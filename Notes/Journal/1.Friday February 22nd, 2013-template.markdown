@@ -1,0 +1,22 @@
+Friday February 22nd, 2013
+==========================
+
+`MSMultiselectGestureRecognizer` seems to be in a better state. Now I need to
+re-enable the other gestures in `RemoteElementEditingViewController` to see what
+changes need to be made to have them all play nicely together. Basic log statements
+need to be added to the editor to provide the story of which gesture is receiving
+actions. Some thought, on paper, should be given to the individual state machines
+for the editing gestures and how they fit into the interface as a whole.
+
+Pending completion of the above, it would be nice to get to adding more menu interactions
+such as copy, delete, duplicate, copy style, edit, etc. I just realized that since
+the icons are really glyphs in a font, they should be able to appear in the menu.
+
+
+###Update
+
+Things that need doing in editor:
+
+- Gestures are taking touches away from bottom toolbars
+- Scaling is not working
+- Make sure that any translation or scaling is bounded by the screen

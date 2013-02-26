@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Pronto Hex Database</key>
+	<array>
+		<dict>
+			<key>Manufacturer</key>
+			<string>Philips</string>
+			<key>Codeset</key>
+			<string>Codeset - 0646</string>
+			<key>Name 1</key>
+			<string>Blue</string>
+			<key>Name 2</key>
+			<string>Blue</string>
+			<key>Hex Code</key>
+			<string>0000 0073 0000 000B 0040 0020 0020 0020 0020 0040 0020 0020 0020 0020 0020 0020 0020 0020 0040 0040 0020 0020 0020 0020 0040 09B7</string>
+		</dict>
+		<dict>
+			<key>Manufacturer</key>
+			<string>Denon</string>
+			<key>Codeset</key>
+			<string>Codeset - 0646</string>
+			<key>Name 1</key>
+			<string>Skip Back - Channel/Track Lower</string>
+			<key>Name 2</key>
+			<string>Channel Down</string>
+			<key>Hex Code</key>
+			<string>0000 0073 0000 000C 0020 0020 0040 0020 0020 0040 0020 0020 0020 0020 0020 0020 0020 0020 0040 0020 0020 0020 0020 0020 0020 0040 0020 09B7</string>
+		</dict>
+		<dict>
+			<key>Manufacturer</key>
+			<string>Toshiba</string>
+			<key>Codeset</key>
+			<string>Codeset - 0646</string>
+			<key>Name 1</key>
+			<string>Skip Fwd - Channel/Track Greater</string>
+			<key>Name 2</key>
+			<string>Channel Up</string>
+			<key>Hex Code</key>
+			<string>0000 0073 0000 000C 0020 0020 0040 0020 0020 0040 0020 0020 0020 0020 0020 0020 0020 0020 0040 0020 0020 0020 0020 0020 0020 0020 0020 09B7</string>
+		</dict>
+    </array>
+</dict>

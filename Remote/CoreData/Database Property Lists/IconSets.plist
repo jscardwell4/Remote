@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BillyBarker</key>
+	<array>
+		<string>Black</string>
+		<string>Gray</string>
+		<string>White</string>
+	</array>
+	<key>LargerIcons</key>
+	<array>
+		<string>Black</string>
+		<string>White</string>
+	</array>
+	<key>Glyphish</key>
+	<array>
+		<string>Icons</string>
+		<string>Symbols</string>
+		<string>Mini-Icons</string>
+	</array>
+	<key>Tabs</key>
+	<array>
+		<string>Classic</string>
+		<string>Duo</string>
+		<string>Social</string>
+		<string>Uno</string>
+	</array>
+</dict>
+</plist>
