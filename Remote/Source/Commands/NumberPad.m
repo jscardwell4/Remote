@@ -4,18 +4,18 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
 
-NSString * const          kDigitZeroButtonKey  = @"digit0";
-NSString * const          kDigitOneButtonKey   = @"digit1";
-NSString * const          kDigitTwoButtonKey   = @"digit2";
-NSString * const          kDigitThreeButtonKey = @"digit3";
-NSString * const          kDigitFourButtonKey  = @"digit4";
-NSString * const          kDigitFiveButtonKey  = @"digit5";
-NSString * const          kDigitSixButtonKey   = @"digit6";
-NSString * const          kDigitSevenButtonKey = @"digit7";
-NSString * const          kDigitEightButtonKey = @"digit8";
-NSString * const          kDigitNineButtonKey  = @"digit9";
-NSString * const          kAuxOneButtonKey     = @"aux1";
-NSString * const          kAuxTwoButtonKey     = @"aux2";
+MSKIT_STRING_CONST          kDigitZeroButtonKey  = @"digit0";
+MSKIT_STRING_CONST          kDigitOneButtonKey   = @"digit1";
+MSKIT_STRING_CONST          kDigitTwoButtonKey   = @"digit2";
+MSKIT_STRING_CONST          kDigitThreeButtonKey = @"digit3";
+MSKIT_STRING_CONST          kDigitFourButtonKey  = @"digit4";
+MSKIT_STRING_CONST          kDigitFiveButtonKey  = @"digit5";
+MSKIT_STRING_CONST          kDigitSixButtonKey   = @"digit6";
+MSKIT_STRING_CONST          kDigitSevenButtonKey = @"digit7";
+MSKIT_STRING_CONST          kDigitEightButtonKey = @"digit8";
+MSKIT_STRING_CONST          kDigitNineButtonKey  = @"digit9";
+MSKIT_STRING_CONST          kAuxOneButtonKey     = @"aux1";
+MSKIT_STRING_CONST          kAuxTwoButtonKey     = @"aux2";
 static NSArray          * keysByTag;
 static const NSUInteger   kTagMax = 11;
 

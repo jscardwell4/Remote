@@ -1,13 +1,13 @@
 #import "Transport.h"
 
-NSString * const          kTransportRewindButtonKey      = @"rewind";
-NSString * const          kTransportRecordButtonKey      = @"record";
-NSString * const          kTransportNextButtonKey        = @"next";
-NSString * const          kTransportStopButtonKey        = @"stop";
-NSString * const          kTransportFastForwardButtonKey = @"fastForward";
-NSString * const          kTransportPreviousButtonKey    = @"previous";
-NSString * const          kTransportPauseButtonKey       = @"pause";
-NSString * const          kTransportPlayButtonKey        = @"play";
+MSKIT_STRING_CONST          kTransportRewindButtonKey      = @"rewind";
+MSKIT_STRING_CONST          kTransportRecordButtonKey      = @"record";
+MSKIT_STRING_CONST          kTransportNextButtonKey        = @"next";
+MSKIT_STRING_CONST          kTransportStopButtonKey        = @"stop";
+MSKIT_STRING_CONST          kTransportFastForwardButtonKey = @"fastForward";
+MSKIT_STRING_CONST          kTransportPreviousButtonKey    = @"previous";
+MSKIT_STRING_CONST          kTransportPauseButtonKey       = @"pause";
+MSKIT_STRING_CONST          kTransportPlayButtonKey        = @"play";
 static NSArray          * keysByTag;
 static const NSUInteger   kTagMax    = 7;
 static int                ddLogLevel = DefaultDDLogLevel;

@@ -22,10 +22,11 @@
 #define AUTO_ASSIGN_DEFAULT_DEVICE_ON_DISCOVERY YES
 
 // static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int   ddLogLevel = DefaultDDLogLevel;
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = NETWORKING_F;
 
 // notifications
-NSString * const   kiTachDeviceDiscoveryNotification = @"kiTachDeviceDiscoveryNotification";
+MSKIT_STRING_CONST   kiTachDeviceDiscoveryNotification = @"kiTachDeviceDiscoveryNotification";
 
 // connection state bit settings
 typedef NS_ENUM (UInt8, ConnectionState) {
@@ -104,7 +105,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
             self.defaultDeviceUUID = UserDefaults[kDefaultiTachDeviceKey];
 
             if (![ITachDevice networkDeviceExistsForUUID:self.defaultDeviceUUID]) {
-                MSLogDebug(NETWORKING_F_C, @"%@ removing default device setting without a backing model object", ClassTagSelectorString);
+                MSLogDebug(@"%@ removing default device setting without a backing model object", ClassTagSelectorString);
                 self.defaultDeviceUUID               = nil;
                 UserDefaults[kDefaultiTachDeviceKey] = nil;
             }
@@ -120,7 +121,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
                                     usingBlock:^(NSNotification * note) {
                                         BOOL wifiAvailable = [[note userInfo][kConnectionStatusWifiAvailable] boolValue];
                                         connectionState = (wifiAvailable ? connectionState | ConnectionStateWifiAvailable : connectionState & ~ConnectionStateWifiAvailable);
-                                        MSLogDebug(NETWORKING_F_C, @"%@ received notification with connection status update: wifi? %@ connection state:%u",
+                                        MSLogDebug(@"%@ received notification with connection status update: wifi? %@ connection state:%u",
                                         ClassTagSelectorString, NSStringFromBOOL(wifiAvailable), connectionState);
                                     }
 
@@ -131,7 +132,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         _networkDevices = (devices
                            ?[NSMutableDictionary dictionaryWithObjects:devices forKeys:[devices valueForKeyPath:@"uuid"]]
                            :[NSMutableDictionary dictionaryWithCapacity:5]);
-                MSLogDebug(NETWORKING_F_C, @"%@iTach devices retrieved from database:\n\t%@", ClassTagSelectorString, _networkDevices);
+                MSLogDebug(@"%@iTach devices retrieved from database:\n\t%@", ClassTagSelectorString, _networkDevices);
 
         [NotificationCenter addObserverForName:UIApplicationDidEnterBackgroundNotification
                                         object:[UIApplication sharedApplication]
@@ -157,7 +158,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
     for (GlobalCacheDeviceConnection * connection in[_connectedDevices allValues]) {
         // disconnect tcp socket
-                MSLogDebug(NETWORKING_F_C, @"%@ disconnecting device: %@", ClassTagSelectorString, connection.deviceUUID);
+                MSLogDebug(@"%@ disconnecting device: %@", ClassTagSelectorString, connection.deviceUUID);
         [connection disconnect];
     }
 }
@@ -171,7 +172,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         // disconnect tcp socket
         [_operationQueue addOperationWithBlock:^{
                              BOOL success = [connection connect];
-                             MSLogDebug(NETWORKING_F_C, @"%@ %@ to device: %@", ClassTagSelectorString, success ? @"reconnected" : @"failed to reconnect", connection.deviceUUID);
+                             MSLogDebug(@"%@ %@ to device: %@", ClassTagSelectorString, success ? @"reconnected" : @"failed to reconnect", connection.deviceUUID);
 
                              if (success && [connection.deviceUUID
                              isEqualToString:self.defaultDeviceUUID]) connectionState |= ConnectionStateDefaultDeviceConnected;
@@ -189,19 +190,19 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 - (BOOL)detectNetworkDevices {
     // Make sure we are connected to wifi
     if (!connectionState & ConnectionStateWifiAvailable) {
-        MSLogWarn(NETWORKING_F_C, @"%@ cannot detect network devices without valid wifi connection", ClassTagSelectorString);
+        MSLogWarn(@"%@ cannot detect network devices without valid wifi connection", ClassTagSelectorString);
 
         return NO;
     }
 
     if (connectionState & ConnectionStateMulticastGroup) {
-        MSLogWarn(NETWORKING_F_C, @"%@ multicast socket already exists", ClassTagSelectorString);
+        MSLogWarn(@"%@ multicast socket already exists", ClassTagSelectorString);
 
         return YES;
     }
 
     [_operationQueue addOperationWithBlock:^{
-                         if (![_multicastConnection joinMulticastGroup]) MSLogError(NETWORKING_F_C, @"%@ failed to join multicast group", ClassTagSelectorString);
+                         if (![_multicastConnection joinMulticastGroup]) MSLogError(@"%@ failed to join multicast group", ClassTagSelectorString);
                          else connectionState |= ConnectionStateMulticastGroup;
                      }
 
@@ -226,7 +227,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
  * Parse the message broadcast by an iTach device to obtain its attributes
  */
 - (void)receivedMulticastGroupMessage:(NSString *)message {
-    MSLogDebug(NETWORKING_F_C, @"%@ message:%@", ClassTagSelectorString, message);
+    MSLogDebug(@"%@ message:%@", ClassTagSelectorString, message);
 
     if (StringIsEmpty(message)) return;
 
@@ -245,7 +246,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
     attributeDictionary[kNetworkDeviceTypeKey] = @(iTachNetworkDeviceType);
 
-    MSLogDebug(NETWORKING_F_C, @"%@ parsed message:\n%@\n", ClassTagSelectorString, attributeDictionary);
+    MSLogDebug(@"%@ parsed message:\n%@\n", ClassTagSelectorString, attributeDictionary);
     [self deviceDiscoveredWithAttributes:attributeDictionary];
 }
 
@@ -260,7 +261,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     assert(uuid);
 
     if (_networkDevices[uuid]) {
-        MSLogDebug(NETWORKING_F_C, @"%@ device with attributes already discovered:\n%@\n", ClassTagSelectorString, attributes);
+        MSLogDebug(@"%@ device with attributes already discovered:\n%@\n", ClassTagSelectorString, attributes);
 
         return;
     }
@@ -276,9 +277,9 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
     ];
     _networkDevices[uuid] = device;
-    MSLogDebug(NETWORKING_F_C, @"%@ added device with uuid %@ to known devices",        ClassTagSelectorString, uuid);
+    MSLogDebug(@"%@ added device with uuid %@ to known devices",        ClassTagSelectorString, uuid);
 
-    MSLogDebug(NETWORKING_F_C, @"%@ posting notification for new device with UUID: %@", ClassTagSelectorString, uuid);
+    MSLogDebug(@"%@ posting notification for new device with UUID: %@", ClassTagSelectorString, uuid);
     [NotificationCenter postNotificationName:kiTachDeviceDiscoveryNotification
                                       object:self
                                     userInfo:@{kNetworkDeviceKey : attributes}
@@ -306,10 +307,10 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
 - (BOOL)connectWithDefaultDevice {
     if (!(connectionState & ConnectionStateDefaultDevice)) {
-            MSLogWarn(NETWORKING_F_C, @"%@ no default device registered, checking for known devices...",              ClassTagSelectorString);
+            MSLogWarn(@"%@ no default device registered, checking for known devices...",              ClassTagSelectorString);
 
         if (_networkDevices.count > 0) {
-            MSLogWarn(NETWORKING_F_C, @"%@ setting default device from known devices, this should be done elsewhere", ClassTagSelectorString);
+            MSLogWarn(@"%@ setting default device from known devices, this should be done elsewhere", ClassTagSelectorString);
             [self setDefaultDeviceUUID:[_networkDevices allKeys][0]];
         } else
             return NO;
@@ -337,21 +338,21 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 - (BOOL)connectWithDevice:(NSString *)deviceUUID {
     // Check wifi connection
     if (!(connectionState & ConnectionStateWifiAvailable)) {
-        MSLogError(NETWORKING_F_C, @"%@ wifi connection required", ClassTagSelectorString);
+        MSLogError(@"%@ wifi connection required", ClassTagSelectorString);
 
         return NO;
     }
 
     // Check device id
     if (StringIsEmpty(deviceUUID)) {
-        MSLogWarn(NETWORKING_F_C, @"%@ device uuid invalid", ClassTagSelectorString);
+        MSLogWarn(@"%@ device uuid invalid", ClassTagSelectorString);
 
         return NO;
     }
 
     // Check for existing connection
     if (_connectedDevices[deviceUUID]) {
-        MSLogWarn(NETWORKING_F_C, @"%@ device connection already exists", ClassTagSelectorString);
+        MSLogWarn(@"%@ device connection already exists", ClassTagSelectorString);
 
         return YES;
     }
@@ -360,7 +361,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     ITachDevice * device = [ITachDevice iTachDeviceForUUID:deviceUUID context:[DataManager mainObjectContext]];
 
     if (!device) {
-        MSLogError(NETWORKING_F_C, @"%@ failed to retrieve device from database with uuid: %@", ClassTagSelectorString, deviceUUID);
+        MSLogError(@"%@ failed to retrieve device from database with uuid: %@", ClassTagSelectorString, deviceUUID);
 
         return NO;
     }
@@ -370,7 +371,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     assert(deviceConnection);
 
     [_operationQueue addOperationWithBlock:^{
-                         if (![deviceConnection connect]) MSLogError(NETWORKING_F_C, @"%@ connection failed for device with uuid: %@", ClassTagSelectorString, deviceUUID);
+                         if (![deviceConnection connect]) MSLogError(@"%@ connection failed for device with uuid: %@", ClassTagSelectorString, deviceUUID);
 
                          _connectedDevices[deviceUUID] = deviceConnection;
 
@@ -403,7 +404,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 - (BOOL)sendCommand:(NSString *)command withTag:(NSUInteger)tag toDevice:(NSString *)device {
     // check for command content
     if (StringIsEmpty(command)) {
-            MSLogError(NETWORKING_F_C, @"%@ cannot send nil command", ClassTagSelectorString);
+            MSLogError(@"%@ cannot send nil command", ClassTagSelectorString);
 
         return NO;
     }
@@ -416,7 +417,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         ITachDevice * iTachDevice = _networkDevices[device];
 
         if (!iTachDevice) {
-            MSLogError(NETWORKING_F_C, @"%@ failed to retrieve info for device:%@", ClassTagSelectorString, device);
+            MSLogError(@"%@ failed to retrieve info for device:%@", ClassTagSelectorString, device);
 
             return NO;
         }
@@ -426,7 +427,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
     BOOL               alreadyConnected = deviceConnection.isConnected;
     NSBlockOperation * connectOp        = [NSBlockOperation blockOperationWithBlock:^{
-                                                                if (![deviceConnection connect]) MSLogError(NETWORKING_F_C, @"%@ failed to connect to device: %@", ClassTagSelectorString, device);
+                                                                if (![deviceConnection connect]) MSLogError(@"%@ failed to connect to device: %@", ClassTagSelectorString, device);
                                                             }
 
                                           ];
@@ -454,7 +455,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
                                                               [validatedCommand appendFormat:@"<tag>%u", tag];
                                                               // send command
-                                                              MSLogDebug(NETWORKING_F_C, @"%@ queueing command \"%@\"", ClassTagSelectorString, [validatedCommand                                                       stringByReplacingOccurrencesOfString:@"\r"
+                                                              MSLogDebug(@"%@ queueing command \"%@\"", ClassTagSelectorString, [validatedCommand                                                       stringByReplacingOccurrencesOfString:@"\r"
                                                                                                                                                                                                         withString:@"⏎"]);
 
                                                               [deviceConnection queueCommand:validatedCommand];
@@ -475,13 +476,13 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 - (void)parseiTachReturnMessage:(NSString *)returnMessage {
     // iTach completeir command: completeir,<module address>:<connector address>,<ID>
     // TODO: handle error messages
-    static NSString * const   kIREnabled  = @"IR Learner Enabled\r";
-    static NSString * const   kIRDisabled = @"IR Learner Disabled\r";
-    static NSString * const   kCompleteIR = @"completeir";
-    static NSString * const   kSendIR     = @"sendir";
-    static NSString * const   kError      = @"ERR";
+    MSKIT_STATIC_STRING_CONST   kIREnabled  = @"IR Learner Enabled\r";
+    MSKIT_STATIC_STRING_CONST   kIRDisabled = @"IR Learner Disabled\r";
+    MSKIT_STATIC_STRING_CONST   kCompleteIR = @"completeir";
+    MSKIT_STATIC_STRING_CONST   kSendIR     = @"sendir";
+    MSKIT_STATIC_STRING_CONST   kError      = @"ERR";
 
-        MSLogDebug(NETWORKING_F_C, @"%@ Return message from device: \"%@\"", ClassTagSelectorString, returnMessage);
+        MSLogDebug(@"%@ Return message from device: \"%@\"", ClassTagSelectorString, returnMessage);
 
     // command success
     if ([returnMessage hasPrefix:kCompleteIR]) {
@@ -494,7 +495,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         [[ConnectionManager sharedConnectionManager] notifySenderForTag:@(-1) success:NO];
     // learner enabled
     else if ([kIREnabled isEqualToString:returnMessage]) {
-        MSLogInfo(NETWORKING_F_C, @"%@ IR Learner has been enabled on the iTach device", ClassTagSelectorString);
+        MSLogInfo(@"%@ IR Learner has been enabled on the iTach device", ClassTagSelectorString);
         [NotificationCenter postNotificationName:kLearnerStatusDidChangeNotification
                                           object:self
                                         userInfo:@{kLearnerStatusDidChangeNotification : @YES}
@@ -502,7 +503,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     }
     // learner disabled
     else if ([kIRDisabled isEqualToString:returnMessage]) {
-        MSLogInfo(NETWORKING_F_C, @"%@IR Learner has been disabled on the iTach device", ClassTagSelectorString);
+        MSLogInfo(@"%@IR Learner has been disabled on the iTach device", ClassTagSelectorString);
         [NotificationCenter postNotificationName:kLearnerStatusDidChangeNotification
                                           object:self
                                         userInfo:@{kLearnerStatusDidChangeNotification : @NO}
@@ -513,7 +514,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         _capturedCommand = returnMessage;
     else if (ValueIsNotNil(_capturedCommand)) {
         _capturedCommand = [_capturedCommand stringByAppendingString:returnMessage];
-        MSLogDebug(NETWORKING_F_C, @"%@ capturedCommand = %@", ClassTagSelectorString, _capturedCommand);
+        MSLogDebug(@"%@ capturedCommand = %@", ClassTagSelectorString, _capturedCommand);
         [NotificationCenter postNotificationName:kCommandCapturedNotification
                                           object:self
                                         userInfo:@{kCommandCapturedNotification : _capturedCommand}
@@ -575,7 +576,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
 - (BOOL)connect {
     if (_isConnecting) {
-        MSLogWarn(NETWORKING_F_C, @"%@ already trying to connect", ClassTagSelectorString);
+        MSLogWarn(@"%@ already trying to connect", ClassTagSelectorString);
 
         return NO;
     } else
@@ -586,7 +587,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     if (  (_tcpSourceRead && !dispatch_source_testcancel(_tcpSourceRead))
        || (_tcpSourceWrite && !dispatch_source_testcancel(_tcpSourceWrite)))
     {
-        MSLogWarn(NETWORKING_F_C, @"%@ already connected to device", ClassTagSelectorString);
+        MSLogWarn(@"%@ already connected to device", ClassTagSelectorString);
         _isConnecting = NO;
 
         return NO;
@@ -608,7 +609,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     hints.ai_socktype = SOCK_STREAM;
 
     if ((n = getaddrinfo([_device.configURL UTF8String], [kiTachDeviceTCPPort UTF8String], &hints, &res)) != 0) {
-        MSLogError(NETWORKING_F_C, @"%@error getting address info for %@, %@: %s",
+        MSLogError(@"%@error getting address info for %@, %@: %s",
                    ClassTagSelectorString, _device.configURL, kiTachDeviceTCPPort, gai_strerror(n));
         _isConnecting = NO;
 
@@ -632,7 +633,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
     if (res == NULL) {                                                   // errno set from final
                                                                          // connect()
-        MSLogError(NETWORKING_F_C, @"%@ error connecting to %@, %@",
+        MSLogError(@"%@ error connecting to %@, %@",
                    ClassTagSelectorString, _device.configURL, kiTachDeviceTCPPort);
         _isConnecting = NO;
 
@@ -642,11 +643,11 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     // Make socket non-blocking
     int   flags;
 
-    if ((flags = fcntl(sockfd, F_GETFL, 0)) < 0) MSLogError(NETWORKING_F_C, @"%@ error getting flags for tcp socket: %d - %s", ClassTagSelectorString, errno, strerror(errno));
+    if ((flags = fcntl(sockfd, F_GETFL, 0)) < 0) MSLogError(@"%@ error getting flags for tcp socket: %d - %s", ClassTagSelectorString, errno, strerror(errno));
 
     flags |= O_NONBLOCK;
 
-    if (fcntl(sockfd, F_SETFL, flags) < 0) MSLogError(NETWORKING_F_C, @"%@ error setting flags for tcp socket: %d - %s", ClassTagSelectorString, errno, strerror(errno));
+    if (fcntl(sockfd, F_SETFL, flags) < 0) MSLogError(@"%@ error setting flags for tcp socket: %d - %s", ClassTagSelectorString, errno, strerror(errno));
 
     // Create dispatch source for socket
     _tcpSourceWrite = dispatch_source_create(DISPATCH_SOURCE_TYPE_WRITE, sockfd, 0, queue);
@@ -661,13 +662,13 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         const char * msg = [cmdComponents[0] UTF8String];
         ssize_t bytesWritten = write(sockfd, msg, strlen(msg));
 
-        if (bytesWritten < 0) MSLogError(NETWORKING_F_C, @"%@ write failed for tcp socket", ClassTagSelectorString);
-        else MSLogDebug(NETWORKING_F_C, @"%@ message sent to device:%s\n", ClassTagSelectorString, msg);
+        if (bytesWritten < 0) MSLogError(@"%@ write failed for tcp socket", ClassTagSelectorString);
+//        else MSLogDebug(@"%@ message sent to device:%s\n", ClassTagSelectorString, msg);
     }
 
                                       );
     dispatch_source_set_cancel_handler(_tcpSourceWrite, ^{
-        MSLogDebug(NETWORKING_F_C, @"%@ closing tcp socket...", ClassTagSelectorString);
+        MSLogDebug(@"%@ closing tcp socket...", ClassTagSelectorString);
         close(sockfd);
         _tcpSourceWrite = nil;
         _tcpSourceRead = nil;
@@ -688,10 +689,10 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         ssize_t bytesRead = read(sockfd, msg, bytesAvailable);
 
         if (bytesRead < 0)
-            MSLogError(NETWORKING_F_C, @"%@ read failed for tcp socket", ClassTagSelectorString);
+            MSLogError(@"%@ read failed for tcp socket", ClassTagSelectorString);
         else {
             msg[bytesAvailable] = '\0';
-            MSLogDebug(NETWORKING_F_C, @"%@ message received from device:%s\n", ClassTagSelectorString, msg);
+//            MSLogDebug(@"%@ message received from device:%s\n", ClassTagSelectorString, msg);
             NSArray * msgComponents = [@(msg)componentsSeparatedByString: @"\r"];
 
             for (NSString * msgComponent in msgComponents) {
@@ -708,7 +709,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
                                       );
     dispatch_source_set_cancel_handler(_tcpSourceRead, ^{
-        MSLogDebug(NETWORKING_F_C, @"%@ closing tcp socket...", ClassTagSelectorString);
+        MSLogDebug(@"%@ closing tcp socket...", ClassTagSelectorString);
         close(sockfd);
         _tcpSourceWrite = nil;
         _tcpSourceRead = nil;
@@ -769,7 +770,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     assert(![NSThread isMainThread]);
 
     if (multicastSource && !dispatch_source_testcancel(multicastSource)) {
-        MSLogWarn(NETWORKING_F_C, @"%@ multicast dispatch source already exists", ClassTagSelectorString);
+        MSLogWarn(@"%@ multicast dispatch source already exists", ClassTagSelectorString);
 
         return NO;
     }
@@ -794,7 +795,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
     if ((n = getaddrinfo([kiTachDeviceMulticastGroupAddress UTF8String],
                          [kiTachDeviceMulticastGroupPort UTF8String], &hints, &res)) != 0)
-        MSLogError(NETWORKING_F_C, @"%@ error getting address info for %@, %@: %s",
+        MSLogError(@"%@ error getting address info for %@, %@: %s",
                    ClassTagSelectorString, kiTachDeviceMulticastGroupAddress,
                    kiTachDeviceMulticastGroupPort, gai_strerror(n));
 
@@ -807,7 +808,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     } while ((res = res->ai_next) != NULL);
 
     if (res == NULL) {           // errno set from final socket()
-        MSLogError(NETWORKING_F_C, @"%@ error creating multicast socket for %@, %@",
+        MSLogError(@"%@ error creating multicast socket for %@, %@",
                    ClassTagSelectorString, kiTachDeviceMulticastGroupAddress,
                    kiTachDeviceMulticastGroupPort);
 
@@ -824,7 +825,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     // Bind socket to multicast address info
 
     if (bind(sockfd, sa, salen) < 0) {
-        MSLogError(NETWORKING_F_C, @"%@ failed to bind multicast socket: %d - %s...closing socket", ClassTagSelectorString, errno, strerror(errno));
+        MSLogError(@"%@ failed to bind multicast socket: %d - %s...closing socket", ClassTagSelectorString, errno, strerror(errno));
         close(sockfd);
         free(sa);
 
@@ -858,7 +859,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
     }  /* switch */
 
     if (n < 0) {
-        MSLogError(NETWORKING_F_C, @"%@ failed to join multicast group: %d - %s...closing socket", ClassTagSelectorString, errno, strerror(errno));
+        MSLogError(@"%@ failed to join multicast group: %d - %s...closing socket", ClassTagSelectorString, errno, strerror(errno));
         close(sockfd);
         free(sa);
 
@@ -874,7 +875,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
         ssize_t bytesRead = read(sockfd, msg, bytesAvailable);
 
         if (bytesRead < 0) {
-            MSLogError(NETWORKING_F_C, @"%@ read failed for multicast socket", ClassTagSelectorString);
+            MSLogError(@"%@ read failed for multicast socket", ClassTagSelectorString);
             dispatch_source_cancel(multicastSource);
         } else {
             msg[bytesAvailable] = '\0';
@@ -889,7 +890,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
 
                                       );
     dispatch_source_set_cancel_handler(multicastSource, ^{
-        MSLogDebug(NETWORKING_F_C, @"%@(multicastSource cancel handler)\tclosing multicast socket...", ClassTagSelectorString);
+        MSLogDebug(@"%@(multicastSource cancel handler)\tclosing multicast socket...", ClassTagSelectorString);
         close(dispatch_source_get_handle(multicastSource));
         multicastSource = nil;
     }

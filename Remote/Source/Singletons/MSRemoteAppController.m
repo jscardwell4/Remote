@@ -23,7 +23,6 @@
 
 static int   ddLogLevel = LOG_LEVEL_DEBUG;
 // static int ddLogLevel = DefaultDDLogLevel;
-static NSMutableArray * kLogReceptionists;
 
 @implementation MSRemoteAppController {
     LaunchScreenViewController * _launchScreenVC;
@@ -82,10 +81,11 @@ static NSMutableArray * kLogReceptionists;
                         RemoteEditingTest(     UITestFocusScale,       0, 2), // 15
                         RemoteEditingTest(     UITestFocusInfo,        0, 2), // 16
                         RemoteEditingTest(     UITestFocusInfo,        1, 2), // 17
-                        ButtonGroupEditingTest(UITestFocusDialog,      0, 3)  // 18
+                        ButtonGroupEditingTest(UITestFocusDialog,      0, 3), // 18
+                        ButtonGroupEditingTest(UITestFocusAlignment,   8, 2)  // 19
                       ];
-    NSMutableIndexSet * indices       = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(18, 1)];
-    NSArray           * selectedTests = [tests objectsAtIndexes:indices];
+    NSMutableIndexSet * indices = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(19, 1)];
+    NSArray * selectedTests = [tests objectsAtIndexes:indices];
 
     [UITestRunner runTests:selectedTests];
 }
@@ -108,63 +108,24 @@ static NSMutableArray * kLogReceptionists;
 }
 
 + (void)attachLoggers {
-    kLogReceptionists = [@[] mutableCopy];
 
-    void   (^ addFileLoggerForContextAndDirectory)(NSUInteger, NSString *) =
-        ^(NSUInteger context, NSString * directory) {
-        MSRemoteLogFileManager * fileManager = [[MSRemoteLogFileManager alloc] initWithLogsDirectory:directory];
-        fileManager.maximumNumberOfLogFiles = 100;
-#ifdef LOG_LOGGER_FILE_ROLL
-        [kLogReceptionists addObject:
-         [MSKVOReceptionist receptionistForObject:fileManager
-                                          keyPath:@"currentLogFile"
-                                          options:NSKeyValueObservingOptionNew
-                                          context:NULL
-                                          handler:
-          ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx) {
-                nsprintf(@"\u00ABnew log file created\u00BB\n\t%@: %@\n",
-                         [o valueForKeyPath:@"logsDirectory.lastPathComponent.lowercaseString"],
-                         c[NSKeyValueChangeNewKey]);
-            }
+    [MSLog addTTYLogger];
+    [MSLog addASLLogger];
 
-                                            queue:[NSOperationQueue mainQueue]
-         ]
-        ];
-#endif
-        DDFileLogger * fileLogger = [[DDFileLogger alloc] initWithLogFileManager:fileManager];
-        fileLogger.rollingFrequency = 60;
-        fileLogger.maximumFileSize  = 0;
-        MSRemoteLogFormatter * logFormatter = [MSRemoteLogFormatter remoteLogFormatterForContext:context];
-        logFormatter.includeTimestamp      = YES;
-        logFormatter.addReturnAfterPrefix  = YES;
-        logFormatter.addReturnAfterMessage = YES;
-        logFormatter.includeLogLevel       = NO;
-        logFormatter.indentMessageBody     = NO;
-        fileLogger.logFormatter            = logFormatter;
+    NSString * logsDirectory = [MSLog defaultLogDirectory];
 
-        [DDLog addLogger:fileLogger];
-    };
-
-    [DDLog addLogger:[DDTTYLogger sharedInstanceWithLogFormatter:
-                      [MSRemoteLogFormatter remoteLogFormatterForContext:TTY_LOG_CONTEXT]]];
-
-    [DDLog addLogger:[DDASLLogger sharedInstanceWithLogFormatter:
-                      [MSRemoteLogFormatter remoteLogFormatterForContext:ASL_LOG_CONTEXT]]];
-
-    NSString * logsDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]
-                                stringByAppendingPathComponent:@"Logs"];
-
-    NSDictionary * fileLoggers = @{@(FILE_LOG_CONTEXT)       : logsDirectory,
+    NSDictionary * fileLoggers = @{@(FILE_LOG_CONTEXT)       : [logsDirectory stringByAppendingPathComponent:@"Default"],
                                    @(PAINTER_LOG_CONTEXT)    : [logsDirectory stringByAppendingPathComponent:@"Painter"],
                                    @(NETWORKING_LOG_CONTEXT) : [logsDirectory stringByAppendingPathComponent:@"Networking"],
                                    @(REMOTE_LOG_CONTEXT)     : [logsDirectory stringByAppendingPathComponent:@"Remote"],
                                    @(COREDATA_LOG_CONTEXT)   : [logsDirectory stringByAppendingPathComponent:@"CoreData"],
                                    @(UITESTING_LOG_CONTEXT)  : [logsDirectory stringByAppendingPathComponent:@"UITesting"],
-                                   @(EDITOR_LOG_CONTEXT)     : [logsDirectory stringByAppendingPathComponent:@"Editor"]};
+                                   @(EDITOR_LOG_CONTEXT)     : [logsDirectory stringByAppendingPathComponent:@"Editor"],
+                                   @(CONSTRAINT_LOG_CONTEXT) : [logsDirectory stringByAppendingPathComponent:@"Constraints"]};
 
     [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop) {
-                     addFileLoggerForContextAndDirectory(UInteger(key), obj);
-                 }];
+        [MSLog addDefaultFileLoggerForContext:UInteger(key) directory:obj];
+    }];
 
 }  /* attachLoggers */
 

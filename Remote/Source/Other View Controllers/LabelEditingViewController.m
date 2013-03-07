@@ -14,7 +14,7 @@
 #import "Button.h"
 #import "StoryboardProxy.h"
 
-static NSString * const   kEmptyLabelText = @"Add Label";
+MSKIT_STATIC_STRING_CONST   kEmptyLabelText = @"Add Label";
 static int                ddLogLevel      = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
 static NSArray const    * fontNames;
 

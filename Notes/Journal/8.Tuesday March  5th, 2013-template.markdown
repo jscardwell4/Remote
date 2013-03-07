@@ -1,0 +1,6 @@
+Tuesday March  5th, 2013
+========================
+
+I need to remove the hash maps in `RemoteElementConstraintManager` as mentioned yestereday
+and then pick up where I left off with getting constraint notifications working and passing
+UI tests.

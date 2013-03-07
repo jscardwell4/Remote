@@ -18,7 +18,8 @@
 // #define DEBUG_CONTEXT  UITESTING_F
 #define DEPTH NSUIntegerMax
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = UITESTING_F;
 
 // static const int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)
@@ -65,7 +66,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
                                for (NSNumber * scale in scales) {
                                if (!quietMode)
-                               MSLogDebug(DEBUG_CONTEXT, @"%@ scale: %.2f\nbefore scaling button group...\n\n%@\n\n%@\n",
+                               MSLogDebug(@"%@ scale: %.2f\nbefore scaling button group...\n\n%@\n\n%@\n",
                                        ClassTagSelectorString,
                                        [scale floatValue],
                                        [bgv constraintsDescription],
@@ -93,7 +94,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                sleep(2);
 
                                if (!quietMode)
-                               MSLogDebug(DEBUG_CONTEXT, @"%@ scale: %.2f\nafter scaling button group...\n\n%@\n\n%@\n",
+                               MSLogDebug(@"%@ scale: %.2f\nafter scaling button group...\n\n%@\n\n%@\n",
                                        ClassTagSelectorString,
                                        appliedScale,
                                        [bgv constraintsDescription],
@@ -132,9 +133,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
                     [queue addOperationWithBlock:^{
                                sleep(2);
-                               MSLogDebug(DEBUG_CONTEXT, @"%@ autolayout trace...\n%@", ClassTagSelectorString, AutolayoutTraceDescription());
+                               MSLogDebug(@"%@ autolayout trace...\n%@", ClassTagSelectorString, AutolayoutTraceDescription());
                                sleep(2);
-                               MSLogDebug(DEBUG_CONTEXT, @"%@\nbutton group...\n\n%@\n%@\n\n %@\n\\n%@\\n%@",
+                               MSLogDebug(@"%@\nbutton group...\n\n%@\n%@\n\n %@\n\\n%@\\n%@",
                                ClassTagSelectorString,
                                [rEditor.sourceView modelConstraintsDescription],
                                [rEditor.sourceView viewConstraintsDescription],
@@ -166,9 +167,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
                     [queue addOperationWithBlock:^{
                                sleep(2);
-                               MSLogDebug(DEBUG_CONTEXT, @"%@ autolayout trace...\n%@", ClassTagSelectorString, AutolayoutTraceDescription());
+                               MSLogDebug(@"%@ autolayout trace...\n%@", ClassTagSelectorString, AutolayoutTraceDescription());
                                sleep(2);
-                               MSLogDebug(DEBUG_CONTEXT, @"%@\nbutton group...\n\n%@\n%@\n\n %@\n\n\n%@\n\n%@",
+                               MSLogDebug(@"%@\nbutton group...\n\n%@\n%@\n\n %@\n\n\n%@\n\n%@",
                                ClassTagSelectorString,
                                [rEditor.sourceView modelConstraintsDescription],
                                [rEditor.sourceView viewConstraintsDescription],

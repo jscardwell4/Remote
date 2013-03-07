@@ -10,7 +10,8 @@
 #import "RemoteElementView_Private.h"
 
 //static const int   ddLogLevel = LOG_LEVEL_DEBUG;
-static const int ddLogLevel = DefaultDDLogLevel;
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = EDITOR_F;
 #pragma unused(ddLogLevel)
 
 @implementation RemoteElementEditingViewController (IBActions)
@@ -32,21 +33,21 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Duplicate the selected subelement views for the `sourceView`.
  */
 - (IBAction)duplicateSubelements:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 /**
  * Copy the style of the selected subelement views for the `sourceView`.
  */
 - (IBAction)copyStyle:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 /**
  * Paste a copied style onto the selected subelement views for the `sourceView`.
  */
 - (IBAction)pasteStyle:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Align the vertical centers of the `selectedViews` to the vertical center of the `focusView`.
  */
 - (IBAction)alignVerticalCenters:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willAlignSelectedViews];
     [self alignSelectedViews:NSLayoutAttributeCenterY];
     [self didAlignSelectedViews];
@@ -80,7 +81,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Align the horizontal centers of the `selectedViews` to the horizontal center of the `focusView`.
  */
 - (IBAction)alignHorizontalCenters:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willAlignSelectedViews];
     [self alignSelectedViews:NSLayoutAttributeCenterX];
     [self didAlignSelectedViews];
@@ -90,7 +91,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Align the top edges of the `selectedViews` to the top edge of the `focusView`.
  */
 - (IBAction)alignTopEdges:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willAlignSelectedViews];
     [self alignSelectedViews:NSLayoutAttributeTop];
     [self didAlignSelectedViews];
@@ -100,7 +101,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Align the bottom edges of the `selectedViews` to the bottom edge of the `focusView`.
  */
 - (IBAction)alignBottomEdges:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willAlignSelectedViews];
     [self alignSelectedViews:NSLayoutAttributeBottom];
     [self didAlignSelectedViews];
@@ -110,7 +111,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Align the left edges of the `selectedViews` to the left edge of the `focusView`.
  */
 - (IBAction)alignLeftEdges:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willAlignSelectedViews];
     [self alignSelectedViews:NSLayoutAttributeLeft];
     [self didAlignSelectedViews];
@@ -120,7 +121,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Align the right edges of the `selectedViews` to the right edge of the `focusView`.
  */
 - (IBAction)alignRightEdges:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willAlignSelectedViews];
     [self alignSelectedViews:NSLayoutAttributeRight];
     [self didAlignSelectedViews];
@@ -130,7 +131,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Resize the `selectedViews` to match the height and width of the `focusView`.
  */
 - (IBAction)resizeFromFocusView:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willResizeSelectedViews];
     [self resizeSelectedViews:NSLayoutAttributeWidth];
     [self resizeSelectedViews:NSLayoutAttributeHeight];
@@ -141,7 +142,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Resize the `selectedViews` to match the width of the `focusView`.
  */
 - (IBAction)resizeHorizontallyFromFocusView:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willResizeSelectedViews];
     [self resizeSelectedViews:NSLayoutAttributeWidth];
     [self didResizeSelectedViews];
@@ -151,7 +152,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Resize the `selectedViews` to match the height of the `focusView`.
  */
 - (IBAction)resizeVerticallyFromFocusView:(id)sender {
-    MSLogDebug(REMOTE_F, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [self willResizeSelectedViews];
     [self resizeSelectedViews:NSLayoutAttributeHeight];
     [self didResizeSelectedViews];
@@ -176,7 +177,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
     ];
 
     if (!savedOK)
-        MSLogError(EDITOR_F_C, @"<%@> Saving child context failed: %@, %@",
+        MSLogError(@"<%@> Saving child context failed: %@, %@",
                    NSStringFromClass([self class]), error, [error localizedFailureReason]);
     else if (_delegate)
         [_delegate remoteElementEditorDidSave:self];
@@ -188,7 +189,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
  * Reset the `sourceView` to its pre-editing state.
  */
 - (IBAction)resetAction:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [_context performBlockAndWait:^{[_context rollback];}];
 }
 
@@ -218,7 +219,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
 }
 
 - (IBAction)menuAction:(id)sender {
-    MSLogDebug(EDITOR_F_C,
+    MSLogDebug(
                @"%@ sender class = %@, sender: %@", ClassTagSelectorString, NSStringFromClass([sender class]), sender);
     if ([sender isKindOfClass:[RemoteElementView class]]) {
         [self toggleSelectionForViews:[@[sender] set]];
@@ -231,49 +232,49 @@ static const int ddLogLevel = DefaultDDLogLevel;
 ////////////////////////////////////////////////////////////////////////////////
 
 - (void)undo:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [_context performBlockAndWait:^{[_context undo];}];
 }
 
 - (void)redo:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
     [_context performBlockAndWait:^{[_context redo];}];
 }
 
 - (void)copy:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)cut:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)delete:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)paste:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)select:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)selectAll:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)toggleBoldface:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)toggleItalics:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (void)toggleUnderline:(id)sender {
-    MSLogDebug(EDITOR_F_C, @"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 @end

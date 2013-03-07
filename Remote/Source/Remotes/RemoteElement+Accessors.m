@@ -12,9 +12,9 @@
  */
 @implementation RemoteElement (ConstraintAccessors)
 
-static NSString * const kConstraintsKey = @"contraints";
-static NSString * const   kFirstItemConstraintsKey  = @"firstItemConstraints";
-static NSString * const   kSecondItemConstraintsKey = @"secondItemContraints";
+MSKIT_STATIC_STRING_CONST kConstraintsKey = @"contraints";
+MSKIT_STATIC_STRING_CONST   kFirstItemConstraintsKey  = @"firstItemConstraints";
+MSKIT_STATIC_STRING_CONST   kSecondItemConstraintsKey = @"secondItemContraints";
 
 - (void)addConstraintsObject:(RemoteElementLayoutConstraint *)value {
     NSSet * values = [NSSet setWithObject:value];
@@ -119,7 +119,7 @@ static NSString * const   kSecondItemConstraintsKey = @"secondItemContraints";
  */
 @implementation RemoteElement (SubelementsAccessors)
 
-static NSString * const kSubelementsKey = @"subelements";
+MSKIT_STATIC_STRING_CONST kSubelementsKey = @"subelements";
 
 - (void)insertObject:(RemoteElement *)value inSubelementsAtIndex:(NSUInteger)idx {
     NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:idx];

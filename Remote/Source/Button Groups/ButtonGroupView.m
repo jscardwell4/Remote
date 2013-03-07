@@ -26,7 +26,7 @@
 #define UPDATE_FROM_MODEL_TRICKLES_DOWN NO
 #define RESIZABLE_TRICKLES_DOWN         NO
 
-NSString * const   kTuckButtonKey = @"kTuckButtonKey";
+MSKIT_STRING_CONST   kTuckButtonKey = @"kTuckButtonKey";
 static int         ddLogLevel     = DefaultDDLogLevel;
 
 // static int ddLogLevel = LOG_LEVEL_DEBUG;

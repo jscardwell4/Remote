@@ -16,6 +16,7 @@ MSKIT_EXTERN_STRING   MSRemoteUIButtonGroupKey;
 MSKIT_EXTERN_STRING   MSRemoteUIButtonKey;
 MSKIT_EXTERN_STRING   MSRemoteUIIterationValuesKey;
 MSKIT_EXTERN_STRING   MSRemoteUIAssertionsKey;
+MSKIT_EXTERN_STRING   MSRemoteUILogSubviewsKey;
 @class                RemoteElementView;
 
 /**
@@ -44,7 +45,10 @@ MSKIT_EXTERN_STRING   MSRemoteUIAssertionsKey;
 /**
  *  logView:after:message:
  */
-- (void)logView:(RemoteElementView *)view after:(dispatch_time_t)delay message:(NSString *)message;
+- (void)logRemoteElementView:(RemoteElementView *)view
+    includingSubelementViews:(NSArray *)subelementViews
+                       after:(dispatch_time_t)delay
+                     message:(NSString *)message;
 
 @end
 

@@ -12,7 +12,8 @@
 #import <ImageIO/ImageIO.h>
 #import "MSRemoteLogFormatter.h"
 
-static int   ddLogLevel = LOG_LEVEL_DEBUG;
+static int         ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = PAINTER_F;
 
 #pragma mark - Typedefs
 
@@ -114,7 +115,7 @@ CGImageRef createImageFromFileName(NSString * fileName) {
 
     if (image_source == NULL) {
         // Something went wrong
-        MSLogCError(PAINTER_F_C, @"VImage error: Couldn't create image source from URL\n");
+        MSLogCError(@"VImage error: Couldn't create image source from URL\n");
 
         return NULL;
     }
@@ -127,7 +128,7 @@ CGImageRef createImageFromFileName(NSString * fileName) {
 
     if (image == NULL) {
         // something went wrong
-        MSLogCError(PAINTER_F_C, @"VImage error: Couldn't create image source from URL\n");
+        MSLogCError(@"VImage error: Couldn't create image source from URL\n");
 
         return NULL;
     }
@@ -248,7 +249,7 @@ NSData * getBitmapFromImage(UIImage * image) {
 NSData * vImageConformantDataForImage(UIImage * image) {
     ImageInfo   imageInfo = [image imageInfo];
 
-    MSLogCDebug(PAINTER_F_C, @"%@", NSStringFromImageInfo(imageInfo));
+    MSLogCDebug(@"%@", NSStringFromImageInfo(imageInfo));
 
     CGColorSpaceRef   colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef      context    = CGBitmapContextCreate(NULL,
@@ -870,7 +871,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
                [string appendFormat:@"%@  ", NSStringFromCGPoint(Point(pv))];
                }
 
-               MSLogDebug(REMOTE_F_C, @"%@", string);
+               MSLogDebug(@"%@", string);
            }
 
     ];
@@ -958,7 +959,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
                                   );
 
     if (err != kvImageNoError) {
-        MSLogError(PAINTER_F_C, @"%@ error with image convolusion:%li", ClassTagSelectorString, err);
+        MSLogError(@"%@ error with image convolusion:%li", ClassTagSelectorString, err);
         free(outData);
 
         return nil;
@@ -1033,7 +1034,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
 // );
 
     if (err != kvImageNoError) {
-        MSLogError(PAINTER_F_C, @"%@ error with image convolusion:%li", ClassTagSelectorString, err);
+        MSLogError(@"%@ error with image convolusion:%li", ClassTagSelectorString, err);
         free(outData);
 
         return nil;

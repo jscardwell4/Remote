@@ -69,18 +69,18 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 @end
 
 // iTach device keys
-NSString * const   kiTachDeviceMake                  = @"Make";
-NSString * const   kiTachDeviceModel                 = @"Model";
-NSString * const   kiTachDevicePCB                   = @"PCB_PN";
-NSString * const   kiTachDevicePkg                   = @"Pkg_Level";
-NSString * const   kiTachDeviceRev                   = @"Revision";
-NSString * const   kiTachDeviceSDK                   = @"SDKClass";
-NSString * const   kiTachDeviceStatus                = @"Status";
-NSString * const   kiTachDeviceUUID                  = @"UUID";
-NSString * const   kiTachDeviceURL                   = @"Config-URL";
-NSString * const   kiTachDeviceMulticastGroupAddress = @"239.255.250.250";
-NSString * const   kiTachDeviceMulticastGroupPort    = @"9131";
-NSString * const   kiTachDeviceTCPPort               = @"4998";
+MSKIT_STRING_CONST   kiTachDeviceMake                  = @"Make";
+MSKIT_STRING_CONST   kiTachDeviceModel                 = @"Model";
+MSKIT_STRING_CONST   kiTachDevicePCB                   = @"PCB_PN";
+MSKIT_STRING_CONST   kiTachDevicePkg                   = @"Pkg_Level";
+MSKIT_STRING_CONST   kiTachDeviceRev                   = @"Revision";
+MSKIT_STRING_CONST   kiTachDeviceSDK                   = @"SDKClass";
+MSKIT_STRING_CONST   kiTachDeviceStatus                = @"Status";
+MSKIT_STRING_CONST   kiTachDeviceUUID                  = @"UUID";
+MSKIT_STRING_CONST   kiTachDeviceURL                   = @"Config-URL";
+MSKIT_STRING_CONST   kiTachDeviceMulticastGroupAddress = @"239.255.250.250";
+MSKIT_STRING_CONST   kiTachDeviceMulticastGroupPort    = @"9131";
+MSKIT_STRING_CONST   kiTachDeviceTCPPort               = @"4998";
 
 @implementation ITachDevice
 

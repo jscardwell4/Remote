@@ -14,14 +14,14 @@
 #define UNDO_BUTTON_INDEX 2
 
 #define MSLogDebugGesture                 \
-    MSLogDebug(EDITOR_F_C,                \
-               @"%@ %@ state: %@",        \
+    MSLogDebug(@"%@ %@ state: %@",        \
                ClassTagSelectorString,    \
                gestureRecognizer.nametag, \
                NSStringFromUIGestureRecognizerState(gestureRecognizer.state));
 
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = EDITOR_F;
 //static const int ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
@@ -131,74 +131,87 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                            _anchoredMultiselectGesture];
     __weak RemoteElementEditingViewController *weakSelf = self;
 
-    MSGestureManagerBlock receiveTouchDefault =
-    ^BOOL(UIGestureRecognizer * gesture, UITouch * touch) {
-        return ([weakSelf.toolbars
-                 objectPassingTest:^BOOL(UIToolbar * obj, NSUInteger idx, BOOL *stop) {
-                     return [touch.view isDescendantOfView:obj];
-                 }] || _flags.popoverActive || _flags.menuState != REEditingMenuStateDefault
-                ? NO :
-                YES);
-    };
+#define ShouldBegin                   @(MSGestureManagerResponseTypeBegin)
+#define ShouldReceiveTouch            @(MSGestureManagerResponseTypeReceiveTouch)
+#define ShouldRecognizeSimultaneously @(MSGestureManagerResponseTypeRecognizeSimultaneously)
 
-    MSGestureManagerBlock notMovingBlock =
-    ^BOOL(UIGestureRecognizer * gesture, id unused) {
-        return !_flags.movingSelectedViews;
-    };
+#define RecognizeSimultaneouslyBlock(name)                                                   \
+    (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, UIGestureRecognizer * other) \
+    {                                                                                        \
+        return [name isEqualToString:other.nametag];                                         \
+    }
 
-    MSGestureManagerBlock hasSelectionBlock =
-    ^BOOL(UIGestureRecognizer * gesture, id unused) {
-        return weakSelf.selectionCount;
-    };
+#define ReceiveTouchBlock(condition)                                             \
+    (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, UITouch * touch) \
+    {                                                                            \
+        return condition;                                                        \
+    }
+
+#define ShouldBeginBlock(condition)                                              \
+    (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, id unused)       \
+    {                                                                            \
+        return condition;                                                        \
+    }
+
+    // general blocks
+
+    MSGestureManagerBlock notMovingBlock = ShouldBeginBlock(!_flags.movingSelectedViews);
+
+    MSGestureManagerBlock hasSelectionBlock = ShouldBeginBlock(weakSelf.selectionCount);
+
+    MSGestureManagerBlock noPopovers = ShouldBeginBlock(!_flags.popoverActive && _flags.menuState == REEditingMenuStateDefault);
+
+    MSGestureManagerBlock noToolbars = ReceiveTouchBlock(![weakSelf.toolbars
+                                                         objectPassingTest:^BOOL(UIToolbar * obj, NSUInteger idx, BOOL *stop) {
+                                                             return [touch.view isDescendantOfView:obj];
+                                                         }]);
+
+    MSGestureManagerBlock selectableClassBlock = ReceiveTouchBlock([touch.view isKindOfClass:_selectableClass]);
 
     // pinch
     [gestureBlocks addObject:@{
-     @(MSGestureManagerResponseTypeBegin):hasSelectionBlock,
-     @(MSGestureManagerResponseTypeReceiveTouch):receiveTouchDefault
+         ShouldBegin        : hasSelectionBlock,
+         ShouldReceiveTouch : ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch))
      }];
 
     // long press
     [gestureBlocks addObject:@{
-     @(MSGestureManagerResponseTypeReceiveTouch): receiveTouchDefault,
-     @(MSGestureManagerResponseTypeRecognizeSimultaneously):
-     (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, UIGestureRecognizer * other) {
-        return [@"toolbarLongPressGesture" isEqualToString:other.nametag];
-    }}];
+         ShouldReceiveTouch            : ReceiveTouchBlock(  noPopovers(gesture, touch)
+                                                          && noToolbars(gesture, touch)
+                                                          && selectableClassBlock(gesture, touch)),
+         ShouldRecognizeSimultaneously : RecognizeSimultaneouslyBlock(@"toolbarLongPressGesture")
+     }];
 
     // toolbar long press
     [gestureBlocks addObject:@{
-     @(MSGestureManagerResponseTypeReceiveTouch): receiveTouchDefault,
-     @(MSGestureManagerResponseTypeRecognizeSimultaneously):
-     (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, UIGestureRecognizer * other) {
-        return [@"longPressGesture" isEqualToString:other.nametag];
-    }}];
+         ShouldReceiveTouch            : ReceiveTouchBlock(noPopovers(gesture, touch) && [touch.view isDescendantOfView:_topToolbar]),
+         ShouldRecognizeSimultaneously : RecognizeSimultaneouslyBlock(@"longPressGesture")
+     }];
 
     // two touch pan
-    [gestureBlocks addObject:@{@(MSGestureManagerResponseTypeReceiveTouch): receiveTouchDefault}];
+    [gestureBlocks addObject:@{
+         ShouldReceiveTouch: ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch))
+     }];
 
     // one touch double tap
     [gestureBlocks addObject:@{
-     @(MSGestureManagerResponseTypeBegin): notMovingBlock,
-     @(MSGestureManagerResponseTypeReceiveTouch): receiveTouchDefault
+         ShouldBegin        : notMovingBlock,
+         ShouldReceiveTouch : ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch))
      }];
 
     // multiselect
     [gestureBlocks addObject:@{
-     @(MSGestureManagerResponseTypeBegin): notMovingBlock,
-     @(MSGestureManagerResponseTypeReceiveTouch): receiveTouchDefault,
-     @(MSGestureManagerResponseTypeRecognizeSimultaneously):
-     (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, UIGestureRecognizer * other) {
-        return [@"anchoredMultiselectGesture" isEqualToString:other.nametag];
-    }}];
+         ShouldBegin 			 				: notMovingBlock,
+         ShouldReceiveTouch 			: ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch)),
+         ShouldRecognizeSimultaneously  : RecognizeSimultaneouslyBlock(@"anchoredMultiselectGesture")
+     }];
 
     // anchored multiselect
     [gestureBlocks addObject:@{
-     @(MSGestureManagerResponseTypeBegin): notMovingBlock,
-     @(MSGestureManagerResponseTypeReceiveTouch): receiveTouchDefault,
-     @(MSGestureManagerResponseTypeRecognizeSimultaneously):
-     (MSGestureManagerBlock)^BOOL(UIGestureRecognizer * gesture, UIGestureRecognizer * other) {
-        return [@"multiselectGesture" isEqualToString:other.nametag];
-    }}];
+         ShouldBegin                   : notMovingBlock,
+         ShouldReceiveTouch            : ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch)),
+         ShouldRecognizeSimultaneously : RecognizeSimultaneouslyBlock(@"multiselectGesture")
+    }];
 
     self.gestureManager = [MSGestureManager gestureManagerForGestures:gestures
                                                                blocks:gestureBlocks];
@@ -216,7 +229,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     _multiselectGesture.enabled         = !moving;
     _anchoredMultiselectGesture.enabled = !moving;
 
-    MSLogDebug(EDITOR_F_C,
+    MSLogDebug(
                @"%@\n\t%@",
                ClassTagSelectorString,
                [[[_gestures allObjects]
@@ -340,10 +353,12 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
         {
             case UIGestureRecognizerStateBegan :
                 [self willScaleSelectedViews];
+                _flags.appliedScale = 1.0f;
                 break;
 
             case UIGestureRecognizerStateChanged :
-                [self scaleSelectedViews:gestureRecognizer.scale validation:nil];
+                _flags.appliedScale = [self scaleSelectedViews:gestureRecognizer.scale
+                                                     validation:nil];
                 break;
 
             case UIGestureRecognizerStateCancelled :
@@ -402,7 +417,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 - (void)displayStackedViewDialogForViews:(NSSet *)stackedViews
 {
-    MSLogDebug(EDITOR_F, @"%@ select stacked views to include: (%@)",
+    MSLogDebug(@"%@ select stacked views to include: (%@)",
                ClassTagSelectorString,
                [[[stackedViews allObjects] valueForKey:@"displayName"]
                 componentsJoinedByString:@", "]);

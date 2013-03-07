@@ -10,16 +10,17 @@
 #import "RemoteController.h"
 #import "CoreDataManager.h"
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
-
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = UITESTING_F;
 // static const int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)
 
-NSString * const   MSRemoteUIRemoteKey          = @"MSRemoteUIRemoteKey";
-NSString * const   MSRemoteUIButtonGroupKey     = @"MSRemoteUIButtonGroupKey";
-NSString * const   MSRemoteUIButtonKey          = @"MSRemoteUIButtonKey";
-NSString * const   MSRemoteUIIterationValuesKey = @"MSRemoteUIIterationValuesKey";
-NSString * const   MSRemoteUIAssertionsKey      = @"MSRemoteUIAssertionsKey";
+MSKIT_STRING_CONST   MSRemoteUIRemoteKey          = @"MSRemoteUIRemoteKey";
+MSKIT_STRING_CONST   MSRemoteUIButtonGroupKey     = @"MSRemoteUIButtonGroupKey";
+MSKIT_STRING_CONST   MSRemoteUIButtonKey          = @"MSRemoteUIButtonKey";
+MSKIT_STRING_CONST   MSRemoteUIIterationValuesKey = @"MSRemoteUIIterationValuesKey";
+MSKIT_STRING_CONST   MSRemoteUIAssertionsKey      = @"MSRemoteUIAssertionsKey";
+MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
 
 @implementation MSRemoteUITest
 
@@ -38,7 +39,7 @@ NSString * const   MSRemoteUIAssertionsKey      = @"MSRemoteUIAssertionsKey";
             break;
 
         default :
-            MSLogWarn(DEBUG_CONTEXT, @"%@ unsupported test type: %llu",
+            MSLogWarn(@"%@ unsupported test type: %llu",
                       ClassTagSelectorString,
                       (testCode & UITestTypeMask));
             break;
@@ -73,26 +74,51 @@ NSString * const   MSRemoteUIAssertionsKey      = @"MSRemoteUIAssertionsKey";
 - (void)logTest:(BOOL)testComplete {
     NSString * testInfo = NSStringFromUITestCode(_testCode);
     NSString * prefix   = (testComplete ? @"  end test - " : @"begin test - ");
-    NSString * leftPad  = [NSString stringFilledWithCharacter:' ' count:39 - (testInfo.length + prefix.length) / 2];
-    NSString * meat     = [[NSString stringWithFormat:@"%@%@%@", leftPad, prefix, testInfo] stringByPaddingToLength:78 withString:@" " startingAtIndex:0];
+    NSString * leftPad  = [NSString stringFilledWithCharacter:' '
+                                                        count:39 - (testInfo.length + prefix.length) / 2];
+    NSString * meat     = [$(@"%@%@%@", leftPad, prefix, testInfo) stringByPaddingToLength:78
+                                                                                withString:@" "
+                                                                           startingAtIndex:0];
     NSString * spacer   = [NSString stringFilledWithCharacter:' ' count:78];
-    NSString * message  = [NSString stringWithFormat:@"\u23A7%1$@\u23AB\n\u23A8%2$@\u23AC\n\u23A9%1$@\u23AD\n", spacer, meat];
+    NSString * message  = $(@"\u23A7%1$@\u23AB\n\u23A8%2$@\u23AC\n\u23A9%1$@\u23AD\n", spacer, meat);
 
-    MSLogDebug(UITESTING_F_C, @"\n%@", message);
+    MSLogDebug(@"\n%@", message);
 }
 
-- (void)logView:(RemoteElementView *)view after:(dispatch_time_t)delay message:(NSString *)message {
+- (void)logRemoteElementView:(RemoteElementView *)view
+    includingSubelementViews:(NSArray *)subelementViews
+                       after:(dispatch_time_t)delay
+                     message:(NSString *)message
+{
+    assert(OnMainQueue);
     dispatch_time_t   popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
 
+    NSString * messageString = ([NSString isEmptyString:message]
+                                ? @""
+                                :[message dividerWithCharacterString:@"#"]);
+    NSString * viewString = $(@"%@%@\n%@\n\n%@",
+                              [$(@"%@", view.displayName) singleBarMessageBox],
+                              [view modelConstraintsDescription],
+                              [view viewConstraintsDescription],
+                              [view framesDescription]);
+    NSString * subelementsString = @"";
+    if (subelementViews.count) {
+        subelementsString = $(@"%@\n\n%@\n",
+                              [@"subelements" dividerWithCharacterString: @"#"],
+                              [[subelementViews
+                               arrayByMappingToBlock:^NSString *(NSString * key, NSUInteger idx) {
+                                   return $(@"%@%@\n%@",
+                                            [$(@"%@", view[key].displayName) singleBarMessageBox],
+                                            [view[key] modelConstraintsDescription],
+                                            [view[key] viewConstraintsDescription]);
+                               }] componentsJoinedByString:@"\n\n"]);
+    }
+
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-        MSLogDebug(DEBUG_CONTEXT, @"\n%@\n\n%@\n\n%@\n\n%@\n\n%@\n",
-                   ([NSString isEmptyString:message]
-                    ? @""
-                    :[message dividerWithCharacterString:@"#"]),
-                   [view constraintsDescription],
-                   [view framesDescription],
-                   [@"subelements" dividerWithCharacterString: @"#"],
-                   [[view.subelementViews valueForKeyPath:@"constraintsDescription"] componentsJoinedByString:@"\n\n"]);
+        MSLogDebug(@"%@\n\n%@\n\n%@\f",
+                   messageString,
+                   viewString,
+                   subelementsString);
     });
 }
 

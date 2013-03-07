@@ -13,8 +13,8 @@
 #import "CoreDataManager.h"
 
 static int                ddLogLevel   = LOG_LEVEL_DEBUG;
-static NSString * const   kTestSuccess = @"=";
-static NSString * const   kTestFailure = @"X";
+MSKIT_STATIC_STRING_CONST   kTestSuccess = @"=";
+MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 
 @interface IRCodeDetailViewController ()
 

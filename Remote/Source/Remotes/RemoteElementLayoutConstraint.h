@@ -34,4 +34,6 @@
                                                 owner:(RemoteElement *)owner;
 - (BOOL)hasAttributeValues:(NSDictionary *)values;
 
+- (NSString *)committedValuesDescription;
+
 @end

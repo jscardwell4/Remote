@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# get the index number
+COUNT=$((`find ./ -depth 1 -name "[0-9].*markdown" | wc -l`+1))
+
+# get the date
+DAY=`date +'%A'`
+MONTH=`date +'%B'`
+DATE=`date +'%e'`
+YEAR=`date +'%Y'`
+
+case "$DATE % 10" in
+1) DATE=$DATE"st,"
+;;
+2) DATE=$DATE"nd,"
+;;
+3) DATE=$DATE"rd,"
+;;
+*) DATE=$DATE"th,"
+esac
+
+FULLDATE="$DAY $MONTH $DATE $YEAR"
+
+FILENAME="$COUNT.$FULLDATE-template.markdown"
+
+HEADER="$FULLDATE"$'\n'
+
+for i in `seq 1 ${#FULLDATE}`
+do
+    HEADER=$HEADER"="
+done
+HEADER="$HEADER"$'\n'$'\n'
+
+echo "$HEADER" > "$FILENAME"
+
+echo "$FILENAME"

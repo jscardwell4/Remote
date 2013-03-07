@@ -10,8 +10,8 @@
 #import "ComponentDevice.h"
 #import "IRCode.h"
 
-NSString * const   kDeviceConfigurationInputKey      = @"kDeviceConfigurationInputKey";
-NSString * const   kDeviceConfigurationPowerStateKey = @"kDeviceConfigurationPowerStateKey";
+MSKIT_STRING_CONST   kDeviceConfigurationInputKey      = @"kDeviceConfigurationInputKey";
+MSKIT_STRING_CONST   kDeviceConfigurationPowerStateKey = @"kDeviceConfigurationPowerStateKey";
 static int         ddLogLevel                        = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)

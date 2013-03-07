@@ -12,34 +12,34 @@
 
 // Panel registration keys
 static NSArray   * kValidPanelKeys;
-NSString * const   kTopPanelOneKey      = @"kTopPanelOneKey";
-NSString * const   kBottomPanelOneKey   = @"kBottomPanelOneKey";
-NSString * const   kLeftPanelOneKey     = @"kLeftPanelOneKey";
-NSString * const   kRightPanelOneKey    = @"kRightPanelOneKey";
-NSString * const   kTopPanelTwoKey      = @"kTopPanelTwoKey";
-NSString * const   kBottomPanelTwoKey   = @"kBottomPanelTwoKey";
-NSString * const   kLeftPanelTwoKey     = @"kLeftPanelTwoKey";
-NSString * const   kRightPanelTwoKey    = @"kRightPanelTwoKey";
-NSString * const   kTopPanelThreeKey    = @"kTopPanelThreeKey";
-NSString * const   kBottomPanelThreeKey = @"kBottomPanelThreeKey";
-NSString * const   kLeftPanelThreeKey   = @"kLeftPanelThreeKey";
-NSString * const   kRightPanelThreeKey  = @"kRightPanelThreeKey";
+MSKIT_STRING_CONST   kTopPanelOneKey      = @"kTopPanelOneKey";
+MSKIT_STRING_CONST   kBottomPanelOneKey   = @"kBottomPanelOneKey";
+MSKIT_STRING_CONST   kLeftPanelOneKey     = @"kLeftPanelOneKey";
+MSKIT_STRING_CONST   kRightPanelOneKey    = @"kRightPanelOneKey";
+MSKIT_STRING_CONST   kTopPanelTwoKey      = @"kTopPanelTwoKey";
+MSKIT_STRING_CONST   kBottomPanelTwoKey   = @"kBottomPanelTwoKey";
+MSKIT_STRING_CONST   kLeftPanelTwoKey     = @"kLeftPanelTwoKey";
+MSKIT_STRING_CONST   kRightPanelTwoKey    = @"kRightPanelTwoKey";
+MSKIT_STRING_CONST   kTopPanelThreeKey    = @"kTopPanelThreeKey";
+MSKIT_STRING_CONST   kBottomPanelThreeKey = @"kBottomPanelThreeKey";
+MSKIT_STRING_CONST   kLeftPanelThreeKey   = @"kLeftPanelThreeKey";
+MSKIT_STRING_CONST   kRightPanelThreeKey  = @"kRightPanelThreeKey";
 
 // Panel gesture keys
-static NSString * const   kPinchGestureKey           = @"kPinchGestureKey";
-static NSString * const   kTapGestureKey             = @"kTapGestureKey";
-static NSString * const   kSwipeDownOneTouchKey      = @"kSwipeDownOneTouchKey";
-static NSString * const   kSwipeDownTwoTouchesKey    = @"kSwipeDownTwoTouchesKey";
-static NSString * const   kSwipeDownThreeTouchesKey  = @"kSwipeDownThreeTouchesKey";
-static NSString * const   kSwipeUpOneTouchKey        = @"kSwipeUpOneTouchKey";
-static NSString * const   kSwipeUpTwoTouchesKey      = @"kSwipeUpTwoTouchesKey";
-static NSString * const   kSwipeUpThreeTouchesKey    = @"kSwipeUpThreeTouchesKey";
-static NSString * const   kSwipeLeftOneTouchKey      = @"kSwipeLeftOneTouchKey";
-static NSString * const   kSwipeLeftTwoTouchesKey    = @"kSwipeLeftTwoTouchesKey";
-static NSString * const   kSwipeLeftThreeTouchesKey  = @"kSwipeLeftThreeTouchesKey";
-static NSString * const   kSwipeRightOneTouchKey     = @"kSwipeRightOneTouchKey";
-static NSString * const   kSwipeRightTwoTouchesKey   = @"kSwipeRightTwoTouchesKey";
-static NSString * const   kSwipeRightThreeTouchesKey = @"kSwipeRightThreeTouchesKey";
+MSKIT_STATIC_STRING_CONST   kPinchGestureKey           = @"kPinchGestureKey";
+MSKIT_STATIC_STRING_CONST   kTapGestureKey             = @"kTapGestureKey";
+MSKIT_STATIC_STRING_CONST   kSwipeDownOneTouchKey      = @"kSwipeDownOneTouchKey";
+MSKIT_STATIC_STRING_CONST   kSwipeDownTwoTouchesKey    = @"kSwipeDownTwoTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeDownThreeTouchesKey  = @"kSwipeDownThreeTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeUpOneTouchKey        = @"kSwipeUpOneTouchKey";
+MSKIT_STATIC_STRING_CONST   kSwipeUpTwoTouchesKey      = @"kSwipeUpTwoTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeUpThreeTouchesKey    = @"kSwipeUpThreeTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeLeftOneTouchKey      = @"kSwipeLeftOneTouchKey";
+MSKIT_STATIC_STRING_CONST   kSwipeLeftTwoTouchesKey    = @"kSwipeLeftTwoTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeLeftThreeTouchesKey  = @"kSwipeLeftThreeTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeRightOneTouchKey     = @"kSwipeRightOneTouchKey";
+MSKIT_STATIC_STRING_CONST   kSwipeRightTwoTouchesKey   = @"kSwipeRightTwoTouchesKey";
+MSKIT_STATIC_STRING_CONST   kSwipeRightThreeTouchesKey = @"kSwipeRightThreeTouchesKey";
 
 // static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int          ddLogLevel = DefaultDDLogLevel;

@@ -26,23 +26,23 @@ NSUInteger const   kFocusSelectionToolbarIndex    = 3;
 
 - (void)initializeToolbars {
 
-    self.topToolbar                                       = [[UIToolbar alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
+    self.topToolbar = [[UIToolbar alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
     _topToolbar.translatesAutoresizingMaskIntoConstraints = NO;
     _topToolbar.barStyle                                  = UIBarStyleBlack;
     [self.view addSubview:_topToolbar];
 
-    self.emptySelectionToolbar                                       = [[UIToolbar alloc] initWithFrame:TOOLBAR_FRAME];
+    self.emptySelectionToolbar = [[UIToolbar alloc] initWithFrame:TOOLBAR_FRAME];
     _emptySelectionToolbar.translatesAutoresizingMaskIntoConstraints = NO;
     _emptySelectionToolbar.barStyle                                  = UIBarStyleBlack;
     [self.view addSubview:_emptySelectionToolbar];
 
-    self.nonEmptySelectionToolbar                                       = [[UIToolbar alloc] initWithFrame:TOOLBAR_FRAME];
+    self.nonEmptySelectionToolbar = [[UIToolbar alloc] initWithFrame:TOOLBAR_FRAME];
     _nonEmptySelectionToolbar.translatesAutoresizingMaskIntoConstraints = NO;
     _nonEmptySelectionToolbar.barStyle                                  = UIBarStyleBlack;
     _nonEmptySelectionToolbar.hidden                                    = YES;
     [self.view addSubview:_nonEmptySelectionToolbar];
 
-    self.focusSelectionToolbar                                       = [[UIToolbar alloc] initWithFrame:TOOLBAR_FRAME];
+    self.focusSelectionToolbar = [[UIToolbar alloc] initWithFrame:TOOLBAR_FRAME];
     _focusSelectionToolbar.translatesAutoresizingMaskIntoConstraints = NO;
     _focusSelectionToolbar.barStyle                                  = UIBarStyleBlack;
     _focusSelectionToolbar.hidden                                    = YES;

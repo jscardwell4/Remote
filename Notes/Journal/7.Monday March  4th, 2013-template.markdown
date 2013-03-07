@@ -1,0 +1,11 @@
+Monday March  4th, 2013
+=======================
+
+Finish the flow of constraint updates. Fix resizing to match sibling. Run UI tests.
+Figure out why DDLog calls are crashing the application.
+
+###Update
+
+The `NSHashMap` ivars holding the constraint cache values are not staying in sync. I suspect
+it might have something to do with threads/queues. Perhaps I should just switch back to the
+on-demand filtered set returns and come back to this issue when it is time to work on app performance.

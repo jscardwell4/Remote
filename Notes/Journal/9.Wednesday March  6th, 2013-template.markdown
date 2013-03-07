@@ -1,0 +1,4 @@
+Wednesday March  6th, 2013
+==========================
+
+I need to stop getting lost in debugging and get stuff working again. Pick up where I left off yesterday with the alignment tests.

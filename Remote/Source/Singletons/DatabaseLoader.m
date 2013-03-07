@@ -119,12 +119,12 @@ static int   ddLogLevel = LOG_LEVEL_WARN;
 
 - (void)loadProntoHexCodeBankIntoDatabase {
     // Keys for plist entries
-    static NSString * const   databaseKey     = @"Pronto Hex Database";
-    static NSString * const   manufacturerKey = @"Manufacturer";
-    static NSString * const   codesetKey      = @"Codeset";
-// static NSString * const name1Key = @"Name 1";
-// static NSString * const name2Key = @"Name 2";
-// static NSString * const hexcodeKey = @"Hex Code";
+    MSKIT_STATIC_STRING_CONST   databaseKey     = @"Pronto Hex Database";
+    MSKIT_STATIC_STRING_CONST   manufacturerKey = @"Manufacturer";
+    MSKIT_STATIC_STRING_CONST   codesetKey      = @"Codeset";
+// MSKIT_STATIC_STRING_CONST name1Key = @"Name 1";
+// MSKIT_STATIC_STRING_CONST name2Key = @"Name 2";
+// MSKIT_STATIC_STRING_CONST hexcodeKey = @"Hex Code";
 
 // static const int plistCount = 56;
     NSArray * codesArray =

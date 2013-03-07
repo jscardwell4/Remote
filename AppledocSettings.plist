@@ -14,19 +14,19 @@
 	<true/>
 	<key>--include</key>
 	<array>
-		<string>/Users/Moondeer/Projects/IR-Remote/source/iPhonto/Notes</string>
+		<string>/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Notes</string>
 	</array>
 	<key>--project-company</key>
 	<string>Moondeer Studios</string>
 	<key>--project-name</key>
-	<string>iPhonto</string>
+	<string>Remote</string>
 	<key>--company-id</key>
 	<string>com.moondeerstudios</string>
 	<key>--logformat</key>
 	<string>xcode</string>
 	<key>--templates</key>
-	<string>/Users/Moondeer/Projects/IR-Remote/source/Templates</string>
+	<string>/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Templates</string>
 	<key>--output</key>
-	<string>/Users/Moondeer/Projects/IR-Remote/documentation</string>
+	<string>/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Documentation</string>
 </dict>
 </plist>

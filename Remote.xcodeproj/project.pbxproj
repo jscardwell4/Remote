@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C208DEB916DECF4300084C49 /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C208DEB816DECF4300084C49 /* MSKit.framework */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
 		C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
 		C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
@@ -118,8 +119,6 @@
 		C26BB07516DC18530093D5B4 /* MacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFC016DC18530093D5B4 /* MacroBuilder.m */; };
 		C26BB07616DC18530093D5B4 /* RemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFC216DC18530093D5B4 /* RemoteBuilder.m */; };
 		C26BB07716DC18530093D5B4 /* RemoteElementConstructionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFC516DC18530093D5B4 /* RemoteElementConstructionManager.m */; };
-		C26BB07816DC18530093D5B4 /* indentoutput.tmp in Resources */ = {isa = PBXBuildFile; fileRef = C26BAFC716DC18530093D5B4 /* indentoutput.tmp */; };
-		C26BB07916DC18530093D5B4 /* output.txt in Resources */ = {isa = PBXBuildFile; fileRef = C26BAFC816DC18530093D5B4 /* output.txt */; };
 		C26BB07A16DC18530093D5B4 /* Remote.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCA16DC18530093D5B4 /* Remote.m */; };
 		C26BB07B16DC18530093D5B4 /* RemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCC16DC18530093D5B4 /* RemoteController.m */; };
 		C26BB07C16DC18530093D5B4 /* RemoteEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCE16DC18530093D5B4 /* RemoteEditingViewController.m */; };
@@ -1501,7 +1500,6 @@
 		C26BBB4916DC1C960093D5B4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB3F16DC1C960093D5B4 /* QuartzCore.framework */; };
 		C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */; };
 		C26BBB4C16DC1FA20093D5B4 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */; };
-		C26BBB5016DC20D10093D5B4 /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4F16DC20D10093D5B4 /* MSKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1515,6 +1513,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Project.xcconfig"; sourceTree = "<group>"; };
+		C208DDFE16DDC5F600084C49 /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
+		C208DDFF16DDC5FD00084C49 /* Config-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Release.xcconfig"; sourceTree = "<group>"; };
+		C208DE0016DDC6B100084C49 /* Config-Remote.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote.xcconfig"; sourceTree = "<group>"; };
+		C208DE0116DDC6BA00084C49 /* Config-Remote-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote-Debug.xcconfig"; sourceTree = "<group>"; };
+		C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote-Release.xcconfig"; sourceTree = "<group>"; };
+		C208DE0316DE763900084C49 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Notes; sourceTree = "<group>"; };
+		C208DEB516DEC70C00084C49 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/6.1/Applications/29A05435-229D-4987-9F98-804B390E45AB/Library/Caches/Logs"; sourceTree = "<group>"; };
+		C208DEB816DECF4300084C49 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = "../DerivedData/MSRemote/Build/Products/Debug-iphonesimulator/MSKit.framework"; sourceTree = "<group>"; };
 		C23004C416DD3AA100D30A19 /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
 		C2625B9016DD47F10000F676 /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
 		C2625B9116DD47F10000F676 /* Remote.base 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 11.xcdatamodel"; sourceTree = "<group>"; };
@@ -1754,8 +1761,6 @@
 		C26BAFC316DC18530093D5B4 /* RemoteConstruction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConstruction.h; sourceTree = "<group>"; };
 		C26BAFC416DC18530093D5B4 /* RemoteElementConstructionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager.h; sourceTree = "<group>"; };
 		C26BAFC516DC18530093D5B4 /* RemoteElementConstructionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementConstructionManager.m; sourceTree = "<group>"; };
-		C26BAFC716DC18530093D5B4 /* indentoutput.tmp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = indentoutput.tmp; sourceTree = "<group>"; };
-		C26BAFC816DC18530093D5B4 /* output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = output.txt; sourceTree = "<group>"; };
 		C26BAFC916DC18530093D5B4 /* Remote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Remote.h; sourceTree = "<group>"; };
 		C26BAFCA16DC18530093D5B4 /* Remote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Remote.m; sourceTree = "<group>"; };
 		C26BAFCB16DC18530093D5B4 /* RemoteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteController.h; sourceTree = "<group>"; };
@@ -1769,12 +1774,8 @@
 		C26BAFD316DC18530093D5B4 /* RemoteElement_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement_Private.h; sourceTree = "<group>"; };
 		C26BAFD416DC18530093D5B4 /* RemoteElementConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstraintManager.h; sourceTree = "<group>"; };
 		C26BAFD516DC18530093D5B4 /* RemoteElementConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementConstraintManager.m; sourceTree = "<group>"; };
-		C26BAFD616DC18530093D5B4 /* RemoteElementLayoutConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConfiguration.h; sourceTree = "<group>"; };
-		C26BAFD716DC18530093D5B4 /* RemoteElementLayoutConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConfiguration.m; sourceTree = "<group>"; };
 		C26BAFD816DC18530093D5B4 /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
 		C26BAFD916DC18530093D5B4 /* RemoteElementLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConstraint.m; sourceTree = "<group>"; };
-		C26BAFDA16DC18530093D5B4 /* RemoteElementLayoutFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutFunctions.h; sourceTree = "<group>"; };
-		C26BAFDB16DC18530093D5B4 /* RemoteElementLayoutFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutFunctions.m; sourceTree = "<group>"; };
 		C26BAFDC16DC18530093D5B4 /* RemoteElementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementView.h; sourceTree = "<group>"; };
 		C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementView.m; sourceTree = "<group>"; };
 		C26BAFDE16DC18530093D5B4 /* RemoteElementView_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementView_Private.h; sourceTree = "<group>"; };
@@ -3093,14 +3094,6 @@
 		C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNumberPadView.xib; sourceTree = "<group>"; };
 		C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		C26BB59916DC18A90093D5B4 /* RemoteEditingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RemoteEditingViewController.xib; sourceTree = "<group>"; };
-		C26BBA9016DC19490093D5B4 /* agenda.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = agenda.markdown; sourceTree = "<group>"; };
-		C26BBA9116DC19490093D5B4 /* Example Pronto Hex and Global Caché Conversion.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Example Pronto Hex and Global Caché Conversion.rtf"; sourceTree = "<group>"; };
-		C26BBA9216DC19490093D5B4 /* Font List.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Font List.rtf"; sourceTree = "<group>"; };
-		C26BBA9316DC19490093D5B4 /* Helpful Snippets.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Helpful Snippets.rtf"; sourceTree = "<group>"; };
-		C26BBA9516DC19490093D5B4 /* 1.Friday February 22nd, 2013-template.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = "1.Friday February 22nd, 2013-template.markdown"; sourceTree = "<group>"; };
-		C26BBA9616DC19490093D5B4 /* 2.Saturday February 23nd, 2013-template.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = "2.Saturday February 23nd, 2013-template.markdown"; sourceTree = "<group>"; };
-		C26BBA9716DC19490093D5B4 /* Markdown Syntax Cheatsheet.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Markdown Syntax Cheatsheet.rtf"; sourceTree = "<group>"; };
-		C26BBA9816DC19490093D5B4 /* Pronto Hex Format.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Pronto Hex Format.rtf"; sourceTree = "<group>"; };
 		C26BBA9B16DC1B5B0093D5B4 /* 10-arrows-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10-arrows-in.png"; sourceTree = "<group>"; };
 		C26BBA9C16DC1B5B0093D5B4 /* 10-arrows-in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10-arrows-in@2x.png"; sourceTree = "<group>"; };
 		C26BBA9D16DC1B5B0093D5B4 /* AlignBarButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AlignBarButtonIcon.png; sourceTree = "<group>"; };
@@ -3189,7 +3182,6 @@
 		C26BBB3F16DC1C960093D5B4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = ../../Frameworks/Lumberjack/Lumberjack.framework; sourceTree = "<group>"; };
-		C26BBB4F16DC20D10093D5B4 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = ../../Frameworks/MSKit/MSKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3212,7 +3204,7 @@
 				C26BBB4916DC1C960093D5B4 /* QuartzCore.framework in Frameworks */,
 				C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */,
 				C26BBB4C16DC1FA20093D5B4 /* Lumberjack.framework in Frameworks */,
-				C26BBB5016DC20D10093D5B4 /* MSKit.framework in Frameworks */,
+				C208DEB916DECF4300084C49 /* MSKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3230,11 +3222,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C208DDFC16DDC5A300084C49 /* Build Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */,
+				C208DDFE16DDC5F600084C49 /* Config-Debug.xcconfig */,
+				C208DDFF16DDC5FD00084C49 /* Config-Release.xcconfig */,
+				C208DE0016DDC6B100084C49 /* Config-Remote.xcconfig */,
+				C208DE0116DDC6BA00084C49 /* Config-Remote-Debug.xcconfig */,
+				C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */,
+			);
+			path = "Build Configurations";
+			sourceTree = "<group>";
+		};
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
+				C208DEB516DEC70C00084C49 /* Logs */,
+				C208DE0316DE763900084C49 /* Notes */,
+				C208DDFC16DDC5A300084C49 /* Build Configurations */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
-				C26BBA8F16DC19490093D5B4 /* Notes */,
 				C26BAEB316DC10FE0093D5B4 /* Remote */,
 				C26BAED516DC10FE0093D5B4 /* RemoteTests */,
 				C26BAEAA16DC10FE0093D5B4 /* Frameworks */,
@@ -3254,7 +3261,7 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C26BBB4F16DC20D10093D5B4 /* MSKit.framework */,
+				C208DEB816DECF4300084C49 /* MSKit.framework */,
 				C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */,
 				C26BBB3716DC1C960093D5B4 /* OpenGLES.framework */,
 				C26BBB3816DC1C960093D5B4 /* QuickLook.framework */,
@@ -3667,8 +3674,6 @@
 		C26BAFC616DC18530093D5B4 /* Remotes */ = {
 			isa = PBXGroup;
 			children = (
-				C26BAFC716DC18530093D5B4 /* indentoutput.tmp */,
-				C26BAFC816DC18530093D5B4 /* output.txt */,
 				C26BAFC916DC18530093D5B4 /* Remote.h */,
 				C26BAFCA16DC18530093D5B4 /* Remote.m */,
 				C26BAFCB16DC18530093D5B4 /* RemoteController.h */,
@@ -3682,12 +3687,8 @@
 				C26BAFD316DC18530093D5B4 /* RemoteElement_Private.h */,
 				C26BAFD416DC18530093D5B4 /* RemoteElementConstraintManager.h */,
 				C26BAFD516DC18530093D5B4 /* RemoteElementConstraintManager.m */,
-				C26BAFD616DC18530093D5B4 /* RemoteElementLayoutConfiguration.h */,
-				C26BAFD716DC18530093D5B4 /* RemoteElementLayoutConfiguration.m */,
 				C26BAFD816DC18530093D5B4 /* RemoteElementLayoutConstraint.h */,
 				C26BAFD916DC18530093D5B4 /* RemoteElementLayoutConstraint.m */,
-				C26BAFDA16DC18530093D5B4 /* RemoteElementLayoutFunctions.h */,
-				C26BAFDB16DC18530093D5B4 /* RemoteElementLayoutFunctions.m */,
 				C26BAFDC16DC18530093D5B4 /* RemoteElementView.h */,
 				C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */,
 				C26BAFDE16DC18530093D5B4 /* RemoteElementView_Private.h */,
@@ -5073,29 +5074,6 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		C26BBA8F16DC19490093D5B4 /* Notes */ = {
-			isa = PBXGroup;
-			children = (
-				C26BBA9016DC19490093D5B4 /* agenda.markdown */,
-				C26BBA9116DC19490093D5B4 /* Example Pronto Hex and Global Caché Conversion.rtf */,
-				C26BBA9216DC19490093D5B4 /* Font List.rtf */,
-				C26BBA9316DC19490093D5B4 /* Helpful Snippets.rtf */,
-				C26BBA9416DC19490093D5B4 /* Journal */,
-				C26BBA9716DC19490093D5B4 /* Markdown Syntax Cheatsheet.rtf */,
-				C26BBA9816DC19490093D5B4 /* Pronto Hex Format.rtf */,
-			);
-			path = Notes;
-			sourceTree = "<group>";
-		};
-		C26BBA9416DC19490093D5B4 /* Journal */ = {
-			isa = PBXGroup;
-			children = (
-				C26BBA9516DC19490093D5B4 /* 1.Friday February 22nd, 2013-template.markdown */,
-				C26BBA9616DC19490093D5B4 /* 2.Saturday February 23nd, 2013-template.markdown */,
-			);
-			path = Journal;
-			sourceTree = "<group>";
-		};
 		C26BBA9916DC19C50093D5B4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -5267,8 +5245,6 @@
 			files = (
 				C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */,
 				C26BB06A16DC18530093D5B4 /* RemoteElementEditingViewController+Gestures.m.uncrustify in Resources */,
-				C26BB07816DC18530093D5B4 /* indentoutput.tmp in Resources */,
-				C26BB07916DC18530093D5B4 /* output.txt in Resources */,
 				C26BB59A16DC18A90093D5B4 /* [10]Wood.jpg in Resources */,
 				C26BB59B16DC18A90093D5B4 /* [10]Wood@2x.jpg in Resources */,
 				C26BB59C16DC18A90093D5B4 /* [1]Blueprint.jpg in Resources */,
@@ -6815,103 +6791,37 @@
 /* Begin XCBuildConfiguration section */
 		C26BAEDE16DC10FE0093D5B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		C26BAEDF16DC10FE0093D5B4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		C26BAEE116DC10FE0093D5B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C208DE0116DDC6BA00084C49 /* Config-Remote-Debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Frameworks/Lumberjack\"",
-					"\"$(SRCROOT)/../../Frameworks/MSKit\"",
+					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
-				IBC_FLATTEN_NIBS = YES;
-				IBSC_FLATTEN_NIBS = YES;
-				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-licucore",
-					"-ObjC",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		C26BAEE216DC10FE0093D5B4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Frameworks/Lumberjack\"",
-					"\"$(SRCROOT)/../../Frameworks/MSKit\"",
+					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
-				IBC_FLATTEN_NIBS = YES;
-				IBSC_FLATTEN_NIBS = YES;
-				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-licucore",
-					"-ObjC",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};

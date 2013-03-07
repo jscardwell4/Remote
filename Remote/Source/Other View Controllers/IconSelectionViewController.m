@@ -201,7 +201,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
 // }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * const   CellIdentifier       = @"Cell";
+    MSKIT_STATIC_STRING_CONST   CellIdentifier       = @"Cell";
     static const CGSize       originalIconViewSize = (CGSize) {.width = 35.0, .height = 35.0};
     UITableViewCell         * cell                 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 

@@ -30,7 +30,7 @@ typedef NS_OPTIONS (uint64_t, UITestCode) {
         UITestFocusScale       = 0x4 << 0x10,
         UITestFocusFocus       = 0x8 << 0x10,
         UITestFocusDialog      = 0x10 << 0x10,
-        UITestFocusAlignment   = 0xF0 << 0x10,
+        UITestFocusAlignment   = 0x20 << 0x10,
         UITestFocusReserved    = 0xFFF0 << 0x10,
         UITestFocusMask        = 0XFFFF000000000000 >> 0x20,
 
@@ -56,7 +56,6 @@ typedef NS_OPTIONS (uint64_t, UITestCode) {
 
 @end
 
-#define DEBUG_CONTEXT         UITESTING_F
 #define SLEEP_DURATION        1
 #define SHOULD_LOG_QUEUE_NAME NO
 #define LOG_QUEUE_NAME                                                         \
@@ -70,16 +69,16 @@ MSKIT_STATIC_INLINE NSString * NSStringFromUITestCode(UITestCode testCode) {
     static dispatch_once_t      onceToken;
 
     dispatch_once(&onceToken, ^{
-        names = @{@(UITestTypeUnspecified) : @"Unspecified",
-                  @(UITestTypeRemoteEditing) : @"RemoteEditing",
+        names = @{@(UITestTypeUnspecified)        : @"Unspecified",
+                  @(UITestTypeRemoteEditing)      : @"RemoteEditing",
                   @(UITestTypeButtonGroupEditing) : @"ButtonGroupEditing",
-                  @(UITestTypeButtonEditing) : @"ButtonEditing",
-                  @(UITestFocusUnspecified) : @"Unspecified",
-                  @(UITestFocusInfo) : @"Info",
-                  @(UITestFocusTranslation) : @"Translation",
-                  @(UITestFocusScale) : @"Scale",
-                  @(UITestFocusFocus) : @"Focus",
-                  @(UITestFocusAlignment) : @"Alignment"};
+                  @(UITestTypeButtonEditing)      : @"ButtonEditing",
+                  @(UITestFocusUnspecified)       : @"Unspecified",
+                  @(UITestFocusInfo)              : @"Info",
+                  @(UITestFocusTranslation)       : @"Translation",
+                  @(UITestFocusScale)             : @"Scale",
+                  @(UITestFocusFocus)             : @"Focus",
+                  @(UITestFocusAlignment)         : @"Alignment"};
     }
 
                   );

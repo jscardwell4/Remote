@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ActivityButton" representedClassName="ActivityButton" parentEntity="Button" syncable="YES">
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceConfiguration" inverseName="activityButtons" inverseEntity="DeviceConfiguration" indexed="YES" syncable="YES"/>
     </entity>
@@ -246,7 +246,7 @@
         </relationship>
     </entity>
     <entity name="IRCodeSet" representedClassName="IRCodeSet" parentEntity="BankObject" syncable="YES">
-        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FactoryIRCode" inverseName="codeSet" inverseEntity="FactoryIRCode" indexed="YES" syncable="YES"/>
+        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FactoryIRCode" inverseName="codeSet" inverseEntity="FactoryIRCode" indexed="YES" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="codesets" inverseEntity="Manufacturer" syncable="YES"/>
     </entity>
     <entity name="ITachDevice" representedClassName="ITachDevice" parentEntity="NetworkDevice" syncable="YES">
@@ -265,7 +265,7 @@
         </attribute>
     </entity>
     <entity name="Manufacturer" representedClassName="Manufacturer" parentEntity="BankObject" syncable="YES">
-        <relationship name="codesets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCodeSet" inverseName="manufacturer" inverseEntity="IRCodeSet" syncable="YES"/>
+        <relationship name="codesets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IRCodeSet" inverseName="manufacturer" inverseEntity="IRCodeSet" syncable="YES"/>
     </entity>
     <entity name="NetworkDevice" representedClassName="NetworkDevice" syncable="YES">
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
@@ -303,8 +303,8 @@
         <attribute name="currentActivityKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentRemoteKey" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="remoteElements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RemoteElement" inverseName="controller" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="switchToRemoteCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SwitchToRemoteCommand" inverseName="remoteController" inverseEntity="SwitchToRemoteCommand" indexed="YES" syncable="YES"/>
-        <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
+        <relationship name="switchToRemoteCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SwitchToRemoteCommand" inverseName="remoteController" inverseEntity="SwitchToRemoteCommand" indexed="YES" syncable="YES"/>
+        <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="RemoteElement" representedClassName="RemoteElement" syncable="YES">
         <attribute name="appearance" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -318,10 +318,10 @@
         <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryImage" inverseName="remoteElement" inverseEntity="GalleryImage" syncable="YES"/>
         <relationship name="constraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RemoteElementLayoutConstraint" inverseName="owner" inverseEntity="RemoteElementLayoutConstraint" syncable="YES"/>
         <relationship name="controller" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="remoteElements" inverseEntity="RemoteController" syncable="YES"/>
-        <relationship name="firstItemConstraints" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElementLayoutConstraint" inverseName="firstItem" inverseEntity="RemoteElementLayoutConstraint" syncable="YES"/>
+        <relationship name="firstItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RemoteElementLayoutConstraint" inverseName="firstItem" inverseEntity="RemoteElementLayoutConstraint" syncable="YES"/>
         <relationship name="parentElement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="subelements" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="secondItemConstraints" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElementLayoutConstraint" inverseName="secondItem" inverseEntity="RemoteElementLayoutConstraint" syncable="YES"/>
-        <relationship name="subelements" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RemoteElement" inverseName="parentElement" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="secondItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RemoteElementLayoutConstraint" inverseName="secondItem" inverseEntity="RemoteElementLayoutConstraint" syncable="YES"/>
+        <relationship name="subelements" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RemoteElement" inverseName="parentElement" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="RemoteElementLayoutConstraint" representedClassName="RemoteElementLayoutConstraint" syncable="YES">
         <attribute name="constant" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -410,7 +410,7 @@
         <element name="GalleryPreview" positionX="79" positionY="-657" width="128" height="43"/>
         <element name="HTTPCommand" positionX="-621" positionY="612" width="99" height="43"/>
         <element name="IRCode" positionX="763" positionY="369" width="128" height="195"/>
-        <element name="IRCodeSet" positionX="943" positionY="297" width="128" height="43"/>
+        <element name="IRCodeSet" positionX="943" positionY="297" width="128" height="75"/>
         <element name="ITachDevice" positionX="-216" positionY="-450" width="128" height="43"/>
         <element name="MacroCommand" positionX="-657" positionY="542" width="128" height="60"/>
         <element name="Manufacturer" positionX="1015" positionY="135" width="128" height="60"/>

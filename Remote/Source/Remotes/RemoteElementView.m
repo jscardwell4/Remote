@@ -121,6 +121,11 @@ CGSize const       RemoteElementMinimumSize = (CGSize) {.width = 44.0f, .height 
             :[super valueForUndefinedKey:key]);
 }
 
+- (void)updateConstraints {
+    [_constraintManager updateConstraints];
+    [super updateConstraints];
+}
+
 /**
  * Unregisters as observer for model KVO notifications.
  */
@@ -273,7 +278,7 @@ CGSize const       RemoteElementMinimumSize = (CGSize) {.width = 44.0f, .height 
                                                                   error:nil]]];
     }
 
-    [self.constraintManager refreshConstraints];
+    [self.constraintManager updateConstraints];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -290,8 +295,9 @@ CGSize const       RemoteElementMinimumSize = (CGSize) {.width = 44.0f, .height 
     [self.constraintManager translateSubelements:subelementViews translation:translation];
 }
 
-- (void)scaleSubelements:(NSSet *)subelementViews scale:(CGFloat)scale
-{}
+- (void)scaleSubelements:(NSSet *)subelementViews scale:(CGFloat)scale {
+    [self.constraintManager scaleSubelements:subelementViews scale:scale];
+}
 
 - (void)alignSubelements:(NSSet *)subelementViews
                toSibling:(RemoteElementView *)siblingView
@@ -1253,21 +1259,23 @@ CGSize const       RemoteElementMinimumSize = (CGSize) {.width = 44.0f, .height 
 
 @implementation RemoteElementView (Debugging)
 
+- (NSString *)shortDescription { return self.displayName; }
+
 - (NSString *)framesDescription {
     NSArray * subelementFrames = [self.subelementViews
                                   arrayByMappingToBlock:^id (RemoteElementView * obj, NSUInteger idx)
     {
         NSString * nameString = [obj.displayName camelCaseString];
 
-        NSString * originString = [NSString stringWithFormat:@"(%6s,%6s)",
-                                   [[[NSString stringWithFormat:@"%f", obj.frame.origin.x] stringByStrippingTrailingZeroes] UTF8String],
-                                   [[[NSString stringWithFormat:@"%f", obj.frame.origin.y] stringByStrippingTrailingZeroes] UTF8String]];
+        NSString * originString = $(@"(%6s,%6s)",
+                                   UTF8(StripTrailingZeros($(@"%f", obj.frame.origin.x))),
+                                   UTF8(StripTrailingZeros($(@"%f", obj.frame.origin.y))));
 
-        NSString * sizeString = [NSString stringWithFormat:@"%6s x %6s",
-                                 [[[NSString stringWithFormat:@"%f", obj.frame.size.width] stringByStrippingTrailingZeroes] UTF8String],
-                                 [[[NSString stringWithFormat:@"%f", obj.frame.size.height] stringByStrippingTrailingZeroes] UTF8String]];
+        NSString * sizeString = $(@"%6s x %6s",
+                                 UTF8(StripTrailingZeros($(@"%f", obj.frame.size.width))),
+                                 UTF8(StripTrailingZeros($(@"%f", obj.frame.size.height))));
 
-        return [NSString stringWithFormat:@"%@\t%@\t%@", nameString, originString, sizeString];
+        return $(@"%@\t%@\t%@", nameString, originString, sizeString);
     }];
 
     return [[@"Element\t    Origin       \t      Size        \n" stringByAppendingString :
@@ -1275,41 +1283,33 @@ CGSize const       RemoteElementMinimumSize = (CGSize) {.width = 44.0f, .height 
 }
 
 - (NSString *)constraintsDescription {
-    return [NSString stringWithFormat:@"%@\n\n%@", [self modelConstraintsDescription], [self viewConstraintsDescription]];
+    return $(@"%@\n%@\n\n%@",
+             [$(@"%@", self.displayName) singleBarMessageBox],
+             [self modelConstraintsDescription],
+             [self viewConstraintsDescription]);
 }
 
 - (NSString *)modelConstraintsDescription {
-    NSMutableString * description = [[[NSString stringWithFormat:@"Model Constraints (%@)", self.displayName]
-                                      singleBarMessageBox] mutableCopy];
-
-    [description appendFormat:@"\tlayout config: %@\n\tproportion lock? %@",
-     _remoteElement.layoutConfiguration,
-     NSStringFromBOOL(_remoteElement.proportionLock)];
-    [description appendString:[[self.remoteElement constraintsDescription] stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"]];
-
-    return description;
+    return [_remoteElement constraintsDescription];
 }
 
 - (NSString *)viewConstraintsDescription {
-    NSMutableString * description = [[[NSString stringWithFormat:@"View Constraints (%@)", self.displayName]
-                                      singleBarMessageBox] mutableCopy];
-    NSArray * modeledConstraints =
-        [[self constraintsOfType:[RELayoutConstraint class]]
-         arrayByMappingToBlock:^NSString * (RELayoutConstraint * obj, NSUInteger idx) {
-        return [obj description];
-    }];
+    NSMutableString * description = [@"" mutableCopy];
+    NSArray * modeledConstraints = [self constraintsOfType:[RELayoutConstraint class]];
 
-    if (modeledConstraints.count) [description appendFormat:@"\tmodeled:\n\t\t%@\n", [modeledConstraints componentsJoinedByString:@"\n\t\t"]];
+    if (modeledConstraints.count) [description appendFormat:@"\nview constraints (modeled):\n\t%@",
+                                   [[modeledConstraints valueForKeyPath:@"description"]
+                                    componentsJoinedByString:@"\n\t"]];
 
-    NSArray * unmodeledConstraints =
-        [[self constraintsOfType:[NSLayoutConstraint class]]
-         arrayByMappingToBlock:^NSString * (RELayoutConstraint * obj, NSUInteger idx) {
-        return prettyRemoteElementConstraint(obj);
-    }];
+    NSArray * unmodeledConstraints = [self constraintsOfType:[NSLayoutConstraint class]];
 
-    if (unmodeledConstraints.count) [description appendFormat:@"\tunmodeled:\n\t\t%@\n", [unmodeledConstraints componentsJoinedByString:@"\n\t\t"]];
+    if (unmodeledConstraints.count) [description appendFormat:@"\nview constraints (unmodeled):\n\t%@",
+                                     [[unmodeledConstraints arrayByMappingToBlock:^id(id obj, NSUInteger idx) {
+                                        return prettyRemoteElementConstraint(obj);
+                                      }] componentsJoinedByString:@"\n\t"]];
 
-    if (!modeledConstraints.count && !unmodeledConstraints.count) [description appendString:@"\tno constraints\n"];
+    if (!modeledConstraints.count && !unmodeledConstraints.count)
+        [description appendString:@"no constraints"];
 
     return description;
 }
@@ -1323,7 +1323,7 @@ NSString * prettyRemoteElementConstraint(NSLayoutConstraint * constraint) {
                    ?[((RemoteElementView *)view).displayName camelCaseString]
                    : (view.accessibilityIdentifier
                       ? view.accessibilityIdentifier
-                      :[NSString stringWithFormat:@"<%@:%p>", NSStringFromClass([view class]), view]
+                      :$(@"<%@:%p>", NSStringFromClass([view class]), view)
                       )
                    )
                 : (NSString *)nil

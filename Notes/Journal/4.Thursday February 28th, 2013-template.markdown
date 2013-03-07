@@ -1,0 +1,8 @@
+Thursday February 28th, 2013
+============================
+
+I need to trace and document the process by which constraints are added/removed and
+managed in general when responding to editing commands like aligning and resizing.
+After which, I would like to come up with a solid set of use case scenarios that can
+be tested with the `UITestRunner`. A good place to start would be to simply document
+the tests I have already created as use cases.

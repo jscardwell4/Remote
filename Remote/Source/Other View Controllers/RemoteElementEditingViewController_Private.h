@@ -34,6 +34,7 @@ extern NSString const   * kTranslationAnimationKey;
         BOOL                            showSourceBoundary;
         BOOL                            popoverActive;
         RemoteElementEditingMenuState   menuState;
+        CGFloat                         appliedScale;
         CGRect                          originalFrame;
         CGRect                          currentFrame;
         CGPoint                         longPressPreviousLocation;

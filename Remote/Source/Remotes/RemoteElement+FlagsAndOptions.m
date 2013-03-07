@@ -1,5 +1,5 @@
 //
-// RemoteElement+FlagsAndOptions.m
+//RemoteElement+FlagsAndOptions.m
 // iPhonto
 //
 // Created by Jason Cardwell on 2/9/13.
@@ -7,63 +7,63 @@
 //
 #import "RemoteElement_Private.h"
 
-RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RemoteElementRelationshipType type) {
+RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type) {
     switch (attribute) {
         case NSLayoutAttributeBaseline :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionBaselineParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionBaselineFocus
                        : RemoteElementAlignmentOptionBaselineUnspecified));
 
         case NSLayoutAttributeBottom :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionBottomParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionBottomFocus
                        : RemoteElementAlignmentOptionBottomUnspecified));
 
         case NSLayoutAttributeTop :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionTopParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionTopFocus
                        : RemoteElementAlignmentOptionTopUnspecified));
 
         case NSLayoutAttributeLeft :
         case NSLayoutAttributeLeading :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionLeftParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionLeftFocus
                        : RemoteElementAlignmentOptionLeftUnspecified));
 
         case NSLayoutAttributeRight :
         case NSLayoutAttributeTrailing :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionRightParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionRightFocus
                        : RemoteElementAlignmentOptionRightUnspecified));
 
         case NSLayoutAttributeCenterX :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionCenterXParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionCenterXFocus
                        : RemoteElementAlignmentOptionCenterXUnspecified));
 
         case NSLayoutAttributeCenterY :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionCenterYParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionCenterYFocus
                        : RemoteElementAlignmentOptionCenterYUnspecified));
 
@@ -76,25 +76,25 @@ RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttrib
     } /* switch */
 }     /* alignmentOptionForNSLayoutAttribute */
 
-RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RemoteElementRelationshipType type) {
+RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute,RERelationshipType type) {
     switch (attribute) {
         case NSLayoutAttributeWidth :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementSizingOptionWidthParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementSizingOptionWidthFocus
-                       : (type == RemoteElementIntrinsicRelationship
+                       : (type == REIntrinsicRelationship
                           ? RemoteElementSizingOptionWidthIntrinsic
                           : RemoteElementSizingOptionWidthUnspecified)));
 
         case NSLayoutAttributeHeight :
 
-            return (type == RemoteElementParentRelationship
+            return (type == REParentRelationship
                     ? RemoteElementSizingOptionHeightParent
-                    : (type == RemoteElementSiblingRelationship
+                    : (type == RESiblingRelationship
                        ? RemoteElementSizingOptionHeightFocus
-                       : (type == RemoteElementIntrinsicRelationship
+                       : (type == REIntrinsicRelationship
                           ? RemoteElementSizingOptionHeightIntrinsic
                           : RemoteElementSizingOptionHeightUnspecified)));
 

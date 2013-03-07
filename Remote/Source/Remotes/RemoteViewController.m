@@ -23,9 +23,10 @@
 
 // static int ddLogLevel = DefaultDDLogLevel;
 static const int          ddLogLevel                             = LOG_LEVEL_DEBUG;
-static NSString * const   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
-static NSString * const   kTopToolbarConstraintNameTag           = @"kTopToolbarConstraintNameTag";
-static NSString * const   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRemoteViewConstraintNameTag";
+static const int          msLogContext                           = REMOTE_F;
+MSKIT_STATIC_STRING_CONST   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
+MSKIT_STATIC_STRING_CONST   kTopToolbarConstraintNameTag           = @"kTopToolbarConstraintNameTag";
+MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRemoteViewConstraintNameTag";
 
 // static DebugFlags debugFlags = {
 // .logKVO = NO,
@@ -197,7 +198,7 @@ static NSString * const   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbar
         uint64_t next = timeToNext();
         DDLogDebug(@"%@ next: %lld (%fs)", ClassTagSelectorString, next, (NSTimeInterval)next / NSEC_PER_SEC);
         if (next) {
-            MSLogDebug(REMOTE_F_C, @"%@ max inactivity:%fs  last event:%fs timeout in:%llds",
+            MSLogDebug(@"%@ max inactivity:%fs  last event:%fs timeout in:%llds",
                        ClassTagSelectorString,
                        (maxInactivity / NSEC_PER_SEC),
                        ((maxInactivity - next) / NSEC_PER_SEC),
@@ -207,7 +208,7 @@ static NSString * const   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbar
                                       maxInactivity,
                                       leeway);
         } else {
-            MSLogDebug(REMOTE_F_C, @"%@ max inactivity reached, turning off screen...", ClassTagSelectorString);
+            MSLogDebug(@"%@ max inactivity reached, turning off screen...", ClassTagSelectorString);
             [self stopInactivityTimer:YES];
         }
     }
@@ -550,13 +551,13 @@ static NSString * const   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbar
 #pragma mark - Debugging
 
 - (void)dumpLayoutData {
-    MSLogDebug(REMOTE_F, @"%@ dumping constraints...\n\n%@\n\n",
+    MSLogDebug(@"%@ dumping constraints...\n\n%@\n\n",
                ClassTagSelectorString,
                [[UIWindow keyWindow] viewTreeDescriptionWithProperties:@[@"frame", @"hasAmbiguousLayout?", @"key", @"nametag", @"displayName", @"constraints"]]);
 }
 
 - (void)dumpElements {
-    MSLogDebug(REMOTE_F_C, @"%@ dumping elements...\n\n%@\n\n",
+    MSLogDebug(@"%@ dumping elements...\n\n%@\n\n",
                ClassTagSelectorString,
                [[(RemoteView *)[self.view
                                 viewWithNametag:kRemoteViewNameTag]

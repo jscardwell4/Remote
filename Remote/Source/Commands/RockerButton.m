@@ -1,7 +1,7 @@
 #import "RockerButton.h"
 
-NSString * const          kRockerButtonPlusButtonKey  = @"plus";
-NSString * const          kRockerButtonMinusButtonKey = @"minus";
+MSKIT_STRING_CONST          kRockerButtonPlusButtonKey  = @"plus";
+MSKIT_STRING_CONST          kRockerButtonMinusButtonKey = @"minus";
 static NSArray          * keysByTag;
 static const NSUInteger   kTagMax    = 1;
 static int                ddLogLevel = DefaultDDLogLevel;

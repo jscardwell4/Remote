@@ -15,6 +15,7 @@
 
 // static const int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int            ddLogLevel = DefaultDDLogLevel;
+static const int            msLogContext = COREDATA_F_C;
 static const NSDictionary * kEntityNameForType;
 
 @implementation RemoteElement
@@ -113,7 +114,7 @@ static const NSDictionary * kEntityNameForType;
     self.controller      = [RemoteController remoteControllerInContext:self.managedObjectContext];
     self.backgroundColor = ClearColor;
     self.identifier      = [@"_" stringByAppendingString :[MSNonce() stringByRemovingCharacter:'-']];
-    [self registerForNotifications];
+//    [self registerForNotifications];
 }
 
 - (void)willTurnIntoFault {
@@ -143,9 +144,9 @@ static const NSDictionary * kEntityNameForType;
      * method as the inverse will not be set.
      *
      */
-    [super awakeFromFetch];
-    [self registerForNotifications];
-    [self.constraintManager processConstraints];
+//    [super awakeFromFetch];
+//    [self registerForNotifications];
+    [self.constraintManager.layoutConfiguration refreshConfig];
 }
 
 - (BOOL)validateForInsert:(NSError **)error {
@@ -157,7 +158,7 @@ static const NSDictionary * kEntityNameForType;
     if (![super validateForInsert:error]) {
         NSArray * errors = (*error).userInfo[NSDetailedErrorsKey];
 
-        MSLogError(COREDATA_F_C, @"%@ validation failed%@", ClassTagSelectorString, errors ? @" with multipler errors" : @"");
+        MSLogError(@"%@ validation failed%@", ClassTagSelectorString, errors ? @" with multipler errors" : @"");
 
         return NO;
     } else
@@ -182,7 +183,7 @@ static const NSDictionary * kEntityNameForType;
     // failure.
 
     if (![super validateForUpdate:error]) {
-        MSLogError(COREDATA_F_C, @"%@ validation failed: %@", ClassTagSelectorString, [*error description]);
+        MSLogError(@"%@ validation failed: %@", ClassTagSelectorString, [*error description]);
 
         return NO;
     } else
@@ -222,7 +223,10 @@ static const NSDictionary * kEntityNameForType;
 #pragma mark - Model-backed Properties
 ////////////////////////////////////////////////////////////////////////////////
 
+
 - (void)registerForNotifications {
+    assert(NO);
+/*
     [NotificationCenter addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
                                     object:self.managedObjectContext
                                      queue:[NSOperationQueue mainQueue]
@@ -252,8 +256,8 @@ static const NSDictionary * kEntityNameForType;
                                  ];
 
         if (insertedObjects.count || deletedObjects.count || updatedObjects.count) {
-            [self.constraintManager processConstraints];
-            MSLogDebug(REMOTE_F,
+            [self.constraintManager processFirstOrderConstraints];
+            MSLogDebug(
                        @"%@\ninserted objects:\n\t%@\ndeleted objects:\n\t%@\nupdated objects:\n\t%@",
                        ClassTagSelectorStringForInstance(self.displayName),
                        (insertedObjects.count
@@ -269,6 +273,7 @@ static const NSDictionary * kEntityNameForType;
     }
 
     ];
+*/
 }
 
 - (void)dealloc {
@@ -315,29 +320,47 @@ static const NSDictionary * kEntityNameForType;
 
 @implementation RemoteElement (Debugging)
 
-- (NSString *)constraintsDescription {
-    NSMutableString * description = [@"" mutableCopy];
+- (NSString *)shortDescription { return self.displayName; }
 
-    if (self.constraints.count)
-        [description appendFormat:@"\nowned:\n\t%@",
-         [[[self.constraints allObjects] valueForKeyPath:@"description"]
-          componentsJoinedByString:@"\n\t"]];
-    if (self.subelementConstraints.count)
-        [description appendFormat:@"\nsubelements:\n\t%@",
-         [[[self.subelementConstraints allObjects] valueForKeyPath:@"description"]
-          componentsJoinedByString:@"\n\t"]];
-    if (self.dependentConstraints.count)
-        [description appendFormat:@"\ndependent constraints:\n\t%@",
-         [[[self.dependentConstraints allObjects] valueForKeyPath:@"description"]
-          componentsJoinedByString:@"\n\t"]];
-    if (self.dependentChildConstraints.count)
-        [description appendFormat:@"\ndependent children:\n\t%@",
-         [[[self.dependentChildConstraints allObjects] valueForKeyPath:@"description"]
-          componentsJoinedByString:@"\n\t"]];
-    if (self.dependentSiblingConstraints.count)
-        [description appendFormat:@"\ndependent siblings:\n\t%@",
-         [[[self.dependentSiblingConstraints allObjects] valueForKeyPath:@"description"]
-          componentsJoinedByString:@"\n\t"]];
+- (NSString *)constraintsDescription
+{
+    NSMutableString * description = [$(@"configuration: %@\nproportion lock? %@",
+                                       self.layoutConfiguration,
+                                       NSStringFromBOOL(self.proportionLock)) mutableCopy];
+
+    NSSet * constraints                 = self.constraints;
+    NSSet * subelementConstraints       = self.subelementConstraints;
+    NSSet * intrinsicConstraints        = self.intrinsicConstraints;
+    NSSet * childToParentConstraints    = self.dependentChildConstraints;
+    NSSet * childToChildConstraints     = [subelementConstraints setByRemovingObjectsFromSet:childToParentConstraints];
+    NSSet * dependentSiblingConstraints = self.dependentSiblingConstraints;
+    NSSet * ancestorOwnedConstraints    = [self.firstItemConstraints setByRemovingObjectsFromSet:self.constraints];
+
+    // owned constraints
+    if (constraints.count) {
+        if (intrinsicConstraints.count)
+            [description appendFormat:@"\n\nintrinsic constraints:\n\t%@",
+             [intrinsicConstraints componentsJoinedByString:@"\n\t"]];
+
+        if (childToParentConstraints.count)
+            [description appendFormat:@"\n\nchild to parent constraints:\n\t%@",
+                 [childToParentConstraints componentsJoinedByString:@"\n\t"]];
+        
+        if (childToChildConstraints.count)
+            [description appendFormat:@"\n\nchild to child constraints:\n\t%@",
+             [childToChildConstraints componentsJoinedByString:@"\n\t"]];
+    }
+    
+    // dependent sibling constraints
+    if (dependentSiblingConstraints.count)
+        [description appendFormat:@"\n\ndependent sibling constraints:\n\t%@",
+         [dependentSiblingConstraints componentsJoinedByString:@"\n\t"]];
+
+    if (ancestorOwnedConstraints.count)
+        [description appendFormat:@"\n\nancestor owned constraints:\n\t%@",
+         [ancestorOwnedConstraints componentsJoinedByString:@"\n\t"]];
+
+    // no constraints
     if (description.length == 0) [description appendString:@"\nno constraints"];
 
     return description;
@@ -391,35 +414,49 @@ static const NSDictionary * kEntityNameForType;
     NSMutableString * returnString = [@"alignmentOptions:{\n" mutableCopy];
 
     if ((_appearance & RemoteElementAlignmentOptionMaskParent)) {
-        if ((_appearance & RemoteElementAlignmentOptionCenterXParent)) [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionCenterXParent))
+          [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXParent\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionCenterYParent)) [returnString appendString:@"\tcenterY: RemoteElementAlignmentOptionCenterYParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionCenterYParent))
+          [returnString appendString:@"\tcenterY: RemoteElementAlignmentOptionCenterYParent\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionTopParent)) [returnString appendString:@"\ttop: RemoteElementAlignmentOptionTopParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionTopParent))
+          [returnString appendString:@"\ttop: RemoteElementAlignmentOptionTopParent\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionBottomParent)) [returnString appendString:@"\tbottom: RemoteElementAlignmentOptionBottomParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionBottomParent))
+          [returnString appendString:@"\tbottom: RemoteElementAlignmentOptionBottomParent\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionLeftParent)) [returnString appendString:@"\tleft: RemoteElementAlignmentOptionLeftParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionLeftParent))
+          [returnString appendString:@"\tleft: RemoteElementAlignmentOptionLeftParent\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionRightParent)) [returnString appendString:@"\tright: RemoteElementAlignmentOptionRightParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionRightParent))
+          [returnString appendString:@"\tright: RemoteElementAlignmentOptionRightParent\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionBaselineParent)) [returnString appendString:@"\tbaseline: RemoteElementAlignmentOptionBaselineParent\n"];
+        if ((_appearance & RemoteElementAlignmentOptionBaselineParent))
+          [returnString appendString:@"\tbaseline: RemoteElementAlignmentOptionBaselineParent\n"];
     }
 
     if ((_appearance & RemoteElementAlignmentOptionMaskFocus)) {
-        if ((_appearance & RemoteElementAlignmentOptionCenterXFocus)) [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionCenterXFocus))
+          [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXFocus\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionCenterYFocus)) [returnString appendString:@"\tcenterY: RemoteElementAlignmentOptionCenterYFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionCenterYFocus))
+          [returnString appendString:@"\tcenterY: RemoteElementAlignmentOptionCenterYFocus\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionTopFocus)) [returnString appendString:@"\ttop: RemoteElementAlignmentOptionTopFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionTopFocus))
+          [returnString appendString:@"\ttop: RemoteElementAlignmentOptionTopFocus\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionBottomFocus)) [returnString appendString:@"\tbottom: RemoteElementAlignmentOptionBottomFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionBottomFocus))
+          [returnString appendString:@"\tbottom: RemoteElementAlignmentOptionBottomFocus\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionLeftFocus)) [returnString appendString:@"\tleft: RemoteElementAlignmentOptionLeftFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionLeftFocus))
+          [returnString appendString:@"\tleft: RemoteElementAlignmentOptionLeftFocus\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionRightFocus)) [returnString appendString:@"\tright: RemoteElementAlignmentOptionRightFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionRightFocus))
+          [returnString appendString:@"\tright: RemoteElementAlignmentOptionRightFocus\n"];
 
-        if ((_appearance & RemoteElementAlignmentOptionBaselineFocus)) [returnString appendString:@"\tbaseline: RemoteElementAlignmentOptionBaselineFocus\n"];
+        if ((_appearance & RemoteElementAlignmentOptionBaselineFocus))
+          [returnString appendString:@"\tbaseline: RemoteElementAlignmentOptionBaselineFocus\n"];
     }
 
     [returnString appendString:@"}"];
@@ -428,12 +465,18 @@ static const NSDictionary * kEntityNameForType;
 }
 
 - (NSString *)flagsAndAppearanceDescription {
-    return [NSString
-            stringWithFormat:
-            @"flags:%12$-15s0x%2$.*1$llX\ntype:%12$-16s0x%3$.*1$llX\nsubtype:%12$-13s0x%4$.*1$llX\noptions:%12$-13s0x%5$.*1$llX\nstate:%12$-15s0x%6$.*1$llX\n"
-            "appearance:%12$-10s0x%7$.*1$llX\nalignment:%12$-11s0x%8$.*1$llX\nsizing:%12$-14s0x%9$.*1$llX\nshape:%12$-15s0x%10$.*1$llX\nstyle:%12$-15s0x%11$.*1$llX\n",
-            16, _flags, self.type, self.subtype, self.options, self.state,
-            _appearance, self.alignmentOptions, self.sizingOptions, self.shape, self.style, " "];
+    return $(@"flags:%12$-15s0x%2$.*1$llX\n"
+              "type:%12$-16s0x%3$.*1$llX\n"
+              "subtype:%12$-13s0x%4$.*1$llX\n"
+              "options:%12$-13s0x%5$.*1$llX\n"
+              "state:%12$-15s0x%6$.*1$llX\n"
+              "appearance:%12$-10s0x%7$.*1$llX\n"
+              "alignment:%12$-11s0x%8$.*1$llX\n"
+              "sizing:%12$-14s0x%9$.*1$llX\n"
+              "shape:%12$-15s0x%10$.*1$llX\n"
+              "style:%12$-15s0x%11$.*1$llX\n",
+              16, _flags, self.type, self.subtype, self.options, self.state, _appearance,
+              self.alignmentOptions, self.sizingOptions, self.shape, self.style, " ");
 }
 
 - (NSString *)dumpElementHierarchy {

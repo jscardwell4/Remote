@@ -10,7 +10,6 @@
 #import "RemoteElementView_Private.h"
 #import "RemoteElementViewConstraintManager.h"
 #import "RemoteElementLayoutConstraint.h"
-#import "RemoteElementLayoutConfiguration.h"
 #import <MSKit/MSKit.h>
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
@@ -21,14 +20,13 @@
 #define CONTAINER_DEBUG_COLOR OrangeColor
 // #define COLOR_CONTAINER_BACKGROUND
 
-#define DEBUG_CONTEXT EDITOR_F
+static int         ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = EDITOR_F;
+// static const int ddLogLevel = DefaultDDLogLevel;
 
-//static int   ddLogLevel = LOG_LEVEL_DEBUG;
- static const int ddLogLevel = DefaultDDLogLevel;
-
-static NSString * const   kCenterXConstraintNametag = @"kCenterXConstraintNametag";
-static NSString * const   kCenterYConstraintNametag = @"kCenterYConstraintNametag";
-static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag";
+MSKIT_STATIC_STRING_CONST   kCenterXConstraintNametag = @"kCenterXConstraintNametag";
+MSKIT_STATIC_STRING_CONST   kCenterYConstraintNametag = @"kCenterYConstraintNametag";
+MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
 @implementation RemoteElementEditingViewController {
     UIView            * _referenceView;
@@ -267,7 +265,7 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
                                && size.width >= minSize.width
                                && size.height >= minSize.height);
 
-            MSLogDebug(EDITOR_F,
+            MSLogDebug(
                        @"%@\n\tsize:%@\n\tminSize:%@\n\tmaxSize:%@\n\tvalid? %@",
                        ClassTagSelectorStringForInstance(view.displayName),
                        NSStringFromCGSize(size),
@@ -298,13 +296,15 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
                  ? Float([scaleRejections valueForKeyPath:@"@min.self"])
                  : Float([scaleRejections valueForKeyPath:@"@max.self"])
                  );
-        MSLogDebug(EDITOR_F,
+        MSLogDebug(
                    @"%@ scale adjusted to remain valid - new scale: %.2f",
                    ClassTagSelectorString, scale);
     }
 
-    // TODO: Needs to be replaced with frame manipulation and call moved to didScaleSelectedViews
-    [_sourceView scaleSubelements:_selectedViews scale:scale];
+    for (RemoteElementView * view in _selectedViews)
+        view.transform = CGAffineTransformScale(view.transform,
+                                                scale/CGAffineTransformGetScaleX(view.transform),
+                                                scale/CGAffineTransformGetScaleY(view.transform));
 
     return scale;
 }  /* scaleSelectedViews */
@@ -314,6 +314,10 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
 }
 
 - (void)didScaleSelectedViews {
+    for (RemoteElementView * view in _selectedViews)
+        view.transform = CGAffineTransformIdentity;
+
+    [_sourceView scaleSubelements:_selectedViews scale:_flags.appliedScale];
     [self.context performBlock:^{[self.context processPendingChanges];}];
 }
 
@@ -350,7 +354,7 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
 
 - (void)resizeSelectedViews:(NSLayoutAttribute)axis {
     assert(_focusView);
-    [_sourceView resizeSubelements:_selectedViews toSibling:_focusView attribute:axis];
+    [_sourceView resizeSubelements:[_selectedViews setByRemovingObject:_focusView] toSibling:_focusView attribute:axis];
 }
 
 - (void)willResizeSelectedViews {
@@ -374,6 +378,7 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
     assert(remoteElement);
     self.context = [DataManager childContextWithNametag:NSStringFromClass([self class])
                                              forContext:remoteElement.managedObjectContext
+                                        concurrencyType:NSMainQueueConcurrencyType
                                             undoManager:YES];
     assert(self.context.undoManager);
 
@@ -385,7 +390,7 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
                                                           error:&error];
 
                   if (error)
-                  MSLogError(EDITOR_F_C, @"%@ error unfaulting model object: %@ - %@",
+                  MSLogError(@"%@ error unfaulting model object: %@ - %@",
                        ClassTagSelectorString, error, [error localizedFailureReason]);
         else if (_remoteElement.parentElement) {
                   _parentConstraintsObserver = [MSKVOReceptionist
@@ -394,7 +399,7 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
                                                         options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
                                                         context:NULL
                                                         handler:^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx) {
-                                                            MSLogDebug(EDITOR_F_C,
+                                                            MSLogDebug(
                                                             @"%@ parent element '%@' constraints changed",
                                                             ClassTagSelectorString,
                                                             _remoteElement.parentElement.displayName);
@@ -566,7 +571,7 @@ static NSString * const   kParentConstraintNametag  = @"kParentConstraintNametag
     dispatch_time_t   popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
 
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-        MSLogDebug(DEBUG_CONTEXT, @"%@\n%@\n\n%@\n\n%@\n\n%@\n\n%@\n",
+        MSLogDebug(@"%@\n%@\n\n%@\n\n%@\n\n%@\n\n%@\n",
                    ClassTagSelectorString,
                    [message dividerWithCharacterString:@"#"],
                    [_sourceView constraintsDescription],

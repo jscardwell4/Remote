@@ -35,11 +35,11 @@ enum ProntoHexFormatParts {
 
 };
 struct                    HexPair {unsigned int   num1; unsigned int num2; };
-static NSString * const   kIRCodeFrequencyKey       = @"frequency";
-static NSString * const   kIRCodeOffsetKey          = @"offset";
-static NSString * const   kIRCodePreamblePairsKey   = @"preamblePairs";
-static NSString * const   kIRCodeRepeatablePairsKey = @"repeatablePairs";
-static NSString * const   kIRCodeLeadInKey          = @"leadIn";
+MSKIT_STATIC_STRING_CONST   kIRCodeFrequencyKey       = @"frequency";
+MSKIT_STATIC_STRING_CONST   kIRCodeOffsetKey          = @"offset";
+MSKIT_STATIC_STRING_CONST   kIRCodePreamblePairsKey   = @"preamblePairs";
+MSKIT_STATIC_STRING_CONST   kIRCodeRepeatablePairsKey = @"repeatablePairs";
+MSKIT_STATIC_STRING_CONST   kIRCodeLeadInKey          = @"leadIn";
 
 #pragma mark - Helper functions
 

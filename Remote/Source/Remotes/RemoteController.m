@@ -8,6 +8,8 @@
 
 #import "RemoteController.h"
 #import "Remote.h"
+#import "RemoteElement_Private.h"
+#import "RemoteElementLayoutConstraint.h"
 #import "Button.h"
 #import "ButtonGroup.h"
 #import "ComponentDevice.h"
@@ -17,9 +19,10 @@
 
 #define RESET_CURRENT_REMOTE_ON_FETCH
 
-NSString * const   MSRemoteControllerHomeRemoteKeyName = @"MSRemoteControllerHomeRemoteKeyName";
-NSString * const   MSRemoteControllerTopToolbarKeyName = @"MSRemoteControllerTopToolbarKeyName";
-static int         ddLogLevel                          = DefaultDDLogLevel;
+MSKIT_STRING_CONST   MSRemoteControllerHomeRemoteKeyName = @"MSRemoteControllerHomeRemoteKeyName";
+MSKIT_STRING_CONST   MSRemoteControllerTopToolbarKeyName = @"MSRemoteControllerTopToolbarKeyName";
+static int         ddLogLevel                          = LOG_LEVEL_DEBUG;
+static int         msLogContext                        = REMOTE_F_C;
 
 @interface RemoteController ()
 
@@ -55,6 +58,44 @@ static int         ddLogLevel                          = DefaultDDLogLevel;
 #ifdef RESET_CURRENT_REMOTE_ON_FETCH
     [self setPrimitiveValue:MSRemoteControllerHomeRemoteKeyName forKey:@"currentRemoteKey"];
 #endif
+    [NotificationCenter addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
+                                    object:self.managedObjectContext
+                                     queue:MainQueue
+                                usingBlock:^(NSNotification * note)
+     {
+         NSSet * insertedConstraints = [note.userInfo[NSInsertedObjectsKey]
+                                        objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+                                            return [obj isKindOfClass:[RemoteElementLayoutConstraint class]];
+                                        }];
+         NSSet * deletedConstraints  = [note.userInfo[NSDeletedObjectsKey]
+                                        objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+                                            return [obj isKindOfClass:[RemoteElementLayoutConstraint class]];
+                                        }];
+         NSSet * updatedConstraints  = [note.userInfo[NSUpdatedObjectsKey]
+                                        objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+                                            return [obj isKindOfClass:[RemoteElementLayoutConstraint class]];
+                                        }];
+         
+         MSLogDebug(@"%@\ninsertedConstraints: %@\ndeletedConstraints: %@\nupdatedConstraints: %@",
+                    ClassTagSelectorString,
+                    [insertedConstraints componentsJoinedByString:@", "],
+                    [deletedConstraints  componentsJoinedByString:@", "],
+                    [updatedConstraints  componentsJoinedByString:@", "]);
+
+         [insertedConstraints enumerateObjectsUsingBlock:^(RemoteElementLayoutConstraint * constraint, BOOL *stop) {
+             [constraint.owner.constraintManager didAddConstraint:constraint];
+         }];
+
+         [deletedConstraints enumerateObjectsUsingBlock:^(RemoteElementLayoutConstraint * constraint, BOOL *stop) {
+             RemoteElement * previousOwner = (RemoteElement *)[constraint committedValueForKey:@"owner"];
+             if (previousOwner) [previousOwner.constraintManager didRemoveConstraint:constraint];
+         }];
+
+         [updatedConstraints enumerateObjectsUsingBlock:^(RemoteElementLayoutConstraint * constraint, BOOL *stop) {
+             [constraint.owner.constraintManager didUpdateConstraint:constraint];
+         }];
+
+     }];
 }
 
 /// @name ￼Creating a RemoteController
@@ -69,11 +110,11 @@ static int         ddLogLevel                          = DefaultDDLogLevel;
 
     [context performBlockAndWait:^{
                  NSError * error = nil;
-                 NSArray * fetchedObjects = [context          executeFetchRequest:fetchRequest
+                 NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest
                                                                    error:&error];
                  if (error)
-                 DDLogError(@"%@\n\terror retrieving remote controller: %@",
-                       ClassTagSelectorString, [error localizedFailureReason]);
+                 MSLogError(@"%@\n\terror retrieving remote controller: %@",
+                            ClassTagSelectorString, [error localizedFailureReason]);
         else if (fetchedObjects.count)
                  controller = fetchedObjects[0];
         else

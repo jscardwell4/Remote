@@ -15,8 +15,8 @@
 #define USE_CURL_DOWN_FOR_PUSH   NO
 
 static int         ddLogLevel                            = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
-NSString * const   kDetailedButtonEditingButtonKey       = @"kDetailedButtonEditingButtonKey";
-NSString * const   kDetailedButtonEditingControlStateKey = @"kDetailedButtonEditingControlStateKey";
+MSKIT_STRING_CONST   kDetailedButtonEditingButtonKey       = @"kDetailedButtonEditingButtonKey";
+MSKIT_STRING_CONST   kDetailedButtonEditingControlStateKey = @"kDetailedButtonEditingControlStateKey";
 
 enum {
     CommandEditingChildController,

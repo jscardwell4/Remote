@@ -10,9 +10,9 @@
 #import "RemoteView.h"
 
 static int         ddLogLevel                                 = DefaultDDLogLevel;
-NSString * const   kCurrentConfigurationDidChangeNotification = @"kCurrentConfigurationDidChangeNotification";
-NSString * const   kDefaultConfiguration                      = @"kDefaultConfiguration";
-NSString * const   kConfigurationKey                          = @"kConfigurationKey";
+MSKIT_STRING_CONST   kCurrentConfigurationDidChangeNotification = @"kCurrentConfigurationDidChangeNotification";
+MSKIT_STRING_CONST   kDefaultConfiguration                      = @"kDefaultConfiguration";
+MSKIT_STRING_CONST   kConfigurationKey                          = @"kConfigurationKey";
 
 @interface ConfigurationDelegate ()
 

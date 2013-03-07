@@ -318,7 +318,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * const   kCellIdentifier = @"Cell";
+    MSKIT_STATIC_STRING_CONST   kCellIdentifier = @"Cell";
     UITableViewCell         * cell            = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     NSInteger                 index           = indexPath.row * 3 - 1;
     GalleryBackgroundImage  * bgImage;

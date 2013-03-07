@@ -49,6 +49,23 @@
  *
  * @param nametag String to set as the nametag for the new context
  *
+ * @param type Concurrency type to use when creating the new context
+ *
+ * @param undoManager Whether the context should have an undo manager attached to it
+ *
+ * @return The new context
+ */
+- (NSManagedObjectContext *)newContextWithNametag:(NSString *)nametag
+                                  concurrencyType:(NSManagedObjectContextConcurrencyType)type
+                                      undoManager:(BOOL)undoManager;
+
+/**
+ * Creates and returns a new managed object context with the same `NSPersistentStoreCoordinator` as
+ * the main managed object context and with an undo manager if specified. Also sets the context's
+ * `nametag` property if provided.
+ *
+ * @param nametag String to set as the nametag for the new context
+ *
  * @param undoManager Whether the context should have an undo manager attached to it
  *
  * @return The new context
@@ -84,6 +101,24 @@
 - (NSManagedObjectContext *)newContext;
 
 ///@name Creating a new child managed object context
+
+
+/**
+ * Creates and returns a new child context with the main object context as a parent, undo support
+ * as specified and with the specified `nametag`.
+ *
+ * @param nametag String to set as the nametag for the new context
+ *
+ * @param type Concurrency type to use when creating the new context
+ *
+ * @param undoManager Whether to attach an undo manager to the new context
+ *
+ * @return The new child context
+ */
+- (NSManagedObjectContext *)childContextWithNametag:(NSString *)nametag
+                                         forContext:(NSManagedObjectContext *)context
+                                    concurrencyType:(NSManagedObjectContextConcurrencyType)type
+                                        undoManager:(BOOL)undoManager;
 
 /**
  * Creates and returns a new child context with the main object context as a parent, undo support

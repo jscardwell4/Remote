@@ -21,22 +21,24 @@
      : @"InsteonNetworkDeviceType")
 
 // static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
+static int msLogContext = NETWORKING_F_C;
+
 
 // device constants
-NSString * const   kDefaultiTachDeviceKey = @"kDefaultiTachDeviceKey";
+MSKIT_STRING_CONST   kDefaultiTachDeviceKey = @"kDefaultiTachDeviceKey";
 
 // other keys
-NSString * const   kDevicesUserDefaultsKey = @"kDevicesUserDefaultsKey";
-NSString * const   kNetworkDeviceTypeKey   = @"kNetworkDeviceTypeKey";
-NSString * const   kNetworkDeviceKey       = @"kNetworkDeviceKey";
+MSKIT_STRING_CONST   kDevicesUserDefaultsKey = @"kDevicesUserDefaultsKey";
+MSKIT_STRING_CONST   kNetworkDeviceTypeKey   = @"kNetworkDeviceTypeKey";
+MSKIT_STRING_CONST   kNetworkDeviceKey       = @"kNetworkDeviceKey";
 
 // notifications
-NSString * const   kConnectionStatusNotification       = @"kConnectionStatusNotification";
-NSString * const   kConnectionStatusWifiAvailable      = @"kConnectionStatusWifiAvailable";
-NSString * const   kCommandDidCompleteNotification     = @"kCommandDidCompleteNotification";
-NSString * const   kLearnerStatusDidChangeNotification = @"kLearnerStatusDidChangedNotification";
-NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotification";
+MSKIT_STRING_CONST   kConnectionStatusNotification       = @"kConnectionStatusNotification";
+MSKIT_STRING_CONST   kConnectionStatusWifiAvailable      = @"kConnectionStatusWifiAvailable";
+MSKIT_STRING_CONST   kCommandDidCompleteNotification     = @"kCommandDidCompleteNotification";
+MSKIT_STRING_CONST   kLearnerStatusDidChangeNotification = @"kLearnerStatusDidChangedNotification";
+MSKIT_STRING_CONST   kCommandCapturedNotification        = @"kCommandCapturedNotification";
 
 @interface ConnectionManager ()
 
@@ -133,13 +135,13 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
     self->wifiReachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (struct sockaddr *)&addr);
     assert(self->wifiReachability != NULL);
     if (!SCNetworkReachabilitySetCallback(self->wifiReachability, NetworkReachabilityCallBack, &context))
-        MSLogError(NETWORKING_F_C, @"%@ failed to set callback for wifi reachability", ClassTagSelectorString);
+        MSLogError(@"%@ failed to set callback for wifi reachability", ClassTagSelectorString);
     else {
         assert(self->reachabilityQueue == nil);
         self->reachabilityQueue = dispatch_queue_create("com.moondeerstudios.reachability", DISPATCH_QUEUE_SERIAL);
         assert(self->reachabilityQueue != nil);
-        if (!(SCNetworkReachabilitySetDispatchQueue(self->wifiReachability, self->reachabilityQueue) == TRUE)) MSLogError(NETWORKING_F_C, @"%@ failed reachability dispatch", ClassTagSelectorString);
-        else MSLogDebug(NETWORKING_F_C, @"%@ reachability object dispatched", ClassTagSelectorString);
+        if (!(SCNetworkReachabilitySetDispatchQueue(self->wifiReachability, self->reachabilityQueue) == TRUE)) MSLogError(@"%@ failed reachability dispatch", ClassTagSelectorString);
+        else MSLogDebug(@"%@ reachability object dispatched", ClassTagSelectorString);
     }
 }
 
@@ -152,7 +154,7 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
  *                                  NSDictionary * deviceAttrs = note.userInfo[kNetworkDeviceKey];
  *                                  assert(deviceAttrs != nil);
  *
- *                                  MSLogDebug(NETWORKING_F_C,@"%@ notification received
+ *                                  MSLogDebug(@"%@ notification received
  * with discovered device:\n%@\nstopping device discovery...",
  *                                               ClassTagSelectorString, deviceAttrs);
  *                              }
@@ -161,15 +163,15 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
  */
     if (self->flags.autoConnect) {
         // TODO:refine initialization
-            MSLogDebug(NETWORKING_F_C, @"%@ (autoConnect) trying to connect with default device...", ClassTagSelectorString);
+            MSLogDebug(@"%@ (autoConnect) trying to connect with default device...", ClassTagSelectorString);
 
         BOOL   success = [self->gcConnectionManager connectWithDefaultDevice];
 
         if (!success && flags.autoListen) {
-            MSLogDebug(NETWORKING_F_C, @"%@ (autoConnect|autoListen) connect failed, listening for devices...", ClassTagSelectorString);
+            MSLogDebug(@"%@ (autoConnect|autoListen) connect failed, listening for devices...", ClassTagSelectorString);
             [self->gcConnectionManager detectNetworkDevices];
         } else
-            MSLogDebug(NETWORKING_F_C, @"%@ (autoConnect) default device connected",                            ClassTagSelectorString);
+            MSLogDebug(@"%@ (autoConnect) default device connected",                            ClassTagSelectorString);
     }
 }
 
@@ -177,7 +179,7 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
 
 - (void)logStatus {
     // TODO: Implement meaningful logging code
-    MSLogInfo(NETWORKING_F_C, @"%@ %@", ClassTagSelectorString, [self->gcConnectionManager statusDescription]);
+    MSLogInfo(@"%@ %@", ClassTagSelectorString, [self->gcConnectionManager statusDescription]);
 }
 
 #pragma mark - Sending commands
@@ -203,7 +205,7 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
     NSUInteger   commandTag = [self nextTag];
 
     if (self->flags.simulateCommandSuccess) {
-        MSLogDebug(NETWORKING_F_C, @"%@ simulating successful send command", ClassTagSelectorString);
+        MSLogDebug(@"%@ simulating successful send command", ClassTagSelectorString);
         // save sender by tag
         if (ValueIsNotNil(sender)) [self->requestLog setObject:sender forKey:@(commandTag)];
 
@@ -227,11 +229,11 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
     BOOL   success = NO;
 
     if (ValueIsNil(command))
-        MSLogWarn(NETWORKING_F_C, @"%@ can't set nil command!", ClassTagSelectorString);
+        MSLogWarn(@"%@ can't set nil command!", ClassTagSelectorString);
     else if (!self->flags.wifiAvailable)
-        MSLogWarn(NETWORKING_F_C, @"%@ wifi not available",     ClassTagSelectorString);
+        MSLogWarn(@"%@ wifi not available",     ClassTagSelectorString);
     else {
-        MSLogDebug(NETWORKING_F_C, @"%@ sending URL command:%@", ClassTagSelectorString, command);
+        MSLogDebug(@"%@ sending URL command:%@", ClassTagSelectorString, command);
 
         NSURLConnection * connection;
         NSURL           * url;
@@ -247,8 +249,8 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
     // save sender by tag
     if (ValueIsNotNil(sender)) [self->requestLog setObject:sender forKey:@(tag)];
 
-    if (success) MSLogDebug(NETWORKING_F_C, @"%@ URL command sent", ClassTagSelectorString);
-    else MSLogDebug(NETWORKING_F_C, @"%@ failed to send URL command", ClassTagSelectorString);
+    if (success) MSLogDebug(@"%@ URL command sent", ClassTagSelectorString);
+    else MSLogDebug(@"%@ failed to send URL command", ClassTagSelectorString);
 
     [self notifySenderForTag:@(tag) success:success];
 }
@@ -261,7 +263,7 @@ NSString * const   kCommandCapturedNotification        = @"kCommandCapturedNotif
 
     if (sender) {
         [sender commandWithTag:tag.unsignedIntegerValue didCompleteWithStatus:success];
-        MSLogDebug(NETWORKING_F_C, @"%@ notifying sender command with tag %@ completed %ssuccessfully", ClassTagSelectorString, tag, success ? "" : "un");
+        MSLogDebug(@"%@ notifying sender command with tag %@ completed %ssuccessfully", ClassTagSelectorString, tag, success ? "" : "un");
     }
 }
 
@@ -290,7 +292,7 @@ static void NetworkReachabilityCallBack(SCNetworkReachabilityRef   target,
                                         SCNetworkReachabilityFlags flags,
                                         void                     * info) {
     if (info != (__bridge void *)([ConnectionManager sharedConnectionManager])) {
-        MSLogCError(NETWORKING_F_C, @"<ConnectionManager NetworkReachabilityCallback>\n\t`info` != self.sharedConnectionManager");
+        MSLogCError(@"<ConnectionManager NetworkReachabilityCallback>\n\t`info` != self.sharedConnectionManager");
 
         return;
     }

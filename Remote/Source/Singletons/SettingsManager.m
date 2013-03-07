@@ -8,14 +8,14 @@
 
 #import "SettingsManager.h"
 
-NSString * const                   kAutoConnectKey                                                = @"kAutoConnectKey";
-NSString * const                   kProximitySensorKey                                            = @"kProximitySensorKey";
-NSString * const                   kStatusBarKey                                                  = @"kStatusBarKey";
-NSString * const                   kInactivityTimeoutKey                                          = @"kInactivityTimeoutKey";
-NSString * const                   MSSettingsManagerAutoConnectSettingDidChangeNotification       = @"MSSettingsManagerAutoConnectSettingDidChangeNotification";
-NSString * const                   MSSettingsManagerProximitySensorSettingDidChangeNotification   = @"MSSettingsManagerProximitySensorSettingDidChangeNotification";
-NSString * const                   MSSettingsManagerStatusBarSettingDidChangeNotification         = @"MSSettingsManagerStatusBarSettingDidChangeNotification";
-NSString * const                   MSSettingsManagerInactivityTimeoutSettingDidChangeNotification = @"MSSettingsManagerInactivityTimeoutSettingDidChangeNotification";
+MSKIT_STRING_CONST                   kAutoConnectKey                                                = @"kAutoConnectKey";
+MSKIT_STRING_CONST                   kProximitySensorKey                                            = @"kProximitySensorKey";
+MSKIT_STRING_CONST                   kStatusBarKey                                                  = @"kStatusBarKey";
+MSKIT_STRING_CONST                   kInactivityTimeoutKey                                          = @"kInactivityTimeoutKey";
+MSKIT_STRING_CONST                   MSSettingsManagerAutoConnectSettingDidChangeNotification       = @"MSSettingsManagerAutoConnectSettingDidChangeNotification";
+MSKIT_STRING_CONST                   MSSettingsManagerProximitySensorSettingDidChangeNotification   = @"MSSettingsManagerProximitySensorSettingDidChangeNotification";
+MSKIT_STRING_CONST                   MSSettingsManagerStatusBarSettingDidChangeNotification         = @"MSSettingsManagerStatusBarSettingDidChangeNotification";
+MSKIT_STRING_CONST                   MSSettingsManagerInactivityTimeoutSettingDidChangeNotification = @"MSSettingsManagerInactivityTimeoutSettingDidChangeNotification";
 static NSMutableDictionary const * settingsCache;
 static NSSet const               * validSettings;
 static NSDictionary const        * notifications;

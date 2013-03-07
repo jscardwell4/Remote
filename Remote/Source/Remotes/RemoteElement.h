@@ -9,21 +9,14 @@
 #import "RemoteElementEditingViewController.h"
 #import "RemoteElementConstraintManager.h"
 
-typedef NS_ENUM (uint8_t, RemoteElementRelationshipType) {
-    RemoteElementParentRelationship,
-    RemoteElementChildRelationship,
-    RemoteElementSiblingRelationship,
-    RemoteElementIntrinsicRelationship
-};
-
 /**
  *
  * Bit vector assignments for `appearance`
  *
- *   0xFF 0xFF   0xFF 0xFF 0xFF   0xFF  0xFF 0xFF
- * └──────┴─────────┴───┴──────┘
- *     ⬇             ⬇         ⬇       ⬇
- *   style          shape       size   alignment
+ *		   0xFF 0xFF   0xFF 0xFF 0xFF  0xFF  0xFF 0xFF
+ * 		└──────┴─────────┴───┴──────┘
+ *     				  ⬇             ⬇         ⬇       ⬇
+ *			style          shape      size   alignment
  *
  */
 typedef NS_OPTIONS(uint64_t, RemoteElementAlignmentOptions) {
@@ -70,7 +63,7 @@ typedef NS_OPTIONS(uint64_t, RemoteElementAlignmentOptions) {
     RemoteElementAlignmentOptionsMask      = 0xFFFF
 };
 
-RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RemoteElementRelationshipType type);
+RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type);
 
 typedef NS_OPTIONS (uint64_t, RemoteElementSizingOptions) {
     RemoteElementSizingOptionUnspecified = 0 << 0x17,
@@ -93,7 +86,7 @@ typedef NS_OPTIONS (uint64_t, RemoteElementSizingOptions) {
         RemoteElementSizingOptionsMask    = 0xFF0000
 };
 
-RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RemoteElementRelationshipType type);
+RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type);
 
 typedef NS_ENUM (uint64_t, RemoteElementShape) {
     RemoteElementShapeUndefined            = 0 << 0x2F,
@@ -118,10 +111,10 @@ typedef NS_OPTIONS (uint64_t, RemoteElementStyle) {
  *
  * Bit vector assignments for `flags`
  *
- *   0xFF 0xFF   0xFF 0xFF   0xFF 0xFF  0xFF 0xFF
- * └──────┴──────┴──────┴──────┘
- *     ⬇           ⬇        ⬇            ⬇
- *   state       options    subtype     type
+ *           0xFF 0xFF   0xFF 0xFF   0xFF 0xFF  0xFF 0xFF
+ *         └──────┴──────┴──────┴──────┘
+ *             ⬇           ⬇        	⬇          ⬇
+ *           state       options    	  subtype      type
  *
  */
 typedef NS_ENUM (uint64_t, RemoteElementType) {
@@ -206,11 +199,13 @@ MSKIT_STATIC_INLINE NSString * NSStringFromEditingMode(EditingMode mode) {
 @property (nonatomic, strong, readonly) RemoteElementLayoutConfiguration     * layoutConfiguration;
 @property (nonatomic, readonly, getter = isLayoutConfigurationValid)    BOOL   layoutConfigurationValid;
 
-@property (nonatomic, strong, readonly)     NSHashTable * subelementConstraints;
-@property (nonatomic, strong, readonly)     NSHashTable * dependentConstraints;
-@property (nonatomic, strong, readonly)     NSHashTable * dependentChildConstraints;
-@property (nonatomic, strong, readonly)     NSHashTable * dependentSiblingConstraints;
+@property (nonatomic, strong, readonly)     NSSet * subelementConstraints;
+@property (nonatomic, strong, readonly)     NSSet * dependentConstraints;
+@property (nonatomic, strong, readonly)     NSSet * intrinsicConstraints;
+@property (nonatomic, strong, readonly)     NSSet * dependentChildConstraints;
+@property (nonatomic, strong, readonly)     NSSet * dependentSiblingConstraints;
 
+- (RemoteElementLayoutConstraint *)constraintWithAttributes:(NSDictionary *)attributes;
 - (void)processConstraints;
 - (void)setConstraintsFromString:(NSString *)constraints;
 - (NSSet *)constraintsAffectingAxis:(UILayoutConstraintAxis)axis
