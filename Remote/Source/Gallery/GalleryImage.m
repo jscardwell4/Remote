@@ -53,7 +53,7 @@ thumbnailSize    = _thumbnailSize;
     if (StringIsEmpty(name) || ValueIsNil(group)) return nil;
 
     GalleryImage * image =
-        [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+        [NSEntityDescription insertNewObjectForEntityForName:ClassString([self class])
                                       inManagedObjectContext:group.managedObjectContext];
 
     if (ValueIsNotNil(image)) {

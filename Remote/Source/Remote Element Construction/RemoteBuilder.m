@@ -65,7 +65,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
         "selection.centerY = remote.centerY\n"
         "selection.right = remote.right @999";
 
-    [remote setConstraintsFromString:[constraints stringByReplacingOccurrencesWithDictionary:identifiers]];
+    [remote.constraintManager setConstraintsFromString:[constraints stringByReplacingOccurrencesWithDictionary:identifiers]];
 
     return remote;
 }
@@ -94,7 +94,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
         "lightControls.bottom = homeRemote.bottom";
     NSDictionary * identifiers = NSDictionaryOfVariableBindingsToIdentifiers(activityButtons, lightControls, homeRemote);
 
-    [homeRemote setConstraintsFromString:[childConstraints stringByReplacingOccurrencesWithDictionary:identifiers]];
+    [homeRemote.constraintManager setConstraintsFromString:[childConstraints stringByReplacingOccurrencesWithDictionary:identifiers]];
 
     return homeRemote;
 }
@@ -143,7 +143,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
         "mute.height = rocker.height * 0.33";
     NSDictionary * identifiers = NSDictionaryOfVariableBindingsToIdentifiers(mute, rocker, power, remote);
 
-    [remote setConstraintsFromString:[constraints stringByReplacingOccurrencesWithDictionary:identifiers]];
+    [remote.constraintManager setConstraintsFromString:[constraints stringByReplacingOccurrencesWithDictionary:identifiers]];
 
     return remote;
 }

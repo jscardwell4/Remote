@@ -11,13 +11,23 @@
 #import "RemoteElement_Private.h"
 #import "RemoteElementView_Private.h"
 
+@interface RemoteElementLayoutConstraint ()
+
+@property (nonatomic, copy,   readwrite) NSString      * identifier;
+@property (nonatomic, assign, readwrite) int16_t         firstAttribute;
+@property (nonatomic, assign, readwrite) int16_t         secondAttribute;
+@property (nonatomic, assign, readwrite) int16_t         relation;
+@property (nonatomic, assign, readwrite) float           multiplier;
+@property (nonatomic, strong, readwrite) RemoteElement * firstItem;
+@property (nonatomic, strong, readwrite) RemoteElement * secondItem;
+
+@end
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - RemoteElementLayoutConstraint
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation RemoteElementLayoutConstraint {
-    NSArray * _kvoReceptionists;
-}
+@implementation RemoteElementLayoutConstraint
 @dynamic firstAttribute;
 @dynamic secondAttribute;
 @dynamic multiplier;
@@ -42,108 +52,56 @@
                                             attribute:(NSLayoutAttribute)attr2
                                            multiplier:(CGFloat)multiplier
                                              constant:(CGFloat)c
-                                                owner:(RemoteElement *)owner {
+{
     assert(  ValueIsNotNil(element1)
            && attr1 && (  !element2
-                        || ValueIsNotNil(element2))
-           && ValueIsNotNil(owner));
+                        || ValueIsNotNil(element2)));
 
     __block RemoteElementLayoutConstraint * constraint = nil;
     NSManagedObjectContext                * context    = element1.managedObjectContext;
 
     [context performBlockAndWait:^{
-        constraint = [NSEntityDescription insertNewObjectForEntityForName:@"RemoteElementLayoutConstraint"
-                                                   inManagedObjectContext:context];
+        constraint = [NSEntityDescription
+                      insertNewObjectForEntityForName:@"RemoteElementLayoutConstraint"
+                      inManagedObjectContext:context];
         if (constraint) {
-            constraint.firstItem = element1;
             constraint.firstAttribute = attr1;
             constraint.relation = relation;
             constraint.secondItem = element2;
             constraint.secondAttribute = attr2;
             constraint.multiplier = multiplier;
             constraint.constant = c;
-            constraint.owner = owner;
+            constraint.firstItem = element1;
         }
-//        [context processPendingChanges];
-    }
-
-     ];
+     }];
 
     return constraint;
 }
 
++ (RemoteElementLayoutConstraint *)constraintWithAttributeValues:(NSDictionary *)attributes
+{
+    return [self constraintWithItem:attributes[@"firstItem"]
+                          attribute:NSUIntegerValue(attributes[@"firstAttribute"])
+                          relatedBy:NSUIntegerValue(attributes[@"relation"])
+                             toItem:NilSafeValue(attributes[@"secondItem"])
+                          attribute:NSUIntegerValue(attributes[@"secondAttribute"])
+                         multiplier:CGFloatValue(attributes[@"multiplier"])
+                           constant:CGFloatValue(attributes[@"constant"])];
+}
+
 - (void)awakeFromInsert {
-    /*
-     * You typically use this method to initialize special default property values. This method
-     * is invoked only once in the object's lifetime. If you want to set attribute values in an
-     * implementation of this method, you should typically use primitive accessor methods (either
-     * setPrimitiveValue:forKey: or—better—the appropriate custom primitive accessors). This
-     * ensures that the new values are treated as baseline values rather than being recorded as
-     * undoable changes for the properties in question.
-     */
     [super awakeFromInsert];
     self.identifier = [@"_" stringByAppendingString :[MSNonce()stringByRemovingCharacter:'-']];
     self.key        = @"";
-    [self kvoReceptionists];
-}
-
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-    [self kvoReceptionists];
-}
-
-/*
- - (void)prepareForDeletion {
- self.firstItem.layoutConfiguration[self.firstAttribute] = @NO;
- [@[self.owner, self.firstItem, self.secondItem]
- makeObjectsPerformSelector:@selector(removeConstraintFromCache:) withObject:self];
- }
- */
-
-- (void)kvoReceptionists
-{
-    if (!_kvoReceptionists) {
-
-        __weak RemoteElementLayoutConstraint * weakSelf = self;
-        MSKVOHandler                           handler  = ^(MSKVOReceptionist * receptionist,
-                                                            NSString * keyPath,
-                                                            id object,
-                                                            NSDictionary * change,
-                                                            void * context)
-        {
-            //            if (ValueIsNil(object)) assert(![@"firstItem" isEqualToString: keyPath]);
-            //            [weakSelf.owner
-            //             constraintDidUpdate:weakSelf];
-        };
-        NSOperationQueue           * queue   = [NSOperationQueue mainQueue];
-        void                       * context = NULL;
-        NSKeyValueObservingOptions   options = NSKeyValueObservingOptionNew;
-
-        _kvoReceptionists = [@[@"firstItem",
-                             @"secondItem",
-                             @"firstAttribute",
-                             @"secondAttribute",
-                             @"multiplier",
-                             @"relation"] arrayByMappingToBlock :^MSKVOReceptionist * (NSString * keyPath, NSUInteger idx) {
-                                 return [MSKVOReceptionist receptionistForObject:weakSelf
-                                                                         keyPath:keyPath
-                                                                         options:options
-                                                                         context:context
-                                                                         handler:handler
-                                                                           queue:queue];
-                             }];
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)isStaticConstraint {
-    return ((!self.secondItem)
-            ? YES
-            : NO);
-}
+- (RemoteElementLayoutConfiguration *)configuration { return self.firstItem.layoutConfiguration; }
+
+- (BOOL)isStaticConstraint { return !self.secondItem; }
 
 - (BOOL)hasAttributeValues:(NSDictionary *)values {
     id         firstItem       = values[@"firstItem"];
@@ -160,16 +118,16 @@
                 || (  [firstItem isKindOfClass:[NSString class]]
                     ? [self.firstItem.identifier isEqualToString:firstItem]
                     : self.firstItem == firstItem))
-            && (!firstAttribute || self.firstAttribute == Float(firstAttribute))
-            && (!relation || self.relation == Integer(relation))
+            && (!firstAttribute || self.firstAttribute == CGFloatValue(firstAttribute))
+            && (!relation || self.relation == NSIntegerValue(relation))
             && (   !secondItem
                 || (  [secondItem isKindOfClass:[NSString class]]
                     ? [self.secondItem.identifier isEqualToString:secondItem]
                     : self.secondItem == secondItem))
-            && (!secondAttribute || self.secondAttribute == Float(secondAttribute))
-            && (!multiplier || self.multiplier == Float(multiplier))
-            && (!constant || self.constant == Float(constant))
-            && (!priority || self.priority == Float(priority))
+            && (!secondAttribute || self.secondAttribute == CGFloatValue(secondAttribute))
+            && (!multiplier || self.multiplier == CGFloatValue(multiplier))
+            && (!constant || self.constant == CGFloatValue(constant))
+            && (!priority || self.priority == CGFloatValue(priority))
             && (   !owner
                 || (  [owner isKindOfClass:[NSString class]]
                     ? [self.owner.identifier isEqualToString:owner]
@@ -193,12 +151,17 @@
 
     NSDictionary * attributes = [self committedValuesForKeys:attributeKeys];
 
-    NSString * firstItem      = [((RemoteElement *)attributes[@"firstItem"]).displayName camelCaseString];
-    NSString * firstAttribute = [NSLayoutConstraint pseudoNameForAttribute:[attributes[@"firstAttribute"] integerValue]];
-    NSString * relation       = [NSLayoutConstraint pseudoNameForRelation:[attributes[@"relation"] integerValue]];
-    NSString * secondItem     = [((RemoteElement *)NilSafeValue(attributes[@"secondItem"])).displayName camelCaseString];
-    NSString * secondAttribute = ([attributes[@"secondAttribute"] integerValue] != NSLayoutAttributeNotAnAttribute
-                                  ? [NSLayoutConstraint pseudoNameForAttribute:[attributes[@"secondAttribute"] integerValue]]
+    NSString * firstItem      = [((RemoteElement *)attributes[@"firstItem"]).displayName
+                                 camelCaseString];
+    NSString * firstAttribute = [NSLayoutConstraint pseudoNameForAttribute:
+                                 [attributes[@"firstAttribute"] integerValue]];
+    NSString * relation       = [NSLayoutConstraint pseudoNameForRelation:
+                                 [attributes[@"relation"] integerValue]];
+    NSString * secondItem     = [((RemoteElement *)NilSafeValue(attributes[@"secondItem"])).displayName
+                                 camelCaseString];
+    NSString * secondAttribute = (NSIntegerValue(attributes[@"secondAttribute"])
+                                  ? [NSLayoutConstraint pseudoNameForAttribute:
+                                     [attributes[@"secondAttribute"] integerValue]]
                                   : nil);
     NSString * multiplier = ([attributes[@"multiplier"] floatValue] == 1.0f
                              ? nil
@@ -246,12 +209,17 @@
 
     NSDictionary * attributes = [self dictionaryWithValuesForKeys:attributeKeys];
 
-    NSString * firstItem      = [((RemoteElement *)attributes[@"firstItem"]).displayName camelCaseString];
-    NSString * firstAttribute = [NSLayoutConstraint pseudoNameForAttribute:[attributes[@"firstAttribute"] integerValue]];
-    NSString * relation       = [NSLayoutConstraint pseudoNameForRelation:[attributes[@"relation"] integerValue]];
-    NSString * secondItem     = [((RemoteElement *)NilSafeValue(attributes[@"secondItem"])).displayName camelCaseString];
-    NSString * secondAttribute = ([attributes[@"secondAttribute"] integerValue] != NSLayoutAttributeNotAnAttribute
-                                  ? [NSLayoutConstraint pseudoNameForAttribute:[attributes[@"secondAttribute"] integerValue]]
+    NSString * firstItem       = [((RemoteElement *)attributes[@"firstItem"]).displayName
+                                  camelCaseString];
+    NSString * firstAttribute  = [NSLayoutConstraint pseudoNameForAttribute:
+                                  [attributes[@"firstAttribute"] integerValue]];
+    NSString * relation        = [NSLayoutConstraint pseudoNameForRelation:
+                                  [attributes[@"relation"] integerValue]];
+    NSString * secondItem      = [((RemoteElement *)NilSafeValue(attributes[@"secondItem"])).displayName
+                                  camelCaseString];
+    NSString * secondAttribute = ([attributes[@"secondAttribute"] integerValue]
+                                  ? [NSLayoutConstraint pseudoNameForAttribute:
+                                     [attributes[@"secondAttribute"] integerValue]]
                                   : nil);
     NSString * multiplier = ([attributes[@"multiplier"] floatValue] == 1.0f
                              ? nil
@@ -261,7 +229,7 @@
                            :StripTrailingZeros($(@"%f", [attributes[@"constant"] floatValue])));
     NSString * priority = ([attributes[@"priority"] integerValue] == UILayoutPriorityRequired
                            ? nil
-                           :$(@"%i", [attributes[@"priority"] integerValue]));
+                           :$(@"@%i", [attributes[@"priority"] integerValue]));
     NSMutableString * stringRep = [NSMutableString stringWithFormat:@"%@.%@ %@ ",
                                    firstItem, firstAttribute, relation];
 
@@ -277,6 +245,166 @@
         }
     }
     if (constant) [stringRep appendString:constant];
+    if (priority) [stringRep appendFormat:@" %@", priority];
+
+    return stringRep;
+}
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - RELayoutConstraint Implementation
+////////////////////////////////////////////////////////////////////////////////
+
+@interface RELayoutConstraint ()
+
+@property (nonatomic, assign, readwrite, getter = isValid) BOOL   valid;
+@property (nonatomic, strong) MSContextChangeReceptionist       * contextReceptionist;
+@property (nonatomic, strong) MSKVOReceptionist                 * kvoReceptionist;
+
+@end
+
+@implementation RELayoutConstraint
+
++ (RELayoutConstraint *)constraintWithModel:(RemoteElementLayoutConstraint *)modelConstraint
+                                    forView:(RemoteElementView *)view
+{
+    RemoteElementView * firstItem = view[modelConstraint.firstItem.identifier];
+    RemoteElementView * secondItem = ([modelConstraint isStaticConstraint]
+                                      ? nil
+                                      : view[modelConstraint.secondItem.identifier]);
+
+    RELayoutConstraint * constraint = [RELayoutConstraint
+                                       constraintWithItem:firstItem
+                                       attribute:modelConstraint.firstAttribute
+                                       relatedBy:modelConstraint.relation
+                                       toItem:secondItem
+                                       attribute:modelConstraint.secondAttribute
+                                       multiplier:modelConstraint.multiplier
+                                       constant:modelConstraint.constant];
+
+    assert(constraint);
+
+    constraint.priority        = modelConstraint.priority;
+    constraint.tag             = modelConstraint.tag;
+    constraint.nametag         = modelConstraint.key;
+    constraint.owner            = view;
+    constraint.valid           = YES;
+    constraint.modelConstraint = modelConstraint;
+
+
+
+    return constraint;
+}
+
+- (void)setModelConstraint:(RemoteElementLayoutConstraint *)modelConstraint {
+
+    _modelConstraint = modelConstraint;
+
+    __weak RELayoutConstraint * weakself = self;
+
+    _contextReceptionist = [MSContextChangeReceptionist
+                            receptionistForObject:_modelConstraint
+                            notificationName:NSManagedObjectContextObjectsDidChangeNotification
+                            queue:MainQueue
+                            updateHandler:^(MSContextChangeReceptionist *receptionist,
+                                            NSManagedObject *object)
+                            {
+                                RemoteElementLayoutConstraint * constraint =
+                                    (RemoteElementLayoutConstraint *)object;
+
+                                if (   constraint.owner != weakself.owner.remoteElement
+                                    || constraint.firstItem != weakself.firstItem.remoteElement
+                                    || constraint.firstAttribute != weakself.firstAttribute
+                                    || constraint.relation != weakself.relation
+                                    || constraint.secondItem != weakself.secondItem.remoteElement
+                                    || constraint.secondAttribute != weakself.secondAttribute
+                                    || constraint.multiplier != weakself.multiplier
+                                    )
+                                    weakself.valid = NO;
+                            }
+                            deleteHandler:^(MSContextChangeReceptionist *receptionist,
+                                            NSManagedObject *object)
+                            {
+                                weakself.valid = NO;
+                            }];
+    
+    _kvoReceptionist = [MSKVOReceptionist
+                        receptionistForObject:_modelConstraint
+                        keyPath:@"constant"
+                        options:NSKeyValueObservingOptionNew
+                        context:NULL
+                        queue:MainQueue
+                        handler:^(MSKVOReceptionist *r, NSString *kp, id o, NSDictionary *c, void *ctx) {
+                            weakself.constant = ((RemoteElementLayoutConstraint *)o).constant;
+                        }];
+}
+
+- (void)setValid:(BOOL)valid {
+    _valid = valid;
+    if (!_valid) {
+        [_owner removeConstraint:self];
+    }
+}
+
+- (NSString *)identifier { return _modelConstraint.identifier; }
+
+- (NSString *)description {
+    static NSString * (^ itemNameForView)(UIView *) = ^(UIView * view){
+        return (view
+                ? ([view isKindOfClass:[RemoteElementView class]]
+                   ? [((RemoteElementView*)view).displayName camelCaseString]
+                   : (view.accessibilityIdentifier
+                      ? view.accessibilityIdentifier
+                      : $(@"<%@:%p>", ClassString([view class]), view)
+                      )
+                   )
+                : (NSString*)nil
+                );
+    };
+    NSString * firstItem       = itemNameForView(self.firstItem);
+    NSString * firstAttribute  = [NSLayoutConstraint pseudoNameForAttribute:self.firstAttribute];
+    NSString * relation        = [NSLayoutConstraint pseudoNameForRelation:self.relation];
+    NSString * secondItem      = itemNameForView(self.secondItem);
+    NSString * secondAttribute = (self.secondAttribute != NSLayoutAttributeNotAnAttribute
+                                  ? [NSLayoutConstraint pseudoNameForAttribute:self.secondAttribute]
+                                  : nil);
+    NSString * multiplier = (self.multiplier == 1.0f
+                             ? nil
+                             : [[NSString stringWithFormat:@"%f", self.multiplier]
+                                stringByStrippingTrailingZeroes]);
+    NSString * constant = (self.constant == 0.0f
+                           ? nil
+                           : [[NSString stringWithFormat:@"%f", self.constant]
+                              stringByStrippingTrailingZeroes]);
+    NSString * priority = (self.priority == UILayoutPriorityRequired
+                           ? nil
+                           : [NSString stringWithFormat:@"@%i", (int)self.priority]);
+    NSMutableString * stringRep = [NSMutableString stringWithFormat:@"%@.%@ %@ ",
+                                   firstItem,
+                                   firstAttribute,
+                                   relation];
+
+    if (secondItem && secondAttribute)
+    {
+        [stringRep appendFormat:@"%@.%@", secondItem, secondAttribute];
+
+        if (multiplier) [stringRep appendFormat:@" * %@", multiplier];
+
+        if (constant)
+        {
+            if (self.constant < 0)
+            {
+                constant = [constant substringFromIndex:1];
+                [stringRep appendString:@" - "];
+            }
+            else
+                [stringRep appendString:@" + "];
+        }
+    }
+
+    if (constant) [stringRep appendString:constant];
+
     if (priority) [stringRep appendFormat:@" %@", priority];
 
     return stringRep;

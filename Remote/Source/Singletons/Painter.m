@@ -249,7 +249,7 @@ NSData * getBitmapFromImage(UIImage * image) {
 NSData * vImageConformantDataForImage(UIImage * image) {
     ImageInfo   imageInfo = [image imageInfo];
 
-    MSLogCDebug(@"%@", NSStringFromImageInfo(imageInfo));
+    MSLogCDebug(@"%@", ImageInfoString(imageInfo));
 
     CGColorSpaceRef   colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef      context    = CGBitmapContextCreate(NULL,
@@ -768,7 +768,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
     NSUInteger   p0 = 0;
 
     while (border.count == 0 && p0 < imageData.length - 4) {
-        if (pixelAlpha(p0) > alphaThreshold) [border addObject:PointValue(imageLocation(p0))];
+        if (pixelAlpha(p0) > alphaThreshold) [border addObject:NSValueWithCGPoint(imageLocation(p0))];
         else p0 += 4;
     }
 
@@ -786,7 +786,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
         if (n == p0)
             stop = YES;
         else if (pixelAlpha(n) > alphaThreshold) {
-            [border addObject:PointValue(imageLocation(n))];
+            [border addObject:NSValueWithCGPoint(imageLocation(n))];
             pn  = n;
             dir = nextDirection(dir);
         } else
@@ -832,7 +832,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
  *      if (pixels[c+3] > alphaThreshold) {
  *          // add point to array and setup variables
  *          borderStart = imageLocation(c);
- *          [border addObject:PointValue(borderStart)];
+ *          [border addObject:NSValueWithCGPoint(borderStart)];
  *          borderPoint = borderStart;
  *          backtrack = imageLocation(b);
  *      } else {
@@ -850,7 +850,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
  *      NSUInteger idx = bitmapLocation(current);
  *      Pixel_8 alpha = pixels[idx+3];
  *      if (alpha > alphaThreshold) {
- *          [border addObject:PointValue(current)];
+ *          [border addObject:NSValueWithCGPoint(current)];
  *          backtrack = borderPoint;
  *          borderPoint = current;
  *      } else
@@ -868,7 +868,7 @@ NSData * scaledImageDataFromImageData(NSData * imageData, NSUInteger bytesPerRow
                                     stringWithFormat:@"%@ detected border points in %zu x %zu context:\n",
                                     ClassTagSelectorString, imageInfo.width, imageInfo.height];
                for (NSValue * pv in border) {
-               [string appendFormat:@"%@  ", NSStringFromCGPoint(Point(pv))];
+               [string appendFormat:@"%@  ", CGPointString(CGPointValue(pv))];
                }
 
                MSLogDebug(@"%@", string);

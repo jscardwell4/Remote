@@ -1,0 +1,5 @@
+Wednesday March 13th, 2013
+==========================
+
+I need to finish updating `RemoteElementConstraintManager` and then fix the `shrinkWrap` method for
+all current UI test cases.

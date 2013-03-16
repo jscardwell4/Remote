@@ -141,7 +141,7 @@ command            = _command;
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     Command         * command = [self.command commandAtIndex:indexPath.row];
-    UITableViewCell * cell    = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([command class])];
+    UITableViewCell * cell    = [tableView dequeueReusableCellWithIdentifier:ClassString([command class])];
 
     cell.imageView.image =
         [Painter circledText:[NSString stringWithFormat:@"%i", indexPath.row + 1]

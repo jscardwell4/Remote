@@ -173,13 +173,13 @@ static int   ddLogLevel = DefaultDDLogLevel;
     [self.view exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
 }
 
-- (void)willMoveSelectedViews {
-    [super willMoveSelectedViews];
+- (void)willTranslateSelectedViews {
+    [super willTranslateSelectedViews];
     _buttonGroupView.buttonsLocked = NO;
 }
 
-- (void)didMoveSelectedViews {
-    [super didMoveSelectedViews];
+- (void)didTranslateSelectedViews {
+    [super didTranslateSelectedViews];
 // [_buttonGroupView updateModelConstraintsFromView];
     _buttonGroupView.buttonsLocked = YES;
 }

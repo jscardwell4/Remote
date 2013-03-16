@@ -31,7 +31,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     if (!context) return nil;
 
     ControlStateSet * stateSet =
-        [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+        [NSEntityDescription insertNewObjectForEntityForName:ClassString([self class])
                                       inManagedObjectContext:context];
 
     return stateSet;
@@ -41,7 +41,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     if (!button) return nil;
 
     ControlStateSet * stateSet =
-        [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+        [NSEntityDescription insertNewObjectForEntityForName:ClassString([self class])
                                       inManagedObjectContext:button.managedObjectContext];
 
     stateSet.button = button;

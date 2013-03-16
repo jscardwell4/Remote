@@ -148,8 +148,8 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
     [super didReceiveMemoryWarning];
     DDLogWarn(@"%@ is view loaded? %@  is toolbar allocated? %@",
               ClassTagSelectorString,
-              NSStringFromBOOL([self isViewLoaded]),
-              NSStringFromBOOL(_topToolbar == nil));
+              BOOLString([self isViewLoaded]),
+              BOOLString(_topToolbar == nil));
 }
 
 #ifdef INACTIVITY_TIMER

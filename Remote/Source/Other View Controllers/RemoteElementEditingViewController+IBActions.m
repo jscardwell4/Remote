@@ -178,7 +178,7 @@ static const int   msLogContext = EDITOR_F;
 
     if (!savedOK)
         MSLogError(@"<%@> Saving child context failed: %@, %@",
-                   NSStringFromClass([self class]), error, [error localizedFailureReason]);
+                   ClassString([self class]), error, [error localizedFailureReason]);
     else if (_delegate)
         [_delegate remoteElementEditorDidSave:self];
     else if (self.presentingViewController)
@@ -220,7 +220,7 @@ static const int   msLogContext = EDITOR_F;
 
 - (IBAction)menuAction:(id)sender {
     MSLogDebug(
-               @"%@ sender class = %@, sender: %@", ClassTagSelectorString, NSStringFromClass([sender class]), sender);
+               @"%@ sender class = %@, sender: %@", ClassTagSelectorString, ClassString([sender class]), sender);
     if ([sender isKindOfClass:[RemoteElementView class]]) {
         [self toggleSelectionForViews:[@[sender] set]];
     }

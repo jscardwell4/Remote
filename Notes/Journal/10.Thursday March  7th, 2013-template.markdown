@@ -1,0 +1,10 @@
+Thursday March  7th, 2013
+=========================
+
+Figure out why layout configuration isn't being updated. Just started changing implementation
+of layout configuration to use core data model.
+
+###Update
+
+I have gotten some of the UI tests working again. Next up is the button group scale test, which
+I think is broken because of the way the editor relies on pinch gestures for setting `_flags.appliedScale`.

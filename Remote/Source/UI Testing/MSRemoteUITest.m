@@ -74,15 +74,17 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
 - (void)logTest:(BOOL)testComplete {
     NSString * testInfo = NSStringFromUITestCode(_testCode);
     NSString * prefix   = (testComplete ? @"  end test - " : @"begin test - ");
-    NSString * leftPad  = [NSString stringFilledWithCharacter:' '
-                                                        count:39 - (testInfo.length + prefix.length) / 2];
-    NSString * meat     = [$(@"%@%@%@", leftPad, prefix, testInfo) stringByPaddingToLength:78
-                                                                                withString:@" "
-                                                                           startingAtIndex:0];
-    NSString * spacer   = [NSString stringFilledWithCharacter:' ' count:78];
-    NSString * message  = $(@"\u23A7%1$@\u23AB\n\u23A8%2$@\u23AC\n\u23A9%1$@\u23AD\n", spacer, meat);
+    MSLogDebug(@"%@%@", prefix, testInfo);
+//    NSString * leftPad  = [NSString stringFilledWithCharacter:' '
+//                                                        count:39 - (testInfo.length + prefix.length) / 2];
+//    NSString * meat     = [$(@"%@%@%@", leftPad, prefix, testInfo) stringByPaddingToLength:78
+//                                                                                withString:@" "
+//                                                                           startingAtIndex:0];
+//    NSString * spacer   = [NSString stringFilledWithCharacter:' ' count:78];
+//    NSString * message  = $(@"\u23A7%1$@\u23AB\n\u23A8%2$@\u23AC\n\u23A9%1$@\u23AD\n", spacer, meat);
 
-    MSLogDebug(@"\n%@", message);
+//    MSLogDebug(@"\n%@", message);
+//    MSLogDebug(@"%@", meat);
 }
 
 - (void)logRemoteElementView:(RemoteElementView *)view
@@ -90,12 +92,12 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
                        after:(dispatch_time_t)delay
                      message:(NSString *)message
 {
-    assert(OnMainQueue);
+//    assert(OnMainQueue);
     dispatch_time_t   popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
 
     NSString * messageString = ([NSString isEmptyString:message]
                                 ? @""
-                                :[message dividerWithCharacterString:@"#"]);
+                                :message /*[message dividerWithCharacterString:@"#"]*/);
     NSString * viewString = $(@"%@%@\n%@\n\n%@",
                               [$(@"%@", view.displayName) singleBarMessageBox],
                               [view modelConstraintsDescription],

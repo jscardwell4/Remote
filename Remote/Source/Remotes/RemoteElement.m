@@ -11,7 +11,6 @@
 #import "Remote.h"
 #import "ButtonGroup.h"
 #import "Button.h"
-#import "RemoteElementLayoutConstraint.h"
 
 // static const int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int            ddLogLevel = DefaultDDLogLevel;
@@ -20,7 +19,6 @@ static const NSDictionary * kEntityNameForType;
 
 @implementation RemoteElement
 @synthesize constraintManager      = _constraintManager;
-@synthesize needsUpdateConstraints = _needsUpdateConstraints;
 
 @dynamic constraints;
 @dynamic displayName;
@@ -38,6 +36,7 @@ static const NSDictionary * kEntityNameForType;
 @dynamic primitiveFirstItemConstraints;
 @dynamic primitiveSecondItemConstraints;
 @dynamic secondItemConstraints;
+@dynamic layoutConfiguration;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initializers
@@ -46,28 +45,29 @@ static const NSDictionary * kEntityNameForType;
 + (void)initialize {
     if (self == [RemoteElement class]) {
         kEntityNameForType = @{
-            @(RemoteElementRemoteType) : @"Remote",
-            @(RemoteElementButtonGroupType) : @"ButtonGroup",
-            @(ButtonGroupTypePickerLabel) : @"PickerLabelButtonGroup",
-            @(ButtonGroupTypeToolbar) : @"ButtonGroup",
-            @(ButtonGroupTypeTransport) : @"ButtonGroup",
-            @(ButtonGroupTypeDPad) : @"ButtonGroup",
-            @(ButtonGroupTypeSelectionPanel) : @"ButtonGroup",
+            @(RemoteElementRemoteType)          : @"Remote",
+            @(RemoteElementButtonGroupType)     : @"ButtonGroup",
+            @(ButtonGroupTypePickerLabel)       : @"PickerLabelButtonGroup",
+            @(ButtonGroupTypeToolbar)           : @"ButtonGroup",
+            @(ButtonGroupTypeTransport)         : @"ButtonGroup",
+            @(ButtonGroupTypeDPad)              : @"ButtonGroup",
+            @(ButtonGroupTypeSelectionPanel)    : @"ButtonGroup",
             @(ButtonGroupTypeCommandSetManager) : @"ButtonGroup",
-            @(ButtonGroupTypeRoundedPanel) : @"ButtonGroup",
-            @(RemoteElementButtonType) : @"Button",
-            @(ButtonTypeActivityButton) : @"ActivityButton",
-            @(ButtonTypeNumberPad) : @"Button",
-            @(ButtonTypeConnectionStatus) : @"Button",
-            @(ButtonTypeBatteryStatus) : @"Button",
-            @(ButtonTypeCommandManager) : @"Button"
+            @(ButtonGroupTypeRoundedPanel)      : @"ButtonGroup",
+            @(RemoteElementButtonType)          : @"Button",
+            @(ButtonTypeActivityButton)         : @"ActivityButton",
+            @(ButtonTypeNumberPad)              : @"Button",
+            @(ButtonTypeConnectionStatus)       : @"Button",
+            @(ButtonTypeBatteryStatus)          : @"Button",
+            @(ButtonTypeCommandManager)         : @"Button"
         };
     }
 }
 
 + (id)remoteElementOfType:(RemoteElementType)type
                   subtype:(RemoteElementSubtype)subtype
-                  context:(NSManagedObjectContext *)context {
+                  context:(NSManagedObjectContext *)context
+{
     assert(context);
 
     NSString      * entityName = kEntityNameForType[@(type)];
@@ -89,7 +89,8 @@ static const NSDictionary * kEntityNameForType;
 }
 
 + (id)remoteElementInContext:(NSManagedObjectContext *)context
-              withAttributes:(NSDictionary *)attributes {
+              withAttributes:(NSDictionary *)attributes
+{
     assert(attributes[@"type"]);
 
     RemoteElement * element =
@@ -114,101 +115,21 @@ static const NSDictionary * kEntityNameForType;
     self.controller      = [RemoteController remoteControllerInContext:self.managedObjectContext];
     self.backgroundColor = ClearColor;
     self.identifier      = [@"_" stringByAppendingString :[MSNonce() stringByRemovingCharacter:'-']];
-//    [self registerForNotifications];
-}
-
-- (void)willTurnIntoFault {
-    // This method is the companion of the didTurnIntoFault method. You can use it to (re)set state
-    // which
-    // requires access to property values (for example, observers across keypaths). The default
-    // implementation
-    // does nothing.
-    [super willTurnIntoFault];
-}
-
-- (void)didTurnIntoFault {
-    // You use this method to clear out custom data caches—transient values declared as entity
-    // properties
-    // are typically already cleared out by the time this method is invoked (see, for example,
-    // refreshObject:mergeChanges:).
-    [super didTurnIntoFault];
-}
-
-- (void)awakeFromFetch {
-    /*
-     * You typically use this method to compute derived values or to recreate transient
-     * relationships from the receiver’s persistent properties. The managed object context’s
-     * change processing is explicitly disabled around this method so that you can use public
-     * setters to establish transient values and other caches without dirtying the object or
-     * its context. Because of this, however, you should not modify relationships in this
-     * method as the inverse will not be set.
-     *
-     */
-//    [super awakeFromFetch];
-//    [self registerForNotifications];
-    [self.constraintManager.layoutConfiguration refreshConfig];
-}
-
-- (BOOL)validateForInsert:(NSError **)error {
-    // Subclasses should invoke super’s implementation before performing their own validation, and
-    // should
-    // combine any error returned by super’s implementation with their own (see “Model Object
-    // Validation”).
-
-    if (![super validateForInsert:error]) {
-        NSArray * errors = (*error).userInfo[NSDetailedErrorsKey];
-
-        MSLogError(@"%@ validation failed%@", ClassTagSelectorString, errors ? @" with multipler errors" : @"");
-
-        return NO;
-    } else
-// RemoteElementLayoutConfiguration config = self.layoutConfiguration;
-// BOOL validConfiguration = isValidLayoutConfiguration(config);
-// DDLogDebug(@"%@ layout configuration: %@, valid? %@",
-// ClassTagSelectorStringForInstance(self.displayName),
-// NSStringFromRemoteElementLayoutConfiguration(config),
-
-// NSStringFromBOOL(validConfiguration));
-        return YES;  // validConfiguration;
-}
-
-- (BOOL)validateForUpdate:(NSError **)error {
-    // NSManagedObject’s implementation iterates through all of the receiver’s properties validating
-    // each
-    // in turn. If this results in more than one error, the userInfo dictionary in the NSError
-    // returned in
-    // error contains a key NSDetailedErrorsKey; the corresponding value is an array containing the
-    // individual
-    // validation errors. If you pass NULL as the error, validation will abort after the first
-    // failure.
-
-    if (![super validateForUpdate:error]) {
-        MSLogError(@"%@ validation failed: %@", ClassTagSelectorString, [*error description]);
-
-        return NO;
-    } else
-// RemoteElementLayoutConfiguration config = self.layoutConfiguration;
-// BOOL validConfiguration = isValidLayoutConfiguration(config);
-// DDLogDebug(@"%@ layout configuration: %@, valid? %@",
-// ClassTagSelectorStringForInstance(self.displayName),
-// NSStringFromRemoteElementLayoutConfiguration(config),
-
-// NSStringFromBOOL(validConfiguration));
-        return YES;
+    self.layoutConfiguration = [RemoteElementLayoutConfiguration layoutConfigurationForElement:self];
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
     id   target = (self.constraintManager && [_constraintManager respondsToSelector:aSelector]
                    ? _constraintManager
-                   :[super forwardingTargetForSelector:aSelector]);
+                   : [super forwardingTargetForSelector:aSelector]);
 
     return target;
 }
 
 - (id)valueForUndefinedKey:(NSString *)key {
     return (_constraintManager
-            ?[_constraintManager valueForKey:key]
-            :[super valueForUndefinedKey:key]);
+            ? [_constraintManager valueForKey:key]
+            : [super valueForUndefinedKey:key]);
 }
 
 - (RemoteElementConstraintManager *)constraintManager {
@@ -224,68 +145,16 @@ static const NSDictionary * kEntityNameForType;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)registerForNotifications {
-    assert(NO);
-/*
-    [NotificationCenter addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
-                                    object:self.managedObjectContext
-                                     queue:[NSOperationQueue mainQueue]
-                                usingBlock:^(NSNotification * note)
-    {
-        __weak RemoteElement * weakSelf = self;
-        NSSet * insertedObjects = [note.userInfo[NSInsertedObjectsKey]
-                                   objectsPassingTest:^BOOL (id obj, BOOL * stop) {
-                return [weakSelf.constraints
-                        containsObject:obj];
-            }
-
-                                  ];
-        NSSet * deletedObjects = [note.userInfo[NSDeletedObjectsKey]
-                                  objectsPassingTest:^BOOL (id obj, BOOL * stop) {
-                return [weakSelf.constraints
-                        containsObject:obj];
-            }
-
-                                 ];
-        NSSet * updatedObjects = [note.userInfo[NSUpdatedObjectsKey]
-                                  objectsPassingTest:^BOOL (id obj, BOOL * stop) {
-                return [weakSelf.constraints
-                        containsObject:obj];
-            }
-
-                                 ];
-
-        if (insertedObjects.count || deletedObjects.count || updatedObjects.count) {
-            [self.constraintManager processFirstOrderConstraints];
-            MSLogDebug(
-                       @"%@\ninserted objects:\n\t%@\ndeleted objects:\n\t%@\nupdated objects:\n\t%@",
-                       ClassTagSelectorStringForInstance(self.displayName),
-                       (insertedObjects.count
-                        ?[[[insertedObjects valueForKeyPath:@"description"] allObjects] componentsJoinedByString:@"\n\t"]
-                        : @""),
-                       (deletedObjects.count
-                        ?[[[deletedObjects valueForKeyPath:@"description"] allObjects] componentsJoinedByString:@"\n\t"]
-                        : @""),
-                       (updatedObjects.count
-                        ?[[[updatedObjects valueForKeyPath:@"description"] allObjects] componentsJoinedByString:@"\n\t"]
-                        : @""));
-        }
-    }
-
-    ];
-*/
-}
-
 - (void)dealloc {
     [NotificationCenter removeObserver:self];
 }
 
 - (void)clearAlignmentOptions {
-    self.alignmentOptions = RemoteElementAlignmentOptionUndefined;
+//    self.alignmentOptions = RemoteElementAlignmentOptionUndefined;
 }
 
 - (void)clearSizingOptions {
-    self.sizingOptions = RemoteElementSizingOptionWidthUnspecified | RemoteElementSizingOptionHeightUnspecified;
+//    self.sizingOptions = RemoteElementSizingOptionWidthUnspecified | RemoteElementSizingOptionHeightUnspecified;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -322,11 +191,10 @@ static const NSDictionary * kEntityNameForType;
 
 - (NSString *)shortDescription { return self.displayName; }
 
-- (NSString *)constraintsDescription
-{
+- (NSString *)constraintsDescription {
     NSMutableString * description = [$(@"configuration: %@\nproportion lock? %@",
                                        self.layoutConfiguration,
-                                       NSStringFromBOOL(self.proportionLock)) mutableCopy];
+                                       BOOLString(self.layoutConfiguration.proportionLock)) mutableCopy];
 
     NSSet * constraints                 = self.constraints;
     NSSet * subelementConstraints       = self.subelementConstraints;
@@ -369,6 +237,7 @@ static const NSDictionary * kEntityNameForType;
 - (NSString *)sizingOptionsDescription {
     NSMutableString * s = [@"sizingOptions: {\n" mutableCopy];
 
+/*
     switch (self.sizingOptions & RemoteElementSizingOptionWidthMask) {
         case RemoteElementSizingOptionWidthIntrinsic :
             [s appendString:@"\twidth: RemoteElementSizingOptionWidthIntrinsic\n"];
@@ -402,8 +271,9 @@ static const NSDictionary * kEntityNameForType;
         default :
             break;
     }
+*/
 
-    [s appendFormat:@"\tproportion lock? %@\n", NSStringFromBOOL(self.proportionLock)];
+    [s appendFormat:@"\tproportion lock? %@\n", BOOLString(self.layoutConfiguration.proportionLock)];
 
     [s appendString:@"}"];
 
@@ -413,7 +283,8 @@ static const NSDictionary * kEntityNameForType;
 - (NSString *)alignmentOptionsDescription {
     NSMutableString * returnString = [@"alignmentOptions:{\n" mutableCopy];
 
-    if ((_appearance & RemoteElementAlignmentOptionMaskParent)) {
+   /*
+ if ((_appearance & RemoteElementAlignmentOptionMaskParent)) {
         if ((_appearance & RemoteElementAlignmentOptionCenterXParent))
           [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXParent\n"];
 
@@ -460,23 +331,25 @@ static const NSDictionary * kEntityNameForType;
     }
 
     [returnString appendString:@"}"];
+*/
+
 
     return returnString;
 }
 
 - (NSString *)flagsAndAppearanceDescription {
-    return $(@"flags:%12$-15s0x%2$.*1$llX\n"
-              "type:%12$-16s0x%3$.*1$llX\n"
-              "subtype:%12$-13s0x%4$.*1$llX\n"
-              "options:%12$-13s0x%5$.*1$llX\n"
-              "state:%12$-15s0x%6$.*1$llX\n"
-              "appearance:%12$-10s0x%7$.*1$llX\n"
-              "alignment:%12$-11s0x%8$.*1$llX\n"
-              "sizing:%12$-14s0x%9$.*1$llX\n"
-              "shape:%12$-15s0x%10$.*1$llX\n"
-              "style:%12$-15s0x%11$.*1$llX\n",
+    return $(@"flags:%10$-15s0x%2$.*1$llX\n"
+              "type:%10$-16s0x%3$.*1$llX\n"
+              "subtype:%10$-13s0x%4$.*1$llX\n"
+              "options:%10$-13s0x%5$.*1$llX\n"
+              "state:%10$-15s0x%6$.*1$llX\n"
+              "appearance:%10$-10s0x%7$.*1$llX\n"
+//              "alignment:%12$-11s0x%8$.*1$llX\n"
+//              "sizing:%12$-14s0x%9$.*1$llX\n"
+              "shape:%10$-15s0x%8$.*1$llX\n"
+              "style:%10$-15s0x%9$.*1$llX\n",
               16, _flags, self.type, self.subtype, self.options, self.state, _appearance,
-              self.alignmentOptions, self.sizingOptions, self.shape, self.style, " ");
+              /*self.alignmentOptions, self.sizingOptions, */self.shape, self.style, " ");
 }
 
 - (NSString *)dumpElementHierarchy {
@@ -495,7 +368,7 @@ static const NSDictionary * kEntityNameForType;
          "%@\n%@\n\n",
          dashes,
          indent,
-         NSStringFromClass([element class]),
+         ClassString([element class]),
          spacer,
          element.displayName,
          spacer,

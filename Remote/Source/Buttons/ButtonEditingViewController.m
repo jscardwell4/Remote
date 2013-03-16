@@ -396,7 +396,7 @@ presentedControlState = _presentedControlState;
                 newMinY = curMinY;
             } else
                 DDLogWarn(@"%@\n\tsomething went wrong, neither upper left nor lower left "
-                          "contains point %@", ClassTagSelectorString, NSStringFromCGPoint(point));
+                          "contains point %@", ClassTagSelectorString, CGPointString(point));
         } else if (CGRectContainsPoint(rightHalf, point)) {
             setVerticalEdge =
                 (  (flags.resizeTouchDirection & ResizeTouchDirectionRight)
@@ -420,10 +420,10 @@ presentedControlState = _presentedControlState;
                 newMinY = curMinY;
             } else
                 DDLogWarn(@"%@\n\tsomething went wrong, neither upper right nor lower right contains"
-                          "point %@", ClassTagSelectorString, NSStringFromCGPoint(point));
+                          "point %@", ClassTagSelectorString, CGPointString(point));
         } else
                 DDLogWarn(@"%@\n\tsomething went wrong, neither left nor right half contains point %@",
-                      ClassTagSelectorString, NSStringFromCGPoint(point));
+                      ClassTagSelectorString, CGPointString(point));
     } else {
 // setVerticalEdge = YES;
 // setHorizontalEdge = YES;

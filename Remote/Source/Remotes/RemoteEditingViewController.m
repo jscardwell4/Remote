@@ -214,8 +214,8 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 - (void)pickerInput:(MSPickerInputView *)pickerInput selectedRows:(NSArray *)rows {
     [pickerInput.pickerInputButton resignFirstResponder];
     if (pickerInput.pickerInputButton == _panelPickerButton) {
-        NSString * panelKey = [self panelKeyForLocation:Integer(rows[0])
-                                        numberOfTouches:Integer(rows[1])];
+        NSString * panelKey = [self panelKeyForLocation:NSIntegerValue(rows[0])
+                                        numberOfTouches:NSIntegerValue(rows[1])];
         ButtonGroupView * selectedPanel = [((RemoteView *)self.sourceView)panelForKey : panelKey];
 
         if (ValueIsNotNil(selectedPanel)) [self openButtonGroupInEditor:(ButtonGroupView *)selectedPanel];

@@ -142,15 +142,14 @@ static int   ddLogLevel = DefaultDDLogLevel;
  * Creates empty arrays if nil and sets default background and label text colors
  */
 
-/*
- * - (void)awakeFromInsert {
- *  [super awakeFromInsert];
- *      if (ValueIsNil(self.backgroundColor))
- *              self.backgroundColor = [UIColor clearColor];
- * }
- *
- */
-- (void)addLabel:(NSAttributedString *)label withCommandSet:(CommandSet *)commandSet {
+
+- (void)awakeFromInsert {
+    [super awakeFromInsert];
+    self.commandSetLabels = [NSOrderedSet orderedSet];
+    self.commandSets = [NSOrderedSet orderedSet];
+}
+
+ - (void)addLabel:(NSAttributedString *)label withCommandSet:(CommandSet *)commandSet {
     NSURL * uri = [self uriForCommandSet:commandSet];
 
     assert(uri && label && [label isKindOfClass:[NSAttributedString class]] && label.string.length > 0);

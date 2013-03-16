@@ -50,6 +50,7 @@ static DebugFlags   debugFlags = {
     .logGestures              = NO,
     .overrideBackgroundColors = 0
 };
+#pragma unused(debugFlags)
 
 #define isTopPanelKey(panelKey)                   \
     (  [panelKey isEqualToString:kTopPanelOneKey] \
@@ -117,26 +118,11 @@ static DebugFlags   debugFlags = {
     return [_buttonGroupPanelAssignments objectForKey:panelKey];
 }
 
-- (ButtonGroupView *)buttonGroupViewForKey:(NSString *)key {
-    return [self.subelementViews
-            objectPassingTest:^BOOL (ButtonGroupView * obj, NSUInteger idx, BOOL * stop) {
-        return [obj.key
-                isEqualToString:key];
-    }
-
-    ];
-}
-
-// - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx
-// {
-// return (ButtonGroupView *)[super objectAtIndexedSubscript:idx];
-// }
-
 - (void)untuckPanelForKey:(NSString *)panelKey {
     ButtonGroupView * panel = [self panelForKey:panelKey];
 
     if (ValueIsNil(panel)) {
-        DDLogWarn(@"%@\n\tno button group registered for panel:%@", SelectorTagString, panelKey);
+        DDLogWarn(@"%@\n\tno button group registered for panel:%@", ClassTagSelectorStringForInstance(self.displayName), panelKey);
 
         return;
     }
@@ -169,7 +155,7 @@ static DebugFlags   debugFlags = {
     ButtonGroupView * panel = [self panelForKey:panelKey];
 
     if (ValueIsNil(panel)) {
-        DDLogWarn(@"%@\n\tno button group registered for panel:%@", SelectorTagString, panelKey);
+        DDLogWarn(@"%@\n\tno button group registered for panel:%@", ClassTagSelectorStringForInstance(self.displayName), panelKey);
 
         return;
     }
@@ -235,7 +221,7 @@ static DebugFlags   debugFlags = {
 
         newConstant = -size.width;
     } else {
-        DDLogWarn(@"%@\n\tinvalid panel key:%@", SelectorTagString, panelKey);
+        DDLogWarn(@"%@\n\tinvalid panel key:%@", ClassTagSelectorStringForInstance(self.displayName), panelKey);
 
         return;
     }
@@ -283,8 +269,6 @@ static DebugFlags   debugFlags = {
 }
 
 - (void)tuckRequestFromButtonGroupView:(ButtonGroupView *)buttonGroupView {
-    if (debugFlags.logGeometry) DDLogDebug(@"%@\n\tbuttonGroupView:%@", SelectorTagString, buttonGroupView.displayName);
-
     if (  [self buttonGroupViewIsPanel:buttonGroupView]
        && [_currentlyDisplayedPanel isEqualToString:buttonGroupView.key]) [self tuckPanelForKey:_currentlyDisplayedPanel];
 }

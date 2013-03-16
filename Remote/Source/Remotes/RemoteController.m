@@ -58,44 +58,6 @@ static int         msLogContext                        = REMOTE_F_C;
 #ifdef RESET_CURRENT_REMOTE_ON_FETCH
     [self setPrimitiveValue:MSRemoteControllerHomeRemoteKeyName forKey:@"currentRemoteKey"];
 #endif
-    [NotificationCenter addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
-                                    object:self.managedObjectContext
-                                     queue:MainQueue
-                                usingBlock:^(NSNotification * note)
-     {
-         NSSet * insertedConstraints = [note.userInfo[NSInsertedObjectsKey]
-                                        objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-                                            return [obj isKindOfClass:[RemoteElementLayoutConstraint class]];
-                                        }];
-         NSSet * deletedConstraints  = [note.userInfo[NSDeletedObjectsKey]
-                                        objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-                                            return [obj isKindOfClass:[RemoteElementLayoutConstraint class]];
-                                        }];
-         NSSet * updatedConstraints  = [note.userInfo[NSUpdatedObjectsKey]
-                                        objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-                                            return [obj isKindOfClass:[RemoteElementLayoutConstraint class]];
-                                        }];
-         
-         MSLogDebug(@"%@\ninsertedConstraints: %@\ndeletedConstraints: %@\nupdatedConstraints: %@",
-                    ClassTagSelectorString,
-                    [insertedConstraints componentsJoinedByString:@", "],
-                    [deletedConstraints  componentsJoinedByString:@", "],
-                    [updatedConstraints  componentsJoinedByString:@", "]);
-
-         [insertedConstraints enumerateObjectsUsingBlock:^(RemoteElementLayoutConstraint * constraint, BOOL *stop) {
-             [constraint.owner.constraintManager didAddConstraint:constraint];
-         }];
-
-         [deletedConstraints enumerateObjectsUsingBlock:^(RemoteElementLayoutConstraint * constraint, BOOL *stop) {
-             RemoteElement * previousOwner = (RemoteElement *)[constraint committedValueForKey:@"owner"];
-             if (previousOwner) [previousOwner.constraintManager didRemoveConstraint:constraint];
-         }];
-
-         [updatedConstraints enumerateObjectsUsingBlock:^(RemoteElementLayoutConstraint * constraint, BOOL *stop) {
-             [constraint.owner.constraintManager didUpdateConstraint:constraint];
-         }];
-
-     }];
 }
 
 /// @name ￼Creating a RemoteController

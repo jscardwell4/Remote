@@ -49,6 +49,34 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     __weak Button * _button;
 }
 
+- (void)updateConstraints {
+    MSKIT_STATIC_STRING_CONST   kButtonViewInternalNametag = @"ButtonViewInternal";
+    MSKIT_STATIC_STRING_CONST   kButtonLabelNametag = @"ButtonViewLabel";
+    MSKIT_STATIC_STRING_CONST   kButtonActivityIndicatorNametag = @"ButtonViewActivityIndicator";
+    [super updateConstraints];
+
+    if (![self constraintsWithNametagPrefix:kButtonViewInternalNametag])
+    {
+        UIEdgeInsets   titleInsets = _button.titleEdgeInsets;
+        NSString * constraints =
+            [NSString stringWithFormat:
+             @"'%1$@' _labelView.left = self.left + %3$f @900\n"
+              "'%1$@' _labelView.top = self.top + %4$f @900\n"
+              "'%1$@' _labelView.bottom = self.bottom - %5$f @900\n"
+              "'%1$@' _labelView.right = self.right - %6$f @900\n"
+              "'%2$@' _activityIndicator.centerX = self.centerX\n"
+              "'%2$@' _activityIndicator.centerY = self.centerY",
+              $(@"%@-%@", kButtonViewInternalNametag, kButtonLabelNametag),
+              $(@"%@-%@", kButtonViewInternalNametag, kButtonActivityIndicatorNametag),
+              titleInsets.left, titleInsets.top,
+              titleInsets.bottom, titleInsets.right];
+
+        NSDictionary * views = NSDictionaryOfVariableBindings(self, _labelView, _activityIndicator);
+
+        [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraints views:views]];
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Gestures
 ////////////////////////////////////////////////////////////////////////////////
@@ -242,10 +270,10 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 // MSLogDebug(REMOTE_F_C,
 // @"%@\ni:%@\nproportionLock? %@\ns:%@",
 // ClassTagSelectorStringForInstance(self.displayName),
-// NSStringFromUIEdgeInsets(i),
-// NSStringFromBOOL(self.proportionLock),
+// UIEdgeInsetsString(i),
+// BOOLString(self.proportionLock),
 
-// NSStringFromCGSize(s));
+// CGSizeString(s));
     return s;
 }
 
@@ -265,17 +293,12 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     return nil;
 }
 
-- (void)updateChildConstraintsFromModel
-{}
-
 - (void)initializeIVARs {
-// _flags.enabled = YES;
     _bvflags.scaleTitleText = YES;
-    _actionHandlers         = [@{}
-                               mutableCopy];
+    _actionHandlers         = [@{} mutableCopy];
     _bvoptions.antialiasIcon        = ANTIALIASICON;
     _bvoptions.antialiasText        = ANTIALIASTEXT;
-    _options.cornerRadii            = CORNER_RADII;
+    self.cornerRadii                = CORNER_RADII;
     _bvoptions.minHighlightInterval = MIN_HIGHLIGHT_DURATION;
     _bvflags.commandsActive         = YES;
     self.resizable                  = RESIZABLE;
@@ -293,8 +316,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 - (void)addInternalSubviews {
     [super addInternalSubviews];
-    self.contentView.userInteractionEnabled              = NO;
-    self.contentView.clipsToBounds                       = NO;
+    self.contentInteractionEnabled                       = NO;
+    self.contentClipsToBounds                            = NO;
     self.clipsToBounds                                   = NO;
     _labelView                                           = [RemoteElementLabelView new];
     _labelView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -307,7 +330,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 #else
     _labelView.backgroundColor = ClearColor;
 #endif
-    [self.contentView addSubview:_labelView];
+    [self addViewToContent:_labelView];
 
     _activityIndicator =
         [[UIActivityIndicatorView alloc]
@@ -315,23 +338,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     _activityIndicator.hidesWhenStopped                          = YES;
     _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     _activityIndicator.color                                     = defaultTitleHighlightColor();
-    [self.overlayView addSubview:_activityIndicator];
+    [self addViewToOverlay:_activityIndicator];
 
-    UIEdgeInsets   titleInsets = _button.titleEdgeInsets;
-    NSString     * constraints = [NSString stringWithFormat:
-                                  @"_labelView.left = self.left + %f @900\n"
-                                  "_labelView.top = self.top + %f @900\n"
-                                  "_labelView.bottom = self.bottom - %f @900\n"
-                                  "_labelView.right = self.right - %f @900\n"
-// "_labelView.height ≥ 10 @1000\n"
-                                  "_activityIndicator.centerX = self.centerX\n"
-                                  "_activityIndicator.centerY = self.centerY",
-                                  titleInsets.left, titleInsets.top, titleInsets.bottom, titleInsets.right];
-    NSDictionary * views = NSDictionaryOfVariableBindings(self,
-                                                          _labelView,
-                                                          _activityIndicator);
-
-    [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraints views:views]];
 }
 
 - (void)attachGestureRecognizers {
@@ -365,60 +373,50 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [self setNeedsDisplay];
 }
 
-- (NSArray *)kvoRegistration {
+- (NSDictionary *)kvoRegistration {
     __weak ButtonView * weakSelf        = self;
-    __strong NSArray  * kvoRegistration = @[
-                                            @[@"selected", ^(MSKVOReceptionist * receptionist,
+    __strong NSDictionary  * kvoRegistration = @{
+                                            @"selected" : ^(MSKVOReceptionist * receptionist,
                                                              NSString * keyPath,
                                                              id object,
                                                              NSDictionary * change,
                                                              void * context)
         {
             [weakSelf updateState];
-        }
-
-                                            ],
-                                            @[@"enabled", ^(MSKVOReceptionist * receptionist,
+        },
+                                            @"enabled" : ^(MSKVOReceptionist * receptionist,
                                                             NSString * keyPath,
                                                             id object,
                                                             NSDictionary * change,
                                                             void * context)
         {
             [weakSelf updateState];
-        }
-
-                                            ],
-                                            @[@"highlighted", ^(MSKVOReceptionist * receptionist,
+        },
+                                            @"highlighted" : ^(MSKVOReceptionist * receptionist,
                                                                 NSString * keyPath,
                                                                 id object,
                                                                 NSDictionary * change,
                                                                 void * context)
         {
             [weakSelf updateState];
-        }
-
-                                            ],
-                                            @[@"command", ^(MSKVOReceptionist * receptionist,
+        },
+                                            @"command" : ^(MSKVOReceptionist * receptionist,
                                                             NSString * keyPath,
                                                             id object,
                                                             NSDictionary * change,
                                                             void * context)
         {
             _bvflags.activityIndicator = [_button.command isKindOfClass:[MacroCommand class]];
-        }
-
-                                            ],
-                                            @[@"style", ^(MSKVOReceptionist * receptionist,
+        },
+                                            @"style" : ^(MSKVOReceptionist * receptionist,
                                                           NSString * keyPath,
                                                           id object,
                                                           NSDictionary * change,
                                                           void * context)
         {
             [weakSelf setNeedsDisplay];
-        }
-
-                                            ],
-                                            @[@"titles", ^(MSKVOReceptionist * receptionist,
+        },
+                                            @"titles" : ^(MSKVOReceptionist * receptionist,
                                                            NSString * keyPath,
                                                            id object,
                                                            NSDictionary * change,
@@ -426,11 +424,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
         {
             _labelView.attributedText = [weakSelf titleForState:_bvflags.state];
         }
+                                          };
 
-                                            ]
-                                          ];
-
-    return [[super kvoRegistration] arrayByAddingObjectsFromArray:kvoRegistration];
+    return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }  /* kvoRegistration */
 
 - (UIColor *)backgroundColor {

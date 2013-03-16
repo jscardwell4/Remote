@@ -7,28 +7,21 @@
 //
 
 #import "RemoteElement.h"
-
-@class   RemoteElementLayoutConstraint;
+#import "RemoteElementLayoutConfiguration.h"
+#import "RemoteElementLayoutConstraint.h"
 
 @interface RemoteElement () {
-    @protected
+@protected
     uint64_t   _flags;
     uint64_t   _appearance;
     uint64_t   _index;
 }
-@property (nonatomic, strong) RemoteElementConstraintManager * constraintManager;
-@property (nonatomic, strong) NSMutableSet                   * primitiveConstraints;
-@property (nonatomic, strong) NSMutableSet                   * primitiveFirstItemConstraints;
-@property (nonatomic, strong) NSMutableSet                   * primitiveSecondItemConstraints;
-// @property (nonatomic, strong, readwrite) RemoteElementLayoutConfiguration *layoutConfiguration;
-// @property (nonatomic, strong, readwrite) NSHashTable *dependentChildConstraints;
-// @property (nonatomic, strong, readwrite) NSHashTable *dependentConstraints;
-// @property (nonatomic, strong, readwrite) NSHashTable *subelementConstraints;
-// @property (nonatomic, strong, readwrite) NSHashTable *dependentSiblingConstraints;
 
-// - (void)constraintDidUpdate:(RemoteElementLayoutConstraint *)constraint;
-//
-// - (void)removeConstraintFromCache:(RemoteElementLayoutConstraint *)constraint;
+@property (nonatomic, strong, readwrite) RemoteElementConstraintManager   * constraintManager;
+@property (nonatomic, strong) NSMutableSet                                * primitiveConstraints;
+@property (nonatomic, strong) NSMutableSet                                * primitiveFirstItemConstraints;
+@property (nonatomic, strong) NSMutableSet                                * primitiveSecondItemConstraints;
+@property (nonatomic, strong, readwrite) RemoteElementLayoutConfiguration * layoutConfiguration;
 
 @end
 

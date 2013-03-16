@@ -122,7 +122,7 @@ typedef NS_ENUM (UInt8, ConnectionState) {
                                         BOOL wifiAvailable = [[note userInfo][kConnectionStatusWifiAvailable] boolValue];
                                         connectionState = (wifiAvailable ? connectionState | ConnectionStateWifiAvailable : connectionState & ~ConnectionStateWifiAvailable);
                                         MSLogDebug(@"%@ received notification with connection status update: wifi? %@ connection state:%u",
-                                        ClassTagSelectorString, NSStringFromBOOL(wifiAvailable), connectionState);
+                                        ClassTagSelectorString, BOOLString(wifiAvailable), connectionState);
                                     }
 
         ];

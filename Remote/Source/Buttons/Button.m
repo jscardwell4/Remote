@@ -243,7 +243,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     [self willChangeValueForKey:@"titleEdgeInsets"];
     _titleEdgeInsets = titleEdgeInsets;
     [self didChangeValueForKey:@"titleEdgeInsets"];
-    [self setValue:NSStringFromUIEdgeInsets(titleEdgeInsets) forKey:@"titleEdgeInsetsString"];
+    [self setValue:UIEdgeInsetsString(titleEdgeInsets) forKey:@"titleEdgeInsetsString"];
 }
 
 - (void)setPrimitiveImageEdgeInsets:(UIEdgeInsets)primitiveImageEdgeInsets {
@@ -268,7 +268,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     [self willChangeValueForKey:@"imageEdgeInsets"];
     _imageEdgeInsets = imageEdgeInsets;
     [self didChangeValueForKey:@"imageEdgeInsets"];
-    [self setValue:NSStringFromUIEdgeInsets(imageEdgeInsets) forKey:@"imageEdgeInsetsString"];
+    [self setValue:UIEdgeInsetsString(imageEdgeInsets) forKey:@"imageEdgeInsetsString"];
 }
 
 - (void)setPrimitiveContentEdgeInsets:(UIEdgeInsets)primitiveContentEdgeInsets {
@@ -293,7 +293,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     [self willChangeValueForKey:@"contentEdgeInsets"];
     _contentEdgeInsets = contentEdgeInsets;
     [self didChangeValueForKey:@"contentEdgeInsets"];
-    [self setValue:NSStringFromUIEdgeInsets(contentEdgeInsets) forKey:@"contentEdgeInsetsString"];
+    [self setValue:UIEdgeInsetsString(contentEdgeInsets) forKey:@"contentEdgeInsetsString"];
 }
 
 #pragma mark - Executing commands

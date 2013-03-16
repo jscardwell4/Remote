@@ -181,12 +181,12 @@ NSUInteger const   kFocusSelectionToolbarIndex    = 3;
                          [ViewDecorator fontAwesomeTitleWithName:@"align-center-y" size:48.0f],
                          [ViewDecorator fontAwesomeTitleWithName:@"align-center-x" size:48.0f]];
 
-    NSArray * selectorNames = @[NSStringFromSelector(@selector(alignBottomEdges:)),
-                                NSStringFromSelector(@selector(alignTopEdges:)),
-                                NSStringFromSelector(@selector(alignLeftEdges:)),
-                                NSStringFromSelector(@selector(alignRightEdges:)),
-                                NSStringFromSelector(@selector(alignVerticalCenters:)),
-                                NSStringFromSelector(@selector(alignHorizontalCenters:))
+    NSArray * selectorNames = @[SelectorString(@selector(alignBottomEdges:)),
+                                SelectorString(@selector(alignTopEdges:)),
+                                SelectorString(@selector(alignLeftEdges:)),
+                                SelectorString(@selector(alignRightEdges:)),
+                                SelectorString(@selector(alignVerticalCenters:)),
+                                SelectorString(@selector(alignHorizontalCenters:))
                               ];
 
     MSPopupBarButton * align = [[MSPopupBarButton alloc]
@@ -212,9 +212,9 @@ NSUInteger const   kFocusSelectionToolbarIndex    = 3;
                [ViewDecorator fontAwesomeTitleWithName:@"align-vertical-size" size:48.0f],
                [ViewDecorator fontAwesomeTitleWithName:@"align-size-exact" size:48.0f]];
 
-    selectorNames = @[NSStringFromSelector(@selector(resizeHorizontallyFromFocusView:)),
-                                NSStringFromSelector(@selector(resizeVerticallyFromFocusView:)),
-                                NSStringFromSelector(@selector(resizeFromFocusView:))];
+    selectorNames = @[SelectorString(@selector(resizeHorizontallyFromFocusView:)),
+                                SelectorString(@selector(resizeVerticallyFromFocusView:)),
+                                SelectorString(@selector(resizeFromFocusView:))];
 
     MSPopupBarButton * resize = [[MSPopupBarButton alloc]
                                  initWithTitle:[UIFont fontAwesomeIconForName:@"align-size"]

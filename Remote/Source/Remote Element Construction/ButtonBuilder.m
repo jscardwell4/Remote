@@ -142,7 +142,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
     if (switchIndex >= 0) longPressCommand = command[switchIndex];
 
     ActivityButton * button = (ActivityButton *)MakeActivityOnButton(
-        @"titleEdgeInsets" : InsetsValue(UIEdgeInsetsMake(20, 20, 20, 20)),
+        @"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
         @"shape" : @(ButtonShapeRoundedRectangle),
         @"style" : @(ButtonStyleApplyGloss | ButtonStyleDrawBorder),
         @"key" :[NSString stringWithFormat:@"activity%u", activity],

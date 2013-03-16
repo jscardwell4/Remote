@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # get the index number
-COUNT=$((`find ./ -depth 1 -name "[0-9].*markdown" | wc -l`+1))
+COUNT=$((`find ./ -depth 1 -name "[0-9]*.*markdown" | wc -l`+1))
 
 # get the date
 DAY=`date +'%A'`
@@ -9,12 +9,20 @@ MONTH=`date +'%B'`
 DATE=`date +'%e'`
 YEAR=`date +'%Y'`
 
-case "$DATE % 10" in
+case "$DATE" in
 1) DATE=$DATE"st,"
+;;
+21) DATE=$DATE"st,"
+;;
+31) DATE=$DATE"st,"
 ;;
 2) DATE=$DATE"nd,"
 ;;
+22) DATE=$DATE"nd,"
+;;
 3) DATE=$DATE"rd,"
+;;
+23) DATE=$DATE"rd,"
 ;;
 *) DATE=$DATE"th,"
 esac

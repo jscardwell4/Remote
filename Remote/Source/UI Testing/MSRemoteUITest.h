@@ -8,8 +8,10 @@
 
 #import "UITestRunner.h"
 
+@class RemoteElementEditingViewController;
+
 typedef void (^ MSRemoteUITestRunner)(NSDictionary * parameters);
-typedef void (^ MSRemoteUITestAssertions)(NSDictionary * variables);
+typedef void (^ MSRemoteUITestAssertions)(RemoteElementEditingViewController * editor);
 
 MSKIT_EXTERN_STRING   MSRemoteUIRemoteKey;
 MSKIT_EXTERN_STRING   MSRemoteUIButtonGroupKey;

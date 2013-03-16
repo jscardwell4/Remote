@@ -150,7 +150,7 @@ typedef NS_ENUM (uint64_t, EditingMode) {
     EditingModeEditingButton      = RemoteElementButtonType
 };
 
-MSKIT_STATIC_INLINE NSString * NSStringFromEditingMode(EditingMode mode) {
+MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
     NSMutableString * modeString = [NSMutableString string];
 
     if (mode & EditingModeEditingRemote) {
@@ -171,22 +171,21 @@ MSKIT_STATIC_INLINE NSString * NSStringFromEditingMode(EditingMode mode) {
 @interface RemoteElement : NSManagedObject <EditableBackground>
 
 // model backed properties
-@property (nonatomic, assign)                   int16_t            tag;
-@property (nonatomic, copy)                     NSString         * key;
-@property (nonatomic, copy)                     NSString         * identifier;
-@property (nonatomic, copy)                     NSString         * displayName;
-@property (nonatomic, strong)                   NSSet            * constraints;
-@property (nonatomic, strong)                   NSSet            * firstItemConstraints;
-@property (nonatomic, strong)                   NSSet            * secondItemConstraints;
-@property (nonatomic, assign)                   CGFloat            backgroundImageAlpha;
-@property (nonatomic, strong)                   UIColor          * backgroundColor;
-@property (nonatomic, strong)                   GalleryImage     * backgroundImage;
-@property (nonatomic, strong)                   RemoteController * controller;
-@property (nonatomic, strong)                   RemoteElement    * parentElement;
-@property (nonatomic, strong)                   NSOrderedSet     * subelements;
-
-// derived properties
-@property (nonatomic, assign) BOOL   needsUpdateConstraints;
+@property (nonatomic, assign)                   int16_t                            tag;
+@property (nonatomic, copy)                     NSString                         * key;
+@property (nonatomic, copy)                     NSString                         * identifier;
+@property (nonatomic, copy)                     NSString                         * displayName;
+@property (nonatomic, strong)                   NSSet                            * constraints;
+@property (nonatomic, strong)                   NSSet                            * firstItemConstraints;
+@property (nonatomic, strong)                   NSSet                            * secondItemConstraints;
+@property (nonatomic, assign)                   CGFloat                            backgroundImageAlpha;
+@property (nonatomic, strong)                   UIColor                          * backgroundColor;
+@property (nonatomic, strong)                   GalleryImage                     * backgroundImage;
+@property (nonatomic, strong)                   RemoteController                 * controller;
+@property (nonatomic, strong)                   RemoteElement                    * parentElement;
+@property (nonatomic, strong)                   NSOrderedSet                     * subelements;
+@property (nonatomic, strong, readonly)         RemoteElementLayoutConfiguration * layoutConfiguration;
+@property (nonatomic, strong, readonly)         RemoteElementConstraintManager   * constraintManager;
 
 + (id)remoteElementInContext:(NSManagedObjectContext *)context withAttributes:(NSDictionary *)attributes;
 + (id)remoteElementOfType:(RemoteElementType)type context:(NSManagedObjectContext *)context;
@@ -194,50 +193,22 @@ MSKIT_STATIC_INLINE NSString * NSStringFromEditingMode(EditingMode mode) {
 
 @end
 
-@interface RemoteElement (ConstraintManager)
-
-@property (nonatomic, strong, readonly) RemoteElementLayoutConfiguration     * layoutConfiguration;
-@property (nonatomic, readonly, getter = isLayoutConfigurationValid)    BOOL   layoutConfigurationValid;
-
-@property (nonatomic, strong, readonly)     NSSet * subelementConstraints;
-@property (nonatomic, strong, readonly)     NSSet * dependentConstraints;
-@property (nonatomic, strong, readonly)     NSSet * intrinsicConstraints;
-@property (nonatomic, strong, readonly)     NSSet * dependentChildConstraints;
-@property (nonatomic, strong, readonly)     NSSet * dependentSiblingConstraints;
-
-- (RemoteElementLayoutConstraint *)constraintWithAttributes:(NSDictionary *)attributes;
-- (void)processConstraints;
-- (void)setConstraintsFromString:(NSString *)constraints;
-- (NSSet *)constraintsAffectingAxis:(UILayoutConstraintAxis)axis
-                              order:(RELayoutConstraintOrder)order;
-- (void)processConstraint:(RemoteElementLayoutConstraint *)constraint;
-- (void)constraintDidUpdate:(RemoteElementLayoutConstraint *)constraint;
-- (void)removeConstraintFromCache:(RemoteElementLayoutConstraint *)constraint;
-- (void)freezeSize:(CGSize)size
-     forSubelement:(RemoteElement *)subelement
-         attribute:(NSLayoutAttribute)attribute;
-- (NSArray *)replacementCandidatesForAddingAttribute:(NSLayoutAttribute)attribute
-                                           additions:(NSArray **)additions;
-- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute;
-- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute order:(RELayoutConstraintOrder)order;
-
-@end
-
 @interface RemoteElement (FLagsAndOptions)
 
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   alignmentOptions;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   topAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   bottomAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   leftAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   rightAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   baselineAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerXAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerYAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   alignmentOptions;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   topAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   bottomAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   leftAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   rightAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   baselineAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerXAlignmentOption;
+//@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerYAlignmentOption;
 
-@property (nonatomic, assign)       RemoteElementSizingOptions   sizingOptions;
-@property (nonatomic, assign)       RemoteElementSizingOptions   widthSizingOption;
-@property (nonatomic, assign)       RemoteElementSizingOptions   heightSizingOption;
-@property (nonatomic, assign)       BOOL                         proportionLock;
+//@property (nonatomic, assign)       RemoteElementSizingOptions   sizingOptions;
+//@property (nonatomic, assign)       RemoteElementSizingOptions   widthSizingOption;
+//@property (nonatomic, assign)       RemoteElementSizingOptions   heightSizingOption;
+
+@property (nonatomic, assign, readonly) BOOL proportionLock;
 
 @property (nonatomic, assign)       RemoteElementShape     shape;
 @property (nonatomic, assign)       RemoteElementStyle     style;
@@ -278,21 +249,28 @@ MSKIT_STATIC_INLINE NSString * NSStringFromEditingMode(EditingMode mode) {
 @end
 
 @interface RemoteElement (ConstraintAccessors)
+- (void)addConstraint:(RemoteElementLayoutConstraint *)constraint;
+- (void)addConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)removeConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)addConstraints:(NSSet *)constraints;
+- (void)removeConstraint:(RemoteElementLayoutConstraint *)constraint;
+- (void)removeConstraints:(NSSet *)constraints;
 
-- (void)addConstraintsObject:(RemoteElementLayoutConstraint *)value;
-- (void)removeConstraintsObject:(RemoteElementLayoutConstraint *)value;
-- (void)addConstraints:(NSSet *)values;
-- (void)removeConstraints:(NSSet *)values;
+- (void)addFirstItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)removeFirstItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)addFirstItemConstraints:(NSSet *)constraints;
+- (void)removeFirstItemConstraints:(NSSet *)constraints;
 
-- (void)addFirstItemConstraintsObject:(RemoteElementLayoutConstraint *)value;
-- (void)removeFirstItemConstraintsObject:(RemoteElementLayoutConstraint *)value;
-- (void)addFirstItemConstraints:(NSSet *)values;
-- (void)removeFirstItemConstraints:(NSSet *)values;
+- (void)addSecondItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)removeSecondItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)addSecondItemConstraints:(NSSet *)constraints;
+- (void)removeSecondItemConstraints:(NSSet *)constraints;
 
-- (void)addSecondItemConstraintsObject:(RemoteElementLayoutConstraint *)value;
-- (void)removeSecondItemConstraintsObject:(RemoteElementLayoutConstraint *)value;
-- (void)addSecondItemConstraints:(NSSet *)values;
-- (void)removeSecondItemConstraints:(NSSet *)values;
+@property (nonatomic, strong, readonly) NSSet * subelementConstraints;
+@property (nonatomic, strong, readonly) NSSet * dependentConstraints;
+@property (nonatomic, strong, readonly) NSSet * dependentChildConstraints;
+@property (nonatomic, strong, readonly) NSSet * dependentSiblingConstraints;
+@property (nonatomic, strong, readonly) NSSet * intrinsicConstraints;
 
 @end
 

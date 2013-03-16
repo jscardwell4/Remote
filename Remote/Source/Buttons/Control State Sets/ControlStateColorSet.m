@@ -199,7 +199,7 @@ static BOOL   useCache   = NO;
 #pragma mark - End result colors
 
 - (UIColor *)colorForState:(NSUInteger)state {
-            DDLogDebug(@"%@\n\tcolor requested for state:%@", ClassTagString, NSStringFromUIControlState(state));
+            DDLogDebug(@"%@\n\tcolor requested for state:%@", ClassTagString, UIControlStateString(state));
 
     // Validate state
     if (InvalidControlState(state)) return nil;
@@ -237,7 +237,7 @@ static BOOL   useCache   = NO;
             DDLogDebug(@"%@\n\treturning cached color:%@ from substituted state:%@",
                        ClassTagString,
                        [substituteColor stringFromColor],
-                       NSStringFromUIControlState(substituteState));
+                       UIControlStateString(substituteState));
 
             return substituteColor;
         }
@@ -246,7 +246,7 @@ static BOOL   useCache   = NO;
     // Check whether pattern is needed
 // if (self.patternColorStates & substituteState) {
 // DDLogDebug(@"%@\n\tpattern color should be applied for state:%@",
-// ClassTagString, NSStringFromUIControlState(substituteState));
+// ClassTagString, UIControlStateString(substituteState));
 
     // Check if pattern already exists
 // UIImage *patternImage = [self patternImageForState:substituteState];
@@ -254,12 +254,12 @@ static BOOL   useCache   = NO;
     // If no pattern, generate it
 // if (ValueIsNil(patternImage)) {
 // DDLogDebug(@"%@\n\tno pattern exists for state:%@, creating pattern...",
-// ClassTagString, NSStringFromUIControlState(substituteState));
+// ClassTagString, UIControlStateString(substituteState));
 // [self generatePatternColorForState:substituteState];
 // patternImage = [self patternImageForState:substituteState];
 // } else {
 // DDLogDebug(@"%@\n\tpattern already exists for state:%@",
-// ClassTagString, NSStringFromUIControlState(substituteState));
+// ClassTagString, UIControlStateString(substituteState));
 // }
 
     // If pattern was created successfully, insert pattern color in cache and return
@@ -268,7 +268,7 @@ static BOOL   useCache   = NO;
 // color = [UIColor colorWithPatternImage:patternImage];
 // } else {
 // DDLogDebug(@"%@\n\tfailed to retrieve or create pattern image for state:%@",
-// ClassTagString, NSStringFromUIControlState(substituteState));
+// ClassTagString, UIControlStateString(substituteState));
 // }
 // }
 
@@ -277,20 +277,20 @@ static BOOL   useCache   = NO;
         DDLogDebug(@"%@\n\tinserting color into cache for state:%@ color is valid?"
                    " %@ color is pattern-based? %@",
                    ClassTagString,
-                   NSStringFromUIControlState(state),
-                   NSStringFromBOOL(ValueIsNotNil(color)),
-                   NSStringFromBOOL([color isPatternBased]));
+                   UIControlStateString(state),
+                   BOOLString(ValueIsNotNil(color)),
+                   BOOLString([color isPatternBased]));
         [self.colorCache insertObject:CollectionSafeValue(color) atIndex:state];
 
         if (state != substituteState) {
             DDLogDebug(@"%@\n\talso inserting color into cache for substituted state:%@",
-                       ClassTagString, NSStringFromUIControlState(substituteState));
+                       ClassTagString, UIControlStateString(substituteState));
             [self.colorCache insertObject:CollectionSafeValue(color) atIndex:substituteState];
         }
     }
 
             DDLogDebug(@"%@\n\treturning valid color? %@",
-               ClassTagString, NSStringFromBOOL(ValueIsNotNil(color)));
+               ClassTagString, BOOLString(ValueIsNotNil(color)));
 
     return NilSafeValue(color);
 }  /* colorForState */

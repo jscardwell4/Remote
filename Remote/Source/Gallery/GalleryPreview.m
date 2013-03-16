@@ -21,7 +21,7 @@
     if (StringIsEmpty(name) || ValueIsNil(context)) return nil;
 
     GalleryPreview * preview =
-        [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+        [NSEntityDescription insertNewObjectForEntityForName:ClassString([self class])
                                       inManagedObjectContext:context];
 
     if (ValueIsNotNil(preview)) {
@@ -36,7 +36,7 @@
     __block NSArray * fetchedObjects = nil;
 
     [[DataManager mainObjectContext] performBlockAndWait:^{
-                                         NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([self class])];
+                                         NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:ClassString([self class])];
 
                                          NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc]                                  initWithKey:@"tag"
                                                                                                          ascending:YES];

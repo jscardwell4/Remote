@@ -36,10 +36,11 @@ MSKIT_EXTERN_STRING   kTuckButtonKey;
 @class   ButtonView;
 
 @interface ButtonGroupView : RemoteElementView
+
 @property (nonatomic, assign) BOOL   buttonsEnabled;
 @property (nonatomic, assign) BOOL   autohide;
 @property (nonatomic, assign) BOOL   buttonsLocked;
-// - (ButtonView *)objectAtIndexedSubscript:(NSUInteger)idx;
+
 @end
 
 #pragma mark - Properties forwarded to the model object

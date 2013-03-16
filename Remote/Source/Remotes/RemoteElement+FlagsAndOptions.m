@@ -7,7 +7,9 @@
 //
 #import "RemoteElement_Private.h"
 
-RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type) {
+RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute,
+                                                                  RERelationshipType type)
+{
     switch (attribute) {
         case NSLayoutAttributeBaseline :
 
@@ -74,9 +76,11 @@ RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttrib
 
             return RemoteElementAlignmentOptionUndefined;
     } /* switch */
-}     /* alignmentOptionForNSLayoutAttribute */
+}
 
-RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute,RERelationshipType type) {
+RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute,
+                                                            RERelationshipType type)
+{
     switch (attribute) {
         case NSLayoutAttributeWidth :
 
@@ -256,152 +260,8 @@ RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute at
     return (_appearance & bits ? YES : NO);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Alignment Options
-////////////////////////////////////////////////////////////////////////////////
-
-- (RemoteElementAlignmentOptions)alignmentOptions {
-    [self willAccessValueForKey:@"alignmentOptions"];
-
-    uint64_t   t = [self appearanceWithMask:RemoteElementAlignmentOptionsMask];
-
-    [self didAccessValueForKey:@"alignmentOptions"];
-
-    return t;
-}
-
-- (void)setAlignmentOptions:(RemoteElementAlignmentOptions)alignmentOptions {
-    [self willChangeValueForKey:@"alignmentOptions"];
-    [self setAppearance:alignmentOptions mask:RemoteElementAlignmentOptionsMask];
-    [self didChangeValueForKey:@"alignmentOptions"];
-}
-
-- (RemoteElementAlignmentOptions)bottomAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionBottomMask];
-}
-
-- (void)setBottomAlignmentOption:(RemoteElementAlignmentOptions)bottomOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionBottomMask];
-
-    newAlignmentOptions  |= (bottomOption & RemoteElementAlignmentOptionBottomMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-- (RemoteElementAlignmentOptions)topAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionTopMask];
-}
-
-- (void)setTopAlignmentOption:(RemoteElementAlignmentOptions)topOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionTopMask];
-
-    newAlignmentOptions  |= (topOption & RemoteElementAlignmentOptionTopMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-- (RemoteElementAlignmentOptions)leftAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionLeftMask];
-}
-
-- (void)setLeftAlignmentOption:(RemoteElementAlignmentOptions)leftOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionLeftMask];
-
-    newAlignmentOptions  |= (leftOption & RemoteElementAlignmentOptionLeftMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-- (RemoteElementAlignmentOptions)rightAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionRightMask];
-}
-
-- (void)setRightAlignmentOption:(RemoteElementAlignmentOptions)rightOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionRightMask];
-
-    newAlignmentOptions  |= (rightOption & RemoteElementAlignmentOptionRightMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-- (RemoteElementAlignmentOptions)baselineAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionBaselineMask];
-}
-
-- (void)setBaselineAlignmentOption:(RemoteElementAlignmentOptions)baselineOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionBaselineMask];
-
-    newAlignmentOptions  |= (baselineOption & RemoteElementAlignmentOptionBaselineMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-- (RemoteElementAlignmentOptions)centerXAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionCenterXMask];
-}
-
-- (void)setCenterXAlignmentOption:(RemoteElementAlignmentOptions)centerXOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionCenterXMask];
-
-    newAlignmentOptions  |= (centerXOption & RemoteElementAlignmentOptionCenterXMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-- (RemoteElementAlignmentOptions)centerYAlignmentOption {
-    return [self appearanceWithMask:RemoteElementAlignmentOptionCenterYMask];
-}
-
-- (void)setCenterYAlignmentOption:(RemoteElementAlignmentOptions)centerYOption {
-    uint64_t   newAlignmentOptions = [self appearanceWithMask:~RemoteElementAlignmentOptionCenterYMask];
-
-    newAlignmentOptions  |= (centerYOption & RemoteElementAlignmentOptionCenterYMask);
-    self.alignmentOptions = newAlignmentOptions;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Sizing Options
-////////////////////////////////////////////////////////////////////////////////
-
-- (RemoteElementSizingOptions)sizingOptions {
-    [self willAccessValueForKey:@"sizingOptions"];
-
-    uint64_t   t = [self appearanceWithMask:RemoteElementSizingOptionsMask];
-
-    [self didAccessValueForKey:@"sizingOptions"];
-
-    return t;
-}
-
-- (void)setSizingOptions:(RemoteElementSizingOptions)sizingOptions {
-    [self willChangeValueForKey:@"sizingOptions"];
-    [self setAppearance:sizingOptions mask:RemoteElementSizingOptionsMask];
-    [self didChangeValueForKey:@"sizingOptions"];
-}
-
-- (RemoteElementSizingOptions)widthSizingOption {
-    return [self appearanceWithMask:RemoteElementSizingOptionWidthMask];
-}
-
-- (void)setWidthSizingOption:(RemoteElementSizingOptions)widthOption {
-    uint64_t   newSizingOptions = [self appearanceWithMask:~RemoteElementSizingOptionWidthMask];
-
-    newSizingOptions  |= (widthOption & RemoteElementSizingOptionWidthMask);
-    self.sizingOptions = newSizingOptions;
-}
-
-- (RemoteElementSizingOptions)heightSizingOption {
-    return [self appearanceWithMask:RemoteElementSizingOptionHeightMask];
-}
-
-- (void)setHeightSizingOption:(RemoteElementSizingOptions)heightOption {
-    uint64_t   newSizingOptions = [self appearanceWithMask:~RemoteElementSizingOptionHeightMask];
-
-    newSizingOptions  |= (heightOption & RemoteElementSizingOptionHeightMask);
-    self.sizingOptions = newSizingOptions;
-}
-
 - (BOOL)proportionLock {
-    return ((_appearance & RemoteElementSizingOptionsProportionLock) ? YES : NO);
-}
-
-- (void)setProportionLock:(BOOL)proportionLock {
-    if (proportionLock) [self setAppearanceBits:RemoteElementSizingOptionsProportionLock];
-    else [self unsetAppearanceBits:RemoteElementSizingOptionsProportionLock];
+    return self.layoutConfiguration.proportionLock;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 + (NetworkDevice *)networkDeviceInContext:(NSManagedObjectContext *)context {
     if (!context) return nil;
 
-    return [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+    return [NSEntityDescription insertNewObjectForEntityForName:ClassString([self class]) inManagedObjectContext:context];
 }
 
 + (BOOL)networkDeviceExistsForUUID:(NSString *)uuid {
@@ -27,7 +27,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     __block NSUInteger       count   = 0;
     NSManagedObjectContext * context = [DataManager newContext];
 // [context performBlockAndWait:^{
-    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([self class])];
+    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:ClassString([self class])];
     NSPredicate    * predicate    = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
 
     [fetchRequest setPredicate:predicate];
@@ -48,7 +48,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
     [context performBlockAndWait:^{
                  NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-                 NSEntityDescription * entity = [NSEntityDescription entityForName:NSStringFromClass([self class])
+                 NSEntityDescription * entity = [NSEntityDescription entityForName:ClassString([self class])
                                                    inManagedObjectContext:context];
                  [fetchRequest setEntity:entity];
 

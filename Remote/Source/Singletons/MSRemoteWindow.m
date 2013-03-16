@@ -36,7 +36,7 @@ callsuper:
     DDLogDebug(@"%@ new event:%@", ClassTagSelectorString, ((ddLogLevel & LOG_FLAG_VERBOSE)
                                                             ?[event description]
                                                             :[NSString stringWithFormat:@"%@ timestamp:%f",
-                                                              NSStringFromClass([event class]), event.timestamp]));
+                                                              ClassString([event class]), event.timestamp]));
 #endif
 }
 

@@ -184,7 +184,10 @@ extern NSString const   * kTranslationAnimationKey;
  * @return The actual scale value applied to the current selection
  */
 - (CGFloat)scaleSelectedViews:(CGFloat)scale
-                   validation:(BOOL (^)(RemoteElementView * view, CGSize size))isValidSize;
+                   validation:(BOOL (^)(RemoteElementView * view,
+                                        CGSize size,
+                                        CGSize * max,
+                                        CGSize * min))isValidSize;
 
 /**
  * Override point for subclasses to perform additional work post-scaling.
@@ -199,27 +202,27 @@ extern NSString const   * kTranslationAnimationKey;
  * selection when moved
  * @return Whether the views should be moved
  */
-- (BOOL)shouldMoveSelectionFrom:(CGRect)fromUnion to:(CGRect)toUnion;
+- (BOOL)shouldTranslateSelectionFrom:(CGRect)fromUnion to:(CGRect)toUnion;
 
 /**
  * Captures the original union frame for the selected views before any translation and acts
  * as an override point for subclasses to perform additional work pre-movement.
  */
-- (void)willMoveSelectedViews;
+- (void)willTranslateSelectedViews;
 
 /**
  * Updates the `frame` property of the selected views to affect the specified translation.
  * @param translation `CGPoint` value representing the x and y axis translations to be performed on
  * the selected views
  */
-- (void)moveSelectedViewsWithTranslation:(CGPoint)translation;
+- (void)translateSelectedViews:(CGPoint)translation;
 
 /**
  * Sends `translateSublements:translation:` to the `sourceView` to perform model-level translation
  * and acts
  * as an override point for subclasses to perform additional work post-movement.
  */
-- (void)didMoveSelectedViews;
+- (void)didTranslateSelectedViews;
 
 @end
 

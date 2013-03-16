@@ -103,7 +103,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
 - (UIImage *)imageForState:(NSUInteger)state {
 // DDLogDebug(@"%@\n\timage requested for state:%@\ncache contents:%@",
 // ClassTagString,
-// NSStringFromUIControlState(state),
+// UIControlStateString(state),
 // [self.imageCache debugDescription]);
 
     // Validate state
@@ -122,14 +122,14 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
 
     if (self.shouldUseCache) {
         image = self.imageCache[substitutedState];
-                DDLogDebug(@"%@\n\tcached image? %@", ClassTagString, NSStringFromBOOL((ValueIsNotNil(image))));
+                DDLogDebug(@"%@\n\tcached image? %@", ClassTagString, BOOLString((ValueIsNotNil(image))));
 
         // If cached image available, stick a reference to it in original state and return
         if (ValueIsNotNil(image)) {
             if (substituteUsed) [self.imageCache insertObject:image atIndex:state];
 
                 DDLogDebug(@"%@\n\treturning cached image, using substitute? %@",
-                       ClassTagString, NSStringFromBOOL(substituteUsed));
+                       ClassTagString, BOOLString(substituteUsed));
 
             return image;
         }
@@ -141,7 +141,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
     UIColor * imageColor = [self.iconColors colorForState:state];
 
                 DDLogDebug(@"%@\n\tbase image retrieved? %@ color retrieved for image:%@",
-               ClassTagString, NSStringFromBOOL(ValueIsNotNil(image)), [imageColor stringFromColor]);
+               ClassTagString, BOOLString(ValueIsNotNil(image)), [imageColor stringFromColor]);
 
     // Apply color if not nil
     if (ValueIsNotNil(image) && ValueIsNotNil(imageColor)) {
@@ -153,19 +153,19 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
         if (ValueIsNotNil(image)) {
             // Store image in cache
                 DDLogDebug(@"%@\n\tinserting image into cache for state:%@",
-                       ClassTagString, NSStringFromUIControlState(state));
+                       ClassTagString, UIControlStateString(state));
             [self.imageCache insertObject:CollectionSafeValue(image) atIndex:state];
 
             if (state != substitutedState) {
                 DDLogDebug(@"%@\n\tinserting image into cache for substituted state:%@",
-                           ClassTagString, NSStringFromUIControlState(substitutedState));
+                           ClassTagString, UIControlStateString(substitutedState));
                 [self.imageCache insertObject:image atIndex:substitutedState];
             }
         }
 
     // Return the image
                 DDLogDebug(@"%@\n\treturning non-null image? %@",
-               ClassTagString, NSStringFromBOOL(ValueIsNotNil(image)));
+               ClassTagString, BOOLString(ValueIsNotNil(image)));
 
     return NilSafeValue(image);
 }  /* imageForState */

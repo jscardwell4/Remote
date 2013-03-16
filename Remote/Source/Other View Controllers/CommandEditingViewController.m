@@ -148,7 +148,7 @@ button                  = _button;
 }
 
 - (void)pushChildControllerForCommand:(Command *)command {
-    NSString                    * identifier      = NSStringFromClass([command class]);
+    NSString                    * identifier      = ClassString([command class]);
     CommandDetailViewController * childController =
         [self.commandDetailEditors instantiateViewControllerWithIdentifier:identifier];
 
@@ -228,7 +228,7 @@ button                  = _button;
     [_commandTypeButton resignFirstResponder];
 
     NSString * selection         = createableCommands[[rows[0] integerValue]];
-    NSString * NSStringFromClass =
+    NSString * classString =
         [[commandTypes keysOfEntriesPassingTest:
           ^BOOL (id key, id obj, BOOL * stop) {
             if ([selection isEqualToString:(NSString *)obj]) {
@@ -240,7 +240,7 @@ button                  = _button;
         }
 
          ] anyObject];
-    Class     commandClass = NSClassFromString(NSStringFromClass);
+    Class     commandClass = NSClassFromString(classString);
     Command * newCommand   = (Command *)[commandClass commandInContext:_button.managedObjectContext];
 
     if (newCommand) {

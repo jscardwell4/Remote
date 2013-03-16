@@ -8,7 +8,6 @@
 
 #import "ButtonGroupView.h"
 #import "RemoteElementView_Private.h"
-#import "RemoteElementViewConstraintManager.h"
 #import "ButtonView.h"
 #import "Button.h"
 #import "ButtonGroup.h"
@@ -43,6 +42,30 @@ static int         ddLogLevel     = DefaultDDLogLevel;
     }
     _bgvflags;
 }
+
+- (void)updateConstraints {
+
+    MSKIT_STATIC_STRING_CONST kButtonGroupViewInternalNametag = @"ButtonGroupViewInternal";
+    MSKIT_STATIC_STRING_CONST kButtonGroupViewLabelNametag = @"ButtonGroupViewLabel";
+
+    [super updateConstraints];
+
+    if (![self constraintsWithNametagPrefix:kButtonGroupViewInternalNametag])
+    {
+        NSString * constraints =
+        $(@"'%1$@' _buttonGroupLabel.width = self.width\n"
+          "'%1$@' _buttonGroupLabel.height = self.height\n"
+          "'%1$@' _buttonGroupLabel.centerX = self.centerX\n"
+          "'%1$@' _buttonGroupLabel.centerY = self.centerY",
+          $(@"%@-%@", kButtonGroupViewInternalNametag, kButtonGroupViewLabelNametag));
+
+        [self addConstraints:
+         [NSLayoutConstraint
+          constraintsByParsingString:constraints
+          views:NSDictionaryOfVariableBindings(self, _buttonGroupLabel)]];
+    }
+
+}
 - (CGSize)intrinsicContentSize {
     switch ((uint64_t)self.type) {
         case ButtonGroupTypeToolbar :
@@ -74,12 +97,12 @@ static int         ddLogLevel     = DefaultDDLogLevel;
 
 - (void)setButtonsEnabled:(BOOL)buttonsEnabled {
     _bgvflags.buttonsEnabled                = buttonsEnabled;
-    self.contentView.userInteractionEnabled = _bgvflags.buttonsEnabled;
+    self.contentInteractionEnabled = _bgvflags.buttonsEnabled;
 
 // DDLogDebug(@"%@\n\t%@abling buttons...contextView.userInteractionEnabled? %@",
 // ClassTagSelectorStringForInstance(self.displayName),
 // buttonsEnabled ? @"en" : @"dis",
-// NSStringFromBOOL(self.contentView.userInteractionEnabled));
+// BOOLString(self.contentView.userInteractionEnabled));
 }
 
 - (void)setButtonsLocked:(BOOL)buttonsLocked {
@@ -108,9 +131,9 @@ static int         ddLogLevel     = DefaultDDLogLevel;
 #pragma mark - RemoteElementView Overrides
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSArray *)kvoRegistration {
-    __strong NSArray * kvoRegistration = @[
-                                           @[@"labelText", ^(MSKVOReceptionist * receptionist,
+- (NSDictionary *)kvoRegistration {
+    __strong NSDictionary * kvoRegistration = @{
+                                           @"labelText" : ^(MSKVOReceptionist * receptionist,
                                                              NSString * keyPath,
                                                              id object,
                                                              NSDictionary * change,
@@ -118,18 +141,14 @@ static int         ddLogLevel     = DefaultDDLogLevel;
         {
             id newValue = change[NSKeyValueChangeNewKey];
             _buttonGroupLabel.text = (ValueIsNotNil(newValue) ? (NSString *)newValue : nil);
-        }
-
-                                           ],
-                                           @[@"labelCenter", ^(MSKVOReceptionist * receptionist,
+        },
+                                           @"labelCenter" : ^(MSKVOReceptionist * receptionist,
                                                                NSString * keyPath,
                                                                id object,
                                                                NSDictionary * change,
                                                                void * context)
-        {}
-
-                                           ],
-                                           @[@"labelTextColor", ^(MSKVOReceptionist * receptionist,
+        {},
+                                           @"labelTextColor" : ^(MSKVOReceptionist * receptionist,
                                                                   NSString * keyPath,
                                                                   id object,
                                                                   NSDictionary * change,
@@ -137,10 +156,8 @@ static int         ddLogLevel     = DefaultDDLogLevel;
         {
             id newValue = change[NSKeyValueChangeNewKey];
             _buttonGroupLabel.textColor = (ValueIsNotNil(newValue) ? (UIColor *)newValue : nil);
-        }
-
-                                           ],
-                                           @[@"labelTextAlignment", ^(MSKVOReceptionist * receptionist,
+        },
+                                           @"labelTextAlignment" : ^(MSKVOReceptionist * receptionist,
                                                                       NSString * keyPath,
                                                                       id object,
                                                                       NSDictionary * change,
@@ -151,20 +168,18 @@ static int         ddLogLevel     = DefaultDDLogLevel;
                                                ?[(NSNumber *)newValue unsignedIntegerValue]
                                                : NSTextAlignmentCenter);
         }
+                                         };
 
-                                           ]
-                                         ];
-
-    return [[super kvoRegistration] arrayByAddingObjectsFromArray:kvoRegistration];
+    return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }
 
 - (void)initializeIVARs {
     [super initializeIVARs];
 
-    self.constraintManager.shrinkWrap = YES;
-    self.resizable                    = RESIZABLE;
-    self.moveable                     = MOVEABLE;
-    _options.cornerRadii              = CORNER_RADII;
+    self.shrinkwrap      = YES;
+    self.resizable       = RESIZABLE;
+    self.moveable        = MOVEABLE;
+    self.cornerRadii         = CORNER_RADII;
 
     if (self.type == ButtonGroupTypeToolbar) {
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
@@ -183,7 +198,6 @@ static int         ddLogLevel     = DefaultDDLogLevel;
         [view setActionHandler:^{[weakSelf tuckAction:weakView]; }
 
                      forAction:ButtonViewSingleTapAction];
-        DDLogDebug(@"%@\n\ttuck button:%@", SelectorTagString, view.displayName);
     }
 
     [super addSubelementView:view];
@@ -200,18 +214,8 @@ static int         ddLogLevel     = DefaultDDLogLevel;
     _buttonGroupLabel                                           = [[UILabel alloc] init];
     _buttonGroupLabel.backgroundColor                           = ClearColor;
     _buttonGroupLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:_buttonGroupLabel];
+    [self addViewToContent:_buttonGroupLabel];
 
-    NSString * constraints =
-        @"_buttonGroupLabel.width = self.width\n"
-        "_buttonGroupLabel.height = self.height\n"
-        "_buttonGroupLabel.centerX = self.centerX\n"
-        "_buttonGroupLabel.centerY = self.centerY";
-
-    [self addConstraints:
-     [NSLayoutConstraint
-      constraintsByParsingString:constraints
-                           views:NSDictionaryOfVariableBindings(self, _buttonGroupLabel)]];
 }
 
 - (void)setEditingMode:(EditingMode)mode {
@@ -405,6 +409,41 @@ enum {
 #pragma mark - UIView Overrides
 ////////////////////////////////////////////////////////////////////////////////
 
+MSKIT_STATIC_STRING_CONST
+kPickerLabelButtonGroupViewInternalNametag = @"PickerLabelButtonGroupViewInternal";
+
+MSKIT_STATIC_STRING_CONST
+kPickerLabelButtonGroupViewLabelContainer = @"PickerLabelButtonGroupViewLabelContainer";
+
+- (void)updateConstraints {
+
+    [super updateConstraints];
+
+    if (![self constraintsWithNametagPrefix:kPickerLabelButtonGroupViewInternalNametag]) {
+
+        NSString * constraints =
+            $(@"'%1$@' _labelContainer.centerY = self.centerY\n"
+              "'%1$@' _labelContainer.height = self.height * 0.34\n"
+              "'%1$@-left' _labelContainer.left = self.left",
+              $(@"%@-%@",
+              kPickerLabelButtonGroupViewInternalNametag,
+              kPickerLabelButtonGroupViewLabelContainer));
+
+        [self addConstraints:[NSLayoutConstraint
+                              constraintsByParsingString:constraints
+                              views:NSDictionaryOfVariableBindings(_labelContainer, self)]];
+
+        _labelContainerLeftConstraint =
+            [self constraintWithNametag:$(@"%@-%@-left",
+                                          kPickerLabelButtonGroupViewInternalNametag,
+                                          kPickerLabelButtonGroupViewLabelContainer)];
+
+        if (![_labelContainer constraintsWithNametagPrefix:kPickerLabelButtonGroupViewInternalNametag])
+            [self buildLabels];
+    }
+
+}
+
 - (void)addSubelementView:(ButtonView *)view {
     [super addSubelementView:view];
     [view.gestureRecognizers
@@ -416,23 +455,21 @@ enum {
 #pragma mark ButtonGroupView Overrides
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSArray *)kvoRegistration {
+- (NSDictionary *)kvoRegistration {
     __weak PickerLabelButtonGroupView * weakSelf = self;
 
     return [[super kvoRegistration]
-            arrayByAddingObjectsFromArray:
-            @[
-              @[@"labels", ^(MSKVOReceptionist * receptionist,
+            dictionaryByAddingEntriesFromDictionary:
+            @{
+              @"labels" : ^(MSKVOReceptionist * receptionist,
                              NSString * keyPath,
                              id object,
                              NSDictionary * change,
                              void * context)
             {
                 [weakSelf buildLabels];
-            }
-
-              ],
-              @[@"commandSets", ^(MSKVOReceptionist * receptionist,
+            },
+              @"commandSets" : ^(MSKVOReceptionist * receptionist,
                                   NSString * keyPath,
                                   id object,
                                   NSDictionary * change,
@@ -440,14 +477,11 @@ enum {
             {
                 [weakSelf updateCommandSet];
             }
-
-              ]
-            ]];
+            }];
 }
 
 - (void)initializeIVARs {
     [super initializeIVARs];
-    [self buildLabels];
     [self updateCommandSet];
 }
 
@@ -456,25 +490,10 @@ enum {
 
     _labelContainer                                           = [[UIView alloc] init];
     _labelContainer.backgroundColor                           = ClearColor;
-    self.overlayView.clipsToBounds                            = YES;
+    self.overlayClipsToBounds                                 = YES;
     _labelContainer.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.overlayView addSubview:_labelContainer];
+    [self addViewToOverlay:_labelContainer];
 
-    NSString * constraints =
-        @"_labelContainer.centerY = self.centerY\n_labelContainer.height = self.height * 0.34";
-
-    [self addConstraints:[NSLayoutConstraint
-                          constraintsByParsingString:constraints
-                                               views:NSDictionaryOfVariableBindings(_labelContainer, self)]];
-
-    _labelContainerLeftConstraint = [NSLayoutConstraint constraintWithItem:_labelContainer
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:1.0
-                                                                  constant:0];
-    [self addConstraint:_labelContainerLeftConstraint];
 }
 
 - (void)attachGestureRecognizers {
@@ -528,6 +547,8 @@ enum {
     NSMutableString     * s     = [NSMutableString stringWithString:@"H:|"];
     NSMutableDictionary * views = [NSMutableDictionary dictionaryWithCapacity:labelSet.count];
 
+    // TODO: move constraint building to `updateConstraints`
+
     for (NSAttributedString * label in labelSet) {
         assert([label isKindOfClass:[NSAttributedString class]]);
 
@@ -538,25 +559,34 @@ enum {
         newLabel.backgroundColor                           = [UIColor clearColor];
         [_labelContainer addSubview:newLabel];
         views[label.string] = newLabel;
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:newLabel
-                                                         attribute:NSLayoutAttributeWidth
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeWidth
-                                                        multiplier:1
-                                                          constant:0]];
-        [_labelContainer addConstraint:[NSLayoutConstraint constraintWithItem:newLabel
-                                                                    attribute:NSLayoutAttributeCenterY
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:_labelContainer
-                                                                    attribute:NSLayoutAttributeCenterY
-                                                                   multiplier:1
-                                                                     constant:0]];
+        NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:newLabel
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                      multiplier:1
+                                                                        constant:0];
+        constraint.nametag = kPickerLabelButtonGroupViewInternalNametag;
+
+        [self addConstraint:constraint];
+
+        constraint = [NSLayoutConstraint constraintWithItem:newLabel
+                                                  attribute:NSLayoutAttributeCenterY
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:_labelContainer
+                                                  attribute:NSLayoutAttributeCenterY
+                                                 multiplier:1
+                                                   constant:0];
+        constraint.nametag = kPickerLabelButtonGroupViewInternalNametag;
+
+        [_labelContainer addConstraint:constraint];
         [s appendFormat:@"[%@]", label.string];
     }
 
     [s appendString:@"|"];
-    [_labelContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:s options:0 metrics:nil views:views]];
+    NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:s options:0 metrics:nil views:views];
+    [constraints setValue:kPickerLabelButtonGroupViewInternalNametag forKeyPath:@"nametag"];
+    [_labelContainer addConstraints:constraints];
 }
 
 ////////////////////////////////////////////////////////////////////////////////

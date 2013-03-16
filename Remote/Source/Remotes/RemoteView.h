@@ -28,9 +28,6 @@ MSKIT_EXTERN_STRING   kRightPanelThreeKey;
 
 @property (nonatomic, assign) BOOL   buttonGroupsLocked;
 
-- (ButtonGroupView *)buttonGroupViewForKey:(NSString *)key;
-// - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx;
-
 /**
  * Returns the button group registered for the specified panel.
  * @param panelKey The panel for which the registered button group should be returned.

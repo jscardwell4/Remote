@@ -36,8 +36,8 @@ typedef NS_OPTIONS (NSUInteger, EditingStyle) {
 #pragma mark - Syncing Model and View
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)               updateSubelementOrderFromView;
-- (RemoteElementView *)subelementViewForIdentifier:(NSString *)identifier;
+- (void) updateSubelementOrderFromView;
+//- (RemoteElementView *)subelementViewForIdentifier:(NSString *)identifier;
 - (RemoteElementView *)objectAtIndexedSubscript:(NSUInteger)idx;
 - (RemoteElementView *)objectForKeyedSubscript:(NSString *)key;
 
@@ -45,16 +45,30 @@ typedef NS_OPTIONS (NSUInteger, EditingStyle) {
 #pragma mark - Editing
 ////////////////////////////////////////////////////////////////////////////////
 
-@property (nonatomic, assign)                       EditingMode    editingMode;
-@property (nonatomic, readonly, getter = isEditing) BOOL           editing;
-@property (nonatomic, assign)                       EditingStyle   editingStyle;
-@property (nonatomic, getter = isResizable)         BOOL           resizable;
-@property (nonatomic, getter = isMoveable)          BOOL           moveable;
+@property (nonatomic, assign)                            EditingMode     editingMode;
+@property (nonatomic, readonly, getter = isEditing)      BOOL            editing;
+@property (nonatomic, assign)                            EditingStyle    editingStyle;
+@property (nonatomic, getter = isResizable)              BOOL            resizable;
+@property (nonatomic, getter = isMoveable)               BOOL            moveable;
+@property (nonatomic, assign, getter = shouldShrinkwrap) BOOL            shrinkwrap;
 
 - (void)translateSubelements:(NSSet *)subelementViews translation:(CGPoint)translation;
 - (void)scaleSubelements:(NSSet *)subelementViews scale:(CGFloat)scale;
-- (void)alignSubelements:(NSSet *)subelementViews toSibling:(RemoteElementView *)siblingView attribute:(NSLayoutAttribute)attribute;
-- (void)resizeSubelements:(NSSet *)subelementViews toSibling:(RemoteElementView *)siblingView attribute:(NSLayoutAttribute)attribute;
+- (void)alignSubelements:(NSSet *)subelementViews
+               toSibling:(RemoteElementView *)siblingView
+               attribute:(NSLayoutAttribute)attribute;
+- (void)resizeSubelements:(NSSet *)subelementViews
+                toSibling:(RemoteElementView *)siblingView
+                attribute:(NSLayoutAttribute)attribute;
+- (void)willResizeViews:(NSSet *)views;
+- (void)didResizeViews:(NSSet *)views;
+- (void)willScaleViews:(NSSet *)views;
+- (void)scale:(CGFloat)scale;
+- (void)didScaleViews:(NSSet *)views;
+- (void)willAlignViews:(NSSet *)views;
+- (void)didAlignViews:(NSSet *)views;
+- (void)willMoveViews:(NSSet *)views;
+- (void)didMoveViews:(NSSet *)views;
 
 @property (nonatomic, readonly) CGSize   minimumSize;
 @property (nonatomic, readonly) CGSize   maximumSize;
@@ -67,32 +81,19 @@ typedef NS_OPTIONS (NSUInteger, EditingStyle) {
 
 @interface RemoteElementView (RemoteElementProperties)
 // model backed properties
-@property (nonatomic, assign)         int16_t            tag;
-@property (nonatomic, copy)           NSString         * key;
-@property (nonatomic, copy)           NSString         * identifier;
-@property (nonatomic, copy)           NSString         * displayName;
-@property (nonatomic, assign)         CGFloat            backgroundImageAlpha;
-@property (nonatomic, strong)         UIColor          * backgroundColor;
-@property (nonatomic, strong)         GalleryImage     * backgroundImage;
-@property (nonatomic, strong)         RemoteController * controller;
-@property (nonatomic, strong)         RemoteElement    * parentElement;
-@property (nonatomic, strong)         NSOrderedSet     * subelements;
+@property (nonatomic, assign)           int16_t                            tag;
+@property (nonatomic, copy)             NSString                         * key;
+@property (nonatomic, copy)             NSString                         * identifier;
+@property (nonatomic, copy)             NSString                         * displayName;
+@property (nonatomic, assign)           CGFloat                            backgroundImageAlpha;
+@property (nonatomic, strong)           UIColor                          * backgroundColor;
+@property (nonatomic, strong)           GalleryImage                     * backgroundImage;
+@property (nonatomic, strong)           RemoteController                 * controller;
+@property (nonatomic, strong)           RemoteElement                    * parentElement;
+@property (nonatomic, strong)           NSOrderedSet                     * subelements;
+@property (nonatomic, strong, readonly) RemoteElementLayoutConfiguration * layoutConfiguration;
 
-// derived properties
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   alignmentOptions;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   topAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   bottomAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   leftAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   rightAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   baselineAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerXAlignmentOption;
-@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerYAlignmentOption;
-
-@property (nonatomic, assign)       RemoteElementSizingOptions   sizingOptions;
-@property (nonatomic, assign)       RemoteElementSizingOptions   widthSizingOption;
-@property (nonatomic, assign)       RemoteElementSizingOptions   heightSizingOption;
-@property (nonatomic, assign)       BOOL                         proportionLock;
-
+@property (nonatomic, assign)       BOOL                   proportionLock;
 @property (nonatomic, assign)       RemoteElementShape     shape;
 @property (nonatomic, assign)       RemoteElementStyle     style;
 @property (nonatomic, readonly)     RemoteElementType      type;
@@ -113,3 +114,16 @@ typedef NS_OPTIONS (NSUInteger, EditingStyle) {
 @end
 
 NSString * prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
+
+MSKIT_STATIC_INLINE NSDictionary * viewFramesByIdentifier(RemoteElementView * remoteElementView) {
+    NSMutableDictionary * viewFrames =
+        [NSMutableDictionary dictionaryWithObjects:[remoteElementView.subelementViews
+                                                    valueForKeyPath:@"frame"]
+                                           forKeys:[remoteElementView.subelementViews
+                                                    valueForKeyPath:@"identifier"]];
+    viewFrames[remoteElementView.identifier] = NSValueWithCGRect(remoteElementView.frame);
+    if (remoteElementView.parentElementView)
+        viewFrames[remoteElementView.parentElementView.identifier] =
+            NSValueWithCGRect(remoteElementView.parentElementView.frame);
+    return viewFrames;
+}

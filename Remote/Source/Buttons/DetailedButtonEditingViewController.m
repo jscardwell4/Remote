@@ -235,7 +235,7 @@ editorState;
     if (ValueIsNil(controllerClass)) return nil;
 
         DDLogDebug(@"%@\n\tchecking child controllers array for controller of class:%@",
-               ClassTagString, NSStringFromClass(controllerClass));
+               ClassTagString, ClassString(controllerClass));
 
     NSUInteger   controllerIndex =
         [self.childViewControllers
@@ -597,7 +597,7 @@ editorState;
 
 // CGFloat rectBottom = rectInWindow.origin.y + rectInWindow.size.height;
         DDLogDebug(@"%@\n\tfirst responder rect as report by window:%@",
-                   ClassTagString, NSStringFromCGRect(rectInWindow));
+                   ClassTagString, CGRectString(rectInWindow));
     }
 
     CGFloat   duration =

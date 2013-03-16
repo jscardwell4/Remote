@@ -23,7 +23,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     if (!context) return nil;
 
     Command * command =
-        [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class])
+        [NSEntityDescription insertNewObjectForEntityForName:ClassString([self class])
                                       inManagedObjectContext:context];
 
     return command;
@@ -50,7 +50,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return [super debugDescription];
 
     NSMutableString * description = [NSMutableString string];
-    NSString        * className   = NSStringFromClass([self class]);
+    NSString        * className   = ClassString([self class]);
     NSString        * tabString   = [NSString stringFilledWithCharacter:' ' count:MSDefaultTabWidth];
 
     // Add the class name tag

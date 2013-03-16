@@ -61,6 +61,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
     for (RemoteElementView * view in [views setByRemovingObjectsFromSet: self.selectedViews])
     {
         view.editingStyle = EditingStyleSelected;
+        [_sourceView bringSubviewToFront:view];
     }
 
     [_selectedViews unionSet:views];

@@ -99,22 +99,22 @@ static const int   msLogContext = COREDATA_F;
                      appendFormat:@"\n\t\tname: %@\n\t\toptional? %@\n\t\ttransient? %@\n"
                                   "\t\tvalidation predicates: %@\n\t\tstored in external record? %@\n",
                      property.name,
-                     NSStringFromBOOL(property.isOptional),
-                     NSStringFromBOOL(property.isTransient),
+                     BOOLString(property.isOptional),
+                     BOOLString(property.isTransient),
                      [property.validationPredicates
                       componentsJoinedByString:@", "],
-                     NSStringFromBOOL(property.isStoredInExternalRecord)
+                     BOOLString(property.isStoredInExternalRecord)
                     ];
 
                     if ([property isKindOfClass:[NSAttributeDescription class]])
                         [modelDescription
                          appendFormat:@"\t\tattribute type: %@\n\t\tattribute value class name: %@\n"
                                       "\t\tdefault value: %@\n\t\tallows extern binary data storage: %@\n",
-                         NSStringFromNSAttributeType(((NSAttributeDescription *)property).
+                         NSAttributeTypeString(((NSAttributeDescription *)property).
                                                      attributeType),
                          ((NSAttributeDescription *)property).attributeValueClassName,
                          ((NSAttributeDescription *)property).defaultValue,
-                         NSStringFromBOOL(((NSAttributeDescription *)property).
+                         BOOLString(((NSAttributeDescription *)property).
                                           allowsExternalBinaryDataStorage)
                         ];
                     else if ([property isKindOfClass:[NSRelationshipDescription class]])
@@ -123,11 +123,11 @@ static const int   msLogContext = COREDATA_F;
                                       "\t\tmax count: %u\n\t\tmin count: %u\n\t\tone-to-many? %@\n\t\tordered: %@\n\n",
                          ((NSRelationshipDescription *)property).destinationEntity.name,
                          ((NSRelationshipDescription *)property).inverseRelationship.name,
-                         NSStringFromNSDeleteRule(((NSRelationshipDescription *)property).deleteRule),
+                         NSDeleteRuleString(((NSRelationshipDescription *)property).deleteRule),
                          ((NSRelationshipDescription *)property).maxCount,
                          ((NSRelationshipDescription *)property).minCount,
-                         NSStringFromBOOL(((NSRelationshipDescription *)property).isToMany),
-                         NSStringFromBOOL(((NSRelationshipDescription *)property).isOrdered)
+                         BOOLString(((NSRelationshipDescription *)property).isToMany),
+                         BOOLString(((NSRelationshipDescription *)property).isOrdered)
                         ];
                 }
 
@@ -181,7 +181,7 @@ static const int   msLogContext = COREDATA_F;
 
     MSLogDebug(@"%@  destination database url: %@\nfile exists? %@",
                ClassTagSelectorString, dataFileDestinationURL,
-               NSStringFromBOOL(fileExistsAtDestination));
+               BOOLString(fileExistsAtDestination));
 
     // Remove existing database store if flag is set
     if (_databaseFlags.removePreviousDatabase && fileExistsAtDestination) {
@@ -487,7 +487,7 @@ static const int   msLogContext = COREDATA_F;
              if (ValueIsNotNil(completion)) {
                 MSLogDebug(@"%@  executing completion callback, success? %@",
                            ClassTagSelectorString,
-                           NSStringFromBOOL(savedOK));
+                           BOOLString(savedOK));
                 completion(savedOK);
              }
          }

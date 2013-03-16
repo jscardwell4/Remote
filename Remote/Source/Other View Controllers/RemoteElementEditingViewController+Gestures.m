@@ -17,14 +17,13 @@
     MSLogDebug(@"%@ %@ state: %@",        \
                ClassTagSelectorString,    \
                gestureRecognizer.nametag, \
-               NSStringFromUIGestureRecognizerState(gestureRecognizer.state));
+               UIGestureRecognizerStateString(gestureRecognizer.state));
 
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   ddLogLevel   = DefaultDDLogLevel;
 static const int   msLogContext = EDITOR_F;
-//static const int ddLogLevel = DefaultDDLogLevel;
+#pragma unused(ddLogLevel, msLogContext)
 
-#pragma unused(ddLogLevel)
 
 @implementation RemoteElementEditingViewController (Gestures)
 
@@ -159,14 +158,17 @@ static const int   msLogContext = EDITOR_F;
 
     MSGestureManagerBlock hasSelectionBlock = ShouldBeginBlock(weakSelf.selectionCount);
 
-    MSGestureManagerBlock noPopovers = ShouldBeginBlock(!_flags.popoverActive && _flags.menuState == REEditingMenuStateDefault);
+    MSGestureManagerBlock noPopovers =
+        ShouldBeginBlock(!_flags.popoverActive && _flags.menuState == REEditingMenuStateDefault);
 
-    MSGestureManagerBlock noToolbars = ReceiveTouchBlock(![weakSelf.toolbars
-                                                         objectPassingTest:^BOOL(UIToolbar * obj, NSUInteger idx, BOOL *stop) {
-                                                             return [touch.view isDescendantOfView:obj];
-                                                         }]);
+    MSGestureManagerBlock noToolbars =
+        ReceiveTouchBlock(![weakSelf.toolbars objectPassingTest:
+                            ^BOOL(UIToolbar * obj, NSUInteger idx) {
+                                return [touch.view isDescendantOfView:obj];
+                            }]);
 
-    MSGestureManagerBlock selectableClassBlock = ReceiveTouchBlock([touch.view isKindOfClass:_selectableClass]);
+    MSGestureManagerBlock selectableClassBlock =
+        ReceiveTouchBlock([touch.view isKindOfClass:_selectableClass]);
 
     // pinch
     [gestureBlocks addObject:@{
@@ -184,7 +186,8 @@ static const int   msLogContext = EDITOR_F;
 
     // toolbar long press
     [gestureBlocks addObject:@{
-         ShouldReceiveTouch            : ReceiveTouchBlock(noPopovers(gesture, touch) && [touch.view isDescendantOfView:_topToolbar]),
+         ShouldReceiveTouch            : ReceiveTouchBlock(   noPopovers(gesture, touch)
+                                                           && [touch.view isDescendantOfView:_topToolbar]),
          ShouldRecognizeSimultaneously : RecognizeSimultaneouslyBlock(@"longPressGesture")
      }];
 
@@ -202,14 +205,16 @@ static const int   msLogContext = EDITOR_F;
     // multiselect
     [gestureBlocks addObject:@{
          ShouldBegin 			 				: notMovingBlock,
-         ShouldReceiveTouch 			: ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch)),
+         ShouldReceiveTouch 			: ReceiveTouchBlock(   noPopovers(gesture, touch)
+                                                            && noToolbars(gesture, touch)),
          ShouldRecognizeSimultaneously  : RecognizeSimultaneouslyBlock(@"anchoredMultiselectGesture")
      }];
 
     // anchored multiselect
     [gestureBlocks addObject:@{
          ShouldBegin                   : notMovingBlock,
-         ShouldReceiveTouch            : ReceiveTouchBlock(noPopovers(gesture, touch) && noToolbars(gesture, touch)),
+         ShouldReceiveTouch            : ReceiveTouchBlock(   noPopovers(gesture, touch)
+                                                           && noToolbars(gesture, touch)),
          ShouldRecognizeSimultaneously : RecognizeSimultaneouslyBlock(@"multiselectGesture")
     }];
 
@@ -229,8 +234,7 @@ static const int   msLogContext = EDITOR_F;
     _multiselectGesture.enabled         = !moving;
     _anchoredMultiselectGesture.enabled = !moving;
 
-    MSLogDebug(
-               @"%@\n\t%@",
+    MSLogDebug(@"%@\n\t%@",
                ClassTagSelectorString,
                [[[_gestures allObjects]
                  arrayByMappingToBlock:^NSString *(UIGestureRecognizer * obj, NSUInteger idx) {
@@ -250,7 +254,8 @@ static const int   msLogContext = EDITOR_F;
 
         if ([view isKindOfClass:_selectableClass])
         {
-            if (![_selectedViews containsObject:view]) [self selectView:(RemoteElementView *)view];
+            if (![_selectedViews containsObject:view])
+                [self selectView:(RemoteElementView *)view];
 
             self.focusView = (_focusView == view ? nil : (RemoteElementView *)view);
         }
@@ -265,59 +270,61 @@ static const int   msLogContext = EDITOR_F;
     {
         switch (gestureRecognizer.state)
         {
-            case UIGestureRecognizerStateBegan :
+            case UIGestureRecognizerStateBegan:
             {
-                UIView * view = [self.view hitTest:[gestureRecognizer locationInView:self.view] withEvent:nil];
+                UIView * view = [self.view hitTest:[gestureRecognizer locationInView:self.view]
+                                         withEvent:nil];
 
                 if ([view isKindOfClass:_selectableClass])
                 {
-                    if (![_selectedViews containsObject:view]) [self selectView:(RemoteElementView *)view];
+                    if (![_selectedViews containsObject:view])
+                        [self selectView:(RemoteElementView*)view];
 
                     for (RemoteElementView * view in _selectedViews)
-                    {
                         view.editingStyle = EditingStyleMoving;
-                    }
 
                     _flags.movingSelectedViews = YES;
                     [self updateState];
                     _flags.longPressPreviousLocation = [gestureRecognizer locationInView:nil];
-                    [self willMoveSelectedViews];
+                    [self willTranslateSelectedViews];
                 }
             }
             break;
 
-            case UIGestureRecognizerStateChanged :
+            case UIGestureRecognizerStateChanged:
             {
                 CGPoint   currentLocation = [gestureRecognizer locationInView:nil];
-                CGPoint   translation     = CGPointGetDelta(currentLocation, _flags.longPressPreviousLocation);
+                CGPoint   translation     = CGPointGetDelta(currentLocation,
+                                                            _flags.longPressPreviousLocation);
 
                 _flags.longPressPreviousLocation = currentLocation;
-                [self moveSelectedViewsWithTranslation:translation];
+                [self translateSelectedViews:translation];
             }
             break;
 
-            case UIGestureRecognizerStateCancelled :
-            case UIGestureRecognizerStateFailed :
-            case UIGestureRecognizerStateEnded :
-                [self didMoveSelectedViews];
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed:
+            case UIGestureRecognizerStateEnded:
+                [self didTranslateSelectedViews];
                 break;
 
-            case UIGestureRecognizerStatePossible :
+            case UIGestureRecognizerStatePossible:
                 break;
-        }  /* switch */
+        }
 
     }
     else if (gestureRecognizer == _toolbarLongPressGesture)
     {
         switch (gestureRecognizer.state)
         {
-            case UIGestureRecognizerStateBegan :
+            case UIGestureRecognizerStateBegan:
                 [_undoButton.button setTitle:[UIFont fontAwesomeIconForName:@"repeat"]
                                     forState:UIControlStateNormal];
                 _undoButton.button.selected = YES;
                 break;
 
-            case UIGestureRecognizerStateChanged :
+            case UIGestureRecognizerStateChanged:
+
                 if (![_undoButton.button
                       pointInside:[gestureRecognizer locationInView:_undoButton.button]
                         withEvent:nil])
@@ -328,12 +335,12 @@ static const int   msLogContext = EDITOR_F;
 
                 break;
 
-            case UIGestureRecognizerStateRecognized :
+            case UIGestureRecognizerStateRecognized:
                 [self redo:nil];
 
-            case UIGestureRecognizerStateCancelled :
-            case UIGestureRecognizerStateFailed :
-            case UIGestureRecognizerStatePossible :
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed:
+            case UIGestureRecognizerStatePossible:
                 gestureRecognizer.enabled   = YES;
                 _undoButton.button.selected = NO;
                 [_undoButton.button setTitle:[UIFont fontAwesomeIconForName:@"undo"]
@@ -343,6 +350,7 @@ static const int   msLogContext = EDITOR_F;
     }
 }
 
+
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)gestureRecognizer
 {
     MSLogDebugGesture;
@@ -351,25 +359,23 @@ static const int   msLogContext = EDITOR_F;
     {
         switch (gestureRecognizer.state)
         {
-            case UIGestureRecognizerStateBegan :
+            case UIGestureRecognizerStateBegan:
                 [self willScaleSelectedViews];
-                _flags.appliedScale = 1.0f;
                 break;
 
-            case UIGestureRecognizerStateChanged :
-                _flags.appliedScale = [self scaleSelectedViews:gestureRecognizer.scale
-                                                     validation:nil];
+            case UIGestureRecognizerStateChanged:
+                [self scaleSelectedViews:gestureRecognizer.scale validation:nil];
                 break;
 
-            case UIGestureRecognizerStateCancelled :
-            case UIGestureRecognizerStateFailed :
-            case UIGestureRecognizerStateEnded :
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed:
+            case UIGestureRecognizerStateEnded:
                 [self didScaleSelectedViews];
                 break;
 
-            case UIGestureRecognizerStatePossible :
+            case UIGestureRecognizerStatePossible:
                 break;
-        }  /* switch */
+        }
 
     }
 }
@@ -388,14 +394,13 @@ static const int   msLogContext = EDITOR_F;
         {
             CGPoint   translation    = [gestureRecognizer translationInView:self.view];
             CGFloat   adjustedOffset = startingOffset + translation.y;
-            BOOL      isInBounds     = MSValueInBounds(adjustedOffset, _flags.allowableSourceViewYOffset);
+            BOOL      isInBounds     = MSValueInBounds(adjustedOffset,
+                                                       _flags.allowableSourceViewYOffset);
             CGFloat   newOffset      = (isInBounds
                                         ? adjustedOffset
                                         : (adjustedOffset < _flags.allowableSourceViewYOffset.lower
                                            ? _flags.allowableSourceViewYOffset.lower
-                                           : _flags.allowableSourceViewYOffset.upper
-                                           )
-                                        );
+                                           : _flags.allowableSourceViewYOffset.upper));
 
             if (self.sourceViewCenterYConstraint.constant != newOffset)
             {
@@ -425,16 +430,16 @@ static const int   msLogContext = EDITOR_F;
     _flags.menuState = REEditingMenuStateStackedViews;
 
     MenuController.menuItems = [[stackedViews allObjects]
-                                arrayByMappingToBlock:^UIMenuItem *(RemoteElementView * obj, NSUInteger idx) {
-                                    SEL action = NSSelectorFromString($(@"menuAction%@:",obj.identifier));
-
+                                arrayByMappingToBlock:
+                                ^UIMenuItem *(RemoteElementView * obj, NSUInteger idx) {
+                                    SEL action = NSSelectorFromString($(@"menuAction%@:",
+                                                                        obj.identifier));
                                     return MenuItem(obj.displayName, action);
                                 }];
 
-    [MenuController setTargetRect:[self.view.window convertRect:[UIView
-                                                                 unionFrameForViews:[stackedViews
-                                                                                     allObjects]]
-                                                       fromView:_sourceView]
+    [MenuController setTargetRect:[self.view.window
+                                   convertRect:[UIView unionFrameForViews:[stackedViews allObjects]]
+                                   fromView:_sourceView]
                            inView:self.view];
     MenuController.arrowDirection = UIMenuControllerArrowDefault;
     [MenuController update];
@@ -454,26 +459,30 @@ static const int   msLogContext = EDITOR_F;
                       );
 
         NSSet        * touchLocations         = [gestureRecognizer touchLocationsInView:_sourceView];
-        NSMutableSet * touchedSubelementViews = [[gestureRecognizer touchedSubviewsInView:_sourceView
-                                                                                   ofKind:_selectableClass] mutableCopy];
+        NSMutableSet * touchedSubelementViews = [[gestureRecognizer
+                                                  touchedSubviewsInView:_sourceView
+                                                  ofKind:_selectableClass] mutableCopy];
 
         if (touchedSubelementViews.count)
         {
-            NSMutableDictionary * viewsPerTouch = [NSMutableDictionary dictionaryWithCapacity:touchLocations.count];
+            NSMutableDictionary * viewsPerTouch = [NSMutableDictionary
+                                                   dictionaryWithCapacity:touchLocations.count];
 
             [touchLocations enumerateObjectsUsingBlock:^(NSValue * obj, BOOL *stop) {
-                                viewsPerTouch[obj] = [_sourceView.subelementViews
-                                                      filteredArrayUsingPredicateWithBlock:
-                                                      ^BOOL(RemoteElementView * evaluatedObject, NSDictionary *bindings) {
-                                                          return [evaluatedObject pointInside:[evaluatedObject convertPoint:Point(obj)
-                                                                                                                   fromView:_sourceView]
-                                                                                    withEvent:nil];
-                                                      }];
+                viewsPerTouch[obj] = [_sourceView.subelementViews
+                                      filteredArrayUsingPredicateWithBlock:
+                                      ^BOOL(RemoteElementView * rev, NSDictionary *bindings) {
+                                          return [rev pointInside:[rev convertPoint:CGPointValue(obj)
+                                                                           fromView:_sourceView]
+                                                        withEvent:nil];
+                                      }];
             }];
 
-            NSSet * stackedLocations = [viewsPerTouch keysOfEntriesPassingTest:^BOOL(id key, NSArray * obj, BOOL *stop) {
-                return (ValueIsNotNil(obj) && obj.count > 1);
-            }];
+            NSSet * stackedLocations = [viewsPerTouch
+                                        keysOfEntriesPassingTest:
+                                        ^BOOL(id key, NSArray * obj, BOOL *stop) {
+                                            return (ValueIsNotNil(obj) && obj.count > 1);
+                                        }];
 
             if (stackedLocations.count)
             {
@@ -483,7 +492,8 @@ static const int   msLogContext = EDITOR_F;
                 [self displayStackedViewDialogForViews:stackedViews];
             }
 
-            SuppressPerformSelectorLeakWarning([self performSelector:action withObject:touchedSubelementViews];)
+            SuppressPerformSelectorLeakWarning([self performSelector:action
+                                                          withObject:touchedSubelementViews];)
 
     }
         else if (_selectedViews.count) [self deselectAll];
