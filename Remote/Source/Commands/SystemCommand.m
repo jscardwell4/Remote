@@ -1,6 +1,6 @@
 //
 // SystemCommand.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 7/13/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
@@ -8,16 +8,16 @@
 
 #import "Command.h"
 #import "Command_Private.h"
-#import "Button.h"
-#import "ButtonView.h"
-#import "RemoteViewController.h"
+#import "REButton.h"
+#import "REButtonView.h"
+#import "RERemoteViewController.h"
 #import "MSRemoteAppController.h"
 
 #define kSystemKeyMax 4
 #define kSystemKeyMin 0
 
 static int                           ddLogLevel = DefaultDDLogLevel;
-static __weak RemoteViewController * _remoteViewController;
+static __weak RERemoteViewController * _remoteViewController;
 
 @interface SystemCommand ()
 
@@ -66,7 +66,7 @@ static __weak RemoteViewController * _remoteViewController;
     return fetchedCommand;
 }
 
-+ (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController {
++ (BOOL)registerRemoteViewController:(RERemoteViewController *)remoteViewController {
     _remoteViewController = remoteViewController;
 
     return YES;

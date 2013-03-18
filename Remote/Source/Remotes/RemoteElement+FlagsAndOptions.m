@@ -1,89 +1,83 @@
 //
 //RemoteElement+FlagsAndOptions.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 2/9/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElement_Private.h"
 
-RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute,
-                                                                  RERelationshipType type)
+/*
+REOptionsAlignment
+alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type)
 {
-    switch (attribute) {
-        case NSLayoutAttributeBaseline :
-
+    switch (attribute)
+    {
+        case NSLayoutAttributeBaseline:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionBaselineParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionBaselineFocus
                        : RemoteElementAlignmentOptionBaselineUnspecified));
 
-        case NSLayoutAttributeBottom :
-
+        case NSLayoutAttributeBottom:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionBottomParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionBottomFocus
                        : RemoteElementAlignmentOptionBottomUnspecified));
 
-        case NSLayoutAttributeTop :
-
+        case NSLayoutAttributeTop:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionTopParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionTopFocus
                        : RemoteElementAlignmentOptionTopUnspecified));
 
-        case NSLayoutAttributeLeft :
-        case NSLayoutAttributeLeading :
-
+        case NSLayoutAttributeLeft:
+        case NSLayoutAttributeLeading:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionLeftParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionLeftFocus
                        : RemoteElementAlignmentOptionLeftUnspecified));
 
-        case NSLayoutAttributeRight :
-        case NSLayoutAttributeTrailing :
-
+        case NSLayoutAttributeRight:
+        case NSLayoutAttributeTrailing:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionRightParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionRightFocus
                        : RemoteElementAlignmentOptionRightUnspecified));
 
-        case NSLayoutAttributeCenterX :
-
+        case NSLayoutAttributeCenterX:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionCenterXParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionCenterXFocus
                        : RemoteElementAlignmentOptionCenterXUnspecified));
 
-        case NSLayoutAttributeCenterY :
-
+        case NSLayoutAttributeCenterY:
             return (type == REParentRelationship
                     ? RemoteElementAlignmentOptionCenterYParent
                     : (type == RESiblingRelationship
                        ? RemoteElementAlignmentOptionCenterYFocus
                        : RemoteElementAlignmentOptionCenterYUnspecified));
 
-        case NSLayoutAttributeWidth :
-        case NSLayoutAttributeHeight :
-        case NSLayoutAttributeNotAnAttribute :
+        case NSLayoutAttributeWidth:
+        case NSLayoutAttributeHeight:
+        case NSLayoutAttributeNotAnAttribute:
             assert(NO);
-
             return RemoteElementAlignmentOptionUndefined;
-    } /* switch */
+    }
 }
 
-RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute,
-                                                            RERelationshipType type)
+REOptionsSizing
+sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type)
 {
-    switch (attribute) {
-        case NSLayoutAttributeWidth :
-
+    switch (attribute)
+    {
+        case NSLayoutAttributeWidth:
             return (type == REParentRelationship
                     ? RemoteElementSizingOptionWidthParent
                     : (type == RESiblingRelationship
@@ -92,8 +86,7 @@ RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute at
                           ? RemoteElementSizingOptionWidthIntrinsic
                           : RemoteElementSizingOptionWidthUnspecified)));
 
-        case NSLayoutAttributeHeight :
-
+        case NSLayoutAttributeHeight:
             return (type == REParentRelationship
                     ? RemoteElementSizingOptionHeightParent
                     : (type == RESiblingRelationship
@@ -102,42 +95,43 @@ RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute at
                           ? RemoteElementSizingOptionHeightIntrinsic
                           : RemoteElementSizingOptionHeightUnspecified)));
 
-        case NSLayoutAttributeBaseline :
-        case NSLayoutAttributeBottom :
-        case NSLayoutAttributeTop :
-        case NSLayoutAttributeLeft :
-        case NSLayoutAttributeLeading :
-        case NSLayoutAttributeRight :
-        case NSLayoutAttributeTrailing :
-        case NSLayoutAttributeCenterX :
-        case NSLayoutAttributeCenterY :
-        case NSLayoutAttributeNotAnAttribute :
+        case NSLayoutAttributeBaseline:
+        case NSLayoutAttributeBottom:
+        case NSLayoutAttributeTop:
+        case NSLayoutAttributeLeft:
+        case NSLayoutAttributeLeading:
+        case NSLayoutAttributeRight:
+        case NSLayoutAttributeTrailing:
+        case NSLayoutAttributeCenterX:
+        case NSLayoutAttributeCenterY:
+        case NSLayoutAttributeNotAnAttribute:
             assert(NO);
-
             return RemoteElementSizingOptionUnspecified;
-    }  /* switch */
+    }
 }
+*/
 
 @implementation RemoteElement (FlagsAndOptionsPrivate)
+
 @dynamic type;
 @dynamic subtype;
 @dynamic state;
 
-- (void)setType:(RemoteElementType)type {
+- (void)setType:(REType)type {
     [self willChangeValueForKey:@"type"];
-    [self setFlags:type mask:RemoteElementTypeMask];
+    [self setFlags:type mask:RETypeMask];
     [self didChangeValueForKey:@"type"];
 }
 
-- (void)setSubtype:(RemoteElementSubtype)subtype {
+- (void)setSubtype:(RESubtype)subtype {
     [self willChangeValueForKey:@"subtype"];
-    [self setFlags:subtype mask:RemoteElementSubtypeMask];
+    [self setFlags:subtype mask:RESubtypeMask];
     [self didChangeValueForKey:@"subtype"];
 }
 
-- (void)setState:(RemoteElementState)state {
+- (void)setState:(REState)state {
     [self willChangeValueForKey:@"state"];
-    [self setFlags:state mask:RemoteElementStateMask];
+    [self setFlags:state mask:REStateMask];
     [self didChangeValueForKey:@"state"];
 }
 
@@ -162,49 +156,37 @@ RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute at
 @implementation RemoteElement (FlagsAndOptions)
 #pragma mark Properties stored inside `flags`
 
-- (RemoteElementType)type {
+- (REType)type {
     [self willAccessValueForKey:@"type"];
-
-    uint64_t   t = [self flagsWithMask:RemoteElementTypeMask];
-
+    uint64_t   t = [self flagsWithMask:RETypeMask];
     [self didAccessValueForKey:@"type"];
-
     return t;
 }
 
-- (RemoteElementSubtype)subtype {
+- (RESubtype)subtype {
     [self willAccessValueForKey:@"subtype"];
-
-    uint64_t   t = [self flagsWithMask:RemoteElementSubtypeMask];
-
+    uint64_t   t = [self flagsWithMask:RESubtypeMask];
     [self didAccessValueForKey:@"subtype"];
-
     return t;
 }
 
-- (RemoteElementOptions)options {
+- (REOptions)options {
     [self willAccessValueForKey:@"options"];
-
-    uint64_t   t = [self flagsWithMask:RemoteElementOptionsMask];
-
+    uint64_t   t = [self flagsWithMask:REOptionsMask];
     [self didAccessValueForKey:@"options"];
-
     return t;
 }
 
-- (void)setOptions:(RemoteElementOptions)options {
+- (void)setOptions:(REOptions)options {
     [self willChangeValueForKey:@"options"];
-    [self setFlags:options mask:RemoteElementOptionsMask];
+    [self setFlags:options mask:REOptionsMask];
     [self didChangeValueForKey:@"options"];
 }
 
-- (RemoteElementState)state {
+- (REState)state {
     [self willAccessValueForKey:@"state"];
-
-    uint64_t   t = [self flagsWithMask:RemoteElementStateMask];
-
+    uint64_t   t = [self flagsWithMask:REStateMask];
     [self didAccessValueForKey:@"state"];
-
     return t;
 }
 
@@ -260,27 +242,26 @@ RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute at
     return (_appearance & bits ? YES : NO);
 }
 
+/*
 - (BOOL)proportionLock {
     return self.layoutConfiguration.proportionLock;
 }
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Shape Options
 ////////////////////////////////////////////////////////////////////////////////
 
-- (RemoteElementShape)shape {
+- (REShape)shape {
     [self willAccessValueForKey:@"shape"];
-
-    uint64_t   t = [self appearanceWithMask:RemoteElementShapeMask];
-
+    uint64_t   t = [self appearanceWithMask:REShapeMask];
     [self didAccessValueForKey:@"shape"];
-
     return t;
 }
 
-- (void)setShape:(RemoteElementShape)shape {
+- (void)setShape:(REShape)shape {
     [self willChangeValueForKey:@"shape"];
-    [self setAppearance:shape mask:RemoteElementShapeMask];
+    [self setAppearance:shape mask:REShapeMask];
     [self didChangeValueForKey:@"shape"];
 }
 
@@ -288,19 +269,16 @@ RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute at
 #pragma mark - Style Options
 ////////////////////////////////////////////////////////////////////////////////
 
-- (RemoteElementStyle)style {
+- (REStyle)style {
     [self willAccessValueForKey:@"style"];
-
-    uint64_t   t = [self appearanceWithMask:RemoteElementStyleMask];
-
+    uint64_t   t = [self appearanceWithMask:REStyleMask];
     [self didAccessValueForKey:@"style"];
-
     return t;
 }
 
-- (void)setStyle:(RemoteElementStyle)style {
+- (void)setStyle:(REStyle)style {
     [self willChangeValueForKey:@"style"];
-    [self setAppearance:style mask:RemoteElementStyleMask];
+    [self setAppearance:style mask:REStyleMask];
     [self didChangeValueForKey:@"style"];
 }
 

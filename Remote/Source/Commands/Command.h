@@ -1,6 +1,6 @@
 //
 // Command.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
@@ -18,7 +18,7 @@ typedef NS_ENUM (int16_t, SystemCommandKey) {
     SystemCommandOpenEditor            = 4
 };
 
-@class   Command, Button, ComponentDevice, IRCode, RemoteController;
+@class   Command, REButton, ComponentDevice, IRCode, RERemoteController;
 
 #pragma mark - Command interface
 
@@ -52,7 +52,7 @@ typedef NS_ENUM (int16_t, SystemCommandKey) {
  */
 @property (nonatomic, assign) int16_t   tag;
 
-@property (nonatomic, strong) Button * button;
+@property (nonatomic, strong) REButton * button;
 
 @end
 
@@ -164,7 +164,7 @@ typedef NS_ENUM (int16_t, SystemCommandKey) {
 
 #pragma mark - SystemCommand interface
 
-@class   RemoteViewController;
+@class   RERemoteViewController;
 
 /**
  * `SystemCommand` subclasses `Command` to perform tasks that interact with `UIKit` objects like
@@ -185,7 +185,7 @@ typedef NS_ENUM (int16_t, SystemCommandKey) {
 + (SystemCommand *)systemCommandWithKey:(SystemCommandKey)key
                               inContext:(NSManagedObjectContext *)context;
 
-+ (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController;
++ (BOOL)registerRemoteViewController:(RERemoteViewController *)remoteViewController;
 
 @end
 
@@ -306,6 +306,6 @@ typedef NS_ENUM (int16_t, SystemCommandKey) {
 /**
  * `RemoteController` object managing the remote to switch to.
  */
-@property (nonatomic, strong) RemoteController * remoteController;
+@property (nonatomic, strong) RERemoteController * remoteController;
 
 @end

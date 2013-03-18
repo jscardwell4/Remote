@@ -1,14 +1,14 @@
 //
 // LaunchScreenViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 12/27/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "LaunchScreenViewController.h"
-#import "RemoteViewController.h"
+#import "RERemoteViewController.h"
 #import "CoreDataManager.h"
-#import "Remote.h"
+#import "RERemote.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
 
@@ -55,8 +55,8 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 - (IBAction)launchEditor:(id)sender {
-    RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
-    Remote                      * remote   = [RemoteElement remoteElementOfType:(RemoteElementType)RemoteTypeDefault context:[DataManager mainObjectContext]];
+    RERemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
+    RERemote                      * remote   = [RemoteElement remoteElementOfType:(REType)RETypeRemote context:[DataManager mainObjectContext]];
 
     editorVC.remoteElement = remote;
     editorVC.delegate      = nil;

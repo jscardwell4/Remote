@@ -1,6 +1,6 @@
 //
 // MSRemoteUITest_Private.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 2/12/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "MSRemoteUITest.h"
 
-@class   RemoteController;
+@class   RERemoteController;
 
 @interface MSRemoteUITest () {
     @protected
@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext * objectContext;
 
-@property (nonatomic, strong) RemoteController * remoteController;
+@property (nonatomic, strong) RERemoteController * remoteController;
 
 - (void)testComplete;
 

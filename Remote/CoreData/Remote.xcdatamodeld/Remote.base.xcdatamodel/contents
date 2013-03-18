@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="1.0" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="1.0" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ActivityButton" representedClassName="ActivityButton" parentEntity="Button" syncable="YES">
         <attribute name="activityButtonType" attributeType="Integer 16" minValueString="0" maxValueString="1" defaultValueString="0" syncable="YES"/>
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceConfiguration" inverseName="activityButtons" inverseEntity="DeviceConfiguration" indexed="YES" syncable="YES"/>
@@ -10,6 +10,12 @@
         <attribute name="exportFileFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="factoryObject" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="BankObjectButtonPreview" representedClassName="GalleryButtonPreview" parentEntity="BankObjectPreview" syncable="YES"/>
+    <entity name="BankObjectPreview" representedClassName="GalleryPreview" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tag" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="BankPreset" representedClassName="BankPreset" parentEntity="BankObject" syncable="YES">
         <attribute name="previewData" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -165,7 +171,7 @@
         <attribute name="zOrder" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryBackgroundImage" inverseName="buttonGroups" inverseEntity="GalleryBackgroundImage" indexed="YES">
+        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REBackgroundImage" inverseName="buttonGroups" inverseEntity="REBackgroundImage" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="buttons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Button" inverseName="buttonGroup" inverseEntity="Button" indexed="YES">
@@ -332,76 +338,17 @@
             <userInfo/>
         </relationship>
     </entity>
-    <entity name="GalleryBackgroundImage" representedClassName="GalleryBackgroundImage" parentEntity="GalleryImage">
-        <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="backgroundImage" inverseEntity="ButtonGroup" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Remote" inverseName="backgroundImage" inverseEntity="Remote" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <userInfo/>
-    </entity>
-    <entity name="GalleryButtonImage" representedClassName="GalleryButtonImage" parentEntity="GalleryImage">
-        <attribute name="state" attributeType="Integer 16" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <userInfo/>
-    </entity>
-    <entity name="GalleryButtonPreview" representedClassName="GalleryButtonPreview" parentEntity="GalleryPreview" syncable="YES"/>
     <entity name="GalleryGroup" representedClassName="GalleryGroup">
         <attribute name="name" attributeType="String">
             <userInfo/>
         </attribute>
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GalleryImage" inverseName="group" inverseEntity="GalleryImage" indexed="YES">
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REImage" inverseName="group" inverseEntity="REImage" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="presets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PresetInfo" inverseName="galleryGroup" inverseEntity="PresetInfo" indexed="YES">
             <userInfo/>
         </relationship>
         <userInfo/>
-    </entity>
-    <entity name="GalleryIconImage" representedClassName="GalleryIconImage" parentEntity="GalleryImage">
-        <attribute name="iconSet" attributeType="String" defaultValueString="No Icon Set">
-            <userInfo/>
-        </attribute>
-        <attribute name="previewData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES">
-            <userInfo/>
-        </attribute>
-        <attribute name="subcategory" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <userInfo/>
-    </entity>
-    <entity name="GalleryImage" representedClassName="GalleryImage" isAbstract="YES" parentEntity="BankObject">
-        <attribute name="baseFileName" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="displayName" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="fileDirectory" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="fileNameExtension" attributeType="String" syncable="YES"/>
-        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="leftCap" attributeType="Float" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <attribute name="size" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="tag" optional="YES" attributeType="Integer 16" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <attribute name="topCap" attributeType="Float" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <attribute name="useRetinaScale" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryGroup" inverseName="images" inverseEntity="GalleryGroup" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <userInfo/>
-    </entity>
-    <entity name="GalleryPreview" representedClassName="GalleryPreview" syncable="YES">
-        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tag" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="HTTPCommand" representedClassName="HTTPCommand" parentEntity="Command" syncable="YES">
         <attribute name="url" attributeType="String" syncable="YES"/>
@@ -513,6 +460,59 @@
         </relationship>
         <userInfo/>
     </entity>
+    <entity name="REBackgroundImage" representedClassName="GalleryBackgroundImage" parentEntity="REImage">
+        <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="backgroundImage" inverseEntity="ButtonGroup" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Remote" inverseName="backgroundImage" inverseEntity="Remote" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="REButtonImage" representedClassName="GalleryButtonImage" parentEntity="REImage">
+        <attribute name="state" attributeType="Integer 16" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="REIconImage" representedClassName="GalleryIconImage" parentEntity="REImage">
+        <attribute name="iconSet" attributeType="String" defaultValueString="No Icon Set">
+            <userInfo/>
+        </attribute>
+        <attribute name="previewData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="subcategory" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="REImage" representedClassName="GalleryImage" isAbstract="YES" parentEntity="BankObject">
+        <attribute name="baseFileName" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="displayName" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="fileDirectory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fileNameExtension" attributeType="String" syncable="YES"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="leftCap" attributeType="Float" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="size" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="Integer 16" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="topCap" attributeType="Float" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="useRetinaScale" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryGroup" inverseName="images" inverseEntity="GalleryGroup" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
     <entity name="Remote" representedClassName="Remote">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable">
             <userInfo/>
@@ -529,7 +529,7 @@
         <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
-        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryBackgroundImage" inverseName="remotes" inverseEntity="GalleryBackgroundImage" indexed="YES">
+        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REBackgroundImage" inverseName="remotes" inverseEntity="REBackgroundImage" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ButtonGroup" inverseName="remote" inverseEntity="ButtonGroup" indexed="YES">
@@ -617,55 +617,55 @@
     </entity>
     <entity name="UserIRCode" representedClassName="UserIRCode" parentEntity="IRCode" syncable="YES"/>
     <elements>
-        <element name="ActivityButton" positionX="-126" positionY="-621" width="128" height="90"/>
-        <element name="BankObject" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="BankPreset" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="Button" positionX="-1010" positionY="-621" width="128" height="45"/>
-        <element name="ButtonConfigurationDelegate" positionX="-929" positionY="-396" width="128" height="45"/>
-        <element name="ButtonGroup" positionX="-1278" positionY="-513" width="128" height="45"/>
-        <element name="ButtonGroupConfigurationDelegate" positionX="-1089" positionY="-423" width="128" height="45"/>
-        <element name="ButtonGroupPreset" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="ButtonPreset" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="Command" positionX="-594" positionY="-486" width="128" height="45"/>
-        <element name="CommandContainer" positionX="-1496" positionY="-405" width="128" height="45"/>
-        <element name="CommandSet" positionX="-1476" positionY="-279" width="128" height="45"/>
-        <element name="CommandSetCollection" positionX="-1593" positionY="-558" width="128" height="60"/>
-        <element name="ComponentDevice" positionX="-812" positionY="-972" width="128" height="180"/>
-        <element name="ConfigurationDelegate" positionX="-1053" positionY="-270" width="128" height="45"/>
-        <element name="ControlStateButtonImageSet" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="ControlStateColorSet" positionX="160" positionY="192" width="128" height="225"/>
-        <element name="ControlStateIconImageSet" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="ControlStateImageSet" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="ControlStateSet" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="ControlStateTitleSet" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="DelayCommand" positionX="-801" positionY="-306" width="128" height="45"/>
-        <element name="DeviceConfiguration" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="DPad" positionX="-1224" positionY="-171" width="128" height="45"/>
-        <element name="FactoryIRCode" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="GalleryBackgroundImage" positionX="-1593" positionY="-738" width="128" height="45"/>
-        <element name="GalleryButtonImage" positionX="-1332" positionY="-801" width="128" height="45"/>
-        <element name="GalleryButtonPreview" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="GalleryGroup" positionX="-1818" positionY="-891" width="128" height="45"/>
-        <element name="GalleryIconImage" positionX="-1179" positionY="-882" width="128" height="45"/>
-        <element name="GalleryImage" positionX="-1359" positionY="-891" width="128" height="210"/>
-        <element name="GalleryPreview" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="HTTPCommand" positionX="-263" positionY="-441" width="128" height="60"/>
-        <element name="IRCode" positionX="-855" positionY="-828" width="128" height="195"/>
-        <element name="IRCodeSet" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="MacroCommand" positionX="-425" positionY="-333" width="128" height="45"/>
-        <element name="Manufacturer" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="NumberPad" positionX="-1656" positionY="-144" width="128" height="45"/>
-        <element name="PickerLabelButtonGroup" positionX="-981" positionY="-21" width="128" height="75"/>
-        <element name="PowerCommand" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="PresetInfo" positionX="-1496" positionY="-990" width="128" height="45"/>
-        <element name="Remote" positionX="-1305" positionY="-684" width="128" height="150"/>
-        <element name="RemoteController" positionX="-1413" positionY="-558" width="128" height="134"/>
-        <element name="RemotePreset" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="RockerButton" positionX="-1737" positionY="-243" width="128" height="45"/>
-        <element name="SendIRCommand" positionX="-587" positionY="-711" width="128" height="45"/>
-        <element name="SwitchToRemoteCommand" positionX="-414" positionY="96" width="128" height="75"/>
-        <element name="SystemCommand" positionX="-596" positionY="-315" width="128" height="45"/>
-        <element name="Transport" positionX="-1440" positionY="-135" width="128" height="45"/>
-        <element name="UserIRCode" positionX="160" positionY="192" width="128" height="45"/>
+        <element name="ActivityButton" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObject" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankPreset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Button" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonGroupConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonGroupPreset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonPreset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Command" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CommandContainer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CommandSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CommandSetCollection" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ComponentDevice" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateButtonImageSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateColorSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateIconImageSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateImageSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateTitleSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DelayCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DeviceConfiguration" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DPad" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="FactoryIRCode" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GalleryGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="HTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="IRCode" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="IRCodeSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MacroCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Manufacturer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="NumberPad" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PowerCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PresetInfo" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="REBackgroundImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="REButtonImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="REIconImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="REImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Remote" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RemoteController" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RemotePreset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RockerButton" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SendIRCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SwitchToRemoteCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SystemCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Transport" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="UserIRCode" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

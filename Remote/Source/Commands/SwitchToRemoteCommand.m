@@ -1,13 +1,13 @@
 //
 // SwitchToRemoteCommand.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 7/21/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Command.h"
 #import "Command_Private.h"
-#import "RemoteController.h"
+#import "RERemoteController.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -22,7 +22,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 + (SwitchToRemoteCommand *)switchToRemoteCommandInContext:(NSManagedObjectContext *)context {
     SwitchToRemoteCommand * command = (SwitchToRemoteCommand *)[super commandInContext:context];
 
-    if (command) command.remoteController = [RemoteController remoteControllerInContext:context];
+    if (command) command.remoteController = [RERemoteController remoteControllerInContext:context];
 
     return command;
 }

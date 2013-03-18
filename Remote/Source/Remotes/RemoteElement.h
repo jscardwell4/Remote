@@ -1,13 +1,13 @@
 //
 // RemoteElement.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/3/12.
 // Copyright © 2012 Moondeer Studios. All rights reserved.
 //
 
-#import "RemoteElementEditingViewController.h"
-#import "RemoteElementConstraintManager.h"
+#import "REEditingViewController.h"
+#import "REConstraintManager.h"
 
 /**
  *
@@ -19,7 +19,8 @@
  *			style          shape      size   alignment
  *
  */
-typedef NS_OPTIONS(uint64_t, RemoteElementAlignmentOptions) {
+/*
+typedef NS_OPTIONS(uint64_t, REOptionsAlignment) {
     RemoteElementAlignmentOptionUndefined = 0 << 0xF,
 
     RemoteElementAlignmentOptionCenterXUnspecified = 0 << 0x0,
@@ -60,12 +61,13 @@ typedef NS_OPTIONS(uint64_t, RemoteElementAlignmentOptions) {
     RemoteElementAlignmentOptionMaskParent = 0x1555,
     RemoteElementAlignmentOptionMaskFocus  = 0x2AAA,
     RemoteElementAlignmentOptionReserved   = 0xC000,
-    RemoteElementAlignmentOptionsMask      = 0xFFFF
+    REOptionsAlignmentMask      = 0xFFFF
 };
 
-RemoteElementAlignmentOptions alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type);
+REOptionsAlignment
+alignmentOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type);
 
-typedef NS_OPTIONS (uint64_t, RemoteElementSizingOptions) {
+typedef NS_OPTIONS (uint64_t, REOptionsSizing) {
     RemoteElementSizingOptionUnspecified = 0 << 0x17,
 
         RemoteElementSizingOptionWidthUnspecified = 0 << 0x11,
@@ -80,31 +82,34 @@ typedef NS_OPTIONS (uint64_t, RemoteElementSizingOptions) {
         RemoteElementSizingOptionHeightFocus       = 0xC0000,
         RemoteElementSizingOptionHeightMask        = 0xC0000,
 
-        RemoteElementSizingOptionsProportionLock = 0x100000,
+        REOptionsSizingProportionLock = 0x100000,
 
         RemoteElementSizingOptionReserved = 0xC00000,
-        RemoteElementSizingOptionsMask    = 0xFF0000
+        REOptionsSizingMask    = 0xFF0000
 };
 
-RemoteElementSizingOptions sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type);
+REOptionsSizing
+sizingOptionForNSLayoutAttribute(NSLayoutAttribute attribute, RERelationshipType type);
+*/
 
-typedef NS_ENUM (uint64_t, RemoteElementShape) {
-    RemoteElementShapeUndefined            = 0 << 0x2F,
-        RemoteElementShapeRoundedRectangle = 0x1000000,
-        RemoteElementShapeOval             = 0x2000000,
-        RemoteElementShapeRectangle        = 0x3000000,
-        RemoteElementShapeTriangle         = 0x4000000,
-        RemoteElementShapeDiamond          = 0x5000000,
-        RemoteElementShapeReserved         = 0xFFFFF8000000,
-        RemoteElementShapeMask             = 0xFFFFFF000000
+typedef NS_ENUM (uint64_t, REShape) {
+    REShapeUndefined        = 0 << 0x2F,
+    REShapeRoundedRectangle = 0x1000000,
+    REShapeOval             = 0x2000000,
+    REShapeRectangle        = 0x3000000,
+    REShapeTriangle         = 0x4000000,
+    REShapeDiamond          = 0x5000000,
+    REShapeReserved         = 0xFFFFF8000000,
+    REShapeMask             = 0xFFFFFF000000
 };
-typedef NS_OPTIONS (uint64_t, RemoteElementStyle) {
-    RemoteElementNoStyle              = 0 << 0x3F,
-        RemoteElementStyleApplyGloss  = 0x1000000000000,
-        RemoteElementStyleDrawBorder  = 0x2000000000000,
-        RemoteElementStyleStretchable = 0x4000000000000,
-        RemoteElementStyleReserved    = 0xFFF8000000000000,
-        RemoteElementStyleMask        = 0xFFFF000000000000
+
+typedef NS_OPTIONS (uint64_t, REStyle) {
+    REStyleUndefined   = 0 << 0x3F,
+    REStyleApplyGloss  = 0x1000000000000,
+    REStyleDrawBorder  = 0x2000000000000,
+    REStyleStretchable = 0x4000000000000,
+    REStyleReserved    = 0xFFF8000000000000,
+    REStyleMask        = 0xFFFF000000000000
 };
 
 /**
@@ -117,37 +122,40 @@ typedef NS_OPTIONS (uint64_t, RemoteElementStyle) {
  *           state       options    	  subtype      type
  *
  */
-typedef NS_ENUM (uint64_t, RemoteElementType) {
-    RemoteElementUnspecifiedType     = 0 << 0xF,
-        RemoteElementRemoteType      = 0x1,
-        RemoteElementButtonGroupType = 0x2,
-        RemoteElementButtonType      = 0x3,
-        RemoteElementBaseTypeMask    = 0xC,
-        RemoteElementTypeReserved    = 0xFFF0,
-        RemoteElementTypeMask        = 0xFFFF
+typedef NS_ENUM (uint64_t, REType){
+    RETypeUndefined   = 0 << 0xF,
+    RETypeRemote      = 0x1,
+    RETypeButtonGroup = 0x2,
+    RETypeButton      = 0x3,
+    RETypeBaseMask    = 0xC,
+    RETypeReserved    = 0xFFF0,
+    RETypeMask        = 0xFFFF
 };
-typedef NS_ENUM (uint64_t, RemoteElementSubtype) {
-    RemoteElementUnspecifiedSubtype  = 0 << 0x1F,
-        RemoteElementSubtypeReserved = 0xFFFF0000,
-        RemoteElementSubtypeMask     = 0xFFFF0000
+
+typedef NS_ENUM (uint64_t, RESubtype) {
+    RESubtypeUndefined  = 0 << 0x1F,
+    RESubtypeReserved   = 0xFFFF0000,
+    RESubtypeMask       = 0xFFFF0000
 };
-typedef NS_ENUM (uint64_t, RemoteElementOptions) {
-    RemoteElementNoOptions           = 0 << 0x2F,
-        RemoteElementOptionsReserved = 0xFFFF00000000,
-        RemoteElementOptionsMask     = 0xFFFF00000000
+
+typedef NS_ENUM (uint64_t, REOptions) {
+    REOptionsUndefined = 0 << 0x2F,
+    REOptionsReserved  = 0xFFFF00000000,
+    REOptionsMask      = 0xFFFF00000000
 };
-typedef NS_OPTIONS (uint64_t, RemoteElementState) {
-    RemoteElementDefaultState      = 0 << 0x3F,
-        RemoteElementStateReserved = 0xFFFF000000000000,
-        RemoteElementStateMask     = 0xFFFF000000000000
+
+typedef NS_OPTIONS (uint64_t, REState) {
+    REStateDefault  = 0 << 0x3F,
+    REStateReserved = 0xFFFF000000000000,
+    REStateMask     = 0xFFFF000000000000
 };
 
 // TODO: Should editing go in the view file?
 typedef NS_ENUM (uint64_t, EditingMode) {
-    EditingModeEditingNone        = RemoteElementUnspecifiedType,
-    EditingModeEditingRemote      = RemoteElementRemoteType,
-    EditingModeEditingButtonGroup = RemoteElementButtonGroupType,
-    EditingModeEditingButton      = RemoteElementButtonType
+    EditingModeEditingNone        = RETypeUndefined,
+    EditingModeEditingRemote      = RETypeRemote,
+    EditingModeEditingButtonGroup = RETypeButtonGroup,
+    EditingModeEditingButton      = RETypeButton
 };
 
 MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
@@ -159,63 +167,61 @@ MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
             [modeString appendString:@"|EditingModeEditingButtonGroup"];
             if (mode & EditingModeEditingButton) [modeString appendString:@"|EditingModeEditingButton"];
         }
-    } else
+    }
+
+    else
         [modeString appendString:@"EditingModeEditingNone"];
 
 
     return modeString;
 }
 
-@class   RemoteController, RemoteElementLayoutConfiguration;
+@class   RERemoteController, RELayoutConfiguration;
 
 @interface RemoteElement : NSManagedObject <EditableBackground>
 
 // model backed properties
-@property (nonatomic, assign)                   int16_t                            tag;
-@property (nonatomic, copy)                     NSString                         * key;
-@property (nonatomic, copy)                     NSString                         * identifier;
-@property (nonatomic, copy)                     NSString                         * displayName;
-@property (nonatomic, strong)                   NSSet                            * constraints;
-@property (nonatomic, strong)                   NSSet                            * firstItemConstraints;
-@property (nonatomic, strong)                   NSSet                            * secondItemConstraints;
-@property (nonatomic, assign)                   CGFloat                            backgroundImageAlpha;
-@property (nonatomic, strong)                   UIColor                          * backgroundColor;
-@property (nonatomic, strong)                   GalleryImage                     * backgroundImage;
-@property (nonatomic, strong)                   RemoteController                 * controller;
-@property (nonatomic, strong)                   RemoteElement                    * parentElement;
-@property (nonatomic, strong)                   NSOrderedSet                     * subelements;
-@property (nonatomic, strong, readonly)         RemoteElementLayoutConfiguration * layoutConfiguration;
-@property (nonatomic, strong, readonly)         RemoteElementConstraintManager   * constraintManager;
+@property (nonatomic, assign)                   int16_t                 tag;
+@property (nonatomic, copy)                     NSString              * key;
+@property (nonatomic, copy)                     NSString              * uuid;
+@property (nonatomic, copy)                     NSString              * displayName;
+@property (nonatomic, strong)                   NSSet                 * constraints;
+@property (nonatomic, strong)                   NSSet                 * firstItemConstraints;
+@property (nonatomic, strong)                   NSSet                 * secondItemConstraints;
+@property (nonatomic, assign)                   CGFloat                 backgroundImageAlpha;
+@property (nonatomic, strong)                   UIColor               * backgroundColor;
+@property (nonatomic, strong)                   REImage               * backgroundImage;
+@property (nonatomic, strong)                   RERemoteController    * controller;
+@property (nonatomic, strong)                   RemoteElement         * parentElement;
+@property (nonatomic, strong)                   NSOrderedSet          * subelements;
+@property (nonatomic, strong, readonly)         RELayoutConfiguration * layoutConfiguration;
+@property (nonatomic, strong, readonly)         REConstraintManager   * constraintManager;
 
 + (id)remoteElementInContext:(NSManagedObjectContext *)context withAttributes:(NSDictionary *)attributes;
-+ (id)remoteElementOfType:(RemoteElementType)type context:(NSManagedObjectContext *)context;
++ (id)remoteElementOfType:(REType)type context:(NSManagedObjectContext *)context;
 - (RemoteElement *)objectForKeyedSubscript:(NSString *)key;
+
+@end
+
+@interface RemoteElement (LayoutConfiguration)
+
+@property (nonatomic, assign, readonly) BOOL    proportionLock;
+@property (nonatomic, strong, readonly) NSSet * subelementConstraints;
+@property (nonatomic, strong, readonly) NSSet * dependentConstraints;
+@property (nonatomic, strong, readonly) NSSet * dependentChildConstraints;
+@property (nonatomic, strong, readonly) NSSet * dependentSiblingConstraints;
+@property (nonatomic, strong, readonly) NSSet * intrinsicConstraints;
 
 @end
 
 @interface RemoteElement (FLagsAndOptions)
 
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   alignmentOptions;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   topAlignmentOption;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   bottomAlignmentOption;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   leftAlignmentOption;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   rightAlignmentOption;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   baselineAlignmentOption;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerXAlignmentOption;
-//@property (nonatomic, assign)       RemoteElementAlignmentOptions   centerYAlignmentOption;
-
-//@property (nonatomic, assign)       RemoteElementSizingOptions   sizingOptions;
-//@property (nonatomic, assign)       RemoteElementSizingOptions   widthSizingOption;
-//@property (nonatomic, assign)       RemoteElementSizingOptions   heightSizingOption;
-
-@property (nonatomic, assign, readonly) BOOL proportionLock;
-
-@property (nonatomic, assign)       RemoteElementShape     shape;
-@property (nonatomic, assign)       RemoteElementStyle     style;
-@property (nonatomic, readonly)     RemoteElementType      type;
-@property (nonatomic, readonly)     RemoteElementSubtype   subtype;
-@property (nonatomic, assign)       RemoteElementOptions   options;
-@property (nonatomic, readonly)     RemoteElementState     state;
+@property (nonatomic, assign)           REShape     shape;
+@property (nonatomic, assign)           REStyle     style;
+@property (nonatomic, readonly)         REType      type;
+@property (nonatomic, readonly)         RESubtype   subtype;
+@property (nonatomic, assign)           REOptions   options;
+@property (nonatomic, readonly)         REState     state;
 
 - (uint64_t)flagsWithMask:(uint64_t)mask;
 - (uint64_t)appearanceWithMask:(uint64_t)mask;
@@ -229,9 +235,10 @@ MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
 - (void)toggleAppearanceBits:(uint64_t)appearanceBits mask:(uint64_t)mask;
 - (BOOL)isFlagSetForBits:(uint64_t)bits;
 - (BOOL)isAppearanceSetforBits:(uint64_t)bits;
+
 @end
 
-@class   RemoteElementLayoutConstraint;
+@class   REConstraint;
 
 @interface RemoteElement (SubelementsAccessors)
 
@@ -249,28 +256,23 @@ MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
 @end
 
 @interface RemoteElement (ConstraintAccessors)
-- (void)addConstraint:(RemoteElementLayoutConstraint *)constraint;
-- (void)addConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
-- (void)removeConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+
+- (void)addConstraint:(REConstraint *)constraint;
+- (void)addConstraintsObject:(REConstraint *)constraint;
+- (void)removeConstraintsObject:(REConstraint *)constraint;
 - (void)addConstraints:(NSSet *)constraints;
-- (void)removeConstraint:(RemoteElementLayoutConstraint *)constraint;
+- (void)removeConstraint:(REConstraint *)constraint;
 - (void)removeConstraints:(NSSet *)constraints;
 
-- (void)addFirstItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
-- (void)removeFirstItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)addFirstItemConstraintsObject:(REConstraint *)constraint;
+- (void)removeFirstItemConstraintsObject:(REConstraint *)constraint;
 - (void)addFirstItemConstraints:(NSSet *)constraints;
 - (void)removeFirstItemConstraints:(NSSet *)constraints;
 
-- (void)addSecondItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
-- (void)removeSecondItemConstraintsObject:(RemoteElementLayoutConstraint *)constraint;
+- (void)addSecondItemConstraintsObject:(REConstraint *)constraint;
+- (void)removeSecondItemConstraintsObject:(REConstraint *)constraint;
 - (void)addSecondItemConstraints:(NSSet *)constraints;
 - (void)removeSecondItemConstraints:(NSSet *)constraints;
-
-@property (nonatomic, strong, readonly) NSSet * subelementConstraints;
-@property (nonatomic, strong, readonly) NSSet * dependentConstraints;
-@property (nonatomic, strong, readonly) NSSet * dependentChildConstraints;
-@property (nonatomic, strong, readonly) NSSet * dependentSiblingConstraints;
-@property (nonatomic, strong, readonly) NSSet * intrinsicConstraints;
 
 @end
 
@@ -279,12 +281,11 @@ MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
 - (NSString *)constraintsDescription;
 - (NSString *)dumpElementHierarchy;
 - (NSString *)flagsAndAppearanceDescription;
-- (NSString *)sizingOptionsDescription;
-- (NSString *)alignmentOptionsDescription;
 
 @end
 
 #define NSDictionaryOfVariableBindingsToIdentifiers(...) \
     _NSDictionaryOfVariableBindingsToIdentifiers(@"" # __VA_ARGS__, __VA_ARGS__, nil)
 
-MSKIT_EXTERN NSDictionary * _NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSeparatedKeysString, id firstValue, ...);
+MSKIT_EXTERN NSDictionary *
+_NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSeparatedKeysString, id firstValue, ...);

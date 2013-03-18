@@ -1,30 +1,30 @@
 //
 // RemoteConstruction.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/20/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "Button.h"
-#import "Remote.h"
+#import "REButton.h"
+#import "RERemote.h"
 #import "ButtonBuilder.h"
-#import "ButtonGroup.h"
+#import "REButtonGroup.h"
 #import "ButtonGroupBuilder.h"
-#import "ButtonGroupView.h"
-#import "ButtonView.h"
+#import "REButtonGroupView.h"
+#import "REButtonView.h"
 #import "ConfigurationDelegate.h"
 #import "CoreDataManager.h"
 #import "DPad.h"
 #import "DeviceConfiguration.h"
-#import "GalleryPreview.h"
-#import "GalleryImage.h"
+#import "BankObjectPreview.h"
+#import "REImage.h"
 #import "MSRemoteConstants.h"
 #import "MacroBuilder.h"
 #import "NumberPad.h"
 #import "RemoteBuilder.h"
-#import "RemoteController.h"
+#import "RERemoteController.h"
 #import "RemoteElement.h"
-#import "RemoteView.h"
+#import "RERemoteView.h"
 #import "RockerButton.h"
 #import "Transport.h"
 #import "MSRemoteConstants.h"
@@ -38,24 +38,24 @@
     _MakeElement((@{__VA_ARGS__} \
                   ))
 
-#define MakeRemote(...) MakeElement(@"type" : @(RemoteTypeDefault), __VA_ARGS__)
+#define MakeRemote(...) MakeElement(@"type" : @(RETypeRemote), __VA_ARGS__)
 
-#define MakeButtonGroup(...)        MakeElement(@"type" : @(ButtonGroupTypeDefault), __VA_ARGS__)
-#define MakeToolbarButtonGroup(...) MakeElement(@"type" : @(ButtonGroupTypeToolbar), __VA_ARGS__)
+#define MakeButtonGroup(...)        MakeElement(@"type" : @(REButtonGroupTypeDefault), __VA_ARGS__)
+#define MakeToolbarButtonGroup(...) MakeElement(@"type" : @(REButtonGroupTypeToolbar), __VA_ARGS__)
 
-#define MakeButton(...) MakeElement(@"type" : @(ButtonTypeDefault), @"subtype" : @(ButtonSubtypeUnspecified), __VA_ARGS__)
-#define MakeBatteryStatusButton    MakeElement(@"type" : @(ButtonTypeBatteryStatus), @"subtype" : @(ButtonSubtypeUnspecified), @"displayName" : @"Battery Status Button")
-#define MakeConnectionStatusButton MakeElement(@"type" : @(ButtonTypeConnectionStatus), @"subtype" : @(ButtonSubtypeUnspecified), @"displayName" : @"Connection Status Button")
+#define MakeButton(...) MakeElement(@"type" : @(REButtonTypeDefault), @"subtype" : @(REButtonSubtypeUnspecified), __VA_ARGS__)
+#define MakeBatteryStatusButton    MakeElement(@"type" : @(REButtonTypeBatteryStatus), @"subtype" : @(REButtonSubtypeUnspecified), @"displayName" : @"Battery Status Button")
+#define MakeConnectionStatusButton MakeElement(@"type" : @(REButtonTypeConnectionStatus), @"subtype" : @(REButtonSubtypeUnspecified), @"displayName" : @"Connection Status Button")
 
-#define MakeActivityOnButton(...)  MakeElement(@"type" : @(ButtonTypeActivityButton), @"options" : @(ActivityButtonTypeBegin), __VA_ARGS__)
-#define MakeActivityOffButton(...) MakeElement(@"type" : @(ButtonTypeActivityButton), __VA_ARGS__)
+#define MakeActivityOnButton(...)  MakeElement(@"type" : @(REButtonTypeActivityButton), @"options" : @(REActivityButtonTypeBegin), __VA_ARGS__)
+#define MakeActivityOffButton(...) MakeElement(@"type" : @(REButtonTypeActivityButton), __VA_ARGS__)
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Fetching Images
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MakeBackgroundImage(t) [GalleryBackgroundImage fetchBackgroundImageWithTag : t context : _buildContext]
-#define MakeIconImage(t)       [GalleryIconImage fetchIconWithTag : t context : _buildContext]
+#define MakeBackgroundImage(t) [REBackgroundImage fetchBackgroundImageWithTag : t context : _buildContext]
+#define MakeIconImage(t)       [REIconImage fetchIconWithTag : t context : _buildContext]
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Making Control State Sets

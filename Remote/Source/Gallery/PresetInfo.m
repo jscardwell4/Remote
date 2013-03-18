@@ -1,13 +1,13 @@
 //
 // PresetInfo.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 
 #import "PresetInfo.h"
-#import "GalleryGroup.h"
+#import "BankObjectGroup.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -20,7 +20,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 /*
  * newPresetInfoWithName:andGalleryGroup:inContext:
  */
-+ (PresetInfo *)newPresetInfoWithName:(NSString *)presetName andGalleryGroup:(GalleryGroup *)galleryGroup inContext:(NSManagedObjectContext *)context {
++ (PresetInfo *)newPresetInfoWithName:(NSString *)presetName andGalleryGroup:(BankObjectGroup *)galleryGroup inContext:(NSManagedObjectContext *)context {
     PresetInfo * presetInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PresetInfo" inManagedObjectContext:context];
 
     presetInfo.presetName   = presetName;

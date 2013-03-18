@@ -1,6 +1,6 @@
 //
 // LabelEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/29/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -8,10 +8,10 @@
 
 #import "LabelEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
-#import "ButtonEditingViewController.h"
-#import "DetailedButtonEditingViewController.h"
-#import "ButtonView.h"
-#import "Button.h"
+#import "REButtonEditingViewController.h"
+#import "REDetailedButtonEditingViewController.h"
+#import "REButtonView.h"
+#import "REButton.h"
 #import "StoryboardProxy.h"
 
 MSKIT_STATIC_STRING_CONST   kEmptyLabelText = @"Add Label";
@@ -44,7 +44,7 @@ static NSArray const    * fontNames;
 @property (strong, nonatomic) NSNumber       * currentFontSize;
 @property (copy, nonatomic) NSString         * currentTitleText;
 @property (strong, nonatomic) UIColor        * currentColor;
-@property (weak, nonatomic) ButtonView       * buttonView;
+@property (weak, nonatomic) REButtonView       * buttonView;
 @property (nonatomic, assign) UIControlState   controlState;
 
 - (IBAction)sliderValueChanged:(UISlider *)sender;

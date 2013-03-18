@@ -1,6 +1,6 @@
 //
 // DPad.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/20/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.

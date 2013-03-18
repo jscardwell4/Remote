@@ -1,6 +1,6 @@
 //
 // Constants.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/19/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.

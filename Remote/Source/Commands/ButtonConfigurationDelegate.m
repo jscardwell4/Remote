@@ -1,13 +1,13 @@
 //
 // ButtonConfigurationDelegate.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 7/11/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 
 #import "ConfigurationDelegate.h"
-#import "Button.h"
+#import "REButton.h"
 #import "ControlStateSet.h"
 #import "Command.h"
 
@@ -26,7 +26,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 @dynamic commands;
 @dynamic labels;
 
-+ (ButtonConfigurationDelegate *)buttonConfigurationDelegateForButton:(Button *)button {
++ (ButtonConfigurationDelegate *)buttonConfigurationDelegateForButton:(REButton *)button {
     if (ValueIsNil(button)) return nil;
 
     ButtonConfigurationDelegate * configurationDelegate =

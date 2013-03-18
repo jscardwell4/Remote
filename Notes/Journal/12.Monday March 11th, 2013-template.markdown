@@ -1,9 +1,9 @@
 Monday March 11th, 2013
 =======================
 
-I need to add `requiresConstraintBasedLayout` to `RemoteElementView` and then have a look
+I need to add `requiresConstraintBasedLayout` to `REView` and then have a look
 at the flow of constraint changes through `updateConstraints` to figure out how things need
 to be modified to ensure changes are reflected in the user interface appropriately. For example,
 in button group alignment test #8 the resize occurs appropriately but the following alignment to
 center x does not get drawn to the screen. Also, there are a couple of cases where
- `[RemoteElementView shrinkwrap]` are not working, not working at all with scaling operations.
+ `[REView shrinkwrap]` are not working, not working at all with scaling operations.

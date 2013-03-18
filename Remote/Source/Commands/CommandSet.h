@@ -1,6 +1,6 @@
 //
 // CommandSet.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/9/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
@@ -10,14 +10,14 @@
 #import <CoreData/CoreData.h>
 #import "CommandContainer.h"
 
-@class   Command, IRCode, ButtonGroup;
+@class   Command, IRCode, REButtonGroup;
 
 @interface CommandSet : CommandContainer {
     @private
 }
 
 @property (nonatomic, strong) NSString    * name;
-@property (nonatomic, strong) ButtonGroup * buttonGroup;
+@property (nonatomic, strong) REButtonGroup * buttonGroup;
 
 + (NSString *)keyForTag:(NSUInteger)tag;
 

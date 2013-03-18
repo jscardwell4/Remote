@@ -1,13 +1,13 @@
 //
 // MSRemoteUITest.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 2/7/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "MSRemoteUITest_Private.h"
-#import "RemoteElementView.h"
-#import "RemoteController.h"
+#import "REView.h"
+#import "RERemoteController.h"
 #import "CoreDataManager.h"
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -54,7 +54,7 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
         _flags.quietMode      = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 1);
         _flags.suppressDialog = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 2);
         self.objectContext    = [DataManager childContext];
-        self.remoteController = [RemoteController remoteControllerInContext:_objectContext];
+        self.remoteController = [RERemoteController remoteControllerInContext:_objectContext];
     }
 
     return self;
@@ -87,7 +87,7 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
 //    MSLogDebug(@"%@", meat);
 }
 
-- (void)logRemoteElementView:(RemoteElementView *)view
+- (void)logRemoteElementView:(REView *)view
     includingSubelementViews:(NSArray *)subelementViews
                        after:(dispatch_time_t)delay
                      message:(NSString *)message

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3006" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <development version="4500" identifier="xcode"/>
@@ -155,7 +155,7 @@
         <!--Button Group Editing View Controller-->
         <scene sceneID="2k9-6W-OlE">
             <objects>
-                <viewController storyboardIdentifier="Button Group Editor" id="OQq-R2-BbM" customClass="ButtonGroupEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Button Group Editor" id="OQq-R2-BbM" customClass="REButtonGroupEditingViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wYW-rE-Mbs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -650,7 +650,7 @@
         <!--Remote Editing View Controller-->
         <scene sceneID="bvU-tO-ttz">
             <objects>
-                <viewController storyboardIdentifier="Remote Editor" autoresizesArchivedViewToFullSize="NO" id="iaP-8F-k5F" customClass="RemoteEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Remote Editor" autoresizesArchivedViewToFullSize="NO" id="iaP-8F-k5F" customClass="RERemoteEditingViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CMS-d7-4gi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1090,7 +1090,7 @@
         <!--Button Editing View Controller-->
         <scene sceneID="S55-D1-mrx">
             <objects>
-                <viewController storyboardIdentifier="Button Editor" id="CVE-jO-0Xo" customClass="ButtonEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Button Editor" id="CVE-jO-0Xo" customClass="REButtonEditingViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WTP-qQ-IvQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1478,7 +1478,7 @@
         <!--Detailed Button Editing View Controller-->
         <scene sceneID="dQB-oT-NMR">
             <objects>
-                <viewController storyboardIdentifier="Detailed Button Editor" modalTransitionStyle="partialCurl" id="2mL-QU-hWZ" customClass="DetailedButtonEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Detailed Button Editor" modalTransitionStyle="partialCurl" id="2mL-QU-hWZ" customClass="REDetailedButtonEditingViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="o4Y-bc-In3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1822,229 +1822,6 @@
         <image name="[424]circlex.png" width="22" height="22"/>
         <image name="icons/[384]checkmark.png" width="16" height="16"/>
     </resources>
-    <classes>
-        <class className="AttributeEditingViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AttributeEditingViewController.h"/>
-        </class>
-        <class className="BackgroundEditingViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/BackgroundEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backgroundColorInputAction:"/>
-                <relationship kind="action" name="cancelAction:"/>
-                <relationship kind="action" name="dismissPreview:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="handleTap:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="resetAction:"/>
-                <relationship kind="action" name="saveAction:"/>
-                <relationship kind="outlet" name="colorInputButton" candidateClass="MSColorInputButton"/>
-                <relationship kind="outlet" name="colorSelectionContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="imagePreview" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="ButtonEditingViewController" superclassName="RemoteElementEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ButtonEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="editButtonDetails:"/>
-                <relationship kind="action" name="editButtonStyle:"/>
-                <relationship kind="action" name="resizeButton:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="applyGlossCheckbox" candidateClass="MSCheckboxView"/>
-                <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="buttonActionsToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="buttonStateSelectionContainer" candidateClass="MSView"/>
-                <relationship kind="outlet" name="disabledStateCheckbox" candidateClass="MSCheckboxView"/>
-                <relationship kind="outlet" name="drawBorderCheckbox" candidateClass="MSCheckboxView"/>
-                <relationship kind="outlet" name="highlightedStateCheckbox" candidateClass="MSCheckboxView"/>
-                <relationship kind="outlet" name="selectedStateCheckbox" candidateClass="MSCheckboxView"/>
-                <relationship kind="outlet" name="styleButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="stylePicker" candidateClass="UIPickerView"/>
-                <relationship kind="outlet" name="topToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="touchReporter" candidateClass="MSTouchReporterView"/>
-            </relationships>
-        </class>
-        <class className="ButtonGroupEditingViewController" superclassName="RemoteElementEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ButtonGroupEditingViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="addButtonPicker" candidateClass="MSPickerInputButton"/>
-            </relationships>
-        </class>
-        <class className="ColorSelectionViewController" superclassName="SelectionViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ColorSelectionViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="action" name="reset:"/>
-                <relationship kind="action" name="save:"/>
-                <relationship kind="action" name="sliderValueChanged:" candidateClass="UISlider"/>
-                <relationship kind="action" name="togglePresets:"/>
-                <relationship kind="outlet" name="alphaSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="blueSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="buttonToolbar" candidateClass="UIView"/>
-                <relationship kind="outlet" name="colorDisplayView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="contentView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="greenSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="pickerContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="presetPickerView" candidateClass="UIPickerView"/>
-                <relationship kind="outlet" name="presetsButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="redSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="slidersContainerView" candidateClass="MSView"/>
-                <relationship kind="outletCollection" name="buttonCollection" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="CommandEditingViewController" superclassName="AttributeEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CommandEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="removeCommandAction:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="commandDetailsContainer" candidateClass="MSView"/>
-                <relationship kind="outlet" name="commandTypeButton" candidateClass="MSPickerInputButton"/>
-                <relationship kind="outlet" name="contentContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="detailsLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="removeCommandButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="DetailedButtonEditingViewController" superclassName="RemoteElementEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DetailedButtonEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleSwipe:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="pageChangeAction:" candidateClass="UIPageControl"/>
-                <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="childContentContainer" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
-                <relationship kind="outlet" name="topToolbar" candidateClass="UIToolbar"/>
-            </relationships>
-        </class>
-        <class className="IconEditingViewController" superclassName="AttributeEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/IconEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="launchColorSection:"/>
-                <relationship kind="action" name="launchIconSelection:"/>
-                <relationship kind="action" name="removeIconAction:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="bottomInsetTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="contentContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="iconColorButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="iconNameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="insetContainer" candidateClass="MSView"/>
-                <relationship kind="outlet" name="leftInsetTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="removeIconButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="rightInsetTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="topInsetTextField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="IconSelectionViewController" superclassName="SelectionTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/IconSelectionViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelAction:" candidateClass="UIButton"/>
-                <relationship kind="action" name="saveAction:" candidateClass="UIButton"/>
-                <relationship kind="action" name="selectIconAction:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="outlet" name="tableFooter" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="LabelEditingViewController" superclassName="AttributeEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LabelEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="beginEditingTitleAction:"/>
-                <relationship kind="action" name="doneEditingTitleAction:" candidateClass="UIButton"/>
-                <relationship kind="action" name="launchColorSelection:"/>
-                <relationship kind="action" name="sliderValueChanged:" candidateClass="UISlider"/>
-                <relationship kind="action" name="togglePicker:"/>
-                <relationship kind="outlet" name="bottomInsetTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="contentContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="doneEditingTitleButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="fontNameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="fontNamePicker" candidateClass="UIPickerView"/>
-                <relationship kind="outlet" name="fontSizeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="fontSizeSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="insetContainer" candidateClass="MSView"/>
-                <relationship kind="outlet" name="leftInsetTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="rightInsetTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="titleColorButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="titleTextView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="topInsetTextField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="MSCheckboxView" superclassName="MSView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MSCheckboxView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="delegate"/>
-            </relationships>
-        </class>
-        <class className="MSColorInputButton" superclassName="MSView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MSColorInputButton.h"/>
-        </class>
-        <class className="MSMultiselectGestureRecognizer" superclassName="UIGestureRecognizer">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MSMultiselectGestureRecognizer.h"/>
-        </class>
-        <class className="MSPickerInputButton" superclassName="MSView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MSPickerInputButton.h"/>
-            <relationships>
-                <relationship kind="outlet" name="cancelBarButtonItem" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="delegate"/>
-                <relationship kind="outlet" name="selectBarButtonItem" candidateClass="UIBarButtonItem"/>
-            </relationships>
-        </class>
-        <class className="MSTouchReporterView" superclassName="MSView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MSTouchReporterView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="delegate"/>
-            </relationships>
-        </class>
-        <class className="MSView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MSView.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="RemoteEditingViewController" superclassName="RemoteElementEditingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RemoteEditingViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="addGroupPickerButton" candidateClass="MSPickerInputButton"/>
-                <relationship kind="outlet" name="panelPickerButton" candidateClass="MSPickerInputButton"/>
-            </relationships>
-        </class>
-        <class className="RemoteElementEditingViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RemoteElementEditingViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="addSubelement:"/>
-                <relationship kind="action" name="alignBottomEdges:"/>
-                <relationship kind="action" name="alignHorizontalCenters:"/>
-                <relationship kind="action" name="alignLeftEdges:"/>
-                <relationship kind="action" name="alignRightEdges:"/>
-                <relationship kind="action" name="alignTopEdges:"/>
-                <relationship kind="action" name="alignVerticalCenters:"/>
-                <relationship kind="action" name="cancelAction:"/>
-                <relationship kind="action" name="copyStyle:"/>
-                <relationship kind="action" name="duplicateSubelements:"/>
-                <relationship kind="action" name="editBackground:"/>
-                <relationship kind="action" name="editSubelement:"/>
-                <relationship kind="action" name="handleLongPress:" candidateClass="UILongPressGestureRecognizer"/>
-                <relationship kind="action" name="handlePan:" candidateClass="UIPanGestureRecognizer"/>
-                <relationship kind="action" name="handlePinch:" candidateClass="UIPinchGestureRecognizer"/>
-                <relationship kind="action" name="handleSelection:" candidateClass="MSMultiselectGestureRecognizer"/>
-                <relationship kind="action" name="handleTap:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="hideMultiselect:"/>
-                <relationship kind="action" name="menuAction:"/>
-                <relationship kind="action" name="pasteStyle:"/>
-                <relationship kind="action" name="presets:"/>
-                <relationship kind="action" name="redo:"/>
-                <relationship kind="action" name="resetAction:"/>
-                <relationship kind="action" name="resizeFromFocusView:"/>
-                <relationship kind="action" name="resizeHorizontallyFromFocusView:"/>
-                <relationship kind="action" name="resizeVerticallyFromFocusView:"/>
-                <relationship kind="action" name="saveAction:"/>
-                <relationship kind="action" name="showMultiselect:"/>
-                <relationship kind="action" name="toggleBoundsVisibility:"/>
-                <relationship kind="action" name="undo:"/>
-                <relationship kind="outlet" name="emptySelectionToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="focusSelectionToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="nonEmptySelectionToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="topToolbar" candidateClass="UIToolbar"/>
-            </relationships>
-        </class>
-        <class className="SelectionTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SelectionTableViewController.h"/>
-        </class>
-        <class className="SelectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SelectionViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <nil key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

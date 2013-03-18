@@ -1,6 +1,6 @@
 //
 // RemoteBuilder.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 7/12/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
@@ -16,13 +16,13 @@
 
 + (RemoteBuilder *)remoteBuilderWithContext:(NSManagedObjectContext *)context;
 
-- (Remote *)constructDVRRemote;
+- (RERemote *)constructDVRRemote;
 
-- (Remote *)constructHomeRemote;
+- (RERemote *)constructHomeRemote;
 
-- (Remote *)constructPS3Remote;
+- (RERemote *)constructPS3Remote;
 
-- (Remote *)constructSonosRemote;
+- (RERemote *)constructSonosRemote;
 
 @property (nonatomic, strong) NSManagedObjectContext * buildContext;
 

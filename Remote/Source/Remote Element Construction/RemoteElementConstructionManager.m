@@ -1,6 +1,6 @@
 //
 // RemoteElementConstructionManager.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/23/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -54,7 +54,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
     [self.buildContext
      performBlockAndWait:^{
          NSFetchRequest * fetchRequest =
-            [[NSFetchRequest alloc] initWithEntityName:@"RemoteController"];
+            [[NSFetchRequest alloc] initWithEntityName:@"RERemoteController"];
 
          NSError * error = nil;
          NSArray * fetchedObjects =
@@ -63,7 +63,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
                            error:&error];
 
          if (!error && fetchedObjects && fetchedObjects.count) {
-            RemoteController * rc = (RemoteController *)fetchedObjects[0];
+            RERemoteController * rc = (RERemoteController *)fetchedObjects[0];
             [self.buildContext
              deleteObject:rc];
 // [self.buildContext save:&error];
@@ -87,7 +87,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
 }
 
 - (BOOL)buildController {
-    RemoteController * controller = [RemoteController remoteControllerInContext:_buildContext];
+    RERemoteController * controller = [RERemoteController remoteControllerInContext:_buildContext];
 
     controller.topToolbar =
         [self.buttonGroupBuilder constructRemoteViewControllerTopBarButtonGroup];
@@ -149,7 +149,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
     return YES;
 }  /* buildController */
 
-- (BOOL)rebuildGalleryPreviews {
+- (BOOL)rebuildBankObjectPreviews {
 // FIXME: This hasn't been working with CGPost errors
 
 // return [[ButtonBuilder sharedButtonBuilder] generateButtonPreviews:YES];

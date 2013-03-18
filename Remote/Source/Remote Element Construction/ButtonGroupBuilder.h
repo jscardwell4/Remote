@@ -1,52 +1,52 @@
 //
 // ButtonGroupBuilder.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/6/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-@class   ButtonGroup, PickerLabelButtonGroup;
+@class   REButtonGroup, REPickerLabelButtonGroup;
 
 @interface ButtonGroupBuilder : NSObject
 
 + (ButtonGroupBuilder *)buttonGroupBuilderWithContext:(NSManagedObjectContext *)context;
-- (ButtonGroup *)       constructRemoteViewControllerTopBarButtonGroup;
+- (REButtonGroup *)       constructRemoteViewControllerTopBarButtonGroup;
 
 // Home screen
-- (ButtonGroup *)constructActivities;
-- (ButtonGroup *)constructLightControls;
+- (REButtonGroup *)constructActivities;
+- (REButtonGroup *)constructLightControls;
 
 // DPad construction
-- (ButtonGroup *)rawDPad;
-- (ButtonGroup *)constructDVRDPad;
-- (ButtonGroup *)constructPS3DPad;
+- (REButtonGroup *)rawDPad;
+- (REButtonGroup *)constructDVRDPad;
+- (REButtonGroup *)constructPS3DPad;
 
 // ￼NumberPad construction
-- (ButtonGroup *)rawNumberPad;
-- (ButtonGroup *)constructDVRNumberPad;
-- (ButtonGroup *)constructPS3NumberPad;
+- (REButtonGroup *)rawNumberPad;
+- (REButtonGroup *)constructDVRNumberPad;
+- (REButtonGroup *)constructPS3NumberPad;
 
 // Transport construction
-- (ButtonGroup *)rawTransport;
-- (ButtonGroup *)constructDVRTransport;
-- (ButtonGroup *)constructPS3Transport;
+- (REButtonGroup *)rawTransport;
+- (REButtonGroup *)constructDVRTransport;
+- (REButtonGroup *)constructPS3Transport;
 
 // Rocker construction
-- (PickerLabelButtonGroup *)rawRocker;
-- (PickerLabelButtonGroup *)constructDVRRocker;
-- (PickerLabelButtonGroup *)constructPS3Rocker;
-- (PickerLabelButtonGroup *)constructSonosRocker;
+- (REPickerLabelButtonGroup *)rawRocker;
+- (REPickerLabelButtonGroup *)constructDVRRocker;
+- (REPickerLabelButtonGroup *)constructPS3Rocker;
+- (REPickerLabelButtonGroup *)constructSonosRocker;
 
 // Constructing other button groups
-- (ButtonGroup *)rawGroupOfThreeButtons;
-- (ButtonGroup *)rawButtonPanel;
-- (ButtonGroup *)constructSonosMuteButtonGroup;
-- (ButtonGroup *)constructSelectionPanel;
-- (ButtonGroup *)constructDVRGroupOfThreeButtons;
-- (ButtonGroup *)constructPS3GroupOfThreeButtons;
-- (ButtonGroup *)constructAdditionalButtonsLeft;
-- (ButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity;
+- (REButtonGroup *)rawGroupOfThreeButtons;
+- (REButtonGroup *)rawButtonPanel;
+- (REButtonGroup *)constructSonosMuteButtonGroup;
+- (REButtonGroup *)constructSelectionPanel;
+- (REButtonGroup *)constructDVRGroupOfThreeButtons;
+- (REButtonGroup *)constructPS3GroupOfThreeButtons;
+- (REButtonGroup *)constructAdditionalButtonsLeft;
+- (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity;
 
 @property (nonatomic, weak) NSManagedObjectContext * buildContext;
 

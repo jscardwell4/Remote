@@ -1,6 +1,6 @@
 //
 // IconBankSubcategoryDetailViewController.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/14/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.

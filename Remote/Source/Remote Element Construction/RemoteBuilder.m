@@ -1,6 +1,6 @@
 //
 // RemoteBuilder.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 7/12/11.// Copyright 2011 Moondeer Studios. All rights reserved.
 //
@@ -24,21 +24,21 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return rb;
 }
 
-- (Remote *)constructDVRRemote {
+- (RERemote *)constructDVRRemote {
     // Create remote view that fills the screen with textured background
-    Remote * remote = MakeRemote(@"displayName" : @"Comcast DVR Activity",
+    RERemote * remote = MakeRemote(@"displayName" : @"Comcast DVR Activity",
                                  @"key" : @"activity1",
                                  @"backgroundImage" : MakeBackgroundImage(8),
                                  @"backgroundImageAlpha" : @1.0,
-                                 @"options" : @(RemoteOptionTopBarHiddenOnLoad));
-    ButtonGroup * oneByThree = [self.buttonGroupBuilder constructDVRGroupOfThreeButtons];
-    ButtonGroup * rocker     = [self.buttonGroupBuilder constructDVRRocker];
-    ButtonGroup * dpad       = [self.buttonGroupBuilder constructDVRDPad];
-    ButtonGroup * numberpad  = [self.buttonGroupBuilder constructDVRNumberPad];
-    ButtonGroup * transport  = [self.buttonGroupBuilder constructDVRTransport];
-    ButtonGroup * selection  = [self.buttonGroupBuilder constructSelectionPanel];
-    ButtonGroup * leftPanel  = [self.buttonGroupBuilder constructAdditionalButtonsLeft];
-    ButtonGroup * power      = [self.buttonGroupBuilder constructHomeAndPowerButtonsForActivity:1];
+                                 @"options" : @(RERemoteOptionTopBarHiddenOnLoad));
+    REButtonGroup * oneByThree = [self.buttonGroupBuilder constructDVRGroupOfThreeButtons];
+    REButtonGroup * rocker     = [self.buttonGroupBuilder constructDVRRocker];
+    REButtonGroup * dpad       = [self.buttonGroupBuilder constructDVRDPad];
+    REButtonGroup * numberpad  = [self.buttonGroupBuilder constructDVRNumberPad];
+    REButtonGroup * transport  = [self.buttonGroupBuilder constructDVRTransport];
+    REButtonGroup * selection  = [self.buttonGroupBuilder constructSelectionPanel];
+    REButtonGroup * leftPanel  = [self.buttonGroupBuilder constructAdditionalButtonsLeft];
+    REButtonGroup * power      = [self.buttonGroupBuilder constructHomeAndPowerButtonsForActivity:1];
 
     [remote addSubelements:[@[oneByThree, rocker, dpad, power, numberpad, transport, selection, leftPanel] orderedSet]];
 
@@ -70,16 +70,16 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return remote;
 }
 
-- (Remote *)constructHomeRemote {
-    Remote * homeRemote = MakeRemote(@"type" : @(RemoteTypeDefault),
+- (RERemote *)constructHomeRemote {
+    RERemote * homeRemote = MakeRemote(@"type" : @(RETypeRemote),
                                      @"displayName" : @"Home Screen",
                                      @"key" : MSRemoteControllerHomeRemoteKeyName,
                                      @"backgroundImage" : MakeBackgroundImage(8),
                                      @"backgroundImageAlpha" : @1.0);
-    ButtonGroup * activityButtons = [self.buttonGroupBuilder constructActivities];
+    REButtonGroup * activityButtons = [self.buttonGroupBuilder constructActivities];
 // activityButtons.sizingOptions = SizingOptions4;
 // activityButtons.alignmentOptions = AlignmentOptions4;
-    ButtonGroup * lightControls = [self.buttonGroupBuilder constructLightControls];
+    REButtonGroup * lightControls = [self.buttonGroupBuilder constructLightControls];
 
 // lightControls.alignmentOptions = AlignmentOptions8;
 // lightControls.sizingOptions = SizingOptions5;
@@ -99,19 +99,19 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return homeRemote;
 }
 
-- (Remote *)constructPS3Remote {
-    Remote * remote = MakeRemote(@"type" : @(RemoteTypeDefault),
+- (RERemote *)constructPS3Remote {
+    RERemote * remote = MakeRemote(@"type" : @(RETypeRemote),
                                  @"key" : @"activity2",
-                                 @"options" : @(RemoteOptionTopBarHiddenOnLoad),
+                                 @"options" : @(RERemoteOptionTopBarHiddenOnLoad),
                                  @"displayName" : @"Playstation Activity",
                                  @"backgroundImage" : MakeBackgroundImage(8),
                                  @"backgroundImageAlpha" : @1.0);
-    ButtonGroup * bg1 = [self.buttonGroupBuilder constructPS3GroupOfThreeButtons];
-    ButtonGroup * bg2 = [self.buttonGroupBuilder constructPS3Rocker];
-    ButtonGroup * bg3 = [self.buttonGroupBuilder constructPS3DPad];
-    ButtonGroup * bg4 = [self.buttonGroupBuilder constructPS3NumberPad];
-    ButtonGroup * bg5 = [self.buttonGroupBuilder constructPS3Transport];
-    ButtonGroup * bg6 = [self.buttonGroupBuilder constructHomeAndPowerButtonsForActivity:2];
+    REButtonGroup * bg1 = [self.buttonGroupBuilder constructPS3GroupOfThreeButtons];
+    REButtonGroup * bg2 = [self.buttonGroupBuilder constructPS3Rocker];
+    REButtonGroup * bg3 = [self.buttonGroupBuilder constructPS3DPad];
+    REButtonGroup * bg4 = [self.buttonGroupBuilder constructPS3NumberPad];
+    REButtonGroup * bg5 = [self.buttonGroupBuilder constructPS3Transport];
+    REButtonGroup * bg6 = [self.buttonGroupBuilder constructHomeAndPowerButtonsForActivity:2];
 
     [remote addSubelements:[@[bg1, bg2, bg3, bg4, bg5, bg6] orderedSet]];
 
@@ -120,15 +120,15 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return remote;
 }
 
-- (Remote *)constructSonosRemote {
-    Remote * remote = MakeRemote(@"type" : @(RemoteTypeDefault),
+- (RERemote *)constructSonosRemote {
+    RERemote * remote = MakeRemote(@"type" : @(RETypeRemote),
                                  @"key" : @"activity4",
                                  @"displayName" : @"Sonos Activity",
                                  @"backgroundImage" : MakeBackgroundImage(8),
                                  @"backgroundImageAlpha" : @1.0);
-    ButtonGroup * mute   = [self.buttonGroupBuilder constructSonosMuteButtonGroup];
-    ButtonGroup * rocker = [self.buttonGroupBuilder constructSonosRocker];
-    ButtonGroup * power  = [self.buttonGroupBuilder constructHomeAndPowerButtonsForActivity:4];
+    REButtonGroup * mute   = [self.buttonGroupBuilder constructSonosMuteButtonGroup];
+    REButtonGroup * rocker = [self.buttonGroupBuilder constructSonosRocker];
+    REButtonGroup * power  = [self.buttonGroupBuilder constructHomeAndPowerButtonsForActivity:4];
 
     [remote addSubelements:[@[mute, rocker, power] orderedSet]];
 

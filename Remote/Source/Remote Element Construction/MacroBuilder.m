@@ -1,6 +1,6 @@
 //
 // MacroBuilder.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/12/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -8,7 +8,7 @@
 #import "RemoteConstruction.h"
 #import "MacroBuilder.h"
 #import "Command.h"
-#import "RemoteController.h"
+#import "RERemoteController.h"
 #import "DeviceConfiguration.h"
 #import "RemoteBuilder.h"
 

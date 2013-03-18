@@ -1,6 +1,6 @@
 //
 // StoryboardProxy.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/25/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -8,14 +8,14 @@
 
 @class   ColorSelectionViewController,
          LabelEditingViewController,
-         ButtonEditingViewController,
+         REButtonEditingViewController,
          IconEditingViewController,
-         DetailedButtonEditingViewController,
+         REDetailedButtonEditingViewController,
          IconSelectionViewController,
          CommandEditingViewController,
-         ButtonGroupEditingViewController,
+         REButtonGroupEditingViewController,
          BackgroundEditingViewController,
-         RemoteEditingViewController,
+         RERemoteEditingViewController,
          SettingsViewController,
          LogsViewController,
          LaunchScreenViewController;
@@ -26,13 +26,13 @@
 + (UIStoryboard *)                       mainStoryboard;
 + (ColorSelectionViewController *)       colorSelectionViewController;
 + (LabelEditingViewController *)         labelEditingViewController;
-+ (ButtonEditingViewController *)        buttonEditingViewController;
++ (REButtonEditingViewController *)        buttonEditingViewController;
 + (IconEditingViewController *)          iconEditingViewController;
-+ (DetailedButtonEditingViewController *)detailedButtonEditingViewController;
++ (REDetailedButtonEditingViewController *)detailedButtonEditingViewController;
 + (IconSelectionViewController *)        iconSelectionViewController;
 + (CommandEditingViewController *)       commandEditingViewController;
-+ (ButtonGroupEditingViewController *)   buttonGroupEditingViewController;
-+ (RemoteEditingViewController *)        remoteEditingViewController;
++ (REButtonGroupEditingViewController *)   buttonGroupEditingViewController;
++ (RERemoteEditingViewController *)        remoteEditingViewController;
 + (BackgroundEditingViewController *)    backgroundEditingViewController;
 + (SettingsViewController *)             settingsViewController;
 + (LogsViewController *)                 logsViewController;

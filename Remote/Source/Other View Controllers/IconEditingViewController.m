@@ -1,18 +1,18 @@
 //
 // IconEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/30/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "AttributeEditingViewController_Private.h"
 #import "IconEditingViewController.h"
-#import "ButtonEditingViewController.h"
-#import "GalleryImage.h"
+#import "REButtonEditingViewController.h"
+#import "REImage.h"
 #import <QuartzCore/QuartzCore.h>
-#import "DetailedButtonEditingViewController.h"
-#import "ButtonView.h"
-#import "Button.h"
+#import "REDetailedButtonEditingViewController.h"
+#import "REButtonView.h"
+#import "REButton.h"
 #import "StoryboardProxy.h"
 
 static int   ddLogLevel = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
@@ -28,11 +28,11 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
 @property (strong, nonatomic) IBOutlet UIView      * contentContainer;
 @property (strong, nonatomic) NSValue              * initialEdgeInsets;
 @property (strong, nonatomic) UIColor              * initialColor;
-@property (strong, nonatomic) GalleryIconImage     * initialIconImage;
+@property (strong, nonatomic) REIconImage     * initialIconImage;
 @property (strong, nonatomic) NSValue              * currentEdgeInsets;
 @property (strong, nonatomic) UIColor              * currentColor;
-@property (strong, nonatomic) GalleryIconImage     * currentIconImage;
-@property (weak, nonatomic) ButtonView             * buttonView;
+@property (strong, nonatomic) REIconImage     * currentIconImage;
+@property (weak, nonatomic) REButtonView             * buttonView;
 @property (nonatomic, assign) UIControlState         controlState;
 @property (strong, nonatomic) IBOutlet UIButton    * removeIconButton;
 
@@ -285,7 +285,7 @@ delegate             = _delegate;
     if (ValueIsNotNil(_detailedButtonEditor)) [_detailedButtonEditor removeAuxController:controller animated:YES];
 }
 
-- (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(GalleryIconImage *)icon {
+- (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(REIconImage *)icon {
     DDLogDebug(@"%@\n\ticon selected:%@", ClassTagString, icon);
     self.currentIconImage = icon;
     [self restoreCurrentValues];

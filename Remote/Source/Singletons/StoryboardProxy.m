@@ -1,6 +1,6 @@
 //
 // StoryboardProxy.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/25/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -40,7 +40,7 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Label Editor"];
 }
 
-+ (ButtonEditingViewController *)buttonEditingViewController {
++ (REButtonEditingViewController *)buttonEditingViewController {
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Button Editor"];
 }
 
@@ -48,7 +48,7 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Icon Editor"];
 }
 
-+ (DetailedButtonEditingViewController *)detailedButtonEditingViewController {
++ (REDetailedButtonEditingViewController *)detailedButtonEditingViewController {
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Detailed Button Editor"];
 }
 
@@ -60,11 +60,11 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Command Editor"];
 }
 
-+ (ButtonGroupEditingViewController *)buttonGroupEditingViewController {
++ (REButtonGroupEditingViewController *)buttonGroupEditingViewController {
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Button Group Editor"];
 }
 
-+ (RemoteEditingViewController *)remoteEditingViewController {
++ (RERemoteEditingViewController *)remoteEditingViewController {
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Remote Editor"];
 }
 

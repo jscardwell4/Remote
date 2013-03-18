@@ -1,6 +1,6 @@
 //
 // MacroCommandEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/5/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -9,10 +9,10 @@
 #import "MacroCommandEditingViewController.h"
 #import "CommandEditingViewController.h"
 #import "Painter.h"
-#import "ButtonGroup.h"
-#import "Remote.h"
-#import "RemoteController.h"
-#import "Button.h"
+#import "REButtonGroup.h"
+#import "RERemote.h"
+#import "RERemoteController.h"
+#import "REButton.h"
 #import "ViewDecorator.h"
 
 static int   ddLogLevel = LOG_LEVEL_DEBUG;

@@ -1,6 +1,6 @@
 //
 // CommandContainer.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/29/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.

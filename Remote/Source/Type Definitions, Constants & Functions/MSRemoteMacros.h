@@ -1,6 +1,6 @@
 //
-// iPhontoMacros.h
-// iPhonto
+// RemoteMacros.h
+// Remote
 //
 // Created by Jason Cardwell on 6/13/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.

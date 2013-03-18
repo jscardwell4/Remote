@@ -1,6 +1,6 @@
 //
 // ButtonGroupEditingTest.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 2/7/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
@@ -10,11 +10,11 @@
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
 #import "RemoteElement_Private.h"
-#import "RemoteElementLayoutConstraint.h"
+#import "REConstraint.h"
 #import "RemoteConstruction.h"
-#import "RemoteElementEditingViewController_Private.h"
-#import "ButtonGroupEditingViewController.h"
-#import "ButtonGroupView.h"
+#import "REEditingViewController_Private.h"
+#import "REButtonGroupEditingViewController.h"
+#import "REButtonGroupView.h"
 #import "UITestRunner.h"
 
 // #define DEBUG_CONTEXT  UITESTING_F
@@ -55,10 +55,10 @@ static const int   msLogContext = EDITOR_F;
 - (void)runTranslationTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
 
     MSRemoteUITestRunner   performTranslations = ^(NSDictionary * parameters) {
-        __block ButtonGroupEditingViewController * bgEditor = nil;
-        __block ButtonGroupView                  * bgv      = nil;
-        __block ButtonGroup                      * bg       = nil;
-        __block ButtonView                       * bv       = nil;
+        __block REButtonGroupEditingViewController * bgEditor = nil;
+        __block REButtonGroupView                  * bgv      = nil;
+        __block REButtonGroup                      * bg       = nil;
+        __block REButtonView                       * bv       = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
         NSString * buttonGroupKey = parameters[MSRemoteUIButtonGroupKey];
@@ -75,9 +75,9 @@ static const int   msLogContext = EDITOR_F;
                                         bgEditor.mockParentSize = MainScreen.bounds.size;
                                         bgEditor.remoteElement = bg;
                                         [AppController.window setRootViewController:bgEditor];
-                                        bgv = (ButtonGroupView *)bgEditor.sourceView;
+                                        bgv = (REButtonGroupView *)bgEditor.sourceView;
                                         assert(bgv);
-                                        bv = (ButtonView *)bgv[buttonKey];
+                                        bv = (REButtonView *)bgv[buttonKey];
                                         assert(bv);
                                         [bgEditor selectView:bv];
                                         assert([bgEditor.selectedViews containsObject:bv]);)]
@@ -135,7 +135,7 @@ static const int   msLogContext = EDITOR_F;
 
     switch (testNumber) {
         case 0 : {
-            __block void(^assertSize)(RemoteElementView *, CGSize) = ^(RemoteElementView * view, CGSize size) {
+            __block void(^assertSize)(REView *, CGSize) = ^(REView * view, CGSize size) {
                 @try
                 {
                     NSAssert(CGSizeEqualToSize(size, view.bounds.size),
@@ -164,39 +164,39 @@ static const int   msLogContext = EDITOR_F;
                                                             @"activity2",
                                                             @"activity3",
                                                             @"activity4"],
-                           MSRemoteUIAssertionsKey      : @[^(RemoteElementEditingViewController * editor) {
+                           MSRemoteUIAssertionsKey      : @[^(REEditingViewController * editor) {
                                                                assertSize(editor.sourceView,CGSizeMake(300, 348));
-                                                               for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                               for (REView * view in editor.sourceView.subelementViews)
                                                                    assertSize(view,CGSizeMake(150,150));
                                                              },
-                                                             ^(RemoteElementEditingViewController * editor) {
+                                                             ^(REEditingViewController * editor) {
                                                                  assertSize(editor.sourceView,CGSizeMake(300, 350));
-                                                                 for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                                 for (REView * view in editor.sourceView.subelementViews)
                                                                      assertSize(view,CGSizeMake(150,150));
                                                              },
-                                                             ^(RemoteElementEditingViewController * editor) {
+                                                             ^(REEditingViewController * editor) {
                                                                  assertSize(editor.sourceView,CGSizeMake(300, 300));
-                                                                 for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                                 for (REView * view in editor.sourceView.subelementViews)
                                                                      assertSize(view,CGSizeMake(150,150));
                                                              },
-                                                             ^(RemoteElementEditingViewController * editor) {
+                                                             ^(REEditingViewController * editor) {
                                                                  assertSize(editor.sourceView,CGSizeMake(309, 332));
-                                                                 for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                                 for (REView * view in editor.sourceView.subelementViews)
                                                                      assertSize(view,CGSizeMake(150,150));
                                                              },
-                                                             ^(RemoteElementEditingViewController * editor) {
+                                                             ^(REEditingViewController * editor) {
                                                                  assertSize(editor.sourceView,CGSizeMake(300, 300));
-                                                                 for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                                 for (REView * view in editor.sourceView.subelementViews)
                                                                      assertSize(view,CGSizeMake(150,150));
                                                              },
-                                                             ^(RemoteElementEditingViewController * editor) {
+                                                             ^(REEditingViewController * editor) {
                                                                  assertSize(editor.sourceView,CGSizeMake(300, 336));
-                                                                 for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                                 for (REView * view in editor.sourceView.subelementViews)
                                                                      assertSize(view,CGSizeMake(150,150));
                                                              },
-                                                             ^(RemoteElementEditingViewController * editor) {
+                                                             ^(REEditingViewController * editor) {
                                                                  assertSize(editor.sourceView,CGSizeMake(300, 300));
-                                                                 for (RemoteElementView * view in editor.sourceView.subelementViews)
+                                                                 for (REView * view in editor.sourceView.subelementViews)
                                                                      assertSize(view,CGSizeMake(150,150));}]
                            };
             performTranslations(parameters);
@@ -237,10 +237,10 @@ static const int   msLogContext = EDITOR_F;
 
 - (void)runFocusTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
     MSRemoteUITestRunner   performFocus = ^(NSDictionary * parameters) {
-        __block ButtonGroupEditingViewController * bgEditor = nil;
-        __block ButtonGroupView                  * bgv      = nil;
-        __block ButtonGroup                      * bg       = nil;
-        __block ButtonView                       * bv       = nil;
+        __block REButtonGroupEditingViewController * bgEditor = nil;
+        __block REButtonGroupView                  * bgv      = nil;
+        __block REButtonGroup                      * bg       = nil;
+        __block REButtonView                       * bv       = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
         NSString * buttonGroupKey = parameters[MSRemoteUIButtonGroupKey];
@@ -254,10 +254,10 @@ static const int   msLogContext = EDITOR_F;
                                                   bgEditor.remoteElement = bg;
                                                   [AppController.window
                                                    setRootViewController:bgEditor];
-                                                  bgv = (ButtonGroupView *)bgEditor.sourceView;
+                                                  bgv = (REButtonGroupView *)bgEditor.sourceView;
                                                       assert(bgv);
                                                   for (NSString * buttonKey in buttonKeys) {
-                                                      bv = (ButtonView *)bgv[buttonKey];
+                                                      bv = (REButtonView *)bgv[buttonKey];
                                                       assert(bv);
                                                       [bgEditor selectView:bv];
                                                       assert([bgEditor.selectedViews
@@ -303,10 +303,10 @@ static const int   msLogContext = EDITOR_F;
     });
 
     MSRemoteUITestRunner   performAlignments = ^(NSDictionary * parameters) {
-        __block ButtonGroupEditingViewController * bgEditor = nil;
-        __block ButtonGroupView                  * bgv      = nil;
-        __block ButtonGroup                      * bg       = nil;
-        __block ButtonView                       * bv       = nil;
+        __block REButtonGroupEditingViewController * bgEditor = nil;
+        __block REButtonGroupView                  * bgv      = nil;
+        __block REButtonGroup                      * bg       = nil;
+        __block REButtonView                       * bv       = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
         NSString * buttonGroupKey = parameters[MSRemoteUIButtonGroupKey];
@@ -315,7 +315,8 @@ static const int   msLogContext = EDITOR_F;
         NSArray  * subelements    = parameters[MSRemoteUILogSubviewsKey];
 
         [MainQueue
-         addOperations:@[BlockOperation(bgEditor = [StoryboardProxy buttonGroupEditingViewController];
+         addOperations:@[BlockOperation(
+                                        bgEditor = [StoryboardProxy buttonGroupEditingViewController];
                                         assert(bgEditor && !bgEditor.sourceView);
                                         bg = self.remoteController[remoteKey][buttonGroupKey];
                                         assert(bg);
@@ -323,7 +324,7 @@ static const int   msLogContext = EDITOR_F;
                                         bgEditor.remoteElement = bg;
                                         [AppController.window
                                          setRootViewController:bgEditor];
-                                        bgv = (ButtonGroupView *)bgEditor.sourceView;
+                                        bgv = (REButtonGroupView *)bgEditor.sourceView;
                                         assert(bgv);)
                          ]
          waitUntilFinished:YES];
@@ -347,12 +348,12 @@ static const int   msLogContext = EDITOR_F;
                                             [bgEditor deselectAll];
                                             assert(bgEditor.selectedViews.count == 0);
                                             for (NSString * key in selectedViewKeys) {
-                                                bv = (ButtonView *)bgv[key];
+                                                bv = (REButtonView *)bgv[key];
                                                 assert(bv);
                                                 [bgEditor selectView:bv];
                                                 assert([bgEditor.selectedViews containsObject:bv]);
                                             }
-                                            bv = (ButtonView *)bgv[keys[1]];
+                                            bv = (REButtonView *)bgv[keys[1]];
                                             assert(bv);
                                             [bgEditor selectView:bv];
                                             assert([bgEditor.selectedViews containsObject:bv]);
@@ -420,20 +421,20 @@ static const int   msLogContext = EDITOR_F;
                             MSRemoteUILogSubviewsKey     : @[@"digit4", @"aux2", @"aux1", @"digit6"],
                             MSRemoteUIIterationValuesKey : @[@"digit4:aux2:bottom", @"aux1:digit6:top"],
                             MSRemoteUIAssertionsKey      :
-                                @[ ^(RemoteElementEditingViewController * editor)
+                                @[ ^(REEditingViewController * editor)
                                     {
-                                        ButtonGroup * numberPad = (ButtonGroup *)editor.sourceView.remoteElement;
-                                        Button * digit4 = numberPad[@"digit4"];
-                                        Button * digit1 = numberPad[@"digit1"];
-                                        NSDictionary * values = @{ @"firstItem"      : digit4.identifier,
+                                        REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
+                                        REButton * digit4 = numberPad[@"digit4"];
+                                        REButton * digit1 = numberPad[@"digit1"];
+                                        NSDictionary * values = @{ @"firstItem"      : digit4.uuid,
                                                                    @"firstAttribute" : @(NSLayoutAttributeTop),
                                                                    @"relation"       : @(NSLayoutRelationEqual),
-                                                                   @"secondItem"     : digit1.identifier };
+                                                                   @"secondItem"     : digit1.uuid };
 
                                         @try
                                         {
                                             NSAssert( ![digit4.firstItemConstraints firstObjectPassingTest:
-                                                        ^BOOL (RemoteElementLayoutConstraint * obj, BOOL * stop) {
+                                                        ^BOOL (REConstraint * obj, BOOL * stop) {
                                                             return [obj hasAttributeValues:values];
                                                         }],
                                                      @"'digit4.top = digit1.bottom' should have been removed" );
@@ -442,20 +443,20 @@ static const int   msLogContext = EDITOR_F;
 
                                         @catch (NSException * exception) {}
                                     },
-                                    ^(RemoteElementEditingViewController * editor)
+                                    ^(REEditingViewController * editor)
                                     {
-                                        ButtonGroup * numberPad = (ButtonGroup *)editor.sourceView.remoteElement;
-                                        Button * aux1 =numberPad[@"aux1"];
-                                        Button * digit0 =numberPad[@"digit0"];
-                                        NSDictionary * values = @{  @"firstItem"      : aux1.identifier,
+                                        REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
+                                        REButton * aux1 =numberPad[@"aux1"];
+                                        REButton * digit0 =numberPad[@"digit0"];
+                                        NSDictionary * values = @{  @"firstItem"      : aux1.uuid,
                                                                     @"firstAttribute" : @(NSLayoutAttributeBottom),
                                                                     @"relation"       : @(NSLayoutRelationEqual),
-                                                                    @"secondItem"     : digit0.identifier };
+                                                                    @"secondItem"     : digit0.uuid };
                                         @try
                                         {
                                             NSAssert(![aux1.firstItemConstraints
                                                        firstObjectPassingTest:
-                                                       ^BOOL (RemoteElementLayoutConstraint * obj, BOOL * stop) {
+                                                       ^BOOL (REConstraint * obj, BOOL * stop) {
                                                            return ([obj hasAttributeValues:values] && (*stop = YES));
                                                        }],
                                                      @"'aux1.bottom = digit0.bottom' should have been removed");
@@ -538,12 +539,12 @@ static const int   msLogContext = EDITOR_F;
                                                               @"digit4:kTuckButtonKey:centerX"],
                             MSRemoteUILogSubviewsKey     : @[ @"digit4", kTuckButtonKey],
                             MSRemoteUIAssertionsKey      :
-                                @[ ^(RemoteElementEditingViewController * editor)
+                                @[ ^(REEditingViewController * editor)
                                     {
-                                        ButtonGroup * numberPad = (ButtonGroup *)editor.sourceView.remoteElement;
-                                        Button * digit4 = numberPad[@"digit4"];
-                                        Button * digit7 = numberPad[@"digit7"];
-                                        Button * tuckPanel = numberPad[kTuckButtonKey];
+                                        REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
+                                        REButton * digit4 = numberPad[@"digit4"];
+                                        REButton * digit7 = numberPad[@"digit7"];
+                                        REButton * tuckPanel = numberPad[kTuckButtonKey];
 
                                         @try
                                         {
@@ -579,12 +580,12 @@ static const int   msLogContext = EDITOR_F;
 
                                         @catch (NSException * exception) {}
                                     },
-                                    ^(RemoteElementEditingViewController * editor)
+                                    ^(REEditingViewController * editor)
                                     {
-                                        ButtonGroup * numberPad = (ButtonGroup*)editor.sourceView.remoteElement;
-                                        Button      * digit4    = numberPad[@"digit4"];
-                                        Button      * digit1    = numberPad[@"digit1"];
-                                        Button      * tuckPanel = numberPad[kTuckButtonKey];
+                                        REButtonGroup * numberPad = (REButtonGroup*)editor.sourceView.model;
+                                        REButton      * digit4    = numberPad[@"digit4"];
+                                        REButton      * digit1    = numberPad[@"digit1"];
+                                        REButton      * tuckPanel = numberPad[kTuckButtonKey];
 
                                         @try
                                         {
@@ -624,9 +625,9 @@ static const int   msLogContext = EDITOR_F;
 
 - (void)runInfoTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
     MSRemoteUITestRunner   dumpInfo = ^(NSDictionary * parameters) {
-        __block ButtonGroupEditingViewController * bgEditor = nil;
-        __block ButtonGroupView                  * bgv      = nil;
-        __block ButtonGroup                      * bg       = nil;
+        __block REButtonGroupEditingViewController * bgEditor = nil;
+        __block REButtonGroupView                  * bgv      = nil;
+        __block REButtonGroup                      * bg       = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
         NSString * buttonGroupKey = parameters[MSRemoteUIButtonGroupKey];
@@ -639,7 +640,7 @@ static const int   msLogContext = EDITOR_F;
                                                   bgEditor.mockParentSize = MainScreen.bounds.size;
                                                   bgEditor.remoteElement = bg;
                                                   [AppController.window setRootViewController:bgEditor];
-                                                  bgv = (ButtonGroupView *)bgEditor.sourceView;
+                                                  bgv = (REButtonGroupView *)bgEditor.sourceView;
                                                   assert(bgv);
                                                   )]
                waitUntilFinished:YES];
@@ -672,9 +673,9 @@ static const int   msLogContext = EDITOR_F;
 
 - (void)runDialogTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
     MSRemoteUITestRunner   showDialog = ^(NSDictionary * parameters) {
-        __block ButtonGroupEditingViewController * bgEditor = nil;
-        __block ButtonGroupView                  * bgv      = nil;
-        __block ButtonGroup                      * bg       = nil;
+        __block REButtonGroupEditingViewController * bgEditor = nil;
+        __block REButtonGroupView                  * bgv      = nil;
+        __block REButtonGroup                      * bg       = nil;
         __block NSArray                          * buttons  = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
@@ -688,7 +689,7 @@ static const int   msLogContext = EDITOR_F;
                                                   bgEditor.mockParentSize = MainScreen.bounds.size;
                                                   bgEditor.remoteElement = bg;
                                                   [AppController.window setRootViewController:bgEditor];
-                                                  bgv = (ButtonGroupView *)bgEditor.sourceView;
+                                                  bgv = (REButtonGroupView *)bgEditor.sourceView;
                                                   assert(bgv);
                                                   )]
                waitUntilFinished:YES];
@@ -696,9 +697,9 @@ static const int   msLogContext = EDITOR_F;
         sleep(SLEEP_DURATION);
 
         [MainQueue addOperations:@[BlockOperation(buttons = [buttonKeys
-                                                             arrayByMappingToBlock:^ButtonView *(NSString * obj, NSUInteger idx)
+                                                             arrayByMappingToBlock:^REButtonView *(NSString * obj, NSUInteger idx)
                     {
-                        ButtonView * bv = (ButtonView *)bgv[obj];
+                        REButtonView * bv = (REButtonView *)bgv[obj];
                         assert(bv);
 
                         return bv;
@@ -748,10 +749,10 @@ static const int   msLogContext = EDITOR_F;
 - (void)runScaleTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
     MSRemoteUITestRunner   performScaling =
         ^(NSDictionary * parameters) {
-        __block ButtonGroupEditingViewController * bgEditor = nil;
-        __block ButtonGroupView                  * bgv      = nil;
-        __block ButtonGroup                      * bg       = nil;
-        __block ButtonView                       * bv       = nil;
+        __block REButtonGroupEditingViewController * bgEditor = nil;
+        __block REButtonGroupView                  * bgv      = nil;
+        __block REButtonGroup                      * bg       = nil;
+        __block REButtonView                       * bv       = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
         NSString * buttonGroupKey = parameters[MSRemoteUIButtonGroupKey];
@@ -768,9 +769,9 @@ static const int   msLogContext = EDITOR_F;
                         bgEditor.mockParentSize = MainScreen.bounds.size;
                         bgEditor.remoteElement = bg;
                         [AppController.window setRootViewController:bgEditor];
-                        bgv = (ButtonGroupView *)bgEditor.sourceView;
+                        bgv = (REButtonGroupView *)bgEditor.sourceView;
                         assert(bgv);
-                        bv = (ButtonView *)bgv[buttonKey];
+                        bv = (REButtonView *)bgv[buttonKey];
                         assert(bv);
                         [bgEditor selectView:bv];
                         assert([bgEditor.selectedViews containsObject:bv]);)

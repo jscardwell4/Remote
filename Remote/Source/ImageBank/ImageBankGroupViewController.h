@@ -1,6 +1,6 @@
 //
 // ImageBankGroupViewController.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 5/29/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @class   GalleryGroup;
-@class   GalleryImage;
+@class   REImage;
 
 @protocol ImageSelection <NSObject>
 
-- (void)selectedImage:(GalleryImage *)image;
+- (void)selectedImage:(REImage *)image;
 
 @end
 
@@ -22,7 +22,7 @@
     GalleryGroup * _group;
     UIImageView  * _imageView;
     UIView       * _imageViewContainer;
-    GalleryImage * _mutatingImage;
+    REImage * _mutatingImage;
 // id <MSModalViewControllerDelegate, ImageSelection>__unsafe_unretained   _modalDelegate;
 }
 - (id)initWithGroup:(GalleryGroup *)group;

@@ -1,6 +1,6 @@
 //
 // ControlStateIconImageSet.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/26/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -8,8 +8,8 @@
 
 #import "ControlStateSet.h"
 #import "ControlStateSet_Private.h"
-#import "Button.h"
-#import "GalleryImage.h"
+#import "REButton.h"
+#import "REImage.h"
 
 static int   ddLogLevel = LOG_LEVEL_OFF;
 
@@ -36,7 +36,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
     return iconSet;
 }
 
-+ (ControlStateIconImageSet *)iconSetForButton:(Button *)button {
++ (ControlStateIconImageSet *)iconSetForButton:(REButton *)button {
     if (ValueIsNil(button)) return nil;
 
     ControlStateIconImageSet * imageSet =
@@ -52,7 +52,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
 
 - (CGRect)patternColorFrameForState:(NSUInteger)state {
     CGRect    frame         = CGRectZero;
-    UIImage * imageForState = [[self galleryImageForState:state
+    UIImage * imageForState = [[self imageForState:state
                                           substituteIfNil:YES
                                          substitutedState:NULL] image];
 
@@ -62,7 +62,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
 }
 
 - (void)removeIconStyleForState:(NSUInteger)state {
-    if (InvalidControlState(state)) return;
+    if (IsInvalidControlState(state)) return;
 
     self.styledIconStates &= ~state;
 
@@ -72,7 +72,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
 }
 
 - (void)styleIconForState:(NSUInteger)state {
-    if (InvalidControlState(state)) return;
+    if (IsInvalidControlState(state)) return;
 
     self.styledIconStates |= state;
 
@@ -100,14 +100,14 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
     return [self.iconColors colorDefinedForState:state];
 }
 
-- (UIImage *)imageForState:(NSUInteger)state {
+- (UIImage *)UIImageForState:(NSUInteger)state {
 // DDLogDebug(@"%@\n\timage requested for state:%@\ncache contents:%@",
 // ClassTagString,
 // UIControlStateString(state),
 // [self.imageCache debugDescription]);
 
     // Validate state
-    if (InvalidControlState(state)) return nil;
+    if (IsInvalidControlState(state)) return nil;
 
     // Try retrieving image from cache
     UIControlState   substitutedState = state;
@@ -136,7 +136,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
     }
 
     // Otherwise retrieve icon color and create the image
-    image = [super imageForState:substitutedState];
+    image = [super UIImageForState:substitutedState];
 
     UIColor * imageColor = [self.iconColors colorForState:state];
 

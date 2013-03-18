@@ -1,6 +1,6 @@
 //
 // UITestRunner.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 1/15/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
@@ -10,12 +10,12 @@
 #import "MSRemoteUITest.h"
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
-#import "RemoteViewController.h"
+#import "RERemoteViewController.h"
 #import "RemoteConstruction.h"
-#import "RemoteElementView.h"
-#import "RemoteEditingViewController.h"
-#import "ButtonEditingViewController.h"
-#import "RemoteElementEditingViewController_Private.h"
+#import "REView.h"
+#import "RERemoteEditingViewController.h"
+#import "REButtonEditingViewController.h"
+#import "REEditingViewController_Private.h"
 
 static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 

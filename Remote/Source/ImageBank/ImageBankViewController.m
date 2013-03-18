@@ -1,6 +1,6 @@
 //
 // ImageBankViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 5/29/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.

@@ -1,6 +1,6 @@
 //
 // ControlStateImageSet.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/26/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -39,15 +39,15 @@ imageCache     = _imageCache;
     return _shouldUseCache;
 }
 
-- (UIImage *)imageForState:(NSUInteger)state {
-    return [self imageForState:state substituteIfNil:NO substitutedState:NULL];
+- (UIImage *)UIImageForState:(NSUInteger)state {
+    return [self UIImageForState:state substituteIfNil:NO substitutedState:NULL];
 }
 
-- (UIImage *)imageForState:(NSUInteger)state
+- (UIImage *)UIImageForState:(NSUInteger)state
            substituteIfNil:(BOOL)substitute
           substitutedState:(NSUInteger *)substitutedState {
     // Check state validity
-    if (InvalidControlState(state)) return nil;
+    if (IsInvalidControlState(state)) return nil;
 
     // Check cache for image and return if found
 
@@ -60,7 +60,7 @@ imageCache     = _imageCache;
 
     // No substitutes, look for original image and return results
     if (!substitute) {
-        image = [[self galleryImageForState:state] image];
+        image = [[self imageForState:state] image];
 
         if (self.shouldUseCache)
             // Insert image into cache if valid
@@ -80,7 +80,7 @@ imageCache     = _imageCache;
 
         // Get image if not in cache
         if (ValueIsNil(image)) {
-            image = [[self galleryImageForState:*substitutedState] image];
+            image = [[self imageForState:*substitutedState] image];
 
             if (self.shouldUseCache)
                 // Stick in cache for substituted state as well
@@ -96,7 +96,7 @@ imageCache     = _imageCache;
     return NilSafeValue(image);
 }  /* imageForState */
 
-- (GalleryImage *)galleryImageForState:(NSUInteger)state {
+- (REImage *)imageForState:(NSUInteger)state {
     NSData * imageURIData = (NSData *)[super objectForState:state];
     NSURL  * imageURI     = nil;
 
@@ -104,14 +104,14 @@ imageCache     = _imageCache;
 
     NSManagedObjectID * imageID = [self.managedObjectContext.persistentStoreCoordinator
                                    managedObjectIDForURIRepresentation:imageURI];
-    GalleryImage * image = nil;
+    REImage * image = nil;
 
-    if (imageID) image = (GalleryImage *)[self.managedObjectContext objectWithID:imageID];
+    if (imageID) image = (REImage *)[self.managedObjectContext objectWithID:imageID];
 
     return image;
 }
 
-- (GalleryImage *)galleryImageForState:(NSUInteger)state
+- (REImage *)imageForState:(NSUInteger)state
                        substituteIfNil:(BOOL)substitute
                       substitutedState:(NSUInteger *)substitutedState {
     UIControlState   localSubstitutedState = state;
@@ -120,14 +120,14 @@ imageCache     = _imageCache;
 
     if (ValueIsNil(imageURIData) || (state != localSubstitutedState && !substitute)) return nil;
 
-    GalleryImage * image = [self galleryImageForState:localSubstitutedState];
+    REImage * image = [self imageForState:localSubstitutedState];
 
     if (substitutedState != NULL) *substitutedState = localSubstitutedState;
 
     return NilSafeValue(image);
 }
 
-- (void)setImage:(GalleryImage *)image forState:(NSUInteger)state {
+- (void)setImage:(REImage *)image forState:(NSUInteger)state {
     if (ValueIsNil(image)) {
         [super setObject:nil forState:state];
 

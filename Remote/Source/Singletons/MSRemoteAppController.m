@@ -1,13 +1,13 @@
 //
 // MSRemoteAppController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 5/3/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "MSRemoteLogFormatter.h"
 #import "RemoteElementConstructionManager.h"
-#import "RemoteViewController.h"
+#import "RERemoteViewController.h"
 #import "LaunchScreenViewController.h"
 #import "CoreDataManager.h"
 #import "DatabaseLoader.h"
@@ -100,10 +100,10 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
     
     NSMutableIndexSet * indices = [NSMutableIndexSet indexSet];
-//    [indices addIndex:0];
-    [indices addIndexes:bgScaleTests];
-    [indices addIndexes:bgTranslationTests];
-    [indices addIndexes:bgAlignmentTests];
+    [indices addIndex:12];
+//    [indices addIndexes:bgScaleTests];
+//    [indices addIndexes:bgTranslationTests];
+//    [indices addIndexes:bgAlignmentTests];
 
     NSArray * selectedTests = [tests objectsAtIndexes:indices];
 

@@ -1,0 +1,4 @@
+Sunday March 17th, 2013
+=======================
+
+Another thought about labels, have `UILabel` subclass observe label attributes directly?

@@ -1,13 +1,13 @@
 //
 // BackgroundImageChooserTableViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/3/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "BackgroundImageChooserTableViewController.h"
-#import "Remote.h"
-#import "GalleryImage.h"
+#import "RERemote.h"
+#import "REImage.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -124,7 +124,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
  */
 - (void)save {
     NSUInteger               selectedRow   = [self.tableView indexPathForSelectedRow].row;
-    GalleryBackgroundImage * selectedImage = self.fetchedBackgrounds[selectedRow];
+    REBackgroundImage * selectedImage = self.fetchedBackgrounds[selectedRow];
 
     self.remote.backgroundImage = selectedImage;
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -186,7 +186,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     static CGSize            baseSize    = {.width = 300.0, .height = 347.0};
     static CGPoint           centerPoint = {.x = 160.0, .y = 240.0};
-    GalleryBackgroundImage * image       = (GalleryBackgroundImage *)self.fetchedBackgrounds[indexPath.row];
+    REBackgroundImage * image       = (REBackgroundImage *)self.fetchedBackgrounds[indexPath.row];
 
     _imageView.image = image.image;
 
@@ -212,7 +212,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     }
 
     // Configure the cell...
-    GalleryBackgroundImage * backgroundImage = (GalleryBackgroundImage *)self.fetchedBackgrounds[indexPath.row];
+    REBackgroundImage * backgroundImage = (REBackgroundImage *)self.fetchedBackgrounds[indexPath.row];
 
     cell.textLabel.text  = backgroundImage.name;
     cell.imageView.image = backgroundImage.thumbnail;

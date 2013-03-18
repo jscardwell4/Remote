@@ -1,21 +1,21 @@
 //
 // SwitchToRemoteCommandEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/5/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
 #import "SwitchToRemoteCommandEditingViewController.h"
-#import "RemoteController.h"
-#import "Remote.h"
+#import "RERemoteController.h"
+#import "RERemote.h"
 #import "ViewDecorator.h"
 
 @interface SwitchToRemoteCommandEditingViewController ()
 
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * pickerInputButton;
 @property (nonatomic, strong) NSArray                      * remotes;
-@property (nonatomic, strong) Remote                       * selectedRemote;
+@property (nonatomic, strong) RERemote                       * selectedRemote;
 
 @end
 
@@ -42,7 +42,7 @@ command           = _command;
     }
 }
 
-- (void)setSelectedRemote:(Remote *)selectedRemote {
+- (void)setSelectedRemote:(RERemote *)selectedRemote {
     _selectedRemote = selectedRemote;
     if (ValueIsNotNil(_selectedRemote))
         [_pickerInputButton setTitle:_selectedRemote.displayName
@@ -64,7 +64,7 @@ command           = _command;
 }
 
 - (NSString *)pickerInput:(MSPickerInputView *)pickerInput titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return ((Remote *)self.remotes[row]).displayName;
+    return ((RERemote *)self.remotes[row]).displayName;
 }
 
 - (void)pickerInputDidCancel:(MSPickerInputView *)pickerInput {

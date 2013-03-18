@@ -1,28 +1,30 @@
 //
 // RemoteElement.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/3/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElement.h"
 #import "RemoteElement_Private.h"
-#import "RemoteController.h"
-#import "Remote.h"
-#import "ButtonGroup.h"
-#import "Button.h"
+#import "RERemoteController.h"
+#import "RERemote.h"
+#import "REButtonGroup.h"
+#import "REButton.h"
 
-// static const int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int            ddLogLevel = DefaultDDLogLevel;
 static const int            msLogContext = COREDATA_F_C;
+
 static const NSDictionary * kEntityNameForType;
+static const NSSet        * kLayoutConfigurationSelectors;
+static const NSSet        * kLayoutConfigurationKeys;
 
 @implementation RemoteElement
-@synthesize constraintManager      = _constraintManager;
+@synthesize constraintManager = _constraintManager;
 
 @dynamic constraints;
 @dynamic displayName;
-@dynamic identifier;
+@dynamic uuid;
 @dynamic key;
 @dynamic tag;
 @dynamic backgroundColor;
@@ -44,28 +46,39 @@ static const NSDictionary * kEntityNameForType;
 
 + (void)initialize {
     if (self == [RemoteElement class]) {
-        kEntityNameForType = @{
-            @(RemoteElementRemoteType)          : @"Remote",
-            @(RemoteElementButtonGroupType)     : @"ButtonGroup",
-            @(ButtonGroupTypePickerLabel)       : @"PickerLabelButtonGroup",
-            @(ButtonGroupTypeToolbar)           : @"ButtonGroup",
-            @(ButtonGroupTypeTransport)         : @"ButtonGroup",
-            @(ButtonGroupTypeDPad)              : @"ButtonGroup",
-            @(ButtonGroupTypeSelectionPanel)    : @"ButtonGroup",
-            @(ButtonGroupTypeCommandSetManager) : @"ButtonGroup",
-            @(ButtonGroupTypeRoundedPanel)      : @"ButtonGroup",
-            @(RemoteElementButtonType)          : @"Button",
-            @(ButtonTypeActivityButton)         : @"ActivityButton",
-            @(ButtonTypeNumberPad)              : @"Button",
-            @(ButtonTypeConnectionStatus)       : @"Button",
-            @(ButtonTypeBatteryStatus)          : @"Button",
-            @(ButtonTypeCommandManager)         : @"Button"
-        };
+        kEntityNameForType = @{@(RETypeRemote)                     : @"RERemote",
+                               @(RETypeButtonGroup)                : @"REButtonGroup",
+                               @(REButtonGroupTypePickerLabel)       : @"REPickerLabelButtonGroup",
+                               @(REButtonGroupTypeToolbar)           : @"REButtonGroup",
+                               @(REButtonGroupTypeTransport)         : @"REButtonGroup",
+                               @(REButtonGroupTypeDPad)              : @"REButtonGroup",
+                               @(REButtonGroupTypeSelectionPanel)    : @"REButtonGroup",
+                               @(REButtonGroupTypeCommandSetManager) : @"REButtonGroup",
+                               @(REButtonGroupTypeRoundedPanel)      : @"REButtonGroup",
+                               @(RETypeButton)                     : @"REButton",
+                               @(REButtonTypeActivityButton)         : @"REActivityButton",
+                               @(REButtonTypeNumberPad)              : @"REButton",
+                               @(REButtonTypeConnectionStatus)       : @"REButton",
+                               @(REButtonTypeBatteryStatus)          : @"REButton",
+                               @(REButtonTypeCommandManager)         : @"REButton"};
+
+        kLayoutConfigurationSelectors = [@[NSValueWithPointer(@selector(proportionLock)),
+                                          NSValueWithPointer(@selector(subelementConstraints)),
+                                          NSValueWithPointer(@selector(dependentConstraints)),
+                                          NSValueWithPointer(@selector(dependentChildConstraints)),
+                                          NSValueWithPointer(@selector(dependentSiblingConstraints)),
+                                          NSValueWithPointer(@selector(intrinsicConstraints))] set];
+        kLayoutConfigurationKeys = [@[@"proportionLock",
+                                      @"subelementConstraints",
+                                      @"dependentConstraints",
+                                      @"dependentChildConstraints",
+                                      @"dependentSiblingConstraints",
+                                      @"intrinsicConstraints"] set];
     }
 }
 
-+ (id)remoteElementOfType:(RemoteElementType)type
-                  subtype:(RemoteElementSubtype)subtype
++ (id)remoteElementOfType:(REType)type
+                  subtype:(RESubtype)subtype
                   context:(NSManagedObjectContext *)context
 {
     assert(context);
@@ -84,8 +97,9 @@ static const NSDictionary * kEntityNameForType;
     return element;
 }
 
-+ (id)remoteElementOfType:(RemoteElementType)type context:(NSManagedObjectContext *)context {
-    return [self remoteElementOfType:type subtype:RemoteElementUnspecifiedSubtype context:context];
++ (id)remoteElementOfType:(REType)type context:(NSManagedObjectContext *)context
+{
+    return [self remoteElementOfType:type subtype:RESubtypeUndefined context:context];
 }
 
 + (id)remoteElementInContext:(NSManagedObjectContext *)context
@@ -103,40 +117,30 @@ static const NSDictionary * kEntityNameForType;
 }
 
 - (void)awakeFromInsert {
-    /*
-     * You typically use this method to initialize special default property values. This method
-     * is invoked only once in the object's lifetime. If you want to set attribute values in an
-     * implementation of this method, you should typically use primitive accessor methods (either
-     * setPrimitiveValue:forKey: or—better—the appropriate custom primitive accessors). This
-     * ensures that the new values are treated as baseline values rather than being recorded as
-     * undoable changes for the properties in question.
-     */
     [super awakeFromInsert];
-    self.controller      = [RemoteController remoteControllerInContext:self.managedObjectContext];
+    self.controller      = [RERemoteController remoteControllerInContext:self.managedObjectContext];
     self.backgroundColor = ClearColor;
-    self.identifier      = [@"_" stringByAppendingString :[MSNonce() stringByRemovingCharacter:'-']];
-    self.layoutConfiguration = [RemoteElementLayoutConfiguration layoutConfigurationForElement:self];
+    self.uuid      = [@"_" stringByAppendingString :[MSNonce() stringByRemovingCharacter:'-']];
+    self.layoutConfiguration = [RELayoutConfiguration layoutConfigurationForElement:self];
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
-    id   target = (self.constraintManager && [_constraintManager respondsToSelector:aSelector]
-                   ? _constraintManager
-                   : [super forwardingTargetForSelector:aSelector]);
-
-    return target;
+    if ([kLayoutConfigurationSelectors containsObject:NSValueWithPointer(aSelector)])
+        return self.layoutConfiguration;
+    else
+        return [super forwardingTargetForSelector:aSelector];
 }
 
 - (id)valueForUndefinedKey:(NSString *)key {
-    return (_constraintManager
-            ? [_constraintManager valueForKey:key]
-            : [super valueForUndefinedKey:key]);
+    if ([kLayoutConfigurationKeys containsObject:key])
+        return [self.layoutConfiguration valueForKey:key];
+    else
+        return [super valueForUndefinedKey:key];
 }
 
-- (RemoteElementConstraintManager *)constraintManager {
+- (REConstraintManager *)constraintManager {
     if (!_constraintManager)
-        self.constraintManager = [RemoteElementConstraintManager
-                                  constraintManagerForRemoteElement:self];
-
+        self.constraintManager = [REConstraintManager constraintManagerForRemoteElement:self];
     return _constraintManager;
 }
 
@@ -145,25 +149,11 @@ static const NSDictionary * kEntityNameForType;
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/*
 - (void)dealloc {
     [NotificationCenter removeObserver:self];
 }
-
-- (void)clearAlignmentOptions {
-//    self.alignmentOptions = RemoteElementAlignmentOptionUndefined;
-}
-
-- (void)clearSizingOptions {
-//    self.sizingOptions = RemoteElementSizingOptionWidthUnspecified | RemoteElementSizingOptionHeightUnspecified;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Constraints
-////////////////////////////////////////////////////////////////////////////////
-
-+ (BOOL)automaticallyNotifiesObserversOfNeedsUpdateConstraints {
-    return YES;
-}
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Derived Properties
@@ -173,16 +163,15 @@ static const NSDictionary * kEntityNameForType;
     return [self.displayName camelCaseString];
 }
 
-- (RemoteElement *)objectForKeyedSubscript:(NSString *)key {
+- (RemoteElement *)objectForKeyedSubscript:(NSString *)key
+{
     if (!self.subelements.count) return nil;
 
     return [self.subelements
             objectPassingTest:^BOOL (RemoteElement * obj, NSUInteger idx, BOOL * stop) {
-        return ([obj.identifier
-                 isEqualToString:key] && (*stop = YES));
-    }
-
-    ];
+                return (   [obj.uuid isEqualToString:key]
+                        || [obj.key isEqualToString:key]);
+            }];
 }
 
 @end
@@ -200,9 +189,11 @@ static const NSDictionary * kEntityNameForType;
     NSSet * subelementConstraints       = self.subelementConstraints;
     NSSet * intrinsicConstraints        = self.intrinsicConstraints;
     NSSet * childToParentConstraints    = self.dependentChildConstraints;
-    NSSet * childToChildConstraints     = [subelementConstraints setByRemovingObjectsFromSet:childToParentConstraints];
+    NSSet * childToChildConstraints     = [subelementConstraints
+                                           setByRemovingObjectsFromSet:childToParentConstraints];
     NSSet * dependentSiblingConstraints = self.dependentSiblingConstraints;
-    NSSet * ancestorOwnedConstraints    = [self.firstItemConstraints setByRemovingObjectsFromSet:self.constraints];
+    NSSet * ancestorOwnedConstraints    = [self.firstItemConstraints
+                                           setByRemovingObjectsFromSet:self.constraints];
 
     // owned constraints
     if (constraints.count) {
@@ -234,109 +225,6 @@ static const NSDictionary * kEntityNameForType;
     return description;
 }
 
-- (NSString *)sizingOptionsDescription {
-    NSMutableString * s = [@"sizingOptions: {\n" mutableCopy];
-
-/*
-    switch (self.sizingOptions & RemoteElementSizingOptionWidthMask) {
-        case RemoteElementSizingOptionWidthIntrinsic :
-            [s appendString:@"\twidth: RemoteElementSizingOptionWidthIntrinsic\n"];
-            break;
-
-        case RemoteElementSizingOptionWidthParent :
-            [s appendString:@"\twidth: RemoteElementSizingOptionWidthParent\n"];
-            break;
-
-        case RemoteElementSizingOptionWidthFocus :
-            [s appendString:@"\twidth: RemoteElementSizingOptionWidthFocus\n"];
-            break;
-
-        default :
-            break;
-    }
-
-    switch (self.sizingOptions & RemoteElementSizingOptionHeightMask) {
-        case RemoteElementSizingOptionHeightIntrinsic :
-            [s appendString:@"\theight: RemoteElementSizingOptionHeightIntrinsic\n"];
-            break;
-
-        case RemoteElementSizingOptionHeightParent :
-            [s appendString:@"\theight: RemoteElementSizingOptionHeightParent\n"];
-            break;
-
-        case RemoteElementSizingOptionHeightFocus :
-            [s appendString:@"\theight: RemoteElementSizingOptionHeightFocus\n"];
-            break;
-
-        default :
-            break;
-    }
-*/
-
-    [s appendFormat:@"\tproportion lock? %@\n", BOOLString(self.layoutConfiguration.proportionLock)];
-
-    [s appendString:@"}"];
-
-    return s;
-}
-
-- (NSString *)alignmentOptionsDescription {
-    NSMutableString * returnString = [@"alignmentOptions:{\n" mutableCopy];
-
-   /*
- if ((_appearance & RemoteElementAlignmentOptionMaskParent)) {
-        if ((_appearance & RemoteElementAlignmentOptionCenterXParent))
-          [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXParent\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionCenterYParent))
-          [returnString appendString:@"\tcenterY: RemoteElementAlignmentOptionCenterYParent\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionTopParent))
-          [returnString appendString:@"\ttop: RemoteElementAlignmentOptionTopParent\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionBottomParent))
-          [returnString appendString:@"\tbottom: RemoteElementAlignmentOptionBottomParent\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionLeftParent))
-          [returnString appendString:@"\tleft: RemoteElementAlignmentOptionLeftParent\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionRightParent))
-          [returnString appendString:@"\tright: RemoteElementAlignmentOptionRightParent\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionBaselineParent))
-          [returnString appendString:@"\tbaseline: RemoteElementAlignmentOptionBaselineParent\n"];
-    }
-
-    if ((_appearance & RemoteElementAlignmentOptionMaskFocus)) {
-        if ((_appearance & RemoteElementAlignmentOptionCenterXFocus))
-          [returnString appendString:@"\tcenterX: RemoteElementAlignmentOptionCenterXFocus\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionCenterYFocus))
-          [returnString appendString:@"\tcenterY: RemoteElementAlignmentOptionCenterYFocus\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionTopFocus))
-          [returnString appendString:@"\ttop: RemoteElementAlignmentOptionTopFocus\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionBottomFocus))
-          [returnString appendString:@"\tbottom: RemoteElementAlignmentOptionBottomFocus\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionLeftFocus))
-          [returnString appendString:@"\tleft: RemoteElementAlignmentOptionLeftFocus\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionRightFocus))
-          [returnString appendString:@"\tright: RemoteElementAlignmentOptionRightFocus\n"];
-
-        if ((_appearance & RemoteElementAlignmentOptionBaselineFocus))
-          [returnString appendString:@"\tbaseline: RemoteElementAlignmentOptionBaselineFocus\n"];
-    }
-
-    [returnString appendString:@"}"];
-*/
-
-
-    return returnString;
-}
-
 - (NSString *)flagsAndAppearanceDescription {
     return $(@"flags:%10$-15s0x%2$.*1$llX\n"
               "type:%10$-16s0x%3$.*1$llX\n"
@@ -344,15 +232,14 @@ static const NSDictionary * kEntityNameForType;
               "options:%10$-13s0x%5$.*1$llX\n"
               "state:%10$-15s0x%6$.*1$llX\n"
               "appearance:%10$-10s0x%7$.*1$llX\n"
-//              "alignment:%12$-11s0x%8$.*1$llX\n"
-//              "sizing:%12$-14s0x%9$.*1$llX\n"
               "shape:%10$-15s0x%8$.*1$llX\n"
               "style:%10$-15s0x%9$.*1$llX\n",
               16, _flags, self.type, self.subtype, self.options, self.state, _appearance,
-              /*self.alignmentOptions, self.sizingOptions, */self.shape, self.style, " ");
+              self.shape, self.style, " ");
 }
 
-- (NSString *)dumpElementHierarchy {
+- (NSString *)dumpElementHierarchy
+{
     NSMutableString * outstring = [[NSMutableString alloc] init];
     __block void (__weak ^ dumpElement)(RemoteElement *, int) =
         ^(RemoteElement * element, int indent) {
@@ -364,8 +251,7 @@ static const NSDictionary * kEntityNameForType;
          @"%@[%d] class:%@\n"
          "%@displayName:%@\n"
          "%@key:%@\n"
-         "%@identifier:%@\n"
-         "%@\n%@\n\n",
+         "%@identifier:%@\n\n",
          dashes,
          indent,
          ClassString([element class]),
@@ -374,26 +260,23 @@ static const NSDictionary * kEntityNameForType;
          spacer,
          element.key,
          spacer,
-         element.identifier,
-         [element alignmentOptionsDescription],
-         [element sizingOptionsDescription]];
-
-        for (RemoteElement * subelement in element.subelements) {
+         element.uuid];
+            
+        for (RemoteElement * subelement in element.subelements)
             dumpElement(subelement, indent + 1);
-        }
     };
 
-            dumpElement(self, 0);
+    dumpElement(self, 0);
 
     return outstring;
 }
 
 @end
 
-NSDictionary * _NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSeparatedKeysString,
-                                                            id firstValue, ...) {
-    // TODO: Handle replacement order by determining if a key string is matched in another key
-    // string
+NSDictionary *
+_NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSeparatedKeysString, id firstValue, ...)
+{
+    // TODO: Handle replacement order by determining if a key string is matched in another key string
     if (!commaSeparatedKeysString || !firstValue) return nil;
 
     NSArray        * keys   = [commaSeparatedKeysString componentsSeparatedByRegEx:@",[ ]*"];
@@ -405,7 +288,7 @@ NSDictionary * _NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSepa
         RemoteElement * element = firstValue;
 
         do {
-            [values addObject:element.identifier];
+            [values addObject:element.uuid];
             element = va_arg(arglist, RemoteElement *);
         } while (element);
     }

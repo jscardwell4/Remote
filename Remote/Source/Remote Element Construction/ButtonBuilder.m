@@ -1,6 +1,6 @@
 //
 // ButtonBuilder.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 10/6/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -24,38 +24,38 @@ static const int   ddLogLevel = DefaultDDLogLevel;
     return bb;
 }
 
-- (Button *)buttonWithDefaultStyle:(ButtonStyleDefault)style context:(NSManagedObjectContext *)context {
-    Button              * button      = [RemoteElement remoteElementOfType:(RemoteElementType)ButtonTypeDefault context:context];
+- (REButton *)buttonWithDefaultStyle:(REButtonStyleDefault)style context:(NSManagedObjectContext *)context {
+    REButton              * button      = [RemoteElement remoteElementOfType:(REType)REButtonTypeDefault context:context];
     NSDictionary        * identifiers = NSDictionaryOfVariableBindingsToIdentifiers(button);
     NSMutableDictionary * attributes  = [@{}
                                          mutableCopy];
 
     switch (style) {
-        case ButtonStyleDefault1 :
-            attributes[@"shape"]       = @(ButtonShapeRoundedRectangle);
-            attributes[@"style"]       = @(ButtonStyleDrawBorder | ButtonStyleApplyGloss);
+        case REButtonStyleDefault1 :
+            attributes[@"shape"]       = @(REButtonShapeRoundedRectangle);
+            attributes[@"style"]       = @(REButtonStyleDrawBorder | REButtonStyleApplyGloss);
             attributes[@"constraints"] = [@"button.width ≥ 100\nbutton.height = button.width" stringByReplacingOccurrencesWithDictionary : identifiers];
             break;
 
-        case ButtonStyleDefault2 :
-            attributes[@"shape"]       = @(ButtonShapeRectangle);
-            attributes[@"style"]       = @(ButtonStyleDrawBorder | ButtonStyleApplyGloss);
+        case REButtonStyleDefault2 :
+            attributes[@"shape"]       = @(REButtonShapeRectangle);
+            attributes[@"style"]       = @(REButtonStyleDrawBorder | REButtonStyleApplyGloss);
             attributes[@"constraints"] = [@"button.width ≥ 200\nbutton.height = button.width * 0.5" stringByReplacingOccurrencesWithDictionary : identifiers];
             break;
 
-        case ButtonStyleDefault3 :
-            attributes[@"shape"]       = @(ButtonShapeOval);
-            attributes[@"style"]       = @(ButtonStyleDrawBorder | ButtonStyleApplyGloss);
+        case REButtonStyleDefault3 :
+            attributes[@"shape"]       = @(REButtonShapeOval);
+            attributes[@"style"]       = @(REButtonStyleDrawBorder | REButtonStyleApplyGloss);
             attributes[@"constraints"] = [@"button.width ≥ 44\nbutton.height = button.width" stringByReplacingOccurrencesWithDictionary : identifiers];
             break;
 
-        case ButtonStyleDefault4 :
-            attributes[@"shape"]       = @(ButtonShapeOval);
-            attributes[@"style"]       = @(ButtonStyleDrawBorder | ButtonStyleApplyGloss | ButtonStyleStretchable);
+        case REButtonStyleDefault4 :
+            attributes[@"shape"]       = @(REButtonShapeOval);
+            attributes[@"style"]       = @(REButtonStyleDrawBorder | REButtonStyleApplyGloss | REButtonStyleStretchable);
             attributes[@"constraints"] = [@"button.width ≥ 100\nbutton.height = button.width * 0.6875" stringByReplacingOccurrencesWithDictionary : identifiers];
             break;
 
-        case ButtonStyleDefault5 :
+        case REButtonStyleDefault5 :
             //
             break;
     }  /* switch */
@@ -69,7 +69,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
 - (BOOL)generateButtonPreviews:(BOOL)replaceExisting {
     if (replaceExisting) {
         [_buildContext performBlockAndWait:^{
-                           NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"GalleryPreview"];
+                           NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"BankObjectPreview"];
 
                            NSError * error = nil;
                            NSArray * fetchedObjects = [self.buildContext
@@ -79,7 +79,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
                            if (fetchedObjects == nil)
                            DDLogDebug(@"%@\n\tno objects to delete", ClassTagSelectorString);
             else {
-                           for (GalleryPreview * preview in fetchedObjects) {
+                           for (BankObjectPreview * preview in fetchedObjects) {
                            [self.buildContext
                             deleteObject:preview];
                            }
@@ -91,9 +91,9 @@ static const int   ddLogLevel = DefaultDDLogLevel;
         ];
     }
 
-    GalleryButtonPreview * buttonPreview = [GalleryButtonPreview buttonPreviewWithName:@"ButtonStyleDefault1" context:self.buildContext];
-    Button               * button        = [self buttonWithDefaultStyle:ButtonStyleDefault1 context:self.buildContext];
-    ButtonView           * buttonView    = (ButtonView *)[ButtonView remoteElementViewWithElement:button];
+    BankObjectButtonPreview * buttonPreview = [BankObjectButtonPreview buttonPreviewWithName:@"REButtonStyleDefault1" context:self.buildContext];
+    REButton               * button        = [self buttonWithDefaultStyle:REButtonStyleDefault1 context:self.buildContext];
+    REButtonView           * buttonView    = (REButtonView *)[REButtonView viewWithModel:button];
     UIImage              * previewImage  = [UIImage captureImageOfView:buttonView];
 
     [self.buildContext deleteObject:button];
@@ -101,27 +101,27 @@ static const int   ddLogLevel = DefaultDDLogLevel;
 
     [DataManager saveMainContext];
 
-    buttonPreview = [GalleryButtonPreview buttonPreviewWithName:@"ButtonStyleDefault2" context:self.buildContext];
-    button        = [self buttonWithDefaultStyle:ButtonStyleDefault2 context:self.buildContext];
-    buttonView    = (ButtonView *)[ButtonView remoteElementViewWithElement:button];
+    buttonPreview = [BankObjectButtonPreview buttonPreviewWithName:@"REButtonStyleDefault2" context:self.buildContext];
+    button        = [self buttonWithDefaultStyle:REButtonStyleDefault2 context:self.buildContext];
+    buttonView    = (REButtonView *)[REButtonView viewWithModel:button];
     previewImage  = [UIImage captureImageOfView:buttonView];
     [self.buildContext deleteObject:button];
     buttonPreview.image = previewImage;
 
     [DataManager saveMainContext];
 
-    buttonPreview = [GalleryButtonPreview buttonPreviewWithName:@"ButtonStyleDefault3" context:self.buildContext];
-    button        = [self buttonWithDefaultStyle:ButtonStyleDefault3 context:self.buildContext];
-    buttonView    = (ButtonView *)[ButtonView remoteElementViewWithElement:button];
+    buttonPreview = [BankObjectButtonPreview buttonPreviewWithName:@"REButtonStyleDefault3" context:self.buildContext];
+    button        = [self buttonWithDefaultStyle:REButtonStyleDefault3 context:self.buildContext];
+    buttonView    = (REButtonView *)[REButtonView viewWithModel:button];
     previewImage  = [UIImage captureImageOfView:buttonView];
     [self.buildContext deleteObject:button];
     buttonPreview.image = previewImage;
 
     [DataManager saveMainContext];
 
-    buttonPreview = [GalleryButtonPreview buttonPreviewWithName:@"ButtonStyleDefault4" context:self.buildContext];
-    button        = [self buttonWithDefaultStyle:ButtonStyleDefault4 context:self.buildContext];
-    buttonView    = (ButtonView *)[ButtonView remoteElementViewWithElement:button];
+    buttonPreview = [BankObjectButtonPreview buttonPreviewWithName:@"REButtonStyleDefault4" context:self.buildContext];
+    button        = [self buttonWithDefaultStyle:REButtonStyleDefault4 context:self.buildContext];
+    buttonView    = (REButtonView *)[REButtonView viewWithModel:button];
     previewImage  = [UIImage captureImageOfView:buttonView];
     [self.buildContext deleteObject:button];
     buttonPreview.image = previewImage;
@@ -129,7 +129,7 @@ static const int   ddLogLevel = DefaultDDLogLevel;
     return [DataManager saveMainContext];
 }  /* generateButtonPreviews */
 
-- (ActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity {
+- (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity {
     NSMutableDictionary * titleHighlightedAttributes = [@{}
                                                         mutableCopy];
     NSMutableDictionary * titleAttributes            = [self buttonTitleAttributesWithFontName:nil fontSize:0 highlighted:titleHighlightedAttributes];
@@ -141,10 +141,10 @@ static const int   ddLogLevel = DefaultDDLogLevel;
 
     if (switchIndex >= 0) longPressCommand = command[switchIndex];
 
-    ActivityButton * button = (ActivityButton *)MakeActivityOnButton(
+    REActivityButton * button = (REActivityButton *)MakeActivityOnButton(
         @"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-        @"shape" : @(ButtonShapeRoundedRectangle),
-        @"style" : @(ButtonStyleApplyGloss | ButtonStyleDrawBorder),
+        @"shape" : @(REButtonShapeRoundedRectangle),
+        @"style" : @(REButtonStyleApplyGloss | REButtonStyleDrawBorder),
         @"key" :[NSString stringWithFormat:@"activity%u", activity],
         @"titles" : MakeTitleSet(@{@0 : attributedTitle, @1 : attributedTitleHighlighted}
                                  ),

@@ -1,6 +1,6 @@
 //
 // IconEditingViewController.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/30/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.

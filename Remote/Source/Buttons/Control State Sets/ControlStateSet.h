@@ -1,30 +1,30 @@
 //
 // ControlStateSet.h
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/26/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "GalleryImage.h"
+#import "REImage.h"
 
-@class   Button;
+@class   REButton;
 
 #pragma mark - ControlStateSet
 
-MSKIT_STATIC_INLINE BOOL ValidControlState(NSInteger state) {
+MSKIT_STATIC_INLINE BOOL IsValidControlState(NSInteger state) {
     return state >= 0 && state <= 7;
 }
 
-MSKIT_STATIC_INLINE BOOL InvalidControlState(NSInteger state) {
-    return !ValidControlState(state);
+MSKIT_STATIC_INLINE BOOL IsInvalidControlState(NSInteger state) {
+    return !IsValidControlState(state);
 }
 
 @interface ControlStateSet : NSManagedObject
 
-@property (nonatomic, strong) Button * button;
+@property (nonatomic, strong) REButton * button;
 
 + (ControlStateSet *)controlStateSetInContext:(NSManagedObjectContext *)context;
-+ (ControlStateSet *)controlStateSetForButton:(Button *)button;
++ (ControlStateSet *)controlStateSetForButton:(REButton *)button;
 - (id)objectForState:(NSUInteger)state;
 - (void)setObject:(id)object forState:(NSUInteger)state;
 
@@ -54,6 +54,7 @@ typedef NS_ENUM (NSInteger, ControlStateColorType) {
 @class   ControlStateIconImageSet;
 
 @interface ControlStateColorSet : ControlStateSet <MSCaching>
+
 + (ControlStateColorSet *)colorSetInContext:(NSManagedObjectContext *)context
                                  withColors:(NSDictionary *)colors;
 + (ControlStateColorSet *)colorSetInContext:(NSManagedObjectContext *)context;
@@ -63,20 +64,17 @@ typedef NS_ENUM (NSInteger, ControlStateColorType) {
 + (ControlStateColorSet *)colorSetForIcons:(ControlStateIconImageSet *)icons;
 + (ControlStateColorSet *)colorSetForIcons:(ControlStateIconImageSet *)icons
                          withDefaultColors:(ControlStateColorSetDefault)defaultColors;
-+ (ControlStateColorSet *)colorSetForButton:(Button *)button
++ (ControlStateColorSet *)colorSetForButton:(REButton *)button
                           withDefaultColors:(ControlStateColorSetDefault)defaultColors
                                        type:(ControlStateColorType)type;
 
 - (BOOL)colorDefinedForState:(NSUInteger)state;
 - (UIColor *)colorForState:(NSUInteger)state;
-// - (UIColor *)baseColorForState:(NSUInteger)state;
 - (UIColor *)colorForState:(NSUInteger)state
            substituteIfNil:(BOOL)substitute
           substitutedState:(NSUInteger *)substitutedState;
-// - (void)setBaseColor:(UIColor *)color forState:(NSUInteger)state;
-// - (void)removePatternColorForState:(NSUInteger)state;
-// - (void)addPatternColorForState:(NSUInteger)state;
 - (void)setColor:(UIColor *)color forState:(NSUInteger)state;
+
 @property (nonatomic, assign, readonly) int16_t   colorSetType;
 
 + (void)setClassShouldUseCache:(BOOL)shouldUseCache;
@@ -87,15 +85,15 @@ typedef NS_ENUM (NSInteger, ControlStateColorType) {
 
 @interface ControlStateImageSet : ControlStateSet <MSCaching>
 
-- (UIImage *)imageForState:(NSUInteger)state;
-- (UIImage *)imageForState:(NSUInteger)state
+- (UIImage *)UIImageForState:(NSUInteger)state;
+- (UIImage *)UIImageForState:(NSUInteger)state
+             substituteIfNil:(BOOL)substitute
+            substitutedState:(NSUInteger *)substitutedState;
+- (REImage *)imageForState:(NSUInteger)state;
+- (REImage *)imageForState:(NSUInteger)state
            substituteIfNil:(BOOL)substitute
           substitutedState:(NSUInteger *)substitutedState;
-- (GalleryImage *)galleryImageForState:(NSUInteger)state;
-- (GalleryImage *)galleryImageForState:(NSUInteger)state
-                       substituteIfNil:(BOOL)substitute
-                      substitutedState:(NSUInteger *)substitutedState;
-- (void)setImage:(GalleryImage *)image forState:(NSUInteger)state;
+- (void)setImage:(REImage *)image forState:(NSUInteger)state;
 + (void)setClassShouldUseCache:(BOOL)shouldUseCache;
 
 @end
@@ -104,7 +102,7 @@ typedef NS_ENUM (NSInteger, ControlStateColorType) {
 
 @interface ControlStateButtonImageSet : ControlStateImageSet
 
-+ (ControlStateButtonImageSet *)imageSetForButton:(Button *)button;
++ (ControlStateButtonImageSet *)imageSetForButton:(REButton *)button;
 
 @end
 
@@ -115,7 +113,7 @@ typedef NS_ENUM (NSInteger, ControlStateColorType) {
 @property (nonatomic, assign) BOOL   styleHighlightedIcon;
 
 + (ControlStateIconImageSet *)iconSetWithColors:(ControlStateColorSet *)colors icons:(NSDictionary *)icons;
-+ (ControlStateIconImageSet *)iconSetForButton:(Button *)button;
++ (ControlStateIconImageSet *)iconSetForButton:(REButton *)button;
 
 - (void)setIconColor:(UIColor *)color forState:(NSUInteger)state;
 - (BOOL)iconColorDefinedForState:(NSUInteger)state;
@@ -131,7 +129,7 @@ typedef NS_ENUM (NSInteger, ControlStateColorType) {
 
 @interface ControlStateTitleSet : ControlStateSet
 
-+ (ControlStateTitleSet *)titleSetForButton:(Button *)button;
++ (ControlStateTitleSet *)titleSetForButton:(REButton *)button;
 
 + (ControlStateTitleSet *)titleSetInContext:(NSManagedObjectContext *)context
                                  withTitles:(NSDictionary *)titles;

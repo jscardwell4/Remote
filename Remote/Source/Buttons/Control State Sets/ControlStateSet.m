@@ -1,13 +1,13 @@
 //
 // ControlStateSet.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/26/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "ControlStateSet.h"
 #import "ControlStateSet_Private.h"
-#import "Button.h"
+#import "REButton.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -37,7 +37,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return stateSet;
 }
 
-+ (ControlStateSet *)controlStateSetForButton:(Button *)button {
++ (ControlStateSet *)controlStateSetForButton:(REButton *)button {
     if (!button) return nil;
 
     ControlStateSet * stateSet =

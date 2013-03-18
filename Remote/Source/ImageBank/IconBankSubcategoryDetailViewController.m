@@ -1,13 +1,13 @@
 //
 // IconBankSubcategoryDetailViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 6/14/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 
 #import "IconBankSubcategoryDetailViewController.h"
-#import "GalleryImage.h"
+#import "REImage.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -163,7 +163,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     // Configure the cell...
 // cell.textLabel.text = [self trimmedFileNameForIndexPath:indexPath];
 // cell.imageView.image = [UIImage imageWithContentsOfFile: _icons[indexPath.row]];
-    GalleryIconImage * iconImage = _icons[indexPath.row];
+    REIconImage * iconImage = _icons[indexPath.row];
 
     cell.textLabel.text  = iconImage.name;
     cell.imageView.image = [UIImage imageNamed:iconImage.fileName];
@@ -235,7 +235,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     if (ValueIsNotNil(_modalDelegate)) {
 // NSString *iconString = [[self fileNamePrefix] stringByAppendingString:[self
 // trimmedFileNameForIndexPath:indexPath]];
-        GalleryIconImage * iconImage  = _icons[indexPath.row];
+        REIconImage * iconImage  = _icons[indexPath.row];
         NSString         * iconString = iconImage.fileName;
 
         [_modalDelegate didSelectIconFile:iconString];

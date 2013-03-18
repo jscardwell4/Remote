@@ -1,13 +1,13 @@
 //
 // BackgroundEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/25/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
 #import "BackgroundEditingViewController.h"
-#import "GalleryImage.h"
+#import "REImage.h"
 #import "StoryboardProxy.h"
 #import "Painter.h"
 
@@ -32,7 +32,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 @property (strong, nonatomic) IBOutlet MSColorInputButton  * colorInputButton;
 
 - (void)initializeColorSelectionControllerWithColor:(UIColor *)color;
-- (void)selectRowForGalleryBackgroundImage:(GalleryBackgroundImage *)bgImage;
+- (void)selectRowForGalleryBackgroundImage:(REBackgroundImage *)bgImage;
 - (void)resetUI;
 
 - (void)setBorderForView:(UIView *)view selected:(BOOL)selected;
@@ -86,7 +86,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
     selectedIndex = -2;
 
     if (_sourceObject) {
-        [self selectRowForGalleryBackgroundImage:(GalleryBackgroundImage *)_sourceObject.backgroundImage];
+        [self selectRowForGalleryBackgroundImage:(REBackgroundImage *)_sourceObject.backgroundImage];
 // self.colorSelectionVC.initialColor = self.sourceObject.backgroundColor;
 // [self initializeColorSelectionControllerWithColor:_sourceObject.backgroundColor];
         self.colorInputButton.backgroundColor = _sourceObject.backgroundColor;
@@ -156,8 +156,8 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                  // touchedView.tag - 1 : 0);
 
     if (sender.numberOfTapsRequired == 2 && index >= 0) {
-        GalleryBackgroundImage * bgImage =
-            (GalleryBackgroundImage *)self.fetchedBackgrounds[index];
+        REBackgroundImage * bgImage =
+            (REBackgroundImage *)self.fetchedBackgrounds[index];
 
         self.imagePreview.image  = bgImage.image;
         self.imagePreview.hidden = NO;
@@ -214,7 +214,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
     [self resetToInitialState];
 }
 
-- (void)selectRowForGalleryBackgroundImage:(GalleryBackgroundImage *)bgImage {
+- (void)selectRowForGalleryBackgroundImage:(REBackgroundImage *)bgImage {
     if (!bgImage) {
         selectedIndex = -1;
 
@@ -229,7 +229,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
             [self.fetchedBackgrounds
              indexOfObjectPassingTest:
              ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
-            if (bgImage.tag == ((GalleryBackgroundImage *)obj).tag) {
+            if (bgImage.tag == ((REBackgroundImage *)obj).tag) {
                 *stop = YES;
 
                 return YES;
@@ -269,7 +269,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
     else {
         [_sourceObject.managedObjectContext
          performBlockAndWait:^{
-             NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"GalleryBackgroundImage"];
+             NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"REBackgroundImage"];
              NSError * error = nil;
              NSArray * fetchedObjects =
                 [_sourceObject.managedObjectContext
@@ -321,7 +321,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
     MSKIT_STATIC_STRING_CONST   kCellIdentifier = @"Cell";
     UITableViewCell         * cell            = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     NSInteger                 index           = indexPath.row * 3 - 1;
-    GalleryBackgroundImage  * bgImage;
+    REBackgroundImage  * bgImage;
     UIImageView             * imageView;
 
     imageView     = (UIImageView *)[cell viewWithNametag:@"column1"];
@@ -329,20 +329,20 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
     [self setBorderForView:imageView selected:(index == selectedIndex)];
 
     if (index >= 0) {
-        bgImage         = (GalleryBackgroundImage *)_fetchedBackgrounds[index];
+        bgImage         = (REBackgroundImage *)_fetchedBackgrounds[index];
         imageView.image = bgImage.image;
     } else
         imageView.image = [self noBackgroundImage];
 
     if (++index < [self.fetchedBackgrounds count]) {
-        bgImage         = (GalleryBackgroundImage *)_fetchedBackgrounds[index];
+        bgImage         = (REBackgroundImage *)_fetchedBackgrounds[index];
         imageView       = (UIImageView *)[cell viewWithNametag:@"column2"];
         imageView.image = bgImage.image;
         imageView.tag   = index;
         [self setBorderForView:imageView selected:(index == selectedIndex)];
 
         if (++index < [self.fetchedBackgrounds count]) {
-            bgImage         = (GalleryBackgroundImage *)_fetchedBackgrounds[index];
+            bgImage         = (REBackgroundImage *)_fetchedBackgrounds[index];
             imageView       = (UIImageView *)[cell viewWithNametag:@"column3"];
             imageView.image = bgImage.image;
             imageView.tag   = index;

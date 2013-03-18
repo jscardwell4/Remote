@@ -1,12 +1,12 @@
 /*
  * LaunchScreenViewController.h
- * iPhonto
+ * Remote
  *
  * Created by Jason Cardwell on 12/27/11.
  * Copyright (c) 2011 Moondeer Studios. All rights reserved.
  */
 
-#import "RemoteEditingViewController.h"
+#import "RERemoteEditingViewController.h"
 
 /**
  * `LaunchScreenViewController` is created in the main storyboard as the initial view controller

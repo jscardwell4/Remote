@@ -1,6 +1,6 @@
 //
 // CommandEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/2/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -9,9 +9,9 @@
 #import "CommandEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
 #import "Command.h"
-#import "ButtonGroup.h"
-#import "Remote.h"
-#import "RemoteController.h"
+#import "REButtonGroup.h"
+#import "RERemote.h"
+#import "RERemoteController.h"
 #import "ComponentDevice.h"
 #import "IRCode.h"
 #import <QuartzCore/QuartzCore.h>

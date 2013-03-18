@@ -1,6 +1,6 @@
 Friday March  1th, 2013
 =======================
 
-Sizing selected `RemoteElementViews` to one of their siblings is not working.
+Sizing selected `REViews` to one of their siblings is not working.
 I need to get that working and then give the constraint management implementation
 a once over.

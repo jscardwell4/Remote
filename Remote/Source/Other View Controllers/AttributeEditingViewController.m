@@ -1,6 +1,6 @@
 //
 // AttributeEditingViewController.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 4/2/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -41,7 +41,7 @@ MSKIT_STRING_CONST   kAttributeEditingImageKey        = @"kAttributeEditingImage
 {}
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-    if ([parent isMemberOfClass:[DetailedButtonEditingViewController class]]) self.detailedButtonEditor = (DetailedButtonEditingViewController *)parent;
+    if ([parent isMemberOfClass:[REDetailedButtonEditingViewController class]]) self.detailedButtonEditor = (REDetailedButtonEditingViewController *)parent;
     else self.detailedButtonEditor = nil;
 }
 

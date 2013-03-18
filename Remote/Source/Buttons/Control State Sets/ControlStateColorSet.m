@@ -1,6 +1,6 @@
 //
 // ControlStateColorSet.m
-// iPhonto
+// Remote
 //
 // Created by Jason Cardwell on 3/26/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "ControlStateSet.h"
 #import "ControlStateSet_Private.h"
-#import "Button.h"
+#import "REButton.h"
 
 static int    ddLogLevel = LOG_LEVEL_OFF;
 static BOOL   useCache   = NO;
@@ -164,7 +164,7 @@ static BOOL   useCache   = NO;
     return colorSet;
 }
 
-+ (ControlStateColorSet *)colorSetForButton:(Button *)button
++ (ControlStateColorSet *)colorSetForButton:(REButton *)button
                           withDefaultColors:(ControlStateColorSetDefault)defaultColors
                                        type:(ControlStateColorType)type {
     ControlStateColorSet * colorSet = [self colorSetInContext:button.managedObjectContext
@@ -202,7 +202,7 @@ static BOOL   useCache   = NO;
             DDLogDebug(@"%@\n\tcolor requested for state:%@", ClassTagString, UIControlStateString(state));
 
     // Validate state
-    if (InvalidControlState(state)) return nil;
+    if (IsInvalidControlState(state)) return nil;
 
     // Check cache for color and return if found
     UIColor * color = nil;
@@ -302,7 +302,7 @@ static BOOL   useCache   = NO;
 // #pragma mark - Base colors
 
 // - (void)setBaseColor:(UIColor *)color forState:(NSUInteger)state {
-    if (InvalidControlState(state)) return;
+    if (IsInvalidControlState(state)) return;
 
     if ([color isPatternBased] || ValueIsNil(color)) color = nil;
 
@@ -352,7 +352,7 @@ static BOOL   useCache   = NO;
            substituteIfNil:(BOOL)substitute
           substitutedState:(NSUInteger *)substitutedState {
     // Return nil if state is invalid
-    if (InvalidControlState(state)) return nil;
+    if (IsInvalidControlState(state)) return nil;
 
     BOOL         substitutePointerOK   = (substitutedState != NULL);
     NSUInteger   localSubstitutedState = state;
