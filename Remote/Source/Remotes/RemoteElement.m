@@ -46,8 +46,8 @@ static const NSSet        * kLayoutConfigurationKeys;
 
 + (void)initialize {
     if (self == [RemoteElement class]) {
-        kEntityNameForType = @{@(RETypeRemote)                     : @"RERemote",
-                               @(RETypeButtonGroup)                : @"REButtonGroup",
+        kEntityNameForType = @{@(RETypeRemote)                       : @"RERemote",
+                               @(RETypeButtonGroup)                  : @"REButtonGroup",
                                @(REButtonGroupTypePickerLabel)       : @"REPickerLabelButtonGroup",
                                @(REButtonGroupTypeToolbar)           : @"REButtonGroup",
                                @(REButtonGroupTypeTransport)         : @"REButtonGroup",
@@ -55,7 +55,7 @@ static const NSSet        * kLayoutConfigurationKeys;
                                @(REButtonGroupTypeSelectionPanel)    : @"REButtonGroup",
                                @(REButtonGroupTypeCommandSetManager) : @"REButtonGroup",
                                @(REButtonGroupTypeRoundedPanel)      : @"REButtonGroup",
-                               @(RETypeButton)                     : @"REButton",
+                               @(RETypeButton)                       : @"REButton",
                                @(REButtonTypeActivityButton)         : @"REActivityButton",
                                @(REButtonTypeNumberPad)              : @"REButton",
                                @(REButtonTypeConnectionStatus)       : @"REButton",
@@ -129,6 +129,13 @@ static const NSSet        * kLayoutConfigurationKeys;
         return self.layoutConfiguration;
     else
         return [super forwardingTargetForSelector:aSelector];
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    if ([kLayoutConfigurationSelectors containsObject:NSValueWithPointer(aSelector)])
+        return YES;
+    else
+        return [super respondsToSelector:aSelector];
 }
 
 - (id)valueForUndefinedKey:(NSString *)key {

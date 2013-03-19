@@ -281,7 +281,7 @@ static const int   msLogContext = EDITOR_F;
                         [self selectView:(REView*)view];
 
                     for (REView * view in _selectedViews)
-                        view.editingStyle = EditingStyleMoving;
+                        view.editingState = REEditingStateMoving;
 
                     _flags.movingSelectedViews = YES;
                     [self updateState];

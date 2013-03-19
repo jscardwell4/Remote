@@ -269,6 +269,8 @@
 + (RELayoutConstraint *)constraintWithModel:(REConstraint *)modelConstraint
                                     forView:(REView *)view
 {
+    if (!modelConstraint || modelConstraint.owner != view.model) return nil;
+
     REView * firstItem = view[modelConstraint.firstItem.uuid];
     REView * secondItem = ([modelConstraint isStaticConstraint]
                                       ? nil

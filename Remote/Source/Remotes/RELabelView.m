@@ -7,53 +7,43 @@
 //
 #import "RELabelView.h"
 
-@implementation RELabelView
+@implementation RELabelView {
+    CGSize          _baseSize;
+    CGFloat         _scale;
+    CGPoint         _offset;
+}
 
-- (id)init {
-    if ((self = [super init])) {
-        self.preserveLines = YES; self.clipsToBounds = NO;
+- (id)init { if ((self = [super init])) self.clipsToBounds = NO; return self; }
+
+- (void)setBounds:(CGRect)bounds {
+    [super setBounds:bounds];
+
+    if (CGSizeEqualToSize(_baseSize, CGSizeZero))
+    {
+        _baseSize = bounds.size;
+        _scale = 1.0f;
+        _offset = CGPointZero;
     }
 
-    return self;
+    else
+    {
+        MSAspectRatio aspectRatio = MSAspectRatioFromSizeOverSize(bounds.size, _baseSize);
+        _scale = (ABS(aspectRatio.x - 1) < ABS(aspectRatio.y - 1) ? aspectRatio.x : aspectRatio.y);
+        CGSize delta = CGSizeGetDelta(bounds.size, CGSizeApplyScale(_baseSize, _scale));
+        _offset = CGPointApplyAffineTransform(CGPointMake(CGSizeUnpack(delta)),
+                                              CGAffineTransformMakeScale(0.5, 0.5));
+    }
 }
 
-- (void)setBaseWidth:(CGFloat)baseWidth {
-    _baseWidth = baseWidth; _fontScale = 1.0f;
-}
-
-- (NSUInteger)lineBreaks {
-    return [self.text numberOfMatchesForRegEx:@"\\n"];
-}
+- (NSUInteger)lineBreaks { return [self.text numberOfMatchesForRegEx:@"\\n"]; }
 
 - (void)drawTextInRect:(CGRect)rect {
     UIGraphicsPushContext(UIGraphicsGetCurrentContext());
-    if (self.preserveLines) {
-        CGFloat   w = rect.size.width;
-
-        if (!_baseWidth)
-            self.baseWidth = rect.size.width;
-        else if (w != _baseWidth)
-            self.fontScale = w / _baseWidth;
-        else
-            _fontScale = 1.0f;
-
-        if (_fontScale != 1.0f) {
-            CGContextScaleCTM(UIGraphicsGetCurrentContext(), _fontScale, _fontScale);
-            CGContextTranslateCTM(UIGraphicsGetCurrentContext(),
-                                  0,
-                                  rect.origin.y + (_baseWidth - w) / 2.0f);
-            rect.size.width = _baseWidth;
-        }
-    }
-
+    CGContextScaleCTM(UIGraphicsGetCurrentContext(), _scale, _scale);
+    CGContextTranslateCTM(UIGraphicsGetCurrentContext(),CGPointUnpack(_offset));
+    rect.size = _baseSize;    
     [super drawTextInRect:rect];
     UIGraphicsPopContext();
 }
-
-@end
-
-@implementation REButtonLabelView
-
-
 
 @end

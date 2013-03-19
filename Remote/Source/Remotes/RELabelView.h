@@ -8,14 +8,6 @@
 
 @interface RELabelView : UILabel
 
-@property (nonatomic, assign) CGFloat        baseWidth;
-@property (nonatomic, assign) CGFloat        fontScale;
-@property (nonatomic, assign) BOOL           preserveLines;
 @property (nonatomic, readonly) NSUInteger   lineBreaks;
-
-@end
-
-
-@interface REButtonLabelView : RELabelView
 
 @end

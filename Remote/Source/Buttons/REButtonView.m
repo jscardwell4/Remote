@@ -25,7 +25,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     NSMutableDictionary          * _actionHandlers;
     UITapGestureRecognizer       * _tapGesture;
     MSLongPressGestureRecognizer * _longPressGesture;
-    REButtonLabelView            * _labelView;
+    RELabelView                  * _labelView;
     UIImage                      * _icon;
     UIActivityIndicatorView      * _activityIndicator;
     @protected
@@ -226,8 +226,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
     if (_labelView.text) s.height += MIN_LINE_HEIGHT + _labelView.lineBreaks * MIN_LINE_HEIGHT;
 
-    s.width  = MAX(s.width, RemoteElementMinimumSize.width);
-    s.height = MAX(s.height, RemoteElementMinimumSize.height);
+    s.width  = MAX(s.width, REMinimumSize.width);
+    s.height = MAX(s.height, REMinimumSize.height);
 
     if (self.proportionLock)
     {
@@ -274,14 +274,13 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 - (void)addInternalSubviews {
     [super addInternalSubviews];
-    self.contentInteractionEnabled                       = NO;
-    self.contentClipsToBounds                            = NO;
-    self.clipsToBounds                                   = NO;
-    _labelView                                           = [REButtonLabelView new];
-    _labelView.translatesAutoresizingMaskIntoConstraints = NO;
-    _labelView.numberOfLines                             = 0;
-    _labelView.opaque                                    = NO;
-    _labelView.minimumScaleFactor                        = 0;
+    self.contentInteractionEnabled = NO;
+    self.contentClipsToBounds      = NO;
+    self.clipsToBounds             = NO;
+    _labelView                     = [RELabelView newForAutolayout];
+    _labelView.numberOfLines       = 0;
+    _labelView.opaque              = NO;
+    _labelView.minimumScaleFactor  = 0;
 
 #ifdef BUTTON_VIEW_DEBUG_LABELS
     _labelView.backgroundColor = [GreenColor colorWithAlphaComponent:0.5];

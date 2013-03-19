@@ -21,28 +21,19 @@
 #pragma mark - Internal Subview Class Interfaces
 ////////////////////////////////////////////////////////////////////////////////
 
-/*******************************************************************************
- *  Generic view that initializes some basic settings
- *******************************************************************************/
-@interface REViewInternal : UIView {
-    __weak REView * _delegate;
-}
+ /// Generic view that initializes some basic settings
+@interface REViewInternal : UIView { __weak REView * _delegate; } @end
 
-@end
+/// View that holds any subelement views
+@interface REViewSubelements : REViewInternal @end
 
-/*******************************************************************************
- *  View that holds any subelement views and draws primary content
- *******************************************************************************/
+/// View that draws primary content
 @interface REViewContent : REViewInternal @end
 
-/*******************************************************************************
- *  View that draws any background decoration
- *******************************************************************************/
+/// View that draws any background decoration
 @interface REViewBackdrop : REViewInternal @end
 
-/*******************************************************************************
- *  View that draws top level style elements such as gloss and editing indicators
- *******************************************************************************/
+/// View that draws top level style elements such as gloss and editing indicators
 @interface REViewOverlay : REViewInternal
 
 @property (nonatomic, assign) BOOL      showAlignmentIndicators;
@@ -51,76 +42,58 @@
 
 @end
 
-#define UPDATE_FROM_MODEL_TRICKLES_DOWN NO
-#define VIEW_CLIPS_TO_BOUNDS            NO
-
-
-@interface REView ()
-
-@property (nonatomic, strong) REViewContent           * contentView;
-@property (nonatomic, strong) REViewBackdrop          * backdropView;
-@property (nonatomic, strong) REViewOverlay           * overlayView;
-
-@end
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Global Variables
+////////////////////////////////////////////////////////////////////////////////
 
 static const int   ddLogLevel               = LOG_LEVEL_DEBUG;
 static const int   msLogContext             = REMOTE_F;
-CGSize const       RemoteElementMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
+CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - REView Implementation
+////////////////////////////////////////////////////////////////////////////////
 
 @implementation REView {
-    @private
-    NSDictionary  * _kvoReceptionists;
-    __weak REView * _weakself;
+@private
+    NSDictionary      * _kvoReceptionists;
+    REViewSubelements * _subelementsView;
+    REViewContent     * _contentView;
+    REViewBackdrop    * _backdropView;
+    REViewOverlay     * _overlayView;
+    __weak REView     * _weakself;
 }
 
 + (REView *)viewWithModel:(RemoteElement *)model
 {
+    static NSDictionary const * kClassMap = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kClassMap = @{@(RETypeRemote)                       : @"RERemoteView",
+                      @(REButtonGroupTypeSelectionPanel)    : @"RESelectionPanelButtonGroupView",
+                      @(REButtonGroupTypePickerLabel)       : @"REPickerLabelButtonGroupView",
+                      @(REButtonGroupTypeRoundedPanel)      : @"RERoundedPanelButtonGroupView",
+                      @(REButtonGroupTypeToolbar)           : @"REButtonGroupView",
+                      @(REButtonGroupTypeCommandSetManager) : @"REButtonGroupView",
+                      @(REButtonGroupTypeTransport)         : @"REButtonGroupView",
+                      @(REButtonGroupTypeDPad)              : @"REButtonGroupView",
+                      @(RETypeButtonGroup)                  : @"REButtonGroupView",
+                      @(REButtonTypeConnectionStatus)       : @"REConnectionStatusButtonView",
+                      @(REButtonTypeBatteryStatus)          : @"REBatteryStatusButtonView",
+                      @(REButtonTypeActivityButton)         : @"REButtonView",
+                      @(RETypeButton)                       : @"REButtonView",
+                      @(RETypeUndefined)                    : NullObject};
+
+    });
+
     model = (RemoteElement *)[model.managedObjectContext existingObjectWithID:model.objectID
                                                                        error:nil];
 
-    switch ((uint64_t)model.type)
-    {
-        case RETypeRemote:
-
-            return [[RERemoteView alloc] initWithModel:model];
-
-        case REButtonGroupTypeSelectionPanel:
-
-            return [[RESelectionPanelButtonGroupView alloc] initWithModel:model];
-
-        case REButtonGroupTypePickerLabel:
-
-            return [[REPickerLabelButtonGroupView alloc] initWithModel:model];
-
-        case REButtonGroupTypeRoundedPanel:
-
-            return [[RERoundedPanelButtonGroupView alloc] initWithModel:model];
-
-        case REButtonGroupTypeToolbar:
-        case REButtonGroupTypeCommandSetManager:
-        case REButtonGroupTypeTransport:
-        case REButtonGroupTypeDPad:
-        case RETypeButtonGroup:
-
-            return [[REButtonGroupView alloc] initWithModel:model];
-
-        case REButtonTypeConnectionStatus:
-
-            return [[REConnectionStatusButtonView alloc] initWithModel:model];
-
-        case REButtonTypeBatteryStatus:
-
-            return [[REBatteryStatusButtonView alloc] initWithModel:model];
-
-        case REButtonTypeActivityButton:
-        case RETypeButton:
-
-            return [[REButtonView alloc] initWithModel:model];
-
-        case RETypeUndefined:
-        default:
-            assert(NO); return nil;
-    }
+    NSString * className = kClassMap[@(model.type)];
+    if (ValueIsNotNil(className))
+        return [[NSClassFromString(className) alloc] initWithModel:model];
+    else
+        return nil;
 }
 
 /**
@@ -146,11 +119,11 @@ CGSize const       RemoteElementMinimumSize = (CGSize) { .width = 44.0f, .height
     _weakself = self;
     self.appliedScale = 1.0;
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.clipsToBounds                             = VIEW_CLIPS_TO_BOUNDS;
+    self.clipsToBounds                             = NO;
     self.opaque                                    = NO;
     self.multipleTouchEnabled                      = YES;
     self.userInteractionEnabled                    = YES;
-    
+
     [self addInternalSubviews];
     [self attachGestureRecognizers];
     [self initializeViewFromModel];
@@ -186,6 +159,7 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
                                                               _backdropView,
                                                               _backgroundImageView,
                                                               _contentView,
+                                                              _subelementsView,
                                                               _overlayView);
         NSString * constraints =
             $(@"'%1$@' _backdropView.width = self.width\n"
@@ -200,6 +174,10 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
              "'%1$@' _contentView.height = self.height\n"
              "'%1$@' _contentView.centerX = self.centerX\n"
              "'%1$@' _contentView.centerY = self.centerY\n"
+             "'%1$@' _subelementsView.width = self.width\n"
+             "'%1$@' _subelementsView.height = self.height\n"
+             "'%1$@' _subelementsView.centerX = self.centerX\n"
+             "'%1$@' _subelementsView.centerY = self.centerY\n"
              "'%1$@' _overlayView.width = self.width\n"
              "'%1$@' _overlayView.height = self.height\n"
              "'%1$@' _overlayView.centerX = self.centerX\n"
@@ -238,47 +216,32 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 - (NSDictionary *)kvoRegistration
 {
     NSDictionary * kvoRegistration =
-        @{
-        @"constraints" :
-        ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx)
-        {
+        @{@"constraints" : MSMakeKVOHandler({
             [_weakself setNeedsUpdateConstraints];
-        },
-        @"firstItemConstraints" :
-        ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx)
-        {
-            [_weakself.parentElementView setNeedsUpdateConstraints];
-        },
-        @"backgroundColor" :
-        ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx)
-        {
-            if ([c[NSKeyValueChangeNewKey] isKindOfClass:[UIColor class]])
-                _weakself.backgroundColor = c[NSKeyValueChangeNewKey];
-            else
-                _weakself.backgroundColor = nil;
-        },
-        @"backgroundImage" :
-        ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx)
-        {
-            if ([c[NSKeyValueChangeNewKey] isKindOfClass:[REImage class]])
-                _weakself.backgroundImageView.image = [(REImage*)c[NSKeyValueChangeNewKey]
-                                                       stretchableImage];
-            else
-                _weakself.backgroundImageView.image = nil;
-        },
-        @"backgroundImageAlpha" :
-        ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx)
-        {
-            if ([c[NSKeyValueChangeNewKey] isKindOfClass:[NSNumber class]])
-                _backgroundImageView.alpha = [c[NSKeyValueChangeNewKey] floatValue];
-        },
-        @"shape" :
-        ^(MSKVOReceptionist * r, NSString * k, id o, NSDictionary * c, void * ctx)
-        {
-            _weakself.bounds = _weakself.bounds;
-        }
-
-    };
+          }),
+//          @"firstItemConstraints" : MSMakeKVOHandler({
+//              [_weakself.parentElementView setNeedsUpdateConstraints];
+//          }),
+          @"backgroundColor" : MSMakeKVOHandler({
+              if ([change[NSKeyValueChangeNewKey] isKindOfClass:[UIColor class]])
+                  _weakself.backgroundColor = change[NSKeyValueChangeNewKey];
+              else
+                  _weakself.backgroundColor = nil;
+          }),
+          @"backgroundImage" : MSMakeKVOHandler({
+              if ([change[NSKeyValueChangeNewKey] isKindOfClass:[REImage class]])
+                  _weakself.backgroundImageView.image = [(REImage*)change[NSKeyValueChangeNewKey]
+                                                         stretchableImage];
+              else
+                  _weakself.backgroundImageView.image = nil;
+          }),
+          @"backgroundImageAlpha" : MSMakeKVOHandler({
+              if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNumber class]])
+                  _backgroundImageView.alpha = [change[NSKeyValueChangeNewKey] floatValue];
+          }),
+          @"shape" : MSMakeKVOHandler({
+              [_weakself refreshBorderPath];
+          })};
 
     return kvoRegistration;
 }
@@ -296,8 +259,6 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 {
     if (_model)
     {
-        assert(_kvoReceptionists == nil);
-
         _kvoReceptionists = [[self kvoRegistration]
                              dictionaryByMappingObjectsToBlock:
                              ^MSKVOReceptionist *(NSString * keypath, MSKVOHandler handler)
@@ -323,15 +284,13 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 /**
  * Override point for subclasses to update themselves with data from the model.
  */
-- (void)initializeViewFromModel {
-    assert(_model);
-
+- (void)initializeViewFromModel
+{
     self.backgroundColor       = _model.backgroundColor;
     _backgroundImageView.image = (_model.backgroundImage
                                   ?[_model.backgroundImage stretchableImage]
                                   : nil);
-
-    [self.subelementViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self refreshBorderPath];
 
     for (RemoteElement * re in _model.subelements)
         [self addSubelementView:[REView viewWithModel:re]];
@@ -447,25 +406,25 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 
 - (void)didAlignViews:(NSSet *)views {}
 
-- (void)willMoveViews:(NSSet *)views {}
+- (void)willTranslateViews:(NSSet *)views {}
 
-- (void)didMoveViews:(NSSet *)views {}
+- (void)didTranslateViews:(NSSet *)views {}
 
 /**
  * Returns the model's display name or nil if no model.
  */
-- (NSString *)displayName
-{
-    return (_model ? _model.displayName : nil);
-}
+//- (NSString *)displayName
+//{
+//    return (_model ? _model.displayName : nil);
+//}
 
 /**
  * Returns the model's key or nil if no model.
  */
-- (NSString *)key
-{
-    return (_model ? _model.key : nil);
-}
+//- (NSString *)key
+//{
+//    return (_model ? _model.key : nil);
+//}
 
 - (BOOL)isEditing
 {
@@ -477,12 +436,12 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
  */
 - (NSArray *)subelementViews
 {
-    return [_contentView subviewsOfKind:[REView class]];
+    return [_subelementsView subviews];
 }
 
 - (REView *)objectAtIndexedSubscript:(NSUInteger)idx
 {
-    return self.subelementViews[idx];
+    return _subelementsView.subviews[idx];
 }
 
 - (BOOL)isSubscriptKey:(NSString *)key
@@ -493,12 +452,12 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 
 - (REView *)objectForKeyedSubscript:(NSString *)key
 {
-    if ([self isSubscriptKey:key]) return self;
+    if (REStringIdentifiesREView(key, self)) return self;
     else
-        return [self.subelementViews objectPassingTest:^BOOL (REView * obj, NSUInteger idx)
-                                                       {
-                                                           return [obj isSubscriptKey:key];
-                                                       }];
+        return [self.subelementViews objectPassingTest:
+                ^BOOL (REView * obj, NSUInteger idx) {
+                    return REStringIdentifiesREView(key, obj);
+                }];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -508,7 +467,7 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 - (CGSize)minimumSize
 {
     // TODO: Constraints will need to be handled eventually
-    if (!self.subelementViews.count) return RemoteElementMinimumSize;
+    if (!self.subelementViews.count) return REMinimumSize;
 
     NSMutableArray * xAxisRanges = [@[] mutableCopy];
     NSMutableArray * yAxisRanges = [@[] mutableCopy];
@@ -521,25 +480,25 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
          [xAxisRanges addObject:NSValueWithNSRange(NSMakeRange(org.x, min.width))];
          [yAxisRanges addObject:NSValueWithNSRange(NSMakeRange(org.y, min.height))];
      }];
-    
+
     // sort collections by range location
     [xAxisRanges sortUsingComparator:^NSComparisonResult (NSValue * obj1, NSValue * obj2)
      {
          NSRange r1 = NSRangeValue(obj1);
          NSRange r2 = NSRangeValue(obj2);
-         
+
          return (r1.location < r2.location
                  ? NSOrderedAscending
                  : (r1.location > r2.location
                     ? NSOrderedDescending
                     : NSOrderedSame));
      }];
-    
+
     [yAxisRanges sortUsingComparator:^NSComparisonResult (NSValue * obj1, NSValue * obj2)
      {
          NSRange r1 = NSRangeValue(obj1);
          NSRange r2 = NSRangeValue(obj2);
-         
+
          return (r1.location < r2.location
                  ? NSOrderedAscending
                  : (r1.location > r2.location
@@ -568,7 +527,7 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
                 joinCount++;
                 tmpRange = NSUnionRange(tmpRange, r);
             }
-            
+
             else
             {
                 [a addObject:NSValueWithNSRange(tmpRange)];
@@ -598,7 +557,7 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
                 joinCount++;
                 tmpRange = NSUnionRange(tmpRange, r);
             }
-            
+
             else
             {
                 [a addObject:NSValueWithNSRange(tmpRange)];
@@ -608,7 +567,7 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 
         [a addObject:NSValueWithNSRange(tmpRange)];
         yAxisRanges = a;
-        
+
     } while (joinCount);
 
     // calculate min size and width by summing range lengths
@@ -616,12 +575,12 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
                                         ^id (NSValue * obj, NSUInteger idx){
                                             return @(NSRangeValue(obj).length);
                                         }] valueForKeyPath:@"@sum.self"]);
-    
+
     CGFloat   minHeight = CGFloatValue([[yAxisRanges arrayByMappingToBlock:
                                          ^id (NSValue * obj, NSUInteger idx){
                                              return @(NSRangeValue(obj).length);
                                          }] valueForKeyPath:@"@sum.self"]);
-    
+
     CGSize   s = CGSizeMake(minWidth, minHeight);
 
     if (self.proportionLock) s = CGSizeAspectMappedToSize(self.bounds.size, s, NO);
@@ -644,24 +603,24 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 /**
  * Sets border color according to current editing style.
  */
-- (void)setEditingStyle:(EditingStyle)editingStyle
+- (void)setEditingState:(REEditingState)editingState
 {
-    _editingStyle = editingStyle;
+    _editingState = editingState;
 
-    _overlayView.showAlignmentIndicators = (_editingStyle == EditingStyleMoving ? YES : NO);
-    _overlayView.showContentBoundary     = (_editingStyle ? YES : NO);
+    _overlayView.showAlignmentIndicators = (_editingState == REEditingStateMoving ? YES : NO);
+    _overlayView.showContentBoundary     = (_editingState ? YES : NO);
 
-    switch (_editingStyle)
+    switch (_editingState)
     {
-        case EditingStyleSelected:
+        case REEditingStateSelected:
             _overlayView.boundaryColor = YellowColor;
             break;
 
-        case EditingStyleMoving:
+        case REEditingStateMoving:
             _overlayView.boundaryColor = BlueColor;
             break;
 
-        case EditingStyleFocus:
+        case REEditingStateFocus:
             _overlayView.boundaryColor = RedColor;
             break;
 
@@ -679,42 +638,48 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
  */
 - (void)addInternalSubviews
 {
-    self.backdropView = [REViewBackdrop new];
+    _backdropView = [REViewBackdrop newForAutolayout];
     [self addSubview:_backdropView];
 
-    _backgroundImageView                                           = [UIImageView new];
-    _backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    _backgroundImageView                                           = [UIImageView newForAutolayout];
     _backgroundImageView.contentMode                               = UIViewContentModeScaleToFill;
     _backgroundImageView.opaque                                    = NO;
     _backgroundImageView.backgroundColor                           = ClearColor;
-    [self.backdropView addSubview:_backgroundImageView];
+    [_backdropView addSubview:_backgroundImageView];
 
-    self.contentView = [REViewContent new];
+    _contentView = [REViewContent newForAutolayout];
     [self addSubview:_contentView];
 
-    self.overlayView = [REViewOverlay new];
+    _subelementsView = [REViewSubelements newForAutolayout];
+    [self addSubview:_subelementsView];
+
+    _overlayView = [REViewOverlay newForAutolayout];
     [self addSubview:_overlayView];
 }
 
 - (void)addViewToContent:(UIView *)view
 {
-    [self.contentView addSubview:view];
+    [_contentView addSubview:view];
 }
 
 - (void)addViewToOverlay:(UIView *)view
 {
-    [self.overlayView addSubview:view];
+    [_overlayView addSubview:view];
 }
 
 - (void)addViewToBackdrop:(UIView *)view
 {
-    [self.backdropView addSubview:view];
+    [_backdropView addSubview:view];
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    if ([newSuperview isKindOfClass:[REViewSubelements class]])
+        _parentElementView = (REView *)newSuperview.superview;
 }
 
 - (void)addSubelementView:(REView *)view
 {
-    view.parentElementView = self;
-    [self.contentView addSubview:view];
+    [_subelementsView addSubview:view];
 }
 
 - (void)removeSubelementView:(REView *)view
@@ -730,48 +695,32 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 
 - (void)removeSubelementViews:(NSSet *)views
 {
-    for (REView * view in views)
-        [self removeSubelementView:view];
+    [views makeObjectsPerformSelector:@selector(removeFromSuperview)];
 }
 
-- (void)bringSubviewToFront:(UIView *)view
+- (void)bringSubelementViewToFront:(REView *)subelementView
 {
-    if ([view isKindOfClass:[REView class]])
-        [_contentView bringSubviewToFront:view];
-    else
-        [super bringSubviewToFront:view];
+    [_subelementsView bringSubviewToFront:subelementView];
 }
 
-- (void)sendSubviewToBack:(UIView *)view
+- (void)sendSubelementViewToBack:(REView *)subelementView
 {
-    if ([view isKindOfClass:[REView class]])
-        [_contentView sendSubviewToBack:view];
-    else
-        [super sendSubviewToBack:view];
+    [_subelementsView sendSubviewToBack:subelementView];
 }
 
-- (void)insertSubview:(UIView *)view aboveSubview:(UIView *)siblingSubview
+- (void)insertSubelementView:(REView *)subelementView aboveSubelementView:(REView *)siblingSubelementView
 {
-    if ([view isKindOfClass:[REView class]])
-        [_contentView insertSubview:view aboveSubview:siblingSubview];
-    else
-        [super insertSubview:view aboveSubview:siblingSubview];
+    [_subelementsView insertSubview:subelementView aboveSubview:siblingSubelementView];
 }
 
-- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index
+- (void)insertSubelementView:(REView *)subelementView atIndex:(NSInteger)index
 {
-    if ([view isKindOfClass:[REView class]])
-        [_contentView insertSubview:view atIndex:index];
-    else
-        [super insertSubview:view atIndex:index];
+    [_subelementsView insertSubview:subelementView atIndex:index];
 }
 
-- (void)insertSubview:(UIView *)view belowSubview:(UIView *)siblingSubview
+- (void)insertSubelementView:(REView *)subelementView belowSubelementView:(REView *)siblingSubelementView
 {
-    if ([view isKindOfClass:[REView class]])
-        [_contentView insertSubview:view belowSubview:siblingSubview];
-    else
-        [super insertSubview:view belowSubview:siblingSubview];
+    [_subelementsView insertSubview:subelementView belowSubview:siblingSubelementView];
 }
 
 /**
@@ -783,37 +732,38 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 
     [_backdropView setNeedsDisplay];
     [_contentView setNeedsDisplay];
+    [_subelementsView setNeedsDisplay];
     [_overlayView setNeedsDisplay];
 }
 
 - (void)setContentInteractionEnabled:(BOOL)contentInteractionEnabled
 {
-    self.contentView.userInteractionEnabled = contentInteractionEnabled;
+    _contentView.userInteractionEnabled = contentInteractionEnabled;
 }
 
 - (BOOL)contentInteractionEnabled
 {
-    return self.contentView.userInteractionEnabled;
+    return _contentView.userInteractionEnabled;
 }
 
 - (void)setContentClipsToBounds:(BOOL)contentClipsToBounds
 {
-    self.contentView.clipsToBounds = contentClipsToBounds;
+    _contentView.clipsToBounds = contentClipsToBounds;
 }
 
 - (BOOL)contentClipsToBounds
 {
-    return self.contentView.clipsToBounds;
+    return _contentView.clipsToBounds;
 }
 
 - (void)setOverlayClipsToBounds:(BOOL)overlayClipsToBounds
 {
-    self.overlayView.clipsToBounds = overlayClipsToBounds;
+    _overlayView.clipsToBounds = overlayClipsToBounds;
 }
 
 - (BOOL)overlayClipsToBounds
 {
-    return self.overlayView.clipsToBounds;
+    return _overlayView.clipsToBounds;
 }
 
 /**
@@ -821,10 +771,12 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
  */
 - (void)drawContentInContext:(CGContextRef)ctx inRect:(CGRect)rect {}
 
-- (void)setBounds:(CGRect)bounds
-{
+- (void)setBounds:(CGRect)bounds {
     [super setBounds:bounds];
+    [self refreshBorderPath];
+}
 
+- (void)refreshBorderPath {
     switch (self.shape)
     {
         case REShapeRectangle:
@@ -907,9 +859,6 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 }
 
 @end
-#define SUBVIEW_CLIPS_TO_BOUNDS     NO
-#define SUBVIEW_AUTORESIZE_SUBVIEWS NO
-#define SUBVIEW_CONTENT_MODE        UIViewContentModeRedraw
 
 @implementation REViewInternal
 
@@ -917,12 +866,12 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 {
     if ((self = [super init]))
     {
-        self.userInteractionEnabled                    = [self isMemberOfClass:[REViewContent class]];
-        self.backgroundColor                           = ClearColor;
-        self.clipsToBounds                             = SUBVIEW_CLIPS_TO_BOUNDS;
-        self.contentMode                               = SUBVIEW_CONTENT_MODE;
-        self.autoresizesSubviews                       = SUBVIEW_AUTORESIZE_SUBVIEWS;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.userInteractionEnabled = [self isMemberOfClass:[REViewSubelements class]];
+        self.backgroundColor        = ClearColor;
+        self.clipsToBounds          = NO;
+        self.opaque                 = NO;
+        self.contentMode            = UIViewContentModeRedraw;
+        self.autoresizesSubviews    = NO;
     }
 
     return self;
@@ -932,6 +881,15 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
 {
     assert(!newSuperview || [newSuperview isKindOfClass:[REView class]]);
     _delegate = newSuperview;
+}
+
+@end
+
+@implementation REViewSubelements
+
+- (void)addSubview:(REView *)view {
+    if ([view isKindOfClass:[REView class]] && view.model.parentElement == _delegate.model)
+        [super addSubview:view];
 }
 
 @end
@@ -1076,7 +1034,7 @@ MSKIT_STATIC_STRING_CONST kRemoteElementViewInternalNametag = @"RemoteElementVie
         self.alignmentOverlay    = [CALayer layer];
         _alignmentOverlay.frame  = self.layer.bounds;
         _alignmentOverlay.hidden = !_showAlignmentIndicators;
-        
+
         [self.layer addSublayer:_alignmentOverlay];
     }
 
@@ -1588,7 +1546,7 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint)
                    )
                 : (NSString *)nil);
     };
-    
+
     NSString     * firstItem     = itemNameForView(constraint.firstItem);
     NSString     * secondItem    = itemNameForView(constraint.secondItem);
     NSDictionary * substitutions = nil;

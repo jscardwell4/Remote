@@ -234,7 +234,7 @@ MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNamet
 }
 
 - (void)willTranslateSelectedViews {
-    [_sourceView willMoveViews:_selectedViews];
+    [_sourceView willTranslateViews:_selectedViews];
 
     _flags.originalFrame = [self selectedViewsUnionFrameInView:self.view];
     _flags.currentFrame  = _flags.originalFrame;
@@ -242,7 +242,7 @@ MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNamet
 
 - (void)didTranslateSelectedViews {
     [self clearCacheForViews:_selectedViews];
-    [_sourceView didMoveViews:_selectedViews];
+    [_sourceView didTranslateViews:_selectedViews];
 
     // inform source view of translation
     CGPoint   translation = CGPointGetDelta(_flags.currentFrame.origin, _flags.originalFrame.origin);
@@ -250,7 +250,7 @@ MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNamet
     [_sourceView translateSubelements:_selectedViews translation:translation];
 
     // update editing style for selected views
-    [_selectedViews setValue:@(EditingStyleSelected) forKeyPath:@"editingStyle"];
+    [_selectedViews setValue:@(REEditingStateSelected) forKeyPath:@"editingStyle"];
 
     // udpate state
     _flags.movingSelectedViews = NO;
@@ -589,11 +589,11 @@ MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNamet
  */
 - (void)setFocusView:(REView *)focusView {
     if (focusView != _focusView) {
-        if (_focusView) _focusView.editingStyle = EditingStyleSelected;
+        if (_focusView) _focusView.editingState = REEditingStateSelected;
 
         _focusView = focusView;
 
-        if (_focusView) _focusView.editingStyle = EditingStyleFocus;
+        if (_focusView) _focusView.editingState = REEditingStateFocus;
 
         [self updateState];
     }

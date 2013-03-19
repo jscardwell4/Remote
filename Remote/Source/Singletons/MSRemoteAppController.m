@@ -100,8 +100,8 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
     
     NSMutableIndexSet * indices = [NSMutableIndexSet indexSet];
-    [indices addIndex:12];
-//    [indices addIndexes:bgScaleTests];
+//    [indices addIndex:12];
+    [indices addIndexes:bgScaleTests];
 //    [indices addIndexes:bgTranslationTests];
 //    [indices addIndexes:bgAlignmentTests];
 

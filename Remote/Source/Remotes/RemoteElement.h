@@ -284,6 +284,11 @@ MSKIT_STATIC_INLINE NSString * EditingModeString(EditingMode mode) {
 
 @end
 
+MSKIT_STATIC_INLINE BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re) {
+    return (   StringIsNotEmpty(identifier)
+            && ([identifier isEqualToString:re.uuid] || [identifier isEqualToString:re.key]));
+}
+
 #define NSDictionaryOfVariableBindingsToIdentifiers(...) \
     _NSDictionaryOfVariableBindingsToIdentifiers(@"" # __VA_ARGS__, __VA_ARGS__, nil)
 

@@ -60,8 +60,8 @@ static const int ddLogLevel = DefaultDDLogLevel;
 {
     for (REView * view in [views setByRemovingObjectsFromSet: self.selectedViews])
     {
-        view.editingStyle = EditingStyleSelected;
-        [_sourceView bringSubviewToFront:view];
+        view.editingState = REEditingStateSelected;
+        [_sourceView bringSubelementViewToFront:view];
     }
 
     [_selectedViews unionSet:views];
@@ -86,7 +86,7 @@ static const int ddLogLevel = DefaultDDLogLevel;
     for (REView * view in [views setByIntersectingSet: self.selectedViews])
     {
         if (view == _focusView) self.focusView = nil;
-        else view.editingStyle = EditingStyleNotEditing;
+        else view.editingState = REEditingStateNotEditing;
     }
 
     [self.selectedViews minusSet:views];
