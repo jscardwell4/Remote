@@ -8,9 +8,25 @@
 
 #import "ConnectionManager.h"
 #import "NetworkDevice.h"
-@interface ConnectionManager ()
+#import "IRLearnerViewController.h"
+#import "IRLearner.h"
+#import "SettingsManager.h"
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <netinet/in.h>
+#import "GlobalCacheConnectionManager.h"
+#import "MSRemoteAppController.h"
+#import "RECommand.h"
+#import "CoreDataManager.h"
 
-// TODO:notify sender should be a notification, not a delegate call
-- (void)notifySenderForTag:(NSNumber *)tag success:(BOOL)success;
+@interface ConnectionManager () {
+    dispatch_queue_t        _reachabilityQueue; /// Queue maintained for reachability notifications
+    MSNetworkReachability * _reachability;      /// Monitors changes in connectivity
+    struct {
+        BOOL autoConnect;               /// Whether to automatically connect to known devices
+        BOOL autoListen;                /// Whether to automatically listen for new devices
+        BOOL wifiAvailable;             /// Whether wifi connectivity is currently available
+        BOOL simulateCommandSuccess;    /// Whether to simulate send operations
+    } _flags;
+}
 
 @end

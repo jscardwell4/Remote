@@ -7,7 +7,7 @@
 //
 
 #import "ManufacturerCodeSetsViewController.h"
-#import "IRCodeSet.h"
+#import "BankObjectGroup.h"
 #import "CodeSetCodesViewController.h"
 #import "CoreDataManager.h"
 
@@ -44,9 +44,9 @@ static int   ddLogLevel = DefaultDDLogLevel;
     UITableViewCell * cell           = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     // Configure the cell...
-    IRCodeSet * codeSet = self.fetchedCodeSets[indexPath.row];
+    BOIRCodeset * codeset = self.fetchedCodeSets[indexPath.row];
 
-    cell.textLabel.text = codeSet.name;
+    cell.textLabel.text = codeset.name;
 
     return cell;
 }
@@ -54,7 +54,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 - (NSArray *)fetchedCodeSets {
     if (ValueIsNotNil(fetchedCodeSets)) return fetchedCodeSets;
 
-    [[DataManager mainObjectContext] performBlockAndWait:^{
+    [[[CoreDataManager sharedManager] mainObjectContext] performBlockAndWait:^{
                                          NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"IRCodeSet"];
 
                                          NSError * error = nil;
@@ -62,7 +62,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                          [NSPredicate predicateWithFormat:@"manufacturer == %@", self.manufacturer];
                                          [fetchRequest setPredicate:predicate];
 
-                                         self.fetchedCodeSets = [[DataManager mainObjectContext]                                  executeFetchRequest:fetchRequest
+                                         self.fetchedCodeSets = [[[CoreDataManager sharedManager] mainObjectContext]                                  executeFetchRequest:fetchRequest
                                                                                                                error:&error];
 
                                          if (ValueIsNil(fetchedCodeSets)) {
@@ -83,8 +83,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     if (  [@"Push Codeset Codes" isEqualToString : segue.identifier]
        && [segue.destinationViewController isMemberOfClass:[CodeSetCodesViewController class]])
         [(CodeSetCodesViewController *)segue.destinationViewController
-         setCodeSet : self.fetchedCodeSets[
-                                           [self.tableView indexPathForSelectedRow].row]];
+         setCodeset: self.fetchedCodeSets[[self.tableView indexPathForSelectedRow].row]];
 }
 
 @end

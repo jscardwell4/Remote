@@ -7,7 +7,7 @@
 //
 
 #import "IconBankSubcategoryDetailViewController.h"
-#import "REImage.h"
+#import "BankObject.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -163,7 +163,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     // Configure the cell...
 // cell.textLabel.text = [self trimmedFileNameForIndexPath:indexPath];
 // cell.imageView.image = [UIImage imageWithContentsOfFile: _icons[indexPath.row]];
-    REIconImage * iconImage = _icons[indexPath.row];
+    BOIconImage * iconImage = _icons[indexPath.row];
 
     cell.textLabel.text  = iconImage.name;
     cell.imageView.image = [UIImage imageNamed:iconImage.fileName];
@@ -235,7 +235,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     if (ValueIsNotNil(_modalDelegate)) {
 // NSString *iconString = [[self fileNamePrefix] stringByAppendingString:[self
 // trimmedFileNameForIndexPath:indexPath]];
-        REIconImage * iconImage  = _icons[indexPath.row];
+        BOIconImage * iconImage  = _icons[indexPath.row];
         NSString         * iconString = iconImage.fileName;
 
         [_modalDelegate didSelectIconFile:iconString];

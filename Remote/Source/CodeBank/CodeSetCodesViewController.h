@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class   IRCodeSet;
+@class   BOIRCodeset;
 
 @interface CodeSetCodesViewController : UITableViewController
 
-@property (nonatomic, strong) IRCodeSet * codeSet;
+@property (nonatomic, strong) BOIRCodeset * codeset;
 
 @end

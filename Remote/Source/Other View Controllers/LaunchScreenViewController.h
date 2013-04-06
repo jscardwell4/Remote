@@ -6,8 +6,6 @@
  * Copyright (c) 2011 Moondeer Studios. All rights reserved.
  */
 
-#import "RERemoteEditingViewController.h"
-
 /**
  * `LaunchScreenViewController` is created in the main storyboard as the initial view controller
  * for the application. It contains buttons for navigating to the remote, the IR learner, and the

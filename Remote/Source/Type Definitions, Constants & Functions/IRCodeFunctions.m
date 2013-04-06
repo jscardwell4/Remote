@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "IRCodeFunctions.h"
-
+#import "BankObject.h"
 enum ProntoHexFormatParts {
     PatternType                 = 0,
     Frequency                   = 1,

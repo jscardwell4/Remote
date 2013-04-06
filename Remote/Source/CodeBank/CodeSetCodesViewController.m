@@ -6,8 +6,8 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "CodeSetCodesViewController.h"
-#import "IRCodeSet.h"
-#import "IRCode.h"
+#import "BankObjectGroup.h"
+#import "BankObject.h"
 #import "IRCodeDetailViewController.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
@@ -22,11 +22,11 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 @implementation CodeSetCodesViewController
 
-@synthesize codeSet, fetchedCodes;
+@synthesize codeset, fetchedCodes;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (ValueIsNotNil(self.codeSet)) self.navigationItem.title = self.codeSet.name;
+    if (ValueIsNotNil(self.codeset)) self.navigationItem.title = self.codeset.name;
 }
 
 #pragma mark - Table view data source
@@ -45,17 +45,17 @@ static int   ddLogLevel = DefaultDDLogLevel;
     UITableViewCell * cell           = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     // Configure the cell...
-    IRCode * code = self.fetchedCodes[indexPath.row];
+    BOIRCode * code = self.fetchedCodes[indexPath.row];
 
     cell.textLabel.text = code.name;
 
     return cell;
 }
 
-- (void)setCodeSet:(IRCodeSet *)newCodeSet {
-    codeSet           = newCodeSet;
+- (void)setCodeSet:(BOIRCodeset *)newCodeSet {
+    codeset           = newCodeSet;
     self.fetchedCodes =
-        [[codeSet.codes allObjects]
+        [[codeset.codes allObjects]
          sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name"
                                                                      ascending:YES]]];
 }

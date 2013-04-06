@@ -6,11 +6,11 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-@class   IconSelectionViewController, REIconImage;
+@class   IconSelectionViewController, BOIconImage;
 
 @protocol IconSelectionDelegate <NSObject>
 
-- (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(REIconImage *)icon;
+- (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(BOIconImage *)icon;
 
 - (void)iconSelectorDidCancel:(IconSelectionViewController *)controller;
 

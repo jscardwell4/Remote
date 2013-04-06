@@ -1,5 +1,5 @@
 #import "CodeDatabaseViewController.h"
-#import "IRCodeSet.h"
+#import "BankObjectGroup.h"
 #import "ManufacturerCodeSetsViewController.h"
 #import "CoreDataManager.h"
 
@@ -51,12 +51,12 @@ static int   ddLogLevel = DefaultDDLogLevel;
         [fetchedManufacturers addObject:[NSMutableArray array]];
     }
 
-    [[DataManager mainObjectContext] performBlockAndWait:^{
+    [[[CoreDataManager sharedManager] mainObjectContext] performBlockAndWait:^{
                                          NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"IRCodeSet"];
 
                                          NSError * error = nil;
                                          NSArray * fetchedCodesets =
-                                         [[DataManager mainObjectContext]                              executeFetchRequest:fetchRequest
+                                         [[[CoreDataManager sharedManager] mainObjectContext]                              executeFetchRequest:fetchRequest
                                                                                         error:&error];
 
                                          if (ValueIsNil(fetchedCodesets))

@@ -20,6 +20,59 @@
     <entity name="BankPreset" representedClassName="BankPreset" parentEntity="BankObject" syncable="YES">
         <attribute name="previewData" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
+    <entity name="BOBackgroundImage" representedClassName="GalleryBackgroundImage" parentEntity="BOImage">
+        <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="backgroundImage" inverseEntity="ButtonGroup" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Remote" inverseName="backgroundImage" inverseEntity="Remote" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="BOButtonImage" representedClassName="GalleryButtonImage" parentEntity="BOImage">
+        <attribute name="state" attributeType="Integer 16" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="BOIconImage" representedClassName="GalleryIconImage" parentEntity="BOImage">
+        <attribute name="iconSet" attributeType="String" defaultValueString="No Icon Set">
+            <userInfo/>
+        </attribute>
+        <attribute name="previewData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="subcategory" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="BOImage" representedClassName="GalleryImage" isAbstract="YES" parentEntity="BankObject">
+        <attribute name="baseFileName" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="displayName" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="fileDirectory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fileNameExtension" attributeType="String" syncable="YES"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="leftCap" attributeType="Float" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="size" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="Integer 16" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="topCap" attributeType="Float" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="useRetinaScale" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryGroup" inverseName="images" inverseEntity="GalleryGroup" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
     <entity name="Button" representedClassName="Button">
         <attribute name="bounds" optional="YES" attributeType="Transformable">
             <userInfo/>
@@ -174,7 +227,7 @@
         <attribute name="zOrder" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REBackgroundImage" inverseName="buttonGroups" inverseEntity="REBackgroundImage" indexed="YES">
+        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOBackgroundImage" inverseName="buttonGroups" inverseEntity="BOBackgroundImage" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="buttons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Button" inverseName="buttonGroup" inverseEntity="Button" indexed="YES">
@@ -353,7 +406,7 @@
         <attribute name="name" attributeType="String">
             <userInfo/>
         </attribute>
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REImage" inverseName="group" inverseEntity="REImage" indexed="YES">
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BOImage" inverseName="group" inverseEntity="BOImage" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="presets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PresetInfo" inverseName="galleryGroup" inverseEntity="PresetInfo" indexed="YES">
@@ -484,59 +537,6 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="REBackgroundImage" representedClassName="GalleryBackgroundImage" parentEntity="REImage">
-        <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="backgroundImage" inverseEntity="ButtonGroup" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Remote" inverseName="backgroundImage" inverseEntity="Remote" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <userInfo/>
-    </entity>
-    <entity name="REButtonImage" representedClassName="GalleryButtonImage" parentEntity="REImage">
-        <attribute name="state" attributeType="Integer 16" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <userInfo/>
-    </entity>
-    <entity name="REIconImage" representedClassName="GalleryIconImage" parentEntity="REImage">
-        <attribute name="iconSet" attributeType="String" defaultValueString="No Icon Set">
-            <userInfo/>
-        </attribute>
-        <attribute name="previewData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES">
-            <userInfo/>
-        </attribute>
-        <attribute name="subcategory" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <userInfo/>
-    </entity>
-    <entity name="REImage" representedClassName="GalleryImage" isAbstract="YES" parentEntity="BankObject">
-        <attribute name="baseFileName" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="displayName" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="fileDirectory" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="fileNameExtension" attributeType="String" syncable="YES"/>
-        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="leftCap" attributeType="Float" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <attribute name="size" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="tag" optional="YES" attributeType="Integer 16" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <attribute name="topCap" attributeType="Float" defaultValueString="0">
-            <userInfo/>
-        </attribute>
-        <attribute name="useRetinaScale" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GalleryGroup" inverseName="images" inverseEntity="GalleryGroup" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <userInfo/>
-    </entity>
     <entity name="Remote" representedClassName="Remote">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable">
             <userInfo/>
@@ -554,7 +554,7 @@
         <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
-        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REBackgroundImage" inverseName="remotes" inverseEntity="REBackgroundImage" indexed="YES">
+        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOBackgroundImage" inverseName="remotes" inverseEntity="BOBackgroundImage" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ButtonGroup" inverseName="remote" inverseEntity="ButtonGroup" indexed="YES">
@@ -645,6 +645,8 @@
     <elements>
         <element name="ActivityButton" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankObject" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankPreset" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Button" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ButtonConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
@@ -668,9 +670,7 @@
         <element name="DeviceConfiguration" positionX="0" positionY="0" width="0" height="0"/>
         <element name="DPad" positionX="0" positionY="0" width="0" height="0"/>
         <element name="FactoryIRCode" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GalleryGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCode" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCodeSet" positionX="0" positionY="0" width="0" height="0"/>
@@ -682,10 +682,10 @@
         <element name="PickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PresetInfo" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REBackgroundImage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REButtonImage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REIconImage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BOBackgroundImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BOButtonImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BOIconImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BOImage" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Remote" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemoteController" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemotePreset" positionX="0" positionY="0" width="0" height="0"/>

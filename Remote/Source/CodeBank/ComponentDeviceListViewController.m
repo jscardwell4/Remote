@@ -8,8 +8,8 @@
 
 #import "ComponentDeviceListViewController.h"
 #import "IRCodeDetailViewController.h"
-#import "IRCode.h"
-#import "ComponentDevice.h"
+#import "BankObject.h"
+#import "BankObject.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -69,7 +69,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                       reuseIdentifier:CellIdentifier];
 
     // Configure the cell...
-    IRCode * code = self.codes[indexPath.row];
+    BOIRCode * code = self.codes[indexPath.row];
 
     cell.textLabel.text = code.name;
 
@@ -82,7 +82,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
               isMemberOfClass:[IRCodeDetailViewController class]]) return;
 
         NSUInteger                   codeIndex = [self.tableView indexPathForSelectedRow].row;
-        IRCode                     * code      = self.codes[codeIndex];
+        BOIRCode                     * code      = self.codes[codeIndex];
         IRCodeDetailViewController * detailVC  =
             (IRCodeDetailViewController *)segue.destinationViewController;
 

@@ -13,8 +13,7 @@
 #import "REConstraint.h"
 #import "RemoteConstruction.h"
 #import "REEditingViewController_Private.h"
-#import "REButtonGroupEditingViewController.h"
-#import "REButtonGroupView.h"
+#import "REView.h"
 #import "UITestRunner.h"
 
 // #define DEBUG_CONTEXT  UITESTING_F
@@ -205,12 +204,12 @@ static const int   msLogContext = EDITOR_F;
         case 1 :
             parameters = @{
                                     MSRemoteUIRemoteKey : @"activity1",
-                                    MSRemoteUIButtonGroupKey : kTopPanelOneKey,
-                                    MSRemoteUIButtonKey : kDigitFourButtonKey,
+                                    MSRemoteUIButtonGroupKey : RERemoteTopPanel1Key,
+                                    MSRemoteUIButtonKey : REDigitFourButtonKey,
                                     MSRemoteUIIterationValuesKey : @[NSValueWithCGPoint(CGPointMake(20, 60)),
                                                                      NSValueWithCGPoint(CGPointMake(5, 5)),
                                                                      NSValueWithCGPoint(CGPointMake(-25, -65))],
-                                    MSRemoteUILogSubviewsKey : @[@"digit4", @"digit7"]
+                                    MSRemoteUILogSubviewsKey : @[REDigitFourButtonKey, @"digit7"]
 
                                 };
             performTranslations(parameters);
@@ -417,15 +416,15 @@ static const int   msLogContext = EDITOR_F;
     switch (testNumber) {
         case 0 :{    // vertical alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUILogSubviewsKey     : @[@"digit4", @"aux2", @"aux1", @"digit6"],
-                            MSRemoteUIIterationValuesKey : @[@"digit4:aux2:bottom", @"aux1:digit6:top"],
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUILogSubviewsKey     : @[REDigitFourButtonKey, REAuxTwoButtonKey, REAuxOneButtonKey, REDigitSixButtonKey],
+                            MSRemoteUIIterationValuesKey : @[@"REDigitFourButtonKey:REAuxTwoButtonKey:bottom", @"REAuxOneButtonKey:REDigitSixButtonKey:top"],
                             MSRemoteUIAssertionsKey      :
                                 @[ ^(REEditingViewController * editor)
                                     {
                                         REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
-                                        REButton * digit4 = numberPad[@"digit4"];
-                                        REButton * digit1 = numberPad[@"digit1"];
+                                        REButton * digit4 = numberPad[REDigitFourButtonKey];
+                                        REButton * digit1 = numberPad[REDigitOneButtonKey];
                                         NSDictionary * values = @{ @"firstItem"      : digit4.uuid,
                                                                    @"firstAttribute" : @(NSLayoutAttributeTop),
                                                                    @"relation"       : @(NSLayoutRelationEqual),
@@ -433,8 +432,8 @@ static const int   msLogContext = EDITOR_F;
 
                                         @try
                                         {
-                                            NSAssert( ![digit4.firstItemConstraints firstObjectPassingTest:
-                                                        ^BOOL (REConstraint * obj, BOOL * stop) {
+                                            NSAssert( ![digit4.firstItemConstraints objectPassingTest:
+                                                        ^BOOL (REConstraint * obj) {
                                                             return [obj hasAttributeValues:values];
                                                         }],
                                                      @"'digit4.top = digit1.bottom' should have been removed" );
@@ -446,8 +445,8 @@ static const int   msLogContext = EDITOR_F;
                                     ^(REEditingViewController * editor)
                                     {
                                         REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
-                                        REButton * aux1 =numberPad[@"aux1"];
-                                        REButton * digit0 =numberPad[@"digit0"];
+                                        REButton * aux1 =numberPad[REAuxOneButtonKey];
+                                        REButton * digit0 =numberPad[REDigitZeroButtonKey];
                                         NSDictionary * values = @{  @"firstItem"      : aux1.uuid,
                                                                     @"firstAttribute" : @(NSLayoutAttributeBottom),
                                                                     @"relation"       : @(NSLayoutRelationEqual),
@@ -455,9 +454,9 @@ static const int   msLogContext = EDITOR_F;
                                         @try
                                         {
                                             NSAssert(![aux1.firstItemConstraints
-                                                       firstObjectPassingTest:
-                                                       ^BOOL (REConstraint * obj, BOOL * stop) {
-                                                           return ([obj hasAttributeValues:values] && (*stop = YES));
+                                                       objectPassingTest:
+                                                       ^BOOL (REConstraint * obj) {
+                                                           return [obj hasAttributeValues:values];
                                                        }],
                                                      @"'aux1.bottom = digit0.bottom' should have been removed");
                                         }
@@ -471,18 +470,18 @@ static const int   msLogContext = EDITOR_F;
 
         case 1 : {   // horizontal alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:aux2:bottom",
-                                                              @"aux1:digit6:top" ]
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REAuxTwoButtonKey:bottom",
+                                                              @"REAuxOneButtonKey:REDigitSixButtonKey:top" ]
                             };
             performAlignments(parameters);
         }    break;
 
         case 2 : {   // top alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:aux2:bottom",
-                                                              @"aux1:digit6:top" ]
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REAuxTwoButtonKey:bottom",
+                                                              @"REAuxOneButtonKey:REDigitSixButtonKey:top" ]
                             };
 
             performAlignments(parameters);
@@ -490,9 +489,9 @@ static const int   msLogContext = EDITOR_F;
 
         case 3 :  {  // bottom alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:aux2:bottom",
-                                                              @"aux1:digit6:top" ]
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REAuxTwoButtonKey:bottom",
+                                                              @"REAuxOneButtonKey:REDigitSixButtonKey:top" ]
                             };
             performAlignments(parameters);
         }   break;
@@ -508,43 +507,43 @@ static const int   msLogContext = EDITOR_F;
 
         case 5 :{    // right alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:aux2:bottom",
-                                                              @"aux1:digit6:top" ]
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REAuxTwoButtonKey:bottom",
+                                                              @"REAuxOneButtonKey:REDigitSixButtonKey:top" ]
                             };
             performAlignments(parameters);
         }  break;
 
         case 6 : {    // top and bottom alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:aux2:bottom",
-                                                              @"aux1:digit6:top" ]
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REAuxTwoButtonKey:bottom",
+                                                              @"REAuxOneButtonKey:REDigitSixButtonKey:top" ]
                             };
             performAlignments(parameters);
         }   break;
 
         case 7 : {   // left and right alignment
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:digit3:right",
-                                                              @"digit6:digit1:left" ]
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REDigitThreeButtonKey:right",
+                                                              @"REDigitSixButtonKey:REDigitOneButtonKey:left" ]
                             };
 						performAlignments(parameters);
         }   break;
         case 8 : {
             parameters = @{ MSRemoteUIRemoteKey          : @"activity1",
-                            MSRemoteUIButtonGroupKey     : kTopPanelOneKey,
-                            MSRemoteUIIterationValuesKey : @[ @"digit4:kTuckButtonKey:horizontal",
-                                                              @"digit4:kTuckButtonKey:centerX"],
-                            MSRemoteUILogSubviewsKey     : @[ @"digit4", kTuckButtonKey],
+                            MSRemoteUIButtonGroupKey     : RERemoteTopPanel1Key,
+                            MSRemoteUIIterationValuesKey : @[ @"REDigitFourButtonKey:REButtonGroupTuckButtonKey:horizontal",
+                                                              @"REDigitFourButtonKey:REButtonGroupTuckButtonKey:centerX"],
+                            MSRemoteUILogSubviewsKey     : @[ REDigitFourButtonKey, REButtonGroupTuckButtonKey],
                             MSRemoteUIAssertionsKey      :
                                 @[ ^(REEditingViewController * editor)
                                     {
                                         REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
-                                        REButton * digit4 = numberPad[@"digit4"];
-                                        REButton * digit7 = numberPad[@"digit7"];
-                                        REButton * tuckPanel = numberPad[kTuckButtonKey];
+                                        REButton * digit4 = numberPad[REDigitFourButtonKey];
+                                        REButton * digit7 = numberPad[REDigitSevenButtonKey];
+                                        REButton * tuckPanel = numberPad[REButtonGroupTuckButtonKey];
 
                                         @try
                                         {
@@ -583,9 +582,9 @@ static const int   msLogContext = EDITOR_F;
                                     ^(REEditingViewController * editor)
                                     {
                                         REButtonGroup * numberPad = (REButtonGroup*)editor.sourceView.model;
-                                        REButton      * digit4    = numberPad[@"digit4"];
-                                        REButton      * digit1    = numberPad[@"digit1"];
-                                        REButton      * tuckPanel = numberPad[kTuckButtonKey];
+                                        REButton      * digit4    = numberPad[REDigitFourButtonKey];
+                                        REButton      * digit1    = numberPad[REDigitOneButtonKey];
+                                        REButton      * tuckPanel = numberPad[REButtonGroupTuckButtonKey];
 
                                         @try
                                         {
@@ -663,7 +662,7 @@ static const int   msLogContext = EDITOR_F;
                             MSRemoteUIButtonGroupKey : @"activityButtons"});
             break;
         case 1 : dumpInfo(@{MSRemoteUIRemoteKey : @"activity1",
-                            MSRemoteUIButtonGroupKey : kTopPanelOneKey});
+                            MSRemoteUIButtonGroupKey : RERemoteTopPanel1Key});
             break;
         default : MSLogWarn(
                             @"%@ unsupported test number:%llu",

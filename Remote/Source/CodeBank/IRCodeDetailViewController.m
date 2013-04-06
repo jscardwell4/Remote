@@ -7,8 +7,8 @@
 //
 
 #import "IRCodeDetailViewController.h"
-#import "ComponentDevice.h"
-#import "IRCode.h"
+#import "BankObject.h"
+#import "BankObject.h"
 #import "ConnectionManager.h"
 #import "CoreDataManager.h"
 
@@ -22,7 +22,7 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 @property (nonatomic, assign) NSUInteger               commandIndex;
 @property (nonatomic, assign) NSUInteger               testPort;
 @property (nonatomic, strong) NSManagedObjectContext * testContext;
-@property (nonatomic, strong) SendIRCommand          * testCommand;
+@property (nonatomic, strong) RESendIRCommand          * testCommand;
 
 - (IBAction)stepperValueChanged:(UIStepper *)sender;
 - (IBAction)executeTestCommand:(id)sender;
@@ -35,7 +35,10 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.testContext = [DataManager childContext];
+    self.testContext = [CoreDataManager childContextForContext:nil
+                                               concurrencyType:NSMainQueueConcurrencyType
+                                                   undoSupport:NO
+                                                       nametag:@"ir learner"];
     self.testCommand = [NSEntityDescription insertNewObjectForEntityForName:@"SendIRCommand"
                                                      inManagedObjectContext:testContext];
     if (ValueIsNil(testCommand)) DDLogWarn(@"failed to create test command object");
@@ -83,14 +86,14 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
     self.testPort = port;
 }
 
-- (IRCode *)code {
+- (BOIRCode *)code {
     return self.testCommand.code;
 }
 
-- (void)setCode:(IRCode *)code {
+- (void)setCode:(BOIRCode *)code {
     if (ValueIsNil(code)) return;
 
-    IRCode * testCode = (IRCode *)[testContext objectWithID:code.objectID];
+    BOIRCode * testCode = (BOIRCode *)[testContext objectWithID:code.objectID];
 
     self.testCommand.code = testCode;
 
@@ -98,10 +101,10 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 }
 
 - (IBAction)executeTestCommand:(id)sender {
-    [self.testCommand execute:self];
+//    [self.testCommand execute:self];
 }
 
-- (void)commandDidComplete:(Command *)command success:(BOOL)success {
+- (void)commandDidComplete:(RECommand *)command success:(BOOL)success {
     testCommandResultView.checkmarkText  = success ? kTestSuccess : kTestFailure;
     testCommandResultView.checkmarkColor = success ?[UIColor greenColor] :[UIColor redColor];
 }

@@ -11,7 +11,7 @@
 
 @class   IPhontoAppController;
 
-@interface IRLearnerViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, ConnectionManagerDelegate> {
+@interface IRLearnerViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate> {
     UISwitch                      * _learnerSwitch;
     UITextView                    * _capturedCommandTextView;
     IPhontoAppController * __weak   _appDelegate;

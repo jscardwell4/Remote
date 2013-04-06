@@ -8,8 +8,8 @@
 
 #import "UserCodesViewController.h"
 #import "ComponentDeviceListViewController.h"
-#import "ComponentDevice.h"
-#import "IRCodeSet.h"
+#import "BankObject.h"
+#import "BankObjectGroup.h"
 #import "MSRemoteAppController.h"
 #import "CoreDataManager.h"
 
@@ -49,7 +49,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                       reuseIdentifier:CellIdentifier];
 
     // Configure the cell...
-    ComponentDevice * device = self.fetchedDevices[indexPath.row];
+    BOComponentDevice * device = self.fetchedDevices[indexPath.row];
 
     cell.textLabel.text = device.name;
 
@@ -59,7 +59,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 - (NSArray *)fetchedDevices {
     if (ValueIsNotNil(fetchedDevices)) return fetchedDevices;
 
-    [[DataManager mainObjectContext] performBlockAndWait:^{
+    [[[CoreDataManager sharedManager] mainObjectContext] performBlockAndWait:^{
                                          NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ComponentDevice"];
 
                                          NSSortDescriptor * sortDescriptor = [NSSortDescriptor                                  sortDescriptorWithKey:@"deviceName"
@@ -67,7 +67,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                          [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
                                          NSError * error = nil;
-                                         self.fetchedDevices = [[DataManager mainObjectContext]                                  executeFetchRequest:fetchRequest
+                                         self.fetchedDevices = [[[CoreDataManager sharedManager] mainObjectContext]                                  executeFetchRequest:fetchRequest
                                                                                                               error:&error];
                                          if (ValueIsNil(fetchedDevices)) {
                                          DDLogError(@"No component device objects could be found");
@@ -86,7 +86,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
               isMemberOfClass:[ComponentDeviceListViewController class]]) return;
 
         NSUInteger                          deviceIndex = [self.tableView indexPathForSelectedRow].row;
-        ComponentDevice                   * device      = self.fetchedDevices[deviceIndex];
+        BOComponentDevice                   * device      = self.fetchedDevices[deviceIndex];
         ComponentDeviceListViewController * detailVC    = segue.destinationViewController;
 
         detailVC.componentDevice = device;

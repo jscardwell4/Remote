@@ -5,7 +5,6 @@
 // Created by Jason Cardwell on 5/3/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
-#import "MSRemoteLogFormatter.h"
 #import "RemoteElementConstructionManager.h"
 #import "RERemoteViewController.h"
 #import "LaunchScreenViewController.h"
@@ -21,8 +20,9 @@
 #define USE_UNDO_MANAGER NO
 #define REBUILD_PREVIEWS NO
 
-static int   ddLogLevel = LOG_LEVEL_DEBUG;
-// static int ddLogLevel = DefaultDDLogLevel;
+static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static const int msLogContext = DEFAULT_LOG_CONTEXT;
+#pragma unused(ddLogLevel, msLogContext)
 
 @implementation MSRemoteAppController {
     LaunchScreenViewController * _launchScreenVC;
@@ -100,7 +100,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
     
     NSMutableIndexSet * indices = [NSMutableIndexSet indexSet];
-//    [indices addIndex:12];
+//    [indices addIndex:1];
     [indices addIndexes:bgScaleTests];
 //    [indices addIndexes:bgTranslationTests];
 //    [indices addIndexes:bgAlignmentTests];
@@ -129,8 +129,8 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (void)attachLoggers {
 
-    [MSLog addTTYLogger];
-    [MSLog addASLLogger];
+    [MSLog addTaggingTTYLogger];
+    [MSLog addTaggingASLLogger];
 
     NSString * logsDirectory = [MSLog defaultLogDirectory];
 
@@ -141,13 +141,14 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
                                    @(COREDATA_LOG_CONTEXT)   : [logsDirectory stringByAppendingPathComponent:@"CoreData"],
                                    @(UITESTING_LOG_CONTEXT)  : [logsDirectory stringByAppendingPathComponent:@"UITesting"],
                                    @(EDITOR_LOG_CONTEXT)     : [logsDirectory stringByAppendingPathComponent:@"Editor"],
+                                   @(COMMAND_LOG_CONTEXT)    : [logsDirectory stringByAppendingPathComponent:@"Command"],
                                    @(CONSTRAINT_LOG_CONTEXT) : [logsDirectory stringByAppendingPathComponent:@"Constraints"]};
 
     [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop) {
         [MSLog addDefaultFileLoggerForContext:NSUIntegerValue(key) directory:obj];
     }];
 
-}  /* attachLoggers */
+}
 
 /*
  * Creates the application's loggers and registers default settings
@@ -189,69 +190,58 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
                                     SharedApp.statusBarHidden = [SettingsManager boolForSetting:kStatusBarKey];
                                 }];
 
-    if (![CoreDataManager setUpCoreDataStack]) DDLogError(@"%@ failed to setup core data stack", ClassTagSelectorString);
+    if (![[CoreDataManager sharedManager] initializeCoreDataStack])
+        DDLogError(@"%@ failed to setup core data stack", ClassTagSelectorString);
 
     _workQueue      = [[NSOperationQueue alloc] init];
     _workQueue.name = @"com.moondeerstudios.initialization";
 
-    __block BOOL             error           = NO;
-    NSManagedObjectContext * context         = [DataManager mainObjectContext];
-    NSOperation            * rebuildDatabase =
-        [NSBlockOperation blockOperationWithBlock:^{
-            if (!error && [UserDefaults boolForKey:@"rebuild"])
-            {
-                [context performBlock:^{
-                    if (  [DatabaseLoader loadDataIntoContext:context]
-                        && [DataManager saveMainContext])
-                        DDLogDebug(@"%@ data loaded and saved successfully",
-                                   ClassTagSelectorString);
-                    else
-                    {
-                        DDLogError(@"%@ failed to load and save data", ClassTagSelectorString);
-                        error = YES;
-                    }
-                }];
-            }
-        }];
-
+    __block BOOL error = NO;
+    NSOperation * rebuildDatabase =
+        [NSBlockOperation blockOperationWithBlock:
+         ^{
+             if (!error && [UserDefaults boolForKey:@"rebuild"])
+             {
+                 [DatabaseLoader
+                  loadDataIntoContext:[CoreDataManager
+                                       newContextWithConcurrencyType:NSPrivateQueueConcurrencyType
+                                                         undoSupport:NO
+                                                             nametag:@"data loading"]];
+             }
+         }];
+    
     NSOperation * rebuildRemote =
-        [NSBlockOperation blockOperationWithBlock:^{
-            if (!error && ([UserDefaults boolForKey:@"rebuild"] || [UserDefaults boolForKey:@"remote"]))
-            {
-                [context performBlock:^{
-                    if (  [ConstructionManager buildRemoteControllerInContext:context]
-                        && [DataManager saveMainContext])
-                        DDLogDebug(@"%@ remote controller constructed and saved successfully",
-                                   ClassTagSelectorString);
-                    else
-                    {
-                        DDLogError(@"%@ failed to construct and save remote controller",
-                                   ClassTagSelectorString);
-                        error = YES;
-                    }
-                }];
-            }
-        }];
-
+        [NSBlockOperation blockOperationWithBlock:
+         ^{
+             if (!error && ([UserDefaults boolForKey:@"rebuild"] || [UserDefaults boolForKey:@"remote"]))
+             {
+                 [ConstructionManager
+                  buildRemoteControllerInContext:[CoreDataManager
+                                                  newContextWithConcurrencyType:NSPrivateQueueConcurrencyType
+                                                                    undoSupport:NO
+                                                                        nametag:@"remote building"]];
+             }
+         }];
+    
     [rebuildRemote addDependency:rebuildDatabase];
 
-    NSOperation * runUITests = [NSBlockOperation blockOperationWithBlock:^{
-                                                     if (!error && [UserDefaults boolForKey:@"uitest"])
-                                                     {
-                                                     MSRunAsyncOnMain (^{ [self runUITests]; });
-                                                     }
-                                                 }];
+    NSOperation * runUITests = [NSBlockOperation blockOperationWithBlock:
+                                ^{
+                                    if (!error && [UserDefaults boolForKey:@"uitest"])
+                                        MSRunAsyncOnMain (^{ [self runUITests]; });
+                                }];
 
     [runUITests addDependency:rebuildRemote];
 
-    NSOperation * readyApplication = [NSBlockOperation blockOperationWithBlock:^{
-                                                           MSRunAsyncOnMain (^{ _launchScreenVC.view.userInteractionEnabled = YES; });
-                                                       }];
+    NSOperation * readyApplication = [NSBlockOperation blockOperationWithBlock:
+                                      ^{
+                                          MSRunAsyncOnMain (^{ _launchScreenVC.view.
+                                                                  userInteractionEnabled = YES; });
+                                      }];
 
     [readyApplication addDependency:runUITests];
 
-    [_workQueue addOperations:@[rebuildDatabase, rebuildRemote, runUITests,
-                                readyApplication]
+    [_workQueue addOperations:@[rebuildDatabase, rebuildRemote, runUITests, readyApplication]
             waitUntilFinished:NO];
 
     return YES;
@@ -268,11 +258,17 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
     // [[ConnectionManager sharedConnectionManager] logStatus];
 }
 
+//???: Why are random saves like these crashing with -[NSNull countByEnumeratingWithState:objects:count:] message sends?
+//- (void)applicationWillResignActive:(UIApplication *)application
+//{
+//    [[CoreDataManager sharedManager] saveMainContext];
+//}
+
 /*
  * Saves the primary managed object context
  */
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    [DataManager saveMainContext];
-}
+//- (void)applicationDidEnterBackground:(UIApplication *)application {
+//    [[CoreDataManager sharedManager] saveMainContext];
+//}
 
 @end

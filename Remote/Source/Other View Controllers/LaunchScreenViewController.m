@@ -8,7 +8,7 @@
 #import "LaunchScreenViewController.h"
 #import "RERemoteViewController.h"
 #import "CoreDataManager.h"
-#import "RERemote.h"
+#import "RemoteElement.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
 
@@ -56,7 +56,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 - (IBAction)launchEditor:(id)sender {
     RERemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
-    RERemote                      * remote   = [RemoteElement remoteElementOfType:(REType)RETypeRemote context:[DataManager mainObjectContext]];
+    RERemote * remote   = [RERemote remoteElementInContext:[[CoreDataManager sharedManager] mainObjectContext]];
 
     editorVC.remoteElement = remote;
     editorVC.delegate      = nil;

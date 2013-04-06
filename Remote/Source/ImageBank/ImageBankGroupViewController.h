@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @class   GalleryGroup;
-@class   REImage;
+@class   BOImage;
 
 @protocol ImageSelection <NSObject>
 
-- (void)selectedImage:(REImage *)image;
+- (void)selectedImage:(BOImage *)image;
 
 @end
 
@@ -22,7 +22,7 @@
     GalleryGroup * _group;
     UIImageView  * _imageView;
     UIView       * _imageViewContainer;
-    REImage * _mutatingImage;
+    BOImage * _mutatingImage;
 // id <MSModalViewControllerDelegate, ImageSelection>__unsafe_unretained   _modalDelegate;
 }
 - (id)initWithGroup:(GalleryGroup *)group;

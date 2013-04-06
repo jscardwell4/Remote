@@ -13,8 +13,6 @@
 #import "RERemoteViewController.h"
 #import "RemoteConstruction.h"
 #import "REView.h"
-#import "RERemoteEditingViewController.h"
-#import "REButtonEditingViewController.h"
 #import "REEditingViewController_Private.h"
 
 static const int   ddLogLevel = LOG_LEVEL_DEBUG;

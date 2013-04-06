@@ -18,7 +18,8 @@
          RERemoteEditingViewController,
          SettingsViewController,
          LogsViewController,
-         LaunchScreenViewController;
+         LaunchScreenViewController,
+         REBackgroundEditingViewController;
 
 @interface StoryboardProxy : NSObject
 
@@ -33,7 +34,7 @@
 + (CommandEditingViewController *)       commandEditingViewController;
 + (REButtonGroupEditingViewController *)   buttonGroupEditingViewController;
 + (RERemoteEditingViewController *)        remoteEditingViewController;
-+ (BackgroundEditingViewController *)    backgroundEditingViewController;
++ (REBackgroundEditingViewController *)    backgroundEditingViewController;
 + (SettingsViewController *)             settingsViewController;
 + (LogsViewController *)                 logsViewController;
 + (LaunchScreenViewController *)         launchScreenViewController;

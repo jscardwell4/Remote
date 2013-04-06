@@ -8,7 +8,7 @@
 
 #import "ImageBankGroupViewController.h"
 #import "GalleryGroup.h"
-#import "REImage.h"
+#import "BankObject.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -310,7 +310,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     static CGPoint   centerPoint = {.x = 160.0, .y = 240.0};
     // Delete the managed object for the given index path
     NSFetchedResultsController * resultsController = indexPath.section == 0 ? __fetchedBackgroundsResultsController : __fetchedIconsResultsController;
-    REImage               * image             = [resultsController objectAtIndexPath:indexPath];
+    BOImage               * image             = [resultsController objectAtIndexPath:indexPath];
 
     if (self.tableView.editing)
         _mutatingImage = image;
@@ -332,12 +332,12 @@ static int   ddLogLevel = DefaultDDLogLevel;
  */
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        REBackgroundImage * image = [self.fetchedBackgroundsResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        BOBackgroundImage * image = [self.fetchedBackgroundsResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
 
         cell.textLabel.text  = image.name;
         cell.imageView.image = image.thumbnail;
     } else {
-        REIconImage * image = [self.fetchedIconsResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        BOIconImage * image = [self.fetchedIconsResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
 
         cell.textLabel.text  = image.name;
         cell.imageView.image = image.thumbnail;
@@ -426,7 +426,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
     NSMutableString * logString = [[NSMutableString alloc] initWithString:@"Backgrounds:\n"];
 
-    for (REBackgroundImage * image in[__fetchedBackgroundsResultsController fetchedObjects]) {
+    for (BOBackgroundImage * image in[__fetchedBackgroundsResultsController fetchedObjects]) {
         [logString appendFormat:@"\t%@\n", image.name];
     }
 
@@ -496,7 +496,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
     NSMutableString * logString = [[NSMutableString alloc] initWithString:@"Icons:\n"];
 
-    for (REIconImage * image in[__fetchedIconsResultsController fetchedObjects]) {
+    for (BOIconImage * image in[__fetchedIconsResultsController fetchedObjects]) {
         [logString appendFormat:@"\t%@\n", image.name];
     }
 

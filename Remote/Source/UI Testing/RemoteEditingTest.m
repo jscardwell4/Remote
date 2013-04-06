@@ -11,8 +11,7 @@
 #import "MSRemoteAppController.h"
 #import "RemoteConstruction.h"
 #import "REEditingViewController_Private.h"
-#import "RERemoteEditingViewController.h"
-#import "REButtonGroupView.h"
+#import "REView.h"
 #import "UITestRunner.h"
 
 // #define DEBUG_CONTEXT  UITESTING_F
@@ -156,7 +155,7 @@ static const int   msLogContext = UITESTING_F;
 
                     assert(rEditor);
 
-                    RERemote * r = [[RERemoteController remoteController] remoteWithKey:@"activity1"];
+                    RERemote * r = [RERemoteController remoteController][@"activity1"];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;

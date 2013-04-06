@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "IconSelectionViewController.h"
-#import "REImage.h"
+#import "BankObject.h"
 
 #define MAX_COL 5
 #define MIN_COL 1
@@ -17,7 +17,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
 @interface IconSelectionViewController ()
 @property (nonatomic, strong) NSArray * fetchedIcons;
 - (IBAction)selectIconAction:(UITapGestureRecognizer *)sender;
-- (REIconImage *)iconForRow:(NSUInteger)row column:(NSUInteger)column;
+- (BOIconImage *)iconForRow:(NSUInteger)row column:(NSUInteger)column;
 @property (nonatomic, assign) NSUInteger        rowCount;
 @property (nonatomic, assign) NSUInteger        iconCount;
 @property (nonatomic, assign) NSInteger         selectedIcon;
@@ -49,7 +49,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
     self.selectedIcon = -1;
 
     [_context performBlockAndWait:^{
-                  NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"REIconImage"];
+                  NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"BOIconImage"];
 
                   NSError * error = nil;
                   NSArray * fetchedObjects = [_context           executeFetchRequest:fetchRequest
@@ -76,7 +76,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
         NSUInteger   column = touchedView.tag - 1;
         NSUInteger   row    =
             [self.tableView indexPathForCell:(UITableViewCell *)touchedView.superview.superview].row;
-        REIconImage * icon = [self iconForRow:row column:column];
+        BOIconImage * icon = [self iconForRow:row column:column];
 
         if (ValueIsNotNil(icon)) {
             NSUInteger   touchedIcon = row * MAX_COL + column;
@@ -127,20 +127,20 @@ static int       ddLogLevel = DefaultDDLogLevel;
     if (_selectedIcon < 0)
         [_delegate iconSelectorDidCancel:self];
     else {
-        REIconImage * icon = self.fetchedIcons[_selectedIcon];
+        BOIconImage * icon = self.fetchedIcons[_selectedIcon];
 
         [_delegate iconSelector:self didSelectIcon:icon];
     }
 }
 
-- (REIconImage *)iconForRow:(NSUInteger)row column:(NSUInteger)column {
+- (BOIconImage *)iconForRow:(NSUInteger)row column:(NSUInteger)column {
     if (row > _rowCount || column > MAX_COL - 1) return nil;
 
     NSInteger   iconIndex = [self iconIndexForRow:row column:column];
 
     if (iconIndex > self.iconCount) return nil;
 
-    return (REIconImage *)self.fetchedIcons[iconIndex];
+    return (BOIconImage *)self.fetchedIcons[iconIndex];
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
@@ -208,7 +208,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
     // Configure the cell...
     @autoreleasepool {
         UIImageView      * iconView   = nil;
-        REIconImage * iconImage  = nil;
+        BOIconImage * iconImage  = nil;
         NSUInteger         row        = indexPath.row;
         NSUInteger         iconNumber = row * 5;
 
@@ -221,10 +221,10 @@ static int       ddLogLevel = DefaultDDLogLevel;
 
                 CGSize   iconSize = iconImage.size;
 
-                if (iconImage.useRetinaScale) {
+//                if (iconImage.useRetinaScale) {
                     iconSize.width  /= 2.0;
                     iconSize.height /= 2.0;
-                }
+//                }
 
                 CGSize   adjustedSize = CGSizeFitToSize(iconSize, originalIconViewSize);
 

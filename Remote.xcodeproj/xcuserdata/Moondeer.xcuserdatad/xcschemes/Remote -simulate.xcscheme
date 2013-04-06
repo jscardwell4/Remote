@@ -43,15 +43,6 @@
             <ActionContent
                title = "Run Script"
                scriptText = "date &gt;&gt; $PROJECT_DIR/env.log&#10;env &gt;&gt; $PROJECT_DIR/env.log&#10;echo $&apos;\n&apos; &gt;&gt; $PROJECT_DIR/env.log">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "C240153D16D9A97100639F0D"
-                     BuildableName = "MSKit.framework"
-                     BlueprintName = "MSKit"
-                     ReferencedContainer = "container:../../Frameworks/MSKit/MSKit.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
       </PostActions>
@@ -68,20 +59,6 @@
                BuildableName = "Remote.app"
                BlueprintName = "Remote"
                ReferencedContainer = "container:Remote.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C240153D16D9A97100639F0D"
-               BuildableName = "MSKit.framework"
-               BlueprintName = "MSKit"
-               ReferencedContainer = "container:../../Frameworks/MSKit/MSKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -5,17 +5,8 @@
 // Created by Jason Cardwell on 2/29/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-
 #import <QuartzCore/QuartzCore.h>
 
-typedef NS_ENUM (NSInteger, PainterShape) {
-    PainterShapeUndefined        = 0,
-    PainterShapeRoundedRectangle = 1,
-    PainterShapeOval             = 2,
-    PainterShapeRectangle        = 3,
-    PainterShapeTriangle         = 4,
-    PainterShapeDiamond          = 5
-};
 
 @interface Painter : NSObject
 
@@ -59,5 +50,35 @@ typedef NS_ENUM (NSInteger, PainterShape) {
 + (UIImage *)embossImage:(UIImage *)image;
 
 + (UIImage *)blurImage:(UIImage *)image;
+
++ (void)drawLEDButtons;
+
++ (void)drawPowerButton;
+
++ (void)drawRoundedRectButton;
+
++ (void)drawRoundedRectButtonBaseInContext:(CGContextRef)context
+                               buttonColor:(UIColor *)buttonColor
+                               shadowColor:(UIColor *)shadowColor
+                                    opaque:(BOOL)opaque
+                                     frame:(CGRect)frame;
+
++ (void)drawRoundedRectButtonOverlayInContext:(CGContextRef)context
+                                   shineColor:(UIColor *)shineColor
+                                        frame:(CGRect)frame;
+
++ (void)drawIconButton;
+
++ (void)drawResizableButton;
+
++ (void)drawBlueButton;
+
++ (void)drawGlassShelf;
+
++ (void)drawProgressBar;
+
++ (void)drawOrganicSlider;
+
++ (void)drawCMYPad;
 
 @end

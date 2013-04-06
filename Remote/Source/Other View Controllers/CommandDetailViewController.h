@@ -5,12 +5,12 @@
 // Created by Jason Cardwell on 4/5/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "Command.h"
+#import "RECommand.h"
 #import "CommandEditingViewController.h"
 
 @interface CommandDetailViewController : UIViewController
 
-@property (nonatomic, strong) Command * command;
+@property (nonatomic, strong) RECommand * command;
 
 @property (nonatomic, weak) CommandEditingViewController * delegate;
 @property (strong, nonatomic) IBOutlet UIButton          * popButton;

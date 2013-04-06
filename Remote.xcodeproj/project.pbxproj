@@ -7,11 +7,129 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C208DEB916DECF4300084C49 /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C208DEB816DECF4300084C49 /* MSKit.framework */; };
+		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
+		C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
+		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
+		C23B946C170C8FEA0028CC06 /* REView+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946B170C8FEA0028CC06 /* REView+Drawing.m */; };
+		C23B946F170C94BE0028CC06 /* REView+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946E170C94BE0028CC06 /* REView+Debugging.m */; };
+		C23F1E5D1705064E0084718A /* RESendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* RESendCommand.m */; };
+		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
+		C25B473116FF8D0A0042B59E /* BOComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* BOComponentDevice.m */; };
+		C25B473216FF8D0A0042B59E /* REDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* REDeviceConfiguration.m */; };
+		C25B473316FF8D0A0042B59E /* BOIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* BOIRCode.m */; };
+		C25B473516FF8D0A0042B59E /* BOFactoryIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */; };
+		C25B473616FF8D0A0042B59E /* BOManufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* BOManufacturer.m */; };
+		C25B473716FF8D0A0042B59E /* BOBackgroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E116FF69110042B59E /* BOBackgroundImage.m */; };
+		C25B473816FF8D0A0042B59E /* BOButtonImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E216FF69110042B59E /* BOButtonImage.m */; };
+		C25B473916FF8D0A0042B59E /* BOIconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E316FF69110042B59E /* BOIconImage.m */; };
+		C25B473A16FF8D0A0042B59E /* BOImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* BOImage.m */; };
+		C25B473B16FF8D0A0042B59E /* BOUserIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E816FF69110042B59E /* BOUserIRCode.m */; };
+		C25B473C16FF8D0A0042B59E /* BankObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46EA16FF69110042B59E /* BankObject.m */; };
+		C25B473D16FF8D0A0042B59E /* BankObjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankObjectGroup.m */; };
+		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
+		C25B474016FF8D0A0042B59E /* BOPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* BOPreset.m */; };
+		C25B474516FF8D5E0042B59E /* REButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* REButtonBuilder.m */; };
+		C25B474616FF8D5E0042B59E /* REButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */; };
+		C25B474716FF8D5E0042B59E /* REMacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469A16FF67D00042B59E /* REMacroBuilder.m */; };
+		C25B474816FF8D5E0042B59E /* RERemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469C16FF67D00042B59E /* RERemoteBuilder.m */; };
+		C25B474916FF8D5E0042B59E /* RemoteElementConstructionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */; };
+		C25B474A16FF8D5E0042B59E /* RERemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RERemoteController.m */; };
+		C25B474B16FF8D5E0042B59E /* RERemoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A416FF67D00042B59E /* RERemoteViewController.m */; };
+		C25B474C16FF8D5E0042B59E /* REControlStateButtonImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468116FF67AF0042B59E /* REControlStateButtonImageSet.m */; };
+		C25B474D16FF8D5E0042B59E /* REControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* REControlStateColorSet.m */; };
+		C25B474E16FF8D5E0042B59E /* REControlStateIconImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468316FF67AF0042B59E /* REControlStateIconImageSet.m */; };
+		C25B474F16FF8D5E0042B59E /* REControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468416FF67AF0042B59E /* REControlStateImageSet.m */; };
+		C25B475016FF8D5E0042B59E /* REControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468616FF67AF0042B59E /* REControlStateSet.m */; };
+		C25B475116FF8D5E0042B59E /* REControlStateTitleSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */; };
+		C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */; };
+		C25B475316FF8D5E0042B59E /* BackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463216FF679B0042B59E /* BackgroundEditingViewController.m */; };
+		C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463416FF679B0042B59E /* CommandEditingViewController.m */; };
+		C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463616FF679B0042B59E /* DelayCommandEditingViewController.m */; };
+		C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463816FF679B0042B59E /* HTTPCommandEditingViewController.m */; };
+		C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463A16FF679B0042B59E /* IconEditingViewController.m */; };
+		C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463C16FF679B0042B59E /* LabelEditingViewController.m */; };
+		C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463E16FF679B0042B59E /* MacroCommandEditingViewController.m */; };
+		C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464016FF679B0042B59E /* PowerCommandEditingViewController.m */; };
+		C25B475B16FF8D5E0042B59E /* REButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464216FF679B0042B59E /* REButtonEditingViewController.m */; };
+		C25B475C16FF8D5E0042B59E /* REButtonGroupEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464416FF679B0042B59E /* REButtonGroupEditingViewController.m */; };
+		C25B475D16FF8D5E0042B59E /* REDetailedButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464616FF679B0042B59E /* REDetailedButtonEditingViewController.m */; };
+		C25B475E16FF8D5E0042B59E /* REEditingViewController+Gestures.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464816FF679B0042B59E /* REEditingViewController+Gestures.m */; };
+		C25B475F16FF8D5E0042B59E /* REEditingViewController+IBActions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464A16FF679B0042B59E /* REEditingViewController+IBActions.m */; };
+		C25B476016FF8D5E0042B59E /* REEditingViewController+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464C16FF679B0042B59E /* REEditingViewController+Selection.m */; };
+		C25B476116FF8D5E0042B59E /* REEditingViewController+Toolbars.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464E16FF679B0042B59E /* REEditingViewController+Toolbars.m */; };
+		C25B476216FF8D5E0042B59E /* REEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465016FF679B0042B59E /* REEditingViewController.m */; };
+		C25B476316FF8D5E0042B59E /* RERemoteEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465316FF679B0042B59E /* RERemoteEditingViewController.m */; };
+		C25B476416FF8D5E0042B59E /* SendIRCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */; };
+		C25B476516FF8D5E0042B59E /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
+		C25B476616FF8D5E0042B59E /* REDelayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B116FF66FE0042B59E /* REDelayCommand.m */; };
+		C25B476716FF8D5E0042B59E /* REHTTPCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B216FF66FE0042B59E /* REHTTPCommand.m */; };
+		C25B476816FF8D5E0042B59E /* REMacroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B316FF66FE0042B59E /* REMacroCommand.m */; };
+		C25B476916FF8D5E0042B59E /* REPowerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B416FF66FE0042B59E /* REPowerCommand.m */; };
+		C25B476A16FF8D5E0042B59E /* RESendIRCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B516FF66FE0042B59E /* RESendIRCommand.m */; };
+		C25B476B16FF8D5E0042B59E /* RESwitchToRemoteCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */; };
+		C25B476C16FF8D5E0042B59E /* RESystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B716FF66FE0042B59E /* RESystemCommand.m */; };
+		C25B476D16FF8D5E0042B59E /* RECommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B916FF66FE0042B59E /* RECommand.m */; };
+		C25B476E16FF8D5E0042B59E /* RECommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* RECommandContainer.m */; };
+		C25B476F16FF8D5E0042B59E /* RECommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* RECommandSet.m */; };
+		C25B477516FF8D5E0042B59E /* REConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* REConstraintManager.m */; };
+		C25B477616FF8D5E0042B59E /* RELayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* RELayoutConfiguration.m */; };
+		C25B477716FF8D5E0042B59E /* REButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */; };
+		C25B477816FF8D5E0042B59E /* REButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */; };
+		C25B477916FF8D5E0042B59E /* REConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* REConfigurationDelegate.m */; };
+		C25B477A16FF8D5E0042B59E /* RERemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */; };
+		C25B477B16FF8D5E0042B59E /* REButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* REButton.m */; };
+		C25B477C16FF8D5E0042B59E /* REButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* REButtonGroup.m */; };
+		C25B477D16FF8D5E0042B59E /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */; };
+		C25B477E16FF8D5E0042B59E /* RemoteElement+FlagsAndOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457916FF62A00042B59E /* RemoteElement+FlagsAndOptions.m */; };
+		C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
+		C25B478016FF8D5E0042B59E /* RERemote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* RERemote.m */; };
+		C25B478116FF8D5E0042B59E /* REView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFDD16DC18530093D5B4 /* REView.m */; };
+		C25B478216FF8D5E0042B59E /* REView+Editing.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472716FF695B0042B59E /* REView+Editing.m */; };
+		C25B478316FF8D5E0042B59E /* REView+SubelementViews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472B16FF6E500042B59E /* REView+SubelementViews.m */; };
+		C25B478416FF8D5E0042B59E /* REView+InternalSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472E16FF77AB0042B59E /* REView+InternalSubviews.m */; };
+		C25B478516FF8D5E0042B59E /* RELabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2912BC316F6311D004AB0DB /* RELabelView.m */; };
+		C25B478616FF8D5E0042B59E /* REConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* REConstraint.m */; };
+		C25B478716FF8D5E0042B59E /* RERemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE316DC18530093D5B4 /* RERemoteView.m */; };
+		C25B478816FF8D5E0042B59E /* REPickerLabelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1E16FA06B400290737 /* REPickerLabelButtonGroupView.m */; };
+		C25B478916FF8D5E0042B59E /* RESelectionPanelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */; };
+		C25B478A16FF8D5E0042B59E /* REButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */; };
+		C25B478B16FF8D5E0042B59E /* REBatteryStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */; };
+		C25B478C16FF8D5E0042B59E /* REButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456816FF61C90042B59E /* REButtonView.m */; };
+		C25B478D16FF8D5E0042B59E /* REConnectionStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */; };
+		C25B478E16FF8D5E0042B59E /* CodeDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1D16DC18530093D5B4 /* CodeDatabaseViewController.m */; };
+		C25B478F16FF8D5E0042B59E /* CodeSetCodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1F16DC18530093D5B4 /* CodeSetCodesViewController.m */; };
+		C25B479016FF8D5E0042B59E /* ComponentDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2116DC18530093D5B4 /* ComponentDeviceListViewController.m */; };
+		C25B479116FF8D5E0042B59E /* IRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2316DC18530093D5B4 /* IRCodeDetailViewController.m */; };
+		C25B479216FF8D5E0042B59E /* ManufacturerCodeSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2516DC18530093D5B4 /* ManufacturerCodeSetsViewController.m */; };
+		C25B479316FF8D5E0042B59E /* UserCodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2716DC18530093D5B4 /* UserCodesViewController.m */; };
+		C25B479416FF8D5E0042B59E /* LogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5116DC18530093D5B4 /* LogsViewController.m */; };
+		C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7716DC18530093D5B4 /* ConnectionManager.m */; };
+		C25B479B16FF8D5E0042B59E /* GlobalCacheConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */; };
+		C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8216DC18530093D5B4 /* NetworkDevice.m */; };
+		C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */; };
+		C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */; };
+		C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */; };
+		C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */; };
+		C25B47A216FF8D5E0042B59E /* LaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */; };
+		C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */; };
+		C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB416DC18530093D5B4 /* SelectionViewController.m */; };
+		C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE916DC18530093D5B4 /* CoreDataManager.m */; };
+		C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */; };
+		C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFED16DC18530093D5B4 /* MSRemoteAppController.m */; };
+		C25B47A916FF8D5E0042B59E /* Painter.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF116DC18530093D5B4 /* Painter.m */; };
+		C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF516DC18530093D5B4 /* SettingsManager.m */; };
+		C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF716DC18530093D5B4 /* SettingsViewController.m */; };
+		C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */; };
+		C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
+		C25B47B016FF8D5E0042B59E /* MSRemoteConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */; };
+		C25B47B116FF8D5E0042B59E /* ButtonGroupEditingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00416DC18530093D5B4 /* ButtonGroupEditingTest.m */; };
+		C25B47B216FF8D5E0042B59E /* MSRemoteUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00616DC18530093D5B4 /* MSRemoteUITest.m */; };
+		C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00816DC18530093D5B4 /* RemoteEditingTest.m */; };
+		C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00A16DC18530093D5B4 /* UITestRunner.m */; };
 		C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
 		C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
-		C2625BA016DD47F10000F676 /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2625B8F16DD47F10000F676 /* Remote.xcdatamodeld */; };
+		C2629BF7170248E100A0FFC2 /* RECommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */; };
 		C26BAEAC16DC10FE0093D5B4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAB16DC10FE0093D5B4 /* UIKit.framework */; };
 		C26BAEAE16DC10FE0093D5B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */; };
 		C26BAEB016DC10FE0093D5B4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAF16DC10FE0093D5B4 /* CoreGraphics.framework */; };
@@ -24,125 +142,6 @@
 		C26BAED216DC10FE0093D5B4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEB116DC10FE0093D5B4 /* CoreData.framework */; };
 		C26BAEDA16DC10FE0093D5B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C26BAED816DC10FE0093D5B4 /* InfoPlist.strings */; };
 		C26BAEDD16DC10FE0093D5B4 /* RemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEDC16DC10FE0093D5B4 /* RemoteTests.m */; };
-		C26BB00B16DC18530093D5B4 /* BankIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEEA16DC18530093D5B4 /* BankIndexViewController.m */; };
-		C26BB00C16DC18530093D5B4 /* BankObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEEC16DC18530093D5B4 /* BankObject.m */; };
-		C26BB00D16DC18530093D5B4 /* BankPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEEE16DC18530093D5B4 /* BankPreset.m */; };
-		C26BB00E16DC18530093D5B4 /* ButtonGroupPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEF016DC18530093D5B4 /* ButtonGroupPreset.m */; };
-		C26BB00F16DC18530093D5B4 /* ButtonPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEF216DC18530093D5B4 /* ButtonPreset.m */; };
-		C26BB01016DC18530093D5B4 /* FactoryIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEF416DC18530093D5B4 /* FactoryIRCode.m */; };
-		C26BB01116DC18530093D5B4 /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEF616DC18530093D5B4 /* Manufacturer.m */; };
-		C26BB01216DC18530093D5B4 /* RemotePreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEF816DC18530093D5B4 /* RemotePreset.m */; };
-		C26BB01316DC18530093D5B4 /* UserIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEFA16DC18530093D5B4 /* UserIRCode.m */; };
-		C26BB01416DC18530093D5B4 /* REButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEFD16DC18530093D5B4 /* REButtonGroup.m */; };
-		C26BB01516DC18530093D5B4 /* REButtonGroupEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEFF16DC18530093D5B4 /* REButtonGroupEditingViewController.m */; };
-		C26BB01616DC18530093D5B4 /* REButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */; };
-		C26BB01716DC18530093D5B4 /* REButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0516DC18530093D5B4 /* REButton.m */; };
-		C26BB01816DC18530093D5B4 /* REButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0716DC18530093D5B4 /* REButtonEditingViewController.m */; };
-		C26BB01916DC18530093D5B4 /* REButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0916DC18530093D5B4 /* REButtonView.m */; };
-		C26BB01B16DC18530093D5B4 /* ControlStateButtonImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0D16DC18530093D5B4 /* ControlStateButtonImageSet.m */; };
-		C26BB01C16DC18530093D5B4 /* ControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0E16DC18530093D5B4 /* ControlStateColorSet.m */; };
-		C26BB01D16DC18530093D5B4 /* ControlStateIconImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0F16DC18530093D5B4 /* ControlStateIconImageSet.m */; };
-		C26BB01E16DC18530093D5B4 /* ControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1016DC18530093D5B4 /* ControlStateImageSet.m */; };
-		C26BB01F16DC18530093D5B4 /* ControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1216DC18530093D5B4 /* ControlStateSet.m */; };
-		C26BB02016DC18530093D5B4 /* ControlStateTitleSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1416DC18530093D5B4 /* ControlStateTitleSet.m */; };
-		C26BB02116DC18530093D5B4 /* REDetailedButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1616DC18530093D5B4 /* REDetailedButtonEditingViewController.m */; };
-		C26BB02416DC18530093D5B4 /* CodeDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1D16DC18530093D5B4 /* CodeDatabaseViewController.m */; };
-		C26BB02516DC18530093D5B4 /* CodeSetCodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1F16DC18530093D5B4 /* CodeSetCodesViewController.m */; };
-		C26BB02616DC18530093D5B4 /* ComponentDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2116DC18530093D5B4 /* ComponentDeviceListViewController.m */; };
-		C26BB02716DC18530093D5B4 /* IRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2316DC18530093D5B4 /* IRCodeDetailViewController.m */; };
-		C26BB02816DC18530093D5B4 /* ManufacturerCodeSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2516DC18530093D5B4 /* ManufacturerCodeSetsViewController.m */; };
-		C26BB02916DC18530093D5B4 /* UserCodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2716DC18530093D5B4 /* UserCodesViewController.m */; };
-		C26BB02A16DC18530093D5B4 /* ButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2916DC18530093D5B4 /* ButtonConfigurationDelegate.m */; };
-		C26BB02B16DC18530093D5B4 /* ButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2A16DC18530093D5B4 /* ButtonGroupConfigurationDelegate.m */; };
-		C26BB02C16DC18530093D5B4 /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2C16DC18530093D5B4 /* Command.m */; };
-		C26BB02D16DC18530093D5B4 /* CommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2F16DC18530093D5B4 /* CommandContainer.m */; };
-		C26BB02E16DC18530093D5B4 /* CommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3216DC18530093D5B4 /* CommandSet.m */; };
-		C26BB02F16DC18530093D5B4 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3416DC18530093D5B4 /* CommandSetCollection.m */; };
-		C26BB03016DC18530093D5B4 /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3616DC18530093D5B4 /* ComponentDevice.m */; };
-		C26BB03116DC18530093D5B4 /* ConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3816DC18530093D5B4 /* ConfigurationDelegate.m */; };
-		C26BB03216DC18530093D5B4 /* DelayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3916DC18530093D5B4 /* DelayCommand.m */; };
-		C26BB03316DC18530093D5B4 /* DeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3B16DC18530093D5B4 /* DeviceConfiguration.m */; };
-		C26BB03416DC18530093D5B4 /* DPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3D16DC18530093D5B4 /* DPad.m */; };
-		C26BB03516DC18530093D5B4 /* HTTPCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF3E16DC18530093D5B4 /* HTTPCommand.m */; };
-		C26BB03616DC18530093D5B4 /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4016DC18530093D5B4 /* IRCode.m */; };
-		C26BB03716DC18530093D5B4 /* IRCodeSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4316DC18530093D5B4 /* IRCodeSet.m */; };
-		C26BB03816DC18530093D5B4 /* MacroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4416DC18530093D5B4 /* MacroCommand.m */; };
-		C26BB03916DC18530093D5B4 /* NumberPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4616DC18530093D5B4 /* NumberPad.m */; };
-		C26BB03A16DC18530093D5B4 /* PowerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4716DC18530093D5B4 /* PowerCommand.m */; };
-		C26BB03B16DC18530093D5B4 /* RockerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4916DC18530093D5B4 /* RockerButton.m */; };
-		C26BB03C16DC18530093D5B4 /* SendIRCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4A16DC18530093D5B4 /* SendIRCommand.m */; };
-		C26BB03D16DC18530093D5B4 /* SwitchToRemoteCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4B16DC18530093D5B4 /* SwitchToRemoteCommand.m */; };
-		C26BB03E16DC18530093D5B4 /* SystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4C16DC18530093D5B4 /* SystemCommand.m */; };
-		C26BB03F16DC18530093D5B4 /* Transport.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF4E16DC18530093D5B4 /* Transport.m */; };
-		C26BB04016DC18530093D5B4 /* LogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5116DC18530093D5B4 /* LogsViewController.m */; };
-		C26BB04116DC18530093D5B4 /* BackgroundImageChooserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5416DC18530093D5B4 /* BackgroundImageChooserTableViewController.m */; };
-		C26BB04216DC18530093D5B4 /* REBackgroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5616DC18530093D5B4 /* REBackgroundImage.m */; };
-		C26BB04316DC18530093D5B4 /* REButtonImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5716DC18530093D5B4 /* REButtonImage.m */; };
-		C26BB04416DC18530093D5B4 /* BankObjectButtonPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5816DC18530093D5B4 /* BankObjectButtonPreview.m */; };
-		C26BB04516DC18530093D5B4 /* BankObjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5A16DC18530093D5B4 /* BankObjectGroup.m */; };
-		C26BB04616DC18530093D5B4 /* REIconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5B16DC18530093D5B4 /* REIconImage.m */; };
-		C26BB04716DC18530093D5B4 /* REImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5D16DC18530093D5B4 /* REImage.m */; };
-		C26BB04816DC18530093D5B4 /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF6016DC18530093D5B4 /* BankObjectPreview.m */; };
-		C26BB04916DC18530093D5B4 /* PresetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF6316DC18530093D5B4 /* PresetInfo.m */; };
-		C26BB05416DC18530093D5B4 /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7716DC18530093D5B4 /* ConnectionManager.m */; };
-		C26BB05516DC18530093D5B4 /* error.c in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7916DC18530093D5B4 /* error.c */; };
-		C26BB05616DC18530093D5B4 /* GlobalCacheConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */; };
-		C26BB05816DC18530093D5B4 /* iTachUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8016DC18530093D5B4 /* iTachUDPSocket.m */; };
-		C26BB05916DC18530093D5B4 /* NetworkDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8216DC18530093D5B4 /* NetworkDevice.m */; };
-		C26BB05A16DC18530093D5B4 /* MSRemoteLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8616DC18530093D5B4 /* MSRemoteLogFormatter.m */; };
-		C26BB05B16DC18530093D5B4 /* AttributeEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8916DC18530093D5B4 /* AttributeEditingViewController.m */; };
-		C26BB05C16DC18530093D5B4 /* BackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8C16DC18530093D5B4 /* BackgroundEditingViewController.m */; };
-		C26BB05D16DC18530093D5B4 /* ColorSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */; };
-		C26BB05E16DC18530093D5B4 /* CommandDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */; };
-		C26BB05F16DC18530093D5B4 /* CommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9216DC18530093D5B4 /* CommandEditingViewController.m */; };
-		C26BB06016DC18530093D5B4 /* DelayCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9416DC18530093D5B4 /* DelayCommandEditingViewController.m */; };
-		C26BB06116DC18530093D5B4 /* HTTPCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9616DC18530093D5B4 /* HTTPCommandEditingViewController.m */; };
-		C26BB06216DC18530093D5B4 /* IconEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9816DC18530093D5B4 /* IconEditingViewController.m */; };
-		C26BB06316DC18530093D5B4 /* IconSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */; };
-		C26BB06416DC18530093D5B4 /* IRLearnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */; };
-		C26BB06516DC18530093D5B4 /* LabelEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9E16DC18530093D5B4 /* LabelEditingViewController.m */; };
-		C26BB06616DC18530093D5B4 /* LaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */; };
-		C26BB06716DC18530093D5B4 /* MacroCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA216DC18530093D5B4 /* MacroCommandEditingViewController.m */; };
-		C26BB06816DC18530093D5B4 /* PowerCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA416DC18530093D5B4 /* PowerCommandEditingViewController.m */; };
-		C26BB06916DC18530093D5B4 /* REEditingViewController+Gestures.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA616DC18530093D5B4 /* REEditingViewController+Gestures.m */; };
-		C26BB06B16DC18530093D5B4 /* REEditingViewController+IBActions.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA916DC18530093D5B4 /* REEditingViewController+IBActions.m */; };
-		C26BB06C16DC18530093D5B4 /* REEditingViewController+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFAB16DC18530093D5B4 /* REEditingViewController+Selection.m */; };
-		C26BB06D16DC18530093D5B4 /* REEditingViewController+Toolbars.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFAD16DC18530093D5B4 /* REEditingViewController+Toolbars.m */; };
-		C26BB06E16DC18530093D5B4 /* REEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFAF16DC18530093D5B4 /* REEditingViewController.m */; };
-		C26BB06F16DC18530093D5B4 /* SelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */; };
-		C26BB07016DC18530093D5B4 /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB416DC18530093D5B4 /* SelectionViewController.m */; };
-		C26BB07116DC18530093D5B4 /* SendIRCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB616DC18530093D5B4 /* SendIRCommandEditingViewController.m */; };
-		C26BB07216DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB816DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.m */; };
-		C26BB07316DC18530093D5B4 /* ButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFBC16DC18530093D5B4 /* ButtonBuilder.m */; };
-		C26BB07416DC18530093D5B4 /* ButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFBE16DC18530093D5B4 /* ButtonGroupBuilder.m */; };
-		C26BB07516DC18530093D5B4 /* MacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFC016DC18530093D5B4 /* MacroBuilder.m */; };
-		C26BB07616DC18530093D5B4 /* RemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFC216DC18530093D5B4 /* RemoteBuilder.m */; };
-		C26BB07716DC18530093D5B4 /* RemoteElementConstructionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFC516DC18530093D5B4 /* RemoteElementConstructionManager.m */; };
-		C26BB07A16DC18530093D5B4 /* RERemote.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCA16DC18530093D5B4 /* RERemote.m */; };
-		C26BB07B16DC18530093D5B4 /* RERemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCC16DC18530093D5B4 /* RERemoteController.m */; };
-		C26BB07C16DC18530093D5B4 /* RERemoteEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCE16DC18530093D5B4 /* RERemoteEditingViewController.m */; };
-		C26BB07D16DC18530093D5B4 /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFCF16DC18530093D5B4 /* RemoteElement+Accessors.m */; };
-		C26BB07E16DC18530093D5B4 /* RemoteElement+FlagsAndOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFD016DC18530093D5B4 /* RemoteElement+FlagsAndOptions.m */; };
-		C26BB07F16DC18530093D5B4 /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFD216DC18530093D5B4 /* RemoteElement.m */; };
-		C26BB08016DC18530093D5B4 /* REConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFD516DC18530093D5B4 /* REConstraintManager.m */; };
-		C26BB08216DC18530093D5B4 /* REConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFD916DC18530093D5B4 /* REConstraint.m */; };
-		C26BB08416DC18530093D5B4 /* REView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFDD16DC18530093D5B4 /* REView.m */; };
-		C26BB08616DC18530093D5B4 /* RERemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE316DC18530093D5B4 /* RERemoteView.m */; };
-		C26BB08716DC18530093D5B4 /* RERemoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE516DC18530093D5B4 /* RERemoteViewController.m */; };
-		C26BB08816DC18530093D5B4 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE916DC18530093D5B4 /* CoreDataManager.m */; };
-		C26BB08916DC18530093D5B4 /* DatabaseLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */; };
-		C26BB08A16DC18530093D5B4 /* MSRemoteAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFED16DC18530093D5B4 /* MSRemoteAppController.m */; };
-		C26BB08C16DC18530093D5B4 /* Painter.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF116DC18530093D5B4 /* Painter.m */; };
-		C26BB08D16DC18530093D5B4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF316DC18530093D5B4 /* Reachability.m */; };
-		C26BB08E16DC18530093D5B4 /* SettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF516DC18530093D5B4 /* SettingsManager.m */; };
-		C26BB08F16DC18530093D5B4 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF716DC18530093D5B4 /* SettingsViewController.m */; };
-		C26BB09016DC18530093D5B4 /* StoryboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */; };
-		C26BB09116DC18530093D5B4 /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
-		C26BB09316DC18530093D5B4 /* MSRemoteConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */; };
-		C26BB09416DC18530093D5B4 /* ButtonGroupEditingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00416DC18530093D5B4 /* ButtonGroupEditingTest.m */; };
-		C26BB09516DC18530093D5B4 /* MSRemoteUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00616DC18530093D5B4 /* MSRemoteUITest.m */; };
-		C26BB09616DC18530093D5B4 /* RemoteEditingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00816DC18530093D5B4 /* RemoteEditingTest.m */; };
-		C26BB09716DC18530093D5B4 /* UITestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00A16DC18530093D5B4 /* UITestRunner.m */; };
 		C26BB59A16DC18A90093D5B4 /* [10]Wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0A116DC18A30093D5B4 /* [10]Wood.jpg */; };
 		C26BB59B16DC18A90093D5B4 /* [10]Wood@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0A216DC18A30093D5B4 /* [10]Wood@2x.jpg */; };
 		C26BB59C16DC18A90093D5B4 /* [1]Blueprint.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0A316DC18A30093D5B4 /* [1]Blueprint.jpg */; };
@@ -1406,7 +1405,6 @@
 		C26BBA8616DC18A90093D5B4 /* iconList.txt in Resources */ = {isa = PBXBuildFile; fileRef = C26BB58F16DC18A90093D5B4 /* iconList.txt */; };
 		C26BBA8816DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */; };
-		C26BBA8A16DC18A90093D5B4 /* CurlDownSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB59516DC18A90093D5B4 /* CurlDownSegue.m */; };
 		C26BBA8B16DC18A90093D5B4 /* CustomNumberPadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */; };
 		C26BBA8D16DC18A90093D5B4 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */; };
 		C26BBA8E16DC18A90093D5B4 /* RERemoteEditingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59916DC18A90093D5B4 /* RERemoteEditingViewController.xib */; };
@@ -1498,8 +1496,17 @@
 		C26BBB4916DC1C960093D5B4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB3F16DC1C960093D5B4 /* QuartzCore.framework */; };
 		C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */; };
 		C26BBB4C16DC1FA20093D5B4 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */; };
-		C2912BC416F6311E004AB0DB /* RELabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2912BC316F6311D004AB0DB /* RELabelView.m */; };
-		C29DD1B716E8FA4A00595CD5 /* RELayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C29DD1B616E8FA4A00595CD5 /* RELayoutConfiguration.m */; };
+		C277343A1700BC9300E85F8D /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2625B8F16DD47F10000F676 /* Remote.xcdatamodeld */; };
+		C277343D1701232D00E85F8D /* REBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343C1701232D00E85F8D /* REBuilder.m */; };
+		C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */; };
+		C2FFB5F7170B5A6C0079C283 /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FFB5F1170B5A6C0079C283 /* MSKit.framework */; };
+		C2FFB5F8170B5A6C0079C283 /* MSColorInputView.nib in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */; };
+		C2FFB5F9170B5A6C0079C283 /* MSPickerInputViewController.nib in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */; };
+		C2FFB5FA170B5A6C0079C283 /* ScrollWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F5170B5A6C0079C283 /* ScrollWheel.png */; };
+		C2FFB5FB170B5A6C0079C283 /* ScrollWheel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F6170B5A6C0079C283 /* ScrollWheel@2x.png */; };
+		C2FFB5FE170B8A1D0079C283 /* NoBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5FC170B8A1D0079C283 /* NoBackground.png */; };
+		C2FFB5FF170B8A1D0079C283 /* NoBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5FD170B8A1D0079C283 /* NoBackground@2x.png */; };
+		C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1521,8 +1528,136 @@
 		C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote-Release.xcconfig"; sourceTree = "<group>"; };
 		C208DE0316DE763900084C49 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Notes; sourceTree = "<group>"; };
 		C208DEB516DEC70C00084C49 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/6.1/Applications/B24ABD7F-AD97-47CB-B0C6-F9065B1EC2EA/Library/Caches/Logs"; sourceTree = "<group>"; };
-		C208DEB816DECF4300084C49 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = "../DerivedData/MSRemote/Build/Products/Debug-iphonesimulator/MSKit.framework"; sourceTree = "<group>"; };
+		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
+		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
+		C21B423C170B3ED600FAE00E /* REBackgroundEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundEditingViewController.h; sourceTree = "<group>"; };
+		C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundEditingViewController.m; sourceTree = "<group>"; };
 		C23004C416DD3AA100D30A19 /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
+		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
+		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
+		C23B7A4A1705FAF80031CD6C /* BOTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOTypedefs.h; sourceTree = "<group>"; };
+		C23B946B170C8FEA0028CC06 /* REView+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+Drawing.m"; sourceTree = "<group>"; };
+		C23B946E170C94BE0028CC06 /* REView+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+Debugging.m"; sourceTree = "<group>"; };
+		C23F1E5C1705064E0084718A /* RESendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESendCommand.m; sourceTree = "<group>"; };
+		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
+		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
+		C240DD6017049106005CC390 /* GlobalCacheConnectionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalCacheConnectionManager_Private.h; sourceTree = "<group>"; };
+		C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REBatteryStatusButtonView.m; path = REButtonView/REBatteryStatusButtonView.m; sourceTree = "<group>"; };
+		C25B456816FF61C90042B59E /* REButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REButtonView.m; path = REButtonView/REButtonView.m; sourceTree = "<group>"; };
+		C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REConnectionStatusButtonView.m; path = REButtonView/REConnectionStatusButtonView.m; sourceTree = "<group>"; };
+		C25B457416FF62A00042B59E /* REButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButton.m; sourceTree = "<group>"; };
+		C25B457716FF62A00042B59E /* REButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroup.m; sourceTree = "<group>"; };
+		C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElement+Accessors.m"; sourceTree = "<group>"; };
+		C25B457916FF62A00042B59E /* RemoteElement+FlagsAndOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElement+FlagsAndOptions.m"; sourceTree = "<group>"; };
+		C25B457A16FF62A00042B59E /* RemoteElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement.h; sourceTree = "<group>"; };
+		C25B457B16FF62A00042B59E /* RemoteElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElement.m; sourceTree = "<group>"; };
+		C25B457C16FF62A00042B59E /* RemoteElement_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement_Private.h; sourceTree = "<group>"; };
+		C25B457F16FF62A00042B59E /* RERemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemote.m; sourceTree = "<group>"; };
+		C25B45B116FF66FE0042B59E /* REDelayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REDelayCommand.m; sourceTree = "<group>"; };
+		C25B45B216FF66FE0042B59E /* REHTTPCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REHTTPCommand.m; sourceTree = "<group>"; };
+		C25B45B316FF66FE0042B59E /* REMacroCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMacroCommand.m; sourceTree = "<group>"; };
+		C25B45B416FF66FE0042B59E /* REPowerCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPowerCommand.m; sourceTree = "<group>"; };
+		C25B45B516FF66FE0042B59E /* RESendIRCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESendIRCommand.m; sourceTree = "<group>"; };
+		C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESwitchToRemoteCommand.m; sourceTree = "<group>"; };
+		C25B45B716FF66FE0042B59E /* RESystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESystemCommand.m; sourceTree = "<group>"; };
+		C25B45B816FF66FE0042B59E /* RECommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommand.h; sourceTree = "<group>"; };
+		C25B45B916FF66FE0042B59E /* RECommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommand.m; sourceTree = "<group>"; };
+		C25B45BA16FF66FE0042B59E /* RECommand_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommand_Private.h; sourceTree = "<group>"; };
+		C25B45BB16FF66FE0042B59E /* RECommandContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommandContainer.h; sourceTree = "<group>"; };
+		C25B45BC16FF66FE0042B59E /* RECommandContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandContainer.m; sourceTree = "<group>"; };
+		C25B45C016FF66FE0042B59E /* RECommandSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandSet.m; sourceTree = "<group>"; };
+		C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandSetCollection.m; sourceTree = "<group>"; };
+		C25B462E16FF679B0042B59E /* AttributeEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController.h; sourceTree = "<group>"; };
+		C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeEditingViewController.m; sourceTree = "<group>"; };
+		C25B463016FF679B0042B59E /* AttributeEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController_Private.h; sourceTree = "<group>"; };
+		C25B463116FF679B0042B59E /* BackgroundEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundEditingViewController.h; sourceTree = "<group>"; };
+		C25B463216FF679B0042B59E /* BackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundEditingViewController.m; sourceTree = "<group>"; };
+		C25B463316FF679B0042B59E /* CommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B463416FF679B0042B59E /* CommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B463516FF679B0042B59E /* DelayCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayCommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B463616FF679B0042B59E /* DelayCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayCommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B463716FF679B0042B59E /* HTTPCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPCommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B463816FF679B0042B59E /* HTTPCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPCommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B463916FF679B0042B59E /* IconEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconEditingViewController.h; sourceTree = "<group>"; };
+		C25B463A16FF679B0042B59E /* IconEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconEditingViewController.m; sourceTree = "<group>"; };
+		C25B463B16FF679B0042B59E /* LabelEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelEditingViewController.h; sourceTree = "<group>"; };
+		C25B463C16FF679B0042B59E /* LabelEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelEditingViewController.m; sourceTree = "<group>"; };
+		C25B463D16FF679B0042B59E /* MacroCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacroCommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B463E16FF679B0042B59E /* MacroCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacroCommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B463F16FF679B0042B59E /* PowerCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerCommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B464016FF679B0042B59E /* PowerCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerCommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B464216FF679B0042B59E /* REButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C25B464416FF679B0042B59E /* REButtonGroupEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupEditingViewController.m; sourceTree = "<group>"; };
+		C25B464616FF679B0042B59E /* REDetailedButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REDetailedButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C25B464716FF679B0042B59E /* REEditingViewController+Gestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Gestures.h"; sourceTree = "<group>"; };
+		C25B464816FF679B0042B59E /* REEditingViewController+Gestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Gestures.m"; sourceTree = "<group>"; };
+		C25B464916FF679B0042B59E /* REEditingViewController+IBActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+IBActions.h"; sourceTree = "<group>"; };
+		C25B464A16FF679B0042B59E /* REEditingViewController+IBActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+IBActions.m"; sourceTree = "<group>"; };
+		C25B464B16FF679B0042B59E /* REEditingViewController+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Selection.h"; sourceTree = "<group>"; };
+		C25B464C16FF679B0042B59E /* REEditingViewController+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Selection.m"; sourceTree = "<group>"; };
+		C25B464D16FF679B0042B59E /* REEditingViewController+Toolbars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Toolbars.h"; sourceTree = "<group>"; };
+		C25B464E16FF679B0042B59E /* REEditingViewController+Toolbars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Toolbars.m"; sourceTree = "<group>"; };
+		C25B464F16FF679B0042B59E /* REEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = REEditingViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C25B465016FF679B0042B59E /* REEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingViewController.m; sourceTree = "<group>"; };
+		C25B465116FF679B0042B59E /* REEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingViewController_Private.h; sourceTree = "<group>"; };
+		C25B465316FF679B0042B59E /* RERemoteEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteEditingViewController.m; sourceTree = "<group>"; };
+		C25B465416FF679B0042B59E /* SendIRCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendIRCommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendIRCommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B465616FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchToRemoteCommandEditingViewController.h; sourceTree = "<group>"; };
+		C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToRemoteCommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B468116FF67AF0042B59E /* REControlStateButtonImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateButtonImageSet.m; sourceTree = "<group>"; };
+		C25B468216FF67AF0042B59E /* REControlStateColorSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateColorSet.m; sourceTree = "<group>"; };
+		C25B468316FF67AF0042B59E /* REControlStateIconImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateIconImageSet.m; sourceTree = "<group>"; };
+		C25B468416FF67AF0042B59E /* REControlStateImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateImageSet.m; sourceTree = "<group>"; };
+		C25B468516FF67AF0042B59E /* REControlStateSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REControlStateSet.h; sourceTree = "<group>"; };
+		C25B468616FF67AF0042B59E /* REControlStateSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateSet.m; sourceTree = "<group>"; };
+		C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateTitleSet.m; sourceTree = "<group>"; };
+		C25B469616FF67D00042B59E /* REButtonBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonBuilder.m; sourceTree = "<group>"; };
+		C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupBuilder.m; sourceTree = "<group>"; };
+		C25B469A16FF67D00042B59E /* REMacroBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMacroBuilder.m; sourceTree = "<group>"; };
+		C25B469C16FF67D00042B59E /* RERemoteBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteBuilder.m; sourceTree = "<group>"; };
+		C25B469D16FF67D00042B59E /* RemoteConstruction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConstruction.h; sourceTree = "<group>"; };
+		C25B469E16FF67D00042B59E /* RemoteElementConstructionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager.h; sourceTree = "<group>"; };
+		C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementConstructionManager.m; sourceTree = "<group>"; };
+		C25B46A116FF67D00042B59E /* RERemoteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteController.h; sourceTree = "<group>"; };
+		C25B46A216FF67D00042B59E /* RERemoteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteController.m; sourceTree = "<group>"; };
+		C25B46A316FF67D00042B59E /* RERemoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteViewController.h; sourceTree = "<group>"; };
+		C25B46A416FF67D00042B59E /* RERemoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteViewController.m; sourceTree = "<group>"; };
+		C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46B616FF68840042B59E /* REConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConfigurationDelegate.h; sourceTree = "<group>"; };
+		C25B46B716FF68840042B59E /* REConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46B816FF68840042B59E /* REConfigurationDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConfigurationDelegate_Private.h; sourceTree = "<group>"; };
+		C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46C316FF68900042B59E /* REConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConstraintManager.h; sourceTree = "<group>"; };
+		C25B46C416FF68900042B59E /* REConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConstraintManager.m; sourceTree = "<group>"; };
+		C25B46C516FF68900042B59E /* RELayoutConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RELayoutConfiguration.h; sourceTree = "<group>"; };
+		C25B46C616FF68900042B59E /* RELayoutConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELayoutConfiguration.m; sourceTree = "<group>"; };
+		C25B46CC16FF68A90042B59E /* REConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConstraint.h; sourceTree = "<group>"; };
+		C25B46CD16FF68A90042B59E /* REConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConstraint.m; sourceTree = "<group>"; };
+		C25B46D416FF69110042B59E /* BOComponentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOComponentDevice.m; path = ComponentDevice/BOComponentDevice.m; sourceTree = "<group>"; };
+		C25B46D516FF69110042B59E /* REDeviceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = REDeviceConfiguration.h; path = "../BankObject/BankObject Subclasses/ComponentDevice/REDeviceConfiguration.h"; sourceTree = "<group>"; };
+		C25B46D616FF69110042B59E /* REDeviceConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REDeviceConfiguration.m; path = "../BankObject/BankObject Subclasses/ComponentDevice/REDeviceConfiguration.m"; sourceTree = "<group>"; };
+		C25B46D816FF69110042B59E /* BOIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOIRCode.m; path = ComponentDevice/BOIRCode.m; sourceTree = "<group>"; };
+		C25B46D916FF69110042B59E /* BOIRCode_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BOIRCode_Private.h; path = ComponentDevice/BOIRCode_Private.h; sourceTree = "<group>"; };
+		C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOFactoryIRCode.m; sourceTree = "<group>"; };
+		C25B46DF16FF69110042B59E /* BOManufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOManufacturer.m; sourceTree = "<group>"; };
+		C25B46E116FF69110042B59E /* BOBackgroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOBackgroundImage.m; path = REImage/BOBackgroundImage.m; sourceTree = "<group>"; };
+		C25B46E216FF69110042B59E /* BOButtonImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOButtonImage.m; path = REImage/BOButtonImage.m; sourceTree = "<group>"; };
+		C25B46E316FF69110042B59E /* BOIconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOIconImage.m; path = REImage/BOIconImage.m; sourceTree = "<group>"; };
+		C25B46E516FF69110042B59E /* BOImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOImage.m; path = REImage/BOImage.m; sourceTree = "<group>"; };
+		C25B46E616FF69110042B59E /* BOImage_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BOImage_Private.h; path = REImage/BOImage_Private.h; sourceTree = "<group>"; };
+		C25B46E816FF69110042B59E /* BOUserIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOUserIRCode.m; sourceTree = "<group>"; };
+		C25B46E916FF69110042B59E /* BankObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObject.h; sourceTree = "<group>"; };
+		C25B46EA16FF69110042B59E /* BankObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObject.m; sourceTree = "<group>"; };
+		C25B46EC16FF69110042B59E /* BankObjectGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BankObjectGroup.h; path = BankObjectGroup/BankObjectGroup.h; sourceTree = "<group>"; };
+		C25B46ED16FF69110042B59E /* BankObjectGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BankObjectGroup.m; path = BankObjectGroup/BankObjectGroup.m; sourceTree = "<group>"; };
+		C25B46F016FF69110042B59E /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BankObjectPreview.h; path = BankObjectPreview/BankObjectPreview.h; sourceTree = "<group>"; };
+		C25B46F116FF69110042B59E /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BankObjectPreview.m; path = BankObjectPreview/BankObjectPreview.m; sourceTree = "<group>"; };
+		C25B46F516FF69110042B59E /* BOPreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOPreset.m; path = ../Presets/BOPreset.m; sourceTree = "<group>"; };
+		C25B472716FF695B0042B59E /* REView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+Editing.m"; sourceTree = "<group>"; };
+		C25B472B16FF6E500042B59E /* REView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+SubelementViews.m"; sourceTree = "<group>"; };
+		C25B472E16FF77AB0042B59E /* REView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+InternalSubviews.m"; sourceTree = "<group>"; };
 		C2625B9016DD47F10000F676 /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
 		C2625B9116DD47F10000F676 /* Remote.base 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 11.xcdatamodel"; sourceTree = "<group>"; };
 		C2625B9216DD47F10000F676 /* Remote.base 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -1554,46 +1689,7 @@
 		C26BAED916DC10FE0093D5B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C26BAEDB16DC10FE0093D5B4 /* RemoteTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteTests.h; sourceTree = "<group>"; };
 		C26BAEDC16DC10FE0093D5B4 /* RemoteTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoteTests.m; sourceTree = "<group>"; };
-		C26BAEE916DC18530093D5B4 /* BankIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankIndexViewController.h; sourceTree = "<group>"; };
-		C26BAEEA16DC18530093D5B4 /* BankIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankIndexViewController.m; sourceTree = "<group>"; };
-		C26BAEEB16DC18530093D5B4 /* BankObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObject.h; sourceTree = "<group>"; };
-		C26BAEEC16DC18530093D5B4 /* BankObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObject.m; sourceTree = "<group>"; };
-		C26BAEED16DC18530093D5B4 /* BankPreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankPreset.h; sourceTree = "<group>"; };
-		C26BAEEE16DC18530093D5B4 /* BankPreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankPreset.m; sourceTree = "<group>"; };
-		C26BAEEF16DC18530093D5B4 /* ButtonGroupPreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonGroupPreset.h; sourceTree = "<group>"; };
-		C26BAEF016DC18530093D5B4 /* ButtonGroupPreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupPreset.m; sourceTree = "<group>"; };
-		C26BAEF116DC18530093D5B4 /* ButtonPreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonPreset.h; sourceTree = "<group>"; };
-		C26BAEF216DC18530093D5B4 /* ButtonPreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonPreset.m; sourceTree = "<group>"; };
-		C26BAEF316DC18530093D5B4 /* FactoryIRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FactoryIRCode.h; sourceTree = "<group>"; };
-		C26BAEF416DC18530093D5B4 /* FactoryIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FactoryIRCode.m; sourceTree = "<group>"; };
-		C26BAEF516DC18530093D5B4 /* Manufacturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Manufacturer.h; sourceTree = "<group>"; };
-		C26BAEF616DC18530093D5B4 /* Manufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manufacturer.m; sourceTree = "<group>"; };
-		C26BAEF716DC18530093D5B4 /* RemotePreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemotePreset.h; sourceTree = "<group>"; };
-		C26BAEF816DC18530093D5B4 /* RemotePreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemotePreset.m; sourceTree = "<group>"; };
-		C26BAEF916DC18530093D5B4 /* UserIRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserIRCode.h; sourceTree = "<group>"; };
-		C26BAEFA16DC18530093D5B4 /* UserIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserIRCode.m; sourceTree = "<group>"; };
-		C26BAEFC16DC18530093D5B4 /* REButtonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = REButtonGroup.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C26BAEFD16DC18530093D5B4 /* REButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroup.m; sourceTree = "<group>"; };
-		C26BAEFE16DC18530093D5B4 /* REButtonGroupEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REButtonGroupEditingViewController.h; sourceTree = "<group>"; };
-		C26BAEFF16DC18530093D5B4 /* REButtonGroupEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupEditingViewController.m; sourceTree = "<group>"; };
-		C26BAF0016DC18530093D5B4 /* REButtonGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REButtonGroupView.h; sourceTree = "<group>"; };
-		C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupView.m; sourceTree = "<group>"; };
-		C26BAF0416DC18530093D5B4 /* REButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = REButton.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C26BAF0516DC18530093D5B4 /* REButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REButton.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF0616DC18530093D5B4 /* REButtonEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REButtonEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF0716DC18530093D5B4 /* REButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF0816DC18530093D5B4 /* REButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REButtonView.h; sourceTree = "<group>"; };
-		C26BAF0916DC18530093D5B4 /* REButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonView.m; sourceTree = "<group>"; };
-		C26BAF0D16DC18530093D5B4 /* ControlStateButtonImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateButtonImageSet.m; sourceTree = "<group>"; };
-		C26BAF0E16DC18530093D5B4 /* ControlStateColorSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateColorSet.m; sourceTree = "<group>"; };
-		C26BAF0F16DC18530093D5B4 /* ControlStateIconImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateIconImageSet.m; sourceTree = "<group>"; };
-		C26BAF1016DC18530093D5B4 /* ControlStateImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateImageSet.m; sourceTree = "<group>"; };
-		C26BAF1116DC18530093D5B4 /* ControlStateSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateSet.h; sourceTree = "<group>"; };
-		C26BAF1216DC18530093D5B4 /* ControlStateSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateSet.m; sourceTree = "<group>"; };
-		C26BAF1316DC18530093D5B4 /* ControlStateSet_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateSet_Private.h; sourceTree = "<group>"; };
-		C26BAF1416DC18530093D5B4 /* ControlStateTitleSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateTitleSet.m; sourceTree = "<group>"; };
-		C26BAF1516DC18530093D5B4 /* REDetailedButtonEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REDetailedButtonEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF1616DC18530093D5B4 /* REDetailedButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REDetailedButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REButtonGroupView.m; path = REButtonGroupView/REButtonGroupView.m; sourceTree = "<group>"; };
 		C26BAF1C16DC18530093D5B4 /* CodeDatabaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeDatabaseViewController.h; sourceTree = "<group>"; };
 		C26BAF1D16DC18530093D5B4 /* CodeDatabaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeDatabaseViewController.m; sourceTree = "<group>"; };
 		C26BAF1E16DC18530093D5B4 /* CodeSetCodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeSetCodesViewController.h; sourceTree = "<group>"; };
@@ -1606,62 +1702,9 @@
 		C26BAF2516DC18530093D5B4 /* ManufacturerCodeSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManufacturerCodeSetsViewController.m; sourceTree = "<group>"; };
 		C26BAF2616DC18530093D5B4 /* UserCodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCodesViewController.h; sourceTree = "<group>"; };
 		C26BAF2716DC18530093D5B4 /* UserCodesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCodesViewController.m; sourceTree = "<group>"; };
-		C26BAF2916DC18530093D5B4 /* ButtonConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonConfigurationDelegate.m; sourceTree = "<group>"; };
-		C26BAF2A16DC18530093D5B4 /* ButtonGroupConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupConfigurationDelegate.m; sourceTree = "<group>"; };
-		C26BAF2B16DC18530093D5B4 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
-		C26BAF2C16DC18530093D5B4 /* Command.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Command.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF2D16DC18530093D5B4 /* Command_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command_Private.h; sourceTree = "<group>"; };
-		C26BAF2E16DC18530093D5B4 /* CommandContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandContainer.h; sourceTree = "<group>"; };
-		C26BAF2F16DC18530093D5B4 /* CommandContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandContainer.m; sourceTree = "<group>"; };
-		C26BAF3016DC18530093D5B4 /* CommandDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandDelegate.h; sourceTree = "<group>"; };
-		C26BAF3116DC18530093D5B4 /* CommandSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandSet.h; sourceTree = "<group>"; };
-		C26BAF3216DC18530093D5B4 /* CommandSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandSet.m; sourceTree = "<group>"; };
-		C26BAF3316DC18530093D5B4 /* CommandSetCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandSetCollection.h; sourceTree = "<group>"; };
-		C26BAF3416DC18530093D5B4 /* CommandSetCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandSetCollection.m; sourceTree = "<group>"; };
-		C26BAF3516DC18530093D5B4 /* ComponentDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentDevice.h; sourceTree = "<group>"; };
-		C26BAF3616DC18530093D5B4 /* ComponentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComponentDevice.m; sourceTree = "<group>"; };
-		C26BAF3716DC18530093D5B4 /* ConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationDelegate.h; sourceTree = "<group>"; };
-		C26BAF3816DC18530093D5B4 /* ConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationDelegate.m; sourceTree = "<group>"; };
-		C26BAF3916DC18530093D5B4 /* DelayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayCommand.m; sourceTree = "<group>"; };
-		C26BAF3A16DC18530093D5B4 /* DeviceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceConfiguration.h; sourceTree = "<group>"; };
-		C26BAF3B16DC18530093D5B4 /* DeviceConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceConfiguration.m; sourceTree = "<group>"; };
-		C26BAF3C16DC18530093D5B4 /* DPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPad.h; sourceTree = "<group>"; };
-		C26BAF3D16DC18530093D5B4 /* DPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPad.m; sourceTree = "<group>"; };
-		C26BAF3E16DC18530093D5B4 /* HTTPCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPCommand.m; sourceTree = "<group>"; };
-		C26BAF3F16DC18530093D5B4 /* IRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCode.h; sourceTree = "<group>"; };
-		C26BAF4016DC18530093D5B4 /* IRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCode.m; sourceTree = "<group>"; };
-		C26BAF4116DC18530093D5B4 /* IRCode_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCode_Private.h; sourceTree = "<group>"; };
-		C26BAF4216DC18530093D5B4 /* IRCodeSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeSet.h; sourceTree = "<group>"; };
-		C26BAF4316DC18530093D5B4 /* IRCodeSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeSet.m; sourceTree = "<group>"; };
-		C26BAF4416DC18530093D5B4 /* MacroCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacroCommand.m; sourceTree = "<group>"; };
-		C26BAF4516DC18530093D5B4 /* NumberPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPad.h; sourceTree = "<group>"; };
-		C26BAF4616DC18530093D5B4 /* NumberPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPad.m; sourceTree = "<group>"; };
-		C26BAF4716DC18530093D5B4 /* PowerCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerCommand.m; sourceTree = "<group>"; };
-		C26BAF4816DC18530093D5B4 /* RockerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RockerButton.h; sourceTree = "<group>"; };
-		C26BAF4916DC18530093D5B4 /* RockerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RockerButton.m; sourceTree = "<group>"; };
-		C26BAF4A16DC18530093D5B4 /* SendIRCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendIRCommand.m; sourceTree = "<group>"; };
-		C26BAF4B16DC18530093D5B4 /* SwitchToRemoteCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToRemoteCommand.m; sourceTree = "<group>"; };
-		C26BAF4C16DC18530093D5B4 /* SystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemCommand.m; sourceTree = "<group>"; };
-		C26BAF4D16DC18530093D5B4 /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transport.h; sourceTree = "<group>"; };
-		C26BAF4E16DC18530093D5B4 /* Transport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transport.m; sourceTree = "<group>"; };
+		C26BAF3016DC18530093D5B4 /* CommandDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandDelegate.h; path = ../Source/Commands/CommandDelegate.h; sourceTree = "<group>"; };
 		C26BAF5016DC18530093D5B4 /* LogsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogsViewController.h; sourceTree = "<group>"; };
 		C26BAF5116DC18530093D5B4 /* LogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogsViewController.m; sourceTree = "<group>"; };
-		C26BAF5316DC18530093D5B4 /* BackgroundImageChooserTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundImageChooserTableViewController.h; sourceTree = "<group>"; };
-		C26BAF5416DC18530093D5B4 /* BackgroundImageChooserTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundImageChooserTableViewController.m; sourceTree = "<group>"; };
-		C26BAF5616DC18530093D5B4 /* REBackgroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundImage.m; sourceTree = "<group>"; };
-		C26BAF5716DC18530093D5B4 /* REButtonImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonImage.m; sourceTree = "<group>"; };
-		C26BAF5816DC18530093D5B4 /* BankObjectButtonPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectButtonPreview.m; sourceTree = "<group>"; };
-		C26BAF5916DC18530093D5B4 /* BankObjectGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectGroup.h; sourceTree = "<group>"; };
-		C26BAF5A16DC18530093D5B4 /* BankObjectGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectGroup.m; sourceTree = "<group>"; };
-		C26BAF5B16DC18530093D5B4 /* REIconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REIconImage.m; sourceTree = "<group>"; };
-		C26BAF5C16DC18530093D5B4 /* REImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REImage.h; sourceTree = "<group>"; };
-		C26BAF5D16DC18530093D5B4 /* REImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REImage.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF5E16DC18530093D5B4 /* REImage_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REImage_Private.h; sourceTree = "<group>"; };
-		C26BAF5F16DC18530093D5B4 /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview.h; sourceTree = "<group>"; };
-		C26BAF6016DC18530093D5B4 /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BankObjectPreview.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF6116DC18530093D5B4 /* BankObjectPreview_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview_Private.h; sourceTree = "<group>"; };
-		C26BAF6216DC18530093D5B4 /* PresetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetInfo.h; sourceTree = "<group>"; };
-		C26BAF6316DC18530093D5B4 /* PresetInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresetInfo.m; sourceTree = "<group>"; };
 		C26BAF6616DC18530093D5B4 /* IconBankSubCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconBankSubCategoriesViewController.h; sourceTree = "<group>"; };
 		C26BAF6716DC18530093D5B4 /* IconBankSubCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconBankSubCategoriesViewController.m; sourceTree = "<group>"; };
 		C26BAF6816DC18530093D5B4 /* IconBankSubCategoriesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IconBankSubCategoriesViewController.xib; sourceTree = "<group>"; };
@@ -1680,101 +1723,28 @@
 		C26BAF7616DC18530093D5B4 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
 		C26BAF7716DC18530093D5B4 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
 		C26BAF7816DC18530093D5B4 /* ConnectionManager_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager_Private.h; sourceTree = "<group>"; };
-		C26BAF7916DC18530093D5B4 /* error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = error.c; sourceTree = "<group>"; };
-		C26BAF7A16DC18530093D5B4 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 		C26BAF7B16DC18530093D5B4 /* GlobalCacheConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalCacheConnectionManager.h; sourceTree = "<group>"; };
 		C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GlobalCacheConnectionManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF7D16DC18530093D5B4 /* helper_functions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = helper_functions.c; sourceTree = "<group>"; };
-		C26BAF7E16DC18530093D5B4 /* helper_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper_functions.h; sourceTree = "<group>"; };
-		C26BAF7F16DC18530093D5B4 /* iTachUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTachUDPSocket.h; sourceTree = "<group>"; };
-		C26BAF8016DC18530093D5B4 /* iTachUDPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTachUDPSocket.m; sourceTree = "<group>"; };
 		C26BAF8116DC18530093D5B4 /* NetworkDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDevice.h; sourceTree = "<group>"; };
 		C26BAF8216DC18530093D5B4 /* NetworkDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NetworkDevice.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF8316DC18530093D5B4 /* networking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networking.h; sourceTree = "<group>"; };
-		C26BAF8516DC18530093D5B4 /* MSRemoteLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteLogFormatter.h; sourceTree = "<group>"; };
-		C26BAF8616DC18530093D5B4 /* MSRemoteLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRemoteLogFormatter.m; sourceTree = "<group>"; };
-		C26BAF8816DC18530093D5B4 /* AttributeEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF8916DC18530093D5B4 /* AttributeEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeEditingViewController.m; sourceTree = "<group>"; };
-		C26BAF8A16DC18530093D5B4 /* AttributeEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController_Private.h; sourceTree = "<group>"; };
-		C26BAF8B16DC18530093D5B4 /* BackgroundEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF8C16DC18530093D5B4 /* BackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundEditingViewController.m; sourceTree = "<group>"; };
-		C26BAF8D16DC18530093D5B4 /* ColorSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectionViewController.h; sourceTree = "<group>"; };
-		C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectionViewController.m; sourceTree = "<group>"; };
-		C26BAF8F16DC18530093D5B4 /* CommandDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandDetailViewController.h; sourceTree = "<group>"; };
-		C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandDetailViewController.m; sourceTree = "<group>"; };
-		C26BAF9116DC18530093D5B4 /* CommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF9216DC18530093D5B4 /* CommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CommandEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF9316DC18530093D5B4 /* DelayCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayCommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF9416DC18530093D5B4 /* DelayCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayCommandEditingViewController.m; sourceTree = "<group>"; };
-		C26BAF9516DC18530093D5B4 /* HTTPCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPCommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF9616DC18530093D5B4 /* HTTPCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPCommandEditingViewController.m; sourceTree = "<group>"; };
-		C26BAF9716DC18530093D5B4 /* IconEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF9816DC18530093D5B4 /* IconEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconEditingViewController.m; sourceTree = "<group>"; };
-		C26BAF9916DC18530093D5B4 /* IconSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconSelectionViewController.h; sourceTree = "<group>"; };
-		C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconSelectionViewController.m; sourceTree = "<group>"; };
+		C26BAF8D16DC18530093D5B4 /* ColorSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorSelectionViewController.h; path = "../Other View Controllers/ColorSelectionViewController.h"; sourceTree = "<group>"; };
+		C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColorSelectionViewController.m; path = "../Other View Controllers/ColorSelectionViewController.m"; sourceTree = "<group>"; };
+		C26BAF8F16DC18530093D5B4 /* CommandDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandDetailViewController.h; path = "../Other View Controllers/CommandDetailViewController.h"; sourceTree = "<group>"; };
+		C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommandDetailViewController.m; path = "../Other View Controllers/CommandDetailViewController.m"; sourceTree = "<group>"; };
+		C26BAF9916DC18530093D5B4 /* IconSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IconSelectionViewController.h; path = "../Other View Controllers/IconSelectionViewController.h"; sourceTree = "<group>"; };
+		C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IconSelectionViewController.m; path = "../Other View Controllers/IconSelectionViewController.m"; sourceTree = "<group>"; };
 		C26BAF9B16DC18530093D5B4 /* IRLearnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearnerViewController.h; sourceTree = "<group>"; };
 		C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearnerViewController.m; sourceTree = "<group>"; };
-		C26BAF9D16DC18530093D5B4 /* LabelEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelEditingViewController.h; sourceTree = "<group>"; };
-		C26BAF9E16DC18530093D5B4 /* LabelEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelEditingViewController.m; sourceTree = "<group>"; };
 		C26BAF9F16DC18530093D5B4 /* LaunchScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchScreenViewController.h; sourceTree = "<group>"; };
 		C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchScreenViewController.m; sourceTree = "<group>"; };
-		C26BAFA116DC18530093D5B4 /* MacroCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacroCommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAFA216DC18530093D5B4 /* MacroCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MacroCommandEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAFA316DC18530093D5B4 /* PowerCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerCommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAFA416DC18530093D5B4 /* PowerCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerCommandEditingViewController.m; sourceTree = "<group>"; };
-		C26BAFA516DC18530093D5B4 /* REEditingViewController+Gestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Gestures.h"; sourceTree = "<group>"; };
-		C26BAFA616DC18530093D5B4 /* REEditingViewController+Gestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Gestures.m"; sourceTree = "<group>"; };
-		C26BAFA816DC18530093D5B4 /* REEditingViewController+IBActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+IBActions.h"; sourceTree = "<group>"; };
-		C26BAFA916DC18530093D5B4 /* REEditingViewController+IBActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+IBActions.m"; sourceTree = "<group>"; };
-		C26BAFAA16DC18530093D5B4 /* REEditingViewController+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Selection.h"; sourceTree = "<group>"; };
-		C26BAFAB16DC18530093D5B4 /* REEditingViewController+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Selection.m"; sourceTree = "<group>"; };
-		C26BAFAC16DC18530093D5B4 /* REEditingViewController+Toolbars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Toolbars.h"; sourceTree = "<group>"; };
-		C26BAFAD16DC18530093D5B4 /* REEditingViewController+Toolbars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Toolbars.m"; sourceTree = "<group>"; };
-		C26BAFAE16DC18530093D5B4 /* REEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingViewController.h; sourceTree = "<group>"; };
-		C26BAFAF16DC18530093D5B4 /* REEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingViewController.m; sourceTree = "<group>"; };
-		C26BAFB016DC18530093D5B4 /* REEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = REEditingViewController_Private.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C26BAFB116DC18530093D5B4 /* SelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionTableViewController.h; sourceTree = "<group>"; };
-		C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionTableViewController.m; sourceTree = "<group>"; };
-		C26BAFB316DC18530093D5B4 /* SelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
-		C26BAFB416DC18530093D5B4 /* SelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
-		C26BAFB516DC18530093D5B4 /* SendIRCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendIRCommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAFB616DC18530093D5B4 /* SendIRCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendIRCommandEditingViewController.m; sourceTree = "<group>"; };
-		C26BAFB716DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchToRemoteCommandEditingViewController.h; sourceTree = "<group>"; };
-		C26BAFB816DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToRemoteCommandEditingViewController.m; sourceTree = "<group>"; };
-		C26BAFBB16DC18530093D5B4 /* ButtonBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonBuilder.h; sourceTree = "<group>"; };
-		C26BAFBC16DC18530093D5B4 /* ButtonBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonBuilder.m; sourceTree = "<group>"; };
-		C26BAFBD16DC18530093D5B4 /* ButtonGroupBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonGroupBuilder.h; sourceTree = "<group>"; };
-		C26BAFBE16DC18530093D5B4 /* ButtonGroupBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupBuilder.m; sourceTree = "<group>"; };
-		C26BAFBF16DC18530093D5B4 /* MacroBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacroBuilder.h; sourceTree = "<group>"; };
-		C26BAFC016DC18530093D5B4 /* MacroBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacroBuilder.m; sourceTree = "<group>"; };
-		C26BAFC116DC18530093D5B4 /* RemoteBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteBuilder.h; sourceTree = "<group>"; };
-		C26BAFC216DC18530093D5B4 /* RemoteBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteBuilder.m; sourceTree = "<group>"; };
-		C26BAFC316DC18530093D5B4 /* RemoteConstruction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConstruction.h; sourceTree = "<group>"; };
-		C26BAFC416DC18530093D5B4 /* RemoteElementConstructionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager.h; sourceTree = "<group>"; };
-		C26BAFC516DC18530093D5B4 /* RemoteElementConstructionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementConstructionManager.m; sourceTree = "<group>"; };
-		C26BAFC916DC18530093D5B4 /* RERemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RERemote.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C26BAFCA16DC18530093D5B4 /* RERemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemote.m; sourceTree = "<group>"; };
-		C26BAFCB16DC18530093D5B4 /* RERemoteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteController.h; sourceTree = "<group>"; };
-		C26BAFCC16DC18530093D5B4 /* RERemoteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteController.m; sourceTree = "<group>"; };
-		C26BAFCD16DC18530093D5B4 /* RERemoteEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteEditingViewController.h; sourceTree = "<group>"; };
-		C26BAFCE16DC18530093D5B4 /* RERemoteEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteEditingViewController.m; sourceTree = "<group>"; };
-		C26BAFCF16DC18530093D5B4 /* RemoteElement+Accessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElement+Accessors.m"; sourceTree = "<group>"; };
-		C26BAFD016DC18530093D5B4 /* RemoteElement+FlagsAndOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "RemoteElement+FlagsAndOptions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAFD116DC18530093D5B4 /* RemoteElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RemoteElement.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C26BAFD216DC18530093D5B4 /* RemoteElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RemoteElement.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAFD316DC18530093D5B4 /* RemoteElement_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement_Private.h; sourceTree = "<group>"; };
-		C26BAFD416DC18530093D5B4 /* REConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConstraintManager.h; sourceTree = "<group>"; };
-		C26BAFD516DC18530093D5B4 /* REConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConstraintManager.m; sourceTree = "<group>"; };
-		C26BAFD816DC18530093D5B4 /* REConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConstraint.h; sourceTree = "<group>"; };
-		C26BAFD916DC18530093D5B4 /* REConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConstraint.m; sourceTree = "<group>"; };
+		C26BAFB116DC18530093D5B4 /* SelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectionTableViewController.h; path = "../Other View Controllers/SelectionTableViewController.h"; sourceTree = "<group>"; };
+		C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectionTableViewController.m; path = "../Other View Controllers/SelectionTableViewController.m"; sourceTree = "<group>"; };
+		C26BAFB316DC18530093D5B4 /* SelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectionViewController.h; path = "../Other View Controllers/SelectionViewController.h"; sourceTree = "<group>"; };
+		C26BAFB416DC18530093D5B4 /* SelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectionViewController.m; path = "../Other View Controllers/SelectionViewController.m"; sourceTree = "<group>"; };
 		C26BAFDC16DC18530093D5B4 /* REView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REView.h; sourceTree = "<group>"; };
 		C26BAFDD16DC18530093D5B4 /* REView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAFDE16DC18530093D5B4 /* REView_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REView_Private.h; sourceTree = "<group>"; };
-		C26BAFDF16DC18530093D5B4 /* REViewConstraintFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REViewConstraintFunctions.h; sourceTree = "<group>"; };
-		C26BAFE216DC18530093D5B4 /* RERemoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteView.h; sourceTree = "<group>"; };
-		C26BAFE316DC18530093D5B4 /* RERemoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteView.m; sourceTree = "<group>"; };
-		C26BAFE416DC18530093D5B4 /* RERemoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteViewController.h; sourceTree = "<group>"; };
-		C26BAFE516DC18530093D5B4 /* RERemoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteViewController.m; sourceTree = "<group>"; };
+		C26BAFE316DC18530093D5B4 /* RERemoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RERemoteView.m; path = RERemoteView/RERemoteView.m; sourceTree = "<group>"; };
 		C26BAFE816DC18530093D5B4 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		C26BAFE916DC18530093D5B4 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoreDataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAFEA16DC18530093D5B4 /* DatabaseLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseLoader.h; sourceTree = "<group>"; };
@@ -1801,7 +1771,7 @@
 		C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRemoteConstants.m; sourceTree = "<group>"; };
 		C26BB00116DC18530093D5B4 /* MSRemoteMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteMacros.h; sourceTree = "<group>"; };
 		C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteTypeDefinitions.h; sourceTree = "<group>"; };
-		C26BB00416DC18530093D5B4 /* ButtonGroupEditingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupEditingTest.m; sourceTree = "<group>"; };
+		C26BB00416DC18530093D5B4 /* ButtonGroupEditingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ButtonGroupEditingTest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BB00516DC18530093D5B4 /* MSRemoteUITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteUITest.h; sourceTree = "<group>"; };
 		C26BB00616DC18530093D5B4 /* MSRemoteUITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MSRemoteUITest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BB00716DC18530093D5B4 /* MSRemoteUITest_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteUITest_Private.h; sourceTree = "<group>"; };
@@ -3078,8 +3048,6 @@
 		C26BB58F16DC18A90093D5B4 /* iconList.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = iconList.txt; sourceTree = "<group>"; };
 		C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuxiliaryStoryboard.storyboard; sourceTree = "<group>"; };
 		C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommandDetailEditorsStoryboard.storyboard; sourceTree = "<group>"; };
-		C26BB59416DC18A90093D5B4 /* CurlDownSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurlDownSegue.h; sourceTree = "<group>"; };
-		C26BB59516DC18A90093D5B4 /* CurlDownSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurlDownSegue.m; sourceTree = "<group>"; };
 		C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNumberPadView.xib; sourceTree = "<group>"; };
 		C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		C26BB59916DC18A90093D5B4 /* RERemoteEditingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RERemoteEditingViewController.xib; sourceTree = "<group>"; };
@@ -3171,12 +3139,26 @@
 		C26BBB3F16DC1C960093D5B4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = ../../Frameworks/Lumberjack/Lumberjack.framework; sourceTree = "<group>"; };
+		C277343C1701232D00E85F8D /* REBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBuilder.m; sourceTree = "<group>"; };
+		C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESwitchToConfigCommand.m; sourceTree = "<group>"; };
 		C2912BC316F6311D004AB0DB /* RELabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELabelView.m; sourceTree = "<group>"; };
 		C2912BC516F6312D004AB0DB /* RELabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RELabelView.h; sourceTree = "<group>"; };
 		C2912BC616F6388F004AB0DB /* Remote.base 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 18.xcdatamodel"; sourceTree = "<group>"; };
-		C29DD1B516E8FA4A00595CD5 /* RELayoutConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RELayoutConfiguration.h; sourceTree = "<group>"; };
-		C29DD1B616E8FA4A00595CD5 /* RELayoutConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELayoutConfiguration.m; sourceTree = "<group>"; };
+		C2997F1E16FA06B400290737 /* REPickerLabelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REPickerLabelButtonGroupView.m; path = REButtonGroupView/REPickerLabelButtonGroupView.m; sourceTree = "<group>"; };
+		C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RESelectionPanelButtonGroupView.m; path = REButtonGroupView/RESelectionPanelButtonGroupView.m; sourceTree = "<group>"; };
+		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C2997F2416FA5A6D00290737 /* REEditableBackground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REEditableBackground.h; sourceTree = "<group>"; };
+		C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RECommandContainer_Private.h; sourceTree = "<group>"; };
 		C2DF3C4516E8F87B0075AC51 /* Remote.base 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 17.xcdatamodel"; sourceTree = "<group>"; };
+		C2FFB5F1170B5A6C0079C283 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MSKit.framework; sourceTree = "<group>"; };
+		C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSColorInputView.nib; sourceTree = "<group>"; };
+		C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSPickerInputViewController.nib; sourceTree = "<group>"; };
+		C2FFB5F5170B5A6C0079C283 /* ScrollWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScrollWheel.png; sourceTree = "<group>"; };
+		C2FFB5F6170B5A6C0079C283 /* ScrollWheel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ScrollWheel@2x.png"; sourceTree = "<group>"; };
+		C2FFB5FC170B8A1D0079C283 /* NoBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoBackground.png; sourceTree = "<group>"; };
+		C2FFB5FD170B8A1D0079C283 /* NoBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NoBackground@2x.png"; sourceTree = "<group>"; };
+		C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPresetCollectionViewController.h; sourceTree = "<group>"; };
+		C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPresetCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3199,7 +3181,7 @@
 				C26BBB4916DC1C960093D5B4 /* QuartzCore.framework in Frameworks */,
 				C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */,
 				C26BBB4C16DC1FA20093D5B4 /* Lumberjack.framework in Frameworks */,
-				C208DEB916DECF4300084C49 /* MSKit.framework in Frameworks */,
+				C2FFB5F7170B5A6C0079C283 /* MSKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3230,6 +3212,283 @@
 			path = "Build Configurations";
 			sourceTree = "<group>";
 		};
+		C25B456216FF5F8E0042B59E /* REView */ = {
+			isa = PBXGroup;
+			children = (
+				C26BAFDC16DC18530093D5B4 /* REView.h */,
+				C26BAFDD16DC18530093D5B4 /* REView.m */,
+				C26BAFDE16DC18530093D5B4 /* REView_Private.h */,
+				C25B472716FF695B0042B59E /* REView+Editing.m */,
+				C25B472B16FF6E500042B59E /* REView+SubelementViews.m */,
+				C25B472E16FF77AB0042B59E /* REView+InternalSubviews.m */,
+				C23B946E170C94BE0028CC06 /* REView+Debugging.m */,
+				C2912BC516F6312D004AB0DB /* RELabelView.h */,
+				C2912BC316F6311D004AB0DB /* RELabelView.m */,
+				C26BAFE316DC18530093D5B4 /* RERemoteView.m */,
+				C2997F1E16FA06B400290737 /* REPickerLabelButtonGroupView.m */,
+				C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */,
+				C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */,
+				C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */,
+				C23B946B170C8FEA0028CC06 /* REView+Drawing.m */,
+				C25B456816FF61C90042B59E /* REButtonView.m */,
+				C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */,
+				C25B46CB16FF68A90042B59E /* Constraints */,
+			);
+			path = REView;
+			sourceTree = "<group>";
+		};
+		C25B457116FF629F0042B59E /* Remote Element */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46C216FF688F0042B59E /* Constraints */,
+				C25B46B316FF68840042B59E /* Configurations */,
+				C25B457216FF62A00042B59E /* REButton */,
+				C25B457516FF62A00042B59E /* REButtonGroup */,
+				C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */,
+				C25B457916FF62A00042B59E /* RemoteElement+FlagsAndOptions.m */,
+				C25B457A16FF62A00042B59E /* RemoteElement.h */,
+				C25B457B16FF62A00042B59E /* RemoteElement.m */,
+				C25B457C16FF62A00042B59E /* RemoteElement_Private.h */,
+				C25B457D16FF62A00042B59E /* RERemote */,
+			);
+			path = "Remote Element";
+			sourceTree = "<group>";
+		};
+		C25B457216FF62A00042B59E /* REButton */ = {
+			isa = PBXGroup;
+			children = (
+				C25B457416FF62A00042B59E /* REButton.m */,
+			);
+			path = REButton;
+			sourceTree = "<group>";
+		};
+		C25B457516FF62A00042B59E /* REButtonGroup */ = {
+			isa = PBXGroup;
+			children = (
+				C25B457716FF62A00042B59E /* REButtonGroup.m */,
+			);
+			path = REButtonGroup;
+			sourceTree = "<group>";
+		};
+		C25B457D16FF62A00042B59E /* RERemote */ = {
+			isa = PBXGroup;
+			children = (
+				C25B457F16FF62A00042B59E /* RERemote.m */,
+			);
+			path = RERemote;
+			sourceTree = "<group>";
+		};
+		C25B45AF16FF66FD0042B59E /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46D516FF69110042B59E /* REDeviceConfiguration.h */,
+				C25B46D616FF69110042B59E /* REDeviceConfiguration.m */,
+				C25B45B016FF66FE0042B59E /* Command Subclasses */,
+				C25B45B816FF66FE0042B59E /* RECommand.h */,
+				C25B45B916FF66FE0042B59E /* RECommand.m */,
+				C25B45BA16FF66FE0042B59E /* RECommand_Private.h */,
+				C25B45BE16FF66FE0042B59E /* CommandSets */,
+			);
+			path = Commands;
+			sourceTree = "<group>";
+		};
+		C25B45B016FF66FE0042B59E /* Command Subclasses */ = {
+			isa = PBXGroup;
+			children = (
+				C25B45B116FF66FE0042B59E /* REDelayCommand.m */,
+				C25B45B216FF66FE0042B59E /* REHTTPCommand.m */,
+				C25B45B316FF66FE0042B59E /* REMacroCommand.m */,
+				C25B45B416FF66FE0042B59E /* REPowerCommand.m */,
+				C25B45B516FF66FE0042B59E /* RESendIRCommand.m */,
+				C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */,
+				C25B45B716FF66FE0042B59E /* RESystemCommand.m */,
+				C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */,
+				C23F1E5C1705064E0084718A /* RESendCommand.m */,
+			);
+			path = "Command Subclasses";
+			sourceTree = "<group>";
+		};
+		C25B45BE16FF66FE0042B59E /* CommandSets */ = {
+			isa = PBXGroup;
+			children = (
+				C25B45BB16FF66FE0042B59E /* RECommandContainer.h */,
+				C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */,
+				C25B45BC16FF66FE0042B59E /* RECommandContainer.m */,
+				C25B45C016FF66FE0042B59E /* RECommandSet.m */,
+				C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */,
+			);
+			path = CommandSets;
+			sourceTree = "<group>";
+		};
+		C25B462D16FF679A0042B59E /* Editors */ = {
+			isa = PBXGroup;
+			children = (
+				C26BAFB116DC18530093D5B4 /* SelectionTableViewController.h */,
+				C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */,
+				C26BAFB316DC18530093D5B4 /* SelectionViewController.h */,
+				C26BAFB416DC18530093D5B4 /* SelectionViewController.m */,
+				C26BAF8D16DC18530093D5B4 /* ColorSelectionViewController.h */,
+				C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */,
+				C26BAF8F16DC18530093D5B4 /* CommandDetailViewController.h */,
+				C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */,
+				C26BAF9916DC18530093D5B4 /* IconSelectionViewController.h */,
+				C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */,
+				C25B462E16FF679B0042B59E /* AttributeEditingViewController.h */,
+				C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */,
+				C25B463016FF679B0042B59E /* AttributeEditingViewController_Private.h */,
+				C25B463116FF679B0042B59E /* BackgroundEditingViewController.h */,
+				C25B463216FF679B0042B59E /* BackgroundEditingViewController.m */,
+				C21B423C170B3ED600FAE00E /* REBackgroundEditingViewController.h */,
+				C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */,
+				C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */,
+				C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */,
+				C25B463316FF679B0042B59E /* CommandEditingViewController.h */,
+				C25B463416FF679B0042B59E /* CommandEditingViewController.m */,
+				C25B463516FF679B0042B59E /* DelayCommandEditingViewController.h */,
+				C25B463616FF679B0042B59E /* DelayCommandEditingViewController.m */,
+				C25B463716FF679B0042B59E /* HTTPCommandEditingViewController.h */,
+				C25B463816FF679B0042B59E /* HTTPCommandEditingViewController.m */,
+				C25B463916FF679B0042B59E /* IconEditingViewController.h */,
+				C25B463A16FF679B0042B59E /* IconEditingViewController.m */,
+				C25B463B16FF679B0042B59E /* LabelEditingViewController.h */,
+				C25B463C16FF679B0042B59E /* LabelEditingViewController.m */,
+				C25B463D16FF679B0042B59E /* MacroCommandEditingViewController.h */,
+				C25B463E16FF679B0042B59E /* MacroCommandEditingViewController.m */,
+				C25B463F16FF679B0042B59E /* PowerCommandEditingViewController.h */,
+				C25B464016FF679B0042B59E /* PowerCommandEditingViewController.m */,
+				C25B464216FF679B0042B59E /* REButtonEditingViewController.m */,
+				C25B464416FF679B0042B59E /* REButtonGroupEditingViewController.m */,
+				C25B464616FF679B0042B59E /* REDetailedButtonEditingViewController.m */,
+				C25B464716FF679B0042B59E /* REEditingViewController+Gestures.h */,
+				C25B464816FF679B0042B59E /* REEditingViewController+Gestures.m */,
+				C25B464916FF679B0042B59E /* REEditingViewController+IBActions.h */,
+				C25B464A16FF679B0042B59E /* REEditingViewController+IBActions.m */,
+				C25B464B16FF679B0042B59E /* REEditingViewController+Selection.h */,
+				C25B464C16FF679B0042B59E /* REEditingViewController+Selection.m */,
+				C25B464D16FF679B0042B59E /* REEditingViewController+Toolbars.h */,
+				C25B464E16FF679B0042B59E /* REEditingViewController+Toolbars.m */,
+				C25B464F16FF679B0042B59E /* REEditingViewController.h */,
+				C25B465016FF679B0042B59E /* REEditingViewController.m */,
+				C25B465116FF679B0042B59E /* REEditingViewController_Private.h */,
+				C25B465316FF679B0042B59E /* RERemoteEditingViewController.m */,
+				C25B465416FF679B0042B59E /* SendIRCommandEditingViewController.h */,
+				C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */,
+				C25B465616FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.h */,
+				C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */,
+				C2355950170A736100160896 /* REBackgroundCollectionViewController.h */,
+				C2355951170A736300160896 /* REBackgroundCollectionViewController.m */,
+				C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */,
+				C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */,
+			);
+			path = Editors;
+			sourceTree = "<group>";
+		};
+		C25B468016FF67AF0042B59E /* Control State Sets */ = {
+			isa = PBXGroup;
+			children = (
+				C25B468116FF67AF0042B59E /* REControlStateButtonImageSet.m */,
+				C25B468216FF67AF0042B59E /* REControlStateColorSet.m */,
+				C25B468316FF67AF0042B59E /* REControlStateIconImageSet.m */,
+				C25B468416FF67AF0042B59E /* REControlStateImageSet.m */,
+				C25B468516FF67AF0042B59E /* REControlStateSet.h */,
+				C25B468616FF67AF0042B59E /* REControlStateSet.m */,
+				C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */,
+			);
+			path = "Control State Sets";
+			sourceTree = "<group>";
+		};
+		C25B469416FF67D00042B59E /* Construction */ = {
+			isa = PBXGroup;
+			children = (
+				C25B469616FF67D00042B59E /* REButtonBuilder.m */,
+				C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */,
+				C25B469A16FF67D00042B59E /* REMacroBuilder.m */,
+				C25B469C16FF67D00042B59E /* RERemoteBuilder.m */,
+				C25B469D16FF67D00042B59E /* RemoteConstruction.h */,
+				C25B469E16FF67D00042B59E /* RemoteElementConstructionManager.h */,
+				C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */,
+				C277343C1701232D00E85F8D /* REBuilder.m */,
+			);
+			path = Construction;
+			sourceTree = "<group>";
+		};
+		C25B46A016FF67D00042B59E /* Remote Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46A116FF67D00042B59E /* RERemoteController.h */,
+				C25B46A216FF67D00042B59E /* RERemoteController.m */,
+				C25B46A316FF67D00042B59E /* RERemoteViewController.h */,
+				C25B46A416FF67D00042B59E /* RERemoteViewController.m */,
+			);
+			path = "Remote Controllers";
+			sourceTree = "<group>";
+		};
+		C25B46B316FF68840042B59E /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */,
+				C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */,
+				C25B46B616FF68840042B59E /* REConfigurationDelegate.h */,
+				C25B46B716FF68840042B59E /* REConfigurationDelegate.m */,
+				C25B46B816FF68840042B59E /* REConfigurationDelegate_Private.h */,
+				C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		C25B46C216FF688F0042B59E /* Constraints */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46C316FF68900042B59E /* REConstraintManager.h */,
+				C25B46C416FF68900042B59E /* REConstraintManager.m */,
+				C25B46C516FF68900042B59E /* RELayoutConfiguration.h */,
+				C25B46C616FF68900042B59E /* RELayoutConfiguration.m */,
+			);
+			path = Constraints;
+			sourceTree = "<group>";
+		};
+		C25B46CB16FF68A90042B59E /* Constraints */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46CC16FF68A90042B59E /* REConstraint.h */,
+				C25B46CD16FF68A90042B59E /* REConstraint.m */,
+			);
+			path = Constraints;
+			sourceTree = "<group>";
+		};
+		C25B46D016FF69110042B59E /* BankObject */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46D116FF69110042B59E /* BankObject Subclasses */,
+				C25B46E916FF69110042B59E /* BankObject.h */,
+				C25B46EA16FF69110042B59E /* BankObject.m */,
+				C25B46EC16FF69110042B59E /* BankObjectGroup.h */,
+				C25B46ED16FF69110042B59E /* BankObjectGroup.m */,
+				C25B46F016FF69110042B59E /* BankObjectPreview.h */,
+				C25B46F116FF69110042B59E /* BankObjectPreview.m */,
+			);
+			path = BankObject;
+			sourceTree = "<group>";
+		};
+		C25B46D116FF69110042B59E /* BankObject Subclasses */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46F516FF69110042B59E /* BOPreset.m */,
+				C25B46D816FF69110042B59E /* BOIRCode.m */,
+				C25B46D916FF69110042B59E /* BOIRCode_Private.h */,
+				C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */,
+				C25B46E816FF69110042B59E /* BOUserIRCode.m */,
+				C25B46D416FF69110042B59E /* BOComponentDevice.m */,
+				C25B46E116FF69110042B59E /* BOBackgroundImage.m */,
+				C25B46E216FF69110042B59E /* BOButtonImage.m */,
+				C25B46E316FF69110042B59E /* BOIconImage.m */,
+				C25B46E516FF69110042B59E /* BOImage.m */,
+				C25B46E616FF69110042B59E /* BOImage_Private.h */,
+				C25B46DF16FF69110042B59E /* BOManufacturer.m */,
+			);
+			path = "BankObject Subclasses";
+			sourceTree = "<group>";
+		};
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
@@ -3256,7 +3515,7 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C208DEB816DECF4300084C49 /* MSKit.framework */,
+				C2FFB5F0170B5A6C0079C283 /* MSKit.embeddedframework */,
 				C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */,
 				C26BBB3716DC1C960093D5B4 /* OpenGLES.framework */,
 				C26BBB3816DC1C960093D5B4 /* QuickLook.framework */,
@@ -3280,6 +3539,7 @@
 		C26BAEB316DC10FE0093D5B4 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				C2997F2216FA55E900290737 /* Protocols */,
 				C26BAEE716DC16F90093D5B4 /* CoreData */,
 				C26BAEE616DC16C30093D5B4 /* Source */,
 				C26BAEB416DC10FE0093D5B4 /* Supporting Files */,
@@ -3320,22 +3580,12 @@
 		C26BAEE616DC16C30093D5B4 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				C26BAEE816DC18530093D5B4 /* Banks */,
-				C26BAEFB16DC18530093D5B4 /* Button Groups */,
-				C26BAF0316DC18530093D5B4 /* Buttons */,
-				C26BAF1B16DC18530093D5B4 /* CodeBank */,
-				C26BAF2816DC18530093D5B4 /* Commands */,
+				C2E67D201705E92A00AB0392 /* Bank */,
+				C25B469416FF67D00042B59E /* Construction */,
+				C2E67D1E1705E46D00AB0392 /* Remote Elements */,
 				C26BAF4F16DC18530093D5B4 /* Debugging */,
-				C26BAF5216DC18530093D5B4 /* Gallery */,
-				C26BAF6416DC18530093D5B4 /* Gestures */,
-				C26BAF6516DC18530093D5B4 /* ImageBank */,
 				C26BAF7516DC18530093D5B4 /* Networking */,
-				C26BAF8416DC18530093D5B4 /* Other Objects */,
 				C26BAF8716DC18530093D5B4 /* Other View Controllers */,
-				C26BAFB916DC18530093D5B4 /* Other Views */,
-				C26BAFBA16DC18530093D5B4 /* Remote Element Construction */,
-				C26BAFC616DC18530093D5B4 /* Remotes */,
-				C26BAFE616DC18530093D5B4 /* Segues */,
 				C26BAFE716DC18530093D5B4 /* Singletons */,
 				C26BAFFC16DC18530093D5B4 /* Type Definitions, Constants & Functions */,
 				C26BB00316DC18530093D5B4 /* UI Testing */,
@@ -3351,75 +3601,6 @@
 				C26BB09816DC187D0093D5B4 /* Database Property Lists */,
 			);
 			path = CoreData;
-			sourceTree = "<group>";
-		};
-		C26BAEE816DC18530093D5B4 /* Banks */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAEE916DC18530093D5B4 /* BankIndexViewController.h */,
-				C26BAEEA16DC18530093D5B4 /* BankIndexViewController.m */,
-				C26BAEEB16DC18530093D5B4 /* BankObject.h */,
-				C26BAEEC16DC18530093D5B4 /* BankObject.m */,
-				C26BAEED16DC18530093D5B4 /* BankPreset.h */,
-				C26BAEEE16DC18530093D5B4 /* BankPreset.m */,
-				C26BAEEF16DC18530093D5B4 /* ButtonGroupPreset.h */,
-				C26BAEF016DC18530093D5B4 /* ButtonGroupPreset.m */,
-				C26BAEF116DC18530093D5B4 /* ButtonPreset.h */,
-				C26BAEF216DC18530093D5B4 /* ButtonPreset.m */,
-				C26BAEF316DC18530093D5B4 /* FactoryIRCode.h */,
-				C26BAEF416DC18530093D5B4 /* FactoryIRCode.m */,
-				C26BAEF516DC18530093D5B4 /* Manufacturer.h */,
-				C26BAEF616DC18530093D5B4 /* Manufacturer.m */,
-				C26BAEF716DC18530093D5B4 /* RemotePreset.h */,
-				C26BAEF816DC18530093D5B4 /* RemotePreset.m */,
-				C26BAEF916DC18530093D5B4 /* UserIRCode.h */,
-				C26BAEFA16DC18530093D5B4 /* UserIRCode.m */,
-			);
-			path = Banks;
-			sourceTree = "<group>";
-		};
-		C26BAEFB16DC18530093D5B4 /* Button Groups */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAEFC16DC18530093D5B4 /* REButtonGroup.h */,
-				C26BAEFD16DC18530093D5B4 /* REButtonGroup.m */,
-				C26BAEFE16DC18530093D5B4 /* REButtonGroupEditingViewController.h */,
-				C26BAEFF16DC18530093D5B4 /* REButtonGroupEditingViewController.m */,
-				C26BAF0016DC18530093D5B4 /* REButtonGroupView.h */,
-				C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */,
-			);
-			path = "Button Groups";
-			sourceTree = "<group>";
-		};
-		C26BAF0316DC18530093D5B4 /* Buttons */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAF0416DC18530093D5B4 /* REButton.h */,
-				C26BAF0516DC18530093D5B4 /* REButton.m */,
-				C26BAF0616DC18530093D5B4 /* REButtonEditingViewController.h */,
-				C26BAF0716DC18530093D5B4 /* REButtonEditingViewController.m */,
-				C26BAF0816DC18530093D5B4 /* REButtonView.h */,
-				C26BAF0916DC18530093D5B4 /* REButtonView.m */,
-				C26BAF0C16DC18530093D5B4 /* Control State Sets */,
-				C26BAF1516DC18530093D5B4 /* REDetailedButtonEditingViewController.h */,
-				C26BAF1616DC18530093D5B4 /* REDetailedButtonEditingViewController.m */,
-			);
-			path = Buttons;
-			sourceTree = "<group>";
-		};
-		C26BAF0C16DC18530093D5B4 /* Control State Sets */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAF0D16DC18530093D5B4 /* ControlStateButtonImageSet.m */,
-				C26BAF0E16DC18530093D5B4 /* ControlStateColorSet.m */,
-				C26BAF0F16DC18530093D5B4 /* ControlStateIconImageSet.m */,
-				C26BAF1016DC18530093D5B4 /* ControlStateImageSet.m */,
-				C26BAF1116DC18530093D5B4 /* ControlStateSet.h */,
-				C26BAF1216DC18530093D5B4 /* ControlStateSet.m */,
-				C26BAF1316DC18530093D5B4 /* ControlStateSet_Private.h */,
-				C26BAF1416DC18530093D5B4 /* ControlStateTitleSet.m */,
-			);
-			path = "Control State Sets";
 			sourceTree = "<group>";
 		};
 		C26BAF1B16DC18530093D5B4 /* CodeBank */ = {
@@ -3441,51 +3622,6 @@
 			path = CodeBank;
 			sourceTree = "<group>";
 		};
-		C26BAF2816DC18530093D5B4 /* Commands */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAF2916DC18530093D5B4 /* ButtonConfigurationDelegate.m */,
-				C26BAF2A16DC18530093D5B4 /* ButtonGroupConfigurationDelegate.m */,
-				C26BAF2B16DC18530093D5B4 /* Command.h */,
-				C26BAF2C16DC18530093D5B4 /* Command.m */,
-				C26BAF2D16DC18530093D5B4 /* Command_Private.h */,
-				C26BAF2E16DC18530093D5B4 /* CommandContainer.h */,
-				C26BAF2F16DC18530093D5B4 /* CommandContainer.m */,
-				C26BAF3016DC18530093D5B4 /* CommandDelegate.h */,
-				C26BAF3116DC18530093D5B4 /* CommandSet.h */,
-				C26BAF3216DC18530093D5B4 /* CommandSet.m */,
-				C26BAF3316DC18530093D5B4 /* CommandSetCollection.h */,
-				C26BAF3416DC18530093D5B4 /* CommandSetCollection.m */,
-				C26BAF3516DC18530093D5B4 /* ComponentDevice.h */,
-				C26BAF3616DC18530093D5B4 /* ComponentDevice.m */,
-				C26BAF3716DC18530093D5B4 /* ConfigurationDelegate.h */,
-				C26BAF3816DC18530093D5B4 /* ConfigurationDelegate.m */,
-				C26BAF3916DC18530093D5B4 /* DelayCommand.m */,
-				C26BAF3A16DC18530093D5B4 /* DeviceConfiguration.h */,
-				C26BAF3B16DC18530093D5B4 /* DeviceConfiguration.m */,
-				C26BAF3C16DC18530093D5B4 /* DPad.h */,
-				C26BAF3D16DC18530093D5B4 /* DPad.m */,
-				C26BAF3E16DC18530093D5B4 /* HTTPCommand.m */,
-				C26BAF3F16DC18530093D5B4 /* IRCode.h */,
-				C26BAF4016DC18530093D5B4 /* IRCode.m */,
-				C26BAF4116DC18530093D5B4 /* IRCode_Private.h */,
-				C26BAF4216DC18530093D5B4 /* IRCodeSet.h */,
-				C26BAF4316DC18530093D5B4 /* IRCodeSet.m */,
-				C26BAF4416DC18530093D5B4 /* MacroCommand.m */,
-				C26BAF4516DC18530093D5B4 /* NumberPad.h */,
-				C26BAF4616DC18530093D5B4 /* NumberPad.m */,
-				C26BAF4716DC18530093D5B4 /* PowerCommand.m */,
-				C26BAF4816DC18530093D5B4 /* RockerButton.h */,
-				C26BAF4916DC18530093D5B4 /* RockerButton.m */,
-				C26BAF4A16DC18530093D5B4 /* SendIRCommand.m */,
-				C26BAF4B16DC18530093D5B4 /* SwitchToRemoteCommand.m */,
-				C26BAF4C16DC18530093D5B4 /* SystemCommand.m */,
-				C26BAF4D16DC18530093D5B4 /* Transport.h */,
-				C26BAF4E16DC18530093D5B4 /* Transport.m */,
-			);
-			path = Commands;
-			sourceTree = "<group>";
-		};
 		C26BAF4F16DC18530093D5B4 /* Debugging */ = {
 			isa = PBXGroup;
 			children = (
@@ -3493,36 +3629,6 @@
 				C26BAF5116DC18530093D5B4 /* LogsViewController.m */,
 			);
 			path = Debugging;
-			sourceTree = "<group>";
-		};
-		C26BAF5216DC18530093D5B4 /* Gallery */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAF5316DC18530093D5B4 /* BackgroundImageChooserTableViewController.h */,
-				C26BAF5416DC18530093D5B4 /* BackgroundImageChooserTableViewController.m */,
-				C26BAF5616DC18530093D5B4 /* REBackgroundImage.m */,
-				C26BAF5716DC18530093D5B4 /* REButtonImage.m */,
-				C26BAF5816DC18530093D5B4 /* BankObjectButtonPreview.m */,
-				C26BAF5916DC18530093D5B4 /* BankObjectGroup.h */,
-				C26BAF5A16DC18530093D5B4 /* BankObjectGroup.m */,
-				C26BAF5B16DC18530093D5B4 /* REIconImage.m */,
-				C26BAF5C16DC18530093D5B4 /* REImage.h */,
-				C26BAF5D16DC18530093D5B4 /* REImage.m */,
-				C26BAF5E16DC18530093D5B4 /* REImage_Private.h */,
-				C26BAF5F16DC18530093D5B4 /* BankObjectPreview.h */,
-				C26BAF6016DC18530093D5B4 /* BankObjectPreview.m */,
-				C26BAF6116DC18530093D5B4 /* BankObjectPreview_Private.h */,
-				C26BAF6216DC18530093D5B4 /* PresetInfo.h */,
-				C26BAF6316DC18530093D5B4 /* PresetInfo.m */,
-			);
-			path = Gallery;
-			sourceTree = "<group>";
-		};
-		C26BAF6416DC18530093D5B4 /* Gestures */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Gestures;
 			sourceTree = "<group>";
 		};
 		C26BAF6516DC18530093D5B4 /* ImageBank */ = {
@@ -3553,151 +3659,26 @@
 				C26BAF7616DC18530093D5B4 /* ConnectionManager.h */,
 				C26BAF7716DC18530093D5B4 /* ConnectionManager.m */,
 				C26BAF7816DC18530093D5B4 /* ConnectionManager_Private.h */,
-				C26BAF7916DC18530093D5B4 /* error.c */,
-				C26BAF7A16DC18530093D5B4 /* error.h */,
 				C26BAF7B16DC18530093D5B4 /* GlobalCacheConnectionManager.h */,
 				C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */,
-				C26BAF7D16DC18530093D5B4 /* helper_functions.c */,
-				C26BAF7E16DC18530093D5B4 /* helper_functions.h */,
-				C26BAF7F16DC18530093D5B4 /* iTachUDPSocket.h */,
-				C26BAF8016DC18530093D5B4 /* iTachUDPSocket.m */,
 				C26BAF8116DC18530093D5B4 /* NetworkDevice.h */,
 				C26BAF8216DC18530093D5B4 /* NetworkDevice.m */,
-				C26BAF8316DC18530093D5B4 /* networking.h */,
+				C240DD5D170485F2005CC390 /* IRLearner.h */,
+				C240DD5E170485F2005CC390 /* IRLearner.m */,
+				C240DD6017049106005CC390 /* GlobalCacheConnectionManager_Private.h */,
 			);
 			path = Networking;
-			sourceTree = "<group>";
-		};
-		C26BAF8416DC18530093D5B4 /* Other Objects */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAF8516DC18530093D5B4 /* MSRemoteLogFormatter.h */,
-				C26BAF8616DC18530093D5B4 /* MSRemoteLogFormatter.m */,
-			);
-			path = "Other Objects";
 			sourceTree = "<group>";
 		};
 		C26BAF8716DC18530093D5B4 /* Other View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C26BAF8816DC18530093D5B4 /* AttributeEditingViewController.h */,
-				C26BAF8916DC18530093D5B4 /* AttributeEditingViewController.m */,
-				C26BAF8A16DC18530093D5B4 /* AttributeEditingViewController_Private.h */,
-				C26BAF8B16DC18530093D5B4 /* BackgroundEditingViewController.h */,
-				C26BAF8C16DC18530093D5B4 /* BackgroundEditingViewController.m */,
-				C26BAF8D16DC18530093D5B4 /* ColorSelectionViewController.h */,
-				C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */,
-				C26BAF8F16DC18530093D5B4 /* CommandDetailViewController.h */,
-				C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */,
-				C26BAF9116DC18530093D5B4 /* CommandEditingViewController.h */,
-				C26BAF9216DC18530093D5B4 /* CommandEditingViewController.m */,
-				C26BAF9316DC18530093D5B4 /* DelayCommandEditingViewController.h */,
-				C26BAF9416DC18530093D5B4 /* DelayCommandEditingViewController.m */,
-				C26BAF9516DC18530093D5B4 /* HTTPCommandEditingViewController.h */,
-				C26BAF9616DC18530093D5B4 /* HTTPCommandEditingViewController.m */,
-				C26BAF9716DC18530093D5B4 /* IconEditingViewController.h */,
-				C26BAF9816DC18530093D5B4 /* IconEditingViewController.m */,
-				C26BAF9916DC18530093D5B4 /* IconSelectionViewController.h */,
-				C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */,
 				C26BAF9B16DC18530093D5B4 /* IRLearnerViewController.h */,
 				C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */,
-				C26BAF9D16DC18530093D5B4 /* LabelEditingViewController.h */,
-				C26BAF9E16DC18530093D5B4 /* LabelEditingViewController.m */,
 				C26BAF9F16DC18530093D5B4 /* LaunchScreenViewController.h */,
 				C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */,
-				C26BAFA116DC18530093D5B4 /* MacroCommandEditingViewController.h */,
-				C26BAFA216DC18530093D5B4 /* MacroCommandEditingViewController.m */,
-				C26BAFA316DC18530093D5B4 /* PowerCommandEditingViewController.h */,
-				C26BAFA416DC18530093D5B4 /* PowerCommandEditingViewController.m */,
-				C26BAFA516DC18530093D5B4 /* REEditingViewController+Gestures.h */,
-				C26BAFA616DC18530093D5B4 /* REEditingViewController+Gestures.m */,
-				C26BAFA816DC18530093D5B4 /* REEditingViewController+IBActions.h */,
-				C26BAFA916DC18530093D5B4 /* REEditingViewController+IBActions.m */,
-				C26BAFAA16DC18530093D5B4 /* REEditingViewController+Selection.h */,
-				C26BAFAB16DC18530093D5B4 /* REEditingViewController+Selection.m */,
-				C26BAFAC16DC18530093D5B4 /* REEditingViewController+Toolbars.h */,
-				C26BAFAD16DC18530093D5B4 /* REEditingViewController+Toolbars.m */,
-				C26BAFAE16DC18530093D5B4 /* REEditingViewController.h */,
-				C26BAFAF16DC18530093D5B4 /* REEditingViewController.m */,
-				C26BAFB016DC18530093D5B4 /* REEditingViewController_Private.h */,
-				C26BAFB116DC18530093D5B4 /* SelectionTableViewController.h */,
-				C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */,
-				C26BAFB316DC18530093D5B4 /* SelectionViewController.h */,
-				C26BAFB416DC18530093D5B4 /* SelectionViewController.m */,
-				C26BAFB516DC18530093D5B4 /* SendIRCommandEditingViewController.h */,
-				C26BAFB616DC18530093D5B4 /* SendIRCommandEditingViewController.m */,
-				C26BAFB716DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.h */,
-				C26BAFB816DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.m */,
 			);
 			path = "Other View Controllers";
-			sourceTree = "<group>";
-		};
-		C26BAFB916DC18530093D5B4 /* Other Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Other Views";
-			sourceTree = "<group>";
-		};
-		C26BAFBA16DC18530093D5B4 /* Remote Element Construction */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAFBB16DC18530093D5B4 /* ButtonBuilder.h */,
-				C26BAFBC16DC18530093D5B4 /* ButtonBuilder.m */,
-				C26BAFBD16DC18530093D5B4 /* ButtonGroupBuilder.h */,
-				C26BAFBE16DC18530093D5B4 /* ButtonGroupBuilder.m */,
-				C26BAFBF16DC18530093D5B4 /* MacroBuilder.h */,
-				C26BAFC016DC18530093D5B4 /* MacroBuilder.m */,
-				C26BAFC116DC18530093D5B4 /* RemoteBuilder.h */,
-				C26BAFC216DC18530093D5B4 /* RemoteBuilder.m */,
-				C26BAFC316DC18530093D5B4 /* RemoteConstruction.h */,
-				C26BAFC416DC18530093D5B4 /* RemoteElementConstructionManager.h */,
-				C26BAFC516DC18530093D5B4 /* RemoteElementConstructionManager.m */,
-			);
-			path = "Remote Element Construction";
-			sourceTree = "<group>";
-		};
-		C26BAFC616DC18530093D5B4 /* Remotes */ = {
-			isa = PBXGroup;
-			children = (
-				C26BAFC916DC18530093D5B4 /* RERemote.h */,
-				C26BAFCA16DC18530093D5B4 /* RERemote.m */,
-				C26BAFCB16DC18530093D5B4 /* RERemoteController.h */,
-				C26BAFCC16DC18530093D5B4 /* RERemoteController.m */,
-				C26BAFCD16DC18530093D5B4 /* RERemoteEditingViewController.h */,
-				C26BAFCE16DC18530093D5B4 /* RERemoteEditingViewController.m */,
-				C26BAFCF16DC18530093D5B4 /* RemoteElement+Accessors.m */,
-				C26BAFD016DC18530093D5B4 /* RemoteElement+FlagsAndOptions.m */,
-				C26BAFD116DC18530093D5B4 /* RemoteElement.h */,
-				C26BAFD216DC18530093D5B4 /* RemoteElement.m */,
-				C26BAFD316DC18530093D5B4 /* RemoteElement_Private.h */,
-				C26BAFD416DC18530093D5B4 /* REConstraintManager.h */,
-				C26BAFD516DC18530093D5B4 /* REConstraintManager.m */,
-				C26BAFD816DC18530093D5B4 /* REConstraint.h */,
-				C26BAFD916DC18530093D5B4 /* REConstraint.m */,
-				C26BAFDC16DC18530093D5B4 /* REView.h */,
-				C26BAFDD16DC18530093D5B4 /* REView.m */,
-				C26BAFDE16DC18530093D5B4 /* REView_Private.h */,
-				C26BAFDF16DC18530093D5B4 /* REViewConstraintFunctions.h */,
-				C26BAFE216DC18530093D5B4 /* RERemoteView.h */,
-				C26BAFE316DC18530093D5B4 /* RERemoteView.m */,
-				C26BAFE416DC18530093D5B4 /* RERemoteViewController.h */,
-				C26BAFE516DC18530093D5B4 /* RERemoteViewController.m */,
-				C29DD1B516E8FA4A00595CD5 /* RELayoutConfiguration.h */,
-				C29DD1B616E8FA4A00595CD5 /* RELayoutConfiguration.m */,
-				C2912BC516F6312D004AB0DB /* RELabelView.h */,
-				C2912BC316F6311D004AB0DB /* RELabelView.m */,
-			);
-			path = Remotes;
-			sourceTree = "<group>";
-		};
-		C26BAFE616DC18530093D5B4 /* Segues */ = {
-			isa = PBXGroup;
-			children = (
-				C26BB59416DC18A90093D5B4 /* CurlDownSegue.h */,
-				C26BB59516DC18A90093D5B4 /* CurlDownSegue.m */,
-			);
-			path = Segues;
 			sourceTree = "<group>";
 		};
 		C26BAFE716DC18530093D5B4 /* Singletons */ = {
@@ -3709,12 +3690,9 @@
 				C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */,
 				C26BAFEC16DC18530093D5B4 /* MSRemoteAppController.h */,
 				C26BAFED16DC18530093D5B4 /* MSRemoteAppController.m */,
-				C26BAFEE16DC18530093D5B4 /* MSRemoteWindow.h */,
-				C26BAFEF16DC18530093D5B4 /* MSRemoteWindow.m */,
+				C2E67D211705EB7B00AB0392 /* disabled */,
 				C26BAFF016DC18530093D5B4 /* Painter.h */,
 				C26BAFF116DC18530093D5B4 /* Painter.m */,
-				C26BAFF216DC18530093D5B4 /* Reachability.h */,
-				C26BAFF316DC18530093D5B4 /* Reachability.m */,
 				C26BAFF416DC18530093D5B4 /* SettingsManager.h */,
 				C26BAFF516DC18530093D5B4 /* SettingsManager.m */,
 				C26BAFF616DC18530093D5B4 /* SettingsViewController.h */,
@@ -3736,6 +3714,8 @@
 				C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */,
 				C26BB00116DC18530093D5B4 /* MSRemoteMacros.h */,
 				C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */,
+				C2997F2316FA563900290737 /* RETypedefs.h */,
+				C23B7A4A1705FAF80031CD6C /* BOTypedefs.h */,
 			);
 			path = "Type Definitions, Constants & Functions";
 			sourceTree = "<group>";
@@ -3771,6 +3751,8 @@
 		C26BB0A016DC18A30093D5B4 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				C2FFB5FC170B8A1D0079C283 /* NoBackground.png */,
+				C2FFB5FD170B8A1D0079C283 /* NoBackground@2x.png */,
 				C26BB0A116DC18A30093D5B4 /* [10]Wood.jpg */,
 				C26BB0A216DC18A30093D5B4 /* [10]Wood@2x.jpg */,
 				C26BB0A316DC18A30093D5B4 /* [1]Blueprint.jpg */,
@@ -5157,6 +5139,78 @@
 				C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */,
 			);
 			path = png;
+			sourceTree = "<group>";
+		};
+		C2997F2216FA55E900290737 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C26BAF3016DC18530093D5B4 /* CommandDelegate.h */,
+				C2997F2416FA5A6D00290737 /* REEditableBackground.h */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		C2E67D1E1705E46D00AB0392 /* Remote Elements */ = {
+			isa = PBXGroup;
+			children = (
+				C25B468016FF67AF0042B59E /* Control State Sets */,
+				C25B462D16FF679A0042B59E /* Editors */,
+				C25B46A016FF67D00042B59E /* Remote Controllers */,
+				C25B45AF16FF66FD0042B59E /* Commands */,
+				C25B457116FF629F0042B59E /* Remote Element */,
+				C25B456216FF5F8E0042B59E /* REView */,
+			);
+			name = "Remote Elements";
+			sourceTree = "<group>";
+		};
+		C2E67D1F1705E91A00AB0392 /* Bank View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C26BAF1B16DC18530093D5B4 /* CodeBank */,
+				C26BAF6516DC18530093D5B4 /* ImageBank */,
+			);
+			name = "Bank View Controllers";
+			sourceTree = "<group>";
+		};
+		C2E67D201705E92A00AB0392 /* Bank */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46D016FF69110042B59E /* BankObject */,
+				C2E67D1F1705E91A00AB0392 /* Bank View Controllers */,
+			);
+			name = Bank;
+			sourceTree = "<group>";
+		};
+		C2E67D211705EB7B00AB0392 /* disabled */ = {
+			isa = PBXGroup;
+			children = (
+				C26BAFEE16DC18530093D5B4 /* MSRemoteWindow.h */,
+				C26BAFEF16DC18530093D5B4 /* MSRemoteWindow.m */,
+				C26BAFF216DC18530093D5B4 /* Reachability.h */,
+				C26BAFF316DC18530093D5B4 /* Reachability.m */,
+			);
+			name = disabled;
+			sourceTree = "<group>";
+		};
+		C2FFB5F0170B5A6C0079C283 /* MSKit.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				C2FFB5F1170B5A6C0079C283 /* MSKit.framework */,
+				C2FFB5F2170B5A6C0079C283 /* Resources */,
+			);
+			name = MSKit.embeddedframework;
+			path = "../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework";
+			sourceTree = "<group>";
+		};
+		C2FFB5F2170B5A6C0079C283 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */,
+				C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */,
+				C2FFB5F5170B5A6C0079C283 /* ScrollWheel.png */,
+				C2FFB5F6170B5A6C0079C283 /* ScrollWheel@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6578,6 +6632,12 @@
 				C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */,
 				C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */,
 				C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */,
+				C2FFB5F8170B5A6C0079C283 /* MSColorInputView.nib in Resources */,
+				C2FFB5F9170B5A6C0079C283 /* MSPickerInputViewController.nib in Resources */,
+				C2FFB5FA170B5A6C0079C283 /* ScrollWheel.png in Resources */,
+				C2FFB5FB170B5A6C0079C283 /* ScrollWheel@2x.png in Resources */,
+				C2FFB5FE170B8A1D0079C283 /* NoBackground.png in Resources */,
+				C2FFB5FF170B8A1D0079C283 /* NoBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6613,129 +6673,130 @@
 			buildActionMask = 2147483647;
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
-				C26BB00B16DC18530093D5B4 /* BankIndexViewController.m in Sources */,
-				C26BB00C16DC18530093D5B4 /* BankObject.m in Sources */,
-				C26BB00D16DC18530093D5B4 /* BankPreset.m in Sources */,
-				C26BB00E16DC18530093D5B4 /* ButtonGroupPreset.m in Sources */,
-				C26BB00F16DC18530093D5B4 /* ButtonPreset.m in Sources */,
-				C26BB01016DC18530093D5B4 /* FactoryIRCode.m in Sources */,
-				C26BB01116DC18530093D5B4 /* Manufacturer.m in Sources */,
-				C26BB01216DC18530093D5B4 /* RemotePreset.m in Sources */,
-				C26BB01316DC18530093D5B4 /* UserIRCode.m in Sources */,
-				C26BB01416DC18530093D5B4 /* REButtonGroup.m in Sources */,
-				C26BB01516DC18530093D5B4 /* REButtonGroupEditingViewController.m in Sources */,
-				C26BB01616DC18530093D5B4 /* REButtonGroupView.m in Sources */,
-				C26BB01716DC18530093D5B4 /* REButton.m in Sources */,
-				C26BB01816DC18530093D5B4 /* REButtonEditingViewController.m in Sources */,
-				C26BB01916DC18530093D5B4 /* REButtonView.m in Sources */,
-				C26BB01B16DC18530093D5B4 /* ControlStateButtonImageSet.m in Sources */,
-				C26BB01C16DC18530093D5B4 /* ControlStateColorSet.m in Sources */,
-				C26BB01D16DC18530093D5B4 /* ControlStateIconImageSet.m in Sources */,
-				C26BB01E16DC18530093D5B4 /* ControlStateImageSet.m in Sources */,
-				C26BB01F16DC18530093D5B4 /* ControlStateSet.m in Sources */,
-				C26BB02016DC18530093D5B4 /* ControlStateTitleSet.m in Sources */,
-				C26BB02116DC18530093D5B4 /* REDetailedButtonEditingViewController.m in Sources */,
-				C26BB02416DC18530093D5B4 /* CodeDatabaseViewController.m in Sources */,
-				C26BB02516DC18530093D5B4 /* CodeSetCodesViewController.m in Sources */,
-				C26BB02616DC18530093D5B4 /* ComponentDeviceListViewController.m in Sources */,
-				C26BB02716DC18530093D5B4 /* IRCodeDetailViewController.m in Sources */,
-				C26BB02816DC18530093D5B4 /* ManufacturerCodeSetsViewController.m in Sources */,
-				C26BB02916DC18530093D5B4 /* UserCodesViewController.m in Sources */,
-				C26BB02A16DC18530093D5B4 /* ButtonConfigurationDelegate.m in Sources */,
-				C26BB02B16DC18530093D5B4 /* ButtonGroupConfigurationDelegate.m in Sources */,
-				C26BB02C16DC18530093D5B4 /* Command.m in Sources */,
-				C26BB02D16DC18530093D5B4 /* CommandContainer.m in Sources */,
-				C26BB02E16DC18530093D5B4 /* CommandSet.m in Sources */,
-				C26BB02F16DC18530093D5B4 /* CommandSetCollection.m in Sources */,
-				C26BB03016DC18530093D5B4 /* ComponentDevice.m in Sources */,
-				C26BB03116DC18530093D5B4 /* ConfigurationDelegate.m in Sources */,
-				C26BB03216DC18530093D5B4 /* DelayCommand.m in Sources */,
-				C26BB03316DC18530093D5B4 /* DeviceConfiguration.m in Sources */,
-				C26BB03416DC18530093D5B4 /* DPad.m in Sources */,
-				C26BB03516DC18530093D5B4 /* HTTPCommand.m in Sources */,
-				C26BB03616DC18530093D5B4 /* IRCode.m in Sources */,
-				C26BB03716DC18530093D5B4 /* IRCodeSet.m in Sources */,
-				C26BB03816DC18530093D5B4 /* MacroCommand.m in Sources */,
-				C26BB03916DC18530093D5B4 /* NumberPad.m in Sources */,
-				C26BB03A16DC18530093D5B4 /* PowerCommand.m in Sources */,
-				C26BB03B16DC18530093D5B4 /* RockerButton.m in Sources */,
-				C26BB03C16DC18530093D5B4 /* SendIRCommand.m in Sources */,
-				C26BB03D16DC18530093D5B4 /* SwitchToRemoteCommand.m in Sources */,
-				C26BB03E16DC18530093D5B4 /* SystemCommand.m in Sources */,
-				C26BB03F16DC18530093D5B4 /* Transport.m in Sources */,
-				C26BB04016DC18530093D5B4 /* LogsViewController.m in Sources */,
-				C26BB04116DC18530093D5B4 /* BackgroundImageChooserTableViewController.m in Sources */,
-				C26BB04216DC18530093D5B4 /* REBackgroundImage.m in Sources */,
-				C26BB04316DC18530093D5B4 /* REButtonImage.m in Sources */,
-				C26BB04416DC18530093D5B4 /* BankObjectButtonPreview.m in Sources */,
-				C26BB04516DC18530093D5B4 /* BankObjectGroup.m in Sources */,
-				C26BB04616DC18530093D5B4 /* REIconImage.m in Sources */,
-				C26BB04716DC18530093D5B4 /* REImage.m in Sources */,
-				C26BB04816DC18530093D5B4 /* BankObjectPreview.m in Sources */,
-				C26BB04916DC18530093D5B4 /* PresetInfo.m in Sources */,
-				C26BB05416DC18530093D5B4 /* ConnectionManager.m in Sources */,
-				C26BB05516DC18530093D5B4 /* error.c in Sources */,
-				C26BB05616DC18530093D5B4 /* GlobalCacheConnectionManager.m in Sources */,
-				C26BB05816DC18530093D5B4 /* iTachUDPSocket.m in Sources */,
-				C26BB05916DC18530093D5B4 /* NetworkDevice.m in Sources */,
-				C26BB05A16DC18530093D5B4 /* MSRemoteLogFormatter.m in Sources */,
-				C26BB05B16DC18530093D5B4 /* AttributeEditingViewController.m in Sources */,
-				C26BB05C16DC18530093D5B4 /* BackgroundEditingViewController.m in Sources */,
-				C26BB05D16DC18530093D5B4 /* ColorSelectionViewController.m in Sources */,
-				C26BB05E16DC18530093D5B4 /* CommandDetailViewController.m in Sources */,
-				C26BB05F16DC18530093D5B4 /* CommandEditingViewController.m in Sources */,
-				C26BB06016DC18530093D5B4 /* DelayCommandEditingViewController.m in Sources */,
-				C26BB06116DC18530093D5B4 /* HTTPCommandEditingViewController.m in Sources */,
-				C26BB06216DC18530093D5B4 /* IconEditingViewController.m in Sources */,
-				C26BB06316DC18530093D5B4 /* IconSelectionViewController.m in Sources */,
-				C26BB06416DC18530093D5B4 /* IRLearnerViewController.m in Sources */,
-				C26BB06516DC18530093D5B4 /* LabelEditingViewController.m in Sources */,
-				C26BB06616DC18530093D5B4 /* LaunchScreenViewController.m in Sources */,
-				C26BB06716DC18530093D5B4 /* MacroCommandEditingViewController.m in Sources */,
-				C26BB06816DC18530093D5B4 /* PowerCommandEditingViewController.m in Sources */,
-				C26BB06916DC18530093D5B4 /* REEditingViewController+Gestures.m in Sources */,
-				C26BB06B16DC18530093D5B4 /* REEditingViewController+IBActions.m in Sources */,
-				C26BB06C16DC18530093D5B4 /* REEditingViewController+Selection.m in Sources */,
-				C26BB06D16DC18530093D5B4 /* REEditingViewController+Toolbars.m in Sources */,
-				C26BB06E16DC18530093D5B4 /* REEditingViewController.m in Sources */,
-				C26BB06F16DC18530093D5B4 /* SelectionTableViewController.m in Sources */,
-				C26BB07016DC18530093D5B4 /* SelectionViewController.m in Sources */,
-				C26BB07116DC18530093D5B4 /* SendIRCommandEditingViewController.m in Sources */,
-				C26BB07216DC18530093D5B4 /* SwitchToRemoteCommandEditingViewController.m in Sources */,
-				C26BB07316DC18530093D5B4 /* ButtonBuilder.m in Sources */,
-				C26BB07416DC18530093D5B4 /* ButtonGroupBuilder.m in Sources */,
-				C26BB07516DC18530093D5B4 /* MacroBuilder.m in Sources */,
-				C26BB07616DC18530093D5B4 /* RemoteBuilder.m in Sources */,
-				C26BB07716DC18530093D5B4 /* RemoteElementConstructionManager.m in Sources */,
-				C26BB07A16DC18530093D5B4 /* RERemote.m in Sources */,
-				C26BB07B16DC18530093D5B4 /* RERemoteController.m in Sources */,
-				C26BB07C16DC18530093D5B4 /* RERemoteEditingViewController.m in Sources */,
-				C26BB07D16DC18530093D5B4 /* RemoteElement+Accessors.m in Sources */,
-				C26BB07E16DC18530093D5B4 /* RemoteElement+FlagsAndOptions.m in Sources */,
-				C26BB07F16DC18530093D5B4 /* RemoteElement.m in Sources */,
-				C26BB08016DC18530093D5B4 /* REConstraintManager.m in Sources */,
-				C26BB08216DC18530093D5B4 /* REConstraint.m in Sources */,
-				C26BB08416DC18530093D5B4 /* REView.m in Sources */,
-				C26BB08616DC18530093D5B4 /* RERemoteView.m in Sources */,
-				C26BB08716DC18530093D5B4 /* RERemoteViewController.m in Sources */,
-				C26BB08816DC18530093D5B4 /* CoreDataManager.m in Sources */,
-				C26BB08916DC18530093D5B4 /* DatabaseLoader.m in Sources */,
-				C26BB08A16DC18530093D5B4 /* MSRemoteAppController.m in Sources */,
-				C26BB08C16DC18530093D5B4 /* Painter.m in Sources */,
-				C26BB08D16DC18530093D5B4 /* Reachability.m in Sources */,
-				C26BB08E16DC18530093D5B4 /* SettingsManager.m in Sources */,
-				C26BB08F16DC18530093D5B4 /* SettingsViewController.m in Sources */,
-				C26BB09016DC18530093D5B4 /* StoryboardProxy.m in Sources */,
-				C26BB09116DC18530093D5B4 /* ViewDecorator.m in Sources */,
-				C26BB09316DC18530093D5B4 /* MSRemoteConstants.m in Sources */,
-				C26BB09416DC18530093D5B4 /* ButtonGroupEditingTest.m in Sources */,
-				C26BB09516DC18530093D5B4 /* MSRemoteUITest.m in Sources */,
-				C26BB09616DC18530093D5B4 /* RemoteEditingTest.m in Sources */,
-				C26BB09716DC18530093D5B4 /* UITestRunner.m in Sources */,
-				C26BBA8A16DC18A90093D5B4 /* CurlDownSegue.m in Sources */,
-				C2625BA016DD47F10000F676 /* Remote.xcdatamodeld in Sources */,
-				C29DD1B716E8FA4A00595CD5 /* RELayoutConfiguration.m in Sources */,
-				C2912BC416F6311E004AB0DB /* RELabelView.m in Sources */,
+				C25B473116FF8D0A0042B59E /* BOComponentDevice.m in Sources */,
+				C25B473216FF8D0A0042B59E /* REDeviceConfiguration.m in Sources */,
+				C25B473316FF8D0A0042B59E /* BOIRCode.m in Sources */,
+				C25B473516FF8D0A0042B59E /* BOFactoryIRCode.m in Sources */,
+				C25B473616FF8D0A0042B59E /* BOManufacturer.m in Sources */,
+				C25B473716FF8D0A0042B59E /* BOBackgroundImage.m in Sources */,
+				C25B473816FF8D0A0042B59E /* BOButtonImage.m in Sources */,
+				C25B473916FF8D0A0042B59E /* BOIconImage.m in Sources */,
+				C25B473A16FF8D0A0042B59E /* BOImage.m in Sources */,
+				C25B473B16FF8D0A0042B59E /* BOUserIRCode.m in Sources */,
+				C25B473C16FF8D0A0042B59E /* BankObject.m in Sources */,
+				C25B473D16FF8D0A0042B59E /* BankObjectGroup.m in Sources */,
+				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
+				C25B474016FF8D0A0042B59E /* BOPreset.m in Sources */,
+				C25B474516FF8D5E0042B59E /* REButtonBuilder.m in Sources */,
+				C25B474616FF8D5E0042B59E /* REButtonGroupBuilder.m in Sources */,
+				C25B474716FF8D5E0042B59E /* REMacroBuilder.m in Sources */,
+				C25B474816FF8D5E0042B59E /* RERemoteBuilder.m in Sources */,
+				C25B474916FF8D5E0042B59E /* RemoteElementConstructionManager.m in Sources */,
+				C25B474A16FF8D5E0042B59E /* RERemoteController.m in Sources */,
+				C25B474B16FF8D5E0042B59E /* RERemoteViewController.m in Sources */,
+				C25B474C16FF8D5E0042B59E /* REControlStateButtonImageSet.m in Sources */,
+				C25B474D16FF8D5E0042B59E /* REControlStateColorSet.m in Sources */,
+				C25B474E16FF8D5E0042B59E /* REControlStateIconImageSet.m in Sources */,
+				C25B474F16FF8D5E0042B59E /* REControlStateImageSet.m in Sources */,
+				C25B475016FF8D5E0042B59E /* REControlStateSet.m in Sources */,
+				C25B475116FF8D5E0042B59E /* REControlStateTitleSet.m in Sources */,
+				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
+				C25B475316FF8D5E0042B59E /* BackgroundEditingViewController.m in Sources */,
+				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
+				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,
+				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
+				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
+				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
+				C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */,
+				C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */,
+				C25B475B16FF8D5E0042B59E /* REButtonEditingViewController.m in Sources */,
+				C25B475C16FF8D5E0042B59E /* REButtonGroupEditingViewController.m in Sources */,
+				C25B475D16FF8D5E0042B59E /* REDetailedButtonEditingViewController.m in Sources */,
+				C25B475E16FF8D5E0042B59E /* REEditingViewController+Gestures.m in Sources */,
+				C25B475F16FF8D5E0042B59E /* REEditingViewController+IBActions.m in Sources */,
+				C25B476016FF8D5E0042B59E /* REEditingViewController+Selection.m in Sources */,
+				C25B476116FF8D5E0042B59E /* REEditingViewController+Toolbars.m in Sources */,
+				C25B476216FF8D5E0042B59E /* REEditingViewController.m in Sources */,
+				C25B476316FF8D5E0042B59E /* RERemoteEditingViewController.m in Sources */,
+				C25B476416FF8D5E0042B59E /* SendIRCommandEditingViewController.m in Sources */,
+				C25B476516FF8D5E0042B59E /* SwitchToRemoteCommandEditingViewController.m in Sources */,
+				C25B476616FF8D5E0042B59E /* REDelayCommand.m in Sources */,
+				C25B476716FF8D5E0042B59E /* REHTTPCommand.m in Sources */,
+				C25B476816FF8D5E0042B59E /* REMacroCommand.m in Sources */,
+				C25B476916FF8D5E0042B59E /* REPowerCommand.m in Sources */,
+				C25B476A16FF8D5E0042B59E /* RESendIRCommand.m in Sources */,
+				C25B476B16FF8D5E0042B59E /* RESwitchToRemoteCommand.m in Sources */,
+				C25B476C16FF8D5E0042B59E /* RESystemCommand.m in Sources */,
+				C25B476D16FF8D5E0042B59E /* RECommand.m in Sources */,
+				C25B476E16FF8D5E0042B59E /* RECommandContainer.m in Sources */,
+				C25B476F16FF8D5E0042B59E /* RECommandSet.m in Sources */,
+				C25B477516FF8D5E0042B59E /* REConstraintManager.m in Sources */,
+				C25B477616FF8D5E0042B59E /* RELayoutConfiguration.m in Sources */,
+				C25B477716FF8D5E0042B59E /* REButtonConfigurationDelegate.m in Sources */,
+				C25B477816FF8D5E0042B59E /* REButtonGroupConfigurationDelegate.m in Sources */,
+				C25B477916FF8D5E0042B59E /* REConfigurationDelegate.m in Sources */,
+				C25B477A16FF8D5E0042B59E /* RERemoteConfigurationDelegate.m in Sources */,
+				C25B477B16FF8D5E0042B59E /* REButton.m in Sources */,
+				C25B477C16FF8D5E0042B59E /* REButtonGroup.m in Sources */,
+				C25B477D16FF8D5E0042B59E /* RemoteElement+Accessors.m in Sources */,
+				C25B477E16FF8D5E0042B59E /* RemoteElement+FlagsAndOptions.m in Sources */,
+				C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */,
+				C25B478016FF8D5E0042B59E /* RERemote.m in Sources */,
+				C25B478116FF8D5E0042B59E /* REView.m in Sources */,
+				C25B478216FF8D5E0042B59E /* REView+Editing.m in Sources */,
+				C25B478316FF8D5E0042B59E /* REView+SubelementViews.m in Sources */,
+				C25B478416FF8D5E0042B59E /* REView+InternalSubviews.m in Sources */,
+				C25B478516FF8D5E0042B59E /* RELabelView.m in Sources */,
+				C25B478616FF8D5E0042B59E /* REConstraint.m in Sources */,
+				C25B478716FF8D5E0042B59E /* RERemoteView.m in Sources */,
+				C25B478816FF8D5E0042B59E /* REPickerLabelButtonGroupView.m in Sources */,
+				C25B478916FF8D5E0042B59E /* RESelectionPanelButtonGroupView.m in Sources */,
+				C25B478A16FF8D5E0042B59E /* REButtonGroupView.m in Sources */,
+				C25B478B16FF8D5E0042B59E /* REBatteryStatusButtonView.m in Sources */,
+				C25B478C16FF8D5E0042B59E /* REButtonView.m in Sources */,
+				C25B478D16FF8D5E0042B59E /* REConnectionStatusButtonView.m in Sources */,
+				C25B478E16FF8D5E0042B59E /* CodeDatabaseViewController.m in Sources */,
+				C25B478F16FF8D5E0042B59E /* CodeSetCodesViewController.m in Sources */,
+				C25B479016FF8D5E0042B59E /* ComponentDeviceListViewController.m in Sources */,
+				C25B479116FF8D5E0042B59E /* IRCodeDetailViewController.m in Sources */,
+				C25B479216FF8D5E0042B59E /* ManufacturerCodeSetsViewController.m in Sources */,
+				C25B479316FF8D5E0042B59E /* UserCodesViewController.m in Sources */,
+				C25B479416FF8D5E0042B59E /* LogsViewController.m in Sources */,
+				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
+				C25B479B16FF8D5E0042B59E /* GlobalCacheConnectionManager.m in Sources */,
+				C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */,
+				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
+				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
+				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
+				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
+				C25B47A216FF8D5E0042B59E /* LaunchScreenViewController.m in Sources */,
+				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
+				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
+				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
+				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
+				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
+				C25B47A916FF8D5E0042B59E /* Painter.m in Sources */,
+				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
+				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
+				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
+				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
+				C25B47B016FF8D5E0042B59E /* MSRemoteConstants.m in Sources */,
+				C25B47B116FF8D5E0042B59E /* ButtonGroupEditingTest.m in Sources */,
+				C25B47B216FF8D5E0042B59E /* MSRemoteUITest.m in Sources */,
+				C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */,
+				C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */,
+				C277343A1700BC9300E85F8D /* Remote.xcdatamodeld in Sources */,
+				C277343D1701232D00E85F8D /* REBuilder.m in Sources */,
+				C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */,
+				C2629BF7170248E100A0FFC2 /* RECommandSetCollection.m in Sources */,
+				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
+				C23F1E5D1705064E0084718A /* RESendCommand.m in Sources */,
+				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
+				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,
+				C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */,
+				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
+				C23B946C170C8FEA0028CC06 /* REView+Drawing.m in Sources */,
+				C23B946F170C94BE0028CC06 /* REView+Debugging.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6798,6 +6859,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
+					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"",
 				);
 			};
 			name = Debug;
@@ -6809,6 +6871,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
+					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"",
 				);
 			};
 			name = Release;

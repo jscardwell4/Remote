@@ -156,10 +156,10 @@ static int   ddLogLevel = DefaultDDLogLevel;
  * toggleLearner:
  */
 - (IBAction)toggleLearner:(id)sender {
-    NSString * command = _learnerSwitch.on ? @"get_IRL\r" : @"stop_IRL\r";
+//    NSString * command = _learnerSwitch.on ? @"get_IRL\r" : @"stop_IRL\r";
 
 // [[ConnectionManager sharedConnectionManager] sendIRCommand:command];
-    [[ConnectionManager sharedConnectionManager] sendCommand:command ofType:IRConnectionCommandType toDevice:0 sender:self];
+//    [[ConnectionManager sharedConnectionManager] sendCommand:command ofType:IRCMConnectionCommandType toDevice:0 sender:self];
 }
 
 /*

@@ -49,11 +49,14 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
 }
 
 - (id)initWithTestCode:(UITestCode)testCode {
-    if ((self = [super init])) {
+    if (self = [super init]) {
         _testCode             = testCode;
         _flags.quietMode      = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 1);
         _flags.suppressDialog = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 2);
-        self.objectContext    = [DataManager childContext];
+        self.objectContext    = [CoreDataManager childContextForContext:nil
+                                                        concurrencyType:NSMainQueueConcurrencyType
+                                                            undoSupport:NO
+                                                                nametag:@"uitesting"];
         self.remoteController = [RERemoteController remoteControllerInContext:_objectContext];
     }
 
