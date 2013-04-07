@@ -31,17 +31,14 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 @end
 
 @implementation IRCodeDetailViewController
-@synthesize deviceIndex, commandIndex, testPort, testCommand, testContext;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.testContext = [CoreDataManager childContextForContext:nil
-                                               concurrencyType:NSMainQueueConcurrencyType
-                                                   undoSupport:NO
-                                                       nametag:@"ir learner"];
+    self.testContext = [NSManagedObjectContext MR_newMainQueueContext];
+    [_testContext MR_setWorkingName:@"ir learner"];
     self.testCommand = [NSEntityDescription insertNewObjectForEntityForName:@"SendIRCommand"
-                                                     inManagedObjectContext:testContext];
-    if (ValueIsNil(testCommand)) DDLogWarn(@"failed to create test command object");
+                                                     inManagedObjectContext:_testContext];
+    if (ValueIsNil(_testCommand)) DDLogWarn(@"failed to create test command object");
     else DDLogDebug(@"test command created");
 }
 
@@ -93,11 +90,11 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 - (void)setCode:(BOIRCode *)code {
     if (ValueIsNil(code)) return;
 
-    BOIRCode * testCode = (BOIRCode *)[testContext objectWithID:code.objectID];
+    BOIRCode * testCode = (BOIRCode *)[_testContext objectWithID:code.objectID];
 
     self.testCommand.code = testCode;
 
-    DDLogDebug(@"testCommand value changed:%@", [testCommand debugDescription]);
+    DDLogDebug(@"testCommand value changed:%@", [_testCommand debugDescription]);
 }
 
 - (IBAction)executeTestCommand:(id)sender {
@@ -110,10 +107,10 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 }
 
 - (void)setTestPort:(NSUInteger)newPort {
-    testPort                      = newPort;
-    portLabel.text                = [NSString stringWithFormat:@"%u", testPort];
-    portStepper.value             = testPort;
-    self.testCommand.portOverride = testPort;
+    _testPort                      = newPort;
+    portLabel.text                = [NSString stringWithFormat:@"%u", _testPort];
+    portStepper.value             = _testPort;
+    self.testCommand.portOverride = _testPort;
 }
 
 @end

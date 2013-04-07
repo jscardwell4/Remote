@@ -28,6 +28,16 @@ typedef NS_OPTIONS (NSUInteger, CoreDataObjectRemovalOptions) {
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = COREDATA_F_C;
 
+struct DatabaseFlags_s {
+    NSUInteger   objectRemoval;
+    BOOL         rebuildDatabase;
+    BOOL         rebuildRemote;
+    BOOL         removePreviousDatabase;
+    BOOL         replacePreviousDatabase;
+    BOOL         logSaves;
+    BOOL         logCoreDataStackSetup;
+} kFlags;
+
 NSString *(^getContextDescription)(NSManagedObjectContext *) =
 ^NSString *(NSManagedObjectContext * context)
 {
@@ -35,75 +45,351 @@ NSString *(^getContextDescription)(NSManagedObjectContext *) =
 };
 
 
-MSKIT_STATIC_STRING_CONST   kCoreDataManagerModelName                = @"Remote";
-MSKIT_STATIC_STRING_CONST   kCoreDataManagerPersistentStoreName      = @"Remote";
-MSKIT_STATIC_STRING_CONST   kCoreDataManagerPersistentStoreExtension = @"sqlite";
-
-#define kCoreDataManagerSQLiteName \
-    $(@"%@.%@", kCoreDataManagerPersistentStoreName, kCoreDataManagerPersistentStoreExtension)
+MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - CoreDataManager Implementation
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation CoreDataManager {
-    struct DatabaseFlags_s {
-        NSUInteger   objectRemoval;
-        BOOL         rebuildDatabase;
-        BOOL         rebuildRemote;
-        BOOL         removePreviousDatabase;
-        BOOL         replacePreviousDatabase;
-        BOOL         logSaves;
-        BOOL         logCoreDataStackSetup;
-    } _flags;
-    NSManagedObjectContext       * __mainObjectContext;
-    NSPersistentStoreCoordinator * __persistentStoreCoordinator;
-    NSManagedObjectModel         * __objectModel;
+@implementation CoreDataManager
+
++ (void)initialize
+{
+    if (self == [CoreDataManager class])
+    {
+        BOOL rebuildDatabase = [UserDefaults boolForKey:@"rebuild"];
+        BOOL rebuildRemote   = [UserDefaults boolForKey:@"remote"];
+        BOOL replaceDatabase = [UserDefaults boolForKey:@"replace"];
+        kFlags = (struct DatabaseFlags_s) {
+            .logSaves                = YES,
+            .logCoreDataStackSetup   = YES,
+            .removePreviousDatabase  = replaceDatabase||rebuildDatabase,
+            .rebuildRemote           = (rebuildRemote||rebuildDatabase),
+            .rebuildDatabase         = rebuildDatabase,
+            .replacePreviousDatabase = (replaceDatabase||rebuildDatabase),
+            .objectRemoval           = CoreDataManagerRemoveNone
+        };
+    }
 }
 
-+ (CoreDataManager const *)sharedManager
++ (BOOL)initializeDatabase
 {
-    static CoreDataManager const * sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedManager = [CoreDataManager new];
-        BOOL rebuildDatabase = [UserDefaults boolForKey:@"rebuild"];
-        BOOL rebuildRemote   = ([UserDefaults boolForKey:@"remote"] || rebuildDatabase);
-        BOOL replaceDatabase = [UserDefaults boolForKey:@"replace"];
-        sharedManager->_flags = (struct DatabaseFlags_s) {
-            .logSaves = YES,
-            .logCoreDataStackSetup = YES,
-            .removePreviousDatabase = replaceDatabase | rebuildDatabase,
-            .rebuildRemote = rebuildRemote,
-            .rebuildDatabase = rebuildDatabase,
-            .replacePreviousDatabase = replaceDatabase | rebuildDatabase,
-            .objectRemoval = CoreDataManagerRemoveNone
-        };
+        // register error handler
+        [MagicalRecord setErrorHandlerTarget:self action:@selector(handlerError:)];
+
+        // Magical Record should autocreate the model by merging bundle files
+        NSManagedObjectModel * model = [[NSManagedObjectModel
+                                         MR_defaultManagedObjectModel] mutableCopy];
+        assert(model);
+        [self modifyObjectModel:model];
+
+        BOOL databaseStoreExists = [self databaseStoreExists];
+        if (databaseStoreExists && kFlags.removePreviousDatabase)
+        {
+            BOOL success = [self removeExistingStore];
+            assert(success);
+        }
+
+        // Copy bundle resource to store destination if needed
+        if (!databaseStoreExists && !kFlags.rebuildDatabase)
+        {
+            BOOL success = [self copyBundleDatabaseStore];
+            assert(success);
+        }
+
+        assert(([self databaseStoreExists] ^ kFlags.rebuildDatabase));
+        
+        MSLogDebugTag(@"file operations complete, database %@ flagged for rebuilding",
+                      kFlags.rebuildDatabase ? @"is" : @"is not");
+
+        // Use Magical Record to create the coordinator with calculated store path
+        // and intialize the default managed object context
+        [MagicalRecord
+         setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kCoreDataManagerSQLiteName];
     });
-    return sharedManager;
+    
+    return YES;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Core Data Stack
+#pragma mark - Database File Operations
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (BOOL)initializeCoreDataStack { return [[self sharedManager] initializeCoreDataStack]; }
-- (BOOL)initializeCoreDataStack
++ (NSURL *)databaseStoreURL
 {
-    return ([self mainObjectContext] != nil);
+    static NSURL * databaseStoreURL = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        databaseStoreURL = [NSURL fileURLWithPath:
+                            [[NSPersistentStore MR_applicationStorageDirectory]
+                             stringByAppendingPathComponent:kCoreDataManagerSQLiteName]];
+    });
+    return databaseStoreURL;
 }
 
-+ (void)logObjectModel { [[self sharedManager] logObjectModel]; }
-- (void)logObjectModel
++ (NSURL *)databaseBundleURL
+{
+    static NSURL * databaseBundleURL = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        databaseBundleURL = [MainBundle URLForResource:kCoreDataManagerSQLiteName withExtension:nil];
+    });
+    return databaseBundleURL;
+}
+
++ (BOOL)databaseStoreExists
+{
+    return [[self databaseStoreURL] checkResourceIsReachableAndReturnError:NULL];
+}
+
++ (BOOL)copyBundleDatabaseStore
+{
+    NSError * error = nil;
+
+    [FileManager copyItemAtURL:[self databaseBundleURL] toURL:[self databaseStoreURL] error:&error];
+
+    if (error)
+    {
+        [MagicalRecord handleErrors:error];
+        return NO;
+    }
+
+    else if (![self databaseStoreExists])
+    {
+        MSLogErrorTag(@"bundle database copied but not found at destination store location");
+        return NO;
+    }
+
+    else
+    {
+        MSLogDebugTag(@"bundle database store copied to destination successfully");
+        return YES;
+    }
+}
+
++ (BOOL)removeExistingStore
+{
+    NSError * error = nil;
+    
+    if (![self databaseStoreExists])
+    {
+        MSLogDebugTag(@"no previous database store found to remove");
+        return YES;
+    }
+
+    else if (![FileManager removeItemAtURL:[self databaseStoreURL] error:&error])
+    {
+        [MagicalRecord handleErrors:error];
+        return NO;
+    }
+
+    else
+    {
+        MSLogDebugTag(@"previous database store has been removed");
+        return YES;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Object Model
+////////////////////////////////////////////////////////////////////////////////
+
++ (void)modifyObjectModel:(NSManagedObjectModel *)model
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        // helper block for modifiying the same attribute on multiple entities
+        void   (^modifyAttributeForEntities)(NSArray *, NSString *, NSString *, id) =
+        ^(NSArray * e, NSString * a, NSString * c, id d)
+        {
+            for (NSEntityDescription * entity in e)
+            {
+                NSAttributeDescription * description = [entity attributesByName][a];
+                [description setAttributeValueClassName:c];
+                if (d != nil) [description setDefaultValue:d];
+            }
+        };
+
+        // helper block for modifying multiple attributes on the same entity
+        void   (^modifyAttributesForEntity)(NSEntityDescription *, NSArray *, NSString *, id) =
+        ^(NSEntityDescription * e, NSArray * a, NSString * c, id d)
+        {
+            NSDictionary * attributeDescriptions = [e attributesByName];
+            for (NSString * attributeName in a)
+            {
+                [attributeDescriptions[attributeName] setAttributeValueClassName:c];
+                if (d != nil) [attributeDescriptions[attributeName] setDefaultValue:d];
+            }
+        };
+
+        NSDictionary * entities = [model entitiesByName];
+
+        // size attributes on images
+        modifyAttributeForEntities([entities objectsForKeys:@[@"BOImage",
+                                                              @"BOBackgroundImage",
+                                                              @"BOButtonImage",
+                                                              @"BOIconImage"]
+                                             notFoundMarker:NullObject],
+                                   @"size",
+                                   @"NSValue",
+                                   NSValueWithCGSize(CGSizeZero));
+
+        // background color attributes on remote elements
+        modifyAttributeForEntities([entities objectsForKeys:@[@"RemoteElement",
+                                                              @"RERemote",
+                                                              @"REButtonGroup",
+                                                              @"REPickerLabelButtonGroup",
+                                                              @"REButton",
+                                                              @"REActivityButton"]
+                                             notFoundMarker:NullObject],
+                                   @"backgroundColor",
+                                   @"UIColor",
+                                   ClearColor);
+
+        // edge insets attributes on buttons
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
+                                                              @"REActivityButton"]
+                                             notFoundMarker:NullObject],
+                                   @"titleEdgeInsets",
+                                   @"NSValue",
+                                   NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
+                                                              @"REActivityButton"]
+                                             notFoundMarker:NullObject],
+                                   @"contentEdgeInsets",
+                                   @"NSValue",
+                                   NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
+                                                              @"REActivityButton"]
+                                             notFoundMarker:NullObject],
+                                   @"imageEdgeInsets",
+                                   @"NSValue",
+                                   NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
+
+        // configurations attribute on configuration delegates
+        modifyAttributeForEntities([entities
+                                    objectsForKeys:@[@"REConfigurationDelegate",
+                                                     @"RERemoteConfigurationDelegate",
+                                                     @"REButtonGroupConfigurationDelegate",
+                                                     @"REButtonConfigurationDelegate"]
+                                    notFoundMarker:NullObject],
+                                   @"configurations",
+                                   @"NSDictionary",
+                                   @{});
+
+        // label attribute on button groups
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButtonGroup",
+                                                              @"REPickerLabelButtonGroup"]
+                                             notFoundMarker:NullObject],
+                                   @"label",
+                                   @"NSAttributedString",
+                                   nil);
+
+        // index attribute on command containers
+        modifyAttributeForEntities([entities objectsForKeys:@[@"RECommandContainer",
+                                                              @"RECommandSet",
+                                                              @"RECommandSetCollection"]
+                                             notFoundMarker:NullObject],
+                                   @"index",
+                                   @"NSDictionary",
+                                   @{});
+
+        // url attribute on http command
+        modifyAttributeForEntities(@[entities[@"REHTTPCommand"]],
+                                   @"url",
+                                   @"NSURL",
+                                   [NSURL URLWithString:@"http://about:blank"]);
+
+        // bitVector attribute on layout configuration
+        modifyAttributeForEntities(@[entities[@"RELayoutConfiguration"]],
+                                   @"bitVector",
+                                   @"MSBitVector",
+                                   BitVector8);
+
+        // color attributes on control state color set
+        modifyAttributesForEntity(entities[@"REControlStateColorSet"],
+                                  @[@"disabled",
+                                    @"disabledAndSelected",
+                                    @"highlighted",
+                                    @"highlightedAndDisabled",
+                                    @"highlightedAndSelected",
+                                    @"normal",
+                                    @"selected",
+                                    @"selectedHighlightedAndDisabled"],
+                                  @"UIColor",
+                                  nil);
+
+        // url attributes on control state image sets
+        modifyAttributesForEntity(entities[@"REControlStateImageSet"],
+                                  @[@"disabled",
+                                    @"disabledAndSelected",
+                                    @"highlighted",
+                                    @"highlightedAndDisabled",
+                                    @"highlightedAndSelected",
+                                    @"normal",
+                                    @"selected",
+                                    @"selectedHighlightedAndDisabled"],
+                                  @"NSURL",
+                                  nil);
+        modifyAttributesForEntity(entities[@"REControlStateButtonImageSet"],
+                                  @[@"disabled",
+                                    @"disabledAndSelected",
+                                    @"highlighted",
+                                    @"highlightedAndDisabled",
+                                    @"highlightedAndSelected",
+                                    @"normal",
+                                    @"selected",
+                                    @"selectedHighlightedAndDisabled"],
+                                  @"NSURL",
+                                  nil);
+        modifyAttributesForEntity(entities[@"REControlStateIconImageSet"],
+                                  @[@"disabled",
+                                    @"disabledAndSelected",
+                                    @"highlighted",
+                                    @"highlightedAndDisabled",
+                                    @"highlightedAndSelected",
+                                    @"normal",
+                                    @"selected",
+                                    @"selectedHighlightedAndDisabled"],
+                                  @"NSURL",
+                                  nil);
+
+        // attributed string attributes on control state title set
+        modifyAttributesForEntity(entities[@"REControlStateTitleSet"],
+                                  @[@"disabled",
+                                    @"disabledAndSelected",
+                                    @"highlighted",
+                                    @"highlightedAndDisabled",
+                                    @"highlightedAndSelected",
+                                    @"normal",
+                                    @"selected",
+                                    @"selectedHighlightedAndDisabled"],
+                                  @"NSAttributedString",
+                                  nil);
+        // Update Magical Record default model
+        [NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
+
+        // Log the updated model
+        [self logObjectModel:model];
+
+    });
+}
+
++ (void)logObjectModel:(NSManagedObjectModel *)model
 {
     NSOperationQueue * queue = [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.model"];
+
+    if (!model) model = [NSManagedObjectModel MR_defaultManagedObjectModel];
 
     [queue addOperationWithBlock:
      ^{
          __block NSMutableString * modelDescription =
          [$(@"%@  managed object model:\n", ClassTagSelectorString) mutableCopy];
 
-         [__objectModel.entities enumerateObjectsUsingBlock:
+         [model.entities enumerateObjectsUsingBlock:
           ^(NSEntityDescription * obj, NSUInteger idx, BOOL * stop)
           {
               [modelDescription appendFormat:@"%@ {\n", obj.name];
@@ -111,47 +397,47 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerPersistentStoreExtension = @"sqlite"
               for (NSPropertyDescription * property in obj)
               {
                   [modelDescription   appendFormat:@"\n\t\tname: %@\n"
-                                                    "\t\toptional? %@\n"
-                                                    "\t\ttransient? %@\n"
-                                                    "\t\tvalidation predicates: %@\n"
-                                                    "\t\tstored in external record? %@\n",
-                                                    property.name,
-                                                    BOOLString(property.isOptional),
-                                                    BOOLString(property.isTransient),
-                                                    [property.validationPredicates
-                                                         componentsJoinedByString:@", "],
-                                                    BOOLString(property.isStoredInExternalRecord)];
+                   "\t\toptional? %@\n"
+                   "\t\ttransient? %@\n"
+                   "\t\tvalidation predicates: %@\n"
+                   "\t\tstored in external record? %@\n",
+                   property.name,
+                   BOOLString(property.isOptional),
+                   BOOLString(property.isTransient),
+                   [property.validationPredicates
+                    componentsJoinedByString:@", "],
+                   BOOLString(property.isStoredInExternalRecord)];
 
                   if ([property isKindOfClass:[NSAttributeDescription class]])
                   {
                       NSAttributeDescription * ad = (NSAttributeDescription *)property;
                       [modelDescription appendFormat:@"\t\tattribute type: %@\n"
-                                                     "\t\tattribute value class name: %@\n"
-                                                     "\t\tdefault value: %@\n"
-                                                     "\t\tallows extern binary data storage: %@\n",
-                                                     NSAttributeTypeString(ad.attributeType),
-                                                     ad.attributeValueClassName,
-                                                     ad.defaultValue,
-                                                     BOOLString(ad.allowsExternalBinaryDataStorage)];
+                       "\t\tattribute value class name: %@\n"
+                       "\t\tdefault value: %@\n"
+                       "\t\tallows extern binary data storage: %@\n",
+                       NSAttributeTypeString(ad.attributeType),
+                       ad.attributeValueClassName,
+                       ad.defaultValue,
+                       BOOLString(ad.allowsExternalBinaryDataStorage)];
                   }
 
                   else if ([property isKindOfClass:[NSRelationshipDescription class]])
                   {
                       NSRelationshipDescription * rd = (NSRelationshipDescription *)property;
                       [modelDescription appendFormat:@"\t\tdestination: %@\n"
-                                                      "\t\tinverse: %@\n"
-                                                      "\t\tdelete rule: %@\n"
-                                                      "\t\tmax count: %u\n"
-                                                      "\t\tmin count: %u\n"
-                                                      "\t\tone-to-many? %@\n"
-                                                      "\t\tordered: %@\n\n",
-                                                      rd.destinationEntity.name,
-                                                      rd.inverseRelationship.name,
-                                                      NSDeleteRuleString(rd.deleteRule),
-                                                      rd.maxCount,
-                                                      rd.minCount,
-                                                      BOOLString(rd.isToMany),
-                                                      BOOLString(rd.isOrdered)];
+                       "\t\tinverse: %@\n"
+                       "\t\tdelete rule: %@\n"
+                       "\t\tmax count: %u\n"
+                       "\t\tmin count: %u\n"
+                       "\t\tone-to-many? %@\n"
+                       "\t\tordered: %@\n\n",
+                       rd.destinationEntity.name,
+                       rd.inverseRelationship.name,
+                       NSDeleteRuleString(rd.deleteRule),
+                       rd.maxCount,
+                       rd.minCount,
+                       BOOLString(rd.isToMany),
+                       BOOLString(rd.isOrdered)];
                   }
               }
 
@@ -162,516 +448,42 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerPersistentStoreExtension = @"sqlite"
      }];
 }
 
-+ (NSManagedObjectModel *)objectModel { return [[self sharedManager] objectModel]; }
-- (NSManagedObjectModel *)objectModel
-{
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Error Handling
+////////////////////////////////////////////////////////////////////////////////
 
-    void(^modifyAttributeForEntities)(NSArray *, NSString *, NSString *, id) =
-    ^(NSArray * entities, NSString * attributeName, NSString * classValueName, id defaultValue)
++ (void)handlerError:(NSError *)error
+{
+    NSMutableString * errorMessage = [@"" mutableCopy];
+    if ([error isKindOfClass:[MSError class]])
     {
-        for (NSEntityDescription * entity in entities)
-        {
-            NSAttributeDescription * description = [entity attributesByName][attributeName];
-            [description setAttributeValueClassName:classValueName];
-            if (defaultValue != nil) [description setDefaultValue:defaultValue];
-        }
-    };
-
-    void(^modifyAttributesForEntity)(NSEntityDescription *, NSArray *, NSString *, id) =
-    ^(NSEntityDescription * entity, NSArray * attributeNames, NSString * classValueName, id defaultValue)
-    {
-        NSDictionary * attributeDescriptions = [entity attributesByName];
-        for (NSString * attributeName in attributeNames)
-        {
-            [attributeDescriptions[attributeName] setAttributeValueClassName:classValueName];
-            if (defaultValue != nil) [attributeDescriptions[attributeName] setDefaultValue:defaultValue];
-        }
-    };
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      __objectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] mutableCopy];
-                      assert(__objectModel);
-                      
-                      NSDictionary * entities = [__objectModel entitiesByName];
-
-                      // size attributes on images
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"BOImage",
-                                                                            @"BOBackgroundImage",
-                                                                            @"BOButtonImage",
-                                                                            @"BOIconImage"]
-                                                           notFoundMarker:NullObject],
-                                                 @"size",
-                                                 @"NSValue",
-                                                 NSValueWithCGSize(CGSizeZero));
-
-                      // background color attributes on remote elements
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"RemoteElement",
-                                                                            @"RERemote",
-                                                                            @"REButtonGroup",
-                                                                            @"REPickerLabelButtonGroup",
-                                                                            @"REButton",
-                                                                            @"REActivityButton"]
-                                                           notFoundMarker:NullObject],
-                                                 @"backgroundColor",
-                                                 @"UIColor",
-                                                 ClearColor);
-
-                      // edge insets attributes on buttons
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
-                                                                            @"REActivityButton"]
-                                                           notFoundMarker:NullObject],
-                                                 @"titleEdgeInsets",
-                                                 @"NSValue",
-                                                 NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
-                                                                            @"REActivityButton"]
-                                                           notFoundMarker:NullObject],
-                                                 @"contentEdgeInsets",
-                                                 @"NSValue",
-                                                 NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
-                                                                            @"REActivityButton"]
-                                                           notFoundMarker:NullObject],
-                                                 @"imageEdgeInsets",
-                                                 @"NSValue",
-                                                 NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-
-                      // configurations attribute on configuration delegates
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"REConfigurationDelegate",
-                                                                            @"RERemoteConfigurationDelegate",
-                                                                            @"REButtonGroupConfigurationDelegate",
-                                                                            @"REButtonConfigurationDelegate"]
-                                                           notFoundMarker:NullObject],
-                                                 @"configurations",
-                                                 @"NSDictionary",
-                                                 @{});
-
-                      // label attribute on button groups
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"REButtonGroup",
-                                                                            @"REPickerLabelButtonGroup"]
-                                                           notFoundMarker:NullObject],
-                                                 @"label",
-                                                 @"NSAttributedString",
-                                                 nil);
-
-                      // index attribute on command containers
-                      modifyAttributeForEntities([entities objectsForKeys:@[@"RECommandContainer",
-                                                                            @"RECommandSet",
-                                                                            @"RECommandSetCollection"]
-                                                           notFoundMarker:NullObject],
-                                                 @"index",
-                                                 @"NSDictionary",
-                                                 @{});
-
-                      // url attribute on http command
-                      modifyAttributeForEntities(@[entities[@"REHTTPCommand"]],
-                                                 @"url",
-                                                 @"NSURL",
-                                                 [NSURL URLWithString:@"http://about:blank"]);
-
-                      // bitVector attribute on layout configuration
-                      modifyAttributeForEntities(@[entities[@"RELayoutConfiguration"]],
-                                                 @"bitVector",
-                                                 @"MSBitVector",
-                                                 BitVector8);
-
-
-                      // color attributes on control state color set
-                      modifyAttributesForEntity(entities[@"REControlStateColorSet"],
-                                                @[@"disabled",
-                                                  @"disabledAndSelected",
-                                                  @"highlighted",
-                                                  @"highlightedAndDisabled",
-                                                  @"highlightedAndSelected",
-                                                  @"normal",
-                                                  @"selected",
-                                                  @"selectedHighlightedAndDisabled"],
-                                                @"UIColor",
-                                                nil);
-
-                      // url attributes on control state image sets
-                      modifyAttributesForEntity(entities[@"REControlStateImageSet"],
-                                                @[@"disabled",
-                                                  @"disabledAndSelected",
-                                                  @"highlighted",
-                                                  @"highlightedAndDisabled",
-                                                  @"highlightedAndSelected",
-                                                  @"normal",
-                                                  @"selected",
-                                                  @"selectedHighlightedAndDisabled"],
-                                                @"NSURL",
-                                                nil);
-                      modifyAttributesForEntity(entities[@"REControlStateButtonImageSet"],
-                                                @[@"disabled",
-                                                  @"disabledAndSelected",
-                                                  @"highlighted",
-                                                  @"highlightedAndDisabled",
-                                                  @"highlightedAndSelected",
-                                                  @"normal",
-                                                  @"selected",
-                                                  @"selectedHighlightedAndDisabled"],
-                                                @"NSURL",
-                                                nil);
-                      modifyAttributesForEntity(entities[@"REControlStateIconImageSet"],
-                                                @[@"disabled",
-                                                  @"disabledAndSelected",
-                                                  @"highlighted",
-                                                  @"highlightedAndDisabled",
-                                                  @"highlightedAndSelected",
-                                                  @"normal",
-                                                  @"selected",
-                                                  @"selectedHighlightedAndDisabled"],
-                                                @"NSURL",
-                                                nil);
-
-                      // attributed string attributes on control state title set
-                      modifyAttributesForEntity(entities[@"REControlStateTitleSet"],
-                                                @[@"disabled",
-                                                  @"disabledAndSelected",
-                                                  @"highlighted",
-                                                  @"highlightedAndDisabled",
-                                                  @"highlightedAndSelected",
-                                                  @"normal",
-                                                  @"selected",
-                                                  @"selectedHighlightedAndDisabled"],
-                                                @"NSAttributedString",
-                                                nil);
-
-                      [self logObjectModel];
-
-                  });
-
-    return __objectModel;
-}
-
-+ (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    return [[self sharedManager] persistentStoreCoordinator];
-}
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-
-        // Persistent store location with read/write access
-        NSString * filePath = $(@"%@/Library/Application Support/%@",
-                                NSHomeDirectory(),
-                                MainBundle.bundleIdentifier);
-
-        NSURL * directoryURL = [NSURL fileURLWithPath:filePath isDirectory:YES];
-
-        MSLogDebugTag(@"destination directory:%@", directoryURL);
-
-        if (![directoryURL checkResourceIsReachableAndReturnError:NULL])
-        {
-            MSLogDebugTag(@"creating destination directory...");
-
-            NSError * error = nil;
-
-            [FileManager createDirectoryAtURL:directoryURL
-                  withIntermediateDirectories:YES
-                                   attributes:nil
-                                        error:&error];
-
-            if (error)
-                MSLogErrorTag(@"error creating destination directory:%@", [error localizedFailureReason]);
-        }
-
-        NSURL * destinationURL = [directoryURL URLByAppendingPathComponent:kCoreDataManagerSQLiteName];
-
-        BOOL   fileExists = [destinationURL checkResourceIsReachableAndReturnError:NULL];
-
-        MSLogDebugTag(@"database url: %@\nfile exists? %@", destinationURL, BOOLString(fileExists));
-
-        // Remove existing database store if flag is set
-        if (_flags.removePreviousDatabase && fileExists)
-        {
-            MSLogDebugTag(@"removing existing database");
-
-            NSError * error = nil;
-
-            if (![FileManager removeItemAtURL:destinationURL error:&error])
-                MSLogErrorTag(@"problem encountered while removing existing persistent store %@, %@",
-                              error, [error localizedFailureReason]);
-
-            fileExists = [destinationURL checkResourceIsReachableAndReturnError:NULL];
-            assert(!fileExists);
-        }
-
-        // Copy bundle resource to store destination if needed
-        if (!fileExists && !_flags.rebuildDatabase)
-        {
-            MSLogDebugTag(@"copying bundle database to destination url...");
-
-            NSURL * bundleURL = [MainBundle URLForResource:kCoreDataManagerPersistentStoreName
-                                             withExtension:kCoreDataManagerPersistentStoreExtension];
-
-            // Copy the file
-            NSError * error = nil;
-
-            [FileManager copyItemAtURL:bundleURL toURL:destinationURL error:&error];
-
-            // Log error if operation failed
-            if (error)
-                MSLogWarnTag(@"problem encountered while copying %@ to destination url: %@, %@",
-                          [bundleURL lastPathComponent],
-                          error,
-                          [error localizedFailureReason]);
-
-            fileExists = [destinationURL checkResourceIsReachableAndReturnError:NULL];
-            assert(fileExists);
-            MSLogDebugTag(@"bundle database copied to destination url successfully");
-        }
-
-        assert((fileExists ^ _flags.rebuildDatabase));
-
-        MSLogDebugTag(@"database file operations complete, database %@ flagged for rebuilding",
-                      _flags.rebuildDatabase ? @"is" : @"is not");
-
-        NSDictionary * options = @{ NSMigratePersistentStoresAutomaticallyOption : @YES,
-                                    NSInferMappingModelAutomaticallyOption       : @YES };
-
-        __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                       initWithManagedObjectModel:[self objectModel]];
-
-        NSError * error = nil;
-
-        if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                        configuration:nil
-                                                                  URL:destinationURL
-                                                              options:options
-                                                                error:&error])
-        {
-            // TODO: Replace with code to handle error appropriately
-            MSLogErrorTag(@"aborting due to unresolved error creating persistent store:%@, %@",
-                          error, [error localizedFailureReason]);
-            abort();
-        }
-
-    });
-
-
-    return __persistentStoreCoordinator;
-}
-
-+ (NSManagedObjectContext *)mainObjectContext { return [[self sharedManager] mainObjectContext]; }
-- (NSManagedObjectContext *)mainObjectContext
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-        
-                      if ([self persistentStoreCoordinator])
-                      {
-                          __mainObjectContext = [[NSManagedObjectContext alloc]
-                                                 initWithConcurrencyType:NSMainQueueConcurrencyType];
-            
-                          [__mainObjectContext performBlockAndWait:
-                           ^{
-                               [__mainObjectContext
-                                setPersistentStoreCoordinator:__persistentStoreCoordinator];
-                               __mainObjectContext.nametag = @"main";
-                           }];
-                      }
-                      assert(__mainObjectContext);
-                  });
-
-    return __mainObjectContext;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Making a new NSManagedObjectContext
-////////////////////////////////////////////////////////////////////////////////
-
-+ (NSManagedObjectContext *)newContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)type
-                                              undoSupport:(BOOL)undoSupport
-                                                  nametag:(NSString *)nametag
-{
-    return [[self sharedManager] newContextWithConcurrencyType:type
-                                                   undoSupport:undoSupport
-                                                       nametag:nametag];
-}
-- (NSManagedObjectContext *)newContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)type
-                                              undoSupport:(BOOL)undoSupport
-                                                  nametag:(NSString *)nametag
-{
-    assert(__persistentStoreCoordinator);
-    NSManagedObjectContext * context = nil;
-
-    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:type];
-
-    [context performBlockAndWait:
-     ^{
-         context.nametag = nametag;
-         [context setPersistentStoreCoordinator:__persistentStoreCoordinator];
-         if (undoSupport) context.undoManager = [NSUndoManager new];
-     }];
-
-    [NotificationCenter addObserverForName:NSManagedObjectContextDidSaveNotification
-                                    object:context
-                                     queue:nil
-                                usingBlock:^(NSNotification *note) {
-                                    [__mainObjectContext performBlockAndWait:
-                                     ^{
-                                         MSLogDebugTag(@"merging changes from saved context '%@'",
-                                                       getContextDescription(context));
-                                         [__mainObjectContext
-                                          mergeChangesFromContextDidSaveNotification:note];
-                                         [self saveContext:__mainObjectContext
-                                              asynchronous:NO
-                                                completion:nil];
-                                     }];
-                                }];
-
-
-    return context;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Making a new child NSManagedObjectContext
-////////////////////////////////////////////////////////////////////////////////
-
-+ (NSManagedObjectContext *)childContextForContext:(NSManagedObjectContext *)context
-                                   concurrencyType:(NSManagedObjectContextConcurrencyType)type
-                                       undoSupport:(BOOL)undoSupport
-                                           nametag:(NSString *)nametag
-{
-    return [[self sharedManager] childContextForContext:context
-                                        concurrencyType:type
-                                            undoSupport:undoSupport
-                                                nametag:nametag];
-}
-- (NSManagedObjectContext *)childContextForContext:(NSManagedObjectContext *)context
-                                   concurrencyType:(NSManagedObjectContextConcurrencyType)type
-                                       undoSupport:(BOOL)undoSupport
-                                           nametag:(NSString *)nametag
-{
-
-    NSManagedObjectContext * parent = (context ? context : __mainObjectContext);
-    NSManagedObjectContext * child  = [[NSManagedObjectContext alloc] initWithConcurrencyType:type];
-
-    [child performBlockAndWait:
-     ^{
-         child.nametag = nametag;
-         child.parentContext = parent;
-         if (undoSupport)
-         {
-             child.undoManager = [NSUndoManager new];
-             child.undoManager.levelsOfUndo = 6;
-         }
-     }];
-
-    return child;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Saving and Resetting an NSManagedObjectContext
-////////////////////////////////////////////////////////////////////////////////
-
-+ (BOOL)saveContext:(NSManagedObjectContext *)context
-       asynchronous:(BOOL)asynchronous
-         completion:(void (^)(BOOL success))completion
-{
-    return [[self sharedManager] saveContext:context
-                                asynchronous:asynchronous
-                                  completion:completion];
-}
-- (BOOL)saveContext:(NSManagedObjectContext *)context
-       asynchronous:(BOOL)asynchronous
-         completion:(void (^)(BOOL success))completion
-{
-    if (!context) context = __mainObjectContext;
-    
-    void(^SaveOperation)(NSManagedObjectContext *, BOOL *) =
-    ^(NSManagedObjectContext * ctx, BOOL * success)
-    {
-        [ctx performBlockAndWait:
-         ^{
-             if (ctx != __mainObjectContext)
-                 [NotificationCenter
-                  addObserverForName:NSManagedObjectContextDidSaveNotification
-                              object:ctx
-                               queue:MainQueue
-                          usingBlock:^(NSNotification *note)
-                                     {
-                                         [__mainObjectContext performBlock:
-                                          ^{
-                                              [__mainObjectContext
-                                               mergeChangesFromContextDidSaveNotification:note];
-//                                              [CoreDataManager saveContext:nil
-//                                                              asynchronous:YES
-//                                                                completion:nil];
-                                          }];
-
-                                         [NotificationCenter
-                                          removeObserver:[CoreDataManager sharedManager]
-                                                    name:NSManagedObjectContextDidSaveNotification
-                                                  object:ctx];
-                                     }];
-
-             NSError * error = nil;
-             *success = [ctx save:&error];
-             
-             if (!success)
-             {
-                 NSArray * errors = error.userInfo[NSDetailedErrorsKey];
-                 
-                 if (errors)
-                     MSLogErrorTag(@"multiple errors while saving context '%@':%@",
-                                   getContextDescription(ctx),
-                                   [[errors valueForKeyPath:@"description"]
-                                    componentsJoinedByString:@"\n\n"]);
-                 else if (error)
-                     MSLogErrorTag(@"error saving context '%@':%@",
-                                   getContextDescription(ctx),
-                                   [error description]);
-                 else
-                     MSLogErrorTag(@"not sure why save failed for context '%@'",
-                                   getContextDescription(ctx));
-             }
-             
-             else
-                 MSLogDebugTag(@"save successful for context '%@'", getContextDescription(context));
-             
-             if (completion) MSRunSyncOnMain(^{completion(*success);});
-             
-            }];
-    };
-
-    MSLogDebugTag(@"save requested for context '%@'", getContextDescription(context));
-
-    if (![context hasChanges])
-    { // Return success if no changes need to be saved
-        MSLogDebugTag(@"save requested but context '%@' has no changes to save",
-                      getContextDescription(context));
-        if (completion) MSRunSyncOnMain(^{completion(YES);});
-        return YES;
+        NSString * message = ((MSError *)error).message;
+        if (message) [errorMessage appendFormat:@"!!! %@ !!!", message];
+        error = ((MSError *)error).error;
     }
 
-    else
-    { // Otherwise save context and call completion block
-        __block BOOL success = NO;
+    NSDictionary *userInfo = [error userInfo];
+    for (NSArray *detailedError in [userInfo allValues])
+    {
+        if ([detailedError isKindOfClass:[NSArray class]])
+        {
+            for (NSError *e in detailedError)
+            {
+                if ([e respondsToSelector:@selector(userInfo)])
+                    [errorMessage appendFormat:@"Error Details: %@\n", [e userInfo]];
 
-        if (asynchronous)
-            [context performBlock:^{ SaveOperation(context, &success); }];
+                else
+                    [errorMessage appendFormat:@"Error Details: %@\n", e];
+            }
+        }
 
         else
-            [context performBlockAndWait:^{ SaveOperation(context, &success); }];
-
-        return (asynchronous ? YES : success);
+            [errorMessage appendFormat:@"Error: %@", detailedError];
     }
-
+    [errorMessage appendFormat:@"Error Message: %@\n", [error localizedDescription]];
+    [errorMessage appendFormat:@"Error Domain: %@\n", [error domain]];
+    MSLogErrorTag(@"%@\nRecovery Suggestion: %@", errorMessage, [error localizedRecoverySuggestion]);
 }
 
-+ (void)resetContext:(NSManagedObjectContext *)context { [[self sharedManager] resetContext:context]; }
-- (void)resetContext:(NSManagedObjectContext *)context
-{
-    if (!context) context = __mainObjectContext;
-    
-    MSLogDebugTag(@"resetting context '%@'", getContextDescription(context));
-    [context performBlockAndWait:^{[context reset]; }];
-}
 
 @end

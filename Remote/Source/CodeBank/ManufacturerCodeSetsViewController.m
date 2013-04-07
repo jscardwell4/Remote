@@ -54,7 +54,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 - (NSArray *)fetchedCodeSets {
     if (ValueIsNotNil(fetchedCodeSets)) return fetchedCodeSets;
 
-    [[[CoreDataManager sharedManager] mainObjectContext] performBlockAndWait:^{
+    [[NSManagedObjectContext MR_defaultContext] performBlockAndWait:^{
                                          NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"IRCodeSet"];
 
                                          NSError * error = nil;
@@ -62,7 +62,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                          [NSPredicate predicateWithFormat:@"manufacturer == %@", self.manufacturer];
                                          [fetchRequest setPredicate:predicate];
 
-                                         self.fetchedCodeSets = [[[CoreDataManager sharedManager] mainObjectContext]                                  executeFetchRequest:fetchRequest
+                                         self.fetchedCodeSets = [[NSManagedObjectContext MR_defaultContext]                                  executeFetchRequest:fetchRequest
                                                                                                                error:&error];
 
                                          if (ValueIsNil(fetchedCodeSets)) {

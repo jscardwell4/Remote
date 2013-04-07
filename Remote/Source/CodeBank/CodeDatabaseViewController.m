@@ -51,12 +51,12 @@ static int   ddLogLevel = DefaultDDLogLevel;
         [fetchedManufacturers addObject:[NSMutableArray array]];
     }
 
-    [[[CoreDataManager sharedManager] mainObjectContext] performBlockAndWait:^{
+    [[NSManagedObjectContext MR_defaultContext] performBlockAndWait:^{
                                          NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"IRCodeSet"];
 
                                          NSError * error = nil;
                                          NSArray * fetchedCodesets =
-                                         [[[CoreDataManager sharedManager] mainObjectContext]                              executeFetchRequest:fetchRequest
+                                         [[NSManagedObjectContext MR_defaultContext]                              executeFetchRequest:fetchRequest
                                                                                         error:&error];
 
                                          if (ValueIsNil(fetchedCodesets))

@@ -88,7 +88,7 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
 
 
     BOOL   success = NO, finished = NO;
-    NSManagedObject * command = [[[CoreDataManager sharedManager] mainObjectContext] existingObjectWithID:commandID
+    NSManagedObject * command = [[NSManagedObjectContext MR_defaultContext] existingObjectWithID:commandID
                                                                                     error:nil];
 
     if ([command isKindOfClass:[RESendIRCommand class]])

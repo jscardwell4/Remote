@@ -59,7 +59,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 - (NSArray *)fetchedDevices {
     if (ValueIsNotNil(fetchedDevices)) return fetchedDevices;
 
-    [[[CoreDataManager sharedManager] mainObjectContext] performBlockAndWait:^{
+    [[NSManagedObjectContext MR_defaultContext] performBlockAndWait:^{
                                          NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ComponentDevice"];
 
                                          NSSortDescriptor * sortDescriptor = [NSSortDescriptor                                  sortDescriptorWithKey:@"deviceName"
@@ -67,7 +67,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                          [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
                                          NSError * error = nil;
-                                         self.fetchedDevices = [[[CoreDataManager sharedManager] mainObjectContext]                                  executeFetchRequest:fetchRequest
+                                         self.fetchedDevices = [[NSManagedObjectContext MR_defaultContext]                                  executeFetchRequest:fetchRequest
                                                                                                               error:&error];
                                          if (ValueIsNil(fetchedDevices)) {
                                          DDLogError(@"No component device objects could be found");

@@ -463,11 +463,8 @@ MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNamet
 - (void)setRemoteElement:(RemoteElement *)remoteElement
 {
     assert(remoteElement);
-    self.context = [CoreDataManager childContextForContext:remoteElement.managedObjectContext
-                                           concurrencyType:NSMainQueueConcurrencyType
-                                               undoSupport:YES
-                                                   nametag:ClassString([self class])];
-
+    self.context = [NSManagedObjectContext MR_contextWithParent:remoteElement.managedObjectContext];
+    [_context MR_setWorkingName:ClassString([self class])];
     [_context performBlockAndWait:
      ^{
          self.changedModelValues = [remoteElement changedValues];

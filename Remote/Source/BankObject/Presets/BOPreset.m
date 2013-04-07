@@ -40,7 +40,7 @@
 - (void)generatePreviewWithObjectID:(NSManagedObjectID *)objectID
 {
     assert(objectID);
-    NSManagedObjectContext * context = [[CoreDataManager sharedManager] newContext];
+    NSManagedObjectContext * context = [CoreDataManager newContext];
     [context performBlock:
      ^{
          RemoteElement * element = (RemoteElement *)[context objectWithID:objectID];

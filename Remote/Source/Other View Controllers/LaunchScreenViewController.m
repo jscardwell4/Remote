@@ -56,7 +56,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 - (IBAction)launchEditor:(id)sender {
     RERemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
-    RERemote * remote   = [RERemote remoteElementInContext:[[CoreDataManager sharedManager] mainObjectContext]];
+    RERemote * remote   = [RERemote remoteElementInContext:[NSManagedObjectContext MR_defaultContext]];
 
     editorVC.remoteElement = remote;
     editorVC.delegate      = nil;

@@ -1497,8 +1497,8 @@
 		C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */; };
 		C26BBB4C16DC1FA20093D5B4 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */; };
 		C277343A1700BC9300E85F8D /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2625B8F16DD47F10000F676 /* Remote.xcdatamodeld */; };
-		C277343D1701232D00E85F8D /* REBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343C1701232D00E85F8D /* REBuilder.m */; };
 		C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */; };
+		C2AF0F471711DC5E00E45849 /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AF0F451711DC2600E45849 /* MagicalRecord.framework */; };
 		C2FFB5F7170B5A6C0079C283 /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FFB5F1170B5A6C0079C283 /* MSKit.framework */; };
 		C2FFB5F8170B5A6C0079C283 /* MSColorInputView.nib in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */; };
 		C2FFB5F9170B5A6C0079C283 /* MSPickerInputViewController.nib in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */; };
@@ -3139,7 +3139,6 @@
 		C26BBB3F16DC1C960093D5B4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = ../../Frameworks/Lumberjack/Lumberjack.framework; sourceTree = "<group>"; };
-		C277343C1701232D00E85F8D /* REBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBuilder.m; sourceTree = "<group>"; };
 		C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESwitchToConfigCommand.m; sourceTree = "<group>"; };
 		C2912BC316F6311D004AB0DB /* RELabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELabelView.m; sourceTree = "<group>"; };
 		C2912BC516F6312D004AB0DB /* RELabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RELabelView.h; sourceTree = "<group>"; };
@@ -3148,11 +3147,12 @@
 		C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RESelectionPanelButtonGroupView.m; path = REButtonGroupView/RESelectionPanelButtonGroupView.m; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2997F2416FA5A6D00290737 /* REEditableBackground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REEditableBackground.h; sourceTree = "<group>"; };
+		C2AF0F451711DC2600E45849 /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = "../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MagicalRecord.framework"; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RECommandContainer_Private.h; sourceTree = "<group>"; };
 		C2DF3C4516E8F87B0075AC51 /* Remote.base 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 17.xcdatamodel"; sourceTree = "<group>"; };
-		C2FFB5F1170B5A6C0079C283 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MSKit.framework; sourceTree = "<group>"; };
-		C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSColorInputView.nib; sourceTree = "<group>"; };
-		C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSPickerInputViewController.nib; sourceTree = "<group>"; };
+		C2FFB5F1170B5A6C0079C283 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = MSKit.embeddedframework/MSKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MSColorInputView.nib; sourceTree = "<group>"; };
+		C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MSPickerInputViewController.nib; sourceTree = "<group>"; };
 		C2FFB5F5170B5A6C0079C283 /* ScrollWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScrollWheel.png; sourceTree = "<group>"; };
 		C2FFB5F6170B5A6C0079C283 /* ScrollWheel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ScrollWheel@2x.png"; sourceTree = "<group>"; };
 		C2FFB5FC170B8A1D0079C283 /* NoBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoBackground.png; sourceTree = "<group>"; };
@@ -3181,6 +3181,7 @@
 				C26BBB4916DC1C960093D5B4 /* QuartzCore.framework in Frameworks */,
 				C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */,
 				C26BBB4C16DC1FA20093D5B4 /* Lumberjack.framework in Frameworks */,
+				C2AF0F471711DC5E00E45849 /* MagicalRecord.framework in Frameworks */,
 				C2FFB5F7170B5A6C0079C283 /* MSKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3407,7 +3408,6 @@
 				C25B469D16FF67D00042B59E /* RemoteConstruction.h */,
 				C25B469E16FF67D00042B59E /* RemoteElementConstructionManager.h */,
 				C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */,
-				C277343C1701232D00E85F8D /* REBuilder.m */,
 			);
 			path = Construction;
 			sourceTree = "<group>";
@@ -3516,6 +3516,7 @@
 			isa = PBXGroup;
 			children = (
 				C2FFB5F0170B5A6C0079C283 /* MSKit.embeddedframework */,
+				C2AF0F451711DC2600E45849 /* MagicalRecord.framework */,
 				C26BBB4B16DC1FA20093D5B4 /* Lumberjack.framework */,
 				C26BBB3716DC1C960093D5B4 /* OpenGLES.framework */,
 				C26BBB3816DC1C960093D5B4 /* QuickLook.framework */,
@@ -6786,7 +6787,6 @@
 				C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */,
 				C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */,
 				C277343A1700BC9300E85F8D /* Remote.xcdatamodeld in Sources */,
-				C277343D1701232D00E85F8D /* REBuilder.m in Sources */,
 				C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* RECommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
@@ -6859,7 +6859,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
-					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"",
+					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"/**",
 				);
 			};
 			name = Debug;
@@ -6871,7 +6871,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
-					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"",
+					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"/**",
 				);
 			};
 			name = Release;

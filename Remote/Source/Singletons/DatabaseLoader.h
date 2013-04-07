@@ -12,15 +12,10 @@
  */
 @interface DatabaseLoader : NSObject
 
-/// @name ￼Loading data into the database
-
 /**
- * Creates managed objects in the specified context from various files located in the bundle.
- * @param context `NSManagedObjectContext` in which the objects should be created.
+ * Creates managed objects in the context created for the current thread of operation
  */
-+ (BOOL)loadDataIntoContext:(NSManagedObjectContext *)context;
-
-/// @name ￼Logging database content
+ + (BOOL)loadData;
 
 /**
  * Enumerates all the codes currently in the database and logs them to the console.

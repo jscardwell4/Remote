@@ -37,7 +37,7 @@ MSKIT_EXTERN_STRING   NDDefaultiTachDeviceKey;
  * Attempts to connect with the device identified by the specified `uuid`.
  * @param uuid The uuid of the device with which to connect, or nil for the registered default device
  */
-- (BOOL)connectWithDevice:(NSString *)uuid;
+- (BOOL)connectWithDevice:(NSString *)uri;
 
 /**
  * Sends an IR command to the device identified by the specified `uuid`.
@@ -61,7 +61,7 @@ MSKIT_EXTERN_STRING   NDDefaultiTachDeviceKey;
 @property (nonatomic, readonly) NSString * statusDescription;
 
 /// The uuid identifying an iTach device to be registered as the default device.
-@property (nonatomic, copy) NSString * defaultDeviceUUID;
+@property (nonatomic, strong) NSString * defaultDeviceURI;
 
 @end
 

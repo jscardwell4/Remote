@@ -7,8 +7,6 @@
 //
 #import "DatabaseLoader.h"
 #import "BankObjectGroup.h"
-#import "BankObjectGroup.h"
-#import "BankObject.h"
 #import "BankObject.h"
 #import "CoreDataManager.h"
 #import "MSRemoteAppController.h"
@@ -16,244 +14,187 @@
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
 
-static int   ddLogLevel = LOG_LEVEL_WARN;
-
-@interface DatabaseLoader ()
-
-/// Creates <IconImage> objects for files located in the bundle's *icons* directory.
-- (void)loadIconsFromBundleIntoDatabase;
-
-/// Parses *CodeBank.plist* to create <ComponentDevice> objects and <IRCode> objects.
-- (void)loadUserCodeBankIntoDatabase;
-
-- (void)loadProntoHexCodeBankIntoDatabase;
-
-/// Calls all the methods sequentially for loading the data.
-- (void)loadDataIntoDatabase;
-
-/// Creates <BackgroundImage> objects for files located in the bundle's *backgrounds* directory.
-- (void)loadBackgroundImagesFromBundleIntoDatabase;
-
-/// Stores a reference to the context passed to `loadDataIntoContext:`.
-@property (nonatomic, weak) NSManagedObjectContext * managedObjectContext;
-
-@end
+static const int   ddLogLevel   = LOG_LEVEL_INFO;
+static const int   msLogContext = BUILDING_F;
+#pragma unused(ddLogLevel, msLogContext)
 
 @implementation DatabaseLoader
 
-+ (DatabaseLoader *)sharedDatabaseLoader {
-    static dispatch_once_t pred = 0;
-    __strong static id _sharedObject = nil;
-    dispatch_once(&pred, ^{_sharedObject = [[self alloc] init]; });
-    return _sharedObject;
-}
++ (BOOL)loadData
+{    
+    @autoreleasepool { [self loadUserCodeBankIntoDatabase]; }
+    [NSManagedObjectContext MR_resetContextForCurrentThread];
+    
+    @autoreleasepool { [self loadBackgroundImagesFromBundleIntoDatabase]; }
+    [NSManagedObjectContext MR_resetContextForCurrentThread];
 
-/// @name ￼Loading data into the database
+    @autoreleasepool { [self loadIconsFromBundleIntoDatabase]; }
+    [NSManagedObjectContext MR_resetContextForCurrentThread];
 
-+ (BOOL)loadDataIntoContext:(NSManagedObjectContext *)context
-{
-//    context = (context ? context : [[CoreDataManager sharedManager] mainObjectContext]);
-    self.sharedDatabaseLoader.managedObjectContext = context;
-    [context performBlockAndWait:^{ [self.sharedDatabaseLoader loadDataIntoDatabase]; }];
+    @autoreleasepool { [self loadProntoHexCodeBankIntoDatabase]; }
+    [NSManagedObjectContext MR_resetContextForCurrentThread];
+
     return YES;
 }
 
-- (void)loadDataIntoDatabase
-{
-    [_managedObjectContext performBlockAndWait:^{
-        @autoreleasepool { [self loadUserCodeBankIntoDatabase]; }
-        if ([CoreDataManager saveContext:self.managedObjectContext asynchronous:NO completion:nil])
-            [[CoreDataManager sharedManager] resetContext:self.managedObjectContext];
-
-        @autoreleasepool { [self loadBackgroundImagesFromBundleIntoDatabase]; }
-        if ([CoreDataManager saveContext:self.managedObjectContext asynchronous:NO completion:nil])
-            [[CoreDataManager sharedManager] resetContext:self.managedObjectContext];
-
-        @autoreleasepool { [self loadIconsFromBundleIntoDatabase]; }
-        if ([CoreDataManager saveContext:self.managedObjectContext asynchronous:NO completion:nil])
-            [[CoreDataManager sharedManager] resetContext:self.managedObjectContext];
-
-        @autoreleasepool { [self loadProntoHexCodeBankIntoDatabase]; }
-        if ([CoreDataManager saveContext:self.managedObjectContext asynchronous:NO completion:nil])
-            [[CoreDataManager sharedManager] resetContext:self.managedObjectContext];
-    }];
-}
-
-- (void)loadProntoHexCodeBankIntoDatabase
++ (void)loadProntoHexCodeBankIntoDatabase
 {
     // Keys for plist entries
-    MSKIT_STATIC_STRING_CONST   databaseKey     = @"Pronto Hex Database";
-    MSKIT_STATIC_STRING_CONST   manufacturerKey = @"Manufacturer";
-    MSKIT_STATIC_STRING_CONST   codesetKey      = @"Codeset";
-// MSKIT_STATIC_STRING_CONST name1Key = @"Name 1";
-// MSKIT_STATIC_STRING_CONST name2Key = @"Name 2";
-// MSKIT_STATIC_STRING_CONST hexcodeKey = @"Hex Code";
+    MSKIT_STATIC_STRING_CONST   kDatabaseKey     = @"Pronto Hex Database";
+    MSKIT_STATIC_STRING_CONST   kManufacturerKey = @"Manufacturer";
+    MSKIT_STATIC_STRING_CONST   kCodesetKey      = @"Codeset";
+    MSKIT_STATIC_STRING_CONST   kName1           = @"Name 1";
+    MSKIT_STATIC_STRING_CONST   kName2           = @"Name 2";
 
-// static const int plistCount = 56;
 
-    [_managedObjectContext performBlockAndWait:
-     ^{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext * context)
+     {
 
-        NSArray * codesArray = [[NSDictionary dictionaryWithContentsOfURL:
-                                 [MainBundle URLForResource:CODE_DATABASE_PLIST
-                                              withExtension:@"plist"]]
-                                objectForKey:databaseKey];
+         NSArray * codesArray = [[NSDictionary dictionaryWithContentsOfURL:
+                                  [MainBundle URLForResource:CODE_DATABASE_PLIST
+                                               withExtension:@"plist"]]
+                                 objectForKey:kDatabaseKey];
 
-        BOIRCodeset * codeset       = nil;
-        CGFloat     currentProgress = 0.0;
-        NSInteger   codeCount       = [codesArray count];
-        CGFloat     increment       = 1.0 / codeCount;
+         BOIRCodeset * codeset       = nil;
+         @autoreleasepool
+         {
+             // Enumerate list content creating a code for each entry
+             for (NSDictionary * codeAttributes in codesArray)
+             {
+                 // Get the code set for this entry
+                 NSString * codesetName = codeAttributes[kCodesetKey];
 
-        @autoreleasepool
-        {
-            // Enumerate list content creating a code for each entry
-            for (NSDictionary * codeAttributes in codesArray)
-            {
-                // Get the code set for this entry
-                NSString * codesetName = codeAttributes[codesetKey];
+                 // Create a CodeSet object if necessary and set its manufacturer attribute
+                 if (ValueIsNil(codeset) || ![codeset.name isEqualToString:codesetName])
+                 {
+                     codeset = [BOIRCodeset groupWithName:codesetName context:context];
+                     codeset.manufacturer =
+                     [BOManufacturer manufacturerWithName:codeAttributes[kManufacturerKey]
+                                                  context:codeset.managedObjectContext];
+                 }
 
-                // Create a CodeSet object if necessary and set its manufacturer attribute
-                if (ValueIsNil(codeset) || ![codeset.name isEqualToString:codesetName])
-                {
-                    codeset = [BOIRCodeset groupWithName:codesetName context:_managedObjectContext];
-                    codeset.manufacturer =
-                        [BOManufacturer manufacturerWithName:codeAttributes[manufacturerKey]
-                                                 context:codeset.managedObjectContext];
-                }
-
-                // Create an IRCode object for this code with attributes from the list entry
-                BOFactoryIRCode * code = [BOFactoryIRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
-                                                                    context:_managedObjectContext];
-                code.codeset       = codeset;
-                code.name          = codeAttributes[@"Name 1"];
-                code.alternateName = codeAttributes[@"Name 2"];
-                if ([code.name isEqualToString:code.alternateName]) code.alternateName = nil;
-                currentProgress += increment;
-            }
-        }
+                 // Create an IRCode object for this code with attributes from the list entry
+                 BOFactoryIRCode * code = [BOFactoryIRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
+                                                                     context:context];
+                 code.codeset       = codeset;
+                 code.name          = codeAttributes[kName1];
+                 code.alternateName = codeAttributes[kName2];
+                 if ([code.name isEqualToString:code.alternateName]) code.alternateName = nil;
+             }
+         }
      }];
 }
 
-- (void)loadUserCodeBankIntoDatabase
+/// Parses *CodeBank.plist* to create <ComponentDevice> objects and <IRCode> objects.
++ (void)loadUserCodeBankIntoDatabase
 {
-    [_managedObjectContext performBlockAndWait:
-     ^{
-        // Create devices
-        NSDictionary * codeBankPlist = [NSDictionary dictionaryWithContentsOfURL:
-                                        [MainBundle URLForResource:USER_CODES_PLIST
-                                                     withExtension:@"plist"]];
-        CGFloat   currentProgress = 0.0;
-        NSInteger codeCount       = 0;
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext * context)
+     {
+         // Create devices
+         NSDictionary * codeBankPlist = [NSDictionary dictionaryWithContentsOfURL:
+                                         [MainBundle URLForResource:USER_CODES_PLIST
+                                                      withExtension:@"plist"]];
+         assert(codeBankPlist);
 
-        for (NSString * key in[codeBankPlist allKeys])
-            codeCount += [codeBankPlist[key] count];
+         @autoreleasepool
+         {
+             for (NSString * deviceName in [codeBankPlist allKeys])
+             {
+                 // Create codes for this device
+                 BOComponentDevice * device = [BOComponentDevice bankObjectWithName:deviceName
+                                                                            context:context];
 
-        CGFloat increment = 1.0 / codeCount;
+                 if 		([@"AV Receiver" isEqualToString:deviceName]) 	device.port = 2;
+                 else if ([@"Comcast DVR" isEqualToString:deviceName]) 	device.port = 1;
+                 else if ([@"Samsung TV" isEqualToString:deviceName]) 	device.port = 3;
+                 else if ([@"PS3" isEqualToString:deviceName]) 			device.port = 3;
 
-        @autoreleasepool
-        {
-            for (NSString * deviceName in [codeBankPlist allKeys])
-            {
-                // Create codes for this device
-                BOComponentDevice * device = [BOComponentDevice bankObjectWithName:deviceName
-                                                                           context:_managedObjectContext];
+                 NSDictionary * deviceCodes = codeBankPlist[deviceName];
 
-                if 		([@"AV Receiver" isEqualToString:deviceName]) 	device.port = 2;
-                else if ([@"Comcast DVR" isEqualToString:deviceName]) 	device.port = 1;
-                else if ([@"Samsung TV" isEqualToString:deviceName]) 	device.port = 3;
-                else if ([@"PS3" isEqualToString:deviceName]) 			device.port = 3;
+                 @autoreleasepool
+                 {
+                     for (NSString * codeName in [deviceCodes allKeys])
+                     {
+                         NSDictionary * codeDict = deviceCodes[codeName];
 
-                NSDictionary * deviceCodes = codeBankPlist[deviceName];
-
-                @autoreleasepool
-                {
-                    for (NSString * codeName in [deviceCodes allKeys])
-                    {
-                        NSDictionary * codeDict = deviceCodes[codeName];
-                        
-                        // Create this code
-                        BOUserIRCode * code = [BOUserIRCode codeForDevice:device];
-                        code.name            = codeName;
-                        code.frequency       = [codeDict[@"Frequency"] unsignedIntegerValue];
-                        code.repeatCount     = [codeDict[@"Repeat Count"] unsignedIntegerValue];
-                        code.offset          = [codeDict[@"Offset"] unsignedIntegerValue];
-                        code.onOffPattern    = codeDict[@"On-Off Pattern"];
-                        code.setsDeviceInput = [codeDict[@"Input"] boolValue];
-                        currentProgress += increment;
-                    }
-                }
-            }
-        }
+                         // Create this code
+                         BOUserIRCode * code = [BOUserIRCode codeForDevice:device];
+                         code.name            = codeName;
+                         code.frequency       = [codeDict[@"Frequency"] unsignedIntegerValue];
+                         code.repeatCount     = [codeDict[@"Repeat Count"] unsignedIntegerValue];
+                         code.offset          = [codeDict[@"Offset"] unsignedIntegerValue];
+                         code.onOffPattern    = codeDict[@"On-Off Pattern"];
+                         code.setsDeviceInput = [codeDict[@"Input"] boolValue];
+                     }
+                 }
+             }
+         }
      }];
 }
 
-- (void)loadIconsFromBundleIntoDatabase
+/// Creates <IconImage> objects for files located in the bundle's *icons* directory.
++ (void)loadIconsFromBundleIntoDatabase
 {
-    [_managedObjectContext performBlockAndWait:
-     ^{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext * context)
+     {
+         NSError  * error = nil;
+         NSString * iconFileList =
+         [NSString stringWithContentsOfFile:[MainBundle pathForResource:@"iconList" ofType:@"txt"]
+                                   encoding:NSUTF8StringEncoding
+                                      error:&error];
+
+         if (error) [MagicalRecord handleErrors:[MSError errorWithError:error
+                                                                message:@"failed to get list of icons"]];
+
+         NSArray * iconFileNames = [iconFileList
+                                    componentsSeparatedByCharactersInSet:[NSCharacterSet
+                                                                          newlineCharacterSet]];
+
+         @autoreleasepool
+         {
+             for (NSString * fileName in iconFileNames)
+             {
+                 if (StringIsEmpty(fileName)) continue;
+
+                 // Create entry for this file
+                 BOIconImage * iconImage = [BOIconImage imageWithFileName:fileName
+                                                                  context:context];
+
+                 if (!iconImage) MSLogErrorTag(@"failed to create model for icon image:%@", iconImage);
+             }
+         }
+     }];
+}
+
+/// Creates <BackgroundImage> objects for files located in the bundle's *backgrounds* directory.
++ (void)loadBackgroundImagesFromBundleIntoDatabase
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext * context)
+     {
         NSError  * error = nil;
-        NSString * iconFileList =
-            [NSString stringWithContentsOfFile:[MainBundle pathForResource:@"iconList" ofType:@"txt"]
-                                      encoding:NSUTF8StringEncoding
-                                         error:&error];
-
-        if (error) DDLogError(@"%@\n\tcould not read icon list file", ClassTagString);
-
-        NSArray * iconFileNames =
-            [iconFileList componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-        @autoreleasepool
-        {
-            for (NSString * fileName in iconFileNames)
-            {
-                if (StringIsEmpty(fileName)) continue;
-
-                // Create entry for this file
-                BOIconImage * iconImage = [BOIconImage imageWithFileName:fileName
-                                                                 context:_managedObjectContext];
-
-                if (!iconImage) DDLogError(@"%@\n\tcould not create UIImage for icon image:%@",
-                                           ClassTagString, iconImage);
-            }
-        }
-     }];
-}
-
-- (void)loadBackgroundImagesFromBundleIntoDatabase
-{
-    [_managedObjectContext performBlockAndWait:
-     ^{
-        NSError  * error = nil;
-        NSString * backgroundFileList =
+        NSString * list =
             [NSString stringWithContentsOfFile:[MainBundle pathForResource:@"backgroundList"
                                                                     ofType:@"txt"]
                                       encoding:NSUTF8StringEncoding
                                          error:&error];
 
-        if (error) DDLogError(@"%@\n\tcould not read background list file", ClassTagString);
+        if (error) [MagicalRecord handleErrors:[MSError
+                                                errorWithError:error
+                                                       message:@"failed to get list of backgrounds"]];
 
-        NSArray * backgroundFileNames =
-            [backgroundFileList
-             componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        NSArray * names = [list componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         
-        CGFloat     currentProgress = 0.0;
-        NSInteger   fileCount       = [backgroundFileNames count];
-        CGFloat     increment       = 1.0 / fileCount;
-
         @autoreleasepool
         {
-            for (NSString * fileName in backgroundFileNames)
+            for (NSString * fileName in names)
             {
                 if (StringIsEmpty(fileName)) continue;
 
                 // Create entry for this file
                 BOBackgroundImage * image = [BOBackgroundImage imageWithFileName:fileName
-                                                                         context:_managedObjectContext];
+                                                                         context:context];
 
-                if (!image) DDLogError(@"%@\n\tcould not create UIImage for icon image:%@",
-                                       ClassTagString, image);
-
-                currentProgress += increment;
+                if (!image) MSLogErrorTag(@"failed to create model for background image:%@", image);
             }
         }
      }];
@@ -263,23 +204,27 @@ static int   ddLogLevel = LOG_LEVEL_WARN;
 
 + (void)logCodeBank
 {
-    if (   ValueIsNil(self.sharedDatabaseLoader)
-        || ValueIsNil(self.sharedDatabaseLoader.managedObjectContext))
-        DDLogWarn(@"missing database loader or the context");
+    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
 
-    [self.sharedDatabaseLoader.managedObjectContext performBlockAndWait:
+    [context performBlockAndWait:
      ^{
          NSFetchRequest * fetchRequest = [NSFetchRequest
                                           fetchRequestWithEntityName:@"ComponentDevice"];
 
          NSError * error = nil;
-         NSArray * fetchedObjects = [self.sharedDatabaseLoader.managedObjectContext
-                                         executeFetchRequest:fetchRequest
-                                                       error:&error];
+         NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 
-         if (ValueIsNil(fetchedObjects))
+         if (error)
          {
-            DDLogWarn(@"failed to retrieve ComponentDevice objects");
+             [MagicalRecord handleErrors:
+              [MSError errorWithError:error
+                              message:@"failed to retrieve devices from database"]];
+             return;
+         }
+         
+         else if (ValueIsNil(fetchedObjects))
+         {
+            MSLogWarnTag(@"fetch returned zero component devices");
             return;
          }
 
@@ -295,27 +240,27 @@ static int   ddLogLevel = LOG_LEVEL_WARN;
 
          fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"IRCodeSet"];
 
-         fetchedObjects = [self.sharedDatabaseLoader.managedObjectContext
-                               executeFetchRequest:fetchRequest
-                                             error:&error];
+         fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 
-         if (ValueIsNil(fetchedObjects))
+         if (error)
          {
-            DDLogWarn(@"failed to retrieve IRCodeSet objects");
-            return;
+             [MagicalRecord handleErrors:
+              [MSError errorWithError:error
+                              message:@"failed to retrieve codesets from database"]];
+             return;
          }
+         
+         else if (ValueIsNil(fetchedObjects)) { MSLogWarnTag(@"fetch returned zero codesets"); return; }
 
          [logString appendString:@"\nIRCodes by IRCodeSet\n"];
 
          for (BOIRCodeset * codeset in fetchedObjects)
          {
             [logString appendFormat:@"codeset: %@\n", codeset.name];
-
-            for (BOIRCode * irCode in codeset.codes)
-                [logString appendFormat:@"\t%@\n", irCode.name];
+            for (BOIRCode * irCode in codeset.codes) [logString appendFormat:@"\t%@\n", irCode.name];
          }
 
-         DDLogInfo(@"%@", logString);
+         MSLogInfo(@"%@", logString);
      }];
 }
 

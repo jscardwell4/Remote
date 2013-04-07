@@ -10,42 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Construction Manager
 ////////////////////////////////////////////////////////////////////////////////
-@class RERemoteBuilder, REButtonGroupBuilder, REButtonBuilder, MacroBuilder;
-@interface RemoteElementConstructionManager : NSObject {
-    @private
-    NSManagedObjectContext * _buildContext;
-    RERemoteBuilder        * _remoteBuilder;
-    REButtonGroupBuilder   * _buttonGroupBuilder;
-    REButtonBuilder        * _buttonBuilder;
-    MacroBuilder           * _macroBuilder;
-}
 
-- (BOOL)buildRemoteControllerInContext:(NSManagedObjectContext *)context;
+@interface RemoteElementConstructionManager : NSObject
 
-+ (RemoteElementConstructionManager *)sharedManager;
-
-@end
-
-#define ConstructionManager [RemoteElementConstructionManager sharedManager]
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Abstract Builder
-////////////////////////////////////////////////////////////////////////////////
-@interface REBuilder : NSObject {
-    @protected
-    NSManagedObjectContext * _buildContext;
-}
-
-+ (instancetype)builderWithContext:(NSManagedObjectContext *)context;
-
-@property (nonatomic, strong) NSManagedObjectContext * buildContext;
++ (BOOL)buildController;
 
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remotes
 ////////////////////////////////////////////////////////////////////////////////
-@class RERemote, REButtonGroupBuilder;
+@class RERemote;
 
 /**
  * `RemoteBuilder` is a singleton class that, when provided with an `NSManagedObjectContext`, can
@@ -53,18 +28,15 @@
  * form a fully realized remote control interface. Currently this class is used for testing
  * purposes.
  */
-@interface RERemoteBuilder : REBuilder {
-    @private
-    REButtonGroupBuilder * _buttonGroupBuilder;
-}
+@interface RERemoteBuilder : NSObject
 
-- (RERemote *)constructDVRRemote;
++ (RERemote *)constructDVRRemote;
 
-- (RERemote *)constructHomeRemote;
++ (RERemote *)constructHomeRemote;
 
-- (RERemote *)constructPS3Remote;
++ (RERemote *)constructPS3Remote;
 
-- (RERemote *)constructSonosRemote;
++ (RERemote *)constructSonosRemote;
 
 @end
 
@@ -73,83 +45,73 @@
 ////////////////////////////////////////////////////////////////////////////////
 @class   REMacroCommand;
 
-@interface MacroBuilder : REBuilder
+@interface REMacroBuilder : NSObject
 
-- (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
                            toInitiateState:(BOOL)isOnState
                                switchIndex:(NSInteger *)switchIndex;
-- (NSSet *)deviceConfigsForActivity:(NSUInteger)activity;
+
++ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity;
 
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Button Groups
 ////////////////////////////////////////////////////////////////////////////////
-@class   REButtonGroup, REPickerLabelButtonGroup, REButtonBuilder, MacroBuilder;
+@class   REButtonGroup, REPickerLabelButtonGroup;
 
-@interface REButtonGroupBuilder : REBuilder {
-    REButtonBuilder * _buttonBuilder;
-    MacroBuilder    * _macroBuilder;
-}
+@interface REButtonGroupBuilder : NSObject
 
-- (REButtonGroup *) constructRemoteViewControllerTopBarButtonGroup;
++ (REButtonGroup *) constructControllerTopToolbar;
 
 // Home screen
-- (REButtonGroup *)constructActivities;
-- (REButtonGroup *)constructLightControls;
++ (REButtonGroup *)constructActivities;
++ (REButtonGroup *)constructLightControls;
 
 // DPad construction
-- (REButtonGroup *)rawDPad;
-- (REButtonGroup *)constructDVRDPad;
-- (REButtonGroup *)constructPS3DPad;
++ (REButtonGroup *)rawDPad;
++ (REButtonGroup *)constructDVRDPad;
++ (REButtonGroup *)constructPS3DPad;
 
 // ￼NumberPad construction
-- (REButtonGroup *)rawNumberPad;
-- (REButtonGroup *)constructDVRNumberPad;
-- (REButtonGroup *)constructPS3NumberPad;
++ (REButtonGroup *)rawNumberPad;
++ (REButtonGroup *)constructDVRNumberPad;
++ (REButtonGroup *)constructPS3NumberPad;
 
 // Transport construction
-- (REButtonGroup *)rawTransport;
-- (REButtonGroup *)constructDVRTransport;
-- (REButtonGroup *)constructPS3Transport;
++ (REButtonGroup *)rawTransport;
++ (REButtonGroup *)constructDVRTransport;
++ (REButtonGroup *)constructPS3Transport;
 
 // Rocker construction
-- (REPickerLabelButtonGroup *)rawRocker;
-- (REPickerLabelButtonGroup *)constructDVRRocker;
-- (REPickerLabelButtonGroup *)constructPS3Rocker;
-- (REPickerLabelButtonGroup *)constructSonosRocker;
++ (REPickerLabelButtonGroup *)rawRocker;
++ (REPickerLabelButtonGroup *)constructDVRRocker;
++ (REPickerLabelButtonGroup *)constructPS3Rocker;
++ (REPickerLabelButtonGroup *)constructSonosRocker;
 
 // Constructing other button groups
-- (REButtonGroup *)rawGroupOfThreeButtons;
-- (REButtonGroup *)rawButtonPanel;
-- (REButtonGroup *)constructSonosMuteButtonGroup;
-- (REButtonGroup *)constructSelectionPanel;
-- (REButtonGroup *)constructDVRGroupOfThreeButtons;
-- (REButtonGroup *)constructPS3GroupOfThreeButtons;
-- (REButtonGroup *)constructAdditionalButtonsLeft;
-- (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity;
++ (REButtonGroup *)rawGroupOfThreeButtons;
++ (REButtonGroup *)rawButtonPanel;
++ (REButtonGroup *)constructSonosMuteButtonGroup;
++ (REButtonGroup *)constructSelectionPanel;
++ (REButtonGroup *)constructDVRGroupOfThreeButtons;
++ (REButtonGroup *)constructPS3GroupOfThreeButtons;
++ (REButtonGroup *)constructAdditionalButtonsLeft;
++ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity;
 
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Buttons
 ////////////////////////////////////////////////////////////////////////////////
-@class   REActivityButton, RECommand, REButton;
+@class   REActivityButton;
 
-@interface REButtonBuilder : REBuilder {
-    @private
-    MacroBuilder * _macroBuilder;
-}
+@interface REButtonBuilder : NSObject
 
-//- (BOOL)generateButtonPreviews:(BOOL)replaceExisting;
++ (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity;
 
-- (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity;
-
-- (NSMutableDictionary *)buttonTitleAttributesWithFontName:(NSString *)fontName
++ (NSMutableDictionary *)buttonTitleAttributesWithFontName:(NSString *)fontName
                                                   fontSize:(CGFloat)fontSize
                                                highlighted:(NSMutableDictionary *)highlighted;
-
-//- (REButton *)buttonWithDefaultStyle:(REButtonStyleDefault)style
-//                             context:(NSManagedObjectContext *)context;
 
 @end

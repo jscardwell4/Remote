@@ -68,7 +68,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     fetchRequest.resultType = NSCountResultType;
 
     __block NSUInteger       count   = 0;
-    NSManagedObjectContext * context = [[CoreDataManager sharedManager] mainObjectContext];
+    NSManagedObjectContext * context = [NSManagedObjectContext MR_defaultContext];
     [context performBlockAndWait:
      ^{
          NSError * error = nil;

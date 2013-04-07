@@ -69,10 +69,10 @@
 
 /**
  * Method for creating a new `GlobalCacheDeviceConnection` for connecting to the specified `device`.
- * @param device The object model for the device to which a connection shall be established
+ * @param uri The URI for the device to which a connection shall be established
  * @return The Newly instantiated `GlobalCachedDeviceConnection` object
  */
-+ (GlobalCacheDeviceConnection *)connectionForDevice:(NDiTachDevice *)device;
++ (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uri;
 
 /**
  * Asks the `GlobalCacheDeviceConnection` to commence communication with the `device`.
@@ -98,7 +98,7 @@
 @property (nonatomic, readonly) BOOL isConnected;
 
 /// The uuid identifying the device to which the connection transmits and receives
-@property (nonatomic, readonly) NSString * deviceUUID;
+@property (nonatomic, readonly) NSString * deviceURI;
 
 @end
 
@@ -112,7 +112,6 @@
     NSMutableSet                   * _beaconsReceived;     /// uuids of devices from processed beacons.
     NSString                       * _capturedCommand;     /// needs to be moved to `IRLearner`
     GlobalCacheMulticastConnection * _multicastConnection; /// reference to the multicast singleton.
-    NSManagedObjectContext         * _context;             /// context used for device models.
     @package
     NSOperationQueue               * _operationQueue;      /// private queue for networking operations.
 }

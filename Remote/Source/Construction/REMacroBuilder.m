@@ -7,230 +7,234 @@
 //
 #import "RemoteConstruction.h"
 
-@implementation MacroBuilder
+@implementation REMacroBuilder
 
-- (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
-                           toInitiateState:(BOOL)isOnState
-                               switchIndex:(NSInteger *)switchIndex
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
+                             toInitiateState:(BOOL)isOnState
+                                 switchIndex:(NSInteger *)switchIndex
 {
     __block REMacroCommand * macroCommand = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-        switch (activity)
-        {
-            case 1:
-                macroCommand = [self dvrActivityMacroToInitiateState:isOnState
-                                                         switchIndex:switchIndex];
-                break;
-                
-            case 2:
-                macroCommand = [self ps3ActivityMacroToInitiateState:isOnState
-                                                         switchIndex:switchIndex];
-                break;
-                
-            case 3:
-                macroCommand = [self appleTVActivityMacroToInitiateState:isOnState
-                                                             switchIndex:switchIndex];
-                break;
-                
-            case 4:
-                macroCommand = [self sonosActivityMacroToInitiateState:isOnState
-                                                           switchIndex:switchIndex];
-                break;
-                
-            default:
-                break;
-        }
-     }];
 
-    return macroCommand;
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext * context)
+          {
+              switch (activity)
+              {
+                  case 1:
+                      macroCommand = [self dvrActivityMacroToInitiateState:isOnState
+                                                               switchIndex:switchIndex];
+                      break;
+
+                  case 2:
+                      macroCommand = [self ps3ActivityMacroToInitiateState:isOnState
+                                                               switchIndex:switchIndex];
+                      break;
+
+                  case 3:
+                      macroCommand = [self appleTVActivityMacroToInitiateState:isOnState
+                                                                   switchIndex:switchIndex];
+                      break;
+
+                  case 4:
+                      macroCommand = [self sonosActivityMacroToInitiateState:isOnState
+                                                                 switchIndex:switchIndex];
+                      break;
+
+                  default:
+                      break;
+              }
+          }]) return nil;
+    else return macroCommand;
 }
 
 
-- (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
-                                      switchIndex:(NSInteger *)switchIndex
-{
-    __block REMacroCommand    * macroCommand = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-        // Macro sequence: A/V Power -> TV Power
-        macroCommand = [REMacroCommand commandInContext:_buildContext];
-        BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                             context:_buildContext];
-        BOComponentDevice * samsungTV    = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                             context:_buildContext];
-
-        if (isOnState)
-        {
-            [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"TV/SAT")];
-            [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
-            [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
-            [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 4")];
-            [macroCommand addCommandsObject:MakeSwitchCommand(@"activity1")];
-
-            if (switchIndex != NULL) *switchIndex = 4;
-        }
-
-        else
-        {
-            [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-            [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
-            [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-            if (switchIndex != NULL) *switchIndex = 2;
-        }
-    }];
-
-    return macroCommand;
-}
-
-- (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState
-                                          switchIndex:(NSInteger *)switchIndex
-{
-    __block REMacroCommand    * macroCommand = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-         // Macro sequence: A/V Power -> TV Power
-         macroCommand = [REMacroCommand commandInContext:_buildContext];
-         BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                           context:_buildContext];
-         BOComponentDevice * samsungTV = [BOComponentDevice    fetchDeviceWithName:@"Samsung TV"
-                                                                           context:_buildContext];
-
-         if (isOnState)
-         {
-             [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"DVD")];
-             [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
-             [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
-             [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 2")];
-
-             if (switchIndex != NULL) *switchIndex = -2;
-         }
-
-         else
-         {
-             [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-             [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
-             [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-             
-             if (switchIndex != NULL) *switchIndex = 2;
-         }
-     }];
-
-    return macroCommand;
-}
-
-
-- (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState
++ (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
                                         switchIndex:(NSInteger *)switchIndex
 {
     __block REMacroCommand    * macroCommand = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-         // Macro sequence: A/V Power -> TV Power
-         macroCommand = [REMacroCommand commandInContext:_buildContext];
-         BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                           context:_buildContext];
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext * context)
+          {
+              // Macro sequence: A/V Power -> TV Power
+              macroCommand = [REMacroCommand commandInContext:context];
+              BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                                context:context];
+              BOComponentDevice * samsungTV    = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                                context:context];
 
-         if (isOnState)
-         {
-             [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"MD/Tape")];
-             [macroCommand addCommandsObject:MakeSwitchCommand(@"activity4")];
+              if (isOnState)
+              {
+                  [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"TV/SAT")];
+                  [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
+                  [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
+                  [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 4")];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(@"activity1")];
 
-             if (switchIndex != NULL) *switchIndex = 1;
-         }
+                  if (switchIndex != NULL) *switchIndex = 4;
+              }
 
-         else
-         {
-             [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-             [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-             
-             if (switchIndex != NULL) *switchIndex = 1;
-         }
-     }];
+              else
+              {
+                  [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
+                  [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
+                  if (switchIndex != NULL) *switchIndex = 2;
+              }
 
-    return macroCommand;
+          }]) return nil;
+    else return macroCommand;
 }
 
-
-- (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState
-                                      switchIndex:(NSInteger *)switchIndex
++ (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState
+                                            switchIndex:(NSInteger *)switchIndex
 {
     __block REMacroCommand    * macroCommand = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-         // Macro sequence: A/V Power -> TV Power
-         macroCommand = [REMacroCommand commandInContext:_buildContext];
-         BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                           context:_buildContext];
-         BOComponentDevice * ps3 = [BOComponentDevice          fetchDeviceWithName:@"PS3"
-                                                                           context:_buildContext];
-         BOComponentDevice * samsungTV = [BOComponentDevice    fetchDeviceWithName:@"Samsung TV"
-                                                                           context:_buildContext];
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext * context)
+          {
+              // Macro sequence: A/V Power -> TV Power
+              macroCommand = [REMacroCommand commandInContext:context];
+              BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                                context:context];
+              BOComponentDevice * samsungTV = [BOComponentDevice    fetchDeviceWithName:@"Samsung TV"
+                                                                                context:context];
 
-         if (isOnState)
-         {
-             [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"Video 2")];
-             [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
-             [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
-             [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 3")];
-             [macroCommand addCommandsObject:MakePowerOnCommand(ps3)];
-             [macroCommand addCommandsObject:MakeSwitchCommand(@"activity2")];
+              if (isOnState)
+              {
+                  [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"DVD")];
+                  [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
+                  [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
+                  [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 2")];
 
-             if (switchIndex != NULL) *switchIndex = 5;
-         }
+                  if (switchIndex != NULL) *switchIndex = -2;
+              }
 
-         else
-         {
-             [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
-             [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-             [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-             
-             if (switchIndex != NULL) *switchIndex = 2;
-         }
-     }];
-    return macroCommand;
+              else
+              {
+                  [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
+                  [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
+
+                  if (switchIndex != NULL) *switchIndex = 2;
+              }
+
+          }]) return nil;
+    else return macroCommand;
 }
 
 
-- (NSSet *)deviceConfigsForActivity:(NSUInteger)activity
++ (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState
+                                          switchIndex:(NSInteger *)switchIndex
+{
+    __block REMacroCommand    * macroCommand = nil;
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext * context)
+          {
+              // Macro sequence: A/V Power -> TV Power
+              macroCommand = [REMacroCommand commandInContext:context];
+              BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                                context:context];
+
+              if (isOnState)
+              {
+                  [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"MD/Tape")];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(@"activity4")];
+
+                  if (switchIndex != NULL) *switchIndex = 1;
+              }
+
+              else
+              {
+                  [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
+
+                  if (switchIndex != NULL) *switchIndex = 1;
+              }
+
+          }]) return nil;
+    else return macroCommand;
+}
+
+
++ (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState
+                                        switchIndex:(NSInteger *)switchIndex
+{
+    __block REMacroCommand    * macroCommand = nil;
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext * context)
+          {
+              // Macro sequence: A/V Power -> TV Power
+              macroCommand = [REMacroCommand commandInContext:context];
+              BOComponentDevice * avReceiver   = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                                context:context];
+              BOComponentDevice * ps3 = [BOComponentDevice          fetchDeviceWithName:@"PS3"
+                                                                                context:context];
+              BOComponentDevice * samsungTV = [BOComponentDevice    fetchDeviceWithName:@"Samsung TV"
+                                                                                context:context];
+
+              if (isOnState)
+              {
+                  [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"Video 2")];
+                  [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
+                  [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
+                  [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 3")];
+                  [macroCommand addCommandsObject:MakePowerOnCommand(ps3)];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(@"activity2")];
+
+                  if (switchIndex != NULL) *switchIndex = 5;
+              }
+
+              else
+              {
+                  [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
+                  [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
+                  [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
+
+                  if (switchIndex != NULL) *switchIndex = 2;
+              }
+
+          }]) return nil;
+    else return macroCommand;
+}
+
+
++ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity
 {
     __block NSSet * configs = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-         BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                         context:_buildContext];
-         BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                        context:_buildContext];
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext * context)
+          {
+              BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                              context:context];
+              BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                              context:context];
 
-         NSDictionary    * receiverConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
-         REDeviceConfiguration * receiverConfig =
-         [REDeviceConfiguration configurationForDevice:avReceiver
-                                              settings:receiverConfigSettings];
+              NSDictionary * receiverConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
 
-         NSDictionary * tvOffConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
-         REDeviceConfiguration * tvOffConfig =
-         [REDeviceConfiguration configurationForDevice:samsungTV
-                                              settings:tvOffConfigSettings];
+              REDeviceConfiguration * receiverConfig = [REDeviceConfiguration
+                                                        configurationForDevice:avReceiver
+                                                                      settings:receiverConfigSettings];
 
-         switch (activity)
-         {
-             case 1:  // dvr
-             case 2:  // samsung
-             case 3:  // ps3
-                 configs = [NSSet setWithObjects:receiverConfig, tvOffConfig, nil];
-                 break;
+              NSDictionary * tvOffConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
+              REDeviceConfiguration * tvOffConfig = [REDeviceConfiguration
+                                                     configurationForDevice:samsungTV
+                                                                   settings:tvOffConfigSettings];
 
-             case 4:
-                 // sonos
-                 configs = [NSSet setWithObject:receiverConfig];
-                 break;
-                 
-             default:
-                 break;
-         }
-     }];
-
-    return configs;
+              switch (activity)
+              {
+                  case 1:  // dvr
+                  case 2:  // samsung
+                  case 3:  // ps3
+                      configs = [NSSet setWithObjects:receiverConfig, tvOffConfig, nil]; break;
+                      
+                  case 4:
+                      // sonos
+                      configs = [NSSet setWithObject:receiverConfig]; break;
+                      
+                  default: break;
+              }
+          }]) return nil;
+    else return configs;
 }
 
 @end

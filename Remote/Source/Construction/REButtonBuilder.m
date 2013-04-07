@@ -8,64 +8,68 @@
 
 #import "RemoteConstruction.h"
 
-static const int   ddLogLevel = DefaultDDLogLevel;
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = DEFAULT_LOG_CONTEXT;
+#pragma unused(ddLogLevel, msLogContext)
 
 @implementation REButtonBuilder
 
-+ (instancetype)builderWithContext:(NSManagedObjectContext *)context
-{
-    REButtonBuilder * builder = [super builderWithContext:context];
-    builder->_macroBuilder = [MacroBuilder builderWithContext:context];
-    return builder;
-}
-
-- (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity
++ (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity
 {
     __block REActivityButton *  button = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-        NSMutableDictionary * attrHigh = [@{} mutableCopy];
+    
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+          ^(NSManagedObjectContext *context)
+          {
 
-        NSMutableDictionary * attr     = [self buttonTitleAttributesWithFontName:nil
-                                                                        fontSize:0
-                                                                     highlighted:attrHigh];
+              NSMutableDictionary * attrH = [@{} mutableCopy];
 
-        NSAttributedString * attrTitle = [NSAttributedString  attributedStringWithString:title
-                                                                              attributes:attr];
+              NSMutableDictionary * attrN     = [self buttonTitleAttributesWithFontName:nil
+                                                                               fontSize:0
+                                                                            highlighted:attrH];
 
-        NSAttributedString * attrTitleHigh = [NSAttributedString  attributedStringWithString:title
-                                                                                  attributes:attrHigh];
-        NSInteger switchIndex = -1;
+              NSAttributedString * titleN = [NSAttributedString  attributedStringWithString:title
+                                                                                 attributes:attrN];
 
-        REMacroCommand * command     = [_macroBuilder activityMacroForActivity:activity
-                                                               toInitiateState:YES
-                                                                   switchIndex:&switchIndex];
+              NSAttributedString * titleH = [NSAttributedString  attributedStringWithString:title
+                                                                                 attributes:attrH];
+              NSInteger switchIndex = -1;
 
-        RECommand * longPressCommand = nil;
+              REMacroCommand * command     = [REMacroBuilder activityMacroForActivity:activity
+                                                                      toInitiateState:YES
+                                                                          switchIndex:&switchIndex];
+              assert(command);
+              
+              RECommand * longPressCommand = nil;
 
-        if (switchIndex >= 0) longPressCommand = command[switchIndex];
+              if (switchIndex >= 0) longPressCommand = command[switchIndex];
 
-        NSSet * configs = [_macroBuilder deviceConfigsForActivity:activity];
+              NSSet * configs = [REMacroBuilder deviceConfigsForActivity:activity];
 
-        button =
-            MakeActivityOnButton(@"titleEdgeInsets"       : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                                 @"shape"                 : @(REShapeRoundedRectangle),
-                                 @"style"                 : @(REStyleApplyGloss | REStyleDrawBorder),
-                                 @"key"                   :   $(@"activity%u", activity),
-                                 @"titles"                : MakeTitleSet(@{ @"normal"      : attrTitle,
-                                                                            @"highlighted" : attrTitleHigh }),
-                                 @"deviceConfigurations"  : configs,
-                                 @"command"               : command,
-                                 @"longPressCommand"      : CollectionSafeValue(longPressCommand),
-                                 @"displayName"           : [title stringByReplacingOccurrencesOfString:@"\n"
-                                                                                         withString:@" "]);
-     }];
+              NSValue * titleEdgeInsets = NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20));
+              REControlStateTitleSet * titleSet = MakeTitleSet(@{ @"normal"    	: titleN,
+                                                                  @"highlighted": titleH });
+              NSString * displayName = [title stringByRemovingLineBreaks];
+              NSString * key = $(@"activity%u", activity);
+              NSNumber * shape = @(REShapeRoundedRectangle);
+              NSNumber * style = @(REStyleApplyGloss | REStyleDrawBorder);
 
-    return button;
+              button =
+                  MakeActivityOnButton(@"titleEdgeInsets"       : titleEdgeInsets,
+                                       @"shape"                 : shape,
+                                       @"style"                 : style,
+                                       @"key"                   : key,
+                                       @"titles"                : titleSet,
+                                       @"deviceConfigurations"  : configs,
+                                       @"command"               : command,
+                                       @"longPressCommand"      : CollectionSafeValue(longPressCommand),
+                                       @"displayName"           : displayName);
+     }]) return nil;
+    else return button;
 }
 
 
-- (NSMutableDictionary *)buttonTitleAttributesWithFontName:(NSString *)fontName
++ (NSMutableDictionary *)buttonTitleAttributesWithFontName:(NSString *)fontName
                                                   fontSize:(CGFloat)fontSize
                                                highlighted:(NSMutableDictionary *)highlighted
 {
@@ -90,7 +94,8 @@ static const int   ddLogLevel = DefaultDDLogLevel;
 
     NSMutableDictionary * buttonTitleAttributes = [titleAttributes mutableCopy];
 
-    if (fontName) buttonTitleAttributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:fontSize];
+    if (fontName)
+        buttonTitleAttributes[NSFontAttributeName] = [UIFont fontWithName:fontName size:fontSize];
 
     if (highlighted)
     {

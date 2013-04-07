@@ -16,12 +16,8 @@
 #import "UITestRunner.h"
 #import "StoryboardProxy.h"
 
-// Database options
-#define USE_UNDO_MANAGER NO
-#define REBUILD_PREVIEWS NO
-
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
-static const int msLogContext = DEFAULT_LOG_CONTEXT;
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = DEFAULT_LOG_CONTEXT;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation MSRemoteAppController {
@@ -29,7 +25,8 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
     NSOperationQueue           * _workQueue;
 }
 
-+ (NSString const *)versionInfo {
++ (NSString const *)versionInfo
+{
 
     static NSString const * kVersionInfo = nil;
 
@@ -57,7 +54,8 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 }
 
-- (void)runUITests {
+- (void)runUITests
+{
     #define ButtonGroupEditingTest(focus, number, options) \
     @(UITestTypeButtonGroupEditing | focus | (uint64_t)((uint64_t)number << UITestNumberOffset) | (uint64_t)((uint64_t)options << UITestOptionsOffset))
     #define RemoteEditingTest(focus, number, options) \
@@ -112,39 +110,41 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 #pragma mark - Shared controller and Storyboard controllers
 
-+ (MSRemoteAppController *)sharedAppController {
-    static dispatch_once_t                  pred          = 0;
++ (MSRemoteAppController *)sharedAppController
+{
+    static dispatch_once_t pred = 0;
     __strong static MSRemoteAppController * _sharedObject = nil;
-
     dispatch_once(&pred, ^{_sharedObject = SharedApp.delegate;});
-
     return _sharedObject;
 }
 
-- (void)showRemote {
-    [MainQueue addOperationWithBlock:^{
-                   [_launchScreenVC performSegueWithIdentifier:@"remoteView" sender:self];
-               }];
+- (void)showRemote
+{
+    [MainQueue addOperationWithBlock:^{ [_launchScreenVC performSegueWithIdentifier:@"remoteView"
+                                                                             sender:self]; }];
 }
 
-+ (void)attachLoggers {
++ (void)attachLoggers
+{
 
     [MSLog addTaggingTTYLogger];
     [MSLog addTaggingASLLogger];
 
     NSString * logsDirectory = [MSLog defaultLogDirectory];
 
-    NSDictionary * fileLoggers = @{@(FILE_LOG_CONTEXT)       : [logsDirectory stringByAppendingPathComponent:@"Default"],
-                                   @(PAINTER_LOG_CONTEXT)    : [logsDirectory stringByAppendingPathComponent:@"Painter"],
-                                   @(NETWORKING_LOG_CONTEXT) : [logsDirectory stringByAppendingPathComponent:@"Networking"],
-                                   @(REMOTE_LOG_CONTEXT)     : [logsDirectory stringByAppendingPathComponent:@"Remote"],
-                                   @(COREDATA_LOG_CONTEXT)   : [logsDirectory stringByAppendingPathComponent:@"CoreData"],
-                                   @(UITESTING_LOG_CONTEXT)  : [logsDirectory stringByAppendingPathComponent:@"UITesting"],
-                                   @(EDITOR_LOG_CONTEXT)     : [logsDirectory stringByAppendingPathComponent:@"Editor"],
-                                   @(COMMAND_LOG_CONTEXT)    : [logsDirectory stringByAppendingPathComponent:@"Command"],
-                                   @(CONSTRAINT_LOG_CONTEXT) : [logsDirectory stringByAppendingPathComponent:@"Constraints"]};
+    NSDictionary * fileLoggers = @{@(FILE_LC)       : $(@"%@/Default",     logsDirectory),
+                                   @(PAINTER_LC)    : $(@"%@/Painter",     logsDirectory),
+                                   @(NETWORKING_LC) : $(@"%@/Networking",  logsDirectory),
+                                   @(REMOTE_LC)     : $(@"%@/Remote",      logsDirectory),
+                                   @(COREDATA_LC)   : $(@"%@/CoreData",    logsDirectory),
+                                   @(UITESTING_LC)  : $(@"%@/UITesting",   logsDirectory),
+                                   @(EDITOR_LC)     : $(@"%@/Editor",      logsDirectory),
+                                   @(COMMAND_LC)    : $(@"%@/Command",     logsDirectory),
+                                   @(CONSTRAINT_LC) : $(@"%@/Constraints", logsDirectory),
+                                   @(BUILDING_LC)   : $(@"%@/Building",    logsDirectory)};
 
-    [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop) {
+    [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop)
+    {
         [MSLog addDefaultFileLoggerForContext:NSUIntegerValue(key) directory:obj];
     }];
 
@@ -153,7 +153,8 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 /*
  * Creates the application's loggers and registers default settings
  */
-+ (void)initialize {
++ (void)initialize
+{
     nsprintf(@"\u00ABversion\u00BB %@\n", [self versionInfo]);
 
     // Create loggers
@@ -163,7 +164,8 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
     [SettingsManager registerDefaults];
 }
 
-- (void)showLaunchScreen {
+- (void)showLaunchScreen
+{
     if (!_launchScreenVC) _launchScreenVC = [StoryboardProxy launchScreenViewController];
 
     [self.window setRootViewController:_launchScreenVC];
@@ -177,57 +179,52 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 - (BOOL)              application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // set a reference to our launch screen view controller
     _launchScreenVC = (LaunchScreenViewController*)[self.window rootViewController];
     _launchScreenVC.view.userInteractionEnabled = NO;
 
     // Apply user defined settings and observe status bar setting changes
     [SettingsManager applyUserSettings];
-
     [NotificationCenter addObserverForName:MSSettingsManagerStatusBarSettingDidChangeNotification
                                     object:[SettingsManager sharedSettingsManager]
-                                     queue:nil
-                                usingBlock:^(NSNotification * note){
-                                    SharedApp.statusBarHidden = [SettingsManager boolForSetting:kStatusBarKey];
-                                }];
+                                     queue:MainQueue
+                                usingBlock:^(NSNotification * note)
+                                           {
+                                               SharedApp.statusBarHidden =
+                                                   [SettingsManager boolForSetting:kStatusBarKey];
+                                           }];
 
-    if (![[CoreDataManager sharedManager] initializeCoreDataStack])
-        DDLogError(@"%@ failed to setup core data stack", ClassTagSelectorString);
+    // intialize core data statck
+    BOOL coreDataStackInitializedSuccessfully = [CoreDataManager initializeDatabase];
+    assert(coreDataStackInitializedSuccessfully);
 
-    _workQueue      = [[NSOperationQueue alloc] init];
-    _workQueue.name = @"com.moondeerstudios.initialization";
+    // create our work queue for database loading and building
+    _workQueue = [NSOperationQueue  operationQueueWithName:@"com.moondeerstudios.initialization"];
 
-    __block BOOL error = NO;
-    NSOperation * rebuildDatabase =
-        [NSBlockOperation blockOperationWithBlock:
-         ^{
-             if (!error && [UserDefaults boolForKey:@"rebuild"])
-             {
-                 [DatabaseLoader
-                  loadDataIntoContext:[CoreDataManager
-                                       newContextWithConcurrencyType:NSPrivateQueueConcurrencyType
-                                                         undoSupport:NO
-                                                             nametag:@"data loading"]];
-             }
-         }];
+    // create block operations for our work queue
+    __block BOOL errorOccurred = NO; // if set to YES, remaining operations should cancel
     
-    NSOperation * rebuildRemote =
-        [NSBlockOperation blockOperationWithBlock:
-         ^{
-             if (!error && ([UserDefaults boolForKey:@"rebuild"] || [UserDefaults boolForKey:@"remote"]))
-             {
-                 [ConstructionManager
-                  buildRemoteControllerInContext:[CoreDataManager
-                                                  newContextWithConcurrencyType:NSPrivateQueueConcurrencyType
-                                                                    undoSupport:NO
-                                                                        nametag:@"remote building"]];
-             }
-         }];
+    NSOperation * rebuildDatabase = [NSBlockOperation blockOperationWithBlock:
+                                     ^{
+                                         if (!errorOccurred && [UserDefaults boolForKey:@"rebuild"])
+                                             errorOccurred = (![DatabaseLoader loadData]);
+                                     }];
+    
+    NSOperation * rebuildRemote = [NSBlockOperation blockOperationWithBlock:
+                                   ^{
+                                       if (   !errorOccurred
+                                           && (   [UserDefaults boolForKey:@"rebuild"]
+                                               || [UserDefaults boolForKey:@"remote"]))
+                                       {
+                                           [RemoteElementConstructionManager buildController];
+                                       }
+                                   }];
     
     [rebuildRemote addDependency:rebuildDatabase];
 
     NSOperation * runUITests = [NSBlockOperation blockOperationWithBlock:
                                 ^{
-                                    if (!error && [UserDefaults boolForKey:@"uitest"])
+                                    if (!errorOccurred && [UserDefaults boolForKey:@"uitest"])
                                         MSRunAsyncOnMain (^{ [self runUITests]; });
                                 }];
 
@@ -235,40 +232,39 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
     NSOperation * readyApplication = [NSBlockOperation blockOperationWithBlock:
                                       ^{
-                                          MSRunAsyncOnMain (^{ _launchScreenVC.view.
-                                                                  userInteractionEnabled = YES; });
+                                          [MainQueue addOperationWithBlock:
+                                           ^{ _launchScreenVC.view. userInteractionEnabled = YES; }];
                                       }];
 
     [readyApplication addDependency:runUITests];
 
-    [_workQueue addOperations:@[rebuildDatabase, rebuildRemote, runUITests, readyApplication]
+    [_workQueue addOperations:@[rebuildDatabase,
+                                rebuildRemote,
+                                runUITests,
+                                readyApplication]
             waitUntilFinished:NO];
 
     return YES;
 }
-  /* application */
 
-/*
- * Dispatches various methods for initializing the application.
- */
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+//- (void)applicationDidBecomeActive:(UIApplication *)application {
     // Carry out any methods dependent on the state of top level defines.
 
     // Listen for available devices
     // [[ConnectionManager sharedConnectionManager] logStatus];
-}
+//}
 
 //???: Why are random saves like these crashing with -[NSNull countByEnumeratingWithState:objects:count:] message sends?
 //- (void)applicationWillResignActive:(UIApplication *)application
 //{
-//    [[CoreDataManager sharedManager] saveMainContext];
+//    [CoreDataManager saveMainContext];
 //}
 
 /*
  * Saves the primary managed object context
  */
 //- (void)applicationDidEnterBackground:(UIApplication *)application {
-//    [[CoreDataManager sharedManager] saveMainContext];
+//    [CoreDataManager saveMainContext];
 //}
 
 @end

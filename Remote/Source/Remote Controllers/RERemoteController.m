@@ -23,6 +23,7 @@ MSKIT_STRING_CONST   MSRemoteControllerTopToolbarKeyName = @"MSRemoteControllerT
 
 static int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = REMOTE_F_C;
+#pragma unused(ddLogLevel,msLogContext)
 
 @interface RERemoteController ()
 
@@ -76,30 +77,20 @@ static int   msLogContext = REMOTE_F_C;
 
 /// @name ￼Creating a RemoteController
 
-+ (RERemoteController *)remoteController {
-    return [self remoteControllerInContext:[[CoreDataManager sharedManager] mainObjectContext]];
++ (RERemoteController *)remoteController
+{
+    return [self remoteControllerInContext:[NSManagedObjectContext MR_defaultContext]];
 }
 
 + (RERemoteController *)remoteControllerInContext:(NSManagedObjectContext *)context
 {
-    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"RERemoteController"];
-    __block RERemoteController * controller = nil;
-
-    [context performBlockAndWait:^{
-                 NSError * error = nil;
-                 NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest
-                                                                   error:&error];
-                 if (error)
-                     MSLogError(@"%@\n\terror retrieving remote controller: %@",
-                                ClassTagSelectorString, [error localizedFailureReason]);
-                 else if (fetchedObjects.count > 1)
-                     MSLogError(@"there should only be one controller");
-
-                 else if (fetchedObjects.count)
-                     controller = fetchedObjects[0];
-                 else
-                     controller = NSManagedObjectFromClass(context);
-    }];
+    __block RERemoteController * controller = [self MR_findFirstInContext:context];
+    if (!controller)
+        [context performBlockAndWait:
+         ^{
+             controller = NSManagedObjectFromClass(context);
+             [context MR_saveToPersistentStoreAndWait];
+         }];
 
     return controller;
 }

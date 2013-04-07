@@ -135,7 +135,8 @@ MSKIT_STATIC_STRING_CONST   REConstant        = @"constant";
 
              [_remoteElement addConstraint:constraint];
           }];
-         [CoreDataManager saveContext:_context asynchronous:NO completion:nil];
+         [_context MR_saveOnlySelfAndWait];
+//         [CoreDataManager saveContext:_context asynchronous:NO completion:nil];
      }];
 }
 
@@ -358,7 +359,7 @@ MSKIT_STATIC_STRING_CONST   REConstant        = @"constant";
              }
          }
          // save added because change notifications randomly not received otherwise
-//         [[CoreDataManager sharedManager] saveContext:element.managedObjectContext];
+//         [CoreDataManager saveContext:element.managedObjectContext];
          [_context processPendingChanges];
      }];
 }

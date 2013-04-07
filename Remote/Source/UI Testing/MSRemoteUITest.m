@@ -53,10 +53,8 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
         _testCode             = testCode;
         _flags.quietMode      = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 1);
         _flags.suppressDialog = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 2);
-        self.objectContext    = [CoreDataManager childContextForContext:nil
-                                                        concurrencyType:NSMainQueueConcurrencyType
-                                                            undoSupport:NO
-                                                                nametag:@"uitesting"];
+        self.objectContext    = [NSManagedObjectContext MR_newMainQueueContext];
+        [_objectContext MR_setWorkingName:@"uitesting"];
         self.remoteController = [RERemoteController remoteControllerInContext:_objectContext];
     }
 

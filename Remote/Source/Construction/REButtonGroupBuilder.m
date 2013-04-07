@@ -9,26 +9,14 @@
 
 static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
-@interface REButtonGroupBuilder ()
-@property (nonatomic, strong) REButtonBuilder * buttonBuilder;
-@property (nonatomic, strong) MacroBuilder    * macroBuilder;
-@end
-
 @implementation REButtonGroupBuilder
 
-+ (instancetype)builderWithContext:(NSManagedObjectContext *)context
-{
-    REButtonGroupBuilder * builder = [super builderWithContext:context];
-    builder->_buttonBuilder = [REButtonBuilder builderWithContext:context];
-    builder->_macroBuilder  = [MacroBuilder builderWithContext:context];
-    return builder;
-}
-
-- (REButtonGroup *)constructRemoteViewControllerTopBarButtonGroup
++ (REButtonGroup *)constructControllerTopToolbar
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeToolbarButtonGroup(@"type"            : @(REButtonGroupTypeToolbar),
                                     @"displayName"     : @"Top Toolbar",
@@ -97,29 +85,29 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                         home, settings, editRemote, battery, connection);
 
          SetConstraints(home, @"home.width ≥ 44");
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructActivities
++ (REButtonGroup *)constructActivities
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup = MakeButtonGroup(@"displayName" : @"Activity Buttons",
                                            @"key"         : @"activityButtons");
 
-         REActivityButton * dvrActivityButton = [_buttonBuilder
+         REActivityButton * dvrActivityButton = [REButtonBuilder
                                                  launchActivityButtonWithTitle:@"Comcast\nDVR"
                                                                       activity:1];
-         REActivityButton * ps3ActivityButton = [_buttonBuilder
+         REActivityButton * ps3ActivityButton = [REButtonBuilder
                                                  launchActivityButtonWithTitle:@"Playstation"
                                                                       activity:2];
-         REActivityButton * appleTVActivityButton = [_buttonBuilder
+         REActivityButton * appleTVActivityButton = [REButtonBuilder
                                                      launchActivityButtonWithTitle:@" TV"
                                                                           activity:3];
-         REActivityButton * sonosActivityButton = [_buttonBuilder
+         REActivityButton * sonosActivityButton = [REButtonBuilder
                                                    launchActivityButtonWithTitle:@"Sonos"
                                                                         activity:4];
          [buttonGroup addSubelements:[@[dvrActivityButton,
@@ -154,16 +142,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructLightControls
++ (REButtonGroup *)constructLightControls
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeButtonGroup(@"displayName"     : @"Light Controls",
                              @"key"             : @"lightControls",
@@ -202,16 +190,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)rawDPad
++ (REButtonGroup *)rawDPad
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeButtonGroup(@"key"             : @"dpad",
                              @"displayName"     : @"dpad",
@@ -220,7 +208,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                              @"style"           : @(REStyleApplyGloss|REStyleDrawBorder));
 
          NSMutableDictionary * attrHigh = [@{} mutableCopy];
-         NSDictionary * attr = [_buttonBuilder
+         NSDictionary * attr = [REButtonBuilder
                                 buttonTitleAttributesWithFontName:kDefaultFontName
                                                          fontSize:32.0
                                                       highlighted:attrHigh];
@@ -242,7 +230,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          [buttonGroup addSubelementsObject:ok];
 
          // Create _up button and add to button group
-         attr             = [_buttonBuilder buttonTitleAttributesWithFontName:kArrowFontName
+         attr             = [REButtonBuilder buttonTitleAttributesWithFontName:kArrowFontName
                                                                      fontSize:32.0
                                                                   highlighted:attrHigh];
          label            = [NSAttributedString attributedStringWithString:kUpArrow attributes:attr];
@@ -322,26 +310,26 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructDVRDPad
++ (REButtonGroup *)constructDVRDPad
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                          context:_buildContext];
+                                                                          context:context];
          BOComponentDevice * samsungTV   = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                          context:_buildContext];
+                                                                          context:context];
 
          buttonGroup = [self rawDPad];
          buttonGroup.displayName = @"DVR DPad";
 
          // Create default DPad command set
-         RECommandSet   * dvrDPad = [RECommandSet commandSetInContext:_buildContext type:RECommandSetTypeDPad];
+         RECommandSet   * dvrDPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeDPad];
          dvrDPad[REDPadOkButtonKey]    = MakeIRCommand(comcastDVR, @"OK");
          dvrDPad[REDPadUpButtonKey]    = MakeIRCommand(comcastDVR, @"Up");
          dvrDPad[REDPadDownButtonKey]  = MakeIRCommand(comcastDVR, @"Down");
@@ -351,7 +339,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          [buttonGroup.configurationDelegate setCommandSet:dvrDPad forConfiguration:REDefaultConfiguration];
 
          // Create tv DPad command set
-         RECommandSet * tvDPad = [RECommandSet commandSetInContext:_buildContext type:RECommandSetTypeDPad];
+         RECommandSet * tvDPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeDPad];
          tvDPad[REDPadOkButtonKey]    = MakeIRCommand(samsungTV, @"Enter");
          tvDPad[REDPadUpButtonKey]    = MakeIRCommand(samsungTV, @"Up");
          tvDPad[REDPadDownButtonKey]  = MakeIRCommand(samsungTV, @"Down");
@@ -359,22 +347,23 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          tvDPad[REDPadLeftButtonKey]  = MakeIRCommand(samsungTV, @"Left");
 
          [buttonGroup.configurationDelegate setCommandSet:tvDPad forConfiguration:kTVConfiguration];
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructPS3DPad
++ (REButtonGroup *)constructPS3DPad
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-         BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3" context:_buildContext];
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
+         BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3" context:context];
 
          buttonGroup = [self rawDPad];
          buttonGroup.displayName = @"Playstation DPad";
 
          // Create default DPad command set
-         RECommandSet   * ps3DPad = [RECommandSet commandSetInContext:_buildContext type:RECommandSetTypeDPad];
+         RECommandSet   * ps3DPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeDPad];
          ps3DPad[REDPadOkButtonKey]    = MakeIRCommand(ps3, @"Enter");
          ps3DPad[REDPadUpButtonKey]    = MakeIRCommand(ps3, @"Up");
          ps3DPad[REDPadDownButtonKey]  = MakeIRCommand(ps3, @"Down");
@@ -382,15 +371,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          ps3DPad[REDPadLeftButtonKey]  = MakeIRCommand(ps3, @"Left");
 
          buttonGroup.commandSet = ps3DPad;
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)rawNumberPad
++ (REButtonGroup *)rawNumberPad
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeButtonGroup(@"key"             : @"numberpad",
                              @"displayName"     : @"numberpad",
@@ -400,7 +390,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          NSMutableDictionary * attrHigh = [@{} mutableCopy];
 
-         NSMutableDictionary * attr = [_buttonBuilder
+         NSMutableDictionary * attr = [REButtonBuilder
                                        buttonTitleAttributesWithFontName:kDefaultFontName
                                                                 fontSize:64.0
                                                              highlighted:attrHigh];
@@ -521,7 +511,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                         @"titles"      : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
 
          [attrHigh removeAllObjects];
-         attr      = [_buttonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
+         attr      = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
                                                               fontSize:32.0
                                                            highlighted:attrHigh];
          label     = [NSAttributedString attributedStringWithString:@"Exit" attributes:attr];
@@ -616,21 +606,21 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructDVRNumberPad
++ (REButtonGroup *)constructDVRNumberPad
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                         context:_buildContext];
+                                                                         context:context];
 
          // Create number pad button and add to button group
-         RECommandSet * dvrNumberPad = [RECommandSet commandSetInContext:_buildContext type:RECommandSetTypeNumberPad];
+         RECommandSet * dvrNumberPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeNumberPad];
          dvrNumberPad[REDigitOneButtonKey]   = MakeIRCommand(comcastDVR, @"One");
          dvrNumberPad[REDigitTwoButtonKey]   = MakeIRCommand(comcastDVR, @"Two");
          dvrNumberPad[REDigitThreeButtonKey] = MakeIRCommand(comcastDVR, @"Three");
@@ -650,19 +640,20 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          buttonGroup.key           = RERemoteTopPanel1Key;
          buttonGroup.panelLocation = REPanelLocationTop;
          buttonGroup.commandSet    = dvrNumberPad;
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructPS3NumberPad
++ (REButtonGroup *)constructPS3NumberPad
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
-         BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3" context:_buildContext];
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
+         BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3" context:context];
 
          // Create number pad button and add to button group
-         RECommandSet * ps3NumberPad = [RECommandSet commandSetInContext:_buildContext
+         RECommandSet * ps3NumberPad = [RECommandSet commandSetInContext:context
                                                                 type:RECommandSetTypeNumberPad];
          ps3NumberPad[REDigitOneButtonKey]   = MakeIRCommand(ps3, @"1");
          ps3NumberPad[REDigitTwoButtonKey]   = MakeIRCommand(ps3, @"2");
@@ -680,16 +671,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          buttonGroup.key           = RERemoteTopPanel1Key;
          buttonGroup.panelLocation = REPanelLocationTop;
          buttonGroup.commandSet    = ps3NumberPad;
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)rawTransport
++ (REButtonGroup *)rawTransport
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeButtonGroup(@"key"             : @"transport",
                              @"displayName"     : @"transport",
@@ -784,7 +775,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                               (@{ @"normal"      : MakeIconImage(4007) })));
 
          NSMutableDictionary * attrHigh = [@{} mutableCopy];
-         NSMutableDictionary * attr = [_buttonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
+         NSMutableDictionary * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
                                                                                fontSize:64.0
                                                                             highlighted:attrHigh];
 
@@ -849,24 +840,24 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructDVRTransport
++ (REButtonGroup *)constructDVRTransport
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                         context:_buildContext];
+                                                                         context:context];
          BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                        context:_buildContext];
+                                                                        context:context];
          buttonGroup = [self rawTransport];
 
          // Create default transport command set
-         RECommandSet * dvrTransport = [RECommandSet commandSetInContext:_buildContext type:RECommandSetTypeTransport];
+         RECommandSet * dvrTransport = [RECommandSet commandSetInContext:context type:RECommandSetTypeTransport];
          dvrTransport[RETransportPreviousButtonKey]    = MakeIRCommand(comcastDVR, @"Prev");
          dvrTransport[RETransportStopButtonKey]        = MakeIRCommand(comcastDVR, @"Stop");
          dvrTransport[RETransportPlayButtonKey]        = MakeIRCommand(comcastDVR, @"Play");
@@ -880,7 +871,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                          forConfiguration:REDefaultConfiguration];
 
          // Create TV transport command set
-         RECommandSet * tvTransport = [RECommandSet commandSetInContext:_buildContext
+         RECommandSet * tvTransport = [RECommandSet commandSetInContext:context
                                                                type:RECommandSetTypeTransport];
          tvTransport[RETransportPlayButtonKey]        = MakeIRCommand(samsungTV, @"Play");
          tvTransport[RETransportPauseButtonKey]       = MakeIRCommand(samsungTV, @"Pause");
@@ -894,20 +885,21 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          buttonGroup.displayName = @"DVR Transport";
          buttonGroup.key           = RERemoteBottomPanel1Key;
          buttonGroup.panelLocation = REPanelLocationBottom;
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructPS3Transport
++ (REButtonGroup *)constructPS3Transport
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"
-                                                                  context:_buildContext];
+                                                                  context:context];
 
          // Create default transport command set
-         RECommandSet * ps3Transport = [RECommandSet commandSetInContext:_buildContext
+         RECommandSet * ps3Transport = [RECommandSet commandSetInContext:context
                                                                 type:RECommandSetTypeTransport];
          ps3Transport[RETransportPreviousButtonKey]    = MakeIRCommand(ps3, @"Previous");
          ps3Transport[RETransportStopButtonKey]        = MakeIRCommand(ps3, @"Stop");
@@ -922,15 +914,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          buttonGroup.key           = RERemoteBottomPanel1Key;
          buttonGroup.panelLocation = REPanelLocationBottom;
          buttonGroup.commandSet    = ps3Transport;
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REPickerLabelButtonGroup *)rawRocker
++ (REPickerLabelButtonGroup *)rawRocker
 {
     __block REPickerLabelButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakePickerLabelButtonGroup(@"backgroundColor" : defaultBGColor(),
                                         @"shape"           : @(REShapeRoundedRectangle),
@@ -973,33 +966,33 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REPickerLabelButtonGroup *)constructDVRRocker
++ (REPickerLabelButtonGroup *)constructDVRRocker
 {
     __block REPickerLabelButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                         context:_buildContext];
-         RECommandSet * channelsCommandSet = [RECommandSet commandSetInContext:_buildContext
+                                                                         context:context];
+         RECommandSet * channelsCommandSet = [RECommandSet commandSetInContext:context
                                                                           type:RECommandSetTypeRocker];
          channelsCommandSet.name = @"DVR Channels";
          channelsCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(comcastDVR, @"Channel Up");
          channelsCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(comcastDVR, @"Channel Down");
 
-         RECommandSet * pageUpDownCommandSet = [RECommandSet commandSetInContext:_buildContext
+         RECommandSet * pageUpDownCommandSet = [RECommandSet commandSetInContext:context
                                                                             type:RECommandSetTypeRocker];
          pageUpDownCommandSet.name = @"DVR Paging";
          pageUpDownCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(comcastDVR, @"Page Up");
          pageUpDownCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(comcastDVR, @"Page Down");
 
          BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                         context:_buildContext];
-         RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:_buildContext
+                                                                         context:context];
+         RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:context
                                                                         type:RECommandSetTypeRocker];
          volumeCommandSet.name = @"Receiver Volume";
          volumeCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(avReceiver, @"Volume Up");
@@ -1007,12 +1000,12 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          buttonGroup = [self rawRocker];
          buttonGroup.displayName = @"DVR Rocker";
-         
+
          [buttonGroup
           addCommandSet:channelsCommandSet
           withLabel:[NSAttributedString
                     attributedStringWithString:@"CH"
-                                    attributes:[_buttonBuilder
+                                    attributes:[REButtonBuilder
                                                 buttonTitleAttributesWithFontName:nil
                                                                          fontSize:0
                                                                       highlighted:NO]]];
@@ -1021,7 +1014,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
           addCommandSet:pageUpDownCommandSet
           withLabel:[NSAttributedString
                     attributedStringWithString:@"PAGE"
-                                    attributes:[_buttonBuilder
+                                    attributes:[REButtonBuilder
                                                 buttonTitleAttributesWithFontName:nil
                                                                          fontSize:0
                                                                       highlighted:NO]]];
@@ -1030,22 +1023,23 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
           addCommandSet:volumeCommandSet
           withLabel:[NSAttributedString
                     attributedStringWithString:@"VOL"
-                                    attributes:[_buttonBuilder
+                                    attributes:[REButtonBuilder
                                                 buttonTitleAttributesWithFontName:nil
                                                                          fontSize:0
                                                                       highlighted:NO]]];
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REPickerLabelButtonGroup *)constructPS3Rocker
++ (REPickerLabelButtonGroup *)constructPS3Rocker
 {
     __block REPickerLabelButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                         context:_buildContext];
-         RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:_buildContext
+                                                                         context:context];
+         RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:context
                                                                     type:RECommandSetTypeRocker];
          volumeCommandSet.name = @"Receiver Volume";
          volumeCommandSet[RERockerButtonPlusButtonKey] = MakeIRCommand(avReceiver, @"Volume Up");
@@ -1058,22 +1052,23 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
           addCommandSet:volumeCommandSet
           withLabel:[NSAttributedString
                     attributedStringWithString:@"VOL"
-                                    attributes:[_buttonBuilder
+                                    attributes:[REButtonBuilder
                                                 buttonTitleAttributesWithFontName:nil
                                                                          fontSize:0
                                                                       highlighted:NO]]];
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REPickerLabelButtonGroup *)constructSonosRocker
++ (REPickerLabelButtonGroup *)constructSonosRocker
 {
     __block REPickerLabelButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                         context:_buildContext];
-         RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:_buildContext
+                                                                         context:context];
+         RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:context
                                                                     type:RECommandSetTypeRocker];
          volumeCommandSet.name = @"Receiver Volume";
          volumeCommandSet[RERockerButtonPlusButtonKey] = MakeIRCommand(avReceiver, @"Volume Up");
@@ -1081,30 +1076,31 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          buttonGroup = [self rawRocker];
          buttonGroup.displayName = @"Sonos Rocker";
-         
+
          [buttonGroup
           addCommandSet:volumeCommandSet
           withLabel:[NSAttributedString attributedStringWithString:@"VOL"
-                                                       attributes:[_buttonBuilder
+                                                       attributes:[REButtonBuilder
                                 buttonTitleAttributesWithFontName:nil
                                                          fontSize:0
                                                       highlighted:NO]]];
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructSonosMuteButtonGroup
++ (REButtonGroup *)constructSonosMuteButtonGroup
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                         context:_buildContext];
+                                                                         context:context];
          buttonGroup = MakeButtonGroup(@"displayName" : @"Mute Button",
                                        @"key"         : @"mute");
 
          NSMutableDictionary * attrHigh = [@{} mutableCopy];
-         NSDictionary       * attr = [_buttonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
+         NSDictionary       * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
                                                                               fontSize:16.0
                                                                            highlighted:attrHigh];
          NSAttributedString * label    = [NSAttributedString attributedStringWithString:@"Mute"
@@ -1128,15 +1124,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                          "mute.height = buttonGroup.height\n"
                          "buttonGroup.width ≥ 132",
                         mute);
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructSelectionPanel
++ (REButtonGroup *)constructSelectionPanel
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          /* Create selection panel button group */
          buttonGroup =
              MakeSelectionPanelButtonGroup(@"displayName" : @"Configuration Selection Panel",
@@ -1146,7 +1143,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          NSMutableDictionary * attrSelected = [@{} mutableCopy];
 
-         NSDictionary * attr = [_buttonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
+         NSDictionary * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
                                                                         fontSize:48
                                                                      highlighted:attrSelected];
          NSAttributedString * label = [NSAttributedString attributedStringWithString:@"STB"
@@ -1185,15 +1182,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                         "stbButton.bottom = tvButton.top\n"
                         "tvButton.height = stbButton.height",
                         tvButton, stbButton);
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)rawGroupOfThreeButtons
++ (REButtonGroup *)rawGroupOfThreeButtons
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          // Create button group with three vertically aligned buttons
          buttonGroup = MakeButtonGroup(@"key" : @"oneByThree", @"displayName" : @"1x3");
 
@@ -1239,20 +1237,20 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructDVRGroupOfThreeButtons
++ (REButtonGroup *)constructDVRGroupOfThreeButtons
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                         context:_buildContext];
+                                                                         context:context];
          BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                        context:_buildContext];
+                                                                        context:context];
          buttonGroup = [self rawGroupOfThreeButtons];
 
          buttonGroup.displayName = @"One x Three Button Group";
@@ -1264,11 +1262,11 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          guideButton.displayName = @"Guide / Tools";
 
          NSMutableDictionary * attrHigh = [@{} mutableCopy];
-         NSDictionary * attr = [_buttonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
+         NSDictionary * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
                                                                         fontSize:18.0
                                                                      highlighted:attrHigh];
 
-         REControlStateTitleSet * titles = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         REControlStateTitleSet * titles = [REControlStateTitleSet controlStateSetInContext:context];
 
          titles[UIControlStateNormal]      = [NSAttributedString attributedStringWithString:@"Guide"
                                                                                  attributes:attr];
@@ -1280,7 +1278,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          [guideButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Guide")
                                       forConfiguration:REDefaultConfiguration];
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Tools"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Tools"
@@ -1296,7 +1294,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          dvrButton.key         = @"dvr/internet@tv";
          dvrButton.displayName = @"DVR / Internet@TV";
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"DVR"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"DVR"
@@ -1306,7 +1304,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          [dvrButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"DVR")
                                     forConfiguration:REDefaultConfiguration];
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Internet@TV"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Internet@TV"
@@ -1322,7 +1320,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          infoButton.key         = @"info";
          infoButton.displayName = @"Info";
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Info"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Info"
@@ -1336,17 +1334,18 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          [infoButton.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Info")
                                      forConfiguration:kTVConfiguration];
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructPS3GroupOfThreeButtons
++ (REButtonGroup *)constructPS3GroupOfThreeButtons
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"
-                                                                  context:_buildContext];
+                                                                  context:context];
          buttonGroup   = [self rawGroupOfThreeButtons];
          REButton      * displayButton = buttonGroup[@"button1"];
 
@@ -1354,7 +1353,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          displayButton.displayName = @"Display";
 
          NSMutableDictionary * attrHigh = [@{}  mutableCopy];
-         NSDictionary * attr = [_buttonBuilder
+         NSDictionary * attr = [REButtonBuilder
                                 buttonTitleAttributesWithFontName:kDefaultFontName
                                                          fontSize:18.0
                                                       highlighted:attrHigh];
@@ -1386,15 +1385,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                                          attributes:attr];
          sendIR                  = [RESendIRCommand commandWithIRCode:ps3[@"Popup Menu"]];
          popupMenuButton.command = sendIR;
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)rawButtonPanel
++ (REButtonGroup *)rawButtonPanel
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeButtonGroup(@"key"             : @"buttons",
                              @"displayName"     : @"buttons",
@@ -1479,15 +1479,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
          assert(preset);
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
++ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          buttonGroup =
              MakeButtonGroup(@"displayName" : @"Home and Power Buttons",
                              @"key"         : @"homeAndPowerButtonGroup");
@@ -1508,7 +1509,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                    @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
                                                                          @"highlighted" : kHighlightColor }),
                                                                      (@{ @"normal"      : MakeIconImage(168) })),
-                                   @"command"     : [_macroBuilder activityMacroForActivity:activity
+                                   @"command"     : [REMacroBuilder activityMacroForActivity:activity
                                                                             toInitiateState:NO
                                                                                 switchIndex:NULL]);
 
@@ -1524,21 +1525,22 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                          "homeButton.centerY = buttonGroup.centerY\n"
                          "powerButton.centerY = buttonGroup.centerY",
                         homeButton, powerButton);
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
-- (REButtonGroup *)constructAdditionalButtonsLeft
++ (REButtonGroup *)constructAdditionalButtonsLeft
 {
     __block REButtonGroup * buttonGroup = nil;
-    [_buildContext performBlockAndWait:
-     ^{
+    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+        ^(NSManagedObjectContext * context)
+        {
          BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                         context:_buildContext];
+                                                                         context:context];
          BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                        context:_buildContext];
+                                                                        context:context];
          BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                         context:_buildContext];
+                                                                         context:context];
 
          buttonGroup = [self rawButtonPanel];
 
@@ -1547,7 +1549,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          buttonGroup.displayName   = @"Left Overlay Panel";
 
          NSMutableDictionary * attrHigh = [@{} mutableCopy];
-         NSMutableDictionary * attr     = [_buttonBuilder
+         NSMutableDictionary * attr     = [REButtonBuilder
                                            buttonTitleAttributesWithFontName:kDefaultFontName
                                                                     fontSize:15.0
                                                                  highlighted:attrHigh];
@@ -1556,7 +1558,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          button.displayName = @"On Demand / Source";
 
-         REControlStateTitleSet * titles = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         REControlStateTitleSet * titles = [REControlStateTitleSet controlStateSetInContext:context];
 
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"On Demand"
                                                                             attributes:attr];
@@ -1568,7 +1570,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"On Demand")
                                  forConfiguration:REDefaultConfiguration];
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Source"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Source"
@@ -1581,7 +1583,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          button             = buttonGroup[@"button2"];
          button.displayName = @"Menu";
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Menu"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Menu"
@@ -1598,7 +1600,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          button             = buttonGroup[@"button3"];
          button.displayName = @"Last / Return";
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Last"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Last"
@@ -1608,7 +1610,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Last")
                                  forConfiguration:REDefaultConfiguration];
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Return"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Return"
@@ -1621,7 +1623,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
          button             = buttonGroup[@"button4"];
          button.displayName = @"Exit";
 
-         titles                       = [REControlStateTitleSet controlStateSetInContext:_buildContext];
+         titles                       = [REControlStateTitleSet controlStateSetInContext:context];
          titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Exit"
                                                                             attributes:attr];
          titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Exit"
@@ -1665,7 +1667,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
          button             = buttonGroup[@"button8"];
          button.displayName = @"Tuck Panel";
-         attr               = [_buttonBuilder buttonTitleAttributesWithFontName:kArrowFontName
+         attr               = [REButtonBuilder buttonTitleAttributesWithFontName:kArrowFontName
                                                                        fontSize:32.0
                                                                     highlighted:attrHigh];
          attr[NSForegroundColorAttributeName] = [UIColor colorWithWhite:0.0 alpha:0.5];
@@ -1679,8 +1681,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                                      attributes:attrHigh];
          button.key   = REButtonGroupTuckButtonKey;
          button.style = 0;
-     }];
-    return buttonGroup;
+     }]) return nil;
+    else return buttonGroup;
 }
 
 @end
