@@ -20,20 +20,6 @@
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C240153D16D9A97100639F0D"
-               BuildableName = "MSKit-arm7-old.framework"
-               BlueprintName = "MSKit-arm7"
-               ReferencedContainer = "container:../../Frameworks/MSKit/MSKit.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

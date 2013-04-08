@@ -6,6 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "GlobalCacheConnectionManager_Private.h"
+#import <objc/runtime.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Typedefs and Class variables
@@ -15,10 +16,10 @@ static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = NETWORKING_F_C;
 #pragma unused(ddLogLevel, msLogContext)
 
-static NSMutableDictionary   * _requestLog;        /// Holds completion handlers for ongoing commands
+static const GlobalCacheConnectionManager * globalCacheConnectionManager = nil;
 
 MSKIT_STRING_CONST   NDiTachDeviceDiscoveryNotification = @"NDiTachDeviceDiscoveryNotification";
-MSKIT_STRING_CONST   NDDefaultiTachDeviceKey             = @"NDDefaultiTachDeviceKey";
+MSKIT_STRING_CONST   NDDefaultiTachDeviceKey            = @"NDDefaultiTachDeviceKey";
 
 // connection state bit settings
 typedef NS_ENUM (uint8_t, ConnectionState){
@@ -33,108 +34,101 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
 @implementation GlobalCacheConnectionManager
 
-+ (GlobalCacheConnectionManager *)sharedInstance
++ (void)initialize
 {
+    if (self != [GlobalCacheConnectionManager class]) return;
+    
     static dispatch_once_t pred = 0;
-    __strong static GlobalCacheConnectionManager * _sharedObject = nil;
-    dispatch_once(&pred,
-                  ^{
-                      _sharedObject = [self new];
+    dispatch_once(&pred,  ^{
+        globalCacheConnectionManager = [self new];
 
-                      _requestLog = [@{} mutableCopy];
+        globalCacheConnectionManager->_requestLog = [@{} mutableCopy];
 
-                      _sharedObject.defaultDeviceURI = UserDefaults[NDDefaultiTachDeviceKey];
-                      
-                      if (![NDiTachDevice deviceExistsWithUUID:_sharedObject.defaultDeviceURI])
-                      {
-                          MSLogDebugTag(@"removing orphaned default device setting...");
-                          _sharedObject.defaultDeviceURI       = nil;
-                          UserDefaults[NDDefaultiTachDeviceKey] = nil;
-                      }
+        globalCacheConnectionManager->_operationQueue = [NSOperationQueue operationQueueWithName:
+                                                         @"com.moondeerstudios.globalcache"];
 
-                      _sharedObject->_operationQueue =
-                          [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.globalcache"];
+        globalCacheConnectionManager->_multicastConnection = [GlobalCacheMulticastConnection
+                                                              multicastConnection];
 
-                      _sharedObject->_multicastConnection =
-                          [GlobalCacheMulticastConnection multicastConnection];
-                      
-                      _sharedObject->_connectedDevices = [NSMutableDictionary dictionaryWithCapacity:5];
+        globalCacheConnectionManager->_connectedDevices = [@{} mutableCopy];
 
-                      NSArray * devices = [NDiTachDevice MR_findAll];
 
-                      _sharedObject->_networkDevices =
-                          (devices
-                           ? [NSMutableDictionary dictionaryWithObjects:devices
-                                                                forKeys:[devices
-                                                                         valueForKeyPath:@"permanentURI.path"]]
-                           : [NSMutableDictionary dictionaryWithCapacity:5]);
-                      
-                      _sharedObject->_beaconsReceived = [NSMutableSet setWithCapacity:5];
+        NSArray * devices = [NDiTachDevice MR_findAll];
+        if (devices.count)
+            globalCacheConnectionManager->_networkDevices =
+                [NSMutableDictionary
+                 dictionaryWithObjects:[devices valueForKeyPath:@"permanentURI.data"]
+                               forKeys:[devices valueForKeyPath:@"uuid"]];
 
-                      MSLogDebugTag(@"iTach devices retrieved from database:\n\t%@",
-                                    _sharedObject->_networkDevices);
+        else
+            globalCacheConnectionManager->_networkDevices = [@{} mutableCopy];
 
-                      [NotificationCenter
-                       addObserverForName:UIApplicationDidEnterBackgroundNotification
-                                  object:SharedApp
-                                   queue:nil
-                              usingBlock:^(NSNotification * note)
+        globalCacheConnectionManager->_beaconsReceived = [NSMutableSet setWithCapacity:5];
+
+        MSLogDebugTag(@"iTach devices retrieved from database:\n\t%@",
+                      globalCacheConnectionManager->_networkDevices);
+
+        [NotificationCenter
+         addObserverForName:UIApplicationDidEnterBackgroundNotification
+                     object:UIApp
+                      queue:CurrentQueue
+                 usingBlock:^(NSNotification * note)
+                            {
+                                if (kConnectionState & ConnectionStateMulticastGroup)
+                                    [globalCacheConnectionManager->_multicastConnection
+                                     leaveMulticastGroup];
+
+                                for (GlobalCacheDeviceConnection * connection
+                                     in [globalCacheConnectionManager->_connectedDevices allValues])
+                                { // disconnect tcp socket
+                                    MSLogDebugTag(@"disconnecting device: %@", connection.deviceUUID);
+                                    [connection disconnect];
+                                }
+                            }];
+
+        [NotificationCenter
+         addObserverForName:UIApplicationWillEnterForegroundNotification
+                     object:UIApp
+                      queue:nil
+                 usingBlock:^(NSNotification * note)
+                            {
+                                if (kConnectionState & ConnectionStateMulticastGroup)
+                                    [globalCacheConnectionManager->_multicastConnection
+                                     joinMulticastGroup];
+
+                                for (GlobalCacheDeviceConnection * connection
+                                     in globalCacheConnectionManager->_connectedDevices)
+                                { // disconnect tcp socket
+                                    [globalCacheConnectionManager->_operationQueue addOperationWithBlock:
+                                     ^{
+                                         BOOL success = [connection connect];
+                                         MSLogDebugTag(@"%@ to device: %@",
+                                                       (success
+                                                        ? @"reconnected"
+                                                        : @"failed to reconnect"),
+                                                       connection.deviceUUID);
+                                         
+                                         if (   success
+                                             && [connection.deviceUUID isEqualToString:
+                                                 [globalCacheConnectionManager defaultDeviceUUID]])
                                          {
-                                             if (kConnectionState & ConnectionStateMulticastGroup)
-                                                 [_sharedObject->_multicastConnection leaveMulticastGroup];
-
-                                             for (GlobalCacheDeviceConnection * connection
-                                                  in [_sharedObject->_connectedDevices allValues])
-                                             { // disconnect tcp socket
-                                                 MSLogDebugTag(@"disconnecting device: %@",
-                                                               connection.deviceURI);
-                                                 [connection disconnect];
-                                             }
-                                         }];
-
-                     [NotificationCenter
-                      addObserverForName:UIApplicationWillEnterForegroundNotification
-                                  object:SharedApp
-                                   queue:nil
-                              usingBlock:^(NSNotification * note)
-                                         {
-                                             if (kConnectionState & ConnectionStateMulticastGroup)
-                                                 [_sharedObject->_multicastConnection joinMulticastGroup];
-
-                                             for (GlobalCacheDeviceConnection * connection
-                                                  in _sharedObject->_connectedDevices)
-                                             { // disconnect tcp socket
-                                                 [_sharedObject->_operationQueue addOperationWithBlock:
-                                                  ^{
-                                                      BOOL success = [connection connect];
-                                                      MSLogDebugTag(@"%@ to device: %@",
-                                                                    (success
-                                                                     ? @"reconnected"
-                                                                     : @"failed to reconnect"),
-                                                                    connection.deviceURI);
-                                                      
-                                                      if (   success
-                                                          && [connection.deviceURI isEqualToString:
-                                                              _sharedObject.defaultDeviceURI])
-                                                      {
-                                                          kConnectionState |=
-                                                              ConnectionStateDefaultDeviceConnected;
-                                                      }
-                                                  }];
-                                             }
-                                         }];
-                  });
-    return _sharedObject;
+                                             kConnectionState |= ConnectionStateDefaultDeviceConnected;
+                                         }
+                                     }];
+                                }
+                            }];
+    });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Device Discovery
 ////////////////////////////////////////////////////////////////////////////////
 
++ (BOOL)detectNetworkDevices { return [globalCacheConnectionManager detectNetworkDevices]; }
 - (BOOL)detectNetworkDevices
 {
     // Make sure we are connected to wifi
-    if (![ConnectionManager sharedConnectionManager].isWifiAvailable)
+    if (![ConnectionManager isWifiAvailable])
     {
         MSLogWarnTag(@"cannot detect network devices without valid wifi connection");
         return NO;
@@ -157,6 +151,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     return YES;
 }
 
++ (void)stopNetworkDeviceDetection { [globalCacheConnectionManager stopNetworkDeviceDetection]; }
 - (void)stopNetworkDeviceDetection
 {
     [_operationQueue addOperationWithBlock:
@@ -166,6 +161,10 @@ typedef NS_ENUM (uint8_t, ConnectionState){
      }];
 }
 
++ (void)receivedMulticastGroupMessage:(NSString *)message
+{
+    [globalCacheConnectionManager receivedMulticastGroupMessage:message];
+}
 - (void)receivedMulticastGroupMessage:(NSString *)message
 {
     MSLogDebugTag(@"message:%@", message);
@@ -213,24 +212,27 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         MSLogDebugTag(@"ingnoring previously received beacon for device with uuid: %@", uuid);
 }
 
++ (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes
+{
+    [globalCacheConnectionManager deviceDiscoveredWithUUID:uuid attributes:attributes];
+}
 - (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes
 {
     assert(uuid && attributes && !_networkDevices[uuid]);
 
-    __block NSURL * deviceURI = nil;
-    [MagicalRecord
-     saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *localContext)
+    __block NSData * deviceURIData = nil;
+    [MagicalRecord saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *context)
      {
          NDiTachDevice * device = [NDiTachDevice deviceWithAttributes:attributes
-                                                              context:localContext];
-         if (device) deviceURI = [device permanentURI];
+                                                              context:context];
+         if (device) deviceURIData = [[device permanentURI] data];
          
      }
      completion:^(BOOL success, NSError *error)
      {
-         if (success && deviceURI)
+         if (success && deviceURIData)
          {
-             _networkDevices[uuid] = deviceURI;
+             _networkDevices[uuid] = deviceURIData;
              MSLogDebugTag(@"added device with uuid %@ to known devices, posting notification...",
                            uuid);
 
@@ -238,7 +240,8 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                                                object:[GlobalCacheConnectionManager class]
                                              userInfo:@{ CMNetworkDeviceKey : attributes }];
 
-             self.defaultDeviceURI = uuid;
+             if (!self.defaultDeviceUUID)
+                 self.defaultDeviceUUID = uuid;
 
              [self stopNetworkDeviceDetection];
          }
@@ -247,72 +250,121 @@ typedef NS_ENUM (uint8_t, ConnectionState){
      }];
 }
 
++ (BOOL)isDetectingNetworkDevices { return [globalCacheConnectionManager isDetectingNetworkDevices]; }
 - (BOOL)isDetectingNetworkDevices { return (kConnectionState & ConnectionStateMulticastGroup); }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Default Device Connection
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setDefaultDeviceURI:(NSString *)defaultDeviceURI
++ (void)setDefaultDeviceUUID:(NSString *)defaultDeviceUUID
 {
-    _defaultDeviceURI = defaultDeviceURI;
-    UserDefaults[NDDefaultiTachDeviceKey] = _defaultDeviceURI;
-    kConnectionState = (_defaultDeviceURI
+    [globalCacheConnectionManager setDefaultDeviceUUID:defaultDeviceUUID];
+}
+- (void)setDefaultDeviceUUID:(NSString *)defaultDeviceUUID
+{
+    _defaultDeviceUUID = [defaultDeviceUUID copy];
+    UserDefaults[NDDefaultiTachDeviceKey] = _defaultDeviceUUID;
+    kConnectionState = (_defaultDeviceUUID
                         ? kConnectionState | ConnectionStateDefaultDevice
                         : kConnectionState & ~ConnectionStateDefaultDevice);
 }
 
-- (BOOL)connectWithDefaultDevice
++ (NSString *)defaultDeviceUUID { return [globalCacheConnectionManager defaultDeviceUUID]; }
+- (NSString *)defaultDeviceUUID
 {
-    if (!self.isDefaultDeviceConnected)
+    if (!_defaultDeviceUUID)
     {
-            MSLogWarnTag(@"no default device registered, checking for known devices...");
-
-        if (_networkDevices.count > 0)
+        NSString * uuid = UserDefaults[NDDefaultiTachDeviceKey];
+        if (StringIsNotEmpty(uuid))
         {
-            MSLogWarnTag(@"setting default device from known devices, this should be done elsewhere");
-            self.defaultDeviceURI = [_networkDevices allKeys][0];
-        }
+            NSFetchRequest * request = [NDiTachDevice MR_requestAllWhere:@"uuid" isEqualTo:uuid];
+            NSError * error = nil;
+            NSUInteger count = [[NSManagedObjectContext MR_contextForCurrentThread]
+                                countForFetchRequest:request error:&error];
+            if (error) [MagicalRecord handleErrors:error];
 
-        else return NO;
+            else if (count == 1)
+            {
+                // uuid seems valid
+                self.defaultDeviceUUID = uuid;
+            }
+
+            else
+            {
+                if (count)
+                { // remove devices since uuid is not unique
+                    [MagicalRecord
+                     saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *localContext)
+                     {
+                         MSLogDebugTag(@"removing devices from store with non-unique uuid '%@', uuid");
+                         [NDiTachDevice
+                          MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:
+                                                         @"self.uuid EQUALS %k", uuid]
+                                              inContext:localContext];
+                     }
+                     completion:^(BOOL success, NSError *error)
+                     {
+                         if (error) [MagicalRecord handleErrors:error];
+                         if (success)
+                             MSLogDebugTag(@"devices with uuid '%@' removed successfully", uuid);
+                         else
+                             MSLogDebugTag(@"devices with uuid '%@' could not be removed", uuid);
+                     }];
+                }
+
+                // remove uuid from user defaults
+                UserDefaults[NDDefaultiTachDeviceKey] = nil;
+            }
+            
+        }
     }
 
-    [_operationQueue addOperationWithBlock:^{ [self connectWithDevice:_defaultDeviceURI]; }];
-
-    return YES;
+    return _defaultDeviceUUID;
 }
 
-- (BOOL)isDefaultDeviceConnected { return (kConnectionState & ConnectionStateDefaultDeviceConnected); }
++ (BOOL)isDefaultDeviceConnected
+{
+    return [globalCacheConnectionManager isDefaultDeviceConnected];
+}
+- (BOOL)isDefaultDeviceConnected
+{
+    return (kConnectionState & ConnectionStateDefaultDeviceConnected);
+}
 
-- (BOOL)connectWithDevice:(NSString *)uri
++ (BOOL)connectWithDevice:(NSString *)uuid
+{
+    return [globalCacheConnectionManager connectWithDevice:uuid];
+}
+- (BOOL)connectWithDevice:(NSString *)uuid
 {
     // Check wifi connection
-    if (![ConnectionManager sharedConnectionManager].isWifiAvailable)
+    if (![ConnectionManager isWifiAvailable])
     {
         MSLogErrorTag(@"wifi connection required");
         return NO;
     }
 
-    if (!uri) uri = self.defaultDeviceURI;
+    if (!uuid) uuid = [self defaultDeviceUUID];
 
     // Check device id
-    if (StringIsEmpty(uri)) { MSLogWarnTag(@"device uri invalid"); return NO; }
+    if (StringIsEmpty(uuid)) { MSLogWarnTag(@"device uuid invalid"); return NO; }
 
     // Check for existing connection
-    if (_connectedDevices[uri]) { MSLogWarnTag(@"device connection already exists"); return YES; }
+    if (_connectedDevices[uuid]) { MSLogWarnTag(@"device connection already exists"); return YES; }
 
     // Add device uuid to set of connected devices and update state if default device
 
-    GlobalCacheDeviceConnection * dc = [GlobalCacheDeviceConnection connectionForDevice:uri];
+    GlobalCacheDeviceConnection * dc = [GlobalCacheDeviceConnection connectionForDevice:uuid];
     assert(dc);
 
     [_operationQueue addOperationWithBlock:
      ^{
-         if (![dc connect]) MSLogErrorTag(@"connection failed for device with uuid: %@", uri);
+         if (![dc connect]) MSLogErrorTag(@"connection failed for device with uuid: %@", uuid);
 
-         _connectedDevices[uri] = dc;
+         _connectedDevices[uuid] = dc;
 
-         if ([uri isEqualToString:self.defaultDeviceURI])
+         if ([uuid isEqualToString:self.defaultDeviceUUID])
              kConnectionState |= ConnectionStateDefaultDeviceConnected;
      }];
 
@@ -320,38 +372,53 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     return YES;
 }
 
++ (void)deviceDisconnected:(NSString *)uuid { [globalCacheConnectionManager deviceDisconnected:uuid]; }
 - (void)deviceDisconnected:(NSString *)uuid
 {
-    if ([uuid isEqualToString:_defaultDeviceURI])
+    if ([uuid isEqualToString:self.defaultDeviceUUID])
         kConnectionState &= ~ConnectionStateDefaultDeviceConnected;
 }
 
++ (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection
+{
+    [globalCacheConnectionManager connectionEstablished:deviceConnection];
+}
 - (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection
 {
     assert(deviceConnection.isConnected);
-    _connectedDevices[deviceConnection.deviceURI] = deviceConnection;
+    _connectedDevices[deviceConnection.deviceUUID] = deviceConnection;
 }
 
++ (BOOL)sendCommand:(NSString *)command
+                tag:(NSUInteger)tag
+             device:(NSString *)uuid
+         completion:(RECommandCompletionHandler)completion
+{
+    return [globalCacheConnectionManager sendCommand:command
+                                                 tag:tag
+                                              device:uuid
+                                          completion:completion];
+}
 - (BOOL)sendCommand:(NSString *)command
                 tag:(NSUInteger)tag
-             device:(NSString *)uri
+             device:(NSString *)uuid
          completion:(RECommandCompletionHandler)completion
 {
 
-    if (!uri) uri = self.defaultDeviceURI;
+    if (!uuid) uuid = self.defaultDeviceUUID;
     MSLogDebugTag(@"tag:%u, device:%@, command:'%@'",
                   tag,
-                  uri,
+                  uuid,
                   [command stringByReplacingReturnsWithSymbol]);
 
     // check for command content
     if (StringIsEmpty(command)) { MSLogErrorTag(@"cannot send nil command"); return NO; }
 
     // check current connection
-    GlobalCacheDeviceConnection * deviceConnection = _connectedDevices[uri];
+    GlobalCacheDeviceConnection * deviceConnection = _connectedDevices[uuid];
 
     if (!deviceConnection)
-        deviceConnection = [GlobalCacheDeviceConnection connectionForDevice:uri];
+        deviceConnection = [GlobalCacheDeviceConnection connectionForDevice:uuid];
 
     NSBlockOperation * connectOp = nil;
     if (!deviceConnection.isConnected)
@@ -359,7 +426,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         connectOp = [NSBlockOperation blockOperationWithBlock:
                      ^{
                          if (![deviceConnection connect])
-                             MSLogErrorTag(@"failed to connect to device: %@", uri);
+                             MSLogErrorTag(@"failed to connect to device: %@", uuid);
                      }];
 
         [_operationQueue addOperation:connectOp];
@@ -389,12 +456,20 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     return YES;
 }
 
++ (void)dispatchCompletionHandlerForTag:(NSNumber *)tag success:(BOOL)success
+{
+    [globalCacheConnectionManager dispatchCompletionHandlerForTag:tag success:success];
+}
 - (void)dispatchCompletionHandlerForTag:(NSNumber *)tag success:(BOOL)success
 {
     RECommandCompletionHandler completion = _requestLog[tag];
     if (completion) completion(YES, success);
 }
 
++ (void)parseiTachReturnMessage:(NSString *)message
+{
+    [globalCacheConnectionManager parseiTachReturnMessage:message];
+}
 - (void)parseiTachReturnMessage:(NSString *)message
 {
     // iTach completeir command: completeir,<module address>:<connector address>,<ID>
@@ -453,6 +528,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 #pragma mark - Logging
 ////////////////////////////////////////////////////////////////////////////////
 
++ (NSString *)statusDescription { return [globalCacheConnectionManager statusDescription]; }
 - (NSString *)statusDescription
 {
     NSMutableArray * a = [NSMutableArray arrayWithCapacity:4];
@@ -496,26 +572,25 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
 @implementation GlobalCacheDeviceConnection
 
-+ (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uri
++ (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uuid
 {
     NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
 
-    __block NDiTachDevice * device = nil;
+    __block GlobalCacheDeviceConnection * connection = nil;
 
     [context performBlockAndWait:
      ^{
-        device = (NDiTachDevice *)[context objectForURI:[NSURL URLWithString:uri]];
+         connection = [GlobalCacheDeviceConnection new];
+         connection->_device = [NDiTachDevice MR_findFirstByAttribute:@"uuid"
+                                                            withValue:uuid
+                                                            inContext:context];
+         connection->_commandQueue = [MSQueue queue];
     }];
 
-    if (!device) return nil;
-
-    GlobalCacheDeviceConnection * connection = [self new];
-    connection->_device = device;
-    connection->_commandQueue = [MSQueue queue];
-    return connection;
+    return (connection->_device ? connection : nil);
 }
 
-- (NSString *)deviceURI { return [[_device permanentURI] path]; }
+- (NSString *)deviceUUID { return _device.uuid; }
 
 - (BOOL)connect
 {
@@ -618,7 +693,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         _tcpSourceWrite = nil;
 //        _tcpSourceRead = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [GCConnManager deviceDisconnected:_device.uuid];
+            [GlobalCacheConnectionManager deviceDisconnected:_device.uuid];
         });
     });
 
@@ -642,7 +717,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                 if (msgComponent.length)
                 {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                        [GCConnManager parseiTachReturnMessage:msgComponent];
+                        [GlobalCacheConnectionManager parseiTachReturnMessage:msgComponent];
                     });
                 }
             }
@@ -655,7 +730,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 //        _tcpSourceWrite = nil;
         _tcpSourceRead = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [GCConnManager deviceDisconnected:_device.uuid];
+            [GlobalCacheConnectionManager deviceDisconnected:_device.uuid];
         });
     });
 
@@ -665,7 +740,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
     _isConnecting = NO;
 
-    [GCConnManager connectionEstablished:self];
+    [GlobalCacheConnectionManager connectionEstablished:self];
 
     return YES;
 }
@@ -689,9 +764,9 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 + (GlobalCacheMulticastConnection *)multicastConnection
 {
     static dispatch_once_t pred = 0;
-    __strong static GlobalCacheMulticastConnection * _sharedObject = nil;
-    dispatch_once(&pred, ^{ _sharedObject = [GlobalCacheMulticastConnection new]; });
-    return _sharedObject;
+    __strong static GlobalCacheMulticastConnection * globalCacheConnectionManager = nil;
+    dispatch_once(&pred, ^{ globalCacheConnectionManager = [GlobalCacheMulticastConnection new]; });
+    return globalCacheConnectionManager;
 }
 
 - (BOOL)joinMulticastGroup
@@ -820,7 +895,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
             msg[bytesAvailable] = '\0';
             NSString * message = @(msg);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [GCConnManager receivedMulticastGroupMessage:message];
+                [GlobalCacheConnectionManager receivedMulticastGroupMessage:message];
             });
         }
     });

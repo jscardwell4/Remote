@@ -61,7 +61,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
 
 + (void)applyUserSettings {
     // FIXME: Not sure where this method fits in the overall scheme.
-    SharedApp.statusBarHidden = [self boolForSetting:kStatusBarKey];
+    UIApp.statusBarHidden = [self boolForSetting:kStatusBarKey];
 }
 
 + (BOOL)validSetting:(NSString *)setting {

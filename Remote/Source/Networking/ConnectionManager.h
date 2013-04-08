@@ -13,18 +13,18 @@ MSKIT_EXTERN_STRING   CMNetworkDeviceKey;
 MSKIT_EXTERN_STRING   CMDevicesUserDefaultsKey;
 MSKIT_EXTERN_STRING   CMCommandDidCompleteNotification;
 
-@class RESendCommand;
-
 /**
  * The `ConnectionManager` class utilizes a singleton instance to oversee all device-related network
  * activity.
  */
-@interface ConnectionManager : NSObject
+@interface ConnectionManager : NSObject @end
+
+@interface ConnectionManager (Public)
 
 /**
  * Dumps various details about the current state.
  */
-- (void)logStatus;
++ (void)logStatus;
 
 /**
  * Obtains the necessary data from the specified `RESendCommand` model object, executes the
@@ -32,19 +32,9 @@ MSKIT_EXTERN_STRING   CMCommandDidCompleteNotification;
   @param command The command containing the details from which the send message will be constructed.
   @param completion Block which to be executed upon completion of the send operation
  */
-- (void)sendCommand:(NSManagedObjectID *)commandID completion:(RECommandCompletionHandler)completion;
++ (void)sendCommand:(NSManagedObjectID *)commandID completion:(RECommandCompletionHandler)completion;
 
 /// Indicates status of wifi connectivity.
-@property (nonatomic, readonly, getter = isWifiAvailable) BOOL wifiAvailable;
-
-/**
-  Accessor for the `ConnectionManager` shared singleton instance.
-  @return The singleton instance of `ConnectionManager`
- */
-+ (ConnectionManager *)sharedConnectionManager;
++ (BOOL)isWifiAvailable;
 
 @end
-
-#define ConnManager [ConnectionManager sharedConnectionManager]
-
-

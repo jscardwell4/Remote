@@ -29,7 +29,7 @@ static const int msLogContext = COMMAND_F_C;
     {
         NSManagedObjectID * commandID = _command.objectID;
         MSLogDebugTag(@"command ID:'%@', %@", commandID, [_command shortDescription]);
-        [[ConnectionManager sharedConnectionManager]
+        [ConnectionManager
              sendCommand:commandID
               completion:^(BOOL finished, BOOL success)
                          {

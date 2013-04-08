@@ -16,57 +16,52 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 + (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity
 {
-    __block REActivityButton *  button = nil;
-    
-    if (![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
-          ^(NSManagedObjectContext *context)
-          {
+    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSMutableDictionary * attrH = [@{} mutableCopy];
 
-              NSMutableDictionary * attrH = [@{} mutableCopy];
+    NSMutableDictionary * attrN = [self buttonTitleAttributesWithFontName:nil
+                                                                 fontSize:0
+                                                              highlighted:attrH];
 
-              NSMutableDictionary * attrN     = [self buttonTitleAttributesWithFontName:nil
-                                                                               fontSize:0
-                                                                            highlighted:attrH];
+    NSAttributedString * titleN = [NSAttributedString attributedStringWithString:title
+                                                                      attributes:attrN];
 
-              NSAttributedString * titleN = [NSAttributedString  attributedStringWithString:title
-                                                                                 attributes:attrN];
+    NSAttributedString * titleH = [NSAttributedString attributedStringWithString:title
+                                                                      attributes:attrH];
+    NSInteger   switchIndex = -1;
 
-              NSAttributedString * titleH = [NSAttributedString  attributedStringWithString:title
-                                                                                 attributes:attrH];
-              NSInteger switchIndex = -1;
+    REMacroCommand * command = [REMacroBuilder    activityMacroForActivity:activity
+                                                           toInitiateState:YES
+                                                               switchIndex:&switchIndex];
+    assert(command);
 
-              REMacroCommand * command     = [REMacroBuilder activityMacroForActivity:activity
-                                                                      toInitiateState:YES
-                                                                          switchIndex:&switchIndex];
-              assert(command);
-              
-              RECommand * longPressCommand = nil;
+    RECommand * longPressCommand = nil;
 
-              if (switchIndex >= 0) longPressCommand = command[switchIndex];
+    if (switchIndex >= 0) longPressCommand = command[switchIndex];
 
-              NSSet * configs = [REMacroBuilder deviceConfigsForActivity:activity];
+    NSSet * configs = [REMacroBuilder deviceConfigsForActivity:activity];
 
-              NSValue * titleEdgeInsets = NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20));
-              REControlStateTitleSet * titleSet = MakeTitleSet(@{ @"normal"    	: titleN,
-                                                                  @"highlighted": titleH });
-              NSString * displayName = [title stringByRemovingLineBreaks];
-              NSString * key = $(@"activity%u", activity);
-              NSNumber * shape = @(REShapeRoundedRectangle);
-              NSNumber * style = @(REStyleApplyGloss | REStyleDrawBorder);
+    NSValue                * titleEdgeInsets = NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20));
+    REControlStateTitleSet * titleSet        = MakeTitleSet(@{ @"normal"      : titleN,
+                                                               @"highlighted": titleH });
+    NSString * displayName = [title stringByRemovingLineBreaks];
+    NSString * key         = $(@"activity%u", activity);
+    NSNumber * shape       = @(REShapeRoundedRectangle);
+    NSNumber * style       = @(REStyleApplyGloss | REStyleDrawBorder);
 
-              button =
-                  MakeActivityOnButton(@"titleEdgeInsets"       : titleEdgeInsets,
-                                       @"shape"                 : shape,
-                                       @"style"                 : style,
-                                       @"key"                   : key,
-                                       @"titles"                : titleSet,
-                                       @"deviceConfigurations"  : configs,
-                                       @"command"               : command,
-                                       @"longPressCommand"      : CollectionSafeValue(longPressCommand),
-                                       @"displayName"           : displayName);
-     }]) return nil;
-    else return button;
+    REActivityButton * button =
+        MakeActivityOnButton(@"titleEdgeInsets"       : titleEdgeInsets,
+                             @"shape"                 : shape,
+                             @"style"                 : style,
+                             @"key"                   : key,
+                             @"titles"                : titleSet,
+                             @"deviceConfigurations"  : configs,
+                             @"command"               : command,
+                             @"longPressCommand"      : CollectionSafeValue(longPressCommand),
+                             @"displayName"           : displayName);
+    return button;
 }
+
 
 
 + (NSMutableDictionary *)buttonTitleAttributesWithFontName:(NSString *)fontName

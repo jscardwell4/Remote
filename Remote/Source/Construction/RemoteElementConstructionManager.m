@@ -14,74 +14,51 @@ static const int msLogContext = CONSOLE_LOG_CONTEXT;
 
 @implementation RemoteElementConstructionManager
 
-+ (BOOL)buildController
-{
++ (void)buildController
+{    
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+    ^(NSManagedObjectContext * context)
+    {
+        RERemoteController * controller = [RERemoteController
+                                           MR_findFirstInContext:context];
+        assert(!controller);
+        controller = [RERemoteController remoteControllerInContext:context];
+        assert(controller);
+        controller.topToolbar = [REButtonGroupBuilder
+                                 constructControllerTopToolbar];
 
-    __block BOOL success = [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
-                            ^(NSManagedObjectContext * context)
-                            {
-                                RERemoteController * controller = [RERemoteController
-                                                                   MR_findFirstInContext:context];
-                                assert(!controller);
-                                controller = [RERemoteController remoteControllerInContext:context];
-                                assert(controller);
-                                controller.topToolbar = [REButtonGroupBuilder
-                                                         constructControllerTopToolbar];
-                                
-                                BOComponentDevice * avReceiver = [BOComponentDevice
-                                                                  fetchDeviceWithName:@"AV Receiver"
-                                                                              context:context];
-                                assert(avReceiver);
-                                avReceiver.inputPowersOn = YES;
-                                avReceiver.offCommand    = MakeIRCommand(avReceiver, @"Power");
-                                
-                                BOComponentDevice * comcastDVR = [BOComponentDevice
-                                                                  fetchDeviceWithName:@"Comcast DVR"
-                                                                               context:context];
-                                assert(comcastDVR);
-                                comcastDVR.alwaysOn = YES;
-                                
-                                BOComponentDevice * samsungTV = [BOComponentDevice
-                                                                 fetchDeviceWithName:@"Samsung TV"
-                                                                             context:context];
-                                assert(samsungTV);
-                                samsungTV.offCommand = MakeIRCommand(samsungTV, @"Power Off");
-                                samsungTV.onCommand  = MakeIRCommand(samsungTV, @"Power On");
-                                
-                                BOComponentDevice * ps3 = [BOComponentDevice
-                                                           fetchDeviceWithName:@"PS3"
-                                                                       context:context];
-                                assert(ps3);
-                                ps3.offCommand = MakeIRCommand(ps3, @"Discrete Off");
-                                ps3.onCommand  = MakeIRCommand(ps3, @"Discrete On");
-                            }];
+        BOComponentDevice * avReceiver = [BOComponentDevice
+                                          fetchDeviceWithName:@"AV Receiver"
+                                                      context:context];
+        assert(avReceiver);
+        avReceiver.inputPowersOn = YES;
+        avReceiver.offCommand    = MakeIRCommand(avReceiver, @"Power");
 
-    if (!success || ![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
-                      ^(NSManagedObjectContext *localContext)
-                      {
-                          success = ([RERemoteBuilder constructHomeRemote] != nil);
-                      }]) return NO;
-    
-    if (!success || ![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
-                      ^(NSManagedObjectContext *localContext)
-                      {
-                          success = ([RERemoteBuilder constructDVRRemote] != nil);
-                      }]) return NO;
-    
-    if (!success || ![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
-                      ^(NSManagedObjectContext *localContext)
-                      {
-                          success = ([RERemoteBuilder constructPS3Remote] != nil);
-                      }]) return NO;
+        BOComponentDevice * comcastDVR = [BOComponentDevice
+                                          fetchDeviceWithName:@"Comcast DVR"
+                                                       context:context];
+        assert(comcastDVR);
+        comcastDVR.alwaysOn = YES;
 
-    if (!success || ![MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
-                      ^(NSManagedObjectContext *localContext)
-                      {
-                          success = ([RERemoteBuilder constructSonosRemote] != nil);
-                      }]) return NO;
+        BOComponentDevice * samsungTV = [BOComponentDevice
+                                         fetchDeviceWithName:@"Samsung TV"
+                                                     context:context];
+        assert(samsungTV);
+        samsungTV.offCommand = MakeIRCommand(samsungTV, @"Power Off");
+        samsungTV.onCommand  = MakeIRCommand(samsungTV, @"Power On");
 
+        BOComponentDevice * ps3 = [BOComponentDevice
+                                   fetchDeviceWithName:@"PS3"
+                                               context:context];
+        assert(ps3);
+        ps3.offCommand = MakeIRCommand(ps3, @"Discrete Off");
+        ps3.onCommand  = MakeIRCommand(ps3, @"Discrete On");
 
-    return success;
+        [RERemoteBuilder constructHomeRemote];
+        [RERemoteBuilder constructDVRRemote];
+        [RERemoteBuilder constructPS3Remote];
+        [RERemoteBuilder constructSonosRemote];
+    }];
 }
 
 @end

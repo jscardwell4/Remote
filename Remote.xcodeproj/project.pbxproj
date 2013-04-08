@@ -3147,7 +3147,7 @@
 		C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RESelectionPanelButtonGroupView.m; path = REButtonGroupView/RESelectionPanelButtonGroupView.m; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2997F2416FA5A6D00290737 /* REEditableBackground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REEditableBackground.h; sourceTree = "<group>"; };
-		C2AF0F451711DC2600E45849 /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = "../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MagicalRecord.framework"; sourceTree = "<group>"; };
+		C2AF0F451711DC2600E45849 /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = ../../../Applications/MagicalRecord/MagicalRecord.framework; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RECommandContainer_Private.h; sourceTree = "<group>"; };
 		C2DF3C4516E8F87B0075AC51 /* Remote.base 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 17.xcdatamodel"; sourceTree = "<group>"; };
 		C2FFB5F1170B5A6C0079C283 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = MSKit.embeddedframework/MSKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6860,6 +6860,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"/**",
+					"/Users/Moondeer/Applications/MagicalRecord/**",
 				);
 			};
 			name = Debug;
@@ -6872,6 +6873,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"/**",
 					"\"$(SRCROOT)/../DerivedData/MSRemote/Build/Products/Debug-iphoneos/MSKit.embeddedframework\"/**",
+					"/Users/Moondeer/Applications/MagicalRecord/**",
 				);
 			};
 			name = Release;

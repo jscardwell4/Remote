@@ -114,7 +114,7 @@ static const int   msLogContext = DEFAULT_LOG_CONTEXT;
 {
     static dispatch_once_t pred = 0;
     __strong static MSRemoteAppController * _sharedObject = nil;
-    dispatch_once(&pred, ^{_sharedObject = SharedApp.delegate;});
+    dispatch_once(&pred, ^{_sharedObject = UIApp.delegate;});
     return _sharedObject;
 }
 
@@ -190,7 +190,7 @@ static const int   msLogContext = DEFAULT_LOG_CONTEXT;
                                      queue:MainQueue
                                 usingBlock:^(NSNotification * note)
                                            {
-                                               SharedApp.statusBarHidden =
+                                               UIApp.statusBarHidden =
                                                    [SettingsManager boolForSetting:kStatusBarKey];
                                            }];
 

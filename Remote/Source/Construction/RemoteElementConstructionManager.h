@@ -13,7 +13,7 @@
 
 @interface RemoteElementConstructionManager : NSObject
 
-+ (BOOL)buildController;
++ (void)buildController;
 
 @end
 
@@ -30,13 +30,13 @@
  */
 @interface RERemoteBuilder : NSObject
 
-+ (RERemote *)constructDVRRemote;
++ (void)constructDVRRemote;
 
-+ (RERemote *)constructHomeRemote;
++ (void)constructHomeRemote;
 
-+ (RERemote *)constructPS3Remote;
++ (void)constructPS3Remote;
 
-+ (RERemote *)constructSonosRemote;
++ (void)constructSonosRemote;
 
 @end
 

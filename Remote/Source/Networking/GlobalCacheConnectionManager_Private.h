@@ -72,7 +72,7 @@
  * @param uri The URI for the device to which a connection shall be established
  * @return The Newly instantiated `GlobalCachedDeviceConnection` object
  */
-+ (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uri;
++ (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uuid;
 
 /**
  * Asks the `GlobalCacheDeviceConnection` to commence communication with the `device`.
@@ -98,7 +98,7 @@
 @property (nonatomic, readonly) BOOL isConnected;
 
 /// The uuid identifying the device to which the connection transmits and receives
-@property (nonatomic, readonly) NSString * deviceURI;
+@property (nonatomic, readonly) NSString * deviceUUID;
 
 @end
 
@@ -107,6 +107,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 @interface GlobalCacheConnectionManager () {
+    NSMutableDictionary            * _requestLog;          /// Holds completion handlers for ongoing commands
     NSMutableDictionary            * _networkDevices;      /// previously discovered iTach devices.
     NSMutableDictionary            * _connectedDevices;    /// currently connected iTach devices.
     NSMutableSet                   * _beaconsReceived;     /// uuids of devices from processed beacons.
@@ -114,7 +115,12 @@
     GlobalCacheMulticastConnection * _multicastConnection; /// reference to the multicast singleton.
     @package
     NSOperationQueue               * _operationQueue;      /// private queue for networking operations.
+    NSString                       * _defaultDeviceUUID;
 }
+
+@end
+
+@interface GlobalCacheConnectionManager (DynamicPrivate)
 
 /**
  * Processes the beacon broadcast by an iTach device and received by the multicast connection singleton.
@@ -122,20 +128,24 @@
  * `deviceDiscoveredOfType:uuid:attributes:`.
  * @param The contents of the received beacon to be parsed by the manager
  */
-- (void)receivedMulticastGroupMessage:(NSString *)message;
++ (void)receivedMulticastGroupMessage:(NSString *)message;
 
 /**
  * Creates a new `NDiTachDevice` model object with the specified attributes.
  * @param uuid Unique identifier for the device
  * @param attributes Dictionary of key/value pairs to set for created device model object.
  */
-- (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes;
++ (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes;
 
 /**
  * Processes messages received through `GlobalCachedDeviceConnection` objects.
  * @param message Contents of the message received by the device connection
  */
-- (void)parseiTachReturnMessage:(NSString *)message;
++ (void)parseiTachReturnMessage:(NSString *)message;
+
++ (void)deviceDisconnected:(NSString *)uri;
+
++ (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection;
 
 @end
 

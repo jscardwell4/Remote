@@ -13,11 +13,11 @@
 {
     [super initializeIVARs];
 
-    self.selected = [[ConnectionManager sharedConnectionManager] isWifiAvailable];
+    self.selected = [ConnectionManager isWifiAvailable];
 
     [NotificationCenter
      addObserverForName:CMConnectionStatusNotification
-                 object:[ConnectionManager sharedConnectionManager]
+                 object:[ConnectionManager class]
                   queue:MainQueue
              usingBlock:^(NSNotification * note){
                  if (self.model.selected != BOOLValue([note.userInfo
