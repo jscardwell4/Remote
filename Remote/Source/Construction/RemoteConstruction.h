@@ -18,11 +18,11 @@
 #import "REControlStateSet.h"
 #import "RECommand.h"
 #import "RECommandContainer.h"
+#import "RETheme.h"
 
 
 
-
-#define CTX context
+#define CTX [NSManagedObjectContext MR_contextForCurrentThread]
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Constraints

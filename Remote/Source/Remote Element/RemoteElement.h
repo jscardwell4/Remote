@@ -69,6 +69,7 @@
 @property (nonatomic, assign)           REShape     shape;
 @property (nonatomic, assign)           REStyle     style;
 @property (nonatomic, readonly)         REType      type;
+@property (nonatomic, readonly)         REType      baseType;
 @property (nonatomic, readonly)         RESubtype   subtype;
 @property (nonatomic, assign)           REOptions   options;
 @property (nonatomic, readonly)         REState     state;

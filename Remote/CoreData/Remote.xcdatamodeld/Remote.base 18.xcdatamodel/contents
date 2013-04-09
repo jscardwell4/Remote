@@ -160,6 +160,7 @@
     <entity name="REActivityButton" representedClassName="REActivityButton" parentEntity="REButton" syncable="YES">
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REDeviceConfiguration" inverseName="activityButtons" inverseEntity="REDeviceConfiguration" indexed="YES" syncable="YES"/>
     </entity>
+    <entity name="REBuiltinTheme" representedClassName="REBuiltinTheme" parentEntity="RETheme" syncable="YES"/>
     <entity name="REButton" representedClassName="REButton" parentEntity="RemoteElement" syncable="YES">
         <attribute name="contentEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
         <attribute name="imageEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
@@ -248,6 +249,8 @@
         <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="backgroundColors" inverseEntity="REButton" indexed="YES" syncable="YES"/>
         <relationship name="icon" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateIconImageSet" inverseName="iconColors" inverseEntity="REControlStateIconImageSet" indexed="YES" syncable="YES"/>
+        <relationship name="themeBackground" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="backgroundColors" inverseEntity="RETheme" syncable="YES"/>
+        <relationship name="themeIcons" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="iconColors" inverseEntity="RETheme" syncable="YES"/>
     </entity>
     <entity name="REControlStateIconImageSet" representedClassName="REControlStateIconImageSet" parentEntity="REControlStateImageSet" syncable="YES">
         <attribute name="styledIconStates" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -278,7 +281,9 @@
         <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="titles" inverseEntity="REButton" indexed="YES" syncable="YES"/>
         <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="titleSets" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="titleStyles" inverseEntity="RETheme" syncable="YES"/>
     </entity>
+    <entity name="RECustomTheme" representedClassName="RECustomTheme" parentEntity="RETheme" syncable="YES"/>
     <entity name="REDelayCommand" representedClassName="REDelayCommand" parentEntity="RECommand" syncable="YES">
         <attribute name="duration" attributeType="Float" defaultValueString="0.25">
             <userInfo/>
@@ -364,6 +369,13 @@
             <userInfo/>
         </attribute>
     </entity>
+    <entity name="RETheme" representedClassName="RETheme" isAbstract="YES" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="theme" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
+        <relationship name="backgroundColors" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateColorSet" inverseName="themeBackground" inverseEntity="REControlStateColorSet" syncable="YES"/>
+        <relationship name="iconColors" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateColorSet" inverseName="themeIcons" inverseEntity="REControlStateColorSet" syncable="YES"/>
+        <relationship name="titleStyles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateTitleSet" inverseName="theme" inverseEntity="REControlStateTitleSet" syncable="YES"/>
+    </entity>
     <elements>
         <element name="BankObject" positionX="0" positionY="0" width="128" height="105"/>
         <element name="BankObjectGroup" positionX="0" positionY="0" width="128" height="60"/>
@@ -398,11 +410,11 @@
         <element name="REConfigurationDelegate" positionX="0" positionY="0" width="128" height="105"/>
         <element name="REConstraint" positionX="0" positionY="0" width="128" height="225"/>
         <element name="REControlStateButtonImageSet" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="REControlStateColorSet" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="REControlStateColorSet" positionX="0" positionY="0" width="128" height="240"/>
         <element name="REControlStateIconImageSet" positionX="0" positionY="0" width="128" height="90"/>
         <element name="REControlStateImageSet" positionX="0" positionY="0" width="128" height="165"/>
         <element name="REControlStateSet" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="REControlStateTitleSet" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="REControlStateTitleSet" positionX="0" positionY="0" width="128" height="210"/>
         <element name="REDelayCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="REDeviceConfiguration" positionX="0" positionY="0" width="128" height="105"/>
         <element name="REHTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
@@ -418,5 +430,8 @@
         <element name="RESwitchToConfigCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="RESwitchToRemoteCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="RESystemCommand" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="RETheme" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="RECustomTheme" positionX="160" positionY="192" width="128" height="45"/>
+        <element name="REBuiltinTheme" positionX="160" positionY="192" width="128" height="45"/>
     </elements>
 </model>

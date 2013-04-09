@@ -31,15 +31,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
     [context performBlockAndWait:
      ^{
-         NSFetchRequest * fetchRequest =
-             [NSFetchRequest fetchRequestWithEntityName:ClassString(self)
-                                              predicate:[NSPredicate
-                                                         predicateWithFormat:@"name == %@", @"Default"]];
-        NSError * error = nil;
-        NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-
-         group = [fetchedObjects lastObject];
-
+         group = [self MR_findFirstByAttribute:@"name" withValue:@"Default"];
          if (!group) group = [self groupWithName:@"Default" context:context];
     }];
 
@@ -61,19 +53,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 + (instancetype)fetchGroupWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    __block BankObjectGroup * group = nil;
-
-    [context performBlockAndWait:^{
-        NSFetchRequest * fetchRequest =
-            [NSFetchRequest fetchRequestWithEntityName:ClassString(self)
-                                             predicate:[NSPredicate
-                                                        predicateWithFormat:@"name == %@", name]];
-        NSError * error = nil;
-        NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-        if (fetchedObjects.count) group = [fetchedObjects lastObject];
-    }];
-
-    return group;
+    return [self MR_findFirstByAttribute:@"name" withValue:name inContext:context];
 }
 
 @end

@@ -24,10 +24,7 @@
 
 + (instancetype)previewInContext:(NSManagedObjectContext *)context
 {
-    assert(context);
-    __block BankObjectPreview * preview = nil;
-    [context performBlockAndWait:^{ preview = NSManagedObjectFromClass(context); }];
-    return preview;
+    return [self MR_createInContext:context];
 }
 
 + (instancetype)previewWithName:(NSString *)name context:(NSManagedObjectContext *)context

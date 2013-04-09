@@ -36,7 +36,27 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
 + (void)initialize
 {
-    if (self != [GlobalCacheConnectionManager class]) return;
+    if (self == [GlobalCacheConnectionManager class])
+    {
+        if (![self globalCacheConnectionManager])
+            MSLogErrorTag(@"something went horribly wrong!");
+    }
+}
+
++ (const GlobalCacheConnectionManager *)globalCacheConnectionManager
+{
+/*
+    NSMutableString * instanceMethodEncodings = [@"" mutableCopy];
+    unsigned int outCount;
+    Method * methods = class_copyMethodList(self, &outCount);
+    for (int i = 0; i < outCount; i++) {
+        [instanceMethodEncodings appendFormat:@"%@ = %s\n",
+         SelectorString(method_getName(methods[i])),
+         method_getTypeEncoding(methods[i])];
+    }
+    MSLogDebugTag(@"type encodings for instance methods:\n%@",
+                  [instanceMethodEncodings stringByRemovingCharactersFromSet:NSDecimalDigitCharacters]);
+*/
     
     static dispatch_once_t pred = 0;
     dispatch_once(&pred,  ^{
@@ -118,13 +138,151 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                                 }
                             }];
     });
+    return globalCacheConnectionManager;
+}
+
++ (BOOL)resolveClassMethod:(SEL)sel
+{
+/*
+     connectWithDevice:  						c@:@			char, id, SEL, id
+     detectNetworkDevices  						c@:				char, id, SEL
+     sendCommand:tag:device:completion: 		c@:@I@@?		char, id, SEL, id, unsigned int, id, id, ?
+     statusDescription  						@@:				id, id, SEL
+     defaultDeviceUUID	  						@@:				id, id, SEL
+     stopNetworkDeviceDetection  				v@:				void, id, SEL
+     receivedMulticastGroupMessage:  			v@:@			void, id, SEL, id
+     deviceDiscoveredWithUUID:attributes:   	v@:@@			void, id, SEL, id, id
+     setDefaultDeviceUUID:  					v@:@			void, id, SEL, id
+     isDetectingNetworkDevices  				c@:				char, id, SEL
+     isDefaultDeviceConnected  					c@:				char, id, SEL
+     deviceDisconnected:  						v@:@			void, id, SEL, id
+     connectionEstablished:  					v@:@			void, id, SEL, id
+     dispatchCompletionHandlerForTag:success:   v@:@c			void, id, SEL, char
+     parseiTachReturnMessage:  					v@:@			void, id, SEL, id
+     .cxx_destruct  							 						v@:				void, id, SEL
+
+ */
+    BOOL isResolved = NO;
+
+    Method instanceMethod = class_getInstanceMethod(self, sel);
+    if (!instanceMethod) return [super resolveClassMethod:sel];
+
+    // how many arguments does it take?
+    unsigned numberOfArgs = method_getNumberOfArguments(instanceMethod);
+
+    // get type encodings
+    NSString * typeEncodings = [@(method_getTypeEncoding(instanceMethod))
+                                stringByRemovingCharactersFromSet:NSDecimalDigitCharacters];
+    
+    const char   returnType    = [typeEncodings characterAtIndex:0];
+    const char * argumentTypes = (numberOfArgs > 2
+                                  ? [[typeEncodings substringFromIndex:3] UTF8String]
+                                  : NULL);
+    IMP classImp = NULL;
+    if (![typeEncodings hasSuffix:@"?"])
+    { // Create block implementation for method that does not take a block
+
+        classImp = imp_implementationWithBlock(^(id _self, ...) {
+        // create the invocation with the appropriate method signature
+        NSInvocation * invocation =
+            [NSInvocation invocationWithMethodSignature:
+             [NSMethodSignature signatureWithObjCTypes:method_getTypeEncoding(instanceMethod)]];
+
+        // set the target to the singleton instance
+        [invocation setTarget:[GlobalCacheConnectionManager globalCacheConnectionManager]];
+
+        // set the selector to the SEL being resolved
+        [invocation setSelector:sel];
+
+        // add any arguments
+        if (argumentTypes)
+        {
+            int i = 0;
+            char arg;
+            va_list args;
+            va_start(args, _self);
+            while (i < numberOfArgs - 2)
+            {
+                arg = argumentTypes[i];
+                switch (arg) {
+                    case 'c':
+                    {
+                        char c =  va_arg(args, int);
+                        [invocation setArgument:&c atIndex:i++ + 2];
+                    } break;
+
+                    case '@':
+                    {
+                        id obj = va_arg(args, id);
+                        [invocation setArgument:&obj atIndex:i++ + 2];
+                        [invocation retainArguments];
+                    } break;
+
+                    case 'I':
+                    {
+                        unsigned int u = va_arg(args, unsigned int);
+                        [invocation setArgument:&u atIndex:i+= + 2];
+                    } break;
+
+                    default:
+                        break;
+                }
+            }
+            va_end(args);
+        }
+
+        // invoke the method
+        [invocation invoke];
+
+        if (returnType != 'v')
+        {
+            NSUInteger length = [[invocation methodSignature] methodReturnLength];
+            void * buffer = (void *)malloc(length);
+            [invocation getReturnValue:buffer];
+            return buffer;
+        }
+
+        else
+            return nil;
+    });
+
+    }
+
+    
+    else
+    { // Only one method takes a block at the moment
+        if (sel == @selector(sendCommand:tag:device:completion:))
+            classImp =
+                imp_implementationWithBlock(^(id _self,
+                                              NSString * command,
+                                              NSUInteger tag,
+                                              NSString * device,
+                                              RECommandCompletionHandler completion)
+                                            {
+                                                return [[GlobalCacheConnectionManager
+                                                         globalCacheConnectionManager]
+                                                        sendCommand:command
+                                                        tag:tag
+                                                        device:device
+                                                        completion:completion];
+                                            });
+        
+    }
+
+
+    isResolved = class_addMethod(objc_getMetaClass("GlobalCacheConnectionManager"),
+                                 sel,
+                                 classImp,
+                                 method_getTypeEncoding(instanceMethod));
+
+
+    return isResolved;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Device Discovery
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (BOOL)detectNetworkDevices { return [globalCacheConnectionManager detectNetworkDevices]; }
 - (BOOL)detectNetworkDevices
 {
     // Make sure we are connected to wifi
@@ -151,7 +309,6 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     return YES;
 }
 
-+ (void)stopNetworkDeviceDetection { [globalCacheConnectionManager stopNetworkDeviceDetection]; }
 - (void)stopNetworkDeviceDetection
 {
     [_operationQueue addOperationWithBlock:
@@ -161,10 +318,6 @@ typedef NS_ENUM (uint8_t, ConnectionState){
      }];
 }
 
-+ (void)receivedMulticastGroupMessage:(NSString *)message
-{
-    [globalCacheConnectionManager receivedMulticastGroupMessage:message];
-}
 - (void)receivedMulticastGroupMessage:(NSString *)message
 {
     MSLogDebugTag(@"message:%@", message);
@@ -212,10 +365,6 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         MSLogDebugTag(@"ingnoring previously received beacon for device with uuid: %@", uuid);
 }
 
-+ (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes
-{
-    [globalCacheConnectionManager deviceDiscoveredWithUUID:uuid attributes:attributes];
-}
 - (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes
 {
     assert(uuid && attributes && !_networkDevices[uuid]);
@@ -250,17 +399,12 @@ typedef NS_ENUM (uint8_t, ConnectionState){
      }];
 }
 
-+ (BOOL)isDetectingNetworkDevices { return [globalCacheConnectionManager isDetectingNetworkDevices]; }
 - (BOOL)isDetectingNetworkDevices { return (kConnectionState & ConnectionStateMulticastGroup); }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Default Device Connection
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (void)setDefaultDeviceUUID:(NSString *)defaultDeviceUUID
-{
-    [globalCacheConnectionManager setDefaultDeviceUUID:defaultDeviceUUID];
-}
 - (void)setDefaultDeviceUUID:(NSString *)defaultDeviceUUID
 {
     _defaultDeviceUUID = [defaultDeviceUUID copy];
@@ -270,7 +414,6 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                         : kConnectionState & ~ConnectionStateDefaultDevice);
 }
 
-+ (NSString *)defaultDeviceUUID { return [globalCacheConnectionManager defaultDeviceUUID]; }
 - (NSString *)defaultDeviceUUID
 {
     if (!_defaultDeviceUUID)
@@ -323,19 +466,11 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     return _defaultDeviceUUID;
 }
 
-+ (BOOL)isDefaultDeviceConnected
-{
-    return [globalCacheConnectionManager isDefaultDeviceConnected];
-}
 - (BOOL)isDefaultDeviceConnected
 {
     return (kConnectionState & ConnectionStateDefaultDeviceConnected);
 }
 
-+ (BOOL)connectWithDevice:(NSString *)uuid
-{
-    return [globalCacheConnectionManager connectWithDevice:uuid];
-}
 - (BOOL)connectWithDevice:(NSString *)uuid
 {
     // Check wifi connection
@@ -372,33 +507,18 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     return YES;
 }
 
-+ (void)deviceDisconnected:(NSString *)uuid { [globalCacheConnectionManager deviceDisconnected:uuid]; }
 - (void)deviceDisconnected:(NSString *)uuid
 {
     if ([uuid isEqualToString:self.defaultDeviceUUID])
         kConnectionState &= ~ConnectionStateDefaultDeviceConnected;
 }
 
-+ (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection
-{
-    [globalCacheConnectionManager connectionEstablished:deviceConnection];
-}
 - (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection
 {
     assert(deviceConnection.isConnected);
     _connectedDevices[deviceConnection.deviceUUID] = deviceConnection;
 }
 
-+ (BOOL)sendCommand:(NSString *)command
-                tag:(NSUInteger)tag
-             device:(NSString *)uuid
-         completion:(RECommandCompletionHandler)completion
-{
-    return [globalCacheConnectionManager sendCommand:command
-                                                 tag:tag
-                                              device:uuid
-                                          completion:completion];
-}
 - (BOOL)sendCommand:(NSString *)command
                 tag:(NSUInteger)tag
              device:(NSString *)uuid
@@ -466,10 +586,6 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     if (completion) completion(YES, success);
 }
 
-+ (void)parseiTachReturnMessage:(NSString *)message
-{
-    [globalCacheConnectionManager parseiTachReturnMessage:message];
-}
 - (void)parseiTachReturnMessage:(NSString *)message
 {
     // iTach completeir command: completeir,<module address>:<connector address>,<ID>
@@ -528,7 +644,6 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 #pragma mark - Logging
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (NSString *)statusDescription { return [globalCacheConnectionManager statusDescription]; }
 - (NSString *)statusDescription
 {
     NSMutableArray * a = [NSMutableArray arrayWithCapacity:4];
@@ -693,7 +808,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         _tcpSourceWrite = nil;
 //        _tcpSourceRead = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [GlobalCacheConnectionManager deviceDisconnected:_device.uuid];
+            [globalCacheConnectionManager deviceDisconnected:_device.uuid];
         });
     });
 
@@ -717,7 +832,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                 if (msgComponent.length)
                 {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                        [GlobalCacheConnectionManager parseiTachReturnMessage:msgComponent];
+                        [globalCacheConnectionManager parseiTachReturnMessage:msgComponent];
                     });
                 }
             }
@@ -730,7 +845,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 //        _tcpSourceWrite = nil;
         _tcpSourceRead = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [GlobalCacheConnectionManager deviceDisconnected:_device.uuid];
+            [globalCacheConnectionManager deviceDisconnected:_device.uuid];
         });
     });
 
@@ -740,7 +855,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
     _isConnecting = NO;
 
-    [GlobalCacheConnectionManager connectionEstablished:self];
+    [globalCacheConnectionManager connectionEstablished:self];
 
     return YES;
 }
@@ -895,7 +1010,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
             msg[bytesAvailable] = '\0';
             NSString * message = @(msg);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [GlobalCacheConnectionManager receivedMulticastGroupMessage:message];
+                [globalCacheConnectionManager receivedMulticastGroupMessage:message];
             });
         }
     });

@@ -30,6 +30,7 @@
 
 @interface RECommandSet : RECommandContainer
 
++ (instancetype)commandSetWithType:(RECommandSetType)type;
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type;
 
 - (void)setObject:(RECommand *)command forKeyedSubscript:(NSString *)key;

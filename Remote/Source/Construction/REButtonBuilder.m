@@ -16,18 +16,8 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 + (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSMutableDictionary * attrH = [@{} mutableCopy];
+    NSAttributedString * titleN = [NSAttributedString attributedStringWithString:title];
 
-    NSMutableDictionary * attrN = [self buttonTitleAttributesWithFontName:nil
-                                                                 fontSize:0
-                                                              highlighted:attrH];
-
-    NSAttributedString * titleN = [NSAttributedString attributedStringWithString:title
-                                                                      attributes:attrN];
-
-    NSAttributedString * titleH = [NSAttributedString attributedStringWithString:title
-                                                                      attributes:attrH];
     NSInteger   switchIndex = -1;
 
     REMacroCommand * command = [REMacroBuilder    activityMacroForActivity:activity
@@ -42,23 +32,24 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
     NSSet * configs = [REMacroBuilder deviceConfigsForActivity:activity];
 
     NSValue                * titleEdgeInsets = NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20));
-    REControlStateTitleSet * titleSet        = MakeTitleSet(@{ @"normal"      : titleN,
-                                                               @"highlighted": titleH });
+    REControlStateTitleSet * titleSet        = MakeTitleSet(@{ @"normal" : titleN });
     NSString * displayName = [title stringByRemovingLineBreaks];
     NSString * key         = $(@"activity%u", activity);
     NSNumber * shape       = @(REShapeRoundedRectangle);
-    NSNumber * style       = @(REStyleApplyGloss | REStyleDrawBorder);
 
     REActivityButton * button =
         MakeActivityOnButton(@"titleEdgeInsets"       : titleEdgeInsets,
                              @"shape"                 : shape,
-                             @"style"                 : style,
                              @"key"                   : key,
                              @"titles"                : titleSet,
                              @"deviceConfigurations"  : configs,
                              @"command"               : command,
                              @"longPressCommand"      : CollectionSafeValue(longPressCommand),
                              @"displayName"           : displayName);
+    RETheme * nightshadeTheme = [REBuiltinTheme themeWithName:REThemeNightshadeName];
+    assert(nightshadeTheme);
+    [nightshadeTheme applyThemeToElement:button];
+    
     return button;
 }
 

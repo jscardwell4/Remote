@@ -17,10 +17,7 @@
 
 + (instancetype)bankObjectInContext:(NSManagedObjectContext *)context
 {
-    assert(context);
-    __block BankObject * object = nil;
-    [context performBlockAndWait:^{ object = NSManagedObjectFromClass(context); }];
-    return object;
+    return [self MR_createInContext:context];
 }
 
 + (instancetype)bankObjectWithName:(NSString *)name context:(NSManagedObjectContext *)context
@@ -34,13 +31,5 @@
      }];
     return bankObject;
 }
-
-/*
-- (void)willSave
-{
-    [super willSave];
-    nsprintf(@"%@", ClassTagSelectorStringForInstance($(@"%p",self)));
-}
-*/
 
 @end

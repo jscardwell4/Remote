@@ -90,6 +90,8 @@ MSKIT_STATIC_INLINE NSUInteger stateForProperty(NSString * property) {
 - (id)objectAtIndexedSubscript:(NSUInteger)state;
 - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)state;
 
+- (void)copyObjectsFromSet:(REControlStateSet *)set;
+
 @property (nonatomic, copy, readonly) NSString * uuid;
 
 @end
@@ -117,7 +119,6 @@ MSKIT_STATIC_INLINE NSUInteger stateForProperty(NSString * property) {
 - (UIImage *)UIImageForState:(NSUInteger)state;
 
 - (BOImage *)objectAtIndexedSubscript:(NSUInteger)state;
-//- (void)setObject:(BOImage *)image atIndexedSubscript:(NSUInteger)state;
 
 @end
 
@@ -155,8 +156,6 @@ MSKIT_STATIC_INLINE NSUInteger stateForProperty(NSString * property) {
 ////////////////////////////////////////////////////////////////////////////////
 
 @interface REControlStateTitleSet : REControlStateSet
-
-- (void)copyTitlesFromTitleSet:(REControlStateTitleSet *)titleSet;
 
 - (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state;
 

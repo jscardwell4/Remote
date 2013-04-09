@@ -16,18 +16,14 @@
 
 @dynamic name, port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand;
 
++ (instancetype)fetchDeviceWithName:(NSString *)name
+{
+    return [self MR_findFirstByAttribute:@"name" withValue:name];
+}
+
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    __block BOComponentDevice * device = nil;
-    [context performBlockAndWait:
-     ^{
-         NSFetchRequest * fetchRequest = NSFetchRequestFromClassWithPredicate(@"name == %@", name);
-         NSError * error = nil;
-         NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-         if (fetchedObjects) device = [fetchedObjects lastObject];
-     }];
-
-    return device;
+    return [self MR_findFirstByAttribute:@"name" withValue:name inContext:context];
 }
 
 - (BOOL)ignorePowerCommand:(RECommandCompletionHandler)handler

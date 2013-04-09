@@ -30,32 +30,20 @@
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context
 {
-    assert(context);
-
-    __block REControlStateSet * stateSet;
-
-    [context performBlockAndWait:
-     ^{
-        stateSet = [NSEntityDescription insertNewObjectForEntityForName:ClassString(self)
-                                                 inManagedObjectContext:context];
-     }];
-
-    return stateSet;
+    return [self MR_createInContext:context];
 }
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context
                              withObjects:(NSDictionary *)objects
 {
-    assert(context);
-    
-    __block REControlStateSet * stateSet;
-
-    [context performBlockAndWait:
-     ^{
-         stateSet = [self controlStateSetInContext:context];
-         [stateSet setValuesForKeysWithDictionary:objects];
-     }];
+    REControlStateSet * stateSet = [self controlStateSetInContext:context];
+    [stateSet setValuesForKeysWithDictionary:objects];
     return stateSet;
+}
+
+- (void)copyObjectsFromSet:(REControlStateSet *)set
+{
+    for (int i = 0; i < 8; i++) self[i] = [set[i] copy];
 }
 
 - (void)awakeFromInsert { [super awakeFromInsert]; [self setPrimitiveUuid:MSNonce()]; }
@@ -79,13 +67,5 @@
 {
     if (validState(state)) [self setValue:object forKey:propertyForState(state)];
 }
-
-/*
-- (void)willSave
-{
-    [super willSave];
-    nsprintf(@"%@", ClassTagSelectorStringForInstance($(@"%p",self)));
-}
-*/
 
 @end

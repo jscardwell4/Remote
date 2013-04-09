@@ -10,12 +10,8 @@
 
 @implementation REControlStateTitleSet
 
-- (void)copyTitlesFromTitleSet:(REControlStateTitleSet *)titleSet
+- (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state
 {
-    for (int i = 0; i < 8; i++) self[i] = titleSet[i];
-}
-
-- (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state {
     return (NSAttributedString *)[super objectAtIndexedSubscript:state];
 }
 

@@ -7,7 +7,6 @@
 //
 #import "BankObject.h"
 #import "BankObjectGroup.h"
-#import "BOIRCode_Private.h"
 
 /*
  * @interface IRCode ()

@@ -32,22 +32,10 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
 {
-    __block REButton * element = nil;
-    [context performBlockAndWait:
-     ^{
-         element = [super remoteElementInContext:context];
-         element.type = RETypeButton;
-     }];
+    REButton * element = [super remoteElementInContext:context];
+    element.type = RETypeButton;
     return element;
 }
-
-/*
-- (void)willSave
-{
-    [super willSave];
-    nsprintf(@"%@", self);
-}
-*/
 
 - (void)awakeFromInsert
 {
@@ -65,13 +53,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
          self.icons            = [REControlStateIconImageSet   controlStateSetInContext:cxt];
          self.titles           = [REControlStateTitleSet       controlStateSetInContext:cxt];
          self.images           = [REControlStateButtonImageSet controlStateSetInContext:cxt];
-         self.backgroundColors =
-             [REControlStateColorSet
-               controlStateSetInContext:cxt
-                            withObjects:@{ propertyForState(UIControlStateNormal):
-                                               [DarkTextColor colorByLighteningTo:0.025f] }];
-         assert(self.backgroundColors != nil);
-         assert([self.backgroundColors valueForKey:@"button"] == self);
+         self.backgroundColors = [REControlStateColorSet       controlStateSetInContext:cxt];
      }];
 }
 
@@ -177,12 +159,8 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
 {
-    __block REActivityButton * element = nil;
-    [context performBlockAndWait:
-     ^{
-         element = [super remoteElementInContext:context];
-         element.type = REButtonTypeActivityButton;
-     }];
+    REActivityButton * element = [super remoteElementInContext:context];
+    element.type = REButtonTypeActivityButton;
     return element;
 }
 
@@ -203,9 +181,12 @@ static int   ddLogLevel = DefaultDDLogLevel;
 - (void)executeCommandWithOptions:(RECommandOptions)options
                        completion:(void (^)(BOOL finished, BOOL success))completion
 {
-    [self.controller activityActionForButton:self completion:^(BOOL finished, BOOL success) {
-        [super executeCommandWithOptions:options completion:completion];
-    }];
+    [self.controller activityActionForButton:self
+                                  completion:^(BOOL finished, BOOL success)
+                                             {
+                                                 [super executeCommandWithOptions:options
+                                                                       completion:completion];
+                                             }];
 }
 
 @end

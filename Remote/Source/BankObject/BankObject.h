@@ -74,6 +74,7 @@
 
 @interface BOComponentDevice : BankObject
 
++ (instancetype)fetchDeviceWithName:(NSString *)deviceName;
 + (instancetype)fetchDeviceWithName:(NSString *)deviceName context:(NSManagedObjectContext *)context;
 
 - (BOIRCode *)objectForKeyedSubscript:(NSString *)name;

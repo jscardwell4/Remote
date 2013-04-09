@@ -130,6 +130,8 @@
 		C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
 		C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
 		C2629BF7170248E100A0FFC2 /* RECommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */; };
+		C26329481713AFF30080330D /* RETheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* RETheme.m */; };
+		C263294C1714862A0080330D /* RETheme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */; };
 		C26BAEAC16DC10FE0093D5B4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAB16DC10FE0093D5B4 /* UIKit.framework */; };
 		C26BAEAE16DC10FE0093D5B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */; };
 		C26BAEB016DC10FE0093D5B4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAF16DC10FE0093D5B4 /* CoreGraphics.framework */; };
@@ -1545,14 +1547,14 @@
 		C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REBatteryStatusButtonView.m; path = REButtonView/REBatteryStatusButtonView.m; sourceTree = "<group>"; };
 		C25B456816FF61C90042B59E /* REButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REButtonView.m; path = REButtonView/REButtonView.m; sourceTree = "<group>"; };
 		C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REConnectionStatusButtonView.m; path = REButtonView/REConnectionStatusButtonView.m; sourceTree = "<group>"; };
-		C25B457416FF62A00042B59E /* REButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButton.m; sourceTree = "<group>"; };
-		C25B457716FF62A00042B59E /* REButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroup.m; sourceTree = "<group>"; };
+		C25B457416FF62A00042B59E /* REButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REButton.m; path = REButton/REButton.m; sourceTree = "<group>"; };
+		C25B457716FF62A00042B59E /* REButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REButtonGroup.m; path = REButtonGroup/REButtonGroup.m; sourceTree = "<group>"; };
 		C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElement+Accessors.m"; sourceTree = "<group>"; };
 		C25B457916FF62A00042B59E /* RemoteElement+FlagsAndOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElement+FlagsAndOptions.m"; sourceTree = "<group>"; };
 		C25B457A16FF62A00042B59E /* RemoteElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement.h; sourceTree = "<group>"; };
 		C25B457B16FF62A00042B59E /* RemoteElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElement.m; sourceTree = "<group>"; };
 		C25B457C16FF62A00042B59E /* RemoteElement_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement_Private.h; sourceTree = "<group>"; };
-		C25B457F16FF62A00042B59E /* RERemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemote.m; sourceTree = "<group>"; };
+		C25B457F16FF62A00042B59E /* RERemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RERemote.m; path = RERemote/RERemote.m; sourceTree = "<group>"; };
 		C25B45B116FF66FE0042B59E /* REDelayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REDelayCommand.m; sourceTree = "<group>"; };
 		C25B45B216FF66FE0042B59E /* REHTTPCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REHTTPCommand.m; sourceTree = "<group>"; };
 		C25B45B316FF66FE0042B59E /* REMacroCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMacroCommand.m; sourceTree = "<group>"; };
@@ -1613,7 +1615,7 @@
 		C25B468616FF67AF0042B59E /* REControlStateSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateSet.m; sourceTree = "<group>"; };
 		C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateTitleSet.m; sourceTree = "<group>"; };
 		C25B469616FF67D00042B59E /* REButtonBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonBuilder.m; sourceTree = "<group>"; };
-		C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupBuilder.m; sourceTree = "<group>"; };
+		C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REButtonGroupBuilder.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C25B469A16FF67D00042B59E /* REMacroBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMacroBuilder.m; sourceTree = "<group>"; };
 		C25B469C16FF67D00042B59E /* RERemoteBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteBuilder.m; sourceTree = "<group>"; };
 		C25B469D16FF67D00042B59E /* RemoteConstruction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConstruction.h; sourceTree = "<group>"; };
@@ -1639,7 +1641,6 @@
 		C25B46D516FF69110042B59E /* REDeviceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = REDeviceConfiguration.h; path = "../BankObject/BankObject Subclasses/ComponentDevice/REDeviceConfiguration.h"; sourceTree = "<group>"; };
 		C25B46D616FF69110042B59E /* REDeviceConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REDeviceConfiguration.m; path = "../BankObject/BankObject Subclasses/ComponentDevice/REDeviceConfiguration.m"; sourceTree = "<group>"; };
 		C25B46D816FF69110042B59E /* BOIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOIRCode.m; path = ComponentDevice/BOIRCode.m; sourceTree = "<group>"; };
-		C25B46D916FF69110042B59E /* BOIRCode_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BOIRCode_Private.h; path = ComponentDevice/BOIRCode_Private.h; sourceTree = "<group>"; };
 		C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOFactoryIRCode.m; sourceTree = "<group>"; };
 		C25B46DF16FF69110042B59E /* BOManufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOManufacturer.m; sourceTree = "<group>"; };
 		C25B46E116FF69110042B59E /* BOBackgroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BOBackgroundImage.m; path = REImage/BOBackgroundImage.m; sourceTree = "<group>"; };
@@ -1674,6 +1675,10 @@
 		C2625B9D16DD47F10000F676 /* Remote.base 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 8.xcdatamodel"; sourceTree = "<group>"; };
 		C2625B9E16DD47F10000F676 /* Remote.base 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 9.xcdatamodel"; sourceTree = "<group>"; };
 		C2625B9F16DD47F10000F676 /* Remote.base.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Remote.base.xcdatamodel; sourceTree = "<group>"; };
+		C26329461713AFF20080330D /* RETheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RETheme.h; sourceTree = "<group>"; };
+		C26329471713AFF30080330D /* RETheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RETheme.m; sourceTree = "<group>"; };
+		C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RETheme+ApplyingThemes.m"; sourceTree = "<group>"; };
+		C263294D171487760080330D /* RETheme_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RETheme_Private.h; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26BAEAB16DC10FE0093D5B4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -3241,42 +3246,19 @@
 		C25B457116FF629F0042B59E /* Remote Element */ = {
 			isa = PBXGroup;
 			children = (
+				C26329491713B0110080330D /* Themes */,
 				C25B46C216FF688F0042B59E /* Constraints */,
 				C25B46B316FF68840042B59E /* Configurations */,
-				C25B457216FF62A00042B59E /* REButton */,
-				C25B457516FF62A00042B59E /* REButtonGroup */,
 				C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */,
 				C25B457916FF62A00042B59E /* RemoteElement+FlagsAndOptions.m */,
 				C25B457A16FF62A00042B59E /* RemoteElement.h */,
 				C25B457B16FF62A00042B59E /* RemoteElement.m */,
 				C25B457C16FF62A00042B59E /* RemoteElement_Private.h */,
-				C25B457D16FF62A00042B59E /* RERemote */,
-			);
-			path = "Remote Element";
-			sourceTree = "<group>";
-		};
-		C25B457216FF62A00042B59E /* REButton */ = {
-			isa = PBXGroup;
-			children = (
+				C25B457F16FF62A00042B59E /* RERemote.m */,
+				C25B457716FF62A00042B59E /* REButtonGroup.m */,
 				C25B457416FF62A00042B59E /* REButton.m */,
 			);
-			path = REButton;
-			sourceTree = "<group>";
-		};
-		C25B457516FF62A00042B59E /* REButtonGroup */ = {
-			isa = PBXGroup;
-			children = (
-				C25B457716FF62A00042B59E /* REButtonGroup.m */,
-			);
-			path = REButtonGroup;
-			sourceTree = "<group>";
-		};
-		C25B457D16FF62A00042B59E /* RERemote */ = {
-			isa = PBXGroup;
-			children = (
-				C25B457F16FF62A00042B59E /* RERemote.m */,
-			);
-			path = RERemote;
+			path = "Remote Element";
 			sourceTree = "<group>";
 		};
 		C25B45AF16FF66FD0042B59E /* Commands */ = {
@@ -3475,7 +3457,6 @@
 			children = (
 				C25B46F516FF69110042B59E /* BOPreset.m */,
 				C25B46D816FF69110042B59E /* BOIRCode.m */,
-				C25B46D916FF69110042B59E /* BOIRCode_Private.h */,
 				C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */,
 				C25B46E816FF69110042B59E /* BOUserIRCode.m */,
 				C25B46D416FF69110042B59E /* BOComponentDevice.m */,
@@ -3487,6 +3468,17 @@
 				C25B46DF16FF69110042B59E /* BOManufacturer.m */,
 			);
 			path = "BankObject Subclasses";
+			sourceTree = "<group>";
+		};
+		C26329491713B0110080330D /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				C26329471713AFF30080330D /* RETheme.m */,
+				C26329461713AFF20080330D /* RETheme.h */,
+				C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */,
+				C263294D171487760080330D /* RETheme_Private.h */,
+			);
+			path = Themes;
 			sourceTree = "<group>";
 		};
 		C26BAE9F16DC10FE0093D5B4 = {
@@ -6797,6 +6789,8 @@
 				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
 				C23B946C170C8FEA0028CC06 /* REView+Drawing.m in Sources */,
 				C23B946F170C94BE0028CC06 /* REView+Debugging.m in Sources */,
+				C26329481713AFF30080330D /* RETheme.m in Sources */,
+				C263294C1714862A0080330D /* RETheme+ApplyingThemes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

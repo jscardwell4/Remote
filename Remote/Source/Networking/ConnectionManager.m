@@ -29,6 +29,15 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
 
 @implementation ConnectionManager
 
++ (void)initialize
+{
+    if (self == [ConnectionManager class])
+    {
+        if (![self connectionManager])
+            MSLogErrorTag(@"something went horribly wrong!");
+    }
+}
+
 + (const ConnectionManager *)connectionManager
 {
     static dispatch_once_t pred = 0;

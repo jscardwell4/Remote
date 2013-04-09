@@ -67,6 +67,13 @@ static const NSDictionary * kValidKeysets;
     }
 }
 
++ (instancetype)commandSetWithType:(RECommandSetType)type
+{
+    RECommandSet * commandSet = [self MR_createEntity];
+    commandSet.type = type;
+    return commandSet;
+}
+
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type
 {
     __block RECommandSet * commandSet = nil;

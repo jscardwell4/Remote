@@ -15,7 +15,6 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 + (void)constructDVRRemote
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     RERemote * remote =
           MakeRemote(@"displayName"          : @"Comcast DVR Activity",
                      @"key"                  : @"activity1",
@@ -68,7 +67,6 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 + (void)constructHomeRemote
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     RERemote * remote =
           MakeRemote(@"type"                 : @(RETypeRemote),
                      @"displayName"          : @"Home Screen",
@@ -92,7 +90,6 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 + (void)constructPS3Remote
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     RERemote * remote =
           MakeRemote(@"type"                 : @(RETypeRemote),
                      @"key"                  : @"activity2",
@@ -121,7 +118,6 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 
 + (void)constructSonosRemote
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     RERemote * remote =
          MakeRemote(@"type"				   : @(RETypeRemote),
                     @"key" 				   : @"activity4",

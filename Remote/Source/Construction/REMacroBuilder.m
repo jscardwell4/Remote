@@ -45,14 +45,11 @@
 + (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
                                         switchIndex:(NSInteger *)switchIndex
 {
-    NSManagedObjectContext * context      = [NSManagedObjectContext MR_contextForCurrentThread];
     REMacroCommand         * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand commandInContext:context];
-    BOComponentDevice * avReceiver = [BOComponentDevice   fetchDeviceWithName:@"AV Receiver"
-                                                                      context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice    fetchDeviceWithName:@"Samsung TV"
-                                                                      context:context];
+    macroCommand = [REMacroCommand MR_createEntity];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
 
     if (isOnState)
     {
@@ -79,14 +76,11 @@
 + (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState
                                             switchIndex:(NSInteger *)switchIndex
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REMacroCommand * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand commandInContext:context];
-    BOComponentDevice * avReceiver = [BOComponentDevice   fetchDeviceWithName:@"AV Receiver"
-                                                                      context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                   context:context];
+    macroCommand = [REMacroCommand MR_createEntity];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
 
     if (isOnState)
     {
@@ -113,12 +107,10 @@
 + (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState
                                           switchIndex:(NSInteger *)switchIndex
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REMacroCommand * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand commandInContext:context];
-    BOComponentDevice * avReceiver = [BOComponentDevice   fetchDeviceWithName:@"AV Receiver"
-                                                                      context:context];
+    macroCommand = [REMacroCommand MR_createEntity];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
 
     if (isOnState)
     {
@@ -142,16 +134,12 @@
 + (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState
                                         switchIndex:(NSInteger *)switchIndex
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REMacroCommand * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand commandInContext:context];
-    BOComponentDevice * avReceiver = [BOComponentDevice   fetchDeviceWithName:@"AV Receiver"
-                                                                      context:context];
-    BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"
-                                                             context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                   context:context];
+    macroCommand = [REMacroCommand MR_createEntity];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    BOComponentDevice * ps3 = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"PS3"];
+    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
 
     if (isOnState)
     {
@@ -179,12 +167,9 @@
 
 + (NSSet *)deviceConfigsForActivity:(NSUInteger)activity
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     NSSet             * configs    = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                    context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice  fetchDeviceWithName:@"Samsung TV"
-                                                                    context:context];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
 
     NSDictionary * receiverConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
 

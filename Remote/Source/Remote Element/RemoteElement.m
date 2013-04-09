@@ -84,13 +84,7 @@ static const NSSet        * kConstraintManagerSelectors;
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
 {
-    __block RemoteElement * element = nil;
-    [context performBlockAndWait:
-     ^{
-         element = [NSEntityDescription insertNewObjectForEntityForName:ClassString(self)
-                                                 inManagedObjectContext:context];
-     }];
-    return element;
+    return [self MR_createInContext:context];
 }
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
@@ -113,21 +107,12 @@ static const NSSet        * kConstraintManagerSelectors;
     [context performBlockAndWait:
      ^{
          self.controller = [RERemoteController remoteControllerInContext:context];
-         self.backgroundColor = ClearColor;
          self.uuid = $(@"_%@", [MSNonce() stringByRemovingCharacter:'-']);
-         self.layoutConfiguration = [RELayoutConfiguration layoutConfigurationForElement:self];
+         self.layoutConfiguration   = [RELayoutConfiguration layoutConfigurationForElement:self];
          self.configurationDelegate = [REConfigurationDelegate delegateForRemoteElement:self];
      }];
 }
 
-
-/*
-- (void)willSave
-{
-    [super willSave];
-    nsprintf(@"%@", ClassTagSelectorStringForInstance($(@"%p",self)));
-}
-*/
 
 - (void)setParentElement:(RemoteElement *)parentElement
 {

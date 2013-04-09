@@ -14,10 +14,10 @@
  *
  * Bit vector assignments for `appearance`
  *
- *		   0xFF 0xFF   0xFF 0xFF 0xFF  0xFF 0xFF 0xFF
- * 		└──────┴─────────┴──────────┘
- *     				  ⬇             ⬇               ⬇
- *			style          reserved         shape
+ *		   0xFF 0xFF   0xFF 0xFF    0xFF   0xFF 0xFF 0xFF
+ * 		└──────┴───────┴───┴──────────┘
+ *     				  ⬇           ⬇        ⬇           ⬇
+ *			style       reserved   theme        shape
  *
  */
 typedef NS_ENUM (uint64_t, REShape)
@@ -32,6 +32,15 @@ typedef NS_ENUM (uint64_t, REShape)
     REShapeMask             = 0x0000000000FFFFFF
 };
 
+typedef NS_ENUM(NSUInteger, REThemeType)
+{
+    REThemeUnspecified      = 0x0000000000000000,
+    REThemeNightshade       = 0x0000000001000000,
+    REThemePowerBlue        = 0x0000000002000000,
+    REThemeMask             = 0x00000000FF000000
+};
+
+
 typedef NS_OPTIONS (uint64_t, REStyle)
 {
     REStyleUndefined        = 0x0000000000000000,
@@ -39,10 +48,10 @@ typedef NS_OPTIONS (uint64_t, REStyle)
     REStyleDrawBorder       = 0x0002000000000000,
     REStyleStretchable      = 0x0004000000000000,
     
-    REStyleGlossStyle1      = 0x0000000000000000,
-    REStyleGlossStyle2      = 0x0008000000000000,
-    REStyleGlossStyle3      = 0x0010000000000000,
-    REStyleGlossStyle4      = 0x0018000000000000,
+    REStyleGlossStyle1      = 0x0000000000000000, // 50-50 split
+    REStyleGlossStyle2      = 0x0008000000000000, // Top ⅓
+    REStyleGlossStyle3      = 0x0010000000000000, // Unused
+    REStyleGlossStyle4      = 0x0018000000000000, // Unused
     REStyleGlossStyleMask   = 0x0018000000000000,
     
     REStyleReserved         = 0xFFE0000000000000,
@@ -68,7 +77,7 @@ typedef NS_ENUM (uint64_t, REType){
     RETypeRemote      = 0x0000000000000001,
     RETypeButtonGroup = 0x0000000000000002,
     RETypeButton      = 0x0000000000000003,
-    RETypeBaseMask    = 0x000000000000000C,
+    RETypeBaseMask    = 0x0000000000000003,
     RETypeReserved    = 0x000000000000FFF0,
     RETypeMask        = 0x000000000000FFFF
 };
@@ -88,11 +97,11 @@ typedef NS_ENUM (uint64_t, REButtonGroupType) {
 
 typedef NS_ENUM (uint64_t, REButtonType) {
     REButtonTypeDefault          = RETypeButton,
-    REButtonTypeNumberPad        = 0x000000000000000C,
-    REButtonTypeConnectionStatus = 0x0000000000000014,
-    REButtonTypeBatteryStatus    = 0x000000000000001C,
-    REButtonTypeCommandManager   = 0x0000000000000024,
-    REButtonTypeActivityButton   = 0x000000000000002C,
+    REButtonTypeNumberPad        = 0x000000000000000F,
+    REButtonTypeConnectionStatus = 0x0000000000000017,
+    REButtonTypeBatteryStatus    = 0x000000000000001F,
+    REButtonTypeCommandManager   = 0x0000000000000027,
+    REButtonTypeActivityButton   = 0x000000000000002F,
     REButtonTypeReserved         = 0x000000000000FFC0,
     REButtonTypeMask             = RETypeMask
 };

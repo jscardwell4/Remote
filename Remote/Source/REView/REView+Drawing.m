@@ -97,7 +97,7 @@ static const int msLogContext = REMOTE_F_C;
 {
     UIBezierPath * path = (_borderPath
                            ? [UIBezierPath bezierPathWithCGPath:_borderPath.CGPath]
-                           : [UIBezierPath bezierPathWithRect:self.bounds]);
+                           : [UIBezierPath bezierPathWithRect:rect]);
 
     UIGraphicsPushContext(ctx);
     [path addClip];

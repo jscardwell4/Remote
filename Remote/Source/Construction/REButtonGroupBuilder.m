@@ -13,7 +13,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructControllerTopToolbar
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup =
         MakeToolbarButtonGroup(@"type"            : @(REButtonGroupTypeToolbar),
@@ -90,7 +89,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructActivities
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup = MakeButtonGroup(@"displayName" : @"Activity Buttons",
                                   @"key"         : @"activityButtons");
@@ -146,7 +144,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructLightControls
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup =
         MakeButtonGroup(@"displayName"     : @"Light Controls",
@@ -193,7 +190,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawDPad
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup =
         MakeButtonGroup(@"key"             : @"dpad",
@@ -312,18 +308,17 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRDPad
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
-    REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                          context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice   fetchDeviceWithName:@"Samsung TV"
-                                                                     context:context];
+    REButtonGroup     * buttonGroup = nil;
+    BOComponentDevice * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name"
+                                                                            withValue:@"Comcast DVR"];
+    BOComponentDevice * samsungTV   = [BOComponentDevice  MR_findFirstByAttribute:@"name"
+                                                                        withValue:@"Samsung TV"];
 
     buttonGroup             = [self rawDPad];
     buttonGroup.displayName = @"DVR DPad";
 
     // Create default DPad command set
-    RECommandSet * dvrDPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeDPad];
+    RECommandSet * dvrDPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
     dvrDPad[REDPadOkButtonKey]    = MakeIRCommand(comcastDVR, @"OK");
     dvrDPad[REDPadUpButtonKey]    = MakeIRCommand(comcastDVR, @"Up");
     dvrDPad[REDPadDownButtonKey]  = MakeIRCommand(comcastDVR, @"Down");
@@ -333,7 +328,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [buttonGroup.configurationDelegate setCommandSet:dvrDPad forConfiguration:REDefaultConfiguration];
 
     // Create tv DPad command set
-    RECommandSet * tvDPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeDPad];
+    RECommandSet * tvDPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
     tvDPad[REDPadOkButtonKey]    = MakeIRCommand(samsungTV, @"Enter");
     tvDPad[REDPadUpButtonKey]    = MakeIRCommand(samsungTV, @"Up");
     tvDPad[REDPadDownButtonKey]  = MakeIRCommand(samsungTV, @"Down");
@@ -348,15 +343,15 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3DPad
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * ps3         = [BOComponentDevice fetchDeviceWithName:@"PS3" context:context];
+    BOComponentDevice      * ps3         = [BOComponentDevice MR_findFirstByAttribute:@"name"
+                                                                            withValue:@"PS3"];
 
     buttonGroup             = [self rawDPad];
     buttonGroup.displayName = @"Playstation DPad";
 
     // Create default DPad command set
-    RECommandSet * ps3DPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeDPad];
+    RECommandSet * ps3DPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
     ps3DPad[REDPadOkButtonKey]    = MakeIRCommand(ps3, @"Enter");
     ps3DPad[REDPadUpButtonKey]    = MakeIRCommand(ps3, @"Up");
     ps3DPad[REDPadDownButtonKey]  = MakeIRCommand(ps3, @"Down");
@@ -371,7 +366,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawNumberPad
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup =
         MakeButtonGroup(@"key"             : @"numberpad",
@@ -605,13 +599,12 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRNumberPad
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                          context:context];
+    BOComponentDevice      * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name"
+                                                                            withValue:@"Comcast DVR"];
 
     // Create number pad button and add to button group
-    RECommandSet * dvrNumberPad = [RECommandSet commandSetInContext:context type:RECommandSetTypeNumberPad];
+    RECommandSet * dvrNumberPad = [RECommandSet commandSetWithType:RECommandSetTypeNumberPad];
     dvrNumberPad[REDigitOneButtonKey]   = MakeIRCommand(comcastDVR, @"One");
     dvrNumberPad[REDigitTwoButtonKey]   = MakeIRCommand(comcastDVR, @"Two");
     dvrNumberPad[REDigitThreeButtonKey] = MakeIRCommand(comcastDVR, @"Three");
@@ -638,13 +631,11 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3NumberPad
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * ps3         = [BOComponentDevice fetchDeviceWithName:@"PS3" context:context];
+    BOComponentDevice      * ps3         = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"PS3"];
 
     // Create number pad button and add to button group
-    RECommandSet * ps3NumberPad = [RECommandSet commandSetInContext:context
-                                                               type:RECommandSetTypeNumberPad];
+    RECommandSet * ps3NumberPad = [RECommandSet commandSetWithType:RECommandSetTypeNumberPad];
     ps3NumberPad[REDigitOneButtonKey]   = MakeIRCommand(ps3, @"1");
     ps3NumberPad[REDigitTwoButtonKey]   = MakeIRCommand(ps3, @"2");
     ps3NumberPad[REDigitThreeButtonKey] = MakeIRCommand(ps3, @"3");
@@ -668,7 +659,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawTransport
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup =
         MakeButtonGroup(@"key"             : @"transport",
@@ -836,16 +826,15 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRTransport
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                          context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                   context:context];
+    BOComponentDevice      * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name"
+                                                                            withValue:@"Comcast DVR"];
+    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name"
+                                                                     withValue:@"Samsung TV"];
     buttonGroup = [self rawTransport];
 
     // Create default transport command set
-    RECommandSet * dvrTransport = [RECommandSet commandSetInContext:context type:RECommandSetTypeTransport];
+    RECommandSet * dvrTransport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
     dvrTransport[RETransportPreviousButtonKey]    = MakeIRCommand(comcastDVR, @"Prev");
     dvrTransport[RETransportStopButtonKey]        = MakeIRCommand(comcastDVR, @"Stop");
     dvrTransport[RETransportPlayButtonKey]        = MakeIRCommand(comcastDVR, @"Play");
@@ -859,8 +848,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                     forConfiguration:REDefaultConfiguration];
 
     // Create TV transport command set
-    RECommandSet * tvTransport = [RECommandSet commandSetInContext:context
-                                                              type:RECommandSetTypeTransport];
+    RECommandSet * tvTransport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
     tvTransport[RETransportPlayButtonKey]        = MakeIRCommand(samsungTV, @"Play");
     tvTransport[RETransportPauseButtonKey]       = MakeIRCommand(samsungTV, @"Pause");
     tvTransport[RETransportFastForwardButtonKey] = MakeIRCommand(samsungTV, @"Fast Forward");
@@ -880,14 +868,12 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3Transport
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * ps3         = [BOComponentDevice fetchDeviceWithName:@"PS3"
-                                                                          context:context];
+    BOComponentDevice      * ps3         = [BOComponentDevice MR_findFirstByAttribute:@"name"
+                                                                            withValue:@"PS3"];
 
     // Create default transport command set
-    RECommandSet * ps3Transport = [RECommandSet commandSetInContext:context
-                                                               type:RECommandSetTypeTransport];
+    RECommandSet * ps3Transport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
     ps3Transport[RETransportPreviousButtonKey]    = MakeIRCommand(ps3, @"Previous");
     ps3Transport[RETransportStopButtonKey]        = MakeIRCommand(ps3, @"Stop");
     ps3Transport[RETransportPlayButtonKey]        = MakeIRCommand(ps3, @"Play");
@@ -908,7 +894,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)rawRocker
 {
-    NSManagedObjectContext   * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REPickerLabelButtonGroup * buttonGroup = nil;
     buttonGroup =
         MakePickerLabelButtonGroup(@"backgroundColor" : defaultBGColor(),
@@ -959,26 +944,20 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)constructDVRRocker
 {
-    NSManagedObjectContext   * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REPickerLabelButtonGroup * buttonGroup = nil;
-    BOComponentDevice        * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                            context:context];
-    RECommandSet * channelsCommandSet = [RECommandSet commandSetInContext:context
-                                                                     type:RECommandSetTypeRocker];
+    BOComponentDevice        * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Comcast DVR"];
+    RECommandSet * channelsCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
     channelsCommandSet.name                          = @"DVR Channels";
     channelsCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(comcastDVR, @"Channel Up");
     channelsCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(comcastDVR, @"Channel Down");
 
-    RECommandSet * pageUpDownCommandSet = [RECommandSet commandSetInContext:context
-                                                                       type:RECommandSetTypeRocker];
+    RECommandSet * pageUpDownCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
     pageUpDownCommandSet.name                          = @"DVR Paging";
     pageUpDownCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(comcastDVR, @"Page Up");
     pageUpDownCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(comcastDVR, @"Page Down");
 
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                    context:context];
-    RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:context
-                                                                   type:RECommandSetTypeRocker];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    RECommandSet * volumeCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
     volumeCommandSet.name                          = @"Receiver Volume";
     volumeCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(avReceiver, @"Volume Up");
     volumeCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(avReceiver, @"Volume Down");
@@ -1019,12 +998,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)constructPS3Rocker
 {
-    NSManagedObjectContext   * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REPickerLabelButtonGroup * buttonGroup = nil;
-    BOComponentDevice        * avReceiver  = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                            context:context];
-    RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:context
-                                                                   type:RECommandSetTypeRocker];
+    BOComponentDevice        * avReceiver  = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    RECommandSet * volumeCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
     volumeCommandSet.name                          = @"Receiver Volume";
     volumeCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(avReceiver, @"Volume Up");
     volumeCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(avReceiver, @"Volume Down");
@@ -1047,12 +1023,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)constructSonosRocker
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REPickerLabelButtonGroup * buttonGroup = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                    context:context];
-    RECommandSet * volumeCommandSet = [RECommandSet commandSetInContext:context
-                                                                   type:RECommandSetTypeRocker];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    RECommandSet * volumeCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
     volumeCommandSet.name = @"Receiver Volume";
     volumeCommandSet[RERockerButtonPlusButtonKey] = MakeIRCommand(avReceiver, @"Volume Up");
     volumeCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(avReceiver, @"Volume Down");
@@ -1073,10 +1046,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructSonosMuteButtonGroup
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                    context:context];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
     buttonGroup = MakeButtonGroup(@"displayName" : @"Mute Button",
                                   @"key"         : @"mute");
 
@@ -1111,7 +1082,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructSelectionPanel
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
     /* Create selection panel button group */
     buttonGroup =
@@ -1167,7 +1137,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawGroupOfThreeButtons
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
     // Create button group with three vertically aligned buttons
     buttonGroup = MakeButtonGroup(@"key" : @"oneByThree", @"displayName" : @"1x3");
@@ -1220,12 +1189,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRGroupOfThreeButtons
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                    context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                   context:context];
+    BOComponentDevice * comcastDVR = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Comcast DVR"];
+    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
     buttonGroup = [self rawGroupOfThreeButtons];
 
     buttonGroup.displayName = @"One x Three Button Group";
@@ -1241,7 +1207,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                                     fontSize:18.0
                                                                  highlighted:attrHigh];
 
-    REControlStateTitleSet * titles = [REControlStateTitleSet controlStateSetInContext:context];
+    REControlStateTitleSet * titles = [REControlStateTitleSet MR_createEntity];
 
     titles[UIControlStateNormal]      = [NSAttributedString attributedStringWithString:@"Guide"
                                                                             attributes:attr];
@@ -1253,7 +1219,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [guideButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Guide")
                                  forConfiguration:REDefaultConfiguration];
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Tools"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Tools"
@@ -1269,7 +1235,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     dvrButton.key         = @"dvr/internet@tv";
     dvrButton.displayName = @"DVR / Internet@TV";
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"DVR"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"DVR"
@@ -1279,7 +1245,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [dvrButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"DVR")
                                forConfiguration:REDefaultConfiguration];
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Internet@TV"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Internet@TV"
@@ -1295,7 +1261,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     infoButton.key         = @"info";
     infoButton.displayName = @"Info";
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Info"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Info"
@@ -1315,10 +1281,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3GroupOfThreeButtons
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"
-                                                             context:context];
+    BOComponentDevice * ps3 = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"PS3"];
     buttonGroup   = [self rawGroupOfThreeButtons];
     REButton      * displayButton = buttonGroup[@"button1"];
 
@@ -1364,7 +1328,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawButtonPanel
 {
-    NSManagedObjectContext * context     = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup          * buttonGroup = nil;
     buttonGroup =
     MakeButtonGroup(@"key"             : @"buttons",
@@ -1456,7 +1419,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
      buttonGroup =
          MakeButtonGroup(@"displayName" : @"Home and Power Buttons",
@@ -1500,14 +1462,10 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructAdditionalButtonsLeft
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
     REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                    context:context];
-    BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                                   context:context];
-    BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
-                                                                    context:context];
+    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
+    BOComponentDevice * comcastDVR = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Comcast DVR"];
 
     buttonGroup = [self rawButtonPanel];
 
@@ -1525,7 +1483,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
     button.displayName = @"On Demand / Source";
 
-    REControlStateTitleSet * titles = [REControlStateTitleSet controlStateSetInContext:context];
+    REControlStateTitleSet * titles = [REControlStateTitleSet MR_createEntity];
 
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"On Demand"
                                                                        attributes:attr];
@@ -1537,7 +1495,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"On Demand")
                          forConfiguration:REDefaultConfiguration];
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Source"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Source"
@@ -1550,7 +1508,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     button             = buttonGroup[@"button2"];
     button.displayName = @"Menu";
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Menu"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Menu"
@@ -1567,7 +1525,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     button             = buttonGroup[@"button3"];
     button.displayName = @"Last / Return";
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Last"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Last"
@@ -1577,7 +1535,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Last")
                          forConfiguration:REDefaultConfiguration];
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Return"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Return"
@@ -1590,7 +1548,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     button             = buttonGroup[@"button4"];
     button.displayName = @"Exit";
 
-    titles                       = [REControlStateTitleSet controlStateSetInContext:context];
+    titles                       = [REControlStateTitleSet MR_createEntity];
     titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Exit"
                                                                        attributes:attr];
     titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Exit"

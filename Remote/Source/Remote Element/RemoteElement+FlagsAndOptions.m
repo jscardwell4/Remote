@@ -73,6 +73,8 @@
     return t;
 }
 
+- (REType)baseType { return (self.type & RETypeBaseMask); }
+
 - (RESubtype)subtype {
     [self willAccessValueForKey:@"subtype"];
     uint64_t   t = [self flagsWithMask:RESubtypeMask];
@@ -152,14 +154,8 @@
     return (_primitiveAppearance & bits ? YES : NO);
 }
 
-/*
-- (BOOL)proportionLock {
-    return self.layoutConfiguration.proportionLock;
-}
-*/
-
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Shape Options
+#pragma mark - Shape, Style, and Theme Options
 ////////////////////////////////////////////////////////////////////////////////
 
 - (REShape)shape {
@@ -175,10 +171,6 @@
     [self didChangeValueForKey:@"shape"];
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Style Options
-////////////////////////////////////////////////////////////////////////////////
-
 - (REStyle)style {
     [self willAccessValueForKey:@"style"];
     uint64_t t = [self appearanceWithMask:REStyleMask];
@@ -191,5 +183,20 @@
     [self setAppearance:style mask:REStyleMask];
     [self didChangeValueForKey:@"style"];
 }
+
+/*
+- (RETheme)theme {
+    [self willAccessValueForKey:@"theme"];
+    uint64_t t = [self appearanceWithMask:REThemeMask];
+    [self didAccessValueForKey:@"theme"];
+    return t;
+}
+
+- (void)setTheme:(RETheme)theme {
+    [self willChangeValueForKey:@"theme"];
+    [self setAppearance:theme mask:REThemeMask];
+    [self didChangeValueForKey:@"theme"];
+}
+*/
 
 @end
