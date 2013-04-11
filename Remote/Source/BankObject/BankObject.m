@@ -15,20 +15,27 @@
 @dynamic exportFileFormat;
 @dynamic factoryObject;
 
++ (instancetype)bankObject
+{
+    return [self MR_createEntity];
+}
+
 + (instancetype)bankObjectInContext:(NSManagedObjectContext *)context
 {
     return [self MR_createInContext:context];
 }
 
++ (instancetype)bankObjectWithName:(NSString *)name
+{
+    BankObject * bankObject = [self bankObject];
+    bankObject.name = name;
+    return bankObject;
+}
+
 + (instancetype)bankObjectWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    assert(name && context);
-    __block BankObject * bankObject = nil;
-    [context performBlockAndWait:
-     ^{
-         bankObject = [self bankObjectInContext:context];
-         bankObject.name = name;
-     }];
+    BankObject * bankObject = [self bankObjectInContext:context];
+    bankObject.name = name;
     return bankObject;
 }
 

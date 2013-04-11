@@ -17,20 +17,20 @@ static const NSSet        * kConfigurationDelegateKeys;
 static const NSSet        * kConfigurationDelegateSelectors;
 static const NSSet        * kConstraintManagerSelectors;
 
-@implementation RemoteElement
+@implementation RemoteElement {
+    NSString * __identifier;
+}
 
 @synthesize constraintManager = _constraintManager;
 
 @dynamic constraints;
 @dynamic displayName;
-@dynamic uuid;
 @dynamic key;
 @dynamic tag;
 @dynamic backgroundColor;
 @dynamic subelements;
 @dynamic backgroundImage;
 @dynamic backgroundImageAlpha;
-@dynamic controller;
 @dynamic firstItemConstraints;
 @dynamic secondItemConstraints;
 @dynamic layoutConfiguration;
@@ -52,7 +52,6 @@ static const NSSet        * kConstraintManagerSelectors;
                                @(REButtonGroupTypeCommandSetManager) : @"REButtonGroup",
                                @(REButtonGroupTypeRoundedPanel)      : @"REButtonGroup",
                                @(RETypeButton)                       : @"REButton",
-                               @(REButtonTypeActivityButton)         : @"REActivityButton",
                                @(REButtonTypeNumberPad)              : @"REButton",
                                @(REButtonTypeConnectionStatus)       : @"REButton",
                                @(REButtonTypeBatteryStatus)          : @"REButton",
@@ -106,13 +105,17 @@ static const NSSet        * kConstraintManagerSelectors;
     NSManagedObjectContext * context = self.managedObjectContext;
     [context performBlockAndWait:
      ^{
-         self.controller = [RERemoteController remoteControllerInContext:context];
-         self.uuid = $(@"_%@", [MSNonce() stringByRemovingCharacter:'-']);
          self.layoutConfiguration   = [RELayoutConfiguration layoutConfigurationForElement:self];
          self.configurationDelegate = [REConfigurationDelegate delegateForRemoteElement:self];
      }];
 }
 
+- (NSString *)identifier
+{
+    if (!__identifier)
+        __identifier = $(@"_%@", [self.uuid stringByRemovingCharacter:'-']);
+    return __identifier;
+}
 
 - (void)setParentElement:(RemoteElement *)parentElement
 {
@@ -172,6 +175,15 @@ static const NSSet        * kConstraintManagerSelectors;
     return _constraintManager;
 }
 
+- (void)setDisplayName:(NSString *)displayName
+{
+    [self willChangeValueForKey:@"displayName"];
+    self.primitiveDisplayName = [displayName copy];
+    [self didChangeValueForKey:@"displayName"];
+
+    if (StringIsEmpty(self.key)) self.key = [displayName camelCaseString];
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Derived Properties
 ////////////////////////////////////////////////////////////////////////////////
@@ -187,6 +199,11 @@ static const NSSet        * kConstraintManagerSelectors;
                 return (   [obj.uuid isEqualToString:key]
                         || [obj.key isEqualToString:key]);
             }];
+}
+
+- (RemoteElement *)objectAtIndexedSubscript:(NSUInteger)subscript
+{
+    return (subscript < self.subelements.count ? self.subelements[subscript] : nil);
 }
 
 @end
@@ -304,7 +321,7 @@ _NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSeparatedKeysString
         RemoteElement * element = firstValue;
 
         do {
-            [values addObject:element.uuid];
+            [values addObject:element.identifier];
             element = va_arg(arglist, RemoteElement *);
         } while (element);
     }
@@ -315,7 +332,9 @@ _NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSeparatedKeysString
 
 BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re) {
     return (   StringIsNotEmpty(identifier)
-            && ([identifier isEqualToString:re.uuid] || [identifier isEqualToString:re.key]));
+            && (   [identifier isEqualToString:re.uuid]
+                || [identifier isEqualToString:re.key]
+                || [identifier isEqualToString:re.identifier]));
 }
 
 NSString * EditingModeString(REEditingMode mode) {

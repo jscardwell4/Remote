@@ -45,7 +45,6 @@ CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
                       @(RETypeButtonGroup)                  : @"REButtonGroupView",
                       @(REButtonTypeConnectionStatus)       : @"REConnectionStatusButtonView",
                       @(REButtonTypeBatteryStatus)          : @"REBatteryStatusButtonView",
-                      @(REButtonTypeActivityButton)         : @"REButtonView",
                       @(RETypeButton)                       : @"REButtonView",
                       @(RETypeUndefined)                    : NullObject};
 

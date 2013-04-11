@@ -13,7 +13,6 @@
 
 @interface REConstraint ()
 
-@property (nonatomic, copy,   readwrite) NSString      * uuid;
 @property (nonatomic, assign, readwrite) int16_t         firstAttribute;
 @property (nonatomic, assign, readwrite) int16_t         secondAttribute;
 @property (nonatomic, assign, readwrite) int16_t         relation;
@@ -39,7 +38,6 @@
 @dynamic owner;
 @dynamic tag;
 @dynamic key;
-@dynamic uuid;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Initializer
@@ -88,20 +86,6 @@
                          multiplier:CGFloatValue(attributes[@"multiplier"])
                            constant:CGFloatValue(attributes[@"constant"])];
 }
-
-- (void)awakeFromInsert {
-    [super awakeFromInsert];
-    self.uuid = [@"_" stringByAppendingString :[MSNonce()stringByRemovingCharacter:'-']];
-    self.key        = @"";
-}
-
-/*
-- (void)willSave
-{
-    [super willSave];
-    nsprintf(@"%@", ClassTagSelectorStringForInstance($(@"%p",self)));
-}
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Properties

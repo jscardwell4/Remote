@@ -38,16 +38,27 @@
 @property (nonatomic) NSMutableOrderedSet     * primitiveSubelements;
 @property (nonatomic) REConfigurationDelegate * primitiveConfigurationDelegate;
 @property (nonatomic) RemoteElement           * primitiveParentElement;
+@property (nonatomic) NSString                * primitiveDisplayName;
+
+@end
+
+
+@interface RERemote ()
+
+@property (nonatomic, strong, readwrite) RERemoteController * controller;
 
 @end
 
 @interface RERemote (CoreDataGeneratedAccessors)
 
 @property (nonatomic) RERemoteConfigurationDelegate * primitiveConfigurationDelegate;
+@property (nonatomic) RERemoteController            * primitiveController;
 
 @end
 
 @interface REButtonGroup ()
+
+@property (nonatomic, strong, readwrite) RERemoteController * controller;
 
 - (void)updateButtons;
 
@@ -55,8 +66,9 @@
 
 @interface REButtonGroup (CoreDataGeneratedAccessors)
 
-@property (nonatomic) RECommandSet                         * primitiveCommandSet;
+@property (nonatomic) RECommandSet                       * primitiveCommandSet;
 @property (nonatomic) REButtonGroupConfigurationDelegate * primitiveConfigurationDelegate;
+@property (nonatomic) RERemoteController                 * primitiveController;
 
 @end
 
@@ -68,6 +80,7 @@
 
 @interface REButton () 
 
+@property (nonatomic, strong, readwrite) RERemoteController              * controller;
 @property (nonatomic, strong, readwrite) REControlStateTitleSet          * titles;
 @property (nonatomic, strong, readwrite) REControlStateIconImageSet      * icons;
 @property (nonatomic, strong, readwrite) REControlStateColorSet          * backgroundColors;
@@ -85,6 +98,7 @@
 @property (nonatomic) REControlStateColorSet        * primitiveBackgroundColors;
 @property (nonatomic) REControlStateTitleSet        * primitiveTitles;
 @property (nonatomic) REButtonConfigurationDelegate * primitiveConfigurationDelegate;
+@property (nonatomic) RERemoteController            * primitiveController;
 
 @end
 

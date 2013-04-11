@@ -149,7 +149,7 @@ static const int   msLogContext = EDITOR_F;
                 @catch (NSException * exception) {}
             };
 
-            parameters = @{MSRemoteUIRemoteKey 						 		: MSRemoteControllerHomeRemoteKeyName,
+            parameters = @{MSRemoteUIRemoteKey 						 		: @"MSRemoteControllerHomeRemoteKeyName",
                            MSRemoteUIButtonGroupKey 	: @"activityButtons",
                            MSRemoteUIButtonKey		 		: @"activity1",
                            MSRemoteUIIterationValuesKey : @[NSValueWithCGPoint(CGPointMake(0, -48)),
@@ -217,7 +217,7 @@ static const int   msLogContext = EDITOR_F;
 
         case 2 :
             parameters = @{
-                                    MSRemoteUIRemoteKey : MSRemoteControllerHomeRemoteKeyName,
+                                    MSRemoteUIRemoteKey : @"MSRemoteControllerHomeRemoteKeyName",
                                     MSRemoteUIButtonGroupKey : @"activityButtons",
                                     MSRemoteUIButtonKey : @"activity1",
                                     MSRemoteUIIterationValuesKey : @[NSValueWithCGPoint(CGPointMake(8.5, 46)),
@@ -270,7 +270,7 @@ static const int   msLogContext = EDITOR_F;
     switch (testNumber) {
         case 0 :
             performFocus(@{
-                             MSRemoteUIRemoteKey : MSRemoteControllerHomeRemoteKeyName,
+                             MSRemoteUIRemoteKey : @"MSRemoteControllerHomeRemoteKeyName",
                              MSRemoteUIButtonGroupKey : @"activityButtons",
                              MSRemoteUIIterationValuesKey : @[@"activity1", @"activity3"]
                          });
@@ -497,7 +497,7 @@ static const int   msLogContext = EDITOR_F;
         }   break;
 
         case 4 : {   // left alignment
-            parameters = @{ MSRemoteUIRemoteKey          : MSRemoteControllerHomeRemoteKeyName,
+            parameters = @{ MSRemoteUIRemoteKey          : @"MSRemoteControllerHomeRemoteKeyName",
                             MSRemoteUIButtonGroupKey     : @"activityButtons",
                             MSRemoteUIIterationValuesKey : @[ @"activity1:activity2:centerX",
                                                               @"activity2:activity3:left" ]
@@ -658,7 +658,7 @@ static const int   msLogContext = EDITOR_F;
     };
 
     switch (testNumber) {
-        case 0 : dumpInfo(@{MSRemoteUIRemoteKey      : MSRemoteControllerHomeRemoteKeyName,
+        case 0 : dumpInfo(@{MSRemoteUIRemoteKey      : @"MSRemoteControllerHomeRemoteKeyName",
                             MSRemoteUIButtonGroupKey : @"activityButtons"});
             break;
         case 1 : dumpInfo(@{MSRemoteUIRemoteKey : @"activity1",
@@ -734,7 +734,7 @@ static const int   msLogContext = EDITOR_F;
     };
 
     switch (testNumber) {
-        case 0 : showDialog(@{MSRemoteUIRemoteKey          : MSRemoteControllerHomeRemoteKeyName,
+        case 0 : showDialog(@{MSRemoteUIRemoteKey          : @"MSRemoteControllerHomeRemoteKeyName",
                               MSRemoteUIButtonGroupKey     : @"activityButtons",
                               MSRemoteUIIterationValuesKey : @[@"activity1",@"activity2"]}
                             );
@@ -828,7 +828,7 @@ static const int   msLogContext = EDITOR_F;
     switch (testNumber) {
         case 0 :
             performScaling(@{
-                               MSRemoteUIRemoteKey : MSRemoteControllerHomeRemoteKeyName,
+                               MSRemoteUIRemoteKey : @"MSRemoteControllerHomeRemoteKeyName",
                                MSRemoteUIButtonGroupKey : @"activityButtons",
                                MSRemoteUIButtonKey : @"activity1",
                                MSRemoteUIIterationValuesKey : @[@0.5, @2.0, @1.5, @0.25, @1.0, @4.0]//, // actual applied: 0.853, 2.0, 1.172, 0.427, 1.0, 2.344

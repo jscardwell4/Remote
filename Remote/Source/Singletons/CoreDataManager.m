@@ -242,28 +242,24 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                                                               @"RERemote",
                                                               @"REButtonGroup",
                                                               @"REPickerLabelButtonGroup",
-                                                              @"REButton",
-                                                              @"REActivityButton"]
+                                                              @"REButton"]
                                              notFoundMarker:NullObject],
                                    @"backgroundColor",
                                    @"UIColor",
                                    ClearColor);
 
         // edge insets attributes on buttons
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
-                                                              @"REActivityButton"]
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
                                              notFoundMarker:NullObject],
                                    @"titleEdgeInsets",
                                    @"NSValue",
                                    NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
-                                                              @"REActivityButton"]
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
                                              notFoundMarker:NullObject],
                                    @"contentEdgeInsets",
                                    @"NSValue",
                                    NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton",
-                                                              @"REActivityButton"]
+        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
                                              notFoundMarker:NullObject],
                                    @"imageEdgeInsets",
                                    @"NSValue",

@@ -92,7 +92,7 @@ MSKIT_STATIC_STRING_CONST   REConstant        = @"constant";
 
          NSArray * elements    = [[_remoteElement.subelements array]
                                   arrayByAddingObject:_remoteElement];
-         NSArray * identifiers = [elements valueForKeyPath:@"uuid"];
+         NSArray * identifiers = [elements valueForKeyPath:@"identifier"];
 
          NSDictionary * directory = [NSDictionary  dictionaryWithObjects:elements
                                                                  forKeys:identifiers];

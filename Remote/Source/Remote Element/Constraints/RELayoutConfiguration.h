@@ -5,13 +5,14 @@
 //  Created by Jason Cardwell on 3/7/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 #import "RETypedefs.h"
 #import "REConstraint.h"
 #import "REConstraintManager.h"
 
 @class RemoteElement;
 
-@interface RELayoutConfiguration : NSManagedObject
+@interface RELayoutConfiguration : MSModelObject
 
 @property (nonatomic, strong, readonly) RemoteElement  *element;
 @property (nonatomic, assign, readonly) BOOL            proportionLock;

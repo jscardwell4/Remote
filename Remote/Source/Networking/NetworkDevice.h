@@ -5,7 +5,7 @@
 // Created by Jason Cardwell on 9/25/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-
+#import "MSModelObject.h"
 // keys
 MSKIT_EXTERN_STRING   NDDeviceMakeKey;
 MSKIT_EXTERN_STRING   NDModelKey;
@@ -14,25 +14,22 @@ MSKIT_EXTERN_STRING   NDDeviceStatusKey;
 MSKIT_EXTERN_STRING   NDDeviceUUIDKey;
 MSKIT_EXTERN_STRING   NDDeviceURLKey;
 
-@interface NetworkDevice : NSManagedObject
+@interface NetworkDevice : MSModelObject
 
++ (instancetype)device;
 + (instancetype)deviceInContext:(NSManagedObjectContext *)context;
-
++ (instancetype)deviceWithAttributes:(NSDictionary *)attributes;
 + (instancetype)deviceWithAttributes:(NSDictionary *)attributes
                              context:(NSManagedObjectContext *)context;
 
-+ (instancetype)fetchDeviceWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)context;
++ (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID;
 
-+ (NSArray *)fetchAllInContext:(NSManagedObjectContext *)context;
-
-+ (BOOL)deviceExistsWithUUID:(NSString *)uuid;
-
-@property (nonatomic, readonly) NSString * uuid;
-@property (nonatomic, copy) 		NSString * make;
-@property (nonatomic, copy)  	NSString * model;
-@property (nonatomic, copy)  	NSString * status;
-@property (nonatomic, copy)  	NSString * configURL;
-@property (nonatomic, copy)  	NSString * revision;
+@property (nonatomic, copy, readonly) NSString * deviceUUID;
+@property (nonatomic, copy, readonly) NSString * make;
+@property (nonatomic, copy, readonly) NSString * model;
+@property (nonatomic, copy, readonly) NSString * status;
+@property (nonatomic, copy, readonly) NSString * configURL;
+@property (nonatomic, copy, readonly) NSString * revision;
 
 @end
 

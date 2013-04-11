@@ -12,7 +12,7 @@ static int msLogContext = COMMAND_F_C;
 
 @implementation RECommand
 
-@dynamic uuid, button, indicator, onDevice, offDevice;
+@dynamic button, indicator, onDevice, offDevice;
 
 + (int)ddLogLevel { return ddLogLevel; }
 
@@ -29,8 +29,6 @@ static int msLogContext = COMMAND_F_C;
     return command;
 }
 
-- (void)awakeFromInsert { [super awakeFromInsert]; self.primitiveUuid = MSNonce(); }
-
 - (void)execute:(RECommandCompletionHandler)completion
 {
     MSLogDebugTag(@"");
@@ -42,7 +40,10 @@ static int msLogContext = COMMAND_F_C;
         if (_completion) _completion(!weakoperation.isCancelled, weakoperation.wasSuccessful);
     }];
 
-    [MainQueue addOperation:operation];
+    if (CurrentQueue)
+        [CurrentQueue addOperation:operation];
+    else
+        [operation start];
 }
 
 - (RECommandOperation *)operation { return [RECommandOperation operationForCommand:self]; }

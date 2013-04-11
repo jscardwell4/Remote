@@ -13,7 +13,7 @@ static int ddLogLevel = DefaultDDLogLevel;
 
 @implementation RERemote
 
-@dynamic configurationDelegate;
+@dynamic configurationDelegate, controller;
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
 {
@@ -32,6 +32,10 @@ static int ddLogLevel = DefaultDDLogLevel;
 
 - (REButtonGroup *)objectForKeyedSubscript:(NSString *)subscript {
     return (REButtonGroup *)[super objectForKeyedSubscript:subscript];
+}
+
+- (REButtonGroup *)objectAtIndexedSubscript:(NSUInteger)subscript {
+    return (REButtonGroup *)[super objectAtIndexedSubscript:subscript];
 }
 
 - (void)setTopBarHiddenOnLoad:(BOOL)topBarHiddenOnLoad {

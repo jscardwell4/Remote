@@ -101,7 +101,6 @@ typedef NS_ENUM (uint64_t, REButtonType) {
     REButtonTypeConnectionStatus = 0x0000000000000017,
     REButtonTypeBatteryStatus    = 0x000000000000001F,
     REButtonTypeCommandManager   = 0x0000000000000027,
-    REButtonTypeActivityButton   = 0x000000000000002F,
     REButtonTypeReserved         = 0x000000000000FFC0,
     REButtonTypeMask             = RETypeMask
 };
@@ -129,11 +128,6 @@ typedef NS_ENUM (uint64_t, REButtonSubtype) {
     REButtonSubtypeReserved         = 0x0000000000FC0000,
     REButtonSubtypeButtonGroupPiece = 0x00000000FF000000,
     REButtonSubtypeMask             = RESubtypeMask
-};
-
-typedef NS_ENUM (uint64_t, REActivityButtonType) {
-    REActivityButtonTypeBegin = REButtonSubtypeActivityOn,
-    REActivityButtonTypeEnd   = REButtonSubtypeUnspecified
 };
 
 typedef NS_ENUM (uint64_t, REOptions) {

@@ -8,7 +8,7 @@
 #import "REControlStateSet.h"
 #import "BankObject.h"
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = REMOTE_F_C;
 #pragma unused(ddLogLevel, msLogContext)
 

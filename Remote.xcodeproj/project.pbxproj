@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */; };
+		C2208B5017165BCF00AC0364 /* REActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* REActivityCommand.m */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C23B946C170C8FEA0028CC06 /* REView+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946B170C8FEA0028CC06 /* REView+Drawing.m */; };
@@ -1501,6 +1502,8 @@
 		C277343A1700BC9300E85F8D /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2625B8F16DD47F10000F676 /* Remote.xcdatamodeld */; };
 		C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */; };
 		C2AF0F471711DC5E00E45849 /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AF0F451711DC2600E45849 /* MagicalRecord.framework */; };
+		C2F2254A1715CB8500D22B5F /* REActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* REActivity.m */; };
+		C2F2254D1715E39600D22B5F /* MSModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* MSModelObject.m */; };
 		C2FFB5F7170B5A6C0079C283 /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FFB5F1170B5A6C0079C283 /* MSKit.framework */; };
 		C2FFB5F8170B5A6C0079C283 /* MSColorInputView.nib in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */; };
 		C2FFB5F9170B5A6C0079C283 /* MSPickerInputViewController.nib in Resources */ = {isa = PBXBuildFile; fileRef = C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */; };
@@ -1534,6 +1537,7 @@
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
 		C21B423C170B3ED600FAE00E /* REBackgroundEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundEditingViewController.h; sourceTree = "<group>"; };
 		C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundEditingViewController.m; sourceTree = "<group>"; };
+		C2208B4F17165BCF00AC0364 /* REActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REActivityCommand.m; sourceTree = "<group>"; };
 		C23004C416DD3AA100D30A19 /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
@@ -3155,6 +3159,10 @@
 		C2AF0F451711DC2600E45849 /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = ../../../Applications/MagicalRecord/MagicalRecord.framework; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RECommandContainer_Private.h; sourceTree = "<group>"; };
 		C2DF3C4516E8F87B0075AC51 /* Remote.base 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 17.xcdatamodel"; sourceTree = "<group>"; };
+		C2F225481715CB8500D22B5F /* REActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REActivity.h; sourceTree = "<group>"; };
+		C2F225491715CB8500D22B5F /* REActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REActivity.m; sourceTree = "<group>"; };
+		C2F2254B1715E39600D22B5F /* MSModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSModelObject.h; sourceTree = "<group>"; };
+		C2F2254C1715E39600D22B5F /* MSModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSModelObject.m; sourceTree = "<group>"; };
 		C2FFB5F1170B5A6C0079C283 /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = MSKit.embeddedframework/MSKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2FFB5F3170B5A6C0079C283 /* MSColorInputView.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MSColorInputView.nib; sourceTree = "<group>"; };
 		C2FFB5F4170B5A6C0079C283 /* MSPickerInputViewController.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MSPickerInputViewController.nib; sourceTree = "<group>"; };
@@ -3278,6 +3286,7 @@
 		C25B45B016FF66FE0042B59E /* Command Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				C2208B4F17165BCF00AC0364 /* REActivityCommand.m */,
 				C25B45B116FF66FE0042B59E /* REDelayCommand.m */,
 				C25B45B216FF66FE0042B59E /* REHTTPCommand.m */,
 				C25B45B316FF66FE0042B59E /* REMacroCommand.m */,
@@ -3397,6 +3406,8 @@
 		C25B46A016FF67D00042B59E /* Remote Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C2F225481715CB8500D22B5F /* REActivity.h */,
+				C2F225491715CB8500D22B5F /* REActivity.m */,
 				C25B46A116FF67D00042B59E /* RERemoteController.h */,
 				C25B46A216FF67D00042B59E /* RERemoteController.m */,
 				C25B46A316FF67D00042B59E /* RERemoteViewController.h */,
@@ -3589,6 +3600,8 @@
 		C26BAEE716DC16F90093D5B4 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C2F2254B1715E39600D22B5F /* MSModelObject.h */,
+				C2F2254C1715E39600D22B5F /* MSModelObject.m */,
 				C2625B8F16DD47F10000F676 /* Remote.xcdatamodeld */,
 				C23004C416DD3AA100D30A19 /* Remote.sqlite */,
 				C26BB09816DC187D0093D5B4 /* Database Property Lists */,
@@ -6791,6 +6804,9 @@
 				C23B946F170C94BE0028CC06 /* REView+Debugging.m in Sources */,
 				C26329481713AFF30080330D /* RETheme.m in Sources */,
 				C263294C1714862A0080330D /* RETheme+ApplyingThemes.m in Sources */,
+				C2F2254A1715CB8500D22B5F /* REActivity.m in Sources */,
+				C2F2254D1715E39600D22B5F /* MSModelObject.m in Sources */,
+				C2208B5017165BCF00AC0364 /* REActivityCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

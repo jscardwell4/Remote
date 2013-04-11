@@ -5,6 +5,7 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 #import "RETypedefs.h"
 #import "BOTypedefs.h"
 
@@ -22,7 +23,7 @@
  * that customize behavior for particular tasks: <PowerCommand>, <MacroCommand>, <DelayCommand>,
  * <SystemCommand>, <SendIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
  */
-@interface RECommand : NSManagedObject
+@interface RECommand : MSModelObject
 
 /**
  * Create a new `Command` object in the specified `NSManagedObjectContext`.
@@ -38,9 +39,6 @@
 
 /// Show activity indicator while executing command.
 @property (nonatomic, assign) BOOL indicator;
-
-/// Unique identifier.
-@property (nonatomic, copy, readonly) NSString * uuid;
 
 @end
 
@@ -287,9 +285,31 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Switching Activities
+////////////////////////////////////////////////////////////////////////////////
+@class REActivity;
+
+/**
+ * `ActivityCommand` subclasses `Command` to launch or halt an activity.
+ */
+@interface REActivityCommand : RECommand
+
+/**
+ * Default initializer for creating an `REActivityCommand`.
+ * @param activity The activity to launch or halt
+ * @return The newly created `REActivityCommand`.
+ */
++ (REActivityCommand *)commandWithActivity:(REActivity *)activity;
+
+/// The `REActivity` object to launch or halt.
+@property (nonatomic, strong) REActivity * activity;
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Switching Remotes
 ////////////////////////////////////////////////////////////////////////////////
-@class RERemoteController;
+@class RERemoteController, RERemote;
 /**
  * `SwitchToRemoteCommand` subclasses `Command` to transition from one remote to another. When
  * the command is executed it invokes the <RemoteController> object's `makeCurrentRemoteWithKey:`
@@ -300,18 +320,13 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
 
 /**
  * Default initializer for creating a `SwitchToRemoteCommand`.
- * @param key The key for the remote to which the remote controller should switch.
- * @param controller The `RemoteController` to which the command will be directed.
+ * @param remote The remote to which the remote controller should switch.
  * @return The newly created `SwitchToRemoteCommand`.
  */
-+ (RESwitchToRemoteCommand *)commandInContext:(NSManagedObjectContext *)context key:(NSString *)key;
++ (RESwitchToRemoteCommand *)commandWithRemote:(RERemote *)remote;
 
-
-/// The key registered with the remote controller for the `Remote` object to switch to.
-@property (nonatomic, strong) NSString * remoteKey;
-
-/// `RemoteController` object managing the remote to switch to.
-@property (nonatomic, strong, readonly) RERemoteController * remoteController;
+/// The `Remote` object to switch to.
+@property (nonatomic, strong) RERemote * remote;
 
 @end
 

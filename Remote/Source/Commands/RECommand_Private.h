@@ -44,7 +44,6 @@
 @interface RECommand (CoreDataGeneratedAccessors)
 @property (nonatomic) BOComponentDevice * primitiveOnDevice;
 @property (nonatomic) BOComponentDevice * primitiveOffDevice;
-@property (nonatomic) NSString          * primitiveUuid;
 @property (nonatomic) NSNumber          * primitiveIndicator;
 @end
 
@@ -129,8 +128,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 @interface RESwitchToRemoteCommand (CoreDataGeneratedAccessors)
-@property (nonatomic) NSString           * primitiveRemoteKey;
-@property (nonatomic) RERemoteController * primitiveRemoteController;
 @end
 
 ////////////////////////////////////////////////////////////////////////////////

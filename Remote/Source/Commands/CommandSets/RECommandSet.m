@@ -74,6 +74,16 @@ static const NSDictionary * kValidKeysets;
     return commandSet;
 }
 
++ (instancetype)commandSetWithType:(RECommandSetType)type
+                              name:(NSString *)name
+                            values:(NSDictionary *)values
+{
+    RECommandSet * commandSet = [self commandSetWithType:type];
+    commandSet.name = name;
+    for (NSString * key in values) commandSet[key] = values[key];
+    return commandSet;
+}
+
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type
 {
     __block RECommandSet * commandSet = nil;

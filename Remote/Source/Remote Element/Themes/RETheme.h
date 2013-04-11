@@ -5,11 +5,12 @@
 //  Created by Jason Cardwell on 4/8/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Abstract Theme
 ////////////////////////////////////////////////////////////////////////////////
-@interface RETheme : NSManagedObject
+@interface RETheme : MSModelObject
 
 @property (nonatomic, copy, readonly) NSString * name;
 
@@ -22,6 +23,8 @@
 @interface RETheme (ApplyingThemes)
 
 - (void)applyThemeToElement:(RemoteElement *)element;
+
+- (void)applyThemeToElements:(NSSet *)elements;
 
 @end
 

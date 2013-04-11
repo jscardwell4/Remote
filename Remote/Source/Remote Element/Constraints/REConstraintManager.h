@@ -33,7 +33,7 @@ MSKIT_EXTERN_STRING   REConstraintsDidChangeNotification;
 /*
  * RemoteElementConstraintManager
  */
-@interface REConstraintManager:NSObject
+@interface REConstraintManager : NSObject
 
 @property (nonatomic, weak,   readonly) RemoteElement * remoteElement;
 

@@ -9,31 +9,25 @@
 
 @implementation REMacroBuilder
 
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
-                             toInitiateState:(BOOL)isOnState
-                                 switchIndex:(NSInteger *)switchIndex
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState
 {
     REMacroCommand * macroCommand = nil;
     switch (activity)
     {
         case 1:
-            macroCommand = [self dvrActivityMacroToInitiateState:isOnState
-                                                     switchIndex:switchIndex];
+            macroCommand = [self dvrActivityMacroToInitiateState:isOnState];
             break;
 
         case 2:
-            macroCommand = [self ps3ActivityMacroToInitiateState:isOnState
-                                                     switchIndex:switchIndex];
+            macroCommand = [self ps3ActivityMacroToInitiateState:isOnState];
             break;
 
         case 3:
-            macroCommand = [self appleTVActivityMacroToInitiateState:isOnState
-                                                         switchIndex:switchIndex];
+            macroCommand = [self appleTVActivityMacroToInitiateState:isOnState];
             break;
 
         case 4:
-            macroCommand = [self sonosActivityMacroToInitiateState:isOnState
-                                                       switchIndex:switchIndex];
+            macroCommand = [self sonosActivityMacroToInitiateState:isOnState];
             break;
 
         default:
@@ -43,13 +37,12 @@
 }
 
 + (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
-                                        switchIndex:(NSInteger *)switchIndex
 {
-    REMacroCommand         * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand MR_createEntity];
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
+    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
 
     if (isOnState)
     {
@@ -57,30 +50,24 @@
         [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
         [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
         [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 4")];
-        [macroCommand addCommandsObject:MakeSwitchCommand(@"activity1")];
-
-        if (switchIndex != NULL) *switchIndex = 4;
     }
 
     else
     {
         [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
         [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
-        [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-        if (switchIndex != NULL) *switchIndex = 2;
     }
 
     return macroCommand;
 }
 
 + (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState
-                                            switchIndex:(NSInteger *)switchIndex
 {
-    REMacroCommand * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand MR_createEntity];
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
+    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
 
     if (isOnState)
     {
@@ -88,58 +75,47 @@
         [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
         [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
         [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 2")];
-
-        if (switchIndex != NULL) *switchIndex = -2;
     }
 
     else
     {
         [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
         [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
-        [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-
-        if (switchIndex != NULL) *switchIndex = 2;
     }
 
     return macroCommand;
 }
 
 + (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState
-                                          switchIndex:(NSInteger *)switchIndex
 {
-    REMacroCommand * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand MR_createEntity];
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
+    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
 
     if (isOnState)
     {
         [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"MD/Tape")];
-        [macroCommand addCommandsObject:MakeSwitchCommand(@"activity4")];
 
-        if (switchIndex != NULL) *switchIndex = 1;
     }
 
     else
     {
         [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-        [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
 
-        if (switchIndex != NULL) *switchIndex = 1;
     }
 
     return macroCommand;
 }
 
 + (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState
-                                        switchIndex:(NSInteger *)switchIndex
 {
-    REMacroCommand * macroCommand = nil;
     // Macro sequence: A/V Power -> TV Power
-    macroCommand = [REMacroCommand MR_createEntity];
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    BOComponentDevice * ps3 = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"PS3"];
-    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
+    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * ps3        = [BOComponentDevice fetchDeviceWithName:@"PS3"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
 
     if (isOnState)
     {
@@ -148,18 +124,12 @@
         [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
         [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 3")];
         [macroCommand addCommandsObject:MakePowerOnCommand(ps3)];
-        [macroCommand addCommandsObject:MakeSwitchCommand(@"activity2")];
-
-        if (switchIndex != NULL) *switchIndex = 5;
     }
 
     else
     {
         [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
         [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-        [macroCommand addCommandsObject:MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName)];
-
-        if (switchIndex != NULL) *switchIndex = 2;
     }
 
     return macroCommand;
@@ -167,9 +137,8 @@
 
 + (NSSet *)deviceConfigsForActivity:(NSUInteger)activity
 {
-    NSSet             * configs    = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
 
     NSDictionary * receiverConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
 
@@ -179,8 +148,10 @@
 
     NSDictionary          * tvOffConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
     REDeviceConfiguration * tvOffConfig         = [REDeviceConfiguration
-                                           configurationForDevice:samsungTV
-                                                         settings:tvOffConfigSettings];
+                                                   configurationForDevice:samsungTV
+                                                                 settings:tvOffConfigSettings];
+
+    NSSet * configs = nil;
 
     switch (activity)
     {

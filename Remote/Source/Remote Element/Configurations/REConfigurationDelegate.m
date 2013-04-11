@@ -11,11 +11,12 @@
 
 MSKIT_STRING_CONST   REDefaultConfiguration = @"REDefaultConfiguration";
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static const int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = REMOTE_F;
 #pragma unused(ddLogLevel, msLogContext)
 
-Class delegateClassForElement(RemoteElement * element) {
+Class delegateClassForElement(RemoteElement * element)
+{
     if ([element isKindOfClass:[RERemote class]])
         return [RERemoteConfigurationDelegate class];
     else if ([element isKindOfClass:[REButtonGroup class]])
@@ -35,15 +36,11 @@ Class delegateClassForElement(RemoteElement * element) {
 + (instancetype)delegateForRemoteElement:(RemoteElement *)remoteElement
 {
     assert(remoteElement);
-    __block REConfigurationDelegate * configurationDelegate = nil;
-    [remoteElement.managedObjectContext performBlockAndWait:
-     ^{
-        configurationDelegate =
-            [NSEntityDescription
-                 insertNewObjectForEntityForName:ClassString(delegateClassForElement(remoteElement))
-                          inManagedObjectContext:remoteElement.managedObjectContext];
-        configurationDelegate.remoteElement = remoteElement;
-    }];
+    REConfigurationDelegate * configurationDelegate =
+        [delegateClassForElement(remoteElement) MR_createInContext:remoteElement.managedObjectContext];
+
+    configurationDelegate.remoteElement = remoteElement;
+    
     return configurationDelegate;
 }
 

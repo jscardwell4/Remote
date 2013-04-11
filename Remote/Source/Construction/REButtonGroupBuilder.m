@@ -13,11 +13,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructControllerTopToolbar
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup =
-        MakeToolbarButtonGroup(@"type"            : @(REButtonGroupTypeToolbar),
-                               @"displayName"     : @"Top Toolbar",
-                               @"key"             : MSRemoteControllerTopToolbarKeyName,
+    REButtonGroup * buttonGroup =
+        MakeToolbarButtonGroup(@"displayName"     : @"Top Toolbar",
                                @"backgroundColor" : FlipsideColor);
 
     REButton * home =
@@ -89,51 +86,66 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructActivities
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup = MakeButtonGroup(@"displayName" : @"Activity Buttons",
-                                  @"key"         : @"activityButtons");
+    REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"Activity Buttons");
 
-    REActivityButton * dvrActivityButton = [REButtonBuilder
-                                            launchActivityButtonWithTitle:@"Comcast\nDVR"
-                                                                 activity:1];
-    REActivityButton * ps3ActivityButton = [REButtonBuilder
-                                            launchActivityButtonWithTitle:@"Playstation"
-                                                                 activity:2];
-    REActivityButton * appleTVActivityButton = [REButtonBuilder
-                                                launchActivityButtonWithTitle:@" TV"
-                                                                     activity:3];
-    REActivityButton * sonosActivityButton = [REButtonBuilder
-                                              launchActivityButtonWithTitle:@"Sonos"
-                                                                   activity:4];
-    [buttonGroup addSubelements:[@[dvrActivityButton,
-                                   ps3ActivityButton,
-                                   appleTVActivityButton,
-                                   sonosActivityButton] orderedSet]];
+    REButton * activity1 =
+        MakeButton(@"title"       : @"Comcast\nDVR",
+                   @"displayName" : @"Comcast DVR",
+                   @"shape"       : @(REShapeRoundedRectangle),
+                   @"command"     : MakeActivityCommand(@"Comcast DVR Activity"));
+
+    //[REButtonBuilder launchActivityButtonWithTitle:@"Comcast\nDVR" activity:1];
+
+    REButton * activity2 = //[REButtonBuilder launchActivityButtonWithTitle:@"Playstation" activity:2];
+        MakeButton(@"title"       : @"Playstation",
+                   @"displayName" : @"Playstation",
+                   @"shape"       : @(REShapeRoundedRectangle),
+                   @"command"     : MakeActivityCommand(@"Playstation Activity"));
+
+    REButton * activity3 = //[REButtonBuilder launchActivityButtonWithTitle:@" TV" activity:3];
+        MakeButton(@"title"       : @" TV",
+                   @"displayName" : @" TV",
+                   @"shape"       : @(REShapeRoundedRectangle),
+                   @"command"     : MakeActivityCommand(@" TV Activity"));
+
+    REButton * activity4 = //[REButtonBuilder launchActivityButtonWithTitle:@"Sonos" activity:4];
+        MakeButton(@"title"       : @"Sonos",
+                   @"displayName" : @"Sonos",
+                   @"shape"       : @(REShapeRoundedRectangle),
+                   @"command"     : MakeActivityCommand(@"Sonos Activity"));
+
+    [buttonGroup addSubelements:[@[activity1,
+                                   activity2,
+                                   activity3,
+                                   activity4] orderedSet]];
+
+    [[REBuiltinTheme themeWithName:REThemeNightshadeName]
+     applyThemeToElements:[buttonGroup.subelements set]];
 
     SetConstraints(buttonGroup,
                    @"buttonGroup.width = 300\n"
                    "buttonGroup.height = buttonGroup.width\n"
-                   "dvrActivityButton.width = buttonGroup.width * 0.5\n"
-                   "dvrActivityButton.centerX = buttonGroup.centerX * 0.5\n"
-                   "dvrActivityButton.centerY = buttonGroup.centerY * 0.5\n"
-                   "ps3ActivityButton.width = dvrActivityButton.width\n"
-                   "ps3ActivityButton.centerX = buttonGroup.centerX * 1.5\n"
-                   "ps3ActivityButton.centerY = buttonGroup.centerY * 0.5\n"
-                   "appleTVActivityButton.width = dvrActivityButton.width\n"
-                   "appleTVActivityButton.centerX = buttonGroup.centerX * 0.5\n"
-                   "appleTVActivityButton.centerY = buttonGroup.centerY * 1.5\n"
-                   "sonosActivityButton.width = dvrActivityButton.width\n"
-                   "sonosActivityButton.centerX = buttonGroup.centerX * 1.5\n"
-                   "sonosActivityButton.centerY = buttonGroup.centerY * 1.5",
-                   dvrActivityButton,
-                   ps3ActivityButton,
-                   appleTVActivityButton,
-                   sonosActivityButton);
+                   "activity1.width = buttonGroup.width * 0.5\n"
+                   "activity1.centerX = buttonGroup.centerX * 0.5\n"
+                   "activity1.centerY = buttonGroup.centerY * 0.5\n"
+                   "activity2.width = activity1.width\n"
+                   "activity2.centerX = buttonGroup.centerX * 1.5\n"
+                   "activity2.centerY = buttonGroup.centerY * 0.5\n"
+                   "activity3.width = activity1.width\n"
+                   "activity3.centerX = buttonGroup.centerX * 0.5\n"
+                   "activity3.centerY = buttonGroup.centerY * 1.5\n"
+                   "activity4.width = activity1.width\n"
+                   "activity4.centerX = buttonGroup.centerX * 1.5\n"
+                   "activity4.centerY = buttonGroup.centerY * 1.5",
+                   activity1,
+                   activity2,
+                   activity3,
+                   activity4);
 
-    SetConstraints(dvrActivityButton,     @"dvrActivityButton.height = dvrActivityButton.width");
-    SetConstraints(ps3ActivityButton,     @"ps3ActivityButton.height = ps3ActivityButton.width");
-    SetConstraints(appleTVActivityButton, @"appleTVActivityButton.height = appleTVActivityButton.width");
-    SetConstraints(sonosActivityButton,   @"sonosActivityButton.height = sonosActivityButton.width");
+    SetConstraints(activity1, @"activity1.height = activity1.width");
+    SetConstraints(activity2, @"activity2.height = activity2.width");
+    SetConstraints(activity3, @"activity3.height = activity3.width");
+    SetConstraints(activity4, @"activity4.height = activity4.width");
 
     BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
     assert(preset);
@@ -144,18 +156,15 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructLightControls
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup =
+    REButtonGroup * buttonGroup =
         MakeButtonGroup(@"displayName"     : @"Light Controls",
-                        @"key"             : @"lightControls",
                         @"backgroundColor" : FlipsideColor);
 
     REButton * lightsOnButton =
         MakeButton(@"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
                                                          @"highlighted" : kHighlightColor }),
-                                                     @{ @"normal"      : MakeIconImage(1) }),
+                                                      @{ @"normal"      : MakeIconImage(1) }),
                    @"command"     : MakeHTTPCommand(@"http://10.0.1.27/0?1201=I=0"),
-                   @"key"         : @"lightsOn",
                    @"displayName" : @"Lights On");
 
     REButton * lightsOffButton =
@@ -163,7 +172,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                          @"highlighted" : kHighlightColor }),
                                                      (@{ @"normal"      : MakeIconImage(1) })),
                    @"command"     : MakeHTTPCommand(@"http://10.0.1.27/0?1401=I=0"),
-                   @"key"         : @"lightsOff",
                    @"displayName" : @"Lights Off");
 
     [buttonGroup addSubelements:[@[lightsOnButton, lightsOffButton] orderedSet]];
@@ -190,88 +198,48 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawDPad
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup =
-        MakeButtonGroup(@"key"             : @"dpad",
-                        @"displayName"     : @"dpad",
-                        @"backgroundColor" : defaultBGColor(),
-                        @"shape"           : @(REShapeOval),
-                        @"style"           : @(REStyleApplyGloss|REStyleDrawBorder));
-
-    NSMutableDictionary * attrHigh = [@{} mutableCopy];
-    NSDictionary        * attr     = [REButtonBuilder
-                           buttonTitleAttributesWithFontName:kDefaultFontName
-                                                    fontSize:32.0
-                                                 highlighted:attrHigh];
+    REButtonGroup * buttonGroup =
+        MakeButtonGroup(@"shape"       : @(REShapeOval),
+                        @"displayName" : @"Raw Direction Pad");
 
     // Create center "OK" button and add to button group
-    NSAttributedString * label = [NSAttributedString
-                                      attributedStringWithString:@"OK"
-                                                      attributes:attr];
-    NSAttributedString * labelHigh = [NSAttributedString
-                                      attributedStringWithString:@"OK"
-                                                      attributes:attrHigh];
-
     REButton * ok =
         MakeButton(@"key"         : REDPadOkButtonKey,
                    @"displayName" : @"OK",
-                   @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                                    @"highlighted" : labelHigh }));
-
-    [buttonGroup addSubelementsObject:ok];
+                   @"title"       : @"OK");
 
     // Create _up button and add to button group
-    attr = [REButtonBuilder             buttonTitleAttributesWithFontName:kArrowFontName
-                                                                 fontSize:32.0
-                                                              highlighted:attrHigh];
-    label     = [NSAttributedString attributedStringWithString:kUpArrow attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:kUpArrow
-                                                    attributes:attrHigh];
-
     REButton * _up =
         MakeButton(@"key"         : REDPadUpButtonKey,
                    @"displayName" : @"Up",
-                   @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                                    @"highlighted" : labelHigh }),
+                   @"title"       : kUpArrow,
                    @"style"       : @(REButtonSubtypeButtonGroupPiece));
 
     // Create down button and add to button group
-    label     = [NSAttributedString attributedStringWithString:kDownArrow attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:kDownArrow
-                                                    attributes:attrHigh];
-
     REButton * down =
         MakeButton(@"subtype"     : @(REButtonSubtypeButtonGroupPiece),
                    @"key"         : REDPadDownButtonKey,
                    @"displayName" : @"Down",
-                   @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                                    @"highlighted" : labelHigh }));
+                   @"title"       : kDownArrow);
 
     // Create right button and add to button group
-    label     = [NSAttributedString attributedStringWithString:kRightArrow attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:kRightArrow
-                                                    attributes:attrHigh];
-
     REButton * _right =
         MakeButton(@"style"       : @(REButtonSubtypeButtonGroupPiece),
                    @"key"         : REDPadRightButtonKey,
                    @"displayName" : @"Right",
-                   @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                                    @"highlighted" : labelHigh }));
+                   @"title"       : kRightArrow);
 
     // Create left button and add to button group
-    label     = [NSAttributedString attributedStringWithString:kLeftArrow attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:kLeftArrow
-                                                    attributes:attrHigh];
-
     REButton * _left =
         MakeButton(@"subtype"     : @(REButtonSubtypeButtonGroupPiece),
                    @"key"         : REDPadLeftButtonKey,
                    @"displayName" : @"Left",
-                   @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                                    @"highlighted" : labelHigh }));
+                   @"title"       : kLeftArrow);
 
     [buttonGroup addSubelements:[@[ok, _up, down, _left, _right] orderedSet]];
+
+//    [[REBuiltinTheme themeWithName:REThemeNightshadeName] applyThemeToElement:buttonGroup];
+
 
     SetConstraints(buttonGroup,
                    @"ok.centerX = buttonGroup.centerX\n"
@@ -308,34 +276,10 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRDPad
 {
-    REButtonGroup     * buttonGroup = nil;
-    BOComponentDevice * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name"
-                                                                            withValue:@"Comcast DVR"];
-    BOComponentDevice * samsungTV   = [BOComponentDevice  MR_findFirstByAttribute:@"name"
-                                                                        withValue:@"Samsung TV"];
-
-    buttonGroup             = [self rawDPad];
-    buttonGroup.displayName = @"DVR DPad";
-
-    // Create default DPad command set
-    RECommandSet * dvrDPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
-    dvrDPad[REDPadOkButtonKey]    = MakeIRCommand(comcastDVR, @"OK");
-    dvrDPad[REDPadUpButtonKey]    = MakeIRCommand(comcastDVR, @"Up");
-    dvrDPad[REDPadDownButtonKey]  = MakeIRCommand(comcastDVR, @"Down");
-    dvrDPad[REDPadRightButtonKey] = MakeIRCommand(comcastDVR, @"Right");
-    dvrDPad[REDPadLeftButtonKey]  = MakeIRCommand(comcastDVR, @"Left");
-
-    [buttonGroup.configurationDelegate setCommandSet:dvrDPad forConfiguration:REDefaultConfiguration];
-
-    // Create tv DPad command set
-    RECommandSet * tvDPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
-    tvDPad[REDPadOkButtonKey]    = MakeIRCommand(samsungTV, @"Enter");
-    tvDPad[REDPadUpButtonKey]    = MakeIRCommand(samsungTV, @"Up");
-    tvDPad[REDPadDownButtonKey]  = MakeIRCommand(samsungTV, @"Down");
-    tvDPad[REDPadRightButtonKey] = MakeIRCommand(samsungTV, @"Right");
-    tvDPad[REDPadLeftButtonKey]  = MakeIRCommand(samsungTV, @"Left");
-
-    [buttonGroup.configurationDelegate setCommandSet:tvDPad forConfiguration:kTVConfiguration];
+    REButtonGroup * buttonGroup = [self rawDPad];
+    buttonGroup.displayName = @"DVR Activity DPad";
+    [buttonGroup addCommandSet:DPadForDevice(@"Comcast DVR") forConfiguration:REDefaultConfiguration];
+    [buttonGroup addCommandSet:DPadForDevice(@"Samsung TV")  forConfiguration:kTVConfiguration];
 
     return buttonGroup;
 }
@@ -343,22 +287,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3DPad
 {
-    REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * ps3         = [BOComponentDevice MR_findFirstByAttribute:@"name"
-                                                                            withValue:@"PS3"];
-
-    buttonGroup             = [self rawDPad];
-    buttonGroup.displayName = @"Playstation DPad";
-
-    // Create default DPad command set
-    RECommandSet * ps3DPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
-    ps3DPad[REDPadOkButtonKey]    = MakeIRCommand(ps3, @"Enter");
-    ps3DPad[REDPadUpButtonKey]    = MakeIRCommand(ps3, @"Up");
-    ps3DPad[REDPadDownButtonKey]  = MakeIRCommand(ps3, @"Down");
-    ps3DPad[REDPadRightButtonKey] = MakeIRCommand(ps3, @"Right");
-    ps3DPad[REDPadLeftButtonKey]  = MakeIRCommand(ps3, @"Left");
-
-    buttonGroup.commandSet = ps3DPad;
+    REButtonGroup * buttonGroup = [self rawDPad];
+    buttonGroup.displayName = @"Playstation Activity DPad";
+    buttonGroup.commandSet  = DPadForDevice(@"PS3");
 
     return buttonGroup;
 }
@@ -366,162 +297,119 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawNumberPad
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup =
-        MakeButtonGroup(@"key"             : @"numberpad",
-                        @"displayName"     : @"numberpad",
-                        @"backgroundColor" :[kPanelBackgroundColor colorWithAlphaComponent:0.75]);
+    REButtonGroup * buttonGroup =
+        MakeButtonGroup(@"backgroundColor" : [kPanelBackgroundColor colorWithAlphaComponent:0.75],
+                        @"displayName"     : @"Raw Number Pad");
 
-    NSNumber * style = @(REShapeRoundedRectangle | REStyleApplyGloss | REStyleDrawBorder);
-
-    NSMutableDictionary * attrHigh = [@{} mutableCopy];
-
-    NSMutableDictionary * attr = [REButtonBuilder
-                                  buttonTitleAttributesWithFontName:kDefaultFontName
-                                                           fontSize:64.0
-                                                        highlighted:attrHigh];
-
-    NSAttributedString * label = [NSAttributedString attributedStringWithString:@"1"
-                                                                     attributes:attr];
-    NSAttributedString * labelHigh = [NSAttributedString attributedStringWithString:@"1"
-                                                                         attributes:attrHigh];
+    NSNumber * shape = @(REShapeRoundedRectangle);
 
     REButton * one =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitOneButtonKey,
                    @"displayName"     : @"Digit 1",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"1");
 
-    label     = [NSAttributedString attributedStringWithString:@"2" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"2" attributes:attrHigh];
+
 
     REButton * two =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitTwoButtonKey,
                    @"displayName"     : @"Digit 2",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"2");
 
-    label     = [NSAttributedString attributedStringWithString:@"3" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"3" attributes:attrHigh];
 
     REButton * three =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitThreeButtonKey,
                    @"displayName"     : @"Digit 3",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"3");
 
-    label     = [NSAttributedString attributedStringWithString:@"4" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"4" attributes:attrHigh];
 
     REButton * four =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitFourButtonKey,
                    @"displayName"     : @"Digit 4",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"4");
 
-    label     = [NSAttributedString attributedStringWithString:@"5" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"5" attributes:attrHigh];
 
     REButton * five =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitFiveButtonKey,
                    @"displayName"     : @"Digit 5",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"5");
 
-    label     = [NSAttributedString attributedStringWithString:@"6" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"6" attributes:attrHigh];
 
     REButton * six =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitSixButtonKey,
                    @"displayName"     : @"Digit 6",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"6");
 
-    label     = [NSAttributedString attributedStringWithString:@"7" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"7" attributes:attrHigh];
 
     REButton * seven =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitSevenButtonKey,
                    @"displayName"     : @"Digit 7",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"7");
 
-    label     = [NSAttributedString attributedStringWithString:@"8" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"8" attributes:attrHigh];
 
     REButton * _eight =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitEightButtonKey,
                    @"displayName"     : @"Digit 8",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"8");
 
-    label     = [NSAttributedString attributedStringWithString:@"9" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"9" attributes:attrHigh];
 
     REButton * nine =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitNineButtonKey,
                    @"displayName"     : @"Digit 9",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"9");
 
-    label     = [NSAttributedString attributedStringWithString:@"0" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"0" attributes:attrHigh];
 
     REButton * zero =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REDigitZeroButtonKey,
                    @"displayName"     : @"Digit 0",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
-
-    attr[NSForegroundColorAttributeName] = [UIColor colorWithWhite:0.0 alpha:0.5];
-    attr[NSStrokeWidthAttributeName]     = @"normal";
-
-    label = [NSAttributedString attributedStringWithString:kUpArrow attributes:attr];
-
-    attrHigh[NSStrokeWidthAttributeName] = @"normal";
-    labelHigh                            = [NSAttributedString attributedStringWithString:kUpArrow attributes:attrHigh];
+                   @"title"           : @"0");
 
     REButton * tuck =
         MakeButton(@"key"         : REButtonGroupTuckButtonKey,
-                   @"displayName" : @"Tuck Panel",
-                   @"titles"      : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"displayName" : @"Tuck Button",
+                   @"title"       : kUpArrow);
 
-    [attrHigh removeAllObjects];
-    attr = [REButtonBuilder      buttonTitleAttributesWithFontName:kDefaultFontName
-                                                          fontSize:32.0
-                                                       highlighted:attrHigh];
-    label     = [NSAttributedString attributedStringWithString:@"Exit" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"Exit" attributes:attrHigh];
 
     REButton * aux1 =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REAuxOneButtonKey,
                    @"displayName"     : @"Exit",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"Exit");
 
-    label     = [NSAttributedString attributedStringWithString:@"Enter" attributes:attr];
-    labelHigh = [NSAttributedString attributedStringWithString:@"Enter" attributes:attrHigh];
 
     REButton * aux2 =
         MakeButton(@"titleEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsZero),
-                   @"style"           : style,
+                   @"shape"           : shape,
                    @"key"             : REAuxTwoButtonKey,
                    @"displayName"     : @"Enter",
-                   @"titles"          : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"           : @"Enter");
 
     [buttonGroup addSubelements:[@[one, two, three, four, five, six,
                                    seven, _eight, nine, zero, aux1, aux2, tuck] orderedSet]];
+
+    
+    [[REBuiltinTheme themeWithName:REThemeNightshadeName]
+     applyThemeToElements:[buttonGroup.subelements set]];
 
     SetConstraints(buttonGroup,
                    @"one.left = buttonGroup.left\n"
@@ -599,31 +487,11 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRNumberPad
 {
-    REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name"
-                                                                            withValue:@"Comcast DVR"];
-
-    // Create number pad button and add to button group
-    RECommandSet * dvrNumberPad = [RECommandSet commandSetWithType:RECommandSetTypeNumberPad];
-    dvrNumberPad[REDigitOneButtonKey]   = MakeIRCommand(comcastDVR, @"One");
-    dvrNumberPad[REDigitTwoButtonKey]   = MakeIRCommand(comcastDVR, @"Two");
-    dvrNumberPad[REDigitThreeButtonKey] = MakeIRCommand(comcastDVR, @"Three");
-    dvrNumberPad[REDigitFourButtonKey]  = MakeIRCommand(comcastDVR, @"Four");
-    dvrNumberPad[REDigitFiveButtonKey]  = MakeIRCommand(comcastDVR, @"Five");
-    dvrNumberPad[REDigitSixButtonKey]   = MakeIRCommand(comcastDVR, @"Six");
-    dvrNumberPad[REDigitSevenButtonKey] = MakeIRCommand(comcastDVR, @"Seven");
-    dvrNumberPad[REDigitEightButtonKey] = MakeIRCommand(comcastDVR, @"Eight");
-    dvrNumberPad[REDigitNineButtonKey]  = MakeIRCommand(comcastDVR, @"Nine");
-    dvrNumberPad[REDigitZeroButtonKey]  = MakeIRCommand(comcastDVR, @"Zero");
-    dvrNumberPad[REAuxOneButtonKey]     = MakeIRCommand(comcastDVR, @"Exit");
-    dvrNumberPad[REAuxTwoButtonKey]     = MakeIRCommand(comcastDVR, @"OK");
-
-    buttonGroup               = [self rawNumberPad];
-    buttonGroup.displayName   = @"DVR Number Pad";
-    buttonGroup.commandSet    = dvrNumberPad;
+    REButtonGroup * buttonGroup = [self rawNumberPad];
+    buttonGroup.displayName   = @"DVR Activity Number Pad";
+    buttonGroup.commandSet    = NumberPadForDevice(@"Comcast DVR");
     buttonGroup.key           = RERemoteTopPanel1Key;
     buttonGroup.panelLocation = REPanelLocationTop;
-    buttonGroup.commandSet    = dvrNumberPad;
 
     return buttonGroup;
 }
@@ -631,27 +499,11 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3NumberPad
 {
-    REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * ps3         = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"PS3"];
-
-    // Create number pad button and add to button group
-    RECommandSet * ps3NumberPad = [RECommandSet commandSetWithType:RECommandSetTypeNumberPad];
-    ps3NumberPad[REDigitOneButtonKey]   = MakeIRCommand(ps3, @"1");
-    ps3NumberPad[REDigitTwoButtonKey]   = MakeIRCommand(ps3, @"2");
-    ps3NumberPad[REDigitThreeButtonKey] = MakeIRCommand(ps3, @"3");
-    ps3NumberPad[REDigitFourButtonKey]  = MakeIRCommand(ps3, @"4");
-    ps3NumberPad[REDigitFiveButtonKey]  = MakeIRCommand(ps3, @"5");
-    ps3NumberPad[REDigitSixButtonKey]   = MakeIRCommand(ps3, @"6");
-    ps3NumberPad[REDigitSevenButtonKey] = MakeIRCommand(ps3, @"7");
-    ps3NumberPad[REDigitEightButtonKey] = MakeIRCommand(ps3, @"8");
-    ps3NumberPad[REDigitNineButtonKey]  = MakeIRCommand(ps3, @"9");
-    ps3NumberPad[REDigitZeroButtonKey]  = MakeIRCommand(ps3, @"0");
-
-    buttonGroup               = [self rawNumberPad];
-    buttonGroup.displayName   = @"Playstation Number Pad";
+    REButtonGroup * buttonGroup = [self rawNumberPad];
+    buttonGroup.displayName   = @"Playstation Activity Number Pad";
     buttonGroup.key           = RERemoteTopPanel1Key;
     buttonGroup.panelLocation = REPanelLocationTop;
-    buttonGroup.commandSet    = ps3NumberPad;
+    buttonGroup.commandSet    = NumberPadForDevice(@"PS3");
 
     return buttonGroup;
 }
@@ -659,16 +511,13 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawTransport
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup =
-        MakeButtonGroup(@"key"             : @"transport",
-                        @"displayName"     : @"transport",
-                        @"backgroundColor" :[kPanelBackgroundColor colorWithAlphaComponent:0.75]);
+    REButtonGroup * buttonGroup =
+        MakeButtonGroup(@"backgroundColor" : [kPanelBackgroundColor colorWithAlphaComponent:0.75],
+                        @"displayName"     : @"Raw Transport");
 
     // Create "rewind" button and add to button group
     REButton * rewind =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportRewindButtonKey,
                    @"displayName"     : @"Rewind",
@@ -679,7 +528,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "pause" button and add to button group
     REButton * pause =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportPauseButtonKey,
                    @"displayName"     : @"Pause",
@@ -690,7 +538,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "fast forward" button and add to button group
     REButton * fastForward =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportFastForwardButtonKey,
                    @"displayName"     : @"Fast Forward",
@@ -701,7 +548,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "previous" button and add to button group
     REButton * previous =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportPreviousButtonKey,
                    @"displayName"     : @"Previous",
@@ -712,7 +558,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "play" button and add to button group
     REButton * play =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportPlayButtonKey,
                    @"displayName"     : @"Play",
@@ -723,7 +568,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "next" button and add to button group
     REButton * next =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportNextButtonKey,
                    @"displayName"     : @"Next",
@@ -734,7 +578,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "record" button and add to button group
     REButton * record =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportRecordButtonKey,
                    @"displayName"     : @"Record",
@@ -745,7 +588,6 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     // Create "stop" button and add to button group
     REButton * stop =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
-                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportStopButtonKey,
                    @"displayName"     : @"Stop",
@@ -753,29 +595,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                                                              @"highlighted" : kHighlightColor }),
                                                          (@{ @"normal"      : MakeIconImage(4007) })));
 
-    NSMutableDictionary * attrHigh = [@{} mutableCopy];
-    NSMutableDictionary * attr     = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
-                                                                               fontSize:64.0
-                                                                            highlighted:attrHigh];
-
-    attr[NSForegroundColorAttributeName] = [UIColor colorWithWhite:0.0 alpha:0.5];
-    attr[NSStrokeWidthAttributeName]     = @"normal";
-
-    NSAttributedString * label = [NSAttributedString attributedStringWithString:kDownArrow
-                                                                     attributes:attr];
-
-    attrHigh[NSStrokeWidthAttributeName] = @"normal";
-
-    NSAttributedString * labelHigh = [NSAttributedString attributedStringWithString:kDownArrow
-                                                                         attributes:attrHigh];
-
     REButton * tuck =
         MakeButton(@"key"         : REButtonGroupTuckButtonKey,
                    @"displayName" : @"Tuck Panel",
-                   @"titles"      : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }));
+                   @"title"       : kDownArrow);
 
     [buttonGroup addSubelements:[@[play, pause, rewind, fastForward, stop,
                                    previous, tuck, next, record] orderedSet]];
+
+    [[REBuiltinTheme themeWithName:REThemeNightshadeName]
+     applyThemeToElements:[buttonGroup.subelements set]];
 
     SetConstraints(buttonGroup,
                    @"record.left = buttonGroup.left\n"
@@ -826,41 +655,12 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRTransport
 {
-    REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name"
-                                                                            withValue:@"Comcast DVR"];
-    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name"
-                                                                     withValue:@"Samsung TV"];
-    buttonGroup = [self rawTransport];
-
-    // Create default transport command set
-    RECommandSet * dvrTransport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
-    dvrTransport[RETransportPreviousButtonKey]    = MakeIRCommand(comcastDVR, @"Prev");
-    dvrTransport[RETransportStopButtonKey]        = MakeIRCommand(comcastDVR, @"Stop");
-    dvrTransport[RETransportPlayButtonKey]        = MakeIRCommand(comcastDVR, @"Play");
-    dvrTransport[RETransportPauseButtonKey]       = MakeIRCommand(comcastDVR, @"Pause");
-    dvrTransport[RETransportNextButtonKey]        = MakeIRCommand(comcastDVR, @"Next");
-    dvrTransport[RETransportFastForwardButtonKey] = MakeIRCommand(comcastDVR, @"Fast Forward");
-    dvrTransport[RETransportRewindButtonKey]      = MakeIRCommand(comcastDVR, @"Rewind");
-    dvrTransport[RETransportRecordButtonKey]      = MakeIRCommand(comcastDVR, @"Record");
-
-    [buttonGroup.configurationDelegate setCommandSet:dvrTransport
-                                    forConfiguration:REDefaultConfiguration];
-
-    // Create TV transport command set
-    RECommandSet * tvTransport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
-    tvTransport[RETransportPlayButtonKey]        = MakeIRCommand(samsungTV, @"Play");
-    tvTransport[RETransportPauseButtonKey]       = MakeIRCommand(samsungTV, @"Pause");
-    tvTransport[RETransportFastForwardButtonKey] = MakeIRCommand(samsungTV, @"Fast Forward");
-    tvTransport[RETransportRewindButtonKey]      = MakeIRCommand(samsungTV, @"Rewind");
-    tvTransport[RETransportRecordButtonKey]      = MakeIRCommand(samsungTV, @"Record");
-
-    [buttonGroup.configurationDelegate setCommandSet:tvTransport
-                                    forConfiguration:kTVConfiguration];
-
-    buttonGroup.displayName   = @"DVR Transport";
+    REButtonGroup * buttonGroup = [self rawTransport];
+    buttonGroup.displayName   = @"DVR Activity Transport";
     buttonGroup.key           = RERemoteBottomPanel1Key;
     buttonGroup.panelLocation = REPanelLocationBottom;
+    [buttonGroup addCommandSet:TransportForDevice(@"Comcast DVR") forConfiguration:REDefaultConfiguration];
+    [buttonGroup addCommandSet:TransportForDevice(@"Samsung TV")  forConfiguration:kTVConfiguration];
 
     return buttonGroup;
 }
@@ -868,25 +668,11 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructPS3Transport
 {
-    REButtonGroup          * buttonGroup = nil;
-    BOComponentDevice      * ps3         = [BOComponentDevice MR_findFirstByAttribute:@"name"
-                                                                            withValue:@"PS3"];
-
-    // Create default transport command set
-    RECommandSet * ps3Transport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
-    ps3Transport[RETransportPreviousButtonKey]    = MakeIRCommand(ps3, @"Previous");
-    ps3Transport[RETransportStopButtonKey]        = MakeIRCommand(ps3, @"Stop");
-    ps3Transport[RETransportPlayButtonKey]        = MakeIRCommand(ps3, @"Play");
-    ps3Transport[RETransportPauseButtonKey]       = MakeIRCommand(ps3, @"Pause");
-    ps3Transport[RETransportNextButtonKey]        = MakeIRCommand(ps3, @"Next");
-    ps3Transport[RETransportFastForwardButtonKey] = MakeIRCommand(ps3, @"Scan Forward");
-    ps3Transport[RETransportRewindButtonKey]      = MakeIRCommand(ps3, @"Scan Reverse");
-
-    buttonGroup               = [self rawTransport];
-    buttonGroup.displayName   = @"Playstation Transport";
+    REButtonGroup * buttonGroup = [self rawTransport];
+    buttonGroup.displayName   = @"Playstation Activity Transport";
     buttonGroup.key           = RERemoteBottomPanel1Key;
     buttonGroup.panelLocation = REPanelLocationBottom;
-    buttonGroup.commandSet    = ps3Transport;
+    buttonGroup.commandSet    = TransportForDevice(@"PS3");
 
     return buttonGroup;
 }
@@ -894,13 +680,10 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)rawRocker
 {
-    REPickerLabelButtonGroup * buttonGroup = nil;
-    buttonGroup =
+    REPickerLabelButtonGroup * buttonGroup =
         MakePickerLabelButtonGroup(@"backgroundColor" : defaultBGColor(),
                                    @"shape"           : @(REShapeRoundedRectangle),
-                                   @"key"             : @"rocker",
-                                   @"displayName"     : @"rocker",
-                                   @"style"           : @(REStyleApplyGloss | REStyleDrawBorder));
+                                   @"displayName"     : @"Raw Rocker");
 
     // Create top button and add to button group
     REButton * _up =
@@ -921,6 +704,8 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                    @"key"         : RERockerButtonMinusButtonKey);
 
     [buttonGroup addSubelements:[@[_up, down] orderedSet]];
+
+//    [[REBuiltinTheme themeWithName:REThemeNightshadeName] applyThemeToElement:buttonGroup];
 
     SetConstraints(buttonGroup,
                    @"_up.top = buttonGroup.top\n"
@@ -944,53 +729,11 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)constructDVRRocker
 {
-    REPickerLabelButtonGroup * buttonGroup = nil;
-    BOComponentDevice        * comcastDVR  = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Comcast DVR"];
-    RECommandSet * channelsCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
-    channelsCommandSet.name                          = @"DVR Channels";
-    channelsCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(comcastDVR, @"Channel Up");
-    channelsCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(comcastDVR, @"Channel Down");
-
-    RECommandSet * pageUpDownCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
-    pageUpDownCommandSet.name                          = @"DVR Paging";
-    pageUpDownCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(comcastDVR, @"Page Up");
-    pageUpDownCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(comcastDVR, @"Page Down");
-
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    RECommandSet * volumeCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
-    volumeCommandSet.name                          = @"Receiver Volume";
-    volumeCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(avReceiver, @"Volume Up");
-    volumeCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(avReceiver, @"Volume Down");
-
-    buttonGroup             = [self rawRocker];
-    buttonGroup.displayName = @"DVR Rocker";
-
-    [buttonGroup
-          addCommandSet:channelsCommandSet
-              withLabel:[NSAttributedString
-                     attributedStringWithString:@"CH"
-                                     attributes:[REButtonBuilder
-                                 buttonTitleAttributesWithFontName:nil
-                                                          fontSize:0
-                                                       highlighted:NO]]];
-
-    [buttonGroup
-          addCommandSet:pageUpDownCommandSet
-              withLabel:[NSAttributedString
-                     attributedStringWithString:@"PAGE"
-                                     attributes:[REButtonBuilder
-                                 buttonTitleAttributesWithFontName:nil
-                                                          fontSize:0
-                                                       highlighted:NO]]];
-
-    [buttonGroup
-          addCommandSet:volumeCommandSet
-              withLabel:[NSAttributedString
-                     attributedStringWithString:@"VOL"
-                                     attributes:[REButtonBuilder
-                                 buttonTitleAttributesWithFontName:nil
-                                                          fontSize:0
-                                                       highlighted:NO]]];
+    REPickerLabelButtonGroup * buttonGroup = [self rawRocker];
+    buttonGroup.displayName = @"DVR Activity Rocker";
+    [buttonGroup addCommandSet:DVRChannelsCommandSet      withLabel:@"CH"];
+    [buttonGroup addCommandSet:DVRPagingCommandSet        withLabel:@"PAGE"];
+    [buttonGroup addCommandSet:AVReceiverVolumeCommandSet withLabel:@"VOL"];
 
     return buttonGroup;
 }
@@ -998,24 +741,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)constructPS3Rocker
 {
-    REPickerLabelButtonGroup * buttonGroup = nil;
-    BOComponentDevice        * avReceiver  = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    RECommandSet * volumeCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
-    volumeCommandSet.name                          = @"Receiver Volume";
-    volumeCommandSet[RERockerButtonPlusButtonKey]  = MakeIRCommand(avReceiver, @"Volume Up");
-    volumeCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(avReceiver, @"Volume Down");
-
-    buttonGroup             = [self rawRocker];
-    buttonGroup.displayName = @"Playstation Rocker";
-
-    [buttonGroup
-     addCommandSet:volumeCommandSet
-         withLabel:[NSAttributedString
-                attributedStringWithString:@"VOL"
-                                attributes:[REButtonBuilder
-                            buttonTitleAttributesWithFontName:nil
-                                                     fontSize:0
-                                                  highlighted:NO]]];
+    REPickerLabelButtonGroup * buttonGroup = [self rawRocker];
+    buttonGroup.displayName = @"Playstation Activity Rocker";
+    [buttonGroup addCommandSet:AVReceiverVolumeCommandSet withLabel:@"VOL"];
 
     return buttonGroup;
 }
@@ -1023,51 +751,26 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REPickerLabelButtonGroup *)constructSonosRocker
 {
-    REPickerLabelButtonGroup * buttonGroup = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    RECommandSet * volumeCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
-    volumeCommandSet.name = @"Receiver Volume";
-    volumeCommandSet[RERockerButtonPlusButtonKey] = MakeIRCommand(avReceiver, @"Volume Up");
-    volumeCommandSet[RERockerButtonMinusButtonKey] = MakeIRCommand(avReceiver, @"Volume Down");
-
-    buttonGroup = [self rawRocker];
-    buttonGroup.displayName = @"Sonos Rocker";
-
-    [buttonGroup
-     addCommandSet:volumeCommandSet
-     withLabel:[NSAttributedString attributedStringWithString:@"VOL"
-                                                   attributes:[REButtonBuilder
-                                                               buttonTitleAttributesWithFontName:nil
-                                                               fontSize:0
-                                                               highlighted:NO]]];
+    REPickerLabelButtonGroup * buttonGroup = [self rawRocker];
+    buttonGroup.displayName = @"Sonos Activity Rocker";
+    [buttonGroup addCommandSet:AVReceiverVolumeCommandSet withLabel:@"VOL"];
 
     return buttonGroup;
 }
 
 + (REButtonGroup *)constructSonosMuteButtonGroup
 {
-    REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    buttonGroup = MakeButtonGroup(@"displayName" : @"Mute Button",
-                                  @"key"         : @"mute");
-
-    NSMutableDictionary * attrHigh = [@{} mutableCopy];
-    NSDictionary       * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
-                                                                          fontSize:16.0
-                                                                       highlighted:attrHigh];
-    NSAttributedString * label    = [NSAttributedString attributedStringWithString:@"Mute"
-                                                                        attributes:attr];
-    NSAttributedString * labelHigh = [NSAttributedString attributedStringWithString:@"Mute"
-                                                                         attributes:attrHigh];
+    REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"Mute");
     REButton * mute =
-    MakeButton(@"command"     : MakeIRCommand(avReceiver, @"Mute"),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"displayName" : @"Mute",
-               @"titles"      : MakeTitleSet(@{ @"normal" : label, @"highlighted" : labelHigh }),
-               @"key"         : @"muteButton");
+        MakeButton(@"command"     : MakeIRCommand([BOComponentDevice fetchDeviceWithName:@"AV Receiver"],
+                                                  @"Mute"),
+                   @"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"Mute",
+                   @"title"       : @"Mute");
 
     [buttonGroup addSubelementsObject:mute];
+
+    [[REBuiltinTheme themeWithName:REThemeNightshadeName] applyThemeToElement:mute];
 
     SetConstraints(buttonGroup,
                    @"mute.centerX = buttonGroup.centerX\n"
@@ -1082,41 +785,25 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructSelectionPanel
 {
-    REButtonGroup * buttonGroup = nil;
-    /* Create selection panel button group */
-    buttonGroup =
-    MakeSelectionPanelButtonGroup(@"displayName" : @"Configuration Selection Panel",
-                                  @"subtype" : @(REButtonGroupRightPanel),
-                                  @"backgroundColor" : FlipsideColor,
-                                  @"key" : RERemoteRightPanel1Key);
+    REButtonGroup * buttonGroup =
+        MakeSelectionPanelButtonGroup(@"displayName"     : @"Configuration Selection Panel",
+                                      @"subtype"         : @(REButtonGroupRightPanel),
+                                      @"backgroundColor" : FlipsideColor,
+                                      @"key"             : RERemoteRightPanel1Key);
 
-    NSMutableDictionary * attrSelected = [@{} mutableCopy];
-
-    NSDictionary * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
-                                                                    fontSize:48
-                                                                 highlighted:attrSelected];
-    NSAttributedString * label = [NSAttributedString attributedStringWithString:@"STB"
-                                                                     attributes:attr];
-    NSAttributedString * labelSelected = [NSAttributedString attributedStringWithString:@"STB"
-                                                                             attributes:attrSelected];
     REButton * stbButton =
-    MakeButton(@"displayName" : @"Select Set Top Box",
-               @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                             @"selected"    : labelSelected,
-                                             @"highlighted" : labelSelected }),
-               @"key"         : REDefaultConfiguration);
-
-    label = [NSAttributedString attributedStringWithString:@"TV" attributes:attr];
-    labelSelected = [NSAttributedString attributedStringWithString:@"TV" attributes:attrSelected];
+        MakeButton(@"displayName": @"Select Set Top Box",
+                   @"title"      : @"STB",
+                   @"key"        : REDefaultConfiguration);
 
     REButton * tvButton =
-    MakeButton(@"displayName" : @"Select Samsung TV",
-               @"titles"      : MakeTitleSet(@{ @"normal"      : label,
-                                             @"selected"    : labelSelected,
-                                             @"highlighted" : labelSelected }),
-               @"key"         : kTVConfiguration);
+        MakeButton(@"displayName" : @"Select Samsung TV",
+                   @"title"       : @"TV",
+                   @"key"         : kTVConfiguration);
 
     [buttonGroup addSubelements:[@[stbButton, tvButton] orderedSet]];
+
+//    [[REBuiltinTheme themeWithName:REThemeNightshadeName] applyThemeToElement:buttonGroup];
 
     // TODO: Add alignment and sizing options for buttons
     SetConstraints(buttonGroup,
@@ -1137,49 +824,41 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)rawGroupOfThreeButtons
 {
-    REButtonGroup * buttonGroup = nil;
-    // Create button group with three vertically aligned buttons
-    buttonGroup = MakeButtonGroup(@"key" : @"oneByThree", @"displayName" : @"1x3");
+    REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"1x3");
 
-    // Create first button
     REButton * button1 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button1",
-               @"displayName" : @"button1");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button1");
 
-    // Create second button
     REButton * button2 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button2",
-               @"displayName" : @"button2");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button2");
 
-    // Create third button
     REButton * button3 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button3",
-               @"displayName" : @"button3");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button3");
 
     [buttonGroup addSubelements:[@[button1, button2, button3] orderedSet]];
 
+    [[REBuiltinTheme themeWithName:REThemeNightshadeName]
+     applyThemeToElements:[buttonGroup.subelements set]];
+
     SetConstraints(buttonGroup,
                    @"button1.left = buttonGroup.left\n"
-                   "button1.right = buttonGroup.right\n"
-                   "button2.left = buttonGroup.left\n"
-                   "button2.right = buttonGroup.right\n"
-                   "button3.left = buttonGroup.left\n"
-                   "button3.right = buttonGroup.right\n"
-                   "button1.top = buttonGroup.top\n"
-                   "button2.top = button1.bottom + 4\n"
-                   "button3.top = button2.bottom + 4\n"
-                   "button3.bottom = buttonGroup.bottom\n"
-                   "button2.height = button1.height\n"
-                   "button3.height = button1.height\n"
-                   "buttonGroup.width ≥ 132\n"
-                   "buttonGroup.height ≥ 150",
-                   button1, button2, button3);
+                    "button1.right = buttonGroup.right\n"
+                    "button2.left = buttonGroup.left\n"
+                    "button2.right = buttonGroup.right\n"
+                    "button3.left = buttonGroup.left\n"
+                    "button3.right = buttonGroup.right\n"
+                    "button1.top = buttonGroup.top\n"
+                    "button2.top = button1.bottom + 4\n"
+                    "button3.top = button2.bottom + 4\n"
+                    "button3.bottom = buttonGroup.bottom\n"
+                    "button2.height = button1.height\n"
+                    "button3.height = button1.height\n"
+                    "buttonGroup.width ≥ 132\n"
+                    "buttonGroup.height ≥ 150",
+                    button1, button2, button3);
 
     BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
     assert(preset);
@@ -1189,227 +868,148 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructDVRGroupOfThreeButtons
 {
-    REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * comcastDVR = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Comcast DVR"];
-    BOComponentDevice * samsungTV = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
-    buttonGroup = [self rawGroupOfThreeButtons];
+    // fetch devices
+    BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
 
-    buttonGroup.displayName = @"One x Three Button Group";
+    // create button group
+    REButtonGroup * buttonGroup = [self rawGroupOfThreeButtons];
+    buttonGroup.displayName = @"DVR Activity 1x3";
 
     // Configure "Guide" button and its delegate
-    REButton * guideButton = buttonGroup[@"button1"];
-
-    guideButton.key         = @"guide/tools";
+    REButton * guideButton = buttonGroup[0];
     guideButton.displayName = @"Guide / Tools";
-
-    NSMutableDictionary * attrHigh = [@{} mutableCopy];
-    NSDictionary * attr = [REButtonBuilder buttonTitleAttributesWithFontName:kDefaultFontName
-                                                                    fontSize:18.0
-                                                                 highlighted:attrHigh];
-
-    REControlStateTitleSet * titles = [REControlStateTitleSet MR_createEntity];
-
-    titles[UIControlStateNormal]      = [NSAttributedString attributedStringWithString:@"Guide"
-                                                                            attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Guide"
-                                                                            attributes:attrHigh];
-
-    [guideButton.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [guideButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Guide")
-                                 forConfiguration:REDefaultConfiguration];
-
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Tools"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Tools"
-                                                                            attributes:attrHigh];
-    [guideButton.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-
-    [guideButton.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Tools")
-                                 forConfiguration:kTVConfiguration];
+    [guideButton setTitle:@"Guide" forConfiguration:REDefaultConfiguration];
+    [guideButton setTitle:@"Tools" forConfiguration:kTVConfiguration];
+    [guideButton setCommand:MakeIRCommand(comcastDVR, @"Guide") forConfiguration:REDefaultConfiguration];
+    [guideButton setCommand:MakeIRCommand(samsungTV, @"Tools")  forConfiguration:kTVConfiguration];
 
     // Configure "DVR" button and add its delegate
-    REButton * dvrButton = buttonGroup[@"button2"];
-
-    dvrButton.key         = @"dvr/internet@tv";
+    REButton * dvrButton = buttonGroup[1];
     dvrButton.displayName = @"DVR / Internet@TV";
-
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"DVR"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"DVR"
-                                                                            attributes:attrHigh];
-    [dvrButton.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [dvrButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"DVR")
-                               forConfiguration:REDefaultConfiguration];
-
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Internet@TV"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Internet@TV"
-                                                                            attributes:attrHigh];
-    [dvrButton.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-
-    [dvrButton.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Internet@TV")
-                               forConfiguration:kTVConfiguration];
+    [dvrButton setTitle:@"DVR"         forConfiguration:REDefaultConfiguration];
+    [dvrButton setTitle:@"Internet@TV" forConfiguration:kTVConfiguration];
+    [dvrButton setCommand:MakeIRCommand(comcastDVR, @"DVR")        forConfiguration:REDefaultConfiguration];
+    [dvrButton setCommand:MakeIRCommand(samsungTV, @"Internet@TV") forConfiguration:kTVConfiguration];
 
     // Configure "Info" button and its delegate
-    REButton * infoButton = buttonGroup[@"button3"];
-
-    infoButton.key         = @"info";
+    REButton * infoButton = buttonGroup[2];
     infoButton.displayName = @"Info";
-
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Info"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Info"
-                                                                            attributes:attrHigh];
-    [infoButton.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [infoButton.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Info")
-                                forConfiguration:REDefaultConfiguration];
-
-    [infoButton.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-
-    [infoButton.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Info")
-                                forConfiguration:kTVConfiguration];
+    [infoButton setTitle:@"Info" forConfiguration:REDefaultConfiguration];
+    [infoButton setTitle:@"Info" forConfiguration:kTVConfiguration];
+    [infoButton setCommand:MakeIRCommand(comcastDVR, @"Info") forConfiguration:REDefaultConfiguration];
+    [infoButton setCommand:MakeIRCommand(samsungTV, @"Info")  forConfiguration:kTVConfiguration];
 
     return buttonGroup;
 }
 
 + (REButtonGroup *)constructPS3GroupOfThreeButtons
 {
-    REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * ps3 = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"PS3"];
-    buttonGroup   = [self rawGroupOfThreeButtons];
-    REButton      * displayButton = buttonGroup[@"button1"];
+    // fetch device
+    BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"];
 
-    displayButton.key         = @"display";
-    displayButton.displayName = @"Display";
+    // create button group
+    REButtonGroup * buttonGroup = [self rawGroupOfThreeButtons];
+    buttonGroup.displayName = @"PS3 Activity 1x3";
 
-    NSMutableDictionary * attrHigh = [@{}  mutableCopy];
-    NSDictionary * attr = [REButtonBuilder
-                           buttonTitleAttributesWithFontName:kDefaultFontName
-                           fontSize:18.0
-                           highlighted:attrHigh];
+    // configure buttons
+    REButton * displayButton    = buttonGroup[0];
+    displayButton.displayName   = @"Display";
+    displayButton.title         = @"Display";
+    displayButton.command       = MakeIRCommand(ps3, @"Display");
 
-    displayButton.titles[UIControlStateNormal] = [NSAttributedString
-                                                  attributedStringWithString:@"Display"
-                                                  attributes:attr];
+    REButton * topMenuButton    = buttonGroup[1];
+    topMenuButton.displayName   = @"Top Menu";
+    topMenuButton.title         = @"Top Menu";
+    topMenuButton.command       = MakeIRCommand(ps3, @"Top Menu");
 
-    RESendIRCommand * sendIR = [RESendIRCommand commandWithIRCode:ps3[@"Display"]];
-
-    displayButton.command = sendIR;
-
-    REButton * topMenuButton = buttonGroup[@"button2"];
-
-    topMenuButton.key                          = @"topMenu";
-    topMenuButton.displayName                  = @"Top Menu";
-    topMenuButton.titles[UIControlStateNormal] = [NSAttributedString
-                                                  attributedStringWithString:@"Top Menu"
-                                                  attributes:attr];
-    sendIR                = [RESendIRCommand commandWithIRCode:ps3[@"Top Menu"]];
-    topMenuButton.command = sendIR;
-
-    REButton * popupMenuButton = buttonGroup[@"button3"];
-
-    popupMenuButton.key                          = @"popupMenu";
-    popupMenuButton.displayName                  = @"Popup Menu";
-    popupMenuButton.titles[UIControlStateNormal] = [NSAttributedString
-                                                    attributedStringWithString:@"Popup Menu"
-                                                    attributes:attr];
-    sendIR                  = [RESendIRCommand commandWithIRCode:ps3[@"Popup Menu"]];
-    popupMenuButton.command = sendIR;
+    REButton * popupMenuButton  = buttonGroup[2];
+    popupMenuButton.displayName = @"Popup Menu";
+    popupMenuButton.title       = @"Popup Menu";
+    popupMenuButton.command     = MakeIRCommand(ps3, @"Popup Menu");
 
     return buttonGroup;
 }
 
 + (REButtonGroup *)rawButtonPanel
 {
-    REButtonGroup          * buttonGroup = nil;
-    buttonGroup =
-    MakeButtonGroup(@"key"             : @"buttons",
-                    @"displayName"     : @"buttons",
-                    @"backgroundColor" :[kPanelBackgroundColor colorWithAlphaComponent:0.75]);
+    REButtonGroup * buttonGroup =
+        MakeButtonGroup(@"backgroundColor"  : [kPanelBackgroundColor colorWithAlphaComponent:0.75],
+                        @"displayName"      : @"Raw Button Panel");
+
     REButton * button1 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button1",
-               @"displayName" : @"button1");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button1");
+
     REButton * button2 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button2",
-               @"displayName" : @"button2");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button2");
+
     REButton * button3 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button3",
-               @"displayName" : @"button3");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button3");
+
     REButton * button4 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button4",
-               @"displayName" : @"button4");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button4");
+
     REButton * button5 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button5",
-               @"displayName" : @"button5");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button5");
+
     REButton * button6 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button6",
-               @"displayName" : @"button6");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button6");
+
     REButton * button7 =
-    MakeButton(@"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-               @"shape"       : @(REShapeRoundedRectangle),
-               @"key"         : @"button7",
-               @"displayName" : @"button7");
+        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
+                   @"displayName" : @"button7");
+
     REButton * button8 =
-    MakeButton(@"key"         : @"button8",
-               @"displayName" : @"button8");
+        MakeButton(@"key"         : REButtonGroupTuckButtonKey,
+                   @"displayName" : @"tuck");
 
     [buttonGroup addSubelements:[@[button1, button2, button3, button4,
                                  button5, button6, button7, button8] orderedSet]];
 
+    [[REBuiltinTheme themeWithName:REThemeNightshadeName]
+     applyThemeToElements:[buttonGroup.subelements set]];
+
     SetConstraints(buttonGroup,
                    @"button1.left = buttonGroup.left + 4\n"
-                   "button1.right = buttonGroup.right - 4\n"
-                   "button2.left = buttonGroup.left + 4\n"
-                   "button2.right = buttonGroup.right - 4\n"
-                   "button3.left = buttonGroup.left + 4\n"
-                   "button3.right = buttonGroup.right - 4\n"
-                   "button4.left = buttonGroup.left + 4\n"
-                   "button4.right = buttonGroup.right - 4\n"
-                   "button5.left = buttonGroup.left + 4\n"
-                   "button5.right = buttonGroup.right - 4\n"
-                   "button6.left = buttonGroup.left + 4\n"
-                   "button6.right = buttonGroup.right - 4\n"
-                   "button7.left = buttonGroup.left + 4\n"
-                   "button7.right = buttonGroup.right - 4\n"
-                   "button8.left = buttonGroup.left + 4\n"
-                   "button8.right = buttonGroup.right - 4\n"
-                   "button1.top = buttonGroup.top + 4\n"
-                   "button2.top = button1.bottom + 4\n"
-                   "button3.top = button2.bottom + 4\n"
-                   "button4.top = button3.bottom + 4\n"
-                   "button5.top = button4.bottom + 4\n"
-                   "button6.top = button5.bottom + 4\n"
-                   "button7.top = button6.bottom + 4\n"
-                   "button8.top = button7.bottom + 4\n"
-                   "button8.bottom = buttonGroup.bottom - 4\n"
-                   "button2.height = button1.height\n"
-                   "button3.height = button1.height\n"
-                   "button4.height = button1.height\n"
-                   "button5.height = button1.height\n"
-                   "button6.height = button1.height\n"
-                   "button7.height = button1.height\n"
-                   "button8.height = button1.height\n"
-                   "buttonGroup.width = 150",
-                   button1, button2, button3, button4, button5, button6, button7, button8);
+                    "button1.right = buttonGroup.right - 4\n"
+                    "button2.left = buttonGroup.left + 4\n"
+                    "button2.right = buttonGroup.right - 4\n"
+                    "button3.left = buttonGroup.left + 4\n"
+                    "button3.right = buttonGroup.right - 4\n"
+                    "button4.left = buttonGroup.left + 4\n"
+                    "button4.right = buttonGroup.right - 4\n"
+                    "button5.left = buttonGroup.left + 4\n"
+                    "button5.right = buttonGroup.right - 4\n"
+                    "button6.left = buttonGroup.left + 4\n"
+                    "button6.right = buttonGroup.right - 4\n"
+                    "button7.left = buttonGroup.left + 4\n"
+                    "button7.right = buttonGroup.right - 4\n"
+                    "button8.left = buttonGroup.left + 4\n"
+                    "button8.right = buttonGroup.right - 4\n"
+                    "button1.top = buttonGroup.top + 4\n"
+                    "button2.top = button1.bottom + 4\n"
+                    "button3.top = button2.bottom + 4\n"
+                    "button4.top = button3.bottom + 4\n"
+                    "button5.top = button4.bottom + 4\n"
+                    "button6.top = button5.bottom + 4\n"
+                    "button7.top = button6.bottom + 4\n"
+                    "button8.top = button7.bottom + 4\n"
+                    "button8.bottom = buttonGroup.bottom - 4\n"
+                    "button2.height = button1.height\n"
+                    "button3.height = button1.height\n"
+                    "button4.height = button1.height\n"
+                    "button5.height = button1.height\n"
+                    "button6.height = button1.height\n"
+                    "button7.height = button1.height\n"
+                    "button8.height = button1.height\n"
+                    "buttonGroup.width = 150",
+                    button1, button2, button3, button4, button5, button6, button7, button8);
 
     BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
     assert(preset);
@@ -1419,30 +1019,26 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
 {
-    REButtonGroup * buttonGroup = nil;
-     buttonGroup =
-         MakeButtonGroup(@"displayName" : @"Home and Power Buttons",
-                         @"key"         : @"homeAndPowerButtonGroup");
+    REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"Home and Power Buttons");
+    
      REButton * homeButton =
-         MakeButton(@"shape" : @(REShapeOval),
-                    @"style" : @(REStyleApplyGloss | REStyleDrawBorder),
+         MakeButton(@"shape"       : @(REShapeOval),
                     @"displayName" : @"Home Button",
-                    @"key"         : @"homeButton",
                     @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
                                                           @"highlighted" : kHighlightColor }),
-                                                      (@{ @"normal"      : MakeIconImage(140) })),
-                    @"command" : MakeSwitchCommand(MSRemoteControllerHomeRemoteKeyName));
-     REActivityButton * powerButton =
-         MakeActivityOffButton(@"shape"       : @(REShapeOval),
-                               @"style"       : @(REStyleApplyGloss | REStyleDrawBorder),
-                               @"displayName" : @"Power Off and Exit Activity",
-                               @"key"         : $(@"activity%i", activity),
-                               @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                                     @"highlighted" : kHighlightColor }),
-                                                                 (@{ @"normal"      : MakeIconImage(168) })),
-                               @"command"     :[REMacroBuilder activityMacroForActivity:activity
-                                                                        toInitiateState:NO
-                                                                            switchIndex:NULL]);
+                                                      (@{ @"normal"      : MakeIconImage(140) }))/*,
+                    @"command"     : MakeSwitchCommand(@"MSRemoteControllerHomeRemoteKeyName")*/);
+
+     REButton * powerButton =
+         MakeButton(@"shape"       : @(REShapeOval),
+                    @"displayName" : @"Power Off and Exit Activity",
+                    @"key"         : $(@"activity%i", activity),
+                    @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                                          @"highlighted" : kHighlightColor }),
+                                                      (@{ @"normal"      : MakeIconImage(168) }))//,
+                    /*@"command"     : [REMacroBuilder activityMacroForActivity:activity
+                                                                         toInitiateState:NO
+                                                                             switchIndex:NULL]*/);
 
      [buttonGroup addSubelements:[@[homeButton, powerButton] orderedSet]];
 
@@ -1462,150 +1058,61 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 + (REButtonGroup *)constructAdditionalButtonsLeft
 {
-    REButtonGroup * buttonGroup = nil;
-    BOComponentDevice * avReceiver = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"AV Receiver"];
-    BOComponentDevice * samsungTV  = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Samsung TV"];
-    BOComponentDevice * comcastDVR = [BOComponentDevice MR_findFirstByAttribute:@"name" withValue:@"Comcast DVR"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+    BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
 
-    buttonGroup = [self rawButtonPanel];
-
+    REButtonGroup * buttonGroup = [self rawButtonPanel];
     buttonGroup.panelLocation = REPanelLocationLeft;
     buttonGroup.key           = RERemoteLeftPanel1Key;
     buttonGroup.displayName   = @"Left Overlay Panel";
 
-    NSMutableDictionary * attrHigh = [@{} mutableCopy];
-    NSMutableDictionary * attr     = [REButtonBuilder
-                                   buttonTitleAttributesWithFontName:kDefaultFontName
-                                                            fontSize:15.0
-                                                         highlighted:attrHigh];
-
-    REButton * button = buttonGroup[@"button1"];
-
+    REButton * button = buttonGroup[0];
     button.displayName = @"On Demand / Source";
+    [button setTitle:@"On Demand" forConfiguration:REDefaultConfiguration];
+    [button setTitle:@"Source"    forConfiguration:kTVConfiguration];
+    [button setCommand:MakeIRCommand(comcastDVR, @"On Demand") forConfiguration:REDefaultConfiguration];
+    [button setCommand:MakeIRCommand(samsungTV, @"Source")     forConfiguration:kTVConfiguration];
 
-    REControlStateTitleSet * titles = [REControlStateTitleSet MR_createEntity];
-
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"On Demand"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"On Demand"
-                                                                            attributes:attrHigh];
-
-    [button.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"On Demand")
-                         forConfiguration:REDefaultConfiguration];
-
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Source"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Source"
-                                                                         attributes:attrHigh];
-    [button.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Source")
-                         forConfiguration:kTVConfiguration];
-
-    button             = buttonGroup[@"button2"];
+    button= buttonGroup[1];
     button.displayName = @"Menu";
+    [button setTitle:@"Menu" forConfiguration:REDefaultConfiguration];
+    [button setTitle:@"Menu" forConfiguration:kTVConfiguration];
+    [button setCommand:MakeIRCommand(comcastDVR, @"Menu") forConfiguration:REDefaultConfiguration];
+    [button setCommand:MakeIRCommand(samsungTV, @"Menu")  forConfiguration:kTVConfiguration];
 
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Menu"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Menu"
-                                                                            attributes:attrHigh];
-    [button.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Menu")
-                         forConfiguration:REDefaultConfiguration];
-
-    [button.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-    [button.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Menu")
-                         forConfiguration:kTVConfiguration];
-
-    button             = buttonGroup[@"button3"];
+    button= buttonGroup[2];
     button.displayName = @"Last / Return";
+    [button setTitle:@"Last"   forConfiguration:REDefaultConfiguration];
+    [button setTitle:@"Return" forConfiguration:kTVConfiguration];
+    [button setCommand:MakeIRCommand(comcastDVR, @"Last")  forConfiguration:REDefaultConfiguration];
+    [button setCommand:MakeIRCommand(samsungTV, @"Return") forConfiguration:kTVConfiguration];
 
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Last"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Last"
-                                                                            attributes:attrHigh];
-    [button.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Last")
-                         forConfiguration:REDefaultConfiguration];
-
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Return"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Return"
-                                                                            attributes:attrHigh];
-    [button.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Return")
-                         forConfiguration:kTVConfiguration];
-
-    button             = buttonGroup[@"button4"];
+    button= buttonGroup[3];
     button.displayName = @"Exit";
+    [button setTitle:@"Exit" forConfiguration:REDefaultConfiguration];
+    [button setTitle:@"Exit" forConfiguration:kTVConfiguration];
+    [button setCommand:MakeIRCommand(comcastDVR, @"Exit") forConfiguration:REDefaultConfiguration];
+    [button setCommand:MakeIRCommand(samsungTV, @"Exit")  forConfiguration:kTVConfiguration];
 
-    titles                       = [REControlStateTitleSet MR_createEntity];
-    titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Exit"
-                                                                       attributes:attr];
-    titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Exit"
-                                                                            attributes:attrHigh];
-    [button.configurationDelegate setTitleSet:titles forConfiguration:REDefaultConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(comcastDVR, @"Exit")
-                         forConfiguration:REDefaultConfiguration];
-
-    [button.configurationDelegate setTitleSet:titles forConfiguration:kTVConfiguration];
-
-    [button.configurationDelegate setCommand:MakeIRCommand(samsungTV, @"Exit")
-                         forConfiguration:kTVConfiguration];
-
-    button                       = buttonGroup[@"button5"];
-    button.displayName           = @"DVR Audio Input";
-    button.titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"DVR Audio"
-                                                                              attributes:attr];
-    button.titles[UIControlStateHighlighted] = [NSAttributedString
-                                             attributedStringWithString:@"DVR Audio"
-                                                             attributes:attrHigh];
+    button = buttonGroup[4];
+    button.displayName = @"DVR Audio Input";
+    button.title = @"DVR Audio";
     button.command = MakeIRCommand(avReceiver, @"TV/SAT");
 
-    button                       = buttonGroup[@"button6"];
-    button.displayName           = @"TV Audio Input";
-    button.titles[UIControlStateNormal] = [NSAttributedString
-                                        attributedStringWithString:@"TV Audio"
-                                                        attributes:attr];
-    button.titles[UIControlStateHighlighted] = [NSAttributedString
-                                             attributedStringWithString:@"TV Audio"
-                                                             attributes:attrHigh];
+    button = buttonGroup[5];
+    button.displayName = @"TV Audio Input";
+    button.title = @"TV Audio";
     button.command = MakeIRCommand(avReceiver, @"Video 3");
 
-    button                       = buttonGroup[@"button7"];
-    button.displayName           = @"Mute";
-    button.titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:@"Mute"
-                                                                           attributes:attr];
-    button.titles[UIControlStateHighlighted] = [NSAttributedString attributedStringWithString:@"Mute"
-                                                                                attributes:attrHigh];
+    button = buttonGroup[6];
+    button.displayName = @"Mute";
+    button.title = @"Mute";
     button.command = MakeIRCommand(avReceiver, @"Mute");
 
-    button             = buttonGroup[@"button8"];
+    button = buttonGroup[7];
     button.displayName = @"Tuck Panel";
-    attr               = [REButtonBuilder buttonTitleAttributesWithFontName:kArrowFontName
-                                                               fontSize:32.0
-                                                            highlighted:attrHigh];
-    attr[NSForegroundColorAttributeName] = [UIColor colorWithWhite:0.0 alpha:0.5];
-    attr[NSStrokeWidthAttributeName]     = @"normal";
-    attrHigh[NSStrokeWidthAttributeName] = @"normal";
-
-    button.titles[UIControlStateNormal] = [NSAttributedString attributedStringWithString:kLeftArrow
-                                                                           attributes:attr];
-    button.titles[UIControlStateHighlighted] = [NSAttributedString
-                                             attributedStringWithString:kLeftArrow
-                                                             attributes:attrHigh];
-    button.key   = REButtonGroupTuckButtonKey;
-    button.style = 0;
+    button.title = kLeftArrow;
 
     return buttonGroup;
 }

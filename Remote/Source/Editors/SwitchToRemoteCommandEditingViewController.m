@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * pickerInputButton;
 @property (nonatomic, strong) NSArray                      * remotes;
-@property (nonatomic, strong) RERemote                       * selectedRemote;
+@property (nonatomic, strong) RERemote                     * selectedRemote;
 
 @end
 
@@ -37,8 +37,8 @@ command           = _command;
                                                         pickerInputSelectBarButtonItem];
 
     if (ValueIsNotNil(_command)) {
-        self.selectedRemote = self.command.remoteController[self.command.remoteKey];
-        self.remotes        = _command.remoteController.allRemotes;
+        self.selectedRemote = self.command.remote;
+        self.remotes        = [_command.remote.controller.remotes allObjects];
     }
 }
 
@@ -76,7 +76,7 @@ command           = _command;
         NSInteger   remoteIndex = [(NSNumber *)rows[0] integerValue];
 
         self.selectedRemote = self.remotes[remoteIndex];
-        _command.remoteKey  = _selectedRemote.key;
+        _command.remote  = _selectedRemote;
     }
 
     [_pickerInputButton resignFirstResponder];

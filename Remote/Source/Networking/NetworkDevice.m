@@ -14,7 +14,7 @@ MSKIT_STRING_CONST   NDDeviceMakeKey     = @"make";
 MSKIT_STRING_CONST   NDDeviceModelKey    = @"model";
 MSKIT_STRING_CONST   NDDeviceRevisionKey = @"revision";
 MSKIT_STRING_CONST   NDDeviceStatusKey   = @"status";
-MSKIT_STRING_CONST   NDDeviceUUIDKey     = @"uuid";
+MSKIT_STRING_CONST   NDDeviceUUIDKey     = @"deviceUUID";
 MSKIT_STRING_CONST   NDDeviceURLKey      = @"configURL";
 
 
@@ -22,91 +22,54 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 @interface NetworkDevice ()
 
-@property (nonatomic, copy, readwrite) NSString * uuid;
+@property (nonatomic, copy, readwrite) NSString * deviceUUID;
+@property (nonatomic, copy, readwrite) NSString * make;
+@property (nonatomic, copy, readwrite) NSString * model;
+@property (nonatomic, copy, readwrite) NSString * status;
+@property (nonatomic, copy, readwrite) NSString * configURL;
+@property (nonatomic, copy, readwrite) NSString * revision;
 
 @end
 
 @implementation NetworkDevice
 
-@dynamic uuid, make, model, status, configURL, revision;;
+@dynamic deviceUUID, make, model, status, configURL, revision;;
+
++ (instancetype)device { return [self MR_createEntity]; }
 
 + (instancetype)deviceInContext:(NSManagedObjectContext *)context
 {
-    assert(context);
-    __block NetworkDevice * device = nil;
-    [context performBlockAndWait:^{ device = NSManagedObjectFromClass(context); }];
-    return device;
+    return [self MR_createInContext:context];
+}
+
++ (instancetype)deviceWithAttributes:(NSDictionary *)attributes
+{
+    return [self deviceWithAttributes:attributes
+                              context:[NSManagedObjectContext MR_contextForCurrentThread]];
 }
 
 + (instancetype)deviceWithAttributes:(NSDictionary *)attributes
                              context:(NSManagedObjectContext *)context
-{
-    assert(attributes && context);
-    NSString * uuid = attributes[NDDeviceUUIDKey];
+{   
+    NSString * deviceUUID = attributes[NDDeviceUUIDKey];
 
-    if (uuid && [self deviceExistsWithUUID:uuid])
-        return [self fetchDeviceWithUUID:uuid context:context];
+    if ([self deviceExistsWithDeviceUUID:deviceUUID])
+        return [self MR_findFirstByAttribute:@"deviceUUID" withValue:deviceUUID inContext:context];
 
-    __block NetworkDevice * device = nil;
-    [context performBlockAndWait:
-     ^{
-         device = [self deviceInContext:context];
-         [device setValuesForKeysWithDictionary:attributes];
-         if (!device.uuid) device.uuid = MSNonce();
-     }];
-    return device;
+    else
+    {
+        NetworkDevice * device = [self deviceInContext:context];
+        [device setValuesForKeysWithDictionary:attributes];
+        return device;
+    }
 }
 
-+ (BOOL)deviceExistsWithUUID:(NSString *)uuid
++ (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID
 {
-    if (!uuid) return NO;
-
-    NSFetchRequest * fetchRequest =
-        [NSFetchRequest fetchRequestWithEntityName:ClassString(self)
-                                         predicate:[NSPredicate
-                                                    predicateWithFormat:@"uuid == %@", uuid]];
-    fetchRequest.resultType = NSCountResultType;
-
-    __block NSUInteger       count   = 0;
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_defaultContext];
-    [context performBlockAndWait:
-     ^{
-         NSError * error = nil;
-         count = [context countForFetchRequest:fetchRequest error:&error];
-     }];
-
-    return (count == 1);
+    return (   StringIsNotEmpty(deviceUUID)
+            && [self
+                MR_countOfEntitiesWithPredicate:NSMakePredicate(@"deviceUUID == %@", deviceUUID)] == 1);
 }
-
-+ (NetworkDevice *)fetchDeviceWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)context
-{
-    assert(uuid && context);
-    __block NetworkDevice * device;
-    [context performBlockAndWait:
-     ^{
-         NSFetchRequest * fetchRequest =
-             [NSFetchRequest fetchRequestWithEntityName:ClassString(self)
-                                              predicate:[NSPredicate
-                                                         predicateWithFormat:@"uuid == %@", uuid]];
-
-         NSError * error = nil;
-         NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-         device = [fetchedObjects lastObject];
-     }];
-    return device;
-}
-
-+ (NSArray *)fetchAllInContext:(NSManagedObjectContext *)context
-{
-    assert(context);
-    __block NSArray * fetchedObjects = nil;
-    [context performBlockAndWait:
-     ^{
-         fetchedObjects = [context executeFetchRequest:NSFetchRequestFromClass error:nil];
-     }];
-    return fetchedObjects;
-}
-
 
 @end
 

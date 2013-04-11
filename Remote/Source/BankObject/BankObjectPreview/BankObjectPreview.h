@@ -5,12 +5,12 @@
 // Created by Jason Cardwell on 4/18/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 
-@interface BankObjectPreview : NSManagedObject
+@interface BankObjectPreview : MSModelObject
 
 @property (nonatomic) 			 		int16_t     tag;
 @property (nonatomic, strong)   NSString  * name;
-@property (nonatomic, readonly) NSString  * uuid;
 
 + (instancetype)previewInContext:(NSManagedObjectContext *)context;
 

@@ -30,13 +30,10 @@
  */
 @interface RERemoteBuilder : NSObject
 
-+ (void)constructDVRRemote;
-
-+ (void)constructHomeRemote;
-
-+ (void)constructPS3Remote;
-
-+ (void)constructSonosRemote;
++ (RERemote *)constructDVRRemote;
++ (RERemote *)constructHomeRemote;
++ (RERemote *)constructPS3Remote;
++ (RERemote *)constructSonosRemote;
 
 @end
 
@@ -47,9 +44,7 @@
 
 @interface REMacroBuilder : NSObject
 
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
-                           toInitiateState:(BOOL)isOnState
-                               switchIndex:(NSInteger *)switchIndex;
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState;
 
 + (NSSet *)deviceConfigsForActivity:(NSUInteger)activity;
 
@@ -104,14 +99,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Buttons
 ////////////////////////////////////////////////////////////////////////////////
-@class   REActivityButton;
 
 @interface REButtonBuilder : NSObject
-
-+ (REActivityButton *)launchActivityButtonWithTitle:(NSString *)title activity:(NSUInteger)activity;
-
-+ (NSMutableDictionary *)buttonTitleAttributesWithFontName:(NSString *)fontName
-                                                  fontSize:(CGFloat)fontSize
-                                               highlighted:(NSMutableDictionary *)highlighted;
 
 @end

@@ -7,6 +7,7 @@
 //
 #import "BOTypedefs.h"
 #import "RETypedefs.h"
+#import "MSModelObject.h"
 
 @class BOComponentDevice, BOIRCodeset, BankObjectGroup, BOIRCodeset, RECommand, BOImageGroup, BankObjectPreview, RemoteElement;
 
@@ -14,9 +15,11 @@
 #pragma mark - Bank Object
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface BankObject : NSManagedObject
+@interface BankObject : MSModelObject
 
++ (instancetype)bankObject;
 + (instancetype)bankObjectInContext:(NSManagedObjectContext *)context;
++ (instancetype)bankObjectWithName:(NSString *)name;
 + (instancetype)bankObjectWithName:(NSString *)name context:(NSManagedObjectContext *)context;
 
 @property (nonatomic, strong) NSString * name;

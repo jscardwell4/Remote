@@ -22,6 +22,7 @@ static int msLogContext = REMOTE_F_C;
 @dynamic configurationDelegate;
 @dynamic parentElement;
 @dynamic commandSet;
+@dynamic controller;
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
 {
@@ -32,6 +33,12 @@ static int msLogContext = REMOTE_F_C;
          element.type = RETypeButtonGroup;
      }];
     return element;
+}
+
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    self.primitiveController = [RERemoteController remoteControllerInContext:self.managedObjectContext];
 }
 
 - (RERemote *)remote { return self.parentElement; }
@@ -49,6 +56,15 @@ static int msLogContext = REMOTE_F_C;
 - (REButton *)objectForKeyedSubscript:(NSString *)subscript
 {
     return (REButton *)[super objectForKeyedSubscript:subscript];
+}
+
+- (REButton *)objectAtIndexedSubscript:(NSUInteger)subscript {
+    return (REButton *)[super objectAtIndexedSubscript:subscript];
+}
+
+- (void)addCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)config
+{
+    [self.configurationDelegate setCommandSet:commandSet forConfiguration:config];
 }
 
 /**
@@ -110,8 +126,10 @@ static int msLogContext = REMOTE_F_C;
     return element;
 }
 
-- (void)addCommandSet:(RECommandSet *)commandSet withLabel:(NSAttributedString *)label
+- (void)addCommandSet:(RECommandSet *)commandSet withLabel:(id)label
 {
+    if ([label isKindOfClass:[NSString class]])
+        label = [NSAttributedString attributedStringWithString:label];
     self.commandSetCollection[commandSet] = label;
 }
 

@@ -5,13 +5,10 @@
 // Created by Jason Cardwell on 7/21/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
-
+#import "MSModelObject.h"
 @protocol CommandDelegate;
 
-@class RERemote, REActivityButton, REButtonGroup;
-
-MSKIT_EXTERN_STRING   MSRemoteControllerHomeRemoteKeyName;
-MSKIT_EXTERN_STRING   MSRemoteControllerTopToolbarKeyName;
+@class RERemote, REButtonGroup, REActivity;
 
 /**
  * `RemoteController` is a subclass of `NSManagedObject` that coordinates multiple <Remote>
@@ -20,7 +17,14 @@ MSKIT_EXTERN_STRING   MSRemoteControllerTopToolbarKeyName;
  * actually implenting the remote control functionality within the application. One remote can be
  * designated as the 'home' remote to serve as the base for loading other remotes.
  */
-@interface RERemoteController : NSManagedObject
+@interface RERemoteController : MSModelObject {}
+
+#pragma mark Getting the controller
+
+/**
+ * Calls `remoteControllerInContext:` with the main object context returned by <CoreDataManager>.
+ */
++ (RERemoteController *)remoteController;
 
 /**
  * Creates a new `RemoteController` object in the given context.
@@ -29,55 +33,79 @@ MSKIT_EXTERN_STRING   MSRemoteControllerTopToolbarKeyName;
  */
 + (RERemoteController *)remoteControllerInContext:(NSManagedObjectContext *)context;
 
-/**
- * Calls `remoteControllerInContext:` with the main object context returned by <CoreDataManager>.
- */
-+ (RERemoteController *)remoteController;
+#pragma mark Remotes
 
-/**
- * The `RERemote` currently being displayed by the `RemoteViewController` utilizing the
- * `RemoteController`.
- */
+/// The currently displayed remote
 @property (nonatomic, strong, readonly) RERemote * currentRemote;
 
-/**
- * The `Remote` registered as the "home screen" for the remote control interface.
- */
+/// The home remote from which activities are launched
 @property (nonatomic, strong, readonly) RERemote * homeRemote;
 
 /**
- * Top toolbar that can be toggled in and out of sight over the currently displayed remote.
+ * Registers the specified `RERemote` as the controller's `homeRemote`.
+ * @param The remote to register with the controller as the `homeRemote`
+ * @return `YES` if remote validates and is set to be the home remote, `NO` otherwise
  */
-@property (nonatomic, strong) REButtonGroup * topToolbar;
+- (BOOL)registerHomeRemote:(RERemote *)remote;
+
+/// All registered remotes
+@property (nonatomic, strong, readonly) NSSet * remotes;
 
 /**
- * Sets <currentRemote> to the object retrieved for the specified key.
- * @param key The key of the remote to be set as the current remote.
- * @return `BOOL` indicating whether a remote with the specified key was found.
+ * Registers the specified `RERemote` with the controller.
+ * @param The remote to register with the controller as a valid "switch-to" target
  */
-- (BOOL)switchToRemoteWithKey:(NSString *)key;
-
-/// Provides access to an array containing all registered `RERemote` objects
-@property (nonatomic, readonly) NSArray * allRemotes;
-
-/**
- * The current activity for the controller or nil if no activity has launched.
- */
-@property (nonatomic, strong) NSString * currentActivity;
-
-/**
- * Method for launching or exiting the activity represented by the specified button.
- * @param button The `ActivityButton` for determining what actions to take.
- * @return Whether the action executed successfully.
- */
-- (void)activityActionForButton:(REActivityButton *)button
-                     completion:(void (^)(BOOL finished, BOOL success))completion;
+- (void)registerRemote:(RERemote *)remote;
 
 /**
  * Retrieves the `Remote` object associated with the remote controller with the specified key.
- * @param key The key of the remote to fetch.
- * @return The remote with the specified key registered with the controller.
+ * @param key The `key`, `uuid`, or `identifier` of the remote to fetch.
+ * @return The registered remote identified by `key` or nil
  */
 - (RERemote *)objectForKeyedSubscript:(NSString *)key;
+
+#pragma mark Activities
+
+/// The current activity for the controller or nil if no activity has launched.
+@property (nonatomic, strong, readonly) REActivity * currentActivity;
+
+/// All registered activities
+@property (nonatomic, strong, readonly) NSSet * activities;
+
+/**
+ * Registers an `REActivity` object with the controller
+ * @param activity The activity to register with the controller
+ * @return `YES` if the activity validates and is registered, `NO` otherwise
+ */
+- (BOOL)registerActivity:(REActivity *)activity;
+
+#pragma mark Top toolbar
+
+/// Top toolbar that can be toggled in and out of sight over the currently displayed remote.
+@property (nonatomic, strong, readonly) REButtonGroup * topToolbar;
+
+/**
+ * Registers the specified `REButtonGroup` as the controller's `topToolbar`.
+ * @param The button group to be set as the controller's top toolbar
+ * @return `YES` if the button group validates and is set as the top toolbar, `NO` otherwise
+ */
+- (BOOL)registerTopToolbar:(REButtonGroup *)buttonGroup;
+
+#pragma mark Switching
+
+/**
+ * Sets <currentRemote> to the object retrieved for the specified key.
+ * @param remote The remote to be set as the current remote.
+ * @return `BOOL` indicating whether a remote with the specified key was found.
+ */
+- (BOOL)switchToRemote:(RERemote *)remote;
+
+/**
+ * Updates the current activity, asking the existing activity, if set, to halt and allowing
+ * the new activity to launch.
+ * @param activity The new activity to be launched
+ * @return Whether the specified activity could be made the current activity
+ */
+- (BOOL)switchToActivity:(REActivity *)activity;
 
 @end

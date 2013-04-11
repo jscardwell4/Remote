@@ -5,21 +5,20 @@
 // Created by Jason Cardwell on 6/29/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 #import "RETypedefs.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Abstract Command Container
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface RECommandContainer : NSManagedObject
+@interface RECommandContainer : MSModelObject
 
 + (instancetype)commandContainerInContext:(NSManagedObjectContext *)context;
 - (BOOL)isValidKey:(NSString *)key;
 
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key;
 - (id)objectForKeyedSubscript:(NSString *)key;
-
-@property (nonatomic, copy, readonly) NSString * uuid;
 
 @end
 
@@ -32,6 +31,9 @@
 
 + (instancetype)commandSetWithType:(RECommandSetType)type;
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type;
++ (instancetype)commandSetWithType:(RECommandSetType)type
+                              name:(NSString *)name
+                            values:(NSDictionary *)values;
 
 - (void)setObject:(RECommand *)command forKeyedSubscript:(NSString *)key;
 - (RECommand *)objectForKeyedSubscript:(NSString *)key;

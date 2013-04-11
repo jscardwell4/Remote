@@ -14,7 +14,7 @@ static int msLogContext = REMOTE_F;
 
 @implementation RECommandContainer
 
-@dynamic uuid, index;
+@dynamic index;
 
 + (instancetype)commandContainerInContext:(NSManagedObjectContext *)context
 {
@@ -22,8 +22,6 @@ static int msLogContext = REMOTE_F;
     [context performBlockAndWait:^{ container = NSManagedObjectFromClass(context); }];
     return container;
 }
-
-- (void)awakeFromInsert { [super awakeFromInsert]; self.primitiveUuid = MSNonce(); }
 
 - (BOOL)isValidKey:(NSString *)key { return [self.index hasKey:key]; }
 

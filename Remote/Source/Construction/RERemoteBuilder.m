@@ -7,13 +7,13 @@
 
 #import "RemoteConstruction.h"
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = DEFAULT_LOG_CONTEXT;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation RERemoteBuilder
 
-+ (void)constructDVRRemote
++ (RERemote *)constructDVRRemote
 {
     RERemote * remote =
           MakeRemote(@"displayName"          : @"Comcast DVR Activity",
@@ -62,15 +62,16 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                       "selection.centerY = remote.centerY\n"
                       "selection.right = remote.right @998",
                       oneByThree, rocker, dpad, numberpad, selection, power, leftPanel, transport);
+    return remote;
 }
 
 
-+ (void)constructHomeRemote
++ (RERemote *)constructHomeRemote
 {
     RERemote * remote =
           MakeRemote(@"type"                 : @(RETypeRemote),
                      @"displayName"          : @"Home Screen",
-                     @"key"                  : MSRemoteControllerHomeRemoteKeyName,
+//                     @"key"                  : MSRemoteControllerHomeRemoteKeyName,
                      @"backgroundImage"      : MakeBackgroundImage(8),
                      @"backgroundImageAlpha" : @1.0);
 
@@ -86,9 +87,10 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                       "lightControls.right = remote.right\n"
                       "lightControls.bottom = remote.bottom",
                       activityButtons, lightControls);
+    return remote;
 }
 
-+ (void)constructPS3Remote
++ (RERemote *)constructPS3Remote
 {
     RERemote * remote =
           MakeRemote(@"type"                 : @(RETypeRemote),
@@ -98,25 +100,20 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                      @"backgroundImage"      : MakeBackgroundImage(8),
                      @"backgroundImageAlpha" : @1.0);
 
-      REButtonGroup * bg1 = [REButtonGroupBuilder constructPS3GroupOfThreeButtons];
-      assert(bg1);
-      REButtonGroup * bg2 = [REButtonGroupBuilder constructPS3Rocker];
-      assert(bg2);
-      REButtonGroup * bg3 = [REButtonGroupBuilder constructPS3DPad];
-      assert(bg3);
-      REButtonGroup * bg4 = [REButtonGroupBuilder constructPS3NumberPad];
-      assert(bg4);
-      REButtonGroup * bg5 = [REButtonGroupBuilder constructPS3Transport];
-      assert(bg5);
-      REButtonGroup * bg6 = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2];
-      assert(bg6);
+      REButtonGroup * bg1 = [REButtonGroupBuilder constructPS3GroupOfThreeButtons];			  assert(bg1);
+      REButtonGroup * bg2 = [REButtonGroupBuilder constructPS3Rocker];						  assert(bg2);
+      REButtonGroup * bg3 = [REButtonGroupBuilder constructPS3DPad];						  assert(bg3);
+      REButtonGroup * bg4 = [REButtonGroupBuilder constructPS3NumberPad]; 					  assert(bg4);
+      REButtonGroup * bg5 = [REButtonGroupBuilder constructPS3Transport]; 					  assert(bg5);
+      REButtonGroup * bg6 = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2]; assert(bg6);
 
       [remote addSubelements:[@[bg1, bg2, bg3, bg4, bg5, bg6] orderedSet]];
       
       // TODO:add constraints
+    return remote;
 }
 
-+ (void)constructSonosRemote
++ (RERemote *)constructSonosRemote
 {
     RERemote * remote =
          MakeRemote(@"type"				   : @(RETypeRemote),
@@ -141,6 +138,7 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                      "rocker.centerY = mute.centerY\n"
                      "mute.height = rocker.height * 0.33",
                      mute, rocker, power);
+    return remote;
 }
 
 @end

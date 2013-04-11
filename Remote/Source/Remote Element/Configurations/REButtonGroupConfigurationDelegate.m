@@ -16,17 +16,17 @@
 
 - (REButtonGroup *)buttonGroup { return (REButtonGroup *)self.remoteElement; }
 
-- (void)setCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)configuration
+- (void)setCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)config
 {
-    assert(commandSet && configuration);
+    assert(commandSet && config);
     [self addCommandSetsObject:commandSet];
-    self[$(@"%@.commandSet", configuration)] = commandSet.uuid;
+    self[$(@"%@.commandSet", config)] = commandSet.uuid;
 }
 
-- (void)setLabel:(NSAttributedString *)label forConfiguration:(RERemoteConfiguration)configuration
+- (void)setLabel:(NSAttributedString *)label forConfiguration:(RERemoteConfiguration)config
 {
-    assert(label && configuration);
-    self[$(@"%@.label", configuration)] = label;
+    assert(label && config);
+    self[$(@"%@.label", config)] = label;
 }
 
 - (void)updateConfigForConfiguration:(RERemoteConfiguration)configuration

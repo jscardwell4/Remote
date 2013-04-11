@@ -25,6 +25,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 @dynamic images;
 @dynamic backgroundColors;
 @dynamic titles;
+@dynamic controller;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Object Lifecycle
@@ -49,11 +50,11 @@ static int   ddLogLevel = DefaultDDLogLevel;
          self.primitiveTitleEdgeInsets   = zeroInsets;
          self.primitiveImageEdgeInsets   = zeroInsets;
          self.primitiveContentEdgeInsets = zeroInsets;
-
-         self.icons            = [REControlStateIconImageSet   controlStateSetInContext:cxt];
-         self.titles           = [REControlStateTitleSet       controlStateSetInContext:cxt];
-         self.images           = [REControlStateButtonImageSet controlStateSetInContext:cxt];
-         self.backgroundColors = [REControlStateColorSet       controlStateSetInContext:cxt];
+         self.primitiveController        = [RERemoteController           remoteControllerInContext:cxt];
+         self.icons                      = [REControlStateIconImageSet   controlStateSetInContext:cxt];
+         self.titles                     = [REControlStateTitleSet       controlStateSetInContext:cxt];
+         self.images                     = [REControlStateButtonImageSet controlStateSetInContext:cxt];
+         self.backgroundColors           = [REControlStateColorSet       controlStateSetInContext:cxt];
      }];
 }
 
@@ -93,6 +94,19 @@ static int   ddLogLevel = DefaultDDLogLevel;
     [self didChangeValueForKey:@"selected"];
 }
 
+- (void)setTitle:(NSString *)title { self.titles[UIControlStateNormal] = title; }
+
+- (void)setTitle:(NSString *)title forConfiguration:(RERemoteConfiguration)configuration
+{
+    [self.configurationDelegate setTitle:title forConfiguration:configuration];
+}
+
+- (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)configuration
+{
+    [self.configurationDelegate setCommand:command forConfiguration:configuration];
+}
+
+- (NSString *)title { return self.titles[UIControlStateNormal].string; }
 
 - (UIEdgeInsets)titleEdgeInsets
 {
@@ -149,44 +163,6 @@ static int   ddLogLevel = DefaultDDLogLevel;
     else if (self.command) [self.command execute:completion];
 
     else if (completion) completion(YES, NO);
-}
-
-@end
-
-@implementation REActivityButton
-
-@dynamic deviceConfigurations;
-
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
-{
-    REActivityButton * element = [super remoteElementInContext:context];
-    element.type = REButtonTypeActivityButton;
-    return element;
-}
-
-- (void)setActivityButtonType:(REActivityButtonType)activityButtonType
-{
-    assert(   activityButtonType == REActivityButtonTypeBegin
-           || activityButtonType == REActivityButtonTypeEnd);
-    [self setSubtype:(RESubtype)activityButtonType];
-}
-
-- (REActivityButtonType)activityButtonType { return [self flagsWithMask:RESubtypeMask]; }
-
-/**
- * Calls `activityActionForButton:` on the button's remote controller before exiting the command.
- * @param options Options for the command to execute.
- * @param delegate `CommandDelegate` for the command to notify with result of execution.
- */
-- (void)executeCommandWithOptions:(RECommandOptions)options
-                       completion:(void (^)(BOOL finished, BOOL success))completion
-{
-    [self.controller activityActionForButton:self
-                                  completion:^(BOOL finished, BOOL success)
-                                             {
-                                                 [super executeCommandWithOptions:options
-                                                                       completion:completion];
-                                             }];
 }
 
 @end

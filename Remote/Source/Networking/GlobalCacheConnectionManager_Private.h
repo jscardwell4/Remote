@@ -135,7 +135,7 @@
  * @param uuid Unique identifier for the device
  * @param attributes Dictionary of key/value pairs to set for created device model object.
  */
-+ (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes;
++ (void)deviceDiscoveredWithAttributes:(NSDictionary *)attributes;
 
 /**
  * Processes messages received through `GlobalCachedDeviceConnection` objects.

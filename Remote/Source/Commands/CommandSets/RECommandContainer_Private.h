@@ -17,7 +17,6 @@
 @interface RECommandContainer (CoreDataGeneratedAccessors)
 
 @property (nonatomic, strong)  NSDictionary * primitiveIndex;
-@property (nonatomic, copy)    NSString     * primitiveUuid;
 
 @end
 

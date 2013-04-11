@@ -55,17 +55,16 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-                         assert(object == _remoteController);
-                         assert([@"currentRemote" isEqualToString: keyPath]);
-                         assert([change[NSKeyValueChangeNewKey] isMemberOfClass:[RERemote class]]);
-
-    MSRunSyncOnMain (^{
-                         RERemote * r = (RERemote*)change[NSKeyValueChangeNewKey];
-                         assert(r && [r isKindOfClass:[RERemote class]]);
-                         RERemoteView * rv = (RERemoteView*)[REView viewWithModel:r];
-                         assert(rv && [rv isKindOfClass:[RERemoteView class]]);
-                         [self insertRemoteView:rv];
-                     });
+    assert(object == _remoteController);
+    assert([@"currentRemote" isEqualToString: keyPath]);
+    if([change[NSKeyValueChangeNewKey] isMemberOfClass:[RERemote class]])
+        MSRunSyncOnMain (^{
+            RERemote * r = (RERemote*)change[NSKeyValueChangeNewKey];
+            assert(r && [r isKindOfClass:[RERemote class]]);
+            RERemoteView * rv = (RERemoteView*)[REView viewWithModel:r];
+            assert(rv && [rv isKindOfClass:[RERemoteView class]]);
+            [self insertRemoteView:rv];
+        });
 }
 
 /**
@@ -273,7 +272,12 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
     
     assert(![self.view viewWithNametag:kRemoteViewNameTag]);
 
-    [self insertRemoteView:[RERemoteView viewWithModel:_remoteController.currentRemote]];
+    RERemote * remote = _remoteController.currentRemote;
+    if (!remote && [_remoteController switchToRemote:_remoteController.homeRemote])
+        remote = _remoteController.currentRemote;
+    assert(remote);
+
+    [self insertRemoteView:[RERemoteView viewWithModel:remote]];
 
     [self.view.gestureRecognizers enumerateObjectsUsingBlock:
      ^(id obj, NSUInteger idx, BOOL * stop)

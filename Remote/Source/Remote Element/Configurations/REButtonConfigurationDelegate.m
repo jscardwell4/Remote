@@ -36,19 +36,46 @@
                               }];
 }
 
-- (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)configuration
+- (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)config
 {
-    assert(command && configuration);
+    assert(command && config);
     [self addCommandsObject:command];
-    self[$(@"%@.command", configuration)] = command.uuid;
+    self[$(@"%@.command", config)] = command.uuid;
 }
 
-- (void)setTitleSet:(REControlStateTitleSet *)titleSet
-   forConfiguration:(RERemoteConfiguration)configuration
+- (void)setTitleSet:(REControlStateTitleSet *)titleSet forConfiguration:(RERemoteConfiguration)config
 {
-    assert(titleSet && configuration);
+    assert(titleSet && config);
     [self addTitleSetsObject:titleSet];
-    self[$(@"%@.titleSet", configuration)] = titleSet.uuid;
+    self[$(@"%@.titleSet", config)] = titleSet.uuid;
+}
+
+- (void)setTitle:(id)title forConfiguration:(RERemoteConfiguration)config
+{
+    if ([title isKindOfClass:[NSString class]])
+        title = [NSAttributedString attributedStringWithString:(NSString *)title];
+
+    NSString * uuid = self[$(@"%@.titleSet", config)];
+    if (!uuid)
+    {
+        REControlStateTitleSet * titleSet = [REControlStateTitleSet
+                                             MR_createInContext:self.managedObjectContext];
+        titleSet[UIControlStateNormal] = title;
+        [self setTitleSet:titleSet forConfiguration:config];
+    }
+
+    else
+    {
+        REControlStateTitleSet * titleSet = [self.titleSets objectPassingTest:
+                                             ^BOOL(REControlStateTitleSet * obj)
+                                             {
+                                                 return [uuid isEqualToString:obj.uuid];
+                                             }];
+        titleSet[UIControlStateNormal] = title;
+
+    }
+
+
 }
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "RERemoteController.h"
-
+#import "REActivity.h"
 #import "RemoteElement_Private.h"
 #import "REConstraint.h"
 
@@ -17,166 +17,134 @@
 #import "RECommand.h"
 #import "CoreDataManager.h"
 
-
-MSKIT_STRING_CONST   MSRemoteControllerHomeRemoteKeyName = @"MSRemoteControllerHomeRemoteKeyName";
-MSKIT_STRING_CONST   MSRemoteControllerTopToolbarKeyName = @"MSRemoteControllerTopToolbarKeyName";
-
 static int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = REMOTE_F_C;
 #pragma unused(ddLogLevel,msLogContext)
 
 @interface RERemoteController ()
 
-/**
- * Compares device configurations for the specified button  with `currentDeviceConfigurations` to
- * determine which devices are no longer needed and should be powered off.
- * @param newDevices The devices that will be utilized by the new activity.
- */
-- (void)managePowerForTransitionWithActivityButton:(REActivityButton *)activityButton
-                                        completion:(void (^)(BOOL finished, BOOL success))completion;
-
-/**
- * Set containing the <ComponentDevice> objects being utilized by the current activity.
- */
-@property (nonatomic, strong) NSSet * currentDeviceConfigurations;
-
-@property (nonatomic, strong) NSSet * remoteElements;
-
-@property (nonatomic, strong) NSString * currentRemoteKey;
+@property (nonatomic, strong)              NSSet         * currentDeviceConfigurations;
+@property (nonatomic, strong, readwrite)   NSSet         * remotes;
+@property (nonatomic, strong, readwrite)   RERemote      * homeRemote;
+@property (nonatomic, strong, readwrite)   RERemote      * currentRemote;
+@property (nonatomic, strong, readwrite)   REActivity    * currentActivity;
+@property (nonatomic, strong, readwrite)   NSSet         * activities;
+@property (nonatomic, strong, readwrite)   REButtonGroup * topToolbar;
 
 @end
 
 @interface RERemoteController (CoreDataGeneratedAccessors)
 
-- (void)setPrimitiveCurrentRemoteKey:(NSString *)currentRemoteKey;
+- (void)addRemotesObject:(RERemote *)remote;
+- (void)addActivitiesObject:(REActivity *)activity;
 
 @end
 
-@implementation RERemoteController {
-    RERemote     * _currentRemote;
-    RERemote     * _homeRemote;
-}
+@implementation RERemoteController
 
-@dynamic currentRemoteKey, currentActivity, remoteElements, topToolbar;
-
+@dynamic currentRemote, currentActivity, homeRemote;
+@dynamic remotes, topToolbar, activities;
 @synthesize currentDeviceConfigurations = _currentDeviceConfigurations;
 
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-    self.currentRemoteKey = MSRemoteControllerHomeRemoteKeyName;
-}
-
-/*
-- (void)willSave
-{
-    [super willSave];
-    nsprintf(@"%@", ClassTagSelectorStringForInstance($(@"%p",self)));
-}
-*/
-
-
-/// @name ￼Creating a RemoteController
 
 + (RERemoteController *)remoteController
 {
-    return [self remoteControllerInContext:[NSManagedObjectContext MR_defaultContext]];
+    return [self remoteControllerInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
 }
 
 + (RERemoteController *)remoteControllerInContext:(NSManagedObjectContext *)context
 {
-    __block RERemoteController * controller = [self MR_findFirstInContext:context];
-    if (!controller)
-        [context performBlockAndWait:
-         ^{
-             controller = NSManagedObjectFromClass(context);
-             [context MR_saveToPersistentStoreAndWait];
-         }];
-
+    RERemoteController * controller = [self MR_findFirstInContext:context];
+    if (!controller) controller = [self MR_createInContext:context];
     return controller;
 }
 
-/// @name Managing activities
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Top Toolbar
+////////////////////////////////////////////////////////////////////////////////
 
-- (void)managePowerForTransitionWithActivityButton:(REActivityButton *)activityButton
-                                        completion:(void (^)(BOOL, BOOL))completion
+- (BOOL)registerTopToolbar:(REButtonGroup *)buttonGroup
 {
-    // Use set operations to derive active devices no longer in use
-
-    NSSet * currentDevices    = [_currentDeviceConfigurations valueForKeyPath:@"device"];
-    NSSet * transitionDevices = [activityButton.deviceConfigurations valueForKeyPath:@"device"];
-    NSSet * unusedDevices     = [currentDevices setByRemovingObjectsFromSet:transitionDevices];
-
-    // Inform devices they should power down
-    for (BOComponentDevice * device in unusedDevices) [device powerOff:nil];
-}
-
-- (void)activityActionForButton:(REActivityButton *)button completion:(void (^)(BOOL, BOOL))completion
-{
-    // No button = no device configurations
-    if (!button) { if (completion) completion(YES,NO); return; }
-
-    // Manage power for devices in configuration sets
-    [self managePowerForTransitionWithActivityButton:button completion:completion];
-
-    // Update current configurations
-    if (button.activityButtonType == REActivityButtonTypeEnd) self.currentDeviceConfigurations = nil;
-    else self.currentDeviceConfigurations = button.deviceConfigurations;
-
-    if (completion) completion(YES, YES);
-}
-
-- (RERemote *)currentRemote {
-    if (_currentRemote) return _currentRemote;
-
-    NSString * key = self.currentRemoteKey;
-
-    if (StringIsEmpty(self.currentRemoteKey)) return self.homeRemote;
-
-    _currentRemote = self[key];
-
-    return _currentRemote;
-}
-
-- (RERemote *)homeRemote {
-    if (_homeRemote) return _homeRemote;
-
-    _homeRemote = self[MSRemoteControllerHomeRemoteKeyName];
-
-    return _homeRemote;
-}
-
-- (void)setHomeRemote:(RERemote *)homeRemote {
-    if (homeRemote && ![MSRemoteControllerHomeRemoteKeyName isEqualToString:homeRemote.key])
-        homeRemote.key = MSRemoteControllerHomeRemoteKeyName;
-
-    _homeRemote = homeRemote;
-}
-
-- (NSArray *)allRemotes {
-    return [[self.remoteElements objectsPassingTest:^BOOL (RemoteElement * obj, BOOL * stop)
-             { return [obj isKindOfClass:[RERemote class]]; }] allObjects];
-}
-
-- (void)setCurrentRemoteKey:(NSString *)currentRemoteKey {
-    [self willChangeValueForKey:@"currentRemote"];
-    [self willChangeValueForKey:@"currentRemoteKey"];
-    [self setPrimitiveCurrentRemoteKey:currentRemoteKey];
-    _currentRemote = self[currentRemoteKey];
-    [self didChangeValueForKey:@"currentRemote"];
-    [self didChangeValueForKey:@"currentRemoteKey"];
-}
-
-- (BOOL)switchToRemoteWithKey:(NSString *)key {
-    if (!self[key]) return NO;
-
-    self.currentRemoteKey = key;
-
+    //TODO: Add validation
+    self.topToolbar = buttonGroup;
     return YES;
 }
 
-- (RERemote *)objectForKeyedSubscript:(NSString *)key {
-    return [self.remoteElements objectPassingTest:^BOOL (RemoteElement * obj) {
-        return [obj isKindOfClass:[RERemote class]] && REStringIdentifiesRemoteElement(key, obj);}];
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Remotes
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)registerRemote:(RERemote *)remote
+{
+    assert(remote);
+    //TODO: Add validation?
+    [self addRemotesObject:remote];
+}
+
+- (BOOL)registerHomeRemote:(RERemote *)remote
+{
+    //TODO: Add validation
+    [self registerRemote:remote];
+    self.homeRemote = remote;
+    return YES;
+}
+
+- (BOOL)switchToRemote:(RERemote *)remote
+{
+    if ([self.remotes containsObject:remote])
+    {
+        self.currentRemote = remote;
+
+        if (remote == self.homeRemote)
+            self.currentActivity = nil;
+
+        return YES;
+    }
+
+    else return NO;
+}
+
+- (RERemote *)objectForKeyedSubscript:(NSString *)key
+{
+    return [self.remotes objectPassingTest:
+            ^BOOL (RERemote * remote) { return REStringIdentifiesRemoteElement(key, remote); }];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Activities
+////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)registerActivity:(REActivity *)activity
+{
+    assert(activity);
+    if ([self.activities containsObject:activity])
+        return YES;
+
+    else if ([self.activities containsObjectWithValue:activity.name forKey:@"name"])
+        return NO;
+
+    else
+    {
+        [self addActivitiesObject:activity];
+        return YES;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Switching
+////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)switchToActivity:(REActivity *)activity
+{
+    if ([self.activities containsObject:activity])
+    { //TODO: Need to add parameter to halt/launch to suppress uneccessary power toggling
+        if (self.currentActivity) [self.currentActivity haltActivity];
+        self.currentActivity = activity;
+        return YES;
+    }
+
+    else
+        return NO;
 }
 
 @end

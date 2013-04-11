@@ -5,6 +5,7 @@
 // Created by Jason Cardwell on 10/3/12.
 // Copyright © 2012 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 #import "RETypedefs.h"
 #import "REEditableBackground.h"
 #import "REConfigurationDelegate.h"
@@ -14,20 +15,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 @class RERemoteController, RELayoutConfiguration, REConstraintManager, BOImage;
 
-@interface RemoteElement : NSManagedObject <REEditableBackground>
+@interface RemoteElement : MSModelObject <REEditableBackground>
 
 // model backed properties
 @property (nonatomic, assign)                   int16_t                   tag;
 @property (nonatomic, copy)                     NSString                * key;
-@property (nonatomic, copy)                     NSString                * uuid;
 @property (nonatomic, copy)                     NSString                * displayName;
+@property (nonatomic, readonly)                 NSString                * identifier;
 @property (nonatomic, strong)                   NSSet                   * constraints;
 @property (nonatomic, strong)                   NSSet                   * firstItemConstraints;
 @property (nonatomic, strong)                   NSSet                   * secondItemConstraints;
 @property (nonatomic, assign)                   CGFloat                   backgroundImageAlpha;
 @property (nonatomic, strong)                   UIColor                 * backgroundColor;
 @property (nonatomic, strong)                   BOBackgroundImage       * backgroundImage;
-@property (nonatomic, strong)                   RERemoteController      * controller;
 @property (nonatomic, strong)                   NSOrderedSet            * subelements;
 @property (nonatomic, strong, readonly)         RELayoutConfiguration   * layoutConfiguration;
 @property (nonatomic, strong, readonly)         REConstraintManager     * constraintManager;
@@ -37,13 +37,15 @@
                         withAttributes:(NSDictionary *)attributes;
 
 - (RemoteElement *)objectForKeyedSubscript:(NSString *)key;
+- (RemoteElement *)objectAtIndexedSubscript:(NSUInteger)subscript;
 
 @end
 
 @interface RemoteElement (AbstractProperties)
 
-@property (nonatomic, strong) RemoteElement           * parentElement;
-@property (nonatomic, strong) REConfigurationDelegate * configurationDelegate;
+@property (nonatomic, strong)   RemoteElement           * parentElement;
+@property (nonatomic, strong)   REConfigurationDelegate * configurationDelegate;
+@property (nonatomic, readonly) RERemoteController      * controller;
 
 @end
 
@@ -164,7 +166,7 @@
  * @return The ButtonGroup requested, or nil if no ButtonGroup with specified key exists.
  */
 - (REButtonGroup *)objectForKeyedSubscript:(NSString *)subscript;
-
+- (REButtonGroup *)objectAtIndexedSubscript:(NSUInteger)subscript;
 
 @property (nonatomic, strong) RERemoteConfigurationDelegate * configurationDelegate;
 
@@ -198,6 +200,9 @@
  * @return The Button specifed or nil if it does not exist.
  */
 - (REButton *)objectForKeyedSubscript:(NSString *)subscript;
+- (REButton *)objectAtIndexedSubscript:(NSUInteger)subscript;
+
+- (void)addCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)config;
 
 /**
  * Label text for the optional `UILabelView`.
@@ -254,7 +259,7 @@
  * @param commandSet The `CommandSet` object to add the `PickerLabelButtonGroup`'s collection.
  * @param label The display name for selecting the `CommandSet`.
  */
-- (void)addCommandSet:(RECommandSet *)commandSet withLabel:(NSAttributedString *)label;
+- (void)addCommandSet:(RECommandSet *)commandSet withLabel:(id)label;
 
 /// Container object which holds the `RECommandSet`- `Label` combiniations
 @property (nonatomic, strong) RECommandSetCollection * commandSetCollection;
@@ -282,12 +287,13 @@
 @property (nonatomic, strong)           REButtonConfigurationDelegate * configurationDelegate;
 @property (nonatomic, strong)           REButtonGroup                 * parentElement;
 @property (nonatomic, readonly)         RERemote                      * remote;
-@property (nonatomic, strong, readonly) REControlStateTitleSet          * titles;
-@property (nonatomic, strong, readonly) REControlStateIconImageSet      * icons;
-@property (nonatomic, strong, readonly) REControlStateColorSet          * backgroundColors;
-@property (nonatomic, strong, readonly) REControlStateButtonImageSet    * images;
-@property (nonatomic, strong)           RECommand                       * command;
-@property (nonatomic, strong)           RECommand                       * longPressCommand;
+@property (nonatomic, copy)             NSString                      * title;
+@property (nonatomic, strong, readonly) REControlStateTitleSet        * titles;
+@property (nonatomic, strong, readonly) REControlStateIconImageSet    * icons;
+@property (nonatomic, strong, readonly) REControlStateColorSet        * backgroundColors;
+@property (nonatomic, strong, readonly) REControlStateButtonImageSet  * images;
+@property (nonatomic, strong)           RECommand                     * command;
+@property (nonatomic, strong)           RECommand                     * longPressCommand;
 @property (nonatomic, assign)           UIEdgeInsets                    titleEdgeInsets;
 @property (nonatomic, assign)           UIEdgeInsets                    imageEdgeInsets;
 @property (nonatomic, assign)           UIEdgeInsets                    contentEdgeInsets;
@@ -296,26 +302,11 @@
 @property (nonatomic, assign, getter = isEnabled)     BOOL   enabled;
 @property (nonatomic, assign, getter = isHighlighted) BOOL   highlighted;
 
+- (void)setTitle:(NSString *)title forConfiguration:(RERemoteConfiguration)configuration;
+- (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)configuration;
 
 - (void)executeCommandWithOptions:(RECommandOptions)options
                        completion:(void (^)(BOOL finished, BOOL success))completion;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark REActivityButton
-////////////////////////////////////////////////////////////////////////////////
-/**
- * ActivityButton is a subclass of Button that can be used to trigger a change in the
- * `currentActivity` of a RemoteController. The `key` should be set to the match the name
- * of the associated activity. ActivityButton maintains a set of `DeviceConfiguration` objects to
- * associate with the **activity**. The remote controller associated with the button uses this
- * set to determine what state devices should be in when switching from one activity to another.
- */
-@interface REActivityButton : REButton
-
-@property (nonatomic, strong) NSSet              * deviceConfigurations;
-@property (nonatomic, assign) REActivityButtonType   activityButtonType;
 
 @end
 

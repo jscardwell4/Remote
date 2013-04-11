@@ -7,15 +7,7 @@
 //
 #import "REControlStateSet.h"
 
-@interface REControlStateSet (CoreDataGeneratedAccessors)
-
-- (void)setPrimitiveUuid:(NSString *)uuid;
-
-@end
-
 @implementation REControlStateSet
-
-@dynamic uuid;
 
 /*
 @dynamic disabled;
@@ -45,8 +37,6 @@
 {
     for (int i = 0; i < 8; i++) self[i] = [set[i] copy];
 }
-
-- (void)awakeFromInsert { [super awakeFromInsert]; [self setPrimitiveUuid:MSNonce()]; }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)state
 {

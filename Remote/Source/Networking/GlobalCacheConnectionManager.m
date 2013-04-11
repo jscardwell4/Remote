@@ -337,6 +337,14 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         if ([keyValuePair count] == 2) attributes[keyValuePair[0]] = [keyValuePair lastObject];
     }
 
+    NSString * deviceUUID = attributes[@"UUID"];
+    if (   [_beaconsReceived containsObject:deviceUUID]
+        || [NetworkDevice deviceExistsWithDeviceUUID:deviceUUID])
+        return;
+
+    else
+        [_beaconsReceived addObject:deviceUUID];
+
     NSDictionary * keyMap = @{ @"Make"       :@"make",
                                @"Model"      :@"model",
                                @"PCB_PN"     :@"pcb_pn",
@@ -344,7 +352,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                                @"Revision"   :@"revision",
                                @"SDKClass"   :@"sdkClass",
                                @"Status"     :@"status",
-                               @"UUID"       :@"uuid",
+                               @"UUID"       :@"deviceUUID",
                                @"Config-URL" :@"configURL" };
 
 
@@ -352,47 +360,46 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
     MSLogDebugTag(@"parsed message:\n%@\n", attributes);
 
-    NSString * uuid = attributes[@"uuid"];
-    assert(uuid);
-
-    if (_networkDevices[uuid])
-        MSLogDebugTag(@"ignoring beacon from previously discovered device with uuid: %@", uuid);
-
-    else if (![_beaconsReceived containsObject:attributes[@"uuid"]])
-        [self deviceDiscoveredWithUUID:uuid attributes:attributes];
-
-    else
-        MSLogDebugTag(@"ingnoring previously received beacon for device with uuid: %@", uuid);
+    [self deviceDiscoveredWithAttributes:attributes];
 }
 
-- (void)deviceDiscoveredWithUUID:(NSString *)uuid attributes:(NSDictionary *)attributes
+- (void)deviceDiscoveredWithAttributes:(NSDictionary *)attributes
 {
-    assert(uuid && attributes && !_networkDevices[uuid]);
-
-    __block NSData * deviceURIData = nil;
+    NSOperationQueue * queue = CurrentQueue;
+    __block NSString * uuid = nil;
+    __block NDiTachDevice * device = nil;
     [MagicalRecord saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *context)
      {
-         NDiTachDevice * device = [NDiTachDevice deviceWithAttributes:attributes
-                                                              context:context];
-         if (device) deviceURIData = [[device permanentURI] data];
+         device = [NDiTachDevice deviceWithAttributes:attributes];
+         if (device) uuid = device.uuid;
          
      }
      completion:^(BOOL success, NSError *error)
      {
-         if (success && deviceURIData)
+         if (success && StringIsNotEmpty(uuid))
          {
-             _networkDevices[uuid] = deviceURIData;
-             MSLogDebugTag(@"added device with uuid %@ to known devices, posting notification...",
-                           uuid);
+             if (queue)
+                 [queue addOperationWithBlock:
+                  ^{
+                      _networkDevices[uuid] = [NDiTachDevice MR_findFirstByAttribute:@"uuid"
+                                                                           withValue:uuid];
+                      MSLogDebugTag(@"added device with uuid %@ to known devices", uuid);
+                      [NotificationCenter postNotificationName:NDiTachDeviceDiscoveryNotification
+                                                        object:[GlobalCacheConnectionManager class]
+                                                      userInfo:@{ CMNetworkDeviceKey : attributes }];
+                      [self stopNetworkDeviceDetection];
+                  }];
+             else
+             {
+                 _networkDevices[uuid] = [NDiTachDevice MR_findFirstByAttribute:@"uuid"
+                                                                      withValue:uuid];
+                 MSLogDebugTag(@"added device with uuid %@ to known devices", uuid);
+                 [NotificationCenter postNotificationName:NDiTachDeviceDiscoveryNotification
+                                                   object:[GlobalCacheConnectionManager class]
+                                                 userInfo:@{ CMNetworkDeviceKey : attributes }];
+                 [self stopNetworkDeviceDetection];
+             }
 
-             [NotificationCenter postNotificationName:NDiTachDeviceDiscoveryNotification
-                                               object:[GlobalCacheConnectionManager class]
-                                             userInfo:@{ CMNetworkDeviceKey : attributes }];
-
-             if (!self.defaultDeviceUUID)
-                 self.defaultDeviceUUID = uuid;
-
-             [self stopNetworkDeviceDetection];
          }
 
          else if (error) [MagicalRecord handleErrors:error];
@@ -460,6 +467,11 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                 UserDefaults[NDDefaultiTachDeviceKey] = nil;
             }
             
+        }
+
+        else if (_networkDevices.count)
+        {
+            self.defaultDeviceUUID = [_networkDevices allKeys][0];
         }
     }
 
@@ -689,20 +701,19 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
 + (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uuid
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    NDiTachDevice * device = [NDiTachDevice objectWithUUID:uuid];
 
-    __block GlobalCacheDeviceConnection * connection = nil;
+    if (device)
+    {
+        GlobalCacheDeviceConnection * connection = [GlobalCacheDeviceConnection new];
+        connection->_device = device;
+        connection->_commandQueue = [MSQueue queue];
+        return connection;
+    }
 
-    [context performBlockAndWait:
-     ^{
-         connection = [GlobalCacheDeviceConnection new];
-         connection->_device = [NDiTachDevice MR_findFirstByAttribute:@"uuid"
-                                                            withValue:uuid
-                                                            inContext:context];
-         connection->_commandQueue = [MSQueue queue];
-    }];
-
-    return (connection->_device ? connection : nil);
+    else
+        return nil;
 }
 
 - (NSString *)deviceUUID { return _device.uuid; }

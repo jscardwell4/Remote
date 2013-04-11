@@ -7,27 +7,22 @@
 //
 #import "RECommand_Private.h"
 #import "RERemoteController.h"
+#import "RemoteElement.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel  = LOG_LEVEL_DEBUG;
 static int msLogContext = COMMAND_F_C;
 
 @interface RESwitchToRemoteCommandOperation : RECommandOperation @end
 
 @implementation RESwitchToRemoteCommand
-@dynamic remoteKey;
-@dynamic remoteController;
+@dynamic remote;
 
 /// @name ￼Creating a SwitchToRemoteCommand
 
-+ (RESwitchToRemoteCommand *)commandInContext:(NSManagedObjectContext *)context key:(NSString *)key
++ (RESwitchToRemoteCommand *)commandWithRemote:(RERemote *)remote
 {
-    __block RESwitchToRemoteCommand * command = nil;
-    [context performBlockAndWait:^{
-        command = [self commandInContext:context];
-        command.primitiveRemoteKey = key;
-        command.primitiveRemoteController = [RERemoteController remoteControllerInContext:context];
-    }];
-
+    RESwitchToRemoteCommand * command = [self commandInContext:remote.managedObjectContext];
+    command.remote = remote;
     return command;
 }
 
@@ -36,7 +31,7 @@ static int msLogContext = COMMAND_F_C;
     return [RESwitchToRemoteCommandOperation operationForCommand:self];
 }
 
-- (NSString *)shortDescription { return $(@"remote:'%@'", self.primitiveRemoteKey); }
+- (NSString *)shortDescription { return $(@"remote:'%@'", self.remote.displayName); }
 
 @end
 
@@ -46,9 +41,8 @@ static int msLogContext = COMMAND_F_C;
 {
     @try
     {
-        RERemoteController * remoteController = ((RESwitchToRemoteCommand *)_command).remoteController;
-        NSString * remoteKey = ((RESwitchToRemoteCommand *)_command).remoteKey;
-        _success = [remoteController switchToRemoteWithKey:remoteKey];
+        RERemote * remote = ((RESwitchToRemoteCommand *)_command).remote;
+        _success = [remote.controller switchToRemote:remote];
         [super main];
     }
     @catch (NSException * exception)

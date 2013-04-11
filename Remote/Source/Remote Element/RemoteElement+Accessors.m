@@ -199,32 +199,29 @@ MSKIT_STATIC_STRING_CONST kSubelementsKey = @"subelements";
 {
     NSIndexSet * indices = [NSIndexSet indexSetWithIndex:idx];
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-    [[self primitiveSubelements] insertObject:value atIndex:idx];
+    [self.primitiveSubelements insertObject:value atIndex:idx];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-//    value.configurationDelegate.delegate = self.configurationDelegate;
 }
 
 - (void)removeObjectFromSubelementsAtIndex:(NSUInteger)idx
 {
     NSIndexSet * indices = [NSIndexSet indexSetWithIndex:idx];
     [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
-    [[self primitiveSubelements] removeObjectAtIndex:idx];
+    [self.primitiveSubelements removeObjectAtIndex:idx];
     [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
 }
 
 - (void)insertSubelements:(NSArray *)values atIndexes:(NSIndexSet *)indices
 {
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-    [[self primitiveSubelements] insertObjects:values atIndexes:indices];
+    [self.primitiveSubelements insertObjects:values atIndexes:indices];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-//    [values setValue:self.configurationDelegate
-//          forKeyPath:@"configurationDelegate.delegate"];
 }
 
 - (void)removeSubelementsAtIndexes:(NSIndexSet *)indices
 {
     [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
-    [[self primitiveSubelements] removeObjectsAtIndexes:indices];
+    [self.primitiveSubelements removeObjectsAtIndexes:indices];
     [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
 }
 
@@ -232,27 +229,23 @@ MSKIT_STATIC_STRING_CONST kSubelementsKey = @"subelements";
 {
     NSIndexSet * indices = [NSIndexSet indexSetWithIndex:idx];
     [self willChange:NSKeyValueChangeReplacement valuesAtIndexes:indices forKey:kSubelementsKey];
-    [self primitiveSubelements][idx] = value;
+    self.primitiveSubelements[idx] = value;
     [self didChange:NSKeyValueChangeReplacement valuesAtIndexes:indices forKey:kSubelementsKey];
-//    value.configurationDelegate.delegate = self.configurationDelegate;
 }
 
 - (void)replaceSubelementsAtIndexes:(NSIndexSet *)indices withSubelements:(NSArray *)values
 {
     [self willChange:NSKeyValueChangeReplacement valuesAtIndexes:indices forKey:kSubelementsKey];
-    [[self primitiveSubelements] replaceObjectsAtIndexes:indices withObjects:values];
+    [self.primitiveSubelements replaceObjectsAtIndexes:indices withObjects:values];
     [self didChange:NSKeyValueChangeReplacement valuesAtIndexes:indices forKey:kSubelementsKey];
-//    [values setValue:self.configurationDelegate
-//          forKeyPath:@"configurationDelegate.delegate"];
 }
 
 - (void)addSubelementsObject:(RemoteElement *)value
 {
     NSIndexSet * indices = [NSIndexSet indexSetWithIndex:[[self primitiveSubelements] count]];
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-    [[self primitiveSubelements] addObject:value];
+    [self.primitiveSubelements addObject:value];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-//    value.configurationDelegate.delegate = self.configurationDelegate;
 }
 
 - (void)removeSubelementsObject:(RemoteElement *)value
@@ -261,7 +254,7 @@ MSKIT_STATIC_STRING_CONST kSubelementsKey = @"subelements";
     if (idx != NSNotFound) {
         NSIndexSet * indices = [NSIndexSet indexSetWithIndex:idx];
         [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
-        [[self primitiveSubelements] removeObject:value];
+        [self.primitiveSubelements removeObject:value];
         [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
     }
 }
@@ -272,22 +265,20 @@ MSKIT_STATIC_STRING_CONST kSubelementsKey = @"subelements";
         NSIndexSet * indices = [NSIndexSet indexSetWithIndexesInRange:
                                 NSMakeRange([[self primitiveSubelements] count], [values count])];
         [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-        [[self primitiveSubelements] addObjectsFromArray:[values array]];
+        [self.primitiveSubelements addObjectsFromArray:[values array]];
         [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indices forKey:kSubelementsKey];
-//        [values setValue:self.configurationDelegate
-//              forKeyPath:@"configurationDelegate.delegate"];
     }
 }
 
 - (void)removeSubelements:(NSOrderedSet *)values {
-    NSIndexSet * indices = [[self primitiveSubelements]
+    NSIndexSet * indices = [self.primitiveSubelements
                             indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
                                 return YES;
                             }];
 
     if ([indices count]) {
         [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
-        [[self primitiveSubelements] removeObjectsAtIndexes:indices];
+        [self.primitiveSubelements removeObjectsAtIndexes:indices];
         [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indices forKey:kSubelementsKey];
     }
 }

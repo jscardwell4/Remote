@@ -5,6 +5,7 @@
 // Created by Jason Cardwell on 7/11/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 #import "RETypedefs.h"
 MSKIT_EXTERN_STRING REDefaultConfiguration;
 
@@ -17,7 +18,7 @@ MSKIT_EXTERN_STRING REDefaultConfiguration;
  is not mandatory. For example, the element need to use the delegate if its attributes never
  change regardless of the current configuration.
  */
-@interface REConfigurationDelegate : NSManagedObject
+@interface REConfigurationDelegate : MSModelObject
 
 + (instancetype)delegateForRemoteElement:(RemoteElement *)remoteElement;
 
@@ -48,8 +49,8 @@ MSKIT_EXTERN_STRING REDefaultConfiguration;
 
 @interface REButtonGroupConfigurationDelegate : REConfigurationDelegate
 
-- (void)setCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)configuration;
-- (void)setLabel:(NSAttributedString *)label forConfiguration:(RERemoteConfiguration)configuration;
+- (void)setCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)config;
+- (void)setLabel:(NSAttributedString *)label forConfiguration:(RERemoteConfiguration)config;
 
 @property (nonatomic, strong, readonly) REButtonGroup * buttonGroup;
 
@@ -59,9 +60,9 @@ MSKIT_EXTERN_STRING REDefaultConfiguration;
 
 @interface REButtonConfigurationDelegate : REConfigurationDelegate
 
-- (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)configuration;
-- (void)setTitleSet:(REControlStateTitleSet *)titleSet
-   forConfiguration:(RERemoteConfiguration)configuration;
+- (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)config;
+- (void)setTitleSet:(REControlStateTitleSet *)titleSet forConfiguration:(RERemoteConfiguration)config;
+- (void)setTitle:(id)title forConfiguration:(RERemoteConfiguration)config;
 
 @property (nonatomic, strong, readonly) REButton * button;
 

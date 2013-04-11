@@ -10,6 +10,23 @@
 
 @implementation REControlStateTitleSet
 
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)state
+{
+    if ([obj isKindOfClass:[NSString class]])
+    {
+        id string = [self[state] mutableCopy];
+        if (string)
+            [string replaceCharactersInRange:NSMakeRange(0, ((NSAttributedString *)string).length)
+                                  withString:obj];
+        else
+            string = [NSAttributedString attributedStringWithString:obj];
+        [super setObject:string atIndexedSubscript:state];
+    }
+
+    else
+        [super setObject:obj atIndexedSubscript:state];
+}
+
 - (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state
 {
     return (NSAttributedString *)[super objectAtIndexedSubscript:state];

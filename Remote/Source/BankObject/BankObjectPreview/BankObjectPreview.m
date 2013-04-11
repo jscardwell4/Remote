@@ -12,13 +12,9 @@
 @property (nonatomic, strong) NSData * imageData;
 @end
 
-@interface BankObjectPreview (CoreDataGeneratedAccessors)
-@property (nonatomic) NSString * primitiveUuid;
-@end
-
 @implementation BankObjectPreview
 
-@dynamic imageData, tag, name, uuid;
+@dynamic imageData, tag, name;
 
 @synthesize image = _image;
 
@@ -39,12 +35,6 @@
      }];
 
     return preview;
-}
-
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
-    self.primitiveUuid = MSNonce();
 }
 
 - (void)setImage:(UIImage *)image

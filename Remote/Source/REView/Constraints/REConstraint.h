@@ -5,16 +5,16 @@
 // Created by Jason Cardwell on 1/21/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+#import "MSModelObject.h"
 #import "RETypedefs.h"
 @class   RemoteElement;
 @class   REView;
 @class   RELayoutConfiguration;
 
-@interface REConstraint : NSManagedObject
+@interface REConstraint : MSModelObject
 
 @property (nonatomic, assign)           int16_t         tag;
 @property (nonatomic, copy)             NSString      * key;
-@property (nonatomic, copy,   readonly) NSString      * uuid;
 @property (nonatomic, assign, readonly) int16_t         firstAttribute;
 @property (nonatomic, assign, readonly) int16_t         secondAttribute;
 @property (nonatomic, assign, readonly) int16_t         relation;
