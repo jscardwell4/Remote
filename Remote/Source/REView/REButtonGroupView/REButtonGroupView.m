@@ -14,7 +14,7 @@ MSKIT_STRING_CONST   REButtonGroupViewInternalNametag = @"REButtonGroupViewInter
 MSKIT_STRING_CONST   REButtonGroupViewLabelNametag    = @"REButtonGroupViewLabel";
 
 static int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static int   msLogContext = REMOTE_F_C;
+static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation REButtonGroupView

@@ -151,7 +151,7 @@ static NSMutableDictionary const * imageCache;
 
 - (void)generateImageData {
     NSString * file =
-        [[[(self.fileDirectory ? self.fileDirectory : @"")
+        [[[(self.fileDirectory  ? : @"")
         stringByAppendingPathComponent: self.baseFileName]
           stringByAppendingString:(self.useRetinaScale ? @"@2x" : @"")]
                  stringByAppendingPathExtension:self.fileNameExtension];
@@ -174,7 +174,7 @@ static NSMutableDictionary const * imageCache;
 - (UIImage *)image {
     UIImage * image = imageCache[ClassString([self class])][@(self.tag)];
     if (image) return image;
-    
+
     if (ValueIsNil(self.imageData)) [self generateImageData];
     assert(self.imageData);
 

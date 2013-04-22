@@ -15,7 +15,9 @@
 
 #import "ViewDecorator.h"
 
-static int   ddLogLevel = LOG_LEVEL_DEBUG;
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
 
 @interface MacroCommandEditingViewController ()
 
@@ -104,7 +106,7 @@ command            = _command;
 
     if (newCommand) {
         [_command addCommandsObject:newCommand];
-        DDLogDebug(@"%@\n\tadd new command:%@", ClassTagSelectorString, newCommand);
+        MSLogDebug(@"%@\n\tadd new command:%@", ClassTagSelectorString, newCommand);
         [_tableView reloadData];
     }
 

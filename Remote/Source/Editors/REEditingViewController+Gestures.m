@@ -17,7 +17,7 @@
 
 
 static const int   ddLogLevel   = DefaultDDLogLevel;
-static const int   msLogContext = EDITOR_F;
+static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
 

@@ -21,7 +21,9 @@
 #import "RETheme.h"
 #import "REActivity.h"
 
+#ifndef CTX
 #define CTX [NSManagedObjectContext MR_contextForCurrentThread]
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Constraints
@@ -58,7 +60,7 @@
 #define MakePickerLabelButtonGroup(...) \
     _MakePickerLabelButtonGroup(@"type":@(REButtonGroupTypePickerLabel), __VA_ARGS__)
 
-#define MakeToolbarButtonGroup(...)  _MakeButtonGroup(@"type":@(REButtonGroupTypeToolbar), __VA_ARGS__)
+#define MakeToolbarButtonGroup(...) _MakeButtonGroup(@"type":@(REButtonGroupTypeToolbar), __VA_ARGS__)
 
 #define MakeSelectionPanelButtonGroup(...)  \
     _MakeButtonGroup(@"type":@(REButtonGroupTypeSelectionPanel), __VA_ARGS__)
@@ -91,14 +93,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #define MakeBackgroundImage(tag) [BOBackgroundImage fetchImageWithTag:tag context:CTX]
-#define MakeIconImage(tag) [BOIconImage fetchImageWithTag:tag context:CTX]
+#define MakeIconImage(tag)       [BOIconImage fetchImageWithTag:tag context:CTX]
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Control State Sets
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MakeColorSet(...) [REControlStateColorSet controlStateSetInContext:CTX withObjects:__VA_ARGS__]
-#define MakeTitleSet(...) [REControlStateTitleSet controlStateSetInContext:CTX withObjects:__VA_ARGS__]
+#define MakeColorSet(...) \
+    [REControlStateColorSet controlStateSetInContext:CTX withObjects:__VA_ARGS__]
+
+#define MakeTitleSet(...) \
+    [REControlStateTitleSet controlStateSetInContext:CTX withObjects:__VA_ARGS__]
+
 #define MakeIconImageSet(COLORS,ICONS) \
     [REControlStateIconImageSet iconSetWithColors:COLORS icons:ICONS context:CTX]
 
@@ -106,20 +112,21 @@
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MakeSystemCommand(TYPE) [RESystemCommand commandInContext:CTX type:TYPE]
-#define MakeHTTPCommand(URL) [REHTTPCommand commandInContext:CTX withURL:URL]
+#define MakeSystemCommand(TYPE) [RESystemCommand commandWithType:TYPE inContext:CTX]
+#define MakeHTTPCommand(URL) [REHTTPCommand commandWithURL:URL inContext:CTX]
 #define MakeIRCommand(DEVICE,NAME) [RESendIRCommand commandWithIRCode:DEVICE[NAME]]
 #define MakeSwitchToConfigCommand(CONFIGURATION) \
 	[RESwitchToConfigCommand commandInContext:CTX configuration:CONFIGURATION]
 
 #define MakeActivityCommand(ACTIVITY) \
-    [REActivityCommand commandWithActivity:[REActivity MR_findFirstByAttribute:@"name" \
-                                                                     withValue:ACTIVITY]]
+    [REActivityCommand commandWithActivity:[REActivity MR_findFirstByAttribute:@"name"  \
+                                                                     withValue:ACTIVITY \
+                                                                     inContext:CTX]]
 
 #define MakeSwitchCommand(activity) NullObject  //\
 //    [RESwitchToRemoteCommand commandInContext:CTX key:activity]
 
-#define MakePowerOnCommand(DEVICE) [REPowerCommand onCommandForDevice:DEVICE]
+#define MakePowerOnCommand(DEVICE)  [REPowerCommand onCommandForDevice:DEVICE]
 #define MakePowerOffCommand(DEVICE) [REPowerCommand offCommandForDevice:DEVICE]
 #define MakeDelayCommand(DELAY) [REDelayCommand commandInContext:CTX duration:DELAY]
 
@@ -129,40 +136,51 @@
 
 MSKIT_STATIC_INLINE RECommandSet * avReceiverVolumeCommandSet()
 {
-    BOComponentDevice * av = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * av = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                            context:CTX];
     RECommandSet * volumeCommandSet =
         [RECommandSet
-         commandSetWithType:RECommandSetTypeRocker
-                       name:@"Receiver Volume"
-                     values:@{ RERockerButtonPlusButtonKey  : MakeIRCommand(av, @"Volume Up"),
-                               RERockerButtonMinusButtonKey : MakeIRCommand(av, @"Volume Down") }];
+         commandSetInContext:CTX
+                    withType:RECommandSetTypeRocker
+                        name:@"Receiver Volume"
+                      values:@{ RERockerButtonPlusButtonKey  :
+                                     MakeIRCommand(av, @"Volume Up"),
+                                RERockerButtonMinusButtonKey :
+                                     MakeIRCommand(av, @"Volume Down") }];
     return volumeCommandSet;
 }
 #define AVReceiverVolumeCommandSet avReceiverVolumeCommandSet()
 
 MSKIT_STATIC_INLINE RECommandSet * dvrChannelsCommandSet()
 {
-    BOComponentDevice * dvr = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
-    RECommandSet      * channelsCommandSet = [RECommandSet commandSetWithType:RECommandSetTypeRocker];
-        [RECommandSet
-         commandSetWithType:RECommandSetTypeRocker
-                       name:@"DVR Channels"
-                     values:@{ RERockerButtonPlusButtonKey  : MakeIRCommand(dvr, @"Channel Up"),
-                               RERockerButtonMinusButtonKey : MakeIRCommand(dvr, @"Channel Down") }];
+    BOComponentDevice * dvr = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
+                                                             context:CTX];
+    RECommandSet      * channelsCommandSet =
+        [RECommandSet commandSetInContext:CTX
+                                 withType:RECommandSetTypeRocker
+                                     name:@"DVR Channels"
+                                   values:@{ RERockerButtonPlusButtonKey  :
+                                                 MakeIRCommand(dvr, @"Channel Up"),
+                                             RERockerButtonMinusButtonKey :
+                                                 MakeIRCommand(dvr, @"Channel Down") }];
     return channelsCommandSet;
 }
 #define DVRChannelsCommandSet dvrChannelsCommandSet()
 
 MSKIT_STATIC_INLINE RECommandSet * dvrPagingCommandSet()
 {
-    BOComponentDevice * dvr = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
+    BOComponentDevice * dvr = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
+                                                             context:CTX];
     RECommandSet * pageUpDownCommandSet =
         [RECommandSet
-             commandSetWithType:RECommandSetTypeRocker
+            commandSetInContext:CTX
+                       withType:RECommandSetTypeRocker
                            name:@"DVR Paging"
-                         values:@{ RERockerButtonPlusButtonKey  : MakeIRCommand(dvr, @"Page Up"),
-                                   RERockerButtonMinusButtonKey : MakeIRCommand(dvr, @"Page Down") }];
-    
+                         values:@{ RERockerButtonPlusButtonKey  :
+                                        MakeIRCommand(dvr, @"Page Up"),
+                                   RERockerButtonMinusButtonKey :
+                                        MakeIRCommand(dvr, @"Page Down") }];
+
     return pageUpDownCommandSet;
 }
 #define DVRPagingCommandSet dvrPagingCommandSet()
@@ -173,8 +191,9 @@ MSKIT_STATIC_INLINE RECommandSet * transportForDeviceWithName(NSString * name)
     if ([name isEqualToString:@"PS3"])
     {
 
-        BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"];
-        transport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
+        BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"
+                                                                 context:CTX];
+        transport = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeTransport];
         transport[RETransportPreviousButtonKey]    = MakeIRCommand(ps3, @"Previous");
         transport[RETransportStopButtonKey]        = MakeIRCommand(ps3, @"Stop");
         transport[RETransportPlayButtonKey]        = MakeIRCommand(ps3, @"Play");
@@ -186,8 +205,9 @@ MSKIT_STATIC_INLINE RECommandSet * transportForDeviceWithName(NSString * name)
 
     else if ([name isEqualToString:@"Comcast DVR"])
     {
-        BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
-        transport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
+        BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
+                                                                         context:CTX];
+        transport = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeTransport];
         transport[RETransportPreviousButtonKey]    = MakeIRCommand(comcastDVR, @"Prev");
         transport[RETransportStopButtonKey]        = MakeIRCommand(comcastDVR, @"Stop");
         transport[RETransportPlayButtonKey]        = MakeIRCommand(comcastDVR, @"Play");
@@ -201,8 +221,9 @@ MSKIT_STATIC_INLINE RECommandSet * transportForDeviceWithName(NSString * name)
 
     else if ([name isEqualToString:@"Samsung TV"])
     {
-        BOComponentDevice * samsungTV   = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
-        transport = [RECommandSet commandSetWithType:RECommandSetTypeTransport];
+        BOComponentDevice * samsungTV   = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                         context:CTX];
+        transport = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeTransport];
         transport[RETransportPlayButtonKey]        = MakeIRCommand(samsungTV, @"Play");
         transport[RETransportPauseButtonKey]       = MakeIRCommand(samsungTV, @"Pause");
         transport[RETransportFastForwardButtonKey] = MakeIRCommand(samsungTV, @"Fast Forward");
@@ -221,9 +242,10 @@ MSKIT_STATIC_INLINE RECommandSet * numberPadForDeviceWithName(NSString * name)
 
     if ([@"Comcast DVR" isEqualToString:name])
     {
-        BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
+        BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
+                                                                         context:CTX];
 
-        numberPad = [RECommandSet commandSetWithType:RECommandSetTypeNumberPad];
+        numberPad = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeNumberPad];
         numberPad[REDigitOneButtonKey]   = MakeIRCommand(comcastDVR, @"One");
         numberPad[REDigitTwoButtonKey]   = MakeIRCommand(comcastDVR, @"Two");
         numberPad[REDigitThreeButtonKey] = MakeIRCommand(comcastDVR, @"Three");
@@ -240,10 +262,11 @@ MSKIT_STATIC_INLINE RECommandSet * numberPadForDeviceWithName(NSString * name)
 
     else if ([@"PS3" isEqualToString:name])
     {
-        BOComponentDevice      * ps3         = [BOComponentDevice fetchDeviceWithName:@"PS3"];
+        BOComponentDevice      * ps3         = [BOComponentDevice fetchDeviceWithName:@"PS3"
+                                                                              context:CTX];
 
         // Create number pad button and add to button group
-        numberPad = [RECommandSet commandSetWithType:RECommandSetTypeNumberPad];
+        numberPad = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeNumberPad];
         numberPad[REDigitOneButtonKey]   = MakeIRCommand(ps3, @"1");
         numberPad[REDigitTwoButtonKey]   = MakeIRCommand(ps3, @"2");
         numberPad[REDigitThreeButtonKey] = MakeIRCommand(ps3, @"3");
@@ -267,9 +290,10 @@ MSKIT_STATIC_INLINE RECommandSet * dPadForDeviceWithName(NSString * name)
 
     if ([@"Comcast DVR" isEqualToString:name])
     {
-        BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
+        BOComponentDevice * comcastDVR  = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
+                                                                         context:CTX];
 
-        dPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
+        dPad = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeDPad];
         dPad[REDPadOkButtonKey]    = MakeIRCommand(comcastDVR, @"OK");
         dPad[REDPadUpButtonKey]    = MakeIRCommand(comcastDVR, @"Up");
         dPad[REDPadDownButtonKey]  = MakeIRCommand(comcastDVR, @"Down");
@@ -279,9 +303,9 @@ MSKIT_STATIC_INLINE RECommandSet * dPadForDeviceWithName(NSString * name)
 
     else if ([@"PS3" isEqualToString:name])
     {
-        BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"];
+        BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3" context:CTX];
 
-        dPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
+        dPad = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeDPad];
         dPad[REDPadOkButtonKey]    = MakeIRCommand(ps3, @"Enter");
         dPad[REDPadUpButtonKey]    = MakeIRCommand(ps3, @"Up");
         dPad[REDPadDownButtonKey]  = MakeIRCommand(ps3, @"Down");
@@ -291,9 +315,10 @@ MSKIT_STATIC_INLINE RECommandSet * dPadForDeviceWithName(NSString * name)
 
     else if ([@"Samsung TV" isEqualToString:name])
     {
-        BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+        BOComponentDevice * samsungTV = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                       context:CTX];
 
-        dPad = [RECommandSet commandSetWithType:RECommandSetTypeDPad];
+        dPad = [RECommandSet commandSetInContext:CTX type:RECommandSetTypeDPad];
         dPad[REDPadOkButtonKey]    = MakeIRCommand(samsungTV, @"Enter");
         dPad[REDPadUpButtonKey]    = MakeIRCommand(samsungTV, @"Up");
         dPad[REDPadDownButtonKey]  = MakeIRCommand(samsungTV, @"Down");

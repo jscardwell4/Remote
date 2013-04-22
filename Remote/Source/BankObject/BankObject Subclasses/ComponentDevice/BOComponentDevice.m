@@ -31,7 +31,7 @@
     if (_ignoreNextPowerCommand)
     {
         _ignoreNextPowerCommand = NO;
-        if (handler) handler(YES, YES);
+        if (handler) handler(YES, nil);
         return YES;
     }
 
@@ -42,9 +42,9 @@
 {
     __weak BOComponentDevice * weakself = self;
     if (![self ignorePowerCommand:completion])
-        [self.onCommand execute:^(BOOL finished, BOOL success) {
-            weakself.power = (finished && success ? BOPowerStateOn : BOPowerStateOff);
-            if (completion) completion(finished, success);
+        [self.onCommand execute:^(BOOL success, NSError * error) {
+            weakself.power = (!error && success ? BOPowerStateOn : BOPowerStateOff);
+            if (completion) completion(success, error);
         }];
 }
 
@@ -52,9 +52,9 @@
 {
     __weak BOComponentDevice * weakself = self;
     if (![self ignorePowerCommand:completion])
-        [self.offCommand execute:^(BOOL finished, BOOL success) {
-            weakself.power = (finished && success ? BOPowerStateOff : BOPowerStateOn);
-            if (completion) completion(finished, success);
+        [self.offCommand execute:^(BOOL success, NSError * error) {
+            weakself.power = (!error && success ? BOPowerStateOff : BOPowerStateOn);
+            if (completion) completion(success, error);
         }];
 }
 

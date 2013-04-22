@@ -36,11 +36,11 @@ static CGSize    labelShadowOffset = DefaultShadowOffset;
 @implementation ViewDecorator
 
 + (void)initialize {
-    if (self == [ViewDecorator class]) {
+    if (self == [ViewDecorator class] && [UIApplication sharedApplication]) {
         babyBlue        = [UIColor colorWithRed:0 green:175 / 255.0 blue:1 alpha:1];
         defaultBoldFont = [UIFont boldSystemFontOfSize:defaultButtonFontSize];
         fontAwesomeFont = [UIFont fontAwesomeFontWithSize:32.0f];
-        assert(fontAwesomeFont);
+//        assert(fontAwesomeFont);
 
         buttonTitleColorNormal      = babyBlue;
         buttonTitleColorHighlighted = WhiteColor;

@@ -8,23 +8,22 @@
 #import "RECommand_Private.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation REHTTPCommand
 
 @dynamic url;
 
-+ (REHTTPCommand *)commandInContext:(NSManagedObjectContext *)context withURL:(NSString *)url
++ (REHTTPCommand *)commandWithURL:(NSString *)url
 {
-    __block REHTTPCommand * command = nil;
+    return [self commandWithURL:url inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+}
 
-    [context performBlockAndWait:
-     ^{
-         command = [self commandInContext:context];
-         command.primitiveUrl = [NSURL URLWithString:url];
-     }];
-
++ (REHTTPCommand *)commandWithURL:(NSString *)url inContext:(NSManagedObjectContext *)context
+{
+    REHTTPCommand * command = [self commandInContext:context];
+    command.url = [NSURL URLWithString:url];
     return command;
 }
 

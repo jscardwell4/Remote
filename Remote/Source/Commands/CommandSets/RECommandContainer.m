@@ -9,7 +9,7 @@
 #import "RECommandContainer_Private.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
-static int msLogContext = REMOTE_F;
+static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation RECommandContainer
@@ -18,9 +18,7 @@ static int msLogContext = REMOTE_F;
 
 + (instancetype)commandContainerInContext:(NSManagedObjectContext *)context
 {
-    __block RECommandContainer * container = nil;
-    [context performBlockAndWait:^{ container = NSManagedObjectFromClass(context); }];
-    return container;
+    return [self MR_createInContext:context];
 }
 
 - (BOOL)isValidKey:(NSString *)key { return [self.index hasKey:key]; }

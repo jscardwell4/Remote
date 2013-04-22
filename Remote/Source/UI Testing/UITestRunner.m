@@ -15,10 +15,9 @@
 #import "REView.h"
 #import "REEditingViewController_Private.h"
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
-
-// static const int ddLogLevel = DefaultDDLogLevel;
-#pragma unused(ddLogLevel)
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
 
 static BOOL                     kSuppressDialog;
 static NSOperationQueue const * kTestQueue;

@@ -26,7 +26,7 @@ typedef NS_OPTIONS (NSUInteger, CoreDataObjectRemovalOptions) {
 };
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = COREDATA_F_C;
+static const int   msLogContext = (LOG_CONTEXT_COREDATA|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 struct DatabaseFlags_s {
     NSUInteger   objectRemoval;
@@ -77,13 +77,32 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         // register error handler
-        [MagicalRecord setErrorHandlerTarget:self action:@selector(handlerError:)];
+        [MagicalRecord setErrorHandlerTarget:self action:@selector(handleErrors:)];
+
+        // register log handler
+        LogHandlerBlock handler = ^(id _self, id object, NSString * format, va_list args)
+        {
+            if (format)
+            {
+                [DDLog log:YES
+                     level:ddLogLevel
+                      flag:LOG_FLAG_MAGICALRECORD
+                   context:msLogContext
+                      file:__FILE__
+                  function:sel_getName(_cmd)
+                      line:__LINE__
+                       tag:@{ MSLogClassNameKey  : CollectionSafeValue(ClassString([_self class])) }
+                    format:format
+                      args:args];
+            }
+        };
+        [MagicalRecord setLogHandler:handler];
 
         // Magical Record should autocreate the model by merging bundle files
-        NSManagedObjectModel * model = [[NSManagedObjectModel
-                                         MR_defaultManagedObjectModel] mutableCopy];
+        NSManagedObjectModel * model = [self augmentModel:
+                                        [NSManagedObjectModel MR_defaultManagedObjectModel]];
         assert(model);
-        [self modifyObjectModel:model];
+        [NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
 
         BOOL databaseStoreExists = [self databaseStoreExists];
         if (databaseStoreExists && kFlags.removePreviousDatabase)
@@ -196,182 +215,244 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 #pragma mark - Object Model
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (void)modifyObjectModel:(NSManagedObjectModel *)model
++ (NSManagedObjectModel *)augmentModel:(NSManagedObjectModel *)model
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        // helper block for modifiying the same attribute on multiple entities
-        void   (^modifyAttributeForEntities)(NSArray *, NSString *, NSString *, id) =
-        ^(NSArray * e, NSString * a, NSString * c, id d)
+    NSManagedObjectModel * augmentedModel = [model mutableCopy];
+    if (!augmentedModel) return nil;
+
+    // helper block for modifiying the same attribute on multiple entities
+    void (^modifyAttributeForEntities)(NSArray *, NSString *, NSString *, id) =
+    ^(NSArray * e, NSString * a, NSString * c, id d)
+    {
+        for (NSEntityDescription * entity in e)
         {
-            for (NSEntityDescription * entity in e)
-            {
-                NSAttributeDescription * description = [entity attributesByName][a];
-                [description setAttributeValueClassName:c];
-                if (d != nil) [description setDefaultValue:d];
-            }
-        };
+            NSAttributeDescription * description = [entity attributesByName][a];
+            [description setAttributeValueClassName:c];
+            if (d != nil) [description setDefaultValue:d];
+        }
+    };
 
-        // helper block for modifying multiple attributes on the same entity
-        void   (^modifyAttributesForEntity)(NSEntityDescription *, NSArray *, NSString *, id) =
-        ^(NSEntityDescription * e, NSArray * a, NSString * c, id d)
+    // helper block for modifying multiple attributes on the same entity
+    void (^modifyAttributesForEntity)(NSEntityDescription *, NSArray *, NSString *, id) =
+    ^(NSEntityDescription * e, NSArray * a, NSString * c, id d)
+    {
+        NSDictionary * attributeDescriptions = [e attributesByName];
+        for (NSString * attributeName in a)
         {
-            NSDictionary * attributeDescriptions = [e attributesByName];
-            for (NSString * attributeName in a)
-            {
-                [attributeDescriptions[attributeName] setAttributeValueClassName:c];
-                if (d != nil) [attributeDescriptions[attributeName] setDefaultValue:d];
-            }
-        };
+            [attributeDescriptions[attributeName] setAttributeValueClassName:c];
+            if (d != nil) [attributeDescriptions[attributeName] setDefaultValue:d];
+        }
+    };
 
-        NSDictionary * entities = [model entitiesByName];
+    NSDictionary * entities = [augmentedModel entitiesByName];
 
-        // size attributes on images
-        modifyAttributeForEntities([entities objectsForKeys:@[@"BOImage",
-                                                              @"BOBackgroundImage",
-                                                              @"BOButtonImage",
-                                                              @"BOIconImage"]
-                                             notFoundMarker:NullObject],
-                                   @"size",
-                                   @"NSValue",
-                                   NSValueWithCGSize(CGSizeZero));
+    // size attributes on images
+    modifyAttributeForEntities([entities objectsForKeys:@[@"BOImage",
+                                                          @"BOBackgroundImage",
+                                                          @"BOButtonImage",
+                                                          @"BOIconImage"]
+                                         notFoundMarker:NullObject],
+                               @"size",
+                               @"NSValue",
+                               NSValueWithCGSize(CGSizeZero));
 
-        // background color attributes on remote elements
-        modifyAttributeForEntities([entities objectsForKeys:@[@"RemoteElement",
-                                                              @"RERemote",
-                                                              @"REButtonGroup",
-                                                              @"REPickerLabelButtonGroup",
-                                                              @"REButton"]
-                                             notFoundMarker:NullObject],
-                                   @"backgroundColor",
-                                   @"UIColor",
-                                   ClearColor);
+    // background color attributes on remote elements
+    modifyAttributeForEntities([entities objectsForKeys:@[@"RemoteElement",
+                                                          @"RERemote",
+                                                          @"REButtonGroup",
+                                                          @"REPickerLabelButtonGroup",
+                                                          @"REButton"]
+                                         notFoundMarker:NullObject],
+                               @"backgroundColor",
+                               @"UIColor",
+                               ClearColor);
 
-        // edge insets attributes on buttons
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
-                                             notFoundMarker:NullObject],
-                                   @"titleEdgeInsets",
-                                   @"NSValue",
-                                   NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
-                                             notFoundMarker:NullObject],
-                                   @"contentEdgeInsets",
-                                   @"NSValue",
-                                   NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
-                                             notFoundMarker:NullObject],
-                                   @"imageEdgeInsets",
-                                   @"NSValue",
-                                   NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
+    // edge insets attributes on buttons
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
+                                         notFoundMarker:NullObject],
+                               @"titleEdgeInsets",
+                               @"NSValue",
+                               NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
+                                         notFoundMarker:NullObject],
+                               @"contentEdgeInsets",
+                               @"NSValue",
+                               NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
+                                         notFoundMarker:NullObject],
+                               @"imageEdgeInsets",
+                               @"NSValue",
+                               NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
 
-        // configurations attribute on configuration delegates
-        modifyAttributeForEntities([entities
-                                    objectsForKeys:@[@"REConfigurationDelegate",
-                                                     @"RERemoteConfigurationDelegate",
-                                                     @"REButtonGroupConfigurationDelegate",
-                                                     @"REButtonConfigurationDelegate"]
-                                    notFoundMarker:NullObject],
-                                   @"configurations",
-                                   @"NSDictionary",
-                                   @{});
+    // configurations attribute on configuration delegates
+    modifyAttributeForEntities([entities
+                                objectsForKeys:@[@"REConfigurationDelegate",
+                                                 @"RERemoteConfigurationDelegate",
+                                                 @"REButtonGroupConfigurationDelegate",
+                                                 @"REButtonConfigurationDelegate"]
+                                notFoundMarker:NullObject],
+                               @"configurations",
+                               @"NSDictionary",
+                               @{});
 
-        // label attribute on button groups
-        modifyAttributeForEntities([entities objectsForKeys:@[@"REButtonGroup",
-                                                              @"REPickerLabelButtonGroup"]
-                                             notFoundMarker:NullObject],
-                                   @"label",
-                                   @"NSAttributedString",
-                                   nil);
+    // label attribute on button groups
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REButtonGroup",
+                                                          @"REPickerLabelButtonGroup"]
+                                         notFoundMarker:NullObject],
+                               @"label",
+                               @"NSAttributedString",
+                               nil);
 
-        // index attribute on command containers
-        modifyAttributeForEntities([entities objectsForKeys:@[@"RECommandContainer",
-                                                              @"RECommandSet",
-                                                              @"RECommandSetCollection"]
-                                             notFoundMarker:NullObject],
-                                   @"index",
-                                   @"NSDictionary",
-                                   @{});
+    // index attribute on command containers
+    modifyAttributeForEntities([entities objectsForKeys:@[@"RECommandContainer",
+                                                          @"RECommandSet",
+                                                          @"RECommandSetCollection"]
+                                         notFoundMarker:NullObject],
+                               @"index",
+                               @"NSDictionary",
+                               @{});
 
-        // url attribute on http command
-        modifyAttributeForEntities(@[entities[@"REHTTPCommand"]],
-                                   @"url",
-                                   @"NSURL",
-                                   [NSURL URLWithString:@"http://about:blank"]);
+    // url attribute on http command
+    modifyAttributeForEntities(@[entities[@"REHTTPCommand"]],
+                               @"url",
+                               @"NSURL",
+                               [NSURL URLWithString:@"http://about:blank"]);
 
-        // bitVector attribute on layout configuration
-        modifyAttributeForEntities(@[entities[@"RELayoutConfiguration"]],
-                                   @"bitVector",
-                                   @"MSBitVector",
-                                   BitVector8);
+    // bitVector attribute on layout configuration
+    modifyAttributeForEntities(@[entities[@"RELayoutConfiguration"]],
+                               @"bitVector",
+                               @"MSBitVector",
+                               BitVector8);
 
-        // color attributes on control state color set
-        modifyAttributesForEntity(entities[@"REControlStateColorSet"],
-                                  @[@"disabled",
-                                    @"disabledAndSelected",
-                                    @"highlighted",
-                                    @"highlightedAndDisabled",
-                                    @"highlightedAndSelected",
-                                    @"normal",
-                                    @"selected",
-                                    @"selectedHighlightedAndDisabled"],
-                                  @"UIColor",
-                                  nil);
+    // color attributes on control state color set
+    modifyAttributesForEntity(entities[@"REControlStateColorSet"],
+                              @[@"disabled",
+                                @"disabledAndSelected",
+                                @"highlighted",
+                                @"highlightedAndDisabled",
+                                @"highlightedAndSelected",
+                                @"normal",
+                                @"selected",
+                                @"selectedHighlightedAndDisabled"],
+                              @"UIColor",
+                              nil);
 
-        // url attributes on control state image sets
-        modifyAttributesForEntity(entities[@"REControlStateImageSet"],
-                                  @[@"disabled",
-                                    @"disabledAndSelected",
-                                    @"highlighted",
-                                    @"highlightedAndDisabled",
-                                    @"highlightedAndSelected",
-                                    @"normal",
-                                    @"selected",
-                                    @"selectedHighlightedAndDisabled"],
-                                  @"NSURL",
-                                  nil);
-        modifyAttributesForEntity(entities[@"REControlStateButtonImageSet"],
-                                  @[@"disabled",
-                                    @"disabledAndSelected",
-                                    @"highlighted",
-                                    @"highlightedAndDisabled",
-                                    @"highlightedAndSelected",
-                                    @"normal",
-                                    @"selected",
-                                    @"selectedHighlightedAndDisabled"],
-                                  @"NSURL",
-                                  nil);
-        modifyAttributesForEntity(entities[@"REControlStateIconImageSet"],
-                                  @[@"disabled",
-                                    @"disabledAndSelected",
-                                    @"highlighted",
-                                    @"highlightedAndDisabled",
-                                    @"highlightedAndSelected",
-                                    @"normal",
-                                    @"selected",
-                                    @"selectedHighlightedAndDisabled"],
-                                  @"NSURL",
-                                  nil);
+    // url attributes on control state image sets
+    modifyAttributesForEntity(entities[@"REControlStateImageSet"],
+                              @[@"disabled",
+                                @"disabledAndSelected",
+                                @"highlighted",
+                                @"highlightedAndDisabled",
+                                @"highlightedAndSelected",
+                                @"normal",
+                                @"selected",
+                                @"selectedHighlightedAndDisabled"],
+                              @"NSURL",
+                              nil);
+    modifyAttributesForEntity(entities[@"REControlStateButtonImageSet"],
+                              @[@"disabled",
+                                @"disabledAndSelected",
+                                @"highlighted",
+                                @"highlightedAndDisabled",
+                                @"highlightedAndSelected",
+                                @"normal",
+                                @"selected",
+                                @"selectedHighlightedAndDisabled"],
+                              @"NSURL",
+                              nil);
+    modifyAttributesForEntity(entities[@"REControlStateIconImageSet"],
+                              @[@"disabled",
+                                @"disabledAndSelected",
+                                @"highlighted",
+                                @"highlightedAndDisabled",
+                                @"highlightedAndSelected",
+                                @"normal",
+                                @"selected",
+                                @"selectedHighlightedAndDisabled"],
+                              @"NSURL",
+                              nil);
 
-        // attributed string attributes on control state title set
-        modifyAttributesForEntity(entities[@"REControlStateTitleSet"],
-                                  @[@"disabled",
-                                    @"disabledAndSelected",
-                                    @"highlighted",
-                                    @"highlightedAndDisabled",
-                                    @"highlightedAndSelected",
-                                    @"normal",
-                                    @"selected",
-                                    @"selectedHighlightedAndDisabled"],
-                                  @"NSAttributedString",
-                                  nil);
-        // Update Magical Record default model
-        [NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
+    // attributed string attributes on control state title set
+    modifyAttributesForEntity(entities[@"REControlStateTitleSet"],
+                              @[@"disabled",
+                                @"disabledAndSelected",
+                                @"highlighted",
+                                @"highlightedAndDisabled",
+                                @"highlightedAndSelected",
+                                @"normal",
+                                @"selected",
+                                @"selectedHighlightedAndDisabled"],
+                              @"NSAttributedString",
+                              nil);
+    return augmentedModel;
+}
 
-        // Log the updated model
-        [self logObjectModel:model];
+NSString * (^descriptionForModel)(NSManagedObjectModel *) = ^NSString *(NSManagedObjectModel * model)
+{
+    __block NSMutableString * modelDescription = [@"" mutableCopy];
 
-    });
+    [model.entities enumerateObjectsUsingBlock:
+     ^(NSEntityDescription * obj, NSUInteger idx, BOOL * stop)
+     {
+         [modelDescription appendFormat:@"%@ {\n", obj.name];
+
+         for (NSPropertyDescription * property in obj)
+         {
+             [modelDescription   appendFormat:@"\n\t\tname: %@\n"
+              "\t\toptional? %@\n"
+              "\t\ttransient? %@\n"
+              "\t\tvalidation predicates: %@\n"
+              "\t\tstored in external record? %@\n",
+              property.name,
+              BOOLString(property.isOptional),
+              BOOLString(property.isTransient),
+              [property.validationPredicates
+               componentsJoinedByString:@", "],
+              BOOLString(property.isStoredInExternalRecord)];
+
+             if ([property isKindOfClass:[NSAttributeDescription class]])
+             {
+                 NSAttributeDescription * ad = (NSAttributeDescription *)property;
+                 [modelDescription appendFormat:@"\t\tattribute type: %@\n"
+                  "\t\tattribute value class name: %@\n"
+                  "\t\tdefault value: %@\n"
+                  "\t\tallows extern binary data storage: %@\n",
+                  NSAttributeTypeString(ad.attributeType),
+                  ad.attributeValueClassName,
+                  ad.defaultValue,
+                  BOOLString(ad.allowsExternalBinaryDataStorage)];
+             }
+
+             else if ([property isKindOfClass:[NSRelationshipDescription class]])
+             {
+                 NSRelationshipDescription * rd = (NSRelationshipDescription *)property;
+                 [modelDescription appendFormat:@"\t\tdestination: %@\n"
+                  "\t\tinverse: %@\n"
+                  "\t\tdelete rule: %@\n"
+                  "\t\tmax count: %u\n"
+                  "\t\tmin count: %u\n"
+                  "\t\tone-to-many? %@\n"
+                  "\t\tordered: %@\n\n",
+                  rd.destinationEntity.name,
+                  rd.inverseRelationship.name,
+                  NSDeleteRuleString(rd.deleteRule),
+                  rd.maxCount,
+                  rd.minCount,
+                  BOOLString(rd.isToMany),
+                  BOOLString(rd.isOrdered)];
+             }
+         }
+
+         [modelDescription appendString:@"}\n\n"];
+     }];
+    
+    return modelDescription;
+};
+
++ (NSString *)objectModelDescription:(NSManagedObjectModel *)model
+{
+    if (!model) model = [NSManagedObjectModel MR_defaultManagedObjectModel];
+    return descriptionForModel(model);
 }
 
 + (void)logObjectModel:(NSManagedObjectModel *)model
@@ -382,65 +463,11 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     [queue addOperationWithBlock:
      ^{
-         __block NSMutableString * modelDescription =
-         [$(@"%@  managed object model:\n", ClassTagSelectorString) mutableCopy];
+         NSString * modelDescription = descriptionForModel(model);
 
-         [model.entities enumerateObjectsUsingBlock:
-          ^(NSEntityDescription * obj, NSUInteger idx, BOOL * stop)
-          {
-              [modelDescription appendFormat:@"%@ {\n", obj.name];
-
-              for (NSPropertyDescription * property in obj)
-              {
-                  [modelDescription   appendFormat:@"\n\t\tname: %@\n"
-                   "\t\toptional? %@\n"
-                   "\t\ttransient? %@\n"
-                   "\t\tvalidation predicates: %@\n"
-                   "\t\tstored in external record? %@\n",
-                   property.name,
-                   BOOLString(property.isOptional),
-                   BOOLString(property.isTransient),
-                   [property.validationPredicates
-                    componentsJoinedByString:@", "],
-                   BOOLString(property.isStoredInExternalRecord)];
-
-                  if ([property isKindOfClass:[NSAttributeDescription class]])
-                  {
-                      NSAttributeDescription * ad = (NSAttributeDescription *)property;
-                      [modelDescription appendFormat:@"\t\tattribute type: %@\n"
-                       "\t\tattribute value class name: %@\n"
-                       "\t\tdefault value: %@\n"
-                       "\t\tallows extern binary data storage: %@\n",
-                       NSAttributeTypeString(ad.attributeType),
-                       ad.attributeValueClassName,
-                       ad.defaultValue,
-                       BOOLString(ad.allowsExternalBinaryDataStorage)];
-                  }
-
-                  else if ([property isKindOfClass:[NSRelationshipDescription class]])
-                  {
-                      NSRelationshipDescription * rd = (NSRelationshipDescription *)property;
-                      [modelDescription appendFormat:@"\t\tdestination: %@\n"
-                       "\t\tinverse: %@\n"
-                       "\t\tdelete rule: %@\n"
-                       "\t\tmax count: %u\n"
-                       "\t\tmin count: %u\n"
-                       "\t\tone-to-many? %@\n"
-                       "\t\tordered: %@\n\n",
-                       rd.destinationEntity.name,
-                       rd.inverseRelationship.name,
-                       NSDeleteRuleString(rd.deleteRule),
-                       rd.maxCount,
-                       rd.minCount,
-                       BOOLString(rd.isToMany),
-                       BOOLString(rd.isOrdered)];
-                  }
-              }
-
-              [modelDescription appendString:@"}\n\n"];
-          }];
-
-         MSLogDebugInContext(COREDATA_F_C, @"%@", modelDescription);
+         MSLogDebugInContext((LOG_CONTEXT_COREDATA|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE),
+                             @"%@",
+                             modelDescription);
      }];
 }
 
@@ -448,7 +475,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 #pragma mark - Error Handling
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (void)handlerError:(NSError *)error
++ (void)handleErrors:(NSError *)error
 {
     NSMutableString * errorMessage = [@"" mutableCopy];
     if ([error isKindOfClass:[MSError class]])

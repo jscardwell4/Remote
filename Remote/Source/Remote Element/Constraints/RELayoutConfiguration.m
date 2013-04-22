@@ -18,28 +18,22 @@
 
 @end
 
-@interface RELayoutConfiguration (CoreDataGeneratedAccessors)
-
-- (void)setPrimitiveElement:(RemoteElement *)element;
-
-@end
-
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
-static const int msLogContext = CONSTRAINT_C;
+static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int   msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation RELayoutConfiguration {
-    RemoteElement                       * _element;
     RELayoutConfigurationDependencyType   _relationships[8];
 }
 
 @dynamic bitVector, element;
 
-@synthesize receptionist = _receptionist;
+@synthesize receptionist       = _receptionist;
 @synthesize primitiveBitVector = _bitVector;
-@synthesize proportionLock = _proportionLock;
+@synthesize proportionLock     = _proportionLock;
 
 NSUInteger bitIndexForNSLayoutAttribute(NSLayoutAttribute attribute);
+
 NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,21 +47,15 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
     __block RELayoutConfiguration * config = nil;
     [element.managedObjectContext performBlockAndWait:
      ^{
-         config = NewObjectForEntityInContext(@"RELayoutConfiguration", element.managedObjectContext);
+         config = [self MR_createInContext:element.managedObjectContext];
          config.element = element;
      }];
 
     return config;
 }
 
-/*
-- (void)willSave
+- (void)awakeFromFetch
 {
-    [super willSave];
-}
-*/
-
-- (void)awakeFromFetch {
     [super awakeFromFetch];
     [self refreshConfig];
 }
@@ -76,71 +64,80 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 #pragma mark - Element Config
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSSet *)intrinsicConstraints {
+- (NSSet *)intrinsicConstraints
+{
     return [self.element.constraints
             filteredSetUsingPredicateWithBlock:
-            ^BOOL(REConstraint * constraint, NSDictionary *bindings) {
-                return (   constraint.firstItem == _element
-                        && (!constraint.secondItem || constraint.secondItem == _element));
+            ^BOOL (REConstraint * constraint, NSDictionary *bindings)
+            {
+                return (  constraint.firstItem == self.element
+                       && (!constraint.secondItem || constraint.secondItem == self.element));
             }];
 }
 
-- (NSSet *)subelementConstraints {
-    return [self.element.constraints
-            setByRemovingObjectsFromSet:self.intrinsicConstraints];
+- (NSSet *)subelementConstraints
+{
+    return [self.element.constraints setByRemovingObjectsFromSet:self.intrinsicConstraints];
 }
 
-- (NSSet *)dependentChildConstraints {
+- (NSSet *)dependentChildConstraints
+{
     return [self.dependentConstraints
             objectsPassingTest:
-            ^BOOL(REConstraint * constraint, BOOL *stop) {
-                return [_element.subelements containsObject:constraint.firstItem];
+            ^BOOL (REConstraint * constraint, BOOL *stop)
+            {
+                return [self.element.subelements containsObject:constraint.firstItem];
             }];
 }
 
-- (NSSet *)dependentConstraints {
-    return [self.element.secondItemConstraints
-            setByRemovingObjectsFromSet:self.intrinsicConstraints];
+- (NSSet *)dependentConstraints
+{
+    return [self.element.secondItemConstraints setByRemovingObjectsFromSet:self.intrinsicConstraints];
 }
 
-- (NSSet *)dependentSiblingConstraints {
-    return [self.dependentConstraints
-            setByRemovingObjectsFromSet:self.dependentChildConstraints];
+- (NSSet *)dependentSiblingConstraints
+{
+    return [self.dependentConstraints setByRemovingObjectsFromSet:self.dependentChildConstraints];
 }
 
-- (void)refreshConfig {
+- (void)refreshConfig
+{
     _proportionLock = NO;
     MSBitVector * bv = BitVector8;
     [self.element.firstItemConstraints
-     enumerateObjectsUsingBlock:^(REConstraint * constraint, BOOL *stop) {
+     enumerateObjectsUsingBlock:^(REConstraint * constraint, BOOL *stop)
+     {
          uint8_t bitIndex = bitIndexForNSLayoutAttribute(constraint.firstAttribute);
          bv[bitIndex] = @YES;
-         _relationships[bitIndex] =
-             (RELayoutConfigurationDependencyType)remoteElementRelationshipTypeForConstraint(_element,
-                                                                                             constraint);
-         if (   constraint.firstItem == constraint.secondItem
-             && (   constraint.firstAttribute == NSLayoutAttributeWidth
-                 || constraint.firstAttribute == NSLayoutAttributeHeight))
+         _relationships[bitIndex] = (RELayoutConfigurationDependencyType)
+                                     remoteElementRelationshipTypeForConstraint(self.element, constraint);
+
+         if (  constraint.firstItem == constraint.secondItem
+            && (  constraint.firstAttribute == NSLayoutAttributeWidth
+               || constraint.firstAttribute == NSLayoutAttributeHeight))
              _proportionLock = YES;
      }];
+
     if (self.bitVector != bv) _bitVector.bits = bv.bits;
 
-    if (!_receptionist) {
+    if (!_receptionist)
+    {
         __weak RELayoutConfiguration * weakself = self;
         _receptionist = [MSContextChangeReceptionist
-                         receptionistForObject:_element
-                         notificationName:NSManagedObjectContextObjectsDidChangeNotification
-                         queue:MainQueue
-                         updateHandler:^(MSContextChangeReceptionist *rec, NSManagedObject *obj) {
-                             if ([obj hasChangesForKey:@"firstItemConstraints"])
-                                 [weakself refreshConfig];
-
-                         }
-                         deleteHandler:nil];
+                         receptionistForObject:self.element
+                              notificationName:NSManagedObjectContextObjectsDidChangeNotification
+                                         queue:MainQueue
+                                 updateHandler:^(MSContextChangeReceptionist *rec, NSManagedObject *obj)
+                                               {
+                                                   if ([obj hasChangesForKey:@"firstItemConstraints"])
+                                                       [weakself refreshConfig];
+                                               }
+                                 deleteHandler:nil];
     }
 }
 
-- (RELayoutConfigurationDependencyType)dependencyTypeForAttribute:(NSLayoutAttribute)attribute {
+- (RELayoutConfigurationDependencyType)dependencyTypeForAttribute:(NSLayoutAttribute)attribute
+{
     if (!self[attribute])
         return RELayoutConfigurationUnspecifiedDependency;
     else
@@ -150,108 +147,92 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 - (NSArray *)replacementCandidatesForAddingAttribute:(NSLayoutAttribute)attribute
                                            additions:(NSArray **)additions
 {
-    switch (attribute) {
-        case NSLayoutAttributeBaseline :
-        case NSLayoutAttributeBottom :
+    switch (attribute)
+    {
+        case NSLayoutAttributeBaseline:
+        case NSLayoutAttributeBottom:
             if (self[@"height"])
-                return (self[@"centerY"]
-                        ? @[@(NSLayoutAttributeCenterY)]
-                        : @[@(NSLayoutAttributeTop)]);
-            else {
+                return (self[@"centerY"] ? @[@(NSLayoutAttributeCenterY)] : @[@(NSLayoutAttributeTop)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeHeight)];
-
                 return @[@(NSLayoutAttributeCenterY), @(NSLayoutAttributeTop)];
             }
 
-        case NSLayoutAttributeTop :
+        case NSLayoutAttributeTop:
             if (self[@"height"])
-                return (self[@"centerY"]
-                        ? @[@(NSLayoutAttributeCenterY)]
-                        : @[@(NSLayoutAttributeBottom)]);
-            else {
+                return (self[@"centerY"] ? @[@(NSLayoutAttributeCenterY)] : @[@(NSLayoutAttributeBottom)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeHeight)];
-
                 return @[@(NSLayoutAttributeCenterY), @(NSLayoutAttributeBottom)];
             }
 
-        case NSLayoutAttributeLeft :
-        case NSLayoutAttributeLeading :
+        case NSLayoutAttributeLeft:
+        case NSLayoutAttributeLeading:
             if (self[@"width"])
-                return (self[@"centerX"]
-                        ? @[@(NSLayoutAttributeCenterX)]
-                        : @[@(NSLayoutAttributeRight)]);
-            else {
+                return (self[@"centerX"] ? @[@(NSLayoutAttributeCenterX)] : @[@(NSLayoutAttributeRight)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeWidth)];
-
                 return @[@(NSLayoutAttributeCenterX), @(NSLayoutAttributeRight)];
             }
 
-        case NSLayoutAttributeRight :
-        case NSLayoutAttributeTrailing :
+        case NSLayoutAttributeRight:
+        case NSLayoutAttributeTrailing:
             if (self[@"width"])
-                return (self[@"centerX"]
-                        ? @[@(NSLayoutAttributeCenterX)]
-                        : @[@(NSLayoutAttributeLeft)]);
-            else {
+                return (self[@"centerX"] ? @[@(NSLayoutAttributeCenterX)] : @[@(NSLayoutAttributeLeft)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeWidth)];
-
                 return @[@(NSLayoutAttributeCenterX), @(NSLayoutAttributeLeft)];
             }
 
-        case NSLayoutAttributeCenterX :
+        case NSLayoutAttributeCenterX:
             if (self[@"width"])
-                return (self[@"left"]
-                        ? @[@(NSLayoutAttributeLeft)]
-                        : @[@(NSLayoutAttributeRight)]);
-            else {
+                return (self[@"left"] ? @[@(NSLayoutAttributeLeft)] : @[@(NSLayoutAttributeRight)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeWidth)];
-
                 return @[@(NSLayoutAttributeLeft), @(NSLayoutAttributeRight)];
             }
 
-        case NSLayoutAttributeCenterY :
+        case NSLayoutAttributeCenterY:
             if (self[@"height"])
-                return (self[@"top"]
-                        ? @[@(NSLayoutAttributeTop)]
-                        : @[@(NSLayoutAttributeBottom)]);
-            else {
+                return (self[@"top"] ? @[@(NSLayoutAttributeTop)] : @[@(NSLayoutAttributeBottom)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeHeight)];
-
                 return @[@(NSLayoutAttributeTop), @(NSLayoutAttributeBottom)];
             }
 
-        case NSLayoutAttributeWidth :
+        case NSLayoutAttributeWidth:
             if (self[@"centerX"])
-                return (self[@"left"]
-                        ? @[@(NSLayoutAttributeLeft)]
-                        : @[@(NSLayoutAttributeRight)]);
-            else {
+                return (self[@"left"] ? @[@(NSLayoutAttributeLeft)] : @[@(NSLayoutAttributeRight)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeCenterX)];
-
                 return @[@(NSLayoutAttributeLeft), @(NSLayoutAttributeRight)];
             }
 
-        case NSLayoutAttributeHeight :
+        case NSLayoutAttributeHeight:
             if (self[@"centerY"])
-                return (self[@"top"]
-                        ? @[@(NSLayoutAttributeTop)]
-                        : @[@(NSLayoutAttributeBottom)]);
-            else {
+                return (self[@"top"] ? @[@(NSLayoutAttributeTop)] : @[@(NSLayoutAttributeBottom)]);
+            else
+            {
                 *additions = @[@(NSLayoutAttributeCenterY)];
-                
                 return @[@(NSLayoutAttributeTop), @(NSLayoutAttributeBottom)];
             }
-            
-        case NSLayoutAttributeNotAnAttribute :
-        default :
-            
+
+        case NSLayoutAttributeNotAnAttribute:
+        default:
             return nil;
     }
 }
 
-- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute {
-    return [self constraintsForAttribute:attribute
-                                   order:RELayoutConstraintUnspecifiedOrder];
+- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute
+{
+    return [self constraintsForAttribute:attribute order:RELayoutConstraintUnspecifiedOrder];
 }
 
 - (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute
@@ -261,20 +242,21 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 
     NSMutableSet * constraints = [NSMutableSet set];
 
-    if (!order || order == RELayoutConstraintFirstOrder) {
+    if (!order || order == RELayoutConstraintFirstOrder)
         [constraints unionSet:[self.element.firstItemConstraints
                                objectsPassingTest:
-                               ^BOOL (REConstraint * obj, BOOL * stop) {
+                               ^BOOL (REConstraint * obj, BOOL * stop)
+                               {
                                    return (obj.firstAttribute == attribute);
                                }]];
-    }
-    if (!order || order == RELayoutConstraintSecondOrder) {
+
+    if (!order || order == RELayoutConstraintSecondOrder)
         [constraints unionSet:[self.element.secondItemConstraints
                                objectsPassingTest:
-                               ^BOOL (REConstraint * obj, BOOL * stop) {
+                               ^BOOL (REConstraint * obj, BOOL * stop)
+                               {
                                    return (obj.secondAttribute == attribute);
                                }]];
-    }
 
     return (constraints.count ? constraints : nil);
 }
@@ -282,55 +264,61 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 - (REConstraint *)constraintWithValues:(NSDictionary *)attributes
 {
     return [self.element.firstItemConstraints objectPassingTest:
-            ^BOOL (REConstraint * obj) {
-                return [obj hasAttributeValues:attributes];}];
+            ^BOOL (REConstraint * obj)
+            {
+                return [obj hasAttributeValues:attributes];
+            }];
 }
 
-- (NSSet *)constraintsAffectingAxis:(UILayoutConstraintAxis)axis
-                              order:(RELayoutConstraintOrder)order
+- (NSSet *)constraintsAffectingAxis:(UILayoutConstraintAxis)axis order:(RELayoutConstraintOrder)order
 {
     NSMutableSet * constraints = [NSMutableSet set];
 
-    if (!order || order == RELayoutConstraintFirstOrder) {
-        [constraints
-         unionSet:[self.element.firstItemConstraints objectsPassingTest:
-                   ^BOOL (REConstraint * obj, BOOL * stop) {
-                       return (axis == UILayoutConstraintAxisForAttribute(obj.firstAttribute));
-                   }]];
-    }
-    if (!order || order == RELayoutConstraintSecondOrder) {
-        [constraints
-         unionSet:[self.element.secondItemConstraints objectsPassingTest:
-                   ^BOOL (REConstraint * obj, BOOL * stop) {
-                       return (axis == UILayoutConstraintAxisForAttribute(obj.secondAttribute));
-                   }]];
-    }
+    if (!order || order == RELayoutConstraintFirstOrder)
+        [constraints unionSet:
+         [self.element.firstItemConstraints objectsPassingTest:
+          ^BOOL (REConstraint * obj, BOOL * stop)
+          {
+              return (axis == UILayoutConstraintAxisForAttribute(obj.firstAttribute));
+          }]];
 
-    return (constraints.count
-            ? constraints
-            : nil);
+    if (!order || order == RELayoutConstraintSecondOrder)
+        [constraints unionSet:
+         [self.element.secondItemConstraints objectsPassingTest:
+          ^BOOL (REConstraint * obj, BOOL * stop)
+          {
+              return (axis == UILayoutConstraintAxisForAttribute(obj.secondAttribute));
+          }]];
+
+    return (constraints.count ? constraints : nil);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Syntax Support
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSNumber *)objectForKeyedSubscript:(NSString *)key {
+- (NSNumber *)objectForKeyedSubscript:(NSString *)key
+{
     return self[[NSLayoutConstraint attributeForPseudoName:key]];
 }
 
-- (void)setObject:(NSNumber *)object forKeyedSubscript:(NSString *)key {
+- (void)setObject:(NSNumber *)object forKeyedSubscript:(NSString *)key
+{
     self[[NSLayoutConstraint attributeForPseudoName:key]] = object;
 }
 
-- (NSNumber *)objectAtIndexedSubscript:(NSLayoutAttribute)idx {
-    NSUInteger bitIndex = bitIndexForNSLayoutAttribute(idx);
+- (NSNumber *)objectAtIndexedSubscript:(NSLayoutAttribute)idx
+{
+    NSUInteger   bitIndex = bitIndexForNSLayoutAttribute(idx);
+
     return (bitIndex == NSNotFound ? @NO : self.bitVector[bitIndex]);
 }
 
-- (void)setObject:(NSNumber *)object atIndexedSubscript:(NSLayoutAttribute)idx {
+- (void)setObject:(NSNumber *)object atIndexedSubscript:(NSLayoutAttribute)idx
+{
     if (!object) object = @NO;
-    NSUInteger bitIndex = bitIndexForNSLayoutAttribute(idx);
+
+    NSUInteger   bitIndex = bitIndexForNSLayoutAttribute(idx);
     assert(bitIndex != NSNotFound);
     self.bitVector[bitIndex] = object;
 }
@@ -339,11 +327,12 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 #pragma mark Logging
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)description {
+- (NSString *)layoutDescription
+{
     NSMutableString * s = [@"" mutableCopy];
 
     if (!NSUIntegerValue(_bitVector.bits)) [self refreshConfig];
-
+    
     if ([_bitVector[7] boolValue]) [s appendString:@"L"];
     if ([_bitVector[6] boolValue]) [s appendString:@"R"];
     if ([_bitVector[5] boolValue]) [s appendString:@"T"];
@@ -352,18 +341,17 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
     if ([_bitVector[2] boolValue]) [s appendString:@"Y"];
     if ([_bitVector[1] boolValue]) [s appendString:@"W"];
     if ([_bitVector[0] boolValue]) [s appendString:@"H"];
-
     return s;
 }
 
-- (NSString *)binaryDescription {
-    return [_bitVector binaryDescription];
-}
+- (NSString *)binaryDescription { return [_bitVector binaryDescription]; }
 
 @end
 
-NSUInteger bitIndexForNSLayoutAttribute(NSLayoutAttribute attribute) {
-    switch (attribute) {
+NSUInteger bitIndexForNSLayoutAttribute(NSLayoutAttribute attribute)
+{
+    switch (attribute)
+    {
         case NSLayoutAttributeLeft:
         case NSLayoutAttributeLeading:          return 7;
         case NSLayoutAttributeRight:
@@ -377,11 +365,12 @@ NSUInteger bitIndexForNSLayoutAttribute(NSLayoutAttribute attribute) {
         case NSLayoutAttributeHeight:           return 0;
         case NSLayoutAttributeNotAnAttribute:   return NSNotFound;
     }
-
 }
 
-NSLayoutAttribute attributeForBitIndex(NSUInteger index) {
-    switch (index) {
+NSLayoutAttribute attributeForBitIndex(NSUInteger index)
+{
+    switch (index)
+    {
         case 7:  return NSLayoutAttributeLeft;
         case 6:  return NSLayoutAttributeRight;
         case 5:  return NSLayoutAttributeTop;
@@ -393,4 +382,3 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index) {
         default: return NSLayoutAttributeNotAnAttribute;
     }
 }
-

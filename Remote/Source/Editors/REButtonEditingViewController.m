@@ -8,7 +8,10 @@
 #define REPLACE_BUTTON_COMMAND    NO
 #define MIN_BUTTON_BOUNDS         CGRectMake(0, 0, 14, 14)
 
-static int             ddLogLevel = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
+
 static NSArray const * styleNames;
 
 typedef NS_OPTIONS (NSUInteger, ResizeTouchDirection) {

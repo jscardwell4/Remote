@@ -19,6 +19,10 @@
 @dynamic selected;
 @dynamic selectedHighlightedAndDisabled;
 */
++ (instancetype)controlStateSet
+{
+    return [self controlStateSetInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+}
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context
 {

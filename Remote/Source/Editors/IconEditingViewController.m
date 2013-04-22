@@ -15,7 +15,9 @@
 
 #import "StoryboardProxy.h"
 
-static int   ddLogLevel = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
 
 @interface IconEditingViewController ()
 @property (strong, nonatomic) IBOutlet UIButton    * iconColorButton;
@@ -286,7 +288,7 @@ delegate             = _delegate;
 }
 
 - (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(BOIconImage *)icon {
-    DDLogDebug(@"%@\n\ticon selected:%@", ClassTagString, icon);
+    MSLogDebug(@"%@\n\ticon selected:%@", ClassTagString, icon);
     self.currentIconImage = icon;
     [self restoreCurrentValues];
 

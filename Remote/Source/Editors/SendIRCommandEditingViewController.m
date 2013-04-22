@@ -160,7 +160,7 @@ command        = _command;
                  NSError * error = nil;
                  self.devices = [context          executeFetchRequest:fetchRequest
                                                        error:&error];
-                 if (_devices == nil) self.devices = [NSArray array];
+                 if (_devices == nil) self.devices = @[];
              }
 
     ];

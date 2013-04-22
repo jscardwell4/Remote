@@ -9,7 +9,7 @@
 #import "REActivity.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
-static const int msLogContext = COMMAND_F_C;
+static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 @interface REActivityCommandOperation : RECommandOperation @end
@@ -21,7 +21,7 @@ static const int msLogContext = COMMAND_F_C;
 
 + (REActivityCommand *)commandWithActivity:(REActivity *)activity
 {
-    REActivityCommand * command = [self MR_createInContext:activity.managedObjectContext];
+    REActivityCommand * command = [self commandInContext:activity.managedObjectContext];
     command.activity = activity;
     return command;
 }

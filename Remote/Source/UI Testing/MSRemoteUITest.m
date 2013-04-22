@@ -11,7 +11,7 @@
 #import "CoreDataManager.h"
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = UITESTING_F;
+static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 // static const int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)
 
@@ -76,12 +76,12 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
     NSString * testInfo = NSStringFromUITestCode(_testCode);
     NSString * prefix   = (testComplete ? @"  end test - " : @"begin test - ");
     MSLogDebug(@"%@%@", prefix, testInfo);
-//    NSString * leftPad  = [NSString stringFilledWithCharacter:' '
+//    NSString * leftPad  = [NSString stringWithCharacter:' '
 //                                                        count:39 - (testInfo.length + prefix.length) / 2];
 //    NSString * meat     = [$(@"%@%@%@", leftPad, prefix, testInfo) stringByPaddingToLength:78
 //                                                                                withString:@" "
 //                                                                           startingAtIndex:0];
-//    NSString * spacer   = [NSString stringFilledWithCharacter:' ' count:78];
+//    NSString * spacer   = [NSString stringWithCharacter:' ' count:78];
 //    NSString * message  = $(@"\u23A7%1$@\u23AB\n\u23A8%2$@\u23AC\n\u23A9%1$@\u23AD\n", spacer, meat);
 
 //    MSLogDebug(@"\n%@", message);

@@ -75,9 +75,9 @@
     __block BOOL launchSucceeded = NO;
 
     if (self.launchMacro)
-        [self.launchMacro execute:^(BOOL finished, BOOL success)
+        [self.launchMacro execute:^(BOOL success, NSError * error)
          {
-             if (finished && success)
+             if (!error && success)
                  launchSucceeded = [self.controller switchToRemote:self.remote];
 
              launchReturned = YES;
@@ -99,9 +99,9 @@
     if (self.controller)
     {
         if (self.launchMacro)
-            [self.launchMacro execute:^(BOOL finished, BOOL success)
+            [self.launchMacro execute:^(BOOL success, NSError * error)
              {
-                 if (finished && success)
+                 if (!error && success)
                  {
                      success = [self.controller switchToRemote:self.remote];
                      if (completion)
@@ -134,9 +134,9 @@
 
     else if (self.haltMacro)
     {
-        [self.haltMacro execute:^(BOOL finished, BOOL success)
+        [self.haltMacro execute:^(BOOL success, NSError * error)
          {
-             if (finished && success)
+             if (!error && success)
                  haltSucceeded = [self.controller switchToRemote:self.controller.homeRemote];
 
              haltReturned = YES;
@@ -159,9 +159,9 @@
     if (self.controller)
     {
         if (self.haltMacro)
-            [self.haltMacro execute:^(BOOL finished, BOOL success)
+            [self.haltMacro execute:^(BOOL success, NSError * error)
              {
-                 if (finished && success)
+                 if (!error && success)
                  {
                      success = [self.controller switchToRemote:self.controller.homeRemote];
                      if (completion)

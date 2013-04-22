@@ -8,7 +8,7 @@
 #import "REView_Private.h"
 
 static int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static int   msLogContext = REMOTE_F_C;
+static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 MSKIT_STRING_CONST

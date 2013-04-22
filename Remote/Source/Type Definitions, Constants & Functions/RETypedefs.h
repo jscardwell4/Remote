@@ -238,7 +238,7 @@ typedef NS_ENUM(NSUInteger, RECommandSetType) {
     RECommandSetTypeRocker		= 4
 };
 
-typedef void (^ RECommandCompletionHandler)(BOOL finished, BOOL success);
+typedef void (^ RECommandCompletionHandler)(BOOL success, NSError *);
 
 typedef void (^ REActionHandler)(void);
 

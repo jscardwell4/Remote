@@ -26,7 +26,7 @@ MSKIT_STRING_CONST   RERemoteLeftPanel3Key   = @"RERemoteLeftPanel3Key";
 MSKIT_STRING_CONST   RERemoteRightPanel3Key  = @"RERemoteRightPanel3Key";
 
 static int   ddLogLevel   = DefaultDDLogLevel;
-static int   msLogContext = REMOTE_F_C;
+static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation RERemoteView

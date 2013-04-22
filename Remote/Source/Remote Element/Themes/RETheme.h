@@ -12,7 +12,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 @interface RETheme : MSModelObject
 
-@property (nonatomic, copy, readonly) NSString * name;
+@property (nonatomic, copy,   readonly) NSString * name;
+@property (nonatomic, strong, readonly) NSSet    * elements;
 
 + (instancetype)themeWithName:(NSString *)name;
 + (instancetype)themeWithName:(NSString *)name context:(NSManagedObjectContext *)context;

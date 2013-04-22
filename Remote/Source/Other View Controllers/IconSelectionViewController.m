@@ -12,7 +12,9 @@
 #define MIN_COL 1
 
 static UIColor * kSelectedIconColor;
-static int       ddLogLevel = DefaultDDLogLevel;
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
 
 @interface IconSelectionViewController ()
 @property (nonatomic, strong) NSArray * fetchedIcons;
@@ -56,7 +58,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
                                                                      error:&error];
                   if (ValueIsNil(fetchedObjects)) {
                   DDLogError(@"%@\n\tcould not retrieve icons from database", ClassTagString);
-                  self.fetchedIcons = [NSArray array];
+                  self.fetchedIcons = @[];
                   } else
                   self.fetchedIcons = fetchedObjects;
     }
@@ -67,7 +69,7 @@ static int       ddLogLevel = DefaultDDLogLevel;
 }
 
 - (IBAction)selectIconAction:(UITapGestureRecognizer *)sender {
-    DDLogDebug(@"%@\n\tselection action from sender:%@", ClassTagString, sender);
+    MSLogDebug(@"%@\n\tselection action from sender:%@", ClassTagString, sender);
 
     CGPoint   touchLocation = [sender locationInView:self.tableView];
     UIView  * touchedView   = [self.tableView hitTest:touchLocation withEvent:nil];

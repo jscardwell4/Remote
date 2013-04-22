@@ -31,6 +31,11 @@
 
 + (instancetype)commandSetWithType:(RECommandSetType)type;
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type;
++ (instancetype)commandSetInContext:(NSManagedObjectContext *)context
+                           withType:(RECommandSetType)type
+                               name:(NSString *)name
+                             values:(NSDictionary *)values;
+
 + (instancetype)commandSetWithType:(RECommandSetType)type
                               name:(NSString *)name
                             values:(NSDictionary *)values;

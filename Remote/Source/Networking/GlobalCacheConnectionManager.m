@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = NETWORKING_F_C;
+static int msLogContext = (LOG_CONTEXT_NETWORKING|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 static const GlobalCacheConnectionManager * globalCacheConnectionManager = nil;
@@ -34,6 +34,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
 @implementation GlobalCacheConnectionManager
 
+/*
 + (void)initialize
 {
     if (self == [GlobalCacheConnectionManager class])
@@ -42,6 +43,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
             MSLogErrorTag(@"something went horribly wrong!");
     }
 }
+*/
 
 + (const GlobalCacheConnectionManager *)globalCacheConnectionManager
 {
@@ -162,6 +164,8 @@ typedef NS_ENUM (uint8_t, ConnectionState){
      .cxx_destruct  							 						v@:				void, id, SEL
 
  */
+    if (![self globalCacheConnectionManager]) MSLogErrorTag(@"something went horribly wrong!");
+
     BOOL isResolved = NO;
 
     Method instanceMethod = class_getInstanceMethod(self, sel);
@@ -447,7 +451,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                     [MagicalRecord
                      saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *localContext)
                      {
-                         MSLogDebugTag(@"removing devices from store with non-unique uuid '%@', uuid");
+                         MSLogDebugTag(@"removing devices from store with non-unique uuid '%@'", uuid);
                          [NDiTachDevice
                           MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:
                                                          @"self.uuid EQUALS %k", uuid]
@@ -595,7 +599,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 - (void)dispatchCompletionHandlerForTag:(NSNumber *)tag success:(BOOL)success
 {
     RECommandCompletionHandler completion = _requestLog[tag];
-    if (completion) completion(YES, success);
+    if (completion) completion(success, nil);
 }
 
 - (void)parseiTachReturnMessage:(NSString *)message

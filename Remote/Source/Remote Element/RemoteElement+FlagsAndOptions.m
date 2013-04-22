@@ -61,6 +61,58 @@
     return primitiveFlags;
 }
 
+- (uint64_t)flagsWithMask:(uint64_t)mask {
+    return (_primitiveFlags & mask);
+}
+
+- (void)setFlags:(uint64_t)flags mask:(uint64_t)mask {
+    _primitiveFlags = (_primitiveFlags & ~mask) | flags;
+}
+
+- (void)setFlagBits:(uint64_t)flagBits {
+    _primitiveFlags = (_primitiveFlags & ~flagBits) | flagBits;
+}
+
+- (void)unsetFlagBits:(uint64_t)flagsBits {
+    _primitiveFlags &= ~flagsBits;
+}
+
+- (void)toggleFlagBits:(uint64_t)flagBits mask:(uint64_t)mask {
+    _primitiveFlags ^= (flagBits & mask);
+}
+
+- (BOOL)isFlagSetForBits:(uint64_t)bits {
+    return (_primitiveFlags & bits ? YES : NO);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Appearance Bit Vector
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)setAppearance:(uint64_t)appearance mask:(uint64_t)mask {
+    _primitiveAppearance = (_primitiveAppearance & ~mask) | appearance;
+}
+
+- (uint64_t)appearanceWithMask:(uint64_t)mask {
+    return (_primitiveAppearance & mask);
+}
+
+- (void)setAppearanceBits:(uint64_t)appearanceBits {
+    _primitiveAppearance = (_primitiveAppearance & ~appearanceBits) | appearanceBits;
+}
+
+- (void)unsetAppearanceBits:(uint64_t)appearanceBits {
+    _primitiveAppearance &= ~appearanceBits;
+}
+
+- (void)toggleAppearanceBits:(uint64_t)appearanceBits mask:(uint64_t)mask {
+    _primitiveAppearance ^= (appearanceBits & mask);
+}
+
+- (BOOL)isAppearanceSetForBits:(uint64_t)bits {
+    return (_primitiveAppearance & bits ? YES : NO);
+}
+
 @end
 
 @implementation RemoteElement (FlagsAndOptions)
@@ -100,58 +152,6 @@
     uint64_t   t = [self flagsWithMask:REStateMask];
     [self didAccessValueForKey:@"state"];
     return t;
-}
-
-- (uint64_t)flagsWithMask:(uint64_t)mask {
-    return (_primitiveFlags & mask);
-}
-
-- (void)setFlags:(uint64_t)flags mask:(uint64_t)mask {
-    _primitiveFlags = (_primitiveFlags & ~mask) | flags;
-}
-
-- (void)setFlagBits:(uint64_t)flagBits {
-    _primitiveFlags = (_primitiveFlags & ~flagBits) | flagBits;
-}
-
-- (void)unsetFlagBits:(uint64_t)flagsBits {
-    _primitiveFlags &= ~flagsBits;
-}
-
-- (void)toggleFlagBits:(uint64_t)flagBits mask:(uint64_t)mask {
-    _primitiveFlags ^= (flagBits & mask);
-}
-
-- (BOOL)isFlagSetForBits:(uint64_t)bits {
-    return (_primitiveFlags & bits ? YES : NO);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Appearance Bit Vector
-////////////////////////////////////////////////////////////////////////////////
-
-- (uint64_t)appearanceWithMask:(uint64_t)mask {
-    return (_primitiveAppearance & mask);
-}
-
-- (void)setAppearance:(uint64_t)appearance mask:(uint64_t)mask {
-    _primitiveAppearance = (_primitiveAppearance & ~mask) | appearance;
-}
-
-- (void)setAppearanceBits:(uint64_t)appearanceBits {
-    _primitiveAppearance = (_primitiveAppearance & ~appearanceBits) | appearanceBits;
-}
-
-- (void)unsetAppearanceBits:(uint64_t)appearanceBits {
-    _primitiveAppearance &= ~appearanceBits;
-}
-
-- (void)toggleAppearanceBits:(uint64_t)appearanceBits mask:(uint64_t)mask {
-    _primitiveAppearance ^= (appearanceBits & mask);
-}
-
-- (BOOL)isAppearanceSetforBits:(uint64_t)bits {
-    return (_primitiveAppearance & bits ? YES : NO);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

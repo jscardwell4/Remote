@@ -13,7 +13,7 @@
 #import "StoryboardProxy.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
-static const int msLogContext = EDITOR_F_C;
+static const int msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 

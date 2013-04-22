@@ -9,25 +9,25 @@
 
 @implementation REMacroBuilder
 
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
 {
     REMacroCommand * macroCommand = nil;
     switch (activity)
     {
         case 1:
-            macroCommand = [self dvrActivityMacroToInitiateState:isOnState];
+            macroCommand = [self dvrActivityMacroToInitiateState:isOnState context:context];
             break;
 
         case 2:
-            macroCommand = [self ps3ActivityMacroToInitiateState:isOnState];
+            macroCommand = [self ps3ActivityMacroToInitiateState:isOnState context:context];
             break;
 
         case 3:
-            macroCommand = [self appleTVActivityMacroToInitiateState:isOnState];
+            macroCommand = [self appleTVActivityMacroToInitiateState:isOnState context:context];
             break;
 
         case 4:
-            macroCommand = [self sonosActivityMacroToInitiateState:isOnState];
+            macroCommand = [self sonosActivityMacroToInitiateState:isOnState context:context];
             break;
 
         default:
@@ -36,7 +36,7 @@
     return macroCommand;
 }
 
-+ (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
++ (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
 {
     // Macro sequence: A/V Power -> TV Power
     REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
@@ -61,7 +61,7 @@
     return macroCommand;
 }
 
-+ (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState
++ (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
 {
     // Macro sequence: A/V Power -> TV Power
     REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
@@ -86,7 +86,7 @@
     return macroCommand;
 }
 
-+ (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState
++ (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
 {
     // Macro sequence: A/V Power -> TV Power
     REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
@@ -108,7 +108,7 @@
     return macroCommand;
 }
 
-+ (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState
++ (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
 {
     // Macro sequence: A/V Power -> TV Power
     REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
@@ -135,7 +135,7 @@
     return macroCommand;
 }
 
-+ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity
++ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity context:(NSManagedObjectContext *)context
 {
     BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
     BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];

@@ -84,6 +84,7 @@ MSKIT_STATIC_INLINE NSUInteger stateForProperty(NSString * property) {
 
 @interface REControlStateSet : MSModelObject
 
++ (instancetype)controlStateSet;
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context;
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context
                              withObjects:(NSDictionary *)objects;

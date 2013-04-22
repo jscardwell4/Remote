@@ -163,7 +163,6 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REActivityCommand" inverseName="activity" inverseEntity="REActivityCommand" syncable="YES"/>
         <relationship name="controller" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="activities" inverseEntity="RERemoteController" syncable="YES"/>
-        <relationship name="currentActivityForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="currentActivity" inverseEntity="RERemoteController" syncable="YES"/>
         <relationship name="haltMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REMacroCommand" inverseName="activityHalt" inverseEntity="REMacroCommand" syncable="YES"/>
         <relationship name="launchMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REMacroCommand" inverseName="activityLaunch" inverseEntity="REMacroCommand" syncable="YES"/>
         <relationship name="remote" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemote" inverseName="activity" inverseEntity="RERemote" syncable="YES"/>
@@ -176,27 +175,24 @@
         <attribute name="contentEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
         <attribute name="imageEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
         <attribute name="titleEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
-        <relationship name="backgroundColors" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="REControlStateColorSet" inverseName="button" inverseEntity="REControlStateColorSet" indexed="YES" syncable="YES"/>
         <relationship name="command" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommand" inverseName="button" inverseEntity="RECommand" indexed="YES" syncable="YES"/>
-        <relationship name="controller" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="buttons" inverseEntity="RERemoteController" syncable="YES"/>
-        <relationship name="icons" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="REControlStateIconImageSet" inverseName="button" inverseEntity="REControlStateIconImageSet" indexed="YES" syncable="YES"/>
-        <relationship name="images" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="REControlStateButtonImageSet" inverseName="button" inverseEntity="REControlStateButtonImageSet" indexed="YES" syncable="YES"/>
-        <relationship name="longPressCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RECommand" inverseName="longPressButton" inverseEntity="RECommand" syncable="YES"/>
-        <relationship name="titles" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="REControlStateTitleSet" inverseName="button" inverseEntity="REControlStateTitleSet" indexed="YES" syncable="YES"/>
+        <relationship name="longPressCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommand" inverseName="longPressButton" inverseEntity="RECommand" syncable="YES"/>
     </entity>
     <entity name="REButtonConfigurationDelegate" representedClassName="REButtonConfigurationDelegate" parentEntity="REConfigurationDelegate" syncable="YES">
-        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommand" inverseName="buttonDelegates" inverseEntity="RECommand" syncable="YES"/>
-        <relationship name="titleSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REControlStateTitleSet" inverseName="delegate" inverseEntity="REControlStateTitleSet" syncable="YES"/>
+        <relationship name="backgroundColors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateColorSet" inverseName="delegate" inverseEntity="REControlStateColorSet" syncable="YES"/>
+        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RECommand" inverseName="buttonDelegates" inverseEntity="RECommand" syncable="YES"/>
+        <relationship name="icons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateIconImageSet" inverseName="delegate" inverseEntity="REControlStateIconImageSet" syncable="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateButtonImageSet" inverseName="delegate" inverseEntity="REControlStateButtonImageSet" syncable="YES"/>
+        <relationship name="titles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateTitleSet" inverseName="delegate" inverseEntity="REControlStateTitleSet" syncable="YES"/>
     </entity>
     <entity name="REButtonGroup" representedClassName="REButtonGroup" parentEntity="RemoteElement" syncable="YES">
         <attribute name="label" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label]⋮⋮⋮V:|[label]" syncable="YES"/>
-        <relationship name="commandSet" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommandSet" inverseName="buttonGroup" inverseEntity="RECommandSet" indexed="YES" syncable="YES"/>
-        <relationship name="controller" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="buttonGroups" inverseEntity="RERemoteController" syncable="YES"/>
+        <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label]
+V:|[label]" syncable="YES"/>
         <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="topToolbar" inverseEntity="RERemoteController" syncable="YES"/>
     </entity>
     <entity name="REButtonGroupConfigurationDelegate" representedClassName="REButtonGroupConfigurationDelegate" parentEntity="REConfigurationDelegate" syncable="YES">
-        <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommandSet" inverseName="delegates" inverseEntity="RECommandSet" syncable="YES"/>
+        <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RECommandSet" inverseName="delegates" inverseEntity="RECommandSet" syncable="YES"/>
     </entity>
     <entity name="RECommand" representedClassName="RECommand" isAbstract="YES" parentEntity="MSModelObject" syncable="YES">
         <attribute name="indicator" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -216,7 +212,6 @@
     <entity name="RECommandSet" representedClassName="RECommandSet" parentEntity="RECommandContainer" syncable="YES">
         <attribute name="name" attributeType="String" defaultValueString="Command Set" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="4" defaultValueString="0" syncable="YES"/>
-        <relationship name="buttonGroup" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonGroup" inverseName="commandSet" inverseEntity="REButtonGroup" indexed="YES" syncable="YES"/>
         <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommand" inverseName="commandSets" inverseEntity="RECommand" syncable="YES"/>
         <relationship name="commandSetCollections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommandSetCollection" inverseName="commandSets" inverseEntity="RECommandSetCollection" syncable="YES"/>
         <relationship name="delegates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REButtonGroupConfigurationDelegate" inverseName="commandSets" inverseEntity="REButtonGroupConfigurationDelegate" syncable="YES"/>
@@ -228,7 +223,7 @@
     <entity name="REConfigurationDelegate" representedClassName="REConfigurationDelegate" isAbstract="YES" parentEntity="MSModelObject" syncable="YES">
         <attribute name="configurations" attributeType="Transformable" syncable="YES"/>
         <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="subscribers" inverseEntity="REConfigurationDelegate" syncable="YES"/>
-        <relationship name="remoteElement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="configurationDelegate" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="configurationDelegate" inverseEntity="RemoteElement" syncable="YES"/>
         <relationship name="subscribers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="delegate" inverseEntity="REConfigurationDelegate" syncable="YES"/>
     </entity>
     <entity name="REConstraint" representedClassName="REConstraint" parentEntity="MSModelObject" syncable="YES">
@@ -245,7 +240,7 @@
         <relationship name="secondItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="secondItemConstraints" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="REControlStateButtonImageSet" representedClassName="REControlStateButtonImageSet" parentEntity="REControlStateImageSet" syncable="YES">
-        <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="images" inverseEntity="REButton" indexed="YES" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="images" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
     </entity>
     <entity name="REControlStateColorSet" representedClassName="REControlStateColorSet" parentEntity="REControlStateSet" syncable="YES">
         <attribute name="colorSetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -257,14 +252,14 @@
         <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="backgroundColors" inverseEntity="REButton" indexed="YES" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="backgroundColors" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
         <relationship name="icon" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateIconImageSet" inverseName="iconColors" inverseEntity="REControlStateIconImageSet" indexed="YES" syncable="YES"/>
         <relationship name="themeBackground" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="backgroundColors" inverseEntity="RETheme" syncable="YES"/>
         <relationship name="themeIcons" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="iconColors" inverseEntity="RETheme" syncable="YES"/>
     </entity>
     <entity name="REControlStateIconImageSet" representedClassName="REControlStateIconImageSet" parentEntity="REControlStateImageSet" syncable="YES">
         <attribute name="styledIconStates" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="icons" inverseEntity="REButton" indexed="YES" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="icons" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
         <relationship name="iconColors" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="REControlStateColorSet" inverseName="icon" inverseEntity="REControlStateColorSet" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="REControlStateImageSet" representedClassName="REControlStateImageSet" isAbstract="YES" parentEntity="REControlStateSet" syncable="YES">
@@ -287,8 +282,7 @@
         <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="titles" inverseEntity="REButton" indexed="YES" syncable="YES"/>
-        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="titleSets" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="titles" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
         <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="titleStyles" inverseEntity="RETheme" syncable="YES"/>
     </entity>
     <entity name="RECustomTheme" representedClassName="RECustomTheme" parentEntity="RETheme" syncable="YES"/>
@@ -307,7 +301,7 @@
     </entity>
     <entity name="RELayoutConfiguration" representedClassName="RELayoutConfiguration" parentEntity="MSModelObject" syncable="YES">
         <attribute name="bitVector" attributeType="Transformable" minValueString="0" maxValueString="255" syncable="YES"/>
-        <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="layoutConfiguration" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="element" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="layoutConfiguration" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="REMacroCommand" representedClassName="REMacroCommand" parentEntity="RECommand" syncable="YES">
         <relationship name="activityHalt" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="haltMacro" inverseEntity="REActivity" syncable="YES"/>
@@ -320,10 +314,11 @@
         <attribute name="backgroundImageAlpha" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
         <attribute name="displayName" attributeType="String" minValueString="1" syncable="YES"/>
         <attribute name="flags" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="key" optional="YES" attributeType="String" minValueString="1" defaultValueString="@&quot;&quot;" syncable="YES"/>
+        <attribute name="key" optional="YES" attributeType="String" minValueString="1" syncable="YES"/>
         <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="appliedTheme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="elements" inverseEntity="RETheme" syncable="YES"/>
         <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOImage" inverseName="remoteElement" inverseEntity="BOImage" syncable="YES"/>
-        <relationship name="configurationDelegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="remoteElement" inverseEntity="REConfigurationDelegate" syncable="YES"/>
+        <relationship name="configurationDelegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="element" inverseEntity="REConfigurationDelegate" syncable="YES"/>
         <relationship name="constraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REConstraint" inverseName="owner" inverseEntity="REConstraint" syncable="YES"/>
         <relationship name="firstItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REConstraint" inverseName="firstItem" inverseEntity="REConstraint" syncable="YES"/>
         <relationship name="layoutConfiguration" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RELayoutConfiguration" inverseName="element" inverseEntity="RELayoutConfiguration" syncable="YES"/>
@@ -333,7 +328,7 @@
         <relationship name="subelements" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RemoteElement" inverseName="parentElement" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="REPickerLabelButtonGroup" representedClassName="REPickerLabelButtonGroup" parentEntity="REButtonGroup" syncable="YES">
-        <relationship name="commandSetCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RECommandSetCollection" inverseName="pickerLabelButtonGroup" inverseEntity="RECommandSetCollection" syncable="YES"/>
+        <relationship name="commandSetCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommandSetCollection" inverseName="pickerLabelButtonGroup" inverseEntity="RECommandSetCollection" syncable="YES"/>
     </entity>
     <entity name="REPowerCommand" representedClassName="REPowerCommand" parentEntity="RECommand" syncable="YES">
         <attribute name="state" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -343,20 +338,16 @@
         <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="remote" inverseEntity="REActivity" syncable="YES"/>
         <relationship name="controller" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="remotes" inverseEntity="RERemoteController" syncable="YES"/>
-        <relationship name="currentRemoteForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="currentRemote" inverseEntity="RERemoteController" syncable="YES"/>
-        <relationship name="homeRemoteForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="homeRemote" inverseEntity="RERemoteController" syncable="YES"/>
         <relationship name="remoteForSwitchToCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RESwitchToRemoteCommand" inverseName="remote" inverseEntity="RESwitchToRemoteCommand" syncable="YES"/>
     </entity>
     <entity name="RERemoteConfigurationDelegate" representedClassName="RERemoteConfigurationDelegate" parentEntity="REConfigurationDelegate" syncable="YES"/>
     <entity name="RERemoteController" representedClassName="RERemoteController" parentEntity="MSModelObject" syncable="YES">
+        <attribute name="currentActivityUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currentRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="homeRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REActivity" inverseName="controller" inverseEntity="REActivity" syncable="YES"/>
-        <relationship name="buttonGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REButtonGroup" inverseName="controller" inverseEntity="REButtonGroup" syncable="YES"/>
-        <relationship name="buttons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REButton" inverseName="controller" inverseEntity="REButton" syncable="YES"/>
-        <relationship name="currentActivity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="currentActivityForController" inverseEntity="REActivity" syncable="YES"/>
-        <relationship name="currentRemote" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemote" inverseName="currentRemoteForController" inverseEntity="RERemote" syncable="YES"/>
-        <relationship name="homeRemote" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemote" inverseName="homeRemoteForController" inverseEntity="RERemote" syncable="YES"/>
         <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RERemote" inverseName="controller" inverseEntity="RERemote" syncable="YES"/>
-        <relationship name="switchToConfigCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RESwitchToConfigCommand" inverseName="remoteController" inverseEntity="RESwitchToConfigCommand" syncable="YES"/>
+        <relationship name="switchToConfigCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RESwitchToConfigCommand" inverseName="remoteController" inverseEntity="RESwitchToConfigCommand" syncable="YES"/>
         <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="REButtonGroup" inverseName="topToolbarForController" inverseEntity="REButtonGroup" syncable="YES"/>
     </entity>
     <entity name="RESendIRCommand" representedClassName="RESendIRCommand" parentEntity="RECommand" syncable="YES">
@@ -383,6 +374,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="theme" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <relationship name="backgroundColors" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateColorSet" inverseName="themeBackground" inverseEntity="REControlStateColorSet" syncable="YES"/>
+        <relationship name="elements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="appliedTheme" inverseEntity="RemoteElement" syncable="YES"/>
         <relationship name="iconColors" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateColorSet" inverseName="themeIcons" inverseEntity="REControlStateColorSet" syncable="YES"/>
         <relationship name="titleStyles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateTitleSet" inverseName="theme" inverseEntity="REControlStateTitleSet" syncable="YES"/>
     </entity>
@@ -409,41 +401,41 @@
         <element name="MSModelObject" positionX="360" positionY="54" width="128" height="60"/>
         <element name="NDiTachDevice" positionX="0" positionY="0" width="128" height="90"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="128" height="133"/>
-        <element name="REActivity" positionX="538" positionY="-189" width="128" height="150"/>
+        <element name="REActivity" positionX="538" positionY="-189" width="128" height="135"/>
+        <element name="REActivityCommand" positionX="160" positionY="192" width="128" height="60"/>
         <element name="REBuiltinTheme" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="REButton" positionX="0" positionY="0" width="128" height="195"/>
-        <element name="REButtonConfigurationDelegate" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="REButtonGroup" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="REButton" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="REButtonConfigurationDelegate" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="REButtonGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="REButtonGroupConfigurationDelegate" positionX="0" positionY="0" width="128" height="60"/>
         <element name="RECommand" positionX="0" positionY="0" width="128" height="163"/>
         <element name="RECommandContainer" positionX="0" positionY="0" width="128" height="58"/>
-        <element name="RECommandSet" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="RECommandSet" positionX="0" positionY="0" width="128" height="120"/>
         <element name="RECommandSetCollection" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="REConfigurationDelegate" positionX="0" positionY="0" width="128" height="103"/>
+        <element name="REConfigurationDelegate" positionX="0" positionY="0" width="128" height="105"/>
         <element name="REConstraint" positionX="0" positionY="0" width="128" height="210"/>
         <element name="REControlStateButtonImageSet" positionX="0" positionY="0" width="128" height="60"/>
         <element name="REControlStateColorSet" positionX="0" positionY="0" width="128" height="240"/>
         <element name="REControlStateIconImageSet" positionX="0" positionY="0" width="128" height="90"/>
         <element name="REControlStateImageSet" positionX="0" positionY="0" width="128" height="165"/>
         <element name="REControlStateSet" positionX="0" positionY="0" width="128" height="43"/>
-        <element name="REControlStateTitleSet" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="REControlStateTitleSet" positionX="0" positionY="0" width="128" height="195"/>
         <element name="RECustomTheme" positionX="160" positionY="192" width="128" height="45"/>
         <element name="REDelayCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="REDeviceConfiguration" positionX="0" positionY="0" width="128" height="90"/>
         <element name="REHTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="RELayoutConfiguration" positionX="0" positionY="0" width="128" height="73"/>
+        <element name="RELayoutConfiguration" positionX="0" positionY="0" width="128" height="75"/>
         <element name="REMacroCommand" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="RemoteElement" positionX="0" positionY="0" width="128" height="285"/>
+        <element name="RemoteElement" positionX="0" positionY="0" width="128" height="300"/>
         <element name="REPickerLabelButtonGroup" positionX="0" positionY="0" width="128" height="60"/>
         <element name="REPowerCommand" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="RERemote" positionX="279" positionY="-207" width="128" height="135"/>
+        <element name="RERemote" positionX="279" positionY="-207" width="128" height="105"/>
         <element name="RERemoteConfigurationDelegate" positionX="0" positionY="0" width="128" height="45"/>
-        <element name="RERemoteController" positionX="637" positionY="27" width="218" height="180"/>
+        <element name="RERemoteController" positionX="637" positionY="27" width="218" height="150"/>
         <element name="RESendIRCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="RESwitchToConfigCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="RESwitchToRemoteCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="RESystemCommand" positionX="448" positionY="300" width="128" height="60"/>
-        <element name="RETheme" positionX="160" positionY="192" width="128" height="118"/>
-        <element name="REActivityCommand" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="RETheme" positionX="160" positionY="192" width="128" height="135"/>
     </elements>
 </model>

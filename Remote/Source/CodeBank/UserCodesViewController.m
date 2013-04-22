@@ -71,7 +71,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                                                                                               error:&error];
                                          if (ValueIsNil(fetchedDevices)) {
                                          DDLogError(@"No component device objects could be found");
-                                         self.fetchedDevices = [NSArray array];
+                                         self.fetchedDevices = @[];
                                          }
                                      }
 

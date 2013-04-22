@@ -9,7 +9,7 @@
 #import "RECommandContainer_Private.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
-static int msLogContext = REMOTE_F;
+static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation RECommandSetCollection

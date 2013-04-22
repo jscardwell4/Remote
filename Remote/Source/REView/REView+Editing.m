@@ -76,7 +76,7 @@
             break;
     }
 
-    assert([self.subviews objectAtIndex:self.subviews.count - 1] == _overlayView);
+    assert((self.subviews)[self.subviews.count - 1] == _overlayView);
     [_overlayView.layer setNeedsDisplay];
 }
 

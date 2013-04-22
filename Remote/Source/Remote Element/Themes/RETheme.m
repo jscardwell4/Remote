@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 @implementation RETheme
 
-@dynamic theme, backgroundColors, iconColors,  titleStyles, name;
+@dynamic theme, backgroundColors, iconColors,  titleStyles, name, elements;
 
 + (BOOL)isValidThemeName:(NSString *)name
 {
@@ -98,17 +98,15 @@ MSKIT_STRING_CONST REThemePowerBlueName  = @"Power Blue";
     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     paragraphStyle.alignment     = NSTextAlignmentCenter;
     
-    NSMutableDictionary * attributes = [@{ NSFontAttributeName            : [UIFont
-                                                                             fontWithName:@"Optima-Bold"
-                                                                                     size:20.0],
-                                           NSKernAttributeName            : NullObject,
-                                           NSLigatureAttributeName        : @1,
-                                           NSForegroundColorAttributeName : WhiteColor,
-                                           NSStrokeWidthAttributeName     : @(-2.0),
-                                           NSStrokeColorAttributeName     : [WhiteColor
-                                                                             colorWithAlphaComponent:.5],
-                                           NSParagraphStyleAttributeName  : paragraphStyle } mutableCopy];
-    
+    NSMutableDictionary * attributes =
+        [@{ NSFontAttributeName            : [UIFont fontWithName:@"Optima-Bold" size:20.0],
+            NSKernAttributeName            : NullObject,
+            NSLigatureAttributeName        : @1,
+            NSForegroundColorAttributeName : WhiteColor,
+            NSStrokeWidthAttributeName     : @(-2.0),
+            NSStrokeColorAttributeName     : [WhiteColor colorWithAlphaComponent:.5],
+            NSParagraphStyleAttributeName  : paragraphStyle } mutableCopy];
+        
     NSAttributedString * normalTitle = [NSAttributedString attributedStringWithString:@"normal title"
                                                                            attributes:attributes];
     self.titleStyles[UIControlStateNormal] = normalTitle;

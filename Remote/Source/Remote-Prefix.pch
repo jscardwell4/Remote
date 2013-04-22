@@ -4,6 +4,8 @@
 
 #import <Availability.h>
 
+#define MR_SHORTHAND
+
 #ifndef __IPHONE_3_0
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif
@@ -12,8 +14,9 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+    #import <Lumberjack/Lumberjack.h>
     #import <MSKit/MSKit.h>
-    #import <MagicalRecord/CoreData+MagicalRecord.h>
+    #import <MagicalRecord/MagicalRecord.h>
     #import "MSRemoteMacros.h"
     #import "MSRemoteTypeDefinitions.h"
     #import "MSRemoteConstants.h"

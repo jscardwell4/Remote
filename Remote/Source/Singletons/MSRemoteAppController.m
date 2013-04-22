@@ -17,7 +17,7 @@
 #import "StoryboardProxy.h"
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = DEFAULT_LOG_CONTEXT;
+static const int   msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation MSRemoteAppController {
@@ -128,20 +128,69 @@ static const int   msLogContext = DEFAULT_LOG_CONTEXT;
 {
 
     [MSLog addTaggingTTYLogger];
+    DDTTYLogger * ttyLogger = [DDTTYLogger sharedInstance];
+    assert(ttyLogger);
+    assert([ttyLogger colorsEnabled]);
+    UIColor * testOutputColor = [UIColor colorWithRed:33/255.0f
+                                                green:105/255.0f
+                                                 blue:33/255.0f
+                                                alpha:1.0f];
+    [ttyLogger setForegroundColor:testOutputColor
+                  backgroundColor:nil
+                          forFlag:LOG_FLAG_DEBUG
+                          context:(  LOG_CONTEXT_COREDATATESTS
+                                   | LOG_CONTEXT_CONSOLE
+                                   | LOG_CONTEXT_FILE )];
+
+    UIColor * magicalRecordColor = [UIColor colorWithRed:165/255.0f
+                                                   green:119/255.0f
+                                                    blue:6/255.0f
+                                                   alpha:1.0f];
+    
+    [ttyLogger setForegroundColor:magicalRecordColor
+                  backgroundColor:nil
+                          forFlag:LOG_FLAG_DEBUG
+                          context:(  LOG_CONTEXT_COREDATATESTS
+                                   | LOG_CONTEXT_CONSOLE
+                                   | LOG_CONTEXT_FILE
+                                   | LOG_CONTEXT_MAGICALRECORD )];
+
+    [ttyLogger setForegroundColor:magicalRecordColor
+                  backgroundColor:nil
+                          forFlag:LOG_FLAG_DEBUG
+                          context:(  LOG_CONTEXT_CONSOLE
+                                   | LOG_CONTEXT_FILE
+                                   | LOG_CONTEXT_MAGICALRECORD )];
+
+    UIColor * errorColor = [UIColor colorWithRed:214/255.0f
+                                           green:36/255.0f
+                                            blue:4/255.0f
+                                           alpha:1.0f];
+
+    [ttyLogger setForegroundColor:errorColor
+                  backgroundColor:nil
+                          forFlag:LOG_FLAG_ERROR
+                          context:(  LOG_CONTEXT_COREDATA
+                                   | LOG_CONTEXT_FILE
+                                   | LOG_CONTEXT_CONSOLE )];
+
     [MSLog addTaggingASLLogger];
 
     NSString * logsDirectory = [MSLog defaultLogDirectory];
 
-    NSDictionary * fileLoggers = @{@(FILE_LC)       : $(@"%@/Default",     logsDirectory),
-                                   @(PAINTER_LC)    : $(@"%@/Painter",     logsDirectory),
-                                   @(NETWORKING_LC) : $(@"%@/Networking",  logsDirectory),
-                                   @(REMOTE_LC)     : $(@"%@/Remote",      logsDirectory),
-                                   @(COREDATA_LC)   : $(@"%@/CoreData",    logsDirectory),
-                                   @(UITESTING_LC)  : $(@"%@/UITesting",   logsDirectory),
-                                   @(EDITOR_LC)     : $(@"%@/Editor",      logsDirectory),
-                                   @(COMMAND_LC)    : $(@"%@/Command",     logsDirectory),
-                                   @(CONSTRAINT_LC) : $(@"%@/Constraints", logsDirectory),
-                                   @(BUILDING_LC)   : $(@"%@/Building",    logsDirectory)};
+    NSDictionary * fileLoggers = @{
+       @(LOG_CONTEXT_FILE)          : $(@"%@/Default",       logsDirectory),
+       @(LOG_CONTEXT_PAINTER)       : $(@"%@/Painter",       logsDirectory),
+       @(LOG_CONTEXT_NETWORKING)    : $(@"%@/Networking",    logsDirectory),
+       @(LOG_CONTEXT_REMOTE)        : $(@"%@/Remote",        logsDirectory),
+       @(LOG_CONTEXT_COREDATA)      : $(@"%@/CoreData",      logsDirectory),
+       @(LOG_CONTEXT_UITESTING)     : $(@"%@/UITesting",     logsDirectory),
+       @(LOG_CONTEXT_EDITOR)        : $(@"%@/Editor",        logsDirectory),
+       @(LOG_CONTEXT_COMMAND)       : $(@"%@/Command",       logsDirectory),
+       @(LOG_CONTEXT_CONSTRAINT)    : $(@"%@/Constraints",   logsDirectory),
+       @(LOG_CONTEXT_BUILDING)      : $(@"%@/Building",      logsDirectory),
+       @(LOG_CONTEXT_MAGICALRECORD) : $(@"%@/MagicalRecord", logsDirectory)
+    };
 
     [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop)
     {
@@ -186,12 +235,12 @@ static const int   msLogContext = DEFAULT_LOG_CONTEXT;
     // Apply user defined settings and observe status bar setting changes
     [SettingsManager applyUserSettings];
     [NotificationCenter addObserverForName:MSSettingsManagerStatusBarSettingDidChangeNotification
-                                    object:[SettingsManager sharedSettingsManager]
+                                    object:[SettingsManager class]
                                      queue:MainQueue
                                 usingBlock:^(NSNotification * note)
                                            {
                                                UIApp.statusBarHidden =
-                                                   [SettingsManager boolForSetting:kStatusBarKey];
+                                                   [SettingsManager boolForSetting:MSSettingsStatusBarKey];
                                            }];
 
     // intialize core data statck
@@ -216,7 +265,7 @@ static const int   msLogContext = DEFAULT_LOG_CONTEXT;
                                            && (   [UserDefaults boolForKey:@"rebuild"]
                                                || [UserDefaults boolForKey:@"remote"]))
                                        {
-                                           [RemoteElementConstructionManager buildController];
+                                           [RemoteElementConstructionManager buildControllerInContext:[NSManagedObjectContext MR_defaultContext]];
                                        }
                                    }];
     

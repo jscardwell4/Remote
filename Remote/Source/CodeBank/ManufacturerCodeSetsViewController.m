@@ -67,7 +67,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
                                          if (ValueIsNil(fetchedCodeSets)) {
                                          DDLogError(@"No codeset objects could be found");
-                                         self.fetchedCodeSets = [NSArray array];
+                                         self.fetchedCodeSets = @[];
                                          } else
                                          self.fetchedCodeSets =
                                          [fetchedCodeSets sortedArrayUsingDescriptors:@[[NSSortDescriptor                          sortDescriptorWithKey:@"name"

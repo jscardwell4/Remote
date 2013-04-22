@@ -18,16 +18,16 @@
 #import "CoreDataManager.h"
 
 static int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static int   msLogContext = REMOTE_F_C;
+static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @interface RERemoteController ()
 
 @property (nonatomic, strong)              NSSet         * currentDeviceConfigurations;
 @property (nonatomic, strong, readwrite)   NSSet         * remotes;
-@property (nonatomic, strong, readwrite)   RERemote      * homeRemote;
-@property (nonatomic, strong, readwrite)   RERemote      * currentRemote;
-@property (nonatomic, strong, readwrite)   REActivity    * currentActivity;
+@property (nonatomic, strong, readwrite)   NSString      * homeRemoteUUID;
+@property (nonatomic, strong, readwrite)   NSString      * currentRemoteUUID;
+@property (nonatomic, strong, readwrite)   NSString      * currentActivityUUID;
 @property (nonatomic, strong, readwrite)   NSSet         * activities;
 @property (nonatomic, strong, readwrite)   REButtonGroup * topToolbar;
 
@@ -42,7 +42,7 @@ static int   msLogContext = REMOTE_F_C;
 
 @implementation RERemoteController
 
-@dynamic currentRemote, currentActivity, homeRemote;
+@dynamic currentRemoteUUID, currentActivityUUID, homeRemoteUUID;
 @dynamic remotes, topToolbar, activities;
 @synthesize currentDeviceConfigurations = _currentDeviceConfigurations;
 
@@ -74,6 +74,18 @@ static int   msLogContext = REMOTE_F_C;
 #pragma mark - Remotes
 ////////////////////////////////////////////////////////////////////////////////
 
+- (RERemote *)homeRemote
+{
+    return (RERemote *)memberOfCollectionWithUUID(self.remotes, self.homeRemoteUUID);
+}
+
+- (RERemote *)currentRemote
+{
+    RERemote * currentRemote = (RERemote *)memberOfCollectionWithUUID(self.remotes,
+                                                                      self.currentRemoteUUID);
+    return (currentRemote ? : self.homeRemote);
+}
+
 - (void)registerRemote:(RERemote *)remote
 {
     assert(remote);
@@ -85,7 +97,7 @@ static int   msLogContext = REMOTE_F_C;
 {
     //TODO: Add validation
     [self registerRemote:remote];
-    self.homeRemote = remote;
+    self.homeRemoteUUID = remote.uuid;
     return YES;
 }
 
@@ -93,10 +105,9 @@ static int   msLogContext = REMOTE_F_C;
 {
     if ([self.remotes containsObject:remote])
     {
-        self.currentRemote = remote;
+        self.currentRemoteUUID = remote.uuid;
 
-        if (remote == self.homeRemote)
-            self.currentActivity = nil;
+        if (remote == self.homeRemote) self.currentActivityUUID = nil;
 
         return YES;
     }
@@ -113,6 +124,13 @@ static int   msLogContext = REMOTE_F_C;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Activities
 ////////////////////////////////////////////////////////////////////////////////
+
+- (REActivity *)currentActivity
+{
+    REActivity * currentActivity = (REActivity *)memberOfCollectionWithUUID(self.activities,
+                                                                            self.currentActivityUUID);
+    return currentActivity;
+}
 
 - (BOOL)registerActivity:(REActivity *)activity
 {
@@ -138,8 +156,8 @@ static int   msLogContext = REMOTE_F_C;
 {
     if ([self.activities containsObject:activity])
     { //TODO: Need to add parameter to halt/launch to suppress uneccessary power toggling
-        if (self.currentActivity) [self.currentActivity haltActivity];
-        self.currentActivity = activity;
+        if (self.currentActivityUUID) [self.currentActivity haltActivity];
+        self.currentActivityUUID = activity.uuid;
         return YES;
     }
 

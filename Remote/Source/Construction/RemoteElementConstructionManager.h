@@ -13,7 +13,7 @@
 
 @interface RemoteElementConstructionManager : NSObject
 
-+ (void)buildController;
++ (void)buildControllerInContext:(NSManagedObjectContext *)context;
 
 @end
 
@@ -30,10 +30,10 @@
  */
 @interface RERemoteBuilder : NSObject
 
-+ (RERemote *)constructDVRRemote;
-+ (RERemote *)constructHomeRemote;
-+ (RERemote *)constructPS3Remote;
-+ (RERemote *)constructSonosRemote;
++ (RERemote *)constructDVRRemoteInContext:(NSManagedObjectContext *)context;
++ (RERemote *)constructHomeRemoteInContext:(NSManagedObjectContext *)context;
++ (RERemote *)constructPS3RemoteInContext:(NSManagedObjectContext *)context;
++ (RERemote *)constructSonosRemoteInContext:(NSManagedObjectContext *)context;
 
 @end
 
@@ -44,9 +44,9 @@
 
 @interface REMacroBuilder : NSObject
 
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState;
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context;
 
-+ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity;
++ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity context:(NSManagedObjectContext *)context;
 
 @end
 
@@ -57,42 +57,42 @@
 
 @interface REButtonGroupBuilder : NSObject
 
-+ (REButtonGroup *) constructControllerTopToolbar;
++ (REButtonGroup *) constructControllerTopToolbarInContext:(NSManagedObjectContext *)context;
 
 // Home screen
-+ (REButtonGroup *)constructActivities;
-+ (REButtonGroup *)constructLightControls;
++ (REButtonGroup *)constructActivitiesInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructLightControlsInContext:(NSManagedObjectContext *)context;
 
 // DPad construction
-+ (REButtonGroup *)rawDPad;
-+ (REButtonGroup *)constructDVRDPad;
-+ (REButtonGroup *)constructPS3DPad;
++ (REButtonGroup *)rawDPadInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructDVRDPadInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructPS3DPadInContext:(NSManagedObjectContext *)context;
 
 // ￼NumberPad construction
-+ (REButtonGroup *)rawNumberPad;
-+ (REButtonGroup *)constructDVRNumberPad;
-+ (REButtonGroup *)constructPS3NumberPad;
++ (REButtonGroup *)rawNumberPadInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)context;
 
 // Transport construction
-+ (REButtonGroup *)rawTransport;
-+ (REButtonGroup *)constructDVRTransport;
-+ (REButtonGroup *)constructPS3Transport;
++ (REButtonGroup *)rawTransportInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructDVRTransportInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructPS3TransportInContext:(NSManagedObjectContext *)context;
 
 // Rocker construction
-+ (REPickerLabelButtonGroup *)rawRocker;
-+ (REPickerLabelButtonGroup *)constructDVRRocker;
-+ (REPickerLabelButtonGroup *)constructPS3Rocker;
-+ (REPickerLabelButtonGroup *)constructSonosRocker;
++ (REPickerLabelButtonGroup *)rawRockerInContext:(NSManagedObjectContext *)context;
++ (REPickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)context;
++ (REPickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)context;
++ (REPickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)context;
 
 // Constructing other button groups
-+ (REButtonGroup *)rawGroupOfThreeButtons;
-+ (REButtonGroup *)rawButtonPanel;
-+ (REButtonGroup *)constructSonosMuteButtonGroup;
-+ (REButtonGroup *)constructSelectionPanel;
-+ (REButtonGroup *)constructDVRGroupOfThreeButtons;
-+ (REButtonGroup *)constructPS3GroupOfThreeButtons;
-+ (REButtonGroup *)constructAdditionalButtonsLeft;
-+ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity;
++ (REButtonGroup *)rawGroupOfThreeButtonsInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)rawButtonPanelInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructSelectionPanelInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructDVRGroupOfThreeButtonsInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructPS3GroupOfThreeButtonsInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructAdditionalButtonsLeftInContext:(NSManagedObjectContext *)context;
++ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity context:(NSManagedObjectContext *)context;
 
 @end
 

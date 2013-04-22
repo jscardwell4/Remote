@@ -18,7 +18,7 @@
 // #define INACTIVITY_TIMER
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = REMOTE_F;
+static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 
 MSKIT_STATIC_STRING_CONST   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
 MSKIT_STATIC_STRING_CONST   kTopToolbarConstraintNameTag           = @"kTopToolbarConstraintNameTag";
@@ -91,10 +91,10 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
 - (void)registerForNotificationCenterNotifications
 {
     [NotificationCenter addObserverForName:MSSettingsManagerProximitySensorSettingDidChangeNotification
-                                    object:[SettingsManager sharedSettingsManager]
+                                    object:[SettingsManager class]
                                      queue:nil
                                 usingBlock:^(NSNotification * note){
-         _flags.monitorProximitySensor = [SettingsManager boolForSetting:kProximitySensorKey];
+         _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
          CurrentDevice.proximityMonitoringEnabled = _flags.monitorProximitySensor;
      }
 
@@ -104,7 +104,7 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
                                     object:[SettingsManager sharedSettingsManager]
                                      queue:nil
                                 usingBlock:^(NSNotification * note){
-         _flags.inactivityTimeout = [SettingsManager floatForSetting:kInactivityTimeoutKey];
+         _flags.inactivityTimeout = [SettingsManager floatForSetting:MSSettingsInactivityTimeoutKey];
          if (_flags.monitoringInactivity && !_flags.inactivityTimeout) [self stopInactivityTimer:NO];
      }
 
@@ -114,7 +114,7 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
 
 - (void)unregisterForNotificationCenterNotifications
 {
-    [NotificationCenter removeObserver:self name:nil object:[SettingsManager sharedSettingsManager]];
+    [NotificationCenter removeObserver:self name:nil object:[SettingsManager class]];
 }
 
 #pragma mark - NSObject overrides
@@ -124,8 +124,8 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
     _remoteController = [RERemoteController remoteController];
     assert(_remoteController);
 
-    _flags.monitorProximitySensor = [SettingsManager boolForSetting:kProximitySensorKey];
-    _flags.inactivityTimeout      = [SettingsManager floatForSetting:kInactivityTimeoutKey];
+    _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+    _flags.inactivityTimeout      = [SettingsManager floatForSetting:MSSettingsInactivityTimeoutKey];
     _flags.loadHomeScreen         = YES;
     [self registerForKVONotifications];
     [self registerForNotificationCenterNotifications];
@@ -158,7 +158,7 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
 {
     assert(_inactivityTimer && !dispatch_source_testcancel(_inactivityTimer) && _flags.remoteInactive);
     dispatch_resume(_inactivityTimer);
-    DDLogDebug(@"%@ inactivity timer resumed", ClassTagSelectorString);
+    MSLogDebug(@"%@ inactivity timer resumed", ClassTagSelectorString);
     _flags.remoteInactive       = NO;
     _flags.monitoringInactivity = YES;
 }
@@ -200,7 +200,7 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
                               leeway);
     dispatch_source_set_event_handler(_inactivityTimer, ^{
       uint64_t next = timeToNext();
-      DDLogDebug(@"%@ next: %lld (%fs)",
+      MSLogDebug(@"%@ next: %lld (%fs)",
                  ClassTagSelectorString,
                  next,
                  (NSTimeInterval)next / NSEC_PER_SEC);
@@ -245,7 +245,7 @@ MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolb
                                         usingBlock:^(NSNotification * note){
                  if (MainScreen.brightness > 0)
                  {
-                     DDLogDebug(@"%@ restarting inactivity timer",
+                     MSLogDebug(@"%@ restarting inactivity timer",
                                 ClassTagSelectorString);
                      [NotificationCenter
                                              removeObserver:self

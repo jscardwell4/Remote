@@ -12,7 +12,11 @@
 #import "ConnectionManager.h"
 #import "CoreDataManager.h"
 
-static int                ddLogLevel   = LOG_LEVEL_DEBUG;
+
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
+
 MSKIT_STATIC_STRING_CONST   kTestSuccess = @"=";
 MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 
@@ -39,7 +43,7 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
     self.testCommand = [NSEntityDescription insertNewObjectForEntityForName:@"SendIRCommand"
                                                      inManagedObjectContext:_testContext];
     if (ValueIsNil(_testCommand)) DDLogWarn(@"failed to create test command object");
-    else DDLogDebug(@"test command created");
+    else MSLogDebug(@"test command created");
 }
 
 - (IBAction)selectCurrentCommand:(id)sender
@@ -94,7 +98,7 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 
     self.testCommand.code = testCode;
 
-    DDLogDebug(@"testCommand value changed:%@", [_testCommand debugDescription]);
+    MSLogDebug(@"testCommand value changed:%@", [_testCommand debugDescription]);
 }
 
 - (IBAction)executeTestCommand:(id)sender {

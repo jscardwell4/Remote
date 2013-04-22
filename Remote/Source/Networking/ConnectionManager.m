@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static int msLogContext = NETWORKING_F_C;
+static int msLogContext = (LOG_CONTEXT_NETWORKING|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 static const ConnectionManager * connectionManager = nil;
 
@@ -45,9 +45,9 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
         connectionManager = [self new];
 
         // initialize settings
-        connectionManager->_flags.autoConnect = [SettingsManager boolForSetting:kAutoConnectKey];
+        connectionManager->_flags.autoConnect = [SettingsManager boolForSetting:MSSettingsAutoConnectKey];
         connectionManager->_flags.simulateCommandSuccess = [UserDefaults boolForKey:@"simulate"];
-        connectionManager->_flags.autoListen = YES;
+        connectionManager->_flags.autoListen = [SettingsManager boolForSetting:MSSettingsAutoListenKey];
 
         // initialize reachability
         connectionManager->_reachability =
@@ -185,7 +185,7 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
             {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
                                dispatch_get_main_queue(),
-                               ^(void){ completion(YES, YES); });
+                               ^(void){ completion(YES, nil); });
             }
             
             else [GlobalCacheConnectionManager sendCommand:cmd
@@ -215,7 +215,7 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
             }
         }
 
-        if (completion) completion(finished, success);
+        if (completion) completion(finished, nil);
     }
 }
 

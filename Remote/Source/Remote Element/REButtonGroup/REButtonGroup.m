@@ -8,7 +8,7 @@
 #import "RemoteElement_Private.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
-static int msLogContext = REMOTE_F_C;
+static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,29 +19,18 @@ static int msLogContext = REMOTE_F_C;
 
 @dynamic label;
 @dynamic labelConstraints;
-@dynamic configurationDelegate;
 @dynamic parentElement;
-@dynamic commandSet;
 @dynamic controller;
-
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
-{
-    __block REButtonGroup * element = nil;
-    [context performBlockAndWait:
-     ^{
-         element = [super remoteElementInContext:context];
-         element.type = RETypeButtonGroup;
-     }];
-    return element;
-}
 
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    self.primitiveController = [RERemoteController remoteControllerInContext:self.managedObjectContext];
+    [self.managedObjectContext performBlockAndWait:
+     ^{
+        self.type = RETypeButtonGroup;
+        self.configurationDelegate = [REButtonGroupConfigurationDelegate delegateForRemoteElement:self];
+    }];
 }
-
-- (RERemote *)remote { return self.parentElement; }
 
 - (void)setPanelLocation:(REButtonGroupPanelLocation)panelLocation
 {
@@ -64,44 +53,19 @@ static int msLogContext = REMOTE_F_C;
 
 - (void)addCommandSet:(RECommandSet *)commandSet forConfiguration:(RERemoteConfiguration)config
 {
-    [self.configurationDelegate setCommandSet:commandSet forConfiguration:config];
-}
-
-/**
- * Updates the Command for each Button contained by the ButtonGroup with Command object from
- * the current CommandSet
- */
-- (void)updateButtons
-{
-    RECommandSet * commandSet = self.commandSet;
-
-    if (ValueIsNil(commandSet)) return;
-
-    for (REButton * button in self.subelements)
-    {
-        RECommand * cmd = ([commandSet isValidKey:button.key] ? commandSet[button.key] : nil);
-
-        if (ValueIsNotNil(cmd))
-        {
-            button.command = cmd;
-            button.enabled = YES;
-            MSLogDebugTag(@"new command: %@", button.key, [cmd description]);
-        }
-        else
-        {
-            button.enabled = NO;
-            MSLogDebugTag(@"command not found for key \"%@\"", button.key);
-        }
-    }
+    [(REButtonGroupConfigurationDelegate *)self.configurationDelegate setCommandSet:commandSet
+                                                                   forConfiguration:config];
 }
 
 - (void)setCommandSet:(RECommandSet *)commandSet
 {
-    [self willChangeValueForKey:@"commandSet"];
-    self.primitiveCommandSet = commandSet;
-    [self didChangeValueForKey:@"commandSet"];
+    [(REButtonGroupConfigurationDelegate *)self.configurationDelegate setCommandSet:commandSet
+                                                                   forConfiguration:REDefaultConfiguration];
+}
 
-    [self updateButtons];
+- (RERemoteController *)controller
+{
+    return (self.parentElement ? self.parentElement.controller : nil);
 }
 
 @end
@@ -114,23 +78,49 @@ static int msLogContext = REMOTE_F_C;
 
 @dynamic commandSetCollection;
 
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
+- (void)awakeFromInsert
 {
-    __block REPickerLabelButtonGroup * element = nil;
-    [context performBlockAndWait:
-     ^{
-         element = [super remoteElementInContext:context];
-         element.type = REButtonGroupTypePickerLabel;
-         element.commandSetCollection = [RECommandSetCollection commandContainerInContext:context];
-     }];
-    return element;
+    [super awakeFromInsert];
+    self.type = REButtonGroupTypePickerLabel;
 }
+
+- (RECommandSetCollection *)commandSetCollection
+{
+    [self willAccessValueForKey:@"commandSetColleciton"];
+    RECommandSetCollection * collection = self.primitiveCommandSetCollection;
+    [self didAccessValueForKey:@"commandSetCollection"];
+    if (!collection)
+    {
+        collection = [RECommandSetCollection commandContainerInContext:self.managedObjectContext];
+        self.primitiveCommandSetCollection = collection;
+    }
+    return collection;
+}
+
+- (void)setCommandSet:(RECommandSet *)commandSet { /* Does nothing, this may change */}
 
 - (void)addCommandSet:(RECommandSet *)commandSet withLabel:(id)label
 {
     if ([label isKindOfClass:[NSString class]])
         label = [NSAttributedString attributedStringWithString:label];
     self.commandSetCollection[commandSet] = label;
+}
+
+@end
+
+@implementation REButtonGroup (Debugging)
+
+- (MSDictionary *)deepDescriptionDictionary
+{
+    REButtonGroup * element = [self faultedObject];
+    assert(element);
+    
+    MSMutableDictionary * descriptionDictionary = [[super deepDescriptionDictionary] mutableCopy];
+    descriptionDictionary[@"label"]            = (element.label ? element.label.string : @"nil");
+    descriptionDictionary[@"labelConstraints"] = (element.labelConstraints ? : @"nil");
+    descriptionDictionary[@"panelLocation"]    = NSStringFromPanelLocation(element.panelLocation);
+
+    return descriptionDictionary;
 }
 
 @end

@@ -8,7 +8,7 @@
 #import "REView_Private.h"
 
 static int   ddLogLevel   = DefaultDDLogLevel;
-static int   msLogContext = REMOTE_F_C;
+static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @implementation RESelectionPanelButtonGroupView
 
@@ -29,7 +29,7 @@ static int   msLogContext = REMOTE_F_C;
                 MSLogWarnTag(@"failed to register configuration '%@' with remote controller..."
                           "perhaps it was already registered?", view.key);
             else
-                MSLogDebugTag(@"new configuration '%@' registered successfully with remote controller",
+                MSLogDebugTag(@"configuration '%@' registered successfully with remote controller",
                            view.key);
         }
         if (!_selectedButton && self[REDefaultConfiguration])

@@ -12,8 +12,9 @@
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
 
-static int   ddLogLevel = LOG_LEVEL_DEBUG;
-
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
 // static int ddLogLevel = DefaultDDLogLevel;
 
 @interface LaunchScreenViewController ()
@@ -141,7 +142,7 @@ static int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    DDLogDebug(@"%@", ClassTagSelectorString);
+    MSLogDebug(@"%@", ClassTagSelectorString);
 }
 
 - (IBAction)unwind:(UIStoryboardSegue *)sender

@@ -10,7 +10,7 @@
 #import "RemoteElement_Private.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
-static const int msLogContext = CONSTRAINT_F;
+static const int msLogContext = (LOG_CONTEXT_CONSTRAINT|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
 static NSSet * kAttributeDependenciesAll;
@@ -96,8 +96,10 @@ MSKIT_STATIC_STRING_CONST   REConstant        = @"constant";
 
          NSDictionary * directory = [NSDictionary  dictionaryWithObjects:elements
                                                                  forKeys:identifiers];
+         NSArray * constraintDictionaries = [NSLayoutConstraint
+                                             constraintDictionariesByParsingString:constraints];
 
-         [[NSLayoutConstraint constraintDictionariesByParsingString:constraints]
+         [constraintDictionaries
           enumerateObjectsUsingBlock:^(NSDictionary * obj, NSUInteger idx, BOOL * stop)
           {
               NSString      * element1ID = obj[MSExtendedVisualFormatItem1Name];

@@ -21,3 +21,12 @@
 @property (nonatomic, copy)   NSString               * name;
 
 @end
+
+@interface RETheme (CoreDataGeneratedAccessors)
+
+- (void)addElementsObject:(RemoteElement *)element;
+- (void)removeElementsObject:(RemoteElement *)element;
+- (void)addElements:(NSSet *)elements;
+- (void)removeElements:(NSSet *)elements;
+
+@end

@@ -8,14 +8,18 @@
 
 #import "SettingsManager.h"
 
-MSKIT_STRING_CONST                   kAutoConnectKey                                                = @"kAutoConnectKey";
-MSKIT_STRING_CONST                   kProximitySensorKey                                            = @"kProximitySensorKey";
-MSKIT_STRING_CONST                   kStatusBarKey                                                  = @"kStatusBarKey";
-MSKIT_STRING_CONST                   kInactivityTimeoutKey                                          = @"kInactivityTimeoutKey";
-MSKIT_STRING_CONST                   MSSettingsManagerAutoConnectSettingDidChangeNotification       = @"MSSettingsManagerAutoConnectSettingDidChangeNotification";
-MSKIT_STRING_CONST                   MSSettingsManagerProximitySensorSettingDidChangeNotification   = @"MSSettingsManagerProximitySensorSettingDidChangeNotification";
-MSKIT_STRING_CONST                   MSSettingsManagerStatusBarSettingDidChangeNotification         = @"MSSettingsManagerStatusBarSettingDidChangeNotification";
-MSKIT_STRING_CONST                   MSSettingsManagerInactivityTimeoutSettingDidChangeNotification = @"MSSettingsManagerInactivityTimeoutSettingDidChangeNotification";
+MSKIT_KEY_DEFINITION(MSSettingsAutoConnect      );
+MSKIT_KEY_DEFINITION(MSSettingsAutoListen       );
+MSKIT_KEY_DEFINITION(MSSettingsProximitySensor  );
+MSKIT_KEY_DEFINITION(MSSettingsStatusBar        );
+MSKIT_KEY_DEFINITION(MSSettingsInactivityTimeout);
+
+MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerAutoConnectSettingDidChange      );
+MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerAutoListenSettingDidChange       );
+MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerProximitySensorSettingDidChange  );
+MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerStatusBarSettingDidChange        );
+MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerInactivityTimeoutSettingDidChange);
+
 static NSMutableDictionary const * settingsCache;
 static NSSet const               * validSettings;
 static NSDictionary const        * notifications;
@@ -25,33 +29,24 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
 @implementation SettingsManager
 
 + (void)initialize {
-    if (self == [SettingsManager class]) {
+    if (self == [SettingsManager class])
+    {
         settingsCache = [@{
-                             kAutoConnectKey : @YES,
-                             kStatusBarKey : @YES,
-                             kProximitySensorKey : @YES,
-                             kInactivityTimeoutKey : @0.0f
-                         }
-                         mutableCopy];
+             MSSettingsAutoConnectKey       : ([UserDefaults valueForKey:@"autoconnect"] ? : @YES),
+             MSSettingsAutoListenKey        : ([UserDefaults valueForKey:@"autolisten" ] ? : @YES),
+             MSSettingsStatusBarKey         : @YES,
+             MSSettingsProximitySensorKey   : @YES,
+             MSSettingsInactivityTimeoutKey : @0.0f
+         } mutableCopy];
+
         validSettings = [NSSet setWithArray:[settingsCache allKeys]];
         notifications = @{
-            kAutoConnectKey : MSSettingsManagerAutoConnectSettingDidChangeNotification,
-            kStatusBarKey : MSSettingsManagerStatusBarSettingDidChangeNotification,
-            kProximitySensorKey : MSSettingsManagerProximitySensorSettingDidChangeNotification,
-            kInactivityTimeoutKey : MSSettingsManagerInactivityTimeoutSettingDidChangeNotification
+            MSSettingsAutoConnectKey       : MSSettingsManagerAutoConnectSettingDidChangeNotification,
+            MSSettingsStatusBarKey         : MSSettingsManagerStatusBarSettingDidChangeNotification,
+            MSSettingsProximitySensorKey   : MSSettingsManagerProximitySensorSettingDidChangeNotification,
+            MSSettingsInactivityTimeoutKey : MSSettingsManagerInactivityTimeoutSettingDidChangeNotification
         };
     }
-}
-
-+ (id)sharedSettingsManager {
-    static dispatch_once_t   pred          = 0;
-    __strong static id       _sharedObject = nil;
-
-    dispatch_once(&pred, ^{_sharedObject = [[self alloc] init]; }
-
-                  );
-
-    return _sharedObject;
 }
 
 + (void)registerDefaults {
@@ -61,7 +56,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
 
 + (void)applyUserSettings {
     // FIXME: Not sure where this method fits in the overall scheme.
-    UIApp.statusBarHidden = [self boolForSetting:kStatusBarKey];
+    UIApp.statusBarHidden = [self boolForSetting:MSSettingsStatusBarKey];
 }
 
 + (BOOL)validSetting:(NSString *)setting {
@@ -70,7 +65,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
 
 + (void)setValue:(id)value forSetting:(NSString *)setting {
     if ([self validSetting:setting]) {
-        settingsCache[setting] = (value ? value : NullObject);
+        settingsCache[setting] = (value  ? : NullObject);
         UserDefaults[setting]  = settingsCache[setting];
         [self postNotification:notifications[setting]];
     }
@@ -109,7 +104,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
 }
 
 + (void)postNotification:(NSString *)notificationName {
-    [NotificationCenter postNotificationName:notificationName object:[self sharedSettingsManager]];
+    [NotificationCenter postNotificationName:notificationName object:[self class]];
 }
 
 + (int)ddLogLevel {

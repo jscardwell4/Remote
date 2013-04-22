@@ -26,6 +26,11 @@
 @interface RECommand : MSModelObject
 
 /**
+ * Create a new `Command` object in the current thread's managed object context.
+ */
++ (instancetype)command;
+
+/**
  * Create a new `Command` object in the specified `NSManagedObjectContext`.
  * @param context The context in which to create the new object.
  */
@@ -89,14 +94,14 @@
  * @param uuid The `uuid` of the command to retrieve
  * @return The `Command` object at the specified index
  */
-- (RECommand *)objectAtKeyedSubscript:(NSString *)uuid;
+//- (RECommand *)objectAtKeyedSubscript:(NSString *)uuid;
 
 /**
  * Returns the `Command` object at the specified index sorted by order of execution.
  * @param idx The index of the command to retrieve
  * @return The `Command` object at the specified index
  */
-- (RECommand *)objectAtIndexedSubscript:(NSUInteger)idx;
+//- (RECommand *)objectAtIndexedSubscript:(NSUInteger)idx;
 
 /**
  * Sets the `Command` object at the specified index sorted by order of execution.
@@ -175,13 +180,22 @@
 @interface RESystemCommand : RECommand
 
 /**
- * Retrieves the `SystemCommand` object for the specified key, creating it if it does not already
- * exist.
+ * Retrieves the `SystemCommand` object for the specified key using the current thread's managed 
+ * object context, creating it if it does not already exist.
+ * @param key `RESystemCommandType` for the desired command.
+ * @return The existing or newly created `SystemCommand` for the specified key.
+ */
++ (RESystemCommand *)commandWithType:(RESystemCommandType)key;
+
+/**
+ * Retrieves the `SystemCommand` object for the specified key in the specified context, creating it
+ * if it does not already exist.
  * @param key `RESystemCommandType` for the desired command.
  * @param context Context from which the command will be retrieved.
  * @return The existing or newly created `SystemCommand` for the specified key.
  */
-+ (RESystemCommand *)commandInContext:(NSManagedObjectContext *)context type:(RESystemCommandType)key;
++ (RESystemCommand *)commandWithType:(RESystemCommandType)key
+                           inContext:(NSManagedObjectContext *)context;
 
 + (BOOL)registerRemoteViewController:(RERemoteViewController *)remoteViewController;
 
@@ -202,9 +216,7 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Abstract Send Command
 ////////////////////////////////////////////////////////////////////////////////
-@interface RESendCommand : RECommand
-
-@end
+@interface RESendCommand : RECommand @end
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -217,7 +229,7 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
  * IR receivers that control the user's home theater system. At this time, only
  * [iTach](http://www.globalcache.com/products/itach) devices from Global Caché are supported.
  */
-@interface RESendIRCommand : RESendCommand // <ConnectionManagerDelegate>
+@interface RESendIRCommand : RESendCommand
 
 /**
  * Default intializer for creating a new `SendIRCommand`.
@@ -247,8 +259,7 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
 /// Forces sending over port regardless of port set for `ComponentDevice`.
 @property (nonatomic, assign)  BODevicePort portOverride;
 
-/// `IRCode` object that encapsulates the networked device information necessary for sending the
-/// command.
+/// `IRCode` object that encapsulates the networked device information for sending the command.
 @property (nonatomic, strong) BOIRCode * code;
 
 /// The actual command delivered to the networked device via the `ConnectionManager`. It is derived
@@ -272,12 +283,19 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
 @interface REHTTPCommand : RESendCommand
 
 /**
+ * Default initializer for creating a new `HTTPCommand` in the current thread context.
+ * @param urlString String containing the url to be requested by `ConnectionManager`.
+ * @return The newly created `HTTPCommand` object.
+ */
++ (REHTTPCommand *)commandWithURL:(NSString *)url;
+
+/**
  * Default initializer for creating a new `HTTPCommand`.
  * @param urlString String containing the url to be requested by `ConnectionManager`.
  * @param context `NSManagedObjectContext` in which to create the command.
  * @return The newly created `HTTPCommand` object.
  */
-+ (REHTTPCommand *)commandInContext:(NSManagedObjectContext *)context withURL:(NSString *)url;
++ (REHTTPCommand *)commandWithURL:(NSString *)url inContext:(NSManagedObjectContext *)context;
 
 /// The url for the http request sent by <ConnectionManager>.
 @property (nonatomic, strong) NSURL * url;
@@ -336,10 +354,11 @@ MSKIT_STATIC_INLINE NSString * NSStringFromRESystemCommandType(RESystemCommandTy
 
 @interface RESwitchToConfigCommand : RECommand
 
-+ (RESwitchToConfigCommand *)configCommandInContext:(NSManagedObjectContext *)ctx
-                                      configuration:(RERemoteConfiguration)config;
++ (RESwitchToConfigCommand *)commandWithConfiguration:(RERemoteConfiguration)configuration;
++ (RESwitchToConfigCommand *)commandWithConfiguration:(RERemoteConfiguration)configuration
+                                            inContext:(NSManagedObjectContext *)context;
 
 @property (nonatomic, strong, readonly) RERemoteController    * remoteController;
-@property (nonatomic, copy)             RERemoteConfiguration   configuration;
+@property (nonatomic, copy,   readonly) RERemoteConfiguration   configuration;
 
 @end

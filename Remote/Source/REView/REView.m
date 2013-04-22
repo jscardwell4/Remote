@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static const int   ddLogLevel               = LOG_LEVEL_DEBUG;
-static const int   msLogContext             = REMOTE_F;
+static const int   msLogContext             = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
  */
 - (id)forwardingTargetForSelector:(SEL)aSelector
 {
-    return (_model ? _model : [super forwardingTargetForSelector:aSelector]);
+    return (_model  ? : [super forwardingTargetForSelector:aSelector]);
 }
 
 

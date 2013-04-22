@@ -12,7 +12,7 @@
 #import "Painter.h"
 
 static const int ddLogLevel = LOG_LEVEL_WARN;
-static const int msLogContext = DEFAULT_LOG_CONTEXT;
+static const int msLogContext = LOG_CONTEXT_EDITOR;
 #pragma unused(ddLogLevel, msLogContext)
 
 
@@ -167,7 +167,7 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
     } else
         [self selectImageAtIndex:index];
 
-    DDLogDebug(@"%@\nsender.view:%@\nindexPath:%@\ntouchedView:%@\n",
+    MSLogDebug(@"%@\nsender.view:%@\nindexPath:%@\ntouchedView:%@\n",
                ClassTagSelectorString, sender.view, indexPath, touchedView);
 }
 
@@ -268,7 +268,7 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
     if (_fetchedBackgrounds) return _fetchedBackgrounds;
 
     if (!_sourceObject)
-        self.fetchedBackgrounds = [NSArray array];
+        self.fetchedBackgrounds = @[];
     else {
         [_sourceObject.managedObjectContext
          performBlockAndWait:^{
@@ -282,10 +282,10 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
              if (error) {
                 DDLogError(@"%@\n\terror retrieving background images: %@",
                            ClassTagSelectorString, [error localizedFailureReason]);
-                self.fetchedBackgrounds = [NSArray array];
+                self.fetchedBackgrounds = @[];
              } else if (!fetchedObjects || [fetchedObjects count] == 0) {
                 DDLogError(@"%@\n\tbackground image fetch returned empty array", ClassTagSelectorString);
-                self.fetchedBackgrounds = [NSArray array];
+                self.fetchedBackgrounds = @[];
              } else
                 self.fetchedBackgrounds = fetchedObjects;
         }

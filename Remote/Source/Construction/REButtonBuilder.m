@@ -9,7 +9,7 @@
 #import "RemoteConstruction.h"
 
 static const int ddLogLevel = LOG_LEVEL_WARN;
-static const int msLogContext = DEFAULT_LOG_CONTEXT;
+static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation REButtonBuilder

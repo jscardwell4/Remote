@@ -38,7 +38,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                       reuseIdentifier:CellIdentifier];
 
     cell.textLabel.text =
-        [self.fetchedManufacturers[indexPath.section] objectAtIndex:indexPath.row];
+        (self.fetchedManufacturers[indexPath.section])[indexPath.row];
 
     return cell;
 }
@@ -93,7 +93,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
         NSIndexPath * selectedRow  = [self.tableView indexPathForSelectedRow];
         NSString    * manufacturer =
-            [self.fetchedManufacturers[selectedRow.section] objectAtIndex:selectedRow.row];
+            (self.fetchedManufacturers[selectedRow.section])[selectedRow.row];
         ManufacturerCodeSetsViewController * detailVC = segue.destinationViewController;
 
         detailVC.manufacturer = manufacturer;

@@ -11,7 +11,10 @@
 #define USE_CURL_DOWN_TRANSITION NO
 #define USE_CURL_DOWN_FOR_PUSH   NO
 
-static int         ddLogLevel                            = LOG_LEVEL_DEBUG | LOG_FLAG_SELECTOR;
+static const int ddLogLevel = LOG_LEVEL_WARN;
+static const int msLogContext = 0;
+#pragma unused(ddLogLevel, msLogContext)
+
 MSKIT_STRING_CONST   REDetailedButtonEditingButtonKey       = @"REDetailedButtonEditingButtonKey";
 MSKIT_STRING_CONST   REDetailedButtonEditingControlStateKey = @"REDetailedButtonEditingControlStateKey";
 
@@ -167,7 +170,7 @@ editorState;
     if (  [_currentChildController isKindOfClass:[SelectionViewController class]]
        || [_currentChildController isKindOfClass:[SelectionTableViewController class]])
     {
-                    DDLogDebug(@"%@\n\tshowing selection controller, ignoring swipe", ClassTagString);
+                    MSLogDebug(@"%@\n\tshowing selection controller, ignoring swipe", ClassTagString);
 
         return;
     }
@@ -178,9 +181,9 @@ editorState;
 
         switch (direction) {
             case UISwipeGestureRecognizerDirectionLeft :
-                    DDLogDebug(@"%@\n\tleft swipe received...", ClassTagString);
+                    MSLogDebug(@"%@\n\tleft swipe received...", ClassTagString);
                 if (_pageControl.currentPage < _pageControl.numberOfPages - 1) {
-                    DDLogDebug(@"%@\n\tcurrent page = %u, transitioning to next page...",
+                    MSLogDebug(@"%@\n\tcurrent page = %u, transitioning to next page...",
                                ClassTagString, currentPage);
                     [_pageControl setCurrentPage:_pageControl.currentPage + 1];
                     [self pageChangeAction:_pageControl];
@@ -189,9 +192,9 @@ editorState;
                 break;
 
             case UISwipeGestureRecognizerDirectionRight :
-                    DDLogDebug(@"%@\n\tright swipe received...", ClassTagString);
+                    MSLogDebug(@"%@\n\tright swipe received...", ClassTagString);
                 if (_pageControl.currentPage > 0) {
-                    DDLogDebug(@"%@\n\tcurrent page = %u, transitioning to previous page...",
+                    MSLogDebug(@"%@\n\tcurrent page = %u, transitioning to previous page...",
                                ClassTagString, currentPage);
                     [_pageControl setCurrentPage:_pageControl.currentPage - 1];
                     [self pageChangeAction:_pageControl];
@@ -209,7 +212,7 @@ editorState;
     UIViewController * childController = nil;
     Class              controllerClass;
 
-                    DDLogDebug(@"%@\n\tlocating child controller for page number:%u", ClassTagString, pageNumber);
+                    MSLogDebug(@"%@\n\tlocating child controller for page number:%u", ClassTagString, pageNumber);
     switch (pageNumber) {
         case LabelEditingChildController :
             controllerClass = [LabelEditingViewController class];
@@ -231,7 +234,7 @@ editorState;
 
     if (ValueIsNil(controllerClass)) return nil;
 
-        DDLogDebug(@"%@\n\tchecking child controllers array for controller of class:%@",
+        MSLogDebug(@"%@\n\tchecking child controllers array for controller of class:%@",
                ClassTagString, ClassString(controllerClass));
 
     NSUInteger   controllerIndex =
@@ -249,12 +252,12 @@ editorState;
         ];
 
     if (controllerIndex != NSNotFound) {
-        DDLogDebug(@"%@\n\tcontroller located at index:%u", ClassTagString, controllerIndex);
+        MSLogDebug(@"%@\n\tcontroller located at index:%u", ClassTagString, controllerIndex);
 
         return self.childViewControllers[controllerIndex];
     }
 
-        DDLogDebug(@"%@\n\tno existing controller could be located, creating a new controller...",
+        MSLogDebug(@"%@\n\tno existing controller could be located, creating a new controller...",
                ClassTagString);
     switch (pageNumber) {
         case LabelEditingChildController : {
@@ -304,7 +307,7 @@ editorState;
             break;
     } /* switch */
 
-        DDLogDebug(@"%@\n\treturning new controller %@", ClassTagString, childController);
+        MSLogDebug(@"%@\n\treturning new controller %@", ClassTagString, childController);
 
     return childController;
 }     /* childControllerForPage */
@@ -312,24 +315,24 @@ editorState;
 - (void)transitionToAuxControllerForPage:(NSUInteger)pageNumber {
     UIViewController * childController = [self childControllerForPage:pageNumber];
 
-        DDLogDebug(@"%@\n\tcontroller returned for page %u:%@",
+        MSLogDebug(@"%@\n\tcontroller returned for page %u:%@",
                ClassTagString, pageNumber, childController);
 
     if (ValueIsNil(childController) || [self.childViewControllers count] < 1) return;
 
     UIViewController * currentChild = self.childViewControllers[_currentChildIndex];
 
-        DDLogDebug(@"%@\n\tcurrent child controller %@", ClassTagString, currentChild);
+        MSLogDebug(@"%@\n\tcurrent child controller %@", ClassTagString, currentChild);
 
     [self updateChildContainerForNewController:childController];
 
     if (![self.childViewControllers containsObject:childController]) {
-        DDLogDebug(@"%@\n\tchild controller is new, adding to array...", ClassTagString);
+        MSLogDebug(@"%@\n\tchild controller is new, adding to array...", ClassTagString);
         [self addChildViewController:childController];
         [childController didMoveToParentViewController:self];
     }
 
-        DDLogDebug(@"%@\n\ttransitioning from controller:%@ to controller:%@",
+        MSLogDebug(@"%@\n\ttransitioning from controller:%@ to controller:%@",
                ClassTagString, currentChild, childController);
 
     if (USE_CURL_DOWN_TRANSITION) {
@@ -585,18 +588,18 @@ editorState;
     if ([firstResponder isMemberOfClass:[MSPickerInputButton class]]) return;
 
     CGFloat   keyboardTop =
-        [[[note userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y;
+        [[note userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y;
 
     if (ValueIsNotNil(firstResponder)) {
         CGRect   rectInWindow = [firstResponder convertRect:firstResponder.frame toView:nil];
 
 // CGFloat rectBottom = rectInWindow.origin.y + rectInWindow.size.height;
-        DDLogDebug(@"%@\n\tfirst responder rect as report by window:%@",
+        MSLogDebug(@"%@\n\tfirst responder rect as report by window:%@",
                    ClassTagString, CGRectString(rectInWindow));
     }
 
     CGFloat   duration =
-        [[[note userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+        [[note userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect   frame = self.view.frame;
 
     frame.origin.y -= (frame.size.height - keyboardTop);
@@ -617,7 +620,7 @@ editorState;
     frame.origin.y = 0;
 
     CGFloat   duration =
-        [[[note userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+        [[note userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
 
     [UIView animateWithDuration:duration
                      animations:^{

@@ -33,7 +33,7 @@ callsuper:
     }
 
 #ifdef LOG_WINDOW_EVENTS
-    DDLogDebug(@"%@ new event:%@", ClassTagSelectorString, ((ddLogLevel & LOG_FLAG_VERBOSE)
+    MSLogDebug(@"%@ new event:%@", ClassTagSelectorString, ((ddLogLevel & LOG_FLAG_VERBOSE)
                                                             ?[event description]
                                                             :[NSString stringWithFormat:@"%@ timestamp:%f",
                                                               ClassString([event class]), event.timestamp]));

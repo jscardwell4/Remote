@@ -59,7 +59,7 @@ typedef NS_OPTIONS (uint64_t, UITestCode) {
 #define SLEEP_DURATION        1
 #define SHOULD_LOG_QUEUE_NAME NO
 #define LOG_QUEUE_NAME                                                         \
-    do {if (SHOULD_LOG_QUEUE_NAME) DDLogDebug(@"%@ running on queue: %@",      \
+    do {if (SHOULD_LOG_QUEUE_NAME) MSLogDebug(@"%@ running on queue: %@",      \
                                               ClassTagSelectorString,          \
                                               [[NSOperationQueue currentQueue] \
                                                name]);} while (0)

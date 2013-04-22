@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f41955e5-ea59-4f1b-82ec-046e053d1fbc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CoreDataTests/CoreDataTests-Prefix.pch" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSetProxy.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSetProxy.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSetProxy_Private.h" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote (faster).xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -rebuild (faster).xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -simulate (faster).xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -simulate.xcscheme" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/RemoteTests/RemoteTests-Info.plist" afterPath="$PROJECT_DIR$/CoreDataTests/CoreDataTests-Info.plist" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/RemoteTests/RemoteTests.h" afterPath="$PROJECT_DIR$/CoreDataTests/CoreDataTests.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/RemoteTests/RemoteTests.m" afterPath="$PROJECT_DIR$/CoreDataTests/CoreDataTests.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/RemoteTests/en.lproj/InfoPlist.strings" afterPath="$PROJECT_DIR$/CoreDataTests/en.lproj/InfoPlist.strings" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/BankObject/BankObject Subclasses/ComponentDevice/BOComponentDevice.m" afterPath="$PROJECT_DIR$/Remote/Source/BankObject/BankObject Subclasses/ComponentDevice/BOComponentDevice.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/BankObject/BankObject Subclasses/REImage/BOImage.m" afterPath="$PROJECT_DIR$/Remote/Source/BankObject/BankObject Subclasses/REImage/BOImage.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/BackgroundEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/BackgroundEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/UI Testing/ButtonGroupEditingTest.m" afterPath="$PROJECT_DIR$/Remote/Source/UI Testing/ButtonGroupEditingTest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/CodeBank/CodeDatabaseViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/CodeBank/CodeDatabaseViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/CommandEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/CommandEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/CodeBank/ComponentDeviceListViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/CodeBank/ComponentDeviceListViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Networking/ConnectionManager.m" afterPath="$PROJECT_DIR$/Remote/Source/Networking/ConnectionManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/CoreDataManager.h" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/CoreDataManager.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/CoreDataManager.m" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/CoreDataManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/DatabaseLoader.m" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/DatabaseLoader.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Networking/GlobalCacheConnectionManager.m" afterPath="$PROJECT_DIR$/Remote/Source/Networking/GlobalCacheConnectionManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/CodeBank/IRCodeDetailViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/CodeBank/IRCodeDetailViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/IconEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/IconEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Other View Controllers/IconSelectionViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Other View Controllers/IconSelectionViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/LabelEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/LabelEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Other View Controllers/LaunchScreenViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Other View Controllers/LaunchScreenViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/CoreData/MSModelObject.h" afterPath="$PROJECT_DIR$/Remote/CoreData/MSModelObject.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/CoreData/MSModelObject.m" afterPath="$PROJECT_DIR$/Remote/CoreData/MSModelObject.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/MSRemoteAppController.m" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/MSRemoteAppController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Type Definitions, Constants &amp; Functions/MSRemoteMacros.h" afterPath="$PROJECT_DIR$/Remote/Source/Type Definitions, Constants &amp; Functions/MSRemoteMacros.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/UI Testing/MSRemoteUITest.m" afterPath="$PROJECT_DIR$/Remote/Source/UI Testing/MSRemoteUITest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/MSRemoteWindow.m" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/MSRemoteWindow.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/MacroCommandEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/MacroCommandEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/CodeBank/ManufacturerCodeSetsViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/CodeBank/ManufacturerCodeSetsViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/Painter.m" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/Painter.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/PowerCommandEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/PowerCommandEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Controllers/REActivity.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Controllers/REActivity.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REActivityCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REActivityCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REBackgroundEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REBackgroundEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/REButton/REButton.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/REButton/REButton.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Construction/REButtonBuilder.m" afterPath="$PROJECT_DIR$/Remote/Source/Construction/REButtonBuilder.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REButtonConfigurationDelegate.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REButtonConfigurationDelegate.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REButtonEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REButtonEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/REButtonGroup/REButtonGroup.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/REButtonGroup/REButtonGroup.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Construction/REButtonGroupBuilder.m" afterPath="$PROJECT_DIR$/Remote/Source/Construction/REButtonGroupBuilder.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REButtonGroupConfigurationDelegate.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REButtonGroupConfigurationDelegate.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REButtonGroupEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REButtonGroupEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REButtonGroupView/REButtonGroupView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REButtonGroupView/REButtonGroupView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REButtonView/REButtonView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REButtonView/REButtonView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/RECommand.h" afterPath="$PROJECT_DIR$/Remote/Source/Commands/RECommand.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/RECommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/RECommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/CommandSets/RECommandContainer.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/CommandSets/RECommandContainer.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/CommandSets/RECommandSet.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/CommandSets/RECommandSet.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/CommandSets/RECommandSetCollection.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/CommandSets/RECommandSetCollection.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/RECommand_Private.h" afterPath="$PROJECT_DIR$/Remote/Source/Commands/RECommand_Private.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REConfigurationDelegate.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REConfigurationDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REConfigurationDelegate.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REConfigurationDelegate.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REConfigurationDelegate_Private.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/REConfigurationDelegate_Private.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REButtonView/REConnectionStatusButtonView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REButtonView/REConnectionStatusButtonView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/Constraints/REConstraint.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/Constraints/REConstraint.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Constraints/REConstraintManager.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Constraints/REConstraintManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateIconImageSet.m" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateIconImageSet.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateImageSet.m" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateImageSet.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSet.h" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSet.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSet.m" afterPath="$PROJECT_DIR$/Remote/Source/Control State Sets/REControlStateSet.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REDelayCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REDelayCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REDetailedButtonEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REDetailedButtonEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REEditingViewController+Gestures.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REEditingViewController+Gestures.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REEditingViewController+IBActions.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REEditingViewController+IBActions.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/REEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/REEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REHTTPCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REHTTPCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/RELabelView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/RELabelView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Constraints/RELayoutConfiguration.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Constraints/RELayoutConfiguration.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Constraints/RELayoutConfiguration.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Constraints/RELayoutConfiguration.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REMacroCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REMacroCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REButtonGroupView/REPickerLabelButtonGroupView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REButtonGroupView/REPickerLabelButtonGroupView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REPowerCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/REPowerCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/RERemote/RERemote.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/RERemote/RERemote.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Construction/RERemoteBuilder.m" afterPath="$PROJECT_DIR$/Remote/Source/Construction/RERemoteBuilder.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/RERemoteConfigurationDelegate.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Configurations/RERemoteConfigurationDelegate.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Controllers/RERemoteController.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Controllers/RERemoteController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/RERemoteEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/RERemoteEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/RERemoteView/RERemoteView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/RERemoteView/RERemoteView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Controllers/RERemoteViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Controllers/RERemoteViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REButtonGroupView/RESelectionPanelButtonGroupView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REButtonGroupView/RESelectionPanelButtonGroupView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESendCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESendCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESendIRCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESendIRCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESwitchToConfigCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESwitchToConfigCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESwitchToRemoteCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESwitchToRemoteCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESystemCommand.m" afterPath="$PROJECT_DIR$/Remote/Source/Commands/Command Subclasses/RESystemCommand.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme+ApplyingThemes.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme+ApplyingThemes.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme_Private.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/Themes/RETheme_Private.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Type Definitions, Constants &amp; Functions/RETypedefs.h" afterPath="$PROJECT_DIR$/Remote/Source/Type Definitions, Constants &amp; Functions/RETypedefs.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REView+Debugging.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REView+Debugging.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REView+Drawing.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REView+Drawing.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REView+Editing.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REView+Editing.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/REView/REView.m" afterPath="$PROJECT_DIR$/Remote/Source/REView/REView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -rebuild.xcscheme" afterPath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -rebuild.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -uitest.xcscheme" afterPath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -uitest.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote-Prefix.pch" afterPath="$PROJECT_DIR$/Remote/Source/Remote-Prefix.pch" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote.xcscheme" afterPath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Construction/RemoteConstruction.h" afterPath="$PROJECT_DIR$/Remote/Source/Construction/RemoteConstruction.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/UI Testing/RemoteEditingTest.m" afterPath="$PROJECT_DIR$/Remote/Source/UI Testing/RemoteEditingTest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement+FlagsAndOptions.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement+FlagsAndOptions.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.m" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Construction/RemoteElementConstructionManager.m" afterPath="$PROJECT_DIR$/Remote/Source/Construction/RemoteElementConstructionManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement_Private.h" afterPath="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement_Private.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Editors/SendIRCommandEditingViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/Editors/SendIRCommandEditingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/Singletons/SettingsManager.m" afterPath="$PROJECT_DIR$/Remote/Source/Singletons/SettingsManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/UI Testing/UITestRunner.h" afterPath="$PROJECT_DIR$/Remote/Source/UI Testing/UITestRunner.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/UI Testing/UITestRunner.m" afterPath="$PROJECT_DIR$/Remote/Source/UI Testing/UITestRunner.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/Source/CodeBank/UserCodesViewController.m" afterPath="$PROJECT_DIR$/Remote/Source/CodeBank/UserCodesViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote/CoreData/Remote.xcdatamodeld/Remote.base 18.xcdatamodel/contents" afterPath="$PROJECT_DIR$/Remote/CoreData/Remote.xcdatamodeld/Remote.base 18.xcdatamodel/contents" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/Remote.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="$PROJECT_DIR$/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/xcschememanagement.plist" />
+    </list>
+    <ignored path="Remote.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <file path="/Dummy.txt" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366123274981" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSCompletionBlockOperation.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288177" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSBarButtonItem.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288177" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSGestureManager.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288177" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSMultiselectGestureRecognizer.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288177" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSManagedObject+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSLongPressGestureRecognizer.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPinchGestureRecognizer.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSAssertionHandler.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSError.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSLayoutConstraint+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSOperationQueue+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSQueue.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288178" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSOrderedSet+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKVOReceptionist.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSRegularExpression+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSSwipeGestureRecognizer.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSValue+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSBitVector.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSHashTable+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPopupBarButton.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UICollectionViewFlowLayout+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288179" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSLog.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288180" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSManagedObjectContext+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288180" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSValueTransformers.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288180" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSURL+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288180" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSNetworkReachability.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124288180" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSString+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290467" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIFont+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290467" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSDictionary+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290467" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSResizingLayer.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSCheckboxView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSColorInputButton.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/CALayer+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSUserDefaults+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSNumberPadView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSMapTable+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPickerInputViewController.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSColorInputView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290468" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSArray+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIAlertView+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSColorInputViewController.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSNull+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPickerInputView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIImage+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPickerInputButton.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSReplicatorView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSAttributedString+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290469" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSFetchRequest+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIWindow+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSTouchReporterView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIView+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIColor+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIGestureRecognizer+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSSet+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSReflectingView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSObject+MSKitAdditions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290470" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290790" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSMultiselectView.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290790" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitProtocols.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124290791" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitGeometryFunctions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124295926" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitMacros.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124295926" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitLoggingFunctions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124295926" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitDefines.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124295926" ignored="false" />
+    <file path="$PROJECT_DIR$/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitMiscellaneousFunctions.h" changelist="f41955e5-ea59-4f1b-82ec-046e053d1fbc" time="1366124295926" ignored="false" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_UNIVERSAL" />
+  <component name="FavoritesManager">
+    <favorites_list name="Remote" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="RemoteElement.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="207" column="16" selection-start="8104" selection-end="8104" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RemoteElement.h" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="36" selection-start="2366" selection-end="2366" vertical-scroll-proportion="0.03984064">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.h" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="716" />
+    <option name="height" value="874" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Remote" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="DirectoryView.Xcode" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.RegExp" />
+    <property name="FullScreen" value="false" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+  </component>
+  <component name="RunManager" selected="Application.Remote -rebuild -simulate">
+    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PROJECT_NAME="Remote" TARGET_NAME="Remote" CONFIG_NAME="Debug" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="Remote -rebuild -simulate" type="AppleRunConfiguration" factoryName="Application" SCHEME_NAME="Remote -rebuild -simulate" PROJECT_NAME="Remote" TARGET_NAME="Remote" CONFIG_NAME="Debug" PROGRAM_PARAMS="-rebuild YES -simulate YES" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs>
+        <env name="XcodeColors" value="YES" />
+      </envs>
+      <method />
+    </configuration>
+    <configuration default="false" name="Remote -rebuild" type="AppleRunConfiguration" factoryName="Application" SCHEME_NAME="Remote -rebuild" PROJECT_NAME="Remote" TARGET_NAME="Remote" CONFIG_NAME="Debug" PROGRAM_PARAMS="-rebuild YES" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs>
+        <env name="XcodeColors" value="YES" />
+      </envs>
+      <method />
+    </configuration>
+    <configuration default="false" name="Remote -simulate" type="AppleRunConfiguration" factoryName="Application" SCHEME_NAME="Remote -simulate" PROJECT_NAME="Remote" TARGET_NAME="Remote" CONFIG_NAME="Debug" PROGRAM_PARAMS="-simulate YES" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs>
+        <env name="XcodeColors" value="YES" />
+      </envs>
+      <method />
+    </configuration>
+    <configuration default="false" name="Remote -uitest" type="AppleRunConfiguration" factoryName="Application" SCHEME_NAME="Remote -uitest" PROJECT_NAME="Remote" TARGET_NAME="Remote" CONFIG_NAME="Debug" PROGRAM_PARAMS="-uitest YES" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs>
+        <env name="XcodeColors" value="YES" />
+      </envs>
+      <method />
+    </configuration>
+    <configuration default="false" name="Remote" type="AppleRunConfiguration" factoryName="Application" SCHEME_NAME="Remote" PROJECT_NAME="Remote" TARGET_NAME="Remote" CONFIG_NAME="Debug" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs>
+        <env name="XcodeColors" value="YES" />
+      </envs>
+      <method />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Application.Remote -rebuild -simulate" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Remote -rebuild" />
+      <item index="2" class="java.lang.String" itemvalue="Application.Remote -simulate" />
+      <item index="3" class="java.lang.String" itemvalue="Application.Remote -uitest" />
+      <item index="4" class="java.lang.String" itemvalue="Application.Remote" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="sslv3">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f41955e5-ea59-4f1b-82ec-046e053d1fbc" name="Default" comment="" />
+      <created>1366076736855</created>
+      <updated>1366076736855</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="716" height="874" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24982105" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
+    <option name="LIMIT_HISTORY" value="true" />
+    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
+    <option name="UPDATE_FILTER_SCOPE_NAME" />
+    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
+    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
+    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="207" column="16" selection-start="8104" selection-end="8104" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="207" column="16" selection-start="8104" selection-end="8104" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Remote/Source/Remote Element/RemoteElement.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="36" selection-start="2366" selection-end="2366" vertical-scroll-proportion="0.03984064">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

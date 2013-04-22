@@ -7,8 +7,8 @@
 //
 #import "RemoteElement_Private.h"
 
-static const int            ddLogLevel = LOG_LEVEL_DEBUG;
-static const int            msLogContext = REMOTE_F_C;
+static const int            ddLogLevel  = LOG_LEVEL_DEBUG;
+static const int            msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 static const NSDictionary * kEntityNameForType;
 static const NSSet        * kLayoutConfigurationSelectors;
@@ -21,7 +21,7 @@ static const NSSet        * kConstraintManagerSelectors;
     NSString * __identifier;
 }
 
-@synthesize constraintManager = _constraintManager;
+@synthesize constraintManager = __constraintManager;
 
 @dynamic constraints;
 @dynamic displayName;
@@ -34,6 +34,8 @@ static const NSSet        * kConstraintManagerSelectors;
 @dynamic firstItemConstraints;
 @dynamic secondItemConstraints;
 @dynamic layoutConfiguration;
+@dynamic appliedTheme;
+@dynamic configurationDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initializers
@@ -66,7 +68,7 @@ static const NSSet        * kConstraintManagerSelectors;
 
         kConstraintManagerSelectors = [@[NSValueWithPointer(@selector(setConstraintsFromString:))]
                                        set];
-        
+
         kLayoutConfigurationKeys = [@[@"proportionLock",
                                       @"subelementConstraints",
                                       @"dependentConstraints",
@@ -81,6 +83,18 @@ static const NSSet        * kConstraintManagerSelectors;
     }
 }
 
++ (instancetype)remoteElement
+{
+    return [self remoteElementInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+}
+
++ (instancetype)remoteElementWithAttributes:(NSDictionary *)attributes
+{
+    RemoteElement * element = [self remoteElement];
+    [element setValuesForKeysWithDictionary:attributes];
+    return element;
+}
+
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
 {
     return [self MR_createInContext:context];
@@ -89,24 +103,17 @@ static const NSSet        * kConstraintManagerSelectors;
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
                         withAttributes:(NSDictionary *)attributes
 {
-    __block RemoteElement * element = nil;
-    [context performBlockAndWait:
-     ^{
-         element = [self remoteElementInContext:context];
-         [element setValuesForKeysWithDictionary:attributes];
-     }];
-
+    RemoteElement * element = [self remoteElementInContext:context];
+    [element setValuesForKeysWithDictionary:attributes];
     return element;
 }
 
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    NSManagedObjectContext * context = self.managedObjectContext;
-    [context performBlockAndWait:
+    [self.managedObjectContext performBlockAndWait:
      ^{
-         self.layoutConfiguration   = [RELayoutConfiguration layoutConfigurationForElement:self];
-         self.configurationDelegate = [REConfigurationDelegate delegateForRemoteElement:self];
+         self.layoutConfiguration = [RELayoutConfiguration layoutConfigurationForElement:self];
      }];
 }
 
@@ -124,14 +131,9 @@ static const NSSet        * kConstraintManagerSelectors;
     [self didChangeValueForKey:@"parentElement"];
     if (parentElement)
     {
-        REConfigurationDelegate * delegate = nil;
-        if ([parentElement isKindOfClass:[RERemote class]])
-            delegate = parentElement.configurationDelegate;
-        else if ([parentElement isKindOfClass:[REButtonGroup class]])
-            delegate = parentElement.parentElement.configurationDelegate;
-
-        self.configurationDelegate.delegate = delegate;
-        [self.subelements setValue:delegate forKeyPath:@"configurationDelegate.delegate"];
+        self.configurationDelegate.delegate = parentElement.configurationDelegate.delegate;
+        [self.subelements setValue:self.configurationDelegate.delegate
+                        forKeyPath:@"configurationDelegate.delegate"];
     }
 }
 
@@ -170,34 +172,33 @@ static const NSSet        * kConstraintManagerSelectors;
 
 - (REConstraintManager *)constraintManager
 {
-    if (!_constraintManager)
+    if (!__constraintManager)
         self.constraintManager = [REConstraintManager constraintManagerForRemoteElement:self];
-    return _constraintManager;
+    return __constraintManager;
 }
 
-- (void)setDisplayName:(NSString *)displayName
+- (NSString *)key
 {
-    [self willChangeValueForKey:@"displayName"];
-    self.primitiveDisplayName = [displayName copy];
-    [self didChangeValueForKey:@"displayName"];
-
-    if (StringIsEmpty(self.key)) self.key = [displayName camelCaseString];
+    [self willAccessValueForKey:@"key"];
+    NSString * key = self.primitiveKey;
+    [self didAccessValueForKey:@"key"];
+    return (StringIsEmpty(key) ? [self.displayName camelCaseString] : key);
 }
+
+- (void)applyTheme:(RETheme *)theme { [theme applyThemeToElement:self]; }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Derived Properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)camelCaseDisplayName { return [self.displayName camelCaseString]; }
-
 - (RemoteElement *)objectForKeyedSubscript:(NSString *)key
 {
     if (!self.subelements.count) return nil;
 
-    return [self.subelements
-            objectPassingTest:^BOOL (RemoteElement * obj, NSUInteger idx) {
-                return (   [obj.uuid isEqualToString:key]
-                        || [obj.key isEqualToString:key]);
+    return [self.subelements objectPassingTest:
+            ^BOOL (RemoteElement * obj, NSUInteger idx)
+            {
+                return REStringIdentifiesRemoteElement(key, obj);
             }];
 }
 
@@ -212,11 +213,77 @@ static const NSSet        * kConstraintManagerSelectors;
 
 - (NSString *)shortDescription { return self.displayName; }
 
+- (MSDictionary *)deepDescriptionDictionary
+{
+    RemoteElement * element = [self faultedObject];
+    assert(element);
+
+    MSMutableDictionary * descriptionDictionary = [[super deepDescriptionDictionary] mutableCopy];
+    descriptionDictionary[@"type"]        = (NSStringFromREType(element.type)     ? : @"nil");
+    descriptionDictionary[@"baseType"]    = (NSStringFromREType(element.baseType) ? : @"nil");
+    descriptionDictionary[@"key"]         = $(@"'%@'", element.key);
+    descriptionDictionary[@"displayName"] = $(@"'%@'", element.displayName);
+    descriptionDictionary[@"tag"]         = @(element.tag);
+
+    descriptionDictionary[@"controller"]            = (element.controller
+                                                       ? $(@"%@(%p)",
+                                                           element.controller.uuid,
+                                                           element.controller)
+                                                       : @"nil");
+    descriptionDictionary[@"configurationDelegate"] = (element.configurationDelegate
+                                                       ? $(@"%@(%p)-configurations: %@",
+                                                           element.configurationDelegate.uuid,
+                                                           element.configurationDelegate,
+                                                           [element.configurationDelegate.configurationKeys
+                                                            componentsJoinedByString:@", "])
+                                                       : @"nil");
+    descriptionDictionary[@"parentElement"]         = (element.parentElement
+                                                       ? $(@"%@:%@",
+                                                           element.parentElement.key,
+                                                           element.parentElement.uuid)
+                                                       : @"nil");
+    descriptionDictionary[@"subelements"]           = (!element.subelements.count
+                                                       ? @"nil"
+                                                       : [[element.subelements setByMappingToBlock:
+                                                           ^NSString *(RemoteElement * subelement)
+                                                           {
+                                                               return $(@"%@:%@(%p)",
+                                                                        subelement.key,
+                                                                        subelement.uuid,
+                                                                        subelement);
+                                                           }] componentsJoinedByString:
+                                                              [@"\n" stringByRightPaddingToLength:24
+                                                                                    withCharacter:' ']]);
+
+    descriptionDictionary[@"layoutConfiguration"]  = (element.layoutConfiguration
+                                                      ? $(@"'%@':%@(%p)",
+                                                          [element.layoutConfiguration layoutDescription],
+                                                          element.layoutConfiguration.uuid,
+                                                          element.layoutConfiguration)
+                                                      : @"nil");
+    descriptionDictionary[@"proportionLock"]       = BOOLString(element.proportionLock);
+    descriptionDictionary[@"constraints"]          = [[element constraintsDescription]
+                                                      stringByTrimmingLeadingWhitespace];
+
+    descriptionDictionary[@"appliedTheme"]         = (element.appliedTheme
+                                                      ? element.appliedTheme.name
+                                                      : @"nil");
+    descriptionDictionary[@"shape"]                = (NSStringFromREShape(element.shape) ? : @"nil");
+    descriptionDictionary[@"style"]                = (NSStringFromREStyle(element.style) ? : @"nil");
+    descriptionDictionary[@"backgroundImage"]      = (element.backgroundImage
+                                                      ? element.backgroundImage.fileName
+                                                      : @"nil");
+    descriptionDictionary[@"backgroundImageAlpha"] = @(element.backgroundImageAlpha);
+    descriptionDictionary[@"backgroundColor"]      = (element.backgroundColor
+                                                      ? NSStringFromUIColor(element.backgroundColor)
+                                                      : @"nil");
+
+    return descriptionDictionary;
+}
+
 - (NSString *)constraintsDescription
 {
-    NSMutableString * description = [$(@"configuration: %@\nproportion lock? %@",
-                                       self.layoutConfiguration,
-                                       BOOLString(self.layoutConfiguration.proportionLock)) mutableCopy];
+    NSMutableString * description = [@"" mutableCopy];
 
     NSSet * constraints                 = self.constraints;
     NSSet * subelementConstraints       = self.subelementConstraints;
@@ -237,12 +304,12 @@ static const NSSet        * kConstraintManagerSelectors;
         if (childToParentConstraints.count)
             [description appendFormat:@"\n\nchild to parent constraints:\n\t%@",
                  [childToParentConstraints componentsJoinedByString:@"\n\t"]];
-        
+
         if (childToChildConstraints.count)
             [description appendFormat:@"\n\nchild to child constraints:\n\t%@",
              [childToChildConstraints componentsJoinedByString:@"\n\t"]];
     }
-    
+
     // dependent sibling constraints
     if (dependentSiblingConstraints.count)
         [description appendFormat:@"\n\ndependent sibling constraints:\n\t%@",
@@ -276,9 +343,9 @@ static const NSSet        * kConstraintManagerSelectors;
     NSMutableString * outstring = [[NSMutableString alloc] init];
     __block void (__weak ^ dumpElement)(RemoteElement *, int) =
         ^(RemoteElement * element, int indent) {
-        NSString * dashes = [NSString stringFilledWithCharacter:'-' count:indent * 3];
+        NSString * dashes = [NSString stringWithCharacter:'-' count:indent * 3];
 
-        NSString * spacer = [NSString stringFilledWithCharacter:' ' count:indent * 3 + 4];
+        NSString * spacer = [NSString stringWithCharacter:' ' count:indent * 3 + 4];
 
         [outstring appendFormat:
          @"%@[%d] class:%@\n"
@@ -294,7 +361,7 @@ static const NSSet        * kConstraintManagerSelectors;
          element.key,
          spacer,
          element.uuid];
-            
+
         for (RemoteElement * subelement in element.subelements)
             dumpElement(subelement, indent + 1);
     };
@@ -353,6 +420,99 @@ NSString * EditingModeString(REEditingMode mode) {
 
 
     return modeString;
+}
+
+MSKIT_EXTERN NSString *NSStringFromREShape(REShape shape)
+{
+    switch (shape)
+    {
+        case REShapeUndefined:        return @"REShapeUndefined";
+        case REShapeRoundedRectangle: return @"REShapeRoundedRectangle";
+        case REShapeOval:             return @"REShapeOval";
+        case REShapeRectangle:        return @"REShapeRectangle";
+        case REShapeTriangle:         return @"REShapeTriangle";
+        case REShapeDiamond:          return @"REShapeDiamond";
+        case REShapeReserved:         return @"REShapeReserved";
+        case REShapeMask:             return @"REShapeMask";
+        default: return nil;
+    }
+}
+
+MSKIT_EXTERN NSString *NSStringFromREStyle(REStyle style)
+{
+    NSMutableArray * stringArray = [@[] mutableCopy];
+
+    if (style & REStyleApplyGloss)  [stringArray addObject:@"REStyleAppleGloss"];
+    if (style & REStyleDrawBorder)  [stringArray addObject:@"REStyleDrawBorder"];
+    if (style & REStyleStretchable) [stringArray addObject:@"REStyleStretchable"];
+    if (!stringArray.count)         [stringArray addObject:@"REStyleUndefined"];
+    return [stringArray componentsJoinedByString:@"|"];
+}
+
+MSKIT_EXTERN NSString *NSStringFromREType(REType type)
+{
+    switch (type)
+    {
+        case RETypeUndefined:   return @"RETypeUndefined";
+        case RETypeRemote:      return @"RETypeRemote";
+        case RETypeButtonGroup: return @"RETypeButtonGroup";
+        case RETypeButton:      return @"RETypeButton";
+        default: return nil;
+    }
+}
+
+MSKIT_EXTERN NSString *NSStringFromREButtonGroupType(REButtonGroupType type)
+{
+    switch (type)
+    {
+        case REButtonGroupTypeDefault:           return @"REButtonGroupTypeDefault";
+        case REButtonGroupTypeToolbar:           return @"REButtonGroupTypeToolbar";
+        case REButtonGroupTypeTransport:         return @"REButtonGroupTypeTransport";
+        case REButtonGroupTypeDPad:              return @"REButtonGroupTypeDPad";
+        case REButtonGroupTypeSelectionPanel:    return @"REButtonGroupTypeSelectionPanel";
+        case REButtonGroupTypeCommandSetManager: return @"REButtonGroupTypeCommandSetManager";
+        case REButtonGroupTypeRoundedPanel:      return @"REButtonGroupTypeRoundedPanel";
+        case REButtonGroupTypePickerLabel:       return @"REButtonGroupTypePickerLabel";
+        default: return nil;
+    }
+}
+
+MSKIT_EXTERN NSString *NSStringFromREButtonType(REButtonType type)
+{
+    switch (type)
+    {
+        case REButtonTypeDefault:          return @"REButtonTypeDefault";
+        case REButtonTypeNumberPad:        return @"REButtonTypeNumberPad";
+        case REButtonTypeConnectionStatus: return @"REButtonTypeConnectionStatus";
+        case REButtonTypeBatteryStatus:    return @"REButtonTypeBatteryStatus";
+        case REButtonTypeCommandManager:   return @"REButtonTypeCommandManager";
+        default: return nil;
+    }
+}
+
+MSKIT_EXTERN NSString *NSStringFromREButtonGroupSubtype(REButtonGroupSubtype type)
+{
+    switch (type)
+    {
+        case REButtonGroupSubtypeUndefined: return @"REButtonGroupSubtypeUndefined";
+        case REButtonGroupTopPanel:         return @"REButtonGroupTopPanel";
+        case REButtonGroupBottomPanel:      return @"REButtonGroupBottomPanel";
+        case REButtonGroupLeftPanel:        return @"REButtonGroupLeftPanel";
+        case REButtonGroupRightPanel:       return @"REButtonGroupRightPanel";
+        default: return nil;
+    }
+}
+
+MSKIT_EXTERN NSString *NSStringFromREButtonSubtype(REButtonSubtype type)
+{
+    switch (type)
+    {
+        case REButtonSubtypeUnspecified:      return @"REButtonSubtypeUnspecified";
+        case REButtonSubtypeActivityOn:       return @"REButtonSubtypeActivityOn";
+        case REButtonSubtypeReserved:         return @"REButtonSubtypeReserved";
+        case REButtonSubtypeButtonGroupPiece: return @"REButtonSubtypeButtonGroupPiece";
+        default: return nil;
+    }
 }
 
 

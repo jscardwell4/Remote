@@ -12,10 +12,12 @@
 #import "MSRemoteAppController.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 #define kSystemKeyMax 4
 #define kSystemKeyMin 0
+
+BOOL isValidSystemType(RESystemCommandType type) { return (type > -1 && type < 5); }
 
 static __weak RERemoteViewController * _remoteViewController;
 
@@ -25,30 +27,25 @@ static __weak RERemoteViewController * _remoteViewController;
 
 @dynamic type;
 
-+ (RESystemCommand *)commandInContext:(NSManagedObjectContext *)context type:(RESystemCommandType)type
++ (RESystemCommand *)commandWithType:(RESystemCommandType)type
 {
-    __block RESystemCommand * cmd = nil;
+    return [self commandWithType:type inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+}
 
-    [context performBlockAndWait:
-     ^{
-         NSFetchRequest * fetchRequest = NSFetchRequestFromClassWithPredicate(@"type == %i", type);
-         NSError * error = nil;
-         NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
++ (RESystemCommand *)commandWithType:(RESystemCommandType)type
+                           inContext:(NSManagedObjectContext *)context
+{
+    BOOL isValidType = isValidSystemType(type);
+    if (!isValidType) return nil;
 
-         if (!fetchedObjects || [fetchedObjects count] == 0)
-         {
-             if (type >= kSystemKeyMin && type <= kSystemKeyMax)
-             {
-                 cmd = [self commandInContext:context];
-                 cmd.type = type;
-             }
-             
-             else
-                 DDLogWarn(@"%@ RESystemCommandType invalid:%d", ClassTagSelectorString, type);
-        }
-
-         else cmd = [fetchedObjects lastObject];
-     }];
+    RESystemCommand * cmd = [self MR_findFirstByAttribute:@"type"
+                                                withValue:@(type)
+                                                inContext:context];
+    if (!cmd)
+    {
+        cmd = [self commandInContext:context];
+        cmd.type = type;
+    }
 
     return cmd;
 }

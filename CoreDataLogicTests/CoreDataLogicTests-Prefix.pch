@@ -1,0 +1,19 @@
+//
+// Prefix header for all source files of the 'CoreDataLogicTests' target in the 'CoreDataLogicTests' project
+//
+
+#ifdef __OBJC__
+    #import <SenTestingKit/SenTestingKit.h>
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "GTMSenTestCase_Macros.h"
+    #import "OCHamcrest_SelectiveShorthand.h"
+    #import <CoreData/CoreData.h>
+    #import <Lumberjack/Lumberjack.h>
+    #import <MSKit/MSKit.h>
+    #import <MagicalRecord/MagicalRecord.h>
+    #import <OCMock/OCMock.h>
+    #import "MSRemoteMacros.h"
+    #import "MSRemoteTypeDefinitions.h"
+    #import "MSRemoteConstants.h"
+#endif

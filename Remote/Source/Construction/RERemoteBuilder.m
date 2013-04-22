@@ -8,12 +8,12 @@
 #import "RemoteConstruction.h"
 
 static const int ddLogLevel   = LOG_LEVEL_WARN;
-static const int msLogContext = DEFAULT_LOG_CONTEXT;
+static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation RERemoteBuilder
 
-+ (RERemote *)constructDVRRemote
++ (RERemote *)constructDVRRemoteInContext:(NSManagedObjectContext *)context
 {
     RERemote * remote =
           MakeRemote(@"displayName"          : @"Comcast DVR Activity",
@@ -22,14 +22,14 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                      @"backgroundImageAlpha" : @1.0,
                      @"options"              : @(RERemoteOptionTopBarHiddenOnLoad));
 
-      REButtonGroup * oneByThree = [REButtonGroupBuilder constructDVRGroupOfThreeButtons];
-      REButtonGroup * rocker     = [REButtonGroupBuilder constructDVRRocker];
-      REButtonGroup * dpad       = [REButtonGroupBuilder constructDVRDPad];
-      REButtonGroup * numberpad  = [REButtonGroupBuilder constructDVRNumberPad];
-      REButtonGroup * transport  = [REButtonGroupBuilder constructDVRTransport];
-      REButtonGroup * selection  = [REButtonGroupBuilder constructSelectionPanel];
-      REButtonGroup * leftPanel  = [REButtonGroupBuilder constructAdditionalButtonsLeft];
-      REButtonGroup * power      = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:1];
+      REButtonGroup * oneByThree = [REButtonGroupBuilder constructDVRGroupOfThreeButtonsInContext:context];
+      REButtonGroup * rocker     = [REButtonGroupBuilder constructDVRRockerInContext:context];
+      REButtonGroup * dpad       = [REButtonGroupBuilder constructDVRDPadInContext:context];
+      REButtonGroup * numberpad  = [REButtonGroupBuilder constructDVRNumberPadInContext:context];
+      REButtonGroup * transport  = [REButtonGroupBuilder constructDVRTransportInContext:context];
+      REButtonGroup * selection  = [REButtonGroupBuilder constructSelectionPanelInContext:context];
+      REButtonGroup * leftPanel  = [REButtonGroupBuilder constructAdditionalButtonsLeftInContext:context];
+      REButtonGroup * power      = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:1 context:context];
 
       [remote addSubelements:[@[oneByThree,
                                 rocker,
@@ -66,7 +66,7 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
 }
 
 
-+ (RERemote *)constructHomeRemote
++ (RERemote *)constructHomeRemoteInContext:(NSManagedObjectContext *)context
 {
     RERemote * remote =
           MakeRemote(@"type"                 : @(RETypeRemote),
@@ -75,8 +75,8 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                      @"backgroundImage"      : MakeBackgroundImage(8),
                      @"backgroundImageAlpha" : @1.0);
 
-      REButtonGroup * activityButtons = [REButtonGroupBuilder constructActivities];
-      REButtonGroup * lightControls = [REButtonGroupBuilder constructLightControls];
+      REButtonGroup * activityButtons = [REButtonGroupBuilder constructActivitiesInContext:context];
+      REButtonGroup * lightControls = [REButtonGroupBuilder constructLightControlsInContext:context];
 
       [remote addSubelements:[@[activityButtons, lightControls] orderedSet]];
 
@@ -90,7 +90,7 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
     return remote;
 }
 
-+ (RERemote *)constructPS3Remote
++ (RERemote *)constructPS3RemoteInContext:(NSManagedObjectContext *)context
 {
     RERemote * remote =
           MakeRemote(@"type"                 : @(RETypeRemote),
@@ -100,20 +100,26 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                      @"backgroundImage"      : MakeBackgroundImage(8),
                      @"backgroundImageAlpha" : @1.0);
 
-      REButtonGroup * bg1 = [REButtonGroupBuilder constructPS3GroupOfThreeButtons];			  assert(bg1);
-      REButtonGroup * bg2 = [REButtonGroupBuilder constructPS3Rocker];						  assert(bg2);
-      REButtonGroup * bg3 = [REButtonGroupBuilder constructPS3DPad];						  assert(bg3);
-      REButtonGroup * bg4 = [REButtonGroupBuilder constructPS3NumberPad]; 					  assert(bg4);
-      REButtonGroup * bg5 = [REButtonGroupBuilder constructPS3Transport]; 					  assert(bg5);
-      REButtonGroup * bg6 = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2]; assert(bg6);
+    REButtonGroup * bg1 = [REButtonGroupBuilder constructPS3GroupOfThreeButtonsInContext:context];
+    assert(bg1);
+    REButtonGroup * bg2 = [REButtonGroupBuilder constructPS3RockerInContext:context];
+    assert(bg2);
+    REButtonGroup * bg3 = [REButtonGroupBuilder constructPS3DPadInContext:context];
+    assert(bg3);
+    REButtonGroup * bg4 = [REButtonGroupBuilder constructPS3NumberPadInContext:context];
+    assert(bg4);
+    REButtonGroup * bg5 = [REButtonGroupBuilder constructPS3TransportInContext:context];
+    assert(bg5);
+    REButtonGroup * bg6 = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2 context:context];
+    assert(bg6);
 
-      [remote addSubelements:[@[bg1, bg2, bg3, bg4, bg5, bg6] orderedSet]];
-      
+    [remote addSubelements:[@[bg1, bg2, bg3, bg4, bg5, bg6] orderedSet]];
+
       // TODO:add constraints
     return remote;
 }
 
-+ (RERemote *)constructSonosRemote
++ (RERemote *)constructSonosRemoteInContext:(NSManagedObjectContext *)context
 {
     RERemote * remote =
          MakeRemote(@"type"				   : @(RETypeRemote),
@@ -121,13 +127,13 @@ static const int msLogContext = DEFAULT_LOG_CONTEXT;
                     @"displayName" 		   : @"Sonos Activity",
                     @"backgroundImage" 	   : MakeBackgroundImage(8),
                     @"backgroundImageAlpha" : @1.0);
-     
-     REButtonGroup * mute   = [REButtonGroupBuilder constructSonosMuteButtonGroup];
-     REButtonGroup * rocker = [REButtonGroupBuilder constructSonosRocker];
-     REButtonGroup * power  = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:4];
-     
+
+     REButtonGroup * mute   = [REButtonGroupBuilder constructSonosMuteButtonGroupInContext:context];
+     REButtonGroup * rocker = [REButtonGroupBuilder constructSonosRockerInContext:context];
+     REButtonGroup * power  = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:4 context:context];
+
      [remote addSubelements:[@[mute, rocker, power] orderedSet]];
-     
+
      SetConstraints(remote,
                     @"power.left = remote.left + 10\n"
                      "power.right = remote.right - 10\n"

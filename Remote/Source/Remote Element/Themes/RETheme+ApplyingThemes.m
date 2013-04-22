@@ -24,22 +24,13 @@
 {
     switch (element.baseType)
     {
-        case RETypeRemote:
-            [self applyThemeToRemote:(RERemote *)element];
-            break;
-
-        case RETypeButtonGroup:
-            [self applyThemeToButtonGroup:(REButtonGroup *)element];
-            break;
-
-        case RETypeButton:
-            [self applyThemeToButton:(REButton *)element];
-            break;
-
-        default:
-            assert(NO);
-            break;
+        case RETypeRemote:      [self applyThemeToRemote:(RERemote *)element];           break;
+        case RETypeButtonGroup: [self applyThemeToButtonGroup:(REButtonGroup *)element]; break;
+        case RETypeButton:      [self applyThemeToButton:(REButton *)element];           break;
+        default:                assert(NO);                                              break;
     }
+
+    [self addElementsObject:element];
 }
 
 - (void)applyThemeToElements:(NSSet *)elements

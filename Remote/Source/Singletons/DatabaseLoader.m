@@ -15,7 +15,7 @@
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
 
 static const int   ddLogLevel   = LOG_LEVEL_INFO;
-static const int   msLogContext = BUILDING_F;
+static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation DatabaseLoader
@@ -50,10 +50,9 @@ static const int   msLogContext = BUILDING_F;
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext * context)
      {
 
-         NSArray * codesArray = [[NSDictionary dictionaryWithContentsOfURL:
+         NSArray * codesArray = [NSDictionary dictionaryWithContentsOfURL:
                                   [MainBundle URLForResource:CODE_DATABASE_PLIST
-                                               withExtension:@"plist"]]
-                                 objectForKey:kDatabaseKey];
+                                               withExtension:@"plist"]][kDatabaseKey];
 
          BOIRCodeset * codeset       = nil;
          @autoreleasepool

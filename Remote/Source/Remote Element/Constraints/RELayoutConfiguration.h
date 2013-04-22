@@ -152,4 +152,6 @@
  */
 - (void)setObject:(NSNumber *)object atIndexedSubscript:(NSLayoutAttribute)idx;
 
+- (NSString *)layoutDescription;
+
 @end

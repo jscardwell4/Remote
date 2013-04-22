@@ -14,7 +14,7 @@ MSKIT_STRING_CONST   REButtonViewLabelNametag             = @"REButtonViewLabel"
 MSKIT_STRING_CONST   REButtonViewActivityIndicatorNametag = @"REButtonViewActivityIndicator";
 
 static const int   ddLogLevel = LOG_LEVEL_DEBUG;
-static const int   msLogContext = REMOTE_F_C;
+static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation REButtonView
@@ -198,10 +198,13 @@ static const int   msLogContext = REMOTE_F_C;
         if (_flags.activityIndicator) [_activityIndicator startAnimating];
 
         [self.model executeCommandWithOptions:options
-                                     completion:^(BOOL finished, BOOL success){
-                                         if (_activityIndicator && [_activityIndicator isAnimating])
-                                             MSRunAsyncOnMain (^{ [_activityIndicator stopAnimating]; });
-                                     }];
+                                   completion:^(BOOL success, NSError * error)
+                                              {
+                                                  if ([_activityIndicator isAnimating])
+                                                      MSRunAsyncOnMain (^{
+                                                          [_activityIndicator stopAnimating];
+                                                      });
+                                              }];
     }
 }
 

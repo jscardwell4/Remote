@@ -13,28 +13,29 @@ static int ddLogLevel = DefaultDDLogLevel;
 
 @implementation RERemote
 
-@dynamic configurationDelegate, controller;
+@dynamic controller;
 
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
+- (void)awakeFromInsert
 {
-    __block RERemote * element = nil;
-    [context performBlockAndWait:
+    [super awakeFromInsert];
+    [self.managedObjectContext performBlockAndWait:
      ^{
-         element = [super remoteElementInContext:context];
-         element.type = RETypeRemote;
+         self.type = RETypeRemote;
+         self.configurationDelegate = [RERemoteConfigurationDelegate delegateForRemoteElement:self];
      }];
-    return element;
 }
 
 - (void)setParentElement:(RemoteElement *)parentElement {}
 
 - (RemoteElement *)parentElement { return nil; }
 
-- (REButtonGroup *)objectForKeyedSubscript:(NSString *)subscript {
+- (REButtonGroup *)objectForKeyedSubscript:(NSString *)subscript
+{
     return (REButtonGroup *)[super objectForKeyedSubscript:subscript];
 }
 
-- (REButtonGroup *)objectAtIndexedSubscript:(NSUInteger)subscript {
+- (REButtonGroup *)objectAtIndexedSubscript:(NSUInteger)subscript
+{
     return (REButtonGroup *)[super objectAtIndexedSubscript:subscript];
 }
 
@@ -45,11 +46,10 @@ static int ddLogLevel = DefaultDDLogLevel;
         [self unsetFlagBits:RERemoteOptionTopBarHiddenOnLoad];
 }
 
-- (BOOL)isTopBarHiddenOnLoad {
-    return [self isFlagSetForBits:RERemoteOptionTopBarHiddenOnLoad];
-}
+- (BOOL)isTopBarHiddenOnLoad { return [self isFlagSetForBits:RERemoteOptionTopBarHiddenOnLoad]; }
 
-- (BOOL)registerConfiguration:(NSString *)configuration {
+- (BOOL)registerConfiguration:(NSString *)configuration
+{
     return [self.configurationDelegate addConfiguration:configuration];
 }
 
@@ -59,6 +59,21 @@ static int ddLogLevel = DefaultDDLogLevel;
 {
     self.configurationDelegate.currentConfiguration = configuration;
     return [self.configurationDelegate.currentConfiguration isEqualToString:configuration];
+}
+
+@end
+
+@implementation RERemote (Debugging)
+
+- (MSDictionary *)deepDescriptionDictionary
+{
+    RERemote * element = [self faultedObject];
+    assert(element);
+    
+    MSMutableDictionary * descriptionDictionary = [[super deepDescriptionDictionary] mutableCopy];
+    descriptionDictionary[@"topBarHiddenOnLoad"] = BOOLString(element.topBarHiddenOnLoad);
+
+    return descriptionDictionary;
 }
 
 @end

@@ -11,29 +11,37 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 @implementation REButtonGroupBuilder
 
-+ (REButtonGroup *)constructControllerTopToolbar
++ (REButtonGroup *)constructControllerTopToolbarInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup =
-        MakeToolbarButtonGroup(@"displayName"     : @"Top Toolbar",
-                               @"backgroundColor" : FlipsideColor);
+    __block REButtonGroup * buttonGroup = nil;
+//    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:
+//     ^(NSManagedObjectContext * context)
+//     {
+         buttonGroup =
+            MakeToolbarButtonGroup(@"displayName"     : @"Top Toolbar",
+                                   @"backgroundColor" : FlipsideColor);
+//     }];
 
     REButton * home =
         MakeButton(@"displayName" : @"Home Button",
-                   @"command"     : MakeSystemCommand(RESystemCommandReturnToLaunchScreen),
-                   @"icons"       : MakeIconImageSet(@{ @"normal" : WhiteColor },
-                                                     @{ @"normal" : MakeIconImage(140) }));
+                   @"command"     : MakeSystemCommand(RESystemCommandReturnToLaunchScreen));
+    [home setIcons:MakeIconImageSet(@{ @"normal" : WhiteColor },
+                                    @{ @"normal" : MakeIconImage(140) })
+  forConfiguration:REDefaultConfiguration];
 
     REButton * settings =
         MakeButton(@"displayName" : @"Settings Button",
-                   @"icons"       : MakeIconImageSet(@{ @"normal" : WhiteColor },
-                                                     @{ @"normal" : MakeIconImage(83) }),
                    @"command"     : MakeSystemCommand(RESystemCommandOpenSettings));
+    [settings setIcons:MakeIconImageSet(@{ @"normal" : WhiteColor },
+                                        @{ @"normal" : MakeIconImage(83) })
+      forConfiguration:REDefaultConfiguration];
 
     REButton * editRemote =
         MakeButton(@"displayName" : @"Edit Remote Button",
-                   @"command"     : MakeSystemCommand(RESystemCommandOpenEditor),
-                   @"icons"       : MakeIconImageSet(@{ @"normal" : WhiteColor },
-                                                     @{ @"normal" : MakeIconImage(224) }));
+                   @"command"     : MakeSystemCommand(RESystemCommandOpenEditor));
+    [editRemote setIcons:MakeIconImageSet(@{ @"normal" : WhiteColor },
+                                          @{ @"normal" : MakeIconImage(224) })
+        forConfiguration:REDefaultConfiguration];
 
     REButton * battery = MakeBatteryStatusButton;
 
@@ -84,7 +92,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructActivities
++ (REButtonGroup *)constructActivitiesInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"Activity Buttons");
 
@@ -154,25 +162,27 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructLightControls
++ (REButtonGroup *)constructLightControlsInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup =
         MakeButtonGroup(@"displayName"     : @"Light Controls",
                         @"backgroundColor" : FlipsideColor);
 
     REButton * lightsOnButton =
-        MakeButton(@"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                         @"highlighted" : kHighlightColor }),
-                                                      @{ @"normal"      : MakeIconImage(1) }),
-                   @"command"     : MakeHTTPCommand(@"http://10.0.1.27/0?1201=I=0"),
+        MakeButton(@"command"     : MakeHTTPCommand(@"http://10.0.1.27/0?1201=I=0"),
                    @"displayName" : @"Lights On");
+    [lightsOnButton setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                               @"highlighted" : kHighlightColor }),
+                                              @{ @"normal"      : MakeIconImage(1) })
+            forConfiguration:REDefaultConfiguration];
 
     REButton * lightsOffButton =
-        MakeButton(@"icons"       : MakeIconImageSet((@{ @"normal"      : GrayColor,
-                                                         @"highlighted" : kHighlightColor }),
-                                                     (@{ @"normal"      : MakeIconImage(1) })),
-                   @"command"     : MakeHTTPCommand(@"http://10.0.1.27/0?1401=I=0"),
+        MakeButton(@"command"     : MakeHTTPCommand(@"http://10.0.1.27/0?1401=I=0"),
                    @"displayName" : @"Lights Off");
+    [lightsOffButton setIcons:MakeIconImageSet((@{ @"normal"      : GrayColor,
+                                                @"highlighted" : kHighlightColor }),
+                                               (@{ @"normal"      : MakeIconImage(1) }))
+             forConfiguration:REDefaultConfiguration];
 
     [buttonGroup addSubelements:[@[lightsOnButton, lightsOffButton] orderedSet]];
 
@@ -196,7 +206,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)rawDPad
++ (REButtonGroup *)rawDPadInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup =
         MakeButtonGroup(@"shape"       : @(REShapeOval),
@@ -274,9 +284,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructDVRDPad
++ (REButtonGroup *)constructDVRDPadInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = [self rawDPad];
+    REButtonGroup * buttonGroup = [self rawDPadInContext:context];
     buttonGroup.displayName = @"DVR Activity DPad";
     [buttonGroup addCommandSet:DPadForDevice(@"Comcast DVR") forConfiguration:REDefaultConfiguration];
     [buttonGroup addCommandSet:DPadForDevice(@"Samsung TV")  forConfiguration:kTVConfiguration];
@@ -285,9 +295,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructPS3DPad
++ (REButtonGroup *)constructPS3DPadInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = [self rawDPad];
+    REButtonGroup * buttonGroup = [self rawDPadInContext:context];
     buttonGroup.displayName = @"Playstation Activity DPad";
     buttonGroup.commandSet  = DPadForDevice(@"PS3");
 
@@ -295,7 +305,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)rawNumberPad
++ (REButtonGroup *)rawNumberPadInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup =
         MakeButtonGroup(@"backgroundColor" : [kPanelBackgroundColor colorWithAlphaComponent:0.75],
@@ -407,7 +417,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     [buttonGroup addSubelements:[@[one, two, three, four, five, six,
                                    seven, _eight, nine, zero, aux1, aux2, tuck] orderedSet]];
 
-    
+
     [[REBuiltinTheme themeWithName:REThemeNightshadeName]
      applyThemeToElements:[buttonGroup.subelements set]];
 
@@ -485,9 +495,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructDVRNumberPad
++ (REButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = [self rawNumberPad];
+    REButtonGroup * buttonGroup = [self rawNumberPadInContext:context];
     buttonGroup.displayName   = @"DVR Activity Number Pad";
     buttonGroup.commandSet    = NumberPadForDevice(@"Comcast DVR");
     buttonGroup.key           = RERemoteTopPanel1Key;
@@ -497,9 +507,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructPS3NumberPad
++ (REButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = [self rawNumberPad];
+    REButtonGroup * buttonGroup = [self rawNumberPadInContext:context];
     buttonGroup.displayName   = @"Playstation Activity Number Pad";
     buttonGroup.key           = RERemoteTopPanel1Key;
     buttonGroup.panelLocation = REPanelLocationTop;
@@ -509,7 +519,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)rawTransport
++ (REButtonGroup *)rawTransportInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup =
         MakeButtonGroup(@"backgroundColor" : [kPanelBackgroundColor colorWithAlphaComponent:0.75],
@@ -520,80 +530,88 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportRewindButtonKey,
-                   @"displayName"     : @"Rewind",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4004) })));
+                   @"displayName"     : @"Rewind");
+    [rewind setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                       @"highlighted" : kHighlightColor }),
+                                      (@{ @"normal"      : MakeIconImage(4004) }))
+    forConfiguration:REDefaultConfiguration];
 
     // Create "pause" button and add to button group
     REButton * pause =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportPauseButtonKey,
-                   @"displayName"     : @"Pause",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4001) })));
+                   @"displayName"     : @"Pause");
+    [pause setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                      @"highlighted" : kHighlightColor }),
+                                     (@{ @"normal"      : MakeIconImage(4001) }))
+   forConfiguration:REDefaultConfiguration];
 
     // Create "fast forward" button and add to button group
     REButton * fastForward =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportFastForwardButtonKey,
-                   @"displayName"     : @"Fast Forward",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4000) })));
+                   @"displayName"     : @"Fast Forward");
+    [fastForward setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                            @"highlighted" : kHighlightColor }),
+                                           (@{ @"normal"      : MakeIconImage(4000) }))
+         forConfiguration:REDefaultConfiguration];
 
     // Create "previous" button and add to button group
     REButton * previous =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportPreviousButtonKey,
-                   @"displayName"     : @"Previous",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4005) })));
+                   @"displayName"     : @"Previous");
+    [previous setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                         @"highlighted" : kHighlightColor }),
+                                        (@{ @"normal"      : MakeIconImage(4005) }))
+      forConfiguration:REDefaultConfiguration];
 
     // Create "play" button and add to button group
     REButton * play =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportPlayButtonKey,
-                   @"displayName"     : @"Play",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4002) })));
+                   @"displayName"     : @"Play");
+    [play setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                     @"highlighted" : kHighlightColor }),
+                                    (@{ @"normal"      : MakeIconImage(4002) }))
+  forConfiguration:REDefaultConfiguration];
 
     // Create "next" button and add to button group
     REButton * next =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportNextButtonKey,
-                   @"displayName"     : @"Next",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4006) })));
+                   @"displayName"     : @"Next");
+    [next setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                     @"highlighted" : kHighlightColor }),
+                                    (@{ @"normal"      : MakeIconImage(4006) }))
+  forConfiguration:REDefaultConfiguration];
 
     // Create "record" button and add to button group
     REButton * record =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportRecordButtonKey,
-                   @"displayName"     : @"Record",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4003) })));
+                   @"displayName"     : @"Record");
+    [record setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                       @"highlighted" : kHighlightColor }),
+                                      (@{ @"normal"      : MakeIconImage(4003) }))
+    forConfiguration:REDefaultConfiguration];
 
     // Create "stop" button and add to button group
     REButton * stop =
         MakeButton(@"imageEdgeInsets" : NSValueWithUIEdgeInsets(UIEdgeInsetsMake(20, 20, 20, 20)),
                    @"shape"           : @(REShapeRoundedRectangle),
                    @"key"             : RETransportStopButtonKey,
-                   @"displayName"     : @"Stop",
-                   @"icons"           : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                             @"highlighted" : kHighlightColor }),
-                                                         (@{ @"normal"      : MakeIconImage(4007) })));
+                   @"displayName"     : @"Stop");
+    [stop setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                     @"highlighted" : kHighlightColor }),
+                                    (@{ @"normal"      : MakeIconImage(4007) }))
+  forConfiguration:REDefaultConfiguration];
 
     REButton * tuck =
         MakeButton(@"key"         : REButtonGroupTuckButtonKey,
@@ -653,9 +671,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructDVRTransport
++ (REButtonGroup *)constructDVRTransportInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = [self rawTransport];
+    REButtonGroup * buttonGroup = [self rawTransportInContext:context];
     buttonGroup.displayName   = @"DVR Activity Transport";
     buttonGroup.key           = RERemoteBottomPanel1Key;
     buttonGroup.panelLocation = REPanelLocationBottom;
@@ -666,9 +684,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REButtonGroup *)constructPS3Transport
++ (REButtonGroup *)constructPS3TransportInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = [self rawTransport];
+    REButtonGroup * buttonGroup = [self rawTransportInContext:context];
     buttonGroup.displayName   = @"Playstation Activity Transport";
     buttonGroup.key           = RERemoteBottomPanel1Key;
     buttonGroup.panelLocation = REPanelLocationBottom;
@@ -678,7 +696,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REPickerLabelButtonGroup *)rawRocker
++ (REPickerLabelButtonGroup *)rawRockerInContext:(NSManagedObjectContext *)context
 {
     REPickerLabelButtonGroup * buttonGroup =
         MakePickerLabelButtonGroup(@"backgroundColor" : defaultBGColor(),
@@ -689,19 +707,21 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     REButton * _up =
         MakeButton(@"subtype"     : @(REButtonSubtypeButtonGroupPiece),
                    @"displayName" : @"Rocker Up",
-                   @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                         @"highlighted" : kHighlightColor }),
-                                                     (@{ @"normal"      : MakeIconImage(40) })),
                    @"key"         : RERockerButtonPlusButtonKey);
+    [_up setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                    @"highlighted" : kHighlightColor }),
+                                   (@{ @"normal"      : MakeIconImage(40) }))
+ forConfiguration:REDefaultConfiguration];
 
     // Create bottom button and add to button group
     REButton * down =
         MakeButton(@"subtype"     : @(REButtonSubtypeButtonGroupPiece),
                    @"displayName" : @"Rocker Down",
-                   @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                         @"highlighted" : kHighlightColor }),
-                                                     (@{ @"normal"      : MakeIconImage(155) })),
                    @"key"         : RERockerButtonMinusButtonKey);
+    [down setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                     @"highlighted" : kHighlightColor }),
+                                    (@{ @"normal"      : MakeIconImage(155) }))
+  forConfiguration:REDefaultConfiguration];
 
     [buttonGroup addSubelements:[@[_up, down] orderedSet]];
 
@@ -727,9 +747,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REPickerLabelButtonGroup *)constructDVRRocker
++ (REPickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)context
 {
-    REPickerLabelButtonGroup * buttonGroup = [self rawRocker];
+    REPickerLabelButtonGroup * buttonGroup = [self rawRockerInContext:context];
     buttonGroup.displayName = @"DVR Activity Rocker";
     [buttonGroup addCommandSet:DVRChannelsCommandSet      withLabel:@"CH"];
     [buttonGroup addCommandSet:DVRPagingCommandSet        withLabel:@"PAGE"];
@@ -739,9 +759,9 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REPickerLabelButtonGroup *)constructPS3Rocker
++ (REPickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)context
 {
-    REPickerLabelButtonGroup * buttonGroup = [self rawRocker];
+    REPickerLabelButtonGroup * buttonGroup = [self rawRockerInContext:context];
     buttonGroup.displayName = @"Playstation Activity Rocker";
     [buttonGroup addCommandSet:AVReceiverVolumeCommandSet withLabel:@"VOL"];
 
@@ -749,16 +769,16 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 }
 
 
-+ (REPickerLabelButtonGroup *)constructSonosRocker
++ (REPickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)context
 {
-    REPickerLabelButtonGroup * buttonGroup = [self rawRocker];
+    REPickerLabelButtonGroup * buttonGroup = [self rawRockerInContext:context];
     buttonGroup.displayName = @"Sonos Activity Rocker";
     [buttonGroup addCommandSet:AVReceiverVolumeCommandSet withLabel:@"VOL"];
 
     return buttonGroup;
 }
 
-+ (REButtonGroup *)constructSonosMuteButtonGroup
++ (REButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"Mute");
     REButton * mute =
@@ -783,7 +803,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     return buttonGroup;
 }
 
-+ (REButtonGroup *)constructSelectionPanel
++ (REButtonGroup *)constructSelectionPanelInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup =
         MakeSelectionPanelButtonGroup(@"displayName"     : @"Configuration Selection Panel",
@@ -822,26 +842,27 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     return buttonGroup;
 }
 
-+ (REButtonGroup *)rawGroupOfThreeButtons
++ (REButtonGroup *)rawGroupOfThreeButtonsInContext:(NSManagedObjectContext *)context
 {
-    REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"1x3");
+    REButtonGroup * buttonGroup = [REButtonGroup remoteElementInContext:context
+                                                         withAttributes:@{@"displayName": @"1x3"}];
 
-    REButton * button1 =
-        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
-                   @"displayName" : @"button1");
+    REButton * button1 = [REButton remoteElementInContext:context
+                                           withAttributes:@{@"shape"       : @(REShapeRoundedRectangle),
+                                                            @"displayName" : @"button1"}];
 
-    REButton * button2 =
-        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
-                   @"displayName" : @"button2");
+    REButton * button2 = [REButton remoteElementInContext:context
+                                           withAttributes:@{@"shape"       : @(REShapeRoundedRectangle),
+                                                            @"displayName" : @"button2"}];
 
-    REButton * button3 =
-        MakeButton(@"shape"       : @(REShapeRoundedRectangle),
-                   @"displayName" : @"button3");
+    REButton * button3 = [REButton remoteElementInContext:context
+                                           withAttributes:@{@"shape"       : @(REShapeRoundedRectangle),
+                                                            @"displayName" : @"button3"}];
 
     [buttonGroup addSubelements:[@[button1, button2, button3] orderedSet]];
 
-    [[REBuiltinTheme themeWithName:REThemeNightshadeName]
-     applyThemeToElements:[buttonGroup.subelements set]];
+//    [[REBuiltinTheme themeWithName:REThemeNightshadeName context:context]
+//     applyThemeToElements:[buttonGroup.subelements set]];
 
     SetConstraints(buttonGroup,
                    @"button1.left = buttonGroup.left\n"
@@ -860,20 +881,20 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
                     "buttonGroup.height ≥ 150",
                     button1, button2, button3);
 
-    BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup];
+    BOButtonGroupPreset * preset = [BOButtonGroupPreset presetWithElement:buttonGroup ];
     assert(preset);
 
     return buttonGroup;
 }
 
-+ (REButtonGroup *)constructDVRGroupOfThreeButtons
++ (REButtonGroup *)constructDVRGroupOfThreeButtonsInContext:(NSManagedObjectContext *)context
 {
     // fetch devices
-    BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
-    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+    BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR" context:context];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV" context:context];
 
     // create button group
-    REButtonGroup * buttonGroup = [self rawGroupOfThreeButtons];
+    REButtonGroup * buttonGroup = [self rawGroupOfThreeButtonsInContext:context];
     buttonGroup.displayName = @"DVR Activity 1x3";
 
     // Configure "Guide" button and its delegate
@@ -881,35 +902,41 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     guideButton.displayName = @"Guide / Tools";
     [guideButton setTitle:@"Guide" forConfiguration:REDefaultConfiguration];
     [guideButton setTitle:@"Tools" forConfiguration:kTVConfiguration];
-    [guideButton setCommand:MakeIRCommand(comcastDVR, @"Guide") forConfiguration:REDefaultConfiguration];
-    [guideButton setCommand:MakeIRCommand(samsungTV, @"Tools")  forConfiguration:kTVConfiguration];
+    [guideButton setCommand:[RESendIRCommand commandWithIRCode:comcastDVR[@"Guide"]]
+           forConfiguration:REDefaultConfiguration];
+    [guideButton setCommand:[RESendIRCommand commandWithIRCode:samsungTV[@"Tools"]]
+           forConfiguration:kTVConfiguration];
 
     // Configure "DVR" button and add its delegate
     REButton * dvrButton = buttonGroup[1];
     dvrButton.displayName = @"DVR / Internet@TV";
     [dvrButton setTitle:@"DVR"         forConfiguration:REDefaultConfiguration];
     [dvrButton setTitle:@"Internet@TV" forConfiguration:kTVConfiguration];
-    [dvrButton setCommand:MakeIRCommand(comcastDVR, @"DVR")        forConfiguration:REDefaultConfiguration];
-    [dvrButton setCommand:MakeIRCommand(samsungTV, @"Internet@TV") forConfiguration:kTVConfiguration];
+    [dvrButton setCommand:[RESendIRCommand commandWithIRCode:comcastDVR[@"DVR"]]
+         forConfiguration:REDefaultConfiguration];
+    [dvrButton setCommand:[RESendIRCommand commandWithIRCode:samsungTV[@"Internet@TV"]]
+         forConfiguration:kTVConfiguration];
 
     // Configure "Info" button and its delegate
     REButton * infoButton = buttonGroup[2];
     infoButton.displayName = @"Info";
     [infoButton setTitle:@"Info" forConfiguration:REDefaultConfiguration];
     [infoButton setTitle:@"Info" forConfiguration:kTVConfiguration];
-    [infoButton setCommand:MakeIRCommand(comcastDVR, @"Info") forConfiguration:REDefaultConfiguration];
-    [infoButton setCommand:MakeIRCommand(samsungTV, @"Info")  forConfiguration:kTVConfiguration];
+    [infoButton setCommand:[RESendIRCommand commandWithIRCode:comcastDVR[@"Info"]]
+          forConfiguration:REDefaultConfiguration];
+    [infoButton setCommand:[RESendIRCommand commandWithIRCode:samsungTV[@"Info"]]
+          forConfiguration:kTVConfiguration];
 
     return buttonGroup;
 }
 
-+ (REButtonGroup *)constructPS3GroupOfThreeButtons
++ (REButtonGroup *)constructPS3GroupOfThreeButtonsInContext:(NSManagedObjectContext *)context
 {
     // fetch device
     BOComponentDevice * ps3 = [BOComponentDevice fetchDeviceWithName:@"PS3"];
 
     // create button group
-    REButtonGroup * buttonGroup = [self rawGroupOfThreeButtons];
+    REButtonGroup * buttonGroup = [self rawGroupOfThreeButtonsInContext:context];
     buttonGroup.displayName = @"PS3 Activity 1x3";
 
     // configure buttons
@@ -931,7 +958,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     return buttonGroup;
 }
 
-+ (REButtonGroup *)rawButtonPanel
++ (REButtonGroup *)rawButtonPanelInContext:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup =
         MakeButtonGroup(@"backgroundColor"  : [kPanelBackgroundColor colorWithAlphaComponent:0.75],
@@ -1017,28 +1044,26 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     return buttonGroup;
 }
 
-+ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
++ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity context:(NSManagedObjectContext *)context
 {
     REButtonGroup * buttonGroup = MakeButtonGroup(@"displayName" : @"Home and Power Buttons");
-    
+
      REButton * homeButton =
          MakeButton(@"shape"       : @(REShapeOval),
-                    @"displayName" : @"Home Button",
-                    @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                          @"highlighted" : kHighlightColor }),
-                                                      (@{ @"normal"      : MakeIconImage(140) }))/*,
-                    @"command"     : MakeSwitchCommand(@"MSRemoteControllerHomeRemoteKeyName")*/);
+                    @"displayName" : @"Home Button");
+    [homeButton setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                           @"highlighted" : kHighlightColor }),
+                                          (@{ @"normal"      : MakeIconImage(140) }))
+        forConfiguration:REDefaultConfiguration];
 
      REButton * powerButton =
          MakeButton(@"shape"       : @(REShapeOval),
                     @"displayName" : @"Power Off and Exit Activity",
-                    @"key"         : $(@"activity%i", activity),
-                    @"icons"       : MakeIconImageSet((@{ @"normal"      : WhiteColor,
-                                                          @"highlighted" : kHighlightColor }),
-                                                      (@{ @"normal"      : MakeIconImage(168) }))//,
-                    /*@"command"     : [REMacroBuilder activityMacroForActivity:activity
-                                                                         toInitiateState:NO
-                                                                             switchIndex:NULL]*/);
+                    @"key"         : $(@"activity%i", activity));
+    [powerButton setIcons:MakeIconImageSet((@{ @"normal"      : WhiteColor,
+                                            @"highlighted" : kHighlightColor }),
+                                           (@{ @"normal"      : MakeIconImage(168) }))
+         forConfiguration:REDefaultConfiguration];
 
      [buttonGroup addSubelements:[@[homeButton, powerButton] orderedSet]];
 
@@ -1056,13 +1081,13 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
     return buttonGroup;
 }
 
-+ (REButtonGroup *)constructAdditionalButtonsLeft
++ (REButtonGroup *)constructAdditionalButtonsLeftInContext:(NSManagedObjectContext *)context
 {
     BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
     BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
     BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"];
 
-    REButtonGroup * buttonGroup = [self rawButtonPanel];
+    REButtonGroup * buttonGroup = [self rawButtonPanelInContext:context];
     buttonGroup.panelLocation = REPanelLocationLeft;
     buttonGroup.key           = RERemoteLeftPanel1Key;
     buttonGroup.displayName   = @"Left Overlay Panel";

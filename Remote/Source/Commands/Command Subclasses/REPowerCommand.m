@@ -9,7 +9,7 @@
 #import "BankObject.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @interface REPowerCommandOperation : RECommandOperation @end
 
@@ -19,36 +19,21 @@ static int msLogContext = COMMAND_F_C;
 
 + (REPowerCommand *)onCommandForDevice:(BOComponentDevice *)device
 {
-    __block REPowerCommand * powerCommand = nil;
-
-    [device.managedObjectContext performBlockAndWait:
-     ^{
-         powerCommand = [self commandInContext:device.managedObjectContext];
-         powerCommand.state  = BOPowerStateOn;
-         powerCommand.device = device;
-     }];
-
+    REPowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
+    powerCommand.state  = BOPowerStateOn;
+    powerCommand.device = device;
     return powerCommand;
 }
 
 + (REPowerCommand *)offCommandForDevice:(BOComponentDevice *)device
 {
-    __block REPowerCommand * powerCommand = nil;
-
-    [device.managedObjectContext performBlockAndWait:
-     ^{
-         powerCommand = [self commandInContext:device.managedObjectContext];
-         powerCommand.state  = BOPowerStateOff;
-         powerCommand.device = device;
-     }];
-
+    REPowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
+    powerCommand.state  = BOPowerStateOff;
+    powerCommand.device = device;
     return powerCommand;
 }
 
-- (RECommandOperation *)operation
-{
-    return [REPowerCommandOperation operationForCommand:self];
-}
+- (RECommandOperation *)operation { return [REPowerCommandOperation operationForCommand:self]; }
 
 - (void)setState:(BOPowerState)state
 {
@@ -81,11 +66,11 @@ static int msLogContext = COMMAND_F_C;
     @try
     {
         REPowerCommand * powerCommand = (REPowerCommand *)_command;
-        __weak REPowerCommandOperation * weakself = self;
-        RECommandCompletionHandler handler = ^(BOOL finished, BOOL success)
+        RECommandCompletionHandler handler = ^(BOOL success, NSError * error)
                                              {
-                                                 [weakself statusReceivedWithFinished:finished
-                                                                              success:success];
+                                                 _success = success;
+                                                 _error   = error;
+                                                 [super main];
                                              };
 
         if (powerCommand.state == BOPowerStateOn)
@@ -93,20 +78,12 @@ static int msLogContext = COMMAND_F_C;
 
         else
             [powerCommand.device powerOff:handler];
-
-        while (!_statusReceived);
-
-        [super main];
     }
+
     @catch (NSException * exception)
     {
         MSLogErrorTag(@"wtf?");
     }
 }
 
-- (void)statusReceivedWithFinished:(BOOL)finished success:(BOOL)success
-{
-    _success = (finished && success);
-    _statusReceived = YES;
-}
 @end

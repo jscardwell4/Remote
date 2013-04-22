@@ -43,7 +43,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
             [[componentDevice.codes allObjects]
              sortedArrayUsingDescriptors:@[sortDescriptor]];
     } else
-        self.codes = [NSArray array];
+        self.codes = @[];
 
 
     return codes;

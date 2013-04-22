@@ -11,14 +11,21 @@
 
 @implementation RERemoteConfigurationDelegate
 
-- (RERemote *)remote { return (RERemote *)self.remoteElement; }
 
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-    if (!self.currentConfiguration)
-        self.currentConfiguration = REDefaultConfiguration;
++ (instancetype)delegateForRemoteElement:(RERemote *)element
+{
+    assert(element);
+    __block RERemoteConfigurationDelegate * configurationDelegate = nil;
+    [element.managedObjectContext performBlockAndWait:
+     ^{
+         configurationDelegate = [self MR_createInContext:element.managedObjectContext];
+         configurationDelegate.element = element;
+     }];
+
+    return configurationDelegate;
 }
 
-
+- (REConfigurationDelegate *)delegate { return self; }
+- (void)setDelegate:(REConfigurationDelegate *)delegate {}
 
 @end

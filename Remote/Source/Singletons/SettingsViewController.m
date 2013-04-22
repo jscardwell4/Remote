@@ -77,7 +77,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     UILabel  * label = _keyedLabels[idx];
     NSString * text  = nil;
 
-    if ([kInactivityTimeoutKey isEqualToString:key]) {
+    if ([MSSettingsInactivityTimeoutKey isEqualToString:key]) {
         NSUInteger   idx = [_keyedSliders indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL * stop) {
             if ([key isEqualToString:((UISlider *)obj).nametag]) {
                 *stop = YES;

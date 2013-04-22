@@ -27,7 +27,9 @@
 
 #define kCommandDetailsViewFrame CGRectMake(0, 40, 320, 232)
 
-static int       ddLogLevel = LOG_LEVEL_DEBUG;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
+static int       msLogContext = LOG_CONTEXT_EDITOR;
+
 static UIFont  * labelFont;
 static UIColor * labelTextColor;
 static UIColor * buttonTitleColor;
@@ -103,7 +105,7 @@ button                  = _button;
 - (void)setInitialValuesFromDictionary:(NSDictionary *)initialValues {
     [super setInitialValuesFromDictionary:initialValues];
 
-    DDLogDebug(@"%@\n\tbutton:%@", ClassTagString, [self.button debugDescription]);
+    MSLogDebug(@"%@\n\tbutton:%@", ClassTagString, [self.button debugDescription]);
 
     if (ValueIsNotNil(_button)) self.initialCommand = _button.command;
 
@@ -116,8 +118,7 @@ button                  = _button;
 
 - (void)restoreCurrentValues {
     if (ValueIsNotNil(_currentCommand)) {
-        [_commandTypeButton setTitle:[commandTypes
-                                      objectForKey:NSStringFromClass([_currentCommand class])]
+        [_commandTypeButton setTitle:commandTypes[NSStringFromClass([_currentCommand class])]
                             forState:UIControlStateDisabled];
         _commandTypeButton.enabled  = NO;
         _button.command             = _currentCommand;

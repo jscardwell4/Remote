@@ -46,12 +46,7 @@ static int   ddLogLevel = LOG_LEVEL_OFF;
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    NSManagedObjectContext * context = self.managedObjectContext;
-    [context performBlockAndWait:
-     ^{
-         self.iconColors = [REControlStateColorSet
-                            controlStateSetInContext:self.managedObjectContext];
-     }];
+    self.iconColors = [REControlStateColorSet controlStateSetInContext:self.managedObjectContext];
 }
 
 - (UIImage *)UIImageForState:(NSUInteger)state

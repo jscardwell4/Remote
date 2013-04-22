@@ -14,11 +14,11 @@
 #import "REView.h"
 #import "UITestRunner.h"
 
-// #define DEBUG_CONTEXT  UITESTING_F
+// #define DEBUG_CONTEXT  (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE)
 #define DEPTH NSUIntegerMax
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = UITESTING_F;
+static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 
 // static const int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)

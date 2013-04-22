@@ -8,7 +8,7 @@
 #import "RECommand_Private.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @interface REDelayCommandOperation : RECommandOperation @end
 

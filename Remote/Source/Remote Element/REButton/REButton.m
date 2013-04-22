@@ -7,6 +7,7 @@
 //
 #import "RemoteElement_Private.h"
 #import <QuartzCore/QuartzCore.h>
+#import "REControlStateSetProxy.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -16,49 +17,60 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 @dynamic titleEdgeInsets;
 @dynamic contentEdgeInsets;
-@dynamic configurationDelegate;
 @dynamic parentElement;
 @dynamic imageEdgeInsets;
 @dynamic command;
 @dynamic longPressCommand;
-@dynamic icons;
-@dynamic images;
-@dynamic backgroundColors;
-@dynamic titles;
 @dynamic controller;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Object Lifecycle
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)context
-{
-    REButton * element = [super remoteElementInContext:context];
-    element.type = RETypeButton;
-    return element;
-}
-
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-
-    NSManagedObjectContext * cxt = self.managedObjectContext;
-    
-    [cxt performBlockAndWait:
-     ^{
-         NSValue * zeroInsets = NSValueWithUIEdgeInsets(UIEdgeInsetsZero);
-         self.primitiveTitleEdgeInsets   = zeroInsets;
-         self.primitiveImageEdgeInsets   = zeroInsets;
-         self.primitiveContentEdgeInsets = zeroInsets;
-         self.primitiveController        = [RERemoteController           remoteControllerInContext:cxt];
-         self.icons                      = [REControlStateIconImageSet   controlStateSetInContext:cxt];
-         self.titles                     = [REControlStateTitleSet       controlStateSetInContext:cxt];
-         self.images                     = [REControlStateButtonImageSet controlStateSetInContext:cxt];
-         self.backgroundColors           = [REControlStateColorSet       controlStateSetInContext:cxt];
-     }];
+    [self.managedObjectContext performBlockAndWait:
+    ^{
+        self.type                  = RETypeButton;
+        self.configurationDelegate = [REButtonConfigurationDelegate delegateForRemoteElement:self];
+    }];
 }
 
 - (RERemote *)remote { return (RERemote *)self.parentElement.parentElement; }
+
+- (RERemoteController *)controller
+{
+    return (self.parentElement ? self.parentElement.controller : nil);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Proxies
+////////////////////////////////////////////////////////////////////////////////
+
+- (REControlStateTitleSet *)titles
+{
+    if (!__titles) __titles = ((REButtonConfigurationDelegate *)self.configurationDelegate).titlesProxy;
+    return (REControlStateTitleSet *)__titles;
+}
+
+- (REControlStateIconImageSet *)icons
+{
+    if (!__icons) __icons = ((REButtonConfigurationDelegate *)self.configurationDelegate).iconsProxy;
+    return (REControlStateIconImageSet *)__icons;
+}
+
+- (REControlStateButtonImageSet *)images
+{
+    if (!__images) __images = ((REButtonConfigurationDelegate *)self.configurationDelegate).imagesProxy;
+    return (REControlStateButtonImageSet *)__images;
+}
+
+- (REControlStateColorSet *)backgroundColors
+{
+    if (!__backgroundColors) __backgroundColors = ((REButtonConfigurationDelegate *)self.configurationDelegate).backgroundColorsProxy;
+    return (REControlStateColorSet *)__backgroundColors;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - State Accessors
@@ -98,15 +110,22 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 - (void)setTitle:(NSString *)title forConfiguration:(RERemoteConfiguration)configuration
 {
-    [self.configurationDelegate setTitle:title forConfiguration:configuration];
+    [((REButtonConfigurationDelegate *)self.configurationDelegate) setTitle:title forConfiguration:configuration];
 }
 
 - (void)setCommand:(RECommand *)command forConfiguration:(RERemoteConfiguration)configuration
 {
-    [self.configurationDelegate setCommand:command forConfiguration:configuration];
+    [((REButtonConfigurationDelegate *)self.configurationDelegate) setCommand:command forConfiguration:configuration];
 }
 
 - (NSString *)title { return self.titles[UIControlStateNormal].string; }
+
+- (void)setIcons:(REControlStateIconImageSet *)icons
+forConfiguration:(RERemoteConfiguration)configuration
+{
+    [(REButtonConfigurationDelegate *)self.configurationDelegate setIcons:icons
+                                                         forConfiguration:configuration];
+}
 
 - (UIEdgeInsets)titleEdgeInsets
 {
@@ -154,7 +173,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
 }
 
 - (void)executeCommandWithOptions:(RECommandOptions)options
-                       completion:(void (^)(BOOL, BOOL))completion
+                       completion:(RECommandCompletionHandler)completion
 {
 
     if (options == RECommandOptionsLongPress && self.longPressCommand)
@@ -166,3 +185,61 @@ static int   ddLogLevel = DefaultDDLogLevel;
 }
 
 @end
+
+@implementation REButton (Debugging)
+
+- (MSDictionary *)deepDescriptionDictionary
+{
+    REButton * element = [self faultedObject];
+    assert(element);
+
+    MSMutableDictionary * descriptionDictionary = [[super deepDescriptionDictionary] mutableCopy];
+
+    descriptionDictionary[@"titles"] = (element.titles
+                                        ? $(@"%@(%p)", element.titles.uuid, element.titles)
+                                        : @"nil");
+
+    descriptionDictionary[@"icons"] = (element.icons
+                                       ? $(@"%@(%p)", element.icons.uuid, element.icons)
+                                       : @"nil");
+
+    descriptionDictionary[@"backgroundColors"] = (element.backgroundColors
+                                                  ? $(@"%@(%p)",
+                                                      element.backgroundColors.uuid,
+                                                      element.backgroundColors)
+                                                  : @"nil");
+
+    descriptionDictionary[@"images"] = (element.images
+                                        ? $(@"%@(%p)",
+                                            element.images.uuid,
+                                            element.images)
+                                        : @"nil");
+
+    descriptionDictionary[@"command"] = (element.command
+                                         ? $(@"%@(%p)-%@",
+                                             element.command.uuid,
+                                             element.command,
+                                             [element.command shortDescription])
+                                         : @"nil");
+
+    descriptionDictionary[@"longPressCommand"] = (element.longPressCommand
+                                         ? $(@"%@(%p)-%@",
+                                             element.longPressCommand.uuid,
+                                             element.longPressCommand,
+                                             [element.longPressCommand shortDescription])
+                                         : @"nil");
+
+    descriptionDictionary[@"titleEdgeInsets"  ] = UIEdgeInsetsString(element.titleEdgeInsets  );
+    descriptionDictionary[@"imageEdgeInsets"  ] = UIEdgeInsetsString(element.imageEdgeInsets  );
+    descriptionDictionary[@"contentEdgeInsets"] = UIEdgeInsetsString(element.contentEdgeInsets);
+
+    descriptionDictionary[@"remote"] = (element.remote
+                                        ? $(@"%@(%p)", element.remote.uuid, element.remote)
+                                        : @"nil");
+
+
+    return descriptionDictionary;
+}
+
+@end
+

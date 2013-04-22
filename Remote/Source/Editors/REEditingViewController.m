@@ -14,7 +14,7 @@
 // #define COLOR_CONTAINER_BACKGROUND
 
 static int         ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int    msLogContext = EDITOR_F;
+static const int    msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 // static const int ddLogLevel = DefaultDDLogLevel;
 
 MSKIT_STATIC_STRING_CONST   kCenterXConstraintNametag = @"kCenterXConstraintNametag";

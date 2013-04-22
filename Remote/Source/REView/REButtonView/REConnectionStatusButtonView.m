@@ -21,7 +21,7 @@
                   queue:MainQueue
              usingBlock:^(NSNotification * note){
                  if (self.model.selected != BOOLValue([note.userInfo
-                                                         valueForKey:CMConnectionStatusWifiAvailable]))
+                                                        valueForKey:CMConnectionStatusWifiAvailable]))
                  self.model.selected = !self.model.selected;
              }];
 }

@@ -65,10 +65,10 @@
            ^id (id obj, NSUInteger idx){
                return prettyRemoteElementConstraint(obj);
            }] componentsJoinedByString:@"\n\t"]];
-    
+
     if (!modeledConstraints.count && !unmodeledConstraints.count)
         [description appendString:@"no constraints"];
-    
+
     return description;
 }
 
@@ -81,8 +81,7 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint)
                 ? ([view isKindOfClass:[REView class]]
                    ?[((REView*)view).displayName camelCaseString]
                    : (view.accessibilityIdentifier
-                      ? view.accessibilityIdentifier
-                      : $(@"<%@:%p>", ClassString([view class]), view)
+                       ? : $(@"<%@:%p>", ClassString([view class]), view)
                       )
                    )
                 : (NSString *)nil);
@@ -101,7 +100,7 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint)
         substitutions = @{
                           MSExtendedVisualFormatItem1Name : firstItem
                           };
-    
+
     return [constraint stringRepresentationWithSubstitutions:substitutions];
 }
 

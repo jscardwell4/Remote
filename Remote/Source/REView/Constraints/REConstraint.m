@@ -322,7 +322,7 @@
                             {
                                 weakself.valid = NO;
                             }];
-    
+
     _kvoReceptionist = [MSKVOReceptionist
                         receptionistForObject:_modelConstraint
                         keyPath:@"constant"
@@ -349,8 +349,7 @@
                 ? ([view isKindOfClass:[REView class]]
                    ? [((REView*)view).displayName camelCaseString]
                    : (view.accessibilityIdentifier
-                      ? view.accessibilityIdentifier
-                      : $(@"<%@:%p>", ClassString([view class]), view)
+                       ? : $(@"<%@:%p>", ClassString([view class]), view)
                       )
                    )
                 : (NSString*)nil

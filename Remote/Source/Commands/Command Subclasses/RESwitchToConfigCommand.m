@@ -9,7 +9,7 @@
 #import "RERemoteController.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @interface RESwitchToConfigCommandOperation : RECommandOperation @end
 
@@ -17,31 +17,20 @@ static int msLogContext = COMMAND_F_C;
 
 @dynamic remoteController, configuration;
 
-+ (RESwitchToConfigCommand *)configCommandInContext:(NSManagedObjectContext *)ctx
-                                    configuration:(RERemoteConfiguration)config
++ (RESwitchToConfigCommand *)commandWithConfiguration:(RERemoteConfiguration)configuration
 {
-    __block RESwitchToConfigCommand * command = nil;
+    return [self commandWithConfiguration:configuration
+                                inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+}
 
-    [ctx performBlockAndWait:
-     ^{
-         command = (RESwitchToConfigCommand *)[super commandInContext:ctx];
-         if (command)
-         {
-             command.primitiveRemoteController = [RERemoteController remoteControllerInContext:ctx];
-             command.primitiveConfiguration = config;
-         }
-     }];
-
++ (RESwitchToConfigCommand *)commandWithConfiguration:(RERemoteConfiguration)configuration
+                                            inContext:(NSManagedObjectContext *)context
+{
+    RESwitchToConfigCommand * command = [self commandInContext:context];
+    command.remoteController = [RERemoteController remoteControllerInContext:context];
+    command.configuration = configuration;
     return command;
 }
-
-/*
-- (void)execute:(void (^)(BOOL, BOOL))completion
-{
-    [super execute:completion];
-    assert(NO);
-}
-*/
 
 - (RECommandOperation *)operation
 {
@@ -61,6 +50,7 @@ static int msLogContext = COMMAND_F_C;
         _success = NO;
         [super main];
     }
+    
     @catch (NSException * exception)
     {
         MSLogDebugTag(@"seriously, wtf?");

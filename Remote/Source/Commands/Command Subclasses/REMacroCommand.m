@@ -7,7 +7,7 @@
 //
 #import "RECommand_Private.h"
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @interface REMacroCommandOperation : RECommandOperation @end
 
@@ -15,35 +15,24 @@ static int msLogContext = COMMAND_F_C;
 
 @dynamic commands;
 
-@synthesize queue = _queue;
+@synthesize queue = __queue;
 
-+ (instancetype)commandInContext:(NSManagedObjectContext *)context
+- (void)awakeFromInsert
 {
-    __block REMacroCommand * macroCommand = nil;
-    [context performBlockAndWait:
-     ^{
-         macroCommand = [super commandInContext:context];
-         macroCommand.primitiveIndicator = @YES;
-     }];
-
-    return macroCommand;
+    [super awakeFromInsert];
+    self.indicator = YES;
 }
 
-- (RECommand *)objectAtKeyedSubscript:(NSString *)uuid
-{
-    return [self.commands objectPassingTest:^BOOL(RECommand * obj, NSUInteger idx) {
-        return [obj.uuid isEqualToString:uuid];
-    }];
-}
+- (id)keySubscriptedCollection { return self.commands; }
+- (id)indexSubscriptedCollection { return self.commands; }
 
 - (NSOperationQueue *)queue
 {
-    if (!_queue)
-        _queue = [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.macro"];
-    return _queue;
+    if (!__queue) __queue = [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.macro"];
+    return __queue;
 }
 
-- (void)execute:(void (^)(BOOL, BOOL))completion
+- (void)execute:(RECommandCompletionHandler)completion
 {
     if (self.commands.count)
     {
@@ -56,34 +45,28 @@ static int msLogContext = COMMAND_F_C;
             precedingOperation = operation;
         }
 
-        [precedingOperation setCompletionBlock:^{
-            MSLogDebugTag(@"command dispatch complete");
-            if (completion)
-            {
-                BOOL finished = !([_operations objectPassingTest:
+        [precedingOperation setCompletionBlock:
+         ^{
+             MSLogDebugTag(@"command dispatch complete");
+             if (completion)
+             {
+                 __block NSError * error = nil;
+                 BOOL success = !([_operations objectPassingTest:
                                    ^BOOL(RECommandOperation * op, NSUInteger idx)
                                    {
-                                       return op.isCancelled;
+                                       return (!op.wasSuccessful && (error = op.error));
                                    }]);
-                BOOL success = !([_operations objectPassingTest:
-                                  ^BOOL(RECommandOperation * op, NSUInteger idx)
-                                  {
-                                      return !op.wasSuccessful;
-                                  }]);
-                completion(finished, success);
-            }
+                 completion(success, error);
+             }
        }];
 
         [self.queue addOperations:_operations waitUntilFinished:NO];
     }
     
-    else if (completion) completion(YES, YES);
+    else if (completion) completion(YES, nil);
 }
 
-- (RECommandOperation *)operation
-{
-    return [REMacroCommandOperation operationForCommand:self];
-}
+- (RECommandOperation *)operation { return [REMacroCommandOperation operationForCommand:self]; }
 
 
 - (void)insertObject:(RECommand *)command inCommandsAtIndex:(NSUInteger)idx
@@ -180,8 +163,6 @@ static int msLogContext = COMMAND_F_C;
 
 - (NSUInteger)count { return [self.primitiveCommands count]; }
 
-- (RECommand *)objectAtIndexedSubscript:(NSUInteger)idx { return self.primitiveCommands[idx]; }
-
 - (void)setObject:(RECommand *)obj atIndexedSubscript:(NSUInteger)idx
 {
     [self insertObject:obj inCommandsAtIndex:idx];
@@ -201,21 +182,21 @@ static int msLogContext = COMMAND_F_C;
 {
     @try
     {
-        NSArray * commandOperations = [[((REMacroCommand *)_command).commands
-                                            valueForKey:@"operation"] array];
-        RECommandOperation * precedingOperation = nil;
-        for (RECommandOperation * operation in commandOperations) {
-            if (precedingOperation) [operation addDependency:precedingOperation];
-            precedingOperation = operation;
-        }
+        REMacroCommand * command = (REMacroCommand *)_command;
+        NSOrderedSet * commandOperations = [command.commands valueForKey:@"operation"];
 
-        [((REMacroCommand *)_command).queue addOperations:commandOperations
-                                        waitUntilFinished:YES];
+        [commandOperations enumerateObjectsUsingBlock:
+         ^(RECommandOperation * operation, NSUInteger idx, BOOL *stop)
+         {
+             if (idx) [operation addDependency:(RECommandOperation *)commandOperations[idx - 1]];
+         }];
+
+        [command.queue addOperations:[commandOperations array] waitUntilFinished:YES];
 
         _success = !([commandOperations objectPassingTest:
                       ^BOOL(RECommandOperation * op, NSUInteger idx)
                       {
-                          return !op.wasSuccessful;
+                          return (!op.wasSuccessful && (_error = op.error));
                       }]);
 
 

@@ -13,6 +13,13 @@
 + (instancetype)objectWithUUID:(NSString *)uuid;
 + (instancetype)objectWithUUID:(NSString *)uuid inContext:(NSManagedObjectContext *)context;
 
+- (id)objectForKeyedSubscript:(NSString *)uuid;
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
+- (MSDictionary *)deepDescriptionDictionary;
+- (NSString *)deepDescription;
+
 @end
 
-MSModelObject * memberOfSetWithUUID(NSSet * set, NSString * uuid);
+MSModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid);
+MSModelObject * memberOfCollectionAtIndex(id collection, NSUInteger idx);

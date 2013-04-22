@@ -8,42 +8,28 @@
 #import "RECommand_Private.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @implementation RECommand
 
 @dynamic button, indicator, onDevice, offDevice;
 
-+ (int)ddLogLevel { return ddLogLevel; }
-
-+ (void)ddSetLogLevel:(int)logLevel { ddLogLevel = logLevel; }
-
-+ (int)msLogContext { return msLogContext; }
-
-+ (void)msSetLogContext:(int)logContext { msLogContext = logContext; }
++ (instancetype)command
+{
+    return [self commandInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+}
 
 + (instancetype)commandInContext:(NSManagedObjectContext *)context
 {
-    __block RECommand * command = nil;
-    [context performBlockAndWait:^{ command = NSManagedObjectFromClass(context); }];
-    return command;
+    return [self MR_createInContext:context];
 }
 
 - (void)execute:(RECommandCompletionHandler)completion
 {
     MSLogDebugTag(@"");
-    _completion = completion;
-
-    RECommandOperation * operation = self.operation;
-    __weak RECommandOperation * weakoperation = operation;
-    [operation setCompletionBlock:^{
-        if (_completion) _completion(!weakoperation.isCancelled, weakoperation.wasSuccessful);
-    }];
-
-    if (CurrentQueue)
-        [CurrentQueue addOperation:operation];
-    else
-        [operation start];
+    __weak RECommandOperation * operation = self.operation;
+    [operation setCompletionBlock:^{ if (completion) completion(operation.wasSuccessful, nil); }];
+    [operation start];
 }
 
 - (RECommandOperation *)operation { return [RECommandOperation operationForCommand:self]; }
@@ -52,21 +38,13 @@ static int msLogContext = COMMAND_F_C;
 
 @implementation RECommandOperation
 
-+ (int)ddLogLevel { return ddLogLevel; }
-
-+ (void)ddSetLogLevel:(int)logLevel { ddLogLevel = logLevel; }
-
-+ (int)msLogContext { return msLogContext; }
-
-+ (void)msSetLogContext:(int)logContext { msLogContext = logContext; }
-
 + (instancetype)operationForCommand:(RECommand *)command
 {
     RECommandOperation * operation = [self new];
-    operation->_command = command;
+    operation->_command   = command;
     operation->_executing = NO;
-    operation->_finished = NO;
-    operation->_success = NO;
+    operation->_finished  = NO;
+    operation->_success   = NO;
     return operation;
 }
 
@@ -88,6 +66,7 @@ static int msLogContext = COMMAND_F_C;
     else if (self.dependencies.count && [self.dependencies objectPassingTest:
                                          ^BOOL(RECommandOperation * operation, NSUInteger idx)
                                          {
+                                             _error = operation.error;
                                              return !operation.wasSuccessful;
                                          }])
     {
@@ -109,6 +88,8 @@ static int msLogContext = COMMAND_F_C;
 
 - (BOOL)isFinished { return _finished; }
 
+- (NSError *)error { return _error; }
+
 - (void)main
 {
     [self willChangeValueForKey:@"isFinished"];
@@ -119,7 +100,31 @@ static int msLogContext = COMMAND_F_C;
     [self didChangeValueForKey:@"isFinished"];
 }
 
-- (BOOL)wasSuccessful { return (_success && _finished && ![self isCancelled]); }
+- (BOOL)wasSuccessful { return (!_error && _success && _finished && ![self isCancelled]); }
 
 @end
 
+
+@implementation RECommand (Logging)
+
++ (int)ddLogLevel { return ddLogLevel; }
+
++ (void)ddSetLogLevel:(int)logLevel { ddLogLevel = logLevel; }
+
++ (int)msLogContext { return msLogContext; }
+
++ (void)msSetLogContext:(int)logContext { msLogContext = logContext; }
+
+@end
+
+@implementation RECommandOperation (Logging)
+
++ (int)ddLogLevel { return ddLogLevel; }
+
++ (void)ddSetLogLevel:(int)logLevel { ddLogLevel = logLevel; }
+
++ (int)msLogContext { return msLogContext; }
+
++ (void)msSetLogContext:(int)logContext { msLogContext = logContext; }
+
+@end

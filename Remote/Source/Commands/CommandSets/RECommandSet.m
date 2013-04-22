@@ -11,7 +11,7 @@
 #import "BankObject.h"
 
 static int   ddLogLevel   = DefaultDDLogLevel;
-static int   msLogContext = REMOTE_F;
+static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel,msLogContext)
 
 static const NSDictionary * kValidKeysets;
@@ -83,6 +83,18 @@ static const NSDictionary * kValidKeysets;
     for (NSString * key in values) commandSet[key] = values[key];
     return commandSet;
 }
+
++ (instancetype)commandSetInContext:(NSManagedObjectContext *)context
+                           withType:(RECommandSetType)type
+                               name:(NSString *)name
+                             values:(NSDictionary *)values
+{
+    RECommandSet * commandSet = [self commandSetInContext:context type:type];
+    commandSet.name = name;
+    for (NSString * key in values) commandSet[key] = values[key];
+    return commandSet;
+}
+
 
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type
 {

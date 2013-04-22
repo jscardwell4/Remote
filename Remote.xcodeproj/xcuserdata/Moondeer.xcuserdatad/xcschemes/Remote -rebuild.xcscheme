@@ -1,60 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0460"
-   version = "1.7">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PostActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "/usr/local/bin/appledoc /Users/Moondeer/Projects/MSRemoteWorkspace/Remote">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "C26BAEA716DC10FE0093D5B4"
-                     BuildableName = "Remote.app"
-                     BlueprintName = "Remote"
-                     ReferencedContainer = "container:Remote.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "date &gt;&gt; $PROJECT_DIR/env.log&#10;env &gt;&gt; $PROJECT_DIR/env.log&#10;echo $&apos;\n&apos; &gt;&gt; $PROJECT_DIR/env.log">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "C26BAEA716DC10FE0093D5B4"
-                     BuildableName = "Remote.app"
-                     BlueprintName = "Remote"
-                     ReferencedContainer = "container:Remote.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "date &gt;&gt; $PROJECT_DIR/env.log&#10;env &gt;&gt; $PROJECT_DIR/env.log&#10;echo $&apos;\n&apos; &gt;&gt; $PROJECT_DIR/env.log">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "C240153D16D9A97100639F0D"
-                     BuildableName = "MSKit-arm7-old.framework"
-                     BlueprintName = "MSKit-arm7"
-                     ReferencedContainer = "container:../../Frameworks/MSKit/MSKit.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -70,20 +20,6 @@
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C240153D16D9A97100639F0D"
-               BuildableName = "MSKit-arm7-old.framework"
-               BlueprintName = "MSKit-arm7"
-               ReferencedContainer = "container:../../Frameworks/MSKit/MSKit.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -92,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C26BAECC16DC10FE0093D5B4"
-               BuildableName = "RemoteTests.octest"
-               BlueprintName = "RemoteTests"
-               ReferencedContainer = "container:Remote.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -153,6 +79,13 @@
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "XcodeColors"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

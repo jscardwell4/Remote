@@ -12,9 +12,10 @@
 MSKIT_STRING_CONST   REDefaultConfiguration = @"REDefaultConfiguration";
 
 static const int ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int msLogContext = REMOTE_F;
+static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
+/*
 Class delegateClassForElement(RemoteElement * element)
 {
     if ([element isKindOfClass:[RERemote class]])
@@ -26,22 +27,17 @@ Class delegateClassForElement(RemoteElement * element)
     else
         return NULL;
 }
+*/
 
 @implementation REConfigurationDelegate
 
 @synthesize currentConfiguration = _currentConfiguration;
 
-@dynamic configurations, remoteElement, subscribers, delegate;
+@dynamic configurations, subscribers, delegate, element;
 
-+ (instancetype)delegateForRemoteElement:(RemoteElement *)remoteElement
++ (instancetype)configurationDelegate
 {
-    assert(remoteElement);
-    REConfigurationDelegate * configurationDelegate =
-        [delegateClassForElement(remoteElement) MR_createInContext:remoteElement.managedObjectContext];
-
-    configurationDelegate.remoteElement = remoteElement;
-    
-    return configurationDelegate;
+    return [self MR_createEntity];
 }
 
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key
@@ -132,6 +128,13 @@ Class delegateClassForElement(RemoteElement * element)
     [self updateConfigForConfiguration:_currentConfiguration];
 }
 
-- (NSString *)shortDescription { return self.remoteElement.displayName; }
+- (NSString *)shortDescription { return self.element.displayName; }
+
+- (NSString *)deepDescription
+{
+    return (self.configurationKeys.count
+            ? $(@"registered configurations:%@", [self.configurationKeys componentsJoinedByString:@"\n\t"])
+            : @"no registered configurations");
+}
 
 @end

@@ -17,10 +17,12 @@
     BOOL        _finished;
     BOOL        _success;
     RECommand * _command;
+    NSError   * _error;
 }
 
-@property (nonatomic, getter = wasSuccessful) BOOL        success;
-@property (nonatomic, readonly)               RECommand * command;
+@property (nonatomic, strong, readonly)                         NSError   * error;
+@property (nonatomic, strong, readonly)                         RECommand * command;
+@property (nonatomic, assign, readonly, getter = wasSuccessful) BOOL        success;
 
 + (instancetype)operationForCommand:(RECommand *)command;
 
@@ -44,7 +46,6 @@
 @interface RECommand (CoreDataGeneratedAccessors)
 @property (nonatomic) BOComponentDevice * primitiveOnDevice;
 @property (nonatomic) BOComponentDevice * primitiveOffDevice;
-@property (nonatomic) NSNumber          * primitiveIndicator;
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +134,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - SwitchToConfigCommand Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
+@interface RESwitchToConfigCommand ()
+
+@property (nonatomic, strong, readwrite) RERemoteController    * remoteController;
+@property (nonatomic, copy,   readwrite) RERemoteConfiguration   configuration;
+
+@end
 
 @interface RESwitchToConfigCommand (CoreDataGeneratedAccessors)
 @property (nonatomic) RERemoteController    * primitiveRemoteController;

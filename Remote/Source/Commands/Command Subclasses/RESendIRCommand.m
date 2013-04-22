@@ -9,7 +9,7 @@
 #import "BankObject.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = COMMAND_F_C;
+static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation RESendIRCommand
@@ -60,7 +60,7 @@ static int msLogContext = COMMAND_F_C;
     [self willChangeValueForKey:@"portOverride"];
     _portOverride = portOverride;
     [self didChangeValueForKey:@"portOverride"];
-    __port = (_portOverride ? _portOverride : (self.code ? self.code.device.port : 0));
+    __port = (_portOverride  ? : (self.code ? self.code.device.port : 0));
 }
 
 - (BODevicePort)portOverride
@@ -97,13 +97,8 @@ static int msLogContext = COMMAND_F_C;
 
 + (RESendIRCommand *)commandWithIRCode:(BOIRCode *)code
 {
-    __block RESendIRCommand * sendIR = nil;
-    [code.managedObjectContext performBlockAndWait:
-     ^{
-         sendIR = [self commandInContext:code.managedObjectContext];
-         sendIR.primitiveCode = code;
-     }];
-
+    RESendIRCommand * sendIR = [self commandInContext:code.managedObjectContext];
+    sendIR.code = code;
     return sendIR;
 }
 

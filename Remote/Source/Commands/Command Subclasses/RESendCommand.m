@@ -9,7 +9,7 @@
 #import "ConnectionManager.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
-static const int msLogContext = COMMAND_F_C;
+static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 
@@ -31,14 +31,14 @@ static const int msLogContext = COMMAND_F_C;
         MSLogDebugTag(@"command ID:'%@', %@", commandID, [_command shortDescription]);
         [ConnectionManager
              sendCommand:commandID
-              completion:^(BOOL finished, BOOL success)
+              completion:^(BOOL success, NSError * error)
                          {
-                             MSLogDebugTag(@"command ID:%@\ncompletion: finished? %@, success? %@",
+                             MSLogDebugTag(@"command ID:%@\ncompletion: success? %@ error - %@",
                                            commandID,
-                                           BOOLString(finished),
-                                           BOOLString(success));
-                             _finished = finished;
+                                           BOOLString(success),
+                                           error);
                              _success = success;
+                             _error   = error;
                              [super main];
                          }];
     }
