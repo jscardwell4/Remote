@@ -8,7 +8,15 @@
 
 #import "MSRemoteConstants.h"
 
+MSKIT_STRING_CONST MSDefaultFontName     = @"Optima-Bold";
+MSKIT_STRING_CONST MSArrowFontName       = @"HiraMinProN-W6";
+MSKIT_STRING_CONST MSUpArrow             = @"\u25B2";
+MSKIT_STRING_CONST MSDownArrow           = @"\u25BC";
+MSKIT_STRING_CONST MSLeftArrow           = @"\u25C0";
+MSKIT_STRING_CONST MSRightArrow          = @"\u25B6";
+
 const int   kQueueKey = 121;
+
 UIColor * defaultTitleHighlightColor(void) {
     static UIColor * color;
 

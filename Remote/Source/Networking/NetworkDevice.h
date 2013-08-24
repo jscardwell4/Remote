@@ -14,7 +14,7 @@ MSKIT_EXTERN_STRING   NDDeviceStatusKey;
 MSKIT_EXTERN_STRING   NDDeviceUUIDKey;
 MSKIT_EXTERN_STRING   NDDeviceURLKey;
 
-@interface NetworkDevice : MSModelObject
+@interface NetworkDevice : MSModelObject <MSNamedModelObject>
 
 + (instancetype)device;
 + (instancetype)deviceInContext:(NSManagedObjectContext *)context;
@@ -24,12 +24,13 @@ MSKIT_EXTERN_STRING   NDDeviceURLKey;
 
 + (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID;
 
-@property (nonatomic, copy, readonly) NSString * deviceUUID;
-@property (nonatomic, copy, readonly) NSString * make;
-@property (nonatomic, copy, readonly) NSString * model;
-@property (nonatomic, copy, readonly) NSString * status;
-@property (nonatomic, copy, readonly) NSString * configURL;
-@property (nonatomic, copy, readonly) NSString * revision;
+@property (nonatomic, copy, readonly ) NSString * deviceUUID;
+@property (nonatomic, copy, readonly ) NSString * make;
+@property (nonatomic, copy, readonly ) NSString * model;
+@property (nonatomic, copy, readonly ) NSString * status;
+@property (nonatomic, copy, readonly ) NSString * configURL;
+@property (nonatomic, copy, readonly ) NSString * revision;
+@property (nonatomic, copy, readwrite) NSString * name;
 
 @end
 

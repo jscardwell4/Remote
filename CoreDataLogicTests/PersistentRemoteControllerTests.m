@@ -44,7 +44,10 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
     assertThat(controller.uuid, is(uuid)     );
 }
 
-+ (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }
++ (MSCoreDataTestOptions)options
+{
+    return ([super options] | MSCoreDataTestPersistentStore | MSCoreDataTestBackgroundSavingContext);
+}
 
 + (NSArray *)arrayOfInvocationSelectors
 {

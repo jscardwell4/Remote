@@ -20,7 +20,7 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 {
     __block NSString * buttonGroupUUID, * layoutConfigurationUUID, * configurationDelegateUUID;
 
-    [MagicalRecord saveWithBlockAndWait:
+    [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext *localContext)
      {
 
@@ -28,10 +28,10 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 
          assertThat(buttonGroup, notNilValue());
 
-         NSString * displayName = @"REButtonGroup for 'testCreateREButtonGroup'";
-         buttonGroup.displayName = displayName;
+         NSString * name = @"REButtonGroup for 'testCreateREButtonGroup'";
+         buttonGroup.name = name;
 
-         assertThat(buttonGroup.displayName,                  is(displayName)          );
+         assertThat(buttonGroup.name,                  is(name)          );
          assertThatUnsignedInteger(buttonGroup.panelLocation, equalToUnsignedInteger(0));
          assertThat(buttonGroup.subelements,                  empty()                  );
          assertThat(buttonGroup.constraints,                  empty()                  );
@@ -60,6 +60,8 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
     assertThat(buttonGroup.configurationDelegate,      notNilValue()                );
     assertThat(buttonGroup.layoutConfiguration.uuid,   is(layoutConfigurationUUID)  );
     assertThat(buttonGroup.configurationDelegate.uuid, is(configurationDelegateUUID));
+
+    MSLogInfoTag(@"button group created:\n%@", [buttonGroup deepDescription]);
 }
 
 + (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }

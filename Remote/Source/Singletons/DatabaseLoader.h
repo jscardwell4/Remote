@@ -23,4 +23,12 @@
  */
 + (void)logCodeBank;
 
++ (void)loadFactoryCodesInContext:(NSManagedObjectContext *)moc;
+
++ (void)loadUsersCodes:(NSManagedObjectContext *)moc;
+
++ (void)loadIconImages:(NSManagedObjectContext *)moc;
+
++ (void)loadBackgroundImages:(NSManagedObjectContext *)moc;
+
 @end

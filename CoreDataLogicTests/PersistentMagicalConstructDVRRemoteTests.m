@@ -21,7 +21,7 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 - (void)testCreateDVRRemote
 {
     __block NSString * buttonGroupUUID;
-    [MagicalRecord saveWithBlockAndWait:
+    [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext *localContext)
      {
          // load devices and IR codes

@@ -1,0 +1,25 @@
+{
+    "RERemoteController": "80142DF7-0BFE-4868-BAC0-257DAE79D825",
+    "RERemote": {
+        "Home Screen": "AD60F7A4-A6E2-4C5D-97B2-87A952AFB03E",
+        "Comcast DVR Activity": "EE27F682-437B-42B9-B1D8-03870808821B"
+    },
+    "REActivity": {
+        "Comcast DVR Activity": "62C56ED7-3CD2-412D-9CA9-5CAA5378787E",
+        "Playstation Activity": "3AD4D8A2-5395-4418-B397-FC3A2ABAD42A",
+        " TV Activity": "9C2C8DE2-87DA-422C-B4A1-1438007C75DD",
+        "Sonos Activity": "2D9B7728-CBB1-4BF4-A7B9-83F46F75CB95"
+    },
+    "BOComponentDevice": {
+        "AV Receiver": "18A7C007-4DED-48D6-9A72-FA63640C49B5",
+        "Comcast DVR": "F0419941-0226-4D06-A4F0-4F3B70BE23CF",
+        "PS3": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
+        "Samsung TV": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F"
+    },
+    "BOBackgroundImage": {
+        "Pro Leather": "A6C787CB-FDFF-42EE-82AB-599E139B3EAA"
+    },
+    "BOIconImage": {
+        "Lightbulb": "2F4C236F-19BC-43B7-AE40-7D61103FFBDF"
+    }
+}

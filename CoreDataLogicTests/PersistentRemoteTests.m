@@ -52,10 +52,10 @@ MSKIT_KEY_DEFINITION(PersistentRemoteTestsRemoteUUID);
 
     assertThat(remote, notNilValue());
 
-    NSString * displayName = @"RERemote for 'testCreateRERemote'";
-    remote.displayName = displayName;
+    NSString * name = @"RERemote for 'testCreateRERemote'";
+    remote.name = name;
 
-    assertThat(remote.displayName,           is(displayName));
+    assertThat(remote.name,           is(name));
     assertThat(remote.subelements,           empty()        );
     assertThat(remote.constraints,           empty()        );
     assertThat(remote.parentElement,         nilValue()     );
@@ -76,7 +76,13 @@ MSKIT_KEY_DEFINITION(PersistentRemoteTestsRemoteUUID);
     
     if (error) [MagicalRecord handleErrors:error];
 
-    assertThat(error, nilValue());
+    else if (self.rootSavingContext)
+        [self.rootSavingContext performBlockAndWait:
+         ^{
+             [self.rootSavingContext save:&error];
+         }];
+
+    if (error) [MagicalRecord handleErrors:error];
 
     [self.defaultContext performBlockAndWait:^{ [self.defaultContext reset]; }];
 
@@ -92,7 +98,10 @@ MSKIT_KEY_DEFINITION(PersistentRemoteTestsRemoteUUID);
     self[PersistentRemoteTestsRemoteUUIDKey] = remoteUUID;
 }
 
-+ (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }
++ (MSCoreDataTestOptions)options
+{
+    return ([super options] | MSCoreDataTestPersistentStore | MSCoreDataTestBackgroundSavingContext);
+}
 
 + (NSArray *)arrayOfInvocationSelectors
 {

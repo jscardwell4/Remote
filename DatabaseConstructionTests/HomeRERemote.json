@@ -1,0 +1,188 @@
+/* RERemote - Home Screen */
+{
+    "uuid": "AD60F7A4-A6E2-4C5D-97B2-87A952AFB03E",
+    "type": "remote",
+    "name": "Home Screen",
+    "constraints": {
+        "identifiers": {
+            "remote": "AD60F7A4-A6E2-4C5D-97B2-87A952AFB03E",
+            "activityButtons": "061C048C-D965-4771-AD19-D1F0D13AE131",
+            "lightControls": "D9AC83D5-1182-4891-AD9C-BD1EFF292397"
+        },
+        "format": [
+            "activityButtons.centerX = remote.centerX",
+            "activityButtons.centerY = remote.centerY - 22",
+            "lightControls.left = remote.left",
+            "lightControls.right = remote.right",
+            "lightControls.bottom = remote.bottom"]
+    },
+    "backgroundImage.uuid": "A6C787CB-FDFF-42EE-82AB-599E139B3EAA",
+    "subelements": [
+
+    /* REButtonGroup - Activity Buttons */
+    {
+        "uuid": "061C048C-D965-4771-AD19-D1F0D13AE131",
+        "type": "button group",
+        "name": "Activity Buttons",
+        "constraints": {
+            "identifiers": {
+                "buttonGroup": "061C048C-D965-4771-AD19-D1F0D13AE131",
+                "activity1": "38A2BD0B-5523-491F-A35E-1E7AE67EB934",
+                "activity2": "C797B8C6-8E36-4860-81FB-286FF56057D6",
+                "activity3": "77B616BB-04DE-4F35-B9D8-A1D5D1F0A6A1",
+                "activity4": "D5487F61-E029-41B1-B285-E1067F6AE642"
+            },
+            "format": [
+                "buttonGroup.width = 300",
+                "buttonGroup.height = buttonGroup.width",
+                "activity1.width = buttonGroup.width * 0.5",
+                "activity1.centerX = buttonGroup.centerX * 0.5",
+                "activity1.centerY = buttonGroup.centerY * 0.5",
+                "activity2.width = activity1.width",
+                "activity2.centerX = buttonGroup.centerX * 1.5",
+                "activity2.centerY = buttonGroup.centerY * 0.5",
+                "activity3.width = activity1.width",
+                "activity3.centerX = buttonGroup.centerX * 0.5",
+                "activity3.centerY = buttonGroup.centerY * 1.5",
+                "activity4.width = activity1.width",
+                "activity4.centerX = buttonGroup.centerX * 1.5",
+                "activity4.centerY = buttonGroup.centerY * 1.5"]
+        },
+        "subelements": [
+
+        /*  REButton - Comcast DVR Activity Button */
+        {
+            "uuid": "38A2BD0B-5523-491F-A35E-1E7AE67EB934",
+            "type": "button",
+            "name": "Comcast DVR",
+            "constraints": {
+                "identifiers.activity1": "38A2BD0B-5523-491F-A35E-1E7AE67EB934",
+                "format": ["activity1.height = activity1.width"]
+            },
+            "shape": "rounded rectangle",
+            "titles.default.normal": "Comcast\nDVR",
+            "command": {
+                "type": "activity",
+                "activity.uuid": "62C56ED7-3CD2-412D-9CA9-5CAA5378787E"
+            }
+        },
+
+        /*  REButton - Playstation Activity Button */
+        {
+            "uuid": "C797B8C6-8E36-4860-81FB-286FF56057D6",
+            "type": "button",
+            "name": "Playstation",
+            "constraints": {
+                "identifiers.activity2": "C797B8C6-8E36-4860-81FB-286FF56057D6",
+                "format": ["activity2.height = activity2.width"]
+            },
+            "shape": "rounded rectangle",
+            "titles.default.normal": "Playstation",
+            "command": {
+                "type": "activity",
+                "activity.uuid": "3AD4D8A2-5395-4418-B397-FC3A2ABAD42A"
+            }
+        },
+
+        /*  REButton - Apple TV Activity Button */
+        {
+            "uuid": "77B616BB-04DE-4F35-B9D8-A1D5D1F0A6A1",
+            "type": "button",
+            "name": " TV",
+            "constraints": {
+                "identifiers.activity3": "77B616BB-04DE-4F35-B9D8-A1D5D1F0A6A1",
+                "format": ["activity3.height = activity3.width"]
+            },
+            "shape": "rounded rectangle",
+            "titles.default.normal": " TV",
+            "command": {
+                "type": "activity",
+                "activity.uuid": "9C2C8DE2-87DA-422C-B4A1-1438007C75DD"
+            }
+        },
+
+        /*  REButton - Sonos Activity Button */
+        {
+            "uuid": "D5487F61-E029-41B1-B285-E1067F6AE642",
+            "type": "button",
+            "name": "Sonos",
+            "constraints": {
+                "identifiers.activity4": "D5487F61-E029-41B1-B285-E1067F6AE642",
+                "format": ["activity4.height = activity4.width"]
+            },
+            "shape": "rounded rectangle",
+            "titles.default.normal": "Sonos",
+            "command": {
+                "type": "activity",
+                "activity.uuid": "2D9B7728-CBB1-4BF4-A7B9-83F46F75CB95"
+            }
+        }]
+    },
+
+    /*  REButtonGroup - Light Controls */
+    {
+        "uuid": "D9AC83D5-1182-4891-AD9C-BD1EFF292397",
+        "type": "button group",
+        "name": "Light Controls",
+        "constraints": {
+            "identifiers": {
+                "lightsOnButton": "8EB6168B-7A89-442C-AE08-2BD63DEBA349",
+                "lightsOffButton": "7D9AC852-B3D8-4DED-A009-541FD2385437",
+                "buttonGroup": "D9AC83D5-1182-4891-AD9C-BD1EFF292397"
+            },
+            "format": [
+                "buttonGroup.height = 44",
+                "lightsOnButton.left = buttonGroup.left + 20",
+                "lightsOffButton.left = lightsOnButton.right + 40",
+                "lightsOffButton.width = lightsOnButton.width",
+                "lightsOnButton.top = buttonGroup.top",
+                "lightsOnButton.bottom = buttonGroup.bottom",
+                "lightsOffButton.top = buttonGroup.top",
+                "lightsOffButton.bottom = buttonGroup.bottom"]
+        },
+        "backgroundColor": "flipside",
+        "subelements": [
+
+        /*  REButton - Lights On */
+        {
+            "uuid": "8EB6168B-7A89-442C-AE08-2BD63DEBA349",
+            "type": "button",
+            "name": "Lights On",
+            "constraints": {
+                "identifiers.lightsOnButton": "8EB6168B-7A89-442C-AE08-2BD63DEBA349",
+                "format": ["lightsOnButton.width = 44"]
+            },
+            "icons": {
+                "images.default": "2F4C236F-19BC-43B7-AE40-7D61103FFBDF",
+                "colors": {
+                    "default": "rgba(255,255,255,255)",
+                    "highlighted": "rgba(0,175,255,255)"
+                }
+            },
+            "command": {
+                "uuid": "93D52861-9597-4409-B233-C52377C8F181",
+                "type": "http",
+                "url": "http://10.0.1.27/0?1201=I=0"
+            }
+        },
+
+        /*  REButton - Lights Off */
+        {
+            "uuid": "7D9AC852-B3D8-4DED-A009-541FD2385437",
+            "type": "button",
+            "name": "Lights Off",
+            "icons": {
+                "images.default": "2F4C236F-19BC-43B7-AE40-7D61103FFBDF",
+                "colors": {
+                    "default": "rgba(168,168,168,255)",
+                    "highlighted": "rgba(0,175,255,255)"
+                }
+            },
+            "command": {
+                "uuid": "4A876285-EA78-4F61-B7DE-18B9DD5E98D2",
+                "type": "http",
+                "url": "http://10.0.1.27/0?1401=I=0"
+            }
+        }]
+    }]
+}

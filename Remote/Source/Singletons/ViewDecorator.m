@@ -120,11 +120,11 @@ static CGSize    labelShadowOffset = DefaultShadowOffset;
                                       style:UIBarButtonItemStylePlain
                                      target:target
                                      action:selector];
-    [item setTitleTextAttributes:@{UITextAttributeFont      : [UIFont fontAwesomeFontWithSize:32.0f],
-                                   UITextAttributeTextColor : WhiteColor}
+    [item setTitleTextAttributes:@{NSFontAttributeName      : [UIFont fontAwesomeFontWithSize:32.0f],
+                                   NSForegroundColorAttributeName : WhiteColor}
                         forState:UIControlStateNormal];
-    [item setTitleTextAttributes:@{UITextAttributeFont      : [UIFont fontAwesomeFontWithSize:32.0f],
-                                   UITextAttributeTextColor : LightTextColor}
+    [item setTitleTextAttributes:@{NSFontAttributeName      : [UIFont fontAwesomeFontWithSize:32.0f],
+                                   NSForegroundColorAttributeName : LightTextColor}
                         forState:UIControlStateHighlighted];
 
     return item;

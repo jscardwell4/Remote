@@ -7,6 +7,7 @@
 //
 #import "MSModelObject.h"
 
+MSKIT_STRING_CONST MSModelObjectInitializingContextName = @"MSModelObjectInitializingContextName";
 
 @interface MSModelObject (CoreDataGeneratedAccessors)
 
@@ -22,15 +23,20 @@
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    self.primitiveUuid = [MSNonce() copy];
+
+    if (MSModelObjectShouldInitialize)
+        self.primitiveUuid = MSNonce();
+
 }
 
 + (instancetype)objectWithUUID:(NSString *)uuid
 {
-    return [self objectWithUUID:uuid inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return (StringIsNotEmpty(uuid)
+            ? [self objectWithUUID:uuid context:[NSManagedObjectContext MR_contextForCurrentThread]]
+            : nil);
 }
 
-+ (instancetype)objectWithUUID:(NSString *)uuid inContext:(NSManagedObjectContext *)context
++ (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)context
 {
     return (StringIsNotEmpty(uuid)
             ? [self MR_findFirstByAttribute:@"uuid" withValue:uuid inContext:context]
@@ -53,31 +59,45 @@
 
 - (MSDictionary *)deepDescriptionDictionary
 {
-    MSMutableDictionary * descriptionDictionary = [MSMutableDictionary dictionary];
-    descriptionDictionary[@"class"]   = ClassString([self class]);
-    descriptionDictionary[@"address"] = $(@"%p", self);
-    descriptionDictionary[@"uuid"]    = self.uuid;
-    descriptionDictionary[@"context"] = $(@"%p:'%@'",
+    MSMutableDictionary * dd = [MSMutableDictionary dictionary];
+    dd[@"class"]   = ClassString([self class]);
+    dd[@"address"] = $(@"%p", self);
+    dd[@"uuid"]    = self.uuid;
+    dd[@"context"] = $(@"%p%@",
                                           self.managedObjectContext,
-                                          (self.managedObjectContext.nametag ?: @""));
+                                          (self.managedObjectContext.nametag
+                                           ? $(@":'%@'",self.managedObjectContext.nametag)
+                                           : @""));
 
-    return descriptionDictionary;
+    return dd;
 }
 
-- (NSString *)deepDescription
+- (NSString *)deepDescription { return [self deepDescriptionWithOptions:0 indentLevel:1]; }
+
+- (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level
 {
-    MSDictionary * descriptionDictionary = [self deepDescriptionDictionary];
+    MSDictionary * dd = [self deepDescriptionDictionary];
+    return [dd  formattedDescriptionWithOptions:options levelIndent:level];
+//    NSNumber * maxKeyLength = [[dd allKeys] valueForKeyPath:@"@max.length"];
+//
+//    NSMutableString * description = [@"" mutableCopy];
+//    [dd enumerateKeysAndObjectsUsingBlock:
+//     ^(NSString * key, NSString * value, BOOL *stop)
+//     {
+//         [description appendFormat:@"%@ %@\n",
+//          [[key stringByAppendingString:@":"] stringByRightPaddingToLength:([maxKeyLength longValue] + 2) withCharacter:' '],
+//          [value stringByShiftingRight:23 shiftFirstLine:NO]];
+//     }];
+//
+//    return [description stringByShiftingRight:4];
+}
 
-    NSMutableString * description = [@"" mutableCopy];
-    [descriptionDictionary enumerateKeysAndObjectsUsingBlock:
-     ^(NSString * key, NSString * value, BOOL *stop)
-     {
-         [description appendFormat:@"%@ %@\n",
-          [[key stringByAppendingString:@":"] stringByRightPaddingToLength:22 withCharacter:' '],
-          value];
-     }];
-
-    return [description stringByShiftingRight:4];
+- (NSString *)modelObjectDescription
+{
+        return (([self conformsToProtocol:@protocol(MSNamedModelObject)])
+                ? namedModelObjectDescription((MSModelObject<MSNamedModelObject> *)self)
+                : unnamedModelObjectDescription(self)
+                );
 }
 
 @end
@@ -106,18 +126,20 @@ MSModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid)
 
 MSModelObject * memberOfCollectionAtIndex(id collection, NSUInteger idx)
 {
-    NSArray * array = nil;
-    
-    if ([collection isKindOfClass:[NSArray class]])
-        array = (NSArray *)collection;
+    return ([collection respondsToSelector:@selector(objectAtIndexedSubscript:)]
+            ? collection[idx]
+            : nil);
+}
 
-    else if ([collection isKindOfClass:[NSOrderedSet class]])
-        array = [(NSOrderedSet *)collection array];
+NSString * namedModelObjectDescription(MSModelObject<MSNamedModelObject> * modelObject)
+{
+    return (modelObject
+            ? $(@"%@(%p):'%@'", modelObject.uuid, modelObject, (modelObject.name ?: @""))
+            : @"nil");
+}
 
-    if (!array.count || ! idx < array.count)
-        return nil;
-
-    else
-        return array[idx];
+NSString * unnamedModelObjectDescription(MSModelObject * modelObject)
+{
+    return (modelObject? $(@"%@(%p)", modelObject.uuid, modelObject) : @"nil");
 }
 

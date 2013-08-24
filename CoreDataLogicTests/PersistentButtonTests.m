@@ -46,10 +46,10 @@ MSKIT_KEY_DEFINITION(PersistentButtonTestsButtonUUID);
 
     assertThat(button, notNilValue());
 
-    NSString * displayName = @"REButton for 'testCreateREButton'";
-    button.displayName = displayName;
+    NSString * name = @"REButton for 'testCreateREButton'";
+    button.name = name;
 
-    assertThat(button.displayName,           is(displayName));
+    assertThat(button.name,           is(name));
     assertThat(button.title,                 nilValue()     );
     assertThat(button.subelements,           empty()        );
     assertThat(button.constraints,           empty()        );
@@ -72,6 +72,14 @@ MSKIT_KEY_DEFINITION(PersistentButtonTestsButtonUUID);
 
     if (error) [MagicalRecord handleErrors:error];
 
+    else if (self.rootSavingContext)
+        [self.rootSavingContext performBlockAndWait:
+         ^{
+             [self.rootSavingContext save:&error];
+         }];
+    
+    if (error) [MagicalRecord handleErrors:error];
+
     assertThat(error, nilValue());
 
     [self.defaultContext performBlockAndWait:^{ [self.defaultContext reset]; }];
@@ -88,7 +96,10 @@ MSKIT_KEY_DEFINITION(PersistentButtonTestsButtonUUID);
     self[PersistentButtonTestsButtonUUIDKey] = buttonUUID;
 }
 
-+ (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }
++ (MSCoreDataTestOptions)options
+{
+    return ([super options] | MSCoreDataTestPersistentStore | MSCoreDataTestBackgroundSavingContext);
+}
 
 + (NSArray *)arrayOfInvocationSelectors
 {

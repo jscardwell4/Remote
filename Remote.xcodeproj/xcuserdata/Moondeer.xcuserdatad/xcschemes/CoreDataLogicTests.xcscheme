@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0460"
+   LastUpgradeVersion = "0500"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -59,9 +59,6 @@
                   Identifier = "ManufacturerTests">
                </Test>
                <Test
-                  Identifier = "MSCoreDataTestCase">
-               </Test>
-               <Test
                   Identifier = "NetworkDeviceTests">
                </Test>
                <Test
@@ -71,16 +68,61 @@
                   Identifier = "PreviewTests">
                </Test>
                <Test
+                  Identifier = "ThemeTests">
+               </Test>
+               <Test
+                  Identifier = "ControlStateSetTests">
+               </Test>
+               <Test
+                  Identifier = "RemoteControllerTests">
+               </Test>
+               <Test
+                  Identifier = "RemoteTests">
+               </Test>
+               <Test
+                  Identifier = "ConstructDVRRemoteTests">
+               </Test>
+               <Test
+                  Identifier = "ButtonGroupTests">
+               </Test>
+               <Test
+                  Identifier = "ButtonTests">
+               </Test>
+               <Test
+                  Identifier = "MSCoreDataTestCase">
+               </Test>
+               <Test
                   Identifier = "RECoreDataTestCase">
                </Test>
                <Test
                   Identifier = "REMagicalCoreDataTestCase">
                </Test>
                <Test
-                  Identifier = "ThemeTests">
+                  Identifier = "PersistentButtonGroupTests">
                </Test>
                <Test
-                  Identifier = "ControlStateSetTests">
+                  Identifier = "PersistentButtonTests">
+               </Test>
+               <Test
+                  Identifier = "PersistentConstructDVRRemoteTests">
+               </Test>
+               <Test
+                  Identifier = "PersistentRemoteControllerTests">
+               </Test>
+               <Test
+                  Identifier = "PersistentRemoteTests">
+               </Test>
+               <Test
+                  Identifier = "MagicalRemoteTests">
+               </Test>
+               <Test
+                  Identifier = "MagicalConstructDVRRemoteTests">
+               </Test>
+               <Test
+                  Identifier = "MagicalButtonTests">
+               </Test>
+               <Test
+                  Identifier = "MagicalButtonGroupTests">
                </Test>
             </SkippedTests>
          </TestableReference>
@@ -112,7 +154,7 @@
          <EnvironmentVariable
             key = "DeleteExistingStore"
             value = "YES"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </TestAction>

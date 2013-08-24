@@ -1,0 +1,34 @@
+//
+//  MSRemoteImportSupportFunctions.h
+//  Remote
+//
+//  Created by Jason Cardwell on 4/30/13.
+//  Copyright (c) 2013 Moondeer Studios. All rights reserved.
+//
+#import "BOTypedefs.h"
+#import "RETypedefs.h"
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Remote Element Types
+////////////////////////////////////////////////////////////////////////////////
+Class     remoteElementClassForImportKey    (NSString * importKey);
+REType    remoteElementTypeFromImportKey    (NSString * importKey);
+RESubtype remoteElementSubtypeFromImportKey (NSString * importKey);
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Remote Element Options & State
+////////////////////////////////////////////////////////////////////////////////
+REOptions remoteElementOptionsFromImportKey (NSString * importKey);
+REState   remoteElementStateFromImportKey   (NSString * importKey);
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Remote Element Shape & Style
+////////////////////////////////////////////////////////////////////////////////
+REShape remoteElementShapeFromImportKey (NSString * importKey);
+REStyle remoteElementStyleFromImportKey (NSString * importKey);
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Command Types
+////////////////////////////////////////////////////////////////////////////////
+RESystemCommandType systemCommandTypeFromImportKey (NSString * importKey);
+RECommandSetType    commandSetTypeFromImportKey    (NSString * importKey);

@@ -100,7 +100,7 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
                                 ? @""
                                 :message /*[message dividerWithCharacterString:@"#"]*/);
     NSString * viewString = $(@"%@%@\n%@\n\n%@",
-                              [$(@"%@", view.displayName) singleBarMessageBox],
+                              [$(@"%@", view.name) singleBarMessageBox],
                               [view modelConstraintsDescription],
                               [view viewConstraintsDescription],
                               [view framesDescription]);
@@ -111,7 +111,7 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
                               [[subelementViews
                                arrayByMappingToBlock:^NSString *(NSString * key, NSUInteger idx) {
                                    return $(@"%@%@\n%@",
-                                            [$(@"%@", view[key].displayName) singleBarMessageBox],
+                                            [$(@"%@", view[key].name) singleBarMessageBox],
                                             [view[key] modelConstraintsDescription],
                                             [view[key] viewConstraintsDescription]);
                                }] componentsJoinedByString:@"\n\n"]);

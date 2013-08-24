@@ -92,15 +92,34 @@ MSKIT_KEY_DEFINITION(PersistentConstructDVRRemoteTestsButtonGroupUUID);
     REButtonGroup * buttonGroup = [REButtonGroupBuilder
                                    constructDVRGroupOfThreeButtonsInContext:self.defaultContext];
     assertThat(buttonGroup, notNilValue());
-    MSLogInfoTag(@"group of three buttons:\n%@", [buttonGroup deepDescription]);
+
+    __block NSError * error = nil;
+    [self.defaultContext performBlockAndWait:^{ [self.defaultContext save:&error]; }];
+
+    if (error) [MagicalRecord handleErrors:error];
+
+    else if (self.rootSavingContext)
+        [self.rootSavingContext performBlockAndWait:
+         ^{
+             [self.rootSavingContext save:&error];
+         }];
+
+    if (error) [MagicalRecord handleErrors:error];
+
+    assertThat(error, nilValue());
+
 
     self[PersistentConstructDVRRemoteTestsButtonGroupUUIDKey] = buttonGroup.uuid;
+    MSLogInfoTag(@"group of three buttons:\n%@", [buttonGroup deepDescription]);
 
     // background image with tag: 8
     // component devices: Comcast DVR and Samsung TV
 }
 
-+ (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }
++ (MSCoreDataTestOptions)options
+{
+    return ([super options] | MSCoreDataTestPersistentStore | MSCoreDataTestBackgroundSavingContext);
+}
 
 + (NSArray *)arrayOfInvocationSelectors
 {

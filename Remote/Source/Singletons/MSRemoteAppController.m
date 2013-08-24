@@ -131,48 +131,13 @@ static const int   msLogContext = 0;
     DDTTYLogger * ttyLogger = [DDTTYLogger sharedInstance];
     assert(ttyLogger);
     assert([ttyLogger colorsEnabled]);
-    UIColor * testOutputColor = [UIColor colorWithRed:33/255.0f
-                                                green:105/255.0f
-                                                 blue:33/255.0f
-                                                alpha:1.0f];
-    [ttyLogger setForegroundColor:testOutputColor
-                  backgroundColor:nil
-                          forFlag:LOG_FLAG_DEBUG
-                          context:(  LOG_CONTEXT_COREDATATESTS
-                                   | LOG_CONTEXT_CONSOLE
-                                   | LOG_CONTEXT_FILE )];
 
-    UIColor * magicalRecordColor = [UIColor colorWithRed:165/255.0f
-                                                   green:119/255.0f
-                                                    blue:6/255.0f
-                                                   alpha:1.0f];
-    
-    [ttyLogger setForegroundColor:magicalRecordColor
-                  backgroundColor:nil
-                          forFlag:LOG_FLAG_DEBUG
-                          context:(  LOG_CONTEXT_COREDATATESTS
-                                   | LOG_CONTEXT_CONSOLE
-                                   | LOG_CONTEXT_FILE
-                                   | LOG_CONTEXT_MAGICALRECORD )];
-
-    [ttyLogger setForegroundColor:magicalRecordColor
-                  backgroundColor:nil
-                          forFlag:LOG_FLAG_DEBUG
-                          context:(  LOG_CONTEXT_CONSOLE
-                                   | LOG_CONTEXT_FILE
-                                   | LOG_CONTEXT_MAGICALRECORD )];
-
-    UIColor * errorColor = [UIColor colorWithRed:214/255.0f
-                                           green:36/255.0f
-                                            blue:4/255.0f
-                                           alpha:1.0f];
+    UIColor * errorColor = [UIColor colorWithR:217 G:30 B:0 A:255];
 
     [ttyLogger setForegroundColor:errorColor
                   backgroundColor:nil
                           forFlag:LOG_FLAG_ERROR
-                          context:(  LOG_CONTEXT_COREDATA
-                                   | LOG_CONTEXT_FILE
-                                   | LOG_CONTEXT_CONSOLE )];
+                          context:LOG_CONTEXT_ANY];
 
     [MSLog addTaggingASLLogger];
 
@@ -228,9 +193,12 @@ static const int   msLogContext = 0;
 - (BOOL)              application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [UIApplication sharedApplication].statusBarHidden = YES;
+
     // set a reference to our launch screen view controller
     _launchScreenVC = (LaunchScreenViewController*)[self.window rootViewController];
     _launchScreenVC.view.userInteractionEnabled = NO;
+    [_launchScreenVC toggleSpinner];
 
     // Apply user defined settings and observe status bar setting changes
     [SettingsManager applyUserSettings];
@@ -255,17 +223,17 @@ static const int   msLogContext = 0;
     
     NSOperation * rebuildDatabase = [NSBlockOperation blockOperationWithBlock:
                                      ^{
-                                         if (!errorOccurred && [UserDefaults boolForKey:@"rebuild"])
+                                         if (!errorOccurred && [UserDefaults boolForKey:@"loadData"])
                                              errorOccurred = (![DatabaseLoader loadData]);
                                      }];
     
     NSOperation * rebuildRemote = [NSBlockOperation blockOperationWithBlock:
                                    ^{
                                        if (   !errorOccurred
-                                           && (   [UserDefaults boolForKey:@"rebuild"]
-                                               || [UserDefaults boolForKey:@"remote"]))
+                                           && (   [UserDefaults boolForKey:@"rebuildRemote"]
+                                               || [UserDefaults boolForKey:@"loadData"]))
                                        {
-                                           [RemoteElementConstructionManager buildControllerInContext:[NSManagedObjectContext MR_defaultContext]];
+                                           [RemoteElementConstructionManager buildController];
                                        }
                                    }];
     
@@ -282,7 +250,10 @@ static const int   msLogContext = 0;
     NSOperation * readyApplication = [NSBlockOperation blockOperationWithBlock:
                                       ^{
                                           [MainQueue addOperationWithBlock:
-                                           ^{ _launchScreenVC.view. userInteractionEnabled = YES; }];
+                                           ^{
+                                               [_launchScreenVC toggleSpinner];
+                                               _launchScreenVC.view. userInteractionEnabled = YES;
+                                           }];
                                       }];
 
     [readyApplication addDependency:runUITests];

@@ -329,7 +329,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     if (StringIsEmpty(message)) return;
 
     NSArray * stringSegments = [[message stringByReplacingOccurrencesOfString:@"http://" withString:@""]
-                                substringsByMatchingOccurrencesOfRegEx:@"(?<=<-)(.*?)(?=>)"];
+                                matchingSubstringsForRegEx:@"(?<=<-)(.*?)(?=>)"];
 
     NSMutableDictionary * attributes = [NSMutableDictionary dictionaryWithCapacity:stringSegments.count];
 

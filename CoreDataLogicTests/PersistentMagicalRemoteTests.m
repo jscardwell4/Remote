@@ -24,17 +24,17 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 {
     __block NSString * remoteUUID, * layoutConfigurationUUID, * configurationDelegateUUID;
     
-    [MagicalRecord saveWithBlockAndWait:
-     ^(NSManagedObjectContext *localContext)
+    [NSManagedObjectContext saveWithBlockAndWait:
+     ^(NSManagedObjectContext * localContext)
      {
          RERemote * remote = [RERemote remoteElementInContext:localContext];
 
          assertThat(remote, notNilValue());
 
-         NSString * displayName = @"RERemote for 'testCreateRERemote'";
-         remote.displayName = displayName;
+         NSString * name = @"RERemote for 'testCreateRERemote'";
+         remote.name = name;
 
-         assertThat(remote.displayName,           is(displayName));
+         assertThat(remote.name,           is(name));
          assertThat(remote.subelements,           empty()        );
          assertThat(remote.constraints,           empty()        );
          assertThat(remote.parentElement,         nilValue()     );
@@ -60,6 +60,8 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
     assertThat(remote.configurationDelegate,      notNilValue()                );
     assertThat(remote.layoutConfiguration.uuid,   is(layoutConfigurationUUID)  );
     assertThat(remote.configurationDelegate.uuid, is(configurationDelegateUUID));
+
+    MSLogInfoTag(@"remote created:\n%@", [remote deepDescription]);
 }
 
 + (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }

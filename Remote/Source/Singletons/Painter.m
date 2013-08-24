@@ -24,6 +24,7 @@ typedef struct {
     CGFloat expOffset;
     CGFloat initialWhite;
     CGFloat finalWhite;
+    CGFloat split;
 } GlossParameters;
 
 NSUInteger   (^bitmapLocation)(NSUInteger, NSUInteger, NSUInteger) =
@@ -259,7 +260,8 @@ static void glossInterpolation(void *info, const CGFloat *input, CGFloat *output
     GlossParameters *p = (GlossParameters *) info;
     CGFloat progress = *input;
 
-    if (progress < 0.5)
+    if (   (p->split > 0.0f && progress < p->split)
+        || (p->split < 0.0f && progress > 1 + p->split))
     {
         progress = progress * 2.0;
 
@@ -273,7 +275,7 @@ static void glossInterpolation(void *info, const CGFloat *input, CGFloat *output
         output[3] = p->color[3] * (1.0 - currentWhite) + currentWhite;
     }
     else {
-        progress = (progress - 0.5) * 2.0;
+        progress = (progress - (p->split > 0.0f ?: 1 + p->split)) * 2.0;
 
         progress = p->expScale * (expf((1.0 - progress) * -p->expCoefficient) - p->expOffset);
 
@@ -302,7 +304,7 @@ NSData *vImageConformantDataForImage(UIImage *image)
                                                  imageInfo.bitsPerComponent,
                                                  imageInfo.bytesPerRow,
                                                  colorSpace,
-                                                 kCGImageAlphaPremultipliedFirst);
+                                                 (CGBitmapInfo)kCGImageAlphaPremultipliedFirst);
 
     CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, imageInfo.width, imageInfo.height), image.CGImage);
 
@@ -443,25 +445,27 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
     if (pointSize > size.height) font = [font fontWithSize:size.height];
 
     // Measure width of text
-    CGContextSelectFont(context, [font.fontName UTF8String], font.pointSize, kCGEncodingMacRoman);
+    CGFontRef fontRef = CGFontCreateWithFontName((__bridge CFStringRef)(font.fontName));
+    CGContextSetFont(context, fontRef);
+    CGContextSetFontSize(context, font.pointSize);
     UIGraphicsPushContext(context);
     CGContextSetTextDrawingMode(context, kCGTextInvisible);
-    CGContextShowTextAtPoint(context, 0.0f, 0.0f, [text UTF8String], text.length);
+//    CGContextShowTextAtPoint(context, 0.0f, 0.0f, [text UTF8String], text.length);
 
     CGPoint endPoint = CGContextGetTextPosition(context);
 
     UIGraphicsPopContext();
 
     // Measure height and calculate center point
-    CGSize stringSize = [text sizeWithFont:font];
+    CGSize stringSize = [text sizeWithAttributes:@{NSFontAttributeName: font}];
     CGPoint textCenter = CGRectGetCenter(rect);
     CGPoint textLocation = CGPointMake(textCenter.x - endPoint.x/2.0f,
                                        fabsf(textCenter.y - stringSize.height/2.0f));
-
+#pragma unused(textLocation)
     // Draw text
     [textColor setFill];
     CGContextSetTextDrawingMode(context, kCGTextFillClip);
-    CGContextShowTextAtPoint(context, textLocation.x, textLocation.y, [text UTF8String], text.length);
+//    CGContextShowTextAtPoint(context, textLocation.x, textLocation.y, [text UTF8String], text.length);
 
     // Clear rect with path clipped to text if text color is nil
     if (shouldClearText) CGContextClearRect(context, rect);
@@ -477,8 +481,9 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
 /* circledText */
 
 + (void)drawGlossGradientWithColor:(UIColor *)color
-                            inRect:(CGRect)rect
-                         inContext:(CGContextRef)context
+                              rect:(CGRect)rect
+                           context:(CGContextRef)context
+                            offset:(CGFloat)offset
 {
     /* Called by ButtonGroupView and ButtonView overlays */
     const CGFloat EXP_COEFFICIENT = 1.2;
@@ -489,6 +494,7 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
     params.expCoefficient = EXP_COEFFICIENT;
     params.expOffset = expf(-params.expCoefficient);
     params.expScale = 1.0/(1.0 - params.expOffset);
+    params.split = (offset && offset >= -1.0f && offset <= 1.0f ? offset : 0.5f);
 
     [color getRed:&params.color[0]
             green:&params.color[1]
@@ -514,13 +520,14 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
 
     CGPoint endPoint           = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
     CGPoint startPoint         = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect));
+
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
     CGShadingRef shading       = CGShadingCreateAxial(colorspace,
                                                       startPoint,
                                                       endPoint,
                                                       gradientFunction,
-                                                      FALSE,
-                                                      FALSE);
+                                                      TRUE,
+                                                      TRUE);
 
     UIGraphicsPushContext(context);
     CGContextClipToRect(context, rect);
@@ -1007,7 +1014,7 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
                                         imageInfo.bitsPerPixel,
                                         imageInfo.bytesPerRow,
                                         colorspace,
-                                        kCGImageAlphaPremultipliedFirst,
+                                        (CGBitmapInfo)kCGImageAlphaPremultipliedFirst,
                                         dataProvider,
                                         NULL,
                                         false,
@@ -1086,7 +1093,7 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
                                         imageInfo.bitsPerPixel,
                                         imageInfo.bytesPerRow,
                                         colorspace,
-                                        kCGImageAlphaPremultipliedFirst,
+                                        (CGBitmapInfo)kCGImageAlphaPremultipliedFirst,
                                         dataProvider,
                                         NULL,
                                         false,
@@ -2705,7 +2712,12 @@ controlPoint2:CGPointMake(63, 7)];
     UIGraphicsPushContext(context);
     CGContextSetShadowWithColor(context, textShadowOffset, textShadowBlurRadius, textShadow.CGColor);
     [glossyColorUp setFill];
-    [textContent drawInRect:textRect withFont:[UIFont fontWithName:@"LucidaGrande-Bold" size:18] lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentCenter];
+    NSMutableParagraphStyle * paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    [textContent drawInRect:textRect
+             withAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"LucidaGrande-Bold" size:18],
+                              NSParagraphStyleAttributeName : paragraphStyle}];
     UIGraphicsPopContext();
 
     //// Cleanup

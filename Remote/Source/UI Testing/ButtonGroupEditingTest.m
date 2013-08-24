@@ -52,7 +52,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 }
 
 - (void)runTranslationTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
-
+/*
     MSRemoteUITestRunner   performTranslations = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
         __block REButtonGroupView                  * bgv      = nil;
@@ -139,7 +139,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                 {
                     NSAssert(CGSizeEqualToSize(size, view.bounds.size),
                              @"element '%@' size should be %.2f x %.2f but it is %.2f x %.2f",
-                             view.displayName,
+                             view.name,
                              size.width,
                              size.height,
                              view.bounds.size.width,
@@ -232,9 +232,11 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
             MSLogWarn(@"%@ unsupported test number:%llu", ClassTagSelectorString, testNumber);
             break;
     }
+ */
 }
 
 - (void)runFocusTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
+/*
     MSRemoteUITestRunner   performFocus = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
         __block REButtonGroupView                  * bgv      = nil;
@@ -279,9 +281,11 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
         default :
             MSLogWarn(@"%@ unsupported test number:%llu", ClassTagSelectorString, testNumber);
     }
+    */
 }
 
 - (void)runAlignmentTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
+/*
     static dispatch_once_t      onceToken;
     static NSDictionary const * kAlignmentSelectors;
     static NSSet const        * kSizeAlignmentAttributes;
@@ -620,9 +624,11 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
         default :
             MSLogWarn(@"%@ unsupported test number:%llu", ClassTagSelectorString, testNumber);
     }
+ */
 }
 
 - (void)runInfoTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
+/*
     MSRemoteUITestRunner   dumpInfo = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
         __block REButtonGroupView                  * bgv      = nil;
@@ -668,9 +674,11 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                             @"%@ unsupported test number:%llu",
                             ClassTagSelectorString, testNumber);
     }
+ */
 }
 
 - (void)runDialogTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
+/*
     MSRemoteUITestRunner   showDialog = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
         __block REButtonGroupView                  * bgv      = nil;
@@ -743,9 +751,11 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                             @"%@ unsupported test number:%llu",
                             ClassTagSelectorString, testNumber);
     }
+ */
 }
 
 - (void)runScaleTestNumber:(uint64_t)testNumber options:(uint64_t)testOptions {
+/*
     MSRemoteUITestRunner   performScaling =
         ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
@@ -836,6 +846,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                            });
             break;
     }
+ */
 }
 
 @end

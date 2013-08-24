@@ -26,7 +26,7 @@
     self.clearsSelectionOnViewWillAppear                        = YES;
     self.definesPresentationContext                             = YES;
     self.navigationController.toolbar.barStyle                  = UIBarStyleBlackOpaque;
-    self.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeFont : [UIFont boldSystemFontOfSize:16]};
+    self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:16]};
     [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:2.0 forBarMetrics:UIBarMetricsDefault];
     if (!_logDirectory) self.logDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/Logs"];
 }

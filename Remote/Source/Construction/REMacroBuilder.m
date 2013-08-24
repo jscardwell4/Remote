@@ -7,27 +7,31 @@
 //
 #import "RemoteConstruction.h"
 
-@implementation REMacroBuilder
+@implementation REMacroBuilder @end
 
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
+@implementation REMacroBuilder (Developer)
+
++ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
+                             toInitiateState:(BOOL)isOnState
+                                     context:(NSManagedObjectContext *)moc
 {
     REMacroCommand * macroCommand = nil;
     switch (activity)
     {
         case 1:
-            macroCommand = [self dvrActivityMacroToInitiateState:isOnState context:context];
+            macroCommand = [self dvrActivityMacroToInitiateState:isOnState context:moc];
             break;
 
         case 2:
-            macroCommand = [self ps3ActivityMacroToInitiateState:isOnState context:context];
+            macroCommand = [self ps3ActivityMacroToInitiateState:isOnState context:moc];
             break;
 
         case 3:
-            macroCommand = [self appleTVActivityMacroToInitiateState:isOnState context:context];
+            macroCommand = [self appleTVActivityMacroToInitiateState:isOnState context:moc];
             break;
 
         case 4:
-            macroCommand = [self sonosActivityMacroToInitiateState:isOnState context:context];
+            macroCommand = [self sonosActivityMacroToInitiateState:isOnState context:moc];
             break;
 
         default:
@@ -36,109 +40,123 @@
     return macroCommand;
 }
 
-+ (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
++ (REMacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
+                                            context:(NSManagedObjectContext *)moc
 {
     // Macro sequence: A/V Power -> TV Power
-    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+    REMacroCommand * macroCommand = [REMacroCommand commandInContext:moc];
 
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
-    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                    context:moc];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                    context:moc];
 
     if (isOnState)
     {
-        [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"TV/SAT")];
-        [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
-        [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
-        [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 4")];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:avReceiver[@"TV/SAT"]]];
+        [macroCommand addCommandsObject:[REPowerCommand  onCommandForDevice:samsungTV]];
+        [macroCommand addCommandsObject:[REDelayCommand  commandInContext:moc duration:6.0]];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:samsungTV[@"HDMI 4"]]];
     }
 
     else
     {
-        [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-        [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:avReceiver]];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:samsungTV]];
     }
 
     return macroCommand;
 }
 
-+ (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
++ (REMacroCommand *)appleTVActivityMacroToInitiateState:(BOOL)isOnState
+                                                context:(NSManagedObjectContext *)moc
 {
     // Macro sequence: A/V Power -> TV Power
-    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+    REMacroCommand * macroCommand = [REMacroCommand commandInContext:moc];
 
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
-    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                    context:moc];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                    context:moc];
 
     if (isOnState)
     {
-        [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"DVD")];
-        [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
-        [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
-        [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 2")];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:avReceiver[@"DVD"]]];
+        [macroCommand addCommandsObject:[REPowerCommand  onCommandForDevice:samsungTV]];
+        [macroCommand addCommandsObject:[REDelayCommand  commandInContext:moc duration:6.0]];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:samsungTV[@"HDMI 2"]]];
     }
 
     else
     {
-        [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
-        [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:avReceiver]];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:samsungTV]];
     }
 
     return macroCommand;
 }
 
-+ (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
++ (REMacroCommand *)sonosActivityMacroToInitiateState:(BOOL)isOnState
+                                              context:(NSManagedObjectContext *)moc
 {
     // Macro sequence: A/V Power -> TV Power
-    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+    REMacroCommand * macroCommand = [REMacroCommand commandInContext:moc];
 
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                    context:moc];
 
     if (isOnState)
     {
-        [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"MD/Tape")];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:avReceiver[@"MD/Tape"]]];
 
     }
 
     else
     {
-        [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:avReceiver]];
 
     }
 
     return macroCommand;
 }
 
-+ (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context
++ (REMacroCommand *)ps3ActivityMacroToInitiateState:(BOOL)isOnState
+                                            context:(NSManagedObjectContext *)moc
 {
     // Macro sequence: A/V Power -> TV Power
-    REMacroCommand * macroCommand = [REMacroCommand MR_createEntity];
+    REMacroCommand * macroCommand = [REMacroCommand commandInContext:moc];
 
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
-    BOComponentDevice * ps3        = [BOComponentDevice fetchDeviceWithName:@"PS3"];
-    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                    context:moc];
+    BOComponentDevice * ps3        = [BOComponentDevice fetchDeviceWithName:@"PS3"
+                                                                    context:moc];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                    context:moc];
 
     if (isOnState)
     {
-        [macroCommand addCommandsObject:MakeIRCommand(avReceiver, @"Video 2")];
-        [macroCommand addCommandsObject:MakePowerOnCommand(samsungTV)];
-        [macroCommand addCommandsObject:MakeDelayCommand(6.0)];
-        [macroCommand addCommandsObject:MakeIRCommand(samsungTV, @"HDMI 3")];
-        [macroCommand addCommandsObject:MakePowerOnCommand(ps3)];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:avReceiver[@"Video 2"]]];
+        [macroCommand addCommandsObject:[REPowerCommand onCommandForDevice:samsungTV]];
+        [macroCommand addCommandsObject:[REDelayCommand commandInContext:moc duration:6.0]];
+        [macroCommand addCommandsObject:[RESendIRCommand commandWithIRCode:samsungTV[@"HDMI 3"]]];
+        [macroCommand addCommandsObject:[REPowerCommand onCommandForDevice:ps3]];
     }
 
     else
     {
-        [macroCommand addCommandsObject:MakePowerOffCommand(samsungTV)];
-        [macroCommand addCommandsObject:MakePowerOffCommand(avReceiver)];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:samsungTV]];
+        [macroCommand addCommandsObject:[REPowerCommand offCommandForDevice:avReceiver]];
     }
 
     return macroCommand;
 }
 
-+ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity context:(NSManagedObjectContext *)context
++ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity context:(NSManagedObjectContext *)moc
 {
-    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"];
-    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"];
+    BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+                                                                    context:moc];
+    BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+                                                                    context:moc];
 
     NSDictionary * receiverConfigSettings = @{ REDeviceConfigurationPowerStateKey : @(NO) };
 

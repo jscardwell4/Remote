@@ -7,12 +7,34 @@
 //
 
 typedef NS_OPTIONS(uint8_t, MSCoreDataTestOptions) {
-    MSCoreDataTestDefaultOptions  = 0b00000000,
-    MSCoreDataTestMagicalSaves    = 0b00000001,
-    MSCoreDataTestMagicalSetup    = 0b00000010,
-    MSCoreDataTestPersistentStore = 0b00000100,
-    MSCoreDataTestUndoSupport     = 0b00001000
+    MSCoreDataTestDefaultOptions  			= 0b00000000,
+    MSCoreDataTestMagicalSaves    			= 0b00000001,
+    MSCoreDataTestMagicalSetup    			= 0b00010010,
+    MSCoreDataTestPersistentStore 			= 0b00000100,
+    MSCoreDataTestUndoSupport     			= 0b00001000,
+    MSCoreDataTestBackgroundSavingContext 	= 0b00010000,
+    MSCoreDataTestLogContextSaves           = 0b00100000,
+    MSCoreDataTestLogCreatedObjects         = 0b01000000,
+    MSCoreDataTestLogParseEvents            = 0b10000000
 };
+
+#define MSLogCreatedObjectsInContext(ctx, frmt, ...)        \
+    do                                                      \
+    {                                                       \
+        if(msTestOptions & MSCoreDataTestLogCreatedObjects) \
+            MSLogInfoInContext(ctx, frmt, __VA_ARGS__);     \
+    } while (0)
+
+#define MSLogCreatedObjects(frmt, ...) MSLogCreatedObjectsInContext(msLogContext, frmt, __VA_ARGS__)
+
+#define MSLogCCreatedObjectsInContext(ctx, frmt, ...)                 \
+    do                                                               \
+    {                                                                \
+    if(msTestOptions & MSCoreDataTestLogCreatedObjects) \
+    MSLogCInfoInContext(ctx, frmt, __VA_ARGS__);              \
+    } while (0)
+
+#define MSLogCCreatedObjects(frmt, ...) MSLogCCreatedObjectsInContext(msLogContext, frmt, __VA_ARGS__)
 
 @interface MSCoreDataTestCase : SenTestCase
 

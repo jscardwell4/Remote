@@ -29,7 +29,10 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 }
 
 /// Returns options for managing our own core data stack with undo support and in-memory store.
-+ (MSCoreDataTestOptions)options { return MSCoreDataTestUndoSupport; }
++ (MSCoreDataTestOptions)options
+{
+    return MSCoreDataTestUndoSupport|MSCoreDataTestBackgroundSavingContext;
+}
 
 /// Overridden to create more specific store
 + (NSString *)storeName { return @"RECoreDataTestCase.sqlite"; }

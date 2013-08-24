@@ -17,8 +17,9 @@
                     size:(CGSize)size;
 
 + (void)drawGlossGradientWithColor:(UIColor *)color
-                            inRect:(CGRect)rect
-                         inContext:(CGContextRef)context;
+                              rect:(CGRect)rect
+                           context:(CGContextRef)context
+                            offset:(CGFloat)offset;
 
 + (void)drawLinearGradientInRect:(CGRect)rect
                   withStartColor:(CGColorRef)startColor

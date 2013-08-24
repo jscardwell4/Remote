@@ -7,6 +7,7 @@
 //
 #import "CoreDataManager.h"
 #import "MSRemoteAppController.h"
+#import "RERemoteController.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Typedefs and Class Variables
@@ -57,23 +58,27 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 {
     if (self == [CoreDataManager class])
     {
-        BOOL rebuildDatabase = [UserDefaults boolForKey:@"rebuild"];
-        BOOL rebuildRemote   = [UserDefaults boolForKey:@"remote"];
+        BOOL loadData = [UserDefaults boolForKey:@"loadData"];
+        BOOL rebuildRemote   = [UserDefaults boolForKey:@"rebuildRemote"];
         BOOL replaceDatabase = [UserDefaults boolForKey:@"replace"];
         kFlags = (struct DatabaseFlags_s) {
             .logSaves                = YES,
             .logCoreDataStackSetup   = YES,
-            .removePreviousDatabase  = replaceDatabase||rebuildDatabase,
-            .rebuildRemote           = (rebuildRemote||rebuildDatabase),
-            .rebuildDatabase         = rebuildDatabase,
-            .replacePreviousDatabase = (replaceDatabase||rebuildDatabase),
+            .removePreviousDatabase  = replaceDatabase||loadData,
+            .rebuildRemote           = (rebuildRemote||loadData),
+            .rebuildDatabase         = loadData,
+            .replacePreviousDatabase = replaceDatabase,
             .objectRemoval           = CoreDataManagerRemoveNone
         };
+        assert(   (kFlags.replacePreviousDatabase && !(kFlags.rebuildDatabase || kFlags.rebuildRemote))
+               || !kFlags.replacePreviousDatabase);
     }
 }
 
 + (BOOL)initializeDatabase
 {
+    __block BOOL success = YES;
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         // register error handler
@@ -107,14 +112,14 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
         BOOL databaseStoreExists = [self databaseStoreExists];
         if (databaseStoreExists && kFlags.removePreviousDatabase)
         {
-            BOOL success = [self removeExistingStore];
+            success = [self removeExistingStore];
             assert(success);
         }
 
         // Copy bundle resource to store destination if needed
-        if (!databaseStoreExists && !kFlags.rebuildDatabase)
+        if (!databaseStoreExists && kFlags.replacePreviousDatabase)
         {
-            BOOL success = [self copyBundleDatabaseStore];
+            success = [self copyBundleDatabaseStore];
             assert(success);
         }
 
@@ -127,9 +132,16 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
         // and intialize the default managed object context
         [MagicalRecord
          setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kCoreDataManagerSQLiteName];
+        NSManagedObjectContext * moc = [NSManagedObjectContext MR_defaultContext];
+        if (moc.parentContext) [moc registerAsChildOfContext:moc.parentContext];
+        if (databaseStoreExists && kFlags.rebuildRemote)
+        {
+            success = [self removeExistingRemote];
+            assert(success);
+        }
     });
     
-    return YES;
+    return success;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,6 +223,38 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     }
 }
 
++ (BOOL)removeExistingRemote
+{
+    __block BOOL success = YES;
+    NSManagedObjectContext * moc = [NSManagedObjectContext MR_defaultContext];
+    [moc performBlockAndWait:
+     ^{
+         RERemoteController * controller = [RERemoteController MR_findFirstInContext:moc];
+         MSLogDebugTag(@"existing remote? %@", NSStringFromBOOL((controller != nil)));
+         if (controller)
+         {
+             [moc deleteObject:controller];
+             MSLogDebugTag(@"existing remote has been deleted");
+         }
+         NSError * error = nil;
+         [moc save:&error];
+         if (error)
+         {
+             [CoreDataManager handleErrors:error];
+             success = NO;
+         }
+     }];
+
+    if (success)
+        [moc performBlockAndWait:
+         ^{
+             RERemoteController * controller = [RERemoteController MR_findFirstInContext:moc];
+             success = (controller == nil ? YES : NO);
+         }];
+    
+    return success;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Object Model
 ////////////////////////////////////////////////////////////////////////////////
@@ -248,9 +292,8 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     // size attributes on images
     modifyAttributeForEntities([entities objectsForKeys:@[@"BOImage",
-                                                          @"BOBackgroundImage",
-                                                          @"BOButtonImage",
-                                                          @"BOIconImage"]
+                                                          @"BOBundledImage",
+                                                          @"BOCustomImage"]
                                          notFoundMarker:NullObject],
                                @"size",
                                @"NSValue",
@@ -264,6 +307,23 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                                                           @"REButton"]
                                          notFoundMarker:NullObject],
                                @"backgroundColor",
+                               @"UIColor",
+                               ClearColor);
+
+    // background color attributes on theme
+    modifyAttributeForEntities([entities objectsForKeys:@[@"RETheme",
+                                                          @"REBuiltinTheme",
+                                                          @"RECustomTheme"]
+                                         notFoundMarker:NullObject],
+                                @"remoteBackgroundColor",
+                                @"UIColor",
+                                ClearColor);
+
+    modifyAttributeForEntities([entities objectsForKeys:@[@"RETheme",
+                                                          @"REBuiltinTheme",
+                                                          @"RECustomTheme"]
+                                         notFoundMarker:NullObject],
+                               @"buttonGroupBackgroundColor",
                                @"UIColor",
                                ClearColor);
 
@@ -284,6 +344,23 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                                @"NSValue",
                                NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
 
+    // edge insets attributes on themes
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REThemeButtonSettings"]
+                                         notFoundMarker:NullObject],
+                               @"titleInsets",
+                               @"NSValue",
+                               nil);
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REThemeButtonSettings"]
+                                         notFoundMarker:NullObject],
+                               @"contentInsets",
+                               @"NSValue",
+                               nil);
+    modifyAttributeForEntities([entities objectsForKeys:@[@"REThemeButtonSettings"]
+                                         notFoundMarker:NullObject],
+                               @"imageInsets",
+                               @"NSValue",
+                               nil);
+
     // configurations attribute on configuration delegates
     modifyAttributeForEntities([entities
                                 objectsForKeys:@[@"REConfigurationDelegate",
@@ -292,6 +369,14 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                                                  @"REButtonConfigurationDelegate"]
                                 notFoundMarker:NullObject],
                                @"configurations",
+                               @"NSDictionary",
+                               @{});
+
+    // panels for RERemote
+    modifyAttributeForEntities([entities
+                                objectsForKeys:@[@"RERemote"]
+                                notFoundMarker:NullObject],
+                               @"panels",
                                @"NSDictionary",
                                @{});
 
@@ -349,28 +434,6 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                                 @"selectedHighlightedAndDisabled"],
                               @"NSURL",
                               nil);
-    modifyAttributesForEntity(entities[@"REControlStateButtonImageSet"],
-                              @[@"disabled",
-                                @"disabledAndSelected",
-                                @"highlighted",
-                                @"highlightedAndDisabled",
-                                @"highlightedAndSelected",
-                                @"normal",
-                                @"selected",
-                                @"selectedHighlightedAndDisabled"],
-                              @"NSURL",
-                              nil);
-    modifyAttributesForEntity(entities[@"REControlStateIconImageSet"],
-                              @[@"disabled",
-                                @"disabledAndSelected",
-                                @"highlighted",
-                                @"highlightedAndDisabled",
-                                @"highlightedAndSelected",
-                                @"normal",
-                                @"selected",
-                                @"selectedHighlightedAndDisabled"],
-                              @"NSURL",
-                              nil);
 
     // attributed string attributes on control state title set
     modifyAttributesForEntity(entities[@"REControlStateTitleSet"],
@@ -382,7 +445,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                                 @"normal",
                                 @"selected",
                                 @"selectedHighlightedAndDisabled"],
-                              @"NSAttributedString",
+                              @"NSDictionary",
                               nil);
     return augmentedModel;
 }

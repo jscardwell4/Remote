@@ -22,10 +22,10 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 
     assertThat(buttonGroup, notNilValue());
 
-    NSString * displayName = @"REButtonGroup for 'testCreateREButtonGroup'";
-    buttonGroup.displayName = displayName;
+    NSString * name = @"REButtonGroup for 'testCreateREButtonGroup'";
+    buttonGroup.name = name;
 
-    assertThat(buttonGroup.displayName,                  is(displayName)                                 );
+    assertThat(buttonGroup.name,                  is(name)                                 );
     assertThatUnsignedInteger(buttonGroup.panelLocation, equalToUnsignedInteger(REPanelLocationNotAPanel));
     assertThat(buttonGroup.subelements,                  empty()                                         );
     assertThat(buttonGroup.constraints,                  empty()                                         );

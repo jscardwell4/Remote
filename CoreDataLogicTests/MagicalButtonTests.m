@@ -27,10 +27,10 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 
          assertThat(button, notNilValue());
          
-         NSString * displayName = @"REButton for 'testCreateREButton'";
-         button.displayName = displayName;
+         NSString * name = @"REButton for 'testCreateREButton'";
+         button.name = name;
 
-         assertThat(button.displayName,           is(displayName));
+         assertThat(button.name,           is(name));
          assertThat(button.title,                 nilValue()     );
          assertThat(button.subelements,           empty()        );
          assertThat(button.constraints,           empty()        );

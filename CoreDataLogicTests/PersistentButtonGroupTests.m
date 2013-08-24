@@ -48,10 +48,10 @@ MSKIT_KEY_DEFINITION(PersistentButtonGroupTestsButtonGroupUUID);
 
     assertThat(buttonGroup, notNilValue());
 
-    NSString * displayName = @"REButtonGroup for 'testCreateREButtonGroup'";
-    buttonGroup.displayName = displayName;
+    NSString * name = @"REButtonGroup for 'testCreateREButtonGroup'";
+    buttonGroup.name = name;
 
-    assertThat(buttonGroup.displayName,                  is(displayName)                                 );
+    assertThat(buttonGroup.name,                  is(name)                                 );
     assertThatUnsignedInteger(buttonGroup.panelLocation, equalToUnsignedInteger(0));
     assertThat(buttonGroup.subelements,                  empty()                  );
     assertThat(buttonGroup.constraints,                  empty()                  );
@@ -75,6 +75,14 @@ MSKIT_KEY_DEFINITION(PersistentButtonGroupTestsButtonGroupUUID);
 
     if (error) [MagicalRecord handleErrors:error];
 
+    else if (self.rootSavingContext)
+        [self.rootSavingContext performBlockAndWait:
+         ^{
+             [self.rootSavingContext save:&error];
+         }];
+    
+    if (error) [MagicalRecord handleErrors:error];
+
     assertThat(error, nilValue());
 
     [self.defaultContext performBlockAndWait:^{ [self.defaultContext reset]; }];
@@ -91,7 +99,10 @@ MSKIT_KEY_DEFINITION(PersistentButtonGroupTestsButtonGroupUUID);
     self[PersistentButtonGroupTestsButtonGroupUUIDKey] = buttonGroupUUID;
 }
 
-+ (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }
++ (MSCoreDataTestOptions)options
+{
+    return ([super options] | MSCoreDataTestPersistentStore | MSCoreDataTestBackgroundSavingContext);
+}
 
 + (NSArray *)arrayOfInvocationSelectors
 {

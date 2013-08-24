@@ -10,6 +10,13 @@
 
 extern const int   kQueueKey;
 
+MSKIT_EXTERN_STRING MSDefaultFontName;
+MSKIT_EXTERN_STRING MSArrowFontName;
+MSKIT_EXTERN_STRING MSUpArrow;
+MSKIT_EXTERN_STRING MSDownArrow;
+MSKIT_EXTERN_STRING MSLeftArrow;
+MSKIT_EXTERN_STRING MSRightArrow;
+
 /**
  * Returns the default color for highlighted icons or text.
  * @return `UIColor` object for the default color.

@@ -31,10 +31,10 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 
          assertThat(remote, notNilValue());
 
-         NSString * displayName = @"RERemote for 'testCreateRERemote'";
-         remote.displayName = displayName;
+         NSString * name = @"RERemote for 'testCreateRERemote'";
+         remote.name = name;
 
-         assertThat(remote.displayName,           is(displayName));
+         assertThat(remote.name,           is(name));
          assertThat(remote.subelements,           empty()        );
          assertThat(remote.constraints,           empty()        );
          assertThat(remote.parentElement,         nilValue()     );

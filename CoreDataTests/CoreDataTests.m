@@ -66,7 +66,7 @@ static const int msLogContext = LOG_CONTEXT_COREDATATESTS|LOG_CONTEXT_CONSOLE|LO
      {
          RERemote * remote = [RERemote remoteElementInContext:context];
          STAssertNotNil(remote, @"remote should not be nil");
-         remote.displayName = @"Test Remote";
+         remote.name = @"Test Remote";
          STAssertNotNil(remote.configurationDelegate,
                         @"remote should have a configuration delegate created automatically");
          STAssertNotNil(remote.layoutConfiguration,
@@ -86,7 +86,7 @@ static const int msLogContext = LOG_CONTEXT_COREDATATESTS|LOG_CONTEXT_CONSOLE|LO
      ^{
          RERemote * remote = [RERemote remoteElementInContext:context];
          STAssertNotNil(remote, @"remote should not be nil");
-         remote.displayName = @"Test Remote";
+         remote.name = @"Test Remote";
          STAssertNotNil(remote.configurationDelegate,
                         @"remote should have a configuration delegate created automatically");
          STAssertNotNil(remote.layoutConfiguration,

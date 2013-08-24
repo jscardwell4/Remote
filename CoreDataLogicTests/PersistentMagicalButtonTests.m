@@ -20,17 +20,17 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
 {
     __block NSString * buttonUUID, * layoutConfigurationUUID, * configurationDelegateUUID;
 
-    [MagicalRecord saveWithBlockAndWait:
+    [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext *localContext)
      {
          REButton * button = [REButton remoteElementInContext:localContext];
 
          assertThat(button, notNilValue());
          
-         NSString * displayName = @"REButton for 'testCreateREButton'";
-         button.displayName = displayName;
+         NSString * name = @"REButton for 'testCreateREButton'";
+         button.name = name;
 
-         assertThat(button.displayName,           is(displayName));
+         assertThat(button.name,           is(name));
          assertThat(button.title,                 nilValue()     );
          assertThat(button.subelements,           empty()        );
          assertThat(button.constraints,           empty()        );
@@ -57,6 +57,8 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
     assertThat(button.configurationDelegate,      notNilValue()                );
     assertThat(button.layoutConfiguration.uuid,   is(layoutConfigurationUUID)  );
     assertThat(button.configurationDelegate.uuid, is(configurationDelegateUUID));
+
+    MSLogInfoTag(@"button created:\n%@", [button deepDescription]);
 }
 
 + (MSCoreDataTestOptions)options { return [super options]|MSCoreDataTestPersistentStore; }

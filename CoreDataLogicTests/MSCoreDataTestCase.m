@@ -7,6 +7,7 @@
 //
 #import "MSCoreDataTestCase.h"
 #import "CoreDataManager.h"
+#import "MSModelObject.h"
 
 //#define REMOVE_STORE_EACH_RUN
 
@@ -22,8 +23,11 @@ static BOOL                     useMagicalSaves_      = NO;
 static BOOL                     useMagicalSetup_      = NO;
 static BOOL                     usePersistentStore_   = NO;
 static BOOL                     useUndoManager_       = NO;
+static BOOL                     useBackgroundSaving_  = NO;
+static BOOL                     logContextSaves_      = NO;
 
-static NSString const         * storedValuesFileName  = @"MSCoreDataTestCase_StoredValues.plist";
+
+static NSString const * storedValuesFileName  = @"MSCoreDataTestCase_StoredValues.plist";
 
 @interface MSCoreDataTestCase ()
 
@@ -67,6 +71,7 @@ static NSString const         * storedValuesFileName  = @"MSCoreDataTestCase_Sto
             }];
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - SenTestSuiteExtensions
 ////////////////////////////////////////////////////////////////////////////////
@@ -81,191 +86,25 @@ static NSString const         * storedValuesFileName  = @"MSCoreDataTestCase_Sto
     // Once per class initialization, check for environment variable to remove existing store
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-
-        BOOL removeStore = BOOLValue([[NSProcessInfo processInfo] environment][@"DeleteExistingStore"]);
-        if (removeStore)
-        {
-
-            NSURL * storedValuesURL = [self valueStorageURL];
-            NSFileManager * fm = [[NSFileManager alloc] init];
-            NSError * error = nil;
-            if (![fm removeItemAtURL:storedValuesURL error:&error])
-            {
-                NSError * underlyingError = error.userInfo[NSUnderlyingErrorKey];
-                if (   [underlyingError.domain isEqualToString:NSPOSIXErrorDomain]
-                    && underlyingError.code == 2)
-                    MSLogInfoTag(@"no stored values to remove");
-                else
-                    MSHandleErrors(error);
-            }
-
-            else
-                MSLogInfoTag(@"stored values have been removed");
-
-            NSSet * storeNames = [registeredClasses_ valueForKeyPath:@"storeName"];
-            MSLogInfoTag(@"stores to remove:\n%@", storeNames);
-            for (NSString * storeName in storeNames)
-            {
-                NSURL * storeURL = [NSPersistentStore MR_urlForStoreName:storeName];
-                NSFileManager * fm = [[NSFileManager alloc] init];
-                NSError * error = nil;
-                if (![fm removeItemAtURL:storeURL error:&error])
-                {
-                    NSError * underlyingError = error.userInfo[NSUnderlyingErrorKey];
-                    if (   [underlyingError.domain isEqualToString:NSPOSIXErrorDomain]
-                        && underlyingError.code == 2)
-                        MSLogInfoTag(@"no existing store to remove with name '%@'", storeName);
-                    else
-                        [MagicalRecord handleErrors:error];
-                }
-            
-                else
-                    MSLogInfoTag(@"previous persistent store named '%@' has been removed", storeName);
-            }
-        }
+        if (BOOLValue([[NSProcessInfo processInfo] environment][@"DeleteExistingStore"]))
+            [self removeExistingFiles];
     });
 
-    // Create a url for the managed object model
-    NSString * testedUnitPath = [UserDefaults stringForKey:@"SenTestedUnitPath"];
-    NSString * modelPath      = [testedUnitPath stringByAppendingPathComponent:[self modelName]];
-    NSURL    * modelURL       = [NSURL URLWithString:modelPath];
+    [self initializeManagedObjectModel];
 
-    // Create and augment the managed object model
-    NSManagedObjectModel * model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    NSManagedObjectModel * augmentedModel = [self augmentedModelForModel:model];
+    [self initializeOptions];
 
-    // Set the augmented managed object model as the default model
-    [NSManagedObjectModel MR_setDefaultManagedObjectModel:augmentedModel];
+    if (useMagicalSetup_) [self initializeWithMagicalSetup]; // Let MagicalRecord do the setup work
 
-    // Get runtime arguments regarding core data stack
-    MSCoreDataTestOptions options = [self options];
-    useMagicalSaves_    = (options & MSCoreDataTestMagicalSaves   );
-    useMagicalSetup_    = (options & MSCoreDataTestMagicalSetup   );
-    usePersistentStore_ = (options & MSCoreDataTestPersistentStore);
-    useUndoManager_     = (options & MSCoreDataTestUndoSupport    );
-
-    MSLogInfoTag(@"options: Magical saves? %@, Magical setup? %@, Persistent store? %@, Undo support? %@",
-                  BOOLString(useMagicalSaves_),
-                  BOOLString(useMagicalSetup_),
-                  BOOLString(usePersistentStore_),
-                  BOOLString(useUndoManager_));
-
-    // Create a SQLite database for use in tests, to be deleted in `tearDown` class method
-    if (usePersistentStore_)
-    {
-        // Let MagicalRecord do the setup work
-        if (useMagicalSetup_)
-        {
-            // Initialize the core data stack
-            [MagicalRecord setupCoreDataStackWithStoreNamed:[self storeName]];
-
-            // Hold onto the path to which the persistent store has been created
-            storePath_ = [[[NSPersistentStore MR_defaultPersistentStore] URL] path];
-            MSLogInfoTag(@"\nstore path: %@", storePath_);
-
-            // Store references to the contexts created by MagicalRecord
-            defaultContext_    = [NSManagedObjectContext MR_defaultContext   ];
-            rootSavingContext_ = [NSManagedObjectContext MR_rootSavingContext];
-        }
-
-        // Or do the setup work ourselves
-        else
-        {
-            // Establish URL for persistent store
-            NSError * error = nil;
-            NSURL * supportDirectory = [FileManager URLForDirectory:NSApplicationSupportDirectory
-                                                           inDomain:NSUserDomainMask
-                                                  appropriateForURL:nil
-                                                             create:NO
-                                                              error:&error];
-            if (error) [MagicalRecord handleErrors:error];
-
-            NSURL * storeURL = [supportDirectory
-                                URLByAppendingPathComponent:[self storeName]];
-
-            // Create a persistent store coordinator with the augmented managed object model
-            NSPersistentStoreCoordinator * persistentStoreCoordinator =
-                [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:augmentedModel];
-
-            NSDictionary * options = @{ NSMigratePersistentStoresAutomaticallyOption : @YES,
-                                        NSInferMappingModelAutomaticallyOption       : @YES };
-
-            error = nil;
-
-            // Add a persistent store using the established URL
-            [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                     configuration:nil
-                                                               URL:storeURL
-                                                           options:options
-                                                             error:&error];
-
-            if (error) [MagicalRecord handleErrors:error];
-
-            // Register as default coordinator, should also set default persistent store
-            [NSPersistentStoreCoordinator MR_setDefaultStoreCoordinator:persistentStoreCoordinator];
-            
-            // Hold onto the path to which the persistent store has been created
-            storePath_ = [[[NSPersistentStore MR_defaultPersistentStore] URL] path];
-            MSLogInfoTag(@"\nstore path: %@", storePath_);
-
-            // Create the default context on the main queue with the coordinator just created
-            defaultContext_ = [[NSManagedObjectContext alloc]
-                               initWithConcurrencyType:NSMainQueueConcurrencyType];
-            [defaultContext_ performBlockAndWait:
-             ^{
-                 defaultContext_.persistentStoreCoordinator = persistentStoreCoordinator;
-             }];
-            MSLogInfoTag(@"default context:%@", defaultContext_);
-            [NSManagedObjectContext MR_setDefaultContext:defaultContext_];
-        }
-    }
-
-    // Or create an in-memory store for use in tests
     else
     {
-        // Let MagicalRecord do the setup work
-        if (useMagicalSetup_)
-        {
-            [MagicalRecord setupCoreDataStackWithInMemoryStore];
-
-            // Store references to the contexts created by MagicalRecord
-            defaultContext_    = [NSManagedObjectContext MR_defaultContext];
-            rootSavingContext_ = [NSManagedObjectContext MR_rootSavingContext];
-        }
-
-        // Or do the setup work ourselves
-        else
-        {
-            // Create a persistent store coordinator with the augmented managed object model
-            NSPersistentStoreCoordinator * persistentStoreCoordinator =
-                [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:augmentedModel];
-
-            NSError * error = nil;
-            [persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
-                                                     configuration:nil
-                                                               URL:nil
-                                                           options:nil
-                                                             error:&error];
-            if (error) [MagicalRecord handleErrors:error];
-
-            // Register as default coordinator, should also set default persistent store
-            [NSPersistentStoreCoordinator MR_setDefaultStoreCoordinator:persistentStoreCoordinator];
-
-            // Create the default context on the main queue with the coordinator just created
-            defaultContext_ = [[NSManagedObjectContext alloc]
-                               initWithConcurrencyType:NSMainQueueConcurrencyType];
-            [defaultContext_ performBlockAndWait:
-             ^{
-                 defaultContext_.persistentStoreCoordinator = persistentStoreCoordinator;
-             }];
-            MSLogInfoTag(@"default context:%@", defaultContext_);
-            [NSManagedObjectContext MR_setDefaultContext:defaultContext_];
-        }
+        [self initializePersistentStoreCoordinator];
+        [self initializeManagedObjectContexts];
     }
 
-    // Make sure the context has undo support if specified
-    if (useUndoManager_)
-        [defaultContext_ performBlockAndWait:^{ defaultContext_.undoManager = [NSUndoManager new]; }];
+    if (logContextSaves_) [self observeManagedObjectContexts];
+
+    [self initializeUndoSupport];
 }
 
 /**
@@ -296,6 +135,8 @@ static NSString const         * storedValuesFileName  = @"MSCoreDataTestCase_Sto
  */
 + (void) tearDown
 {
+    [NotificationCenter removeObserver:self];
+
     // Dispose of contexts, model, store, coordinator
     defaultContext_    = nil;
     rootSavingContext_ = nil;
@@ -373,6 +214,269 @@ static NSString const         * storedValuesFileName  = @"MSCoreDataTestCase_Sto
     [CoreDataManager handleErrors:error];
     STFail(@"Error occurred in Magical Record framework");
 }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Initializing Core Data Stack
+////////////////////////////////////////////////////////////////////////////////
+
++ (void)initializeManagedObjectModel
+{
+    // Create a url for the managed object model
+    NSString * testedUnitPath = [UserDefaults stringForKey:@"SenTestedUnitPath"];
+    NSString * modelPath      = [testedUnitPath stringByAppendingPathComponent:[self modelName]];
+    NSURL    * modelURL       = [NSURL URLWithString:modelPath];
+
+    // Create and augment the managed object model
+    NSManagedObjectModel * model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    NSManagedObjectModel * augmentedModel = [self augmentedModelForModel:model];
+
+    // Set the augmented managed object model as the default model
+    [NSManagedObjectModel MR_setDefaultManagedObjectModel:augmentedModel];
+}
+
++ (void)initializeOptions
+{
+    // Get runtime arguments regarding core data stack
+    MSCoreDataTestOptions options = [self options];
+    useMagicalSaves_     = (options & MSCoreDataTestMagicalSaves           );
+    useMagicalSetup_     = (options & MSCoreDataTestMagicalSetup           );
+    usePersistentStore_  = (options & MSCoreDataTestPersistentStore        );
+    useUndoManager_      = (options & MSCoreDataTestUndoSupport            );
+    useBackgroundSaving_ = (options & MSCoreDataTestBackgroundSavingContext);
+    logContextSaves_     = (options & MSCoreDataTestLogContextSaves        );
+
+    MSDictionary * optionsDictionary =
+        [MSDictionary dictionaryWithDictionary:
+          @{ @"Magical saves"      : BOOLString(useMagicalSaves_),
+             @"Magical setup?"     : BOOLString(useMagicalSetup_),
+             @"Persistent store?"  : BOOLString(usePersistentStore_),
+             @"Undo support?"      : BOOLString(useUndoManager_),
+             @"Background saving?" : BOOLString(useBackgroundSaving_),
+             @"Log context saves?" : BOOLString(logContextSaves_) }];
+
+    NSString * optionsString = [optionsDictionary formattedDescriptionWithOptions:0 levelIndent:0];
+
+    MSLogInfoTag(@"options:  %@", [optionsString stringByReplacingOccurrencesOfString:@"\n" withString:@"\n              "]);
+}
+
++ (void)initializeWithMagicalSetup
+{
+    if (usePersistentStore_)
+    {
+        // Initialize the core data stack
+        [MagicalRecord setupCoreDataStackWithStoreNamed:[self storeName]];
+
+        // Hold onto the path to which the persistent store has been created
+        storePath_ = [[[NSPersistentStore MR_defaultPersistentStore] URL] path];
+        MSLogInfoTag(@"store path: %@", storePath_);
+
+        // Store references to the contexts created by MagicalRecord
+        defaultContext_    = [NSManagedObjectContext MR_defaultContext   ];
+        rootSavingContext_ = [NSManagedObjectContext MR_rootSavingContext];
+    }
+
+    else
+    {
+        [MagicalRecord setupCoreDataStackWithInMemoryStore];
+
+        // Store references to the contexts created by MagicalRecord
+        defaultContext_    = [NSManagedObjectContext MR_defaultContext];
+        rootSavingContext_ = [NSManagedObjectContext MR_rootSavingContext];
+    }
+    if (defaultContext_.parentContext)
+        [defaultContext_ registerAsChildOfContext:defaultContext_.parentContext];
+
+}
+
++ (void)initializePersistentStoreCoordinator
+{
+    if (usePersistentStore_)
+    {
+        // Establish URL for persistent store
+        NSError * error = nil;
+        NSURL * supportDirectory = [FileManager URLForDirectory:NSApplicationSupportDirectory
+                                                       inDomain:NSUserDomainMask
+                                              appropriateForURL:nil
+                                                         create:NO
+                                                          error:&error];
+        if (error) [MagicalRecord handleErrors:error];
+
+        NSURL * storeURL = [supportDirectory
+                            URLByAppendingPathComponent:[self storeName]];
+
+        // Create a persistent store coordinator with the augmented managed object model
+        NSPersistentStoreCoordinator * persistentStoreCoordinator =
+        [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[NSManagedObjectModel
+                                                                          MR_defaultManagedObjectModel]];
+
+        NSDictionary * options = @{ NSMigratePersistentStoresAutomaticallyOption : @YES,
+                                    NSInferMappingModelAutomaticallyOption       : @YES };
+
+        error = nil;
+
+        // Add a persistent store using the established URL
+        [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                 configuration:nil
+                                                           URL:storeURL
+                                                       options:options
+                                                         error:&error];
+
+        if (error) [MagicalRecord handleErrors:error];
+
+        // Register as default coordinator, should also set default persistent store
+        [NSPersistentStoreCoordinator MR_setDefaultStoreCoordinator:persistentStoreCoordinator];
+
+        // Hold onto the path to which the persistent store has been created
+        storePath_ = [[[NSPersistentStore MR_defaultPersistentStore] URL] path];
+        MSLogInfoTag(@"store path: %@", storePath_);
+    }
+
+    else
+    {
+        // Create a persistent store coordinator with the augmented managed object model
+        NSPersistentStoreCoordinator * persistentStoreCoordinator =
+        [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[NSManagedObjectModel
+                                                                          MR_defaultManagedObjectModel]];
+
+        NSError * error = nil;
+        [persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                 configuration:nil
+                                                           URL:nil
+                                                       options:nil
+                                                         error:&error];
+        if (error) [MagicalRecord handleErrors:error];
+
+        // Register as default coordinator, should also set default persistent store
+        [NSPersistentStoreCoordinator MR_setDefaultStoreCoordinator:persistentStoreCoordinator];
+    }
+}
+
++ (void)initializeManagedObjectContexts
+{
+    if (useBackgroundSaving_)
+    {
+        rootSavingContext_ = [[NSManagedObjectContext alloc]
+                              initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        [rootSavingContext_ performBlockAndWait:
+         ^{
+             rootSavingContext_.persistentStoreCoordinator = [NSPersistentStoreCoordinator
+                                                              MR_defaultStoreCoordinator];
+         }];
+
+        [NSManagedObjectContext MR_setRootSavingContext:rootSavingContext_];
+
+        defaultContext_ = [[NSManagedObjectContext alloc]
+                           initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [defaultContext_ performBlockAndWait:
+         ^{
+             defaultContext_.parentContext = rootSavingContext_;
+         }];
+
+        [NSManagedObjectContext MR_setDefaultContext:defaultContext_];
+    }
+
+    else
+    {
+
+        // Create the default context on the main queue with the coordinator just created
+        defaultContext_ = [[NSManagedObjectContext alloc]
+                           initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [defaultContext_ performBlockAndWait:
+         ^{
+             defaultContext_.persistentStoreCoordinator = [NSPersistentStoreCoordinator
+                                                           MR_defaultStoreCoordinator];
+         }];
+
+        [NSManagedObjectContext MR_setDefaultContext:defaultContext_];
+    }
+
+    if (defaultContext_.parentContext)
+        [defaultContext_ registerAsChildOfContext:defaultContext_.parentContext];
+}
+
++ (void)initializeUndoSupport
+{
+    // Make sure the context has undo support if specified
+    if (useUndoManager_)
+        [defaultContext_ performBlockAndWait:^{ defaultContext_.undoManager = [NSUndoManager new]; }];
+}
+
++ (void)observeManagedObjectContexts
+{
+    void (^handleContextWillSaveNotification)(NSNotification *) =
+    ^(NSNotification * note)
+    {
+        NSManagedObjectContext * context = (NSManagedObjectContext *)note.object;
+        [context performBlockAndWait:
+         ^{
+             NSSet * registeredObjects = [context registeredObjects];
+             MSLogInfoTag(@"saving context '%@'...\nregistered objects:\n%@",
+                          [context description],
+                          [[registeredObjects valueForKeyPath:@"deepDescription"]
+                           componentsJoinedByString:@"\n"]);
+         }];
+
+    };
+
+    if (defaultContext_)
+        [NotificationCenter addObserverForName:NSManagedObjectContextWillSaveNotification
+                                        object:defaultContext_
+                                         queue:MainQueue
+                                    usingBlock:handleContextWillSaveNotification];
+
+    if (rootSavingContext_)
+        [NotificationCenter addObserverForName:NSManagedObjectContextWillSaveNotification
+                                        object:rootSavingContext_
+                                         queue:MainQueue
+                                    usingBlock:handleContextWillSaveNotification];
+}
+
++ (void)removeExistingFiles
+{
+    // Also remove stored values as they may be invalidated
+    NSURL * storedValuesURL = [self valueStorageURL];
+    NSFileManager * fm = [[NSFileManager alloc] init];
+    NSError * error = nil;
+    if (![fm removeItemAtURL:storedValuesURL error:&error])
+    {
+        NSError * underlyingError = error.userInfo[NSUnderlyingErrorKey];
+        if (   [underlyingError.domain isEqualToString:NSPOSIXErrorDomain]
+            && underlyingError.code == 2)
+            MSLogInfoTag(@"no stored values to remove");
+        else
+            MSHandleErrors(error);
+    }
+
+    else
+        MSLogInfoTag(@"stored values have been removed");
+
+    // Get the store names from registered subclasses
+    NSSet * storeNames = [registeredClasses_ valueForKeyPath:@"storeName"];
+    MSLogInfoTag(@"stores to remove:  %@",
+                 [storeNames componentsJoinedByString:@"\n                       "]);
+    for (NSString * storeName in storeNames)
+    { // Delete the store file
+        NSURL * storeURL = [NSPersistentStore MR_urlForStoreName:storeName];
+        NSFileManager * fm = [[NSFileManager alloc] init];
+        NSError * error = nil;
+        if (![fm removeItemAtURL:storeURL error:&error])
+        {
+            NSError * underlyingError = error.userInfo[NSUnderlyingErrorKey];
+            if (   [underlyingError.domain isEqualToString:NSPOSIXErrorDomain]
+                && underlyingError.code == 2)
+                MSLogInfoTag(@"no existing store to remove with name '%@'", storeName);
+            else
+                [MagicalRecord handleErrors:error];
+        }
+
+        else
+            MSLogInfoTag(@"previous persistent store named '%@' has been removed", storeName);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Storing Arbitrary Values
+////////////////////////////////////////////////////////////////////////////////
 
 + (NSDictionary *)storedValues
 {

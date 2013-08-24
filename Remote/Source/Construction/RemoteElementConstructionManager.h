@@ -13,7 +13,7 @@
 
 @interface RemoteElementConstructionManager : NSObject
 
-+ (void)buildControllerInContext:(NSManagedObjectContext *)context;
++ (void)buildController;
 
 @end
 
@@ -28,27 +28,14 @@
  * form a fully realized remote control interface. Currently this class is used for testing
  * purposes.
  */
-@interface RERemoteBuilder : NSObject
-
-+ (RERemote *)constructDVRRemoteInContext:(NSManagedObjectContext *)context;
-+ (RERemote *)constructHomeRemoteInContext:(NSManagedObjectContext *)context;
-+ (RERemote *)constructPS3RemoteInContext:(NSManagedObjectContext *)context;
-+ (RERemote *)constructSonosRemoteInContext:(NSManagedObjectContext *)context;
-
-@end
+@interface RERemoteBuilder : NSObject @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 @class   REMacroCommand;
 
-@interface REMacroBuilder : NSObject
-
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity toInitiateState:(BOOL)isOnState context:(NSManagedObjectContext *)context;
-
-+ (NSSet *)deviceConfigsForActivity:(NSUInteger)activity context:(NSManagedObjectContext *)context;
-
-@end
+@interface REMacroBuilder : NSObject @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Button Groups
@@ -57,49 +44,24 @@
 
 @interface REButtonGroupBuilder : NSObject
 
-+ (REButtonGroup *) constructControllerTopToolbarInContext:(NSManagedObjectContext *)context;
-
-// Home screen
-+ (REButtonGroup *)constructActivitiesInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructLightControlsInContext:(NSManagedObjectContext *)context;
-
-// DPad construction
-+ (REButtonGroup *)rawDPadInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructDVRDPadInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructPS3DPadInContext:(NSManagedObjectContext *)context;
-
-// ￼NumberPad construction
-+ (REButtonGroup *)rawNumberPadInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)context;
-
-// Transport construction
-+ (REButtonGroup *)rawTransportInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructDVRTransportInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructPS3TransportInContext:(NSManagedObjectContext *)context;
-
-// Rocker construction
-+ (REPickerLabelButtonGroup *)rawRockerInContext:(NSManagedObjectContext *)context;
-+ (REPickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)context;
-+ (REPickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)context;
-+ (REPickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)context;
-
-// Constructing other button groups
-+ (REButtonGroup *)rawGroupOfThreeButtonsInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)rawButtonPanelInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructSelectionPanelInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructDVRGroupOfThreeButtonsInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructPS3GroupOfThreeButtonsInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructAdditionalButtonsLeftInContext:(NSManagedObjectContext *)context;
-+ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity context:(NSManagedObjectContext *)context;
++ (REButtonGroup *)dPadInContext:(NSManagedObjectContext *)moc;
++ (REButtonGroup *)numberPadInContext:(NSManagedObjectContext *)moc;
++ (REButtonGroup *)transportInContext:(NSManagedObjectContext *)moc;
++ (REPickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc;
++ (REButtonGroup *)oneByThreeInContext:(NSManagedObjectContext *)moc;
++ (REButtonGroup *)verticalPanelInContext:(NSManagedObjectContext *)moc;
 
 @end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Command Sets
+////////////////////////////////////////////////////////////////////////////////
+
+@interface RECommandSetBuilder : NSObject @end
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Buttons
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface REButtonBuilder : NSObject
-
-@end
+@interface REButtonBuilder : NSObject @end

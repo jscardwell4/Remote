@@ -28,7 +28,7 @@ static NSString * buttonUUID_      = nil;
 {
     RERemote * remote = [RERemote remoteElementInContext:context];
     STAssertNotNil(remote, @"remote should not be nil");
-    remote.displayName = @"Test Remote";
+    remote.name = @"Test Remote";
     STAssertNotNil(remote.configurationDelegate,
                    @"remote should have a configuration delegate created automatically");
     STAssertNotNil(remote.layoutConfiguration,
@@ -48,7 +48,7 @@ static NSString * buttonUUID_      = nil;
     STAssertNotNil(remote, @"unable to fetch the remote created in the previous test");
     REButtonGroup * buttonGroup = [REButtonGroup remoteElementInContext:context];
     STAssertNotNil(buttonGroup, @"buttonGroup should not be nil");
-    buttonGroup.displayName = @"Test Button Group";
+    buttonGroup.name = @"Test Button Group";
     STAssertNotNil(buttonGroup.configurationDelegate,
                    @"buttonGroup should have a configuration delegate created automatically");
     STAssertNotNil(buttonGroup.layoutConfiguration,
@@ -74,7 +74,7 @@ static NSString * buttonUUID_      = nil;
     STAssertNotNil(buttonGroup, @"unable to fetch the buttonGroup created in the previous test");
     REButton * button = [REButton remoteElementInContext:context];
     STAssertNotNil(button, @"button should not be nil");
-    button.displayName = @"Test Button";
+    button.name = @"Test Button";
     STAssertNotNil(button.configurationDelegate,
                    @"button should have a configuration delegate created automatically");
     STAssertNotNil(button.layoutConfiguration,

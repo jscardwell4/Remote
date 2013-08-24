@@ -93,7 +93,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
     if ([self validSetting:setting]) {
         id   value = [self valueForSetting:setting];
 
-        if ([value isKindOfClass:[NSNumber class]]) return [value floatValue];
+        if ([value isKindOfClass:[NSNumber class]]) return [(NSNumber *)value floatValue];
     }
 
     return NO;

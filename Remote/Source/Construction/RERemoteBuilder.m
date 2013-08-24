@@ -7,143 +7,139 @@
 
 #import "RemoteConstruction.h"
 
-static const int ddLogLevel   = LOG_LEVEL_WARN;
-static const int msLogContext = 0;
+static const int   ddLogLevel   = LOG_LEVEL_WARN;
+static const int   msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
-@implementation RERemoteBuilder
+@implementation RERemoteBuilder @end
 
-+ (RERemote *)constructDVRRemoteInContext:(NSManagedObjectContext *)context
+@implementation RERemoteBuilder (Developer)
+
++ (RERemote *)constructDVRRemoteInContext:(NSManagedObjectContext *)moc
 {
-    RERemote * remote =
-          MakeRemote(@"displayName"          : @"Comcast DVR Activity",
-                     @"key"                  : @"activity1",
-                     @"backgroundImage"      : MakeBackgroundImage(8),
-                     @"backgroundImageAlpha" : @1.0,
-                     @"options"              : @(RERemoteOptionTopBarHiddenOnLoad));
+    RERemote * remote = [RERemote remoteElementInContext:moc];
+    remote.name = @"Comcast DVR Activity";
+    remote.key = @"activity1";
+    remote.topBarHiddenOnLoad = YES;
+    [remote registerConfiguration:kTVConfiguration];
 
-      REButtonGroup * oneByThree = [REButtonGroupBuilder constructDVRGroupOfThreeButtonsInContext:context];
-      REButtonGroup * rocker     = [REButtonGroupBuilder constructDVRRockerInContext:context];
-      REButtonGroup * dpad       = [REButtonGroupBuilder constructDVRDPadInContext:context];
-      REButtonGroup * numberpad  = [REButtonGroupBuilder constructDVRNumberPadInContext:context];
-      REButtonGroup * transport  = [REButtonGroupBuilder constructDVRTransportInContext:context];
-      REButtonGroup * selection  = [REButtonGroupBuilder constructSelectionPanelInContext:context];
-      REButtonGroup * leftPanel  = [REButtonGroupBuilder constructAdditionalButtonsLeftInContext:context];
-      REButtonGroup * power      = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:1 context:context];
+    REButtonGroup * oneByThree = [REButtonGroupBuilder constructDVRGroupOfThreeButtonsInContext:moc];
+    REButtonGroup * rocker = [REButtonGroupBuilder constructDVRRockerInContext:moc];
+    REButtonGroup * dpad = [REButtonGroupBuilder constructDVRDPadInContext:moc];
+    REButtonGroup * numberpad = [REButtonGroupBuilder constructDVRNumberPadInContext:moc];
+    [remote assignButtonGroup:numberpad assignment:REPanelLocationTop|REPanelTrigger1];
+    REButtonGroup * transport = [REButtonGroupBuilder constructDVRTransportInContext:moc];
+    [remote assignButtonGroup:transport assignment:REPanelLocationBottom|REPanelTrigger1];
+    REButtonGroup * selection = [REButtonGroupBuilder constructSelectionPanelInContext:moc];
+    [remote assignButtonGroup:selection assignment:REPanelLocationRight|REPanelTrigger1];
+    REButtonGroup * leftPanel = [REButtonGroupBuilder constructAdditionalButtonsLeftInContext:moc];
+    [remote assignButtonGroup:leftPanel assignment:REPanelLocationLeft|REPanelTrigger1];
+    REButtonGroup * power = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:1
+                                                                                  context:moc];
 
-      [remote addSubelements:[@[oneByThree,
-                                rocker,
-                                dpad,
-                                power,
-                                numberpad,
-                                transport,
-                                selection,
-                                leftPanel] orderedSet]];
+    [remote addSubelements:[@[oneByThree,
+                              rocker,
+                              dpad,
+                              power,
+                              numberpad,
+                              transport,
+                              selection,
+                              leftPanel] orderedSet]];
 
-      SetConstraints(remote,
-                     @"oneByThree.left = remote.left + 20\n"
-                      "rocker.right = remote.right - 20\n"
-                      "oneByThree.top = remote.top + 20\n"
-                      "power.bottom = remote.bottom - 20\n"
-                      "rocker.top = remote.top + 20\n"
-                      "dpad.centerY = remote.centerY + 70 @750\n"
-                      "dpad.centerX = remote.centerX\n"
-                      "power.centerX = remote.centerX\n"
-                      "numberpad.height = remote.height\n"
-                      "numberpad.left = remote.left\n"
-                      "numberpad.right = remote.right\n"
-                      "numberpad.top = remote.top @998\n"
-                      "transport.left = remote.left\n"
-                      "transport.right = remote.right\n"
-                      "transport.bottom = remote.bottom @998\n"
-                      "leftPanel.top = remote.top\n"
-                      "leftPanel.bottom = remote.bottom\n"
-                      "leftPanel.left = remote.left @998\n"
-                      "selection.centerY = remote.centerY\n"
-                      "selection.right = remote.right @998",
-                      oneByThree, rocker, dpad, numberpad, selection, power, leftPanel, transport);
+    SetConstraints(remote,
+                   @"oneByThree.left = remote.left + 20\n"
+                   "rocker.right = remote.right - 20\n"
+                   "oneByThree.top = remote.top + 20\n"
+                   "power.bottom = remote.bottom - 20\n"
+                   "rocker.top = remote.top + 20\n"
+                   "rocker.height = oneByThree.height\n"
+                   "dpad.top = oneByThree.bottom + 20\n"
+                   "dpad.centerY = remote.centerY + 70 @750\n"
+                   "dpad.centerX = remote.centerX\n"
+                   "power.centerX = remote.centerX\n"
+                   "numberpad.height = remote.height\n"
+                   "numberpad.left = remote.left\n"
+                   "numberpad.right = remote.right\n"
+                   "numberpad.top = remote.top @998\n"
+                   "transport.left = remote.left\n"
+                   "transport.right = remote.right\n"
+                   "transport.bottom = remote.bottom @998\n"
+                   "leftPanel.top = remote.top\n"
+                   "leftPanel.bottom = remote.bottom\n"
+                   "leftPanel.left = remote.left @998\n"
+                   "selection.centerY = remote.centerY\n"
+                   "selection.right = remote.right @998",
+                   oneByThree, rocker, dpad, numberpad, selection, power, leftPanel, transport);
+
     return remote;
 }
 
-
-+ (RERemote *)constructHomeRemoteInContext:(NSManagedObjectContext *)context
++ (RERemote *)constructHomeRemoteInContext:(NSManagedObjectContext *)moc
 {
-    RERemote * remote =
-          MakeRemote(@"type"                 : @(RETypeRemote),
-                     @"displayName"          : @"Home Screen",
-//                     @"key"                  : MSRemoteControllerHomeRemoteKeyName,
-                     @"backgroundImage"      : MakeBackgroundImage(8),
-                     @"backgroundImageAlpha" : @1.0);
+    RERemote * remote =  [RERemote remoteElementInContext:moc];
+    remote.name = @"Home Screen";
 
-      REButtonGroup * activityButtons = [REButtonGroupBuilder constructActivitiesInContext:context];
-      REButtonGroup * lightControls = [REButtonGroupBuilder constructLightControlsInContext:context];
+    REButtonGroup * activityButtons = [REButtonGroupBuilder constructActivitiesInContext:moc];
+    REButtonGroup * lightControls = [REButtonGroupBuilder constructLightControlsInContext:moc];
 
-      [remote addSubelements:[@[activityButtons, lightControls] orderedSet]];
+    [remote addSubelements:[@[activityButtons, lightControls] orderedSet]];
 
-      SetConstraints(remote,
-                     @"activityButtons.centerX = remote.centerX\n"
-                      "activityButtons.centerY = remote.centerY - 22\n"
-                      "lightControls.left = remote.left\n"
-                      "lightControls.right = remote.right\n"
-                      "lightControls.bottom = remote.bottom",
-                      activityButtons, lightControls);
+    SetConstraints(remote,
+                   @"activityButtons.centerX = remote.centerX\n"
+                   "activityButtons.centerY = remote.centerY - 22\n"
+                   "lightControls.left = remote.left\n"
+                   "lightControls.right = remote.right\n"
+                   "lightControls.bottom = remote.bottom",
+                   activityButtons, lightControls);
+
     return remote;
 }
 
-+ (RERemote *)constructPS3RemoteInContext:(NSManagedObjectContext *)context
++ (RERemote *)constructPS3RemoteInContext:(NSManagedObjectContext *)moc
 {
-    RERemote * remote =
-          MakeRemote(@"type"                 : @(RETypeRemote),
-                     @"key"                  : @"activity2",
-                     @"options"              : @(RERemoteOptionTopBarHiddenOnLoad),
-                     @"displayName"          : @"Playstation Activity",
-                     @"backgroundImage"      : MakeBackgroundImage(8),
-                     @"backgroundImageAlpha" : @1.0);
+    RERemote * remote = [RERemote remoteElementInContext:moc];
+    remote.key = @"activity2";
+    remote.options = RERemoteOptionTopBarHiddenOnLoad;
+    remote.name = @"Playstation Activity";
 
-    REButtonGroup * bg1 = [REButtonGroupBuilder constructPS3GroupOfThreeButtonsInContext:context];
-    assert(bg1);
-    REButtonGroup * bg2 = [REButtonGroupBuilder constructPS3RockerInContext:context];
-    assert(bg2);
-    REButtonGroup * bg3 = [REButtonGroupBuilder constructPS3DPadInContext:context];
-    assert(bg3);
-    REButtonGroup * bg4 = [REButtonGroupBuilder constructPS3NumberPadInContext:context];
-    assert(bg4);
-    REButtonGroup * bg5 = [REButtonGroupBuilder constructPS3TransportInContext:context];
-    assert(bg5);
-    REButtonGroup * bg6 = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2 context:context];
-    assert(bg6);
+    REButtonGroup * bg1 = [REButtonGroupBuilder constructPS3GroupOfThreeButtonsInContext:moc];
+    REButtonGroup * bg2 = [REButtonGroupBuilder constructPS3RockerInContext:moc];
+    REButtonGroup * bg3 = [REButtonGroupBuilder constructPS3DPadInContext:moc];
+    REButtonGroup * bg4 = [REButtonGroupBuilder constructPS3NumberPadInContext:moc];
+    REButtonGroup * bg5 = [REButtonGroupBuilder constructPS3TransportInContext:moc];
+    REButtonGroup * bg6 = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2
+                                                                                context:moc];
 
     [remote addSubelements:[@[bg1, bg2, bg3, bg4, bg5, bg6] orderedSet]];
 
-      // TODO:add constraints
+    // TODO:add constraints
     return remote;
 }
 
-+ (RERemote *)constructSonosRemoteInContext:(NSManagedObjectContext *)context
++ (RERemote *)constructSonosRemoteInContext:(NSManagedObjectContext *)moc
 {
-    RERemote * remote =
-         MakeRemote(@"type"				   : @(RETypeRemote),
-                    @"key" 				   : @"activity4",
-                    @"displayName" 		   : @"Sonos Activity",
-                    @"backgroundImage" 	   : MakeBackgroundImage(8),
-                    @"backgroundImageAlpha" : @1.0);
+    RERemote * remote = [RERemote remoteElementInContext:moc];
+    remote.key = @"activity4";
+    remote.name = @"Sonos Activity";
 
-     REButtonGroup * mute   = [REButtonGroupBuilder constructSonosMuteButtonGroupInContext:context];
-     REButtonGroup * rocker = [REButtonGroupBuilder constructSonosRockerInContext:context];
-     REButtonGroup * power  = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:4 context:context];
+    REButtonGroup * mute   = [REButtonGroupBuilder constructSonosMuteButtonGroupInContext:moc];
+    REButtonGroup * rocker = [REButtonGroupBuilder constructSonosRockerInContext:moc];
+    REButtonGroup * power  = [REButtonGroupBuilder constructHomeAndPowerButtonsForActivity:4
+                                                                                   context:moc];
 
-     [remote addSubelements:[@[mute, rocker, power] orderedSet]];
+    [remote addSubelements:[@[mute, rocker, power] orderedSet]];
 
-     SetConstraints(remote,
-                    @"power.left = remote.left + 10\n"
-                     "power.right = remote.right - 10\n"
-                     "power.bottom = remote.bottom - 20\n"
-                     "mute.centerX = remote.centerX - 60\n"
-                     "rocker.centerX = remote.centerX + 65\n"
-                     "mute.centerY = remote.centerY - 25\n"
-                     "rocker.centerY = mute.centerY\n"
-                     "mute.height = rocker.height * 0.33",
-                     mute, rocker, power);
+    SetConstraints(remote,
+                   @"power.left = remote.left + 10\n"
+                   "power.right = remote.right - 10\n"
+                   "power.bottom = remote.bottom - 20\n"
+                   "mute.centerX = remote.centerX - 60\n"
+                   "rocker.centerX = remote.centerX + 65\n"
+                   "mute.centerY = remote.centerY - 25\n"
+                   "rocker.centerY = mute.centerY\n"
+                   "mute.height = rocker.height * 0.33",
+                   mute, rocker, power);
+
     return remote;
 }
 
