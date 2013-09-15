@@ -20,7 +20,7 @@ MSKIT_EXTERN_NOTIFICATION(MSSettingsManagerInactivityTimeoutSettingDidChange);
 
 extern int globalDDLogLevel;
 
-@interface SettingsManager : NSObject
+@interface SettingsManager : MSSingletonController
 
 + (void)registerDefaults;
 

@@ -34,9 +34,19 @@
  */
 + (NSString const *)versionInfo;
 
-- (void)showLaunchScreen;
+- (void)showMainMenu;
 
 - (void)showRemote;
+
+- (void)showEditor;
+
+- (void)showBank;
+
+- (void)showSettings;
+
+- (void)showHelp;
+
+- (void)dismissViewController:(UIViewController *)viewController completion:(void (^)(void))completion;
 
 @property (nonatomic, strong) IBOutlet UIWindow * window;
 

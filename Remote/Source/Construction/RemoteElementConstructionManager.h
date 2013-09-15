@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remotes
 ////////////////////////////////////////////////////////////////////////////////
-@class RERemote;
+@class Remote;
 
 /**
  * `RemoteBuilder` is a singleton class that, when provided with an `NSManagedObjectContext`, can
@@ -28,28 +28,28 @@
  * form a fully realized remote control interface. Currently this class is used for testing
  * purposes.
  */
-@interface RERemoteBuilder : NSObject @end
+@interface RemoteBuilder : NSObject @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
-@class   REMacroCommand;
+@class   MacroCommand;
 
-@interface REMacroBuilder : NSObject @end
+@interface MacroBuilder : NSObject @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Button Groups
 ////////////////////////////////////////////////////////////////////////////////
-@class   REButtonGroup, REPickerLabelButtonGroup;
+@class   ButtonGroup, PickerLabelButtonGroup;
 
-@interface REButtonGroupBuilder : NSObject
+@interface ButtonGroupBuilder : NSObject
 
-+ (REButtonGroup *)dPadInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)numberPadInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)transportInContext:(NSManagedObjectContext *)moc;
-+ (REPickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)oneByThreeInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)verticalPanelInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)dPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)numberPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)transportInContext:(NSManagedObjectContext *)moc;
++ (PickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)oneByThreeInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)verticalPanelInContext:(NSManagedObjectContext *)moc;
 
 @end
 
@@ -57,11 +57,11 @@
 #pragma mark - Command Sets
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface RECommandSetBuilder : NSObject @end
+@interface CommandSetBuilder : NSObject @end
 
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Buttons
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface REButtonBuilder : NSObject @end
+@interface ButtonBuilder : NSObject @end

@@ -30,5 +30,5 @@ REStyle remoteElementStyleFromImportKey (NSString * importKey);
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Command Types
 ////////////////////////////////////////////////////////////////////////////////
-RESystemCommandType systemCommandTypeFromImportKey (NSString * importKey);
+SystemCommandType systemCommandTypeFromImportKey (NSString * importKey);
 RECommandSetType    commandSetTypeFromImportKey    (NSString * importKey);

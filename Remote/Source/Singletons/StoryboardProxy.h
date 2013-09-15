@@ -8,35 +8,37 @@
 
 @class   ColorSelectionViewController,
          LabelEditingViewController,
-         REButtonEditingViewController,
+         ButtonEditingViewController,
          IconEditingViewController,
-         REDetailedButtonEditingViewController,
+         DetailedButtonEditingViewController,
          IconSelectionViewController,
          CommandEditingViewController,
-         REButtonGroupEditingViewController,
+         ButtonGroupEditingViewController,
          BackgroundEditingViewController,
-         RERemoteEditingViewController,
+         RemoteEditingViewController,
          SettingsViewController,
-         LogsViewController,
-         LaunchScreenViewController,
+         MainMenuViewController,
          REBackgroundEditingViewController;
 
 @interface StoryboardProxy : NSObject
 
-+ (UIStoryboard *)                       auxiliaryStoryboard;
-+ (UIStoryboard *)                       mainStoryboard;
-+ (ColorSelectionViewController *)       colorSelectionViewController;
-+ (LabelEditingViewController *)         labelEditingViewController;
-+ (REButtonEditingViewController *)        buttonEditingViewController;
-+ (IconEditingViewController *)          iconEditingViewController;
-+ (REDetailedButtonEditingViewController *)detailedButtonEditingViewController;
-+ (IconSelectionViewController *)        iconSelectionViewController;
-+ (CommandEditingViewController *)       commandEditingViewController;
-+ (REButtonGroupEditingViewController *)   buttonGroupEditingViewController;
-+ (RERemoteEditingViewController *)        remoteEditingViewController;
-+ (REBackgroundEditingViewController *)    backgroundEditingViewController;
-+ (SettingsViewController *)             settingsViewController;
-+ (LogsViewController *)                 logsViewController;
-+ (LaunchScreenViewController *)         launchScreenViewController;
++ (UIStoryboard *)auxiliaryStoryboard;
++ (UIStoryboard *)mainStoryboard;
++ (ColorSelectionViewController *)colorSelectionViewController;
++ (LabelEditingViewController *)labelEditingViewController;
++ (ButtonEditingViewController *)buttonEditingViewController;
++ (IconEditingViewController *)iconEditingViewController;
++ (DetailedButtonEditingViewController *)detailedButtonEditingViewController;
++ (IconSelectionViewController *)iconSelectionViewController;
++ (CommandEditingViewController *)commandEditingViewController;
++ (ButtonGroupEditingViewController *)buttonGroupEditingViewController;
++ (RemoteEditingViewController *)remoteEditingViewController;
++ (REBackgroundEditingViewController *)backgroundEditingViewController;
++ (UINavigationController *)bankIndexViewController;
++ (SettingsViewController *)settingsViewController;
++ (MainMenuViewController *)mainMenuViewController;
+
++ (UIViewController *)mainControllerWithID:(NSString *)storyboardID;
++ (UIViewController *)auxControllerWithID:(NSString *)storyboardID;
 
 @end

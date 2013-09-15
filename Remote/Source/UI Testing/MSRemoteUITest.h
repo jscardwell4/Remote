@@ -8,10 +8,10 @@
 
 #import "UITestRunner.h"
 
-@class REEditingViewController;
+@class RemoteElementEditingViewController;
 
 typedef void (^ MSRemoteUITestRunner)(NSDictionary * parameters);
-typedef void (^ MSRemoteUITestAssertions)(REEditingViewController * editor);
+typedef void (^ MSRemoteUITestAssertions)(RemoteElementEditingViewController * editor);
 
 MSKIT_EXTERN_STRING   MSRemoteUIRemoteKey;
 MSKIT_EXTERN_STRING   MSRemoteUIButtonGroupKey;
@@ -19,7 +19,7 @@ MSKIT_EXTERN_STRING   MSRemoteUIButtonKey;
 MSKIT_EXTERN_STRING   MSRemoteUIIterationValuesKey;
 MSKIT_EXTERN_STRING   MSRemoteUIAssertionsKey;
 MSKIT_EXTERN_STRING   MSRemoteUILogSubviewsKey;
-@class                REView;
+@class                RemoteElementView;
 
 /**
  *  MSRemoteUITest
@@ -47,7 +47,7 @@ MSKIT_EXTERN_STRING   MSRemoteUILogSubviewsKey;
 /**
  *  logView:after:message:
  */
-- (void)logRemoteElementView:(REView *)view
+- (void)logRemoteElementView:(RemoteElementView *)view
     includingSubelementViews:(NSArray *)subelementViews
                        after:(dispatch_time_t)delay
                      message:(NSString *)message;

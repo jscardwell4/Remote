@@ -7,8 +7,8 @@
 //
 
 #import "BankObjectGroup.h"
-#import "BankObject.h"
-#import "BOImage.h"
+//#import "BankObject.h"
+#import "Image.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
 
@@ -52,18 +52,18 @@ static int   ddLogLevel = DefaultDDLogLevel;
 
 @dynamic images;
 
-- (BOImage *)objectAtIndexedSubscript:(NSUInteger)idx
+- (Image *)objectAtIndexedSubscript:(NSUInteger)idx
 {
 //    return [self.images objectPassingTest:^BOOL(BOImage * obj) { return (obj.tag == idx); }];
     return nil;
 }
 
-- (BOImage *)objectForKeyedSubscript:(NSString *)key
+- (Image *)objectForKeyedSubscript:(NSString *)key
 {
-    return (BOImage *)memberOfCollectionWithUUID(self.images, key);
+    return (Image *)memberOfCollectionWithUUID(self.images, key);
 }
 
-- (void)addImagesObject:(BOImage *)value {
+- (void)addImagesObject:(Image *)value {
     NSSet * changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
 
     [self willChangeValueForKey:@"images"
@@ -75,7 +75,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                   usingObjects:changedObjects];
 }
 
-- (void)removeImagesObject:(BOImage *)value {
+- (void)removeImagesObject:(Image *)value {
     NSSet * changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
 
     [self willChangeValueForKey:@"images"
@@ -116,7 +116,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     dd[@"name"  ] = (imageGroup.name ?: @"nil");
     dd[@"images"] = (imageGroup.images
                                         ? [[imageGroup.images setByMappingToBlock:
-                                           ^NSString *(BOImage * obj)
+                                           ^NSString *(Image * obj)
                                            {
                                                return $(@"%@:'%@'", obj.uuid, obj.name);
                                            }] componentsJoinedByString:@"\n"]
@@ -126,8 +126,6 @@ static int   ddLogLevel = DefaultDDLogLevel;
 }
 
 @end
-
-@implementation BOPresetsGroup @end
 
 @implementation BOIRCodeset
 

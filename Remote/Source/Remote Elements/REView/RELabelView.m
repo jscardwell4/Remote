@@ -6,7 +6,7 @@
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "RELabelView.h"
-#import "REView.h"
+#import "RemoteElementView.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -65,7 +65,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
 - (NSString *)shortDescription
 {
-    REView * view = (REView *)self.superview.superview;
+    RemoteElementView * view = (RemoteElementView *)self.superview.superview;
     if (view) return view.name;
     else return [self description];
     

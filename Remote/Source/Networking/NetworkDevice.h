@@ -5,7 +5,7 @@
 // Created by Jason Cardwell on 9/25/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "MSModelObject.h"
+#import "ModelObject.h"
 // keys
 MSKIT_EXTERN_STRING   NDDeviceMakeKey;
 MSKIT_EXTERN_STRING   NDModelKey;
@@ -14,7 +14,7 @@ MSKIT_EXTERN_STRING   NDDeviceStatusKey;
 MSKIT_EXTERN_STRING   NDDeviceUUIDKey;
 MSKIT_EXTERN_STRING   NDDeviceURLKey;
 
-@interface NetworkDevice : MSModelObject <MSNamedModelObject>
+@interface NetworkDevice : ModelObject <NamedModelObject>
 
 + (instancetype)device;
 + (instancetype)deviceInContext:(NSManagedObjectContext *)context;

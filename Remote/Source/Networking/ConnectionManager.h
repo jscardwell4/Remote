@@ -27,7 +27,7 @@ MSKIT_EXTERN_STRING   CMCommandDidCompleteNotification;
 + (void)logStatus;
 
 /**
- * Obtains the necessary data from the specified `RESendCommand` model object, executes the
+ * Obtains the necessary data from the specified `SendCommand` model object, executes the
  * send operation, and, optionally, calls the completion handler with the result.
   @param command The command containing the details from which the send message will be constructed.
   @param completion Block which to be executed upon completion of the send operation

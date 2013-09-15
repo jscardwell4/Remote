@@ -16,14 +16,14 @@ MSKIT_STATIC_STRING_CONST kConstraintsKey           = @"contraints";
 MSKIT_STATIC_STRING_CONST kFirstItemConstraintsKey  = @"firstItemConstraints";
 MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
 
-- (void)addConstraint:(REConstraint *)constraint {
+- (void)addConstraint:(Constraint *)constraint {
     assert(constraint);
     //TODO: Still not sure if owner should be set here or in constraint initializer
     constraint.owner = self;
     [self addConstraintsObject:constraint];
 }
 
-- (void)removeConstraint:(REConstraint *)constraint {
+- (void)removeConstraint:(Constraint *)constraint {
     [self removeConstraintsObject:constraint];
     
     [self.managedObjectContext performBlockAndWait:^{
@@ -31,7 +31,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
     }];
 }
 
-- (void)addConstraintsObject:(REConstraint *)constraint
+- (void)addConstraintsObject:(Constraint *)constraint
 {
     NSSet * values = [NSSet setWithObject:constraint];
 
@@ -46,7 +46,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
                   usingObjects:values];
 }
 
-- (void)removeConstraintsObject:(REConstraint *)constraint
+- (void)removeConstraintsObject:(Constraint *)constraint
 {
     NSSet * values = [NSSet setWithObject:constraint];
 
@@ -64,7 +64,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
 
 - (void)addConstraints:(NSSet *)constraints
 {
-    for (REConstraint * constraint in constraints)
+    for (Constraint * constraint in constraints)
         [self addConstraint:constraint];
 }
 
@@ -83,7 +83,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
                   usingObjects:constraints];
 }
 
-- (void)addFirstItemConstraintsObject:(REConstraint *)constraint
+- (void)addFirstItemConstraintsObject:(Constraint *)constraint
 {
     NSSet * values = [NSSet setWithObject:constraint];
 
@@ -98,7 +98,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
                   usingObjects:values];
 }
 
-- (void)removeFirstItemConstraintsObject:(REConstraint *)constraint
+- (void)removeFirstItemConstraintsObject:(Constraint *)constraint
 {
     NSSet * values = [NSSet setWithObject:constraint];
 
@@ -139,7 +139,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
                   usingObjects:constraints];
 }
 
-- (void)addSecondItemConstraintsObject:(REConstraint *)constraint
+- (void)addSecondItemConstraintsObject:(Constraint *)constraint
 {
     NSSet * values = [NSSet setWithObject:constraint];
 
@@ -154,7 +154,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
                   usingObjects:values];
 }
 
-- (void)removeSecondItemConstraintsObject:(REConstraint *)constraint
+- (void)removeSecondItemConstraintsObject:(Constraint *)constraint
 {
     NSSet * values = [NSSet setWithObject:constraint];
 

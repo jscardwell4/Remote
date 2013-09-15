@@ -22,9 +22,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          localContext.nametag = @"remote element construction manager context";
 
          // create controller
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          assert(!controller);
-         controller = [RERemoteController remoteControllerInContext:localContext];
+         controller = [RemoteController remoteControllerInContext:localContext];
          assert(controller);
      }];
 
@@ -32,16 +32,16 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
       ^(NSManagedObjectContext * localContext)
       {
          // create builtin themes
-          REBuiltinTheme * nightshadeTheme = [REBuiltinTheme MR_findFirstByAttribute:@"name"
+          BuiltinTheme * nightshadeTheme = [BuiltinTheme MR_findFirstByAttribute:@"name"
                                                                            withValue:REThemeNightshadeName
                                                                            inContext:localContext];
           if (nightshadeTheme)
               [localContext deleteObject:nightshadeTheme];
 
-          nightshadeTheme =  [REBuiltinTheme themeWithName:REThemeNightshadeName context:localContext];
+          nightshadeTheme =  [BuiltinTheme themeWithName:REThemeNightshadeName context:localContext];
          assert(nightshadeTheme);
 
-         REBuiltinTheme * powerBlueTheme = [REBuiltinTheme themeWithName:REThemePowerBlueName
+         BuiltinTheme * powerBlueTheme = [BuiltinTheme themeWithName:REThemePowerBlueName
                                                                  context:localContext];
          assert(powerBlueTheme);
      }];
@@ -49,11 +49,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
-         REButtonGroup * topToolbar = [REButtonGroupBuilder
+         ButtonGroup * topToolbar = [ButtonGroupBuilder
                                        constructControllerTopToolbarInContext:localContext];
-         [[REBuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:topToolbar];
+         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:topToolbar];
 
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
 
          assert(topToolbar.managedObjectContext == controller.managedObjectContext);
          [controller registerTopToolbar:topToolbar];
@@ -63,46 +63,44 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^(NSManagedObjectContext * localContext)
      {
          // attach power on/off commands to components
-         BOComponentDevice * avReceiver = [BOComponentDevice fetchDeviceWithName:@"AV Receiver"
+         ComponentDevice * avReceiver = [ComponentDevice fetchDeviceWithName:@"AV Receiver"
                                                                          context:localContext];
          avReceiver.inputPowersOn       = YES;
-         avReceiver.offCommand          = [RESendIRCommand commandWithIRCode:avReceiver[@"Power"]];
+         avReceiver.offCommand          = [SendIRCommand commandWithIRCode:avReceiver[@"Power"]];
 
-         BOComponentDevice * comcastDVR = [BOComponentDevice fetchDeviceWithName:@"Comcast DVR"
+         ComponentDevice * comcastDVR = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
                                                                          context:localContext];
          comcastDVR.alwaysOn            = YES;
 
-         BOComponentDevice * samsungTV  = [BOComponentDevice fetchDeviceWithName:@"Samsung TV"
+         ComponentDevice * samsungTV  = [ComponentDevice fetchDeviceWithName:@"Samsung TV"
                                                                          context:localContext];
-         samsungTV.offCommand           = [RESendIRCommand commandWithIRCode:samsungTV[@"Power Off"]];
-         samsungTV.onCommand            = [RESendIRCommand commandWithIRCode:samsungTV[@"Power On"]];
+         samsungTV.offCommand           = [SendIRCommand commandWithIRCode:samsungTV[@"Power Off"]];
+         samsungTV.onCommand            = [SendIRCommand commandWithIRCode:samsungTV[@"Power On"]];
 
-         BOComponentDevice * ps3        = [BOComponentDevice fetchDeviceWithName:@"PS3"
+         ComponentDevice * ps3        = [ComponentDevice fetchDeviceWithName:@"PS3"
                                                                          context:localContext];
-         ps3.offCommand                 = [RESendIRCommand commandWithIRCode:ps3[@"Discrete Off"]];
-         ps3.onCommand                  = [RESendIRCommand commandWithIRCode:ps3[@"Discrete On"]];
+         ps3.offCommand                 = [SendIRCommand commandWithIRCode:ps3[@"Discrete Off"]];
+         ps3.onCommand                  = [SendIRCommand commandWithIRCode:ps3[@"Discrete On"]];
      }];
 
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // Comcast DVR Activity
-         REActivity * dvrActivity = [REActivity activityWithName:@"Comcast DVR Activity"
+         Activity * dvrActivity = [Activity activityWithName:@"Comcast DVR Activity"
                                                        inContext:localContext];
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          [controller registerActivity:dvrActivity];
-         dvrActivity.launchMacro = [REMacroBuilder activityMacroForActivity:1
+         dvrActivity.launchMacro = [MacroBuilder activityMacroForActivity:1
                                                             toInitiateState:YES
                                                                     context:localContext];
-         dvrActivity.haltMacro   = [REMacroBuilder activityMacroForActivity:0
+         dvrActivity.haltMacro   = [MacroBuilder activityMacroForActivity:0
                                                             toInitiateState:YES
                                                                     context:localContext];
 
-         RERemote   * dvrRemote   = [RERemoteBuilder constructDVRRemoteInContext:localContext];
-         [[REBuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:dvrRemote];
+         Remote   * dvrRemote   = [RemoteBuilder constructDVRRemoteInContext:localContext];
+         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:dvrRemote];
          dvrActivity.remote = dvrRemote;
-
-         [controller registerHomeRemote:dvrRemote];
 
      }];
 
@@ -110,19 +108,19 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^(NSManagedObjectContext * localContext)
      {
          // Playstation Activity
-         REActivity * ps3Activity = [REActivity activityWithName:@"Playstation Activity"
+         Activity * ps3Activity = [Activity activityWithName:@"Playstation Activity"
                                                        inContext:localContext];
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          [controller registerActivity:ps3Activity];
-         ps3Activity.launchMacro = [REMacroBuilder activityMacroForActivity:1
+         ps3Activity.launchMacro = [MacroBuilder activityMacroForActivity:1
                                                             toInitiateState:YES
                                                                     context:localContext];
-         ps3Activity.haltMacro   = [REMacroBuilder activityMacroForActivity:0
+         ps3Activity.haltMacro   = [MacroBuilder activityMacroForActivity:0
                                                             toInitiateState:YES
                                                                     context:localContext];
 
-         RERemote   * ps3Remote   = [RERemoteBuilder constructPS3RemoteInContext:localContext];
-         [[REBuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:ps3Remote];
+         Remote   * ps3Remote   = [RemoteBuilder constructPS3RemoteInContext:localContext];
+         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:ps3Remote];
          ps3Activity.remote = ps3Remote;
      }];
 
@@ -130,14 +128,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^(NSManagedObjectContext * localContext)
      {
          // TV Activity
-         REActivity * appleTVActivity = [REActivity activityWithName:@" TV Activity"
+         Activity * appleTVActivity = [Activity activityWithName:@" TV Activity"
                                                            inContext:localContext];
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          [controller registerActivity:appleTVActivity];
-         appleTVActivity.launchMacro = [REMacroBuilder activityMacroForActivity:1
+         appleTVActivity.launchMacro = [MacroBuilder activityMacroForActivity:1
                                                                 toInitiateState:YES
                                                                         context:localContext];
-         appleTVActivity.haltMacro   = [REMacroBuilder activityMacroForActivity:0
+         appleTVActivity.haltMacro   = [MacroBuilder activityMacroForActivity:0
                                                                 toInitiateState:YES
                                                                         context:localContext];
      }];
@@ -146,19 +144,19 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^(NSManagedObjectContext * localContext)
      {
          // Sonos Activity
-         REActivity * sonosActivity = [REActivity activityWithName:@"Sonos Activity"
+         Activity * sonosActivity = [Activity activityWithName:@"Sonos Activity"
                                                          inContext:localContext];
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          [controller registerActivity:sonosActivity];
-         sonosActivity.launchMacro = [REMacroBuilder activityMacroForActivity:1
+         sonosActivity.launchMacro = [MacroBuilder activityMacroForActivity:1
                                                               toInitiateState:YES
                                                                       context:localContext];
-         sonosActivity.haltMacro   = [REMacroBuilder activityMacroForActivity:0
+         sonosActivity.haltMacro   = [MacroBuilder activityMacroForActivity:0
                                                               toInitiateState:YES
                                                                       context:localContext];
 
-         RERemote   * sonosRemote   = [RERemoteBuilder constructSonosRemoteInContext:localContext];
-         [[REBuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:sonosRemote];
+         Remote   * sonosRemote   = [RemoteBuilder constructSonosRemoteInContext:localContext];
+         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:sonosRemote];
          sonosActivity.remote = sonosRemote;
      }];
 
@@ -166,10 +164,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^(NSManagedObjectContext * localContext)
      {
          // Home Remote
-         RERemote * homeRemote = [RERemoteBuilder constructHomeRemoteInContext:localContext];
-         [[REBuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:homeRemote];
-//         RERemoteController * controller = [RERemoteController MR_findFirstInContext:localContext];
-//         [controller registerHomeRemote:homeRemote];
+         Remote * homeRemote = [RemoteBuilder constructHomeRemoteInContext:localContext];
+         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:homeRemote];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
+         [controller registerHomeRemote:homeRemote];
      }];
 
     [NSManagedObjectContext MR_resetDefaultContext];

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3394" systemVersion="12E55" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12E55" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Activity" representedClassName="Activity" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ActivityCommand" inverseName="activity" inverseEntity="ActivityCommand" syncable="YES"/>
+        <relationship name="controller" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="activities" inverseEntity="RemoteController" syncable="YES"/>
+        <relationship name="haltMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MacroCommand" inverseName="activityHalt" inverseEntity="MacroCommand" syncable="YES"/>
+        <relationship name="launchMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MacroCommand" inverseName="activityLaunch" inverseEntity="MacroCommand" syncable="YES"/>
+        <relationship name="remote" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="activity" inverseEntity="Remote" syncable="YES"/>
+    </entity>
+    <entity name="ActivityCommand" representedClassName="ActivityCommand" parentEntity="Command" syncable="YES">
+        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="commands" inverseEntity="Activity" syncable="YES"/>
+    </entity>
     <entity name="BankObjectGroup" representedClassName="BankObjectGroup" isAbstract="YES" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
@@ -10,27 +22,79 @@
         <attribute name="factoryObject" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subcategory" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="code" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOIRCode" inverseName="info" inverseEntity="BOIRCode" syncable="YES"/>
-        <relationship name="componentDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOComponentDevice" inverseName="info" inverseEntity="BOComponentDevice" syncable="YES"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOImage" inverseName="info" inverseEntity="BOImage" syncable="YES"/>
-        <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOManufacturer" inverseName="info" inverseEntity="BOManufacturer" syncable="YES"/>
-        <relationship name="preset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOPreset" inverseName="info" inverseEntity="BOPreset" syncable="YES"/>
+        <relationship name="code" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="info" inverseEntity="IRCode" syncable="YES"/>
+        <relationship name="componentDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="info" inverseEntity="ComponentDevice" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="info" inverseEntity="Image" syncable="YES"/>
+        <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="info" inverseEntity="Manufacturer" syncable="YES"/>
+        <relationship name="preset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="info" inverseEntity="Preset" syncable="YES"/>
     </entity>
     <entity name="BankObjectPreview" representedClassName="BankObjectPreview" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tag" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="preset" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOPreset" inverseName="preview" inverseEntity="BOPreset" syncable="YES"/>
+        <relationship name="preset" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="preview" inverseEntity="Preset" syncable="YES"/>
     </entity>
-    <entity name="BOBundledImage" representedClassName="BOBundledImage" parentEntity="BOImage" syncable="YES"/>
-    <entity name="BOButtonGroupPreset" representedClassName="BOButtonGroupPreset" parentEntity="BOPreset" syncable="YES">
-        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOPresetsGroup" inverseName="buttonGroupPresets" inverseEntity="BOPresetsGroup" syncable="YES"/>
+    <entity name="BOImageGroup" representedClassName="BOImageGroup" parentEntity="BankObjectGroup" syncable="YES">
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="group" inverseEntity="Image" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="BOButtonPreset" representedClassName="BOButtonPreset" parentEntity="BOPreset" syncable="YES">
-        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOPresetsGroup" inverseName="buttonPresets" inverseEntity="BOPresetsGroup" syncable="YES"/>
+    <entity name="BOIRCodeset" representedClassName="BOIRCodeset" parentEntity="BankObjectGroup" syncable="YES">
+        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FactoryIRCode" inverseName="codeset" inverseEntity="FactoryIRCode" indexed="YES" syncable="YES"/>
+        <relationship name="manufacturer" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="codesets" inverseEntity="Manufacturer" syncable="YES"/>
     </entity>
-    <entity name="BOComponentDevice" representedClassName="BOComponentDevice" syncable="YES">
+    <entity name="BuiltinTheme" representedClassName="BuiltinTheme" parentEntity="Theme" syncable="YES"/>
+    <entity name="Button" representedClassName="Button" parentEntity="RemoteElement" syncable="YES">
+        <attribute name="contentEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
+        <attribute name="imageEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
+        <attribute name="titleEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
+        <relationship name="command" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="button" inverseEntity="Command" indexed="YES" syncable="YES"/>
+        <relationship name="longPressCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="longPressButton" inverseEntity="Command" syncable="YES"/>
+    </entity>
+    <entity name="ButtonConfigurationDelegate" representedClassName="ButtonConfigurationDelegate" parentEntity="ConfigurationDelegate" syncable="YES">
+        <relationship name="backgroundColorSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ControlStateColorSet" inverseName="delegate" inverseEntity="ControlStateColorSet" syncable="YES"/>
+        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Command" inverseName="buttonDelegates" inverseEntity="Command" syncable="YES"/>
+        <relationship name="iconSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ControlStateImageSet" inverseName="delegateIcons" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ControlStateImageSet" inverseName="delegateImages" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="titleSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ControlStateTitleSet" inverseName="delegate" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+    </entity>
+    <entity name="ButtonGroup" representedClassName="ButtonGroup" parentEntity="RemoteElement" syncable="YES">
+        <attribute name="label" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
+        <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="topToolbar" inverseEntity="RemoteController" syncable="YES"/>
+    </entity>
+    <entity name="ButtonGroupConfigurationDelegate" representedClassName="ButtonGroupConfigurationDelegate" parentEntity="ConfigurationDelegate" syncable="YES">
+        <relationship name="commandContainers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CommandContainer" inverseName="delegates" inverseEntity="CommandContainer" syncable="YES"/>
+    </entity>
+    <entity name="Command" representedClassName="Command" isAbstract="YES" syncable="YES">
+        <attribute name="indicator" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="command" inverseEntity="Button" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="buttonDelegates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ButtonConfigurationDelegate" inverseName="commands" inverseEntity="ButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommandSet" inverseName="commands" inverseEntity="CommandSet" syncable="YES"/>
+        <relationship name="longPressButton" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="longPressCommand" inverseEntity="Button" syncable="YES"/>
+        <relationship name="macroCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MacroCommand" inverseName="commands" inverseEntity="MacroCommand" syncable="YES"/>
+        <relationship name="offDevice" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="offCommand" inverseEntity="ComponentDevice" indexed="YES" syncable="YES"/>
+        <relationship name="onDevice" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="onCommand" inverseEntity="ComponentDevice" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="CommandContainer" representedClassName="CommandContainer" isAbstract="YES" syncable="YES">
+        <attribute name="index" attributeType="Transformable" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="delegates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ButtonGroupConfigurationDelegate" inverseName="commandContainers" inverseEntity="ButtonGroupConfigurationDelegate" syncable="YES"/>
+    </entity>
+    <entity name="CommandSet" representedClassName="CommandSet" parentEntity="CommandContainer" syncable="YES">
+        <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="4" defaultValueString="0" syncable="YES"/>
+        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Command" inverseName="commandSets" inverseEntity="Command" syncable="YES"/>
+        <relationship name="commandSetCollections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommandSetCollection" inverseName="commandSets" inverseEntity="CommandSetCollection" syncable="YES"/>
+    </entity>
+    <entity name="CommandSetCollection" representedClassName="CommandSetCollection" parentEntity="CommandContainer" syncable="YES">
+        <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CommandSet" inverseName="commandSetCollections" inverseEntity="CommandSet" syncable="YES"/>
+        <relationship name="pickerLabelButtonGroup" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PickerLabelButtonGroup" inverseName="commandSetCollection" inverseEntity="PickerLabelButtonGroup" syncable="YES"/>
+    </entity>
+    <entity name="ComponentDevice" representedClassName="ComponentDevice" syncable="YES">
         <attribute name="alwaysOn" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
@@ -45,33 +109,110 @@
             <userInfo/>
         </attribute>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BOIRCode" inverseName="device" inverseEntity="BOIRCode" indexed="YES">
+        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="device" inverseEntity="IRCode" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="configurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REDeviceConfiguration" inverseName="device" inverseEntity="REDeviceConfiguration" indexed="YES">
+        <relationship name="configurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDeviceConfiguration" inverseName="device" inverseEntity="ComponentDeviceConfiguration" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectInfo" inverseName="componentDevice" inverseEntity="BankObjectInfo" syncable="YES"/>
-        <relationship name="offCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommand" inverseName="offDevice" inverseEntity="RECommand" indexed="YES">
+        <relationship name="offCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="offDevice" inverseEntity="Command" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="onCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommand" inverseName="onDevice" inverseEntity="RECommand" indexed="YES">
+        <relationship name="onCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="onDevice" inverseEntity="Command" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="powerCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REPowerCommand" inverseName="device" inverseEntity="REPowerCommand" indexed="YES">
+        <relationship name="powerCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PowerCommand" inverseName="device" inverseEntity="PowerCommand" indexed="YES">
             <userInfo/>
         </relationship>
     </entity>
-    <entity name="BOCustomImage" representedClassName="BOCustomImage" parentEntity="BOImage" syncable="YES">
-        <attribute name="fileDirectory" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="fileNameExtension" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="ComponentDeviceConfiguration" representedClassName="ComponentDeviceConfiguration" syncable="YES">
+        <attribute name="powerState" attributeType="Boolean" minValueString="0" maxValueString="1" defaultValueString="0" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="device" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="configurations" inverseEntity="ComponentDevice" indexed="YES" syncable="YES"/>
+        <relationship name="input" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="deviceConfigurations" inverseEntity="IRCode" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="BOFactoryIRCode" representedClassName="BOFactoryIRCode" parentEntity="BOIRCode" syncable="YES">
+    <entity name="ConfigurationDelegate" representedClassName="ConfigurationDelegate" isAbstract="YES" syncable="YES">
+        <attribute name="autoPopulateFromDefaultConfiguration" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="configurations" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConfigurationDelegate" inverseName="subscribers" inverseEntity="ConfigurationDelegate" syncable="YES"/>
+        <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="configurationDelegate" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="subscribers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ConfigurationDelegate" inverseName="delegate" inverseEntity="ConfigurationDelegate" syncable="YES"/>
+    </entity>
+    <entity name="Constraint" representedClassName="Constraint" syncable="YES">
+        <attribute name="constant" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="firstAttribute" attributeType="Integer 16" minValueString="0" maxValueString="11" defaultValueString="0" syncable="YES"/>
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="multiplier" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <attribute name="priority" attributeType="Float" minValueString="0" maxValueString="1000" defaultValueString="1000" syncable="YES"/>
+        <attribute name="relation" attributeType="Integer 16" minValueString="-1" maxValueString="1" defaultValueString="0" syncable="YES"/>
+        <attribute name="secondAttribute" attributeType="Integer 16" minValueString="0" maxValueString="11" defaultValueString="0" syncable="YES"/>
+        <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="firstItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="firstItemConstraints" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="owner" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="constraints" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="secondItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="secondItemConstraints" inverseEntity="RemoteElement" syncable="YES"/>
+    </entity>
+    <entity name="ControlStateColorSet" representedClassName="ControlStateColorSet" syncable="YES">
+        <attribute name="colorSetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonConfigurationDelegate" inverseName="backgroundColorSets" inverseEntity="ButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="imageSet" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="colors" inverseEntity="ControlStateImageSet" indexed="YES" syncable="YES"/>
+        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="backgroundColors" inverseEntity="ThemeButtonSettings" syncable="YES"/>
+    </entity>
+    <entity name="ControlStateImageSet" representedClassName="ControlStateImageSet" syncable="YES">
+        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="colors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateColorSet" inverseName="imageSet" inverseEntity="ControlStateColorSet" syncable="YES"/>
+        <relationship name="delegateIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonConfigurationDelegate" inverseName="iconSets" inverseEntity="ButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="delegateImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonConfigurationDelegate" inverseName="imageSets" inverseEntity="ButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="themeIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="icons" inverseEntity="ThemeButtonSettings" syncable="YES"/>
+        <relationship name="themeImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="images" inverseEntity="ThemeButtonSettings" syncable="YES"/>
+    </entity>
+    <entity name="ControlStateTitleSet" representedClassName="ControlStateTitleSet" syncable="YES">
+        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonConfigurationDelegate" inverseName="titleSets" inverseEntity="ButtonConfigurationDelegate" syncable="YES"/>
+        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="titles" inverseEntity="ThemeButtonSettings" syncable="YES"/>
+    </entity>
+    <entity name="CustomTheme" representedClassName="CustomTheme" parentEntity="Theme" syncable="YES"/>
+    <entity name="DelayCommand" representedClassName="DelayCommand" parentEntity="Command" syncable="YES">
+        <attribute name="duration" attributeType="Float" defaultValueString="0.25">
+            <userInfo/>
+        </attribute>
+    </entity>
+    <entity name="FactoryIRCode" representedClassName="FactoryIRCode" parentEntity="IRCode" syncable="YES">
         <relationship name="codeset" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOIRCodeset" inverseName="codes" inverseEntity="BOIRCodeset" indexed="YES">
             <userInfo/>
         </relationship>
     </entity>
-    <entity name="BOImage" representedClassName="BOImage" isAbstract="YES" syncable="YES">
+    <entity name="HTTPCommand" representedClassName="HTTPCommand" parentEntity="Command" syncable="YES">
+        <attribute name="url" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="Image" representedClassName="Image" syncable="YES">
         <attribute name="fileName" attributeType="String">
             <userInfo/>
         </attribute>
@@ -92,12 +233,9 @@
         </relationship>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectInfo" inverseName="image" inverseEntity="BankObjectInfo" syncable="YES"/>
         <relationship name="remoteElement" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgroundImage" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="themeSettings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REThemeSettings" inverseName="backgroundImage" inverseEntity="REThemeSettings" syncable="YES"/>
+        <relationship name="themeSettings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ThemeSettings" inverseName="backgroundImage" inverseEntity="ThemeSettings" syncable="YES"/>
     </entity>
-    <entity name="BOImageGroup" representedClassName="BOImageGroup" parentEntity="BankObjectGroup" syncable="YES">
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BOImage" inverseName="group" inverseEntity="BOImage" indexed="YES" syncable="YES"/>
-    </entity>
-    <entity name="BOIRCode" representedClassName="BOIRCode" isAbstract="YES" syncable="YES">
+    <entity name="IRCode" representedClassName="IRCode" isAbstract="YES" syncable="YES">
         <attribute name="frequency" attributeType="Integer 64" defaultValueString="40000">
             <userInfo/>
         </attribute>
@@ -118,43 +256,33 @@
             <userInfo/>
         </attribute>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="device" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOComponentDevice" inverseName="codes" inverseEntity="BOComponentDevice" indexed="YES">
+        <relationship name="device" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="codes" inverseEntity="ComponentDevice" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REDeviceConfiguration" inverseName="input" inverseEntity="REDeviceConfiguration" indexed="YES">
+        <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDeviceConfiguration" inverseName="input" inverseEntity="ComponentDeviceConfiguration" indexed="YES">
             <userInfo/>
         </relationship>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectInfo" inverseName="code" inverseEntity="BankObjectInfo" syncable="YES"/>
-        <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RESendIRCommand" inverseName="code" inverseEntity="RESendIRCommand" indexed="YES">
+        <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SendIRCommand" inverseName="code" inverseEntity="SendIRCommand" indexed="YES">
             <userInfo/>
         </relationship>
     </entity>
-    <entity name="BOIRCodeset" representedClassName="BOIRCodeset" parentEntity="BankObjectGroup" syncable="YES">
-        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BOFactoryIRCode" inverseName="codeset" inverseEntity="BOFactoryIRCode" indexed="YES" syncable="YES"/>
-        <relationship name="manufacturer" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOManufacturer" inverseName="codesets" inverseEntity="BOManufacturer" syncable="YES"/>
+    <entity name="LayoutConfiguration" representedClassName="LayoutConfiguration" syncable="YES">
+        <attribute name="bitVector" attributeType="Transformable" minValueString="0" maxValueString="255" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="element" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="layoutConfiguration" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
-    <entity name="BOManufacturer" representedClassName="BOManufacturer" syncable="YES">
+    <entity name="MacroCommand" representedClassName="MacroCommand" parentEntity="Command" syncable="YES">
+        <relationship name="activityHalt" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="haltMacro" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="activityLaunch" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="launchMacro" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Command" inverseName="macroCommands" inverseEntity="Command" syncable="YES"/>
+    </entity>
+    <entity name="Manufacturer" representedClassName="Manufacturer" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="codesets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BOIRCodeset" inverseName="manufacturer" inverseEntity="BOIRCodeset" syncable="YES"/>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectInfo" inverseName="manufacturer" inverseEntity="BankObjectInfo" syncable="YES"/>
     </entity>
-    <entity name="BOPreset" representedClassName="BOPreset" isAbstract="YES" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="preset" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectInfo" inverseName="preset" inverseEntity="BankObjectInfo" syncable="YES"/>
-        <relationship name="preview" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectPreview" inverseName="preset" inverseEntity="BankObjectPreview" syncable="YES"/>
-    </entity>
-    <entity name="BOPresetsGroup" representedClassName="BOPresetsGroup" parentEntity="BankObjectGroup" syncable="YES">
-        <relationship name="buttonGroupPresets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BOButtonGroupPreset" inverseName="group" inverseEntity="BOButtonGroupPreset" syncable="YES"/>
-        <relationship name="buttonPresets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BOButtonPreset" inverseName="group" inverseEntity="BOButtonPreset" syncable="YES"/>
-        <relationship name="remotePresets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BORemotePreset" inverseName="group" inverseEntity="BORemotePreset" syncable="YES"/>
-    </entity>
-    <entity name="BORemotePreset" representedClassName="BORemotePreset" parentEntity="BOPreset" syncable="YES">
-        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOPresetsGroup" inverseName="remotePresets" inverseEntity="BOPresetsGroup" syncable="YES"/>
-    </entity>
-    <entity name="BOUserIRCode" representedClassName="BOUserIRCode" parentEntity="BOIRCode" syncable="YES"/>
     <entity name="NDiTachDevice" representedClassName="NDiTachDevice" parentEntity="NetworkDevice" syncable="YES">
         <attribute name="pcb_pn" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pkg_level" optional="YES" attributeType="String" syncable="YES"/>
@@ -170,160 +298,37 @@
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
     </entity>
-    <entity name="REActivity" representedClassName="REActivity" syncable="YES">
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REActivityCommand" inverseName="activity" inverseEntity="REActivityCommand" syncable="YES"/>
-        <relationship name="controller" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="activities" inverseEntity="RERemoteController" syncable="YES"/>
-        <relationship name="haltMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REMacroCommand" inverseName="activityHalt" inverseEntity="REMacroCommand" syncable="YES"/>
-        <relationship name="launchMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REMacroCommand" inverseName="activityLaunch" inverseEntity="REMacroCommand" syncable="YES"/>
-        <relationship name="remote" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemote" inverseName="activity" inverseEntity="RERemote" syncable="YES"/>
+    <entity name="PickerLabelButtonGroup" representedClassName="PickerLabelButtonGroup" parentEntity="ButtonGroup" syncable="YES">
+        <relationship name="commandSetCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="CommandSetCollection" inverseName="pickerLabelButtonGroup" inverseEntity="CommandSetCollection" syncable="YES"/>
     </entity>
-    <entity name="REActivityCommand" representedClassName="REActivityCommand" parentEntity="RECommand" syncable="YES">
-        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="commands" inverseEntity="REActivity" syncable="YES"/>
+    <entity name="PowerCommand" representedClassName="PowerCommand" parentEntity="Command" syncable="YES">
+        <attribute name="state" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <relationship name="device" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="powerCommands" inverseEntity="ComponentDevice" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="REBuiltinTheme" representedClassName="REBuiltinTheme" parentEntity="RETheme" syncable="YES"/>
-    <entity name="REButton" representedClassName="REButton" parentEntity="RemoteElement" syncable="YES">
-        <attribute name="contentEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
-        <attribute name="imageEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
-        <attribute name="titleEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES"/>
-        <relationship name="command" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommand" inverseName="button" inverseEntity="RECommand" indexed="YES" syncable="YES"/>
-        <relationship name="longPressCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommand" inverseName="longPressButton" inverseEntity="RECommand" syncable="YES"/>
-    </entity>
-    <entity name="REButtonConfigurationDelegate" representedClassName="REButtonConfigurationDelegate" parentEntity="REConfigurationDelegate" syncable="YES">
-        <relationship name="backgroundColorSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateColorSet" inverseName="delegate" inverseEntity="REControlStateColorSet" syncable="YES"/>
-        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RECommand" inverseName="buttonDelegates" inverseEntity="RECommand" syncable="YES"/>
-        <relationship name="iconSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateImageSet" inverseName="delegateIcons" inverseEntity="REControlStateImageSet" syncable="YES"/>
-        <relationship name="imageSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateImageSet" inverseName="delegateImages" inverseEntity="REControlStateImageSet" syncable="YES"/>
-        <relationship name="titleSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REControlStateTitleSet" inverseName="delegate" inverseEntity="REControlStateTitleSet" syncable="YES"/>
-    </entity>
-    <entity name="REButtonGroup" representedClassName="REButtonGroup" parentEntity="RemoteElement" syncable="YES">
-        <attribute name="label" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
-        <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="topToolbar" inverseEntity="RERemoteController" syncable="YES"/>
-    </entity>
-    <entity name="REButtonGroupConfigurationDelegate" representedClassName="REButtonGroupConfigurationDelegate" parentEntity="REConfigurationDelegate" syncable="YES">
-        <relationship name="commandContainers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RECommandContainer" inverseName="delegates" inverseEntity="RECommandContainer" syncable="YES"/>
-    </entity>
-    <entity name="RECommand" representedClassName="RECommand" isAbstract="YES" syncable="YES">
-        <attribute name="indicator" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+    <entity name="Preset" representedClassName="Preset" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="command" inverseEntity="REButton" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <relationship name="buttonDelegates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="commands" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
-        <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommandSet" inverseName="commands" inverseEntity="RECommandSet" syncable="YES"/>
-        <relationship name="longPressButton" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButton" inverseName="longPressCommand" inverseEntity="REButton" syncable="YES"/>
-        <relationship name="macroCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REMacroCommand" inverseName="commands" inverseEntity="REMacroCommand" syncable="YES"/>
-        <relationship name="offDevice" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOComponentDevice" inverseName="offCommand" inverseEntity="BOComponentDevice" indexed="YES" syncable="YES"/>
-        <relationship name="onDevice" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOComponentDevice" inverseName="onCommand" inverseEntity="BOComponentDevice" indexed="YES" syncable="YES"/>
+        <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="preset" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectInfo" inverseName="preset" inverseEntity="BankObjectInfo" syncable="YES"/>
+        <relationship name="preview" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectPreview" inverseName="preset" inverseEntity="BankObjectPreview" syncable="YES"/>
     </entity>
-    <entity name="RECommandContainer" representedClassName="RECommandContainer" isAbstract="YES" syncable="YES">
-        <attribute name="index" attributeType="Transformable" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Remote" representedClassName="Remote" parentEntity="RemoteElement" syncable="YES">
+        <attribute name="panels" attributeType="Transformable" syncable="YES"/>
+        <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="remote" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="controller" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="remotes" inverseEntity="RemoteController" syncable="YES"/>
+        <relationship name="remoteForSwitchToCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SwitchToRemoteCommand" inverseName="remote" inverseEntity="SwitchToRemoteCommand" syncable="YES"/>
+    </entity>
+    <entity name="RemoteConfigurationDelegate" representedClassName="RemoteConfigurationDelegate" parentEntity="ConfigurationDelegate" syncable="YES"/>
+    <entity name="RemoteController" representedClassName="RemoteController" syncable="YES">
+        <attribute name="currentActivityUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currentRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="homeRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="delegates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REButtonGroupConfigurationDelegate" inverseName="commandContainers" inverseEntity="REButtonGroupConfigurationDelegate" syncable="YES"/>
-    </entity>
-    <entity name="RECommandSet" representedClassName="RECommandSet" parentEntity="RECommandContainer" syncable="YES">
-        <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="4" defaultValueString="0" syncable="YES"/>
-        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommand" inverseName="commandSets" inverseEntity="RECommand" syncable="YES"/>
-        <relationship name="commandSetCollections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RECommandSetCollection" inverseName="commandSets" inverseEntity="RECommandSetCollection" syncable="YES"/>
-    </entity>
-    <entity name="RECommandSetCollection" representedClassName="RECommandSetCollection" parentEntity="RECommandContainer" syncable="YES">
-        <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RECommandSet" inverseName="commandSetCollections" inverseEntity="RECommandSet" syncable="YES"/>
-        <relationship name="pickerLabelButtonGroup" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REPickerLabelButtonGroup" inverseName="commandSetCollection" inverseEntity="REPickerLabelButtonGroup" syncable="YES"/>
-    </entity>
-    <entity name="REConfigurationDelegate" representedClassName="REConfigurationDelegate" isAbstract="YES" syncable="YES">
-        <attribute name="autoPopulateFromDefaultConfiguration" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="configurations" attributeType="Transformable" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="subscribers" inverseEntity="REConfigurationDelegate" syncable="YES"/>
-        <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="configurationDelegate" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="subscribers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="delegate" inverseEntity="REConfigurationDelegate" syncable="YES"/>
-    </entity>
-    <entity name="REConstraint" representedClassName="REConstraint" syncable="YES">
-        <attribute name="constant" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="firstAttribute" attributeType="Integer 16" minValueString="0" maxValueString="11" defaultValueString="0" syncable="YES"/>
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="multiplier" attributeType="Float" defaultValueString="1" syncable="YES"/>
-        <attribute name="priority" attributeType="Float" minValueString="0" maxValueString="1000" defaultValueString="1000" syncable="YES"/>
-        <attribute name="relation" attributeType="Integer 16" minValueString="-1" maxValueString="1" defaultValueString="0" syncable="YES"/>
-        <attribute name="secondAttribute" attributeType="Integer 16" minValueString="0" maxValueString="11" defaultValueString="0" syncable="YES"/>
-        <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="firstItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="firstItemConstraints" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="owner" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="constraints" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="secondItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="secondItemConstraints" inverseEntity="RemoteElement" syncable="YES"/>
-    </entity>
-    <entity name="REControlStateColorSet" representedClassName="REControlStateColorSet" syncable="YES">
-        <attribute name="colorSetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="backgroundColorSets" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
-        <relationship name="imageSet" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateImageSet" inverseName="colors" inverseEntity="REControlStateImageSet" indexed="YES" syncable="YES"/>
-        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REThemeButtonSettings" inverseName="backgroundColors" inverseEntity="REThemeButtonSettings" syncable="YES"/>
-    </entity>
-    <entity name="REControlStateImageSet" representedClassName="REControlStateImageSet" syncable="YES">
-        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="colors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateColorSet" inverseName="imageSet" inverseEntity="REControlStateColorSet" syncable="YES"/>
-        <relationship name="delegateIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="iconSets" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
-        <relationship name="delegateImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="imageSets" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
-        <relationship name="themeIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REThemeButtonSettings" inverseName="icons" inverseEntity="REThemeButtonSettings" syncable="YES"/>
-        <relationship name="themeImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REThemeButtonSettings" inverseName="images" inverseEntity="REThemeButtonSettings" syncable="YES"/>
-    </entity>
-    <entity name="REControlStateTitleSet" representedClassName="REControlStateTitleSet" syncable="YES">
-        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REButtonConfigurationDelegate" inverseName="titleSets" inverseEntity="REButtonConfigurationDelegate" syncable="YES"/>
-        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REThemeButtonSettings" inverseName="titles" inverseEntity="REThemeButtonSettings" syncable="YES"/>
-    </entity>
-    <entity name="RECustomTheme" representedClassName="RECustomTheme" parentEntity="RETheme" syncable="YES"/>
-    <entity name="REDelayCommand" representedClassName="REDelayCommand" parentEntity="RECommand" syncable="YES">
-        <attribute name="duration" attributeType="Float" defaultValueString="0.25">
-            <userInfo/>
-        </attribute>
-    </entity>
-    <entity name="REDeviceConfiguration" representedClassName="REDeviceConfiguration" syncable="YES">
-        <attribute name="powerState" attributeType="Boolean" minValueString="0" maxValueString="1" defaultValueString="0" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="device" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOComponentDevice" inverseName="configurations" inverseEntity="BOComponentDevice" indexed="YES" syncable="YES"/>
-        <relationship name="input" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOIRCode" inverseName="deviceConfigurations" inverseEntity="BOIRCode" indexed="YES" syncable="YES"/>
-    </entity>
-    <entity name="REHTTPCommand" representedClassName="REHTTPCommand" parentEntity="RECommand" syncable="YES">
-        <attribute name="url" attributeType="Transformable" syncable="YES"/>
-    </entity>
-    <entity name="RELayoutConfiguration" representedClassName="RELayoutConfiguration" syncable="YES">
-        <attribute name="bitVector" attributeType="Transformable" minValueString="0" maxValueString="255" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="element" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="layoutConfiguration" inverseEntity="RemoteElement" syncable="YES"/>
-    </entity>
-    <entity name="REMacroCommand" representedClassName="REMacroCommand" parentEntity="RECommand" syncable="YES">
-        <relationship name="activityHalt" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="haltMacro" inverseEntity="REActivity" syncable="YES"/>
-        <relationship name="activityLaunch" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="launchMacro" inverseEntity="REActivity" syncable="YES"/>
-        <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RECommand" inverseName="macroCommands" inverseEntity="RECommand" syncable="YES"/>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Activity" inverseName="controller" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Remote" inverseName="controller" inverseEntity="Remote" syncable="YES"/>
+        <relationship name="switchToConfigCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SwitchToConfigCommand" inverseName="remoteController" inverseEntity="SwitchToConfigCommand" syncable="YES"/>
+        <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="RemoteElement" representedClassName="RemoteElement" isAbstract="YES" syncable="YES">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -339,155 +344,125 @@
         <attribute name="themeFlags" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOImage" inverseName="remoteElement" inverseEntity="BOImage" syncable="YES"/>
-        <relationship name="configurationDelegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REConfigurationDelegate" inverseName="element" inverseEntity="REConfigurationDelegate" syncable="YES"/>
-        <relationship name="constraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REConstraint" inverseName="owner" inverseEntity="REConstraint" syncable="YES"/>
-        <relationship name="firstItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REConstraint" inverseName="firstItem" inverseEntity="REConstraint" syncable="YES"/>
-        <relationship name="layoutConfiguration" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RELayoutConfiguration" inverseName="element" inverseEntity="RELayoutConfiguration" syncable="YES"/>
+        <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="remoteElement" inverseEntity="Image" syncable="YES"/>
+        <relationship name="configurationDelegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConfigurationDelegate" inverseName="element" inverseEntity="ConfigurationDelegate" syncable="YES"/>
+        <relationship name="constraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Constraint" inverseName="owner" inverseEntity="Constraint" syncable="YES"/>
+        <relationship name="firstItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Constraint" inverseName="firstItem" inverseEntity="Constraint" syncable="YES"/>
+        <relationship name="layoutConfiguration" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="LayoutConfiguration" inverseName="element" inverseEntity="LayoutConfiguration" syncable="YES"/>
         <relationship name="parentElement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="subelements" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="preset" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOPreset" inverseName="element" inverseEntity="BOPreset" syncable="YES"/>
-        <relationship name="secondItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REConstraint" inverseName="secondItem" inverseEntity="REConstraint" syncable="YES"/>
+        <relationship name="preset" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="element" inverseEntity="Preset" syncable="YES"/>
+        <relationship name="secondItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Constraint" inverseName="secondItem" inverseEntity="Constraint" syncable="YES"/>
         <relationship name="subelements" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RemoteElement" inverseName="parentElement" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="elements" inverseEntity="RETheme" syncable="YES"/>
+        <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Theme" inverseName="elements" inverseEntity="Theme" syncable="YES"/>
     </entity>
-    <entity name="REPickerLabelButtonGroup" representedClassName="REPickerLabelButtonGroup" parentEntity="REButtonGroup" syncable="YES">
-        <relationship name="commandSetCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="RECommandSetCollection" inverseName="pickerLabelButtonGroup" inverseEntity="RECommandSetCollection" syncable="YES"/>
-    </entity>
-    <entity name="REPowerCommand" representedClassName="REPowerCommand" parentEntity="RECommand" syncable="YES">
-        <attribute name="state" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="device" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOComponentDevice" inverseName="powerCommands" inverseEntity="BOComponentDevice" indexed="YES" syncable="YES"/>
-    </entity>
-    <entity name="RERemote" representedClassName="RERemote" parentEntity="RemoteElement" syncable="YES">
-        <attribute name="panels" attributeType="Transformable" syncable="YES"/>
-        <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REActivity" inverseName="remote" inverseEntity="REActivity" syncable="YES"/>
-        <relationship name="controller" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="remotes" inverseEntity="RERemoteController" syncable="YES"/>
-        <relationship name="remoteForSwitchToCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RESwitchToRemoteCommand" inverseName="remote" inverseEntity="RESwitchToRemoteCommand" syncable="YES"/>
-    </entity>
-    <entity name="RERemoteConfigurationDelegate" representedClassName="RERemoteConfigurationDelegate" parentEntity="REConfigurationDelegate" syncable="YES"/>
-    <entity name="RERemoteController" representedClassName="RERemoteController" syncable="YES">
-        <attribute name="currentActivityUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="currentRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="homeRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="REActivity" inverseName="controller" inverseEntity="REActivity" syncable="YES"/>
-        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RERemote" inverseName="controller" inverseEntity="RERemote" syncable="YES"/>
-        <relationship name="switchToConfigCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RESwitchToConfigCommand" inverseName="remoteController" inverseEntity="RESwitchToConfigCommand" syncable="YES"/>
-        <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="REButtonGroup" inverseName="topToolbarForController" inverseEntity="REButtonGroup" syncable="YES"/>
-    </entity>
-    <entity name="RESendIRCommand" representedClassName="RESendIRCommand" parentEntity="RECommand" syncable="YES">
+    <entity name="SendIRCommand" representedClassName="SendIRCommand" parentEntity="Command" syncable="YES">
         <attribute name="portOverride" attributeType="Integer 16" maxValueString="3" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <relationship name="code" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BOIRCode" inverseName="sendCommands" inverseEntity="BOIRCode" indexed="YES">
+        <relationship name="code" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="sendCommands" inverseEntity="IRCode" indexed="YES">
             <userInfo/>
         </relationship>
     </entity>
-    <entity name="RESwitchToConfigCommand" representedClassName="RESwitchToConfigCommand" parentEntity="RECommand" syncable="YES">
+    <entity name="SwitchToConfigCommand" representedClassName="SwitchToConfigCommand" parentEntity="Command" syncable="YES">
         <attribute name="configuration" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
-        <relationship name="remoteController" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemoteController" inverseName="switchToConfigCommands" inverseEntity="RERemoteController" syncable="YES"/>
+        <relationship name="remoteController" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="switchToConfigCommands" inverseEntity="RemoteController" syncable="YES"/>
     </entity>
-    <entity name="RESwitchToRemoteCommand" representedClassName="RESwitchToRemoteCommand" parentEntity="RECommand" syncable="YES">
-        <relationship name="remote" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RERemote" inverseName="remoteForSwitchToCommands" inverseEntity="RERemote" syncable="YES"/>
+    <entity name="SwitchToRemoteCommand" representedClassName="SwitchToRemoteCommand" parentEntity="Command" syncable="YES">
+        <relationship name="remote" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="remoteForSwitchToCommands" inverseEntity="Remote" syncable="YES"/>
     </entity>
-    <entity name="RESystemCommand" representedClassName="RESystemCommand" parentEntity="RECommand" syncable="YES">
+    <entity name="SystemCommand" representedClassName="SystemCommand" parentEntity="Command" syncable="YES">
         <attribute name="type" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
     </entity>
-    <entity name="RETheme" representedClassName="RETheme" isAbstract="YES" syncable="YES">
+    <entity name="Theme" representedClassName="Theme" isAbstract="YES" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="theme" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="elements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="theme" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="settings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REThemeSettings" inverseName="theme" inverseEntity="REThemeSettings" syncable="YES"/>
+        <relationship name="settings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ThemeSettings" inverseName="theme" inverseEntity="ThemeSettings" syncable="YES"/>
     </entity>
-    <entity name="REThemeButtonGroupSettings" representedClassName="REThemeButtonGroupSettings" parentEntity="REThemeSettings" syncable="YES">
+    <entity name="ThemeButtonGroupSettings" representedClassName="ThemeButtonGroupSettings" parentEntity="ThemeSettings" syncable="YES">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="backgroundImageAlpha" optional="YES" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
         <attribute name="shape" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="style" optional="YES" attributeType="Integer 16" syncable="YES"/>
     </entity>
-    <entity name="REThemeButtonSettings" representedClassName="REThemeButtonSettings" parentEntity="REThemeSettings" syncable="YES">
+    <entity name="ThemeButtonSettings" representedClassName="ThemeButtonSettings" parentEntity="ThemeSettings" syncable="YES">
         <attribute name="contentInsets" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="imageInsets" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="shape" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="style" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="titleInsets" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="backgroundColors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateColorSet" inverseName="theme" inverseEntity="REControlStateColorSet" syncable="YES"/>
-        <relationship name="icons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateImageSet" inverseName="themeIcons" inverseEntity="REControlStateImageSet" syncable="YES"/>
-        <relationship name="images" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateImageSet" inverseName="themeImages" inverseEntity="REControlStateImageSet" syncable="YES"/>
-        <relationship name="primarySettings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REThemeButtonSettings" inverseName="subSettings" inverseEntity="REThemeButtonSettings" syncable="YES"/>
-        <relationship name="subSettings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="REThemeButtonSettings" inverseName="primarySettings" inverseEntity="REThemeButtonSettings" syncable="YES"/>
-        <relationship name="titles" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="REControlStateTitleSet" inverseName="theme" inverseEntity="REControlStateTitleSet" syncable="YES"/>
+        <relationship name="backgroundColors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateColorSet" inverseName="theme" inverseEntity="ControlStateColorSet" syncable="YES"/>
+        <relationship name="icons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="themeIcons" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="images" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="themeImages" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="primarySettings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="subSettings" inverseEntity="ThemeButtonSettings" syncable="YES"/>
+        <relationship name="subSettings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="primarySettings" inverseEntity="ThemeButtonSettings" syncable="YES"/>
+        <relationship name="titles" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="theme" inverseEntity="ControlStateTitleSet" syncable="YES"/>
     </entity>
-    <entity name="REThemeRemoteSettings" representedClassName="REThemeRemoteSettings" parentEntity="REThemeSettings" syncable="YES">
+    <entity name="ThemeRemoteSettings" representedClassName="ThemeRemoteSettings" parentEntity="ThemeSettings" syncable="YES">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="backgroundImageAlpha" optional="YES" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
     </entity>
-    <entity name="REThemeSettings" representedClassName="REThemeSettings" isAbstract="YES" syncable="YES">
+    <entity name="ThemeSettings" representedClassName="ThemeSettings" isAbstract="YES" syncable="YES">
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="backgroundImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BOImage" inverseName="themeSettings" inverseEntity="BOImage" syncable="YES"/>
-        <relationship name="theme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RETheme" inverseName="settings" inverseEntity="RETheme" syncable="YES"/>
+        <relationship name="backgroundImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="themeSettings" inverseEntity="Image" syncable="YES"/>
+        <relationship name="theme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Theme" inverseName="settings" inverseEntity="Theme" syncable="YES"/>
     </entity>
+    <entity name="UserIRCode" representedClassName="UserIRCode" parentEntity="IRCode" syncable="YES"/>
     <elements>
+        <element name="Activity" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ActivityCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankObjectGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankObjectInfo" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOBundledImage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOButtonGroupPreset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOButtonPreset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOComponentDevice" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOCustomImage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOFactoryIRCode" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOImage" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BOImageGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOIRCode" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BOIRCodeset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOManufacturer" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOPreset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOPresetsGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BORemotePreset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BOUserIRCode" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BuiltinTheme" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Button" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonGroupConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Command" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CommandContainer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CommandSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CommandSetCollection" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ComponentDevice" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ComponentDeviceConfiguration" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Constraint" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateColorSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateImageSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ControlStateTitleSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CustomTheme" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DelayCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="FactoryIRCode" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="HTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Image" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="IRCode" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="LayoutConfiguration" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MacroCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Manufacturer" positionX="0" positionY="0" width="0" height="0"/>
         <element name="NDiTachDevice" positionX="0" positionY="0" width="0" height="0"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REActivity" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REActivityCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REBuiltinTheme" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REButton" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REButtonConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REButtonGroupConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RECommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RECommandContainer" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RECommandSet" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RECommandSetCollection" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REConstraint" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REControlStateColorSet" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REControlStateImageSet" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REControlStateTitleSet" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RECustomTheme" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REDelayCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REDeviceConfiguration" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REHTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RELayoutConfiguration" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REMacroCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PowerCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Preset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ButtonConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Remote" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RemoteConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RemoteController" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REPickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REPowerCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RERemote" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RERemoteConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RERemoteController" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RESendIRCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RESwitchToConfigCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RESwitchToRemoteCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RESystemCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="RETheme" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REThemeButtonGroupSettings" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REThemeButtonSettings" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REThemeRemoteSettings" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REThemeSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SendIRCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SwitchToConfigCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SwitchToRemoteCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SystemCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Theme" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ThemeButtonGroupSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ThemeButtonSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ThemeRemoteSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ThemeSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="UserIRCode" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

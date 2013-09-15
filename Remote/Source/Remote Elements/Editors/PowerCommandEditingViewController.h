@@ -11,6 +11,6 @@
 
 @interface PowerCommandEditingViewController : CommandDetailViewController <MSPickerInputButtonDelegate>
 
-@property (nonatomic, strong) REPowerCommand * command;
+@property (nonatomic, strong) PowerCommand * command;
 
 @end

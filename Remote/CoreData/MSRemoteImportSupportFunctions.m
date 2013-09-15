@@ -129,16 +129,16 @@ REStyle remoteElementStyleFromImportKey(NSString * importKey)
 #pragma mark - Command Types
 ////////////////////////////////////////////////////////////////////////////////
 
-RESystemCommandType systemCommandTypeFromImportKey(NSString * importKey)
+SystemCommandType systemCommandTypeFromImportKey(NSString * importKey)
 {
     static NSDictionary const * index = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        index = @{ @"proximity"     : @(RESystemCommandToggleProximitySensor),
-                   @"url"           : @(RESystemCommandURLRequest),
-                   @"launchscreen" : @(RESystemCommandReturnToLaunchScreen),
-                   @"settings"      : @(RESystemCommandOpenSettings),
-                   @"editor"        : @(RESystemCommandOpenEditor) };
+        index = @{ @"proximity"     : @(SystemCommandToggleProximitySensor),
+                   @"url"           : @(SystemCommandURLRequest),
+                   @"launchscreen" : @(SystemCommandReturnToLaunchScreen),
+                   @"settings"      : @(SystemCommandOpenSettings),
+                   @"editor"        : @(SystemCommandOpenEditor) };
     });
 
     importKey = [[importKey stringByRemovingCharactersFromSet:NSWhitespaceCharacters]

@@ -118,7 +118,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     static const CGFloat   kHalfThumbWidth = 10.0;
     NSLayoutConstraint   * c               = [self.view constraintWithNametag:slider.nametag];
 
-    assert(c);
+//    assert(c);
 
     CGFloat   valueMagnitude   = slider.maximumValue - slider.minimumValue;
     CGFloat   widthByValue     = slider.bounds.size.width / valueMagnitude;
@@ -136,8 +136,6 @@ static int   ddLogLevel = DefaultDDLogLevel;
     [self updateLabelConstraintForSlider:sender];
 }
 
-- (IBAction)doneAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+- (IBAction)doneAction:(id)sender { [AppController dismissViewController:self completion:nil]; }
 
 @end

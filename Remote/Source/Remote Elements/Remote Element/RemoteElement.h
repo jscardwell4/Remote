@@ -5,19 +5,19 @@
 // Created by Jason Cardwell on 10/3/12.
 // Copyright © 2012 Moondeer Studios. All rights reserved.
 //
-#import "MSModelObject.h"
+#import "ModelObject.h"
 #import "RETypedefs.h"
 #import "REEditableBackground.h"
-#import "REConfigurationDelegate.h"
-#import "RELayoutConfiguration.h"
-#import "REConstraint.h"
+#import "ConfigurationDelegate.h"
+#import "LayoutConfiguration.h"
+#import "Constraint.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element
 ////////////////////////////////////////////////////////////////////////////////
-@class RERemoteController, RELayoutConfiguration, REConstraintManager, BOImage, RETheme;
+@class RemoteController, LayoutConfiguration, ConstraintManager, Image, Theme;
 
-@interface RemoteElement : MSModelObject <REEditableBackground, MSNamedModelObject>
+@interface RemoteElement : ModelObject <REEditableBackground, NamedModelObject>
 
 // model backed properties
 @property (nonatomic, assign, readwrite) int16_t                     tag;
@@ -36,12 +36,12 @@
 @property (nonatomic, strong, readonly ) NSSet                     * secondItemConstraints;
 @property (nonatomic, assign, readwrite) CGFloat                     backgroundImageAlpha;
 @property (nonatomic, strong, readwrite) UIColor                   * backgroundColor;
-@property (nonatomic, strong, readwrite) BOImage                   * backgroundImage;
+@property (nonatomic, strong, readwrite) Image                   * backgroundImage;
 @property (nonatomic, strong, readwrite) NSOrderedSet              * subelements;
-@property (nonatomic, strong, readonly ) RELayoutConfiguration     * layoutConfiguration;
-@property (nonatomic, strong, readonly ) REConstraintManager       * constraintManager;
-@property (nonatomic, strong, readonly ) RETheme                   * theme;
-@property (nonatomic, strong, readonly ) REConfigurationDelegate   * configurationDelegate;
+@property (nonatomic, strong, readonly ) LayoutConfiguration     * layoutConfiguration;
+@property (nonatomic, strong, readonly ) ConstraintManager       * constraintManager;
+@property (nonatomic, strong, readonly ) Theme                   * theme;
+@property (nonatomic, strong, readonly ) ConfigurationDelegate   * configurationDelegate;
 
 + (instancetype)remoteElement;
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc;
@@ -53,14 +53,14 @@
 - (RemoteElement *)objectAtIndexedSubscript:(NSUInteger)subscript;
 - (void)setObject:(RemoteElement *)object atIndexedSubscript:(NSUInteger)idx;
 
-- (void)applyTheme:(RETheme *)theme;
+- (void)applyTheme:(Theme *)theme;
 
 @end
 
 @interface RemoteElement (AbstractProperties)
 
 @property (nonatomic, readonly) RemoteElement           * parentElement;
-@property (nonatomic, readonly) RERemoteController      * controller;
+@property (nonatomic, readonly) RemoteController      * controller;
 
 @end
 
@@ -81,7 +81,7 @@
 
 @end
 
-@class   REConstraint;
+@class   Constraint;
 
 @interface RemoteElement (SubelementsAccessors)
 
@@ -100,20 +100,20 @@
 
 @interface RemoteElement (ConstraintAccessors)
 
-- (void)addConstraint:(REConstraint *)constraint;
-- (void)addConstraintsObject:(REConstraint *)constraint;
-- (void)removeConstraintsObject:(REConstraint *)constraint;
+- (void)addConstraint:(Constraint *)constraint;
+- (void)addConstraintsObject:(Constraint *)constraint;
+- (void)removeConstraintsObject:(Constraint *)constraint;
 - (void)addConstraints:(NSSet *)constraints;
-- (void)removeConstraint:(REConstraint *)constraint;
+- (void)removeConstraint:(Constraint *)constraint;
 - (void)removeConstraints:(NSSet *)constraints;
 
-- (void)addFirstItemConstraintsObject:(REConstraint *)constraint;
-- (void)removeFirstItemConstraintsObject:(REConstraint *)constraint;
+- (void)addFirstItemConstraintsObject:(Constraint *)constraint;
+- (void)removeFirstItemConstraintsObject:(Constraint *)constraint;
 - (void)addFirstItemConstraints:(NSSet *)constraints;
 - (void)removeFirstItemConstraints:(NSSet *)constraints;
 
-- (void)addSecondItemConstraintsObject:(REConstraint *)constraint;
-- (void)removeSecondItemConstraintsObject:(REConstraint *)constraint;
+- (void)addSecondItemConstraintsObject:(Constraint *)constraint;
+- (void)removeSecondItemConstraintsObject:(Constraint *)constraint;
 - (void)addSecondItemConstraints:(NSSet *)constraints;
 - (void)removeSecondItemConstraints:(NSSet *)constraints;
 
@@ -131,7 +131,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - RERemote
 ////////////////////////////////////////////////////////////////////////////////
-@class REButtonGroup;
+@class ButtonGroup;
 
 /**
  * `Remote` is a subclass of `NSManagedObject` that models a home theater
@@ -141,7 +141,7 @@
  * a single screen. Dynamically switching among `Remote` objects is handled by a
  * <RemoteController> which maintains a collection of `Remotes`.
  */
-@interface RERemote : RemoteElement
+@interface Remote : RemoteElement
 
 /**
  * Flag that determines whether or not the remote view controller's topbar should be visible when
@@ -149,7 +149,7 @@
  */
 @property (nonatomic, assign, getter = isTopBarHiddenOnLoad) BOOL topBarHiddenOnLoad;
 
-@property (nonatomic, weak, readonly) RERemoteConfigurationDelegate * remoteConfigurationDelegate;
+@property (nonatomic, weak, readonly) RemoteConfigurationDelegate * remoteConfigurationDelegate;
 
 @property (nonatomic, strong, readonly) NSDictionary * panels;
 
@@ -160,14 +160,14 @@
  *
  * @return The ButtonGroup requested, or nil if no ButtonGroup with specified key exists.
  */
-- (REButtonGroup *)objectForKeyedSubscript:(NSString *)subscript;
-- (REButtonGroup *)objectAtIndexedSubscript:(NSUInteger)subscript;
-- (void)assignButtonGroup:(REButtonGroup *)buttonGroup assignment:(REPanelAssignment)assignment;
-- (REButtonGroup *)buttonGroupForAssignment:(REPanelAssignment)assignment;
+- (ButtonGroup *)objectForKeyedSubscript:(NSString *)subscript;
+- (ButtonGroup *)objectAtIndexedSubscript:(NSUInteger)subscript;
+- (void)assignButtonGroup:(ButtonGroup *)buttonGroup assignment:(REPanelAssignment)assignment;
+- (ButtonGroup *)buttonGroupForAssignment:(REPanelAssignment)assignment;
 - (BOOL)registerConfiguration:(RERemoteConfiguration)configuration;
 @end
 
-@interface RERemote (REConfigurationDelegate)
+@interface Remote (REConfigurationDelegate)
 
 @property (nonatomic, copy) RERemoteConfiguration currentConfiguration;
 
@@ -179,7 +179,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 //#pragma mark - REButtonGroup
 //////////////////////////////////////////////////////////////////////////////////
-@class RECommandContainer, REButton;
+@class CommandContainer, Button;
 
 /**
 * `ButtonGroup` is an `NSManagedObject` subclass that models a group of buttons for a home
@@ -187,7 +187,7 @@
 * interact with the <Remote> object to which it typically will belong. <ButtonGroupView> objects
 * use an instance of the `ButtonGroup` class to govern their style, behavior, etc.
 */
-@interface REButtonGroup : RemoteElement
+@interface ButtonGroup : RemoteElement
 
 + (instancetype)buttonGroupWithType:(REType)type;
 + (instancetype)buttonGroupWithType:(REType)type context:(NSManagedObjectContext *)moc;
@@ -198,10 +198,10 @@
 * @param key The key for the Button object.
 * @return The Button specified or nil if it does not exist.
 */
-- (REButton *)objectForKeyedSubscript:(NSString *)subscript;
-- (REButton *)objectAtIndexedSubscript:(NSUInteger)subscript;
+- (Button *)objectForKeyedSubscript:(NSString *)subscript;
+- (Button *)objectAtIndexedSubscript:(NSUInteger)subscript;
 
-- (void)addCommandContainer:(RECommandContainer *)container
+- (void)addCommandContainer:(CommandContainer *)container
              configuration:(RERemoteConfiguration)config;
 
 /**
@@ -222,11 +222,11 @@
 @property (nonatomic, assign) REPanelTrigger panelTrigger;
 @property (nonatomic, assign) REPanelAssignment panelAssignment;
 
-@property (nonatomic, strong, readonly) RERemote * parentElement;
-@property (nonatomic, weak, readonly) REButtonGroupConfigurationDelegate * groupConfigurationDelegate;
+@property (nonatomic, strong, readonly) Remote * parentElement;
+@property (nonatomic, weak, readonly) ButtonGroupConfigurationDelegate * groupConfigurationDelegate;
 
 - (BOOL)isPanel;
-- (void)setCommandContainer:(RECommandContainer *)container;
+- (void)setCommandContainer:(CommandContainer *)container;
 
 @end
 
@@ -235,7 +235,7 @@ MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark REPickerLabelButtonGroup
 ////////////////////////////////////////////////////////////////////////////////
-@class RECommandSetCollection, RECommandSet;
+@class CommandSetCollection, CommandSet;
 
 /**
 * The PickerLabelButtonGroup is a `ButtonGroup` subclass that manages multiple CommandSet objects,
@@ -243,7 +243,7 @@ MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
 * selection. The command sets are represented by a label title. The titles are displayed on a
 * scroll view, which the user swipes left or right to load the next/previous command set.
 */
-@interface REPickerLabelButtonGroup : REButtonGroup
+@interface PickerLabelButtonGroup : ButtonGroup
 
 #pragma mark - Managing the CommandSets
 /// @name ￼Managing the CommandSets
@@ -253,17 +253,17 @@ MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
 * @param commandSet The `CommandSet` object to add the `PickerLabelButtonGroup`'s collection.
 * @param label The display name for selecting the `CommandSet`.
 */
-- (void)addCommandSet:(RECommandSet *)commandSet withLabel:(id)label;
+- (void)addCommandSet:(CommandSet *)commandSet withLabel:(id)label;
 
 /// Container object which holds the `RECommandSet`- `Label` combiniations
-@property (nonatomic, strong) RECommandSetCollection * commandSetCollection;
+@property (nonatomic, strong) CommandSetCollection * commandSetCollection;
 
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - REButton
 ////////////////////////////////////////////////////////////////////////////////
-@class REControlStateTitleSet, REControlStateImageSet, REControlStateColorSet, RECommand, BOImage;
+@class ControlStateTitleSet, ControlStateImageSet, ControlStateColorSet, Command, Image;
 
 
 
@@ -275,18 +275,18 @@ MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
  * the button's `type` attribute. <ActivityButton> subclasses `Button` to coordinate launching and
  * exiting activities, which are coordinated by a <RemoteController>.
  */
-@interface REButton : RemoteElement
+@interface Button : RemoteElement
 
-@property (nonatomic, strong, readonly ) REButtonGroup                 * parentElement;
-@property (nonatomic, weak,   readonly ) RERemote                      * remote;
-@property (nonatomic, weak,   readonly ) REButtonConfigurationDelegate * buttonConfigurationDelegate;
+@property (nonatomic, strong, readonly ) ButtonGroup                 * parentElement;
+@property (nonatomic, weak,   readonly ) Remote                      * remote;
+@property (nonatomic, weak,   readonly ) ButtonConfigurationDelegate * buttonConfigurationDelegate;
 
 @property (nonatomic, copy,   readwrite) id                              title;
 @property (nonatomic, strong, readwrite) UIImage                       * icon;
 @property (nonatomic, strong, readwrite) UIImage                       * image;
 
-@property (nonatomic, strong, readwrite) RECommand                     * command;
-@property (nonatomic, strong, readwrite) RECommand                     * longPressCommand;
+@property (nonatomic, strong, readwrite) Command                     * command;
+@property (nonatomic, strong, readwrite) Command                     * longPressCommand;
 
 @property (nonatomic, assign, readwrite) UIEdgeInsets                    titleEdgeInsets;
 @property (nonatomic, assign, readwrite) UIEdgeInsets                    imageEdgeInsets;
@@ -309,25 +309,25 @@ MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
 
 @end
 
-@interface REButton (REButtonConfigurationDelegate)
+@interface Button (REButtonConfigurationDelegate)
 
 @property (nonatomic, strong, readonly ) NSSet                         * commands;
-@property (nonatomic, strong, readonly ) REControlStateTitleSet        * titles;
-@property (nonatomic, strong, readonly ) REControlStateImageSet        * icons;
-@property (nonatomic, strong, readonly ) REControlStateColorSet        * backgroundColors;
-@property (nonatomic, strong, readonly ) REControlStateImageSet        * images;
+@property (nonatomic, strong, readonly ) ControlStateTitleSet        * titles;
+@property (nonatomic, strong, readonly ) ControlStateImageSet        * icons;
+@property (nonatomic, strong, readonly ) ControlStateColorSet        * backgroundColors;
+@property (nonatomic, strong, readonly ) ControlStateImageSet        * images;
 
-- (void)setCommand:(RECommand *)command configuration:(RERemoteConfiguration)config;
+- (void)setCommand:(Command *)command configuration:(RERemoteConfiguration)config;
 
 - (void)setTitle:(id)title configuration:(RERemoteConfiguration)config;
-- (void)setTitles:(REControlStateTitleSet *)titleSet configuration:(RERemoteConfiguration)config;
+- (void)setTitles:(ControlStateTitleSet *)titleSet configuration:(RERemoteConfiguration)config;
 
-- (void)setBackgroundColors:(REControlStateColorSet *)colors
+- (void)setBackgroundColors:(ControlStateColorSet *)colors
               configuration:(RERemoteConfiguration)config;
 
-- (void)setIcons:(REControlStateImageSet *)icons configuration:(RERemoteConfiguration)config;
+- (void)setIcons:(ControlStateImageSet *)icons configuration:(RERemoteConfiguration)config;
 
-- (void)setImages:(REControlStateImageSet *)images configuration:(RERemoteConfiguration)config;
+- (void)setImages:(ControlStateImageSet *)images configuration:(RERemoteConfiguration)config;
 
 @end
 

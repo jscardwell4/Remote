@@ -9,12 +9,12 @@
 #import "AttributeEditingViewController.h"
 #import "RemoteElement.h"
 
-@class REDetailedButtonEditingViewController;
+@class DetailedButtonEditingViewController;
 
 @interface AttributeEditingViewController ()
 
-@property (nonatomic, weak) REDetailedButtonEditingViewController * detailedButtonEditor;
-@property (nonatomic, weak) REButton                              * button;
+@property (nonatomic, weak) DetailedButtonEditingViewController * detailedButtonEditor;
+@property (nonatomic, weak) Button                              * button;
 
 - (void)storeCurrentValues;
 - (void)restoreCurrentValues;

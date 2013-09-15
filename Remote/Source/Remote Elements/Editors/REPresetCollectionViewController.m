@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "REPresetCollectionViewController.h"
-#import "BOPreset.h"
+#import "Preset.h"
 #import "BankObjectPreview.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@ MSKIT_STATIC_STRING_CONST reuseIdentifier = @"BOPresetCell";
              _presets =
                  [_context
                   executeFetchRequest:[NSFetchRequest
-                                       fetchRequestWithEntityName:ClassString([BOPreset class])]
+                                       fetchRequestWithEntityName:ClassString([Preset class])]
                                error:nil];
              if (_presets.count) _presetImages = [_presets valueForKeyPath:@"preview.image"];
          }];

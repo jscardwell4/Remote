@@ -10,10 +10,10 @@
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
 #import "RemoteElement_Private.h"
-#import "REConstraint.h"
+#import "Constraint.h"
 #import "RemoteConstruction.h"
-#import "REEditingViewController_Private.h"
-#import "REView.h"
+#import "RemoteElementEditingViewController_Private.h"
+#import "RemoteElementView.h"
 #import "UITestRunner.h"
 
 // #define DEBUG_CONTEXT  (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE)
@@ -55,7 +55,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 /*
     MSRemoteUITestRunner   performTranslations = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
-        __block REButtonGroupView                  * bgv      = nil;
+        __block ButtonGroupView                  * bgv      = nil;
         __block REButtonGroup                      * bg       = nil;
         __block REButtonView                       * bv       = nil;
 
@@ -74,7 +74,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                         bgEditor.mockParentSize = MainScreen.bounds.size;
                                         bgEditor.remoteElement = bg;
                                         [AppController.window setRootViewController:bgEditor];
-                                        bgv = (REButtonGroupView *)bgEditor.sourceView;
+                                        bgv = (ButtonGroupView *)bgEditor.sourceView;
                                         assert(bgv);
                                         bv = (REButtonView *)bgv[buttonKey];
                                         assert(bv);
@@ -239,7 +239,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 /*
     MSRemoteUITestRunner   performFocus = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
-        __block REButtonGroupView                  * bgv      = nil;
+        __block ButtonGroupView                  * bgv      = nil;
         __block REButtonGroup                      * bg       = nil;
         __block REButtonView                       * bv       = nil;
 
@@ -255,7 +255,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                                   bgEditor.remoteElement = bg;
                                                   [AppController.window
                                                    setRootViewController:bgEditor];
-                                                  bgv = (REButtonGroupView *)bgEditor.sourceView;
+                                                  bgv = (ButtonGroupView *)bgEditor.sourceView;
                                                       assert(bgv);
                                                   for (NSString * buttonKey in buttonKeys) {
                                                       bv = (REButtonView *)bgv[buttonKey];
@@ -307,7 +307,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 
     MSRemoteUITestRunner   performAlignments = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
-        __block REButtonGroupView                  * bgv      = nil;
+        __block ButtonGroupView                  * bgv      = nil;
         __block REButtonGroup                      * bg       = nil;
         __block REButtonView                       * bv       = nil;
 
@@ -327,7 +327,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                         bgEditor.remoteElement = bg;
                                         [AppController.window
                                          setRootViewController:bgEditor];
-                                        bgv = (REButtonGroupView *)bgEditor.sourceView;
+                                        bgv = (ButtonGroupView *)bgEditor.sourceView;
                                         assert(bgv);)
                          ]
          waitUntilFinished:YES];
@@ -631,7 +631,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 /*
     MSRemoteUITestRunner   dumpInfo = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
-        __block REButtonGroupView                  * bgv      = nil;
+        __block ButtonGroupView                  * bgv      = nil;
         __block REButtonGroup                      * bg       = nil;
 
         NSString * remoteKey      = parameters[MSRemoteUIRemoteKey];
@@ -645,7 +645,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                                   bgEditor.mockParentSize = MainScreen.bounds.size;
                                                   bgEditor.remoteElement = bg;
                                                   [AppController.window setRootViewController:bgEditor];
-                                                  bgv = (REButtonGroupView *)bgEditor.sourceView;
+                                                  bgv = (ButtonGroupView *)bgEditor.sourceView;
                                                   assert(bgv);
                                                   )]
                waitUntilFinished:YES];
@@ -681,7 +681,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 /*
     MSRemoteUITestRunner   showDialog = ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
-        __block REButtonGroupView                  * bgv      = nil;
+        __block ButtonGroupView                  * bgv      = nil;
         __block REButtonGroup                      * bg       = nil;
         __block NSArray                          * buttons  = nil;
 
@@ -696,7 +696,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                                   bgEditor.mockParentSize = MainScreen.bounds.size;
                                                   bgEditor.remoteElement = bg;
                                                   [AppController.window setRootViewController:bgEditor];
-                                                  bgv = (REButtonGroupView *)bgEditor.sourceView;
+                                                  bgv = (ButtonGroupView *)bgEditor.sourceView;
                                                   assert(bgv);
                                                   )]
                waitUntilFinished:YES];
@@ -759,7 +759,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
     MSRemoteUITestRunner   performScaling =
         ^(NSDictionary * parameters) {
         __block REButtonGroupEditingViewController * bgEditor = nil;
-        __block REButtonGroupView                  * bgv      = nil;
+        __block ButtonGroupView                  * bgv      = nil;
         __block REButtonGroup                      * bg       = nil;
         __block REButtonView                       * bv       = nil;
 
@@ -778,7 +778,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                         bgEditor.mockParentSize = MainScreen.bounds.size;
                         bgEditor.remoteElement = bg;
                         [AppController.window setRootViewController:bgEditor];
-                        bgv = (REButtonGroupView *)bgEditor.sourceView;
+                        bgv = (ButtonGroupView *)bgEditor.sourceView;
                         assert(bgv);
                         bv = (REButtonView *)bgv[buttonKey];
                         assert(bv);

@@ -7,7 +7,7 @@
 //
 
 #import "SwitchToRemoteCommandEditingViewController.h"
-#import "RERemoteController.h"
+#import "RemoteController.h"
 #import "RemoteElement.h"
 #import "ViewDecorator.h"
 
@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * pickerInputButton;
 @property (nonatomic, strong) NSArray                      * remotes;
-@property (nonatomic, strong) RERemote                     * selectedRemote;
+@property (nonatomic, strong) Remote                     * selectedRemote;
 
 @end
 
@@ -42,7 +42,7 @@ command           = _command;
     }
 }
 
-- (void)setSelectedRemote:(RERemote *)selectedRemote {
+- (void)setSelectedRemote:(Remote *)selectedRemote {
     _selectedRemote = selectedRemote;
     if (ValueIsNotNil(_selectedRemote))
         [_pickerInputButton setTitle:_selectedRemote.name
@@ -64,7 +64,7 @@ command           = _command;
 }
 
 - (NSString *)pickerInput:(MSPickerInputView *)pickerInput titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return ((RERemote *)self.remotes[row]).name;
+    return ((Remote *)self.remotes[row]).name;
 }
 
 - (void)pickerInputDidCancel:(MSPickerInputView *)pickerInput {

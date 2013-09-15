@@ -11,5 +11,5 @@
 
 @interface SendIRCommandEditingViewController : CommandDetailViewController
     <MSPickerInputButtonDelegate>
-@property (nonatomic, strong) RESendIRCommand * command;
+@property (nonatomic, strong) SendIRCommand * command;
 @end

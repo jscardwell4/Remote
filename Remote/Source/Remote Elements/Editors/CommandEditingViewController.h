@@ -8,17 +8,17 @@
 
 #import "AttributeEditingViewController.h"
 
-@class   RECommand;
+@class   Command;
 
 @interface CommandEditingViewController : AttributeEditingViewController <MSPickerInputButtonDelegate>
 
-+ (NSString *)titleForClassOfCommand:(RECommand *)command;
++ (NSString *)titleForClassOfCommand:(Command *)command;
 
 + (NSArray *)createableCommands;
 
 + (NSDictionary *)commandTypes;
 
-- (void)pushChildControllerForCommand:(RECommand *)command;
+- (void)pushChildControllerForCommand:(Command *)command;
 
 - (void)popChildController;
 

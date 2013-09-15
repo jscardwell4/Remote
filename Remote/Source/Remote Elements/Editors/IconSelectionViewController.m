@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "IconSelectionViewController.h"
-#import "BOImage.h"
+#import "Image.h"
 
 #define MAX_COL 5
 #define MIN_COL 1
@@ -19,7 +19,7 @@ static const int msLogContext = 0;
 @interface IconSelectionViewController ()
 @property (nonatomic, strong) NSArray * fetchedIcons;
 - (IBAction)selectIconAction:(UITapGestureRecognizer *)sender;
-- (BOImage *)iconForRow:(NSUInteger)row column:(NSUInteger)column;
+- (Image *)iconForRow:(NSUInteger)row column:(NSUInteger)column;
 @property (nonatomic, assign) NSUInteger        rowCount;
 @property (nonatomic, assign) NSUInteger        iconCount;
 @property (nonatomic, assign) NSInteger         selectedIcon;
@@ -78,7 +78,7 @@ static const int msLogContext = 0;
         NSUInteger   column = touchedView.tag - 1;
         NSUInteger   row    =
             [self.tableView indexPathForCell:(UITableViewCell *)touchedView.superview.superview].row;
-        BOImage * icon = [self iconForRow:row column:column];
+        Image * icon = [self iconForRow:row column:column];
 
         if (ValueIsNotNil(icon)) {
             NSUInteger   touchedIcon = row * MAX_COL + column;
@@ -129,20 +129,20 @@ static const int msLogContext = 0;
     if (_selectedIcon < 0)
         [_delegate iconSelectorDidCancel:self];
     else {
-        BOImage * icon = self.fetchedIcons[_selectedIcon];
+        Image * icon = self.fetchedIcons[_selectedIcon];
 
         [_delegate iconSelector:self didSelectIcon:icon];
     }
 }
 
-- (BOImage *)iconForRow:(NSUInteger)row column:(NSUInteger)column {
+- (Image *)iconForRow:(NSUInteger)row column:(NSUInteger)column {
     if (row > _rowCount || column > MAX_COL - 1) return nil;
 
     NSInteger   iconIndex = [self iconIndexForRow:row column:column];
 
     if (iconIndex > self.iconCount) return nil;
 
-    return (BOImage *)self.fetchedIcons[iconIndex];
+    return (Image *)self.fetchedIcons[iconIndex];
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
@@ -210,7 +210,7 @@ static const int msLogContext = 0;
     // Configure the cell...
     @autoreleasepool {
         UIImageView      * iconView   = nil;
-        BOImage * iconImage  = nil;
+        Image * iconImage  = nil;
         NSUInteger         row        = indexPath.row;
         NSUInteger         iconNumber = row * 5;
 

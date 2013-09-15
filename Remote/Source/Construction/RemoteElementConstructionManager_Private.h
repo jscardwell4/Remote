@@ -12,12 +12,12 @@
 #pragma mark - Remotes
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface RERemoteBuilder (Developer)
+@interface RemoteBuilder (Developer)
 
-+ (RERemote *)constructDVRRemoteInContext:(NSManagedObjectContext *)moc;
-+ (RERemote *)constructHomeRemoteInContext:(NSManagedObjectContext *)moc;
-+ (RERemote *)constructPS3RemoteInContext:(NSManagedObjectContext *)moc;
-+ (RERemote *)constructSonosRemoteInContext:(NSManagedObjectContext *)moc;
++ (Remote *)constructDVRRemoteInContext:(NSManagedObjectContext *)moc;
++ (Remote *)constructHomeRemoteInContext:(NSManagedObjectContext *)moc;
++ (Remote *)constructPS3RemoteInContext:(NSManagedObjectContext *)moc;
++ (Remote *)constructSonosRemoteInContext:(NSManagedObjectContext *)moc;
 
 @end
 
@@ -25,9 +25,9 @@
 #pragma mark - Macros
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface REMacroBuilder (Developer)
+@interface MacroBuilder (Developer)
 
-+ (REMacroCommand *)activityMacroForActivity:(NSUInteger)activity
++ (MacroCommand *)activityMacroForActivity:(NSUInteger)activity
                              toInitiateState:(BOOL)isOnState
                                      context:(NSManagedObjectContext *)moc;
 
@@ -40,38 +40,38 @@
 #pragma mark - Button Groups
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface REButtonGroupBuilder (Developer)
+@interface ButtonGroupBuilder (Developer)
 
-+ (REButtonGroup *) constructControllerTopToolbarInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *) constructControllerTopToolbarInContext:(NSManagedObjectContext *)moc;
 
 // Home screen
-+ (REButtonGroup *)constructActivitiesInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructLightControlsInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructActivitiesInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructLightControlsInContext:(NSManagedObjectContext *)moc;
 
 // DPad construction
-+ (REButtonGroup *)constructDVRDPadInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructPS3DPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructDVRDPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructPS3DPadInContext:(NSManagedObjectContext *)moc;
 
 // ￼NumberPad construction
-+ (REButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)moc;
 
 // Transport construction
-+ (REButtonGroup *)constructDVRTransportInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructPS3TransportInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructDVRTransportInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructPS3TransportInContext:(NSManagedObjectContext *)moc;
 
 // Rocker construction
-+ (REPickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)moc;
-+ (REPickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)moc;
-+ (REPickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)moc;
++ (PickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)moc;
++ (PickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)moc;
++ (PickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)moc;
 
 // Constructing other button groups
-+ (REButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructSelectionPanelInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructDVRGroupOfThreeButtonsInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructPS3GroupOfThreeButtonsInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructAdditionalButtonsLeftInContext:(NSManagedObjectContext *)moc;
-+ (REButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
++ (ButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructSelectionPanelInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructDVRGroupOfThreeButtonsInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructPS3GroupOfThreeButtonsInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructAdditionalButtonsLeftInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructHomeAndPowerButtonsForActivity:(NSInteger)activity
                                                    context:(NSManagedObjectContext *)moc;
 
 @end
@@ -79,16 +79,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Command Sets
 ////////////////////////////////////////////////////////////////////////////////
-@class RECommandSet;
+@class CommandSet;
 
-@interface RECommandSetBuilder (Developer)
+@interface CommandSetBuilder (Developer)
 
-+ (RECommandSet *)avReceiverVolumeCommandSet:(NSManagedObjectContext *)moc;
-+ (RECommandSet *)dvrChannelsCommandSet:(NSManagedObjectContext *)moc;
-+ (RECommandSet *)dvrPagingCommandSet:(NSManagedObjectContext *)moc;
-+ (RECommandSet *)transportForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
-+ (RECommandSet *)numberPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
-+ (RECommandSet *)dPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
++ (CommandSet *)avReceiverVolumeCommandSet:(NSManagedObjectContext *)moc;
++ (CommandSet *)dvrChannelsCommandSet:(NSManagedObjectContext *)moc;
++ (CommandSet *)dvrPagingCommandSet:(NSManagedObjectContext *)moc;
++ (CommandSet *)transportForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
++ (CommandSet *)numberPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
++ (CommandSet *)dPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
 
 @end
 
@@ -96,4 +96,4 @@
 #pragma mark - Buttons
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface REButtonBuilder (Developer) @end
+@interface ButtonBuilder (Developer) @end

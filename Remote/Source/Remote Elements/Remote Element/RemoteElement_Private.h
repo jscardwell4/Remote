@@ -7,15 +7,15 @@
 //
 
 #import "RemoteElement.h"
-#import "RELayoutConfiguration.h"
-#import "REConstraint.h"
+#import "LayoutConfiguration.h"
+#import "Constraint.h"
 
 @interface RemoteElement ()
 
 @property (nonatomic, assign, readwrite) REType                    type;
-@property (nonatomic, strong, readwrite) REConstraintManager     * constraintManager;
-@property (nonatomic, strong, readwrite) RELayoutConfiguration   * layoutConfiguration;
-@property (nonatomic, strong, readwrite) REConfigurationDelegate * configurationDelegate;
+@property (nonatomic, strong, readwrite) ConstraintManager     * constraintManager;
+@property (nonatomic, strong, readwrite) LayoutConfiguration   * layoutConfiguration;
+@property (nonatomic, strong, readwrite) ConfigurationDelegate * configurationDelegate;
 
 @end
 
@@ -32,7 +32,7 @@
 @property (nonatomic) NSMutableSet            * primitiveFirstItemConstraints;
 @property (nonatomic) NSMutableSet            * primitiveSecondItemConstraints;
 @property (nonatomic) NSMutableOrderedSet     * primitiveSubelements;
-@property (nonatomic) REConfigurationDelegate * primitiveConfigurationDelegate;
+@property (nonatomic) ConfigurationDelegate * primitiveConfigurationDelegate;
 @property (nonatomic) RemoteElement           * primitiveParentElement;
 @property (nonatomic) NSString                * primitiveName;
 @property (nonatomic) NSString                * primitiveKey;
@@ -41,54 +41,54 @@
 @end
 
 
-@interface RERemote ()
+@interface Remote ()
 
-@property (nonatomic, strong, readonly)  RERemoteController * controller;
+@property (nonatomic, strong, readonly)  RemoteController * controller;
 @property (nonatomic, strong, readwrite) NSDictionary       * panels;
 
 @end
 
-@interface RERemote (CoreDataGeneratedAccessors)
+@interface Remote (CoreDataGeneratedAccessors)
 
-@property (nonatomic) RERemoteController * primitiveController;
+@property (nonatomic) RemoteController * primitiveController;
 @property (nonatomic) NSDictionary       * primitivePanels;
 
 @end
 
-@interface REButtonGroup ()
+@interface ButtonGroup ()
 
-@property (nonatomic, strong, readwrite) RERemote           * parentElement;
-@property (nonatomic, weak,   readonly)  RERemoteController * controller;
-
-@end
-
-@interface REButtonGroup (CoreDataGeneratedAccessors)
-
-@property (nonatomic) RECommandSet * primitiveCommandSet;
+@property (nonatomic, strong, readwrite) Remote           * parentElement;
+@property (nonatomic, weak,   readonly)  RemoteController * controller;
 
 @end
 
-@interface REPickerLabelButtonGroup (CoreDataGeneratedAccessors)
+@interface ButtonGroup (CoreDataGeneratedAccessors)
 
-@property (nonatomic, strong) RECommandSetCollection * primitiveCommandSetCollection;
-
-@end
-
-@class REControlStateButtonImageSetProxy,
-       REControlStateColorSetProxy,
-       REControlStateIconImageSetProxy,
-       REControlStateTitleSetProxy;
-
-@interface REButton ()
-
-@property (nonatomic, strong, readwrite) REButtonGroup      * parentElement;
-@property (nonatomic, weak,   readonly)  RERemoteController * controller;
+@property (nonatomic) CommandSet * primitiveCommandSet;
 
 @end
 
-@interface REButton (CoreDataGeneratedAccessors)
+@interface PickerLabelButtonGroup (CoreDataGeneratedAccessors)
 
-@property (nonatomic) RECommand * primitiveCommand;
+@property (nonatomic, strong) CommandSetCollection * primitiveCommandSetCollection;
+
+@end
+
+@class ControlStateButtonImageSetProxy,
+       ControlStateColorSetProxy,
+       ControlStateIconImageSetProxy,
+       ControlStateTitleSetProxy;
+
+@interface Button ()
+
+@property (nonatomic, strong, readwrite) ButtonGroup      * parentElement;
+@property (nonatomic, weak,   readonly)  RemoteController * controller;
+
+@end
+
+@interface Button (CoreDataGeneratedAccessors)
+
+@property (nonatomic) Command * primitiveCommand;
 @property (nonatomic) NSValue   * primitiveTitleEdgeInsets;
 @property (nonatomic) NSValue   * primitiveImageEdgeInsets;
 @property (nonatomic) NSValue   * primitiveContentEdgeInsets;
@@ -96,13 +96,12 @@
 @end
 
 
-#import "RERemoteController.h"
+#import "RemoteController.h"
 #import "BankObjects.h"
-#import "RECommand.h"
-#import "RECommandContainer.h"
-#import "REConfigurationDelegate.h"
-#import "REControlStateSet.h"
-#import "BankObject.h"
+#import "Command.h"
+#import "CommandContainer.h"
+#import "ConfigurationDelegate.h"
+#import "ControlStateSet.h"
 #import "CoreDataManager.h"
-#import "RETheme.h"
+#import "Theme.h"
 #import "MSRemoteImportSupportFunctions.h"

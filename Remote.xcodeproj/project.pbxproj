@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C203BBB91726DB96002FD3EA /* RECommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* RECommandSetBuilder.m */; };
+		C203BBB91726DB96002FD3EA /* CommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */; };
 		C203BBC01726EBD6002FD3EA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAECE16DC10FE0093D5B4 /* SenTestingKit.framework */; };
 		C203BBC11726EBD6002FD3EA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAB16DC10FE0093D5B4 /* UIKit.framework */; };
 		C203BBC21726EBD6002FD3EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */; };
@@ -15,59 +15,55 @@
 		C203BBCB1726EBD7002FD3EA /* DatabaseConstructionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBCA1726EBD7002FD3EA /* DatabaseConstructionTests.m */; };
 		C203BBD21726EC6F002FD3EA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEB116DC10FE0093D5B4 /* CoreData.framework */; };
 		C203BBD31726EC80002FD3EA /* OCHamcrestIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C21687C3172363F200064C95 /* OCHamcrestIOS.framework */; };
-		C203BBD41726ECDE002FD3EA /* MSModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* MSModelObject.m */; };
-		C203BBD51726ECE3002FD3EA /* BOPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* BOPreset.m */; };
-		C203BBD61726ECE3002FD3EA /* BOIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* BOIRCode.m */; };
-		C203BBD71726ECE3002FD3EA /* BOFactoryIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */; };
-		C203BBD81726ECE3002FD3EA /* BOUserIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E816FF69110042B59E /* BOUserIRCode.m */; };
-		C203BBD91726ECE3002FD3EA /* BOComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* BOComponentDevice.m */; };
-		C203BBDD1726ECE3002FD3EA /* BOImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* BOImage.m */; };
-		C203BBDE1726ECE3002FD3EA /* BOManufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* BOManufacturer.m */; };
-		C203BBDF1726ECE7002FD3EA /* BankObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46EA16FF69110042B59E /* BankObject.m */; };
+		C203BBD41726ECDE002FD3EA /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
+		C203BBD51726ECE3002FD3EA /* Preset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* Preset.m */; };
+		C203BBD61726ECE3002FD3EA /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* IRCode.m */; };
+		C203BBD91726ECE3002FD3EA /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
+		C203BBDD1726ECE3002FD3EA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* Image.m */; };
+		C203BBDE1726ECE3002FD3EA /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* Manufacturer.m */; };
 		C203BBE01726ECE7002FD3EA /* BankObjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankObjectGroup.m */; };
 		C203BBE11726ECE7002FD3EA /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
-		C203BBE21726ECF1002FD3EA /* REButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* REButtonBuilder.m */; };
-		C203BBE31726ECF1002FD3EA /* REButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */; };
-		C203BBE41726ECF1002FD3EA /* REMacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469A16FF67D00042B59E /* REMacroBuilder.m */; };
-		C203BBE51726ECF1002FD3EA /* RERemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469C16FF67D00042B59E /* RERemoteBuilder.m */; };
+		C203BBE21726ECF1002FD3EA /* ButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* ButtonBuilder.m */; };
+		C203BBE31726ECF1002FD3EA /* ButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469816FF67D00042B59E /* ButtonGroupBuilder.m */; };
+		C203BBE41726ECF1002FD3EA /* MacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469A16FF67D00042B59E /* MacroBuilder.m */; };
+		C203BBE51726ECF1002FD3EA /* RemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469C16FF67D00042B59E /* RemoteBuilder.m */; };
 		C203BBE61726ECF1002FD3EA /* RemoteElementConstructionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */; };
-		C203BBE71726ECF1002FD3EA /* RECommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* RECommandSetBuilder.m */; };
-		C203BBE91726ECFA002FD3EA /* REControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* REControlStateColorSet.m */; };
-		C203BBEB1726ECFA002FD3EA /* REControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468416FF67AF0042B59E /* REControlStateImageSet.m */; };
-		C203BBEC1726ECFA002FD3EA /* REControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468616FF67AF0042B59E /* REControlStateSet.m */; };
-		C203BBED1726ECFA002FD3EA /* REControlStateTitleSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */; };
-		C203BBEE1726ECFA002FD3EA /* REControlStateSetProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C259F821171898DB001FCED5 /* REControlStateSetProxy.m */; };
-		C203BBEF1726ED01002FD3EA /* REActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* REActivity.m */; };
-		C203BBF01726ED01002FD3EA /* RERemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RERemoteController.m */; };
-		C203BBF11726ED07002FD3EA /* REDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* REDeviceConfiguration.m */; };
-		C203BBF21726ED0C002FD3EA /* REActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* REActivityCommand.m */; };
-		C203BBF31726ED0C002FD3EA /* REDelayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B116FF66FE0042B59E /* REDelayCommand.m */; };
-		C203BBF41726ED0C002FD3EA /* REHTTPCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B216FF66FE0042B59E /* REHTTPCommand.m */; };
-		C203BBF51726ED0C002FD3EA /* REMacroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B316FF66FE0042B59E /* REMacroCommand.m */; };
-		C203BBF61726ED0C002FD3EA /* REPowerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B416FF66FE0042B59E /* REPowerCommand.m */; };
-		C203BBF71726ED0C002FD3EA /* RESendIRCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B516FF66FE0042B59E /* RESendIRCommand.m */; };
-		C203BBF81726ED0C002FD3EA /* RESwitchToRemoteCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */; };
-		C203BBF91726ED0C002FD3EA /* RESystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B716FF66FE0042B59E /* RESystemCommand.m */; };
-		C203BBFA1726ED0C002FD3EA /* RESwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */; };
-		C203BBFB1726ED0C002FD3EA /* RESendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* RESendCommand.m */; };
-		C203BBFC1726ED0F002FD3EA /* RECommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B916FF66FE0042B59E /* RECommand.m */; };
-		C203BBFD1726ED13002FD3EA /* RECommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* RECommandContainer.m */; };
-		C203BBFE1726ED13002FD3EA /* RECommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* RECommandSet.m */; };
-		C203BBFF1726ED13002FD3EA /* RECommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */; };
-		C203BC001726ED18002FD3EA /* RETheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* RETheme.m */; };
-		C203BC011726ED18002FD3EA /* RETheme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */; };
-		C203BC021726ED1C002FD3EA /* REConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* REConstraintManager.m */; };
-		C203BC031726ED1C002FD3EA /* RELayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* RELayoutConfiguration.m */; };
-		C203BC041726ED21002FD3EA /* REButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */; };
-		C203BC051726ED21002FD3EA /* REButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */; };
-		C203BC061726ED21002FD3EA /* REConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* REConfigurationDelegate.m */; };
-		C203BC071726ED21002FD3EA /* RERemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */; };
+		C203BBE71726ECF1002FD3EA /* CommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */; };
+		C203BBE91726ECFA002FD3EA /* ControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* ControlStateColorSet.m */; };
+		C203BBEB1726ECFA002FD3EA /* ControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468416FF67AF0042B59E /* ControlStateImageSet.m */; };
+		C203BBEC1726ECFA002FD3EA /* ControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468616FF67AF0042B59E /* ControlStateSet.m */; };
+		C203BBED1726ECFA002FD3EA /* ControlStateTitleSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468716FF67AF0042B59E /* ControlStateTitleSet.m */; };
+		C203BBEF1726ED01002FD3EA /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
+		C203BBF01726ED01002FD3EA /* RemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RemoteController.m */; };
+		C203BBF11726ED07002FD3EA /* ComponentDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* ComponentDeviceConfiguration.m */; };
+		C203BBF21726ED0C002FD3EA /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
+		C203BBF31726ED0C002FD3EA /* DelayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B116FF66FE0042B59E /* DelayCommand.m */; };
+		C203BBF41726ED0C002FD3EA /* HTTPCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B216FF66FE0042B59E /* HTTPCommand.m */; };
+		C203BBF51726ED0C002FD3EA /* MacroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B316FF66FE0042B59E /* MacroCommand.m */; };
+		C203BBF61726ED0C002FD3EA /* PowerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B416FF66FE0042B59E /* PowerCommand.m */; };
+		C203BBF71726ED0C002FD3EA /* SendIRCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B516FF66FE0042B59E /* SendIRCommand.m */; };
+		C203BBF81726ED0C002FD3EA /* SwitchToRemoteCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B616FF66FE0042B59E /* SwitchToRemoteCommand.m */; };
+		C203BBF91726ED0C002FD3EA /* SystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B716FF66FE0042B59E /* SystemCommand.m */; };
+		C203BBFA1726ED0C002FD3EA /* SwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchToConfigCommand.m */; };
+		C203BBFB1726ED0C002FD3EA /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
+		C203BBFC1726ED0F002FD3EA /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B916FF66FE0042B59E /* Command.m */; };
+		C203BBFD1726ED13002FD3EA /* CommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* CommandContainer.m */; };
+		C203BBFE1726ED13002FD3EA /* CommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* CommandSet.m */; };
+		C203BBFF1726ED13002FD3EA /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
+		C203BC001726ED18002FD3EA /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* Theme.m */; };
+		C203BC011726ED18002FD3EA /* Theme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* Theme+ApplyingThemes.m */; };
+		C203BC021726ED1C002FD3EA /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* ConstraintManager.m */; };
+		C203BC031726ED1C002FD3EA /* LayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* LayoutConfiguration.m */; };
+		C203BC041726ED21002FD3EA /* ButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */; };
+		C203BC051726ED21002FD3EA /* ButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */; };
+		C203BC061726ED21002FD3EA /* ConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* ConfigurationDelegate.m */; };
+		C203BC071726ED21002FD3EA /* RemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */; };
 		C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */; };
 		C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
-		C203BC0B1726ED24002FD3EA /* RERemote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* RERemote.m */; };
-		C203BC0C1726ED24002FD3EA /* REButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* REButtonGroup.m */; };
-		C203BC0D1726ED24002FD3EA /* REButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* REButton.m */; };
-		C203BC0E1726ED2A002FD3EA /* REConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* REConstraint.m */; };
+		C203BC0B1726ED24002FD3EA /* Remote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* Remote.m */; };
+		C203BC0C1726ED24002FD3EA /* ButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* ButtonGroup.m */; };
+		C203BC0D1726ED24002FD3EA /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* Button.m */; };
+		C203BC0E1726ED2A002FD3EA /* Constraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* Constraint.m */; };
 		C203BC0F1726ED36002FD3EA /* NetworkDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8216DC18530093D5B4 /* NetworkDevice.m */; };
 		C203BC101726ED44002FD3EA /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE916DC18530093D5B4 /* CoreDataManager.m */; };
 		C203BC111726ED44002FD3EA /* DatabaseLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */; };
@@ -83,7 +79,7 @@
 		C203BC1D1726EF0E002FD3EA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB3D16DC1C960093D5B4 /* CoreImage.framework */; };
 		C203BC1E1726EF22002FD3EA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB3C16DC1C960093D5B4 /* SystemConfiguration.framework */; };
 		C203BC1F1726EF2C002FD3EA /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
-		C203BC221726F30D002FD3EA /* RELayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RELayoutConstraint.m */; };
+		C203BC221726F30D002FD3EA /* LayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* LayoutConstraint.m */; };
 		C203BC261726F7AA002FD3EA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB3F16DC1C960093D5B4 /* QuartzCore.framework */; };
 		C203BC2717271CFE002FD3EA /* 10-arrows-in.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9B16DC1B5B0093D5B4 /* 10-arrows-in.png */; };
 		C203BC2817271CFE002FD3EA /* 10-arrows-in@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9C16DC1B5B0093D5B4 /* 10-arrows-in@2x.png */; };
@@ -173,48 +169,52 @@
 		C203BC9317271D0A002FD3EA /* modernpics.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BF16DC18A30093D5B4 /* modernpics.otf */; };
 		C203C16417271D50002FD3EA /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
 		C203C16517271D50002FD3EA /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
-		C20C50E5179E1EFE007704C7 /* RENightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* RENightshadeThemeDecorator.m */; };
-		C20C50E6179E1EFE007704C7 /* RENightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* RENightshadeThemeDecorator.m */; };
+		C20C50E5179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
+		C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
+		C215F7F017E39D31004B884C /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215F7EF17E39D31004B884C /* MagicalRecord.framework */; };
+		C215F7F217E39D3E004B884C /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215F7F117E39D3E004B884C /* MSKit.framework */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */; };
-		C2208B5017165BCF00AC0364 /* REActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* REActivityCommand.m */; };
-		C225FC081794A605008B8FF6 /* REBuiltinTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC071794A605008B8FF6 /* REBuiltinTheme.m */; };
-		C225FC091794A605008B8FF6 /* REBuiltinTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC071794A605008B8FF6 /* REBuiltinTheme.m */; };
-		C225FC0B1794A6A5008B8FF6 /* RECustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* RECustomTheme.m */; };
-		C225FC0C1794A6A5008B8FF6 /* RECustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* RECustomTheme.m */; };
+		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
+		C225FC081794A605008B8FF6 /* BuiltinTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC071794A605008B8FF6 /* BuiltinTheme.m */; };
+		C225FC091794A605008B8FF6 /* BuiltinTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC071794A605008B8FF6 /* BuiltinTheme.m */; };
+		C225FC0B1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
+		C225FC0C1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
-		C23423C71795101D00703F86 /* REThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* REThemeSettings.m */; };
-		C23423C81795101D00703F86 /* REThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* REThemeSettings.m */; };
+		C2318B0E17E3CCC200CF58D9 /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2318B0D17E3CCC200CF58D9 /* ParseKit.framework */; };
+		C2318B1717E3D0BE00CF58D9 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2318B1617E3D0BE00CF58D9 /* Lumberjack.framework */; };
+		C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1917E3D40000CF58D9 /* RemoteControl.m */; };
+		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
+		C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B2217E4C80E00CF58D9 /* Editor.m */; };
+		C2318B2517E50DAE00CF58D9 /* BankIndex.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2318B2417E50DAE00CF58D9 /* BankIndex.xib */; };
+		C23423C71795101D00703F86 /* ThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* ThemeSettings.m */; };
+		C23423C81795101D00703F86 /* ThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* ThemeSettings.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2363DCB172EDD6200352906 /* JSON-With-Comments-Grammar.parsekit in Resources */ = {isa = PBXBuildFile; fileRef = C2363DCA172EDD6200352906 /* JSON-With-Comments-Grammar.parsekit */; };
 		C2363DCD172EDD9800352906 /* JSON-With-Discards-Grammar.parsekit in Resources */ = {isa = PBXBuildFile; fileRef = C2363DCC172EDD9800352906 /* JSON-With-Discards-Grammar.parsekit */; };
-		C23B946C170C8FEA0028CC06 /* REView+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946B170C8FEA0028CC06 /* REView+Drawing.m */; };
-		C23B946F170C94BE0028CC06 /* REView+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946E170C94BE0028CC06 /* REView+Debugging.m */; };
-		C23F1E5D1705064E0084718A /* RESendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* RESendCommand.m */; };
+		C23B946C170C8FEA0028CC06 /* RemoteElementView+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */; };
+		C23B946F170C94BE0028CC06 /* RemoteElementView+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */; };
+		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
-		C259F822171898DB001FCED5 /* REControlStateSetProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C259F821171898DB001FCED5 /* REControlStateSetProxy.m */; };
-		C25B473116FF8D0A0042B59E /* BOComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* BOComponentDevice.m */; };
-		C25B473216FF8D0A0042B59E /* REDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* REDeviceConfiguration.m */; };
-		C25B473316FF8D0A0042B59E /* BOIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* BOIRCode.m */; };
-		C25B473516FF8D0A0042B59E /* BOFactoryIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */; };
-		C25B473616FF8D0A0042B59E /* BOManufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* BOManufacturer.m */; };
-		C25B473A16FF8D0A0042B59E /* BOImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* BOImage.m */; };
-		C25B473B16FF8D0A0042B59E /* BOUserIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E816FF69110042B59E /* BOUserIRCode.m */; };
-		C25B473C16FF8D0A0042B59E /* BankObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46EA16FF69110042B59E /* BankObject.m */; };
+		C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
+		C25B473216FF8D0A0042B59E /* ComponentDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* ComponentDeviceConfiguration.m */; };
+		C25B473316FF8D0A0042B59E /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* IRCode.m */; };
+		C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* Manufacturer.m */; };
+		C25B473A16FF8D0A0042B59E /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* Image.m */; };
 		C25B473D16FF8D0A0042B59E /* BankObjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankObjectGroup.m */; };
 		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
-		C25B474016FF8D0A0042B59E /* BOPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* BOPreset.m */; };
-		C25B474516FF8D5E0042B59E /* REButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* REButtonBuilder.m */; };
-		C25B474616FF8D5E0042B59E /* REButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */; };
-		C25B474716FF8D5E0042B59E /* REMacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469A16FF67D00042B59E /* REMacroBuilder.m */; };
-		C25B474816FF8D5E0042B59E /* RERemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469C16FF67D00042B59E /* RERemoteBuilder.m */; };
+		C25B474016FF8D0A0042B59E /* Preset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* Preset.m */; };
+		C25B474516FF8D5E0042B59E /* ButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* ButtonBuilder.m */; };
+		C25B474616FF8D5E0042B59E /* ButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469816FF67D00042B59E /* ButtonGroupBuilder.m */; };
+		C25B474716FF8D5E0042B59E /* MacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469A16FF67D00042B59E /* MacroBuilder.m */; };
+		C25B474816FF8D5E0042B59E /* RemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469C16FF67D00042B59E /* RemoteBuilder.m */; };
 		C25B474916FF8D5E0042B59E /* RemoteElementConstructionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */; };
-		C25B474A16FF8D5E0042B59E /* RERemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RERemoteController.m */; };
-		C25B474B16FF8D5E0042B59E /* RERemoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A416FF67D00042B59E /* RERemoteViewController.m */; };
-		C25B474D16FF8D5E0042B59E /* REControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* REControlStateColorSet.m */; };
-		C25B474F16FF8D5E0042B59E /* REControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468416FF67AF0042B59E /* REControlStateImageSet.m */; };
-		C25B475016FF8D5E0042B59E /* REControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468616FF67AF0042B59E /* REControlStateSet.m */; };
-		C25B475116FF8D5E0042B59E /* REControlStateTitleSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */; };
+		C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RemoteController.m */; };
+		C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A416FF67D00042B59E /* RemoteViewController.m */; };
+		C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* ControlStateColorSet.m */; };
+		C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468416FF67AF0042B59E /* ControlStateImageSet.m */; };
+		C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468616FF67AF0042B59E /* ControlStateSet.m */; };
+		C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468716FF67AF0042B59E /* ControlStateTitleSet.m */; };
 		C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */; };
 		C25B475316FF8D5E0042B59E /* BackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463216FF679B0042B59E /* BackgroundEditingViewController.m */; };
 		C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463416FF679B0042B59E /* CommandEditingViewController.m */; };
@@ -224,58 +224,50 @@
 		C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463C16FF679B0042B59E /* LabelEditingViewController.m */; };
 		C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463E16FF679B0042B59E /* MacroCommandEditingViewController.m */; };
 		C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464016FF679B0042B59E /* PowerCommandEditingViewController.m */; };
-		C25B475B16FF8D5E0042B59E /* REButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464216FF679B0042B59E /* REButtonEditingViewController.m */; };
-		C25B475C16FF8D5E0042B59E /* REButtonGroupEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464416FF679B0042B59E /* REButtonGroupEditingViewController.m */; };
-		C25B475D16FF8D5E0042B59E /* REDetailedButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464616FF679B0042B59E /* REDetailedButtonEditingViewController.m */; };
-		C25B475E16FF8D5E0042B59E /* REEditingViewController+Gestures.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464816FF679B0042B59E /* REEditingViewController+Gestures.m */; };
-		C25B475F16FF8D5E0042B59E /* REEditingViewController+IBActions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464A16FF679B0042B59E /* REEditingViewController+IBActions.m */; };
-		C25B476016FF8D5E0042B59E /* REEditingViewController+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464C16FF679B0042B59E /* REEditingViewController+Selection.m */; };
-		C25B476116FF8D5E0042B59E /* REEditingViewController+Toolbars.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464E16FF679B0042B59E /* REEditingViewController+Toolbars.m */; };
-		C25B476216FF8D5E0042B59E /* REEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465016FF679B0042B59E /* REEditingViewController.m */; };
-		C25B476316FF8D5E0042B59E /* RERemoteEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465316FF679B0042B59E /* RERemoteEditingViewController.m */; };
+		C25B475B16FF8D5E0042B59E /* ButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464216FF679B0042B59E /* ButtonEditingViewController.m */; };
+		C25B475C16FF8D5E0042B59E /* ButtonGroupEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */; };
+		C25B475D16FF8D5E0042B59E /* DetailedButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464616FF679B0042B59E /* DetailedButtonEditingViewController.m */; };
+		C25B475E16FF8D5E0042B59E /* RemoteElementEditingViewController+Gestures.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464816FF679B0042B59E /* RemoteElementEditingViewController+Gestures.m */; };
+		C25B475F16FF8D5E0042B59E /* RemoteElementEditingViewController+IBActions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464A16FF679B0042B59E /* RemoteElementEditingViewController+IBActions.m */; };
+		C25B476016FF8D5E0042B59E /* RemoteElementEditingViewController+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464C16FF679B0042B59E /* RemoteElementEditingViewController+Selection.m */; };
+		C25B476116FF8D5E0042B59E /* RemoteElementEditingViewController+Toolbars.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464E16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.m */; };
+		C25B476216FF8D5E0042B59E /* RemoteElementEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465016FF679B0042B59E /* RemoteElementEditingViewController.m */; };
+		C25B476316FF8D5E0042B59E /* RemoteEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465316FF679B0042B59E /* RemoteEditingViewController.m */; };
 		C25B476416FF8D5E0042B59E /* SendIRCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */; };
 		C25B476516FF8D5E0042B59E /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
-		C25B476616FF8D5E0042B59E /* REDelayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B116FF66FE0042B59E /* REDelayCommand.m */; };
-		C25B476716FF8D5E0042B59E /* REHTTPCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B216FF66FE0042B59E /* REHTTPCommand.m */; };
-		C25B476816FF8D5E0042B59E /* REMacroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B316FF66FE0042B59E /* REMacroCommand.m */; };
-		C25B476916FF8D5E0042B59E /* REPowerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B416FF66FE0042B59E /* REPowerCommand.m */; };
-		C25B476A16FF8D5E0042B59E /* RESendIRCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B516FF66FE0042B59E /* RESendIRCommand.m */; };
-		C25B476B16FF8D5E0042B59E /* RESwitchToRemoteCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */; };
-		C25B476C16FF8D5E0042B59E /* RESystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B716FF66FE0042B59E /* RESystemCommand.m */; };
-		C25B476D16FF8D5E0042B59E /* RECommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B916FF66FE0042B59E /* RECommand.m */; };
-		C25B476E16FF8D5E0042B59E /* RECommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* RECommandContainer.m */; };
-		C25B476F16FF8D5E0042B59E /* RECommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* RECommandSet.m */; };
-		C25B477516FF8D5E0042B59E /* REConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* REConstraintManager.m */; };
-		C25B477616FF8D5E0042B59E /* RELayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* RELayoutConfiguration.m */; };
-		C25B477716FF8D5E0042B59E /* REButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */; };
-		C25B477816FF8D5E0042B59E /* REButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */; };
-		C25B477916FF8D5E0042B59E /* REConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* REConfigurationDelegate.m */; };
-		C25B477A16FF8D5E0042B59E /* RERemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */; };
-		C25B477B16FF8D5E0042B59E /* REButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* REButton.m */; };
-		C25B477C16FF8D5E0042B59E /* REButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* REButtonGroup.m */; };
+		C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B116FF66FE0042B59E /* DelayCommand.m */; };
+		C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B216FF66FE0042B59E /* HTTPCommand.m */; };
+		C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B316FF66FE0042B59E /* MacroCommand.m */; };
+		C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B416FF66FE0042B59E /* PowerCommand.m */; };
+		C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B516FF66FE0042B59E /* SendIRCommand.m */; };
+		C25B476B16FF8D5E0042B59E /* SwitchToRemoteCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B616FF66FE0042B59E /* SwitchToRemoteCommand.m */; };
+		C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B716FF66FE0042B59E /* SystemCommand.m */; };
+		C25B476D16FF8D5E0042B59E /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B916FF66FE0042B59E /* Command.m */; };
+		C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* CommandContainer.m */; };
+		C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* CommandSet.m */; };
+		C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* ConstraintManager.m */; };
+		C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* LayoutConfiguration.m */; };
+		C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */; };
+		C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */; };
+		C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* ConfigurationDelegate.m */; };
+		C25B477A16FF8D5E0042B59E /* RemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */; };
+		C25B477B16FF8D5E0042B59E /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* Button.m */; };
+		C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* ButtonGroup.m */; };
 		C25B477D16FF8D5E0042B59E /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */; };
 		C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
-		C25B478016FF8D5E0042B59E /* RERemote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* RERemote.m */; };
-		C25B478116FF8D5E0042B59E /* REView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFDD16DC18530093D5B4 /* REView.m */; };
-		C25B478216FF8D5E0042B59E /* REView+Editing.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472716FF695B0042B59E /* REView+Editing.m */; };
-		C25B478316FF8D5E0042B59E /* REView+SubelementViews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472B16FF6E500042B59E /* REView+SubelementViews.m */; };
-		C25B478416FF8D5E0042B59E /* REView+InternalSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472E16FF77AB0042B59E /* REView+InternalSubviews.m */; };
-		C25B478516FF8D5E0042B59E /* RELabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2912BC316F6311D004AB0DB /* RELabelView.m */; };
-		C25B478616FF8D5E0042B59E /* REConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* REConstraint.m */; };
-		C25B478716FF8D5E0042B59E /* RERemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE316DC18530093D5B4 /* RERemoteView.m */; };
-		C25B478816FF8D5E0042B59E /* REPickerLabelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1E16FA06B400290737 /* REPickerLabelButtonGroupView.m */; };
-		C25B478916FF8D5E0042B59E /* RESelectionPanelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */; };
-		C25B478A16FF8D5E0042B59E /* REButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */; };
-		C25B478B16FF8D5E0042B59E /* REBatteryStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */; };
-		C25B478C16FF8D5E0042B59E /* REButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456816FF61C90042B59E /* REButtonView.m */; };
-		C25B478D16FF8D5E0042B59E /* REConnectionStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */; };
-		C25B478E16FF8D5E0042B59E /* CodeDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1D16DC18530093D5B4 /* CodeDatabaseViewController.m */; };
-		C25B478F16FF8D5E0042B59E /* CodeSetCodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF1F16DC18530093D5B4 /* CodeSetCodesViewController.m */; };
-		C25B479016FF8D5E0042B59E /* ComponentDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2116DC18530093D5B4 /* ComponentDeviceListViewController.m */; };
-		C25B479116FF8D5E0042B59E /* IRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2316DC18530093D5B4 /* IRCodeDetailViewController.m */; };
-		C25B479216FF8D5E0042B59E /* ManufacturerCodeSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2516DC18530093D5B4 /* ManufacturerCodeSetsViewController.m */; };
-		C25B479316FF8D5E0042B59E /* UserCodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF2716DC18530093D5B4 /* UserCodesViewController.m */; };
-		C25B479416FF8D5E0042B59E /* LogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF5116DC18530093D5B4 /* LogsViewController.m */; };
+		C25B478016FF8D5E0042B59E /* Remote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* Remote.m */; };
+		C25B478116FF8D5E0042B59E /* RemoteElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */; };
+		C25B478216FF8D5E0042B59E /* RemoteElementView+Editing.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */; };
+		C25B478316FF8D5E0042B59E /* RemoteElementView+SubelementViews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */; };
+		C25B478416FF8D5E0042B59E /* RemoteElementView+InternalSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */; };
+		C25B478616FF8D5E0042B59E /* Constraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* Constraint.m */; };
+		C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE316DC18530093D5B4 /* RemoteView.m */; };
+		C25B478816FF8D5E0042B59E /* PickerLabelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */; };
+		C25B478916FF8D5E0042B59E /* SelectionPanelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */; };
+		C25B478A16FF8D5E0042B59E /* ButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */; };
+		C25B478B16FF8D5E0042B59E /* BatteryStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456616FF61C90042B59E /* BatteryStatusButtonView.m */; };
+		C25B478C16FF8D5E0042B59E /* ButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456816FF61C90042B59E /* ButtonView.m */; };
+		C25B478D16FF8D5E0042B59E /* ConnectionStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456916FF61C90042B59E /* ConnectionStatusButtonView.m */; };
 		C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7716DC18530093D5B4 /* ConnectionManager.m */; };
 		C25B479B16FF8D5E0042B59E /* GlobalCacheConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */; };
 		C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8216DC18530093D5B4 /* NetworkDevice.m */; };
@@ -283,7 +275,7 @@
 		C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */; };
 		C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */; };
 		C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */; };
-		C25B47A216FF8D5E0042B59E /* LaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */; };
+		C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA016DC18530093D5B4 /* MainMenuViewController.m */; };
 		C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */; };
 		C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB416DC18530093D5B4 /* SelectionViewController.m */; };
 		C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE916DC18530093D5B4 /* CoreDataManager.m */; };
@@ -301,12 +293,9 @@
 		C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00A16DC18530093D5B4 /* UITestRunner.m */; };
 		C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
 		C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
-		C2629BF7170248E100A0FFC2 /* RECommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */; };
-		C26329481713AFF30080330D /* RETheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* RETheme.m */; };
-		C263294C1714862A0080330D /* RETheme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */; };
-		C26509A11730906800C202FF /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C265099F1730906700C202FF /* MagicalRecord.framework */; };
-		C26509A21730906800C202FF /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26509A01730906800C202FF /* MSKit.framework */; };
-		C26509A3173092F000C202FF /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BF4FB5171AFAFE00C23DCA /* Lumberjack.framework */; };
+		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
+		C26329481713AFF30080330D /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* Theme.m */; };
+		C263294C1714862A0080330D /* Theme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* Theme+ApplyingThemes.m */; };
 		C26B199417A05A2300C22BE6 /* Glyphish Backgrounds.txt in Resources */ = {isa = PBXBuildFile; fileRef = C26B199217A05A2300C22BE6 /* Glyphish Backgrounds.txt */; };
 		C26B199517A05A2300C22BE6 /* Glyphish Backgrounds.txt in Resources */ = {isa = PBXBuildFile; fileRef = C26B199217A05A2300C22BE6 /* Glyphish Backgrounds.txt */; };
 		C26B199617A05A2300C22BE6 /* Glyphish Icons.txt in Resources */ = {isa = PBXBuildFile; fileRef = C26B199317A05A2300C22BE6 /* Glyphish Icons.txt */; };
@@ -421,13 +410,11 @@
 		C26DE4E41731C85300CEF17D /* RERemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C26DE4E31731C85300CEF17D /* RERemoteController.json */; };
 		C26DE4E61731CE1000CEF17D /* ExtendedJSONTest.json in Resources */ = {isa = PBXBuildFile; fileRef = C26DE4E51731CE1000CEF17D /* ExtendedJSONTest.json */; };
 		C26DE4EA1732BB0700CEF17D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BBB3E16DC1C960093D5B4 /* CoreText.framework */; };
-		C26DE4F11732E84400CEF17D /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29B27EE172E0D27006046A5 /* ParseKit.framework */; };
-		C26DE4F21732E84700CEF17D /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29B27EE172E0D27006046A5 /* ParseKit.framework */; };
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C275D86417A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
-		C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */; };
-		C28C7B701798424400E4F9FC /* REButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* REButtonGroupBuilder+Developer.m */; };
-		C28C7B711798424400E4F9FC /* REButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* REButtonGroupBuilder+Developer.m */; };
+		C27734401701365C00E85F8D /* SwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchToConfigCommand.m */; };
+		C28C7B701798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */; };
+		C28C7B711798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */; };
 		C28FAF7C173014B4002902D9 /* MSRemoteImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* MSRemoteImportSupportFunctions.m */; };
 		C28FAF7D173014B4002902D9 /* MSRemoteImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* MSRemoteImportSupportFunctions.m */; };
 		C29B27F2172E1CD7006046A5 /* JSON-Grammar.parsekit in Resources */ = {isa = PBXBuildFile; fileRef = C29B27F1172E1CD7006046A5 /* JSON-Grammar.parsekit */; };
@@ -439,11 +426,8 @@
 		C2A8F827172C820B007CFE0B /* HomeRERemote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F824172C820B007CFE0B /* HomeRERemote.json */; };
 		C2A8F828172C820B007CFE0B /* REActivity.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F825172C820B007CFE0B /* REActivity.json */; };
 		C2A8F829172C820B007CFE0B /* DVR-RERemote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F826172C820B007CFE0B /* DVR-RERemote.json */; };
-		C2F11E291731A18800812F4F /* MSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26509A01730906800C202FF /* MSKit.framework */; };
-		C2F11E2A1731A19700812F4F /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BF4FB5171AFAFE00C23DCA /* Lumberjack.framework */; };
-		C2F11E2B1731A19C00812F4F /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C265099F1730906700C202FF /* MagicalRecord.framework */; };
-		C2F2254A1715CB8500D22B5F /* REActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* REActivity.m */; };
-		C2F2254D1715E39600D22B5F /* MSModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* MSModelObject.m */; };
+		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
+		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
 		C2F46133172854160009AE53 /* BOComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F46132172854160009AE53 /* BOComponentDevice.json */; };
 		C2F46136172855250009AE53 /* JSONImportDatabaseConstructionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F46135172855250009AE53 /* JSONImportDatabaseConstructionTests.m */; };
 		C2F4613A172891D40009AE53 /* BOBackgroundImage.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F46138172891D40009AE53 /* BOBackgroundImage.json */; };
@@ -454,15 +438,15 @@
 /* Begin PBXFileReference section */
 		C203B59A1725D3CE002FD3EA /* CoreDataPersistentTestSuite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataPersistentTestSuite.h; sourceTree = "<group>"; };
 		C203B59B1725D3CE002FD3EA /* CoreDataPersistentTestSuite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataPersistentTestSuite.m; sourceTree = "<group>"; };
-		C203BBB81726DB96002FD3EA /* RECommandSetBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandSetBuilder.m; sourceTree = "<group>"; };
+		C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandSetBuilder.m; sourceTree = "<group>"; };
 		C203BBBF1726EBD6002FD3EA /* DatabaseConstructionTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DatabaseConstructionTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C203BBC51726EBD7002FD3EA /* DatabaseConstructionTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DatabaseConstructionTests-Info.plist"; sourceTree = "<group>"; };
 		C203BBC71726EBD7002FD3EA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C203BBC91726EBD7002FD3EA /* DatabaseConstructionTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatabaseConstructionTests.h; sourceTree = "<group>"; };
 		C203BBCA1726EBD7002FD3EA /* DatabaseConstructionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatabaseConstructionTests.m; sourceTree = "<group>"; };
 		C203BBCC1726EBD7002FD3EA /* DatabaseConstructionTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DatabaseConstructionTests-Prefix.pch"; sourceTree = "<group>"; };
-		C203BC201726F30D002FD3EA /* RELayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RELayoutConstraint.h; sourceTree = "<group>"; };
-		C203BC211726F30D002FD3EA /* RELayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELayoutConstraint.m; sourceTree = "<group>"; };
+		C203BC201726F30D002FD3EA /* LayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutConstraint.h; sourceTree = "<group>"; };
+		C203BC211726F30D002FD3EA /* LayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutConstraint.m; sourceTree = "<group>"; };
 		C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Project.xcconfig"; sourceTree = "<group>"; };
 		C208DDFE16DDC5F600084C49 /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
 		C208DDFF16DDC5FD00084C49 /* Config-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Release.xcconfig"; sourceTree = "<group>"; };
@@ -471,7 +455,9 @@
 		C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote-Release.xcconfig"; sourceTree = "<group>"; };
 		C208DE0316DE763900084C49 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Notes; sourceTree = "<group>"; };
 		C208DEB516DEC70C00084C49 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/6.1/Applications/B24ABD7F-AD97-47CB-B0C6-F9065B1EC2EA/Library/Caches/Logs"; sourceTree = "<group>"; };
-		C20C50E4179E1EFE007704C7 /* RENightshadeThemeDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RENightshadeThemeDecorator.m; sourceTree = "<group>"; };
+		C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NightshadeThemeDecorator.m; sourceTree = "<group>"; };
+		C215F7EF17E39D31004B884C /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = "../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/MagicalRecord.framework"; sourceTree = "<group>"; };
+		C215F7F117E39D3E004B884C /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/MSKit.framework"; sourceTree = "<group>"; };
 		C21687A01722F17000064C95 /* ConfigurationDelegateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationDelegateTests.h; sourceTree = "<group>"; };
 		C21687A11722F17000064C95 /* ConfigurationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationDelegateTests.m; sourceTree = "<group>"; };
 		C21687A31722F18400064C95 /* ControlStateSetTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateSetTests.h; sourceTree = "<group>"; };
@@ -538,16 +524,25 @@
 		C21B478D1722F12F00E0B0DD /* CommandTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandTests.m; sourceTree = "<group>"; };
 		C21B478F1722F14300E0B0DD /* ConstraintTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstraintTests.h; sourceTree = "<group>"; };
 		C21B47901722F14300E0B0DD /* ConstraintTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintTests.m; sourceTree = "<group>"; };
-		C2208B4F17165BCF00AC0364 /* REActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REActivityCommand.m; sourceTree = "<group>"; };
-		C225FC071794A605008B8FF6 /* REBuiltinTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBuiltinTheme.m; sourceTree = "<group>"; };
-		C225FC0A1794A6A5008B8FF6 /* RECustomTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECustomTheme.m; sourceTree = "<group>"; };
+		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
+		C225FC071794A605008B8FF6 /* BuiltinTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuiltinTheme.m; sourceTree = "<group>"; };
+		C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTheme.m; sourceTree = "<group>"; };
 		C22BA1041721933900850174 /* ConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C22BA1051721933900850174 /* ConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstructDVRRemoteTests.m; sourceTree = "<group>"; };
 		C22BA107172193CB00850174 /* RECoreDataTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECoreDataTestCase.h; sourceTree = "<group>"; };
 		C22BA108172193CB00850174 /* RECoreDataTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECoreDataTestCase.m; sourceTree = "<group>"; };
 		C22BA10A1721E9D000850174 /* GTMSenTestCase_Macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase_Macros.h; sourceTree = "<group>"; };
 		C23004C416DD3AA100D30A19 /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
-		C23423C61795101D00703F86 /* REThemeSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = REThemeSettings.m; path = "Remote/Source/Remote Elements/Remote Element/Themes/REThemeSettings.m"; sourceTree = SOURCE_ROOT; };
+		C2318B0D17E3CCC200CF58D9 /* ParseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2318B1617E3D0BE00CF58D9 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = "../../Frameworks/Lumberjack/build/Debug-iphoneos/Lumberjack.framework"; sourceTree = "<group>"; };
+		C2318B1817E3D40000CF58D9 /* RemoteControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteControl.h; path = "../Remote Elements/Remote Controllers/RemoteControl.h"; sourceTree = "<group>"; };
+		C2318B1917E3D40000CF58D9 /* RemoteControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteControl.m; path = "../Remote Elements/Remote Controllers/RemoteControl.m"; sourceTree = "<group>"; };
+		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
+		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
+		C2318B2117E4C80E00CF58D9 /* Editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
+		C2318B2217E4C80E00CF58D9 /* Editor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Editor.m; sourceTree = "<group>"; };
+		C2318B2417E50DAE00CF58D9 /* BankIndex.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankIndex.xib; sourceTree = "<group>"; };
+		C23423C61795101D00703F86 /* ThemeSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThemeSettings.m; path = "Remote/Source/Remote Elements/Remote Element/Themes/ThemeSettings.m"; sourceTree = SOURCE_ROOT; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
 		C2363DCA172EDD6200352906 /* JSON-With-Comments-Grammar.parsekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "JSON-With-Comments-Grammar.parsekit"; sourceTree = "<group>"; };
@@ -555,46 +550,46 @@
 		C23A18411720CD9300B46520 /* MSCoreDataTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCoreDataTestCase.h; sourceTree = "<group>"; };
 		C23A18421720CD9300B46520 /* MSCoreDataTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCoreDataTestCase.m; sourceTree = "<group>"; };
 		C23B7A4A1705FAF80031CD6C /* BOTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOTypedefs.h; sourceTree = "<group>"; };
-		C23B946B170C8FEA0028CC06 /* REView+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+Drawing.m"; sourceTree = "<group>"; };
-		C23B946E170C94BE0028CC06 /* REView+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+Debugging.m"; sourceTree = "<group>"; };
-		C23F1E5C1705064E0084718A /* RESendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESendCommand.m; sourceTree = "<group>"; };
+		C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Drawing.m"; sourceTree = "<group>"; };
+		C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Debugging.m"; sourceTree = "<group>"; };
+		C23F1E5C1705064E0084718A /* SendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendCommand.m; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C240DD6017049106005CC390 /* GlobalCacheConnectionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalCacheConnectionManager_Private.h; sourceTree = "<group>"; };
 		C259F820171898DB001FCED5 /* REControlStateSetProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REControlStateSetProxy.h; sourceTree = "<group>"; };
 		C259F821171898DB001FCED5 /* REControlStateSetProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateSetProxy.m; sourceTree = "<group>"; };
 		C259F8231718AF1D001FCED5 /* REControlStateSetProxy_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REControlStateSetProxy_Private.h; sourceTree = "<group>"; };
-		C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBatteryStatusButtonView.m; sourceTree = "<group>"; };
-		C25B456816FF61C90042B59E /* REButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonView.m; sourceTree = "<group>"; };
-		C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConnectionStatusButtonView.m; sourceTree = "<group>"; };
-		C25B457416FF62A00042B59E /* REButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButton.m; sourceTree = "<group>"; };
-		C25B457716FF62A00042B59E /* REButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroup.m; sourceTree = "<group>"; };
+		C25B456616FF61C90042B59E /* BatteryStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BatteryStatusButtonView.m; sourceTree = "<group>"; };
+		C25B456816FF61C90042B59E /* ButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonView.m; sourceTree = "<group>"; };
+		C25B456916FF61C90042B59E /* ConnectionStatusButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionStatusButtonView.m; sourceTree = "<group>"; };
+		C25B457416FF62A00042B59E /* Button.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Button.m; sourceTree = "<group>"; };
+		C25B457716FF62A00042B59E /* ButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroup.m; sourceTree = "<group>"; };
 		C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElement+Accessors.m"; sourceTree = "<group>"; };
 		C25B457A16FF62A00042B59E /* RemoteElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement.h; sourceTree = "<group>"; };
 		C25B457B16FF62A00042B59E /* RemoteElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RemoteElement.m; sourceTree = "<group>"; };
 		C25B457C16FF62A00042B59E /* RemoteElement_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElement_Private.h; sourceTree = "<group>"; };
-		C25B457F16FF62A00042B59E /* RERemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemote.m; sourceTree = "<group>"; };
-		C25B45B116FF66FE0042B59E /* REDelayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REDelayCommand.m; sourceTree = "<group>"; };
-		C25B45B216FF66FE0042B59E /* REHTTPCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REHTTPCommand.m; sourceTree = "<group>"; };
-		C25B45B316FF66FE0042B59E /* REMacroCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMacroCommand.m; sourceTree = "<group>"; };
-		C25B45B416FF66FE0042B59E /* REPowerCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPowerCommand.m; sourceTree = "<group>"; };
-		C25B45B516FF66FE0042B59E /* RESendIRCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESendIRCommand.m; sourceTree = "<group>"; };
-		C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESwitchToRemoteCommand.m; sourceTree = "<group>"; };
-		C25B45B716FF66FE0042B59E /* RESystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESystemCommand.m; sourceTree = "<group>"; };
-		C25B45B816FF66FE0042B59E /* RECommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommand.h; sourceTree = "<group>"; };
-		C25B45B916FF66FE0042B59E /* RECommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommand.m; sourceTree = "<group>"; };
-		C25B45BA16FF66FE0042B59E /* RECommand_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommand_Private.h; sourceTree = "<group>"; };
-		C25B45BB16FF66FE0042B59E /* RECommandContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommandContainer.h; sourceTree = "<group>"; };
-		C25B45BC16FF66FE0042B59E /* RECommandContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandContainer.m; sourceTree = "<group>"; };
-		C25B45C016FF66FE0042B59E /* RECommandSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandSet.m; sourceTree = "<group>"; };
-		C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommandSetCollection.m; sourceTree = "<group>"; };
+		C25B457F16FF62A00042B59E /* Remote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Remote.m; sourceTree = "<group>"; };
+		C25B45B116FF66FE0042B59E /* DelayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayCommand.m; sourceTree = "<group>"; };
+		C25B45B216FF66FE0042B59E /* HTTPCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPCommand.m; sourceTree = "<group>"; };
+		C25B45B316FF66FE0042B59E /* MacroCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacroCommand.m; sourceTree = "<group>"; };
+		C25B45B416FF66FE0042B59E /* PowerCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PowerCommand.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C25B45B516FF66FE0042B59E /* SendIRCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendIRCommand.m; sourceTree = "<group>"; };
+		C25B45B616FF66FE0042B59E /* SwitchToRemoteCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToRemoteCommand.m; sourceTree = "<group>"; };
+		C25B45B716FF66FE0042B59E /* SystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemCommand.m; sourceTree = "<group>"; };
+		C25B45B816FF66FE0042B59E /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Command.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C25B45B916FF66FE0042B59E /* Command.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Command.m; sourceTree = "<group>"; };
+		C25B45BA16FF66FE0042B59E /* Command_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Command_Private.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C25B45BB16FF66FE0042B59E /* CommandContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandContainer.h; sourceTree = "<group>"; };
+		C25B45BC16FF66FE0042B59E /* CommandContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandContainer.m; sourceTree = "<group>"; };
+		C25B45C016FF66FE0042B59E /* CommandSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandSet.m; sourceTree = "<group>"; };
+		C25B45C216FF66FE0042B59E /* CommandSetCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandSetCollection.m; sourceTree = "<group>"; };
 		C25B462E16FF679B0042B59E /* AttributeEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController.h; sourceTree = "<group>"; };
 		C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeEditingViewController.m; sourceTree = "<group>"; };
 		C25B463016FF679B0042B59E /* AttributeEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController_Private.h; sourceTree = "<group>"; };
 		C25B463116FF679B0042B59E /* BackgroundEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundEditingViewController.h; sourceTree = "<group>"; };
 		C25B463216FF679B0042B59E /* BackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundEditingViewController.m; sourceTree = "<group>"; };
 		C25B463316FF679B0042B59E /* CommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandEditingViewController.h; sourceTree = "<group>"; };
-		C25B463416FF679B0042B59E /* CommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandEditingViewController.m; sourceTree = "<group>"; };
+		C25B463416FF679B0042B59E /* CommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CommandEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C25B463516FF679B0042B59E /* DelayCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayCommandEditingViewController.h; sourceTree = "<group>"; };
 		C25B463616FF679B0042B59E /* DelayCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayCommandEditingViewController.m; sourceTree = "<group>"; };
 		C25B463716FF679B0042B59E /* HTTPCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPCommandEditingViewController.h; sourceTree = "<group>"; };
@@ -607,83 +602,74 @@
 		C25B463E16FF679B0042B59E /* MacroCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacroCommandEditingViewController.m; sourceTree = "<group>"; };
 		C25B463F16FF679B0042B59E /* PowerCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerCommandEditingViewController.h; sourceTree = "<group>"; };
 		C25B464016FF679B0042B59E /* PowerCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerCommandEditingViewController.m; sourceTree = "<group>"; };
-		C25B464216FF679B0042B59E /* REButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C25B464416FF679B0042B59E /* REButtonGroupEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupEditingViewController.m; sourceTree = "<group>"; };
-		C25B464616FF679B0042B59E /* REDetailedButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REDetailedButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C25B464716FF679B0042B59E /* REEditingViewController+Gestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Gestures.h"; sourceTree = "<group>"; };
-		C25B464816FF679B0042B59E /* REEditingViewController+Gestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Gestures.m"; sourceTree = "<group>"; };
-		C25B464916FF679B0042B59E /* REEditingViewController+IBActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+IBActions.h"; sourceTree = "<group>"; };
-		C25B464A16FF679B0042B59E /* REEditingViewController+IBActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+IBActions.m"; sourceTree = "<group>"; };
-		C25B464B16FF679B0042B59E /* REEditingViewController+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Selection.h"; sourceTree = "<group>"; };
-		C25B464C16FF679B0042B59E /* REEditingViewController+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Selection.m"; sourceTree = "<group>"; };
-		C25B464D16FF679B0042B59E /* REEditingViewController+Toolbars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "REEditingViewController+Toolbars.h"; sourceTree = "<group>"; };
-		C25B464E16FF679B0042B59E /* REEditingViewController+Toolbars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REEditingViewController+Toolbars.m"; sourceTree = "<group>"; };
-		C25B464F16FF679B0042B59E /* REEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = REEditingViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C25B465016FF679B0042B59E /* REEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingViewController.m; sourceTree = "<group>"; };
-		C25B465116FF679B0042B59E /* REEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingViewController_Private.h; sourceTree = "<group>"; };
-		C25B465316FF679B0042B59E /* RERemoteEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteEditingViewController.m; sourceTree = "<group>"; };
+		C25B464216FF679B0042B59E /* ButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupEditingViewController.m; sourceTree = "<group>"; };
+		C25B464616FF679B0042B59E /* DetailedButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DetailedButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C25B464716FF679B0042B59E /* RemoteElementEditingViewController+Gestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+Gestures.h"; sourceTree = "<group>"; };
+		C25B464816FF679B0042B59E /* RemoteElementEditingViewController+Gestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+Gestures.m"; sourceTree = "<group>"; };
+		C25B464916FF679B0042B59E /* RemoteElementEditingViewController+IBActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+IBActions.h"; sourceTree = "<group>"; };
+		C25B464A16FF679B0042B59E /* RemoteElementEditingViewController+IBActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+IBActions.m"; sourceTree = "<group>"; };
+		C25B464B16FF679B0042B59E /* RemoteElementEditingViewController+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+Selection.h"; sourceTree = "<group>"; };
+		C25B464C16FF679B0042B59E /* RemoteElementEditingViewController+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+Selection.m"; sourceTree = "<group>"; };
+		C25B464D16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+Toolbars.h"; sourceTree = "<group>"; };
+		C25B464E16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+Toolbars.m"; sourceTree = "<group>"; };
+		C25B464F16FF679B0042B59E /* RemoteElementEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RemoteElementEditingViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C25B465016FF679B0042B59E /* RemoteElementEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementEditingViewController.m; sourceTree = "<group>"; };
+		C25B465116FF679B0042B59E /* RemoteElementEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementEditingViewController_Private.h; sourceTree = "<group>"; };
+		C25B465316FF679B0042B59E /* RemoteEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteEditingViewController.m; sourceTree = "<group>"; };
 		C25B465416FF679B0042B59E /* SendIRCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendIRCommandEditingViewController.h; sourceTree = "<group>"; };
 		C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendIRCommandEditingViewController.m; sourceTree = "<group>"; };
 		C25B465616FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchToRemoteCommandEditingViewController.h; sourceTree = "<group>"; };
 		C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToRemoteCommandEditingViewController.m; sourceTree = "<group>"; };
-		C25B468116FF67AF0042B59E /* REControlStateButtonImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateButtonImageSet.m; sourceTree = "<group>"; };
-		C25B468216FF67AF0042B59E /* REControlStateColorSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateColorSet.m; sourceTree = "<group>"; };
-		C25B468316FF67AF0042B59E /* REControlStateIconImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateIconImageSet.m; sourceTree = "<group>"; };
-		C25B468416FF67AF0042B59E /* REControlStateImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateImageSet.m; sourceTree = "<group>"; };
-		C25B468516FF67AF0042B59E /* REControlStateSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REControlStateSet.h; sourceTree = "<group>"; };
-		C25B468616FF67AF0042B59E /* REControlStateSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateSet.m; sourceTree = "<group>"; };
-		C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateTitleSet.m; sourceTree = "<group>"; };
-		C25B469616FF67D00042B59E /* REButtonBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonBuilder.m; sourceTree = "<group>"; };
-		C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REButtonGroupBuilder.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C25B469A16FF67D00042B59E /* REMacroBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMacroBuilder.m; sourceTree = "<group>"; };
-		C25B469C16FF67D00042B59E /* RERemoteBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteBuilder.m; sourceTree = "<group>"; };
+		C25B468116FF67AF0042B59E /* ControlStateButtonImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateButtonImageSet.m; sourceTree = "<group>"; };
+		C25B468216FF67AF0042B59E /* ControlStateColorSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateColorSet.m; sourceTree = "<group>"; };
+		C25B468316FF67AF0042B59E /* ControlStateIconImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateIconImageSet.m; sourceTree = "<group>"; };
+		C25B468416FF67AF0042B59E /* ControlStateImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateImageSet.m; sourceTree = "<group>"; };
+		C25B468516FF67AF0042B59E /* ControlStateSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateSet.h; sourceTree = "<group>"; };
+		C25B468616FF67AF0042B59E /* ControlStateSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateSet.m; sourceTree = "<group>"; };
+		C25B468716FF67AF0042B59E /* ControlStateTitleSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlStateTitleSet.m; sourceTree = "<group>"; };
+		C25B469616FF67D00042B59E /* ButtonBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonBuilder.m; sourceTree = "<group>"; };
+		C25B469816FF67D00042B59E /* ButtonGroupBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ButtonGroupBuilder.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C25B469A16FF67D00042B59E /* MacroBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacroBuilder.m; sourceTree = "<group>"; };
+		C25B469C16FF67D00042B59E /* RemoteBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteBuilder.m; sourceTree = "<group>"; };
 		C25B469D16FF67D00042B59E /* RemoteConstruction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConstruction.h; sourceTree = "<group>"; };
 		C25B469E16FF67D00042B59E /* RemoteElementConstructionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager.h; sourceTree = "<group>"; };
 		C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementConstructionManager.m; sourceTree = "<group>"; };
-		C25B46A116FF67D00042B59E /* RERemoteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteController.h; sourceTree = "<group>"; };
-		C25B46A216FF67D00042B59E /* RERemoteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteController.m; sourceTree = "<group>"; };
-		C25B46A316FF67D00042B59E /* RERemoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RERemoteViewController.h; sourceTree = "<group>"; };
-		C25B46A416FF67D00042B59E /* RERemoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteViewController.m; sourceTree = "<group>"; };
-		C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonConfigurationDelegate.m; sourceTree = "<group>"; };
-		C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupConfigurationDelegate.m; sourceTree = "<group>"; };
-		C25B46B616FF68840042B59E /* REConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConfigurationDelegate.h; sourceTree = "<group>"; };
-		C25B46B716FF68840042B59E /* REConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConfigurationDelegate.m; sourceTree = "<group>"; };
-		C25B46B816FF68840042B59E /* REConfigurationDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConfigurationDelegate_Private.h; sourceTree = "<group>"; };
-		C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteConfigurationDelegate.m; sourceTree = "<group>"; };
-		C25B46C316FF68900042B59E /* REConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConstraintManager.h; sourceTree = "<group>"; };
-		C25B46C416FF68900042B59E /* REConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConstraintManager.m; sourceTree = "<group>"; };
-		C25B46C516FF68900042B59E /* RELayoutConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RELayoutConfiguration.h; sourceTree = "<group>"; };
-		C25B46C616FF68900042B59E /* RELayoutConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELayoutConfiguration.m; sourceTree = "<group>"; };
-		C25B46CC16FF68A90042B59E /* REConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REConstraint.h; sourceTree = "<group>"; };
-		C25B46CD16FF68A90042B59E /* REConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REConstraint.m; sourceTree = "<group>"; };
-		C25B46D416FF69110042B59E /* BOComponentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOComponentDevice.m; sourceTree = "<group>"; };
-		C25B46D516FF69110042B59E /* REDeviceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REDeviceConfiguration.h; sourceTree = "<group>"; };
-		C25B46D616FF69110042B59E /* REDeviceConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REDeviceConfiguration.m; sourceTree = "<group>"; };
-		C25B46D816FF69110042B59E /* BOIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOIRCode.m; sourceTree = "<group>"; };
-		C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOFactoryIRCode.m; sourceTree = "<group>"; };
-		C25B46DF16FF69110042B59E /* BOManufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOManufacturer.m; sourceTree = "<group>"; };
-		C25B46E116FF69110042B59E /* BOBackgroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOBackgroundImage.m; sourceTree = "<group>"; };
-		C25B46E216FF69110042B59E /* BOButtonImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOButtonImage.m; sourceTree = "<group>"; };
-		C25B46E316FF69110042B59E /* BOIconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOIconImage.m; sourceTree = "<group>"; };
-		C25B46E516FF69110042B59E /* BOImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOImage.m; sourceTree = "<group>"; };
-		C25B46E616FF69110042B59E /* BOImage_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOImage_Private.h; sourceTree = "<group>"; };
-		C25B46E816FF69110042B59E /* BOUserIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOUserIRCode.m; sourceTree = "<group>"; };
-		C25B46E916FF69110042B59E /* BankObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObject.h; sourceTree = "<group>"; };
-		C25B46EA16FF69110042B59E /* BankObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObject.m; sourceTree = "<group>"; };
+		C25B46A116FF67D00042B59E /* RemoteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteController.h; sourceTree = "<group>"; };
+		C25B46A216FF67D00042B59E /* RemoteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteController.m; sourceTree = "<group>"; };
+		C25B46A316FF67D00042B59E /* RemoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteViewController.h; sourceTree = "<group>"; };
+		C25B46A416FF67D00042B59E /* RemoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteViewController.m; sourceTree = "<group>"; };
+		C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46B616FF68840042B59E /* ConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationDelegate.h; sourceTree = "<group>"; };
+		C25B46B716FF68840042B59E /* ConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46B816FF68840042B59E /* ConfigurationDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationDelegate_Private.h; sourceTree = "<group>"; };
+		C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConfigurationDelegate.m; sourceTree = "<group>"; };
+		C25B46C316FF68900042B59E /* ConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstraintManager.h; sourceTree = "<group>"; };
+		C25B46C416FF68900042B59E /* ConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintManager.m; sourceTree = "<group>"; };
+		C25B46C516FF68900042B59E /* LayoutConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutConfiguration.h; sourceTree = "<group>"; };
+		C25B46C616FF68900042B59E /* LayoutConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutConfiguration.m; sourceTree = "<group>"; };
+		C25B46CC16FF68A90042B59E /* Constraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constraint.h; sourceTree = "<group>"; };
+		C25B46CD16FF68A90042B59E /* Constraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constraint.m; sourceTree = "<group>"; };
+		C25B46D416FF69110042B59E /* ComponentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComponentDevice.m; sourceTree = "<group>"; };
+		C25B46D516FF69110042B59E /* ComponentDeviceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentDeviceConfiguration.h; sourceTree = "<group>"; };
+		C25B46D616FF69110042B59E /* ComponentDeviceConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComponentDeviceConfiguration.m; sourceTree = "<group>"; };
+		C25B46D816FF69110042B59E /* IRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCode.m; sourceTree = "<group>"; };
+		C25B46DF16FF69110042B59E /* Manufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manufacturer.m; sourceTree = "<group>"; };
+		C25B46E516FF69110042B59E /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		C25B46E616FF69110042B59E /* Image_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image_Private.h; sourceTree = "<group>"; };
 		C25B46EC16FF69110042B59E /* BankObjectGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectGroup.h; sourceTree = "<group>"; };
 		C25B46ED16FF69110042B59E /* BankObjectGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectGroup.m; sourceTree = "<group>"; };
 		C25B46F016FF69110042B59E /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview.h; sourceTree = "<group>"; };
 		C25B46F116FF69110042B59E /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectPreview.m; sourceTree = "<group>"; };
-		C25B46F516FF69110042B59E /* BOPreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOPreset.m; sourceTree = "<group>"; };
-		C25B472716FF695B0042B59E /* REView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+Editing.m"; sourceTree = "<group>"; };
-		C25B472B16FF6E500042B59E /* REView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+SubelementViews.m"; sourceTree = "<group>"; };
-		C25B472E16FF77AB0042B59E /* REView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REView+InternalSubviews.m"; sourceTree = "<group>"; };
-		C26329461713AFF20080330D /* RETheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RETheme.h; sourceTree = "<group>"; };
-		C26329471713AFF30080330D /* RETheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RETheme.m; sourceTree = "<group>"; };
-		C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RETheme+ApplyingThemes.m"; sourceTree = "<group>"; };
-		C263294D171487760080330D /* RETheme_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RETheme_Private.h; sourceTree = "<group>"; };
-		C265099F1730906700C202FF /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = "../../Frameworks/MagicalRecord/build/Release-iphoneos/MagicalRecord.framework"; sourceTree = "<group>"; };
-		C26509A01730906800C202FF /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = "../../Frameworks/MSKit/build/Release-iphoneos/MSKit.framework"; sourceTree = "<group>"; };
+		C25B46F516FF69110042B59E /* Preset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preset.m; sourceTree = "<group>"; };
+		C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Editing.m"; sourceTree = "<group>"; };
+		C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+SubelementViews.m"; sourceTree = "<group>"; };
+		C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+InternalSubviews.m"; sourceTree = "<group>"; };
+		C26329461713AFF20080330D /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
+		C26329471713AFF30080330D /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
+		C263294B1714862A0080330D /* Theme+ApplyingThemes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Theme+ApplyingThemes.m"; sourceTree = "<group>"; };
+		C263294D171487760080330D /* Theme_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Theme_Private.h; sourceTree = "<group>"; };
 		C26B199217A05A2300C22BE6 /* Glyphish Backgrounds.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Glyphish Backgrounds.txt"; sourceTree = "<group>"; };
 		C26B199317A05A2300C22BE6 /* Glyphish Icons.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Glyphish Icons.txt"; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -696,7 +682,7 @@
 		C26BAEB916DC10FE0093D5B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = main.m; path = Source/main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAEBB16DC10FE0093D5B4 /* Remote-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Prefix.pch"; path = "Source/Remote-Prefix.pch"; sourceTree = "<group>"; };
 		C26BAECE16DC10FE0093D5B4 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REButtonGroupView.m; sourceTree = "<group>"; };
+		C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupView.m; sourceTree = "<group>"; };
 		C26BAF1C16DC18530093D5B4 /* CodeDatabaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeDatabaseViewController.h; sourceTree = "<group>"; };
 		C26BAF1D16DC18530093D5B4 /* CodeDatabaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeDatabaseViewController.m; sourceTree = "<group>"; };
 		C26BAF1E16DC18530093D5B4 /* CodeSetCodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeSetCodesViewController.h; sourceTree = "<group>"; };
@@ -741,16 +727,16 @@
 		C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconSelectionViewController.m; sourceTree = "<group>"; };
 		C26BAF9B16DC18530093D5B4 /* IRLearnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearnerViewController.h; sourceTree = "<group>"; };
 		C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearnerViewController.m; sourceTree = "<group>"; };
-		C26BAF9F16DC18530093D5B4 /* LaunchScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchScreenViewController.h; sourceTree = "<group>"; };
-		C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchScreenViewController.m; sourceTree = "<group>"; };
+		C26BAF9F16DC18530093D5B4 /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
+		C26BAFA016DC18530093D5B4 /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
 		C26BAFB116DC18530093D5B4 /* SelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionTableViewController.h; sourceTree = "<group>"; };
 		C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionTableViewController.m; sourceTree = "<group>"; };
 		C26BAFB316DC18530093D5B4 /* SelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
 		C26BAFB416DC18530093D5B4 /* SelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
-		C26BAFDC16DC18530093D5B4 /* REView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REView.h; sourceTree = "<group>"; };
-		C26BAFDD16DC18530093D5B4 /* REView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = REView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAFDE16DC18530093D5B4 /* REView_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REView_Private.h; sourceTree = "<group>"; };
-		C26BAFE316DC18530093D5B4 /* RERemoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RERemoteView.m; sourceTree = "<group>"; };
+		C26BAFDC16DC18530093D5B4 /* RemoteElementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementView.h; sourceTree = "<group>"; };
+		C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RemoteElementView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		C26BAFDE16DC18530093D5B4 /* RemoteElementView_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementView_Private.h; sourceTree = "<group>"; };
+		C26BAFE316DC18530093D5B4 /* RemoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteView.m; sourceTree = "<group>"; };
 		C26BAFE816DC18530093D5B4 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		C26BAFE916DC18530093D5B4 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoreDataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAFEA16DC18530093D5B4 /* DatabaseLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseLoader.h; sourceTree = "<group>"; };
@@ -895,8 +881,8 @@
 		C26DE4E31731C85300CEF17D /* RERemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RERemoteController.json; sourceTree = "<group>"; };
 		C26DE4E51731CE1000CEF17D /* ExtendedJSONTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExtendedJSONTest.json; sourceTree = "<group>"; };
 		C275D86217A03130004E0BE5 /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
-		C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESwitchToConfigCommand.m; sourceTree = "<group>"; };
-		C28C7B6F1798424400E4F9FC /* REButtonGroupBuilder+Developer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REButtonGroupBuilder+Developer.m"; sourceTree = "<group>"; };
+		C277343F1701365C00E85F8D /* SwitchToConfigCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToConfigCommand.m; sourceTree = "<group>"; };
+		C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ButtonGroupBuilder+Developer.m"; sourceTree = "<group>"; };
 		C28FAF7B173014B4002902D9 /* MSRemoteImportSupportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRemoteImportSupportFunctions.m; sourceTree = "<group>"; };
 		C28FAF7E173014D8002902D9 /* MSRemoteImportSupportFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSRemoteImportSupportFunctions.h; sourceTree = "<group>"; };
 		C28FD582171C65BB008560E3 /* CoreDataTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreDataTests-Info.plist"; sourceTree = "<group>"; };
@@ -906,11 +892,10 @@
 		C28FD589171C65BB008560E3 /* CoreDataTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreDataTests-Prefix.pch"; sourceTree = "<group>"; };
 		C2912BC316F6311D004AB0DB /* RELabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELabelView.m; sourceTree = "<group>"; };
 		C2912BC516F6312D004AB0DB /* RELabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RELabelView.h; sourceTree = "<group>"; };
-		C2997F1E16FA06B400290737 /* REPickerLabelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPickerLabelButtonGroupView.m; sourceTree = "<group>"; };
-		C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESelectionPanelButtonGroupView.m; sourceTree = "<group>"; };
+		C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerLabelButtonGroupView.m; sourceTree = "<group>"; };
+		C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionPanelButtonGroupView.m; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2997F2416FA5A6D00290737 /* REEditableBackground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REEditableBackground.h; sourceTree = "<group>"; };
-		C29B27EE172E0D27006046A5 /* ParseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseKit.framework; path = ../../../GitHub/parsekit/ParseKit.framework; sourceTree = "<group>"; };
 		C29B27F1172E1CD7006046A5 /* JSON-Grammar.parsekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "JSON-Grammar.parsekit"; sourceTree = "<group>"; };
 		C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23DB178505AA00CD782B /* Remote.base 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 11.xcdatamodel"; sourceTree = "<group>"; };
@@ -935,14 +920,13 @@
 		C2A8F824172C820B007CFE0B /* HomeRERemote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HomeRERemote.json; sourceTree = "<group>"; };
 		C2A8F825172C820B007CFE0B /* REActivity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = REActivity.json; sourceTree = "<group>"; };
 		C2A8F826172C820B007CFE0B /* DVR-RERemote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "DVR-RERemote.json"; sourceTree = "<group>"; };
-		C2B4998917C9562D00EC6C7C /* BOIRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOIRCode.h; sourceTree = "<group>"; };
-		C2B4998A17C9567800EC6C7C /* BOImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOImage.h; sourceTree = "<group>"; };
-		C2B4998B17C9568900EC6C7C /* BOPreset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOPreset.h; sourceTree = "<group>"; };
-		C2B4998C17C9569C00EC6C7C /* BOComponentDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOComponentDevice.h; sourceTree = "<group>"; };
-		C2B4998D17C956AE00EC6C7C /* BOManufacturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOManufacturer.h; sourceTree = "<group>"; };
+		C2B4998917C9562D00EC6C7C /* IRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCode.h; sourceTree = "<group>"; };
+		C2B4998A17C9567800EC6C7C /* Image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
+		C2B4998B17C9568900EC6C7C /* Preset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preset.h; sourceTree = "<group>"; };
+		C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComponentDevice.h; sourceTree = "<group>"; };
+		C2B4998D17C956AE00EC6C7C /* Manufacturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Manufacturer.h; sourceTree = "<group>"; };
 		C2B4998F17C958B100EC6C7C /* BankObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankObjects.h; sourceTree = "<group>"; };
-		C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RECommandContainer_Private.h; sourceTree = "<group>"; };
-		C2BF4FB5171AFAFE00C23DCA /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = ../../Frameworks/Lumberjack/Lumberjack.framework; sourceTree = "<group>"; };
+		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
 		C2C54D64171DA93800E01E82 /* CoreDataLogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreDataLogicTests-Info.plist"; sourceTree = "<group>"; };
 		C2C54D66171DA93800E01E82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C2C54D68171DA93800E01E82 /* CoreDataLogicTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreDataLogicTests.h; sourceTree = "<group>"; };
@@ -959,10 +943,10 @@
 		C2D7663517246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentMagicalConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C2D7663617246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentMagicalConstructDVRRemoteTests.m; sourceTree = "<group>"; };
 		C2DB0BDB179DA6EA0005ECA4 /* RemoteElementConstructionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager_Private.h; sourceTree = "<group>"; };
-		C2F225481715CB8500D22B5F /* REActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REActivity.h; sourceTree = "<group>"; };
-		C2F225491715CB8500D22B5F /* REActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REActivity.m; sourceTree = "<group>"; };
-		C2F2254B1715E39600D22B5F /* MSModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSModelObject.h; sourceTree = "<group>"; };
-		C2F2254C1715E39600D22B5F /* MSModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSModelObject.m; sourceTree = "<group>"; };
+		C2F225481715CB8500D22B5F /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		C2F225491715CB8500D22B5F /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
+		C2F2254B1715E39600D22B5F /* ModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelObject.h; sourceTree = "<group>"; };
+		C2F2254C1715E39600D22B5F /* ModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelObject.m; sourceTree = "<group>"; };
 		C2F46132172854160009AE53 /* BOComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BOComponentDevice.json; sourceTree = "<group>"; };
 		C2F46134172855250009AE53 /* JSONImportDatabaseConstructionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONImportDatabaseConstructionTests.h; sourceTree = "<group>"; };
 		C2F46135172855250009AE53 /* JSONImportDatabaseConstructionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONImportDatabaseConstructionTests.m; sourceTree = "<group>"; };
@@ -979,19 +963,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C26DE4EA1732BB0700CEF17D /* CoreText.framework in Frameworks */,
-				C26509A11730906800C202FF /* MagicalRecord.framework in Frameworks */,
-				C26509A21730906800C202FF /* MSKit.framework in Frameworks */,
 				C203BBC01726EBD6002FD3EA /* SenTestingKit.framework in Frameworks */,
 				C203BBC11726EBD6002FD3EA /* UIKit.framework in Frameworks */,
 				C203BBC21726EBD6002FD3EA /* Foundation.framework in Frameworks */,
-				C26509A3173092F000C202FF /* Lumberjack.framework in Frameworks */,
 				C203BBD21726EC6F002FD3EA /* CoreData.framework in Frameworks */,
 				C203BBD31726EC80002FD3EA /* OCHamcrestIOS.framework in Frameworks */,
 				C203BC181726EEB9002FD3EA /* CoreGraphics.framework in Frameworks */,
 				C203BC261726F7AA002FD3EA /* QuartzCore.framework in Frameworks */,
 				C203BC1D1726EF0E002FD3EA /* CoreImage.framework in Frameworks */,
 				C203BC1E1726EF22002FD3EA /* SystemConfiguration.framework in Frameworks */,
-				C26DE4F11732E84400CEF17D /* ParseKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -999,6 +979,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2318B1717E3D0BE00CF58D9 /* Lumberjack.framework in Frameworks */,
+				C2318B0E17E3CCC200CF58D9 /* ParseKit.framework in Frameworks */,
 				C26BAEAC16DC10FE0093D5B4 /* UIKit.framework in Frameworks */,
 				C26BAEAE16DC10FE0093D5B4 /* Foundation.framework in Frameworks */,
 				C26BAEB016DC10FE0093D5B4 /* CoreGraphics.framework in Frameworks */,
@@ -1012,11 +994,9 @@
 				C26BBB4716DC1C960093D5B4 /* CoreImage.framework in Frameworks */,
 				C26BBB4816DC1C960093D5B4 /* CoreText.framework in Frameworks */,
 				C26BBB4916DC1C960093D5B4 /* QuartzCore.framework in Frameworks */,
-				C2F11E291731A18800812F4F /* MSKit.framework in Frameworks */,
-				C2F11E2B1731A19C00812F4F /* MagicalRecord.framework in Frameworks */,
+				C215F7F017E39D31004B884C /* MagicalRecord.framework in Frameworks */,
+				C215F7F217E39D3E004B884C /* MSKit.framework in Frameworks */,
 				C26BBB4A16DC1C960093D5B4 /* CFNetwork.framework in Frameworks */,
-				C2F11E2A1731A19700812F4F /* Lumberjack.framework in Frameworks */,
-				C26DE4F21732E84700CEF17D /* ParseKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,92 +1144,36 @@
 			name = "Bank Object Tests";
 			sourceTree = "<group>";
 		};
-		C25B456216FF5F8E0042B59E /* REView */ = {
+		C2318B3017E553DD00CF58D9 /* disabled */ = {
 			isa = PBXGroup;
 			children = (
-				C26BAFDC16DC18530093D5B4 /* REView.h */,
-				C26BAFDD16DC18530093D5B4 /* REView.m */,
-				C26BAFDE16DC18530093D5B4 /* REView_Private.h */,
-				C25B472716FF695B0042B59E /* REView+Editing.m */,
-				C25B472B16FF6E500042B59E /* REView+SubelementViews.m */,
-				C25B472E16FF77AB0042B59E /* REView+InternalSubviews.m */,
-				C23B946E170C94BE0028CC06 /* REView+Debugging.m */,
+				C2E67D1F1705E91A00AB0392 /* Bank View Controllers */,
+			);
+			name = disabled;
+			sourceTree = "<group>";
+		};
+		C2318B3117E5555600CF58D9 /* disabled */ = {
+			isa = PBXGroup;
+			children = (
 				C2912BC516F6312D004AB0DB /* RELabelView.h */,
 				C2912BC316F6311D004AB0DB /* RELabelView.m */,
-				C26BAFE316DC18530093D5B4 /* RERemoteView.m */,
-				C2997F1E16FA06B400290737 /* REPickerLabelButtonGroupView.m */,
-				C2997F1F16FA06B400290737 /* RESelectionPanelButtonGroupView.m */,
-				C26BAF0116DC18530093D5B4 /* REButtonGroupView.m */,
-				C25B456616FF61C90042B59E /* REBatteryStatusButtonView.m */,
-				C23B946B170C8FEA0028CC06 /* REView+Drawing.m */,
-				C25B456816FF61C90042B59E /* REButtonView.m */,
-				C25B456916FF61C90042B59E /* REConnectionStatusButtonView.m */,
-				C25B46CB16FF68A90042B59E /* Constraints */,
 			);
-			path = REView;
+			name = disabled;
 			sourceTree = "<group>";
 		};
-		C25B457116FF629F0042B59E /* Remote Element */ = {
+		C253B09417E61619007CDFE4 /* disabled */ = {
 			isa = PBXGroup;
 			children = (
-				C26329491713B0110080330D /* Themes */,
-				C25B46C216FF688F0042B59E /* Constraints */,
-				C25B46B316FF68840042B59E /* Configurations */,
-				C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */,
-				C25B457A16FF62A00042B59E /* RemoteElement.h */,
-				C25B457B16FF62A00042B59E /* RemoteElement.m */,
-				C25B457C16FF62A00042B59E /* RemoteElement_Private.h */,
-				C25B457F16FF62A00042B59E /* RERemote.m */,
-				C25B457716FF62A00042B59E /* REButtonGroup.m */,
-				C25B457416FF62A00042B59E /* REButton.m */,
+				C25B468116FF67AF0042B59E /* ControlStateButtonImageSet.m */,
+				C25B468316FF67AF0042B59E /* ControlStateIconImageSet.m */,
+				C259F820171898DB001FCED5 /* REControlStateSetProxy.h */,
+				C259F821171898DB001FCED5 /* REControlStateSetProxy.m */,
+				C259F8231718AF1D001FCED5 /* REControlStateSetProxy_Private.h */,
 			);
-			path = "Remote Element";
+			name = disabled;
 			sourceTree = "<group>";
 		};
-		C25B45AF16FF66FD0042B59E /* Commands */ = {
-			isa = PBXGroup;
-			children = (
-				C25B46D516FF69110042B59E /* REDeviceConfiguration.h */,
-				C25B46D616FF69110042B59E /* REDeviceConfiguration.m */,
-				C25B45B016FF66FE0042B59E /* Command Subclasses */,
-				C25B45B816FF66FE0042B59E /* RECommand.h */,
-				C25B45B916FF66FE0042B59E /* RECommand.m */,
-				C25B45BA16FF66FE0042B59E /* RECommand_Private.h */,
-				C25B45BE16FF66FE0042B59E /* CommandSets */,
-			);
-			path = Commands;
-			sourceTree = "<group>";
-		};
-		C25B45B016FF66FE0042B59E /* Command Subclasses */ = {
-			isa = PBXGroup;
-			children = (
-				C2208B4F17165BCF00AC0364 /* REActivityCommand.m */,
-				C25B45B116FF66FE0042B59E /* REDelayCommand.m */,
-				C25B45B216FF66FE0042B59E /* REHTTPCommand.m */,
-				C25B45B316FF66FE0042B59E /* REMacroCommand.m */,
-				C25B45B416FF66FE0042B59E /* REPowerCommand.m */,
-				C25B45B516FF66FE0042B59E /* RESendIRCommand.m */,
-				C25B45B616FF66FE0042B59E /* RESwitchToRemoteCommand.m */,
-				C25B45B716FF66FE0042B59E /* RESystemCommand.m */,
-				C277343F1701365C00E85F8D /* RESwitchToConfigCommand.m */,
-				C23F1E5C1705064E0084718A /* RESendCommand.m */,
-			);
-			path = "Command Subclasses";
-			sourceTree = "<group>";
-		};
-		C25B45BE16FF66FE0042B59E /* CommandSets */ = {
-			isa = PBXGroup;
-			children = (
-				C25B45BB16FF66FE0042B59E /* RECommandContainer.h */,
-				C2BD71E61702225200FAE4A3 /* RECommandContainer_Private.h */,
-				C25B45BC16FF66FE0042B59E /* RECommandContainer.m */,
-				C25B45C016FF66FE0042B59E /* RECommandSet.m */,
-				C25B45C216FF66FE0042B59E /* RECommandSetCollection.m */,
-			);
-			path = CommandSets;
-			sourceTree = "<group>";
-		};
-		C25B462D16FF679A0042B59E /* Editors */ = {
+		C253B09517E61AC2007CDFE4 /* Auxiallary Editors */ = {
 			isa = PBXGroup;
 			children = (
 				C26BAFB116DC18530093D5B4 /* SelectionTableViewController.h */,
@@ -1285,21 +1209,6 @@
 				C25B463E16FF679B0042B59E /* MacroCommandEditingViewController.m */,
 				C25B463F16FF679B0042B59E /* PowerCommandEditingViewController.h */,
 				C25B464016FF679B0042B59E /* PowerCommandEditingViewController.m */,
-				C25B464216FF679B0042B59E /* REButtonEditingViewController.m */,
-				C25B464416FF679B0042B59E /* REButtonGroupEditingViewController.m */,
-				C25B464616FF679B0042B59E /* REDetailedButtonEditingViewController.m */,
-				C25B464716FF679B0042B59E /* REEditingViewController+Gestures.h */,
-				C25B464816FF679B0042B59E /* REEditingViewController+Gestures.m */,
-				C25B464916FF679B0042B59E /* REEditingViewController+IBActions.h */,
-				C25B464A16FF679B0042B59E /* REEditingViewController+IBActions.m */,
-				C25B464B16FF679B0042B59E /* REEditingViewController+Selection.h */,
-				C25B464C16FF679B0042B59E /* REEditingViewController+Selection.m */,
-				C25B464D16FF679B0042B59E /* REEditingViewController+Toolbars.h */,
-				C25B464E16FF679B0042B59E /* REEditingViewController+Toolbars.m */,
-				C25B464F16FF679B0042B59E /* REEditingViewController.h */,
-				C25B465016FF679B0042B59E /* REEditingViewController.m */,
-				C25B465116FF679B0042B59E /* REEditingViewController_Private.h */,
-				C25B465316FF679B0042B59E /* RERemoteEditingViewController.m */,
 				C25B465416FF679B0042B59E /* SendIRCommandEditingViewController.h */,
 				C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */,
 				C25B465616FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.h */,
@@ -1309,22 +1218,126 @@
 				C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */,
 				C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */,
 			);
+			name = "Auxiallary Editors";
+			sourceTree = "<group>";
+		};
+		C25B456216FF5F8E0042B59E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C26BAFDC16DC18530093D5B4 /* RemoteElementView.h */,
+				C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */,
+				C26BAFDE16DC18530093D5B4 /* RemoteElementView_Private.h */,
+				C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */,
+				C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */,
+				C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */,
+				C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */,
+				C2318B3117E5555600CF58D9 /* disabled */,
+				C26BAFE316DC18530093D5B4 /* RemoteView.m */,
+				C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */,
+				C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */,
+				C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */,
+				C25B456616FF61C90042B59E /* BatteryStatusButtonView.m */,
+				C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */,
+				C25B456816FF61C90042B59E /* ButtonView.m */,
+				C25B456916FF61C90042B59E /* ConnectionStatusButtonView.m */,
+				C25B46CB16FF68A90042B59E /* Constraints */,
+			);
+			name = Views;
+			path = REView;
+			sourceTree = "<group>";
+		};
+		C25B457116FF629F0042B59E /* Remote Element */ = {
+			isa = PBXGroup;
+			children = (
+				C26329491713B0110080330D /* Themes */,
+				C25B46C216FF688F0042B59E /* Constraints */,
+				C25B46B316FF68840042B59E /* Configurations */,
+				C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */,
+				C25B457A16FF62A00042B59E /* RemoteElement.h */,
+				C25B457B16FF62A00042B59E /* RemoteElement.m */,
+				C25B457C16FF62A00042B59E /* RemoteElement_Private.h */,
+				C25B457F16FF62A00042B59E /* Remote.m */,
+				C25B457716FF62A00042B59E /* ButtonGroup.m */,
+				C25B457416FF62A00042B59E /* Button.m */,
+			);
+			path = "Remote Element";
+			sourceTree = "<group>";
+		};
+		C25B45AF16FF66FD0042B59E /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46D516FF69110042B59E /* ComponentDeviceConfiguration.h */,
+				C25B46D616FF69110042B59E /* ComponentDeviceConfiguration.m */,
+				C25B45B016FF66FE0042B59E /* Command Subclasses */,
+				C25B45B816FF66FE0042B59E /* Command.h */,
+				C25B45B916FF66FE0042B59E /* Command.m */,
+				C25B45BA16FF66FE0042B59E /* Command_Private.h */,
+				C25B45BE16FF66FE0042B59E /* CommandSets */,
+			);
+			path = Commands;
+			sourceTree = "<group>";
+		};
+		C25B45B016FF66FE0042B59E /* Command Subclasses */ = {
+			isa = PBXGroup;
+			children = (
+				C2208B4F17165BCF00AC0364 /* ActivityCommand.m */,
+				C25B45B116FF66FE0042B59E /* DelayCommand.m */,
+				C25B45B216FF66FE0042B59E /* HTTPCommand.m */,
+				C25B45B316FF66FE0042B59E /* MacroCommand.m */,
+				C25B45B416FF66FE0042B59E /* PowerCommand.m */,
+				C25B45B516FF66FE0042B59E /* SendIRCommand.m */,
+				C25B45B616FF66FE0042B59E /* SwitchToRemoteCommand.m */,
+				C25B45B716FF66FE0042B59E /* SystemCommand.m */,
+				C277343F1701365C00E85F8D /* SwitchToConfigCommand.m */,
+				C23F1E5C1705064E0084718A /* SendCommand.m */,
+			);
+			path = "Command Subclasses";
+			sourceTree = "<group>";
+		};
+		C25B45BE16FF66FE0042B59E /* CommandSets */ = {
+			isa = PBXGroup;
+			children = (
+				C25B45BB16FF66FE0042B59E /* CommandContainer.h */,
+				C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */,
+				C25B45BC16FF66FE0042B59E /* CommandContainer.m */,
+				C25B45C016FF66FE0042B59E /* CommandSet.m */,
+				C25B45C216FF66FE0042B59E /* CommandSetCollection.m */,
+			);
+			path = CommandSets;
+			sourceTree = "<group>";
+		};
+		C25B462D16FF679A0042B59E /* Editors */ = {
+			isa = PBXGroup;
+			children = (
+				C253B09517E61AC2007CDFE4 /* Auxiallary Editors */,
+				C25B464216FF679B0042B59E /* ButtonEditingViewController.m */,
+				C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */,
+				C25B464616FF679B0042B59E /* DetailedButtonEditingViewController.m */,
+				C25B464716FF679B0042B59E /* RemoteElementEditingViewController+Gestures.h */,
+				C25B464816FF679B0042B59E /* RemoteElementEditingViewController+Gestures.m */,
+				C25B464916FF679B0042B59E /* RemoteElementEditingViewController+IBActions.h */,
+				C25B464A16FF679B0042B59E /* RemoteElementEditingViewController+IBActions.m */,
+				C25B464B16FF679B0042B59E /* RemoteElementEditingViewController+Selection.h */,
+				C25B464C16FF679B0042B59E /* RemoteElementEditingViewController+Selection.m */,
+				C25B464D16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.h */,
+				C25B464E16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.m */,
+				C25B464F16FF679B0042B59E /* RemoteElementEditingViewController.h */,
+				C25B465016FF679B0042B59E /* RemoteElementEditingViewController.m */,
+				C25B465116FF679B0042B59E /* RemoteElementEditingViewController_Private.h */,
+				C25B465316FF679B0042B59E /* RemoteEditingViewController.m */,
+			);
 			path = Editors;
 			sourceTree = "<group>";
 		};
 		C25B468016FF67AF0042B59E /* Control State Sets */ = {
 			isa = PBXGroup;
 			children = (
-				C25B468116FF67AF0042B59E /* REControlStateButtonImageSet.m */,
-				C25B468216FF67AF0042B59E /* REControlStateColorSet.m */,
-				C25B468316FF67AF0042B59E /* REControlStateIconImageSet.m */,
-				C25B468416FF67AF0042B59E /* REControlStateImageSet.m */,
-				C25B468516FF67AF0042B59E /* REControlStateSet.h */,
-				C25B468616FF67AF0042B59E /* REControlStateSet.m */,
-				C25B468716FF67AF0042B59E /* REControlStateTitleSet.m */,
-				C259F820171898DB001FCED5 /* REControlStateSetProxy.h */,
-				C259F821171898DB001FCED5 /* REControlStateSetProxy.m */,
-				C259F8231718AF1D001FCED5 /* REControlStateSetProxy_Private.h */,
+				C25B468216FF67AF0042B59E /* ControlStateColorSet.m */,
+				C25B468416FF67AF0042B59E /* ControlStateImageSet.m */,
+				C25B468516FF67AF0042B59E /* ControlStateSet.h */,
+				C25B468616FF67AF0042B59E /* ControlStateSet.m */,
+				C25B468716FF67AF0042B59E /* ControlStateTitleSet.m */,
+				C253B09417E61619007CDFE4 /* disabled */,
 			);
 			path = "Control State Sets";
 			sourceTree = "<group>";
@@ -1332,15 +1345,15 @@
 		C25B469416FF67D00042B59E /* Construction */ = {
 			isa = PBXGroup;
 			children = (
-				C25B469616FF67D00042B59E /* REButtonBuilder.m */,
-				C25B469816FF67D00042B59E /* REButtonGroupBuilder.m */,
-				C25B469A16FF67D00042B59E /* REMacroBuilder.m */,
-				C25B469C16FF67D00042B59E /* RERemoteBuilder.m */,
+				C25B469616FF67D00042B59E /* ButtonBuilder.m */,
+				C25B469816FF67D00042B59E /* ButtonGroupBuilder.m */,
+				C25B469A16FF67D00042B59E /* MacroBuilder.m */,
+				C25B469C16FF67D00042B59E /* RemoteBuilder.m */,
 				C25B469D16FF67D00042B59E /* RemoteConstruction.h */,
 				C25B469E16FF67D00042B59E /* RemoteElementConstructionManager.h */,
 				C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */,
-				C203BBB81726DB96002FD3EA /* RECommandSetBuilder.m */,
-				C28C7B6F1798424400E4F9FC /* REButtonGroupBuilder+Developer.m */,
+				C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */,
+				C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */,
 				C2DB0BDB179DA6EA0005ECA4 /* RemoteElementConstructionManager_Private.h */,
 			);
 			path = Construction;
@@ -1349,12 +1362,12 @@
 		C25B46A016FF67D00042B59E /* Remote Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C2F225481715CB8500D22B5F /* REActivity.h */,
-				C2F225491715CB8500D22B5F /* REActivity.m */,
-				C25B46A116FF67D00042B59E /* RERemoteController.h */,
-				C25B46A216FF67D00042B59E /* RERemoteController.m */,
-				C25B46A316FF67D00042B59E /* RERemoteViewController.h */,
-				C25B46A416FF67D00042B59E /* RERemoteViewController.m */,
+				C2F225481715CB8500D22B5F /* Activity.h */,
+				C2F225491715CB8500D22B5F /* Activity.m */,
+				C25B46A116FF67D00042B59E /* RemoteController.h */,
+				C25B46A216FF67D00042B59E /* RemoteController.m */,
+				C25B46A316FF67D00042B59E /* RemoteViewController.h */,
+				C25B46A416FF67D00042B59E /* RemoteViewController.m */,
 			);
 			path = "Remote Controllers";
 			sourceTree = "<group>";
@@ -1362,12 +1375,12 @@
 		C25B46B316FF68840042B59E /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				C25B46B416FF68840042B59E /* REButtonConfigurationDelegate.m */,
-				C25B46B516FF68840042B59E /* REButtonGroupConfigurationDelegate.m */,
-				C25B46B616FF68840042B59E /* REConfigurationDelegate.h */,
-				C25B46B716FF68840042B59E /* REConfigurationDelegate.m */,
-				C25B46B816FF68840042B59E /* REConfigurationDelegate_Private.h */,
-				C25B46B916FF68840042B59E /* RERemoteConfigurationDelegate.m */,
+				C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */,
+				C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */,
+				C25B46B616FF68840042B59E /* ConfigurationDelegate.h */,
+				C25B46B716FF68840042B59E /* ConfigurationDelegate.m */,
+				C25B46B816FF68840042B59E /* ConfigurationDelegate_Private.h */,
+				C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -1375,10 +1388,10 @@
 		C25B46C216FF688F0042B59E /* Constraints */ = {
 			isa = PBXGroup;
 			children = (
-				C25B46C316FF68900042B59E /* REConstraintManager.h */,
-				C25B46C416FF68900042B59E /* REConstraintManager.m */,
-				C25B46C516FF68900042B59E /* RELayoutConfiguration.h */,
-				C25B46C616FF68900042B59E /* RELayoutConfiguration.m */,
+				C25B46C316FF68900042B59E /* ConstraintManager.h */,
+				C25B46C416FF68900042B59E /* ConstraintManager.m */,
+				C25B46C516FF68900042B59E /* LayoutConfiguration.h */,
+				C25B46C616FF68900042B59E /* LayoutConfiguration.m */,
 			);
 			path = Constraints;
 			sourceTree = "<group>";
@@ -1386,10 +1399,10 @@
 		C25B46CB16FF68A90042B59E /* Constraints */ = {
 			isa = PBXGroup;
 			children = (
-				C25B46CC16FF68A90042B59E /* REConstraint.h */,
-				C25B46CD16FF68A90042B59E /* REConstraint.m */,
-				C203BC201726F30D002FD3EA /* RELayoutConstraint.h */,
-				C203BC211726F30D002FD3EA /* RELayoutConstraint.m */,
+				C25B46CC16FF68A90042B59E /* Constraint.h */,
+				C25B46CD16FF68A90042B59E /* Constraint.m */,
+				C203BC201726F30D002FD3EA /* LayoutConstraint.h */,
+				C203BC211726F30D002FD3EA /* LayoutConstraint.m */,
 			);
 			path = Constraints;
 			sourceTree = "<group>";
@@ -1398,8 +1411,6 @@
 			isa = PBXGroup;
 			children = (
 				C25B46D116FF69110042B59E /* BankObject Subclasses */,
-				C25B46E916FF69110042B59E /* BankObject.h */,
-				C25B46EA16FF69110042B59E /* BankObject.m */,
 				C25B46EC16FF69110042B59E /* BankObjectGroup.h */,
 				C25B46ED16FF69110042B59E /* BankObjectGroup.m */,
 				C25B46F016FF69110042B59E /* BankObjectPreview.h */,
@@ -1413,22 +1424,17 @@
 		C25B46D116FF69110042B59E /* BankObject Subclasses */ = {
 			isa = PBXGroup;
 			children = (
-				C2B4998D17C956AE00EC6C7C /* BOManufacturer.h */,
-				C25B46DF16FF69110042B59E /* BOManufacturer.m */,
-				C2B4998C17C9569C00EC6C7C /* BOComponentDevice.h */,
-				C25B46D416FF69110042B59E /* BOComponentDevice.m */,
-				C2B4998B17C9568900EC6C7C /* BOPreset.h */,
-				C25B46F516FF69110042B59E /* BOPreset.m */,
-				C2B4998A17C9567800EC6C7C /* BOImage.h */,
-				C25B46E616FF69110042B59E /* BOImage_Private.h */,
-				C25B46E516FF69110042B59E /* BOImage.m */,
-				C25B46E116FF69110042B59E /* BOBackgroundImage.m */,
-				C25B46E216FF69110042B59E /* BOButtonImage.m */,
-				C25B46E316FF69110042B59E /* BOIconImage.m */,
-				C2B4998917C9562D00EC6C7C /* BOIRCode.h */,
-				C25B46D816FF69110042B59E /* BOIRCode.m */,
-				C25B46DD16FF69110042B59E /* BOFactoryIRCode.m */,
-				C25B46E816FF69110042B59E /* BOUserIRCode.m */,
+				C2B4998D17C956AE00EC6C7C /* Manufacturer.h */,
+				C25B46DF16FF69110042B59E /* Manufacturer.m */,
+				C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */,
+				C25B46D416FF69110042B59E /* ComponentDevice.m */,
+				C2B4998B17C9568900EC6C7C /* Preset.h */,
+				C25B46F516FF69110042B59E /* Preset.m */,
+				C2B4998A17C9567800EC6C7C /* Image.h */,
+				C25B46E616FF69110042B59E /* Image_Private.h */,
+				C25B46E516FF69110042B59E /* Image.m */,
+				C2B4998917C9562D00EC6C7C /* IRCode.h */,
+				C25B46D816FF69110042B59E /* IRCode.m */,
 			);
 			path = "BankObject Subclasses";
 			sourceTree = "<group>";
@@ -1436,14 +1442,14 @@
 		C26329491713B0110080330D /* Themes */ = {
 			isa = PBXGroup;
 			children = (
-				C20C50E4179E1EFE007704C7 /* RENightshadeThemeDecorator.m */,
-				C23423C61795101D00703F86 /* REThemeSettings.m */,
-				C26329471713AFF30080330D /* RETheme.m */,
-				C26329461713AFF20080330D /* RETheme.h */,
-				C263294B1714862A0080330D /* RETheme+ApplyingThemes.m */,
-				C263294D171487760080330D /* RETheme_Private.h */,
-				C225FC071794A605008B8FF6 /* REBuiltinTheme.m */,
-				C225FC0A1794A6A5008B8FF6 /* RECustomTheme.m */,
+				C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */,
+				C23423C61795101D00703F86 /* ThemeSettings.m */,
+				C26329471713AFF30080330D /* Theme.m */,
+				C26329461713AFF20080330D /* Theme.h */,
+				C263294B1714862A0080330D /* Theme+ApplyingThemes.m */,
+				C263294D171487760080330D /* Theme_Private.h */,
+				C225FC071794A605008B8FF6 /* BuiltinTheme.m */,
+				C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */,
 			);
 			path = Themes;
 			sourceTree = "<group>";
@@ -1477,11 +1483,11 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C265099F1730906700C202FF /* MagicalRecord.framework */,
-				C26509A01730906800C202FF /* MSKit.framework */,
-				C29B27EE172E0D27006046A5 /* ParseKit.framework */,
+				C2318B1617E3D0BE00CF58D9 /* Lumberjack.framework */,
+				C2318B0D17E3CCC200CF58D9 /* ParseKit.framework */,
+				C215F7F117E39D3E004B884C /* MSKit.framework */,
+				C215F7EF17E39D31004B884C /* MagicalRecord.framework */,
 				C21687C3172363F200064C95 /* OCHamcrestIOS.framework */,
-				C2BF4FB5171AFAFE00C23DCA /* Lumberjack.framework */,
 				C26BBB3716DC1C960093D5B4 /* OpenGLES.framework */,
 				C26BBB3816DC1C960093D5B4 /* QuickLook.framework */,
 				C26BBB3916DC1C960093D5B4 /* GLKit.framework */,
@@ -1543,8 +1549,8 @@
 			isa = PBXGroup;
 			children = (
 				C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */,
-				C2F2254B1715E39600D22B5F /* MSModelObject.h */,
-				C2F2254C1715E39600D22B5F /* MSModelObject.m */,
+				C2F2254B1715E39600D22B5F /* ModelObject.h */,
+				C2F2254C1715E39600D22B5F /* ModelObject.m */,
 				C23004C416DD3AA100D30A19 /* Remote.sqlite */,
 				C26BB09816DC187D0093D5B4 /* Database Property Lists */,
 				C28FAF7B173014B4002902D9 /* MSRemoteImportSupportFunctions.m */,
@@ -1625,8 +1631,8 @@
 		C26BAF8716DC18530093D5B4 /* Other View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C26BAF9F16DC18530093D5B4 /* LaunchScreenViewController.h */,
-				C26BAFA016DC18530093D5B4 /* LaunchScreenViewController.m */,
+				C26BAF9F16DC18530093D5B4 /* MainMenuViewController.h */,
+				C26BAFA016DC18530093D5B4 /* MainMenuViewController.m */,
 			);
 			path = "Other View Controllers";
 			sourceTree = "<group>";
@@ -1634,6 +1640,8 @@
 		C26BAFE716DC18530093D5B4 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
+				C2318B1817E3D40000CF58D9 /* RemoteControl.h */,
+				C2318B1917E3D40000CF58D9 /* RemoteControl.m */,
 				C26BAFE816DC18530093D5B4 /* CoreDataManager.h */,
 				C26BAFE916DC18530093D5B4 /* CoreDataManager.m */,
 				C26BAFEA16DC18530093D5B4 /* DatabaseLoader.h */,
@@ -1651,6 +1659,8 @@
 				C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */,
 				C26BAFFA16DC18530093D5B4 /* ViewDecorator.h */,
 				C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */,
+				C2318B2117E4C80E00CF58D9 /* Editor.h */,
+				C2318B2217E4C80E00CF58D9 /* Editor.m */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -1717,6 +1727,7 @@
 		C26BB59016DC18A90093D5B4 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				C2318B2417E50DAE00CF58D9 /* BankIndex.xib */,
 				C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */,
 				C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */,
 				C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */,
@@ -1979,7 +1990,7 @@
 				C25B46A016FF67D00042B59E /* Remote Controllers */,
 				C25B45AF16FF66FD0042B59E /* Commands */,
 				C25B457116FF629F0042B59E /* Remote Element */,
-				C25B456216FF5F8E0042B59E /* REView */,
+				C25B456216FF5F8E0042B59E /* Views */,
 			);
 			path = "Remote Elements";
 			sourceTree = "<group>";
@@ -1997,8 +2008,10 @@
 		C2E67D201705E92A00AB0392 /* Bank */ = {
 			isa = PBXGroup;
 			children = (
+				C2318B1B17E3DACA00CF58D9 /* Bank.h */,
+				C2318B1C17E3DACA00CF58D9 /* Bank.m */,
 				C25B46D016FF69110042B59E /* BankObject */,
-				C2E67D1F1705E91A00AB0392 /* Bank View Controllers */,
+				C2318B3017E553DD00CF58D9 /* disabled */,
 			);
 			name = Bank;
 			sourceTree = "<group>";
@@ -2287,6 +2300,7 @@
 				C26BBB2E16DC1B5C0093D5B4 /* ScaleVertical@2x.png in Resources */,
 				C26BBB2F16DC1B5C0093D5B4 /* Trash-Small.png in Resources */,
 				C26BBB3016DC1B5C0093D5B4 /* Trash-Small@2x.png in Resources */,
+				C2318B2517E50DAE00CF58D9 /* BankIndex.xib in Resources */,
 				C26BBB3116DC1B5C0093D5B4 /* Trash.png in Resources */,
 				C26BBB3216DC1B5C0093D5B4 /* Trash@2x.png in Resources */,
 				C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */,
@@ -2323,65 +2337,61 @@
 			buildActionMask = 2147483647;
 			files = (
 				C203BBCB1726EBD7002FD3EA /* DatabaseConstructionTests.m in Sources */,
-				C203BBD41726ECDE002FD3EA /* MSModelObject.m in Sources */,
-				C203BBD51726ECE3002FD3EA /* BOPreset.m in Sources */,
-				C203BBD61726ECE3002FD3EA /* BOIRCode.m in Sources */,
-				C203BBD71726ECE3002FD3EA /* BOFactoryIRCode.m in Sources */,
-				C203BBD81726ECE3002FD3EA /* BOUserIRCode.m in Sources */,
-				C203BBD91726ECE3002FD3EA /* BOComponentDevice.m in Sources */,
-				C203BBDD1726ECE3002FD3EA /* BOImage.m in Sources */,
-				C20C50E6179E1EFE007704C7 /* RENightshadeThemeDecorator.m in Sources */,
-				C28C7B711798424400E4F9FC /* REButtonGroupBuilder+Developer.m in Sources */,
-				C203BBDE1726ECE3002FD3EA /* BOManufacturer.m in Sources */,
-				C203BBDF1726ECE7002FD3EA /* BankObject.m in Sources */,
+				C203BBD41726ECDE002FD3EA /* ModelObject.m in Sources */,
+				C203BBD51726ECE3002FD3EA /* Preset.m in Sources */,
+				C203BBD61726ECE3002FD3EA /* IRCode.m in Sources */,
+				C203BBD91726ECE3002FD3EA /* ComponentDevice.m in Sources */,
+				C203BBDD1726ECE3002FD3EA /* Image.m in Sources */,
+				C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
+				C28C7B711798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */,
+				C203BBDE1726ECE3002FD3EA /* Manufacturer.m in Sources */,
 				C203BBE01726ECE7002FD3EA /* BankObjectGroup.m in Sources */,
 				C203BBE11726ECE7002FD3EA /* BankObjectPreview.m in Sources */,
-				C203BBE21726ECF1002FD3EA /* REButtonBuilder.m in Sources */,
-				C203BBE31726ECF1002FD3EA /* REButtonGroupBuilder.m in Sources */,
-				C203BBE41726ECF1002FD3EA /* REMacroBuilder.m in Sources */,
-				C203BBE51726ECF1002FD3EA /* RERemoteBuilder.m in Sources */,
+				C203BBE21726ECF1002FD3EA /* ButtonBuilder.m in Sources */,
+				C203BBE31726ECF1002FD3EA /* ButtonGroupBuilder.m in Sources */,
+				C203BBE41726ECF1002FD3EA /* MacroBuilder.m in Sources */,
+				C203BBE51726ECF1002FD3EA /* RemoteBuilder.m in Sources */,
 				C203BBE61726ECF1002FD3EA /* RemoteElementConstructionManager.m in Sources */,
-				C203BBE71726ECF1002FD3EA /* RECommandSetBuilder.m in Sources */,
-				C203BBE91726ECFA002FD3EA /* REControlStateColorSet.m in Sources */,
-				C225FC0C1794A6A5008B8FF6 /* RECustomTheme.m in Sources */,
-				C203BBEB1726ECFA002FD3EA /* REControlStateImageSet.m in Sources */,
-				C203BBEC1726ECFA002FD3EA /* REControlStateSet.m in Sources */,
-				C203BBED1726ECFA002FD3EA /* REControlStateTitleSet.m in Sources */,
-				C203BBEE1726ECFA002FD3EA /* REControlStateSetProxy.m in Sources */,
-				C203BBEF1726ED01002FD3EA /* REActivity.m in Sources */,
-				C203BBF01726ED01002FD3EA /* RERemoteController.m in Sources */,
-				C203BBF11726ED07002FD3EA /* REDeviceConfiguration.m in Sources */,
-				C203BBF21726ED0C002FD3EA /* REActivityCommand.m in Sources */,
-				C203BBF31726ED0C002FD3EA /* REDelayCommand.m in Sources */,
-				C203BBF41726ED0C002FD3EA /* REHTTPCommand.m in Sources */,
-				C203BBF51726ED0C002FD3EA /* REMacroCommand.m in Sources */,
-				C203BBF61726ED0C002FD3EA /* REPowerCommand.m in Sources */,
-				C203BBF71726ED0C002FD3EA /* RESendIRCommand.m in Sources */,
-				C203BBF81726ED0C002FD3EA /* RESwitchToRemoteCommand.m in Sources */,
-				C203BBF91726ED0C002FD3EA /* RESystemCommand.m in Sources */,
-				C203BBFA1726ED0C002FD3EA /* RESwitchToConfigCommand.m in Sources */,
-				C203BBFB1726ED0C002FD3EA /* RESendCommand.m in Sources */,
-				C203BBFC1726ED0F002FD3EA /* RECommand.m in Sources */,
-				C203BBFD1726ED13002FD3EA /* RECommandContainer.m in Sources */,
+				C203BBE71726ECF1002FD3EA /* CommandSetBuilder.m in Sources */,
+				C203BBE91726ECFA002FD3EA /* ControlStateColorSet.m in Sources */,
+				C225FC0C1794A6A5008B8FF6 /* CustomTheme.m in Sources */,
+				C203BBEB1726ECFA002FD3EA /* ControlStateImageSet.m in Sources */,
+				C203BBEC1726ECFA002FD3EA /* ControlStateSet.m in Sources */,
+				C203BBED1726ECFA002FD3EA /* ControlStateTitleSet.m in Sources */,
+				C203BBEF1726ED01002FD3EA /* Activity.m in Sources */,
+				C203BBF01726ED01002FD3EA /* RemoteController.m in Sources */,
+				C203BBF11726ED07002FD3EA /* ComponentDeviceConfiguration.m in Sources */,
+				C203BBF21726ED0C002FD3EA /* ActivityCommand.m in Sources */,
+				C203BBF31726ED0C002FD3EA /* DelayCommand.m in Sources */,
+				C203BBF41726ED0C002FD3EA /* HTTPCommand.m in Sources */,
+				C203BBF51726ED0C002FD3EA /* MacroCommand.m in Sources */,
+				C203BBF61726ED0C002FD3EA /* PowerCommand.m in Sources */,
+				C203BBF71726ED0C002FD3EA /* SendIRCommand.m in Sources */,
+				C203BBF81726ED0C002FD3EA /* SwitchToRemoteCommand.m in Sources */,
+				C203BBF91726ED0C002FD3EA /* SystemCommand.m in Sources */,
+				C203BBFA1726ED0C002FD3EA /* SwitchToConfigCommand.m in Sources */,
+				C203BBFB1726ED0C002FD3EA /* SendCommand.m in Sources */,
+				C203BBFC1726ED0F002FD3EA /* Command.m in Sources */,
+				C203BBFD1726ED13002FD3EA /* CommandContainer.m in Sources */,
 				C29F23ED178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
-				C203BBFE1726ED13002FD3EA /* RECommandSet.m in Sources */,
-				C203BBFF1726ED13002FD3EA /* RECommandSetCollection.m in Sources */,
-				C23423C81795101D00703F86 /* REThemeSettings.m in Sources */,
-				C203BC001726ED18002FD3EA /* RETheme.m in Sources */,
-				C203BC011726ED18002FD3EA /* RETheme+ApplyingThemes.m in Sources */,
-				C203BC021726ED1C002FD3EA /* REConstraintManager.m in Sources */,
-				C203BC031726ED1C002FD3EA /* RELayoutConfiguration.m in Sources */,
-				C203BC041726ED21002FD3EA /* REButtonConfigurationDelegate.m in Sources */,
-				C203BC051726ED21002FD3EA /* REButtonGroupConfigurationDelegate.m in Sources */,
-				C203BC061726ED21002FD3EA /* REConfigurationDelegate.m in Sources */,
-				C203BC071726ED21002FD3EA /* RERemoteConfigurationDelegate.m in Sources */,
+				C203BBFE1726ED13002FD3EA /* CommandSet.m in Sources */,
+				C203BBFF1726ED13002FD3EA /* CommandSetCollection.m in Sources */,
+				C23423C81795101D00703F86 /* ThemeSettings.m in Sources */,
+				C203BC001726ED18002FD3EA /* Theme.m in Sources */,
+				C203BC011726ED18002FD3EA /* Theme+ApplyingThemes.m in Sources */,
+				C203BC021726ED1C002FD3EA /* ConstraintManager.m in Sources */,
+				C203BC031726ED1C002FD3EA /* LayoutConfiguration.m in Sources */,
+				C203BC041726ED21002FD3EA /* ButtonConfigurationDelegate.m in Sources */,
+				C203BC051726ED21002FD3EA /* ButtonGroupConfigurationDelegate.m in Sources */,
+				C203BC061726ED21002FD3EA /* ConfigurationDelegate.m in Sources */,
+				C203BC071726ED21002FD3EA /* RemoteConfigurationDelegate.m in Sources */,
 				C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */,
 				C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */,
-				C203BC0B1726ED24002FD3EA /* RERemote.m in Sources */,
-				C203BC0C1726ED24002FD3EA /* REButtonGroup.m in Sources */,
-				C203BC0D1726ED24002FD3EA /* REButton.m in Sources */,
-				C225FC091794A605008B8FF6 /* REBuiltinTheme.m in Sources */,
-				C203BC0E1726ED2A002FD3EA /* REConstraint.m in Sources */,
+				C203BC0B1726ED24002FD3EA /* Remote.m in Sources */,
+				C203BC0C1726ED24002FD3EA /* ButtonGroup.m in Sources */,
+				C203BC0D1726ED24002FD3EA /* Button.m in Sources */,
+				C225FC091794A605008B8FF6 /* BuiltinTheme.m in Sources */,
+				C203BC0E1726ED2A002FD3EA /* Constraint.m in Sources */,
 				C203BC0F1726ED36002FD3EA /* NetworkDevice.m in Sources */,
 				C203BC101726ED44002FD3EA /* CoreDataManager.m in Sources */,
 				C203BC111726ED44002FD3EA /* DatabaseLoader.m in Sources */,
@@ -2404,93 +2414,85 @@
 			buildActionMask = 2147483647;
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
-				C25B473116FF8D0A0042B59E /* BOComponentDevice.m in Sources */,
-				C25B473216FF8D0A0042B59E /* REDeviceConfiguration.m in Sources */,
-				C25B473316FF8D0A0042B59E /* BOIRCode.m in Sources */,
-				C25B473516FF8D0A0042B59E /* BOFactoryIRCode.m in Sources */,
-				C25B473616FF8D0A0042B59E /* BOManufacturer.m in Sources */,
-				C28C7B701798424400E4F9FC /* REButtonGroupBuilder+Developer.m in Sources */,
-				C25B473A16FF8D0A0042B59E /* BOImage.m in Sources */,
-				C25B473B16FF8D0A0042B59E /* BOUserIRCode.m in Sources */,
-				C25B473C16FF8D0A0042B59E /* BankObject.m in Sources */,
+				C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */,
+				C25B473216FF8D0A0042B59E /* ComponentDeviceConfiguration.m in Sources */,
+				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
+				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
+				C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */,
+				C28C7B701798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */,
+				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C25B473D16FF8D0A0042B59E /* BankObjectGroup.m in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
-				C25B474016FF8D0A0042B59E /* BOPreset.m in Sources */,
+				C25B474016FF8D0A0042B59E /* Preset.m in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
-				C25B474516FF8D5E0042B59E /* REButtonBuilder.m in Sources */,
-				C25B474616FF8D5E0042B59E /* REButtonGroupBuilder.m in Sources */,
-				C25B474716FF8D5E0042B59E /* REMacroBuilder.m in Sources */,
-				C25B474816FF8D5E0042B59E /* RERemoteBuilder.m in Sources */,
+				C25B474516FF8D5E0042B59E /* ButtonBuilder.m in Sources */,
+				C25B474616FF8D5E0042B59E /* ButtonGroupBuilder.m in Sources */,
+				C25B474716FF8D5E0042B59E /* MacroBuilder.m in Sources */,
+				C25B474816FF8D5E0042B59E /* RemoteBuilder.m in Sources */,
 				C25B474916FF8D5E0042B59E /* RemoteElementConstructionManager.m in Sources */,
-				C25B474A16FF8D5E0042B59E /* RERemoteController.m in Sources */,
-				C25B474B16FF8D5E0042B59E /* RERemoteViewController.m in Sources */,
-				C25B474D16FF8D5E0042B59E /* REControlStateColorSet.m in Sources */,
-				C25B474F16FF8D5E0042B59E /* REControlStateImageSet.m in Sources */,
-				C25B475016FF8D5E0042B59E /* REControlStateSet.m in Sources */,
-				C25B475116FF8D5E0042B59E /* REControlStateTitleSet.m in Sources */,
+				C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */,
+				C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */,
+				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
+				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
+				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
+				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
 				C25B475316FF8D5E0042B59E /* BackgroundEditingViewController.m in Sources */,
 				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
 				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,
-				C225FC081794A605008B8FF6 /* REBuiltinTheme.m in Sources */,
+				C225FC081794A605008B8FF6 /* BuiltinTheme.m in Sources */,
 				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
-				C225FC0B1794A6A5008B8FF6 /* RECustomTheme.m in Sources */,
+				C225FC0B1794A6A5008B8FF6 /* CustomTheme.m in Sources */,
 				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
 				C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */,
 				C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */,
-				C25B475B16FF8D5E0042B59E /* REButtonEditingViewController.m in Sources */,
-				C25B475C16FF8D5E0042B59E /* REButtonGroupEditingViewController.m in Sources */,
-				C25B475D16FF8D5E0042B59E /* REDetailedButtonEditingViewController.m in Sources */,
-				C25B475E16FF8D5E0042B59E /* REEditingViewController+Gestures.m in Sources */,
-				C25B475F16FF8D5E0042B59E /* REEditingViewController+IBActions.m in Sources */,
-				C25B476016FF8D5E0042B59E /* REEditingViewController+Selection.m in Sources */,
-				C25B476116FF8D5E0042B59E /* REEditingViewController+Toolbars.m in Sources */,
-				C25B476216FF8D5E0042B59E /* REEditingViewController.m in Sources */,
-				C25B476316FF8D5E0042B59E /* RERemoteEditingViewController.m in Sources */,
+				C25B475B16FF8D5E0042B59E /* ButtonEditingViewController.m in Sources */,
+				C25B475C16FF8D5E0042B59E /* ButtonGroupEditingViewController.m in Sources */,
+				C25B475D16FF8D5E0042B59E /* DetailedButtonEditingViewController.m in Sources */,
+				C25B475E16FF8D5E0042B59E /* RemoteElementEditingViewController+Gestures.m in Sources */,
+				C25B475F16FF8D5E0042B59E /* RemoteElementEditingViewController+IBActions.m in Sources */,
+				C25B476016FF8D5E0042B59E /* RemoteElementEditingViewController+Selection.m in Sources */,
+				C25B476116FF8D5E0042B59E /* RemoteElementEditingViewController+Toolbars.m in Sources */,
+				C25B476216FF8D5E0042B59E /* RemoteElementEditingViewController.m in Sources */,
+				C25B476316FF8D5E0042B59E /* RemoteEditingViewController.m in Sources */,
 				C25B476416FF8D5E0042B59E /* SendIRCommandEditingViewController.m in Sources */,
 				C25B476516FF8D5E0042B59E /* SwitchToRemoteCommandEditingViewController.m in Sources */,
-				C25B476616FF8D5E0042B59E /* REDelayCommand.m in Sources */,
-				C25B476716FF8D5E0042B59E /* REHTTPCommand.m in Sources */,
-				C25B476816FF8D5E0042B59E /* REMacroCommand.m in Sources */,
-				C25B476916FF8D5E0042B59E /* REPowerCommand.m in Sources */,
-				C25B476A16FF8D5E0042B59E /* RESendIRCommand.m in Sources */,
-				C25B476B16FF8D5E0042B59E /* RESwitchToRemoteCommand.m in Sources */,
-				C25B476C16FF8D5E0042B59E /* RESystemCommand.m in Sources */,
-				C25B476D16FF8D5E0042B59E /* RECommand.m in Sources */,
-				C25B476E16FF8D5E0042B59E /* RECommandContainer.m in Sources */,
-				C25B476F16FF8D5E0042B59E /* RECommandSet.m in Sources */,
-				C25B477516FF8D5E0042B59E /* REConstraintManager.m in Sources */,
-				C25B477616FF8D5E0042B59E /* RELayoutConfiguration.m in Sources */,
-				C25B477716FF8D5E0042B59E /* REButtonConfigurationDelegate.m in Sources */,
-				C25B477816FF8D5E0042B59E /* REButtonGroupConfigurationDelegate.m in Sources */,
-				C25B477916FF8D5E0042B59E /* REConfigurationDelegate.m in Sources */,
-				C25B477A16FF8D5E0042B59E /* RERemoteConfigurationDelegate.m in Sources */,
-				C25B477B16FF8D5E0042B59E /* REButton.m in Sources */,
-				C25B477C16FF8D5E0042B59E /* REButtonGroup.m in Sources */,
+				C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */,
+				C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */,
+				C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */,
+				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
+				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
+				C25B476B16FF8D5E0042B59E /* SwitchToRemoteCommand.m in Sources */,
+				C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */,
+				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
+				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
+				C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */,
+				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
+				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
+				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
+				C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */,
+				C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */,
+				C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */,
+				C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */,
+				C25B477A16FF8D5E0042B59E /* RemoteConfigurationDelegate.m in Sources */,
+				C25B477B16FF8D5E0042B59E /* Button.m in Sources */,
+				C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */,
 				C25B477D16FF8D5E0042B59E /* RemoteElement+Accessors.m in Sources */,
 				C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */,
-				C25B478016FF8D5E0042B59E /* RERemote.m in Sources */,
-				C25B478116FF8D5E0042B59E /* REView.m in Sources */,
-				C25B478216FF8D5E0042B59E /* REView+Editing.m in Sources */,
-				C25B478316FF8D5E0042B59E /* REView+SubelementViews.m in Sources */,
-				C25B478416FF8D5E0042B59E /* REView+InternalSubviews.m in Sources */,
-				C25B478516FF8D5E0042B59E /* RELabelView.m in Sources */,
-				C25B478616FF8D5E0042B59E /* REConstraint.m in Sources */,
-				C25B478716FF8D5E0042B59E /* RERemoteView.m in Sources */,
-				C25B478816FF8D5E0042B59E /* REPickerLabelButtonGroupView.m in Sources */,
-				C25B478916FF8D5E0042B59E /* RESelectionPanelButtonGroupView.m in Sources */,
-				C25B478A16FF8D5E0042B59E /* REButtonGroupView.m in Sources */,
-				C25B478B16FF8D5E0042B59E /* REBatteryStatusButtonView.m in Sources */,
-				C25B478C16FF8D5E0042B59E /* REButtonView.m in Sources */,
-				C25B478D16FF8D5E0042B59E /* REConnectionStatusButtonView.m in Sources */,
-				C25B478E16FF8D5E0042B59E /* CodeDatabaseViewController.m in Sources */,
-				C25B478F16FF8D5E0042B59E /* CodeSetCodesViewController.m in Sources */,
-				C25B479016FF8D5E0042B59E /* ComponentDeviceListViewController.m in Sources */,
-				C25B479116FF8D5E0042B59E /* IRCodeDetailViewController.m in Sources */,
-				C25B479216FF8D5E0042B59E /* ManufacturerCodeSetsViewController.m in Sources */,
-				C25B479316FF8D5E0042B59E /* UserCodesViewController.m in Sources */,
-				C25B479416FF8D5E0042B59E /* LogsViewController.m in Sources */,
+				C25B478016FF8D5E0042B59E /* Remote.m in Sources */,
+				C25B478116FF8D5E0042B59E /* RemoteElementView.m in Sources */,
+				C25B478216FF8D5E0042B59E /* RemoteElementView+Editing.m in Sources */,
+				C25B478316FF8D5E0042B59E /* RemoteElementView+SubelementViews.m in Sources */,
+				C25B478416FF8D5E0042B59E /* RemoteElementView+InternalSubviews.m in Sources */,
+				C25B478616FF8D5E0042B59E /* Constraint.m in Sources */,
+				C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */,
+				C25B478816FF8D5E0042B59E /* PickerLabelButtonGroupView.m in Sources */,
+				C25B478916FF8D5E0042B59E /* SelectionPanelButtonGroupView.m in Sources */,
+				C25B478A16FF8D5E0042B59E /* ButtonGroupView.m in Sources */,
+				C25B478B16FF8D5E0042B59E /* BatteryStatusButtonView.m in Sources */,
+				C25B478C16FF8D5E0042B59E /* ButtonView.m in Sources */,
+				C25B478D16FF8D5E0042B59E /* ConnectionStatusButtonView.m in Sources */,
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* GlobalCacheConnectionManager.m in Sources */,
 				C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */,
@@ -2498,7 +2500,7 @@
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
 				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
 				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
-				C25B47A216FF8D5E0042B59E /* LaunchScreenViewController.m in Sources */,
+				C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */,
 				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
@@ -2512,28 +2514,27 @@
 				C25B47B016FF8D5E0042B59E /* MSRemoteConstants.m in Sources */,
 				C25B47B116FF8D5E0042B59E /* ButtonGroupEditingTest.m in Sources */,
 				C25B47B216FF8D5E0042B59E /* MSRemoteUITest.m in Sources */,
-				C20C50E5179E1EFE007704C7 /* RENightshadeThemeDecorator.m in Sources */,
+				C20C50E5179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
 				C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */,
 				C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */,
-				C27734401701365C00E85F8D /* RESwitchToConfigCommand.m in Sources */,
-				C2629BF7170248E100A0FFC2 /* RECommandSetCollection.m in Sources */,
+				C27734401701365C00E85F8D /* SwitchToConfigCommand.m in Sources */,
+				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
-				C23F1E5D1705064E0084718A /* RESendCommand.m in Sources */,
+				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
 				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,
 				C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */,
 				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
-				C23B946C170C8FEA0028CC06 /* REView+Drawing.m in Sources */,
-				C23B946F170C94BE0028CC06 /* REView+Debugging.m in Sources */,
-				C26329481713AFF30080330D /* RETheme.m in Sources */,
-				C23423C71795101D00703F86 /* REThemeSettings.m in Sources */,
-				C263294C1714862A0080330D /* RETheme+ApplyingThemes.m in Sources */,
-				C2F2254A1715CB8500D22B5F /* REActivity.m in Sources */,
-				C2F2254D1715E39600D22B5F /* MSModelObject.m in Sources */,
-				C2208B5017165BCF00AC0364 /* REActivityCommand.m in Sources */,
-				C259F822171898DB001FCED5 /* REControlStateSetProxy.m in Sources */,
-				C203BBB91726DB96002FD3EA /* RECommandSetBuilder.m in Sources */,
-				C203BC221726F30D002FD3EA /* RELayoutConstraint.m in Sources */,
+				C23B946C170C8FEA0028CC06 /* RemoteElementView+Drawing.m in Sources */,
+				C23B946F170C94BE0028CC06 /* RemoteElementView+Debugging.m in Sources */,
+				C26329481713AFF30080330D /* Theme.m in Sources */,
+				C23423C71795101D00703F86 /* ThemeSettings.m in Sources */,
+				C263294C1714862A0080330D /* Theme+ApplyingThemes.m in Sources */,
+				C2F2254A1715CB8500D22B5F /* Activity.m in Sources */,
+				C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */,
+				C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */,
+				C203BBB91726DB96002FD3EA /* CommandSetBuilder.m in Sources */,
+				C203BC221726F30D002FD3EA /* LayoutConstraint.m in Sources */,
 				C28FAF7C173014B4002902D9 /* MSRemoteImportSupportFunctions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2667,6 +2668,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
@@ -2675,6 +2677,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
@@ -2685,11 +2688,9 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/../../Frameworks/Lumberjack\"",
-					"\"$(SRCROOT)/../../../GitHub/parsekit\"",
-					"\"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"",
-					"\"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"",
+					"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks",
+					"$(SRCROOT)/../../Frameworks/Lumberjack",
+					"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/**",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2702,11 +2703,9 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/../../Frameworks/Lumberjack\"",
-					"\"$(SRCROOT)/../../../GitHub/parsekit\"",
-					"\"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"",
-					"\"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"",
+					"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks",
+					"$(SRCROOT)/../../Frameworks/Lumberjack",
+					"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/**",
 				);
 				SDKROOT = iphoneos;
 			};

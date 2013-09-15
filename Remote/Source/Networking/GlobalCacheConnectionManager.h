@@ -7,7 +7,7 @@
 //
 #import "RETypedefs.h"
 
-@class RESendIRCommand;
+@class SendIRCommand;
 
 MSKIT_EXTERN_STRING   NDiTachDeviceDiscoveryNotification;
 MSKIT_EXTERN_STRING   NDDefaultiTachDeviceKey;

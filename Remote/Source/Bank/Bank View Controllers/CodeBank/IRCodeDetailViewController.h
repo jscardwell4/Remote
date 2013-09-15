@@ -9,7 +9,7 @@
 #import "UserCodesViewController.h"
 #import "RECommand.h"
 
-@class   BOIRCode;
+@class   IRCode;
 
 @interface IRCodeDetailViewController : UIViewController <UITextFieldDelegate,
                                                           UITextViewDelegate,
@@ -31,5 +31,5 @@
     IBOutlet MSCheckboxView * testCommandResultView;
 }
 
-@property (nonatomic, weak) BOIRCode * code;
+@property (nonatomic, weak) IRCode * code;
 @end

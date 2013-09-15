@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-@class BOImage;
+@class Image;
 
 @interface REBackgroundCollectionViewController : UICollectionViewController
 
 @property (nonatomic, strong) NSManagedObjectContext * context;
-@property (nonatomic, strong) BOImage      * initialImage;
+@property (nonatomic, strong) Image      * initialImage;
 
-- (void)selectBackgroundImage:(BOImage *)backgroundImage;
-- (BOImage *)selectedImage;
+- (void)selectBackgroundImage:(Image *)backgroundImage;
+- (Image *)selectedImage;
 
 @end

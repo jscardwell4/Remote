@@ -11,5 +11,5 @@
 @interface MacroCommandEditingViewController : CommandDetailViewController <UITableViewDataSource,
                                                                             MSPickerInputButtonDelegate,
                                                                             UITableViewDelegate>
-@property (nonatomic, strong) REMacroCommand * command;
+@property (nonatomic, strong) MacroCommand * command;
 @end

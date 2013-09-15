@@ -8,12 +8,12 @@
 
 #import "CommandEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
-#import "RECommand.h"
+#import "Command.h"
 
 
-#import "RERemoteController.h"
-#import "BankObject.h"
-#import "BankObject.h"
+#import "RemoteController.h"
+//#import "BankObject.h"
+//#import "BankObject.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Painter.h"
 #import "CommandDetailViewController.h"
@@ -46,8 +46,8 @@ static NSArray const      * createableCommands;
 @property (strong, nonatomic) IBOutlet UIButton            * removeCommandButton;
 @property (strong, nonatomic) UIStoryboard                 * commandDetailEditors;
 
-@property (strong, nonatomic) RECommand * initialCommand;
-@property (strong, nonatomic) RECommand * currentCommand;
+@property (strong, nonatomic) Command * initialCommand;
+@property (strong, nonatomic) Command * currentCommand;
 
 - (void)removeAllChildren;
 
@@ -71,7 +71,7 @@ button                  = _button;
 
 + (void)initialize {
     if (self == [CommandEditingViewController class]) {
-        commandTypes = @{NSStringFromClass([RECommand class]) : @"Generic", NSStringFromClass([REPowerCommand class]) : @"Power", NSStringFromClass([RESwitchToRemoteCommand class]) : @"Switch-To-Remote", NSStringFromClass([REMacroCommand class]) : @"Macro", NSStringFromClass([REDelayCommand class]) : @"Delay", NSStringFromClass([RESystemCommand class]) : @"System", NSStringFromClass([RESendIRCommand class]) : @"Send IR", NSStringFromClass([REHTTPCommand class]) : @"HTTP"};
+        commandTypes = @{NSStringFromClass([Command class]) : @"Generic", NSStringFromClass([PowerCommand class]) : @"Power", NSStringFromClass([SwitchToRemoteCommand class]) : @"Switch-To-Remote", NSStringFromClass([MacroCommand class]) : @"Macro", NSStringFromClass([DelayCommand class]) : @"Delay", NSStringFromClass([SystemCommand class]) : @"System", NSStringFromClass([SendIRCommand class]) : @"Send IR", NSStringFromClass([HTTPCommand class]) : @"HTTP"};
 
         NSSet * excludedCommands = [NSSet setWithObjects:@"Generic", @"System", nil];
 
@@ -98,7 +98,7 @@ button                  = _button;
     return [commandTypes copy];
 }
 
-+ (NSString *)titleForClassOfCommand:(RECommand *)command {
++ (NSString *)titleForClassOfCommand:(Command *)command {
     return commandTypes[NSStringFromClass([command class])];
 }
 
@@ -148,7 +148,7 @@ button                  = _button;
         [self popChildController];
 }
 
-- (void)pushChildControllerForCommand:(RECommand *)command {
+- (void)pushChildControllerForCommand:(Command *)command {
     NSString                    * identifier      = ClassString([command class]);
     CommandDetailViewController * childController =
         [self.commandDetailEditors instantiateViewControllerWithIdentifier:identifier];
@@ -242,7 +242,7 @@ button                  = _button;
 
          ] anyObject];
     Class     commandClass = NSClassFromString(classString);
-    RECommand * newCommand   = (RECommand *)[commandClass commandInContext:_button.managedObjectContext];
+    Command * newCommand   = (Command *)[commandClass commandInContext:_button.managedObjectContext];
 
     if (newCommand) {
         self.currentCommand = newCommand;

@@ -93,6 +93,7 @@ static CGSize    labelShadowOffset = DefaultShadowOffset;
 + (void)decorateLabel:(UILabel *)label {
     if (!label) return;
 
+    label.backgroundColor = ClearColor;
     label.textColor    = labelTextColor;
     label.shadowColor  = labelShadowColor;
     label.shadowOffset = labelShadowOffset;

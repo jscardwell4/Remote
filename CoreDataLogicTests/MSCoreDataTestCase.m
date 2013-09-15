@@ -7,7 +7,7 @@
 //
 #import "MSCoreDataTestCase.h"
 #import "CoreDataManager.h"
-#import "MSModelObject.h"
+#import "ModelObject.h"
 
 //#define REMOVE_STORE_EACH_RUN
 

@@ -10,8 +10,8 @@
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
 #import "RemoteConstruction.h"
-#import "REEditingViewController_Private.h"
-#import "REView.h"
+#import "RemoteElementEditingViewController_Private.h"
+#import "RemoteElementView.h"
 #import "UITestRunner.h"
 
 // #define DEBUG_CONTEXT  (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE)
@@ -37,22 +37,22 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
             switch (testNumber) {
                 case 0 : {
                     NSOperationQueue            * queue   = [NSOperationQueue new];
-                    RERemoteEditingViewController * rEditor = [StoryboardProxy remoteEditingViewController];
+                    RemoteEditingViewController * rEditor = [StoryboardProxy remoteEditingViewController];
 
                     assert(rEditor);
 
-                    RERemote * r = [[RERemoteController remoteController] currentRemote];
+                    Remote * r = [[RemoteController remoteController] currentRemote];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;
                     rEditor.remoteElement  = r;
                     [AppController.window setRootViewController:rEditor];
 
-                    RERemoteView * rv = (RERemoteView *)rEditor.sourceView;
+                    RemoteView * rv = (RemoteView *)rEditor.sourceView;
 
                     assert(rv);
 
-                    REButtonGroupView * bgv = (REButtonGroupView *)rv[@"activityButtons"];
+                    ButtonGroupView * bgv = (ButtonGroupView *)rv[@"activityButtons"];
 
                     assert(bgv);
                     [rEditor selectView:bgv];
@@ -117,11 +117,11 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
             switch (testNumber) {
                 case 0 : {
                     NSOperationQueue            * queue   = [NSOperationQueue new];
-                    RERemoteEditingViewController * rEditor = [StoryboardProxy remoteEditingViewController];
+                    RemoteEditingViewController * rEditor = [StoryboardProxy remoteEditingViewController];
 
                     assert(rEditor);
 
-                    RERemote * r = [[RERemoteController remoteController] currentRemote];
+                    Remote * r = [[RemoteController remoteController] currentRemote];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;
@@ -151,11 +151,11 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 
                 case 1 : {
                     NSOperationQueue            * queue   = [NSOperationQueue new];
-                    RERemoteEditingViewController * rEditor = [StoryboardProxy remoteEditingViewController];
+                    RemoteEditingViewController * rEditor = [StoryboardProxy remoteEditingViewController];
 
                     assert(rEditor);
 
-                    RERemote * r = [RERemoteController remoteController][@"activity1"];
+                    Remote * r = [RemoteController remoteController][@"activity1"];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;

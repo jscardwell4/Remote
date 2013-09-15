@@ -1,34 +1,34 @@
 //
-//  REControlStateSetProxy_Private.h
+//  ControlStateSetProxy_Private.h
 //  Remote
 //
 //  Created by Jason Cardwell on 4/12/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import "REControlStateSetProxy.h"
+#import "ControlStateSetProxy.h"
 
-@interface REControlStateSetProxy () {
-    __weak id<REControlStateSetProxyDelegate> _delegate;
+@interface ControlStateSetProxy () {
+    __weak id<ControlStateSetProxyDelegate> _delegate;
 }
 
-@property (nonatomic, strong) REControlStateSet * proxiedObject;
+@property (nonatomic, strong) ControlStateSet * proxiedObject;
 
 @end
 
-@interface REControlStateTitleSetProxy ()
+@interface ControlStateTitleSetProxy ()
 
-//@property (nonatomic, strong) REControlStateTitleSet * proxiedObject;
+//@property (nonatomic, strong) ControlStateTitleSet * proxiedObject;
 
-- (REControlStateTitleSet *)proxiedObject;
-
-@end
-
-@interface REControlStateColorSetProxy ()
-
-//@property (nonatomic, strong) REControlStateColorSet * proxiedObject;
-- (REControlStateColorSet *)proxiedObject;
+- (ControlStateTitleSet *)proxiedObject;
 
 @end
 
-#import "REControlStateSet.h"
+@interface ControlStateColorSetProxy ()
+
+//@property (nonatomic, strong) ControlStateColorSet * proxiedObject;
+- (ControlStateColorSet *)proxiedObject;
+
+@end
+
+#import "ControlStateSet.h"

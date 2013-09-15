@@ -483,23 +483,23 @@ typedef enum RECommandOptions : NSUInteger RECommandOptions; enum RECommandOptio
     RECommandOptionLongPress = 1 << 0
 };
 
-typedef enum RESystemCommandType : int16_t RESystemCommandType; enum RESystemCommandType : int16_t
+typedef enum SystemCommandType : int16_t SystemCommandType; enum SystemCommandType : int16_t
 {
-    RESystemCommandToggleProximitySensor = 0,
-    RESystemCommandURLRequest            = 1,
-    RESystemCommandReturnToLaunchScreen  = 2,
-    RESystemCommandOpenSettings          = 3,
-    RESystemCommandOpenEditor            = 4
+    SystemCommandToggleProximitySensor = 0,
+    SystemCommandURLRequest            = 1,
+    SystemCommandReturnToLaunchScreen  = 2,
+    SystemCommandOpenSettings          = 3,
+    SystemCommandOpenEditor            = 4
 };
 
-static inline NSString * NSStringFromRESystemCommandType(RESystemCommandType type)
+static inline NSString * NSStringFromSystemCommandType(SystemCommandType type)
 {
     switch (type) {
-        case RESystemCommandOpenEditor: 			   return @"RESystemCommandOpenEditor";
-        case RESystemCommandOpenSettings: 		   return @"RESystemCommandOpenSettings";
-        case RESystemCommandReturnToLaunchScreen:  return @"RESystemCommandReturnToLaunchScreen";
-        case RESystemCommandToggleProximitySensor: return @"RESystemCommandToggleProximitySensor";
-        case RESystemCommandURLRequest:  			   return @"RESystemCommandURLRequest";
+        case SystemCommandOpenEditor: 			   return @"SystemCommandOpenEditor";
+        case SystemCommandOpenSettings: 		   return @"SystemCommandOpenSettings";
+        case SystemCommandReturnToLaunchScreen:  return @"SystemCommandReturnToLaunchScreen";
+        case SystemCommandToggleProximitySensor: return @"SystemCommandToggleProximitySensor";
+        case SystemCommandURLRequest:  			   return @"SystemCommandURLRequest";
         default:  							 						   return nil;
     }
 }

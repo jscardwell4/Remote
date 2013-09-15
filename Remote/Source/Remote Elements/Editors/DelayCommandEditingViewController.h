@@ -11,5 +11,5 @@
 
 @interface DelayCommandEditingViewController : CommandDetailViewController <UITextFieldDelegate>
 
-@property (nonatomic, strong) REDelayCommand * command;
+@property (nonatomic, strong) DelayCommand * command;
 @end

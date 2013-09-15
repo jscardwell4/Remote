@@ -9,7 +9,7 @@
 #import "REBackgroundEditingViewController.h"
 #import "REBackgroundCollectionViewController.h"
 #import "ColorSelectionViewController.h"
-#import "BankObject.h"
+//#import "BankObject.h"
 #import "StoryboardProxy.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;

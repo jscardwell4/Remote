@@ -8,7 +8,7 @@
 
 #import "UserCodesViewController.h"
 #import "ComponentDeviceListViewController.h"
-#import "BOComponentDevice.h"
+#import "ComponentDevice.h"
 #import "BankObjectGroup.h"
 #import "MSRemoteAppController.h"
 #import "CoreDataManager.h"
@@ -49,7 +49,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
                                       reuseIdentifier:CellIdentifier];
 
     // Configure the cell...
-    BOComponentDevice * device = self.fetchedDevices[indexPath.row];
+    ComponentDevice * device = self.fetchedDevices[indexPath.row];
 
     cell.textLabel.text = device.name;
 
@@ -86,7 +86,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
               isMemberOfClass:[ComponentDeviceListViewController class]]) return;
 
         NSUInteger                          deviceIndex = [self.tableView indexPathForSelectedRow].row;
-        BOComponentDevice                   * device      = self.fetchedDevices[deviceIndex];
+        ComponentDevice                   * device      = self.fetchedDevices[deviceIndex];
         ComponentDeviceListViewController * detailVC    = segue.destinationViewController;
 
         detailVC.componentDevice = device;

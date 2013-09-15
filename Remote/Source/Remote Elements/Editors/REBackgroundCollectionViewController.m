@@ -7,7 +7,7 @@
 //
 
 #import "REBackgroundCollectionViewController.h"
-#import "BOImage.h"
+#import "Image.h"
 
 @interface REBackgroundCollectionViewController ()
 
@@ -38,7 +38,7 @@
     
     if (indexPath.row)
     {
-        BOImage * backgroundImage = self.backgrounds[indexPath.row - 1];
+        Image * backgroundImage = self.backgrounds[indexPath.row - 1];
         assert(backgroundImage);
         image = backgroundImage.image;
     }
@@ -81,7 +81,7 @@
          ^{
              NSFetchRequest * request = [NSFetchRequest
                                          fetchRequestWithEntityName:
-                                             ClassString([BOImage class])];
+                                             ClassString([Image class])];
              fetchedObjects = [_context executeFetchRequest:request error:nil];
          }];
         _backgrounds = fetchedObjects;
@@ -89,7 +89,7 @@
     return _backgrounds;
 }
 
-- (void)selectBackgroundImage:(BOImage *)backgroundImage
+- (void)selectBackgroundImage:(Image *)backgroundImage
 {
     NSIndexPath * indexPath = nil;
     if (!backgroundImage)
@@ -118,7 +118,7 @@
     }
 }
 
-- (BOImage *)selectedImage
+- (Image *)selectedImage
 {
     NSArray * selection = [self.collectionView indexPathsForSelectedItems];
     if (selection.count == 1 && ((NSIndexPath *)selection[0]).row > 0)
@@ -127,7 +127,7 @@
         return nil;
 }
 
-- (void)setInitialImage:(BOImage *)initialImage
+- (void)setInitialImage:(Image *)initialImage
 {
     _initialImage = initialImage;
     if (self.isViewLoaded)

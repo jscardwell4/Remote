@@ -89,11 +89,11 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
              {
                  codeset = [BOIRCodeset groupWithName:codesetName context:context];
                  codeset.manufacturer =
-                 [BOManufacturer manufacturerWithName:codeAttributes[kManufacturerKey] context:context];
+                 [Manufacturer manufacturerWithName:codeAttributes[kManufacturerKey] context:context];
              }
 
              // Create an IRCode object for this code with attributes from the list entry
-             BOFactoryIRCode * code = [BOFactoryIRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
+             FactoryIRCode * code = [FactoryIRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
                                                                  context:context];
              code.codeset       = codeset;
              code.name          = codeAttributes[kName1];
@@ -117,9 +117,9 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
          for (NSString * deviceName in [codeBankPlist allKeys])
          {
              // Create codes for this device
-             BOComponentDevice * device = [BOComponentDevice bankObjectWithName:deviceName
-                                                                        context:context];
-
+             ComponentDevice * device = [ComponentDevice MR_createInContext:context];
+             device.name = deviceName;
+             
              if 		 ([@"AV Receiver" isEqualToString:deviceName]) 	device.port = 2;
              else if ([@"Comcast DVR" isEqualToString:deviceName]) 	device.port = 1;
              else if ([@"Samsung TV"  isEqualToString:deviceName]) 	device.port = 3;
@@ -134,7 +134,7 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
                      NSDictionary * codeDict = deviceCodes[codeName];
 
                      // Create this code
-                     BOUserIRCode * code = [BOUserIRCode codeForDevice:device];
+                     UserIRCode * code = [UserIRCode codeForDevice:device];
                      code.name            = codeName;
                      code.frequency       = NSUIntegerValue(codeDict[@"Frequency"]);
                      code.repeatCount     = NSUIntegerValue(codeDict[@"Repeat Count"]);
@@ -172,7 +172,7 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
                 if (StringIsEmpty(fileName)) continue;
 
                 // Create entry for this file
-                BOImage * iconImage = [BOImage imageWithFileName:fileName context:context];
+                Image * iconImage = [Image imageWithFileName:fileName context:context];
 
                 if (!iconImage) MSLogErrorTag(@"failed to create model for icon image:%@", iconImage);
             }
@@ -202,7 +202,7 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
             if (StringIsEmpty(fileName)) continue;
 
             // Create entry for this file
-            BOImage * image = [BOImage imageWithFileName:fileName context:context];
+            Image * image = [Image imageWithFileName:fileName context:context];
 
             if (!image) MSLogErrorTag(@"failed to create model for background image:%@", image);
         }
@@ -237,11 +237,11 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
 
          NSMutableString * logString = [@"\nIRCodes by ComponentDevice\n" mutableCopy];
 
-         for (BOComponentDevice * device in fetchedObjects)
+         for (ComponentDevice * device in fetchedObjects)
          {
             [logString appendFormat:@"deviceName: %@\n", device.name];
 
-            for (BOIRCode * irCode in device.codes)
+            for (IRCode * irCode in device.codes)
                 [logString appendFormat:@"\t%@\n", irCode.name];
          }
 
@@ -263,7 +263,7 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
          for (BOIRCodeset * codeset in fetchedObjects)
          {
             [logString appendFormat:@"codeset: %@\n", codeset.name];
-            for (BOIRCode * irCode in codeset.codes) [logString appendFormat:@"\t%@\n", irCode.name];
+            for (IRCode * irCode in codeset.codes) [logString appendFormat:@"\t%@\n", irCode.name];
          }
 
          MSLogInfo(@"%@", logString);

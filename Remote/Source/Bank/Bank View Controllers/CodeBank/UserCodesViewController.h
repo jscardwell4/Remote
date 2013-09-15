@@ -6,11 +6,11 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 
-@class   RESendIRCommand;
+@class   SendIRCommand;
 
 @protocol CodeSelection <NSObject>
 
-- (void)selectedSendIR:(RESendIRCommand *)sendIRCommand;
+- (void)selectedSendIR:(SendIRCommand *)sendIRCommand;
 
 @end
 

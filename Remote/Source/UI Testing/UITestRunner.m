@@ -10,10 +10,10 @@
 #import "MSRemoteUITest.h"
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
-#import "RERemoteViewController.h"
+#import "RemoteViewController.h"
 #import "RemoteConstruction.h"
-#import "REView.h"
-#import "REEditingViewController_Private.h"
+#import "RemoteElementView.h"
+#import "RemoteElementEditingViewController_Private.h"
 
 static const int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
@@ -46,7 +46,7 @@ static NSOperationQueue const * kTestQueue;
                    }
 
                                               onCancel:^{
-                                                  [AppController showLaunchScreen];
+                                                  [AppController showMainMenu];
                    }];
                }];
 }
@@ -86,7 +86,7 @@ static NSOperationQueue const * kTestQueue;
                                   }
 
                                    onCancel:^{
-                                       [AppController showLaunchScreen];
+                                       [AppController showMainMenu];
                                    }];
     }
 }

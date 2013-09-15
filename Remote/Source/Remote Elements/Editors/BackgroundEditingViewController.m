@@ -7,7 +7,7 @@
 //
 #import "ColorSelectionViewController.h"
 #import "BackgroundEditingViewController.h"
-#import "BOImage.h"
+#import "Image.h"
 #import "StoryboardProxy.h"
 #import "Painter.h"
 
@@ -35,7 +35,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
 @property (strong, nonatomic) IBOutlet MSColorInputButton  * colorInputButton;
 
 - (void)initializeColorSelectionControllerWithColor:(UIColor *)color;
-- (void)selectRowForGalleryBackgroundImage:(BOImage *)bgImage;
+- (void)selectRowForGalleryBackgroundImage:(Image *)bgImage;
 - (void)resetUI;
 
 - (void)setBorderForView:(UIView *)view selected:(BOOL)selected;
@@ -89,7 +89,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
     selectedIndex = -2;
 
     if (_sourceObject) {
-        [self selectRowForGalleryBackgroundImage:(BOImage *)_sourceObject.backgroundImage];
+        [self selectRowForGalleryBackgroundImage:(Image *)_sourceObject.backgroundImage];
 // self.colorSelectionVC.initialColor = self.sourceObject.backgroundColor;
 // [self initializeColorSelectionControllerWithColor:_sourceObject.backgroundColor];
         self.colorInputButton.backgroundColor = _sourceObject.backgroundColor;
@@ -160,7 +160,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
 
     if (sender.numberOfTapsRequired == 2 && index >= 0)
     {
-        BOImage * bgImage = (BOImage *)self.fetchedBackgrounds[index];
+        Image * bgImage = (Image *)self.fetchedBackgrounds[index];
 
         self.imagePreview.image  = bgImage.image;
         self.imagePreview.hidden = NO;
@@ -218,7 +218,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
     [self resetToInitialState];
 }
 
-- (void)selectRowForGalleryBackgroundImage:(BOImage *)bgImage {
+- (void)selectRowForGalleryBackgroundImage:(Image *)bgImage {
     if (!bgImage) {
         selectedIndex = -1;
 
@@ -325,7 +325,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
     MSKIT_STATIC_STRING_CONST   kCellIdentifier = @"Cell";
     UITableViewCell         * cell            = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     NSInteger                 index           = indexPath.row * 3 - 1;
-    BOImage  * bgImage;
+    Image  * bgImage;
     UIImageView             * imageView;
 
     imageView     = (UIImageView *)[cell viewWithNametag:@"column1"];
@@ -333,20 +333,20 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
     [self setBorderForView:imageView selected:(index == selectedIndex)];
 
     if (index >= 0) {
-        bgImage         = (BOImage *)_fetchedBackgrounds[index];
+        bgImage         = (Image *)_fetchedBackgrounds[index];
         imageView.image = bgImage.image;
     } else
         imageView.image = [self noBackgroundImage];
 
     if (++index < [self.fetchedBackgrounds count]) {
-        bgImage         = (BOImage *)_fetchedBackgrounds[index];
+        bgImage         = (Image *)_fetchedBackgrounds[index];
         imageView       = (UIImageView *)[cell viewWithNametag:@"column2"];
         imageView.image = bgImage.image;
         imageView.tag   = index;
         [self setBorderForView:imageView selected:(index == selectedIndex)];
 
         if (++index < [self.fetchedBackgrounds count]) {
-            bgImage         = (BOImage *)_fetchedBackgrounds[index];
+            bgImage         = (Image *)_fetchedBackgrounds[index];
             imageView       = (UIImageView *)[cell viewWithNametag:@"column3"];
             imageView.image = bgImage.image;
             imageView.tag   = index;

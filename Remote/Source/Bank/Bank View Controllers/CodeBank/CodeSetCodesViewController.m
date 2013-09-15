@@ -7,7 +7,7 @@
 //
 #import "CodeSetCodesViewController.h"
 #import "BankObjectGroup.h"
-#import "BOIRCode.h"
+#import "IRCode.h"
 #import "IRCodeDetailViewController.h"
 
 static int   ddLogLevel = DefaultDDLogLevel;
@@ -45,7 +45,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     UITableViewCell * cell           = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     // Configure the cell...
-    BOIRCode * code = self.fetchedCodes[indexPath.row];
+    IRCode * code = self.fetchedCodes[indexPath.row];
 
     cell.textLabel.text = code.name;
 

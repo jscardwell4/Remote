@@ -11,7 +11,7 @@
 #import "Painter.h"
 
 
-#import "RERemoteController.h"
+#import "RemoteController.h"
 
 #import "ViewDecorator.h"
 
@@ -102,7 +102,7 @@ command            = _command;
 
          ] anyObject];
     Class     commandClass = NSClassFromString(classString);
-    RECommand * newCommand   = (RECommand *)[commandClass commandInContext:_command.managedObjectContext];
+    Command * newCommand   = (Command *)[commandClass commandInContext:_command.managedObjectContext];
 
     if (newCommand) {
         [_command addCommandsObject:newCommand];
@@ -142,7 +142,7 @@ command            = _command;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RECommand         * command = self.command[indexPath.row];
+    Command         * command = self.command[indexPath.row];
     UITableViewCell * cell    = [tableView dequeueReusableCellWithIdentifier:ClassString([command class])];
 
     cell.imageView.image =
@@ -295,13 +295,13 @@ command            = _command;
 
 - (void)                           tableView:(UITableView *)tableView
     accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    RECommand * command = self.command[indexPath.row];
+    Command * command = self.command[indexPath.row];
 
     [self.delegate pushChildControllerForCommand:command];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    RECommand * command = self.command[indexPath.row];
+    Command * command = self.command[indexPath.row];
 
     [self.delegate pushChildControllerForCommand:command];
 }

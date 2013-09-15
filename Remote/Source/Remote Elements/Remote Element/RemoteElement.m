@@ -112,10 +112,10 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
 {
     [super awakeFromInsert];
 
-    if (MSModelObjectShouldInitialize)
+    if (ModelObjectShouldInitialize)
         [self.managedObjectContext performBlockAndWait:
          ^{
-             self.layoutConfiguration = [RELayoutConfiguration layoutConfigurationForElement:self];
+             self.layoutConfiguration = [LayoutConfiguration layoutConfigurationForElement:self];
          }];
 }
 
@@ -192,10 +192,10 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
         return [super valueForUndefinedKey:key];
 }
 
-- (REConstraintManager *)constraintManager
+- (ConstraintManager *)constraintManager
 {
     if (!__constraintManager)
-        self.constraintManager = [REConstraintManager constraintManagerForRemoteElement:self];
+        self.constraintManager = [ConstraintManager constraintManagerForRemoteElement:self];
     return __constraintManager;
 }
 
@@ -208,7 +208,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     return (key ?: [self.name camelCaseString]);
 }
 
-- (void)applyTheme:(RETheme *)theme { [theme applyThemeToElement:self]; }
+- (void)applyTheme:(Theme *)theme { [theme applyThemeToElement:self]; }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Importing
@@ -764,18 +764,18 @@ Class classForREType(REType type)
 {
     switch (type)
     {
-        case RETypeRemote:                    return [RERemote class];
+        case RETypeRemote:                    return [Remote class];
 
         case REButtonGroupTypeToolbar:
         case REButtonGroupTypeSelectionPanel:
         case REButtonGroupTypePanel:
-        case RETypeButtonGroup:               return [REButtonGroup class];
+        case RETypeButtonGroup:               return [ButtonGroup class];
 
-        case REButtonGroupTypePickerLabel:    return [REPickerLabelButtonGroup class];
+        case REButtonGroupTypePickerLabel:    return [PickerLabelButtonGroup class];
 
         case REButtonTypeBatteryStatus:
         case REButtonTypeConnectionStatus:
-        case RETypeButton:                    return [REButton class];
+        case RETypeButton:                    return [Button class];
 
         default:                              return [RemoteElement class];
     }

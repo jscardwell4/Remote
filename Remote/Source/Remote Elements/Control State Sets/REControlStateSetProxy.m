@@ -1,20 +1,20 @@
 //
-//  REControlStateSetProxy.m
+//  ControlStateSetProxy.m
 //  Remote
 //
 //  Created by Jason Cardwell on 4/12/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import "REControlStateSetProxy_Private.h"
+#import "ControlStateSetProxy_Private.h"
 
-@implementation REControlStateSetProxy
+@implementation ControlStateSetProxy
 
-+ (instancetype)proxyWithDelegate:(id<REControlStateSetProxyDelegate>)delegate
++ (instancetype)proxyWithDelegate:(id<ControlStateSetProxyDelegate>)delegate
 {
     return [[self alloc] initWithDelegate:delegate];
 }
 
-- (instancetype)initWithDelegate:(id<REControlStateSetProxyDelegate>)delegate
+- (instancetype)initWithDelegate:(id<ControlStateSetProxyDelegate>)delegate
 {
     self->_delegate = delegate;
     return self;
@@ -23,7 +23,7 @@
 - (NSString *)uuid
 {
     return (self.proxiedObject
-            ? ((REControlStateSet *)self.proxiedObject).uuid
+            ? ((ControlStateSet *)self.proxiedObject).uuid
             : ClassString([self class]));
 }
 
@@ -67,7 +67,7 @@
 
 //- (BOOL)isKindOfClass:(Class)aClass { return (aClass == [self proxyClass]); }
 
-- (BOOL)updateProxyObject:(REControlStateSet *)object sender:(id<REControlStateSetProxyDelegate>)sender
+- (BOOL)updateProxyObject:(ControlStateSet *)object sender:(id<ControlStateSetProxyDelegate>)sender
 {
     if (self.delegate == sender)
     {
@@ -82,13 +82,13 @@
 @end
 
 
-@implementation REControlStateTitleSetProxy
+@implementation ControlStateTitleSetProxy
 
-//- (BOOL)isKindOfClass:(Class)aClass { return (aClass == [REControlStateTitleSet class]); }
-+ (Class)proxyClass { return [REControlStateTitleSet class]; }
+//- (BOOL)isKindOfClass:(Class)aClass { return (aClass == [ControlStateTitleSet class]); }
++ (Class)proxyClass { return [ControlStateTitleSet class]; }
 - (Class)proxyClass { return [[self class] proxyClass]; }
 
-- (REControlStateTitleSet *)proxiedObject { return (REControlStateTitleSet *)[super proxiedObject]; }
+- (ControlStateTitleSet *)proxiedObject { return (ControlStateTitleSet *)[super proxiedObject]; }
 
 - (void)instantiateProxyObject
 {
@@ -98,7 +98,7 @@
         self.proxiedObject = self.instanstiationBlock(self);
 
     else
-        self.proxiedObject = [REControlStateTitleSet controlStateSet];
+        self.proxiedObject = [ControlStateTitleSet controlStateSet];
 
     if ([self.delegate respondsToSelector:@selector(didInstantiateProxyObject:forProxy:)])
         [self.delegate didInstantiateProxyObject:[self proxiedObject].uuid forProxy:self];
@@ -107,13 +107,13 @@
 @end
 
 
-@implementation REControlStateColorSetProxy
+@implementation ControlStateColorSetProxy
 
-//- (BOOL)isKindOfClass:(Class)aClass { return (aClass == [REControlStateColorSet class]); }
-+ (Class)proxyClass { return [REControlStateColorSet class]; }
+//- (BOOL)isKindOfClass:(Class)aClass { return (aClass == [ControlStateColorSet class]); }
++ (Class)proxyClass { return [ControlStateColorSet class]; }
 - (Class)proxyClass { return [[self class] proxyClass]; }
 
-- (REControlStateColorSet *)proxiedObject { return (REControlStateColorSet *)[super proxiedObject]; }
+- (ControlStateColorSet *)proxiedObject { return (ControlStateColorSet *)[super proxiedObject]; }
 
 - (void)instantiateProxyObject
 {
@@ -122,7 +122,7 @@
         self.proxiedObject = self.instanstiationBlock(self);
 
     else
-        self.proxiedObject = [REControlStateColorSet controlStateSet];
+        self.proxiedObject = [ControlStateColorSet controlStateSet];
 
     if ([self.delegate respondsToSelector:@selector(didInstantiateProxyObject:forProxy:)])
         [self.delegate didInstantiateProxyObject:[self proxiedObject].uuid forProxy:self];

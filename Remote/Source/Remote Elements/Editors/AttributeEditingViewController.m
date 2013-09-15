@@ -7,7 +7,7 @@
 //
 #import "AttributeEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
-#import "REEditingViewController.h"
+#import "RemoteElementEditingViewController.h"
 
 MSKIT_STRING_CONST   kAttributeEditingFontSizeKey     = @"kAttributeEditingFontSizeKey";
 MSKIT_STRING_CONST   kAttributeEditingFontNameKey     = @"kAttributeEditingFontNameKey";
@@ -41,7 +41,7 @@ MSKIT_STRING_CONST   kAttributeEditingImageKey        = @"kAttributeEditingImage
 {}
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-    if ([parent isMemberOfClass:[REDetailedButtonEditingViewController class]]) self.detailedButtonEditor = (REDetailedButtonEditingViewController *)parent;
+    if ([parent isMemberOfClass:[DetailedButtonEditingViewController class]]) self.detailedButtonEditor = (DetailedButtonEditingViewController *)parent;
     else self.detailedButtonEditor = nil;
 }
 

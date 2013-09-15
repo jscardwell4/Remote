@@ -7,8 +7,8 @@
 //
 
 #import "SendIRCommandEditingViewController.h"
-#import "BOIRCode.h"
-#import "BOComponentDevice.h"
+#import "IRCode.h"
+#import "ComponentDevice.h"
 #import "ViewDecorator.h"
 
 @interface SendIRCommandEditingViewController ()
@@ -19,8 +19,8 @@
 @property (nonatomic, strong) NSArray * devices;
 @property (nonatomic, strong) NSArray * codes;
 
-@property (nonatomic, strong) BOComponentDevice * selectedDevice;
-@property (nonatomic, strong) BOIRCode          * selectedCode;
+@property (nonatomic, strong) ComponentDevice * selectedDevice;
+@property (nonatomic, strong) IRCode          * selectedCode;
 
 - (IBAction)showPicker:(id)sender;
 
@@ -75,8 +75,8 @@ command        = _command;
              forComponent:(NSInteger)component {
     NSString * title = nil;
 
-    if (component == 0) title = ((BOComponentDevice *)self.devices[row]).name;
-    else title = ((BOIRCode *)self.codes[row]).name;
+    if (component == 0) title = ((ComponentDevice *)self.devices[row]).name;
+    else title = ((IRCode *)self.codes[row]).name;
 
     return title;
 }
@@ -124,7 +124,7 @@ command        = _command;
     [_deviceButton resignFirstResponder];
 }
 
-- (void)setSelectedCode:(BOIRCode *)selectedCode {
+- (void)setSelectedCode:(IRCode *)selectedCode {
     _selectedCode = selectedCode;
     if (ValueIsNotNil(_selectedCode))
         [_codeButton setTitle:_selectedCode.name forState:UIControlStateNormal];
@@ -136,7 +136,7 @@ command        = _command;
 // _codeButton.enabled = NO;
 }
 
-- (void)setSelectedDevice:(BOComponentDevice *)selectedDevice {
+- (void)setSelectedDevice:(ComponentDevice *)selectedDevice {
     _selectedDevice = selectedDevice;
     if (ValueIsNotNil(_selectedDevice)) {
         [_deviceButton setTitle:_selectedDevice.name forState:UIControlStateNormal];

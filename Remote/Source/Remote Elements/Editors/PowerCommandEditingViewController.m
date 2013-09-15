@@ -7,14 +7,14 @@
 //
 
 #import "PowerCommandEditingViewController.h"
-#import "BOComponentDevice.h"
+#import "ComponentDevice.h"
 #import "ViewDecorator.h"
 
 @interface PowerCommandEditingViewController ()
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * deviceButton;
 @property (strong, nonatomic) IBOutlet UIButton            * stateButton;
 @property (nonatomic, strong) NSArray                      * devices;
-@property (nonatomic, strong) BOComponentDevice              * selectedDevice;
+@property (nonatomic, strong) ComponentDevice              * selectedDevice;
 - (IBAction)toggleState:(id)sender;
 
 @end
@@ -40,7 +40,7 @@ command        = _command;
     [_stateButton setTitle:_command.state ? @"On":@"Off" forState:UIControlStateNormal];
 }
 
-- (void)setSelectedDevice:(BOComponentDevice *)selectedDevice {
+- (void)setSelectedDevice:(ComponentDevice *)selectedDevice {
     _selectedDevice = selectedDevice;
     if (ValueIsNotNil(_selectedDevice)) [_deviceButton setTitle:_selectedDevice.name forState:UIControlStateNormal];
     else [_deviceButton setTitle:@"Select Device" forState:UIControlStateNormal];
@@ -87,7 +87,7 @@ command        = _command;
 - (NSString *)pickerInput:(MSPickerInputView *)pickerInput
               titleForRow:(NSInteger)row
              forComponent:(NSInteger)component {
-    return ((BOComponentDevice *)self.devices[row]).name;
+    return ((ComponentDevice *)self.devices[row]).name;
 }
 
 - (void)pickerInputDidCancel:(MSPickerInputView *)pickerInput {

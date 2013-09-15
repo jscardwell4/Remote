@@ -6,13 +6,16 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementConstructionManager.h"
-#import "RERemoteViewController.h"
-#import "LaunchScreenViewController.h"
+#import "RemoteViewController.h"
+#import "MainMenuViewController.h"
 #import "CoreDataManager.h"
 #import "DatabaseLoader.h"
 #import "SettingsManager.h"
 #import "ConnectionManager.h"
 #import "MSRemoteAppController.h"
+#import "RemoteControl.h"
+#import "Bank.h"
+#import "Editor.h"
 #import "UITestRunner.h"
 #import "StoryboardProxy.h"
 
@@ -21,8 +24,7 @@ static const int   msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation MSRemoteAppController {
-    LaunchScreenViewController * _launchScreenVC;
-    NSOperationQueue           * _workQueue;
+    NSOperationQueue       * _workQueue;
 }
 
 + (NSString const *)versionInfo
@@ -118,12 +120,6 @@ static const int   msLogContext = 0;
     return _sharedObject;
 }
 
-- (void)showRemote
-{
-    [MainQueue addOperationWithBlock:^{ [_launchScreenVC performSegueWithIdentifier:@"remoteView"
-                                                                             sender:self]; }];
-}
-
 + (void)attachLoggers
 {
 
@@ -178,14 +174,6 @@ static const int   msLogContext = 0;
     [SettingsManager registerDefaults];
 }
 
-- (void)showLaunchScreen
-{
-    if (!_launchScreenVC) _launchScreenVC = [StoryboardProxy launchScreenViewController];
-
-    [self.window setRootViewController:_launchScreenVC];
-    _launchScreenVC.view.userInteractionEnabled = YES;
-}
-
 /*
  * Assigns the window's root view controller to static variable `launchScreenVC` and sets up Core
  * Data stack.
@@ -196,9 +184,9 @@ static const int   msLogContext = 0;
     [UIApplication sharedApplication].statusBarHidden = YES;
 
     // set a reference to our launch screen view controller
-    _launchScreenVC = (LaunchScreenViewController*)[self.window rootViewController];
-    _launchScreenVC.view.userInteractionEnabled = NO;
-    [_launchScreenVC toggleSpinner];
+    MainMenuViewController * mainMenuVC = (MainMenuViewController*)[self.window rootViewController];
+    mainMenuVC.view.userInteractionEnabled = NO;
+    [mainMenuVC toggleSpinner];
 
     // Apply user defined settings and observe status bar setting changes
     [SettingsManager applyUserSettings];
@@ -251,8 +239,8 @@ static const int   msLogContext = 0;
                                       ^{
                                           [MainQueue addOperationWithBlock:
                                            ^{
-                                               [_launchScreenVC toggleSpinner];
-                                               _launchScreenVC.view. userInteractionEnabled = YES;
+                                               [mainMenuVC toggleSpinner];
+                                               mainMenuVC.view. userInteractionEnabled = YES;
                                            }];
                                       }];
 
@@ -286,5 +274,32 @@ static const int   msLogContext = 0;
 //- (void)applicationDidEnterBackground:(UIApplication *)application {
 //    [CoreDataManager saveMainContext];
 //}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Setting Root View Controller
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)showRemote { [self.window setRootViewController:[RemoteControl viewController]]; }
+
+- (void)showEditor { [self.window setRootViewController:[Editor viewController]]; }
+
+- (void)showMainMenu { [self.window setRootViewController:[StoryboardProxy mainMenuViewController]]; }
+
+- (void)showBank { [self.window setRootViewController:[Bank viewController]]; }
+
+- (void)showSettings { [self.window setRootViewController:[SettingsManager viewController]]; }
+
+- (void)dismissViewController:(UIViewController *)viewController completion:(void (^)(void))completion
+{
+    if (self.window.rootViewController == viewController) [self showMainMenu];
+    else [viewController dismissViewControllerAnimated:YES completion:completion];
+}
+
+- (void)showHelp
+{
+
+}
 
 @end

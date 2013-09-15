@@ -6,8 +6,8 @@
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "MSRemoteUITest_Private.h"
-#import "REView.h"
-#import "RERemoteController.h"
+#import "RemoteElementView.h"
+#import "RemoteController.h"
 #import "CoreDataManager.h"
 
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -55,7 +55,7 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
         _flags.suppressDialog = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 2);
         self.objectContext    = [NSManagedObjectContext MR_newMainQueueContext];
         [_objectContext MR_setWorkingName:@"uitesting"];
-        self.remoteController = [RERemoteController remoteControllerInContext:_objectContext];
+        self.remoteController = [RemoteController remoteControllerInContext:_objectContext];
     }
 
     return self;
@@ -88,7 +88,7 @@ MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
 //    MSLogDebug(@"%@", meat);
 }
 
-- (void)logRemoteElementView:(REView *)view
+- (void)logRemoteElementView:(RemoteElementView *)view
     includingSubelementViews:(NSArray *)subelementViews
                        after:(dispatch_time_t)delay
                      message:(NSString *)message

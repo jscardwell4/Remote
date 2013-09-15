@@ -1,4 +1,4 @@
-//
+ //
 // CoreDataManager.m
 // Remote
 //
@@ -7,7 +7,7 @@
 //
 #import "CoreDataManager.h"
 #import "MSRemoteAppController.h"
-#import "RERemoteController.h"
+#import "RemoteController.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Typedefs and Class Variables
@@ -229,7 +229,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     NSManagedObjectContext * moc = [NSManagedObjectContext MR_defaultContext];
     [moc performBlockAndWait:
      ^{
-         RERemoteController * controller = [RERemoteController MR_findFirstInContext:moc];
+         RemoteController * controller = [RemoteController MR_findFirstInContext:moc];
          MSLogDebugTag(@"existing remote? %@", NSStringFromBOOL((controller != nil)));
          if (controller)
          {
@@ -248,7 +248,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     if (success)
         [moc performBlockAndWait:
          ^{
-             RERemoteController * controller = [RERemoteController MR_findFirstInContext:moc];
+             RemoteController * controller = [RemoteController MR_findFirstInContext:moc];
              success = (controller == nil ? YES : NO);
          }];
     
@@ -291,9 +291,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     NSDictionary * entities = [augmentedModel entitiesByName];
 
     // size attributes on images
-    modifyAttributeForEntities([entities objectsForKeys:@[@"BOImage",
-                                                          @"BOBundledImage",
-                                                          @"BOCustomImage"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"Image"]
                                          notFoundMarker:NullObject],
                                @"size",
                                @"NSValue",
@@ -301,61 +299,61 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     // background color attributes on remote elements
     modifyAttributeForEntities([entities objectsForKeys:@[@"RemoteElement",
-                                                          @"RERemote",
-                                                          @"REButtonGroup",
-                                                          @"REPickerLabelButtonGroup",
-                                                          @"REButton"]
+                                                          @"Remote",
+                                                          @"ButtonGroup",
+                                                          @"PickerLabelButtonGroup",
+                                                          @"Button"]
                                          notFoundMarker:NullObject],
                                @"backgroundColor",
                                @"UIColor",
                                ClearColor);
 
     // background color attributes on theme
-    modifyAttributeForEntities([entities objectsForKeys:@[@"RETheme",
-                                                          @"REBuiltinTheme",
-                                                          @"RECustomTheme"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"Theme",
+                                                          @"BuiltinTheme",
+                                                          @"CustomTheme"]
                                          notFoundMarker:NullObject],
                                 @"remoteBackgroundColor",
                                 @"UIColor",
                                 ClearColor);
 
-    modifyAttributeForEntities([entities objectsForKeys:@[@"RETheme",
-                                                          @"REBuiltinTheme",
-                                                          @"RECustomTheme"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"Theme",
+                                                          @"BuiltinTheme",
+                                                          @"CustomTheme"]
                                          notFoundMarker:NullObject],
                                @"buttonGroupBackgroundColor",
                                @"UIColor",
                                ClearColor);
 
     // edge insets attributes on buttons
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"Button"]
                                          notFoundMarker:NullObject],
                                @"titleEdgeInsets",
                                @"NSValue",
                                NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"Button"]
                                          notFoundMarker:NullObject],
                                @"contentEdgeInsets",
                                @"NSValue",
                                NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REButton"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"Button"]
                                          notFoundMarker:NullObject],
                                @"imageEdgeInsets",
                                @"NSValue",
                                NSValueWithUIEdgeInsets(UIEdgeInsetsZero));
 
     // edge insets attributes on themes
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REThemeButtonSettings"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"ThemeButtonSettings"]
                                          notFoundMarker:NullObject],
                                @"titleInsets",
                                @"NSValue",
                                nil);
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REThemeButtonSettings"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"ThemeButtonSettings"]
                                          notFoundMarker:NullObject],
                                @"contentInsets",
                                @"NSValue",
                                nil);
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REThemeButtonSettings"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"ThemeButtonSettings"]
                                          notFoundMarker:NullObject],
                                @"imageInsets",
                                @"NSValue",
@@ -363,10 +361,10 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     // configurations attribute on configuration delegates
     modifyAttributeForEntities([entities
-                                objectsForKeys:@[@"REConfigurationDelegate",
-                                                 @"RERemoteConfigurationDelegate",
-                                                 @"REButtonGroupConfigurationDelegate",
-                                                 @"REButtonConfigurationDelegate"]
+                                objectsForKeys:@[@"ConfigurationDelegate",
+                                                 @"RemoteConfigurationDelegate",
+                                                 @"ButtonGroupConfigurationDelegate",
+                                                 @"ButtonConfigurationDelegate"]
                                 notFoundMarker:NullObject],
                                @"configurations",
                                @"NSDictionary",
@@ -374,43 +372,43 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     // panels for RERemote
     modifyAttributeForEntities([entities
-                                objectsForKeys:@[@"RERemote"]
+                                objectsForKeys:@[@"Remote"]
                                 notFoundMarker:NullObject],
                                @"panels",
                                @"NSDictionary",
                                @{});
 
     // label attribute on button groups
-    modifyAttributeForEntities([entities objectsForKeys:@[@"REButtonGroup",
-                                                          @"REPickerLabelButtonGroup"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"ButtonGroup",
+                                                          @"PickerLabelButtonGroup"]
                                          notFoundMarker:NullObject],
                                @"label",
                                @"NSAttributedString",
                                nil);
 
     // index attribute on command containers
-    modifyAttributeForEntities([entities objectsForKeys:@[@"RECommandContainer",
-                                                          @"RECommandSet",
-                                                          @"RECommandSetCollection"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"CommandContainer",
+                                                          @"CommandSet",
+                                                          @"CommandSetCollection"]
                                          notFoundMarker:NullObject],
                                @"index",
                                @"NSDictionary",
                                @{});
 
     // url attribute on http command
-    modifyAttributeForEntities(@[entities[@"REHTTPCommand"]],
+    modifyAttributeForEntities(@[entities[@"HTTPCommand"]],
                                @"url",
                                @"NSURL",
                                [NSURL URLWithString:@"http://about:blank"]);
 
     // bitVector attribute on layout configuration
-    modifyAttributeForEntities(@[entities[@"RELayoutConfiguration"]],
+    modifyAttributeForEntities(@[entities[@"LayoutConfiguration"]],
                                @"bitVector",
                                @"MSBitVector",
                                BitVector8);
 
     // color attributes on control state color set
-    modifyAttributesForEntity(entities[@"REControlStateColorSet"],
+    modifyAttributesForEntity(entities[@"ControlStateColorSet"],
                               @[@"disabled",
                                 @"disabledAndSelected",
                                 @"highlighted",
@@ -423,7 +421,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                               nil);
 
     // url attributes on control state image sets
-    modifyAttributesForEntity(entities[@"REControlStateImageSet"],
+    modifyAttributesForEntity(entities[@"ControlStateImageSet"],
                               @[@"disabled",
                                 @"disabledAndSelected",
                                 @"highlighted",
@@ -436,7 +434,7 @@ MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
                               nil);
 
     // attributed string attributes on control state title set
-    modifyAttributesForEntity(entities[@"REControlStateTitleSet"],
+    modifyAttributesForEntity(entities[@"ControlStateTitleSet"],
                               @[@"disabled",
                                 @"disabledAndSelected",
                                 @"highlighted",

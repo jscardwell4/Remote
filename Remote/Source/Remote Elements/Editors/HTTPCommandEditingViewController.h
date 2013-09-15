@@ -12,5 +12,5 @@
 
 @interface HTTPCommandEditingViewController : CommandDetailViewController <UITextViewDelegate>
 
-@property (nonatomic, strong) REHTTPCommand * command;
+@property (nonatomic, strong) HTTPCommand * command;
 @end

@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-@class BOImage;
+@class Image;
 
 @protocol REEditableBackground <NSObject>
 
 @property (nonatomic, strong) UIColor * backgroundColor;
-@property (nonatomic, strong) BOImage * backgroundImage;
+@property (nonatomic, strong) Image * backgroundImage;
 
 @end

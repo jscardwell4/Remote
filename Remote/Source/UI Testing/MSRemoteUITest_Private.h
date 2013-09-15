@@ -8,7 +8,7 @@
 
 #import "MSRemoteUITest.h"
 
-@class   RERemoteController;
+@class   RemoteController;
 
 @interface MSRemoteUITest () {
     @protected
@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext * objectContext;
 
-@property (nonatomic, strong) RERemoteController * remoteController;
+@property (nonatomic, strong) RemoteController * remoteController;
 
 - (void)testComplete;
 

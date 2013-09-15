@@ -7,7 +7,7 @@
 //
 
 #import "IRCodeDetailViewController.h"
-#import "BOIRCode.h"
+#import "IRCode.h"
 #import "ConnectionManager.h"
 #import "CoreDataManager.h"
 
@@ -25,7 +25,7 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
 @property (nonatomic, assign) NSUInteger               commandIndex;
 @property (nonatomic, assign) NSUInteger               testPort;
 @property (nonatomic, strong) NSManagedObjectContext * testContext;
-@property (nonatomic, strong) RESendIRCommand          * testCommand;
+@property (nonatomic, strong) SendIRCommand          * testCommand;
 
 - (IBAction)stepperValueChanged:(UIStepper *)sender;
 - (IBAction)executeTestCommand:(id)sender;
@@ -86,14 +86,14 @@ MSKIT_STATIC_STRING_CONST   kTestFailure = @"X";
     self.testPort = port;
 }
 
-- (BOIRCode *)code {
+- (IRCode *)code {
     return self.testCommand.code;
 }
 
-- (void)setCode:(BOIRCode *)code {
+- (void)setCode:(IRCode *)code {
     if (ValueIsNil(code)) return;
 
-    BOIRCode * testCode = (BOIRCode *)[_testContext objectWithID:code.objectID];
+    IRCode * testCode = (IRCode *)[_testContext objectWithID:code.objectID];
 
     self.testCommand.code = testCode;
 

@@ -15,7 +15,7 @@
 #import <netinet/in.h>
 #import "GlobalCacheConnectionManager.h"
 #import "MSRemoteAppController.h"
-#import "RECommand.h"
+#import "Command.h"
 #import "CoreDataManager.h"
 
 @interface ConnectionManager () {

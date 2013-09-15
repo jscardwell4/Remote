@@ -8,9 +8,9 @@
 
 #import "UserCodesViewController.h"
 
-@class   BOComponentDevice;
+@class   ComponentDevice;
 
 @interface ComponentDeviceListViewController : UITableViewController
 
-@property (nonatomic, strong) BOComponentDevice * componentDevice;
+@property (nonatomic, strong) ComponentDevice * componentDevice;
 @end

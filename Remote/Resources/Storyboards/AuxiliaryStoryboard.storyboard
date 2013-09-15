@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4471.1" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3697.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Icon Selection View Controller-->
@@ -19,7 +19,7 @@
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RSO-7d-6ra" id="cxj-dL-JnL">
-                                    <rect key="frame" x="0.0" y="0.0" width="322" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HBt-di-ZTV">
@@ -160,7 +160,7 @@
         <!--Button Group Editing View Controller-->
         <scene sceneID="2k9-6W-OlE">
             <objects>
-                <viewController storyboardIdentifier="Button Group Editor" id="OQq-R2-BbM" customClass="REButtonGroupEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Button Group Editor" id="OQq-R2-BbM" customClass="ButtonGroupEditingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rqO-E5-yyK"/>
                         <viewControllerLayoutGuide type="bottom" id="hjX-a7-7gb"/>
@@ -537,7 +537,7 @@
         <!--Remote Editing View Controller-->
         <scene sceneID="bvU-tO-ttz">
             <objects>
-                <viewController storyboardIdentifier="Remote Editor" autoresizesArchivedViewToFullSize="NO" id="iaP-8F-k5F" customClass="RERemoteEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Remote Editor" autoresizesArchivedViewToFullSize="NO" id="iaP-8F-k5F" customClass="RemoteEditingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yyp-ea-jOh"/>
                         <viewControllerLayoutGuide type="bottom" id="yDA-uY-Kxr"/>
@@ -1161,7 +1161,7 @@
         <!--Button Editing View Controller-->
         <scene sceneID="S55-D1-mrx">
             <objects>
-                <viewController storyboardIdentifier="Button Editor" id="CVE-jO-0Xo" customClass="REButtonEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Button Editor" id="CVE-jO-0Xo" customClass="ButtonEditingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8EF-O9-nb0"/>
                         <viewControllerLayoutGuide type="bottom" id="6hf-Tu-2IY"/>
@@ -1571,7 +1571,7 @@
         <!--Detailed Button Editing View Controller-->
         <scene sceneID="dQB-oT-NMR">
             <objects>
-                <viewController storyboardIdentifier="Detailed Button Editor" modalTransitionStyle="partialCurl" id="2mL-QU-hWZ" customClass="REDetailedButtonEditingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Detailed Button Editor" modalTransitionStyle="partialCurl" id="2mL-QU-hWZ" customClass="DetailedButtonEditingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RE6-id-cPU"/>
                         <viewControllerLayoutGuide type="bottom" id="UAe-tM-UXg"/>

@@ -8,9 +8,9 @@
 #import "JSONImportDatabaseConstructionTests.h"
 #import "BankObject.h"
 #import "BankObjectGroup.h"
-#import "RERemoteController.h"
-#import "REActivity.h"
-#import "RECommand.h"
+#import "RemoteController.h"
+#import "Activity.h"
+#import "Command.h"
 #import "RemoteElement.h"
 #import "MSRemoteImportSupportFunctions.h"
 
@@ -53,7 +53,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         NSArray * componentDevices = [BOComponentDevice MR_importFromArray:importObjects
+         NSArray * componentDevices = [ComponentDevice MR_importFromArray:importObjects
                                                                   inContext:context];
          assertThat(componentDevices, hasCountOf([importObjects count]));
 
@@ -69,7 +69,7 @@ static MSJSONParser const * parser_ = nil;
                                                                             valueForKeyPath:@"name"]];
          for (NSString * uuid in deviceUUIDs)
          {
-             BOComponentDevice * device = [BOComponentDevice objectWithUUID:uuid
+             ComponentDevice * device = [ComponentDevice objectWithUUID:uuid
                                                                   context:self.rootSavingContext];
              assertThat(device, notNilValue());
 
@@ -87,7 +87,7 @@ static MSJSONParser const * parser_ = nil;
                                                        dictionaryWithObjects:deviceImportData[@"codes"]
                                                                      forKeys:[deviceImportData[@"codes"]
                                                                               valueForKeyPath:@"name"]];
-             for (BOIRCode * code in device.codes)
+             for (IRCode * code in device.codes)
              {
                  NSDictionary * codeImportData = codeImportDataDirectory[code.name];
                  assertThat(codeImportData,          notNilValue()                         );
@@ -215,7 +215,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         RERemoteController * controller = [RERemoteController MR_importFromObject:importObject
+         RemoteController * controller = [RemoteController MR_importFromObject:importObject
                                                                          inContext:context];
          assertThat(controller, notNilValue());
 
@@ -224,11 +224,11 @@ static MSJSONParser const * parser_ = nil;
 
     [self.rootSavingContext performBlockAndWait:
      ^{
-         RERemoteController * controller = [RERemoteController objectWithUUID:controllerUUID
+         RemoteController * controller = [RemoteController objectWithUUID:controllerUUID
                                                                     context:self.rootSavingContext];
          assertThat(controller, notNilValue());
 
-         REButtonGroup * topToolbar = controller.topToolbar;
+         ButtonGroup * topToolbar = controller.topToolbar;
          assertThat(topToolbar, notNilValue());
 
          NSDictionary * toolbarImportData = importObject[@"topToolbar"];
@@ -246,7 +246,7 @@ static MSJSONParser const * parser_ = nil;
                                        dictionaryWithObjects:toolbarImportData[@"subelements"]
                                                      forKeys:[toolbarImportData[@"subelements"]
                                                               valueForKeyPath:@"uuid"]];
-         for (REButton * button in topToolbar.subelements)
+         for (Button * button in topToolbar.subelements)
          {
              NSDictionary * buttonImportData = buttonIndex[button.uuid];
              assertThat(buttonImportData, notNilValue());
@@ -282,7 +282,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         NSArray * activities = [REActivity MR_importFromArray:importObject inContext:context];
+         NSArray * activities = [Activity MR_importFromArray:importObject inContext:context];
          assertThat(activities, hasCountOf([importObject count]));
 
          activityUUIDs = [activities valueForKeyPath:@"uuid"];
@@ -300,7 +300,7 @@ static MSJSONParser const * parser_ = nil;
                                           }];
              assertThat(importData, notNilValue());
 
-             REActivity * activity = [REActivity objectWithUUID:uuid context:self.rootSavingContext];
+             Activity * activity = [Activity objectWithUUID:uuid context:self.rootSavingContext];
              assertThat(activity, notNilValue());
              assertThat(activity.name, is(importData[@"name"]));
 
@@ -317,7 +317,7 @@ static MSJSONParser const * parser_ = nil;
                                                                            valueForKeyPath:@"uuid"]];
                  for (NSUInteger i = 0; i < commands.count; i++)
                  {
-                     RECommand * command = launchMacro[i];
+                     Command * command = launchMacro[i];
 
                      NSDictionary * commandData = commandDataIndex[command.uuid];
                      assertThat(commandData, notNilValue());
@@ -331,10 +331,10 @@ static MSJSONParser const * parser_ = nil;
 
                      if ([@"ir" isEqualToString:commandType])
                      {
-                         BOIRCode * code = ((RESendIRCommand *)command).code;
+                         IRCode * code = ((RESendIRCommand *)command).code;
                          assertThat(code, notNilValue());
 
-                         BOIRCode * fetchedCode = [BOIRCode objectWithUUID:commandData[@"code"][@"uuid"]
+                         IRCode * fetchedCode = [IRCode objectWithUUID:commandData[@"code"][@"uuid"]
                                                                  context:self.rootSavingContext];
                          assertThat(fetchedCode, notNilValue());
                          assertThat(code, is(fetchedCode));
@@ -343,10 +343,10 @@ static MSJSONParser const * parser_ = nil;
 
                      else if ([@"power" isEqualToString:commandType])
                      {
-                         BOComponentDevice * device = ((REPowerCommand *)command).device;
+                         ComponentDevice * device = ((REPowerCommand *)command).device;
                          assertThat(device, notNilValue());
 
-                         BOComponentDevice * fetchedDevice = [BOComponentDevice
+                         ComponentDevice * fetchedDevice = [ComponentDevice
                                                               objectWithUUID:commandData[@"device"][@"uuid"]
                                                                    context:self.rootSavingContext];
                          assertThat(fetchedDevice, notNilValue());
@@ -374,7 +374,7 @@ static MSJSONParser const * parser_ = nil;
 
                  for (NSUInteger i = 0; i < commands.count; i++)
                  {
-                     RECommand * command = haltMacro[i];
+                     Command * command = haltMacro[i];
 
                      NSDictionary * commandData = commandDataIndex[command.uuid];
                      assertThat(commandData, notNilValue());
@@ -388,10 +388,10 @@ static MSJSONParser const * parser_ = nil;
 
                      if ([@"ir" isEqualToString:commandType])
                      {
-                         BOIRCode * code = ((RESendIRCommand *)command).code;
+                         IRCode * code = ((RESendIRCommand *)command).code;
                          assertThat(code, notNilValue());
 
-                         BOIRCode * fetchedCode = [BOIRCode objectWithUUID:commandData[@"code"][@"uuid"]
+                         IRCode * fetchedCode = [IRCode objectWithUUID:commandData[@"code"][@"uuid"]
                                                                  context:self.rootSavingContext];
                          assertThat(fetchedCode, notNilValue());
                          assertThat(code, is(fetchedCode));
@@ -400,10 +400,10 @@ static MSJSONParser const * parser_ = nil;
 
                      else if ([@"power" isEqualToString:commandType])
                      {
-                         BOComponentDevice * device = ((REPowerCommand *)command).device;
+                         ComponentDevice * device = ((REPowerCommand *)command).device;
                          assertThat(device, notNilValue());
 
-                         BOComponentDevice * fetchedDevice = [BOComponentDevice
+                         ComponentDevice * fetchedDevice = [ComponentDevice
                                                               objectWithUUID:commandData[@"device"][@"uuid"]
                                                                    context:self.rootSavingContext];
                          assertThat(fetchedDevice, notNilValue());
@@ -449,7 +449,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         RERemote * homeRemote = [RERemote MR_importFromObject:importObject inContext:context];
+         Remote * homeRemote = [Remote MR_importFromObject:importObject inContext:context];
          assertThat(homeRemote, notNilValue());
 
          homeRemoteUUID = homeRemote.uuid;
@@ -457,7 +457,7 @@ static MSJSONParser const * parser_ = nil;
 
     [self.rootSavingContext performBlockAndWait:
      ^{
-         RERemote * homeRemote = [RERemote objectWithUUID:homeRemoteUUID
+         Remote * homeRemote = [Remote objectWithUUID:homeRemoteUUID
                                                 context:self.rootSavingContext];
          assertThat(homeRemote, notNilValue());
          assertThat(homeRemote.name, is(importObject[@"name"]));
@@ -469,8 +469,8 @@ static MSJSONParser const * parser_ = nil;
 
          for (NSDictionary * buttonGroupData in importObject[@"subelements"])
          {
-             REButtonGroup * buttonGroup =
-             (REButtonGroup *)memberOfCollectionWithUUID(homeRemote.subelements, buttonGroupData[@"uuid"]);
+             ButtonGroup * buttonGroup =
+             (ButtonGroup *)memberOfCollectionWithUUID(homeRemote.subelements, buttonGroupData[@"uuid"]);
              assertThat(buttonGroup, notNilValue());
              assertThat(buttonGroup.name, is(buttonGroupData[@"name"]));
              assertThat(buttonGroup.constraints,
@@ -479,7 +479,7 @@ static MSJSONParser const * parser_ = nil;
              [elements addObject:buttonGroup];
              for (NSDictionary * buttonData in buttonGroupData[@"subelements"])
              {
-                 REButton * button = (REButton *)memberOfCollectionWithUUID(buttonGroup.subelements,
+                 Button * button = (Button *)memberOfCollectionWithUUID(buttonGroup.subelements,
                                                                             buttonData[@"uuid"]);
                  assertThat(button, notNilValue());
                  assertThat(button.name, is(buttonData[@"name"]));

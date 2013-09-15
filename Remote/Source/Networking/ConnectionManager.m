@@ -165,10 +165,10 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
     NSManagedObject * command = [[NSManagedObjectContext MR_defaultContext] existingObjectWithID:commandID
                                                                                     error:nil];
 
-    if ([command isKindOfClass:[RESendIRCommand class]])
+    if ([command isKindOfClass:[SendIRCommand class]])
     {
         static NSUInteger nextTag = 0;
-        RESendIRCommand * sendIRCommand = (RESendIRCommand *)command;
+        SendIRCommand * sendIRCommand = (SendIRCommand *)command;
         NSString * cmd = sendIRCommand.commandString;
         MSLogDebugTag(@"sendIRCommand:%@", [sendIRCommand shortDescription]);
 
@@ -195,9 +195,9 @@ MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNo
         }
     }
 
-    else if ([command isKindOfClass:[REHTTPCommand class]])
+    else if ([command isKindOfClass:[HTTPCommand class]])
     {
-        NSURL * url = ((REHTTPCommand*)command).url;
+        NSURL * url = ((HTTPCommand*)command).url;
 
         if (StringIsEmpty([url absoluteString])) MSLogWarnTag(@"cannot send empty or nil command");
 

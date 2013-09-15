@@ -1,39 +1,39 @@
 //
-//  REControlStateSetProxy.h
+//  ControlStateSetProxy.h
 //  Remote
 //
 //  Created by Jason Cardwell on 4/12/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-@class REControlStateSet, REControlStateTitleSet, REControlStateIconImageSet, REControlStateColorSet, REControlStateButtonImageSet, REControlStateSetProxy;
+@class ControlStateSet, ControlStateTitleSet, ControlStateIconImageSet, ControlStateColorSet, ControlStateButtonImageSet, ControlStateSetProxy;
 
-typedef id (^REControlStateSetProxyInstantiationBlock)(REControlStateSetProxy * proxy);
+typedef id (^ControlStateSetProxyInstantiationBlock)(ControlStateSetProxy * proxy);
 
-@protocol REControlStateSetProxyDelegate <NSObject>
+@protocol ControlStateSetProxyDelegate <NSObject>
 
 @optional
-- (void)didInstantiateProxyObject:(NSString *)uuid forProxy:(REControlStateSetProxy *)proxy;
+- (void)didInstantiateProxyObject:(NSString *)uuid forProxy:(ControlStateSetProxy *)proxy;
 
 @end
 
-@interface REControlStateSetProxy : NSProxy
+@interface ControlStateSetProxy : NSProxy
 
-@property (nonatomic, weak, readonly)  id<REControlStateSetProxyDelegate> delegate;
-@property (nonatomic, copy, readwrite) REControlStateSetProxyInstantiationBlock instanstiationBlock;
+@property (nonatomic, weak, readonly)  id<ControlStateSetProxyDelegate> delegate;
+@property (nonatomic, copy, readwrite) ControlStateSetProxyInstantiationBlock instanstiationBlock;
 
-+ (instancetype)proxyWithDelegate:(id<REControlStateSetProxyDelegate>)delegate;
-- (instancetype)initWithDelegate:(id<REControlStateSetProxyDelegate>)delegate;
++ (instancetype)proxyWithDelegate:(id<ControlStateSetProxyDelegate>)delegate;
+- (instancetype)initWithDelegate:(id<ControlStateSetProxyDelegate>)delegate;
 
 + (Class)proxyClass;
 - (Class)proxyClass;
 
-- (BOOL)updateProxyObject:(REControlStateSet *)object
-                   sender:(id<REControlStateSetProxyDelegate>)sender;
+- (BOOL)updateProxyObject:(ControlStateSet *)object
+                   sender:(id<ControlStateSetProxyDelegate>)sender;
 
 @end
 
-@interface REControlStateTitleSetProxy       : REControlStateSetProxy @end
+@interface ControlStateTitleSetProxy       : ControlStateSetProxy @end
 
-@interface REControlStateColorSetProxy       : REControlStateSetProxy @end
+@interface ControlStateColorSetProxy       : ControlStateSetProxy @end
 

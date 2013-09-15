@@ -8,80 +8,102 @@
 
 #import "StoryboardProxy.h"
 
-static int            ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
+#pragma unused(ddLogLevel)
+
 static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
 
 @implementation StoryboardProxy
 
-+ (void)initialize {
-    if (self == [StoryboardProxy class]) {
-        auxiliaryStoryboard = [UIStoryboard storyboardWithName:(([UserDefaults boolForKey:@"autolayout"] == YES) ? @"AuxiliaryStoryboard-Autolayout" : @"AuxiliaryStoryboard")
-                                                        bundle:nil];
-        if (!auxiliaryStoryboard) DDLogError(@"%@\n\tfailed to retrieve auxiliary storyboard", ClassTagString);
++ (void)initialize
+{
+    if (self == [StoryboardProxy class])
+    {
+        auxiliaryStoryboard = [UIStoryboard storyboardWithName:@"AuxiliaryStoryboard" bundle:nil];
+        assert(auxiliaryStoryboard);
 
         mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-        if (!mainStoryboard) DDLogError(@"%@\n\tfailed to retrieve main storyboard", ClassTagString);
+        assert(mainStoryboard);
     }
 }
 
-+ (UIStoryboard *)auxiliaryStoryboard {
-    return auxiliaryStoryboard;
-}
++ (UIStoryboard *)auxiliaryStoryboard { return auxiliaryStoryboard; }
 
-+ (UIStoryboard *)mainStoryboard {
-    return mainStoryboard;
-}
++ (UIStoryboard *)mainStoryboard { return mainStoryboard; }
 
-+ (ColorSelectionViewController *)colorSelectionViewController {
++ (ColorSelectionViewController *)colorSelectionViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Color Selection"];
 }
 
-+ (LabelEditingViewController *)labelEditingViewController {
++ (LabelEditingViewController *)labelEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Label Editor"];
 }
 
-+ (REButtonEditingViewController *)buttonEditingViewController {
++ (ButtonEditingViewController *)buttonEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Button Editor"];
 }
 
-+ (IconEditingViewController *)iconEditingViewController {
++ (IconEditingViewController *)iconEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Icon Editor"];
 }
 
-+ (REDetailedButtonEditingViewController *)detailedButtonEditingViewController {
++ (DetailedButtonEditingViewController *)detailedButtonEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Detailed Button Editor"];
 }
 
-+ (IconSelectionViewController *)iconSelectionViewController {
++ (IconSelectionViewController *)iconSelectionViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Icon Selection"];
 }
 
-+ (CommandEditingViewController *)commandEditingViewController {
++ (CommandEditingViewController *)commandEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Command Editor"];
 }
 
-+ (REButtonGroupEditingViewController *)buttonGroupEditingViewController {
++ (ButtonGroupEditingViewController *)buttonGroupEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Button Group Editor"];
 }
 
-+ (RERemoteEditingViewController *)remoteEditingViewController {
++ (RemoteEditingViewController *)remoteEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Remote Editor"];
 }
 
-+ (REBackgroundEditingViewController *)backgroundEditingViewController {
++ (REBackgroundEditingViewController *)backgroundEditingViewController
+{
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Background Editor"];
 }
 
-+ (SettingsViewController *)settingsViewController {
++ (SettingsViewController *)settingsViewController
+{
     return [mainStoryboard instantiateViewControllerWithIdentifier:@"Settings"];
 }
 
-+ (LogsViewController *)logsViewController {
-    return [mainStoryboard instantiateViewControllerWithIdentifier:@"Logs"];
++ (UINavigationController *)bankIndexViewController
+{
+    return [mainStoryboard instantiateViewControllerWithIdentifier:@"Bank Index"];
 }
 
-+ (LaunchScreenViewController *)launchScreenViewController {
-    return (LaunchScreenViewController *)[mainStoryboard instantiateInitialViewController];
++ (MainMenuViewController *)mainMenuViewController
+{
+    return (MainMenuViewController *)[mainStoryboard instantiateInitialViewController];
+}
+
++ (UIViewController *)mainControllerWithID:(NSString *)storyboardID
+{
+    return [mainStoryboard instantiateViewControllerWithIdentifier:storyboardID];
+}
+
++ (UIViewController *)auxControllerWithID:(NSString *)storyboardID
+{
+    return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:storyboardID];
 }
 
 @end

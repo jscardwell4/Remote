@@ -8,9 +8,9 @@
 
 #import "LabelEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
-#import "REEditingViewController.h"
-#import "REControlStateSet.h"
-#import "REView.h"
+#import "RemoteElementEditingViewController.h"
+#import "ControlStateSet.h"
+#import "RemoteElementView.h"
 
 #import "StoryboardProxy.h"
 
@@ -44,7 +44,7 @@ static NSArray const    * fontNames;
 @property (strong, nonatomic) NSNumber       * currentFontSize;
 @property (copy, nonatomic) NSString         * currentTitleText;
 @property (strong, nonatomic) UIColor        * currentColor;
-@property (weak, nonatomic) REButtonView       * buttonView;
+@property (weak, nonatomic) ButtonView       * buttonView;
 @property (nonatomic, assign) UIControlState   controlState;
 
 - (IBAction)sliderValueChanged:(UISlider *)sender;

@@ -7,11 +7,11 @@
 //
 #import "AttributeEditingViewController_Private.h"
 #import "IconEditingViewController.h"
-#import "REEditingViewController.h"
-#import "REControlStateSet.h"
-#import "BOImage.h"
+#import "RemoteElementEditingViewController.h"
+#import "ControlStateSet.h"
+#import "Image.h"
 #import <QuartzCore/QuartzCore.h>
-#import "REView.h"
+#import "RemoteElementView.h"
 
 #import "StoryboardProxy.h"
 
@@ -30,11 +30,11 @@ static const int msLogContext = 0;
 @property (strong, nonatomic) IBOutlet UIView      * contentContainer;
 @property (strong, nonatomic) NSValue              * initialEdgeInsets;
 @property (strong, nonatomic) UIColor              * initialColor;
-@property (strong, nonatomic) BOImage     * initialIconImage;
+@property (strong, nonatomic) Image     * initialIconImage;
 @property (strong, nonatomic) NSValue              * currentEdgeInsets;
 @property (strong, nonatomic) UIColor              * currentColor;
-@property (strong, nonatomic) BOImage     * currentIconImage;
-@property (weak, nonatomic) REButtonView             * buttonView;
+@property (strong, nonatomic) Image     * currentIconImage;
+@property (weak, nonatomic) ButtonView             * buttonView;
 @property (nonatomic, assign) UIControlState         controlState;
 @property (strong, nonatomic) IBOutlet UIButton    * removeIconButton;
 
@@ -287,7 +287,7 @@ delegate             = _delegate;
     if (ValueIsNotNil(_detailedButtonEditor)) [_detailedButtonEditor removeAuxController:controller animated:YES];
 }
 
-- (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(BOImage *)icon {
+- (void)iconSelector:(IconSelectionViewController *)controller didSelectIcon:(Image *)icon {
     MSLogDebug(@"%@\n\ticon selected:%@", ClassTagString, icon);
     self.currentIconImage = icon;
     [self restoreCurrentValues];

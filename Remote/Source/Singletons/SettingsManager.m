@@ -7,6 +7,7 @@
 //
 
 #import "SettingsManager.h"
+#import "StoryboardProxy.h"
 
 MSKIT_KEY_DEFINITION(MSSettingsAutoConnect      );
 MSKIT_KEY_DEFINITION(MSSettingsAutoListen       );
@@ -53,6 +54,8 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
     [UserDefaults registerDefaults:[settingsCache copy]];
     DDLogVerbose(@"registered defaults:%@", settingsCache);
 }
+
++ (UIViewController *)viewController { return (UIViewController *)[StoryboardProxy settingsViewController]; }
 
 + (void)applyUserSettings {
     // FIXME: Not sure where this method fits in the overall scheme.

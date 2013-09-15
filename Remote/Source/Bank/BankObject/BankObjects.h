@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import "BOComponentDevice.h"
-#import "BOImage.h"
-#import "BOPreset.h"
-#import "BOManufacturer.h"
-#import "BOIRCode.h"
+#import "ComponentDevice.h"
+#import "Image.h"
+#import "Preset.h"
+#import "Manufacturer.h"
+#import "IRCode.h"
