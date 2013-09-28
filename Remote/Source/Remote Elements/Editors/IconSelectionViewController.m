@@ -203,7 +203,7 @@ static const int msLogContext = 0;
 // }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MSKIT_STATIC_STRING_CONST   CellIdentifier       = @"Cell";
+    MSSTATIC_STRING_CONST   CellIdentifier       = @"Cell";
     static const CGSize       originalIconViewSize = (CGSize) {.width = 35.0, .height = 35.0};
     UITableViewCell         * cell                 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 

@@ -9,16 +9,16 @@
 #import "AttributeEditingViewController_Private.h"
 #import "RemoteElementEditingViewController.h"
 
-MSKIT_STRING_CONST   kAttributeEditingFontSizeKey     = @"kAttributeEditingFontSizeKey";
-MSKIT_STRING_CONST   kAttributeEditingFontNameKey     = @"kAttributeEditingFontNameKey";
-MSKIT_STRING_CONST   kAttributeEditingEdgeInsetsKey   = @"kAttributeEditingEdgeInsetsKey";
-MSKIT_STRING_CONST   kAttributeEditingTitleTextKey    = @"kAttributeEditingTitleTextKey";
-MSKIT_STRING_CONST   kAttributeEditingColorKey        = @"kAttributeEditingColorKey";
-MSKIT_STRING_CONST   kAttributeEditingTitleColorKey   = @"kAttributeEditingTitleColorKey";
-MSKIT_STRING_CONST   kAttributeEditingBoundsKey       = @"kAttributeEditingBoundsKey";
-MSKIT_STRING_CONST   kAttributeEditingButtonKey       = @"kAttributeEditingButtonKey";
-MSKIT_STRING_CONST   kAttributeEditingControlStateKey = @"kAttributeEditingControlStateKey";
-MSKIT_STRING_CONST   kAttributeEditingImageKey        = @"kAttributeEditingImageKey";
+MSSTRING_CONST   kAttributeEditingFontSizeKey     = @"kAttributeEditingFontSizeKey";
+MSSTRING_CONST   kAttributeEditingFontNameKey     = @"kAttributeEditingFontNameKey";
+MSSTRING_CONST   kAttributeEditingEdgeInsetsKey   = @"kAttributeEditingEdgeInsetsKey";
+MSSTRING_CONST   kAttributeEditingTitleTextKey    = @"kAttributeEditingTitleTextKey";
+MSSTRING_CONST   kAttributeEditingColorKey        = @"kAttributeEditingColorKey";
+MSSTRING_CONST   kAttributeEditingTitleColorKey   = @"kAttributeEditingTitleColorKey";
+MSSTRING_CONST   kAttributeEditingBoundsKey       = @"kAttributeEditingBoundsKey";
+MSSTRING_CONST   kAttributeEditingButtonKey       = @"kAttributeEditingButtonKey";
+MSSTRING_CONST   kAttributeEditingControlStateKey = @"kAttributeEditingControlStateKey";
+MSSTRING_CONST   kAttributeEditingImageKey        = @"kAttributeEditingImageKey";
 
 @implementation AttributeEditingViewController
 

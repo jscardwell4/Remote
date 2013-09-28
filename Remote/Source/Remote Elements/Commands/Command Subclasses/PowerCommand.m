@@ -20,7 +20,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 + (PowerCommand *)onCommandForDevice:(ComponentDevice *)device
 {
     PowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
-    powerCommand.state  = BOPowerStateOn;
+    powerCommand.state  = YES;
     powerCommand.device = device;
     return powerCommand;
 }
@@ -28,7 +28,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 + (PowerCommand *)offCommandForDevice:(ComponentDevice *)device
 {
     PowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
-    powerCommand.state  = BOPowerStateOff;
+    powerCommand.state  = NO;
     powerCommand.device = device;
     return powerCommand;
 }
@@ -51,21 +51,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
     else
         return NO;
-}
-
-- (void)setState:(BOPowerState)state
-{
-    [self willChangeValueForKey:@"state"];
-    _state = state;
-    [self didChangeValueForKey:@"state"];
-}
-
-- (BOPowerState)state
-{
-    [self willAccessValueForKey:@"state"];
-    BOPowerState state = _state;
-    [self didAccessValueForKey:@"state"];
-    return state;
 }
 
 - (NSString *)shortDescription
@@ -91,7 +76,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
                                                  [super main];
                                              };
 
-        if (powerCommand.state == BOPowerStateOn)
+        if (powerCommand.state == YES)
             [powerCommand.device powerOn:handler];
 
         else

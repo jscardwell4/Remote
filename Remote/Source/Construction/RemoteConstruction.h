@@ -14,7 +14,7 @@
 #import "CoreDataManager.h"
 #import "RemoteController.h"
 #import "BankObjectPreview.h"
-#import "BankObjects.h"
+#import "Bankables.h"
 #import "ControlStateSet.h"
 #import "Command.h"
 #import "CommandContainer.h"

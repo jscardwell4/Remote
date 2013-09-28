@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-MSKIT_EXTERN_STRING   kLearnerStatusDidChangeNotification;
-MSKIT_EXTERN_STRING   kCommandCapturedNotification;
+MSEXTERN_STRING   kLearnerStatusDidChangeNotification;
+MSEXTERN_STRING   kCommandCapturedNotification;
 
 @interface IRLearner : NSObject
 

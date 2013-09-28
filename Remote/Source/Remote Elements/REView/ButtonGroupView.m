@@ -8,8 +8,8 @@
 
 #import "RemoteElementView_Private.h"
 
-MSKIT_NAMETAG_DEFINITION(ButtonGroupViewInternal);
-MSKIT_NAMETAG_DEFINITION(ButtonGroupViewLabel);
+MSNAMETAG_DEFINITION(ButtonGroupViewInternal);
+MSNAMETAG_DEFINITION(ButtonGroupViewLabel);
 
 static int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);

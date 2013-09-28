@@ -1,7 +1,7 @@
-/* RERemote - Comcast DVR */
+/* RERemote - Dish Hopper */
 {
     "uuid": "EE27F682-437B-42B9-B1D8-03870808821B",
-    "name": "Comcast DVR Activity",
+    "name": "Dish Hopper Activity",
     "type": "remote",
     "options": "top bar hidden",
     "tag": 1,

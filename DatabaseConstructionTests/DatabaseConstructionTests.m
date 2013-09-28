@@ -20,7 +20,7 @@ static uint8_t     msTestOptions = 0;
 {
     MSDictionary * componentDeviceNamePortsAssignments =
     [MSDictionary dictionaryWithDictionary:@{ @"AV Receiver" : @2,
-                                              @"Comcast DVR" : @1,
+                                              @"Dish Hopper" : @1,
                                               @"Samsung TV"  : @3,
                                               @"PS3"         : @3 }];
 
@@ -168,7 +168,7 @@ static uint8_t     msTestOptions = 0;
                                                                @"Top Menu",
                                                                @"Up"]]
                                                    forKeys:@[@"AV Receiver",
-                                                             @"Comcast DVR",
+                                                             @"Dish Hopper",
                                                              @"Samsung TV",
                                                              @"PS3"]];
     
@@ -197,7 +197,7 @@ static uint8_t     msTestOptions = 0;
                                                                       forKeys:componentDeviceNames];
 
          assertThat(deviceDirectory, HC_hasKey(@"AV Receiver"));
-         assertThat(deviceDirectory, HC_hasKey(@"Comcast DVR"));
+         assertThat(deviceDirectory, HC_hasKey(@"Dish Hopper"));
          assertThat(deviceDirectory, HC_hasKey(@"Samsung TV") );
          assertThat(deviceDirectory, HC_hasKey(@"PS3")        );
 

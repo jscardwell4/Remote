@@ -148,7 +148,7 @@ CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
 
 + (BOOL)requiresConstraintBasedLayout { return YES; }
 
-MSKIT_STATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
+MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 - (void)updateConstraints {
 

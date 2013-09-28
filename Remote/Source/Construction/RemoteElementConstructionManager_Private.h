@@ -84,8 +84,8 @@
 @interface CommandSetBuilder (Developer)
 
 + (CommandSet *)avReceiverVolumeCommandSet:(NSManagedObjectContext *)moc;
-+ (CommandSet *)dvrChannelsCommandSet:(NSManagedObjectContext *)moc;
-+ (CommandSet *)dvrPagingCommandSet:(NSManagedObjectContext *)moc;
++ (CommandSet *)hopperChannelsCommandSet:(NSManagedObjectContext *)moc;
++ (CommandSet *)hopperPagingCommandSet:(NSManagedObjectContext *)moc;
 + (CommandSet *)transportForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
 + (CommandSet *)numberPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
 + (CommandSet *)dPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;

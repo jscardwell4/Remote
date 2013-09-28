@@ -5,30 +5,27 @@
 // Created by Jason Cardwell on 7/7/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "Bank.h"
-#import "ModelObject.h"
+#import "BankableModelObject.h"
 
-@class BOIRCodeset;
+@class IRCodeset, ComponentDevice;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Manufacturer
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface Manufacturer : ModelObject<Bankable>
-
-+ (instancetype)fetchManufacturerWithName:(NSString *)name
-                                  context:(NSManagedObjectContext *)context;
+@interface Manufacturer : BankableModelObject
 
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context;
 
 @property (nonatomic, strong) NSSet * codesets;
-@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSSet * devices;
+
 @end
 
 @interface Manufacturer (CoreDataGeneratedAccessors)
 
-- (void)addCodesetsObject:(BOIRCodeset *)codeset;
-- (void)removeCodesetsObject:(BOIRCodeset *)codeset;
+- (void)addCodesetsObject:(IRCodeset *)codeset;
+- (void)removeCodesetsObject:(IRCodeset *)codeset;
 - (void)addCodesets:(NSSet *)codesets;
 - (void)removeCodesets:(NSSet *)codesets;
 

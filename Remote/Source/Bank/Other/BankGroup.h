@@ -1,5 +1,5 @@
 //
-// BankObjectGroup.h
+// BankGroup.h
 // Remote
 //
 // Created by Jason Cardwell on 6/1/11.
@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Abstract Group
 ////////////////////////////////////////////////////////////////////////////////
-@interface BankObjectGroup : ModelObject <NamedModelObject>
+@interface BankGroup : ModelObject <NamedModelObject>
 
 + (instancetype)groupWithName:(NSString *)name context:(NSManagedObjectContext *)context;
 + (instancetype)fetchGroupWithName:(NSString *)name context:(NSManagedObjectContext *)context;
@@ -23,27 +23,32 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Images
 ////////////////////////////////////////////////////////////////////////////////
-@interface BOImageGroup : BankObjectGroup
-
-- (Image *)objectAtIndexedSubscript:(NSUInteger)idx;
-
-- (Image *)objectForKeyedSubscript:(NSString *)key;
+@interface ImageGroup : BankGroup
 
 @property (nonatomic, strong) NSSet * images;
+
+@end
+
+@interface ImageGroup (CoreDataGeneratedAccessors)
+
+- (void)addImagesObject:(Image *)value;
+- (void)removeImagesObject:(Image *)value;
+- (void)addImages:(NSSet *)values;
+- (void)removeImages:(NSSet *)values;
 
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Codesets
 ////////////////////////////////////////////////////////////////////////////////
-@interface BOIRCodeset : BankObjectGroup
+@interface IRCodeset : BankGroup
 
 @property (nonatomic, strong) Manufacturer * manufacturer;
 @property (nonatomic, strong) NSSet          * codes;
 
 @end
 
-@interface BOIRCodeset (CoreDataGeneratedAccessors)
+@interface IRCodeset (CoreDataGeneratedAccessors)
 
 - (void)addCodesObject:(IRCode *)value;
 - (void)removeCodesObject:(IRCode *)value;

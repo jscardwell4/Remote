@@ -11,6 +11,8 @@
 #import "RemoteElementEditingViewController.h"
 #import "RemoteElement.h"
 
+static id _sharedInstance;
+
 @interface Editor ()
 
 @property (nonatomic, strong, readwrite) UIViewController * viewController;

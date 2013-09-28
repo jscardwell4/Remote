@@ -7,12 +7,12 @@
 //
 #import "ModelObject.h"
 // keys
-MSKIT_EXTERN_STRING   NDDeviceMakeKey;
-MSKIT_EXTERN_STRING   NDModelKey;
-MSKIT_EXTERN_STRING   NDDeviceRevisionKey;
-MSKIT_EXTERN_STRING   NDDeviceStatusKey;
-MSKIT_EXTERN_STRING   NDDeviceUUIDKey;
-MSKIT_EXTERN_STRING   NDDeviceURLKey;
+MSEXTERN_STRING   NDDeviceMakeKey;
+MSEXTERN_STRING   NDModelKey;
+MSEXTERN_STRING   NDDeviceRevisionKey;
+MSEXTERN_STRING   NDDeviceStatusKey;
+MSEXTERN_STRING   NDDeviceUUIDKey;
+MSEXTERN_STRING   NDDeviceURLKey;
 
 @interface NetworkDevice : ModelObject <NamedModelObject>
 
@@ -35,14 +35,14 @@ MSKIT_EXTERN_STRING   NDDeviceURLKey;
 @end
 
 // constants
-MSKIT_EXTERN_STRING   NDiTachDeviceMulticastGroupAddress;
-MSKIT_EXTERN_STRING   NDiTachDeviceMulticastGroupPort;
-MSKIT_EXTERN_STRING   NDiTachDeviceTCPPort;
+MSEXTERN_STRING   NDiTachDeviceMulticastGroupAddress;
+MSEXTERN_STRING   NDiTachDeviceMulticastGroupPort;
+MSEXTERN_STRING   NDiTachDeviceTCPPort;
 
 // keys
-MSKIT_EXTERN_STRING   NDiTachDevicePCBKey;
-MSKIT_EXTERN_STRING   NDiTachDevicePkgKey;
-MSKIT_EXTERN_STRING   NDiTachDeviceSDKKey;
+MSEXTERN_STRING   NDiTachDevicePCBKey;
+MSEXTERN_STRING   NDiTachDevicePkgKey;
+MSEXTERN_STRING   NDiTachDeviceSDKKey;
 
 @interface NDiTachDevice : NetworkDevice
 

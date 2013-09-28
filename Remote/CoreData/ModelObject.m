@@ -7,7 +7,7 @@
 //
 #import "ModelObject.h"
 
-MSKIT_STRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingContextName";
+MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingContextName";
 
 @interface ModelObject (CoreDataGeneratedAccessors)
 
@@ -78,18 +78,6 @@ MSKIT_STRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializin
 {
     MSDictionary * dd = [self deepDescriptionDictionary];
     return [dd  formattedDescriptionWithOptions:options levelIndent:level];
-//    NSNumber * maxKeyLength = [[dd allKeys] valueForKeyPath:@"@max.length"];
-//
-//    NSMutableString * description = [@"" mutableCopy];
-//    [dd enumerateKeysAndObjectsUsingBlock:
-//     ^(NSString * key, NSString * value, BOOL *stop)
-//     {
-//         [description appendFormat:@"%@ %@\n",
-//          [[key stringByAppendingString:@":"] stringByRightPaddingToLength:([maxKeyLength longValue] + 2) withCharacter:' '],
-//          [value stringByShiftingRight:23 shiftFirstLine:NO]];
-//     }];
-//
-//    return [description stringByShiftingRight:4];
 }
 
 - (NSString *)modelObjectDescription

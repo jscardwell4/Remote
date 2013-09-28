@@ -1,5 +1,5 @@
 //
-//  BankObjects.h
+//  Bankables.h
 //  Remote
 //
 //  Created by Jason Cardwell on 8/24/13.

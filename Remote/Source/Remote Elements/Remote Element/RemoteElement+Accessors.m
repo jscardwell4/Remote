@@ -12,9 +12,9 @@
  */
 @implementation RemoteElement (ConstraintAccessors)
 
-MSKIT_STATIC_STRING_CONST kConstraintsKey           = @"contraints";
-MSKIT_STATIC_STRING_CONST kFirstItemConstraintsKey  = @"firstItemConstraints";
-MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
+MSSTATIC_STRING_CONST kConstraintsKey           = @"contraints";
+MSSTATIC_STRING_CONST kFirstItemConstraintsKey  = @"firstItemConstraints";
+MSSTATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
 
 - (void)addConstraint:(Constraint *)constraint {
     assert(constraint);
@@ -202,7 +202,7 @@ MSKIT_STATIC_STRING_CONST kSecondItemConstraintsKey = @"secondItemContraints";
  */
 @implementation RemoteElement (SubelementsAccessors)
 
-MSKIT_STATIC_STRING_CONST kSubelementsKey = @"subelements";
+MSSTATIC_STRING_CONST kSubelementsKey = @"subelements";
 
 - (void)insertObject:(RemoteElement *)value inSubelementsAtIndex:(NSUInteger)idx
 {

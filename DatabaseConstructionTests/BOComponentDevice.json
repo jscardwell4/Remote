@@ -105,9 +105,9 @@
         "onOffPattern": "96,24,24,24,48,24BBCBBBBBBCCB24,888ABCBBCBBBBBBCCBDABCBBCBBBBBBCCB24,4019",
         "repeatCount": 1
     }]
-}, { // BOComponentDevice - Comcast DVR
+}, { // BOComponentDevice - Dish Hopper
     "uuid": "F0419941-0226-4D06-A4F0-4F3B70BE23CF",
-    "name": "Comcast DVR",
+    "name": "Dish Hopper",
     "port": 1,
     "inputPowersOn": false,
     "alwaysOn": true,

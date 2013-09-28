@@ -11,8 +11,8 @@ static int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
-MSKIT_NAMETAG_DEFINITION(REPickerLabelButtonGroupViewInternal);
-MSKIT_NAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
+MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewInternal);
+MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 
 @implementation PickerLabelButtonGroupView
 

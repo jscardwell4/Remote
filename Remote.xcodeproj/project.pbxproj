@@ -21,7 +21,7 @@
 		C203BBD91726ECE3002FD3EA /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
 		C203BBDD1726ECE3002FD3EA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* Image.m */; };
 		C203BBDE1726ECE3002FD3EA /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* Manufacturer.m */; };
-		C203BBE01726ECE7002FD3EA /* BankObjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankObjectGroup.m */; };
+		C203BBE01726ECE7002FD3EA /* BankGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankGroup.m */; };
 		C203BBE11726ECE7002FD3EA /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
 		C203BBE21726ECF1002FD3EA /* ButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* ButtonBuilder.m */; };
 		C203BBE31726ECF1002FD3EA /* ButtonGroupBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469816FF67D00042B59E /* ButtonGroupBuilder.m */; };
@@ -180,6 +180,9 @@
 		C225FC091794A605008B8FF6 /* BuiltinTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC071794A605008B8FF6 /* BuiltinTheme.m */; };
 		C225FC0B1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
 		C225FC0C1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
+		C2269FBC17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2269FBB17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib */; };
+		C2269FBE17E9F3AD002D5898 /* BankTableViewCell-List.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2269FBD17E9F3AD002D5898 /* BankTableViewCell-List.xib */; };
+		C22E267B17E6A52000299DD5 /* BankTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22E267A17E6A52000299DD5 /* BankTableViewController.m */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
 		C2318B0E17E3CCC200CF58D9 /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2318B0D17E3CCC200CF58D9 /* ParseKit.framework */; };
 		C2318B1717E3D0BE00CF58D9 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2318B1617E3D0BE00CF58D9 /* Lumberjack.framework */; };
@@ -196,12 +199,14 @@
 		C23B946F170C94BE0028CC06 /* RemoteElementView+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */; };
 		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
+		C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2436DB417EA99C600482186 /* BankCollectionViewController.m */; };
+		C258BB6517ECF09200FBB4B4 /* BankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C258BB6417ECF09200FBB4B4 /* BankViewController.m */; };
 		C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
 		C25B473216FF8D0A0042B59E /* ComponentDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* ComponentDeviceConfiguration.m */; };
 		C25B473316FF8D0A0042B59E /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* IRCode.m */; };
 		C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* Manufacturer.m */; };
 		C25B473A16FF8D0A0042B59E /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* Image.m */; };
-		C25B473D16FF8D0A0042B59E /* BankObjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankObjectGroup.m */; };
+		C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankGroup.m */; };
 		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
 		C25B474016FF8D0A0042B59E /* Preset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* Preset.m */; };
 		C25B474516FF8D5E0042B59E /* ButtonBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469616FF67D00042B59E /* ButtonBuilder.m */; };
@@ -426,8 +431,19 @@
 		C2A8F827172C820B007CFE0B /* HomeRERemote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F824172C820B007CFE0B /* HomeRERemote.json */; };
 		C2A8F828172C820B007CFE0B /* REActivity.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F825172C820B007CFE0B /* REActivity.json */; };
 		C2A8F829172C820B007CFE0B /* DVR-RERemote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F826172C820B007CFE0B /* DVR-RERemote.json */; };
+		C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */; };
+		C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
+		C2E953F117E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
 		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
+		C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2F2A46317EDF85900DE2F41 /* Bank.storyboard */; };
+		C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */; };
+		C2F2A46917EE9C1700DE2F41 /* BankTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F2A46817EE9C1700DE2F41 /* BankTableHeaderView.xib */; };
+		C2F2A47217EF564100DE2F41 /* IRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47117EF564100DE2F41 /* IRCodeDetailViewController.m */; };
+		C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47417EF566600DE2F41 /* ComponentDeviceDetailViewController.m */; };
+		C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */; };
+		C2F2A47B17EF568E00DE2F41 /* PresetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */; };
+		C2F2A47E17EF569F00DE2F41 /* ManufacturerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */; };
 		C2F46133172854160009AE53 /* BOComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F46132172854160009AE53 /* BOComponentDevice.json */; };
 		C2F46136172855250009AE53 /* JSONImportDatabaseConstructionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F46135172855250009AE53 /* JSONImportDatabaseConstructionTests.m */; };
 		C2F4613A172891D40009AE53 /* BOBackgroundImage.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F46138172891D40009AE53 /* BOBackgroundImage.json */; };
@@ -527,11 +543,15 @@
 		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
 		C225FC071794A605008B8FF6 /* BuiltinTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuiltinTheme.m; sourceTree = "<group>"; };
 		C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTheme.m; sourceTree = "<group>"; };
+		C2269FBB17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankTableViewCell-Thumbnail.xib"; sourceTree = "<group>"; };
+		C2269FBD17E9F3AD002D5898 /* BankTableViewCell-List.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankTableViewCell-List.xib"; sourceTree = "<group>"; };
 		C22BA1041721933900850174 /* ConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C22BA1051721933900850174 /* ConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstructDVRRemoteTests.m; sourceTree = "<group>"; };
 		C22BA107172193CB00850174 /* RECoreDataTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECoreDataTestCase.h; sourceTree = "<group>"; };
 		C22BA108172193CB00850174 /* RECoreDataTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECoreDataTestCase.m; sourceTree = "<group>"; };
 		C22BA10A1721E9D000850174 /* GTMSenTestCase_Macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase_Macros.h; sourceTree = "<group>"; };
+		C22E267917E6A52000299DD5 /* BankTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankTableViewController.h; sourceTree = "<group>"; };
+		C22E267A17E6A52000299DD5 /* BankTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankTableViewController.m; sourceTree = "<group>"; };
 		C23004C416DD3AA100D30A19 /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
 		C2318B0D17E3CCC200CF58D9 /* ParseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2318B1617E3D0BE00CF58D9 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = "../../Frameworks/Lumberjack/build/Debug-iphoneos/Lumberjack.framework"; sourceTree = "<group>"; };
@@ -549,13 +569,16 @@
 		C2363DCC172EDD9800352906 /* JSON-With-Discards-Grammar.parsekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "JSON-With-Discards-Grammar.parsekit"; sourceTree = "<group>"; };
 		C23A18411720CD9300B46520 /* MSCoreDataTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCoreDataTestCase.h; sourceTree = "<group>"; };
 		C23A18421720CD9300B46520 /* MSCoreDataTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCoreDataTestCase.m; sourceTree = "<group>"; };
-		C23B7A4A1705FAF80031CD6C /* BOTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BOTypedefs.h; sourceTree = "<group>"; };
 		C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Drawing.m"; sourceTree = "<group>"; };
 		C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Debugging.m"; sourceTree = "<group>"; };
 		C23F1E5C1705064E0084718A /* SendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendCommand.m; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C240DD6017049106005CC390 /* GlobalCacheConnectionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalCacheConnectionManager_Private.h; sourceTree = "<group>"; };
+		C2436DB317EA99C600482186 /* BankCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionViewController.h; sourceTree = "<group>"; };
+		C2436DB417EA99C600482186 /* BankCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionViewController.m; sourceTree = "<group>"; };
+		C258BB6317ECF09200FBB4B4 /* BankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankViewController.h; sourceTree = "<group>"; };
+		C258BB6417ECF09200FBB4B4 /* BankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankViewController.m; sourceTree = "<group>"; };
 		C259F820171898DB001FCED5 /* REControlStateSetProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REControlStateSetProxy.h; sourceTree = "<group>"; };
 		C259F821171898DB001FCED5 /* REControlStateSetProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REControlStateSetProxy.m; sourceTree = "<group>"; };
 		C259F8231718AF1D001FCED5 /* REControlStateSetProxy_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REControlStateSetProxy_Private.h; sourceTree = "<group>"; };
@@ -657,9 +680,8 @@
 		C25B46D816FF69110042B59E /* IRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCode.m; sourceTree = "<group>"; };
 		C25B46DF16FF69110042B59E /* Manufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manufacturer.m; sourceTree = "<group>"; };
 		C25B46E516FF69110042B59E /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
-		C25B46E616FF69110042B59E /* Image_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image_Private.h; sourceTree = "<group>"; };
-		C25B46EC16FF69110042B59E /* BankObjectGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectGroup.h; sourceTree = "<group>"; };
-		C25B46ED16FF69110042B59E /* BankObjectGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectGroup.m; sourceTree = "<group>"; };
+		C25B46EC16FF69110042B59E /* BankGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankGroup.h; sourceTree = "<group>"; };
+		C25B46ED16FF69110042B59E /* BankGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankGroup.m; sourceTree = "<group>"; };
 		C25B46F016FF69110042B59E /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview.h; sourceTree = "<group>"; };
 		C25B46F116FF69110042B59E /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectPreview.m; sourceTree = "<group>"; };
 		C25B46F516FF69110042B59E /* Preset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preset.m; sourceTree = "<group>"; };
@@ -689,8 +711,6 @@
 		C26BAF1F16DC18530093D5B4 /* CodeSetCodesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeSetCodesViewController.m; sourceTree = "<group>"; };
 		C26BAF2016DC18530093D5B4 /* ComponentDeviceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentDeviceListViewController.h; sourceTree = "<group>"; };
 		C26BAF2116DC18530093D5B4 /* ComponentDeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComponentDeviceListViewController.m; sourceTree = "<group>"; };
-		C26BAF2216DC18530093D5B4 /* IRCodeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeDetailViewController.h; sourceTree = "<group>"; };
-		C26BAF2316DC18530093D5B4 /* IRCodeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeDetailViewController.m; sourceTree = "<group>"; };
 		C26BAF2416DC18530093D5B4 /* ManufacturerCodeSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManufacturerCodeSetsViewController.h; sourceTree = "<group>"; };
 		C26BAF2516DC18530093D5B4 /* ManufacturerCodeSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManufacturerCodeSetsViewController.m; sourceTree = "<group>"; };
 		C26BAF2616DC18530093D5B4 /* UserCodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCodesViewController.h; sourceTree = "<group>"; };
@@ -920,12 +940,15 @@
 		C2A8F824172C820B007CFE0B /* HomeRERemote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HomeRERemote.json; sourceTree = "<group>"; };
 		C2A8F825172C820B007CFE0B /* REActivity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = REActivity.json; sourceTree = "<group>"; };
 		C2A8F826172C820B007CFE0B /* DVR-RERemote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "DVR-RERemote.json"; sourceTree = "<group>"; };
+		C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableDetailTableViewController.h; sourceTree = "<group>"; };
+		C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankableDetailTableViewController.m; sourceTree = "<group>"; };
+		C2AB7B5F17F2096100906FAE /* BankableDetailTableViewController_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankableDetailTableViewController_Private.h; sourceTree = "<group>"; };
 		C2B4998917C9562D00EC6C7C /* IRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCode.h; sourceTree = "<group>"; };
 		C2B4998A17C9567800EC6C7C /* Image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		C2B4998B17C9568900EC6C7C /* Preset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preset.h; sourceTree = "<group>"; };
 		C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComponentDevice.h; sourceTree = "<group>"; };
 		C2B4998D17C956AE00EC6C7C /* Manufacturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Manufacturer.h; sourceTree = "<group>"; };
-		C2B4998F17C958B100EC6C7C /* BankObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankObjects.h; sourceTree = "<group>"; };
+		C2B4998F17C958B100EC6C7C /* Bankables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bankables.h; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
 		C2C54D64171DA93800E01E82 /* CoreDataLogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreDataLogicTests-Info.plist"; sourceTree = "<group>"; };
 		C2C54D66171DA93800E01E82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -943,10 +966,26 @@
 		C2D7663517246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentMagicalConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C2D7663617246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentMagicalConstructDVRRemoteTests.m; sourceTree = "<group>"; };
 		C2DB0BDB179DA6EA0005ECA4 /* RemoteElementConstructionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager_Private.h; sourceTree = "<group>"; };
+		C2E953EE17E8BAA70052518D /* BankableModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableModelObject.h; sourceTree = "<group>"; };
+		C2E953EF17E8BAA70052518D /* BankableModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankableModelObject.m; sourceTree = "<group>"; };
 		C2F225481715CB8500D22B5F /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		C2F225491715CB8500D22B5F /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		C2F2254B1715E39600D22B5F /* ModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelObject.h; sourceTree = "<group>"; };
 		C2F2254C1715E39600D22B5F /* ModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelObject.m; sourceTree = "<group>"; };
+		C2F2A46317EDF85900DE2F41 /* Bank.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bank.storyboard; sourceTree = "<group>"; };
+		C2F2A46517EDF98800DE2F41 /* BankRootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankRootTableViewController.h; sourceTree = "<group>"; };
+		C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankRootTableViewController.m; sourceTree = "<group>"; };
+		C2F2A46817EE9C1700DE2F41 /* BankTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankTableHeaderView.xib; sourceTree = "<group>"; };
+		C2F2A47017EF564100DE2F41 /* IRCodeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeDetailViewController.h; sourceTree = "<group>"; };
+		C2F2A47117EF564100DE2F41 /* IRCodeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeDetailViewController.m; sourceTree = "<group>"; };
+		C2F2A47317EF566600DE2F41 /* ComponentDeviceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentDeviceDetailViewController.h; sourceTree = "<group>"; };
+		C2F2A47417EF566600DE2F41 /* ComponentDeviceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComponentDeviceDetailViewController.m; sourceTree = "<group>"; };
+		C2F2A47617EF567700DE2F41 /* ImageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDetailViewController.h; sourceTree = "<group>"; };
+		C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDetailViewController.m; sourceTree = "<group>"; };
+		C2F2A47917EF568E00DE2F41 /* PresetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetDetailViewController.h; sourceTree = "<group>"; };
+		C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresetDetailViewController.m; sourceTree = "<group>"; };
+		C2F2A47C17EF569F00DE2F41 /* ManufacturerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManufacturerDetailViewController.h; sourceTree = "<group>"; };
+		C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManufacturerDetailViewController.m; sourceTree = "<group>"; };
 		C2F46132172854160009AE53 /* BOComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BOComponentDevice.json; sourceTree = "<group>"; };
 		C2F46134172855250009AE53 /* JSONImportDatabaseConstructionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONImportDatabaseConstructionTests.h; sourceTree = "<group>"; };
 		C2F46135172855250009AE53 /* JSONImportDatabaseConstructionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONImportDatabaseConstructionTests.m; sourceTree = "<group>"; };
@@ -1407,23 +1446,12 @@
 			path = Constraints;
 			sourceTree = "<group>";
 		};
-		C25B46D016FF69110042B59E /* BankObject */ = {
+		C25B46D016FF69110042B59E /* Bankables */ = {
 			isa = PBXGroup;
 			children = (
-				C25B46D116FF69110042B59E /* BankObject Subclasses */,
-				C25B46EC16FF69110042B59E /* BankObjectGroup.h */,
-				C25B46ED16FF69110042B59E /* BankObjectGroup.m */,
-				C25B46F016FF69110042B59E /* BankObjectPreview.h */,
-				C25B46F116FF69110042B59E /* BankObjectPreview.m */,
-				C2B4998F17C958B100EC6C7C /* BankObjects.h */,
-			);
-			name = BankObject;
-			path = Bank/BankObject;
-			sourceTree = "<group>";
-		};
-		C25B46D116FF69110042B59E /* BankObject Subclasses */ = {
-			isa = PBXGroup;
-			children = (
+				C2E953EE17E8BAA70052518D /* BankableModelObject.h */,
+				C2E953EF17E8BAA70052518D /* BankableModelObject.m */,
+				C2B4998F17C958B100EC6C7C /* Bankables.h */,
 				C2B4998D17C956AE00EC6C7C /* Manufacturer.h */,
 				C25B46DF16FF69110042B59E /* Manufacturer.m */,
 				C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */,
@@ -1431,12 +1459,12 @@
 				C2B4998B17C9568900EC6C7C /* Preset.h */,
 				C25B46F516FF69110042B59E /* Preset.m */,
 				C2B4998A17C9567800EC6C7C /* Image.h */,
-				C25B46E616FF69110042B59E /* Image_Private.h */,
 				C25B46E516FF69110042B59E /* Image.m */,
 				C2B4998917C9562D00EC6C7C /* IRCode.h */,
 				C25B46D816FF69110042B59E /* IRCode.m */,
 			);
-			path = "BankObject Subclasses";
+			name = Bankables;
+			path = Bank/Bankables;
 			sourceTree = "<group>";
 		};
 		C26329491713B0110080330D /* Themes */ = {
@@ -1568,8 +1596,6 @@
 				C26BAF1F16DC18530093D5B4 /* CodeSetCodesViewController.m */,
 				C26BAF2016DC18530093D5B4 /* ComponentDeviceListViewController.h */,
 				C26BAF2116DC18530093D5B4 /* ComponentDeviceListViewController.m */,
-				C26BAF2216DC18530093D5B4 /* IRCodeDetailViewController.h */,
-				C26BAF2316DC18530093D5B4 /* IRCodeDetailViewController.m */,
 				C26BAF2416DC18530093D5B4 /* ManufacturerCodeSetsViewController.h */,
 				C26BAF2516DC18530093D5B4 /* ManufacturerCodeSetsViewController.m */,
 				C26BAF2616DC18530093D5B4 /* UserCodesViewController.h */,
@@ -1675,7 +1701,6 @@
 				C26BB00116DC18530093D5B4 /* MSRemoteMacros.h */,
 				C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */,
 				C2997F2316FA563900290737 /* RETypedefs.h */,
-				C23B7A4A1705FAF80031CD6C /* BOTypedefs.h */,
 			);
 			path = "Type Definitions, Constants & Functions";
 			sourceTree = "<group>";
@@ -1727,6 +1752,10 @@
 		C26BB59016DC18A90093D5B4 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				C2F2A46317EDF85900DE2F41 /* Bank.storyboard */,
+				C2F2A46817EE9C1700DE2F41 /* BankTableHeaderView.xib */,
+				C2269FBD17E9F3AD002D5898 /* BankTableViewCell-List.xib */,
+				C2269FBB17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib */,
 				C2318B2417E50DAE00CF58D9 /* BankIndex.xib */,
 				C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */,
 				C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */,
@@ -2010,7 +2039,9 @@
 			children = (
 				C2318B1B17E3DACA00CF58D9 /* Bank.h */,
 				C2318B1C17E3DACA00CF58D9 /* Bank.m */,
-				C25B46D016FF69110042B59E /* BankObject */,
+				C2F2A46F17EF560900DE2F41 /* View Controllers */,
+				C25B46D016FF69110042B59E /* Bankables */,
+				C2F2A46E17EF55E300DE2F41 /* Other */,
 				C2318B3017E553DD00CF58D9 /* disabled */,
 			);
 			name = Bank;
@@ -2025,6 +2056,47 @@
 				C26BAFF316DC18530093D5B4 /* Reachability.m */,
 			);
 			name = disabled;
+			sourceTree = "<group>";
+		};
+		C2F2A46E17EF55E300DE2F41 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C25B46EC16FF69110042B59E /* BankGroup.h */,
+				C25B46ED16FF69110042B59E /* BankGroup.m */,
+				C25B46F016FF69110042B59E /* BankObjectPreview.h */,
+				C25B46F116FF69110042B59E /* BankObjectPreview.m */,
+			);
+			name = Other;
+			path = Bank/Other;
+			sourceTree = "<group>";
+		};
+		C2F2A46F17EF560900DE2F41 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C258BB6317ECF09200FBB4B4 /* BankViewController.h */,
+				C258BB6417ECF09200FBB4B4 /* BankViewController.m */,
+				C22E267917E6A52000299DD5 /* BankTableViewController.h */,
+				C22E267A17E6A52000299DD5 /* BankTableViewController.m */,
+				C2F2A46517EDF98800DE2F41 /* BankRootTableViewController.h */,
+				C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */,
+				C2436DB317EA99C600482186 /* BankCollectionViewController.h */,
+				C2436DB417EA99C600482186 /* BankCollectionViewController.m */,
+				C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */,
+				C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */,
+				C2AB7B5F17F2096100906FAE /* BankableDetailTableViewController_Private.h */,
+				C2F2A47017EF564100DE2F41 /* IRCodeDetailViewController.h */,
+				C2F2A47117EF564100DE2F41 /* IRCodeDetailViewController.m */,
+				C2F2A47317EF566600DE2F41 /* ComponentDeviceDetailViewController.h */,
+				C2F2A47417EF566600DE2F41 /* ComponentDeviceDetailViewController.m */,
+				C2F2A47617EF567700DE2F41 /* ImageDetailViewController.h */,
+				C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */,
+				C2F2A47917EF568E00DE2F41 /* PresetDetailViewController.h */,
+				C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */,
+				C2F2A47C17EF569F00DE2F41 /* ManufacturerDetailViewController.h */,
+				C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */,
+			);
+			name = "View Controllers";
+			path = "Bank/View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2240,12 +2312,14 @@
 				C26BBAF216DC1B5C0093D5B4 /* AlignRightEdgeIcon.png in Resources */,
 				C26BBAF316DC1B5C0093D5B4 /* AlignRightEdgeIcon@2x.png in Resources */,
 				C26BBAF416DC1B5C0093D5B4 /* AlignTopEdgeIcon.png in Resources */,
+				C2269FBC17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib in Resources */,
 				C26BBAF516DC1B5C0093D5B4 /* AlignTopEdgeIcon@2x.png in Resources */,
 				C26BBAF616DC1B5C0093D5B4 /* AlignVertCenterIcon.png in Resources */,
 				C26BBAF716DC1B5C0093D5B4 /* AlignVertCenterIcon@2x.png in Resources */,
 				C26BBAF816DC1B5C0093D5B4 /* App_Icon.png in Resources */,
 				C26BBAF916DC1B5C0093D5B4 /* App_Icon@2x.png in Resources */,
 				C26BBAFA16DC1B5C0093D5B4 /* ButtonOverButton.png in Resources */,
+				C2F2A46917EE9C1700DE2F41 /* BankTableHeaderView.xib in Resources */,
 				C26BBAFB16DC1B5C0093D5B4 /* ButtonOverButton@2x.png in Resources */,
 				C26BBAFC16DC1B5C0093D5B4 /* Circle-Add.png in Resources */,
 				C26BBAFD16DC1B5C0093D5B4 /* Circle-Add@2x.png in Resources */,
@@ -2306,10 +2380,12 @@
 				C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */,
 				C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */,
 				C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */,
+				C2269FBE17E9F3AD002D5898 /* BankTableViewCell-List.xib in Resources */,
 				C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */,
 				C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */,
 				C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */,
 				C29B27F2172E1CD7006046A5 /* JSON-Grammar.parsekit in Resources */,
+				C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2345,7 +2421,7 @@
 				C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
 				C28C7B711798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */,
 				C203BBDE1726ECE3002FD3EA /* Manufacturer.m in Sources */,
-				C203BBE01726ECE7002FD3EA /* BankObjectGroup.m in Sources */,
+				C203BBE01726ECE7002FD3EA /* BankGroup.m in Sources */,
 				C203BBE11726ECE7002FD3EA /* BankObjectPreview.m in Sources */,
 				C203BBE21726ECF1002FD3EA /* ButtonBuilder.m in Sources */,
 				C203BBE31726ECF1002FD3EA /* ButtonGroupBuilder.m in Sources */,
@@ -2361,6 +2437,7 @@
 				C203BBEF1726ED01002FD3EA /* Activity.m in Sources */,
 				C203BBF01726ED01002FD3EA /* RemoteController.m in Sources */,
 				C203BBF11726ED07002FD3EA /* ComponentDeviceConfiguration.m in Sources */,
+				C2E953F117E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C203BBF21726ED0C002FD3EA /* ActivityCommand.m in Sources */,
 				C203BBF31726ED0C002FD3EA /* DelayCommand.m in Sources */,
 				C203BBF41726ED0C002FD3EA /* HTTPCommand.m in Sources */,
@@ -2415,13 +2492,15 @@
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
 				C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */,
+				C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */,
 				C25B473216FF8D0A0042B59E /* ComponentDeviceConfiguration.m in Sources */,
 				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */,
 				C28C7B701798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
-				C25B473D16FF8D0A0042B59E /* BankObjectGroup.m in Sources */,
+				C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */,
+				C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
 				C25B474016FF8D0A0042B59E /* Preset.m in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
@@ -2460,18 +2539,23 @@
 				C25B476516FF8D5E0042B59E /* SwitchToRemoteCommandEditingViewController.m in Sources */,
 				C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */,
 				C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */,
+				C22E267B17E6A52000299DD5 /* BankTableViewController.m in Sources */,
 				C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */,
 				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
+				C2F2A47E17EF569F00DE2F41 /* ManufacturerDetailViewController.m in Sources */,
 				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
 				C25B476B16FF8D5E0042B59E /* SwitchToRemoteCommand.m in Sources */,
 				C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */,
 				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
+				C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */,
 				C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
+				C2F2A47217EF564100DE2F41 /* IRCodeDetailViewController.m in Sources */,
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */,
+				C258BB6517ECF09200FBB4B4 /* BankViewController.m in Sources */,
 				C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */,
 				C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */,
 				C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */,
@@ -2497,8 +2581,10 @@
 				C25B479B16FF8D5E0042B59E /* GlobalCacheConnectionManager.m in Sources */,
 				C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
+				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
 				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
+				C2F2A47B17EF568E00DE2F41 /* PresetDetailViewController.m in Sources */,
 				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
 				C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */,
 				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
@@ -2517,6 +2603,7 @@
 				C20C50E5179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
 				C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */,
 				C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */,
+				C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */,
 				C27734401701365C00E85F8D /* SwitchToConfigCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
@@ -2536,6 +2623,7 @@
 				C203BBB91726DB96002FD3EA /* CommandSetBuilder.m in Sources */,
 				C203BC221726F30D002FD3EA /* LayoutConstraint.m in Sources */,
 				C28FAF7C173014B4002902D9 /* MSRemoteImportSupportFunctions.m in Sources */,
+				C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

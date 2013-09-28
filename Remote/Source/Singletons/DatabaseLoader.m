@@ -6,8 +6,8 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "DatabaseLoader.h"
-#import "BankObjectGroup.h"
-#import "BankObjects.h"
+#import "BankGroup.h"
+#import "Bankables.h"
 #import "CoreDataManager.h"
 #import "MSRemoteAppController.h"
 
@@ -46,7 +46,8 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
          @autoreleasepool { [self loadIconImages:context]; }
      }];
 
-/*
+
+
     MSLogDebug(@"loading factory codes...");
     
     [NSManagedObjectContext saveWithBlockAndWait:
@@ -54,7 +55,6 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
      {
          @autoreleasepool { [self loadFactoryCodesInContext:context]; }
      }];
-*/
 
     MSLogDebug(@"data load complete");
 
@@ -64,43 +64,45 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
 + (void)loadFactoryCodesInContext:(NSManagedObjectContext *)context
 {
     // Keys for plist entries
-    MSKIT_STATIC_STRING_CONST   kDatabaseKey     = @"Pronto Hex Database";
-    MSKIT_STATIC_STRING_CONST   kManufacturerKey = @"Manufacturer";
-    MSKIT_STATIC_STRING_CONST   kCodesetKey      = @"Codeset";
-    MSKIT_STATIC_STRING_CONST   kName1           = @"Name 1";
-//    MSKIT_STATIC_STRING_CONST   kName2           = @"Name 2";
+    MSSTATIC_STRING_CONST   kDatabaseKey     = @"Pronto Hex Database";
+    MSSTATIC_STRING_CONST   kManufacturerKey = @"Manufacturer";
+    MSSTATIC_STRING_CONST   kCodesetKey      = @"Codeset";
+    MSSTATIC_STRING_CONST   kName1           = @"Name 1";
+//    MSSTATIC_STRING_CONST   kName2           = @"Name 2";
 
 
      NSArray * codesArray = [NSDictionary dictionaryWithContentsOfURL:
                               [MainBundle URLForResource:CODE_DATABASE_PLIST
                                            withExtension:@"plist"]][kDatabaseKey];
 
-     BOIRCodeset * codeset = nil;
-     @autoreleasepool
-     {
-         // Enumerate list content creating a code for each entry
-         for (NSDictionary * codeAttributes in codesArray)
-         {
-             // Get the code set for this entry
-             NSString * codesetName = codeAttributes[kCodesetKey];
-
-             // Create a CodeSet object if necessary and set its manufacturer attribute
-             if (ValueIsNil(codeset) || ![codeset.name isEqualToString:codesetName])
-             {
-                 codeset = [BOIRCodeset groupWithName:codesetName context:context];
-                 codeset.manufacturer =
-                 [Manufacturer manufacturerWithName:codeAttributes[kManufacturerKey] context:context];
-             }
-
+     IRCodeset * codeset = nil;
+    // Enumerate list content creating a code for each entry
+    for (NSDictionary * codeAttributes in codesArray)
+    {
+        // Get the code set for this entry
+        NSString * codesetName = codeAttributes[kCodesetKey];
+        NSString * manufacturerName = codeAttributes[kManufacturerKey];
+        assert(manufacturerName);
+        // Create a CodeSet object if necessary and set its manufacturer attribute
+        if (ValueIsNil(codeset) || ![codeset.name isEqualToString:codesetName])
+        {
+            codeset = [IRCodeset groupWithName:codesetName context:context];
+            Manufacturer * manufacturer =  [Manufacturer manufacturerWithName:manufacturerName
+                                                                      context:context];
+            [context MR_saveToPersistentStoreAndWait];
+            assert(manufacturer);
+            codeset.manufacturer = manufacturer;
+        }
+        
+        assert(codeset && codeset.manufacturer && codeset.manufacturer.name);
              // Create an IRCode object for this code with attributes from the list entry
-             FactoryIRCode * code = [FactoryIRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
-                                                                 context:context];
-             code.codeset       = codeset;
-             code.name          = codeAttributes[kName1];
-//             code.alternateName = codeAttributes[kName2];
-//             if ([code.name isEqualToString:code.alternateName]) code.alternateName = nil;
-         }
-     }
+        IRCode * code = [IRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
+                                          context:context];
+        code.codeset       = codeset;
+        [code setName:codeAttributes[kName1]];
+        [context MR_saveToPersistentStoreAndWait];
+    }
+
 }
 
 /// Parses *CodeBank.plist* to create <ComponentDevice> objects and <IRCode> objects.
@@ -119,11 +121,31 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
              // Create codes for this device
              ComponentDevice * device = [ComponentDevice MR_createInContext:context];
              device.name = deviceName;
+             [context MR_saveToPersistentStoreAndWait];
              
-             if 		 ([@"AV Receiver" isEqualToString:deviceName]) 	device.port = 2;
-             else if ([@"Comcast DVR" isEqualToString:deviceName]) 	device.port = 1;
-             else if ([@"Samsung TV"  isEqualToString:deviceName]) 	device.port = 3;
-             else if ([@"PS3"         isEqualToString:deviceName]) 	device.port = 3;
+             if ([@"AV Receiver" isEqualToString:deviceName])
+             {
+                 device.port = 2;
+                 device.manufacturer = [Manufacturer manufacturerWithName:@"Sony" context:context];
+             }
+
+             else if ([@"Dish Hopper" isEqualToString:deviceName])
+             {
+                 device.port = 1;
+                 device.manufacturer = [Manufacturer manufacturerWithName:@"Dish" context:context];
+             }
+
+             else if ([@"Samsung TV" isEqualToString:deviceName])
+             {
+                 device.port = 3;
+                 device.manufacturer = [Manufacturer manufacturerWithName:@"Samsung" context:context];
+             }
+
+             else if ([@"PS3" isEqualToString:deviceName])
+             {
+                 device.port = 3;
+                 device.manufacturer = [Manufacturer manufacturerWithName:@"Sony" context:context];
+             }
 
              NSDictionary * deviceCodes = codeBankPlist[deviceName];
 
@@ -134,13 +156,14 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
                      NSDictionary * codeDict = deviceCodes[codeName];
 
                      // Create this code
-                     UserIRCode * code = [UserIRCode codeForDevice:device];
+                     IRCode * code = [IRCode userCodeForDevice:device];
                      code.name            = codeName;
                      code.frequency       = NSUIntegerValue(codeDict[@"Frequency"]);
                      code.repeatCount     = NSUIntegerValue(codeDict[@"Repeat Count"]);
                      code.offset          = NSUIntegerValue(codeDict[@"Offset"]);
                      code.onOffPattern    = codeDict[@"On-Off Pattern"];
                      code.setsDeviceInput = BOOLValue(codeDict[@"Input"]);
+                     [context MR_saveToPersistentStoreAndWait];
                  }
              }
          }
@@ -172,10 +195,10 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
                 if (StringIsEmpty(fileName)) continue;
 
                 // Create entry for this file
-                Image * iconImage = [Image imageWithFileName:fileName context:context];
-
-                if (!iconImage) MSLogErrorTag(@"failed to create model for icon image:%@", iconImage);
+                Image * image = [Image imageWithFileName:fileName category:@"Icon" context:context];
+                if (!image) MSLogErrorTag(@"failed to create model for icon image:%@", image);
             }
+            [context MR_saveToPersistentStoreAndWait];
         }
     }
 }
@@ -202,10 +225,10 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
             if (StringIsEmpty(fileName)) continue;
 
             // Create entry for this file
-            Image * image = [Image imageWithFileName:fileName context:context];
-
+            Image * image = [Image imageWithFileName:fileName category:@"Background" context:context];
             if (!image) MSLogErrorTag(@"failed to create model for background image:%@", image);
         }
+        [context MR_saveToPersistentStoreAndWait];
     }
 }
 
@@ -260,7 +283,7 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
 
          [logString appendString:@"\nIRCodes by IRCodeSet\n"];
 
-         for (BOIRCodeset * codeset in fetchedObjects)
+         for (IRCodeset * codeset in fetchedObjects)
          {
             [logString appendFormat:@"codeset: %@\n", codeset.name];
             for (IRCode * irCode in codeset.codes) [logString appendFormat:@"\t%@\n", irCode.name];

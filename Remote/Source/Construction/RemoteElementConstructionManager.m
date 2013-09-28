@@ -7,7 +7,7 @@
 //
 #import "RemoteConstruction.h"
 
-static const int ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -68,9 +68,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          avReceiver.inputPowersOn       = YES;
          avReceiver.offCommand          = [SendIRCommand commandWithIRCode:avReceiver[@"Power"]];
 
-         ComponentDevice * comcastDVR = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+         ComponentDevice * hopper = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                          context:localContext];
-         comcastDVR.alwaysOn            = YES;
+         hopper.alwaysOn            = YES;
 
          ComponentDevice * samsungTV  = [ComponentDevice fetchDeviceWithName:@"Samsung TV"
                                                                          context:localContext];
@@ -86,21 +86,21 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
-         // Comcast DVR Activity
-         Activity * dvrActivity = [Activity activityWithName:@"Comcast DVR Activity"
+         // Dish Hopper Activity
+         Activity * hopperActivity = [Activity activityWithName:@"Dish Hopper Activity"
                                                        inContext:localContext];
          RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
-         [controller registerActivity:dvrActivity];
-         dvrActivity.launchMacro = [MacroBuilder activityMacroForActivity:1
+         [controller registerActivity:hopperActivity];
+         hopperActivity.launchMacro = [MacroBuilder activityMacroForActivity:1
                                                             toInitiateState:YES
                                                                     context:localContext];
-         dvrActivity.haltMacro   = [MacroBuilder activityMacroForActivity:0
+         hopperActivity.haltMacro   = [MacroBuilder activityMacroForActivity:0
                                                             toInitiateState:YES
                                                                     context:localContext];
 
-         Remote   * dvrRemote   = [RemoteBuilder constructDVRRemoteInContext:localContext];
-         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:dvrRemote];
-         dvrActivity.remote = dvrRemote;
+         Remote   * hopperRemote   = [RemoteBuilder constructDVRRemoteInContext:localContext];
+         [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:hopperRemote];
+         hopperActivity.remote = hopperRemote;
 
      }];
 

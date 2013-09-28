@@ -10,12 +10,12 @@
 #import "CoreDataManager.h"
 
 // property keys
-MSKIT_STRING_CONST   NDDeviceMakeKey     = @"make";
-MSKIT_STRING_CONST   NDDeviceModelKey    = @"model";
-MSKIT_STRING_CONST   NDDeviceRevisionKey = @"revision";
-MSKIT_STRING_CONST   NDDeviceStatusKey   = @"status";
-MSKIT_STRING_CONST   NDDeviceUUIDKey     = @"deviceUUID";
-MSKIT_STRING_CONST   NDDeviceURLKey      = @"configURL";
+MSSTRING_CONST   NDDeviceMakeKey     = @"make";
+MSSTRING_CONST   NDDeviceModelKey    = @"model";
+MSSTRING_CONST   NDDeviceRevisionKey = @"revision";
+MSSTRING_CONST   NDDeviceStatusKey   = @"status";
+MSSTRING_CONST   NDDeviceUUIDKey     = @"deviceUUID";
+MSSTRING_CONST   NDDeviceURLKey      = @"configURL";
 
 
 static const int   ddLogLevel = LOG_LEVEL_DEBUG;
@@ -74,14 +74,14 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 @end
 
 // constants
-MSKIT_STRING_CONST   NDiTachDeviceMulticastGroupAddress = @"239.255.250.250";
-MSKIT_STRING_CONST   NDiTachDeviceMulticastGroupPort    = @"9131";
-MSKIT_STRING_CONST   NDiTachDeviceTCPPort               = @"4998";
+MSSTRING_CONST   NDiTachDeviceMulticastGroupAddress = @"239.255.250.250";
+MSSTRING_CONST   NDiTachDeviceMulticastGroupPort    = @"9131";
+MSSTRING_CONST   NDiTachDeviceTCPPort               = @"4998";
 
 // keys
-MSKIT_STRING_CONST   NDiTachDevicePCBKey = @"pcb_pn";
-MSKIT_STRING_CONST   NDiTachDevicePkgKey = @"pkg_level";
-MSKIT_STRING_CONST   NDiTachDeviceSDKKey = @"sdkClass";
+MSSTRING_CONST   NDiTachDevicePCBKey = @"pcb_pn";
+MSSTRING_CONST   NDiTachDevicePkgKey = @"pkg_level";
+MSSTRING_CONST   NDiTachDeviceSDKKey = @"sdkClass";
 
 @implementation NDiTachDevice
 

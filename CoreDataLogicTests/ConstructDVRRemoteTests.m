@@ -38,7 +38,7 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
                                                                        context:self.defaultContext];
 
             if 		([@"AV Receiver" isEqualToString:deviceName]) 	device.port = 2;
-            else if ([@"Comcast DVR" isEqualToString:deviceName]) 	device.port = 1;
+            else if ([@"Dish Hopper" isEqualToString:deviceName]) 	device.port = 1;
             else if ([@"Samsung TV" isEqualToString:deviceName]) 	device.port = 3;
             else if ([@"PS3" isEqualToString:deviceName]) 			device.port = 3;
 
@@ -69,7 +69,7 @@ static const int msLogContext = LOG_CONTEXT_UNITTEST;
     MSLogInfoTag(@"group of three buttons:\n%@", [buttonGroup deepDescription]);
 
     // background image with tag: 8
-    // component devices: Comcast DVR and Samsung TV
+    // component devices: Dish Hopper and Samsung TV
 }
 
 + (NSArray *)arrayOfInvocationSelectors

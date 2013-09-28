@@ -7,15 +7,12 @@
 //
 #import "ComponentDevice.h"
 #import "IRCode.h"
-#import "Command.h"
 
 @implementation ComponentDevice {
     BOOL _ignoreNextPowerCommand;
-    BOPowerState _power;
-    BODevicePort _port;
 }
 
-@dynamic name, port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand;
+@dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer;
 
 /*
 + (id)MR_importFromObject:(id)objectData inContext:(NSManagedObjectContext *)context;
@@ -39,32 +36,20 @@
 }
 */
 
-+ (BOOL)isEditable { return NO; }
-
-+ (BOOL)isPreviewable { return NO;}
-
-+ (NSString *)directoryLabel { return @"Component Device"; }
-
-+ (NSOrderedSet *)directoryItems { return nil; }
-
-- (UIImage *)thumbnail { return nil; }
-
-- (UIImage *)preview { return nil; }
-
-- (NSString *)category { return nil; }
-
-- (UIViewController *)editingViewController { return nil; }
-
-- (NSOrderedSet *)subBankables { return nil; }
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    if (ModelObjectShouldInitialize) self.user = YES;
+}
 
 + (instancetype)fetchDeviceWithName:(NSString *)name
 {
-    return [self MR_findFirstByAttribute:@"name" withValue:name];
+    return [self MR_findFirstByAttribute:@"info.name" withValue:name];
 }
 
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    return [self MR_findFirstByAttribute:@"name" withValue:name inContext:context];
+    return [self MR_findFirstByAttribute:@"info.name" withValue:name inContext:context];
 }
 
 - (BOOL)ignorePowerCommand:(RECommandCompletionHandler)handler
@@ -84,7 +69,7 @@
     __weak ComponentDevice * weakself = self;
     if (![self ignorePowerCommand:completion])
         [self.onCommand execute:^(BOOL success, NSError * error) {
-            weakself.power = (!error && success ? BOPowerStateOn : BOPowerStateOff);
+            weakself.power = (!error && success ? YES : NO);
             if (completion) completion(success, error);
         }];
 }
@@ -94,44 +79,15 @@
     __weak ComponentDevice * weakself = self;
     if (![self ignorePowerCommand:completion])
         [self.offCommand execute:^(BOOL success, NSError * error) {
-            weakself.power = (!error && success ? BOPowerStateOff : BOPowerStateOn);
+            weakself.power = (!error && success ? NO : YES);
             if (completion) completion(success, error);
         }];
 }
 
-- (void)setPower:(BOPowerState)power
-{
-    [self willChangeValueForKey:@"power"];
-    _power = power;
-    [self didChangeValueForKey:@"power"];
-}
-
-- (BOPowerState)power
-{
-    [self willAccessValueForKey:@"power"];
-    BOPowerState power = _power;
-    [self didAccessValueForKey:@"power"];
-    return power;
-}
-
-- (void)setPort:(BODevicePort)port
-{
-    [self willChangeValueForKey:@"port"];
-    _port = port;
-    [self didChangeValueForKey:@"port"];
-}
-
-- (BODevicePort)port
-{
-    [self willAccessValueForKey:@"port"];
-    BODevicePort port = _port;
-    [self didAccessValueForKey:@"port"];
-    return port;
-}
-
 - (IRCode *)objectForKeyedSubscript:(NSString *)name
 {
-    return [self.codes objectPassingTest:^BOOL(IRCode * obj){return [name isEqualToString:obj.name];}];
+    return [self.codes objectPassingTest:
+            ^BOOL(IRCode * obj){ return [name isEqualToString:obj.name]; }];
 }
 
 - (MSDictionary *)deepDescriptionDictionary
@@ -144,5 +100,15 @@
     dd[@"port"] = $(@"%i",device.port);
     return dd;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Bankable
+////////////////////////////////////////////////////////////////////////////////
+
++ (NSString *)directoryLabel { return @"Component Devices"; }
+
++ (BankFlags)bankFlags { return (BankDetail|BankNoSections|BankEditable); }
+
+- (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 @end

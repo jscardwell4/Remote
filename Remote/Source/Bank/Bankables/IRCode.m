@@ -7,7 +7,8 @@
 //
 #import "IRCode.h"
 #import "ComponentDevice.h"
-#import "BankObjectGroup.h"
+#import "BankGroup.h"
+#import "Manufacturer.h"
 
 /*
  * @interface IRCode ()
@@ -31,11 +32,11 @@ enum ProntoHexFormatParts {
 
 struct HexPair {unsigned int   num1; unsigned int num2; };
 
-MSKIT_STATIC_STRING_CONST   BOIRCodeFrequencyKey       = @"frequency";
-MSKIT_STATIC_STRING_CONST   BOIRCodeOffsetKey          = @"offset";
-MSKIT_STATIC_STRING_CONST   BOIRCodePreamblePairsKey   = @"preamblePairs";
-MSKIT_STATIC_STRING_CONST   BOIRCodeRepeatablePairsKey = @"repeatablePairs";
-MSKIT_STATIC_STRING_CONST   BOIRCodeLeadInKey          = @"leadIn";
+MSSTATIC_STRING_CONST   BOIRCodeFrequencyKey       = @"frequency";
+MSSTATIC_STRING_CONST   BOIRCodeOffsetKey          = @"offset";
+MSSTATIC_STRING_CONST   BOIRCodePreamblePairsKey   = @"preamblePairs";
+MSSTATIC_STRING_CONST   BOIRCodeRepeatablePairsKey = @"repeatablePairs";
+MSSTATIC_STRING_CONST   BOIRCodeLeadInKey          = @"leadIn";
 
 NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 {
@@ -109,25 +110,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 @implementation IRCode
 
 @dynamic frequency, offset, repeatCount, onOffPattern;
-@dynamic device, setsDeviceInput, prontoHex, name;
-
-+ (BOOL)isEditable { return NO; }
-
-+ (BOOL)isPreviewable { return NO;}
-
-+ (NSString *)directoryLabel { return @"IR Code"; }
-
-+ (NSOrderedSet *)directoryItems { return nil; }
-
-- (UIImage *)thumbnail { return nil; }
-
-- (UIImage *)preview { return nil; }
-
-- (NSString *)category { return nil; }
-
-- (UIViewController *)editingViewController { return nil; }
-
-- (NSOrderedSet *)subBankables { return nil; }
+@dynamic device, setsDeviceInput, prontoHex, codeset;
 
 + (instancetype)codeForDevice:(ComponentDevice *)device
 {
@@ -139,6 +122,17 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
          code.device = device;
      }];
 
+    return code;
+}
++ (instancetype)userCodeForDevice:(ComponentDevice *)device
+{
+    IRCode * code = [self codeForDevice:device];
+    if (code)
+        [code.managedObjectContext performBlockAndWait:
+         ^{
+             code.info.user = @YES;
+             code.info.category = device.name;
+         }];
     return code;
 }
 
@@ -153,6 +147,12 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 
     return code;
 }
++ (instancetype)userCodeFromProntoHex:(NSString *)hex context:(NSManagedObjectContext *)context
+{
+    IRCode * code = [self codeFromProntoHex:hex context:context];
+    if (code) [context performBlockAndWait:^{ code.info.user = @YES; }];
+    return code;
+}
 
 + (instancetype)codeFromProntoHex:(NSString *)hex device:(ComponentDevice *)device
 {
@@ -163,6 +163,12 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
          code = [[self codeForDevice:device] initWithProntoHex:hex];
      }];
 
+    return code;
+}
++ (instancetype)userCodeFromProntoHex:(NSString *)hex device:(ComponentDevice *)device
+{
+    IRCode * code = [self userCodeFromProntoHex:hex device:device];
+    if (code) [code.managedObjectContext performBlockAndWait:^{ code.info.user = @YES; }];
     return code;
 }
 
@@ -253,13 +259,32 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
     return pattern;
 }
 
+- (void)setCodeset:(IRCodeset *)codeset
+{
+    [self willChangeValueForKey:@"codeset"];
+    [self setPrimitiveValue:codeset forKey:@"codeset"];
+    [self didChangeValueForKey:@"codeset"];
+
+    if (codeset)
+    {
+        NSString * codesetName = [codeset.name copy];
+        Manufacturer * manufacturer = codeset.manufacturer;
+        NSString * manufacturerName = (manufacturer ? [manufacturer.name copy] : nil);
+        NSString * category = (manufacturerName ? $(@"%@ - %@", manufacturerName, codesetName) : codesetName);
+        self.info.category = category;
+    }
+
+    else if (!self.device)
+        self.info.category = @"Uncategorized";
+}
+
 - (MSDictionary *)deepDescriptionDictionary
 {
     IRCode * code = [self faultedObject];
     assert(code);
 
     MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"name"]            = code.name;
+    dd[@"name"]            = [code name];
     dd[@"device"]          = $(@"'%@':%@", code.device.name, code.device.uuid);
     dd[@"setsDeviceInput"] = BOOLString(code.setsDeviceInput);
     dd[@"offset"]          = $(@"%i",code.offset);
@@ -269,28 +294,15 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
     return dd;
 }
 
-@end
 
-@implementation FactoryIRCode
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Bankable
+////////////////////////////////////////////////////////////////////////////////
 
-@dynamic codeset;
++ (NSString *)directoryLabel { return @"IR Codes"; }
 
-+ (IRCode *)codeForCodeset:(BOIRCodeset *)set
-{
-    assert(set);
-    __block FactoryIRCode * code = nil;
-    [set.managedObjectContext performBlockAndWait:
-     ^{
-         code = [self MR_createInContext:set.managedObjectContext];
-         code.codeset = set;
-     }];
-    return code;
-}
++ (BankFlags)bankFlags { return (BankDetail|BankEditable); }
+
+- (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 @end
-
-@implementation UserIRCode
-
-@end
-
-

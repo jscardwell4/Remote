@@ -8,6 +8,7 @@
 #import "REPresetCollectionViewController.h"
 #import "Preset.h"
 #import "BankObjectPreview.h"
+#import <MSKit/MSKit.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - BOPresetCell
@@ -64,7 +65,7 @@
 
 @end
 
-MSKIT_STATIC_STRING_CONST reuseIdentifier = @"BOPresetCell";
+MSSTATIC_STRING_CONST reuseIdentifier = @"BOPresetCell";
 
 @implementation REPresetCollectionViewController
 

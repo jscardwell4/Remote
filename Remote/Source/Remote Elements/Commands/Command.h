@@ -7,7 +7,6 @@
 //
 #import "ModelObject.h"
 #import "RETypedefs.h"
-#import "BOTypedefs.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Abstract Command
@@ -76,7 +75,7 @@
 
 /// Holds the `ComponentDevicePowerState` associated with the command. `NO` is equal to
 /// `ComponentDevicePowerStateOff` and `YES` is equal to `ComponentDevicePowerStateOn`.
-@property (nonatomic) BOPowerState state;
+@property (nonatomic) BOOL state;
 
 /// The device to which the command is directed.
 @property (nonatomic, strong) ComponentDevice * device;
@@ -231,7 +230,7 @@
 + (SendIRCommand *)commandWithIRCode:(IRCode *)code;
 
 /// Cached value for port
-@property (nonatomic, readonly) BODevicePort port;
+@property (nonatomic, readonly) int16_t port;
 
 /// Cached value for offset
 @property (nonatomic, readonly) int16_t offset;
@@ -249,7 +248,7 @@
 @property (nonatomic, readonly) NSString * name;
 
 /// Forces sending over port regardless of port set for `ComponentDevice`.
-@property (nonatomic, assign)  BODevicePort portOverride;
+@property (nonatomic, assign)  int16_t portOverride;
 
 /// `IRCode` object that encapsulates the networked device information for sending the command.
 @property (nonatomic, strong) IRCode * code;
@@ -355,7 +354,7 @@
 
 @end
 
-MSKIT_STATIC_INLINE Class classForCommandImportType(NSString * type)
+MSSTATIC_INLINE Class classForCommandImportType(NSString * type)
 {
     static NSDictionary const * index = nil;
     static dispatch_once_t onceToken;

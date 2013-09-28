@@ -14,10 +14,10 @@ typedef NS_ENUM (NSInteger, HighlightStyle) {
     HighlightStyleMoving   = 3
 };
 
-//MSKIT_EXTERN UIColor const * kUnselectedColor;
-//MSKIT_EXTERN UIColor const * kSelectedColor;
-//MSKIT_EXTERN UIColor const * kFocusColor;
-//MSKIT_EXTERN UIColor const * kMovingColor;
+//MSEXTERN UIColor const * kUnselectedColor;
+//MSEXTERN UIColor const * kSelectedColor;
+//MSEXTERN UIColor const * kFocusColor;
+//MSEXTERN UIColor const * kMovingColor;
 
 @class   RemoteElementView;
 

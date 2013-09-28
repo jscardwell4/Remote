@@ -42,6 +42,6 @@
 
 @end
 
-MSKIT_EXTERN_STRING   RemoteElementModelConstraintNametag;
+MSEXTERN_STRING   RemoteElementModelConstraintNametag;
 
 

@@ -49,8 +49,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-MSKIT_EXTERN_STRING REThemeNightshadeName;
-MSKIT_EXTERN_STRING REThemePowerBlueName;
+MSEXTERN_STRING REThemeNightshadeName;
+MSEXTERN_STRING REThemePowerBlueName;
 
 @interface BuiltinTheme : Theme
 

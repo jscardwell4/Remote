@@ -7,7 +7,7 @@
 //
 #import "Theme_Private.h"
 
-static const int ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -17,8 +17,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-MSKIT_STRING_CONST REThemeNightshadeName = @"Nightshade";
-MSKIT_STRING_CONST REThemePowerBlueName  = @"Power Blue";
+MSSTRING_CONST REThemeNightshadeName = @"Nightshade";
+MSSTRING_CONST REThemePowerBlueName  = @"Power Blue";
 
 @implementation BuiltinTheme
 

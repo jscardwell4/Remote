@@ -16,8 +16,8 @@ static const int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
-MSKIT_STRING_CONST   REDetailedButtonEditingButtonKey       = @"REDetailedButtonEditingButtonKey";
-MSKIT_STRING_CONST   REDetailedButtonEditingControlStateKey = @"REDetailedButtonEditingControlStateKey";
+MSSTRING_CONST   REDetailedButtonEditingButtonKey       = @"REDetailedButtonEditingButtonKey";
+MSSTRING_CONST   REDetailedButtonEditingControlStateKey = @"REDetailedButtonEditingControlStateKey";
 
 enum {
     CommandEditingChildController,

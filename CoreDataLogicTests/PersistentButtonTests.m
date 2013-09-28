@@ -14,7 +14,7 @@ static const int ddLogLevel   = LOG_LEVEL_UNITTEST;
 static const int msLogContext = LOG_CONTEXT_UNITTEST;
 #pragma unused(ddLogLevel, msLogContext)
 
-MSKIT_KEY_DEFINITION(PersistentButtonTestsButtonUUID);
+MSKEY_DEFINITION(PersistentButtonTestsButtonUUID);
 
 @implementation PersistentButtonTests
 

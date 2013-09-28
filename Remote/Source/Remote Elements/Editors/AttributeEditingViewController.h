@@ -5,16 +5,16 @@
 // Created by Jason Cardwell on 4/2/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-MSKIT_EXTERN_STRING   kAttributeEditingFontSizeKey;
-MSKIT_EXTERN_STRING   kAttributeEditingFontNameKey;
-MSKIT_EXTERN_STRING   kAttributeEditingEdgeInsetsKey;
-MSKIT_EXTERN_STRING   kAttributeEditingTitleTextKey;
-MSKIT_EXTERN_STRING   kAttributeEditingTitleColorKey;
-MSKIT_EXTERN_STRING   kAttributeEditingColorKey;
-MSKIT_EXTERN_STRING   kAttributeEditingBoundsKey;
-MSKIT_EXTERN_STRING   kAttributeEditingButtonKey;
-MSKIT_EXTERN_STRING   kAttributeEditingControlStateKey;
-MSKIT_EXTERN_STRING   kAttributeEditingImageKey;
+MSEXTERN_STRING   kAttributeEditingFontSizeKey;
+MSEXTERN_STRING   kAttributeEditingFontNameKey;
+MSEXTERN_STRING   kAttributeEditingEdgeInsetsKey;
+MSEXTERN_STRING   kAttributeEditingTitleTextKey;
+MSEXTERN_STRING   kAttributeEditingTitleColorKey;
+MSEXTERN_STRING   kAttributeEditingColorKey;
+MSEXTERN_STRING   kAttributeEditingBoundsKey;
+MSEXTERN_STRING   kAttributeEditingButtonKey;
+MSEXTERN_STRING   kAttributeEditingControlStateKey;
+MSEXTERN_STRING   kAttributeEditingImageKey;
 
 @interface AttributeEditingViewController : UIViewController <MSResettable>
 

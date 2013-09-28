@@ -15,12 +15,12 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 // static const int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)
 
-MSKIT_STRING_CONST   MSRemoteUIRemoteKey          = @"MSRemoteUIRemoteKey";
-MSKIT_STRING_CONST   MSRemoteUIButtonGroupKey     = @"MSRemoteUIButtonGroupKey";
-MSKIT_STRING_CONST   MSRemoteUIButtonKey          = @"MSRemoteUIButtonKey";
-MSKIT_STRING_CONST   MSRemoteUIIterationValuesKey = @"MSRemoteUIIterationValuesKey";
-MSKIT_STRING_CONST   MSRemoteUIAssertionsKey      = @"MSRemoteUIAssertionsKey";
-MSKIT_STRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
+MSSTRING_CONST   MSRemoteUIRemoteKey          = @"MSRemoteUIRemoteKey";
+MSSTRING_CONST   MSRemoteUIButtonGroupKey     = @"MSRemoteUIButtonGroupKey";
+MSSTRING_CONST   MSRemoteUIButtonKey          = @"MSRemoteUIButtonKey";
+MSSTRING_CONST   MSRemoteUIIterationValuesKey = @"MSRemoteUIIterationValuesKey";
+MSSTRING_CONST   MSRemoteUIAssertionsKey      = @"MSRemoteUIAssertionsKey";
+MSSTRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
 
 @implementation MSRemoteUITest
 

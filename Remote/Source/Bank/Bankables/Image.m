@@ -5,46 +5,65 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
-#import "Image_Private.h"
-#import "BankObjectGroup.h"
+#import "Image.h"
+#import "BankGroup.h"
 
 
 static const int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_DEFAULT;
 #pragma unused(ddLogLevel, msLogContext)
 
+@interface Image ()
+
+@property (nonatomic, strong, readwrite) NSString * fileName;
+@property (nonatomic, strong, readwrite) UIImage  * thumbnail;
+@property (nonatomic, strong, readwrite) UIImage  * stretchableImage;
+@property (nonatomic, assign, readwrite) CGSize     size;
+@property (nonatomic, strong) NSData * previewData;
+
+- (void)generatePreviewData;
+
+@end
+
+@interface Image (CoreDataGeneratedAccessors)
+
+@property (nonatomic, strong) NSValue * primitiveSize;
+
+@end
+
 @implementation Image
 
-@dynamic previewData, size, name, group, leftCap, topCap, fileName;
+@dynamic previewData, size, group, leftCap, topCap, fileName, info;
 
 @synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
 
-+ (BOOL)isEditable { return NO; }
-
-+ (BOOL)isPreviewable { return NO;}
-
-+ (NSString *)directoryLabel { return @"Image"; }
-
-+ (NSOrderedSet *)directoryItems { return nil; }
-
-- (NSString *)category { return nil; }
-
-- (UIViewController *)editingViewController { return nil; }
-
-- (NSOrderedSet *)subBankables { return nil; }
-
-+ (instancetype)imageWithFileName:(NSString *)fileName group:(BOImageGroup *)group
++ (instancetype)imageWithFileName:(NSString *)fileName group:(ImageGroup *)group
 {
     assert(!(StringIsEmpty(fileName) || ValueIsNil(group)));
 
     NSManagedObjectContext * context = group.managedObjectContext;
     __block Image * image;
     [context performBlockAndWait:^{
-        image = [self MR_createInContext:context];
-        image.fileName = fileName;
-        image.group    = group;
+        UIImage * i = [UIImage imageNamed:fileName];
+        if (i)
+        {
+            image = [self MR_createInContext:context];
+            image.fileName = fileName;
+            image.name     = fileName;
+            image.group    = group;
+            image.size     = i.size;
+        }
     }];
 
+    return image;
+}
+
++ (instancetype)imageWithFileName:(NSString *)name
+                         category:(NSString *)category
+                          context:(NSManagedObjectContext *)context
+{
+    Image * image = [self imageWithFileName:name context:context];
+    if (image) [image.managedObjectContext performBlockAndWait:^{ image.info.category = category; }];
     return image;
 }
 
@@ -54,7 +73,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     __block Image * image;
     [context performBlockAndWait:
      ^{
-        BOImageGroup * group = [BOImageGroup groupWithName:@"Default" context:context];
+        ImageGroup * group = [ImageGroup groupWithName:@"Default" context:context];
         image =  [self imageWithFileName:name group:group];
         assert(image);
     }];
@@ -164,7 +183,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 - (CGSize)thumbnailSize
 {
-    if (CGSizeEqualToSize(CGSizeZero, _thumbnailSize)) _thumbnailSize = CGSizeMake(44, 44);
+    if (CGSizeEqualToSize(CGSizeZero, _thumbnailSize)) _thumbnailSize = CGSizeMake(100, 100);
 
     return _thumbnailSize;
 }
@@ -183,7 +202,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     thumbRect.origin.y = (_thumbnailSize.height - thumbSize.height) / 2.0;
 
     void   (^ createThumbnail)(void) = ^(void) {
-        UIGraphicsBeginImageContext(self.thumbnailSize);
+        UIGraphicsBeginImageContextWithOptions(self.thumbnailSize, NO, MainScreenScale);
 
         // draw scaled image into thumbnail context
         [self.image drawInRect:thumbRect];
@@ -217,16 +236,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 - (UIImage *)preview
 {
-    NSData * previewData = self.previewData;
-
-    if (!previewData) {
-        DDLogWarn(@"%@ no preview data exists", ClassTagStringForInstance(self.name));
-        previewData = UIImagePNGRepresentation([self imageWithColor:WhiteColor]);
-        assert(previewData);
-        self.previewData = previewData;
-    }
-
-    UIImage * preview = [UIImage imageWithData:previewData scale:2.0];
+    UIImage * preview = [UIImage imageNamed:self.fileName];
 
     return preview;
 }
@@ -248,5 +258,15 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     dd[@"size"]              = CGSizeString(image.size);
     return dd;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Bankable
+////////////////////////////////////////////////////////////////////////////////
+
++ (BankFlags)bankFlags { return (BankPreview|BankThumbnail|BankDetail|BankEditable); }
++ (NSString *)directoryLabel { return @"Images"; }
+
+- (BOOL)isEditable { return ([super isEditable] && self.user); }
+
 
 @end

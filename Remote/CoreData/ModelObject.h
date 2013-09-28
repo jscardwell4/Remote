@@ -8,7 +8,7 @@
 
 @interface ModelObject : NSManagedObject
 
-MSKIT_EXTERN_STRING ModelObjectInitializingContextName;
+MSEXTERN_STRING ModelObjectInitializingContextName;
 
 @property (nonatomic, copy, readonly) NSString * uuid;
 
@@ -25,7 +25,7 @@ MSKIT_EXTERN_STRING ModelObjectInitializingContextName;
 
 @end
 
-#define ModelObjectShouldInitialize                                              \
+#define ModelObjectShouldInitialize                                                \
     ({ BOOL isOriginal = NO;                                                       \
        if (!self.uuid) isOriginal = YES;                                           \
        else if (!self.managedObjectContext.childContexts.count) isOriginal = YES;  \

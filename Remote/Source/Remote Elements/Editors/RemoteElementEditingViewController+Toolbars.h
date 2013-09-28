@@ -8,10 +8,10 @@
 
 #import "RemoteElementEditingViewController.h"
 
-MSKIT_EXTERN NSUInteger const   kTopToolbarIndex;
-MSKIT_EXTERN NSUInteger const   kEmptySelectionToolbarIndex;
-MSKIT_EXTERN NSUInteger const   kNonEmptySelectionToolbarIndex;
-MSKIT_EXTERN NSUInteger const   kFocusSelectionToolbarIndex;
+MSEXTERN NSUInteger const   kTopToolbarIndex;
+MSEXTERN NSUInteger const   kEmptySelectionToolbarIndex;
+MSEXTERN NSUInteger const   kNonEmptySelectionToolbarIndex;
+MSEXTERN NSUInteger const   kFocusSelectionToolbarIndex;
 
 @interface RemoteElementEditingViewController (Toolbars) <MSPopupBarButtonDelegate>
 

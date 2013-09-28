@@ -269,7 +269,7 @@ extern NSString const   * kTranslationAnimationKey;
 #import <QuartzCore/QuartzCore.h>
 #import "Painter.h"
 #import "Command.h"
-#import "BankObjects.h"
+#import "Bankables.h"
 #import "ControlStateSet.h"
 #import "ColorSelectionViewController.h"
 #import "LabelEditingViewController.h"

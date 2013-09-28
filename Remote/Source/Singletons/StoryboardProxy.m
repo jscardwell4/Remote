@@ -86,10 +86,33 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
     return [mainStoryboard instantiateViewControllerWithIdentifier:@"Settings"];
 }
 
+/*
 + (UINavigationController *)bankIndexViewController
 {
     return [mainStoryboard instantiateViewControllerWithIdentifier:@"Bank Index"];
 }
+*/
+
+/*
++ (BankTableViewController *)bankItemViewController
+{
+    return [mainStoryboard instantiateViewControllerWithIdentifier:@"Bank Item"];
+}
+*/
+
+/*
++ (BankCollectionViewController *)bankCollectionViewController
+{
+    return [mainStoryboard instantiateViewControllerWithIdentifier:@"Bank Item Collection"];
+}
+*/
+
+/*
++ (BankViewController *)bankViewController
+{
+    return [mainStoryboard instantiateViewControllerWithIdentifier:@"Bank View Controller"];
+}
+*/
 
 + (MainMenuViewController *)mainMenuViewController
 {

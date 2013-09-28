@@ -11,7 +11,7 @@ static int ddLogLevel   = DefaultDDLogLevel;
 static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
-MSKIT_NAMETAG_DEFINITION(REButtonGroupPanel);
+MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 
 ////////////////////////////////////////////////////////////////////////////////

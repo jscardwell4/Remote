@@ -9,7 +9,7 @@
 #import "ConfigurationDelegate_Private.h"
 #import "RemoteElement.h"
 
-MSKIT_STRING_CONST   REDefaultConfiguration = @"REDefaultConfiguration";
+MSSTRING_CONST   REDefaultConfiguration = @"REDefaultConfiguration";
 
 static const int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);

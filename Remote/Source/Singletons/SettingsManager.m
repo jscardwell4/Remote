@@ -9,17 +9,17 @@
 #import "SettingsManager.h"
 #import "StoryboardProxy.h"
 
-MSKIT_KEY_DEFINITION(MSSettingsAutoConnect      );
-MSKIT_KEY_DEFINITION(MSSettingsAutoListen       );
-MSKIT_KEY_DEFINITION(MSSettingsProximitySensor  );
-MSKIT_KEY_DEFINITION(MSSettingsStatusBar        );
-MSKIT_KEY_DEFINITION(MSSettingsInactivityTimeout);
+MSKEY_DEFINITION(MSSettingsAutoConnect      );
+MSKEY_DEFINITION(MSSettingsAutoListen       );
+MSKEY_DEFINITION(MSSettingsProximitySensor  );
+MSKEY_DEFINITION(MSSettingsStatusBar        );
+MSKEY_DEFINITION(MSSettingsInactivityTimeout);
 
-MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerAutoConnectSettingDidChange      );
-MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerAutoListenSettingDidChange       );
-MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerProximitySensorSettingDidChange  );
-MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerStatusBarSettingDidChange        );
-MSKIT_NOTIFICATION_DEFINITION(MSSettingsManagerInactivityTimeoutSettingDidChange);
+MSNOTIFICATION_DEFINITION(MSSettingsManagerAutoConnectSettingDidChange      );
+MSNOTIFICATION_DEFINITION(MSSettingsManagerAutoListenSettingDidChange       );
+MSNOTIFICATION_DEFINITION(MSSettingsManagerProximitySensorSettingDidChange  );
+MSNOTIFICATION_DEFINITION(MSSettingsManagerStatusBarSettingDidChange        );
+MSNOTIFICATION_DEFINITION(MSSettingsManagerInactivityTimeoutSettingDidChange);
 
 static NSMutableDictionary const * settingsCache;
 static NSSet const               * validSettings;
@@ -35,7 +35,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
         settingsCache = [@{
              MSSettingsAutoConnectKey       : ([UserDefaults valueForKey:@"autoconnect"] ? : @YES),
              MSSettingsAutoListenKey        : ([UserDefaults valueForKey:@"autolisten" ] ? : @YES),
-             MSSettingsStatusBarKey         : @YES,
+             MSSettingsStatusBarKey         : @NO,
              MSSettingsProximitySensorKey   : @YES,
              MSSettingsInactivityTimeoutKey : @0.0f
          } mutableCopy];
@@ -55,7 +55,8 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
     DDLogVerbose(@"registered defaults:%@", settingsCache);
 }
 
-+ (UIViewController *)viewController { return (UIViewController *)[StoryboardProxy settingsViewController]; }
++ (UIViewController *)viewController { return (UIViewController *)[StoryboardProxy
+                                                                   settingsViewController]; }
 
 + (void)applyUserSettings {
     // FIXME: Not sure where this method fits in the overall scheme.

@@ -322,7 +322,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MSKIT_STATIC_STRING_CONST   kCellIdentifier = @"Cell";
+    MSSTATIC_STRING_CONST   kCellIdentifier = @"Cell";
     UITableViewCell         * cell            = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     NSInteger                 index           = indexPath.row * 3 - 1;
     Image  * bgImage;

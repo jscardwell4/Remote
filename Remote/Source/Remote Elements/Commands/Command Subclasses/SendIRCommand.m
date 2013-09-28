@@ -56,7 +56,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     else [self clearCachedCode];
 }
 
-- (void)setPortOverride:(BODevicePort)portOverride
+- (void)setPortOverride:(int16_t)portOverride
 {
     [self willChangeValueForKey:@"portOverride"];
     _portOverride = portOverride;
@@ -64,17 +64,17 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     __port = (_portOverride  ? : (self.code ? self.code.device.port : 0));
 }
 
-- (BODevicePort)portOverride
+- (int16_t)portOverride
 {
     [self willAccessValueForKey:@"portOverride"];
-    BODevicePort portOverride = _portOverride;
+    int16_t portOverride = _portOverride;
     [self didAccessValueForKey:@"portOverride"];
     return portOverride;
 }
 
 - (ComponentDevice *)device { return self.primitiveCode.device; }
 
-- (BODevicePort)port { return __port; }
+- (int16_t)port { return __port; }
 
 - (int16_t)offset { return __offset; }
 

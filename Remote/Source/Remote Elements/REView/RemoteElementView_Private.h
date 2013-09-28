@@ -8,7 +8,7 @@
 #import "RemoteElementView.h"
 #import "RemoteElement_Private.h"
 
-MSKIT_EXTERN CGSize const   REMinimumSize;
+MSEXTERN CGSize const   REMinimumSize;
 
 @class REViewSubelements, REViewContent, REViewBackdrop, REViewOverlay, RELabelView;
 

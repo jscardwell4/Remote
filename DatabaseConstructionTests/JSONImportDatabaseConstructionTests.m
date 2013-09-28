@@ -7,7 +7,7 @@
 //
 #import "JSONImportDatabaseConstructionTests.h"
 #import "BankObject.h"
-#import "BankObjectGroup.h"
+#import "BankGroup.h"
 #import "RemoteController.h"
 #import "Activity.h"
 #import "Command.h"
@@ -118,7 +118,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         BOImageGroup * imageGroup = [BOImageGroup MR_importFromObject:importObject inContext:context];
+         ImageGroup * imageGroup = [ImageGroup MR_importFromObject:importObject inContext:context];
          assertThat(imageGroup.images, hasCountOf([importObject[@"images"] count]));
 
          imageGroupUUID = imageGroup.uuid;
@@ -127,7 +127,7 @@ static MSJSONParser const * parser_ = nil;
 
     [self.rootSavingContext performBlockAndWait:
      ^{
-         BOImageGroup * fetchedGroup = [BOImageGroup objectWithUUID:imageGroupUUID
+         ImageGroup * fetchedGroup = [ImageGroup objectWithUUID:imageGroupUUID
                                                           context:self.rootSavingContext];
          assertThat(fetchedGroup, notNilValue());
          assertThat(fetchedGroup.images, hasCountOf([importObject[@"images"] count]));
@@ -166,7 +166,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         BOImageGroup * imageGroup = [BOImageGroup MR_importFromObject:importObject inContext:context];
+         ImageGroup * imageGroup = [ImageGroup MR_importFromObject:importObject inContext:context];
          assertThat(imageGroup.images, hasCountOf([importObject[@"images"] count]));
 
          imageGroupUUID = imageGroup.uuid;
@@ -175,7 +175,7 @@ static MSJSONParser const * parser_ = nil;
 
     [self.rootSavingContext performBlockAndWait:
      ^{
-         BOImageGroup * fetchedGroup = [BOImageGroup objectWithUUID:imageGroupUUID
+         ImageGroup * fetchedGroup = [ImageGroup objectWithUUID:imageGroupUUID
                                                           context:self.rootSavingContext];
          assertThat(fetchedGroup, notNilValue());
          assertThat(fetchedGroup.images, hasCountOf([importObject[@"images"] count]));

@@ -80,7 +80,7 @@
     int64_t        __frequency;
     NSString     * __pattern;
     NSString     * __name;
-    BODevicePort   _portOverride;
+    int16_t        _portOverride;
 }
 @end
 
@@ -99,7 +99,7 @@
 #pragma mark - PowerCommand Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
 @interface PowerCommand () {
-    BOPowerState _state;
+    BOOL _state;
 }
 @end
 @interface PowerCommand (CoreDataGeneratedAccessors)

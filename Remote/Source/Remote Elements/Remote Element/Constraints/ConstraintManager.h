@@ -26,7 +26,7 @@ NSString *NSStringFromRERelationshipType(RERelationshipType relationship);
 ///
 UILayoutConstraintAxis UILayoutConstraintAxisForAttribute(NSLayoutAttribute attribute);
 
-MSKIT_EXTERN_STRING   REConstraintsDidChangeNotification;
+MSEXTERN_STRING   REConstraintsDidChangeNotification;
 
 @class   RemoteElement, Constraint;
 

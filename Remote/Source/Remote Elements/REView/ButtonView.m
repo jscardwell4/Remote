@@ -8,9 +8,9 @@
 #import "RemoteElementView_Private.h"
 
 // #define DEBUG_BV_COLOR_BG
-MSKIT_NAMETAG_DEFINITION(REButtonViewInternal);
-MSKIT_NAMETAG_DEFINITION(REButtonViewLabel);
-MSKIT_NAMETAG_DEFINITION(REButtonViewActivityIndicator);
+MSNAMETAG_DEFINITION(REButtonViewInternal);
+MSNAMETAG_DEFINITION(REButtonViewLabel);
+MSNAMETAG_DEFINITION(REButtonViewActivityIndicator);
 
 static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);

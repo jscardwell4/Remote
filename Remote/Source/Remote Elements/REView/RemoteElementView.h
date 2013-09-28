@@ -143,7 +143,7 @@ NSString * prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 @end
 
 
-MSKIT_STATIC_INLINE NSDictionary *viewFramesByIdentifier(RemoteElementView * remoteElementView)
+MSSTATIC_INLINE NSDictionary *viewFramesByIdentifier(RemoteElementView * remoteElementView)
 {
     NSMutableDictionary * viewFrames =
         [NSMutableDictionary dictionaryWithObjects:[remoteElementView.subelementViews
@@ -160,7 +160,7 @@ MSKIT_STATIC_INLINE NSDictionary *viewFramesByIdentifier(RemoteElementView * rem
     return viewFrames;
 }
 
-MSKIT_STATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteElementView * view) {
+MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteElementView * view) {
     return REStringIdentifiesRemoteElement(identifier, view.model);
 }
 
@@ -208,8 +208,8 @@ MSKIT_STATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteE
 || buttonGroup.panelLocation                  \
 == REPanelLocationRight)
 
-MSKIT_EXTERN_NAMETAG(ButtonGroupViewInternal);
-MSKIT_EXTERN_NAMETAG(ButtonGroupViewLabel);
+MSEXTERN_NAMETAG(ButtonGroupViewInternal);
+MSEXTERN_NAMETAG(ButtonGroupViewLabel);
 
 /**
  * The `ButtonGroupView` class is a subclass of `UIView` designed to display itself
@@ -261,8 +261,8 @@ MSKIT_EXTERN_NAMETAG(ButtonGroupViewLabel);
  */
 @interface SelectionPanelButtonGroupView : ButtonGroupView @end
 
-MSKIT_EXTERN_NAMETAG(REPickerLabelButtonGroupViewInternal);
-MSKIT_EXTERN_NAMETAG(REPickerLabelButtonGroupViewLabelContainer);
+MSEXTERN_NAMETAG(REPickerLabelButtonGroupViewInternal);
+MSEXTERN_NAMETAG(REPickerLabelButtonGroupViewLabelContainer);
 
 @interface PickerLabelButtonGroupView : ButtonGroupView @end
 
@@ -271,9 +271,9 @@ MSKIT_EXTERN_NAMETAG(REPickerLabelButtonGroupViewLabelContainer);
 ////////////////////////////////////////////////////////////////////////////////
 
 
-MSKIT_EXTERN_NAMETAG(REButtonViewInternal);
-MSKIT_EXTERN_NAMETAG(REButtonViewLabel);
-MSKIT_EXTERN_NAMETAG(REButtonViewActivityIndicator);
+MSEXTERN_NAMETAG(REButtonViewInternal);
+MSEXTERN_NAMETAG(REButtonViewLabel);
+MSEXTERN_NAMETAG(REButtonViewActivityIndicator);
 
 
 /**

@@ -59,8 +59,8 @@
 #pragma mark - Detailed Button Editing
 ////////////////////////////////////////////////////////////////////////////////
 
-MSKIT_EXTERN_STRING   REDetailedButtonEditingButtonKey;
-MSKIT_EXTERN_STRING   REDetailedButtonEditingControlStateKey;
+MSEXTERN_STRING   REDetailedButtonEditingButtonKey;
+MSEXTERN_STRING   REDetailedButtonEditingControlStateKey;
 
 @interface DetailedButtonEditingViewController : RemoteElementEditingViewController
 

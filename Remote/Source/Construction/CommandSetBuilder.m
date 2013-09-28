@@ -32,14 +32,14 @@
     return commandSet;
 }
 
-+ (CommandSet *)dvrChannelsCommandSet:(NSManagedObjectContext *)moc
++ (CommandSet *)hopperChannelsCommandSet:(NSManagedObjectContext *)moc
 {
     __block CommandSet * commandSet = nil;
 
     [moc performBlockAndWait:
      ^{
-         ComponentDevice * dvr = [ComponentDevice fetchDeviceWithName:@"Comcast DVR" context:moc];
-         NSSet * codes = dvr.codes;
+         ComponentDevice * hopper = [ComponentDevice fetchDeviceWithName:@"Dish Hopper" context:moc];
+         NSSet * codes = hopper.codes;
          IRCode * channelUp = [codes objectPassingTest:^BOOL(IRCode * code) {
              return [code.name isEqualToString:@"Channel Up"];
          }];
@@ -59,15 +59,15 @@
 
 
 
-+ (CommandSet *)dvrPagingCommandSet:(NSManagedObjectContext *)moc
++ (CommandSet *)hopperPagingCommandSet:(NSManagedObjectContext *)moc
 {
     __block CommandSet * commandSet = nil;
 
     [moc performBlockAndWait:
      ^{
-         ComponentDevice * dvr = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+         ComponentDevice * hopper = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                   context:moc];
-         NSSet * codes = dvr.codes;
+         NSSet * codes = hopper.codes;
          IRCode * pageUp = [codes objectPassingTest:^BOOL(IRCode * code) {
              return [code.name isEqualToString:@"Page Up"];
          }];
@@ -114,27 +114,27 @@
                  [SendIRCommand commandWithIRCode:ps3[@"Scan Reverse"]];
          }
 
-         else if ([name isEqualToString:@"Comcast DVR"])
+         else if ([name isEqualToString:@"Dish Hopper"])
          {
-             ComponentDevice * comcastDVR  = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+             ComponentDevice * hopper  = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                               context:moc];
              commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeTransport];
              commandSet[@(REButtonTypeTransportReplay)]    =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Prev"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Prev"]];
              commandSet[@(REButtonTypeTransportStop)]        =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Stop"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Stop"]];
              commandSet[@(REButtonTypeTransportPlay)]        =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Play"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Play"]];
              commandSet[@(REButtonTypeTransportPause)]       =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Pause"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Pause"]];
              commandSet[@(REButtonTypeTransportSkip)]        =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Next"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Next"]];
              commandSet[@(REButtonTypeTransportFF)] =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Fast Forward"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Fast Forward"]];
              commandSet[@(REButtonTypeTransportRewind)]      =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Rewind"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Rewind"]];
              commandSet[@(REButtonTypeTransportRecord)]      =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Record"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Record"]];
 
          }
 
@@ -166,36 +166,36 @@
 
     [moc performBlockAndWait:
      ^{
-         if ([@"Comcast DVR" isEqualToString:name])
+         if ([@"Dish Hopper" isEqualToString:name])
          {
-             ComponentDevice * comcastDVR  = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+             ComponentDevice * hopper  = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                               context:moc];
 
              commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeNumberPad];
              commandSet[@(REButtonTypeNumberpad1)]   =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"One"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"One"]];
              commandSet[@(REButtonTypeNumberpad2)]   =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Two"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Two"]];
              commandSet[@(REButtonTypeNumberpad3)] =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Three"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Three"]];
              commandSet[@(REButtonTypeNumberpad4)]  =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Four"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Four"]];
              commandSet[@(REButtonTypeNumberpad5)]  =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Five"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Five"]];
              commandSet[@(REButtonTypeNumberpad6)]   =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Six"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Six"]];
              commandSet[@(REButtonTypeNumberpad7)] =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Seven"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Seven"]];
              commandSet[@(REButtonTypeNumberpad8)] =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Eight"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Eight"]];
              commandSet[@(REButtonTypeNumberpad9)]  =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Nine"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Nine"]];
              commandSet[@(REButtonTypeNumberpad0)]  =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Zero"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Zero"]];
              commandSet[@(REButtonTypeNumberpadAux1)]     =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Exit"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Exit"]];
              commandSet[@(REButtonTypeNumberpadAux2)]     =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"OK"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"OK"]];
          }
 
          else if ([@"PS3" isEqualToString:name])
@@ -227,22 +227,22 @@
 
     [moc performBlockAndWait:
      ^{
-         if ([@"Comcast DVR" isEqualToString:name])
+         if ([@"Dish Hopper" isEqualToString:name])
          {
-             ComponentDevice * comcastDVR  = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+             ComponentDevice * hopper  = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                               context:moc];
 
              commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeDPad];
              commandSet[@(REButtonTypeDPadCenter)]    =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"OK"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"OK"]];
              commandSet[@(REButtonTypeDPadUp)]    =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Up"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Up"]];
              commandSet[@(REButtonTypeDPadDown)]  =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Down"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Down"]];
              commandSet[@(REButtonTypeDPadLeft)] =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Right"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Right"]];
              commandSet[@(REButtonTypeDPadRight)]  =
-                 [SendIRCommand commandWithIRCode:comcastDVR[@"Left"]];
+                 [SendIRCommand commandWithIRCode:hopper[@"Left"]];
          }
 
          else if ([@"PS3" isEqualToString:name])

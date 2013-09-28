@@ -7,7 +7,7 @@
 //
 #import "ModelObject.h"
 #import "RETypedefs.h"
-MSKIT_EXTERN_STRING REDefaultConfiguration;
+MSEXTERN_STRING REDefaultConfiguration;
 
 @class RemoteElement;
 

@@ -6,17 +6,17 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-MSKIT_EXTERN_KEY(MSSettingsAutoListen       );
-MSKIT_EXTERN_KEY(MSSettingsAutoConnect      );
-MSKIT_EXTERN_KEY(MSSettingsProximitySensor  );
-MSKIT_EXTERN_KEY(MSSettingsStatusBar        );
-MSKIT_EXTERN_KEY(MSSettingsInactivityTimeout);
+MSEXTERN_KEY(MSSettingsAutoListen       );
+MSEXTERN_KEY(MSSettingsAutoConnect      );
+MSEXTERN_KEY(MSSettingsProximitySensor  );
+MSEXTERN_KEY(MSSettingsStatusBar        );
+MSEXTERN_KEY(MSSettingsInactivityTimeout);
 
-MSKIT_EXTERN_NOTIFICATION(MSSettingsManagerAutoConnectSettingDidChange      );
-MSKIT_EXTERN_NOTIFICATION(MSSettingsManagerAutoListenSettingDidChange       );
-MSKIT_EXTERN_NOTIFICATION(MSSettingsManagerProximitySensorSettingDidChange  );
-MSKIT_EXTERN_NOTIFICATION(MSSettingsManagerStatusBarSettingDidChange        );
-MSKIT_EXTERN_NOTIFICATION(MSSettingsManagerInactivityTimeoutSettingDidChange);
+MSEXTERN_NOTIFICATION(MSSettingsManagerAutoConnectSettingDidChange      );
+MSEXTERN_NOTIFICATION(MSSettingsManagerAutoListenSettingDidChange       );
+MSEXTERN_NOTIFICATION(MSSettingsManagerProximitySensorSettingDidChange  );
+MSEXTERN_NOTIFICATION(MSSettingsManagerStatusBarSettingDidChange        );
+MSEXTERN_NOTIFICATION(MSSettingsManagerInactivityTimeoutSettingDidChange);
 
 extern int globalDDLogLevel;
 

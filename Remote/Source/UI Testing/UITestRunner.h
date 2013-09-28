@@ -64,7 +64,7 @@ typedef NS_OPTIONS (uint64_t, UITestCode) {
                                               [[NSOperationQueue currentQueue] \
                                                name]);} while (0)
 
-MSKIT_STATIC_INLINE NSString * NSStringFromUITestCode(UITestCode testCode) {
+MSSTATIC_INLINE NSString * NSStringFromUITestCode(UITestCode testCode) {
     static NSDictionary const * names = nil;
     static dispatch_once_t      onceToken;
 

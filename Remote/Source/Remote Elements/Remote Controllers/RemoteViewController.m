@@ -20,9 +20,9 @@
 static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 
-MSKIT_STATIC_STRING_CONST   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
-MSKIT_STATIC_STRING_CONST   kTopToolbarConstraintNameTag           = @"kTopToolbarConstraintNameTag";
-MSKIT_STATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRemoteViewConstraintNameTag";
+MSSTATIC_STRING_CONST   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
+MSSTATIC_STRING_CONST   kTopToolbarConstraintNameTag           = @"kTopToolbarConstraintNameTag";
+MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRemoteViewConstraintNameTag";
 
 @implementation RemoteViewController {
     struct {

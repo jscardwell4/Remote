@@ -7,11 +7,11 @@
 //
 #import "RETypedefs.h"
 
-MSKIT_EXTERN_STRING   CMConnectionStatusNotification;
-MSKIT_EXTERN_STRING   CMConnectionStatusWifiAvailable;
-MSKIT_EXTERN_STRING   CMNetworkDeviceKey;
-MSKIT_EXTERN_STRING   CMDevicesUserDefaultsKey;
-MSKIT_EXTERN_STRING   CMCommandDidCompleteNotification;
+MSEXTERN_STRING   CMConnectionStatusNotification;
+MSEXTERN_STRING   CMConnectionStatusWifiAvailable;
+MSEXTERN_STRING   CMNetworkDeviceKey;
+MSEXTERN_STRING   CMDevicesUserDefaultsKey;
+MSEXTERN_STRING   CMCommandDidCompleteNotification;
 
 /**
  * The `ConnectionManager` class utilizes a singleton instance to oversee all device-related network

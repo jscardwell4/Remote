@@ -9,8 +9,8 @@
 
 @class SendIRCommand;
 
-MSKIT_EXTERN_STRING   NDiTachDeviceDiscoveryNotification;
-MSKIT_EXTERN_STRING   NDDefaultiTachDeviceKey;
+MSEXTERN_STRING   NDiTachDeviceDiscoveryNotification;
+MSEXTERN_STRING   NDDefaultiTachDeviceKey;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Global Caché Connection Manager

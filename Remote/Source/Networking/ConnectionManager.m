@@ -17,11 +17,11 @@ static int msLogContext = (LOG_CONTEXT_NETWORKING|LOG_CONTEXT_FILE|LOG_CONTEXT_C
 
 static const ConnectionManager * connectionManager = nil;
 
-MSKIT_STRING_CONST   CMDevicesUserDefaultsKey         = @"CMDevicesUserDefaultsKey";
-MSKIT_STRING_CONST   CMNetworkDeviceKey               = @"CMNetworkDeviceKey";
-MSKIT_STRING_CONST   CMConnectionStatusNotification   = @"CMConnectionStatusNotification";
-MSKIT_STRING_CONST   CMConnectionStatusWifiAvailable  = @"CMConnectionStatusWifiAvailable";
-MSKIT_STRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotification";
+MSSTRING_CONST   CMDevicesUserDefaultsKey         = @"CMDevicesUserDefaultsKey";
+MSSTRING_CONST   CMNetworkDeviceKey               = @"CMNetworkDeviceKey";
+MSSTRING_CONST   CMConnectionStatusNotification   = @"CMConnectionStatusNotification";
+MSSTRING_CONST   CMConnectionStatusWifiAvailable  = @"CMConnectionStatusWifiAvailable";
+MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotification";
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - ConnectionManager Implementation

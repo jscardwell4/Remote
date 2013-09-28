@@ -90,7 +90,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 
     Button * activity1 = [Button buttonWithTitle:@"Comcast\nDVR" context:moc];
     Activity * activity = [Activity MR_findFirstByAttribute:@"name"
-                                                      withValue:@"Comcast DVR Activity"
+                                                      withValue:@"Dish Hopper Activity"
                                                       inContext:moc];
     ActivityCommand * command = [ActivityCommand commandWithActivity:activity];
     activity1.command = command;
@@ -215,7 +215,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 {
     ButtonGroup * buttonGroup = [self dPadInContext:moc];
     buttonGroup.name = @"DVR Activity DPad";
-    CommandSet * commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Comcast DVR"
+    CommandSet * commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Dish Hopper"
                                                                    context:moc];
     [buttonGroup addCommandContainer:commandSet configuration:REDefaultConfiguration];
     commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Samsung TV" context:moc];
@@ -241,7 +241,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 {
     ButtonGroup * buttonGroup = [self numberPadInContext:moc];
     buttonGroup.name = @"DVR Activity Number Pad";
-    CommandSet * commandSet = [CommandSetBuilder numberPadForDeviceWithName:@"Comcast DVR"
+    CommandSet * commandSet = [CommandSetBuilder numberPadForDeviceWithName:@"Dish Hopper"
                                                                         context:moc];
     buttonGroup.commandContainer = commandSet;
 
@@ -266,7 +266,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 {
     ButtonGroup * buttonGroup = [self transportInContext:moc];
     buttonGroup.name = @"DVR Activity Transport";
-    CommandSet * commandSet = [CommandSetBuilder transportForDeviceWithName:@"Comcast DVR"
+    CommandSet * commandSet = [CommandSetBuilder transportForDeviceWithName:@"Dish Hopper"
                                                                         context:moc];
     [buttonGroup addCommandContainer:commandSet configuration:REDefaultConfiguration];
     commandSet = [CommandSetBuilder transportForDeviceWithName:@"Samsung TV" context:moc];
@@ -294,10 +294,10 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     PickerLabelButtonGroup * buttonGroup = [self rockerInContext:moc];
     buttonGroup.name = @"DVR Activity Rocker";
     CommandSetCollection * commandSetCollection = [CommandSetCollection commandContainerInContext:moc];
-    CommandSet * commandSet = [CommandSetBuilder dvrChannelsCommandSet:moc];
+    CommandSet * commandSet = [CommandSetBuilder hopperChannelsCommandSet:moc];
 
     commandSetCollection[commandSet] = @"CH";
-    commandSet = [CommandSetBuilder dvrPagingCommandSet:moc];
+    commandSet = [CommandSetBuilder hopperPagingCommandSet:moc];
     commandSetCollection[commandSet] = @"PAGE";
     commandSet = [CommandSetBuilder avReceiverVolumeCommandSet:moc];
     commandSetCollection[commandSet] = @"VOL";
@@ -406,7 +406,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 + (ButtonGroup *)constructDVRGroupOfThreeButtonsInContext:(NSManagedObjectContext *)moc
 {
     // fetch devices
-    ComponentDevice * comcastDVR = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+    ComponentDevice * hopper = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                     context:moc];
     ComponentDevice * samsungTV = [ComponentDevice fetchDeviceWithName:@"Samsung TV"
                                                                    context:moc];
@@ -425,27 +425,27 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
                                                     withObjects:@{@"normal": @"Tools"}];
     [guideButton setTitles:titleSet configuration:kTVConfiguration];
 
-    Command * command = [SendIRCommand commandWithIRCode:comcastDVR[@"Guide"]];
+    Command * command = [SendIRCommand commandWithIRCode:hopper[@"Guide"]];
     [guideButton setCommand:command configuration:REDefaultConfiguration];
 
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Tools"]];
     [guideButton setCommand:command configuration:kTVConfiguration];
 
     // Configure "DVR" button and add its delegate
-    Button * dvrButton = buttonGroup[1];
-    dvrButton.name = @"DVR / Internet@TV";
+    Button * hopperButton = buttonGroup[1];
+    hopperButton.name = @"DVR / Internet@TV";
     titleSet = [ControlStateTitleSet controlStateSetInContext:moc
                                                     withObjects:@{@"normal":@"DVR"}];
-    [dvrButton setTitles:titleSet configuration:REDefaultConfiguration];
+    [hopperButton setTitles:titleSet configuration:REDefaultConfiguration];
     titleSet = [ControlStateTitleSet controlStateSetInContext:moc
                                                     withObjects:@{@"normal":@"Internet@TV"}];
-    [dvrButton setTitles:titleSet configuration:kTVConfiguration];
+    [hopperButton setTitles:titleSet configuration:kTVConfiguration];
 
-    command = [SendIRCommand commandWithIRCode:comcastDVR[@"DVR"]];
-    [dvrButton setCommand:command configuration:REDefaultConfiguration];
+    command = [SendIRCommand commandWithIRCode:hopper[@"DVR"]];
+    [hopperButton setCommand:command configuration:REDefaultConfiguration];
 
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Internet@TV"]];
-    [dvrButton setCommand:command configuration:kTVConfiguration];
+    [hopperButton setCommand:command configuration:kTVConfiguration];
 
     // Configure "Info" button and its delegate
     Button * infoButton = buttonGroup[2];
@@ -456,7 +456,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     [infoButton setTitles:titleSet configuration:REDefaultConfiguration];
     [infoButton setTitles:[titleSet copy] configuration:kTVConfiguration];
 
-    command = [SendIRCommand commandWithIRCode:comcastDVR[@"Info"]];
+    command = [SendIRCommand commandWithIRCode:hopper[@"Info"]];
     [infoButton setCommand:command configuration:REDefaultConfiguration];
 
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Info"]];
@@ -503,7 +503,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
                                                                     context:moc];
     ComponentDevice * samsungTV = [ComponentDevice  fetchDeviceWithName:@"Samsung TV"
                                                                     context:moc];
-    ComponentDevice * comcastDVR = [ComponentDevice fetchDeviceWithName:@"Comcast DVR"
+    ComponentDevice * hopper = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                     context:moc];
 
     ButtonGroup * buttonGroup = [self verticalPanelInContext:moc];
@@ -514,7 +514,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     [button setTitle:@"On Demand" configuration:REDefaultConfiguration];
     [button setTitle:@"Source" configuration:kTVConfiguration];
 
-    Command * command = [SendIRCommand commandWithIRCode:comcastDVR[@"On Demand"]];
+    Command * command = [SendIRCommand commandWithIRCode:hopper[@"On Demand"]];
     [button setCommand:command configuration:REDefaultConfiguration];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Source"]];
     [button setCommand:command configuration:kTVConfiguration];
@@ -523,7 +523,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     button.name = @"Menu";
     [button setTitle:@"Menu" configuration:REDefaultConfiguration];
 
-    command = [SendIRCommand commandWithIRCode:comcastDVR[@"Menu"]];
+    command = [SendIRCommand commandWithIRCode:hopper[@"Menu"]];
     [button setCommand:command  configuration:REDefaultConfiguration];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Menu"]];
     [button setCommand:command  configuration:kTVConfiguration];
@@ -533,7 +533,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     [button setTitle:@"Last" configuration:REDefaultConfiguration];
     [button setTitle:@"Return" configuration:kTVConfiguration];
 
-    command = [SendIRCommand commandWithIRCode:comcastDVR[@"Last"]];
+    command = [SendIRCommand commandWithIRCode:hopper[@"Last"]];
     [button setCommand:command  configuration:REDefaultConfiguration];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Return"]];
     [button setCommand:command  configuration:kTVConfiguration];
@@ -542,7 +542,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     button.name = @"Exit";
     [button setTitle:@"Exit" configuration:REDefaultConfiguration];
 
-    command = [SendIRCommand commandWithIRCode:comcastDVR[@"Exit"]];
+    command = [SendIRCommand commandWithIRCode:hopper[@"Exit"]];
     [button setCommand:command  configuration:REDefaultConfiguration];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Exit"]];
     [button setCommand:command  configuration:kTVConfiguration];

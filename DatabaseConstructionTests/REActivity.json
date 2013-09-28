@@ -3,7 +3,7 @@
 /* DVR Activity */
 {
     "uuid": "62C56ED7-3CD2-412D-9CA9-5CAA5378787E",
-    "name": "Comcast DVR Activity",
+    "name": "Dish Hopper Activity",
     "controller.uuid": "80142DF7-0BFE-4868-BAC0-257DAE79D825",
     "launchMacro": {
         "uuid": "E5DFE4B6-3381-46EB-846D-D7D515B7EE78",

@@ -181,7 +181,6 @@ static const int   msLogContext = 0;
 - (BOOL)              application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [UIApplication sharedApplication].statusBarHidden = YES;
 
     // set a reference to our launch screen view controller
     MainMenuViewController * mainMenuVC = (MainMenuViewController*)[self.window rootViewController];

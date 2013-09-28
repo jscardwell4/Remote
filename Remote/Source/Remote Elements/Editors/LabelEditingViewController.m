@@ -14,7 +14,7 @@
 
 #import "StoryboardProxy.h"
 
-MSKIT_STATIC_STRING_CONST   kEmptyLabelText = @"Add Label";
+MSSTATIC_STRING_CONST   kEmptyLabelText = @"Add Label";
 static int                ddLogLevel      = LOG_LEVEL_DEBUG;
 static NSArray const    * fontNames;
 

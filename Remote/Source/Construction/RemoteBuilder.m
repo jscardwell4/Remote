@@ -18,7 +18,7 @@ static const int   msLogContext = 0;
 + (Remote *)constructDVRRemoteInContext:(NSManagedObjectContext *)moc
 {
     Remote * remote = [Remote remoteElementInContext:moc];
-    remote.name = @"Comcast DVR Activity";
+    remote.name = @"Dish Hopper Activity";
     remote.key = @"activity1";
     remote.topBarHiddenOnLoad = YES;
     [remote registerConfiguration:kTVConfiguration];

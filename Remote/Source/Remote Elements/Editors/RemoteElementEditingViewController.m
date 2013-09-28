@@ -17,9 +17,9 @@ static int         ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int    msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 // static const int ddLogLevel = DefaultDDLogLevel;
 
-MSKIT_STATIC_STRING_CONST   kCenterXConstraintNametag = @"kCenterXConstraintNametag";
-MSKIT_STATIC_STRING_CONST   kCenterYConstraintNametag = @"kCenterYConstraintNametag";
-MSKIT_STATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
+MSSTATIC_STRING_CONST   kCenterXConstraintNametag = @"kCenterXConstraintNametag";
+MSSTATIC_STRING_CONST   kCenterYConstraintNametag = @"kCenterYConstraintNametag";
+MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
 @implementation RemoteElementEditingViewController {
     UIView              * _referenceView;

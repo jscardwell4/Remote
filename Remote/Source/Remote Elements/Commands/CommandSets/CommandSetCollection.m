@@ -56,7 +56,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 
 @implementation CommandSetCollection (CommandSetAccessors)
 
-MSKIT_STATIC_STRING_CONST kCommandSetsKey = @"commandSets";
+MSSTATIC_STRING_CONST kCommandSetsKey = @"commandSets";
 
 - (void)insertObject:(CommandSet *)value inCommandSetsAtIndex:(NSUInteger)index
 {

@@ -97,7 +97,7 @@
 
 
 #import "RemoteController.h"
-#import "BankObjects.h"
+#import "Bankables.h"
 #import "Command.h"
 #import "CommandContainer.h"
 #import "ConfigurationDelegate.h"

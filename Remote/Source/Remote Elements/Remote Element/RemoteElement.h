@@ -230,7 +230,7 @@
 
 @end
 
-MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
+MSEXTERN_NAMETAG(REButtonGroupPanel);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark REPickerLabelButtonGroup
@@ -331,11 +331,11 @@ MSKIT_EXTERN_NAMETAG(REButtonGroupPanel);
 
 @end
 
-MSKIT_EXTERN BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re);
+MSEXTERN BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re);
 
 #define NSDictionaryOfVariableBindingsToIdentifiers(...) \
     _NSDictionaryOfVariableBindingsToIdentifiers(@"" # __VA_ARGS__, __VA_ARGS__, nil)
 
-MSKIT_EXTERN NSDictionary * _NSDictionaryOfVariableBindingsToIdentifiers(NSString *, id , ...);
-MSKIT_EXTERN Class classForREType(REType type);
-MSKIT_EXTERN Class baseClassForREType(REType type);
+MSEXTERN NSDictionary * _NSDictionaryOfVariableBindingsToIdentifiers(NSString *, id , ...);
+MSEXTERN Class classForREType(REType type);
+MSEXTERN Class baseClassForREType(REType type);

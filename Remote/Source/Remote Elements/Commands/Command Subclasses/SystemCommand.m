@@ -111,11 +111,11 @@ static __weak RemoteViewController * _remoteViewController;
 
             case SystemCommandReturnToLaunchScreen:
             {
-                MSRunAsyncOnMain (^{ [_remoteViewController
-                                      dismissViewControllerAnimated:YES
-                                                         completion:^{
-                                          taskComplete = YES;
-                                      }]; });
+                MSRunAsyncOnMain (^{ [AppController dismissViewController:_remoteViewController
+                                                               completion:^{
+                                                                   taskComplete = YES;
+                                                               }];
+                });
             }   break;
 
             case SystemCommandOpenSettings:

@@ -9,24 +9,24 @@
 #import "RemoteControl.h"
 #import "RemoteViewController.h"
 
+static id _sharedInstance;
+
 @interface RemoteControl ()
 
-@property (nonatomic, assign) RemoteViewController * remoteViewController;
 @property (nonatomic, strong, readwrite) UIViewController * viewController;
 
 @end
 
 @implementation RemoteControl
 
-- (RemoteViewController *)viewController
+- (UIViewController *)viewController
 {
-    if (!_remoteViewController)
+    if (!_viewController)
     {
         self.viewController = [RemoteViewController new];
-        self.remoteViewController = (RemoteViewController *)_viewController;
     }
     
-    return _remoteViewController;
+    return _viewController;
 }
 
 @end

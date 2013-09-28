@@ -50,11 +50,11 @@
         },
         "subelements": [
 
-        /*  REButton - Comcast DVR Activity Button */
+        /*  REButton - Dish Hopper Activity Button */
         {
             "uuid": "38A2BD0B-5523-491F-A35E-1E7AE67EB934",
             "type": "button",
-            "name": "Comcast DVR",
+            "name": "Dish Hopper",
             "constraints": {
                 "identifiers.activity1": "38A2BD0B-5523-491F-A35E-1E7AE67EB934",
                 "format": ["activity1.height = activity1.width"]

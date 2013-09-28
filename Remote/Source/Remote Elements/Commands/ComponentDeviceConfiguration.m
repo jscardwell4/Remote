@@ -7,10 +7,10 @@
 //
 
 #import "ComponentDeviceConfiguration.h"
-#import "BankObjects.h"
+#import "Bankables.h"
 
-MSKIT_STRING_CONST   REDeviceConfigurationInputKey      = @"REDeviceConfigurationInputKey";
-MSKIT_STRING_CONST   REDeviceConfigurationPowerStateKey = @"REDeviceConfigurationPowerStateKey";
+MSSTRING_CONST   REDeviceConfigurationInputKey      = @"REDeviceConfigurationInputKey";
+MSSTRING_CONST   REDeviceConfigurationPowerStateKey = @"REDeviceConfigurationPowerStateKey";
 
 @interface ComponentDeviceConfiguration (CoreDataGeneratedAccessors)
 

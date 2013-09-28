@@ -19,7 +19,7 @@
     switch (activity)
     {
         case 1:
-            macroCommand = [self dvrActivityMacroToInitiateState:isOnState context:moc];
+            macroCommand = [self hopperActivityMacroToInitiateState:isOnState context:moc];
             break;
 
         case 2:
@@ -40,7 +40,7 @@
     return macroCommand;
 }
 
-+ (MacroCommand *)dvrActivityMacroToInitiateState:(BOOL)isOnState
++ (MacroCommand *)hopperActivityMacroToInitiateState:(BOOL)isOnState
                                             context:(NSManagedObjectContext *)moc
 {
     // Macro sequence: A/V Power -> TV Power
@@ -173,7 +173,7 @@
 
     switch (activity)
     {
-        case 1:       // dvr
+        case 1:       // hopper
         case 2:       // samsung
         case 3:       // ps3
             configs = [NSSet setWithObjects:receiverConfig, tvOffConfig, nil]; break;

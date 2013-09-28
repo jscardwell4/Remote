@@ -46,7 +46,7 @@ NSString *(^getContextDescription)(NSManagedObjectContext *) =
 };
 
 
-MSKIT_STATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
+MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - CoreDataManager Implementation

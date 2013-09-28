@@ -65,17 +65,17 @@ static NSArray * kConstraintPropertyKeys;
 #pragma mark - Notification
 ////////////////////////////////////////////////////////////////////////////////
 
-MSKIT_STRING_CONST REConstraintsDidChangeNotification = @"REConstraintsDidChangeNotification";
+MSSTRING_CONST REConstraintsDidChangeNotification = @"REConstraintsDidChangeNotification";
 
-MSKIT_STATIC_STRING_CONST   REFirstItem       = @"firstItem";
-MSKIT_STATIC_STRING_CONST   REFirstAttribute  = @"firstAttribute";
-MSKIT_STATIC_STRING_CONST   RESecondItem      = @"secondItem";
-MSKIT_STATIC_STRING_CONST   RESecondAttribute = @"secondAttribute";
-MSKIT_STATIC_STRING_CONST   REOwner           = @"owner";
-MSKIT_STATIC_STRING_CONST   RERelation        = @"relation";
-MSKIT_STATIC_STRING_CONST   REMultiplier      = @"multiplier";
-MSKIT_STATIC_STRING_CONST   REPriority        = @"priority";
-MSKIT_STATIC_STRING_CONST   REConstant        = @"constant";
+MSSTATIC_STRING_CONST   REFirstItem       = @"firstItem";
+MSSTATIC_STRING_CONST   REFirstAttribute  = @"firstAttribute";
+MSSTATIC_STRING_CONST   RESecondItem      = @"secondItem";
+MSSTATIC_STRING_CONST   RESecondAttribute = @"secondAttribute";
+MSSTATIC_STRING_CONST   REOwner           = @"owner";
+MSSTATIC_STRING_CONST   RERelation        = @"relation";
+MSSTATIC_STRING_CONST   REMultiplier      = @"multiplier";
+MSSTATIC_STRING_CONST   REPriority        = @"priority";
+MSSTATIC_STRING_CONST   REConstant        = @"constant";
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -13,12 +13,12 @@
 typedef void (^ MSRemoteUITestRunner)(NSDictionary * parameters);
 typedef void (^ MSRemoteUITestAssertions)(RemoteElementEditingViewController * editor);
 
-MSKIT_EXTERN_STRING   MSRemoteUIRemoteKey;
-MSKIT_EXTERN_STRING   MSRemoteUIButtonGroupKey;
-MSKIT_EXTERN_STRING   MSRemoteUIButtonKey;
-MSKIT_EXTERN_STRING   MSRemoteUIIterationValuesKey;
-MSKIT_EXTERN_STRING   MSRemoteUIAssertionsKey;
-MSKIT_EXTERN_STRING   MSRemoteUILogSubviewsKey;
+MSEXTERN_STRING   MSRemoteUIRemoteKey;
+MSEXTERN_STRING   MSRemoteUIButtonGroupKey;
+MSEXTERN_STRING   MSRemoteUIButtonKey;
+MSEXTERN_STRING   MSRemoteUIIterationValuesKey;
+MSEXTERN_STRING   MSRemoteUIAssertionsKey;
+MSEXTERN_STRING   MSRemoteUILogSubviewsKey;
 @class                RemoteElementView;
 
 /**

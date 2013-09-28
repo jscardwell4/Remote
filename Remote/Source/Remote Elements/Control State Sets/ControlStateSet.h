@@ -21,7 +21,7 @@
  * UIControlStateSelected|UIControlStateHighlighted|UIControlStateDisabled: 7
  *
  */
-MSKIT_STATIC_INLINE BOOL validState(NSUInteger state) {
+MSSTATIC_INLINE BOOL validState(NSUInteger state) {
     static const NSSet * validStates = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -30,7 +30,7 @@ MSKIT_STATIC_INLINE BOOL validState(NSUInteger state) {
     return [validStates containsObject:@(state)];
 }
 
-MSKIT_STATIC_INLINE NSString * propertyForState(NSUInteger state) {
+MSSTATIC_INLINE NSString * propertyForState(NSUInteger state) {
     switch (state) {
         case UIControlStateNormal:
             return @"normal";
@@ -61,7 +61,7 @@ MSKIT_STATIC_INLINE NSString * propertyForState(NSUInteger state) {
     }
 }
 
-MSKIT_STATIC_INLINE NSUInteger stateForProperty(NSString * property) {
+MSSTATIC_INLINE NSUInteger stateForProperty(NSString * property) {
     static const NSDictionary * properties = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -149,16 +149,16 @@ MSKIT_STATIC_INLINE NSUInteger stateForProperty(NSString * property) {
 
 @end
 
-MSKIT_EXTERN_KEY(REForegroundColor);
-MSKIT_EXTERN_KEY(REBackgroundColor);
-MSKIT_EXTERN_KEY(REShadow);
-MSKIT_EXTERN_KEY(REStrokeColor);
-MSKIT_EXTERN_KEY(REStrokeWidth);
-MSKIT_EXTERN_KEY(REStrikethroughStyle);
-MSKIT_EXTERN_KEY(REUnderlineStyle);
-MSKIT_EXTERN_KEY(REKern);
-MSKIT_EXTERN_KEY(RELigature);
-MSKIT_EXTERN_KEY(REParagraphStyle);
-MSKIT_EXTERN_KEY(REFontName);
-MSKIT_EXTERN_KEY(REFontSize);
-MSKIT_EXTERN_KEY(RETitleText);
+MSEXTERN_KEY(REForegroundColor);
+MSEXTERN_KEY(REBackgroundColor);
+MSEXTERN_KEY(REShadow);
+MSEXTERN_KEY(REStrokeColor);
+MSEXTERN_KEY(REStrokeWidth);
+MSEXTERN_KEY(REStrikethroughStyle);
+MSEXTERN_KEY(REUnderlineStyle);
+MSEXTERN_KEY(REKern);
+MSEXTERN_KEY(RELigature);
+MSEXTERN_KEY(REParagraphStyle);
+MSEXTERN_KEY(REFontName);
+MSEXTERN_KEY(REFontSize);
+MSEXTERN_KEY(RETitleText);

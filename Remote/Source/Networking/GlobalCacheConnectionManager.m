@@ -18,8 +18,8 @@ static int msLogContext = (LOG_CONTEXT_NETWORKING|LOG_CONTEXT_FILE|LOG_CONTEXT_C
 
 static const GlobalCacheConnectionManager * globalCacheConnectionManager = nil;
 
-MSKIT_STRING_CONST   NDiTachDeviceDiscoveryNotification = @"NDiTachDeviceDiscoveryNotification";
-MSKIT_STRING_CONST   NDDefaultiTachDeviceKey            = @"NDDefaultiTachDeviceKey";
+MSSTRING_CONST   NDiTachDeviceDiscoveryNotification = @"NDiTachDeviceDiscoveryNotification";
+MSSTRING_CONST   NDDefaultiTachDeviceKey            = @"NDDefaultiTachDeviceKey";
 
 // connection state bit settings
 typedef NS_ENUM (uint8_t, ConnectionState){
@@ -606,11 +606,11 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 {
     // iTach completeir command: completeir,<module address>:<connector address>,<ID>
     // TODO: handle error messages
-    MSKIT_STATIC_STRING_CONST   kIREnabled  = @"IR Learner Enabled\r";
-    MSKIT_STATIC_STRING_CONST   kIRDisabled = @"IR Learner Disabled\r";
-    MSKIT_STATIC_STRING_CONST   kCompleteIR = @"completeir";
-    MSKIT_STATIC_STRING_CONST   kSendIR     = @"sendir";
-    MSKIT_STATIC_STRING_CONST   kError      = @"ERR";
+    MSSTATIC_STRING_CONST   kIREnabled  = @"IR Learner Enabled\r";
+    MSSTATIC_STRING_CONST   kIRDisabled = @"IR Learner Disabled\r";
+    MSSTATIC_STRING_CONST   kCompleteIR = @"completeir";
+    MSSTATIC_STRING_CONST   kSendIR     = @"sendir";
+    MSSTATIC_STRING_CONST   kError      = @"ERR";
 
     MSLogDebugTag(@"Return message from device: \"%@\"",
                   [message stringByReplacingReturnsWithSymbol]);
