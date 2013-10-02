@@ -48,7 +48,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
             break;
 
         case REShapeOval:
-            self.borderPath = [Painter stretchedOvalFromRect:self.bounds];
+            self.borderPath = [MSPainter stretchedOvalFromRect:self.bounds];
             break;
 
         case REShapeTriangle:
@@ -73,7 +73,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     if (self.shape == REShapeRoundedRectangle)
     {
         UIGraphicsPushContext(ctx);
-        [Painter drawRoundedRectButtonBaseInContext:ctx
+        [MSPainter drawRoundedRectButtonBaseInContext:ctx
                                         buttonColor:self.model.backgroundColor
                                         shadowColor:nil
                                              opaque:YES
@@ -107,25 +107,25 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
         switch ((self.style & REGlossStyleMask))
         {
             case REStyleGlossStyle1:
-                [Painter drawGlossGradientWithColor:defaultGlossColor()
+                [MSPainter drawGlossGradientWithColor:defaultGlossColor()
                                                rect:self.bounds
                                             context:UIGraphicsGetCurrentContext()
                                              offset:0.0f];
                 break;
 
             case REStyleGlossStyle2:
-                [Painter drawRoundedRectButtonOverlayInContext:ctx shineColor:nil frame:rect];
+                [MSPainter drawRoundedRectButtonOverlayInContext:ctx shineColor:nil frame:rect];
                 break;
 
             case REStyleGlossStyle3:
-                [Painter drawGlossGradientWithColor:defaultGlossColor()
+                [MSPainter drawGlossGradientWithColor:defaultGlossColor()
                                                rect:self.bounds
                                             context:UIGraphicsGetCurrentContext()
                                              offset:0.8f];
                 break;
 
             case REStyleGlossStyle4:
-                [Painter drawGlossGradientWithColor:defaultGlossColor()
+                [MSPainter drawGlossGradientWithColor:defaultGlossColor()
                                                rect:self.bounds
                                             context:UIGraphicsGetCurrentContext()
                                              offset:-0.8f];

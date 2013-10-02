@@ -83,7 +83,7 @@
 {
     if (!indexPath.section)
     {
-        UIViewController * vc = [Bank detailViewControllerForItem:_devices[indexPath.row]];
+        UIViewController * vc = [Bank detailControllerForItem:_devices[indexPath.row]];
         [self.navigationController pushViewController:vc animated:YES];
     }
     else

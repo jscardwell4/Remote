@@ -7,6 +7,7 @@
 //
 
 #import "BankableDetailTableViewController.h"
+#import "BankableDetailTableViewCell.h"
 
 @class BankableDetailTableDelegate;
 
@@ -16,6 +17,15 @@
 @property (nonatomic, strong)   IBOutlet UIBarButtonItem             * cancelBarButtonItem;
 @property (nonatomic, strong)   IBOutlet BankableDetailTableDelegate * tableDelegate;
 @property (nonatomic, readonly)          NSArray         * editableViews;
+
+@property (nonatomic, strong) UINib   * textFieldCellNib;
+@property (nonatomic, strong) UINib   * labelCellNib;
+@property (nonatomic, strong) UINib   * imageCellNib;
+@property (nonatomic, strong) UINib   * textViewCellNib;
+@property (nonatomic, strong) UINib   * stepperCellNib;
+@property (nonatomic, strong) UINib   * sliderCellNib;
+@property (nonatomic, strong) UINib   * buttonCellNib;
+
 
 - (void)updateDisplay;
 + (Class)itemClass;
@@ -34,3 +44,11 @@
 
 
 MSEXTERN_NAMETAG(BankableDetailHiddenNeighborConstraint);
+
+MSEXTERN_IDENTIFIER(StepperCell);
+MSEXTERN_IDENTIFIER(SliderCell);
+MSEXTERN_IDENTIFIER(LabelCell);
+MSEXTERN_IDENTIFIER(ButtonCell);
+MSEXTERN_IDENTIFIER(ImageCell);
+MSEXTERN_IDENTIFIER(TextFieldCell);
+MSEXTERN_IDENTIFIER(TextViewCell);

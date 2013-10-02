@@ -42,10 +42,15 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 
 @end
 
-@protocol BankableDetailDelegate <NSObject>
+@protocol BankableViewController <NSObject>
+
+@property (nonatomic, strong) Class<Bankable> itemClass;
+
+@end
+
+@protocol BankableDetailDelegate <BankableViewController>
 
 @property (nonatomic, strong) id<Bankable> item;
-
 - (void)editItem;
 
 @end
@@ -61,7 +66,8 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 @interface Bank : MSSingletonController
 
 + (NSArray *)registeredClasses;
-+ (UIViewController<BankableDetailDelegate> *)detailViewControllerForItem:(id<Bankable>)item;
++ (UIViewController<BankableDetailDelegate> *)detailControllerForItem:(id<Bankable>)item;
++ (UIViewController<BankableDetailDelegate> *)editingControllerForItem:(id<Bankable>)item;
 
 @end
 

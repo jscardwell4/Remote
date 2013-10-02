@@ -9,6 +9,8 @@
 #import "BankRootTableViewController.h"
 #import "MSRemoteAppController.h"
 #import "BankViewController.h"
+#import "BankTableViewController.h"
+#import "BankCollectionViewController.h"
 #import "Bank.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
@@ -81,10 +83,23 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 
 
+
 /*
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    Class<Bankable> itemClass = [_rootItems keyAtIndex:indexPath.row];
+    assert([(Class)itemClass conformsToProtocol:@protocol(Bankable)]);
+    NSString * title = _rootItems[indexPath.row];
+    BankFlags flags = [itemClass bankFlags];
+    Class<BankableViewController> pushClass = (flags & BankThumbnail
+                                               ? [BankCollectionViewController class]
+                                               : [BankTableViewController class]);
+    UIViewController<BankableViewController> * viewController =
+        (UIViewController<BankableViewController> *)
+        [self.storyboard instantiateViewControllerWithClassNameIdentifier : pushClass];
+    viewController.title = title;
+    viewController.itemClass = itemClass;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 */
 
@@ -97,11 +112,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     if ([@"Push Bank Items" isEqualToString:segue.identifier])
     {
-        BankViewController * bankVC = segue.destinationViewController;
+        BankCollectionViewController * viewController = segue.destinationViewController;
         NSInteger idx = [self.tableView indexPathForSelectedRow].row;
-        assert(idx >= 0 && idx < [self.rootItems count]);
-        bankVC.navigationItem.title = [_rootItems objectAtIndex:idx];
-        bankVC.itemClass = [_rootItems keyAtIndex:idx];
+        viewController.navigationItem.title = _rootItems[idx];
+        viewController.itemClass = [_rootItems keyAtIndex:idx];
     }
 }
 

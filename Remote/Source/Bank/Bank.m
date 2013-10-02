@@ -34,7 +34,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     return _viewController;
 }
 
-+ (UIViewController<BankableDetailDelegate> *)detailViewControllerForItem:(id<Bankable>)item
++ (UIViewController<BankableDetailDelegate> *)detailControllerForItem:(id<Bankable>)item
 {
     MSLogDebug(@"item name: %@", item.name);
     Class itemDetailClass = [[item class] detailViewControllerClass];
@@ -45,6 +45,13 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     (UIViewController<BankableDetailDelegate> *)
     [storyboard instantiateViewControllerWithClassNameIdentifier:itemDetailClass];
     viewController.item = item;
+    return viewController;
+}
+
++ (UIViewController<BankableDetailDelegate> *)editingControllerForItem:(id<Bankable>)item
+{
+    UIViewController<BankableDetailDelegate> * viewController = [self detailControllerForItem:item];
+    [viewController editItem];
     return viewController;
 }
 

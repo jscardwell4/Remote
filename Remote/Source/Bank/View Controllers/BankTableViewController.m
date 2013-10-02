@@ -7,10 +7,7 @@
 //
 
 #import "BankTableViewController.h"
-#import "Bank.h"
-#import "BankViewController.h"
 #import "MSRemoteAppController.h"
-#import "BankCollectionViewController.h"
 #import "CoreDataManager.h"
 
 static const int ddLogLevel = LOG_LEVEL_DEBUG;
@@ -27,11 +24,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @interface BankTableViewController ()
 
-@property (nonatomic, assign, readonly) BankViewController         * bankViewController;
-@property (nonatomic, strong)           Class                        itemClass;
-@property (nonatomic, weak)             NSFetchedResultsController * bankableItems;
-@property (nonatomic, strong) IBOutlet  UIToolbar                  * tableHeaderView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) NSFetchedResultsController * bankableItems;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,65 +39,50 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     NSMutableSet * _hiddenSections;
 }
 
+//- (void)viewDidLoad
+//{
+//    [super viewDidLoad];
+//    _hiddenSections = [NSMutableSet set];
+//}
 
-- (void)willMoveToParentViewController:(UIViewController *)parent
+- (NSFetchedResultsController *)bankableItems
 {
-    [super willMoveToParentViewController:parent];
-    assert(self.view);
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [super willMoveToParentViewController:parent];
-    if ([parent isKindOfClass:[BankViewController class]])
+    if (!_bankableItems && self.itemClass)
     {
-        _bankViewController = (BankViewController *)parent;
-        self.itemClass = _bankViewController.itemClass;
-        self.bankableItems = _bankViewController.bankableItems;
+        assert(_itemClass && [(Class)_itemClass isSubclassOfClass:[NSManagedObject class]]);
+        NSManagedObjectContext * context = [NSManagedObjectContext MR_defaultContext];
+        NSFetchRequest * request = [(Class)_itemClass MR_requestAllSortedBy:@"info.category"
+                                                                  ascending:YES inContext:context];
+        NSFetchedResultsController * controller = [[NSFetchedResultsController alloc]
+                                                   initWithFetchRequest:request
+                                                   managedObjectContext:context
+                                                   sectionNameKeyPath:@"info.category"
+                                                   cacheName:nil];
+        NSError * error = nil;
+        [controller performFetch:&error];
+        if (error) [CoreDataManager handleErrors:error];
+        else
+        {
+            self.bankableItems = controller;
+            _bankableItems.delegate = self;
+            _hiddenSections = [NSMutableSet set];
+        }
+
     }
 
-    else
-    {
-        _bankViewController = nil;
-        _bankableItems = nil;
-        self.itemClass = nil;
-    }
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    _hiddenSections = [NSMutableSet set];
-    if (self.itemClass && (_flags & BankThumbnail))
-        self.tableView.tableHeaderView = self.tableHeaderView;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (self.tableHeaderView.superview)
-        self.segmentedControl.selectedSegmentIndex = 0;
+    return _bankableItems;
 }
 
 - (void)setItemClass:(Class<Bankable>)itemClass
 {
     _itemClass = itemClass;
     _flags = (_itemClass ? [itemClass bankFlags] : BankDefault);
-    if ((_flags & BankThumbnail) && [self isViewLoaded])
-        self.tableView.tableHeaderView = self.tableHeaderView;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     id<Bankable> item = [self.bankableItems objectAtIndexPath:indexPath];
     assert(item && [item conformsToProtocol:@protocol(Bankable)]);
-
-
-
-    if (_flags & BankPreview)
-        cell.imageView.image = item.thumbnail;
-
 
     cell.accessoryType = (_flags & BankDetail
                           ? UITableViewCellAccessoryDetailDisclosureButton
@@ -132,14 +111,17 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     [self.tableView reloadData];
 }
 
-- (IBAction)segmentedControlValueDidChange:(UISegmentedControl *)sender
+- (IBAction)importBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
+
+- (IBAction)exportBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
+
+- (IBAction)searchBankObjects:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
+
+- (IBAction)dismiss:(id)sender
 {
-    if (sender.selectedSegmentIndex)
-    {
-        [self.bankViewController showThumbnailView];
-        sender.selectedSegmentIndex = 0;
-    }
+    [AppController dismissViewController:[Bank viewController] completion:nil];
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view data source
@@ -168,28 +150,6 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
     return cell;
 }
-
-/*
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    MSSTATIC_STRING_CONST kHeaderIdentifier = @"Header";
-
-//    if (_flags & BankNoSections) return nil;
-
-    BankTableHeaderView * view = [tableView
-                                  dequeueReusableHeaderFooterViewWithIdentifier:kHeaderIdentifier];
-    [view.button setTitle:[self.bankableItems.sections[section] name]
-                 forState:UIControlStateNormal];
-    view.button.tag = section;
-
-    if (![view.button actionsForTarget:self forControlEvent:UIControlEventTouchUpInside])
-        [view.button addTarget:self action:@selector(toggleItemsForSection:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return view;
-}
-*/
-
-
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -242,16 +202,19 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.bankViewController detailItem:[_bankableItems objectAtIndexPath:indexPath]];
+    [self.navigationController
+     pushViewController:[Bank detailControllerForItem:[_bankableItems objectAtIndexPath:indexPath]]
+               animated:YES];
 }
 
 - (void)                           tableView:(UITableView *)tableView
     accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self.bankViewController detailItem:[_bankableItems objectAtIndexPath:indexPath]];
+    [self.navigationController
+     pushViewController:[Bank detailControllerForItem:[_bankableItems objectAtIndexPath:indexPath]]
+               animated:YES];
 }
 
 

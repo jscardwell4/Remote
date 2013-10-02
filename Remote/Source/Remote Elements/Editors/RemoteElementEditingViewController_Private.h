@@ -267,7 +267,7 @@ extern NSString const   * kTranslationAnimationKey;
 #import "StoryboardProxy.h"
 #import "Constraint.h"
 #import <QuartzCore/QuartzCore.h>
-#import "Painter.h"
+#
 #import "Command.h"
 #import "Bankables.h"
 #import "ControlStateSet.h"

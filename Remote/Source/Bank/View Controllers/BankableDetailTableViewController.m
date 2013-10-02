@@ -14,10 +14,40 @@ MSNAMETAG_DEFINITION(BankableDetailHiddenNeighborConstraint);
 #pragma mark - BankableDetailTableViewController
 ////////////////////////////////////////////////////////////////////////////////
 
+#define TextFieldNibName @"BankableDetailTableViewCell-TextField"
+#define LabelNibName     @"BankableDetailTableViewCell-Label"
+#define ImageNibName     @"BankableDetailTableViewCell-Image"
+#define TextViewNibName  @"BankableDetailTableViewCell-TextView"
+#define StepperNibName   @"BankableDetailTableViewCell-Stepper"
+#define SliderNibName    @"BankableDetailTableViewCell-Slider"
+#define ButtonNibName    @"BankableDetailTableViewCell-Button"
+
+MSIDENTIFIER_DEFINITION(StepperCell);
+MSIDENTIFIER_DEFINITION(SliderCell);
+MSIDENTIFIER_DEFINITION(LabelCell);
+MSIDENTIFIER_DEFINITION(ButtonCell);
+MSIDENTIFIER_DEFINITION(ImageCell);
+MSIDENTIFIER_DEFINITION(TextFieldCell);
+MSIDENTIFIER_DEFINITION(TextViewCell);
 
 @implementation BankableDetailTableViewController
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.stepperCellNib   = [UINib nibWithNibName:StepperNibName   bundle:nil];
+    self.textFieldCellNib = [UINib nibWithNibName:TextFieldNibName bundle:nil];
+    self.labelCellNib     = [UINib nibWithNibName:LabelNibName     bundle:nil];
+    self.textViewCellNib  = [UINib nibWithNibName:TextViewNibName  bundle:nil];
+    self.sliderCellNib    = [UINib nibWithNibName:SliderNibName    bundle:nil];
+    self.imageCellNib     = [UINib nibWithNibName:ImageNibName     bundle:nil];
+    self.buttonCellNib    = [UINib nibWithNibName:ButtonNibName    bundle:nil];
+}
+
 + (Class)itemClass { return [NSObject class]; }
+
+- (void)setItemClass:(Class<Bankable> *)itemClass {}
+- (Class<Bankable>)itemClass { return [[self class] itemClass]; }
 
 - (BOOL)hidesBottomBarWhenPushed { return YES; }
 
@@ -47,6 +77,14 @@ MSNAMETAG_DEFINITION(BankableDetailHiddenNeighborConstraint);
         [self updateDisplay];
         self.editButtonItem.enabled = [self.item isEditable];
     }
+
+    [self.tableView registerNib:self.stepperCellNib   forCellReuseIdentifier:StepperCellIdentifier];
+    [self.tableView registerNib:self.sliderCellNib    forCellReuseIdentifier:SliderCellIdentifier];
+    [self.tableView registerNib:self.imageCellNib     forCellReuseIdentifier:ImageCellIdentifier];
+    [self.tableView registerNib:self.labelCellNib     forCellReuseIdentifier:LabelCellIdentifier];
+    [self.tableView registerNib:self.buttonCellNib    forCellReuseIdentifier:ButtonCellIdentifier];
+    [self.tableView registerNib:self.textFieldCellNib forCellReuseIdentifier:TextFieldCellIdentifier];
+    [self.tableView registerNib:self.textViewCellNib  forCellReuseIdentifier:TextViewCellIdentifier];
 }
 
 - (void)updateDisplay

@@ -9,7 +9,7 @@
 #import "BackgroundEditingViewController.h"
 #import "Image.h"
 #import "StoryboardProxy.h"
-#import "Painter.h"
+#
 
 static const int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_EDITOR;
@@ -126,7 +126,7 @@ static const int msLogContext = LOG_CONTEXT_EDITOR;
     UIGraphicsEndImageContext();
 
     return noBackgroundImage;
-// return [Painter blurImage:noBackgroundImage];
+// return [MSPainterblurImage:noBackgroundImage];
 }
 
 - (IBAction)cancelAction:(id)sender {

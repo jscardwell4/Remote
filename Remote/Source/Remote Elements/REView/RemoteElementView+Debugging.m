@@ -134,14 +134,10 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint)
     NSDictionary * substitutions = nil;
 
     if (firstItem && secondItem)
-        substitutions = @{
-                          MSExtendedVisualFormatItem1Name : firstItem,
-                          MSExtendedVisualFormatItem2Name : secondItem
-                          };
+        substitutions = @{MSExtendedVisualFormatItem1Name : firstItem,
+                          MSExtendedVisualFormatItem2Name : secondItem};
     else if (firstItem)
-        substitutions = @{
-                          MSExtendedVisualFormatItem1Name : firstItem
-                          };
+        substitutions = @{MSExtendedVisualFormatItem1Name : firstItem};
 
     return [constraint stringRepresentationWithSubstitutions:substitutions];
 }

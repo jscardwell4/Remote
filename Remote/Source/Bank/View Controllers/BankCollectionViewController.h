@@ -6,8 +6,18 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-@interface BankCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
+#import "Bank.h"
 
-@property (nonatomic, weak) UIView * collectionHeaderView;
+@class BankCollectionViewCell;
+
+@interface BankCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate, BankableViewController>
+
+@property (nonatomic, strong) Class<Bankable>   itemClass;
+
+- (void)zoomItemForCell:(BankCollectionViewCell *)cell;
+- (void)previewItemForCell:(BankCollectionViewCell *)cell;
+- (void)editItemForCell:(BankCollectionViewCell *)cell;
+- (void)detailItemForCell:(BankCollectionViewCell *)cell;
+- (void)toggleItemsForSection:(NSInteger)section;
 
 @end

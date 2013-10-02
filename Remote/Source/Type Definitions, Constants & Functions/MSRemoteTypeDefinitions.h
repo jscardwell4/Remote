@@ -16,12 +16,3 @@ typedef struct DebugFlags {
     BOOL         logNotifications;
     NSUInteger   overrideBackgroundColors;
 } DebugFlags;
-
-typedef NS_ENUM (NSInteger, PainterShape) {
-    PainterShapeUndefined        = 0,
-    PainterShapeRoundedRectangle = 1,
-    PainterShapeOval             = 2,
-    PainterShapeRectangle        = 3,
-    PainterShapeTriangle         = 4,
-    PainterShapeDiamond          = 5
-};

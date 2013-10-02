@@ -15,7 +15,7 @@
 //#import "BankObject.h"
 //#import "BankObject.h"
 #import <QuartzCore/QuartzCore.h>
-#import "Painter.h"
+#
 #import "CommandDetailViewController.h"
 #import "HTTPCommandEditingViewController.h"
 #import "SendIRCommandEditingViewController.h"

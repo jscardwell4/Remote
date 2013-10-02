@@ -10,7 +10,7 @@
 #import "RemoteElementView.h"
 #import "MSRemoteConstants.h"
 
-#import "Painter.h"
+#
 #import <MSKit/MSKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGL.h>

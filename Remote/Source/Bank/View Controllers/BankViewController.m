@@ -176,7 +176,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     assert(item && [item isEditable]);
 
 
-    UIViewController<BankableDetailDelegate> * vc = [Bank detailViewControllerForItem:item];
+    UIViewController<BankableDetailDelegate> * vc = [Bank detailControllerForItem:item];
     assert(vc);
 
     [self presentViewController:vc animated:YES completion:^{ [vc editItem]; }];
@@ -186,7 +186,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     MSLogDebug(@"item name: %@", item.name);
 
-    UIViewController<BankableDetailDelegate> * vc = [Bank detailViewControllerForItem:item];
+    UIViewController<BankableDetailDelegate> * vc = [Bank detailControllerForItem:item];
     assert(vc);
     [self.navigationController pushViewController:vc animated:YES];
 }

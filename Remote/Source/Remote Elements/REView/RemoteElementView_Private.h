@@ -250,7 +250,7 @@ MSEXTERN CGSize const   REMinimumSize;
 
 
 #import "RemoteViewController.h"
-#import "Painter.h"
+#
 #import "CommandContainer.h"
 #import "ConnectionManager.h"
 #import "RELabelView.h"
