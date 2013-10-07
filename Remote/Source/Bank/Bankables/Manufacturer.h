@@ -18,6 +18,7 @@
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context;
 
 @property (nonatomic, strong) NSSet * codesets;
+@property (nonatomic, strong) NSSet * codes;
 @property (nonatomic, strong) NSSet * devices;
 
 @end

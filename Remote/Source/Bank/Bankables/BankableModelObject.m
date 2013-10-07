@@ -51,6 +51,7 @@
              NSError * error = nil;
              [moc save:&error];
              if (error) [CoreDataManager handleErrors:error];
+             else [moc processPendingChanges];
          }];
     }
 }

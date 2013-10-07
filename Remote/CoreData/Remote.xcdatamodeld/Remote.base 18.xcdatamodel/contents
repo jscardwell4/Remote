@@ -107,6 +107,7 @@
         </relationship>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="componentDevice" inverseEntity="BankInfo" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="devices" inverseEntity="Manufacturer" syncable="YES"/>
+        <relationship name="networkDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NetworkDevice" inverseName="componentDevices" inverseEntity="NetworkDevice" syncable="YES"/>
         <relationship name="offCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="offDevice" inverseEntity="Command" indexed="YES">
             <userInfo/>
         </relationship>
@@ -252,6 +253,7 @@
             <userInfo/>
         </relationship>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="code" inverseEntity="BankInfo" syncable="YES"/>
+        <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="codes" inverseEntity="Manufacturer" syncable="YES"/>
         <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SendIRCommand" inverseName="code" inverseEntity="SendIRCommand" indexed="YES">
             <userInfo/>
         </relationship>
@@ -272,6 +274,7 @@
     </entity>
     <entity name="Manufacturer" representedClassName="Manufacturer" syncable="YES">
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="manufacturer" inverseEntity="IRCode" syncable="YES"/>
         <relationship name="codesets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IRCodeset" inverseName="manufacturer" inverseEntity="IRCodeset" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="manufacturer" inverseEntity="ComponentDevice" syncable="YES"/>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="manufacturer" inverseEntity="BankInfo" syncable="YES"/>
@@ -290,6 +293,7 @@
         <attribute name="revision" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="componentDevices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="networkDevice" inverseEntity="ComponentDevice" syncable="YES"/>
     </entity>
     <entity name="PickerLabelButtonGroup" representedClassName="PickerLabelButtonGroup" parentEntity="ButtonGroup" syncable="YES">
         <relationship name="commandSetCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="CommandSetCollection" inverseName="pickerLabelButtonGroup" inverseEntity="CommandSetCollection" syncable="YES"/>

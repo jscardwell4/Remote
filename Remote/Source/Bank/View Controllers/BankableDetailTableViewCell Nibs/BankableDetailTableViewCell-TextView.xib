@@ -46,6 +46,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="infoTextView" destination="rLP-5s-0hm" id="Yt3-bb-xC6"/>
                 <outlet property="nameLabel" destination="mce-8D-BHI" id="kvO-yp-pjI"/>
             </connections>
         </tableViewCell>

@@ -12,7 +12,8 @@
 
 @interface BankCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate, BankableViewController>
 
-@property (nonatomic, strong) Class<Bankable>   itemClass;
+@property (nonatomic, strong) Class<Bankable> itemClass;
+@property (nonatomic, strong) NSFetchedResultsController * bankableItems;
 
 - (void)zoomItemForCell:(BankCollectionViewCell *)cell;
 - (void)previewItemForCell:(BankCollectionViewCell *)cell;

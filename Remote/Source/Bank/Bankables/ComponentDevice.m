@@ -7,12 +7,13 @@
 //
 #import "ComponentDevice.h"
 #import "IRCode.h"
+#import "NetworkDevice.h"
 
 @implementation ComponentDevice {
     BOOL _ignoreNextPowerCommand;
 }
 
-@dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer;
+@dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer, networkDevice;
 
 /*
 + (id)MR_importFromObject:(id)objectData inContext:(NSManagedObjectContext *)context;

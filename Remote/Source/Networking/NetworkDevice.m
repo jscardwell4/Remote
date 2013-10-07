@@ -33,7 +33,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 
 @implementation NetworkDevice
 
-@dynamic deviceUUID, make, model, status, configURL, revision, name;
+@dynamic deviceUUID, make, model, status, configURL, revision, name, componentDevices;
 
 + (instancetype)device { return [self MR_createEntity]; }
 

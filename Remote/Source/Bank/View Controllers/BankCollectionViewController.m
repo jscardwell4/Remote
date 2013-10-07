@@ -27,7 +27,6 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 @interface BankCollectionViewController () <MSTouchReporterViewDelegate>
 
 @property (nonatomic, strong) NSBlockOperation           * updatesBlockOperation;
-@property (nonatomic, strong) NSFetchedResultsController * bankableItems;
 @property (nonatomic, strong) NSMutableSet               * hiddenSections;
 @property (nonatomic, strong) BankPreviewViewController  * previewController;
 @property (nonatomic, strong) BankCollectionZoomView     * zoomView;
@@ -88,7 +87,6 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
     if (_zoomView && _zoomView.superview)
     {
-//        _zoomView.translatesAutoresizingMaskIntoConstraints = NO;
         NSArray * constraints = [NSLayoutConstraint
                                  constraintsByParsingString:@"zoom.centerX = view.centerX\n"
                                                              "zoom.centerY = view.centerY\n"

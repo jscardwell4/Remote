@@ -182,16 +182,12 @@
 		C225FC091794A605008B8FF6 /* BuiltinTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC071794A605008B8FF6 /* BuiltinTheme.m */; };
 		C225FC0B1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
 		C225FC0C1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
-		C2269FBC17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2269FBB17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib */; };
-		C2269FBE17E9F3AD002D5898 /* BankTableViewCell-List.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2269FBD17E9F3AD002D5898 /* BankTableViewCell-List.xib */; };
-		C22E267B17E6A52000299DD5 /* BankTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22E267A17E6A52000299DD5 /* BankTableViewController.m */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
 		C2318B0E17E3CCC200CF58D9 /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2318B0D17E3CCC200CF58D9 /* ParseKit.framework */; };
 		C2318B1717E3D0BE00CF58D9 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2318B1617E3D0BE00CF58D9 /* Lumberjack.framework */; };
 		C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1917E3D40000CF58D9 /* RemoteControl.m */; };
 		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
 		C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B2217E4C80E00CF58D9 /* Editor.m */; };
-		C2318B2517E50DAE00CF58D9 /* BankIndex.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2318B2417E50DAE00CF58D9 /* BankIndex.xib */; };
 		C23423C71795101D00703F86 /* ThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* ThemeSettings.m */; };
 		C23423C81795101D00703F86 /* ThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* ThemeSettings.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
@@ -202,7 +198,6 @@
 		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2436DB417EA99C600482186 /* BankCollectionViewController.m */; };
-		C258BB6517ECF09200FBB4B4 /* BankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C258BB6417ECF09200FBB4B4 /* BankViewController.m */; };
 		C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
 		C25B473216FF8D0A0042B59E /* ComponentDeviceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D616FF69110042B59E /* ComponentDeviceConfiguration.m */; };
 		C25B473316FF8D0A0042B59E /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* IRCode.m */; };
@@ -297,6 +292,8 @@
 		C25B47B216FF8D5E0042B59E /* MSRemoteUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00616DC18530093D5B4 /* MSRemoteUITest.m */; };
 		C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00816DC18530093D5B4 /* RemoteEditingTest.m */; };
 		C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00A16DC18530093D5B4 /* UITestRunner.m */; };
+		C25EE4D417FCA358000DA457 /* BankableDetailTableViewCell-Table.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */; };
+		C25EE4D617FCF649000DA457 /* BankableDetailTableViewCell-List.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */; };
 		C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
 		C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
 		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
@@ -307,7 +304,7 @@
 		C265936717FBA5890017949C /* BankableDetailTableViewCell-Label.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */; };
 		C265936817FBA5890017949C /* BankableDetailTableViewCell-TextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936617FBA5890017949C /* BankableDetailTableViewCell-TextView.xib */; };
 		C265936C17FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936917FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib */; };
-		C265936D17FBA5DB0017949C /* BankableDetailTableViewCell-Slider.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Slider.xib */; };
+		C265936D17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib */; };
 		C265936E17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936B17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib */; };
 		C265937017FBA5F40017949C /* BankableDetailTableViewCell-Button.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */; };
 		C26B199417A05A2300C22BE6 /* Glyphish Backgrounds.txt in Resources */ = {isa = PBXBuildFile; fileRef = C26B199217A05A2300C22BE6 /* Glyphish Backgrounds.txt */; };
@@ -331,9 +328,7 @@
 		C26BB5B716DC18A90093D5B4 /* modernpics.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BF16DC18A30093D5B4 /* modernpics.otf */; };
 		C26BBA8816DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */; };
-		C26BBA8B16DC18A90093D5B4 /* CustomNumberPadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */; };
 		C26BBA8D16DC18A90093D5B4 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */; };
-		C26BBA8E16DC18A90093D5B4 /* RERemoteEditingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59916DC18A90093D5B4 /* RERemoteEditingViewController.xib */; };
 		C26BBAE816DC1B5C0093D5B4 /* 10-arrows-in.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9B16DC1B5B0093D5B4 /* 10-arrows-in.png */; };
 		C26BBAE916DC1B5C0093D5B4 /* 10-arrows-in@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9C16DC1B5B0093D5B4 /* 10-arrows-in@2x.png */; };
 		C26BBAEA16DC1B5C0093D5B4 /* AlignBarButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9D16DC1B5B0093D5B4 /* AlignBarButtonIcon.png */; };
@@ -427,6 +422,42 @@
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C275D86417A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchToConfigCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchToConfigCommand.m */; };
+		C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */; };
+		C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */; };
+		C27BCC8E1801C16A0002464C /* IntegerKeyboard_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */; };
+		C27BCC8F1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6B1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png */; };
+		C27BCC901801C16A0002464C /* IntegerKeyboard_1.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6C1801C16A0002464C /* IntegerKeyboard_1.png */; };
+		C27BCC911801C16A0002464C /* IntegerKeyboard_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6D1801C16A0002464C /* IntegerKeyboard_1@2x.png */; };
+		C27BCC921801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6E1801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png */; };
+		C27BCC931801C16A0002464C /* IntegerKeyboard_2.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6F1801C16A0002464C /* IntegerKeyboard_2.png */; };
+		C27BCC941801C16A0002464C /* IntegerKeyboard_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC701801C16A0002464C /* IntegerKeyboard_2@2x.png */; };
+		C27BCC951801C16A0002464C /* IntegerKeyboard_3-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC711801C16A0002464C /* IntegerKeyboard_3-Highlighted@2x.png */; };
+		C27BCC961801C16A0002464C /* IntegerKeyboard_3.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC721801C16A0002464C /* IntegerKeyboard_3.png */; };
+		C27BCC971801C16A0002464C /* IntegerKeyboard_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC731801C16A0002464C /* IntegerKeyboard_3@2x.png */; };
+		C27BCC981801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC741801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png */; };
+		C27BCC991801C16A0002464C /* IntegerKeyboard_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC751801C16A0002464C /* IntegerKeyboard_4.png */; };
+		C27BCC9A1801C16A0002464C /* IntegerKeyboard_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC761801C16A0002464C /* IntegerKeyboard_4@2x.png */; };
+		C27BCC9B1801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC771801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png */; };
+		C27BCC9C1801C16A0002464C /* IntegerKeyboard_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC781801C16A0002464C /* IntegerKeyboard_5.png */; };
+		C27BCC9D1801C16A0002464C /* IntegerKeyboard_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC791801C16A0002464C /* IntegerKeyboard_5@2x.png */; };
+		C27BCC9E1801C16A0002464C /* IntegerKeyboard_6-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC7A1801C16A0002464C /* IntegerKeyboard_6-Highlighted@2x.png */; };
+		C27BCC9F1801C16A0002464C /* IntegerKeyboard_6.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC7B1801C16A0002464C /* IntegerKeyboard_6.png */; };
+		C27BCCA01801C16A0002464C /* IntegerKeyboard_6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC7C1801C16A0002464C /* IntegerKeyboard_6@2x.png */; };
+		C27BCCA11801C16A0002464C /* IntegerKeyboard_7-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC7D1801C16A0002464C /* IntegerKeyboard_7-Highlighted@2x.png */; };
+		C27BCCA21801C16A0002464C /* IntegerKeyboard_7.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC7E1801C16A0002464C /* IntegerKeyboard_7.png */; };
+		C27BCCA31801C16A0002464C /* IntegerKeyboard_7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC7F1801C16A0002464C /* IntegerKeyboard_7@2x.png */; };
+		C27BCCA41801C16A0002464C /* IntegerKeyboard_8-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC801801C16A0002464C /* IntegerKeyboard_8-Highlighted@2x.png */; };
+		C27BCCA51801C16A0002464C /* IntegerKeyboard_8.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC811801C16A0002464C /* IntegerKeyboard_8.png */; };
+		C27BCCA61801C16A0002464C /* IntegerKeyboard_8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC821801C16A0002464C /* IntegerKeyboard_8@2x.png */; };
+		C27BCCA71801C16A0002464C /* IntegerKeyboard_9-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC831801C16A0002464C /* IntegerKeyboard_9-Highlighted@2x.png */; };
+		C27BCCA81801C16A0002464C /* IntegerKeyboard_9.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC841801C16A0002464C /* IntegerKeyboard_9.png */; };
+		C27BCCA91801C16A0002464C /* IntegerKeyboard_9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC851801C16A0002464C /* IntegerKeyboard_9@2x.png */; };
+		C27BCCAA1801C16A0002464C /* IntegerKeyboard_Blank-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC861801C16A0002464C /* IntegerKeyboard_Blank-Highlighted@2x.png */; };
+		C27BCCAB1801C16A0002464C /* IntegerKeyboard_Blank.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC871801C16A0002464C /* IntegerKeyboard_Blank.png */; };
+		C27BCCAC1801C16A0002464C /* IntegerKeyboard_Blank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC881801C16A0002464C /* IntegerKeyboard_Blank@2x.png */; };
+		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
+		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
+		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
 		C28C7B701798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */; };
 		C28C7B711798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */; };
 		C28FAF7C173014B4002902D9 /* MSRemoteImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* MSRemoteImportSupportFunctions.m */; };
@@ -452,7 +483,6 @@
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
 		C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2F2A46317EDF85900DE2F41 /* Bank.storyboard */; };
 		C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */; };
-		C2F2A46917EE9C1700DE2F41 /* BankTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F2A46817EE9C1700DE2F41 /* BankTableHeaderView.xib */; };
 		C2F2A47217EF564100DE2F41 /* IRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47117EF564100DE2F41 /* IRCodeDetailViewController.m */; };
 		C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47417EF566600DE2F41 /* ComponentDeviceDetailViewController.m */; };
 		C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */; };
@@ -487,7 +517,7 @@
 		C208DEB516DEC70C00084C49 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/6.1/Applications/B24ABD7F-AD97-47CB-B0C6-F9065B1EC2EA/Library/Caches/Logs"; sourceTree = "<group>"; };
 		C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionZoomView.h; sourceTree = "<group>"; };
 		C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionZoomView.m; sourceTree = "<group>"; };
-		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankCollectionZoomView.xib; sourceTree = "<group>"; };
+		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankCollectionZoomView.xib; path = "../../Source/Bank/View Controllers/BankCollectionZoomView.xib"; sourceTree = "<group>"; };
 		C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NightshadeThemeDecorator.m; sourceTree = "<group>"; };
 		C215F7EF17E39D31004B884C /* MagicalRecord.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagicalRecord.framework; path = "../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/MagicalRecord.framework"; sourceTree = "<group>"; };
 		C215F7F117E39D3E004B884C /* MSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/MSKit.framework"; sourceTree = "<group>"; };
@@ -705,6 +735,8 @@
 		C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Editing.m"; sourceTree = "<group>"; };
 		C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+SubelementViews.m"; sourceTree = "<group>"; };
 		C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+InternalSubviews.m"; sourceTree = "<group>"; };
+		C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Table.xib"; sourceTree = "<group>"; };
+		C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-List.xib"; sourceTree = "<group>"; };
 		C26329461713AFF20080330D /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		C26329471713AFF30080330D /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
 		C263294B1714862A0080330D /* Theme+ApplyingThemes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Theme+ApplyingThemes.m"; sourceTree = "<group>"; };
@@ -715,11 +747,12 @@
 		C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Label.xib"; sourceTree = "<group>"; };
 		C265936617FBA5890017949C /* BankableDetailTableViewCell-TextView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-TextView.xib"; sourceTree = "<group>"; };
 		C265936917FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Image.xib"; sourceTree = "<group>"; };
-		C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Slider.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Slider.xib"; sourceTree = "<group>"; };
+		C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Switch.xib"; sourceTree = "<group>"; };
 		C265936B17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Stepper.xib"; sourceTree = "<group>"; };
 		C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Button.xib"; sourceTree = "<group>"; };
 		C26B199217A05A2300C22BE6 /* Glyphish Backgrounds.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Glyphish Backgrounds.txt"; sourceTree = "<group>"; };
 		C26B199317A05A2300C22BE6 /* Glyphish Icons.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Glyphish Icons.txt"; sourceTree = "<group>"; };
+		C26B8A6E18006CD700912DBB /* IntegerKeyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntegerKeyboard.xib; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26BAEAB16DC10FE0093D5B4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -926,6 +959,42 @@
 		C26DE4E51731CE1000CEF17D /* ExtendedJSONTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExtendedJSONTest.json; sourceTree = "<group>"; };
 		C275D86217A03130004E0BE5 /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		C277343F1701365C00E85F8D /* SwitchToConfigCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchToConfigCommand.m; sourceTree = "<group>"; };
+		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_0.png; sourceTree = "<group>"; };
+		C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0@2x.png"; sourceTree = "<group>"; };
+		C27BCC6B1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_1-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC6C1801C16A0002464C /* IntegerKeyboard_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_1.png; sourceTree = "<group>"; };
+		C27BCC6D1801C16A0002464C /* IntegerKeyboard_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_1@2x.png"; sourceTree = "<group>"; };
+		C27BCC6E1801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_2-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC6F1801C16A0002464C /* IntegerKeyboard_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_2.png; sourceTree = "<group>"; };
+		C27BCC701801C16A0002464C /* IntegerKeyboard_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_2@2x.png"; sourceTree = "<group>"; };
+		C27BCC711801C16A0002464C /* IntegerKeyboard_3-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_3-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC721801C16A0002464C /* IntegerKeyboard_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_3.png; sourceTree = "<group>"; };
+		C27BCC731801C16A0002464C /* IntegerKeyboard_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_3@2x.png"; sourceTree = "<group>"; };
+		C27BCC741801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_4-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC751801C16A0002464C /* IntegerKeyboard_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_4.png; sourceTree = "<group>"; };
+		C27BCC761801C16A0002464C /* IntegerKeyboard_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_4@2x.png"; sourceTree = "<group>"; };
+		C27BCC771801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_5-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC781801C16A0002464C /* IntegerKeyboard_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_5.png; sourceTree = "<group>"; };
+		C27BCC791801C16A0002464C /* IntegerKeyboard_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_5@2x.png"; sourceTree = "<group>"; };
+		C27BCC7A1801C16A0002464C /* IntegerKeyboard_6-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_6-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC7B1801C16A0002464C /* IntegerKeyboard_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_6.png; sourceTree = "<group>"; };
+		C27BCC7C1801C16A0002464C /* IntegerKeyboard_6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_6@2x.png"; sourceTree = "<group>"; };
+		C27BCC7D1801C16A0002464C /* IntegerKeyboard_7-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_7-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC7E1801C16A0002464C /* IntegerKeyboard_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_7.png; sourceTree = "<group>"; };
+		C27BCC7F1801C16A0002464C /* IntegerKeyboard_7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_7@2x.png"; sourceTree = "<group>"; };
+		C27BCC801801C16A0002464C /* IntegerKeyboard_8-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_8-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC811801C16A0002464C /* IntegerKeyboard_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_8.png; sourceTree = "<group>"; };
+		C27BCC821801C16A0002464C /* IntegerKeyboard_8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_8@2x.png"; sourceTree = "<group>"; };
+		C27BCC831801C16A0002464C /* IntegerKeyboard_9-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_9-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC841801C16A0002464C /* IntegerKeyboard_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_9.png; sourceTree = "<group>"; };
+		C27BCC851801C16A0002464C /* IntegerKeyboard_9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_9@2x.png"; sourceTree = "<group>"; };
+		C27BCC861801C16A0002464C /* IntegerKeyboard_Blank-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Blank-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC871801C16A0002464C /* IntegerKeyboard_Blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Blank.png; sourceTree = "<group>"; };
+		C27BCC881801C16A0002464C /* IntegerKeyboard_Blank@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Blank@2x.png"; sourceTree = "<group>"; };
+		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
+		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
+		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
 		C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ButtonGroupBuilder+Developer.m"; sourceTree = "<group>"; };
 		C28FAF7B173014B4002902D9 /* MSRemoteImportSupportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRemoteImportSupportFunctions.m; sourceTree = "<group>"; };
 		C28FAF7E173014D8002902D9 /* MSRemoteImportSupportFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSRemoteImportSupportFunctions.h; sourceTree = "<group>"; };
@@ -1518,15 +1587,92 @@
 		C265936417FBA55B0017949C /* BankableDetailTableViewCell Nibs */ = {
 			isa = PBXGroup;
 			children = (
+				C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */,
+				C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */,
 				C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */,
 				C265936917FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib */,
-				C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Slider.xib */,
+				C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib */,
 				C265936B17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib */,
 				C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */,
 				C265936617FBA5890017949C /* BankableDetailTableViewCell-TextView.xib */,
 				C265935F17FBA1180017949C /* BankableDetailTableViewCell-TextField.xib */,
 			);
-			path = "BankableDetailTableViewCell Nibs";
+			name = "BankableDetailTableViewCell Nibs";
+			path = "../../Source/Bank/View Controllers/BankableDetailTableViewCell Nibs";
+			sourceTree = "<group>";
+		};
+		C26B8A6918006B5100912DBB /* Bank */ = {
+			isa = PBXGroup;
+			children = (
+				C2F2A46317EDF85900DE2F41 /* Bank.storyboard */,
+				C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */,
+				C265936417FBA55B0017949C /* BankableDetailTableViewCell Nibs */,
+			);
+			name = Bank;
+			sourceTree = "<group>";
+		};
+		C26B8A6A18006BF500912DBB /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				C2436DB317EA99C600482186 /* BankCollectionViewController.h */,
+				C2436DB417EA99C600482186 /* BankCollectionViewController.m */,
+				C29ABADA17F8761F007D185F /* BankCollectionViewCell.h */,
+				C29ABADB17F8761F007D185F /* BankCollectionViewCell.m */,
+				C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */,
+				C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */,
+				C29ABADE17F87ADB007D185F /* BankCollectionHeaderReusableView.h */,
+				C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */,
+				C2EF968517F7C4D4005AA639 /* BankCollectionViewFlowLayout.h */,
+				C2EF968617F7C4D4005AA639 /* BankCollectionViewFlowLayout.m */,
+			);
+			name = Collections;
+			sourceTree = "<group>";
+		};
+		C26B8A6B18006C1D00912DBB /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */,
+				C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */,
+				C2AB7B5F17F2096100906FAE /* BankableDetailTableViewController_Private.h */,
+				C265936117FBA1B00017949C /* BankableDetailTableViewCell.h */,
+				C265936217FBA1B00017949C /* BankableDetailTableViewCell.m */,
+				C2F2A47017EF564100DE2F41 /* IRCodeDetailViewController.h */,
+				C2F2A47117EF564100DE2F41 /* IRCodeDetailViewController.m */,
+				C2F2A47317EF566600DE2F41 /* ComponentDeviceDetailViewController.h */,
+				C2F2A47417EF566600DE2F41 /* ComponentDeviceDetailViewController.m */,
+				C2F2A47617EF567700DE2F41 /* ImageDetailViewController.h */,
+				C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */,
+				C2F2A47917EF568E00DE2F41 /* PresetDetailViewController.h */,
+				C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */,
+				C2F2A47C17EF569F00DE2F41 /* ManufacturerDetailViewController.h */,
+				C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */,
+			);
+			name = Detail;
+			sourceTree = "<group>";
+		};
+		C26B8A6C18006C5900912DBB /* Early Retirement */ = {
+			isa = PBXGroup;
+			children = (
+				C258BB6317ECF09200FBB4B4 /* BankViewController.h */,
+				C258BB6417ECF09200FBB4B4 /* BankViewController.m */,
+				C22E267917E6A52000299DD5 /* BankTableViewController.h */,
+				C22E267A17E6A52000299DD5 /* BankTableViewController.m */,
+			);
+			name = "Early Retirement";
+			sourceTree = "<group>";
+		};
+		C26B8A6D18006CA000912DBB /* Early Retirement */ = {
+			isa = PBXGroup;
+			children = (
+				C26B8A6E18006CD700912DBB /* IntegerKeyboard.xib */,
+				C2F2A46817EE9C1700DE2F41 /* BankTableHeaderView.xib */,
+				C2269FBD17E9F3AD002D5898 /* BankTableViewCell-List.xib */,
+				C2269FBB17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib */,
+				C2318B2417E50DAE00CF58D9 /* BankIndex.xib */,
+				C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */,
+				C26BB59916DC18A90093D5B4 /* RERemoteEditingViewController.xib */,
+			);
+			name = "Early Retirement";
 			sourceTree = "<group>";
 		};
 		C26BAE9F16DC10FE0093D5B4 = {
@@ -1794,20 +1940,16 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		C26BB59016DC18A90093D5B4 /* Storyboards */ = {
+		C26BB59016DC18A90093D5B4 /* Storyboards and Nibs */ = {
 			isa = PBXGroup;
 			children = (
-				C2F2A46317EDF85900DE2F41 /* Bank.storyboard */,
-				C2F2A46817EE9C1700DE2F41 /* BankTableHeaderView.xib */,
-				C2269FBD17E9F3AD002D5898 /* BankTableViewCell-List.xib */,
-				C2269FBB17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib */,
-				C2318B2417E50DAE00CF58D9 /* BankIndex.xib */,
+				C26B8A6918006B5100912DBB /* Bank */,
+				C26B8A6D18006CA000912DBB /* Early Retirement */,
 				C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */,
 				C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */,
-				C26BB59616DC18A90093D5B4 /* CustomNumberPadView.xib */,
 				C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */,
-				C26BB59916DC18A90093D5B4 /* RERemoteEditingViewController.xib */,
 			);
+			name = "Storyboards and Nibs";
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
@@ -1818,7 +1960,7 @@
 				C26B199317A05A2300C22BE6 /* Glyphish Icons.txt */,
 				C26BBA9A16DC1B5B0093D5B4 /* png */,
 				C26BB0B616DC18A30093D5B4 /* Fonts */,
-				C26BB59016DC18A90093D5B4 /* Storyboards */,
+				C26BB59016DC18A90093D5B4 /* Storyboards and Nibs */,
 				C275D86217A03130004E0BE5 /* Glyphish.xcassets */,
 			);
 			name = Resources;
@@ -1828,6 +1970,42 @@
 		C26BBA9A16DC1B5B0093D5B4 /* png */ = {
 			isa = PBXGroup;
 			children = (
+				C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */,
+				C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */,
+				C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */,
+				C27BCC6B1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png */,
+				C27BCC6C1801C16A0002464C /* IntegerKeyboard_1.png */,
+				C27BCC6D1801C16A0002464C /* IntegerKeyboard_1@2x.png */,
+				C27BCC6E1801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png */,
+				C27BCC6F1801C16A0002464C /* IntegerKeyboard_2.png */,
+				C27BCC701801C16A0002464C /* IntegerKeyboard_2@2x.png */,
+				C27BCC711801C16A0002464C /* IntegerKeyboard_3-Highlighted@2x.png */,
+				C27BCC721801C16A0002464C /* IntegerKeyboard_3.png */,
+				C27BCC731801C16A0002464C /* IntegerKeyboard_3@2x.png */,
+				C27BCC741801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png */,
+				C27BCC751801C16A0002464C /* IntegerKeyboard_4.png */,
+				C27BCC761801C16A0002464C /* IntegerKeyboard_4@2x.png */,
+				C27BCC771801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png */,
+				C27BCC781801C16A0002464C /* IntegerKeyboard_5.png */,
+				C27BCC791801C16A0002464C /* IntegerKeyboard_5@2x.png */,
+				C27BCC7A1801C16A0002464C /* IntegerKeyboard_6-Highlighted@2x.png */,
+				C27BCC7B1801C16A0002464C /* IntegerKeyboard_6.png */,
+				C27BCC7C1801C16A0002464C /* IntegerKeyboard_6@2x.png */,
+				C27BCC7D1801C16A0002464C /* IntegerKeyboard_7-Highlighted@2x.png */,
+				C27BCC7E1801C16A0002464C /* IntegerKeyboard_7.png */,
+				C27BCC7F1801C16A0002464C /* IntegerKeyboard_7@2x.png */,
+				C27BCC801801C16A0002464C /* IntegerKeyboard_8-Highlighted@2x.png */,
+				C27BCC811801C16A0002464C /* IntegerKeyboard_8.png */,
+				C27BCC821801C16A0002464C /* IntegerKeyboard_8@2x.png */,
+				C27BCC831801C16A0002464C /* IntegerKeyboard_9-Highlighted@2x.png */,
+				C27BCC841801C16A0002464C /* IntegerKeyboard_9.png */,
+				C27BCC851801C16A0002464C /* IntegerKeyboard_9@2x.png */,
+				C27BCC861801C16A0002464C /* IntegerKeyboard_Blank-Highlighted@2x.png */,
+				C27BCC871801C16A0002464C /* IntegerKeyboard_Blank.png */,
+				C27BCC881801C16A0002464C /* IntegerKeyboard_Blank@2x.png */,
+				C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */,
+				C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */,
+				C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */,
 				C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */,
 				C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */,
 				C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */,
@@ -2119,41 +2297,13 @@
 		C2F2A46F17EF560900DE2F41 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C258BB6317ECF09200FBB4B4 /* BankViewController.h */,
-				C258BB6417ECF09200FBB4B4 /* BankViewController.m */,
-				C22E267917E6A52000299DD5 /* BankTableViewController.h */,
-				C22E267A17E6A52000299DD5 /* BankTableViewController.m */,
 				C2F2A46517EDF98800DE2F41 /* BankRootTableViewController.h */,
 				C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */,
-				C2436DB317EA99C600482186 /* BankCollectionViewController.h */,
-				C2436DB417EA99C600482186 /* BankCollectionViewController.m */,
-				C29ABADA17F8761F007D185F /* BankCollectionViewCell.h */,
-				C29ABADB17F8761F007D185F /* BankCollectionViewCell.m */,
-				C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */,
-				C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */,
-				C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */,
-				C29ABADE17F87ADB007D185F /* BankCollectionHeaderReusableView.h */,
-				C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */,
-				C2EF968517F7C4D4005AA639 /* BankCollectionViewFlowLayout.h */,
-				C2EF968617F7C4D4005AA639 /* BankCollectionViewFlowLayout.m */,
 				C29ABAD717F87472007D185F /* BankPreviewViewController.h */,
 				C29ABAD817F87472007D185F /* BankPreviewViewController.m */,
-				C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */,
-				C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */,
-				C2AB7B5F17F2096100906FAE /* BankableDetailTableViewController_Private.h */,
-				C265936417FBA55B0017949C /* BankableDetailTableViewCell Nibs */,
-				C265936117FBA1B00017949C /* BankableDetailTableViewCell.h */,
-				C265936217FBA1B00017949C /* BankableDetailTableViewCell.m */,
-				C2F2A47017EF564100DE2F41 /* IRCodeDetailViewController.h */,
-				C2F2A47117EF564100DE2F41 /* IRCodeDetailViewController.m */,
-				C2F2A47317EF566600DE2F41 /* ComponentDeviceDetailViewController.h */,
-				C2F2A47417EF566600DE2F41 /* ComponentDeviceDetailViewController.m */,
-				C2F2A47617EF567700DE2F41 /* ImageDetailViewController.h */,
-				C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */,
-				C2F2A47917EF568E00DE2F41 /* PresetDetailViewController.h */,
-				C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */,
-				C2F2A47C17EF569F00DE2F41 /* ManufacturerDetailViewController.h */,
-				C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */,
+				C26B8A6A18006BF500912DBB /* Collections */,
+				C26B8A6B18006C1D00912DBB /* Detail */,
+				C26B8A6C18006C5900912DBB /* Early Retirement */,
 			);
 			name = "View Controllers";
 			path = "Bank/View Controllers";
@@ -2346,26 +2496,35 @@
 				C26BB5B116DC18A90093D5B4 /* FontAwesome.ttf in Resources */,
 				C265936E17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib in Resources */,
 				C26BB5B216DC18A90093D5B4 /* glyphish.ttf in Resources */,
+				C27BCC9F1801C16A0002464C /* IntegerKeyboard_6.png in Resources */,
 				C26BB5B316DC18A90093D5B4 /* gui_design_icons.otf in Resources */,
 				C26BB5B416DC18A90093D5B4 /* iconic_fill.otf in Resources */,
 				C26BB5B516DC18A90093D5B4 /* iconic_stroke.otf in Resources */,
+				C27BCCAB1801C16A0002464C /* IntegerKeyboard_Blank.png in Resources */,
 				C26BB5B616DC18A90093D5B4 /* iconSweets.otf in Resources */,
+				C27BCC971801C16A0002464C /* IntegerKeyboard_3@2x.png in Resources */,
 				C26BB5B716DC18A90093D5B4 /* modernpics.otf in Resources */,
 				C26B199417A05A2300C22BE6 /* Glyphish Backgrounds.txt in Resources */,
 				C26B199617A05A2300C22BE6 /* Glyphish Icons.txt in Resources */,
 				C265936C17FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib in Resources */,
 				C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */,
 				C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */,
+				C27BCC9C1801C16A0002464C /* IntegerKeyboard_5.png in Resources */,
 				C26BBA8816DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard in Resources */,
+				C27BCCA31801C16A0002464C /* IntegerKeyboard_7@2x.png in Resources */,
 				C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */,
-				C265936D17FBA5DB0017949C /* BankableDetailTableViewCell-Slider.xib in Resources */,
-				C26BBA8B16DC18A90093D5B4 /* CustomNumberPadView.xib in Resources */,
+				C265936D17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib in Resources */,
 				C26BBA8D16DC18A90093D5B4 /* MainStoryboard.storyboard in Resources */,
-				C26BBA8E16DC18A90093D5B4 /* RERemoteEditingViewController.xib in Resources */,
 				C26BBAE816DC1B5C0093D5B4 /* 10-arrows-in.png in Resources */,
+				C27BCC8E1801C16A0002464C /* IntegerKeyboard_0@2x.png in Resources */,
 				C26BBAE916DC1B5C0093D5B4 /* 10-arrows-in@2x.png in Resources */,
+				C27BCCA01801C16A0002464C /* IntegerKeyboard_6@2x.png in Resources */,
+				C27BCCA11801C16A0002464C /* IntegerKeyboard_7-Highlighted@2x.png in Resources */,
+				C27BCC951801C16A0002464C /* IntegerKeyboard_3-Highlighted@2x.png in Resources */,
+				C27BCC991801C16A0002464C /* IntegerKeyboard_4.png in Resources */,
 				C26BBAEA16DC1B5C0093D5B4 /* AlignBarButtonIcon.png in Resources */,
 				C26BBAEB16DC1B5C0093D5B4 /* AlignBarButtonIcon@2x.png in Resources */,
+				C27BCCA51801C16A0002464C /* IntegerKeyboard_8.png in Resources */,
 				C26BBAEC16DC1B5C0093D5B4 /* AlignBottomEdgeIcon.png in Resources */,
 				C26BBAED16DC1B5C0093D5B4 /* AlignBottomEdgeIcon@2x.png in Resources */,
 				C26BBAEE16DC1B5C0093D5B4 /* AlignHorizCenterIcon.png in Resources */,
@@ -2375,28 +2534,35 @@
 				C26BBAF216DC1B5C0093D5B4 /* AlignRightEdgeIcon.png in Resources */,
 				C26BBAF316DC1B5C0093D5B4 /* AlignRightEdgeIcon@2x.png in Resources */,
 				C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */,
+				C27BCCAC1801C16A0002464C /* IntegerKeyboard_Blank@2x.png in Resources */,
 				C26BBAF416DC1B5C0093D5B4 /* AlignTopEdgeIcon.png in Resources */,
-				C2269FBC17E9ED0A002D5898 /* BankTableViewCell-Thumbnail.xib in Resources */,
 				C26BBAF516DC1B5C0093D5B4 /* AlignTopEdgeIcon@2x.png in Resources */,
 				C26BBAF616DC1B5C0093D5B4 /* AlignVertCenterIcon.png in Resources */,
+				C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */,
+				C27BCCA61801C16A0002464C /* IntegerKeyboard_8@2x.png in Resources */,
 				C26BBAF716DC1B5C0093D5B4 /* AlignVertCenterIcon@2x.png in Resources */,
+				C27BCCA81801C16A0002464C /* IntegerKeyboard_9.png in Resources */,
 				C26BBAF816DC1B5C0093D5B4 /* App_Icon.png in Resources */,
 				C26BBAF916DC1B5C0093D5B4 /* App_Icon@2x.png in Resources */,
+				C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */,
 				C265937017FBA5F40017949C /* BankableDetailTableViewCell-Button.xib in Resources */,
 				C26BBAFA16DC1B5C0093D5B4 /* ButtonOverButton.png in Resources */,
-				C2F2A46917EE9C1700DE2F41 /* BankTableHeaderView.xib in Resources */,
 				C26BBAFB16DC1B5C0093D5B4 /* ButtonOverButton@2x.png in Resources */,
 				C26BBAFC16DC1B5C0093D5B4 /* Circle-Add.png in Resources */,
 				C26BBAFD16DC1B5C0093D5B4 /* Circle-Add@2x.png in Resources */,
+				C27BCCA91801C16A0002464C /* IntegerKeyboard_9@2x.png in Resources */,
 				C26BBAFE16DC1B5C0093D5B4 /* CopyButtonIcon.png in Resources */,
 				C26BBAFF16DC1B5C0093D5B4 /* CopyButtonIcon@2x.png in Resources */,
 				C26BBB0016DC1B5C0093D5B4 /* CopyStyleIcon.png in Resources */,
 				C26BBB0116DC1B5C0093D5B4 /* CopyStyleIcon@2x.png in Resources */,
 				C26BBB0216DC1B5C0093D5B4 /* DashedBox.png in Resources */,
+				C27BCC981801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png in Resources */,
 				C26BBB0316DC1B5C0093D5B4 /* DashedBox@2x.png in Resources */,
 				C26BBB0416DC1B5C0093D5B4 /* Default-568h@2x.png in Resources */,
 				C26BBB0516DC1B5C0093D5B4 /* Default.png in Resources */,
+				C27BCC9E1801C16A0002464C /* IntegerKeyboard_6-Highlighted@2x.png in Resources */,
 				C26BBB0616DC1B5C0093D5B4 /* Default@2x.png in Resources */,
+				C27BCC9D1801C16A0002464C /* IntegerKeyboard_5@2x.png in Resources */,
 				C26BBB0716DC1B5C0093D5B4 /* Delete.png in Resources */,
 				C26BBB0816DC1B5C0093D5B4 /* Delete@2x.png in Resources */,
 				C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */,
@@ -2406,16 +2572,19 @@
 				C26BBB0C16DC1B5C0093D5B4 /* DuplicateButtonIcon@2x.png in Resources */,
 				C26BBB0D16DC1B5C0093D5B4 /* export.png in Resources */,
 				C26BBB0E16DC1B5C0093D5B4 /* export@2x.png in Resources */,
+				C27BCCA41801C16A0002464C /* IntegerKeyboard_8-Highlighted@2x.png in Resources */,
 				C26BBB0F16DC1B5C0093D5B4 /* Image.png in Resources */,
 				C26BBB1016DC1B5C0093D5B4 /* Image@2x.png in Resources */,
 				C265936017FBA1180017949C /* BankableDetailTableViewCell-TextField.xib in Resources */,
 				C26BBB1116DC1B5C0093D5B4 /* ImageOverImage.png in Resources */,
 				C26BBB1216DC1B5C0093D5B4 /* ImageOverImage@2x.png in Resources */,
 				C26BBB1316DC1B5C0093D5B4 /* import.png in Resources */,
+				C27BCCA21801C16A0002464C /* IntegerKeyboard_7.png in Resources */,
 				C26BBB1416DC1B5C0093D5B4 /* import@2x.png in Resources */,
 				C26BBB1516DC1B5C0093D5B4 /* MachSizeIcon.png in Resources */,
 				C265936817FBA5890017949C /* BankableDetailTableViewCell-TextView.xib in Resources */,
 				C26BBB1616DC1B5C0093D5B4 /* MatchHeightIcon.png in Resources */,
+				C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */,
 				C26BBB1716DC1B5C0093D5B4 /* MatchHeightIcon@2x.png in Resources */,
 				C26BBB1816DC1B5C0093D5B4 /* MatchSizeBarButtonIcon.png in Resources */,
 				C26BBB1916DC1B5C0093D5B4 /* MatchSizeBarButtonIcon@2x.png in Resources */,
@@ -2423,36 +2592,49 @@
 				C26BBB1B16DC1B5C0093D5B4 /* MatchWidthIcon.png in Resources */,
 				C26BBB1C16DC1B5C0093D5B4 /* MatchWidthIcon@2x.png in Resources */,
 				C26BBB1D16DC1B5C0093D5B4 /* PaintBrush1.png in Resources */,
+				C27BCCAA1801C16A0002464C /* IntegerKeyboard_Blank-Highlighted@2x.png in Resources */,
 				C26BBB1E16DC1B5C0093D5B4 /* PaintBrush1@2x.png in Resources */,
+				C27BCC9B1801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png in Resources */,
 				C26BBB1F16DC1B5C0093D5B4 /* PaintBrush2.png in Resources */,
 				C26BBB2016DC1B5C0093D5B4 /* PaintBrush2@2x.png in Resources */,
+				C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */,
+				C27BCC961801C16A0002464C /* IntegerKeyboard_3.png in Resources */,
 				C26BBB2116DC1B5C0093D5B4 /* PaintBrush3.png in Resources */,
 				C26BBB2216DC1B5C0093D5B4 /* PaintBrush3@2x.png in Resources */,
 				C26BBB2316DC1B5C0093D5B4 /* PasteStyleIcon.png in Resources */,
 				C26BBB2416DC1B5C0093D5B4 /* PasteStyleIcon@2x.png in Resources */,
 				C26BBB2516DC1B5C0093D5B4 /* Pencil.png in Resources */,
 				C26BBB2616DC1B5C0093D5B4 /* Pencil@2x.png in Resources */,
+				C27BCC931801C16A0002464C /* IntegerKeyboard_2.png in Resources */,
 				C26BBB2716DC1B5C0093D5B4 /* Plus-White.png in Resources */,
+				C27BCC9A1801C16A0002464C /* IntegerKeyboard_4@2x.png in Resources */,
 				C26BBB2816DC1B5C0093D5B4 /* Plus-White@2x.png in Resources */,
 				C26BBB2916DC1B5C0093D5B4 /* Plus.png in Resources */,
+				C27BCC901801C16A0002464C /* IntegerKeyboard_1.png in Resources */,
 				C26BBB2A16DC1B5C0093D5B4 /* Plus@2x.png in Resources */,
+				C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */,
 				C26BBB2B16DC1B5C0093D5B4 /* ScaleHorizontal.png in Resources */,
+				C25EE4D617FCF649000DA457 /* BankableDetailTableViewCell-List.xib in Resources */,
 				C26BBB2C16DC1B5C0093D5B4 /* ScaleHorizontal@2x.png in Resources */,
 				C26BBB2D16DC1B5C0093D5B4 /* ScaleVertical.png in Resources */,
 				C26BBB2E16DC1B5C0093D5B4 /* ScaleVertical@2x.png in Resources */,
 				C26BBB2F16DC1B5C0093D5B4 /* Trash-Small.png in Resources */,
+				C27BCCA71801C16A0002464C /* IntegerKeyboard_9-Highlighted@2x.png in Resources */,
 				C26BBB3016DC1B5C0093D5B4 /* Trash-Small@2x.png in Resources */,
-				C2318B2517E50DAE00CF58D9 /* BankIndex.xib in Resources */,
 				C26BBB3116DC1B5C0093D5B4 /* Trash.png in Resources */,
 				C26BBB3216DC1B5C0093D5B4 /* Trash@2x.png in Resources */,
+				C27BCC911801C16A0002464C /* IntegerKeyboard_1@2x.png in Resources */,
 				C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */,
 				C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */,
 				C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */,
+				C27BCC941801C16A0002464C /* IntegerKeyboard_2@2x.png in Resources */,
 				C265936717FBA5890017949C /* BankableDetailTableViewCell-Label.xib in Resources */,
-				C2269FBE17E9F3AD002D5898 /* BankTableViewCell-List.xib in Resources */,
+				C25EE4D417FCA358000DA457 /* BankableDetailTableViewCell-Table.xib in Resources */,
+				C27BCC8F1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png in Resources */,
 				C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */,
 				C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */,
 				C2625B7C16DD41F60000F676 /* UserCodes.plist in Resources */,
+				C27BCC921801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png in Resources */,
 				C29B27F2172E1CD7006046A5 /* JSON-Grammar.parsekit in Resources */,
 				C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */,
 			);
@@ -2610,7 +2792,6 @@
 				C25B476516FF8D5E0042B59E /* SwitchToRemoteCommandEditingViewController.m in Sources */,
 				C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */,
 				C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */,
-				C22E267B17E6A52000299DD5 /* BankTableViewController.m in Sources */,
 				C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */,
 				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
 				C2F2A47E17EF569F00DE2F41 /* ManufacturerDetailViewController.m in Sources */,
@@ -2628,7 +2809,6 @@
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */,
-				C258BB6517ECF09200FBB4B4 /* BankViewController.m in Sources */,
 				C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */,
 				C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */,
 				C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */,

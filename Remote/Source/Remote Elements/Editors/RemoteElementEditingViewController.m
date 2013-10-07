@@ -468,7 +468,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
     [_context performBlockAndWait:
      ^{
          self.changedModelValues = [remoteElement changedValues];
-         _remoteElement = (RemoteElement *)[remoteElement faultedObject];
+         _remoteElement = (RemoteElement *)[_context existingObjectWithID:remoteElement.objectID
+                                                                    error:nil];
 
          if (_remoteElement.parentElement)
          {

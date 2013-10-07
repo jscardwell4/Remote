@@ -7,7 +7,7 @@
 //
 #import "BankableModelObject.h"
 
-@class ComponentDevice, IRCodeset;
+@class ComponentDevice, IRCodeset, Manufacturer;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - IR Code
@@ -34,5 +34,6 @@
 @property (nonatomic, strong) ComponentDevice   * device;
 @property (nonatomic, assign) BOOL                setsDeviceInput;
 @property (nonatomic, strong) IRCodeset         * codeset;
+@property (nonatomic, strong) Manufacturer      * manufacturer;
 
 @end

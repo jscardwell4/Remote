@@ -7,7 +7,7 @@
 //
 
 #import "BankableDetailTableViewController_Private.h"
-#import "BankViewController.h"
+#import "BankCollectionViewController.h"
 #import "ManufacturerDetailViewController.h"
 #import "Manufacturer.h"
 #import "BankGroup.h"
@@ -16,7 +16,7 @@
 
 @interface ManufacturerDetailViewController ()
 
-@property (weak, nonatomic, readonly) Manufacturer * manufacturer;
+@property (nonatomic, weak, readonly) Manufacturer * manufacturer;
 @property (nonatomic, strong)         NSArray      * devices;
 @property (nonatomic, strong)         NSArray      * codesets;
 
@@ -26,15 +26,14 @@
 
 - (Manufacturer *)manufacturer { return (Manufacturer *)self.item; }
 
-+ (Class)itemClass { return [Manufacturer class]; }
+- (Class<Bankable>)itemClass { return [Manufacturer class]; }
 
 - (void)updateDisplay
 {
     [super updateDisplay];
     self.devices = [self.manufacturer.devices allObjects];
     self.codesets = [self.manufacturer.codesets allObjects];
-
-    [self.tableView reloadData];
+    if ([self isViewLoaded]) [self.tableView reloadData];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,21 +54,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MSSTATIC_STRING_CONST kCellIdentifier = @"Cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
+    BankableDetailTableViewCell * cell = [self dequeueReusableCellWithIdentifier:LabelListCellIdentifier
+                                                           forIndexPath:indexPath];
+    
     if (!indexPath.section)
     {
         NSString * labelText = ([_devices count]
                                 ? [_devices[indexPath.row] valueForKey:@"name"]
                                 : @"No Devices");
-        cell.textLabel.text = labelText;
+        cell.infoLabel.text = labelText;
     }
     else
     {
         NSString * labelText = ([_codesets count]
                                 ? [_codesets[indexPath.row] valueForKey:@"name"]
                                 : @"No Codesets");
-        cell.textLabel.text = labelText;
+        cell.infoLabel.text = labelText;
     }
 
     return cell;
@@ -89,7 +89,7 @@
     else
     {
         IRCodeset * codeset = _codesets[indexPath.row];
-        BankViewController * vc = UIStoryboardInstantiateSceneByClassName(BankViewController);
+        BankCollectionViewController * vc = UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
         vc.navigationItem.title = codeset.name;
         NSManagedObjectContext * context = codeset.managedObjectContext;
         NSFetchRequest * request = [IRCode MR_requestAllWhere:@"codeset"

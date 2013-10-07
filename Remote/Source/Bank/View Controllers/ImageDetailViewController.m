@@ -15,15 +15,10 @@ static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-#define kCategoryCell      2
-#define kExpandedRowHeight 200
-#define kDefaultRowHeight  38
-#define kImageCellHeight   291
+static NSIndexPath * kCategoryCellIndexPath;
+static NSIndexPath * kPreviewCellIndexPath;
 
-@interface ImageDetailViewController () <UIPickerViewDataSource, UIPopoverControllerDelegate>
-
-@property (weak, nonatomic) IBOutlet UITextField  * categoryTextField;
-@property (weak, nonatomic) IBOutlet UIPickerView * pickerView;
+@interface ImageDetailViewController ()
 
 @property (nonatomic, weak, readonly) Image   * image;
 @property (nonatomic, strong)         NSArray * categories;
@@ -32,46 +27,28 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation ImageDetailViewController
 {
-    NSInteger _expandedCell;
-    BOOL      _categorySelected;
+    __weak Image * _image;
 }
 
-- (void)awakeFromNib
++ (void)initialize
 {
-    [super awakeFromNib];
-    _expandedCell = -1;
-}
-
-- (Image *)image { return (Image *)self.item; }
-
-+ (Class)itemClass { return [Image class]; }
-
-- (NSArray *)editableViews
-{
-    return [[super editableViews] arrayByAddingObjectsFromArray:@[_categoryTextField]];
-}
-
-- (NSArray *)categories
-{
-    if (!_categories)
+    if (self == [ImageDetailViewController class])
     {
-        NSManagedObjectContext *context = self.item.managedObjectContext;
-
-        NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"BankInfo"];
-        [request setResultType:NSDictionaryResultType];
-        [request setReturnsDistinctResults:YES];
-        [request setPropertiesToFetch:@[@"category"]];
-        [request setPredicate:[NSPredicate predicateWithFormat:@"image != nil"]];
-
-        NSError *error = nil;
-        NSArray *objects = [context executeFetchRequest:request error:&error];
-        if (error) [CoreDataManager handleErrors:error];
-        else
-            self.categories = [objects valueForKeyPath:@"category"];
+        kCategoryCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        kPreviewCellIndexPath  = [NSIndexPath indexPathForRow:0 inSection:1];
     }
-
-    return _categories;
 }
+
+
+- (Class<Bankable>)itemClass { return [Image class]; }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Aliased properties
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (Image *)image { if (!_image) _image = (Image *)self.item; return _image; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,46 +67,55 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
     switch (indexPath.section)
     {
-        case 1:
-        {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:ImageCellIdentifier
-                                                        forIndexPath:indexPath];
-            cell.imageView.image = self.image.preview;
-            if (CGSizeContainsSize(cell.imageView.bounds.size, cell.imageView.image.size))
-                cell.imageView.contentMode = UIViewContentModeCenter;
-        } break;
-
-        case 0:
+        case 0: // Info
         {
             switch (indexPath.row)
             {
-                case 2:
+                case 0: // Category
                 {
-                    cell = [self.tableView dequeueReusableCellWithIdentifier:LabelCellIdentifier
-                                                                forIndexPath:indexPath];
-                    cell.nameLabel.text = @"Size";
-                    cell.infoLabel.text = PrettySize(self.image.size);
+                    cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+                                                      forIndexPath:indexPath];
+                    cell.nameLabel.text = @"Category";
+                    cell.infoTextField.text = (self.image.category ?: @"Uncategorized");
+                    BankableDetailTextFieldChangeHandler changeHandler = ^{
+                        _image.category = cell.infoTextField.text;
+                        if (![_categories containsObject:_image.category]) _categories = nil;
+                    };
+                    [self registerTextField:cell.infoTextField
+                               forIndexPath:indexPath
+                                   handlers:@{BankableDetailTextFieldChangeHandlerKey:changeHandler}];
+                    [self registerPickerView:cell.pickerView forIndexPath:indexPath];
                 } break;
 
-                case 1:
+                case 1: // File name
                 {
-                    cell = [self.tableView dequeueReusableCellWithIdentifier:LabelCellIdentifier
-                                                                forIndexPath:indexPath];
+                    cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
+                                                      forIndexPath:indexPath];
                     cell.nameLabel.text = @"File";
                     cell.infoLabel.text = self.image.fileName;
                 } break;
 
-                case 0:
+                case 2: // Size
                 {
-                    cell = [self.tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
-                                                                forIndexPath:indexPath];
-                    cell.nameLabel.text = @"Category";
-                    cell.infoTextField.text = self.image.category;
-                    cell.infoTextField.delegate = self;
-                    self.categoryTextField = cell.infoTextField;
+                    cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
+                                                      forIndexPath:indexPath];
+                    cell.nameLabel.text = @"Size";
+                    cell.infoLabel.text = PrettySize(self.image.size);
                 } break;
             }
         } break;
+
+        case 1: // Preview
+        {
+            cell = [self dequeueReusableCellWithIdentifier:ImageCellIdentifier
+                                              forIndexPath:indexPath];
+            UIImage * image = self.image.preview;
+            cell.infoImageView.image = image;
+
+            if (CGSizeContainsSize(cell.infoImageView.bounds.size, image.size))
+                cell.infoImageView.contentMode = UIViewContentModeCenter;
+        } break;
+
     }
     
     return cell;
@@ -143,101 +129,46 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
-    {
-        case 1:
-            return kImageCellHeight;
-
-        default:
-            return (indexPath.row == _expandedCell
-                    ? kExpandedRowHeight
-                    : kDefaultRowHeight);
-    }
+    return ([indexPath isEqual:kPreviewCellIndexPath]
+            ? BankableDetailPreviewRowHeight
+            : ([indexPath isEqual:self.visiblePickerCellIndexPath]
+               ? BankableDetailExpandedRowHeight
+               : BankableDetailDefaultRowHeight));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark Text field delegate
+#pragma mark Managing picker views
 ////////////////////////////////////////////////////////////////////////////////
 
-/*
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+
+- (NSArray *)categories
 {
-    [super textFieldDidBeginEditing:textField];
-
-    if (textField == _categoryTextField)
+    if (!_categories)
     {
-        _expandedCell = kCategoryCell;
-        [self.tableView reloadData];
-    }
-}
+        NSManagedObjectContext *context = self.item.managedObjectContext;
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if (textField == _categoryTextField)
-    {
-        if (_categorySelected)
-            _categorySelected = NO;
+        NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"BankInfo"];
+        [request setResultType:NSDictionaryResultType];
+        [request setReturnsDistinctResults:YES];
+        [request setPropertiesToFetch:@[@"category"]];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"preset != nil"]];
 
+        NSError *error = nil;
+        NSArray *objects = [context executeFetchRequest:request error:&error];
+        if (error) [CoreDataManager handleErrors:error];
         else
-        {
-            NSString * category = textField.text;
-            self.image.category = category;
-            if (![self.categories containsObject:category])
-            {
-                self.categories = [_categories arrayByAddingObject:category];
-                [self.pickerView reloadAllComponents];
-            }
-            
-            [self.pickerView selectRow:[self.categories indexOfObject:category]
-                           inComponent:0
-                              animated:YES];
-            _expandedCell = -1;
-            [self.tableView reloadData];
-        }
+            self.categories = [@[@"Uncategorized"]
+                               arrayByAddingObjectsFromArray:[objects valueForKeyPath:@"category"]];
     }
 
-    else
-        [super textFieldDidEndEditing:textField];
-
+    return _categories;
 }
-*/
 
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Picker view data source
-////////////////////////////////////////////////////////////////////////////////
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView { return 1; }
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+- (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type
 {
-    return [self.categories count];
+    return (type == BankableDetailTextFieldData ? self.image.category : self.categories);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Picker view delegate
-////////////////////////////////////////////////////////////////////////////////
-
-- (NSString *)pickerView:(UIPickerView *)pickerView
-             titleForRow:(NSInteger)row
-            forComponent:(NSInteger)component
-{
-    return self.categories[row];
-}
-
-- (void)pickerView:(UIPickerView *)pickerView
-      didSelectRow:(NSInteger)row
-       inComponent:(NSInteger)component
-{
-    NSString * category = self.categories[row];
-    _categorySelected = YES;
-    [self.categoryTextField resignFirstResponder];
-    self.categoryTextField.text = category;
-    self.image.category = category;
-    _expandedCell = -1;
-    [self.tableView reloadData];
-}
 
 @end

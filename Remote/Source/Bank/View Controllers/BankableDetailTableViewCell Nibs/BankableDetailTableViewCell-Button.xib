@@ -35,7 +35,7 @@
                     <constraint firstItem="J2O-pI-nus" firstAttribute="leading" secondItem="NrQ-y5-Ibn" secondAttribute="trailing" constant="8" symbolic="YES" id="NLh-1x-rnZ"/>
                     <constraint firstItem="NrQ-y5-Ibn" firstAttribute="leading" secondItem="W0h-e3-hEd" secondAttribute="leading" constant="20" symbolic="YES" id="XeC-PU-hd1"/>
                     <constraint firstItem="NrQ-y5-Ibn" firstAttribute="baseline" secondItem="J2O-pI-nus" secondAttribute="baseline" id="m80-oP-9bI"/>
-                    <constraint firstAttribute="centerY" secondItem="NrQ-y5-Ibn" secondAttribute="centerY" id="z2h-YX-6P2"/>
+                    <constraint firstItem="NrQ-y5-Ibn" firstAttribute="top" secondItem="W0h-e3-hEd" secondAttribute="top" constant="9" id="zea-8x-DhF"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

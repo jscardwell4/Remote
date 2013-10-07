@@ -78,33 +78,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     return cell;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Table view delegate
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-/*
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Class<Bankable> itemClass = [_rootItems keyAtIndex:indexPath.row];
-    assert([(Class)itemClass conformsToProtocol:@protocol(Bankable)]);
-    NSString * title = _rootItems[indexPath.row];
-    BankFlags flags = [itemClass bankFlags];
-    Class<BankableViewController> pushClass = (flags & BankThumbnail
-                                               ? [BankCollectionViewController class]
-                                               : [BankTableViewController class]);
-    UIViewController<BankableViewController> * viewController =
-        (UIViewController<BankableViewController> *)
-        [self.storyboard instantiateViewControllerWithClassNameIdentifier : pushClass];
-    viewController.title = title;
-    viewController.itemClass = itemClass;
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Navigation
+#pragma mark Navigation
 ////////////////////////////////////////////////////////////////////////////////
 
 // In a story board-based application, you will often want to do a little preparation before navigation
@@ -122,7 +98,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Actions
+#pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
 - (IBAction)importBankObject:(UIBarButtonItem *)sender { MSLogDebug(@"%@", ClassTagSelectorString); }

@@ -110,7 +110,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 @implementation IRCode
 
 @dynamic frequency, offset, repeatCount, onOffPattern;
-@dynamic device, setsDeviceInput, prontoHex, codeset;
+@dynamic device, setsDeviceInput, prontoHex, codeset, manufacturer;
 
 + (instancetype)codeForDevice:(ComponentDevice *)device
 {
@@ -267,15 +267,22 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 
     if (codeset)
     {
-        NSString * codesetName = [codeset.name copy];
         Manufacturer * manufacturer = codeset.manufacturer;
-        NSString * manufacturerName = (manufacturer ? [manufacturer.name copy] : nil);
-        NSString * category = (manufacturerName ? $(@"%@ - %@", manufacturerName, codesetName) : codesetName);
-        self.info.category = category;
+        assert(manufacturer);
+        self.manufacturer = manufacturer;
+        self.info.category = $(@"%@ - %@", manufacturer.name, codeset.name);
     }
 
-    else if (!self.device)
-        self.info.category = @"Uncategorized";
+}
+
+- (void)setManufacturer:(Manufacturer *)manufacturer
+{
+    [self willChangeValueForKey:@"manufacturer"];
+    [self setPrimitiveValue:manufacturer forKey:@"manufacturer"];
+    [self didChangeValueForKey:@"manufacturer"];
+
+    if (self.codeset && manufacturer != self.codeset.manufacturer)
+        self.codeset = nil;
 }
 
 - (MSDictionary *)deepDescriptionDictionary

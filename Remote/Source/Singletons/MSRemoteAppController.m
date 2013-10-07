@@ -23,7 +23,8 @@ static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
-@implementation MSRemoteAppController {
+@implementation MSRemoteAppController
+{
     NSOperationQueue       * _workQueue;
 }
 
@@ -181,6 +182,9 @@ static const int   msLogContext = 0;
 - (BOOL)              application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    // log available fonts
+    NSLog(@"available font families:\n%@", [UIFont familyNames]);
 
     // set a reference to our launch screen view controller
     MainMenuViewController * mainMenuVC = (MainMenuViewController*)[self.window rootViewController];

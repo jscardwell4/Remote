@@ -24,15 +24,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="textColor" red="0.62510675189999998" green="0.62569129469999996" blue="0.64302843809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits"/>
+                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" returnKeyType="done"/>
                     </textField>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="WfT-UL-3rO" secondAttribute="trailing" constant="20" symbolic="YES" id="Fcs-BA-OAa"/>
                     <constraint firstItem="Ep0-lV-F81" firstAttribute="leading" secondItem="vjg-Qv-Ddd" secondAttribute="leading" constant="20" symbolic="YES" id="Mud-zF-cnx"/>
+                    <constraint firstItem="Ep0-lV-F81" firstAttribute="top" secondItem="vjg-Qv-Ddd" secondAttribute="top" constant="8" id="ciU-iW-Yad"/>
                     <constraint firstItem="WfT-UL-3rO" firstAttribute="baseline" secondItem="Ep0-lV-F81" secondAttribute="baseline" id="d1q-1s-LdA"/>
                     <constraint firstItem="WfT-UL-3rO" firstAttribute="leading" secondItem="Ep0-lV-F81" secondAttribute="trailing" constant="8" id="gX6-NW-K23"/>
-                    <constraint firstAttribute="centerY" secondItem="Ep0-lV-F81" secondAttribute="centerY" id="wIt-11-Dbs"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

@@ -11,7 +11,7 @@
 
 @implementation Manufacturer
 
-@dynamic codesets, devices;
+@dynamic codesets, codes, devices;
 
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {

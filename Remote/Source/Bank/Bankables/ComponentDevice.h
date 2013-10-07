@@ -8,7 +8,7 @@
 #import "BankableModelObject.h"
 #import "Command.h"
 
-@class IRCode, Command, Manufacturer;
+@class IRCode, Command, Manufacturer, NetworkDevice;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,14 +26,15 @@
 
 - (void)powerOff:(RECommandCompletionHandler)completion;
 
-@property (nonatomic, assign) int16_t        port;
-@property (nonatomic, strong) NSSet        * codes;
-@property (nonatomic, assign) BOOL           power;
-@property (nonatomic, assign) BOOL           alwaysOn;
-@property (nonatomic, assign) BOOL           inputPowersOn;
-@property (nonatomic, strong) Command      * offCommand;
-@property (nonatomic, strong) Command      * onCommand;
-@property (nonatomic, strong) Manufacturer * manufacturer;
+@property (nonatomic, assign) int16_t         port;
+@property (nonatomic, strong) NSSet         * codes;
+@property (nonatomic, assign) BOOL            power;
+@property (nonatomic, assign) BOOL            alwaysOn;
+@property (nonatomic, assign) BOOL            inputPowersOn;
+@property (nonatomic, strong) Command       * offCommand;
+@property (nonatomic, strong) Command       * onCommand;
+@property (nonatomic, strong) Manufacturer  * manufacturer;
+@property (nonatomic, strong) NetworkDevice * networkDevice;
 
 @end
 

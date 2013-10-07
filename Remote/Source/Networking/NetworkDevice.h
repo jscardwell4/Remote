@@ -6,13 +6,14 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "ModelObject.h"
+
 // keys
-MSEXTERN_STRING   NDDeviceMakeKey;
-MSEXTERN_STRING   NDModelKey;
-MSEXTERN_STRING   NDDeviceRevisionKey;
-MSEXTERN_STRING   NDDeviceStatusKey;
-MSEXTERN_STRING   NDDeviceUUIDKey;
-MSEXTERN_STRING   NDDeviceURLKey;
+MSEXTERN_KEY(NDDeviceMake);
+MSEXTERN_KEY(NDModel);
+MSEXTERN_KEY(NDDeviceRevision);
+MSEXTERN_KEY(NDDeviceStatus);
+MSEXTERN_KEY(NDDeviceUUID);
+MSEXTERN_KEY(NDDeviceURL);
 
 @interface NetworkDevice : ModelObject <NamedModelObject>
 
@@ -24,6 +25,7 @@ MSEXTERN_STRING   NDDeviceURLKey;
 
 + (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID;
 
+@property (nonatomic, strong) NSSet * componentDevices;
 @property (nonatomic, copy, readonly ) NSString * deviceUUID;
 @property (nonatomic, copy, readonly ) NSString * make;
 @property (nonatomic, copy, readonly ) NSString * model;
@@ -40,9 +42,9 @@ MSEXTERN_STRING   NDiTachDeviceMulticastGroupPort;
 MSEXTERN_STRING   NDiTachDeviceTCPPort;
 
 // keys
-MSEXTERN_STRING   NDiTachDevicePCBKey;
-MSEXTERN_STRING   NDiTachDevicePkgKey;
-MSEXTERN_STRING   NDiTachDeviceSDKKey;
+MSEXTERN_KEY(NDiTachDevicePCB);
+MSEXTERN_KEY(NDiTachDevicePkg);
+MSEXTERN_KEY(NDiTachDeviceSDK);
 
 @interface NDiTachDevice : NetworkDevice
 
