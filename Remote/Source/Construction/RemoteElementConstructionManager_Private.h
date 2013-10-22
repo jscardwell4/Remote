@@ -52,9 +52,9 @@
 + (ButtonGroup *)constructDVRDPadInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)constructPS3DPadInContext:(NSManagedObjectContext *)moc;
 
-// ￼NumberPad construction
-+ (ButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)moc;
-+ (ButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)moc;
+// ￼Numberpad construction
++ (ButtonGroup *)constructDVRNumberpadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructPS3NumberpadInContext:(NSManagedObjectContext *)moc;
 
 // Transport construction
 + (ButtonGroup *)constructDVRTransportInContext:(NSManagedObjectContext *)moc;
@@ -87,7 +87,7 @@
 + (CommandSet *)hopperChannelsCommandSet:(NSManagedObjectContext *)moc;
 + (CommandSet *)hopperPagingCommandSet:(NSManagedObjectContext *)moc;
 + (CommandSet *)transportForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
-+ (CommandSet *)numberPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
++ (CommandSet *)numberpadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
 + (CommandSet *)dPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc;
 
 @end

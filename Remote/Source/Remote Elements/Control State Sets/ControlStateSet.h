@@ -8,76 +8,6 @@
 #import "ModelObject.h"
 #import "RETypedefs.h"
 
-/**
- *
- * valid UIControlState bit combinations:
- * UIControlStateNormal: 0
- * UIControlStateHighlighted: 1
- * UIControlStateDisabled: 2
- * UIControlStateHighlighted|UIControlStateDisabled: 3
- * UIControlStateSelected: 4
- * UIControlStateHighlighted|UIControlStateSelected: 5
- * UIControlStateDisabled|UIControlStateSelected: 6
- * UIControlStateSelected|UIControlStateHighlighted|UIControlStateDisabled: 7
- *
- */
-MSSTATIC_INLINE BOOL validState(NSUInteger state) {
-    static const NSSet * validStates = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        validStates = [@[@0,@1,@2,@3,@4,@5,@6,@7] set];
-    });
-    return [validStates containsObject:@(state)];
-}
-
-MSSTATIC_INLINE NSString * propertyForState(NSUInteger state) {
-    switch (state) {
-        case UIControlStateNormal:
-            return @"normal";
-
-        case UIControlStateHighlighted:
-            return @"highlighted";
-
-        case UIControlStateDisabled:
-            return @"disabled";
-
-        case UIControlStateHighlighted|UIControlStateDisabled:
-            return @"highlightedAndDisabled";
-
-        case UIControlStateSelected:
-            return @"selected";
-
-        case UIControlStateSelected|UIControlStateHighlighted:
-            return @"highlightedAndSelected";
-
-        case UIControlStateSelected|UIControlStateDisabled:
-            return @"disabledAndSelected";
-
-        case UIControlStateSelected|UIControlStateDisabled|UIControlStateHighlighted:
-            return @"selectedHighlightedAndDisabled";
-            
-        default:
-            return nil;
-    }
-}
-
-MSSTATIC_INLINE NSUInteger stateForProperty(NSString * property) {
-    static const NSDictionary * properties = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        properties = @{@"normal"                         : @0,
-                       @"highlighted"                    : @1,
-                       @"disabled"                       : @2,
-                       @"highlightedAndDisabled"         : @3,
-                       @"selected"                       : @4,
-                       @"highlightedAndSelected"         : @5,
-                       @"disabledAndSelected"            : @6,
-                       @"selectedHighlightedAndDisabled" : @7};
-
-    });
-    return NSUIntegerValue(properties[property]);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - ControlStateSet
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,10 +19,20 @@ MSSTATIC_INLINE NSUInteger stateForProperty(NSString * property) {
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc
                              withObjects:(NSDictionary *)objects;
 
++ (BOOL)validState:(NSUInteger)state;
++ (NSString *)propertyForState:(NSUInteger)state;
++ (NSUInteger)stateForProperty:(NSString *)property;
+
+- (BOOL)isEmptySet;
 - (NSDictionary *)dictionaryFromSetObjects;
 
+// objectAtIndex: and objectForKey: do not use fall through logic
+// where as objectAtIndexedSubscript: and objectForKeyedSubscript: do use fall through logic
+- (id)objectAtIndex:(NSUInteger)state;
+- (id)objectForKey:(NSString *)key;
 - (id)objectAtIndexedSubscript:(NSUInteger)state;
 - (id)objectForKeyedSubscript:(NSString *)key;
+
 - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)state;
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
 - (void)setObject:(id)obj forStates:(NSArray *)states;

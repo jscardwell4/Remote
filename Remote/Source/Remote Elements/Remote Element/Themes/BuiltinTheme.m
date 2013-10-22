@@ -7,7 +7,7 @@
 //
 #import "Theme_Private.h"
 
-static const int ddLogLevel   = LOG_LEVEL_WARN;
+static int ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 

@@ -17,15 +17,16 @@
 
 @interface BankCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, weak) UIImage * thumbnailImage;
-@property (nonatomic, weak) NSString * name;
-@property (nonatomic, assign) BankFlags bankFlags;
+@property (nonatomic, weak)   UIImage   * thumbnailImage;
+@property (nonatomic, weak)   NSString  * name;
+@property (nonatomic, assign) BankFlags   bankFlags;
 
-@property (nonatomic, weak) IBOutlet UIImageView                  * thumbnailImageView;
-@property (nonatomic, weak) IBOutlet UILabel                      * nameLabel;
-@property (nonatomic, weak) IBOutlet UIButton                     * editButton;
-@property (nonatomic, weak) IBOutlet UIButton                     * detailButton;
-@property (nonatomic, weak) IBOutlet BankCollectionViewController * controller;
+@property (nonatomic, weak, readonly) IBOutlet UIImageView                  * thumbnailImageView;
+@property (nonatomic, weak, readonly) IBOutlet UILabel                      * nameLabel;
+@property (nonatomic, weak, readonly) IBOutlet UIButton                     * editButton;
+@property (nonatomic, weak, readonly) IBOutlet UIButton                     * detailButton;
+@property (nonatomic, weak, readonly) IBOutlet UIButton                     * deleteButton;
+@property (nonatomic, weak, readonly) IBOutlet BankCollectionViewController * controller;
 
 @end
 

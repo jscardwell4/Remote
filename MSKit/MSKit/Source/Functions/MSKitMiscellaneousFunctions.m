@@ -1,0 +1,72 @@
+//
+//  MSKitMiscellaneousFunctions.m
+//  Remote
+//
+//  Created by Jason Cardwell on 4/22/12.
+//  Copyright (c) 2012 Moondeer Studios. All rights reserved.
+//
+
+#import "MSKitMiscellaneousFunctions.h"
+#import <objc/runtime.h>
+
+NSString * MSNonce() {
+    return [[NSUUID UUID] UUIDString];
+}
+
+void MSRunSyncOnMain(dispatch_block_t block) {
+    if ([[NSThread currentThread] isMainThread])
+        block();
+    else
+        dispatch_sync(dispatch_get_main_queue(), block);
+}
+
+void MSRunAsyncOnMain(dispatch_block_t block) {
+    if ([[NSThread currentThread] isMainThread])
+        block();
+    else
+        dispatch_async(dispatch_get_main_queue(), block);
+}
+
+void MSRunOnMainWithDelay(dispatch_block_t block, dispatch_time_t delay) {
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block();
+    });
+}
+
+void MSSwapInstanceMethodsForClass(Class c, SEL m1, SEL m2)
+{
+    MSSwapInstanceMethods(c, m1, c, m2);
+}
+
+void MSSwapInstanceMethods(Class c1, SEL m1, Class c2, SEL m2)
+{
+    if (c1 && m1 && c2 && m2)
+        method_exchangeImplementations(class_getInstanceMethod(c1, m1),
+                                       class_getInstanceMethod(c2, m2));
+}
+
+BOOL MSSelectorInProtocol(SEL selector, Protocol * protocol, BOOL isRequired, BOOL isInstance)
+{
+    struct objc_method_description   description = protocol_getMethodDescription(protocol,
+                                                                                 selector,
+                                                                                 isRequired,
+                                                                                 isInstance);
+    BOOL selectorInProtocol = (description.name != NULL);
+
+    if (!selectorInProtocol) {
+        unsigned int                    adoptedProtocolCount = 0;
+        __unsafe_unretained Protocol ** adoptedProtocols;
+        adoptedProtocols = protocol_copyProtocolList(protocol, &adoptedProtocolCount);
+
+        while (!selectorInProtocol && adoptedProtocolCount) {
+            description = protocol_getMethodDescription(adoptedProtocols[--adoptedProtocolCount],
+                                                        selector,
+                                                        isRequired,
+                                                        isInstance);
+            selectorInProtocol = (description.name != NULL);
+        }
+    }
+
+    return selectorInProtocol;
+}

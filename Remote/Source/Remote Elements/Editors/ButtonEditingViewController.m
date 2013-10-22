@@ -6,12 +6,13 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
+#import "Button.h"
 
 #define AUTO_LAUNCH_DETAIL_EDITOR NO
 #define REPLACE_BUTTON_COMMAND    NO
 #define MIN_BUTTON_BOUNDS         CGRectMake(0, 0, 14, 14)
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 

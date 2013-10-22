@@ -1,0 +1,27 @@
+[
+    {
+        "type": "send ir",
+        "code": "12470A9F-CC42-4C31-B261-213DFDA79BEC",
+        "offDevice": "18A7C007-4DED-48D6-9A72-FA63640C49B5"
+    },
+    {
+        "type": "send ir",
+        "code": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3",
+        "onDevice": "DB69F934-E193-4C45-9598-1D5155B8E6E5"
+    },
+    {
+        "type": "send ir",
+        "code": "9326516F-1923-4461-AD31-E726B4AAAFB1",
+        "offDevice": "DB69F934-E193-4C45-9598-1D5155B8E6E5"
+    },
+    {
+        "type": "send ir",
+        "code": "4386551B-5B7B-4017-A187-62AAFBB49399",
+        "onDevice": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F"
+    },
+    {
+        "type": "send ir",
+        "code": "45693E54-0E98-4D15-89D5-97E89488EDCE",
+        "offDevice": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F"
+    }
+]

@@ -21,11 +21,11 @@
     [moc performBlockAndWait:
      ^{
          ComponentDevice * av = [ComponentDevice fetchDeviceWithName:@"AV Receiver" context:moc];
-         commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeRocker];
+         commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeRocker];
          commandSet.name = @"Receiver Volume";
-         commandSet[@(REButtonTypePickerLabelTop)]    =
+         commandSet[@(REButtonRolePickerLabelTop)]    =
              [SendIRCommand commandWithIRCode:av[@"Volume Up"]];
-         commandSet[@(REButtonTypePickerLabelBottom)] =
+         commandSet[@(REButtonRolePickerLabelBottom)] =
              [SendIRCommand commandWithIRCode:av[@"Volume Down"]];
      }];
 
@@ -46,11 +46,11 @@
          IRCode * channelDown = [codes objectPassingTest:^BOOL(IRCode * code) {
              return [code.name isEqualToString:@"Channel Down"];
          }];
-         commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeRocker];
+         commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeRocker];
          commandSet.name = @"DVR Channels";
-         commandSet[@(REButtonTypePickerLabelTop)]    =
+         commandSet[@(REButtonRolePickerLabelTop)]    =
              [SendIRCommand commandWithIRCode:channelUp];
-         commandSet[@(REButtonTypePickerLabelBottom)] =
+         commandSet[@(REButtonRolePickerLabelBottom)] =
              [SendIRCommand commandWithIRCode:channelDown];
      }];
 
@@ -75,11 +75,11 @@
              return [code.name isEqualToString:@"Page Down"];
          }];
 
-         commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeRocker];
+         commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeRocker];
          commandSet.name = @"DVR Paging";
-         commandSet[@(REButtonTypePickerLabelTop)]    =
+         commandSet[@(REButtonRolePickerLabelTop)]    =
              [SendIRCommand commandWithIRCode:pageUp];
-         commandSet[@(REButtonTypePickerLabelBottom)] =
+         commandSet[@(REButtonRolePickerLabelBottom)] =
              [SendIRCommand commandWithIRCode:pageDown];
      }];
 
@@ -97,20 +97,20 @@
          {
 
              ComponentDevice * ps3 = [ComponentDevice fetchDeviceWithName:@"PS3" context:moc];
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeTransport];
-             commandSet[@(REButtonTypeTransportReplay)]    =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeTransport];
+             commandSet[@(REButtonRoleTransportReplay)]    =
                  [SendIRCommand commandWithIRCode:ps3[@"Previous"]];
-             commandSet[@(REButtonTypeTransportStop)]        =
-                 [SendIRCommand commandWithIRCode:ps3[@"Stop"]];
-             commandSet[@(REButtonTypeTransportPlay)]        =
-                 [SendIRCommand commandWithIRCode:ps3[@"Play"]];
-             commandSet[@(REButtonTypeTransportPause)]       =
-                 [SendIRCommand commandWithIRCode:ps3[@"Pause"]];
-             commandSet[@(REButtonTypeTransportSkip)]        =
-                 [SendIRCommand commandWithIRCode:ps3[@"Next"]];
-             commandSet[@(REButtonTypeTransportFF)] =
+//             commandSet[@(REButtonTypeTransportStop)]        =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Stop"]];
+//             commandSet[@(REButtonTypeTransportPlay)]        =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Play"]];
+//             commandSet[@(REButtonTypeTransportPause)]       =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Pause"]];
+//             commandSet[@(REButtonTypeTransportSkip)]        =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Next"]];
+             commandSet[@(REButtonRoleTransportFF)] =
                  [SendIRCommand commandWithIRCode:ps3[@"Scan Forward"]];
-             commandSet[@(REButtonTypeTransportRewind)]      =
+             commandSet[@(REButtonRoleTransportRewind)]      =
                  [SendIRCommand commandWithIRCode:ps3[@"Scan Reverse"]];
          }
 
@@ -118,22 +118,22 @@
          {
              ComponentDevice * hopper  = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                               context:moc];
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeTransport];
-             commandSet[@(REButtonTypeTransportReplay)]    =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeTransport];
+             commandSet[@(REButtonRoleTransportReplay)]    =
                  [SendIRCommand commandWithIRCode:hopper[@"Prev"]];
-             commandSet[@(REButtonTypeTransportStop)]        =
+             commandSet[@(REButtonRoleTransportStop)]        =
                  [SendIRCommand commandWithIRCode:hopper[@"Stop"]];
-             commandSet[@(REButtonTypeTransportPlay)]        =
+             commandSet[@(REButtonRoleTransportPlay)]        =
                  [SendIRCommand commandWithIRCode:hopper[@"Play"]];
-             commandSet[@(REButtonTypeTransportPause)]       =
+             commandSet[@(REButtonRoleTransportPause)]       =
                  [SendIRCommand commandWithIRCode:hopper[@"Pause"]];
-             commandSet[@(REButtonTypeTransportSkip)]        =
+             commandSet[@(REButtonRoleTransportSkip)]        =
                  [SendIRCommand commandWithIRCode:hopper[@"Next"]];
-             commandSet[@(REButtonTypeTransportFF)] =
+             commandSet[@(REButtonRoleTransportFF)] =
                  [SendIRCommand commandWithIRCode:hopper[@"Fast Forward"]];
-             commandSet[@(REButtonTypeTransportRewind)]      =
+             commandSet[@(REButtonRoleTransportRewind)]      =
                  [SendIRCommand commandWithIRCode:hopper[@"Rewind"]];
-             commandSet[@(REButtonTypeTransportRecord)]      =
+             commandSet[@(REButtonRoleTransportRecord)]      =
                  [SendIRCommand commandWithIRCode:hopper[@"Record"]];
 
          }
@@ -142,16 +142,16 @@
          {
              ComponentDevice * samsungTV   = [ComponentDevice fetchDeviceWithName:@"Samsung TV"
                                                                               context:moc];
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeTransport];
-             commandSet[@(REButtonTypeTransportPlay)]        =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeTransport];
+             commandSet[@(REButtonRoleTransportPlay)]        =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Play"]];
-             commandSet[@(REButtonTypeTransportPause)]       =
+             commandSet[@(REButtonRoleTransportPause)]       =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Pause"]];
-             commandSet[@(REButtonTypeTransportFF)] =
+             commandSet[@(REButtonRoleTransportFF)] =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Fast Forward"]];
-             commandSet[@(REButtonTypeTransportRewind)]      =
+             commandSet[@(REButtonRoleTransportRewind)]      =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Rewind"]];
-             commandSet[@(REButtonTypeTransportRecord)]      =
+             commandSet[@(REButtonRoleTransportRecord)]      =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Record"]];
          }
      }];
@@ -160,7 +160,7 @@
 }
 
 
-+ (CommandSet *)numberPadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc
++ (CommandSet *)numberpadForDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)moc
 {
     __block CommandSet * commandSet = nil;
 
@@ -171,30 +171,30 @@
              ComponentDevice * hopper  = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                               context:moc];
 
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeNumberPad];
-             commandSet[@(REButtonTypeNumberpad1)]   =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeNumberpad];
+             commandSet[@(REButtonRoleNumberpad1)]   =
                  [SendIRCommand commandWithIRCode:hopper[@"One"]];
-             commandSet[@(REButtonTypeNumberpad2)]   =
+             commandSet[@(REButtonRoleNumberpad2)]   =
                  [SendIRCommand commandWithIRCode:hopper[@"Two"]];
-             commandSet[@(REButtonTypeNumberpad3)] =
+             commandSet[@(REButtonRoleNumberpad3)] =
                  [SendIRCommand commandWithIRCode:hopper[@"Three"]];
-             commandSet[@(REButtonTypeNumberpad4)]  =
+             commandSet[@(REButtonRoleNumberpad4)]  =
                  [SendIRCommand commandWithIRCode:hopper[@"Four"]];
-             commandSet[@(REButtonTypeNumberpad5)]  =
+             commandSet[@(REButtonRoleNumberpad5)]  =
                  [SendIRCommand commandWithIRCode:hopper[@"Five"]];
-             commandSet[@(REButtonTypeNumberpad6)]   =
+             commandSet[@(REButtonRoleNumberpad6)]   =
                  [SendIRCommand commandWithIRCode:hopper[@"Six"]];
-             commandSet[@(REButtonTypeNumberpad7)] =
+             commandSet[@(REButtonRoleNumberpad7)] =
                  [SendIRCommand commandWithIRCode:hopper[@"Seven"]];
-             commandSet[@(REButtonTypeNumberpad8)] =
+             commandSet[@(REButtonRoleNumberpad8)] =
                  [SendIRCommand commandWithIRCode:hopper[@"Eight"]];
-             commandSet[@(REButtonTypeNumberpad9)]  =
+             commandSet[@(REButtonRoleNumberpad9)]  =
                  [SendIRCommand commandWithIRCode:hopper[@"Nine"]];
-             commandSet[@(REButtonTypeNumberpad0)]  =
+             commandSet[@(REButtonRoleNumberpad0)]  =
                  [SendIRCommand commandWithIRCode:hopper[@"Zero"]];
-             commandSet[@(REButtonTypeNumberpadAux1)]     =
+             commandSet[@(REButtonRoleNumberpadAux1)]     =
                  [SendIRCommand commandWithIRCode:hopper[@"Exit"]];
-             commandSet[@(REButtonTypeNumberpadAux2)]     =
+             commandSet[@(REButtonRoleNumberpadAux2)]     =
                  [SendIRCommand commandWithIRCode:hopper[@"OK"]];
          }
 
@@ -203,17 +203,17 @@
              ComponentDevice * ps3 = [ComponentDevice fetchDeviceWithName:@"PS3" context:moc];
 
              // Create number pad button and add to button group
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeNumberPad];
-             commandSet[@(REButtonTypeNumberpad1)] = [SendIRCommand commandWithIRCode:ps3[@"1"]];
-             commandSet[@(REButtonTypeNumberpad2)] = [SendIRCommand commandWithIRCode:ps3[@"2"]];
-             commandSet[@(REButtonTypeNumberpad3)] = [SendIRCommand commandWithIRCode:ps3[@"3"]];
-             commandSet[@(REButtonTypeNumberpad4)] = [SendIRCommand commandWithIRCode:ps3[@"4"]];
-             commandSet[@(REButtonTypeNumberpad5)] = [SendIRCommand commandWithIRCode:ps3[@"5"]];
-             commandSet[@(REButtonTypeNumberpad6)] = [SendIRCommand commandWithIRCode:ps3[@"6"]];
-             commandSet[@(REButtonTypeNumberpad7)] = [SendIRCommand commandWithIRCode:ps3[@"7"]];
-             commandSet[@(REButtonTypeNumberpad8)] = [SendIRCommand commandWithIRCode:ps3[@"8"]];
-             commandSet[@(REButtonTypeNumberpad9)] = [SendIRCommand commandWithIRCode:ps3[@"9"]];
-             commandSet[@(REButtonTypeNumberpad0)] = [SendIRCommand commandWithIRCode:ps3[@"0"]];
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeNumberpad];
+             commandSet[@(REButtonRoleNumberpad1)] = [SendIRCommand commandWithIRCode:ps3[@"1"]];
+             commandSet[@(REButtonRoleNumberpad2)] = [SendIRCommand commandWithIRCode:ps3[@"2"]];
+             commandSet[@(REButtonRoleNumberpad3)] = [SendIRCommand commandWithIRCode:ps3[@"3"]];
+             commandSet[@(REButtonRoleNumberpad4)] = [SendIRCommand commandWithIRCode:ps3[@"4"]];
+             commandSet[@(REButtonRoleNumberpad5)] = [SendIRCommand commandWithIRCode:ps3[@"5"]];
+             commandSet[@(REButtonRoleNumberpad6)] = [SendIRCommand commandWithIRCode:ps3[@"6"]];
+             commandSet[@(REButtonRoleNumberpad7)] = [SendIRCommand commandWithIRCode:ps3[@"7"]];
+             commandSet[@(REButtonRoleNumberpad8)] = [SendIRCommand commandWithIRCode:ps3[@"8"]];
+             commandSet[@(REButtonRoleNumberpad9)] = [SendIRCommand commandWithIRCode:ps3[@"9"]];
+             commandSet[@(REButtonRoleNumberpad0)] = [SendIRCommand commandWithIRCode:ps3[@"0"]];
 
          }
      }];
@@ -232,16 +232,16 @@
              ComponentDevice * hopper  = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
                                                                               context:moc];
 
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeDPad];
-             commandSet[@(REButtonTypeDPadCenter)]    =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeDPad];
+             commandSet[@(REButtonRoleDPadCenter)]    =
                  [SendIRCommand commandWithIRCode:hopper[@"OK"]];
-             commandSet[@(REButtonTypeDPadUp)]    =
+             commandSet[@(REButtonRoleDPadUp)]    =
                  [SendIRCommand commandWithIRCode:hopper[@"Up"]];
-             commandSet[@(REButtonTypeDPadDown)]  =
+             commandSet[@(REButtonRoleDPadDown)]  =
                  [SendIRCommand commandWithIRCode:hopper[@"Down"]];
-             commandSet[@(REButtonTypeDPadLeft)] =
+             commandSet[@(REButtonRoleDPadLeft)] =
                  [SendIRCommand commandWithIRCode:hopper[@"Right"]];
-             commandSet[@(REButtonTypeDPadRight)]  =
+             commandSet[@(REButtonRoleDPadRight)]  =
                  [SendIRCommand commandWithIRCode:hopper[@"Left"]];
          }
 
@@ -249,17 +249,17 @@
          {
              ComponentDevice * ps3 = [ComponentDevice fetchDeviceWithName:@"PS3" context:moc];
 
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeDPad];
-             commandSet[@(REButtonTypeDPadCenter)]    =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeDPad];
+             commandSet[@(REButtonRoleDPadCenter)]    =
                  [SendIRCommand commandWithIRCode:ps3[@"Enter"]];
-             commandSet[@(REButtonTypeDPadUp)]    =
-                 [SendIRCommand commandWithIRCode:ps3[@"Up"]];
-             commandSet[@(REButtonTypeDPadDown)]  =
-                 [SendIRCommand commandWithIRCode:ps3[@"Down"]];
-             commandSet[@(REButtonTypeDPadLeft)] =
-                 [SendIRCommand commandWithIRCode:ps3[@"Right"]];
-             commandSet[@(REButtonTypeDPadRight)]  =
-                 [SendIRCommand commandWithIRCode:ps3[@"Left"]];
+//             commandSet[@(REButtonTypeDPadUp)]    =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Up"]];
+//             commandSet[@(REButtonTypeDPadDown)]  =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Down"]];
+//             commandSet[@(REButtonTypeDPadLeft)] =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Right"]];
+//             commandSet[@(REButtonTypeDPadRight)]  =
+//                 [SendIRCommand commandWithIRCode:ps3[@"Left"]];
          }
 
          else if ([@"Samsung TV" isEqualToString:name])
@@ -267,16 +267,16 @@
              ComponentDevice * samsungTV = [ComponentDevice fetchDeviceWithName:@"Samsung TV"
                                                                             context:moc];
 
-             commandSet = [CommandSet commandSetInContext:moc type:RECommandSetTypeDPad];
-             commandSet[@(REButtonTypeDPadCenter)]    =
+             commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeDPad];
+             commandSet[@(REButtonRoleDPadCenter)]    =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Enter"]];
-             commandSet[@(REButtonTypeDPadUp)]    =
+             commandSet[@(REButtonRoleDPadUp)]    =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Up"]];
-             commandSet[@(REButtonTypeDPadDown)]  =
+             commandSet[@(REButtonRoleDPadDown)]  =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Down"]];
-             commandSet[@(REButtonTypeDPadLeft)] =
+             commandSet[@(REButtonRoleDPadLeft)] =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Right"]];
-             commandSet[@(REButtonTypeDPadRight)]  =
+             commandSet[@(REButtonRoleDPadRight)]  =
                  [SendIRCommand commandWithIRCode:samsungTV[@"Left"]];
          }
      }];

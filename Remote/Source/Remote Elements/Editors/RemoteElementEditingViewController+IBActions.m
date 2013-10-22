@@ -9,7 +9,7 @@
 #import "REPresetCollectionViewController.h"
 #import "MSRemoteAppController.h"
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel)
 
@@ -174,30 +174,19 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE|LOG_CONTE
 
 - (IBAction)saveAction:(id)sender
 {
-    [MagicalRecord saveUsingCurrentThreadContextWithBlock:nil
-                                               completion:^(BOOL success, NSError *error) {
-                                                   if (error) [MagicalRecord handleErrors:error];
-                                                   else if (success)
-                                                   {
-                                                       if (_delegate) [_delegate remoteElementEditorDidSave:self];
+    __block BOOL savedOk = NO;
+   [_context performBlockAndWait:
+    ^{
+        NSError * error = nil;
+        savedOk = [_context save:&error];
+        if (error) [CoreDataManager handleErrors:error];
+    }];
 
-                                                       else
-                                                           [AppController dismissViewController:self completion:nil];
-
-//                                                       else if (self.presentingViewController)
-//                                                           [self dismissViewControllerAnimated:YES completion:nil];
-                                                   }
-                                               }];
-/*
-    BOOL savedOK = [CoreDataManager saveContext:_context asynchronous:NO completion:nil];
-    if (savedOK)
+    if (savedOk)
     {
         if (_delegate) [_delegate remoteElementEditorDidSave:self];
-
-        else if (self.presentingViewController)
-            [self dismissViewControllerAnimated:YES completion:nil];
+        else [AppController dismissViewController:self completion:nil];
     }
-*/
 }
 
 - (IBAction)resetAction:(id)sender

@@ -13,9 +13,9 @@
 #define CONTAINER_DEBUG_COLOR OrangeColor
 // #define COLOR_CONTAINER_BACKGROUND
 
-static int         ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int    msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
-// static const int ddLogLevel = DefaultDDLogLevel;
+// static int ddLogLevel = DefaultDDLogLevel;
 
 MSSTATIC_STRING_CONST   kCenterXConstraintNametag = @"kCenterXConstraintNametag";
 MSSTATIC_STRING_CONST   kCenterYConstraintNametag = @"kCenterYConstraintNametag";
@@ -463,7 +463,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 - (void)setRemoteElement:(RemoteElement *)remoteElement
 {
     assert(remoteElement);
-    self.context = [NSManagedObjectContext MR_contextWithParent:remoteElement.managedObjectContext];
+    self.context = [NSManagedObjectContext MR_privateQueueContext];
+    _context.parentContext = remoteElement.managedObjectContext;
     [_context MR_setWorkingName:ClassString([self class])];
     [_context performBlockAndWait:
      ^{

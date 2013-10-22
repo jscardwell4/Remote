@@ -9,7 +9,7 @@
 
 #define NUM_PANELS 13
 
-static int   ddLogLevel   = DefaultDDLogLevel;
+static int ddLogLevel   = DefaultDDLogLevel;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -67,7 +67,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 #pragma mark - Configurations
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)currentConfiguration { return self.model.configurationDelegate.currentConfiguration; }
+- (NSString *)currentMode { return self.model.configurationDelegate.currentMode; }
 
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx {
     return (ButtonGroupView *)[super objectAtIndexedSubscript:idx];

@@ -13,11 +13,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 @implementation ThemeSettings
 
-@dynamic theme, type, backgroundImage;
+@dynamic theme, role, backgroundImage;
 
 + (instancetype)themeSettings
 {
-    return [self themeSettingsInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self themeSettingsInContext:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)themeSettingsInContext:(NSManagedObjectContext *)moc
@@ -25,16 +25,16 @@
     return [self MR_createInContext:moc];
 }
 
-+ (instancetype)themeSettingsWithType:(REType)type
++ (instancetype)themeSettingsWithRole:(RERole)role
 {
-    return [self themeSettingsWithType:type
-                               context:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self themeSettingsWithRole:role
+                               context:[CoreDataManager defaultContext]];
 }
 
-+ (instancetype)themeSettingsWithType:(REType)type context:(NSManagedObjectContext *)moc
++ (instancetype)themeSettingsWithRole:(RERole)role context:(NSManagedObjectContext *)moc
 {
     ThemeSettings * themeSettings = [self themeSettingsInContext:moc];
-    themeSettings.type = @(type);
+    themeSettings.role = role;
     return themeSettings;
 }
 
@@ -46,23 +46,41 @@
     return themeSettings;
 }
 
+- (REType)type { return RETypeUndefined; }
+
+- (RERole)role
+{
+    [self willAccessValueForKey:@"role"];
+    NSNumber * role = [self primitiveValueForKey:@"role"];
+    [self didAccessValueForKey:@"role"];
+    return [role unsignedShortValue];
+}
+
+- (void)setRole:(RERole)role
+{
+    [self willChangeValueForKey:@"role"];
+    [self setPrimitiveValue:@(role) forKey:@"role"];
+    [self didChangeValueForKey:@"role"];
+}
 
 - (MSDictionary *)deepDescriptionDictionary
 {
 
     ThemeSettings * settings = [self faultedObject];
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     NSString * themeString = (settings.theme.name ?: @"nil");
-    NSString * typeString  = NSStringFromREType([settings.type shortValue]);
+    NSString * typeString  = NSStringFromREType(settings.type);
+    NSString * roleString  = NSStringFromRERole(settings.role);
     NSString * bgString    = namedModelObjectDescription(settings.backgroundImage);
 
-    dd[@"theme"] = themeString;
-    dd[@"type" ] = typeString;
+    dd[@"theme"]           = themeString;
+    dd[@"type"]            = typeString;
+    dd[@"role"]            = roleString;
     dd[@"backgroundImage"] = bgString;
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end
@@ -83,12 +101,14 @@
     return themeSettings;
 }
 
+- (REType)type { return RETypeRemote; }
+
 - (MSDictionary *)deepDescriptionDictionary
 {
 
     ThemeRemoteSettings * settings = [self faultedObject];
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     NSString * bgColorString       = NSStringFromUIColor(settings.backgroundColor);
     NSString * bgImageAlphaString  = [settings.backgroundImageAlpha stringValue];
@@ -96,7 +116,7 @@
     dd[@"backgroundColor"]       = bgColorString;
     dd[@"backgroundImageAlpha"]  = bgImageAlphaString;
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end
@@ -119,11 +139,13 @@
     return themeSettings;
 }
 
+- (REType)type { return RETypeButtonGroup; }
+
 - (MSDictionary *)deepDescriptionDictionary
 {
     ThemeButtonGroupSettings * settings = [self faultedObject];
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     NSString * bgColorString       = NSStringFromUIColor(settings.backgroundColor);
     NSString * bgImageAlphaString  = [settings.backgroundImageAlpha stringValue];
@@ -135,7 +157,7 @@
     dd[@"style"]                = styleString;
     dd[@"shape"]                = shapeString;
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end
@@ -163,11 +185,13 @@
     return themeSettings;
 }
 
-- (ThemeButtonSettings *)subSettingsForType:(REType)type
+- (REType)type { return RETypeButton; }
+
+- (ThemeButtonSettings *)subSettingsForRole:(RERole)role
 {
     return [self.subSettings objectPassingTest:
             ^BOOL(ThemeButtonSettings * obj) {
-                return ([obj.type intValue] == type);
+                return (obj.role == role);
             }];
 }
 
@@ -176,7 +200,7 @@
 
     ThemeButtonSettings * settings = [self faultedObject];
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     NSString * titleInsetsString = NSStringFromUIEdgeInsets([settings.titleInsets
                                                              UIEdgeInsetsValue]);
@@ -218,7 +242,7 @@
     dd[@"style"]            = styleString;
     dd[@"shape"]            = shapeString;
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end

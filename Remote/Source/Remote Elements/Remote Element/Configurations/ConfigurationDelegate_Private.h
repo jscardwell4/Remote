@@ -17,7 +17,7 @@
 @property (nonatomic, strong, readwrite) NSSet               * subscribers;
 @property (nonatomic, strong, readwrite) RemoteElement       * element;
 
-- (void)updateForConfiguration:(NSString *)configuration;
+- (void)updateForMode:(NSString *)mode;
 
 @end
 

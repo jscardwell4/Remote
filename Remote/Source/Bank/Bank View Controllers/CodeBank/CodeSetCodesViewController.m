@@ -10,7 +10,7 @@
 #import "IRCode.h"
 #import "IRCodeDetailViewController.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
 
@@ -52,7 +52,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     return cell;
 }
 
-- (void)setCodeSet:(BOIRCodeset *)newCodeSet {
+- (void)setCodeSet:(IRCodeset *)newCodeSet {
     codeset           = newCodeSet;
     self.fetchedCodes =
         [[codeset.codes allObjects]

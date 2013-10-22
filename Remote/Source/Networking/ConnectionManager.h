@@ -32,7 +32,7 @@ MSEXTERN_STRING   CMCommandDidCompleteNotification;
   @param command The command containing the details from which the send message will be constructed.
   @param completion Block which to be executed upon completion of the send operation
  */
-+ (void)sendCommand:(NSManagedObjectID *)commandID completion:(RECommandCompletionHandler)completion;
++ (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion;
 
 /// Indicates status of wifi connectivity.
 + (BOOL)isWifiAvailable;

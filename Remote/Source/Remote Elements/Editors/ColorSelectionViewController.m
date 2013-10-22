@@ -1,6 +1,6 @@
 #import "ColorSelectionViewController.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
 

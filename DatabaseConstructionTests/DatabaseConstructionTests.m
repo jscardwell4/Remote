@@ -8,7 +8,7 @@
 #import "DatabaseConstructionTests.h"
 #import "BankObject.h"
 
-static const int   ddLogLevel    = LOG_LEVEL_UNITTEST;
+static int ddLogLevel    = LOG_LEVEL_UNITTEST;
 static const int   msLogContext  = LOG_CONTEXT_UNITTEST;
 static uint8_t     msTestOptions = 0;
 #pragma unused(ddLogLevel, msLogContext, msTestOptions)

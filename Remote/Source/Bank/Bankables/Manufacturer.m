@@ -11,7 +11,8 @@
 
 @implementation Manufacturer
 
-@dynamic codesets, codes, devices;
+@dynamic codes, devices;
+
 
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
@@ -33,6 +34,21 @@
 
     return manufacturer;
 }
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"codes"] = CollectionSafeSelfKeyPathValue(@"codes.JSONDictionary");
+    dictionary[@"devices"] = CollectionSafeSelfKeyPathValue(@"devices.uuid");
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
+- (NSSet *)codesets { return [self.codes valueForKeyPath:@"codeset"]; }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Bankable

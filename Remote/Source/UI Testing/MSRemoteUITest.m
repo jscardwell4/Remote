@@ -10,9 +10,9 @@
 #import "RemoteController.h"
 #import "CoreDataManager.h"
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
-// static const int ddLogLevel = DefaultDDLogLevel
+// static int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)
 
 MSSTRING_CONST   MSRemoteUIRemoteKey          = @"MSRemoteUIRemoteKey";
@@ -53,7 +53,7 @@ MSSTRING_CONST   MSRemoteUILogSubviewsKey     = @"MSRemoteUILogSubviewsKey";
         _testCode             = testCode;
         _flags.quietMode      = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 1);
         _flags.suppressDialog = (((_testCode & UITestOptionsMask) >> UITestOptionsOffset) & 2);
-        self.objectContext    = [NSManagedObjectContext MR_newMainQueueContext];
+        self.objectContext    = [NSManagedObjectContext MR_mainQueueContext];
         [_objectContext MR_setWorkingName:@"uitesting"];
         self.remoteController = [RemoteController remoteControllerInContext:_objectContext];
     }

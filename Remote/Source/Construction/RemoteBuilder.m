@@ -7,7 +7,7 @@
 
 #import "RemoteConstruction.h"
 
-static const int   ddLogLevel   = LOG_LEVEL_WARN;
+static int ddLogLevel   = LOG_LEVEL_WARN;
 static const int   msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -20,13 +20,13 @@ static const int   msLogContext = 0;
     Remote * remote = [Remote remoteElementInContext:moc];
     remote.name = @"Dish Hopper Activity";
     remote.key = @"activity1";
-    remote.topBarHiddenOnLoad = YES;
-    [remote registerConfiguration:kTVConfiguration];
+    remote.topBarHidden = YES;
+    [remote registerMode:kTVMode];
 
     ButtonGroup * oneByThree = [ButtonGroupBuilder constructDVRGroupOfThreeButtonsInContext:moc];
     ButtonGroup * rocker = [ButtonGroupBuilder constructDVRRockerInContext:moc];
     ButtonGroup * dpad = [ButtonGroupBuilder constructDVRDPadInContext:moc];
-    ButtonGroup * numberpad = [ButtonGroupBuilder constructDVRNumberPadInContext:moc];
+    ButtonGroup * numberpad = [ButtonGroupBuilder constructDVRNumberpadInContext:moc];
     [remote assignButtonGroup:numberpad assignment:REPanelLocationTop|REPanelTrigger1];
     ButtonGroup * transport = [ButtonGroupBuilder constructDVRTransportInContext:moc];
     [remote assignButtonGroup:transport assignment:REPanelLocationBottom|REPanelTrigger1];
@@ -99,13 +99,13 @@ static const int   msLogContext = 0;
 {
     Remote * remote = [Remote remoteElementInContext:moc];
     remote.key = @"activity2";
-    remote.options = RERemoteOptionTopBarHiddenOnLoad;
+    remote.options = RERemoteOptionTopBarHidden;
     remote.name = @"Playstation Activity";
 
     ButtonGroup * bg1 = [ButtonGroupBuilder constructPS3GroupOfThreeButtonsInContext:moc];
     ButtonGroup * bg2 = [ButtonGroupBuilder constructPS3RockerInContext:moc];
     ButtonGroup * bg3 = [ButtonGroupBuilder constructPS3DPadInContext:moc];
-    ButtonGroup * bg4 = [ButtonGroupBuilder constructPS3NumberPadInContext:moc];
+    ButtonGroup * bg4 = [ButtonGroupBuilder constructPS3NumberpadInContext:moc];
     ButtonGroup * bg5 = [ButtonGroupBuilder constructPS3TransportInContext:moc];
     ButtonGroup * bg6 = [ButtonGroupBuilder constructHomeAndPowerButtonsForActivity:2
                                                                                 context:moc];

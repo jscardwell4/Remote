@@ -10,6 +10,7 @@
 #import "RemoteElementView.h"
 #import "RemoteViewController.h"
 #import "MSRemoteAppController.h"
+#import "RemoteElementExportSupportFunctions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -21,7 +22,7 @@ BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 &&
 
 static __weak RemoteViewController * _remoteViewController;
 
-@interface SystemCommandOperation : RECommandOperation @end
+@interface SystemCommandOperation : CommandOperation @end
 
 @implementation SystemCommand
 
@@ -29,7 +30,7 @@ static __weak RemoteViewController * _remoteViewController;
 
 + (SystemCommand *)commandWithType:(SystemCommandType)type
 {
-    return [self commandWithType:type inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self commandWithType:type inContext:[CoreDataManager defaultContext]];
 }
 
 + (SystemCommand *)commandWithType:(SystemCommandType)type
@@ -65,6 +66,18 @@ static __weak RemoteViewController * _remoteViewController;
     return type;
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"type"] = CollectionSafeValue(systemCommandTypeJSONValueForSystemCommand(self));
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
 + (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController
 {
     _remoteViewController = remoteViewController;
@@ -72,7 +85,7 @@ static __weak RemoteViewController * _remoteViewController;
     return YES;
 }
 
-- (RECommandOperation *)operation
+- (CommandOperation *)operation
 {
     return [SystemCommandOperation operationForCommand:self];
 }
@@ -95,7 +108,7 @@ static __weak RemoteViewController * _remoteViewController;
 
         switch (systemCommand.type)
         {
-            case SystemCommandToggleProximitySensor:
+            case SystemCommandProximitySensor:
             {
                 CurrentDevice.proximityMonitoringEnabled = !CurrentDevice.proximityMonitoringEnabled;
                 _success                                 = YES;
@@ -109,7 +122,7 @@ static __weak RemoteViewController * _remoteViewController;
                 taskComplete = YES;
             }   break;
 
-            case SystemCommandReturnToLaunchScreen:
+            case SystemCommandLaunchScreen:
             {
                 MSRunAsyncOnMain (^{ [AppController dismissViewController:_remoteViewController
                                                                completion:^{

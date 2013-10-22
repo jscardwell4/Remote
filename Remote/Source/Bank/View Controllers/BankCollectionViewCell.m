@@ -13,6 +13,7 @@ static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
+
 MSIDENTIFIER_DEFINITION(ListCell);
 MSIDENTIFIER_DEFINITION(ThumbnailCell);
 
@@ -22,9 +23,23 @@ typedef NS_ENUM(uint8_t, BankCollectionViewCellType)
     BankCollectionViewCellThumbnailType  = 1
 };
 
+@interface BankCollectionViewCell () <UIScrollViewDelegate>
+
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView                  * thumbnailImageView;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel                      * nameLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton                     * editButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton                     * detailButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton                     * deleteButton;
+@property (nonatomic, weak, readwrite) IBOutlet BankCollectionViewController * controller;
+@property (nonatomic, weak, readwrite) IBOutlet NSLayoutConstraint           * leadingConstraint;
+@property (nonatomic, weak, readwrite) IBOutlet UIScrollView                 * scrollView;
+
+@end
+
 @implementation BankCollectionViewCell
 {
     BankCollectionViewCellType _cellType;
+    NSTimer * _swipeToDeleteTimer;
 }
 
 
@@ -35,18 +50,6 @@ typedef NS_ENUM(uint8_t, BankCollectionViewCellType)
     self.thumbnailImage = nil;
     self.name = nil;
 }
-
-/*
-- (id)initWithFrame:(CGRect)frame
-{
-    if (self = [super initWithFrame:frame])
-    {
-
-    }
-
-    return self;
-}
-*/
 
 - (void)awakeFromNib
 {
@@ -59,6 +62,13 @@ typedef NS_ENUM(uint8_t, BankCollectionViewCellType)
                                     gestureWithTarget:self
                                                action:@selector(thumbnailImageViewAction:)];
     [_thumbnailImageView addGestureRecognizer:tap];
+
+
+    UISwipeGestureRecognizer * swipe = [UISwipeGestureRecognizer
+                                        gestureWithTarget:self
+                                                   action:@selector(swipeToDeleteAnimation:)];
+    swipe.direction = UISwipeGestureRecognizerDirectionLeft|UISwipeGestureRecognizerDirectionRight;
+    [self addGestureRecognizer:swipe];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,6 +90,32 @@ typedef NS_ENUM(uint8_t, BankCollectionViewCellType)
     _detailButton.enabled                      = (_bankFlags & BankDetail);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Animations
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (void)swipeToDeleteAnimation:(UISwipeGestureRecognizer *)gesture
+{
+    static const CGFloat kDefaultConstant = 8, kShiftedConstant = -58;
+    if ([_controller collectionView:_controller.collectionView
+                   canPerformAction:@selector(deleteItemForCell:)
+                 forItemAtIndexPath:[_controller.collectionView indexPathForCell:self]
+                         withSender:self])
+    {
+        CGFloat newConstant = (_leadingConstraint.constant == kDefaultConstant
+                               ? kShiftedConstant
+                               : kDefaultConstant);
+        _leadingConstraint.constant = newConstant;
+        __weak BankCollectionViewCell * weakself = self;
+
+        [UIView animateWithDuration:0.5 animations:^{ [weakself layoutIfNeeded]; }];
+    }
+
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,13 +123,11 @@ typedef NS_ENUM(uint8_t, BankCollectionViewCellType)
 
 - (IBAction)thumbnailImageViewAction:(id)sender
 {
-    MSLogDebug(@"");
-    switch (_cellType)
-    {
-        case BankCollectionViewCellThumbnailType: [self.controller zoomItemForCell:self];    break;
-        default:                                  [self.controller previewItemForCell:self]; break;
-    }
+    if (_cellType == BankCollectionViewCellListType) [self.controller previewItemForCell:self];
+    else [self.controller zoomItemForCell:self];
 }
+
+- (IBAction)deleteButtonAction:(id)sender { [self.controller deleteItemForCell:self]; }
 
 - (IBAction)detailButtonAction:(id)sender { [self.controller detailItemForCell:self]; }
 

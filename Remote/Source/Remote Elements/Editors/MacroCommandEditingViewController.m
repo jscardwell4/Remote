@@ -15,7 +15,7 @@
 
 #import "ViewDecorator.h"
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 

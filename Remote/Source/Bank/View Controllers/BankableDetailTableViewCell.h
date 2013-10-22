@@ -18,4 +18,9 @@
 @property (nonatomic, weak, readonly) IBOutlet UITextView   * infoTextView;
 @property (nonatomic, weak, readonly) IBOutlet UITableView  * infoTableView;
 @property (nonatomic, weak, readonly) IBOutlet UIPickerView * pickerView;
+
+@property (nonatomic, weak) NSString * name;
+@property (nonatomic, weak) NSString * text;
+@property (nonatomic, weak) UIImage  * image;
+
 @end

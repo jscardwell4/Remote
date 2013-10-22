@@ -27,6 +27,7 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 + (BankFlags)bankFlags;
 + (UIImage *)directoryIcon;
 + (Class<BankableDetailDelegate>)detailViewControllerClass;
++ (NSFetchedResultsController *)bankableItems;
 
 - (void)updateItem;
 - (void)resetItem;
@@ -55,11 +56,11 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 
 @end
 
-@interface BankInfo : NSManagedObject
+@interface BankInfo : NSManagedObject <MSJSONExport>
 
-@property (nonatomic, copy) NSString * name;
-@property (nonatomic, copy) NSString * category;
-@property (nonatomic, copy) NSNumber * user;
+@property (nonatomic, copy)   NSString * name;
+@property (nonatomic, copy)   NSString * category;
+@property (nonatomic, assign) BOOL       user;
 
 @end
 

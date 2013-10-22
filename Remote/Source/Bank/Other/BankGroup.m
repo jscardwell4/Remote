@@ -8,8 +8,9 @@
 
 #import "BankGroup.h"
 #import "Image.h"
+#import "IRCode.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
 
@@ -39,38 +40,3 @@ static int   ddLogLevel = DefaultDDLogLevel;
 }
 
 @end
-
-@implementation ImageGroup
-
-@dynamic images;
-
-- (id)keySubscriptedCollection { return self.images; }
-
-- (NSDictionary *)deepDescriptionDictionary
-{
-    ImageGroup * imageGroup = [self faultedObject];
-    assert(imageGroup);
-    
-    NSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"name"  ] = (imageGroup.name ?: @"nil");
-    dd[@"images"] = (imageGroup.images
-                                        ? [[imageGroup.images setByMappingToBlock:
-                                           ^NSString *(Image * obj)
-                                           {
-                                               return $(@"%@:'%@'", obj.uuid, obj.name);
-                                           }] componentsJoinedByString:@"\n"]
-                                        : @"nil");
-
-    return dd;
-}
-
-@end
-
-@implementation IRCodeset
-
-@dynamic manufacturer, codes;
-
-- (id)keySubscriptedCollection { return self.codes; }
-
-@end
-

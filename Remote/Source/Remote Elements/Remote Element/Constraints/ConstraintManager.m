@@ -9,7 +9,7 @@
 #import "ConstraintManager.h"
 #import "RemoteElement_Private.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSTRAINT|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 

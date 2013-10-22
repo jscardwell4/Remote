@@ -5,9 +5,11 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+
+#import "Remote.h"
 #import "RemoteElement_Private.h"
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_REMOTE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -22,10 +24,10 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
     if (ModelObjectShouldInitialize)
         [self.managedObjectContext performBlockAndWait:
          ^{
-             self.type = RETypeRemote;
+             self.elementType = RETypeRemote;
              self.configurationDelegate = [RemoteConfigurationDelegate
                                            delegateForRemoteElement:self];
-             [self registerConfiguration:REDefaultConfiguration];
+             [self registerMode:REDefaultMode];
          }];
 }
 
@@ -54,36 +56,38 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
     return (ButtonGroup *)[super objectAtIndexedSubscript:subscript];
 }
 
-- (void)setTopBarHiddenOnLoad:(BOOL)topBarHiddenOnLoad
+- (void)setTopBarHidden:(BOOL)topBarHidden
 {
     REOptions options = self.options;
-    self.options = (topBarHiddenOnLoad
-                    ? options | RERemoteOptionTopBarHiddenOnLoad
-                    : options & ~RERemoteOptionTopBarHiddenOnLoad);
+    self.options = (topBarHidden
+                    ? options | RERemoteOptionTopBarHidden
+                    : options & ~RERemoteOptionTopBarHidden);
 }
 
-- (BOOL)isTopBarHiddenOnLoad
+- (BOOL)isTopBarHidden
 {
-    BOOL topBarHiddenOnLoad = (self.options == RERemoteOptionTopBarHiddenOnLoad) ? YES : NO;
-    BOOL faultyTopBarHiddenOnLoad = (self.options & RERemoteOptionTopBarHiddenOnLoad) ? YES : NO;
-    assert(topBarHiddenOnLoad == faultyTopBarHiddenOnLoad);
-    if (topBarHiddenOnLoad) assert(self.options == 1);
+    BOOL topBarHidden = (self.options == RERemoteOptionTopBarHidden) ? YES : NO;
+    BOOL faultyTopBarHidden = (self.options & RERemoteOptionTopBarHidden) ? YES : NO;
+    assert(topBarHidden == faultyTopBarHidden);
+    if (topBarHidden) assert(self.options == 1);
 
-    return topBarHiddenOnLoad;
+    return topBarHidden;
 }
 
-- (BOOL)registerConfiguration:(NSString *)configuration
+- (BOOL)registerMode:(NSString *)mode
 {
-    return [self.configurationDelegate addConfiguration:configuration];
+    return [self.configurationDelegate addMode:mode];
 }
 
-- (NSArray *)registeredConfigurations { return self.configurationDelegate.configurationKeys;}
+- (NSArray *)registeredConfigurations { return self.configurationDelegate.modeKeys;}
 
-- (BOOL)switchToConfiguration:(NSString *)configuration
+- (BOOL)switchToMode:(NSString *)mode
 {
-    self.configurationDelegate.currentConfiguration = configuration;
-    return [self.configurationDelegate.currentConfiguration isEqualToString:configuration];
+    self.configurationDelegate.currentMode = mode;
+    return [self.configurationDelegate.currentMode isEqualToString:mode];
 }
+
+- (NSArray *)modes { return self.configurationDelegate.modeKeys; }
 
 - (void)assignButtonGroup:(ButtonGroup *)buttonGroup assignment:(REPanelAssignment)assignment
 {
@@ -99,6 +103,28 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
     return (uuid ? [ButtonGroup objectWithUUID:uuid context:self.managedObjectContext] : nil);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Exporting
+////////////////////////////////////////////////////////////////////////////////
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    if ([self.panels count])
+        dictionary[@"panels"] = [self.panels dictionaryByMappingKeysToBlock:
+                                 ^NSString *(NSNumber * key, id obj)
+                                 {
+                                     NSString * keyString = panelKeyForPanelAssignment(INTValue(key));
+                                     return (keyString ?: [key stringValue]);
+                                 }];
+
+    NSArray * modes = self.modes;
+    if ([modes count]) dictionary[@"modes"] = modes;
+
+    return dictionary;
+}
+
+
 @end
 
 @implementation Remote (Debugging)
@@ -108,10 +134,10 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
     Remote * element = [self faultedObject];
     assert(element);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"topBarHiddenOnLoad"] = BOOLString(element.topBarHiddenOnLoad);
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    dd[@"topBarHidden"] = BOOLString(element.topBarHidden);
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end

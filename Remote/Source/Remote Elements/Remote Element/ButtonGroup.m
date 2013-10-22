@@ -5,6 +5,8 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+
+#import "ButtonGroup.h"
 #import "RemoteElement_Private.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
@@ -25,18 +27,15 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 @dynamic parentElement;
 @dynamic controller;
 
-+ (instancetype)buttonGroupWithType:(REType)type
++ (instancetype)buttonGroupWithRole:(RERole)role
 {
-    return ((baseTypeForREType(type) == RETypeButtonGroup)
-            ? [self remoteElementWithAttributes:@{@"type": @(type)}]
-            : nil);
+    return [self remoteElementWithAttributes:@{@"role" : @(role)}];
 }
 
-+ (instancetype)buttonGroupWithType:(REType)type context:(NSManagedObjectContext *)moc
++ (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc
 {
-    return ((baseTypeForREType(type) == RETypeButtonGroup)
-            ? [self remoteElementInContext:moc attributes:@{@"type": @(type)}]
-            : nil);
+    return [self remoteElementInContext:moc attributes:@{@"role" : @(role)}];
+
 }
 
 - (void)awakeFromInsert
@@ -46,7 +45,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     if (ModelObjectShouldInitialize)
         [self.managedObjectContext performBlockAndWait:
          ^{
-             self.type = RETypeButtonGroup;
+             self.elementType = RETypeButtonGroup;
              self.configurationDelegate = [ButtonGroupConfigurationDelegate
                                            delegateForRemoteElement:self];
          }];
@@ -97,10 +96,10 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     self.panelTrigger = trigger;
 
     if (self.panelLocation == REPanelLocationUnassigned || self.panelTrigger == REPanelNoTrigger)
-        self.type &= ~REButtonGroupTypePanel | RETypeButtonGroup;
+        self.role &= ~REButtonGroupRolePanel;
 
     else
-        self.type |= REButtonGroupTypePanel;
+        self.role |= REButtonGroupRolePanel;
 }
 
 - (REPanelAssignment)panelAssignment { return (REPanelAssignment)self.subtype; }
@@ -109,7 +108,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 - (REPanelLocation)panelLocation { return self.panelAssignment & REPanelAssignmentLocationMask; }
 
-- (BOOL)isPanel { return ((self.type & REButtonGroupTypePanel) == REButtonGroupTypePanel); }
+- (BOOL)isPanel { return ((self.role & REButtonGroupRolePanel) == REButtonGroupRolePanel); }
 
 - (ButtonGroupConfigurationDelegate *)groupConfigurationDelegate
 {
@@ -126,10 +125,10 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 }
 
 - (void)addCommandContainer:(CommandContainer *)container
-              configuration:(RERemoteConfiguration)config
+              mode:(RERemoteMode)mode
 {
     [self.groupConfigurationDelegate setCommandContainer:container
-                                     configuration:config];
+                                     mode:mode];
 }
 
 - (void)setCommandContainer:(CommandContainer *)container
@@ -143,7 +142,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
                                  );
     for (Button * button in self.subelements)
     {
-        Command * cmd = commandSet[@(button.type)];
+        Command * cmd = commandSet[@(button.elementType)];
         button.command = cmd;
         button.enabled = (cmd != nil);
     }
@@ -169,7 +168,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     [super awakeFromInsert];
 
     if (ModelObjectShouldInitialize)
-        self.type = REButtonGroupTypePickerLabel;
+        self.role |= REButtonGroupRolePickerLabel;
 }
 
 - (CommandSetCollection *)commandSetCollection
@@ -205,6 +204,23 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
                                              );
 }
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Exporting
+////////////////////////////////////////////////////////////////////////////////
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    if (self.label)
+        dictionary[@"label"] = self.label;
+
+    if (self.labelConstraints)
+        dictionary[@"labelConstraints"] = self.labelConstraints;
+
+    return dictionary;
+}
+
 @end
 
 @implementation ButtonGroup (Debugging)
@@ -214,16 +230,12 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     ButtonGroup * element = [self faultedObject];
     assert(element);
     
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"label"] = (element.label ? element.label.string : @"nil");
     dd[@"labelConstraints"] = (element.labelConstraints ? : @"nil");
     dd[@"panelAssignment"] = NSStringFromREPanelAssignment(element.panelAssignment);
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Miscellaneous Functions
-////////////////////////////////////////////////////////////////////////////////

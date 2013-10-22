@@ -11,7 +11,7 @@
 #import "RemoteElementView_Private.h"
 #import "Bank.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -28,7 +28,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          preset = [self MR_createInContext:element.managedObjectContext];
          preset.element = element;
          NSString * category = nil;
-         switch (baseTypeForREType(element.type))
+         switch (element.elementType)
          {
              case RETypeRemote:
                  category = @"Remote";

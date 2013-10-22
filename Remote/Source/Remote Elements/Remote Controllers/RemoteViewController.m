@@ -6,7 +6,8 @@
 #import "SettingsManager.h"
 #import "RemoteElementConstructionManager.h"
 #import "ControlStateSet.h"
-//#import "BankObject.h"
+#import "ButtonGroup.h"
+#import "Remote.h"
 #import "CoreDataManager.h"
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
@@ -17,7 +18,7 @@
 
 // #define INACTIVITY_TIMER
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 
 MSSTATIC_STRING_CONST   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
@@ -294,7 +295,7 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 
     [self insertRemoteView:[RemoteView viewWithModel:remote]];
 
-    _flags.shouldHideTopToolbar = remote.topBarHiddenOnLoad;
+    _flags.shouldHideTopToolbar = remote.topBarHidden;
 
     [self.view.gestureRecognizers enumerateObjectsUsingBlock:
      ^(id obj, NSUInteger idx, BOOL * stop)
@@ -339,7 +340,7 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 
     assert([currentRV isKindOfClass:[RemoteView class]] || currentRV == nil);
 
-    BOOL shouldToggleToolbar = ([self isTopToolbarVisible] == remoteView.topBarHiddenOnLoad);
+    BOOL shouldToggleToolbar = ([self isTopToolbarVisible] == remoteView.topBarHidden);
 
     remoteView.nametag = kRemoteViewNameTag;
 

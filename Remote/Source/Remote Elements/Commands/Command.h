@@ -39,7 +39,7 @@
  * Executes the task associated with the command with the specified options.
  * @param completion Block to execute after the command completes
  */
-- (void)execute:(RECommandCompletionHandler)completion;
+- (void)execute:(CommandCompletionHandler)completion;
 
 /// Show activity indicator while executing command.
 @property (nonatomic, assign) BOOL indicator;
@@ -96,14 +96,14 @@
  * @param uuid The `uuid` of the command to retrieve
  * @return The `Command` object at the specified index
  */
-//- (RECommand *)objectAtKeyedSubscript:(NSString *)uuid;
+//- (Command *)objectAtKeyedSubscript:(NSString *)uuid;
 
 /**
  * Returns the `Command` object at the specified index sorted by order of execution.
  * @param idx The index of the command to retrieve
  * @return The `Command` object at the specified index
  */
-//- (RECommand *)objectAtIndexedSubscript:(NSUInteger)idx;
+//- (Command *)objectAtIndexedSubscript:(NSUInteger)idx;
 
 /**
  * Sets the `Command` object at the specified index sorted by order of execution.
@@ -200,6 +200,8 @@
                            inContext:(NSManagedObjectContext *)context;
 
 + (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController;
+
+@property (nonatomic, assign, readonly) SystemCommandType type;
 
 @end
 
@@ -316,55 +318,12 @@
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Switching Remotes
+#pragma mark - Switching Configurations or Remotes
 ////////////////////////////////////////////////////////////////////////////////
-@class RemoteController, Remote;
-/**
- * `SwitchToRemoteCommand` subclasses `Command` to transition from one remote to another. When
- * the command is executed it invokes the <RemoteController> object's `makeCurrentRemoteWithKey:`
- * method which, in turn, prompts the <RemoteViewController> observing to switch out the current
- * remote for the new one.
- */
-@interface SwitchToRemoteCommand : Command
 
-/**
- * Default initializer for creating a `SwitchToRemoteCommand`.
- * @param remote The remote to which the remote controller should switch.
- * @return The newly created `SwitchToRemoteCommand`.
- */
-+ (SwitchToRemoteCommand *)commandWithRemote:(Remote *)remote;
+@interface SwitchCommand : Command
 
-/// The `Remote` object to switch to.
-@property (nonatomic, strong) Remote * remote;
+@property (nonatomic, assign, readonly) SwitchCommandType type;
+@property (nonatomic, copy, readonly)   NSString * target;
 
 @end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Switching Configurations
-////////////////////////////////////////////////////////////////////////////////
-
-@interface SwitchToConfigCommand : Command
-
-+ (SwitchToConfigCommand *)commandWithConfiguration:(RERemoteConfiguration)configuration;
-+ (SwitchToConfigCommand *)commandWithConfiguration:(RERemoteConfiguration)configuration
-                                            inContext:(NSManagedObjectContext *)context;
-
-@property (nonatomic, strong, readonly) RemoteController    * remoteController;
-@property (nonatomic, copy,   readonly) RERemoteConfiguration   configuration;
-
-@end
-
-MSSTATIC_INLINE Class classForCommandImportType(NSString * type)
-{
-    static NSDictionary const * index = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index = @{ @"power"    : [PowerCommand    class],
-                   @"ir"       : [SendIRCommand   class],
-                   @"http"     : [HTTPCommand     class],
-                   @"delay"    : [DelayCommand    class],
-                   @"activity" : [ActivityCommand class] };
-    });
-    return index[type];
-}
-

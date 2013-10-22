@@ -11,7 +11,7 @@
 #import "CodeSetCodesViewController.h"
 #import "CoreDataManager.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 @interface ManufacturerCodeSetsViewController ()
 
@@ -44,7 +44,7 @@ static int   ddLogLevel = DefaultDDLogLevel;
     UITableViewCell * cell           = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     // Configure the cell...
-    BOIRCodeset * codeset = self.fetchedCodeSets[indexPath.row];
+    IRCodeset * codeset = self.fetchedCodeSets[indexPath.row];
 
     cell.textLabel.text = codeset.name;
 

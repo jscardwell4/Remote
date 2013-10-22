@@ -9,9 +9,9 @@
 #import "RemoteElementEditingViewController_Private.h"
 #import "RemoteElementView_Private.h"
 
-//static const int   ddLogLevel = LOG_LEVEL_DEBUG;
+//static int ddLogLevel = LOG_LEVEL_DEBUG;
 
-static const int ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 #pragma unused(ddLogLevel)
 
 @implementation RemoteElementEditingViewController (Selection)

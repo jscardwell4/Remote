@@ -39,7 +39,7 @@
 - (void)applyThemeToElements:(NSSet *)elements;
 - (NSDictionary *)themedAttributesFromAttributes:(NSDictionary *)attributes
                               templateAttributes:(NSDictionary *)templateAttributes
-                                           flags:(REThemeFlags)flags;
+                                           flags:(REThemeOverrideFlags)flags;
 
 @end
 

@@ -11,7 +11,7 @@
 #import "ComponentDevice.h"
 #import "IRCode.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
 

@@ -47,6 +47,11 @@ static NSIndexPath * kPreviewCellIndexPath;
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
+- (void)setItem:(NSManagedObject<Bankable> *)item
+{
+    [super setItem:item];
+    _image = (Image *)item;
+}
 
 - (Image *)image { if (!_image) _image = (Image *)self.item; return _image; }
 
@@ -58,7 +63,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 2; }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (section ? 1 : 2);
+    return (section ? 1 : 3);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,46 +80,63 @@ static NSIndexPath * kPreviewCellIndexPath;
                 {
                     cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
                                                       forIndexPath:indexPath];
-                    cell.nameLabel.text = @"Category";
-                    cell.infoTextField.text = (self.image.category ?: @"Uncategorized");
-                    BankableDetailTextFieldChangeHandler changeHandler = ^{
+                    cell.name = @"Category";
+                    cell.text = (self.image.category ?: @"Uncategorized");
+
+                    BankableChangeHandler changeHandler =
+                    ^{
                         _image.category = cell.infoTextField.text;
                         if (![_categories containsObject:_image.category]) _categories = nil;
                     };
+
                     [self registerTextField:cell.infoTextField
                                forIndexPath:indexPath
-                                   handlers:@{BankableDetailTextFieldChangeHandlerKey:changeHandler}];
+                                   handlers:@{BankableChangeHandlerKey:changeHandler}];
+                    
                     [self registerPickerView:cell.pickerView forIndexPath:indexPath];
-                } break;
+
+                    break;
+                }
 
                 case 1: // File name
                 {
                     cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
                                                       forIndexPath:indexPath];
-                    cell.nameLabel.text = @"File";
-                    cell.infoLabel.text = self.image.fileName;
-                } break;
+                    cell.name = @"File";
+                    cell.text = self.image.fileName;
+
+                    break;
+                }
 
                 case 2: // Size
                 {
                     cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
                                                       forIndexPath:indexPath];
-                    cell.nameLabel.text = @"Size";
-                    cell.infoLabel.text = PrettySize(self.image.size);
-                } break;
+                    cell.name = @"Size";
+                    cell.text = PrettySize(self.image.size);
+
+                    break;
+                }
             }
-        } break;
+
+            break;
+        }
 
         case 1: // Preview
         {
             cell = [self dequeueReusableCellWithIdentifier:ImageCellIdentifier
                                               forIndexPath:indexPath];
-            UIImage * image = self.image.preview;
-            cell.infoImageView.image = image;
+            UIImage * image = _image.preview;
+            cell.image = image;
 
-            if (CGSizeContainsSize(cell.infoImageView.bounds.size, image.size))
+            CGSize imageSize = image.size;
+            CGSize boundsSize = cell.infoImageView.bounds.size;
+
+            if (CGSizeContainsSize(boundsSize, imageSize))
                 cell.infoImageView.contentMode = UIViewContentModeCenter;
-        } break;
+
+            break;
+        }
 
     }
     
@@ -167,7 +189,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 
 - (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type
 {
-    return (type == BankableDetailTextFieldData ? self.image.category : self.categories);
+    return (type == BankableDetailPickerViewData ? self.categories : self.image.category);
 }
 
 

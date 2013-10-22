@@ -6,8 +6,9 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteConstruction.h"
+#import "RemoteElement_Private.h"
 
-static const int ddLogLevel   = LOG_LEVEL_WARN;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -16,7 +17,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 + (void)buildController
 {
     MSLogDebugTag(@"beginning remote construction...");
-    [NSManagedObjectContext saveWithBlockAndWait:
+
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          localContext.nametag = @"remote element construction manager context";
@@ -28,25 +30,25 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          assert(controller);
      }];
 
-     [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
       ^(NSManagedObjectContext * localContext)
       {
          // create builtin themes
           BuiltinTheme * nightshadeTheme = [BuiltinTheme MR_findFirstByAttribute:@"name"
-                                                                           withValue:REThemeNightshadeName
-                                                                           inContext:localContext];
+                                                                       withValue:REThemeNightshadeName
+                                                                       inContext:localContext];
           if (nightshadeTheme)
               [localContext deleteObject:nightshadeTheme];
 
           nightshadeTheme =  [BuiltinTheme themeWithName:REThemeNightshadeName context:localContext];
-         assert(nightshadeTheme);
+          assert(nightshadeTheme);
 
-         BuiltinTheme * powerBlueTheme = [BuiltinTheme themeWithName:REThemePowerBlueName
-                                                                 context:localContext];
-         assert(powerBlueTheme);
+          BuiltinTheme * powerBlueTheme = [BuiltinTheme themeWithName:REThemePowerBlueName
+                                                              context:localContext];
+          assert(powerBlueTheme);
      }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          ButtonGroup * topToolbar = [ButtonGroupBuilder
@@ -59,7 +61,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          [controller registerTopToolbar:topToolbar];
      }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // attach power on/off commands to components
@@ -83,7 +85,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ps3.onCommand                  = [SendIRCommand commandWithIRCode:ps3[@"Discrete On"]];
      }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+    // [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // Dish Hopper Activity
@@ -102,9 +105,20 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:hopperRemote];
          hopperActivity.remote = hopperRemote;
 
+/*
+         NSString * hopperRemoteJSON = [hopperRemote JSONString];
+         NSError * error = nil;
+         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"hopper.json"];
+         [hopperRemoteJSON writeToFile:filePath
+                            atomically:YES
+                              encoding:NSUTF8StringEncoding
+                                 error:&error];
+         if (error) MSHandleErrors(error);
+*/
      }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+    // [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // Playstation Activity
@@ -122,9 +136,21 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          Remote   * ps3Remote   = [RemoteBuilder constructPS3RemoteInContext:localContext];
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:ps3Remote];
          ps3Activity.remote = ps3Remote;
+
+/*
+         NSString * ps3RemoteJSON = [ps3Remote JSONString];
+         NSError * error = nil;
+         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"ps3.json"];
+         [ps3RemoteJSON writeToFile:filePath
+                         atomically:YES
+                           encoding:NSUTF8StringEncoding
+                              error:&error];
+         if (error) MSHandleErrors(error);
+*/
      }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+    // [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // TV Activity
@@ -140,7 +166,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                                         context:localContext];
      }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+    // [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // Sonos Activity
@@ -158,9 +185,21 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          Remote   * sonosRemote   = [RemoteBuilder constructSonosRemoteInContext:localContext];
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:sonosRemote];
          sonosActivity.remote = sonosRemote;
-     }];
 
-    [NSManagedObjectContext saveWithBlockAndWait:
+/*
+         NSString * sonosRemoteJSON = [sonosRemote JSONString];
+         NSError * error = nil;
+         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"sonos.json"];
+         [sonosRemoteJSON writeToFile:filePath
+                         atomically:YES
+                           encoding:NSUTF8StringEncoding
+                              error:&error];
+         if (error) MSHandleErrors(error);
+*/
+    }];
+
+    // [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
          // Home Remote
@@ -168,9 +207,37 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:homeRemote];
          RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          [controller registerHomeRemote:homeRemote];
+
+/*
+         NSString * homeRemoteJSON = [homeRemote JSONString];
+         NSError * error = nil;
+         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"home.json"];
+         [homeRemoteJSON writeToFile:filePath
+                         atomically:YES
+                           encoding:NSUTF8StringEncoding
+                              error:&error];
+         if (error) MSHandleErrors(error);
+*/
+
      }];
 
-    [NSManagedObjectContext MR_resetDefaultContext];
+    [CoreDataManager resetDefaultContext];
+
+    [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
+                      toFileNamed:@"RemoteController.json"];
+
+    [MSJSONSerialization writeJSONObject:[[Remote MR_findAll] valueForKeyPath:@"JSONDictionary"]
+                      toFileNamed:@"Remote.json"];
+
+    [MSJSONSerialization writeJSONObject:[[ComponentDevice MR_findAll] valueForKeyPath:@"JSONDictionary"]
+                      toFileNamed:@"ComponentDevice.json"];
+
+    [MSJSONSerialization writeJSONObject:[[Manufacturer MR_findAll] valueForKeyPath:@"JSONDictionary"]
+                      toFileNamed:@"Manufacturer.json"];
+
+    [MSJSONSerialization writeJSONObject:[[Image MR_findAll] valueForKeyPath:@"JSONDictionary"]
+                      toFileNamed:@"Image.json"];
+
 
 //#define LOG_CONSTRUCTED_ELEMENTS
 #ifdef LOG_CONSTRUCTED_ELEMENTS

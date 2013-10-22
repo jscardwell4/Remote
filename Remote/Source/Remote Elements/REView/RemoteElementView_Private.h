@@ -142,7 +142,7 @@ MSEXTERN CGSize const   REMinimumSize;
 @interface SelectionPanelButtonGroupView ()
 {
     @private	
-    __weak ButtonView * _selectedButton;  /// Tracks currently selected configuration
+    __weak ButtonView * _selectedButton;  /// Tracks currently selected mode
 }
 
 @end

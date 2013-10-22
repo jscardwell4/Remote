@@ -11,7 +11,7 @@
 
 //#define REMOVE_STORE_EACH_RUN
 
-static const int ddLogLevel   = LOG_LEVEL_UNITTEST;
+static int ddLogLevel   = LOG_LEVEL_UNITTEST;
 static const int msLogContext = LOG_CONTEXT_UNITTEST;
 #pragma unused(ddLogLevel, msLogContext)
 

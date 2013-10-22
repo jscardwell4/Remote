@@ -11,11 +11,11 @@
 #import "RemoteElementEditingViewController.h"
 #import "ControlStateSet.h"
 #import "RemoteElementView.h"
-
+#import "Button.h"
 #import "StoryboardProxy.h"
 
 MSSTATIC_STRING_CONST   kEmptyLabelText = @"Add Label";
-static int                ddLogLevel      = LOG_LEVEL_DEBUG;
+static int ddLogLevel      = LOG_LEVEL_DEBUG;
 static NSArray const    * fontNames;
 
 @interface LabelEditingViewController ()

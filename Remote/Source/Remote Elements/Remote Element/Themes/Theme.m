@@ -22,7 +22,7 @@
 
 + (instancetype)themeWithName:(NSString *)name
 {
-    return [self themeWithName:name context:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self themeWithName:name context:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)themeWithName:(NSString *)name context:(NSManagedObjectContext *)context
@@ -43,58 +43,58 @@
     [moc performBlockAndWait:
      ^{
          self.settings = [@[[ThemeRemoteSettings
-                                     themeSettingsWithType:RETypeRemote
+                                     themeSettingsWithRole:RERoleUndefined
                                                    context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:RETypeButtonGroup
+                                      themeSettingsWithRole:RERoleUndefined
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:RETypeButton
+                                      themeSettingsWithRole:RETypeButton
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypePanel
+                                      themeSettingsWithRole:REButtonGroupRolePanel
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypeSelectionPanel
+                                      themeSettingsWithRole:REButtonGroupRoleSelectionPanel
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypeToolbar
+                                      themeSettingsWithRole:REButtonGroupRoleToolbar
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypeDPad
+                                      themeSettingsWithRole:REButtonGroupRoleDPad
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypeNumberpad
+                                      themeSettingsWithRole:REButtonGroupRoleNumberpad
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypeTransport
+                                      themeSettingsWithRole:REButtonGroupRoleTransport
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithType:REButtonGroupTypePickerLabel
+                                      themeSettingsWithRole:REButtonGroupRolePickerLabel
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypeToolbar
+                                      themeSettingsWithRole:REButtonRoleToolbar
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypePickerLabel
+                                      themeSettingsWithRole:REButtonRolePickerLabel
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypePanel
+                                      themeSettingsWithRole:RERoleUndefined
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypeTuck
+                                      themeSettingsWithRole:REButtonRoleTuck
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypeSelectionPanel
+                                      themeSettingsWithRole:REButtonRoleSelectionPanel
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypeDPad
+                                      themeSettingsWithRole:REButtonRoleDPad
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypeNumberpad
+                                      themeSettingsWithRole:REButtonRoleNumberpad
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithType:REButtonTypeTransport
+                                      themeSettingsWithRole:REButtonRoleTransport
                                                     context:moc]] set];
      }];
 
@@ -109,37 +109,34 @@
 
 - (void)initializeButtonSettings {}
 
-- (ThemeSettings *)settingsForType:(REType)type
+
+- (ThemeSettings *)settingsForType:(REType)type withRole:(RERole)role
 {
     return [self.settings objectPassingTest:
             ^BOOL(ThemeSettings * obj) {
-                return ([obj.type intValue] == type);
+                return (obj.type == type && obj.role == role);
             }];
 }
 
-- (ThemeRemoteSettings *)remoteSettingsForType:(REType)type
+- (ThemeRemoteSettings *)remoteSettingsForRole:(RERole)role
 {
-    ThemeSettings * settings = [self settingsForType:type];
+    ThemeSettings * settings = [self settingsForType:RETypeRemote withRole:role];
     return ([settings isKindOfClass:[ThemeRemoteSettings class]]
             ? (ThemeRemoteSettings *)settings
             : nil);
 }
 
-- (ThemeButtonGroupSettings *)buttonGroupSettingsForType:(REType)type
+- (ThemeButtonGroupSettings *)buttonGroupSettingsForRole:(RERole)role
 {
-    ThemeSettings * settings = [self settingsForType:type];
-    if (!settings && type != REButtonGroupTypeSelectionPanel && (type & REButtonGroupTypePanel) == REButtonGroupTypePanel)
-    {
-        settings = [self settingsForType:(type & ~REButtonGroupTypePanel) | RETypeButtonGroup];
-    }
+    ThemeSettings * settings = [self settingsForType:RETypeButtonGroup withRole:role];
     return ([settings isKindOfClass:[ThemeButtonGroupSettings class]]
             ? (ThemeButtonGroupSettings *)settings
             : nil);
 }
 
-- (ThemeButtonSettings *)buttonSettingsForType:(REType)type
+- (ThemeButtonSettings *)buttonSettingsForRole:(RERole)role
 {
-    ThemeSettings * settings = [self settingsForType:type];
+    ThemeSettings * settings = [self settingsForType:RETypeButton withRole:role];
     return ([settings isKindOfClass:[ThemeButtonSettings class]]
             ? (ThemeButtonSettings *)settings
             : nil);
@@ -155,14 +152,14 @@
     NSString * settingsString = [[self.settings valueForKeyPath:@"deepDescription"]
                                  componentsJoinedByString:@"\n\n"];
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     dd[@"theme"]    = themeString;
     dd[@"name"]     = nameString;
     dd[@"elements"] = elementsString;
     dd[@"settings"] = settingsString;
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 

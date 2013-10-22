@@ -17,10 +17,10 @@
 // #define DEBUG_CONTEXT  (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE)
 #define DEPTH NSUIntegerMax
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 
-// static const int ddLogLevel = DefaultDDLogLevel
+// static int ddLogLevel = DefaultDDLogLevel
 #pragma unused(ddLogLevel)
 
 @implementation RemoteEditingTest

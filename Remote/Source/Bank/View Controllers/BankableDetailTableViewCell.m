@@ -59,4 +59,30 @@
     return _pickerView;
 }
 
+- (NSString *)name { return (_nameLabel.text ?: nil); }
+
+- (void)setName:(NSString *)name { if (_nameLabel) _nameLabel.text = name; }
+
+- (NSString *)text
+{
+    NSString * text = nil;
+    if (_infoButton) text = [_infoButton titleForState:UIControlStateNormal];
+    else if (_infoLabel) text = _infoLabel.text;
+    else if (_infoTextField) text = _infoTextField.text;
+    else if (_infoTextView) text = _infoTextView.text;
+    return text;
+}
+
+- (void)setText:(NSString *)text
+{
+    if (_infoButton) [_infoButton setTitle:text forState:UIControlStateNormal];
+    else if (_infoLabel) _infoLabel.text = text;
+    else if (_infoTextField) _infoTextField.text = text;
+    else if (_infoTextView) _infoTextView.text = text;
+}
+
+- (UIImage *)image { return _infoImageView.image; }
+
+- (void)setImage:(UIImage *)image { if (_infoImageView) _infoImageView.image = image; }
+
 @end

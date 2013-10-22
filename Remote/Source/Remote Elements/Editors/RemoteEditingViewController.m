@@ -6,11 +6,12 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
+#import "ButtonGroup.h"
 
 #define SCALE_USES_TRANSFORM NO
 #define BLOCK_MODEL_UPDATES
 
-static int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @implementation RemoteEditingViewController

@@ -261,7 +261,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                                               NSString * command,
                                               NSUInteger tag,
                                               NSString * device,
-                                              RECommandCompletionHandler completion)
+                                              CommandCompletionHandler completion)
                                             {
                                                 return [[GlobalCacheConnectionManager
                                                          globalCacheConnectionManager]
@@ -372,7 +372,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     NSOperationQueue * queue = CurrentQueue;
     __block NSString * uuid = nil;
     __block NDiTachDevice * device = nil;
-    [MagicalRecord saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *context)
+    [CoreDataManager saveWithBlock:^(NSManagedObjectContext *context)
      {
          device = [NDiTachDevice deviceWithAttributes:attributes];
          if (device) uuid = device.uuid;
@@ -406,7 +406,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
          }
 
-         else if (error) [MagicalRecord handleErrors:error];
+         else if (error) MSHandleErrors(error); //[MagicalRecord handleErrors:error];
      }];
 }
 
@@ -434,9 +434,9 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         {
             NSFetchRequest * request = [NDiTachDevice MR_requestAllWhere:@"uuid" isEqualTo:uuid];
             NSError * error = nil;
-            NSUInteger count = [[NSManagedObjectContext MR_contextForCurrentThread]
+            NSUInteger count = [[CoreDataManager defaultContext]
                                 countForFetchRequest:request error:&error];
-            if (error) [MagicalRecord handleErrors:error];
+            if (error) MSHandleErrors(error);
 
             else if (count == 1)
             {
@@ -448,8 +448,8 @@ typedef NS_ENUM (uint8_t, ConnectionState){
             {
                 if (count)
                 { // remove devices since uuid is not unique
-                    [MagicalRecord
-                     saveUsingCurrentThreadContextWithBlock:^(NSManagedObjectContext *localContext)
+                    [CoreDataManager
+                     saveWithBlock:^(NSManagedObjectContext *localContext)
                      {
                          MSLogDebugTag(@"removing devices from store with non-unique uuid '%@'", uuid);
                          [NDiTachDevice
@@ -459,7 +459,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                      }
                      completion:^(BOOL success, NSError *error)
                      {
-                         if (error) [MagicalRecord handleErrors:error];
+                         if (error) MSHandleErrors(error);
                          if (success)
                              MSLogDebugTag(@"devices with uuid '%@' removed successfully", uuid);
                          else
@@ -538,7 +538,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 - (BOOL)sendCommand:(NSString *)command
                 tag:(NSUInteger)tag
              device:(NSString *)uuid
-         completion:(RECommandCompletionHandler)completion
+         completion:(CommandCompletionHandler)completion
 {
 
     if (!uuid) uuid = self.defaultDeviceUUID;
@@ -598,7 +598,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 }
 - (void)dispatchCompletionHandlerForTag:(NSNumber *)tag success:(BOOL)success
 {
-    RECommandCompletionHandler completion = _requestLog[tag];
+    CommandCompletionHandler completion = _requestLog[tag];
     if (completion) completion(success, nil);
 }
 

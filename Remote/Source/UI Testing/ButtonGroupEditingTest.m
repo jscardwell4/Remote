@@ -19,7 +19,7 @@
 // #define DEBUG_CONTEXT  (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE)
 #define DEPTH NSUIntegerMax
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 
 #pragma unused(ddLogLevel, msLogContext)
@@ -426,9 +426,9 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                             MSRemoteUIAssertionsKey      :
                                 @[ ^(REEditingViewController * editor)
                                     {
-                                        REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
-                                        REButton * digit4 = numberPad[REDigitFourButtonKey];
-                                        REButton * digit1 = numberPad[REDigitOneButtonKey];
+                                        REButtonGroup * numberpad = (REButtonGroup *)editor.sourceView.model;
+                                        REButton * digit4 = numberpad[REDigitFourButtonKey];
+                                        REButton * digit1 = numberpad[REDigitOneButtonKey];
                                         NSDictionary * values = @{ @"firstItem"      : digit4.uuid,
                                                                    @"firstAttribute" : @(NSLayoutAttributeTop),
                                                                    @"relation"       : @(NSLayoutRelationEqual),
@@ -448,9 +448,9 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                     },
                                     ^(REEditingViewController * editor)
                                     {
-                                        REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
-                                        REButton * aux1 =numberPad[REAuxOneButtonKey];
-                                        REButton * digit0 =numberPad[REDigitZeroButtonKey];
+                                        REButtonGroup * numberpad = (REButtonGroup *)editor.sourceView.model;
+                                        REButton * aux1 =numberpad[REAuxOneButtonKey];
+                                        REButton * digit0 =numberpad[REDigitZeroButtonKey];
                                         NSDictionary * values = @{  @"firstItem"      : aux1.uuid,
                                                                     @"firstAttribute" : @(NSLayoutAttributeBottom),
                                                                     @"relation"       : @(NSLayoutRelationEqual),
@@ -544,10 +544,10 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                             MSRemoteUIAssertionsKey      :
                                 @[ ^(REEditingViewController * editor)
                                     {
-                                        REButtonGroup * numberPad = (REButtonGroup *)editor.sourceView.model;
-                                        REButton * digit4 = numberPad[REDigitFourButtonKey];
-                                        REButton * digit7 = numberPad[REDigitSevenButtonKey];
-                                        REButton * tuckPanel = numberPad[REButtonGroupTuckButtonKey];
+                                        REButtonGroup * numberpad = (REButtonGroup *)editor.sourceView.model;
+                                        REButton * digit4 = numberpad[REDigitFourButtonKey];
+                                        REButton * digit7 = numberpad[REDigitSevenButtonKey];
+                                        REButton * tuckPanel = numberpad[REButtonGroupTuckButtonKey];
 
                                         @try
                                         {
@@ -555,9 +555,9 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                                        (@{ @"firstItem"      : digit4,
                                                            @"firstAttribute" : @(NSLayoutAttributeLeft),
                                                            @"relation"       : @(NSLayoutRelationEqual),
-                                                           @"secondItem"     : numberPad
+                                                           @"secondItem"     : numberpad
                                                        })],
-                                                     @"'digit4.left = numberPad.left' should have been removed");
+                                                     @"'digit4.left = numberpad.left' should have been removed");
 
                                             NSAssert([digit4.layoutConfiguration constraintWithValues:
                                                       (@{ @"firstItem"      : digit4,
@@ -577,7 +577,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 
                                             NSString * config = [digit4.layoutConfiguration description];
                                             NSAssert([@"TBXW" isEqualToString:config],
-                                                     @"layout configuration for digit4 is incorrect, '%@' instead of 'TBXW'",
+                                                     @"layout mode for digit4 is incorrect, '%@' instead of 'TBXW'",
                                                      config);
                                         }
 
@@ -585,10 +585,10 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                                     },
                                     ^(REEditingViewController * editor)
                                     {
-                                        REButtonGroup * numberPad = (REButtonGroup*)editor.sourceView.model;
-                                        REButton      * digit4    = numberPad[REDigitFourButtonKey];
-                                        REButton      * digit1    = numberPad[REDigitOneButtonKey];
-                                        REButton      * tuckPanel = numberPad[REButtonGroupTuckButtonKey];
+                                        REButtonGroup * numberpad = (REButtonGroup*)editor.sourceView.model;
+                                        REButton      * digit4    = numberpad[REDigitFourButtonKey];
+                                        REButton      * digit1    = numberpad[REDigitOneButtonKey];
+                                        REButton      * tuckPanel = numberpad[REButtonGroupTuckButtonKey];
 
                                         @try
                                         {
@@ -610,7 +610,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
 
                                             NSString * config = [digit4.layoutConfiguration description];
                                             NSAssert([@"TBXW" isEqualToString:config],
-                                                     @"layout configuration for digit4 is incorrect, '%@' instead of 'TBXW'",
+                                                     @"layout mode for digit4 is incorrect, '%@' instead of 'TBXW'",
                                                      config);
                                         }
 

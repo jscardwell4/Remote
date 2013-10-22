@@ -10,7 +10,7 @@
 #import "MSRemoteAppController.h"
 #import "GalleryGroup.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 @implementation ImageBankViewController
 @synthesize fetchedGroups = _fetchedGroups;

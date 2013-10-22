@@ -14,6 +14,8 @@
 #import "IRCode.h"
 #import "CoreDataManager.h"
 
+MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
+
 @interface ManufacturerDetailViewController ()
 
 @property (nonatomic, weak, readonly) Manufacturer * manufacturer;
@@ -23,18 +25,37 @@
 @end
 
 @implementation ManufacturerDetailViewController
+{
+    __weak Manufacturer * _manufacturer;
+}
 
-- (Manufacturer *)manufacturer { return (Manufacturer *)self.item; }
+//- (Manufacturer *)manufacturer { return (Manufacturer *)self.item; }
 
 - (Class<Bankable>)itemClass { return [Manufacturer class]; }
 
+- (void)setItem:(NSManagedObject<Bankable> *)item
+{
+    [super setItem:item];
+    _manufacturer = (Manufacturer *)self.item;
+
+    if (_manufacturer)
+    {
+        self.devices  = [self.manufacturer.devices allObjects];
+        NSSet * codesets = (self.manufacturer.codesets ?: [NSSet set]);
+        self.codesets = ([_devices count]
+                         ? [@[kDeviceCodesetText] arrayByAddingObjects:codesets]
+                         : [codesets allObjects]);
+    }
+
+}
+
+/*
 - (void)updateDisplay
 {
     [super updateDisplay];
-    self.devices = [self.manufacturer.devices allObjects];
-    self.codesets = [self.manufacturer.codesets allObjects];
     if ([self isViewLoaded]) [self.tableView reloadData];
 }
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Table view data source
@@ -66,9 +87,7 @@
     }
     else
     {
-        NSString * labelText = ([_codesets count]
-                                ? [_codesets[indexPath.row] valueForKey:@"name"]
-                                : @"No Codesets");
+        NSString * labelText = ([_codesets count] ? _codesets[indexPath.row] : @"No Codesets");
         cell.infoLabel.text = labelText;
     }
 
@@ -88,26 +107,48 @@
     }
     else
     {
-        IRCodeset * codeset = _codesets[indexPath.row];
-        BankCollectionViewController * vc = UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
-        vc.navigationItem.title = codeset.name;
-        NSManagedObjectContext * context = codeset.managedObjectContext;
-        NSFetchRequest * request = [IRCode MR_requestAllWhere:@"codeset"
-                                                    isEqualTo:codeset
-                                                    inContext:context];
-        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-        NSFetchedResultsController * controller = [[NSFetchedResultsController alloc]
-                                                   initWithFetchRequest:request
-                                                   managedObjectContext:context
-                                                     sectionNameKeyPath:nil
-                                                              cacheName:nil];
+        NSString * codeset = _codesets[indexPath.row];
+
+        BOOL isUserCodeset = [codeset isEqualToString:kDeviceCodesetText];
+        if (isUserCodeset) codeset = nil;
+        
+        BankCollectionViewController * vc =
+            UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
+
+        vc.navigationItem.title = $(@"(%@) %@",
+                                    self.manufacturer.name,
+                                    (isUserCodeset ? @"Devices" : codeset));
+
+        NSPredicate * predicate =
+            NSPredicateMake(@"(manufacturer = %@) && (codeset = %@)", self.manufacturer, codeset);
+
+        NSString * groupBy = (isUserCodeset ? @"device.info.name" : nil);
+
+        NSString * sortedBy = (isUserCodeset ? @"device.info.name,info.name" : @"info.name");
+
+        NSManagedObjectContext * moc = self.manufacturer.managedObjectContext;
+
+        NSFetchedResultsController * controller = [IRCode MR_fetchAllGroupedBy:groupBy
+                                                                 withPredicate:predicate
+                                                                      sortedBy:sortedBy
+                                                                     ascending:YES
+                                                                     inContext:moc];
         NSError * error = nil;
         [controller performFetch:&error];
+
         if (error) [CoreDataManager handleErrors:error];
+
         else
         {
             vc.bankableItems = controller;
             vc.itemClass = [IRCode class];
+
+            if (!isUserCodeset)
+            {
+                BankFlags bf = vc.bankFlags;
+                vc.bankFlags = bf|BankNoSections;
+            }
+
             [self.navigationController pushViewController:vc animated:YES];
         }
 

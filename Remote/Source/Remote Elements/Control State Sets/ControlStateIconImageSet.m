@@ -8,7 +8,7 @@
 #import "ControlStateSet.h"
 #import "BankObject.h"
 
-static int   ddLogLevel = LOG_LEVEL_OFF;
+static int ddLogLevel = LOG_LEVEL_OFF;
 #pragma unused(ddLogLevel)
 
 @interface ControlStateIconImageSet (CoreDataGeneratedAccessors)

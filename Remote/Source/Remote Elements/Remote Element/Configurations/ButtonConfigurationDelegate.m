@@ -101,66 +101,61 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Updating Configurations
 ////////////////////////////////////////////////////////////////////////////////
-- (void)updateForConfiguration:(RERemoteConfiguration)configuration
+- (void)updateForMode:(RERemoteMode)mode
 {
-    if (![self hasConfiguration:configuration]) return;
+    if (![self hasMode:mode]) return;
 
-    self.command = (Command *)memberOfCollectionWithUUID(self.commands,
-                                                           self[$(@"%@.command",
-                                                                  configuration)]);
+    self.command          = [self commandForMode:mode];
+    self.titles           = [self titlesForMode:mode];
+    self.icons            = [self iconsForMode:mode];
+    self.images           = [self imagesForMode:mode];
+    self.backgroundColors = [self backgroundColorsForMode:mode];
 
-    self.titles =
-        (ControlStateTitleSet*)memberOfCollectionWithUUID(self.titleSets,
-                                                            self[$(@"%@.titles",
-                                                                   configuration)]);
-
-    self.icons =
-        (ControlStateImageSet*)memberOfCollectionWithUUID(self.iconSets,
-                                                            self[$(@"%@.icons",
-                                                                   configuration)]);
-
-    self.images =
-        (ControlStateImageSet*)memberOfCollectionWithUUID(self.imageSets,
-                                                            self[$(@"%@.images",
-                                                                   configuration)]);
-
-    self.backgroundColors =
-        (ControlStateColorSet*)memberOfCollectionWithUUID(self.backgroundColorSets,
-                                                            self[$(@"%@.backgroundColors",
-                                                                   configuration)]);
     [self updateButtonForState:self.button.state];
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Configuration Members
+#pragma mark - Mode Members
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setCommand:(Command *)command configuration:(RERemoteConfiguration)config
+- (void)setCommand:(Command *)command mode:(RERemoteMode)mode
 {
-    Command * currentCommand = (Command *)NilSafeValue(self[$(@"%@.command", config)]);
+    Command * currentCommand = (Command *)NilSafeValue(self[$(@"%@.command", mode)]);
     if (currentCommand && currentCommand != command) [self removeCommandsObject:currentCommand];
 
-    assert(config);
-    if (![self hasConfiguration:config]) [self addConfiguration:config];
+    assert(mode);
+    if (![self hasMode:mode]) [self addMode:mode];
 
     if (command) [self addCommandsObject:command];
-    self[$(@"%@.command", config)] = CollectionSafeValue(command.uuid);
+    self[$(@"%@.command", mode)] = CollectionSafeValue(command.uuid);
 }
 
-- (void)setTitle:(id)title configuration:(RERemoteConfiguration)config
+- (Command *)commandForMode:(RERemoteMode)mode
+{
+    return (Command *)memberOfCollectionWithUUID(self.commands,
+                                                 self[$(@"%@.command", mode)]);
+}
+
+- (void)setTitle:(id)title mode:(RERemoteMode)mode
 {
     ControlStateTitleSet * titleSet = [ControlStateTitleSet
                                          controlStateSetInContext:self.managedObjectContext
                                                       withObjects:@{@"normal": title}];
-    if (titleSet) [self setTitles:titleSet configuration:config];
+    if (titleSet) [self setTitles:titleSet mode:mode];
 }
 
-- (void)setTitles:(ControlStateTitleSet *)titles configuration:(RERemoteConfiguration)config
+- (void)setTitles:(ControlStateTitleSet *)titles mode:(RERemoteMode)mode
 {
-    assert(titles && config);
+    assert(titles && mode);
     [self addTitleSetsObject:titles];
-    self[$(@"%@.titles", config)] = titles.uuid;
+    self[$(@"%@.titles", mode)] = titles.uuid;
+}
+
+- (ControlStateTitleSet *)titlesForMode:(RERemoteMode)mode
+{
+    return (ControlStateTitleSet*)memberOfCollectionWithUUID(self.titleSets,
+                                                             self[$(@"%@.titles", mode)]);
 }
 
 - (NSAttributedString *)titleForState:(REState)state
@@ -208,67 +203,85 @@
 
 - (ControlStateTitleSet *)titles
 {
-    RERemoteConfiguration config = self.currentConfiguration;
-    assert(config);
-    if (![self hasConfiguration:config]) [self addConfiguration:config];
-    NSString * uuid = self[$(@"%@.titles", config)];
+    RERemoteMode mode = self.currentMode;
+    assert(mode);
+    if (![self hasMode:mode]) [self addMode:mode];
+    NSString * uuid = self[$(@"%@.titles", mode)];
     if (!uuid) return nil;
     ControlStateTitleSet * titleSet = (ControlStateTitleSet *)memberOfCollectionWithUUID(self.titleSets, uuid);
     assert(titleSet);
     return titleSet;
 }
 
-- (void)setBackgroundColors:(ControlStateColorSet *)colors configuration:(RERemoteConfiguration)config
+- (void)setBackgroundColors:(ControlStateColorSet *)colors mode:(RERemoteMode)mode
 {
-    assert(colors && config);
+    assert(colors && mode);
     [self addBackgroundColorSetsObject:colors];
-    self[$(@"%@.backgroundColors", config)] = colors.uuid;
+    self[$(@"%@.backgroundColors", mode)] = colors.uuid;
+}
+
+- (ControlStateColorSet *)backgroundColorsForMode:(RERemoteMode)mode
+{
+    return (ControlStateColorSet*)memberOfCollectionWithUUID(self.backgroundColorSets,
+                                                             self[$(@"%@.backgroundColors", mode)]);
 }
 
 - (ControlStateColorSet *)backgroundColors
 {
-    RERemoteConfiguration config = self.currentConfiguration;
-    assert(config);
-    if (![self hasConfiguration:config]) [self addConfiguration:config];
-    NSString * uuid = self[$(@"%@.backgroundColors", config)];
+    RERemoteMode mode = self.currentMode;
+    assert(mode);
+    if (![self hasMode:mode]) [self addMode:mode];
+    NSString * uuid = self[$(@"%@.backgroundColors", mode)];
     if (!uuid) return nil;
     ControlStateColorSet * colorSet = (ControlStateColorSet *)memberOfCollectionWithUUID(self.backgroundColorSets, uuid);
     assert(colorSet);
     return colorSet;
 }
 
-- (void)setIcons:(ControlStateImageSet *)icons configuration:(RERemoteConfiguration)config
+- (void)setIcons:(ControlStateImageSet *)icons mode:(RERemoteMode)mode
 {
-    assert(icons && config);
+    assert(icons && mode);
     [self addIconSetsObject:icons];
-    self[$(@"%@.icons", config)] = icons.uuid;
+    self[$(@"%@.icons", mode)] = icons.uuid;
+}
+
+- (ControlStateImageSet *)iconsForMode:(RERemoteMode)mode
+{
+    return (ControlStateImageSet*)memberOfCollectionWithUUID(self.iconSets,
+                                                             self[$(@"%@.icons", mode)]);
 }
 
 - (ControlStateImageSet *)icons
 {
-    RERemoteConfiguration config = self.currentConfiguration;
-    assert(config);
-    if (![self hasConfiguration:config]) return nil;
-    NSString * uuid = self[$(@"%@.icons", config)];
+    RERemoteMode mode = self.currentMode;
+    assert(mode);
+    if (![self hasMode:mode]) return nil;
+    NSString * uuid = self[$(@"%@.icons", mode)];
     if (!uuid) return nil;
     ControlStateImageSet * iconSet = (ControlStateImageSet *)memberOfCollectionWithUUID(self.iconSets, uuid);
     assert(iconSet);
     return iconSet;
 }
 
-- (void)setImages:(ControlStateImageSet *)images configuration:(RERemoteConfiguration)config
+- (void)setImages:(ControlStateImageSet *)images mode:(RERemoteMode)mode
 {
-    assert(images && config);
+    assert(images && mode);
     [self addImageSetsObject:images];
-    self[$(@"%@.images",config)] = images.uuid;
+    self[$(@"%@.images",mode)] = images.uuid;
+}
+
+- (ControlStateImageSet *)imagesForMode:(RERemoteMode)mode
+{
+    return (ControlStateImageSet*)memberOfCollectionWithUUID(self.imageSets,
+                                                             self[$(@"%@.images", mode)]);
 }
 
 - (ControlStateImageSet *)images
 {
-    RERemoteConfiguration config = self.currentConfiguration;
-    assert(config);
-    if (![self hasConfiguration:config]) [self addConfiguration:config];
-    NSString * uuid = self[$(@"%@.images", config)];
+    RERemoteMode mode = self.currentMode;
+    assert(mode);
+    if (![self hasMode:mode]) [self addMode:mode];
+    NSString * uuid = self[$(@"%@.images", mode)];
     if (!uuid) return nil;
     ControlStateImageSet * imageSet = (ControlStateImageSet *)memberOfCollectionWithUUID(self.imageSets, uuid);
     assert(imageSet);

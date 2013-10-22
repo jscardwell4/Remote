@@ -15,17 +15,6 @@
 
 @interface IRCode : BankableModelObject
 
-+ (instancetype)codeForDevice:(ComponentDevice *)device;
-+ (instancetype)userCodeForDevice:(ComponentDevice *)device;
-
-+ (instancetype)codeFromProntoHex:(NSString *)hex context:(NSManagedObjectContext *)context;
-+ (instancetype)userCodeFromProntoHex:(NSString *)hex context:(NSManagedObjectContext *)context;
-
-+ (instancetype)codeFromProntoHex:(NSString *)hex device:(ComponentDevice *)device;
-+ (instancetype)userCodeFromProntoHex:(NSString *)hex device:(ComponentDevice *)device;
-
-- (NSString *)globalCacheFromProntoHex;
-
 @property (nonatomic, assign) int64_t             frequency;
 @property (nonatomic, assign) int16_t             offset;
 @property (nonatomic, assign) int16_t             repeatCount;
@@ -33,7 +22,7 @@
 @property (nonatomic, strong) NSString          * prontoHex;
 @property (nonatomic, strong) ComponentDevice   * device;
 @property (nonatomic, assign) BOOL                setsDeviceInput;
-@property (nonatomic, strong) IRCodeset         * codeset;
+@property (nonatomic, copy)   NSString          * codeset;
 @property (nonatomic, strong) Manufacturer      * manufacturer;
 
 @end

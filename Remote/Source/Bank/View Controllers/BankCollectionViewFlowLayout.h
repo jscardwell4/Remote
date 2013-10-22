@@ -8,8 +8,4 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BankCollectionViewFlowLayout : UICollectionViewFlowLayout
-
-@property (nonatomic, strong) NSIndexPath * zoomIndexPath;
-
-@end
+@interface BankCollectionViewFlowLayout : UICollectionViewFlowLayout @end

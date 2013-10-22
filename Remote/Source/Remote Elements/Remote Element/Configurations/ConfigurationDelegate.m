@@ -9,9 +9,9 @@
 #import "ConfigurationDelegate_Private.h"
 #import "RemoteElement.h"
 
-MSSTRING_CONST   REDefaultConfiguration = @"REDefaultConfiguration";
+MSSTRING_CONST   REDefaultMode = @"default";
 
-static const int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -31,9 +31,9 @@ Class delegateClassForElement(RemoteElement * element)
 
 @implementation ConfigurationDelegate
 
-@synthesize currentConfiguration = _currentConfiguration;
+@synthesize currentMode = _currentMode;
 
-@dynamic configurations, subscribers, delegate, element, autoPopulateFromDefaultConfiguration;
+@dynamic configurations, subscribers, delegate, element, autoPopulateFromDefaultMode;
 
 + (instancetype)configurationDelegate
 {
@@ -45,15 +45,15 @@ Class delegateClassForElement(RemoteElement * element)
     NSArray * keys = [key componentsSeparatedByString:@"."];
     if (keys.count != 2) return;
 
-    RERemoteConfiguration configuration = keys[0];
+    RERemoteMode mode = keys[0];
     NSString * property = keys[1];
 
-    if (![self hasConfiguration:configuration]) [self addConfiguration:configuration];
+    if (![self hasMode:mode]) [self addMode:mode];
 
     NSMutableDictionary * configurations = [self.configurations mutableCopy];
-    NSMutableDictionary * registration = [configurations[configuration] mutableCopy];
+    NSMutableDictionary * registration = [configurations[mode] mutableCopy];
     registration[property] = CollectionSafeValue(object);
-    configurations[configuration] = registration;
+    configurations[mode] = registration;
     self.configurations = [NSDictionary dictionaryWithDictionary:configurations];
 }
 
@@ -62,25 +62,25 @@ Class delegateClassForElement(RemoteElement * element)
     NSArray * keys = [key componentsSeparatedByString:@"."];
     if (keys.count != 2) return nil;
 
-    RERemoteConfiguration configuration = keys[0];
+    RERemoteMode mode = keys[0];
     NSString * property = keys[1];
-    id object = ([self hasConfiguration:configuration]
-                 ? self.configurations[configuration][property]
+    id object = ([self hasMode:mode]
+                 ? self.configurations[mode][property]
                  : nil);
     return NilSafeValue(object);
 }
 
-- (NSArray *)configurationKeys { return [self.configurations allKeys]; }
+- (NSArray *)modeKeys { return [self.configurations allKeys]; }
 
-- (BOOL)addConfiguration:(RERemoteConfiguration)configuration
+- (BOOL)addMode:(RERemoteMode)mode
 {
-    if (![self hasConfiguration:configuration])
+    if (![self hasMode:mode])
     {
         NSMutableDictionary * configurations = [self.configurations mutableCopy];
-        configurations[configuration] = (  ![configuration isEqualToString:REDefaultConfiguration]
-                                         && self.autoPopulateFromDefaultConfiguration
-                                         && configurations[REDefaultConfiguration]
-                                         ? [configurations[REDefaultConfiguration] copy]
+        configurations[mode] = (  ![mode isEqualToString:REDefaultMode]
+                                         && self.autoPopulateFromDefaultMode
+                                         && configurations[REDefaultMode]
+                                         ? [configurations[REDefaultMode] copy]
                                          : @{});
         self.configurations = [NSDictionary dictionaryWithDictionary:configurations];
         return YES;
@@ -90,56 +90,56 @@ Class delegateClassForElement(RemoteElement * element)
         return NO;
 }
 
-- (RERemoteConfiguration)currentConfiguration
+- (RERemoteMode)currentMode
 {
-    [self willAccessValueForKey:@"currentConfiguration"];
-    RERemoteConfiguration currentConfiguration = _currentConfiguration;
-    [self didAccessValueForKey:@"currentConfiguration"];
-    if (!currentConfiguration)
+    [self willAccessValueForKey:@"currentMode"];
+    RERemoteMode currentMode = _currentMode;
+    [self didAccessValueForKey:@"currentMode"];
+    if (!currentMode)
     {
-        _currentConfiguration = REDefaultConfiguration;
-        currentConfiguration = _currentConfiguration;
-        assert(currentConfiguration);
+        _currentMode = REDefaultMode;
+        currentMode = _currentMode;
+        assert(currentMode);
     }
-    return currentConfiguration;
+    return currentMode;
 }
 
-- (void)setCurrentConfiguration:(RERemoteConfiguration)currentConfiguration
+- (void)setCurrentMode:(RERemoteMode)currentMode
 {
-    MSLogDebugTag(@"currentConfiguration:%@ ⇒ %@\nconfigurationKeys:%@",
-                  _currentConfiguration, currentConfiguration, self.configurationKeys);
+    MSLogDebugTag(@"currentMode:%@ ⇒ %@\nmodeKeys:%@",
+                  _currentMode, currentMode, self.modeKeys);
 
-    [self willChangeValueForKey:@"currentConfiguration"];
-    _currentConfiguration = currentConfiguration;
-    if (![self hasConfiguration:currentConfiguration]) [self addConfiguration:currentConfiguration];
-    [self updateForConfiguration:currentConfiguration];
-    [self didChangeValueForKey:@"currentConfiguration"];
-    [self.subscribers setValue:_currentConfiguration forKeyPath:@"currentConfiguration"];
+    [self willChangeValueForKey:@"currentMode"];
+    _currentMode = currentMode;
+    if (![self hasMode:currentMode]) [self addMode:currentMode];
+    [self updateForMode:currentMode];
+    [self didChangeValueForKey:@"currentMode"];
+    [self.subscribers setValue:_currentMode forKeyPath:@"currentMode"];
 }
 
-- (void)updateForConfiguration:(RERemoteConfiguration)configuration {}
+- (void)updateForMode:(RERemoteMode)mode {}
 
-- (BOOL)hasConfiguration:(RERemoteConfiguration)key
+- (BOOL)hasMode:(RERemoteMode)key
 {
-    BOOL hasConfiguration = [self.configurations hasKey:key];
-    return hasConfiguration;
+    BOOL hasMode = [self.configurations hasKey:key];
+    return hasMode;
 }
 
 - (void)awakeFromFetch
 {
     [super awakeFromFetch];
-    _currentConfiguration = REDefaultConfiguration;
-    [self updateForConfiguration:_currentConfiguration];
+    _currentMode = REDefaultMode;
+    [self updateForMode:_currentMode];
 }
 
-- (void)refresh { [self updateForConfiguration:_currentConfiguration]; }
+- (void)refresh { [self updateForMode:_currentMode]; }
 
 - (NSString *)shortDescription { return self.element.name; }
 
 - (NSString *)deepDescription
 {
-    return (self.configurationKeys.count
-            ? $(@"registered configurations:%@", [self.configurationKeys componentsJoinedByString:@"\n\t"])
+    return (self.modeKeys.count
+            ? $(@"registered configurations:%@", [self.modeKeys componentsJoinedByString:@"\n\t"])
             : @"no registered configurations");
 }
 

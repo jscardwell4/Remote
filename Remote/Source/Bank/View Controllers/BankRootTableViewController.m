@@ -13,7 +13,7 @@
 #import "BankCollectionViewController.h"
 #import "Bank.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -23,7 +23,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @interface BankRootTableViewController () <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) MSMutableDictionary * rootItems;
+@property (nonatomic, strong) MSDictionary * rootItems;
 @end
 
 
@@ -34,11 +34,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation BankRootTableViewController
 
-- (MSMutableDictionary *)rootItems
+- (MSDictionary *)rootItems
 {
     if (!_rootItems)
     {
-        self.rootItems = [MSMutableDictionary dictionary];
+        self.rootItems = [MSDictionary dictionary];
         for (NSString * className in [Bank registeredClasses])
         {
             id class = NSClassFromString(className);
@@ -77,6 +77,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
     return cell;
 }
+
+- (void)     tableView:(UITableView *)tableView
+    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+     forRowAtIndexPath:(NSIndexPath *)indexPath
+{}
 
 
 ////////////////////////////////////////////////////////////////////////////////

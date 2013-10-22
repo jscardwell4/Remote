@@ -96,6 +96,20 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
              __pattern);
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"code"] = CollectionSafeValue(self.code.uuid);
+    if (self.portOverride)
+        dictionary[@"portOverride"] = CollectionSafeValue(@(self.portOverride));
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
 + (SendIRCommand *)commandWithIRCode:(IRCode *)code
 {
     SendIRCommand * sendIR = [self commandInContext:code.managedObjectContext];

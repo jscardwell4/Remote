@@ -46,7 +46,7 @@ MSEXTERN_STRING   NDDefaultiTachDeviceKey;
 + (BOOL)sendCommand:(NSString *)command
                 tag:(NSUInteger)tag
              device:(NSString *)uuid
-         completion:(RECommandCompletionHandler)completion;
+         completion:(CommandCompletionHandler)completion;
 
 /// Whether socket is open to receive multicast group broadcast messages.
 + (BOOL)isDetectingNetworkDevices;

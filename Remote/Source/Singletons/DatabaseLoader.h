@@ -17,18 +17,4 @@
  */
  + (BOOL)loadData;
 
-/**
- * Enumerates all the codes currently in the database and logs them to the console.
- * @note Requires minimum log level of `LOG_LEVEL_INFO`.
- */
-+ (void)logCodeBank;
-
-+ (void)loadFactoryCodesInContext:(NSManagedObjectContext *)moc;
-
-+ (void)loadUsersCodes:(NSManagedObjectContext *)moc;
-
-+ (void)loadIconImages:(NSManagedObjectContext *)moc;
-
-+ (void)loadBackgroundImages:(NSManagedObjectContext *)moc;
-
 @end

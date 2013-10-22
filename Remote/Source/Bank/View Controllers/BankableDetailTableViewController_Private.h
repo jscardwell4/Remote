@@ -12,14 +12,15 @@
 
 typedef NS_ENUM(uint8_t, BankableDetailDataType)
 {
-    BankableDetailUndefinedData    = 0,
-    BankableDetailPickerViewData   = 1,
-    BankableDetailPickerButtonData = 2,
-    BankableDetailTextFieldData    = 3
+    BankableDetailUndefinedData       = 0,
+    BankableDetailPickerViewData      = 1,
+    BankableDetailPickerViewSelection = 2,
+    BankableDetailPickerButtonData    = 3,
+    BankableDetailTextFieldData       = 4
 };
 
-typedef void(^BankableDetailTextFieldChangeHandler)(void);
-typedef BOOL(^BankableDetailTextFieldValidationHandler)(void);
+typedef void(^BankableChangeHandler)(void);
+typedef BOOL(^BankableValidationHandler)(void);
 
 @interface BankableDetailTableViewController () <UITextFieldDelegate, UITextViewDelegate,
                                                  UIPickerViewDataSource, UIPickerViewDelegate>
@@ -77,7 +78,6 @@ typedef BOOL(^BankableDetailTextFieldValidationHandler)(void);
 - (void)registerTextField:(UITextField *)textField
              forIndexPath:(NSIndexPath *)indexPath
                   handlers:(NSDictionary *)handlers;
-- (void)textFieldForIndexPath:(NSIndexPath *)indexPath didSetText:(NSString *)text;
 - (UIView *)integerKeyboardViewForTextField:(UITextField *)textField;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -86,9 +86,6 @@ typedef BOOL(^BankableDetailTextFieldValidationHandler)(void);
 - (void)registerPickerView:(UIPickerView *)pickerView forIndexPath:(NSIndexPath *)indexPath;
 - (UIPickerView *)pickerViewForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForPickerView:(UIPickerView *)pickerView;
-- (void)showPickerViewForIndexPath:(NSIndexPath *)indexPath;
-- (void)showPickerViewForIndexPath:(NSIndexPath *)indexPath selectedObject:(id)object;
-- (void)dismissPickerView:(UIPickerView *)pickerView;
 - (void)pickerView:(UIPickerView *)pickerView
    didSelectObject:(id)selection
                row:(NSUInteger)row
@@ -106,14 +103,15 @@ MSEXTERN_IDENTIFIER(StepperCell);
 MSEXTERN_IDENTIFIER(SwitchCell);
 MSEXTERN_IDENTIFIER(LabelCell);
 MSEXTERN_IDENTIFIER(LabelListCell);
+MSEXTERN_IDENTIFIER(DetailDisclosureCell);
 MSEXTERN_IDENTIFIER(ButtonCell);
 MSEXTERN_IDENTIFIER(ImageCell);
 MSEXTERN_IDENTIFIER(TextFieldCell);
 MSEXTERN_IDENTIFIER(TextViewCell);
 MSEXTERN_IDENTIFIER(TableCell);
 
-MSEXTERN_KEY(BankableDetailTextFieldChangeHandler);
-MSEXTERN_KEY(BankableDetailTextFieldValidationHandler);
+MSEXTERN_KEY(BankableChangeHandler);
+MSEXTERN_KEY(BankableValidationHandler);
 
 MSEXTERN const CGFloat BankableDetailDefaultRowHeight;
 MSEXTERN const CGFloat BankableDetailExpandedRowHeight;

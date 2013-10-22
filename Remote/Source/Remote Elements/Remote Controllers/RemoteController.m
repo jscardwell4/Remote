@@ -16,18 +16,18 @@
 #import "Command.h"
 #import "CoreDataManager.h"
 
-static int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @interface RemoteController ()
 
-@property (nonatomic, strong)              NSSet         * currentDeviceConfigurations;
-@property (nonatomic, strong, readwrite)   NSSet         * remotes;
-@property (nonatomic, strong, readwrite)   NSString      * homeRemoteUUID;
-@property (nonatomic, strong, readwrite)   NSString      * currentRemoteUUID;
-@property (nonatomic, strong, readwrite)   NSString      * currentActivityUUID;
-@property (nonatomic, strong, readwrite)   NSSet         * activities;
+@property (nonatomic, strong)              NSSet       * currentDeviceConfigurations;
+@property (nonatomic, strong, readwrite)   NSSet       * remotes;
+@property (nonatomic, strong, readwrite)   NSString    * homeRemoteUUID;
+@property (nonatomic, strong, readwrite)   NSString    * currentRemoteUUID;
+@property (nonatomic, strong, readwrite)   NSString    * currentActivityUUID;
+@property (nonatomic, strong, readwrite)   NSSet       * activities;
 @property (nonatomic, strong, readwrite)   ButtonGroup * topToolbar;
 
 @end
@@ -48,7 +48,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 + (RemoteController *)remoteController
 {
-    return [self remoteControllerInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self remoteControllerInContext:[CoreDataManager defaultContext]];
 }
 
 + (RemoteController *)remoteControllerInContext:(NSManagedObjectContext *)context
@@ -148,6 +148,31 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
         return YES;
     }
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - JSON export
+////////////////////////////////////////////////////////////////////////////////
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"remotes"]             = CollectionSafeSelfKeyPathValue(@"remotes.uuid");
+    dictionary[@"homeRemoteUUID"]      = CollectionSafeValue(self.homeRemoteUUID);
+    dictionary[@"currentRemoteUUID"]   = CollectionSafeValue(self.currentRemoteUUID);
+    dictionary[@"currentActivityUUID"] = CollectionSafeValue(self.currentActivityUUID);
+    dictionary[@"topToolbar"]          = CollectionSafeValue([self.topToolbar JSONDictionary]);
+    dictionary[@"activities"]          =
+        CollectionSafeSelfKeyPathValue(@"activities.JSONDictionary");
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Switching

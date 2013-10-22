@@ -5,11 +5,12 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+
+#import "Button.h"
 #import "RemoteElement_Private.h"
 #import <QuartzCore/QuartzCore.h>
-//#import "ControlStateSetProxy.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 #pragma unused(ddLogLevel)
 
 static const NSSet * kConfigurationDelegateSelectors;
@@ -31,7 +32,7 @@ static const NSSet * kConfigurationDelegateKeys;
             image = _image;
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Object Lifecycle
+#pragma mark Object Lifecycle
 ////////////////////////////////////////////////////////////////////////////////
 
 + (void)initialize
@@ -39,16 +40,17 @@ static const NSSet * kConfigurationDelegateKeys;
     if (self == [Button class])
     {
         kConfigurationDelegateSelectors =
-            [@[NSValueWithPointer(@selector(titles)),
+            [@[NSValueWithPointer(@selector(commands)),
+               NSValueWithPointer(@selector(titles)),
                NSValueWithPointer(@selector(backgroundColors)),
                NSValueWithPointer(@selector(images)),
                NSValueWithPointer(@selector(icons)),
-               NSValueWithPointer(@selector(setTitle:configuration:)),
-               NSValueWithPointer(@selector(setTitles:configuration:)),
-               NSValueWithPointer(@selector(setIcons:configuration:)),
-               NSValueWithPointer(@selector(setImages:configuration:)),
-               NSValueWithPointer(@selector(setBackgroundColors:configuration:)),
-               NSValueWithPointer(@selector(setCommand:configuration:))] set];
+               NSValueWithPointer(@selector(setTitle:mode:)),
+               NSValueWithPointer(@selector(setTitles:mode:)),
+               NSValueWithPointer(@selector(setIcons:mode:)),
+               NSValueWithPointer(@selector(setImages:mode:)),
+               NSValueWithPointer(@selector(setBackgroundColors:mode:)),
+               NSValueWithPointer(@selector(setCommand:mode:))] set];
         
         kConfigurationDelegateKeys = [@[@"titles",
                                         @"icons",
@@ -58,18 +60,14 @@ static const NSSet * kConfigurationDelegateKeys;
     }
 }
 
-+ (instancetype)buttonWithType:(REType)type
++ (instancetype)buttonWithRole:(RERole)role
 {
-    return ((baseTypeForREType(type) == RETypeButton)
-            ? [self remoteElementWithAttributes:@{@"type": @(type)}]
-            : nil);
+    return [self remoteElementWithAttributes:@{@"role": @(role)}];
 }
 
-+ (instancetype)buttonWithType:(REType)type context:(NSManagedObjectContext *)moc
++ (instancetype)buttonWithRole:(RERole)role context:(NSManagedObjectContext *)moc
 {
-    return ((baseTypeForREType(type) == RETypeButton)
-            ? [self remoteElementInContext:moc attributes:@{@"type": @(type)}]
-            : nil);
+    return [self remoteElementInContext:moc attributes:@{@"role": @(role)}];
 }
 
 + (instancetype)buttonWithTitle:(id)title
@@ -82,18 +80,14 @@ static const NSSet * kConfigurationDelegateKeys;
     return [self remoteElementInContext:moc attributes:@{@"title": title}];
 }
 
-+ (instancetype)buttonWithType:(REType)type title:(id)title
++ (instancetype)buttonWithRole:(RERole)role title:(id)title
 {
-    return ((baseTypeForREType(type) == RETypeButton)
-            ? [self remoteElementWithAttributes:@{@"type": @(type), @"title": title}]
-            : nil);
+    return [self remoteElementWithAttributes:@{@"role": @(role), @"title": title}];
 }
 
-+ (instancetype)buttonWithType:(REType)type title:(id)title context:(NSManagedObjectContext *)moc
++ (instancetype)buttonWithRole:(RERole)role title:(id)title context:(NSManagedObjectContext *)moc
 {
-    return ((baseTypeForREType(type) == RETypeButton)
-            ? [self remoteElementInContext:moc attributes:@{@"type": @(type), @"title": title}]
-            : nil);
+    return [self remoteElementInContext:moc attributes:@{@"role": @(role), @"title": title}];
 }
 
 - (id)forwardingTargetForSelector:(SEL)selector
@@ -143,7 +137,7 @@ static const NSSet * kConfigurationDelegateKeys;
         if (titleObj)
             [element setTitles:[ControlStateTitleSet controlStateSetInContext:context
                                                                     withObjects:@{@"normal": titleObj}]
-              configuration:REDefaultConfiguration];
+              mode:REDefaultMode];
     }
 
     if (attributes[@"icon"])
@@ -151,7 +145,7 @@ static const NSSet * kConfigurationDelegateKeys;
         [filteredAttributes removeObjectForKey:@"icon"];
         [element setIcons:[ControlStateImageSet controlStateSetInContext:context
                                                                withObjects:@{@"normal": attributes[@"icon"]}]
-         configuration:REDefaultConfiguration];
+         mode:REDefaultMode];
     }
 
     if (attributes[@"image"])
@@ -159,13 +153,13 @@ static const NSSet * kConfigurationDelegateKeys;
         [filteredAttributes removeObjectForKey:@"image"];
         [element setImages:[ControlStateImageSet controlStateSetInContext:context
                                                                 withObjects:@{@"normal": attributes[@"image"]}]
-          configuration:REDefaultConfiguration];
+          mode:REDefaultMode];
     }
 
     if (attributes[@"icons"])
     {
         [filteredAttributes removeObjectForKey:@"icons"];
-        [element setIcons:attributes[@"icons"] configuration:REDefaultConfiguration];
+        [element setIcons:attributes[@"icons"] mode:REDefaultMode];
     }
 
     [element setValuesForKeysWithDictionary:attributes];
@@ -179,7 +173,7 @@ static const NSSet * kConfigurationDelegateKeys;
     if (ModelObjectShouldInitialize)
         [self.managedObjectContext performBlockAndWait:
         ^{
-            self.type                  = RETypeButton;
+            self.elementType                  = RETypeButton;
             self.configurationDelegate = [ButtonConfigurationDelegate
                                           delegateForRemoteElement:self];
         }];
@@ -200,7 +194,7 @@ static const NSSet * kConfigurationDelegateKeys;
 */
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Lazy Accessors
+#pragma mark Lazy Accessors
 ////////////////////////////////////////////////////////////////////////////////
 
 - (UIColor *)backgroundColor
@@ -257,7 +251,7 @@ static const NSSet * kConfigurationDelegateKeys;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Importing
+#pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
 - (BOOL)importTitles:(NSDictionary *)data
@@ -344,7 +338,7 @@ static const NSSet * kConfigurationDelegateKeys;
     [self didChangeValueForKey:@"command"];
     
     [((ButtonConfigurationDelegate *)self.configurationDelegate) setCommand:command
-                                                             configuration:REDefaultConfiguration];
+                                                             mode:REDefaultMode];
 }
 
 - (UIEdgeInsets)titleEdgeInsets
@@ -392,11 +386,11 @@ static const NSSet * kConfigurationDelegateKeys;
     [self didChangeValueForKey:@"contentEdgeInsets"];
 }
 
-- (void)executeCommandWithOptions:(RECommandOptions)options
-                       completion:(RECommandCompletionHandler)completion
+- (void)executeCommandWithOptions:(CommandOptions)options
+                       completion:(CommandCompletionHandler)completion
 {
 
-    if (options == RECommandOptionLongPress && self.longPressCommand)
+    if (options == CommandOptionLongPress && self.longPressCommand)
         [self.longPressCommand execute:completion];
 
     else if (self.command) [self.command execute:completion];
@@ -404,6 +398,62 @@ static const NSSet * kConfigurationDelegateKeys;
     else if (completion) completion(YES, NO);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Exporting
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    ButtonConfigurationDelegate * delegate = (ButtonConfigurationDelegate *)self.configurationDelegate;
+    NSArray * configurations = delegate.modeKeys;
+    
+    MSDictionary * titles           = [MSDictionary dictionary];
+    MSDictionary * backgroundColors = [MSDictionary dictionary];
+    MSDictionary * icons            = [MSDictionary dictionary];
+    MSDictionary * images           = [MSDictionary dictionary];
+    MSDictionary * commands         = [MSDictionary dictionary];
+
+    for (RERemoteMode mode in configurations)
+    {
+        ControlStateSet * stateSet = [delegate titlesForMode:mode];
+        if (stateSet && ![stateSet isEmptySet]) titles[mode] = [stateSet JSONDictionary];
+
+        stateSet = [delegate backgroundColorsForMode:mode];
+        if (stateSet && ![stateSet isEmptySet]) backgroundColors[mode] = [stateSet JSONDictionary];
+
+        stateSet = [delegate iconsForMode:mode];
+        if (stateSet && ![stateSet isEmptySet]) icons[mode] = [stateSet JSONDictionary];
+
+        stateSet = [delegate imagesForMode:mode];
+        if (stateSet && ![stateSet isEmptySet]) images[mode] = [stateSet JSONDictionary];
+
+        Command * command = [delegate commandForMode:mode];
+        if (command) commands[mode] = [command JSONDictionary];
+
+    }
+
+    dictionary[@"commands"] = ([commands count] ? commands : NullObject);
+    dictionary[@"titles"] = ([titles count] ? titles : NullObject) ;
+    dictionary[@"icons"] = ([icons count] ? icons : NullObject);
+    dictionary[@"backgroundColors"]  = ([backgroundColors count] ? backgroundColors : NullObject);
+    dictionary[@"images"] = ([images count] ? images : NullObject);
+
+    if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, self.titleEdgeInsets))
+        dictionary[@"titleEdgeInsets"]   = NSStringFromUIEdgeInsets(self.titleEdgeInsets);
+
+    if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, self.imageEdgeInsets))
+        dictionary[@"imageEdgeInsets"]   = NSStringFromUIEdgeInsets(self.imageEdgeInsets);
+
+    if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, self.contentEdgeInsets))
+        dictionary[@"contentEdgeInsets"] = NSStringFromUIEdgeInsets(self.contentEdgeInsets);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
 @end
 
 @implementation Button (Debugging)
@@ -414,7 +464,7 @@ static const NSSet * kConfigurationDelegateKeys;
     assert(element);
 
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     dd[@"titles"] = (element.titles
                                         ? $(@"%@(%p)\n%@", element.titles.uuid, element.titles, [element.titles deepDescription])
@@ -461,7 +511,7 @@ static const NSSet * kConfigurationDelegateKeys;
                                         : @"nil");
 
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 @end

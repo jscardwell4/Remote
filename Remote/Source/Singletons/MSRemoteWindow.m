@@ -10,7 +10,7 @@
 
 // #define LOG_WINDOW_EVENTS
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 
 @implementation MSRemoteWindow {
     BOOL              _nextEventWakesScreen;

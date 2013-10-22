@@ -8,7 +8,7 @@
 #import "ConfigurationDelegate_Private.h"
 #import "CommandContainer.h"
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -38,27 +38,27 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 - (ButtonGroup *)buttonGroup { return (ButtonGroup *)self.element; }
 
 - (void)setCommandContainer:(CommandContainer *)container
-        configuration:(RERemoteConfiguration)config
+        mode:(RERemoteMode)mode
 {
-    assert(container && config);
+    assert(container && mode);
     [self addCommandContainersObject:container];
-    self[$(@"%@.commandContainer", config)] = container.uuid;
+    self[$(@"%@.commandContainer", mode)] = container.uuid;
 }
 
-- (void)setLabel:(NSAttributedString *)label configuration:(RERemoteConfiguration)config
+- (void)setLabel:(NSAttributedString *)label mode:(RERemoteMode)mode
 {
-    assert(label && config);
-    self[$(@"%@.label", config)] = label;
+    assert(label && mode);
+    self[$(@"%@.label", mode)] = label;
 }
 
-- (void)updateForConfiguration:(RERemoteConfiguration)configuration
+- (void)updateForMode:(RERemoteMode)mode
 {
-    if (![self hasConfiguration:configuration]) return;
+    if (![self hasMode:mode]) return;
 
-    NSAttributedString * label = self[$(@"%@.label", configuration)];
+    NSAttributedString * label = self[$(@"%@.label", mode)];
     if (label) self.buttonGroup.label = label;
 
-    NSString * uuid = self[$(@"%@.commandContainer", configuration)];
+    NSString * uuid = self[$(@"%@.commandContainer", mode)];
     if (uuid) {
         CommandContainer * container = (CommandContainer *)
                                          memberOfCollectionWithUUID(self.commandContainers, uuid);
@@ -70,8 +70,8 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
 - (CommandContainer *)commandContainer
 {
-    NSString * uuid = self[$(@"%@.commandContainer", self.currentConfiguration)];
-    if (!uuid) uuid = self[$(@"%@.commandContainer", REDefaultConfiguration)];
+    NSString * uuid = self[$(@"%@.commandContainer", self.currentMode)];
+    if (!uuid) uuid = self[$(@"%@.commandContainer", REDefaultMode)];
     return ((CommandContainer *)memberOfCollectionWithUUID(self.commandContainers, uuid) ?: nil);
 }
 

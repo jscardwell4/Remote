@@ -13,7 +13,7 @@
 #import "Reachability.h"
 #define kShouldPrintReachabilityFlags 0
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 #pragma unused(ddLogLevel)
 

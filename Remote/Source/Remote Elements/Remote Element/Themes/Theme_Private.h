@@ -30,10 +30,10 @@
 - (void)initializeButtonGroupSettings;
 - (void)initializeButtonSettings;
 
-- (ThemeSettings *)settingsForType:(REType)type;
-- (ThemeRemoteSettings *)remoteSettingsForType:(REType)type;
-- (ThemeButtonGroupSettings *)buttonGroupSettingsForType:(REType)type;
-- (ThemeButtonSettings *)buttonSettingsForType:(REType)type;
+- (ThemeSettings *)settingsForType:(REType)type withRole:(RERole)role;
+- (ThemeRemoteSettings *)remoteSettingsForRole:(RERole)role;
+- (ThemeButtonGroupSettings *)buttonGroupSettingsForRole:(RERole)role;
+- (ThemeButtonSettings *)buttonSettingsForRole:(RERole)role;
 
 @property (nonatomic, strong) NSSet    * settings;
 @property (nonatomic, strong) NSNumber * theme;
@@ -100,15 +100,16 @@
 
 @interface ThemeSettings : ModelObject<NSCopying>
 
-@property (nonatomic, strong) Theme  * theme;
-@property (nonatomic, strong) NSNumber * type;
-@property (nonatomic, strong) Image  * backgroundImage;
+@property (nonatomic, strong)   Theme  * theme;
+@property (nonatomic, readonly) REType   type;
+@property (nonatomic, assign)   RERole   role;
+@property (nonatomic, strong)   Image  * backgroundImage;
 
 
 + (instancetype)themeSettings;
 + (instancetype)themeSettingsInContext:(NSManagedObjectContext *)moc;
-+ (instancetype)themeSettingsWithType:(REType)type;
-+ (instancetype)themeSettingsWithType:(REType)type context:(NSManagedObjectContext *)moc;
++ (instancetype)themeSettingsWithRole:(RERole)role;
++ (instancetype)themeSettingsWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
 
 @end
 
@@ -148,7 +149,7 @@
 
 @interface ThemeButtonSettings : ThemeSettings
 
-- (ThemeButtonSettings *)subSettingsForType:(REType)type;
+- (ThemeButtonSettings *)subSettingsForRole:(RERole)role;
 
 @property (nonatomic, strong) NSValue                      * titleInsets;
 @property (nonatomic, strong) NSValue                      * contentInsets;

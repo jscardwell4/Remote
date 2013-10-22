@@ -7,6 +7,7 @@
 //
 
 #import "ControlStateSet.h"
+#import "RemoteElementExportSupportFunctions.h"
 
 MSKEY_DEFINITION(REForegroundColor);
 MSKEY_DEFINITION(REBackgroundColor);
@@ -40,7 +41,7 @@ NSDictionary * dictionaryFromObject(id obj)
     return attributesDictionary;
 }
 
-NSDictionary *dictionaryFromAttributedString(NSAttributedString * string)
+NSDictionary * dictionaryFromAttributedString(NSAttributedString * string)
 {
     if (![string isKindOfClass:[NSAttributedString class]]) return nil;
     else
@@ -81,6 +82,8 @@ NSDictionary *dictionaryFromAttributedString(NSAttributedString * string)
         return convertedAttributes;
     }
 }
+
+
 
 + (NSSet const *)validAttributeKeys
 {
@@ -223,6 +226,44 @@ NSDictionary *dictionaryFromAttributedString(NSAttributedString * string)
     }
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)] arrayByMappingToBlock:
+                      ^id(id obj, NSUInteger idx)
+                      {
+                          return [ControlStateSet propertyForState:[obj unsignedIntegerValue]];
+                      }];
+
+    for (NSString * key in keys)
+    {
+        id obj = [self valueForKey:key];
+
+        NSDictionary * attributesDictionary = dictionaryFromObject(obj);
+        if (attributesDictionary)
+        {
+            MSDictionary * d = [MSDictionary dictionary];
+            d[@"fontName"] = CollectionSafeValue(attributesDictionary[REFontNameKey]);
+            d[@"fontSize"] = CollectionSafeValue(attributesDictionary[REFontSizeKey]);
+
+            UIColor * color = attributesDictionary[REForegroundColorKey];
+            d[@"foregroundColor"] = CollectionSafeValue(normalizedColorJSONValueForColor(color));
+
+            color = attributesDictionary[REStrokeColorKey];
+            d[@"strokeColor"] = CollectionSafeValue(normalizedColorJSONValueForColor(color));
+            
+            d[@"strokeWidth"] = CollectionSafeValue(attributesDictionary[REStrokeWidthKey]);
+            d[@"text"] = CollectionSafeValue(attributesDictionary[RETitleTextKey]);
+
+            [d removeKeysWithNullObjectValues];
+            dictionary[key] = d;
+        }
+    }
+
+    return dictionary;
+}
+
 - (MSDictionary *)deepDescriptionDictionary
 {
     ControlStateTitleSet * stateSet = [self faultedObject];
@@ -249,7 +290,7 @@ NSDictionary *dictionaryFromAttributedString(NSAttributedString * string)
         if (attributes)
         {
 
-            MSMutableDictionary * attributeDescriptions = [MSMutableDictionary dictionaryWithCapacity:[attributes count]];
+            MSDictionary * attributeDescriptions = [MSDictionary dictionaryWithCapacity:[attributes count]];
             for (NSString * attribute in attributes)
             {
                 NSNumber * attributeIndex = attributeKeys[attribute];
@@ -333,7 +374,7 @@ NSDictionary *dictionaryFromAttributedString(NSAttributedString * string)
         return (description ? : @"nil");
     };
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
     NSString * normalString                         = attributesDescription(stateSet[0]);
     NSString * selectedString                       = attributesDescription(stateSet[1]);
@@ -353,7 +394,7 @@ NSDictionary *dictionaryFromAttributedString(NSAttributedString * string)
     dd[@"disabledAndSelected"]            = disabledAndSelectedString;
     dd[@"selectedHighlightedAndDisabled"] = selectedHighlightedAndDisabledString;
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 - (NSString *)shortDescription

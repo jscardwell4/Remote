@@ -11,7 +11,7 @@
     #import <CoreData/CoreData.h>
     #import <Lumberjack/Lumberjack.h>
     #import <MSKit/MSKit.h>
-    #import <MagicalRecord/MagicalRecord.h>
+    #import <MagicalRecord/CoreData+MagicalRecord.h>
     #import <OCMock/OCMock.h>
     #import "MSRemoteMacros.h"
     #import "MSRemoteTypeDefinitions.h"

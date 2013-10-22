@@ -19,7 +19,7 @@
 #import "UITestRunner.h"
 #import "StoryboardProxy.h"
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -156,7 +156,16 @@ static const int   msLogContext = 0;
 
     [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop)
     {
-        [MSLog addDefaultFileLoggerForContext:NSUIntegerValue(key) directory:obj];
+        NSUInteger context = NSUIntegerValue(key);
+        if (context == LOG_CONTEXT_MAGICALRECORD)
+        {
+            DDFileLogger * fileLogger = [MSLog defaultFileLoggerForContext:context directory:obj];
+            MSLogFormatter * formatter = fileLogger.logFormatter;
+            formatter.includeSEL = NO;
+            [DDLog addLogger:fileLogger];
+        }
+
+        else [MSLog addDefaultFileLoggerForContext:context directory:obj];
     }];
 
 }

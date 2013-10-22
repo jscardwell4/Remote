@@ -19,6 +19,25 @@
 
 @dynamic info;
 
+
+- (void)importInfo:(id)data
+{
+    if (![data isKindOfClass:[NSDictionary class]])
+        return;
+    
+    NSDictionary * info = data[@"info"];
+    if (!info) info = data;
+
+    NSString * name = info[@"name"];
+    NSString * category = info[@"category"];
+    NSNumber * user = info[@"user"];
+
+    if (name) self.info.name = name;
+    if (category) self.info.category = category;
+    if (user) self.info.user = [user boolValue];
+}
+
+
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
@@ -66,6 +85,18 @@
     }
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"info"] = CollectionSafeValue(self.info.JSONDictionary);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
 - (NSString *)name { return self.info.name; }
 - (void)setName:(NSString *)name { self.info.name = name; }
 
@@ -74,11 +105,25 @@
 - (NSString *)category { return self.info.category; }
 - (void)setCategory:(NSString *)category { self.info.category = category; }
 
-- (BOOL)user { return [self.info.user boolValue]; }
-- (void)setUser:(BOOL)user { self.info.user = @(user); }
+- (BOOL)user { return self.info.user; }
+- (void)setUser:(BOOL)user { self.info.user = user; }
 
 - (UIImage *)thumbnail { return nil; }
 - (UIImage *)preview { return nil; }
 - (MSDictionary *)subBankables { return nil; }
+
++ (NSFetchedResultsController *)bankableItems
+{
+    NSFetchedResultsController * controller = [self MR_fetchAllGroupedBy:@"info.category"
+                                                           withPredicate:nil
+                                                                sortedBy:@"info.category,info.name"
+                                                               ascending:YES];
+    NSError * error = nil;
+    [controller performFetch:&error];
+
+    if (error) [CoreDataManager handleErrors:error];
+
+    return controller;
+}
 
 @end

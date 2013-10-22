@@ -18,9 +18,15 @@
 
 - (void)setTitle:(NSString *)title
 {
-    [self.button setTitle:title forState:UIControlStateNormal];
+    if (_button)
+        [self.button setTitle:title forState:UIControlStateNormal];
+    else if (_label)
+        self.label.text = title;
 }
 
-- (NSString *)title { return [self.button titleForState:UIControlStateNormal]; }
+- (NSString *)title
+{
+    return (_button ? [self.button titleForState:UIControlStateNormal] : self.label.text);
+}
 
 @end

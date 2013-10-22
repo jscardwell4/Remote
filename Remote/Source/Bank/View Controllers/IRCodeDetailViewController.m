@@ -13,7 +13,7 @@
 #import "Manufacturer.h"
 
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -26,8 +26,6 @@ static NSIndexPath * kOffsetIndexPath;
 static NSIndexPath * kOnOffPatternIndexPath;
 
 @interface IRCodeDetailViewController ()
-
-@property (nonatomic, weak) IBOutlet UITextView   * patternTextView;
 
 @property (nonatomic, readonly) IRCode       * irCode;
 @property (nonatomic, strong)   NSArray      * manufacturers;
@@ -55,35 +53,30 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
 - (Class<Bankable>)itemClass { return [IRCode class]; }
 
-- (void)updateDisplay
-{
-    [super updateDisplay];
-    self.patternTextView.text = self.irCode.onOffPattern;
-    UIButton * codesetButton = [self cellForRowAtIndexPath:kCodesetIndexPath].infoButton;
-    if (codesetButton) codesetButton.enabled = (self.irCode.manufacturer != nil);
-}
-
-- (NSArray *)editableViews
-{
-    return [[super editableViews] arrayByAddingObjectsFromArray:@[_patternTextView]];
-}
-
 - (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type
 {
     switch (type)
     {
         case BankableDetailPickerViewData:
-            return ([indexPath isEqual:kManufacturerIndexPath] ? self.manufacturers : self.codesets);
+            return ([indexPath isEqual:kManufacturerIndexPath]
+                    ? self.manufacturers
+                    : self.codesets);
+
+        case BankableDetailPickerViewSelection:
+            return ([indexPath isEqual:kManufacturerIndexPath]
+                    ? self.irCode.manufacturer
+                    : self.irCode.codeset);
 
         case BankableDetailTextFieldData:
             return ([indexPath isEqual:kFrequencyIndexPath]
-                    ? [@(self.irCode.frequency) description]
-                    : [@(self.irCode.repeatCount) description]);
-
-        case BankableDetailPickerButtonData:
-            return ([indexPath isEqual:kManufacturerIndexPath]
-                    ? (self.irCode.manufacturer ?: @"No Manufacturer")
-                    : (self.irCode.codeset ?: @"No Codeset"));
+                    ? [@(self.irCode.frequency) stringValue]
+                    : ([indexPath isEqual:kRepeatIndexPath]
+                       ? [@(self.irCode.repeatCount) stringValue]
+                       : ([indexPath isEqual:kManufacturerIndexPath]
+                          ? ([self.irCode valueForKeyPath:@"manufacturer.name"]
+                             ?: @"No Manufacturer")
+                          : ([self.irCode valueForKeyPath:@"codeset"]
+                             ?: @"No Codeset"))));
 
         default:
             return nil;
@@ -103,8 +96,8 @@ static NSIndexPath * kOnOffPatternIndexPath;
         self.manufacturers = [@[@"No Manufacturer",
                                 [Manufacturer MR_findAllSortedBy:@"info.name"
                                                        ascending:YES
-                                                       inContext:self.item.managedObjectContext],
-                                @"➕ Create Manufacturer"] flattenedArray];
+                                                       inContext:self.item.managedObjectContext]]
+                                flattenedArray];
     }
 
     return _manufacturers;
@@ -114,11 +107,10 @@ static NSIndexPath * kOnOffPatternIndexPath;
 {
     if (!_codesets)
     {
-        NSArray * codesets = [[self.irCode.manufacturer.codesets allObjects]
-                              sortedArrayUsingDescriptors:@[[NSSortDescriptor
-                                                             sortDescriptorWithKey:@"name"
-                                                             ascending:YES]]];
-        self.codesets = [@[@"No Codeset", (codesets?:@[]), @"➕ Create Codeset"] flattenedArray];
+        NSArray * sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:nil ascending:YES]];
+        NSArray * codesets = [self.irCode.manufacturer.codesets
+                              sortedArrayUsingDescriptors:sortDescriptors];
+        self.codesets = [@[@"No Codeset", (codesets?:@[])] flattenedArray];
     }
     return _codesets;
 }
@@ -130,35 +122,35 @@ static NSIndexPath * kOnOffPatternIndexPath;
 {
     if ([indexPath isEqual:kManufacturerIndexPath])
     {
-        if (row == [_manufacturers lastIndex])
+        if (!row)
         {
-            MSLogDebug(@"right now would be a good time to create a new manufacturer");
+            _irCode.manufacturer = nil;
+            _codesets = nil;
+            [self cellForRowAtIndexPath:kManufacturerIndexPath].text = @"No Manufacturer";
+            [self cellForRowAtIndexPath:kCodesetIndexPath].text = @"No Codeset";
         }
 
-        else if (selection != self.irCode.manufacturer)
+        else
         {
-            self.irCode.manufacturer = ([selection isKindOfClass:[Manufacturer class]]
-                                        ? selection
-                                        : nil);
-            UIButton * codesetButton = [self cellForRowAtIndexPath:kCodesetIndexPath].infoButton;
-            [codesetButton setTitle:@"No Codeset" forState:UIControlStateNormal];
-            _codesets = nil;
+            assert([selection isKindOfClass:[Manufacturer class]]);
+
+             if (selection != _irCode.manufacturer)
+             {
+                 [self cellForRowAtIndexPath:kCodesetIndexPath].text = @"No Codeset";
+                 _codesets = nil;
+             }
+
+            _irCode.manufacturer = selection;
+            [self cellForRowAtIndexPath:kManufacturerIndexPath].text = _irCode.manufacturer.name;
        }
     }
 
     else if ([indexPath isEqual:kCodesetIndexPath])
     {
-        if (row == [_codesets lastIndex])
-        {
-            MSLogDebug(@"right now would be a good time to create a new codeset");
-        }
-        else
-        {
-            self.irCode.codeset = ([selection isKindOfClass:[IRCodeset class]]
-                                   ? selection
-                                   : nil);
-        }
+        _irCode.codeset = (row ? selection : nil);
+        [self cellForRowAtIndexPath:kCodesetIndexPath].text = (row ? selection : @"No Codeset");
     }
+
     [super pickerView:pickerView didSelectObject:selection row:row indexPath:indexPath];
 }
 
@@ -167,14 +159,13 @@ static NSIndexPath * kOnOffPatternIndexPath;
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (IRCode *)irCode { if (!_irCode) _irCode = (IRCode *)self.item; return _irCode; }
-
-- (void)setPatternTextView:(UITextView *)patternTextView
+- (void)setItem:(NSManagedObject<Bankable> *)item
 {
-    _patternTextView = patternTextView;
-    _patternTextView.delegate = self;
-    _patternTextView.text = self.irCode.onOffPattern;
+    [super setItem:item];
+    _irCode = (IRCode *)item;
 }
+
+- (IRCode *)irCode { if (!_irCode) _irCode = (IRCode *)self.item; return _irCode; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -187,101 +178,171 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BankableDetailTableViewCell * cell = nil;
+    BankableDetailTableViewCell       * cell     = nil;
     __weak IRCodeDetailViewController * weakself = self;
 
     switch (indexPath.row)
     {
-        case 0: // Manufacturer
-        {
-            cell = [self dequeueReusableCellWithIdentifier:ButtonCellIdentifier
-                                              forIndexPath:indexPath];
-            cell.nameLabel.text = @"Manufacturer";
-            [cell.infoButton setTitle:([_irCode valueForKeyPath:@"manufacturer.name"]
-                                       ?: @"No Manufacturer")
-                             forState:UIControlStateNormal];
-            void (^actionBlock)(void) = ^{
-                id selection = (_irCode.manufacturer ?: @"No Manufacturer");
-                [weakself showPickerViewForIndexPath:indexPath selectedObject:selection];
-            };
-            [cell.infoButton addActionBlock:actionBlock forControlEvents:UIControlEventTouchUpInside];
-            [self registerEditableView:cell.infoButton];
-        } break;
-
-        case 1: // Codeset
-        {
-            cell = [self dequeueReusableCellWithIdentifier:ButtonCellIdentifier
-                                              forIndexPath:indexPath];
-            cell.nameLabel.text = @"Codeset";
-            [cell.infoButton setTitle:([_irCode valueForKeyPath:@"codeset.name"]
-                                       ?: @"No Codeset")
-                             forState:UIControlStateNormal];
-            void (^actionBlock)(void) = ^{
-                id selection = (_irCode.codeset ?: @"No Codeset");
-                [weakself showPickerViewForIndexPath:indexPath selectedObject:selection];
-            };
-            [cell.infoButton addActionBlock:actionBlock forControlEvents:UIControlEventTouchUpInside];
-            [self registerEditableView:cell.infoButton];
-        } break;
-
-        case 2: // Frequency
+        case 0:  // Manufacturer
         {
             cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
                                               forIndexPath:indexPath];
-            cell.nameLabel.text = @"Frequency";
-            cell.infoTextField.text = [@(_irCode.frequency) stringValue];
-            cell.infoTextField.inputView = [self integerKeyboardViewForTextField:cell.infoTextField];
-            BankableDetailTextFieldChangeHandler changeHandler = ^{
-                _irCode.frequency = [cell.infoTextField.text longLongValue];
+            cell.name = @"Manufacturer";
+            cell.text = ([_irCode valueForKeyPath:@"manufacturer.name"] ? : @"No Manufacturer");
+
+            BankableValidationHandler validationHandler =
+            ^{
+                return (BOOL)(cell.text && cell.text.length > 0);
             };
+
+            BankableChangeHandler changeHandler =
+            ^{
+                NSString * text = cell.text;
+
+                if ([@"No Manufacturer" isEqualToString:text])
+                    _irCode.manufacturer = nil;
+
+                else
+                {
+                    Manufacturer * manufacturer =
+                    [_manufacturers objectPassingTest:
+                     ^BOOL(id obj, NSUInteger idx)
+                     {
+                         return (   [obj isKindOfClass:[Manufacturer class]]
+                                 && [[obj valueForKey:@"name"] isEqualToString:text]);
+                     }];
+
+                    if (!manufacturer)
+                    {
+                        manufacturer = [Manufacturer
+                                        manufacturerWithName:text
+                                                     context:_irCode.managedObjectContext];
+                        _manufacturers = nil;
+                    }
+                    assert(manufacturer);
+
+                    _irCode.manufacturer = manufacturer;
+                }
+            };
+
             [self registerTextField:cell.infoTextField
                        forIndexPath:indexPath
-                           handlers:@{BankableDetailTextFieldChangeHandlerKey: changeHandler}];
-        } break;
+                           handlers:@{ BankableValidationHandlerKey : validationHandler,
+                                       BankableChangeHandlerKey     : changeHandler }];
 
-        case 3: // Repeat
+            [self registerPickerView:cell.pickerView forIndexPath:indexPath];
+
+
+            break;
+        }
+
+        case 1:  // Codeset
         {
             cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
                                               forIndexPath:indexPath];
-            cell.nameLabel.text = @"Repeat";
-            cell.infoTextField.text = [@(_irCode.repeatCount) stringValue];
+            cell.name = @"Codeset";
+            cell.text = (_irCode.codeset ? : @"No Codeset");
+
+            BankableValidationHandler validationHandler =
+            ^{
+                return (BOOL)(cell.text && cell.text.length > 0);
+            };
+
+            BankableChangeHandler changeHandler =
+            ^{
+                NSString * text = cell.text;
+
+                if ([@"No Codeset" isEqualToString:text])
+                    _irCode.codeset = nil;
+
+                else
+                {
+                    _irCode.codeset = text;
+                    if (![_codesets containsObject:text])
+                        _codesets = nil;
+                }
+            };
+
+            [self registerTextField:cell.infoTextField
+                       forIndexPath:indexPath
+                           handlers:@{ BankableValidationHandlerKey : validationHandler,
+                                       BankableChangeHandlerKey     : changeHandler }];
+            
+            [self registerPickerView:cell.pickerView forIndexPath:indexPath];
+            
+
+            break;
+        }
+
+        case 2:  // Frequency
+        {
+            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+                                              forIndexPath:indexPath];
+            cell.name = @"Frequency";
+            cell.text = [@(_irCode.frequency) stringValue];
+
             cell.infoTextField.inputView = [self integerKeyboardViewForTextField:cell.infoTextField];
-            BankableDetailTextFieldChangeHandler changeHandler = ^{
+            BankableChangeHandler   changeHandler =
+            ^{
+                _irCode.frequency = [cell.infoTextField.text longLongValue];
+            };
+
+            [self registerTextField:cell.infoTextField
+                       forIndexPath:indexPath
+                           handlers:@{ BankableChangeHandlerKey : changeHandler }];
+            break;
+        }
+
+        case 3:  // Repeat
+        {
+            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+                                              forIndexPath:indexPath];
+            cell.name = @"Repeat";
+            cell.text = [@(_irCode.repeatCount) stringValue];
+            cell.infoTextField.inputView = [self integerKeyboardViewForTextField:cell.infoTextField];
+            BankableChangeHandler   changeHandler =
+            ^{
                 _irCode.repeatCount = [cell.infoTextField.text intValue];
             };
             [self registerTextField:cell.infoTextField
                        forIndexPath:indexPath
-                           handlers:@{BankableDetailTextFieldChangeHandlerKey: changeHandler}];
-        } break;
+                           handlers:@{ BankableChangeHandlerKey : changeHandler }];
+            break;
+        }
 
-        case 4: // Offset
+        case 4:  // Offset
         {
             cell = [self dequeueReusableCellWithIdentifier:StepperCellIdentifier
                                               forIndexPath:indexPath];
-            cell.nameLabel.text = @"Offset";
+            cell.nameLabel.text           = @"Offset";
             cell.infoStepper.minimumValue = 0;
             cell.infoStepper.maximumValue = 127;
-            cell.infoStepper.wraps = NO;
-            cell.infoStepper.value = self.irCode.offset;
-            cell.infoLabel.text = [@(self.irCode.offset) description];
+            cell.infoStepper.wraps        = NO;
+            cell.infoStepper.value        = self.irCode.offset;
+            cell.infoLabel.text           = [@(self.irCode.offset)description];
             [cell.infoStepper addActionBlock:
              ^{
                  weakself.irCode.offset = (int16_t)cell.infoStepper.value;
-                 cell.infoLabel.text = [@(cell.infoStepper.value) description];
-             } forControlEvents:UIControlEventValueChanged];
-            
+                 cell.infoLabel.text = [@(cell.infoStepper.value)description];
+             }              forControlEvents:UIControlEventValueChanged];
+
             [self registerStepper:cell.infoStepper
                         withLabel:cell.infoLabel
                      forIndexPath:indexPath];
-        } break;
+            break;
+        }
 
-        case 5: // On-Off Pattern
+        case 5:  // On-Off Pattern
         {
             cell = [self dequeueReusableCellWithIdentifier:TextViewCellIdentifier
                                               forIndexPath:indexPath];
-            cell.nameLabel.text = @"On-Off Pattern";
-            self.patternTextView = cell.infoTextView;
-        } break;
+            cell.name = @"On-Off Pattern";
+            cell.text = _irCode.onOffPattern;
+            cell.infoTextView.delegate = self;
+            [self registerEditableView:cell.infoTextView];
+
+            break;
+        }
     }
 
     return cell;
@@ -309,28 +370,20 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    if (textView == _patternTextView)
-        self.irCode.onOffPattern = _patternTextView.text;
-
-    else [super textViewDidEndEditing:textView];
+    _irCode.onOffPattern = textView.text;
 }
 
 - (BOOL)           textView:(UITextView *)textView
     shouldChangeTextInRange:(NSRange)range
             replacementText:(NSString *)text
 {
-    if (textView == _patternTextView)
+    if (text.length && [text[0] isEqual:@('\n')])
     {
-        if (text.length && [text[0] isEqual:@('\n')])
-        {
-            [_patternTextView resignFirstResponder];
-            return NO;
-        }
-
-        else return YES;
+        [textView resignFirstResponder];
+        return NO;
     }
 
-    else return [super textView:textView shouldChangeTextInRange:range replacementText:text];
+    else return YES;
 }
 
 @end

@@ -22,7 +22,7 @@
 
 @interface CommandSet ()
 
-@property (nonatomic, readwrite) RECommandSetType   type;
+@property (nonatomic, readwrite) CommandSetType   type;
 @property (nonatomic, strong)    NSSet            * commands;
 @property (nonatomic, strong)    ButtonGroup    * buttonGroup;
 

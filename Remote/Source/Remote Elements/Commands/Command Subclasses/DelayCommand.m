@@ -10,7 +10,7 @@
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
-@interface DelayCommandOperation : RECommandOperation @end
+@interface DelayCommandOperation : CommandOperation @end
 
 @implementation DelayCommand
 
@@ -29,7 +29,17 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return delayCommand;
 }
 
-- (RECommandOperation *)operation { return [DelayCommandOperation operationForCommand:self]; }
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"duration"] = @(self.duration);
+
+    return dictionary;
+}
+
+
+- (CommandOperation *)operation { return [DelayCommandOperation operationForCommand:self]; }
 
 - (NSString *)shortDescription { return $(@"duration:%@",self.primitiveDuration); }
 

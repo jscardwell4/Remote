@@ -11,7 +11,7 @@
 MSNAMETAG_DEFINITION(ButtonGroupViewInternal);
 MSNAMETAG_DEFINITION(ButtonGroupViewLabel);
 
-static int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
@@ -41,9 +41,9 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 - (CGSize)intrinsicContentSize
 {
-    switch ((uint64_t)self.type)
+    switch ((uint8_t)self.role)
     {
-        case REButtonGroupTypeToolbar:
+        case REButtonGroupRoleToolbar:
             return CGSizeMake(MainScreen.bounds.size.width, 44.0);
 
         default:
@@ -149,7 +149,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     self.moveable    = YES;
     self.cornerRadii = CGSizeMake(5.0f, 5.0f);
 
-    if (self.type == REButtonGroupTypeToolbar)
+    if ((self.role & REButtonGroupRoleToolbar) == REButtonGroupRoleToolbar)
     {
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired
                                               forAxis:UILayoutConstraintAxisHorizontal];
@@ -242,7 +242,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     if (_locked) [view setValuesForKeysWithDictionary:@{@"resizable" : @NO,
                                                         @"moveable"  : @NO}];
 
-    if (view.type == REButtonTypeTuck)
+    if (view.role == REButtonRoleTuck)
     {
         __weak ButtonGroupView * weakself = self;
         __weak ButtonView      * weakview = view;

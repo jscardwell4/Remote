@@ -6,22 +6,16 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Image.h"
-#import "BankGroup.h"
 
-
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_DEFAULT;
 #pragma unused(ddLogLevel, msLogContext)
 
 @interface Image ()
 
-@property (nonatomic, strong, readwrite) NSString * fileName;
 @property (nonatomic, strong, readwrite) UIImage  * thumbnail;
 @property (nonatomic, strong, readwrite) UIImage  * stretchableImage;
 @property (nonatomic, assign, readwrite) CGSize     size;
-@property (nonatomic, strong) NSData * previewData;
-
-- (void)generatePreviewData;
 
 @end
 
@@ -33,123 +27,37 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 @implementation Image
 
-@dynamic previewData, size, group, leftCap, topCap, fileName, info;
+@dynamic size, fileName, info;
 
-@synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
-
-+ (instancetype)imageWithFileName:(NSString *)fileName group:(ImageGroup *)group
-{
-    assert(!(StringIsEmpty(fileName) || ValueIsNil(group)));
-
-    NSManagedObjectContext * context = group.managedObjectContext;
-    __block Image * image;
-    [context performBlockAndWait:^{
-        UIImage * i = [UIImage imageNamed:fileName];
-        if (i)
-        {
-            image = [self MR_createInContext:context];
-            image.fileName = fileName;
-            image.name     = fileName;
-            image.group    = group;
-            image.size     = i.size;
-        }
-    }];
-
-    return image;
-}
+@synthesize thumbnail        = _thumbnail,
+            stretchableImage = _stretchableImage,
+            thumbnailSize    = _thumbnailSize;
 
 + (instancetype)imageWithFileName:(NSString *)name
                          category:(NSString *)category
                           context:(NSManagedObjectContext *)context
 {
-    Image * image = [self imageWithFileName:name context:context];
-    if (image) [image.managedObjectContext performBlockAndWait:^{ image.info.category = category; }];
+    Image * image = [self MR_createInContext:context];
+    if (image) [image.managedObjectContext performBlockAndWait:
+                ^{
+                    image.fileName = name;
+                    image.info.category = category;
+                }];
     return image;
 }
 
-+ (instancetype)imageWithFileName:(NSString *)name context:(NSManagedObjectContext *)context
-{
-    assert(context);
-    __block Image * image;
-    [context performBlockAndWait:
-     ^{
-        ImageGroup * group = [ImageGroup groupWithName:@"Default" context:context];
-        image =  [self imageWithFileName:name group:group];
-        assert(image);
-    }];
-    return image;
-}
-
-+ (instancetype)fetchImageNamed:(NSString *)name context:(NSManagedObjectContext *)context
-{
-    assert(context);
-    __block Image * image = nil;
-    [context performBlockAndWait:
-     ^{
-         image = [self MR_findFirstByAttribute:@"fileName" withValue:name inContext:context];
-     }];
-    return image;
-}
-
-//- (NSString *)fileName { return $(@"%@.%@", self.baseFileName, self.fileNameExtension); }
-
-/*
 - (void)setFileName:(NSString *)fileName
 {
-    assert(StringIsNotEmpty(fileName));
-    
-    NSString * pathToDirectory    = [fileName stringByDeletingLastPathComponent];
-    NSString * fileNameComponent  = [fileName lastPathComponent];
-    NSString * fileNameExtension  = [fileNameComponent pathExtension];
-    
-
-    self.fileDirectory     = (StringIsNotEmpty(pathToDirectory) ? pathToDirectory : nil);
-    self.baseFileName      = (StringIsEmpty(fileNameExtension)
-                              ? fileNameComponent
-                              : [fileNameComponent stringByDeletingPathExtension]);
-    self.fileNameExtension = (StringIsNotEmpty(fileNameExtension) ? fileNameExtension : nil);
-
-    NSString * tagString = [self.baseFileName
-                            stringByMatchingFirstOccurrenceOfRegEx:@"\\[([0-9]{1,4})\\]"
-                                                           capture:1];
-
-    self.tag = (tagString ? NSIntegerValue(tagString) : 0);
-
-    if ([self.baseFileName hasSuffix:@"@2x"])
+    UIImage * image = [UIImage imageNamed:fileName];
+    if (image)
     {
-        self.useRetinaScale = YES;
-        self.baseFileName   = [self.baseFileName stringByReplacingOccurrencesOfString:@"@2x" withString:@""];
+        [self willChangeValueForKey:@"fileName"];
+        [self setPrimitiveValue:fileName forKey:@"fileName"];
+        [self didChangeValueForKey:@"fileName"];
+        self.size = image.size;
     }
-
-    else
-    {
-        NSFileManager * fileManager = [NSFileManager new];
-        NSString * searchPath = [self.fileDirectory stringByAppendingFormat:@"/%@@2x.%@",
-                                                                            self.baseFileName,
-                                                                            self.fileNameExtension];
-        if ([fileManager fileExistsAtPath:searchPath])
-            self.useRetinaScale = YES;
-        else
-        {
-            searchPath  = [[MainBundle resourcePath]
-                           stringByAppendingPathComponent:$(@"%@/%@@2x.%@",
-                                                            self.fileDirectory,
-                                                            self.baseFileName,
-                                                            self.fileNameExtension)];
-            
-            self.useRetinaScale = [fileManager fileExistsAtPath:searchPath];
-        }
-    }
-
-    NSString * name =
-        [self.baseFileName stringByMatchingFirstOccurrenceOfRegEx:@"\\[[0-9]{1,4}\\](.*)$"//\\.(png|jpg)$"
-                                                          capture:1];
-
-    if (name) self.name = name;
 }
-*/
 
-#pragma mark - Getting and sizing UIImages
 
 - (UIImage *)image { return [UIImage imageNamed:self.fileName]; }
 
@@ -168,10 +76,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     [self willAccessValueForKey:@"size"];
     NSValue * imageSizeValue = self.primitiveSize;
     [self didAccessValueForKey:@"size"];
-    CGSize   imageSize = CGSizeZero;
-    if (ValueIsNotNil(imageSizeValue))
-        imageSize = [imageSizeValue CGSizeValue];
-    return imageSize;
+
+    return (imageSizeValue ? CGSizeValue(imageSizeValue) : CGSizeZero);
 }
 
 - (void)setSize:(CGSize)imageSize
@@ -216,7 +122,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     if ([NSThread isMainThread]) createThumbnail();
     else dispatch_sync(dispatch_get_main_queue(), createThumbnail);
 
-    if (ValueIsNil(_thumbnail)) DDLogWarn(@"%@ could not scale image for thumbnail", ClassTagString);
+    if (ValueIsNil(_thumbnail)) MSLogWarn(@"%@ could not scale image for thumbnail", ClassTagString);
 
     return _thumbnail;
 }
@@ -226,37 +132,111 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     if (ValueIsNotNil(_stretchableImage)) return _stretchableImage;
 
     self.stretchableImage = [self.image
-                             stretchableImageWithLeftCapWidth:[self.leftCap floatValue]
-                                                 topCapHeight:[self.topCap floatValue]];
+                             stretchableImageWithLeftCapWidth:self.leftCap
+                                                 topCapHeight:self.topCap];
 
     return _stretchableImage;
 }
 
-- (void)generatePreviewData { self.previewData = UIImagePNGRepresentation([self imageWithColor:WhiteColor]); }
-
-- (UIImage *)preview
+- (void)setLeftCap:(float)leftCap
 {
-    UIImage * preview = [UIImage imageNamed:self.fileName];
-
-    return preview;
+    [self willChangeValueForKey:@"leftCap"];
+    [self setPrimitiveValue:@(leftCap) forKey:@"leftCap"];
+    [self didChangeValueForKey:@"leftCap"];
 }
 
+- (float)leftCap
+{
+    [self willAccessValueForKey:@"leftCap"];
+    NSNumber * leftCap = [self primitiveValueForKey:@"leftCap"];
+    [self didAccessValueForKey:@"leftCap"];
+    return [leftCap floatValue];
+}
+
+
+- (void)setTopCap:(float)topCap
+{
+    [self willChangeValueForKey:@"topCap"];
+    [self setPrimitiveValue:@(topCap) forKey:@"topCap"];
+    [self didChangeValueForKey:@"topCap"];
+}
+
+- (float)topCap
+{
+    [self willAccessValueForKey:@"topCap"];
+    NSNumber * topCap = [self primitiveValueForKey:@"topCap"];
+    [self didAccessValueForKey:@"topCap"];
+    return [topCap floatValue];
+}
+
+- (UIImage *)preview { return [self image]; }
+
+- (NSDictionary *)JSONDictionary
+{
+    id(^defaultForKey)(NSString *) = ^(NSString * key)
+    {
+        static const NSDictionary * index;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken,
+                      ^{
+                          MSDictionary * dictionary = [MSDictionary dictionary];
+                          for (NSString * attribute in @[@"fileName", @"leftCap", @"topCap"])
+                              dictionary[attribute] =
+                              CollectionSafeValue([self defaultValueForAttribute:attribute]);
+                          [dictionary removeKeysWithNullObjectValues];
+                          index = dictionary;
+                      });
+
+        return index[key];
+    };
+
+    void(^addIfCustom)(id, MSDictionary*, NSString*, id) =
+    ^(id object, MSDictionary *dictionary, NSString *attribute, id addition )
+    {
+        BOOL isCustom = YES;
+
+        id defaultValue = defaultForKey(attribute);
+        id setValue = [object valueForKey:attribute];
+
+        if (defaultValue && setValue)
+        {
+            if ([setValue isKindOfClass:[NSNumber class]])
+                isCustom = ![defaultValue isEqualToNumber:setValue];
+
+            else if ([setValue isKindOfClass:[NSString class]])
+                isCustom = ![defaultValue isEqualToString:setValue];
+
+            else
+                isCustom = ![defaultValue isEqual:setValue];
+        }
+
+        if (isCustom)
+            dictionary[attribute] = CollectionSafeValue(addition);
+    };
+
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    addIfCustom(self, dictionary, @"fileName", self.fileName);
+    addIfCustom(self, dictionary, @"leftCap",  @(self.leftCap));
+    addIfCustom(self, dictionary, @"topCap",   @(self.topCap));
+
+    [dictionary removeKeysWithNullObjectValues];
+    
+    return dictionary;
+}
 
 - (MSDictionary *)deepDescriptionDictionary
 {
     Image * image = [self faultedObject];
     assert(image);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"name"]              = (image.name ?: @"");
-    dd[@"group"]             = $(@"'%@':%@",
-                                 image.group.name,
-                                 image.group.uuid);
-    dd[@"baseFileName"]      = (image.fileName ?: @"");
-    dd[@"leftCap"]           = $(@"%@", image.leftCap);
-    dd[@"topCap"]            = $(@"%@", image.topCap);
+    dd[@"fileName"]          = (image.fileName ?: @"");
+    dd[@"leftCap"]           = $(@"%f", image.leftCap);
+    dd[@"topCap"]            = $(@"%f", image.topCap);
     dd[@"size"]              = CGSizeString(image.size);
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

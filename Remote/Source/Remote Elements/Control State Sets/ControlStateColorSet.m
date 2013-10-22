@@ -7,7 +7,7 @@
 //
 
 #import "ControlStateSet.h"
-
+#import "RemoteElementExportSupportFunctions.h"
 
 @implementation ControlStateColorSet
 
@@ -25,7 +25,7 @@
     ControlStateColorSet * stateSet = [self faultedObject];
     assert(stateSet);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"normal"]                         = NSStringFromUIColor(stateSet[0]);
     dd[@"selected"]                       = NSStringFromUIColor(stateSet[1]);
     dd[@"highlighted"]                    = NSStringFromUIColor(stateSet[2]);
@@ -35,8 +35,32 @@
     dd[@"disabledAndSelected"]            = NSStringFromUIColor(stateSet[6]);
     dd[@"selectedHighlightedAndDisabled"] = NSStringFromUIColor(stateSet[7]);
 
-    return dd;
+    return (MSDictionary *)dd;
 }
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)] arrayByMappingToBlock:
+                      ^id(id obj, NSUInteger idx)
+                      {
+                          return [ControlStateSet propertyForState:[obj unsignedIntegerValue]];
+                      }];
+
+
+    for (NSString * key in keys)
+    {
+        UIColor * color = [self valueForKey:key];
+        if (color)
+            dictionary[key] = CollectionSafeValue(normalizedColorJSONValueForColor(color));
+    }
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
 
 - (NSString *)debugDescription
 {

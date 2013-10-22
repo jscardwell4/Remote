@@ -8,13 +8,13 @@
 #import "CoreDataLogicTests.h"
 #import <CoreData/CoreData.h>
 #import <Lumberjack/Lumberjack.h>
-#import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import <MSKit/MSKit.h>
 #import "CoreDataManager.h"
 #import "RemoteElement.h"
 #import "RERemoteController.h"
 
-static const int ddLogLevel   = LOG_LEVEL_UNITTEST;
+static int ddLogLevel   = LOG_LEVEL_UNITTEST;
 static const int msLogContext = LOG_CONTEXT_UNITTEST;
 #pragma unused(ddLogLevel, msLogContext)
 

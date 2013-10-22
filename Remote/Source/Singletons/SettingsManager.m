@@ -24,7 +24,7 @@ MSNOTIFICATION_DEFINITION(MSSettingsManagerInactivityTimeoutSettingDidChange);
 static NSMutableDictionary const * settingsCache;
 static NSSet const               * validSettings;
 static NSDictionary const        * notifications;
-static int                         ddLogLevel       = DefaultDDLogLevel;
+static int ddLogLevel       = DefaultDDLogLevel;
 int                                globalDDLogLevel = DefaultDDLogLevel;
 
 @implementation SettingsManager

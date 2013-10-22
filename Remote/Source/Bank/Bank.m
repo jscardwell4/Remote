@@ -9,7 +9,7 @@
 #import "Bank.h"
 #import "BankCollectionViewController.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -57,8 +57,105 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @end
 
+@class IRCode, ComponentDevice, Manufacturer, Preset, Image;
+
+@interface BankInfo ()
+
+@property (nonatomic, strong) IRCode          * code;
+@property (nonatomic, strong) ComponentDevice * componentDevice;
+@property (nonatomic, strong) Manufacturer    * manufacturer;
+@property (nonatomic, strong) Preset          * preset;
+@property (nonatomic, strong) Image           * image;
+
+@end
+
 @implementation BankInfo
 
-@dynamic category, name, user;
+@dynamic category, name, code, componentDevice, manufacturer, preset, image;
+
+- (void)setUser:(BOOL)user
+{
+    [self willChangeValueForKey:@"user"];
+    [self setPrimitiveValue:@(user) forKey:@"user"];
+    [self didChangeValueForKey:@"user"];
+}
+
+- (BOOL)user
+{
+    [self willAccessValueForKey:@"user"];
+    NSNumber * user = [self primitiveValueForKey:@"user"];
+    [self didAccessValueForKey:@"user"];
+    return [user boolValue];
+}
+
+- (NSString *)containingClass
+{
+    if (self.componentDevice)   return @"ComponentDevice";
+    else if (self.code)         return @"IRCode";
+    else if (self.manufacturer) return @"Manufacturer";
+    else if (self.preset)       return @"Preset";
+    else if (self.image)        return @"Image";
+    else                        return @"none";
+}
+
+- (id)JSONObject { return [self.JSONDictionary JSONObject]; }
+
+- (NSString *)JSONString { return [self.JSONDictionary JSONString]; }
+
+- (NSDictionary *)JSONDictionary
+{
+    id(^defaultForKey)(BankInfo *, NSString *) = ^(BankInfo *info, NSString * key)
+    {
+        static const NSDictionary * index;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken,
+                      ^{
+                          MSDictionary * dictionary = [MSDictionary dictionary];
+                          for (NSString * name in @[@"ComponentDevice",
+                                                    @"Manufacturer",
+                                                    @"IRCode",
+                                                    @"Preset",
+                                                    @"Image",
+                                                    @"none"])
+                          {
+                              BOOL useDefault = [@"none" isEqualToString:name];
+                              MSDictionary * d = [MSDictionary dictionary];
+                              d[@"category"] =
+                                  CollectionSafeValue([self defaultValueForAttribute:@"category"
+                                                                  forContainingClass:(useDefault
+                                                                                      ? nil
+                                                                                      : name)]);
+
+                              d[@"user"] =
+                                  CollectionSafeValue([self defaultValueForAttribute:@"user"
+                                                                  forContainingClass:(useDefault
+                                                                                      ? nil
+                                                                                      : name)]);
+                              [d removeKeysWithNullObjectValues];
+
+                              if ([d count]) dictionary[name] = d;
+                          }
+
+                          index = dictionary;
+                      });
+        
+        return index[[info containingClass]][key];
+    };
+
+
+    MSDictionary * dictionary = [MSDictionary dictionary];
+
+    dictionary[@"name"] = self.name;
+
+    if (![self.category isEqualToString:defaultForKey(self, @"category")])
+        dictionary[@"category"] = self.category;
+
+    if (![@(self.user) isEqualToNumber:defaultForKey(self, @"user")])
+        dictionary[@"user"] = @(self.user);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
 
 @end

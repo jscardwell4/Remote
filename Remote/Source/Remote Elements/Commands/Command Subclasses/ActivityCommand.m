@@ -8,11 +8,11 @@
 #import "Command_Private.h"
 #import "Activity.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
-@interface ActivityCommandOperation : RECommandOperation @end
+@interface ActivityCommandOperation : CommandOperation @end
 
 
 @implementation ActivityCommand
@@ -26,7 +26,19 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
     return command;
 }
 
-- (RECommandOperation *)operation { return [ActivityCommandOperation operationForCommand:self]; }
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"activity"] = CollectionSafeValue(self.activity.uuid);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
+- (CommandOperation *)operation { return [ActivityCommandOperation operationForCommand:self]; }
 
 - (NSString *)shortDescription
 {

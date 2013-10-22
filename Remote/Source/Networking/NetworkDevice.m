@@ -18,7 +18,9 @@ MSSTRING_CONST   NDDeviceUUIDKey     = @"deviceUUID";
 MSSTRING_CONST   NDDeviceURLKey      = @"configURL";
 
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
 
 @interface NetworkDevice ()
 
@@ -45,7 +47,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 + (instancetype)deviceWithAttributes:(NSDictionary *)attributes
 {
     return [self deviceWithAttributes:attributes
-                              context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                              context:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)deviceWithAttributes:(NSDictionary *)attributes
@@ -68,7 +70,7 @@ static const int   ddLogLevel = LOG_LEVEL_DEBUG;
 {
     return (   StringIsNotEmpty(deviceUUID)
             && [self
-                MR_countOfEntitiesWithPredicate:NSMakePredicate(@"deviceUUID == %@", deviceUUID)] == 1);
+                MR_countOfEntitiesWithPredicate:NSPredicateMake(@"deviceUUID == %@", deviceUUID)] == 1);
 }
 
 @end

@@ -12,5 +12,6 @@
 @interface BankableModelObject : ModelObject<Bankable>
 
 @property (nonatomic, strong, readonly) BankInfo * info;
++ (NSFetchedResultsController *)bankableItems;
 
 @end

@@ -7,8 +7,9 @@
 //
 #import "RemoteElement_Private.h"
 
-static const int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+#pragma unused(ddLogLevel, msLogContext)
 
 static const NSDictionary * kEntityNameForType;
 static const NSSet        * kLayoutConfigurationSelectors;
@@ -16,9 +17,9 @@ static const NSSet        * kLayoutConfigurationKeys;
 static const NSSet        * kConfigurationDelegateKeys;
 static const NSSet        * kConfigurationDelegateSelectors;
 static const NSSet        * kConstraintManagerSelectors;
-static const REThemeFlags   kToolbarButtonDefaultThemeFlags          = 0b0011111111101111;
-static const REThemeFlags   kBatteryStatusButtonDefaultThemeFlags    = 0b0011111111111111;
-static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111111111111;
+static const REThemeOverrideFlags   kToolbarButtonDefaultThemeFlags          = 0b0011111111101111;
+static const REThemeOverrideFlags   kBatteryStatusButtonDefaultThemeFlags    = 0b0011111111111111;
+static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111111111111;
 
 
 @implementation RemoteElement {
@@ -49,15 +50,9 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
 + (void)initialize
 {
     if (self == [RemoteElement class]) {
-        kEntityNameForType = @{@(RETypeRemote)                       : @"RERemote",
-                               @(RETypeButtonGroup)                  : @"REButtonGroup",
-                               @(REButtonGroupTypePickerLabel)       : @"REPickerLabelButtonGroup",
-                               @(REButtonGroupTypeToolbar)           : @"REButtonGroup",
-                               @(REButtonGroupTypeSelectionPanel)    : @"REButtonGroup",
-                               @(REButtonGroupTypePanel)      : @"REButtonGroup",
-                               @(RETypeButton)                       : @"REButton",
-                               @(REButtonTypeConnectionStatus)       : @"REButton",
-                               @(REButtonTypeBatteryStatus)          : @"REButton"};
+        kEntityNameForType = @{@(RETypeRemote)      : @"Remote",
+                               @(RETypeButtonGroup) : @"ButtonGroup",
+                               @(RETypeButton)      : @"Button"};
 
         kLayoutConfigurationSelectors = [@[NSValueWithPointer(@selector(proportionLock)),
                                            NSValueWithPointer(@selector(subelementConstraints)),
@@ -76,16 +71,16 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
                                       @"dependentSiblingConstraints",
                                       @"intrinsicConstraints"] set];
 
-        kConfigurationDelegateSelectors = [@[NSValueWithPointer(@selector(currentConfiguration)),
-                                             NSValueWithPointer(@selector(addConfiguration:)),
-                                             NSValueWithPointer(@selector(hasConfiguration:))] set];
-        kConfigurationDelegateKeys = [@[@"currentConfiguration"] set];
+        kConfigurationDelegateSelectors = [@[NSValueWithPointer(@selector(currentMode)),
+                                             NSValueWithPointer(@selector(addMode:)),
+                                             NSValueWithPointer(@selector(hasMode:))] set];
+        kConfigurationDelegateKeys = [@[@"currentMode"] set];
     }
 }
 
 + (instancetype)remoteElement
 {
-    return [self remoteElementInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self remoteElementInContext:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)remoteElementWithAttributes:(NSDictionary *)attributes
@@ -199,6 +194,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     return __constraintManager;
 }
 
+/*
 - (NSString *)key
 {
     [self willAccessValueForKey:@"key"];
@@ -207,6 +203,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
 
     return (key ?: [self.name camelCaseString]);
 }
+*/
 
 - (void)applyTheme:(Theme *)theme { [theme applyThemeToElement:self]; }
 
@@ -214,49 +211,103 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
 #pragma mark - Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)importType:(NSString *)data
+#define isString(OBJ) [OBJ isKindOfClass:[NSString class]]
+
+- (BOOL)MR_importValuesForKeysWithObject:(id)objectData
 {
-    if (StringIsNotEmpty(data))
+    return YES;
+}
+
+- (BOOL)importRole:(id)data
+{
+    if (isString(data))
+    {
+        RERole role = remoteElementRoleFromImportKey(data);
+        self.role = role;
+        return YES;
+    }
+
+    else return NO;
+}
+
+- (BOOL)importElementType:(id)data
+{
+
+    if (isString(data))
     {
         REType type = remoteElementTypeFromImportKey(data);
-        if (classForREType(type) == [self class]) self.type = type;
+        self.elementType = type;
+        return YES;
     }
-    return YES;
+
+    else return NO;
 }
 
-- (BOOL)importSubtype:(NSString *)data
+- (BOOL)importSubtype:(id)data
 {
-    if (StringIsNotEmpty(data)) self.subtype = remoteElementSubtypeFromImportKey(data);
-    return YES;
+    if (isString(data))
+    {
+        RESubtype subtype = remoteElementSubtypeFromImportKey(data);
+        self.subtype = subtype;
+        return YES;
+    }
+
+    else return NO;
 }
 
-- (BOOL)importOptions:(NSString *)data
+- (BOOL)importOptions:(id)data
 {
-    if (StringIsNotEmpty(data)) self.options = remoteElementOptionsFromImportKey(data);
-    return YES;
+    if (isString(data))
+    {
+        REOptions options = remoteElementOptionsFromImportKey(data);
+        self.options = options;
+        return YES;
+    }
+
+    else return NO;
 }
 
-- (BOOL)importState:(NSString *)data
+- (BOOL)importState:(id)data
 {
-    if (StringIsNotEmpty(data)) self.state = remoteElementStateFromImportKey(data);
-    return YES;
+    if (isString(data))
+    {
+        REState state = remoteElementStateFromImportKey(data);
+        self.state = state;
+        return YES;
+    }
+
+    else return NO;
 }
 
-- (BOOL)importShape:(NSString *)data
+- (BOOL)importShape:(id)data
 {
-    if (StringIsNotEmpty(data)) self.shape = remoteElementShapeFromImportKey(data);
-    return YES;
+    if (isString(data))
+    {
+        REShape shape = remoteElementShapeFromImportKey(data);
+        self.shape = shape;
+        return YES;
+    }
+
+    else return NO;
 }
 
-- (BOOL)importStyle:(NSString *)data
+- (BOOL)importStyle:(id)data
 {
-    if (StringIsNotEmpty(data)) self.style = remoteElementStyleFromImportKey(data);
-    return YES;
+    if (isString(data))
+    {
+        REStyle style = remoteElementStyleFromImportKey(data);
+        self.style = style;
+        return YES;
+    }
+
+    else return NO;
 }
 
-- (BOOL)importSubelements:(NSDictionary *)data
+- (BOOL)importSubelements:(id)data
 {
-    [self.managedObjectContext performBlockAndWait:
+/*
+    NSManagedObjectContext * moc = self.managedObjectContext;
+    [moc performBlockAndWait:
      ^{
          for (NSDictionary * subelementData in data[@"subelements"])
          {
@@ -266,7 +317,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
              Class typeClass = remoteElementClassForImportKey(typeString);
              if (!typeClass) continue;
 
-             RemoteElement * subelement = [typeClass remoteElementInContext:self.managedObjectContext];
+             RemoteElement * subelement = [typeClass remoteElementInContext:moc];
              [subelement MR_importValuesForKeysWithObject:subelementData];
              [self addSubelementsObject:subelement];
 
@@ -274,95 +325,197 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
 
          if (_needsImportConstraints) [self importConstraints:data];
      }];
+*/
 
     return YES;
 }
 
-- (BOOL)importConstraints:(NSDictionary *)data
+- (BOOL)importConstraints:(id)data
 {
-    [self.managedObjectContext performBlockAndWait:
-     ^{
-         NSDictionary * constraints = data[@"constraints"];
-         if (constraints)
+   /*
+ NSDictionary * constraints = data[@"constraints"];
+    if (constraints)
+    {
+        __block BOOL isInvalid = NO;
+        NSDictionary * elementUUIDIndex = constraints[@"identifiers"];
+        NSDictionary * elementIndex =
+        [elementUUIDIndex dictionaryByMappingObjectsToBlock:
+         ^id(NSString * label, NSString * uuid)
          {
-             __block BOOL isInvalid = NO;
-             NSDictionary * elementUUIDIndex = constraints[@"identifiers"];
-             NSDictionary * elementIndex =
-             [elementUUIDIndex
-              dictionaryByMappingObjectsToBlock:
-              ^id(NSString * label, NSString * uuid)
-              {
-                  RemoteElement * element = ([uuid isEqualToString:self.uuid]
-                                             ? self
-                                             :(RemoteElement *)
-                                             memberOfCollectionWithUUID(self.subelements, uuid));
-                  if (!element) isInvalid = YES;
-                  return (element ? element.identifier: NullObject);
-              }];
+             RemoteElement * element = ([uuid isEqualToString:self.uuid]
+                                        ? self
+                                        :(RemoteElement *)
+                                        memberOfCollectionWithUUID(self.subelements, uuid));
+             if (!element) isInvalid = YES;
+             return (element ? element.identifier: NullObject);
+         }];
 
-             NSArray * formatComponents = constraints[@"format"];
+        NSArray * formatComponents = constraints[@"format"];
 
 
-             if (isInvalid) _needsImportConstraints = !_needsImportConstraints;
+        if (isInvalid) _needsImportConstraints = !_needsImportConstraints;
 
-             else
-             {
-                 NSString * format = [[formatComponents componentsJoinedByString:@"\n"]
-                                      stringByReplacingOccurrencesWithDictionary:elementIndex];
-                 if (StringIsNotEmpty(format)) [self.constraintManager setConstraintsFromString:format];
+        else
+        {
+            NSString * format = [[formatComponents componentsJoinedByString:@"\n"]
+                                 stringByReplacingOccurrencesWithDictionary:elementIndex];
+            if (StringIsNotEmpty(format)) [self.constraintManager setConstraintsFromString:format];
 
-             }
-         }
-     }];
+        }
+    }
+*/
 
     return YES;
 }
 
-- (BOOL)importBackgroundColor:(NSString *)colorString
+- (BOOL)importBackgroundColor:(id)data
 {
-    [self.managedObjectContext performBlockAndWait:
-     ^{
-         if (StringIsNotEmpty(colorString))
-         {
-             UIColor * color = nil;
-             switch ([colorString[0] charValue])
-             {
-                 case '{':
-                     color = [UIColor colorWithString:colorString];
-                     break;
+    if (isString(data))
+    {
+        UIColor * backgroundColor = colorFromImportValue(data);
+        self.backgroundColor = backgroundColor;
+        return YES;
+    }
 
-                 case '#':
-                     color = [UIColor colorWithHexString:[colorString substringFromIndex:1]];
-                     break;
+    else return NO;
+}
 
-                 default:
-                     color = [UIColor colorWithName:colorString];
-                     break;
-             }
-             if (color) self.backgroundColor = color;
-         }
-     }];
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Exporting
+////////////////////////////////////////////////////////////////////////////////
 
-    return YES;
+
+- (NSDictionary *)JSONDictionary
+{
+
+    id(^defaultForKey)(NSString *) = ^(NSString * key)
+    {
+        static const NSDictionary * index;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken,
+                      ^{
+                          NSDictionary * attributes           = [[self entity] attributesByName];
+                          UIColor      * backgroundColor      = [attributes[@"backgroundColor"]
+                                                                 defaultValue];
+                          NSNumber     * state                = [attributes[@"state"] defaultValue];
+                          NSNumber     * style                = [attributes[@"style"] defaultValue];
+                          NSNumber     * options              = [attributes[@"options"] defaultValue];
+                          NSNumber     * subtype              = [attributes[@"subtype"] defaultValue];
+                          NSNumber     * themeFlags           = [attributes[@"themeFlags"] defaultValue];
+                          NSNumber     * role                 = [attributes[@"role"] defaultValue];
+                          NSNumber     * tag                  = [attributes[@"tag"] defaultValue];
+                          NSNumber     * backgroundImageAlpha = [attributes[@"backgroundImageAlpha"]
+                                                                 defaultValue];
+                          NSNumber     * shape                = [attributes[@"shape"] defaultValue];
+
+                          index = @{@"state"                : state,
+                                    @"style"                : style,
+                                    @"options"              : options,
+                                    @"subtype"              : subtype,
+                                    @"themeFlags"           : themeFlags,
+                                    @"role"                 : role,
+                                    @"tag"                  : tag,
+                                    @"backgroundColor"      : backgroundColor,
+                                    @"backgroundImageAlpha" : backgroundImageAlpha,
+                                    @"shape"                : shape};
+                      });
+        
+        id defaultValue = index[key];
+        return defaultValue;
+    };
+
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"name"] = CollectionSafeValue(self.name);
+    dictionary[@"elementType"] = (typeJSONValueForRemoteElement(self) ?: @(self.elementType));
+
+    dictionary[@"key"]  = CollectionSafeValue(self.primitiveKey);
+
+    if (![@(self.tag) isEqual:defaultForKey(@"tag")])
+        dictionary[@"tag"] = @(self.tag);
+
+    if (![@(self.role) isEqualToNumber:defaultForKey(@"role")])
+        dictionary[@"role"] = (roleJSONValueForRemoteElement(self) ?: @(self.role));
+
+    if (![@(self.subtype) isEqual:defaultForKey(@"subtype")])
+        dictionary[@"subtype"] = (subtypeJSONValueForRemoteElement(self) ?: @(self.subtype));
+
+    if (![@(self.options) isEqual:defaultForKey(@"options")])
+        dictionary[@"options"] = (optionsJSONValueForRemoteElement(self) ?: @(self.options));
+
+    if (![@(self.state) isEqual:defaultForKey(@"state")])
+        dictionary[@"state"] = (stateJSONValueForRemoteElement(self) ?: @(self.state));
+
+    if (![@(self.shape) isEqual:defaultForKey(@"shape")])
+        dictionary[@"shape"] = (shapeJSONValueForRemoteElement(self) ?: @(self.shape));
+
+    if (![@(self.style) isEqual:defaultForKey(@"style")])
+        dictionary[@"style"] = (styleJSONValueForRemoteElement(self) ?: @(self.style));
+
+    if (![@(self.themeFlags) isEqual:defaultForKey(@"themeFlags")])
+        dictionary[@"themeFlags"] = (themeFlagsJSONValueForRemoteElement(self)
+                                     ?: @(self.themeFlags));
+
+    if ([self.constraints count])
+    {
+        NSArray * constraintDictionaries = [[self valueForKeyPath:@"constraints.JSONDictionary"] allObjects];
+        NSArray * firstItemUUIDs = [constraintDictionaries valueForKeyPath:@"@distinctUnionOfObjects.firstItem"];
+        NSArray * secondItemUUIDs = [constraintDictionaries valueForKeyPath:@"@distinctUnionOfObjects.secondItem"];
+        NSSet * uuids = [NSSet setWithArrays:@[firstItemUUIDs, secondItemUUIDs]];
+        uuids = [uuids setByRemovingObject:NullObject];
+        NSMutableDictionary * uuidIndex = [@{} mutableCopy];
+
+        for (NSString * uuid in uuids)
+        {
+            RemoteElement * element = nil;
+            if ([uuid isEqualToString:self.uuid])
+                element = self;
+            else
+                element = (RemoteElement *)memberOfCollectionWithUUID(self.subelements, uuid);
+            assert(element);
+            assert(element.name);
+            uuidIndex[[element.name camelCaseString]] = uuid;
+        }
+        NSSet * constraintDescriptions = [self valueForKeyPath:@"constraints.description"];
+        NSDictionary * constraintsDictionary = @{@"index" : uuidIndex,
+                                                 @"format": [constraintDescriptions allObjects]};
+        dictionary[@"constraints"] = constraintsDictionary;
+    }
+
+    if (![self.backgroundColor isEqual:defaultForKey(@"backgroundColor")])
+        dictionary[@"backgroundColor"] =
+            CollectionSafeValue(normalizedColorJSONValueForColor(self.backgroundColor));
+
+    if (![@(self.backgroundImageAlpha) isEqual:defaultForKey(@"backgroundImageAlpha")])
+        dictionary[@"backgroundImageAlpha"]  = @(self.backgroundImageAlpha);
+
+    if ([self.subelements count])
+        dictionary[@"subelements"] = [self valueForKeyPath:@"subelements.JSONDictionary"];
+
+    dictionary[@"theme"] = CollectionSafeValue(self.theme.name);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Accessors for custom typedef properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setType:(REType)type
+- (void)setElementType:(REType)elementType
 {
-    [self willChangeValueForKey:@"type"];
-    self.primitiveType = @(type);
-    [self didChangeValueForKey:@"type"];
+    [self willChangeValueForKey:@"elementType"];
+    self.primitiveElementType = @(elementType);
+    [self didChangeValueForKey:@"elementType"];
 }
 
-- (REType)type
+- (REType)elementType
 {
-    [self willAccessValueForKey:@"type"];
-    NSNumber * type = self.primitiveType;
-    [self didAccessValueForKey:@"type"];
-    return (type ? [type shortValue] : RETypeUndefined);
+    [self willAccessValueForKey:@"elementType"];
+    NSNumber * elementType = self.primitiveElementType;
+    [self didAccessValueForKey:@"elementType"];
+    return (elementType ? [elementType shortValue] : RETypeUndefined);
 }
 
 - (void)setSubtype:(RESubtype)subtype
@@ -370,6 +523,21 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     [self willChangeValueForKey:@"subtype"];
     self.primitiveSubtype = @(subtype);
     [self didChangeValueForKey:@"subtype"];
+}
+
+- (RERole)role
+{
+    [self willAccessValueForKey:@"role"];
+    NSNumber * role = self.primitiveRole;
+    [self didAccessValueForKey:@"role"];
+    return [role unsignedShortValue];
+}
+
+- (void)setRole:(RERole)role
+{
+    [self willChangeValueForKey:@"role"];
+    self.primitiveRole = @(role);
+    [self didChangeValueForKey:@"role"];
 }
 
 - (RESubtype)subtype
@@ -440,19 +608,19 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     return (style ? [style shortValue] : REStyleUndefined);
 }
 
-- (void)setThemeFlags:(REThemeFlags)themeFlags
+- (void)setThemeFlags:(REThemeOverrideFlags)themeFlags
 {
     [self willChangeValueForKey:@"themeFlags"];
     self.primitiveThemeFlags = @(themeFlags);
     [self didChangeValueForKey:@"themeFlags"];
 }
 
-- (REThemeFlags)themeFlags
+- (REThemeOverrideFlags)themeFlags
 {
     [self willAccessValueForKey:@"themeFlags"];
     NSNumber * themeFlags = self.primitiveThemeFlags;
     [self didAccessValueForKey:@"themeFlags"];
-    return (themeFlags ? [themeFlags intValue] : REThemeAll);
+    return (themeFlags ? [themeFlags intValue] : REThemeNone);
 }
 
 - (NSString *)name
@@ -462,51 +630,51 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     dispatch_once(&onceToken, ^{
         index = @{ @(RETypeRemote)                    : @"Remote",
                    @(RETypeButtonGroup)               : @"ButtonGroup",
-                   @(RETypeButton)                    : @"Button",
-                   @(REButtonGroupTypePanel)          : @"Panel",
-                   @(REButtonGroupTypeSelectionPanel) : @"SelectionPanel",
-                   @(REButtonGroupTypeToolbar)        : @"Toolbar",
-                   @(REButtonGroupTypeDPad)           : @"DPad",
-                   @(REButtonGroupTypeNumberpad)      : @"Numberpad",
-                   @(REButtonGroupTypeTransport)      : @"Transport",
-                   @(REButtonGroupTypePickerLabel)    : @"PickerLabel",
-                   @(REButtonTypeToolbar)             : @"Toolbar",
-                   @(REButtonTypeConnectionStatus)    : @"ConnectionStatus",
-                   @(REButtonTypeBatteryStatus)       : @"BatteryStatus",
-                   @(REButtonTypePickerLabel)         : @"PickerLabel",
-                   @(REButtonTypePickerLabelTop)      : @"PickerLabelTop",
-                   @(REButtonTypePickerLabelBottom)   : @"PickerLabelBottom",
-                   @(REButtonTypePanel)               : @"Panel",
-                   @(REButtonTypeTuck)                : @"Tuck",
-                   @(REButtonTypeSelectionPanel)      : @"SelectionPanel",
-                   @(REButtonTypeDPad)                : @"DPad",
-                   @(REButtonTypeDPadUp)              : @"Up",
-                   @(REButtonTypeDPadDown)            : @"Down",
-                   @(REButtonTypeDPadLeft)            : @"Left",
-                   @(REButtonTypeDPadRight)           : @"Right",
-                   @(REButtonTypeDPadCenter)          : @"Center",
-                   @(REButtonTypeNumberpad)           : @"Numberpad",
-                   @(REButtonTypeNumberpad1)          : @"1",
-                   @(REButtonTypeNumberpad2)          : @"2",
-                   @(REButtonTypeNumberpad3)          : @"3",
-                   @(REButtonTypeNumberpad4)          : @"4",
-                   @(REButtonTypeNumberpad5)          : @"5",
-                   @(REButtonTypeNumberpad6)          : @"6",
-                   @(REButtonTypeNumberpad7)          : @"7",
-                   @(REButtonTypeNumberpad8)          : @"8",
-                   @(REButtonTypeNumberpad9)          : @"9",
-                   @(REButtonTypeNumberpad0)          : @"0",
-                   @(REButtonTypeNumberpadAux1)       : @"Aux1",
-                   @(REButtonTypeNumberpadAux2)       : @"Aux2",
-                   @(REButtonTypeTransport)           : @"Transport",
-                   @(REButtonTypeTransportPlay)       : @"Play",
-                   @(REButtonTypeTransportStop)       : @"Stop",
-                   @(REButtonTypeTransportPause)      : @"Pause",
-                   @(REButtonTypeTransportSkip)       : @"Skip",
-                   @(REButtonTypeTransportReplay)     : @"Replay",
-                   @(REButtonTypeTransportFF)         : @"FF",
-                   @(REButtonTypeTransportRewind)     : @"Rewind",
-                   @(REButtonTypeTransportRecord)     : @"Record" };
+                   @(RETypeButton)                    : @"Button" };//,
+//                   @(REButtonGroupTypePanel)          : @"Panel",
+//                   @(REButtonGroupTypeSelectionPanel) : @"SelectionPanel",
+//                   @(REButtonGroupTypeToolbar)        : @"Toolbar",
+//                   @(REButtonGroupTypeDPad)           : @"DPad",
+//                   @(REButtonGroupTypeNumberpad)      : @"Numberpad",
+//                   @(REButtonGroupTypeTransport)      : @"Transport",
+//                   @(REButtonGroupTypePickerLabel)    : @"PickerLabel",
+//                   @(REButtonTypeToolbar)             : @"Toolbar",
+//                   @(REButtonTypeConnectionStatus)    : @"ConnectionStatus",
+//                   @(REButtonTypeBatteryStatus)       : @"BatteryStatus",
+//                   @(REButtonTypePickerLabel)         : @"PickerLabel",
+//                   @(REButtonTypePickerLabelTop)      : @"PickerLabelTop",
+//                   @(REButtonTypePickerLabelBottom)   : @"PickerLabelBottom",
+//                   @(REButtonTypePanel)               : @"Panel",
+//                   @(REButtonTypeTuck)                : @"Tuck",
+//                   @(REButtonTypeSelectionPanel)      : @"SelectionPanel",
+//                   @(REButtonTypeDPad)                : @"DPad",
+//                   @(REButtonTypeDPadUp)              : @"Up",
+//                   @(REButtonTypeDPadDown)            : @"Down",
+//                   @(REButtonTypeDPadLeft)            : @"Left",
+//                   @(REButtonTypeDPadRight)           : @"Right",
+//                   @(REButtonTypeDPadCenter)          : @"Center",
+//                   @(REButtonTypeNumberpad)           : @"Numberpad",
+//                   @(REButtonTypeNumberpad1)          : @"1",
+//                   @(REButtonTypeNumberpad2)          : @"2",
+//                   @(REButtonTypeNumberpad3)          : @"3",
+//                   @(REButtonTypeNumberpad4)          : @"4",
+//                   @(REButtonTypeNumberpad5)          : @"5",
+//                   @(REButtonTypeNumberpad6)          : @"6",
+//                   @(REButtonTypeNumberpad7)          : @"7",
+//                   @(REButtonTypeNumberpad8)          : @"8",
+//                   @(REButtonTypeNumberpad9)          : @"9",
+//                   @(REButtonTypeNumberpad0)          : @"0",
+//                   @(REButtonTypeNumberpadAux1)       : @"Aux1",
+//                   @(REButtonTypeNumberpadAux2)       : @"Aux2",
+//                   @(REButtonTypeTransport)           : @"Transport",
+//                   @(REButtonTypeTransportPlay)       : @"Play",
+//                   @(REButtonTypeTransportStop)       : @"Stop",
+//                   @(REButtonTypeTransportPause)      : @"Pause",
+//                   @(REButtonTypeTransportSkip)       : @"Skip",
+//                   @(REButtonTypeTransportReplay)     : @"Replay",
+//                   @(REButtonTypeTransportFF)         : @"FF",
+//                   @(REButtonTypeTransportRewind)     : @"Rewind",
+//                   @(REButtonTypeTransportRecord)     : @"Record" };
     });
 
     [self willAccessValueForKey:@"name"];
@@ -514,7 +682,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     [self didAccessValueForKey:@"name"];
     if (!name)
     {
-        name = (index[@(self.type)] ?: @"unnamed");
+        name = (index[@(self.elementType)] ?: @"unnamed");
     }
     return name;
 }
@@ -582,7 +750,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     RemoteElement * element = [self faultedObject];
     assert(element);
 
-    NSString * typeString          = NSStringFromREType(element.type);
+    NSString * typeString          = NSStringFromREType(element.elementType);
     NSString * subtypeString       = NSStringFromRESubtype(element.subtype);
     NSString * keyString           = element.key;
     NSString * nameString          = element.name;
@@ -590,7 +758,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     NSString * controllerString    = unnamedModelObjectDescription(element.controller);
     NSString * configurationString = $(@"%@-configurations:'%@'",
                                        unnamedModelObjectDescription(element.configurationDelegate),
-                                       [element.configurationDelegate.configurationKeys
+                                       [element.configurationDelegate.modeKeys
                                             componentsJoinedByString:@", "]);
     NSString * parentString        = namedModelObjectDescription(element.parentElement);
     NSString * subelementsString   = ([[element.subelements setByMappingToBlock:
@@ -606,14 +774,14 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     NSString * shapeString         = NSStringFromREShape(element.shape);
     NSString * styleString         = NSStringFromREStyle(element.style);
     NSString * themeFlagString     = NSStringFromREThemeFlags(element.themeFlags);
-    NSString * optionsString       = NSStringFromREOptions(element.options, element.type);
+    NSString * optionsString       = NSStringFromREOptions(element.options, element.elementType);
     NSString * stateString         = NSStringFromREState(element.state);
     NSString * backgroundString    = namedModelObjectDescription(element.backgroundImage);
     NSString * bgAlphaString       = [@(element.backgroundImageAlpha) stringValue];
     NSString * bgColorString       = NSStringFromUIColor(element.backgroundColor);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"type"]                  = (typeString ?: @"nil");
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    dd[@"elementType"]           = (typeString ?: @"nil");
     dd[@"subtype"]               = (subtypeString ?: @"nil");
     dd[@"key"]                   = (keyString ?: @"nil");
     dd[@"name"]                  = (nameString ?: @"nil");
@@ -635,7 +803,7 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
     dd[@"backgroundImageAlpha"]  = (bgAlphaString ?: @"nil");
     dd[@"backgroundColor"]       = (bgColorString ?: @"nil");
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 - (NSString *)constraintsDescription
@@ -684,9 +852,9 @@ static const REThemeFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111
 
 - (NSString *)flagsAndAppearanceDescription {
     return $(@"type:%@\nsubtype:%@\noptions:%@\nstate:%@\nshape:%@\nstyle:%@\n",
-             NSStringFromREType(self.type),
+             NSStringFromREType(self.elementType),
              NSStringFromRESubtype(self.subtype),
-             NSStringFromREOptions(self.options, self.type),
+             NSStringFromREOptions(self.options, self.elementType),
              NSStringFromREState(self.state),
              NSStringFromREShape(self.shape),
              NSStringFromREStyle(self.style));
@@ -766,24 +934,26 @@ Class classForREType(REType type)
     {
         case RETypeRemote:                    return [Remote class];
 
-        case REButtonGroupTypeToolbar:
-        case REButtonGroupTypeSelectionPanel:
-        case REButtonGroupTypePanel:
+//        case REButtonGroupTypeToolbar:
+//        case REButtonGroupTypeSelectionPanel:
+//        case REButtonGroupTypePanel:
         case RETypeButtonGroup:               return [ButtonGroup class];
 
-        case REButtonGroupTypePickerLabel:    return [PickerLabelButtonGroup class];
+//        case REButtonGroupTypePickerLabel:    return [PickerLabelButtonGroup class];
 
-        case REButtonTypeBatteryStatus:
-        case REButtonTypeConnectionStatus:
+//        case REButtonTypeBatteryStatus:
+//        case REButtonTypeConnectionStatus:
         case RETypeButton:                    return [Button class];
 
         default:                              return [RemoteElement class];
     }
 }
 
+/*
 Class baseClassForREType(REType type)
 {
     return classForREType((type & RETypeBaseMask));
 }
+*/
 
 

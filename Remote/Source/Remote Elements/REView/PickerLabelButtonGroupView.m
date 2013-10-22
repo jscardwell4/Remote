@@ -7,7 +7,7 @@
 //
 #import "RemoteElementView_Private.h"
 
-static int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
@@ -322,7 +322,7 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
     CommandSet * commandSet = commandSets[_pickerFlags.labelIndex];
     assert(commandSet);
 
-    for (Button * button in self.subelements) button.command = commandSet[@(button.type)];
+    for (Button * button in self.subelements) button.command = commandSet[@(button.elementType)];
 }
 
 @end

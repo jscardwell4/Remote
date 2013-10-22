@@ -12,10 +12,10 @@
 #import "Image.h"
 #import <QuartzCore/QuartzCore.h>
 #import "RemoteElementView.h"
-
+#import "Button.h"
 #import "StoryboardProxy.h"
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 

@@ -9,7 +9,7 @@
 #import "IconBankViewController.h"
 #import "IconBankSubCategoriesViewController.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 @implementation IconBankViewController
 @synthesize categories    = _categories;

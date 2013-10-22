@@ -12,5 +12,5 @@
 @interface SwitchToRemoteCommandEditingViewController : CommandDetailViewController
     <MSPickerInputButtonDelegate>
 
-@property (nonatomic, strong) SwitchToRemoteCommand * command;
+@property (nonatomic, strong) SwitchCommand * command;
 @end

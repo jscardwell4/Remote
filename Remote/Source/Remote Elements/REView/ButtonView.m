@@ -12,7 +12,7 @@ MSNAMETAG_DEFINITION(REButtonViewInternal);
 MSNAMETAG_DEFINITION(REButtonViewLabel);
 MSNAMETAG_DEFINITION(REButtonViewActivityIndicator);
 
-static const int   ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -74,7 +74,7 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
             REActionHandler   handler = _actionHandlers[@(RESingleTapAction)];
 
             if (handler) handler();
-            else [self buttonActionWithOptions:RECommandOptionDefault];
+            else [self buttonActionWithOptions:CommandOptionDefault];
         }
         break;
 
@@ -105,7 +105,7 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
             REActionHandler   handler = _actionHandlers[@(RELongPressAction)];
 
             if (handler) handler();
-            else [self buttonActionWithOptions:RECommandOptionLongPress];
+            else [self buttonActionWithOptions:CommandOptionLongPress];
         }
         break;
 
@@ -176,7 +176,7 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
     _actionHandlers[@(action)] = handler;
 }
 
-- (void)buttonActionWithOptions:(RECommandOptions)options
+- (void)buttonActionWithOptions:(CommandOptions)options
 {
     assert(self.model);
     if (!self.editing && _flags.commandsActive)

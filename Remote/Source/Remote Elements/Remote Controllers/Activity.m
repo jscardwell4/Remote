@@ -9,6 +9,8 @@
 #import "Command.h"
 #import "RemoteController.h"
 #import "RemoteElement.h"
+#import "Remote.h"
+#import "RemoteElementImportSupportFunctions.h"
 
 @interface Activity ()
 
@@ -30,7 +32,7 @@
 
 + (instancetype)activityWithName:(NSString *)name
 {
-    return [self activityWithName:name inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self activityWithName:name inContext:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)activityWithName:(NSString *)name inContext:(NSManagedObjectContext *)context
@@ -57,12 +59,12 @@
          {
              for (NSDictionary * commandData in commandsData)
              {
-                 NSString * type = commandData[@"type"];
-                 Class commandClass = classForCommandImportType(type);
+                 NSString * type = commandData[@"class"];
+                 Class commandClass = commandClassForImportKey(type);
                  if (commandClass)
                  {                     
                      Command * command = [commandClass MR_importFromObject:commandData
-                                                                   inContext:self.managedObjectContext];
+                                                                 inContext:self.managedObjectContext];
                      [macroCommand addCommandsObject:command];
 
                  }
@@ -140,7 +142,7 @@
 
 - (BOOL)updateName:(NSString *)name
 {
-    if ([Activity MR_countOfEntitiesWithPredicate:NSMakePredicate(@"name EQUALS %@", name)])
+    if ([Activity MR_countOfEntitiesWithPredicate:NSPredicateMake(@"name EQUALS %@", name)])
         return NO;
     else
     {
@@ -288,6 +290,21 @@
     else if (completion)
         completion(NO, nil);
 }
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"name"]        = CollectionSafeValue(self.name);
+    dictionary[@"remote"]      = CollectionSafeValue(self.remote.uuid);
+    dictionary[@"launchMacro"] = CollectionSafeValue(self.launchMacro.JSONDictionary);
+    dictionary[@"haltMacro"]   = CollectionSafeValue(self.haltMacro.JSONDictionary);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
 
 - (NSDictionary *)deepDescriptionDictionary
 {

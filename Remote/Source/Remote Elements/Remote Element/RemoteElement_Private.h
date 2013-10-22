@@ -7,12 +7,15 @@
 //
 
 #import "RemoteElement.h"
+#import "Remote.h"
+#import "ButtonGroup.h"
+#import "Button.h"
 #import "LayoutConfiguration.h"
 #import "Constraint.h"
 
 @interface RemoteElement ()
 
-@property (nonatomic, assign, readwrite) REType                    type;
+@property (nonatomic, assign, readwrite) REType                  elementType;
 @property (nonatomic, strong, readwrite) ConstraintManager     * constraintManager;
 @property (nonatomic, strong, readwrite) LayoutConfiguration   * layoutConfiguration;
 @property (nonatomic, strong, readwrite) ConfigurationDelegate * configurationDelegate;
@@ -21,7 +24,8 @@
 
 @interface RemoteElement (CoreDataGeneratedAccessors)
 
-@property (nonatomic) NSNumber                * primitiveType;
+@property (nonatomic) NSNumber                * primitiveElementType;
+@property (nonatomic) NSNumber                * primitiveRole;
 @property (nonatomic) NSNumber                * primitiveSubtype;
 @property (nonatomic) NSNumber                * primitiveOptions;
 @property (nonatomic) NSNumber                * primitiveState;
@@ -32,7 +36,7 @@
 @property (nonatomic) NSMutableSet            * primitiveFirstItemConstraints;
 @property (nonatomic) NSMutableSet            * primitiveSecondItemConstraints;
 @property (nonatomic) NSMutableOrderedSet     * primitiveSubelements;
-@property (nonatomic) ConfigurationDelegate * primitiveConfigurationDelegate;
+@property (nonatomic) ConfigurationDelegate   * primitiveConfigurationDelegate;
 @property (nonatomic) RemoteElement           * primitiveParentElement;
 @property (nonatomic) NSString                * primitiveName;
 @property (nonatomic) NSString                * primitiveKey;
@@ -44,7 +48,7 @@
 @interface Remote ()
 
 @property (nonatomic, strong, readonly)  RemoteController * controller;
-@property (nonatomic, strong, readwrite) NSDictionary       * panels;
+@property (nonatomic, strong, readwrite) NSDictionary     * panels;
 
 @end
 
@@ -88,7 +92,7 @@
 
 @interface Button (CoreDataGeneratedAccessors)
 
-@property (nonatomic) Command * primitiveCommand;
+@property (nonatomic) Command   * primitiveCommand;
 @property (nonatomic) NSValue   * primitiveTitleEdgeInsets;
 @property (nonatomic) NSValue   * primitiveImageEdgeInsets;
 @property (nonatomic) NSValue   * primitiveContentEdgeInsets;
@@ -104,4 +108,5 @@
 #import "ControlStateSet.h"
 #import "CoreDataManager.h"
 #import "Theme.h"
-#import "MSRemoteImportSupportFunctions.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"

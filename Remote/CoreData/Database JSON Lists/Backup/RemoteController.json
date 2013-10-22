@@ -1,0 +1,121 @@
+{
+    "uuid": "80142DF7-0BFE-4868-BAC0-257DAE79D825",
+    "topToolbar": {
+        "uuid": "C0D70CA8-7E02-4D7E-929D-E3550B27137E",
+        "name": "Top Toolbar",
+        "backgroundColor": "flipside",
+        "type": "toolbar button group",
+        "constraints": {
+            "identifiers": {
+                "buttonGroup": "C0D70CA8-7E02-4D7E-929D-E3550B27137E",
+                "home": "52B3AEE0-EE60-46D2-B7BA-C5C51FC9EF7D",
+                "settings": "D2548A02-4929-4DC7-817E-9C6B1E0E56DF",
+                "battery": "20E767E6-67B1-4A67-B5A7-65CD92907D88",
+                "editRemote": "0C491E0B-EE5D-403E-A51A-D76E9C9FF923",
+                "connection": "22C27A7C-7AE1-4620-8C39-B4D06AA9D621"
+            },
+            "format": [
+                "home.left = buttonGroup.left + 4",
+                "settings.left = home.right + 20",
+                "editRemote.left = settings.right + 20",
+                "battery.left = editRemote.right + 20",
+                "connection.left = battery.right + 20",
+                "settings.width = home.width",
+                "editRemote.width = home.width",
+                "battery.width = home.width",
+                "connection.width = home.width",
+                "home.height = buttonGroup.height",
+                "settings.height = buttonGroup.height",
+                "editRemote.height = buttonGroup.height",
+                "battery.height = buttonGroup.height",
+                "connection.height = buttonGroup.height",
+                "home.centerY = buttonGroup.centerY",
+                "settings.centerY = buttonGroup.centerY",
+                "editRemote.centerY = buttonGroup.centerY",
+                "battery.centerY = buttonGroup.centerY",
+                "connection.centerY = buttonGroup.centerY"
+            ]
+        },
+        "subelements": [
+            {
+                "uuid": "52B3AEE0-EE60-46D2-B7BA-C5C51FC9EF7D",
+                "tag": 0,
+                "name": "Home Button",
+                "constraints": {
+                    "identifiers.home": "52B3AEE0-EE60-46D2-B7BA-C5C51FC9EF7D",
+                    "format": [
+                        "home.width ≥ 44"
+                    ]
+                },
+                "type": "button",
+                "icons.default": {
+                    "colors.normal": "rgba(255,255,255,255)",
+                    "images.normal.uuid": "FF45D2FC-4D80-40D5-9CF6-2ABA1DAAA1DF"
+                },
+                "command": {
+                    "uuid": "7A2A0EE8-4418-4520-873A-34755ADA4BE3",
+                    "type": "system",
+                    "commandType": "return to launch screen"
+                }
+            },
+            {
+                "uuid": "D2548A02-4929-4DC7-817E-9C6B1E0E56DF",
+                "name": "Settings Button",
+                "type": "button",
+                "icons.default": {
+                    "colors.normal": "white",
+                    "images.normal.uuid": "DFA5CD5F-6F85-4047-AB41-33C4BADD5910"
+                },
+                "command": {
+                    "uuid": "2A297A60-918A-4C44-8D87-A4840473DFF8",
+                    "type": "system",
+                    "commandType": "open settings"
+                }
+            },
+            {
+                "uuid": "0C491E0B-EE5D-403E-A51A-D76E9C9FF923",
+                "name": "Edit Remote Button",
+                "type": "button",
+                "icons.default": {
+                    "colors.normal": "white",
+                    "images.normal.uuid": "94EB9232-9226-416D-A718-7A5F59F55D88"
+                },
+                "command": {
+                    "uuid": "9181DE80-EF53-4F24-A872-D66DEB2AD966",
+                    "type": "system",
+                    "commandType": "open editor"
+                }
+            },
+            {
+                "uuid": "20E767E6-67B1-4A67-B5A7-65CD92907D88",
+                "name": "Battery Status Button",
+                "type": "battery status button",
+                "icons.default": {
+                    "colors": {
+                        "normal": "white",
+                        "selected": "light gray",
+                        "disabled": "light gray"
+                    },
+                    "images": {
+                        "normal.uuid": "5B472A36-C146-4031-BF5F-BC31E7D8ED8B",
+                        "selected.uuid": "2BBC2A69-A878-4395-AB26-2C7F7DFB878C",
+                        "disabled.uuid": "7B6EA351-F519-4548-953E-D569DA46B7AF"
+                    }
+                },
+                "backgroundColor": "light text"
+            },
+            {
+                "uuid": "22C27A7C-7AE1-4620-8C39-B4D06AA9D621",
+                "name": "Connection Status Button",
+                "type": "button",
+                "icons.default": {
+                    "colors": {
+                        "normal": "gray",
+                        "selected": "white"
+                    },
+                    "images.normal.uuid": "B600E134-8CE5-4B12-BF39-052FC2567BCB"
+                }
+            }
+        ]
+    }
+}

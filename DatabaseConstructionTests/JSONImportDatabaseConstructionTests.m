@@ -18,7 +18,7 @@
     [[UserDefaults stringForKey:@"SenTestedUnitPath"] \
         stringByAppendingPathComponent:n".json"]
 
-static const int   ddLogLevel    = LOG_LEVEL_UNITTEST;
+static int ddLogLevel    = LOG_LEVEL_UNITTEST;
 static const int   msLogContext  = LOG_CONTEXT_UNITTEST;
 static uint8_t     msTestOptions = MSCoreDataTestLogCreatedObjects;
 #pragma unused(ddLogLevel, msLogContext, msTestOptions)
@@ -239,7 +239,7 @@ static MSJSONParser const * parser_ = nil;
          assertThat(topToolbar.constraints,
                     hasCountOf([toolbarImportData[@"constraints"][@"format"] count]));
          assertThat(@(remoteElementTypeFromImportKey(toolbarImportData[@"type"])),
-                    is(@(topToolbar.type)));
+                    is(@(topToolbar.elementType)));
          assertThat(topToolbar.subelements, hasCountOf([toolbarImportData[@"subelements"] count]));
 
          NSDictionary * buttonIndex = [NSDictionary
@@ -254,7 +254,7 @@ static MSJSONParser const * parser_ = nil;
              assertThat(button.constraints,
                         hasCountOf([buttonImportData[@"constraints"][@"format"] count]));
              assertThat(@(remoteElementTypeFromImportKey(buttonImportData[@"type"])),
-                        is(@(button.type)));
+                        is(@(button.elementType)));
 
              NSString * commandUUID = buttonImportData[@"command"][@"uuid"];
              if (commandUUID) assertThat(button.command.uuid, is(commandUUID));

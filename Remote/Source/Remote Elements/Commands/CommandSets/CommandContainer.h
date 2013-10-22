@@ -30,21 +30,21 @@
 
 @interface CommandSet : CommandContainer
 
-+ (instancetype)commandSetWithType:(RECommandSetType)type;
-+ (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type;
++ (instancetype)commandSetWithType:(CommandSetType)type;
++ (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(CommandSetType)type;
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context
-                           withType:(RECommandSetType)type
+                           withType:(CommandSetType)type
                                name:(NSString *)name
                              values:(NSDictionary *)values;
 
-+ (instancetype)commandSetWithType:(RECommandSetType)type
++ (instancetype)commandSetWithType:(CommandSetType)type
                               name:(NSString *)name
                             values:(NSDictionary *)values;
 
 - (void)setObject:(Command *)command forKeyedSubscript:(id<NSCopying>)key;
 - (Command *)objectForKeyedSubscript:(id<NSCopying>)key;
 
-@property (nonatomic, readonly) RECommandSetType   type;
+@property (nonatomic, readonly) CommandSetType   type;
 
 @end
 

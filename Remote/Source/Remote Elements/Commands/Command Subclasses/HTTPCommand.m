@@ -6,6 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
+#import "CoreDataManager.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -17,7 +18,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 + (HTTPCommand *)commandWithURL:(NSString *)url
 {
-    return [self commandWithURL:url context:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self commandWithURL:url context:[CoreDataManager defaultContext]];
 }
 
 + (HTTPCommand *)commandWithURL:(NSString *)url context:(NSManagedObjectContext *)context
@@ -26,6 +27,18 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     command.url = [NSURL URLWithString:url];
     return command;
 }
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"url"] = CollectionSafeValue([self.url absoluteString]);
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
 
 - (NSString *)shortDescription { return $(@"url:'%@'", self.primitiveUrl); }
 

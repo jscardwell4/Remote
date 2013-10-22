@@ -8,12 +8,12 @@
 #import "Command_Private.h"
 #import "ConnectionManager.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 
-@interface SendCommandOperation : RECommandOperation @end
+@interface SendCommandOperation : CommandOperation @end
 
 @implementation SendCommand
 

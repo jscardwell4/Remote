@@ -7,6 +7,9 @@
 //
 #import "Theme_Private.h"
 #import "RemoteElement.h"
+#import "Remote.h"
+#import "ButtonGroup.h"
+#import "Button.h"
 
 @implementation Theme (ApplyingThemes)
 
@@ -15,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 - (NSDictionary *)themedAttributesFromAttributes:(NSDictionary *)attributes
                               templateAttributes:(NSDictionary *)templateAttributes
-                                           flags:(REThemeFlags)flags
+                                           flags:(REThemeOverrideFlags)flags
 {
     NSString * stringText = attributes[RETitleTextKey];
     if (!stringText) return nil;
@@ -138,12 +141,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 - (void)applyThemeToElement:(RemoteElement *)element
 {
-    switch ((element.type & RETypeBaseMask))
+    switch (element.elementType)
     {
         case RETypeRemote:      [self applyThemeToRemote:(Remote *)element];           break;
         case RETypeButtonGroup: [self applyThemeToButtonGroup:(ButtonGroup *)element]; break;
         case RETypeButton:      [self applyThemeToButton:(Button *)element];           break;
-        default:                assert(NO);                                              break;
+        default:                assert(NO);                                            break;
     }
 
     [self addElementsObject:element];
@@ -167,8 +170,8 @@
 
     [moc performBlockAndWait:
      ^{
-         REThemeFlags flags = remote.themeFlags;
-         ThemeRemoteSettings * settings = [self remoteSettingsForType:remote.type];
+         REThemeOverrideFlags flags = remote.themeFlags;
+         ThemeRemoteSettings * settings = [self remoteSettingsForRole:remote.role];
 
          if (!settings) return;
 
@@ -198,12 +201,12 @@
 
     [moc performBlockAndWait:
      ^{
-         REThemeFlags flags = buttonGroup.themeFlags;
-         ThemeButtonGroupSettings * defaultSettings = [self buttonGroupSettingsForType:RETypeButtonGroup];
+         REThemeOverrideFlags flags = buttonGroup.themeFlags;
+         ThemeButtonGroupSettings * defaultSettings = [self buttonGroupSettingsForRole:RERoleUndefined];
          ThemeButtonGroupSettings * panelSettings = ([buttonGroup isPanel]
-                                                       ? [self buttonGroupSettingsForType:REButtonGroupTypePanel]
+                                                       ? [self buttonGroupSettingsForRole:REButtonGroupRolePanel]
                                                        : nil);
-         ThemeButtonGroupSettings * settings = [self buttonGroupSettingsForType:buttonGroup.type];
+         ThemeButtonGroupSettings * settings = [self buttonGroupSettingsForRole:buttonGroup.role];
          if (!(settings || panelSettings)) return;
 
          NSNumber * style = (settings.style
@@ -257,11 +260,10 @@
     NSManagedObjectContext * moc = button.managedObjectContext;
     [moc performBlockAndWait:
      ^{
-         REThemeFlags flags = button.themeFlags;
-         REType baseButtonType = baseButtonTypeForREType(button.type);
-         ThemeButtonSettings * defaultSettings = [self buttonSettingsForType:RETypeButton];
-         ThemeButtonSettings * settings = [self buttonSettingsForType:baseButtonType];
-         ThemeButtonSettings * subSettings = [settings subSettingsForType:button.type];
+         REThemeOverrideFlags flags = button.themeFlags;
+         ThemeButtonSettings * defaultSettings = [self buttonSettingsForRole:RERoleUndefined];
+         ThemeButtonSettings * settings = [self buttonSettingsForRole:RERoleUndefined];
+         ThemeButtonSettings * subSettings = [settings subSettingsForRole:button.role];
 
          if (!(settings || subSettings)) return;
 
@@ -311,13 +313,13 @@
              button.imageEdgeInsets = [imageEdgeInsets UIEdgeInsetsValue];
 
 
-         NSArray * configurationKeys = button.remote.configurationDelegate.configurationKeys;
+         NSArray * modeKeys = button.remote.configurationDelegate.modeKeys;
 
-         if (!configurationKeys) configurationKeys = @[REDefaultConfiguration];
+         if (!modeKeys) modeKeys = @[REDefaultMode];
 
-         for (RERemoteConfiguration configuration in configurationKeys)
+         for (RERemoteMode mode in modeKeys)
          {
-             button.buttonConfigurationDelegate.currentConfiguration = configuration;
+             button.buttonConfigurationDelegate.currentMode = mode;
 
              // background color
              if (!(flags & REThemeNoBackgroundColor) && backgroundColors)
@@ -326,7 +328,7 @@
                  if (!colorSet)
                  {
                      colorSet = [ControlStateColorSet controlStateSetInContext:moc];
-                     [button setBackgroundColors:colorSet configuration:configuration];
+                     [button setBackgroundColors:colorSet mode:mode];
                  }
 
                  [colorSet copyObjectsFromSet:backgroundColors];
@@ -340,7 +342,7 @@
                  if (!imageSet)
                  {
                      imageSet = [ControlStateImageSet controlStateSetInContext:moc];
-                     [button setImages:imageSet configuration:configuration];
+                     [button setImages:imageSet mode:mode];
                  }
                  [imageSet copyObjectsFromSet:images];
              }
@@ -354,15 +356,20 @@
 
                  for (int i = 0; i < 8; i++)
                  {
-                     if (titleSet[i])
-                         titleSet[i] = [self themedAttributesFromAttributes:titleSet[i]
-                                                         templateAttributes:titles[i]
+                     id obj = [titleSet objectAtIndex:i];
+                     id templateObj = [titles objectAtIndex:i];
+                     if (obj)
+                     {
+                         if (!templateObj) templateObj = titles[i];
+                         titleSet[i] = [self themedAttributesFromAttributes:obj
+                                                         templateAttributes:templateObj
                                                                       flags:flags];
-                     else if (!(flags & REThemeNoTitleText) && titles[i][RETitleTextKey])
-                         titleSet[i] = [titles[i] copy];
+                     }
+                     else if (!(flags & REThemeNoTitleText) && templateObj[RETitleTextKey])
+                         titleSet[i] = [templateObj copy];
                  }
 
-                 [button setTitles:titleSet configuration:configuration];
+                 [button setTitles:titleSet mode:mode];
              }
 
              // icon colors
@@ -372,14 +379,19 @@
                  if (!iconSet) iconSet = [ControlStateImageSet controlStateSetInContext:moc];
 
                  if (!(flags & REThemeNoIconImage))
+                 {
                      for (int i = 0; i < 8; i++)
-                         if (icons[i]) iconSet[i] = icons[i];
+                     {
+                         id templateObj = [icons objectAtIndex:i];
+                         if (templateObj) iconSet[i] = templateObj;
+                     }
+                 }
 
                  ControlStateColorSet * colorSet = iconSet.colors;
                  if (!(flags & REThemeNoIconColor))
                      [colorSet copyObjectsFromSet:icons.colors];
 
-                 [button setIcons:iconSet configuration:configuration];
+                 [button setIcons:iconSet mode:mode];
              }
          }
      }];

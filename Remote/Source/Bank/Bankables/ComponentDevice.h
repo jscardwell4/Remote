@@ -22,9 +22,9 @@
 
 - (IRCode *)objectForKeyedSubscript:(NSString *)name;
 
-- (void)powerOn:(RECommandCompletionHandler)completion;
+- (void)powerOn:(CommandCompletionHandler)completion;
 
-- (void)powerOff:(RECommandCompletionHandler)completion;
+- (void)powerOff:(CommandCompletionHandler)completion;
 
 @property (nonatomic, assign) int16_t         port;
 @property (nonatomic, strong) NSSet         * codes;

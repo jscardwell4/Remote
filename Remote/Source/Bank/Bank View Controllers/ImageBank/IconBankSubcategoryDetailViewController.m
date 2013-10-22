@@ -9,7 +9,7 @@
 #import "IconBankSubcategoryDetailViewController.h"
 #import "BankObject.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 @interface IconBankSubcategoryDetailViewController ()
 

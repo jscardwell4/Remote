@@ -19,8 +19,10 @@
 #pragma mark - Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-static const int   ddLogLevel               = LOG_LEVEL_DEBUG;
+static int ddLogLevel               = LOG_LEVEL_DEBUG;
 static const int   msLogContext             = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
+#pragma unused(ddLogLevel,msLogContext)
+
 CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,64 +40,19 @@ CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
                        @(RETypeRemote)                    : @"RemoteView",
                        @(RETypeButtonGroup)               : @"ButtonGroupView",
                        @(RETypeButton)                    : @"ButtonView",
-                       @(REButtonGroupTypePanel)          : @"ButtonGroupView",
-                       @(REButtonGroupTypeSelectionPanel) : @"SelectionPanelButtonGroupView",
-                       @(REButtonGroupTypeToolbar)        : @"ButtonGroupView",
-                       @(REButtonGroupTypeDPad)           : @"ButtonGroupView",
-                       @(REButtonGroupTypeNumberpad)      : @"ButtonGroupView",
-                       @(REButtonGroupTypeTransport)      : @"ButtonGroupView",
-                       @(REButtonGroupTypePickerLabel)    : @"PickerLabelButtonGroupView",
-                       @(REButtonTypeToolbar)             : @"ButtonView",
-                       @(REButtonTypeConnectionStatus)    : @"ConnectionStatusButtonView",
-                       @(REButtonTypeBatteryStatus)       : @"BatteryStatusButtonView",
-                       @(REButtonTypePickerLabel)         : @"ButtonView",
-                       @(REButtonTypePickerLabelTop)      : @"ButtonView",
-                       @(REButtonTypePickerLabelBottom)   : @"ButtonView",
-                       @(REButtonTypePanel)               : @"ButtonView",
-                       @(REButtonTypeTuck)                : @"ButtonView",
-                       @(REButtonTypeSelectionPanel)      : @"ButtonView",
-                       @(REButtonTypeDPad)                : @"ButtonView",
-                       @(REButtonTypeDPadUp)              : @"ButtonView",
-                       @(REButtonTypeDPadDown)            : @"ButtonView",
-                       @(REButtonTypeDPadLeft)            : @"ButtonView",
-                       @(REButtonTypeDPadRight)           : @"ButtonView",
-                       @(REButtonTypeDPadCenter)          : @"ButtonView",
-                       @(REButtonTypeNumberpad)           : @"ButtonView",
-                       @(REButtonTypeNumberpad1)          : @"ButtonView",
-                       @(REButtonTypeNumberpad2)          : @"ButtonView",
-                       @(REButtonTypeNumberpad3)          : @"ButtonView",
-                       @(REButtonTypeNumberpad4)          : @"ButtonView",
-                       @(REButtonTypeNumberpad5)          : @"ButtonView",
-                       @(REButtonTypeNumberpad6)          : @"ButtonView",
-                       @(REButtonTypeNumberpad7)          : @"ButtonView",
-                       @(REButtonTypeNumberpad8)          : @"ButtonView",
-                       @(REButtonTypeNumberpad9)          : @"ButtonView",
-                       @(REButtonTypeNumberpad0)          : @"ButtonView",
-                       @(REButtonTypeNumberpadAux1)       : @"ButtonView",
-                       @(REButtonTypeNumberpadAux2)       : @"ButtonView",
-                       @(REButtonTypeTransport)           : @"ButtonView",
-                       @(REButtonTypeTransportPlay)       : @"ButtonView",
-                       @(REButtonTypeTransportStop)       : @"ButtonView",
-                       @(REButtonTypeTransportPause)      : @"ButtonView",
-                       @(REButtonTypeTransportSkip)       : @"ButtonView",
-                       @(REButtonTypeTransportReplay)     : @"ButtonView",
-                       @(REButtonTypeTransportFF)         : @"ButtonView",
-                       @(REButtonTypeTransportRewind)     : @"ButtonView",
-                       @(REButtonTypeTransportRecord)     : @"ButtonView" };
+                       @(REButtonGroupRoleSelectionPanel) : @"SelectionPanelButtonGroupView",
+                       @(REButtonGroupRolePickerLabel)    : @"PickerLabelButtonGroupView",
+                       @(REButtonRoleConnectionStatus)    : @"ConnectionStatusButtonView",
+                       @(REButtonRoleBatteryStatus)       : @"BatteryStatusButtonView" };
 
     });
 
     model = (RemoteElement *)[model.managedObjectContext existingObjectWithID:model.objectID
                                                                        error:nil];
 
-    REType type = model.type;
-    NSString * className = kClassMap[@(type)];
-    if (!className && ((type & REButtonGroupTypePanel) == REButtonGroupTypePanel))
-    {
-        type &= ~REButtonGroupTypePanel|RETypeButtonGroup;
-        className = kClassMap[@(type)];
-    }
-    
+    NSString * className = kClassMap[@(model.role)];
+    if (!className) className = kClassMap[@(model.elementType)];
+
     return (className ? [[NSClassFromString(className) alloc] initWithModel:model] : nil);
 }
 

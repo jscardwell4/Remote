@@ -7,36 +7,37 @@
 //
 #import "ModelObject.h"
 #import "RETypedefs.h"
-MSEXTERN_STRING REDefaultConfiguration;
+
+MSEXTERN_STRING REDefaultMode;
 
 @class RemoteElement;
 
 /**
- Monitors changes to the current configuration of a `RemoteElement` and responds by updating
+ Monitors changes to the current mode of a `RemoteElement` and responds by updating
  various attributes with values registered with the `REConfigurationDelegate` for the active
- configuration. All `RemoteElement` objects can have a configuration delegate but their use
+ mode. All `RemoteElement` objects can have a mode delegate but their use
  is not mandatory. For example, the element need to use the delegate if its attributes never
- change regardless of the current configuration.
+ change regardless of the current mode.
  */
 @interface ConfigurationDelegate : ModelObject
 
 + (instancetype)configurationDelegate;
 
-- (BOOL)addConfiguration:(RERemoteConfiguration)configuration;
+- (BOOL)addMode:(RERemoteMode)mode;
 
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key;
 - (id)objectForKeyedSubscript:(NSString *)key;
 
-- (BOOL)hasConfiguration:(RERemoteConfiguration)key;
+- (BOOL)hasMode:(RERemoteMode)key;
 
 - (void)refresh;
 
-@property (nonatomic, copy)             RERemoteConfiguration     currentConfiguration;
-@property (nonatomic, weak, readonly)   NSArray                 * configurationKeys;
-@property (nonatomic, strong)           ConfigurationDelegate * delegate;
+@property (nonatomic, copy)             RERemoteMode     currentMode;
+@property (nonatomic, weak, readonly)   NSArray                 * modeKeys;
+@property (nonatomic, strong)           ConfigurationDelegate   * delegate;
 @property (nonatomic, strong, readonly) NSSet                   * subscribers;
 @property (nonatomic, strong, readonly) RemoteElement           * element;
-@property (nonatomic, assign)           BOOL                      autoPopulateFromDefaultConfiguration;
+@property (nonatomic, assign)           BOOL                      autoPopulateFromDefaultMode;
 
 @end
 
@@ -65,8 +66,8 @@ MSEXTERN_STRING REDefaultConfiguration;
 @interface ButtonGroupConfigurationDelegate : ConfigurationDelegate
 
 - (void)setCommandContainer:(CommandContainer *)container
-              configuration:(RERemoteConfiguration)config;
-- (void)setLabel:(NSAttributedString *)label configuration:(RERemoteConfiguration)config;
+              mode:(RERemoteMode)mode;
+- (void)setLabel:(NSAttributedString *)label mode:(RERemoteMode)mode;
 
 - (ButtonGroup *)buttonGroup;
 
@@ -88,21 +89,23 @@ MSEXTERN_STRING REDefaultConfiguration;
 
 - (NSAttributedString *)titleForState:(REState)state;
 
-- (void)setCommand:(Command *)command
-  configuration:(RERemoteConfiguration)config;
+- (void)setCommand:(Command *)command mode:(RERemoteMode)mode;
+- (Command *)commandForMode:(RERemoteMode)mode;
 
-- (void)setTitle:(id)title configuration:(RERemoteConfiguration)config;
+- (void)setTitle:(id)title mode:(RERemoteMode)mode;
 
-- (void)setTitles:(ControlStateTitleSet *)titleSet configuration:(RERemoteConfiguration)config;
+- (void)setTitles:(ControlStateTitleSet *)titleSet mode:(RERemoteMode)mode;
+- (ControlStateTitleSet *)titlesForMode:(RERemoteMode)mode;
 
 - (void)setBackgroundColors:(ControlStateColorSet *)colors
-           configuration:(RERemoteConfiguration)config;
+           mode:(RERemoteMode)mode;
+- (ControlStateColorSet *)backgroundColorsForMode:(RERemoteMode)mode;
 
-- (void)setIcons:(ControlStateImageSet *)icons
-configuration:(RERemoteConfiguration)config;
+- (void)setIcons:(ControlStateImageSet *)icons mode:(RERemoteMode)mode;
+- (ControlStateImageSet *)iconsForMode:(RERemoteMode)mode;
 
-- (void)setImages:(ControlStateImageSet *)images
- configuration:(RERemoteConfiguration)config;
+- (void)setImages:(ControlStateImageSet *)images  mode:(RERemoteMode)mode;
+- (ControlStateImageSet *)imagesForMode:(RERemoteMode)mode;
 
 - (Button *)button;
 

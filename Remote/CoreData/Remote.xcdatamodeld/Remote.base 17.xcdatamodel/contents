@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ActivityButton" representedClassName="ActivityButton" parentEntity="Button" syncable="YES">
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceConfiguration" inverseName="activityButtons" inverseEntity="DeviceConfiguration" indexed="YES" syncable="YES"/>
     </entity>
@@ -100,7 +100,7 @@
         <userInfo/>
     </entity>
     <entity name="ConfigurationDelegate" representedClassName="ConfigurationDelegate" isAbstract="YES" syncable="YES">
-        <attribute name="configurationKeys" attributeType="Transformable" syncable="YES"/>
+        <attribute name="modeKeys" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="ControlStateButtonImageSet" representedClassName="ControlStateButtonImageSet" parentEntity="ControlStateImageSet" syncable="YES">
         <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="images" inverseEntity="Button" indexed="YES" syncable="YES"/>
@@ -227,7 +227,7 @@
     <entity name="NetworkDevice" representedClassName="NetworkDevice" syncable="YES">
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="NumberPad" representedClassName="NumberPad" parentEntity="CommandSet" syncable="YES">
+    <entity name="Numberpad" representedClassName="NumberPad" parentEntity="CommandSet" syncable="YES">
         <attribute name="aux1" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="aux2" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="digit0" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -311,7 +311,7 @@
         <relationship name="remoteElement" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgroundImage" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="Remote" representedClassName="Remote" parentEntity="RemoteElement" syncable="YES">
-        <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="topBarHidden" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
     </entity>
     <entity name="RemoteController" representedClassName="RemoteController" syncable="YES">
         <attribute name="currentActivityKey" optional="YES" attributeType="String" syncable="YES"/>
@@ -383,6 +383,8 @@
     <elements>
         <element name="ActivityButton" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankObject" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankPreset" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Button" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ButtonConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
@@ -406,9 +408,7 @@
         <element name="DeviceConfiguration" positionX="0" positionY="0" width="0" height="0"/>
         <element name="DPad" positionX="0" positionY="0" width="0" height="0"/>
         <element name="FactoryIRCode" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GalleryGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCode" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCodeSet" positionX="0" positionY="0" width="0" height="0"/>
@@ -416,19 +416,19 @@
         <element name="MacroCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="0" height="0"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="NumberPad" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Numberpad" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PresetInfo" positionX="0" positionY="0" width="0" height="0"/>
         <element name="REBackgroundImage" positionX="0" positionY="0" width="0" height="0"/>
         <element name="REButtonImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="REConstraint" positionX="0" positionY="0" width="0" height="0"/>
         <element name="REIconImage" positionX="0" positionY="0" width="0" height="0"/>
         <element name="REImage" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Remote" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemoteController" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemoteElementLayoutConfiguration" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="REConstraint" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemotePreset" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RockerButton" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SendIRCommand" positionX="0" positionY="0" width="0" height="0"/>

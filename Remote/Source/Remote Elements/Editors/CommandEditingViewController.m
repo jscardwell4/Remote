@@ -9,6 +9,7 @@
 #import "CommandEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
 #import "Command.h"
+#import "Button.h"
 
 
 #import "RemoteController.h"
@@ -27,7 +28,7 @@
 
 #define kCommandDetailsViewFrame CGRectMake(0, 40, 320, 232)
 
-static int       ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int       msLogContext = LOG_CONTEXT_EDITOR;
 
 static UIFont  * labelFont;
@@ -70,8 +71,16 @@ commandTypeButton       = _commandTypeButton,
 button                  = _button;
 
 + (void)initialize {
-    if (self == [CommandEditingViewController class]) {
-        commandTypes = @{NSStringFromClass([Command class]) : @"Generic", NSStringFromClass([PowerCommand class]) : @"Power", NSStringFromClass([SwitchToRemoteCommand class]) : @"Switch-To-Remote", NSStringFromClass([MacroCommand class]) : @"Macro", NSStringFromClass([DelayCommand class]) : @"Delay", NSStringFromClass([SystemCommand class]) : @"System", NSStringFromClass([SendIRCommand class]) : @"Send IR", NSStringFromClass([HTTPCommand class]) : @"HTTP"};
+    if (self == [CommandEditingViewController class])
+    {
+        commandTypes = @{NSStringFromClass([Command class])       : @"Generic",
+                         NSStringFromClass([PowerCommand class])  : @"Power",
+                         NSStringFromClass([SwitchCommand class]) : @"Switch",
+                         NSStringFromClass([MacroCommand class])  : @"Macro",
+                         NSStringFromClass([DelayCommand class])  : @"Delay",
+                         NSStringFromClass([SystemCommand class]) : @"System",
+                         NSStringFromClass([SendIRCommand class]) : @"Send IR",
+                         NSStringFromClass([HTTPCommand class])   : @"HTTP"};
 
         NSSet * excludedCommands = [NSSet setWithObjects:@"Generic", @"System", nil];
 

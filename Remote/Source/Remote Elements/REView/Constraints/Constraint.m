@@ -27,17 +27,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 @implementation Constraint
-@dynamic firstAttribute;
-@dynamic secondAttribute;
-@dynamic multiplier;
-@dynamic constant;
-@dynamic firstItem;
-@dynamic secondItem;
-@dynamic relation;
-@dynamic priority;
-@dynamic owner;
-@dynamic tag;
-@dynamic key;
+@dynamic firstAttribute, secondAttribute, multiplier, constant, firstItem, secondItem, relation, priority, owner, tag, key;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Initializer
@@ -56,7 +46,7 @@
                         || ValueIsNotNil(element2)));
 
     __block Constraint * constraint = nil;
-    NSManagedObjectContext                * context    = element1.managedObjectContext;
+    NSManagedObjectContext * context = element1.managedObjectContext;
 
     [context performBlockAndWait:^{
         constraint = [NSEntityDescription
@@ -131,7 +121,8 @@
 #pragma mark Logging
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)committedValuesDescription {
+- (NSString *)committedValuesDescription
+{
     NSArray * attributeKeys = @[@"firstItem",
                                 @"firstAttribute",
                                 @"relation",
@@ -182,6 +173,27 @@
     if (priority) [stringRep appendFormat:@" %@", priority];
 
     return stringRep;
+}
+
+- (NSDictionary * )JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    if (self.tag) dictionary[@"tag"] = @(self.tag);
+    dictionary[@"key"] = CollectionSafeValue(self.key);
+    dictionary[@"firstAttribute"] = [NSLayoutConstraint pseudoNameForAttribute:self.firstAttribute];
+    dictionary[@"secondAttribute"] = [NSLayoutConstraint pseudoNameForAttribute:self.secondAttribute];
+    dictionary[@"relation"] = [NSLayoutConstraint pseudoNameForRelation:self.relation];
+    if (self.multiplier != 1.0f) dictionary[@"multiplier"] = @(self.multiplier);
+    if (self.constant) dictionary[@"constant"] = @(self.constant);
+    dictionary[@"firstItem"] = self.firstItem.uuid;
+    dictionary[@"secondItem"] = CollectionSafeValue(self.secondItem.uuid);
+    dictionary[@"owner"] = self.owner.uuid;
+    if (self.priority != UILayoutPriorityRequired) dictionary[@"priority"] = @(self.priority);
+
+//    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
 }
 
 - (NSString *)description {

@@ -10,15 +10,6 @@
 #import "BankGroup.h"
 #import "Manufacturer.h"
 
-/*
- * @interface IRCode ()
- *
- * - (id)initWithProntoHex:(NSString *)hex;
- *
- * @end
- *
- */
-#pragma mark - Enumerations, structs, and static variables
 
 enum ProntoHexFormatParts {
     PatternType                 = 0,
@@ -32,13 +23,13 @@ enum ProntoHexFormatParts {
 
 struct HexPair {unsigned int   num1; unsigned int num2; };
 
-MSSTATIC_STRING_CONST   BOIRCodeFrequencyKey       = @"frequency";
-MSSTATIC_STRING_CONST   BOIRCodeOffsetKey          = @"offset";
-MSSTATIC_STRING_CONST   BOIRCodePreamblePairsKey   = @"preamblePairs";
-MSSTATIC_STRING_CONST   BOIRCodeRepeatablePairsKey = @"repeatablePairs";
-MSSTATIC_STRING_CONST   BOIRCodeLeadInKey          = @"leadIn";
+MSSTATIC_STRING_CONST   IRCodeFrequencyKey       = @"frequency";
+MSSTATIC_STRING_CONST   IRCodeOffsetKey          = @"offset";
+MSSTATIC_STRING_CONST   IRCodePreamblePairsKey   = @"preamblePairs";
+MSSTATIC_STRING_CONST   IRCodeRepeatablePairsKey = @"repeatablePairs";
+MSSTATIC_STRING_CONST   IRCodeLeadInKey          = @"leadIn";
 
-NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
+NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
 {
     NSMutableDictionary * prontoParts = [@{} mutableCopy];
 
@@ -55,7 +46,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 
     // Calculate frequency
     [hexScanner scanHexInt:&frequencyHex];
-    prontoParts[BOIRCodeFrequencyKey] = @(1000000 / (frequencyHex * 0.241246));
+    prontoParts[IRCodeFrequencyKey] = @(1000000 / (frequencyHex * 0.241246));
 
     // Pair counts
     [hexScanner scanHexInt:&seq1BurstPairCountHex];
@@ -67,7 +58,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 
     struct HexPair leadin = {.num1 = leadInBurstFirstHex, .num2 = leadInBurstSecondHex};
 
-    prontoParts[BOIRCodeLeadInKey] = [NSValue value:&leadin withObjCType:@encode(struct HexPair)];
+    prontoParts[IRCodeLeadInKey] = [NSValue value:&leadin withObjCType:@encode(struct HexPair)];
 
     // Capture burst pair sequence one, which serves as iTach preamble
     NSMutableArray * preamblePairsArray = [@[] mutableCopy];
@@ -85,7 +76,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
         }
 
     if ([preamblePairsArray count] > 0)
-        prontoParts[BOIRCodePreamblePairsKey] = preamblePairsArray;
+        prontoParts[IRCodePreamblePairsKey] = preamblePairsArray;
 
     // Capture burst pair sequence two, which is the repeatable portion of iTach format
     NSMutableArray * repeatablePairsArray = [@[] mutableCopy];
@@ -102,7 +93,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
         }
 
     if ([repeatablePairsArray count] > 0)
-        prontoParts[BOIRCodeRepeatablePairsKey] = repeatablePairsArray;
+        prontoParts[IRCodeRepeatablePairsKey] = repeatablePairsArray;
 
     return prontoParts;
 }
@@ -110,169 +101,59 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 @implementation IRCode
 
 @dynamic frequency, offset, repeatCount, onOffPattern;
-@dynamic device, setsDeviceInput, prontoHex, codeset, manufacturer;
+@dynamic device, setsDeviceInput, prontoHex, manufacturer, codeset;
 
-+ (instancetype)codeForDevice:(ComponentDevice *)device
-{
-    assert(device);
-    __block IRCode * code = nil;
-    [device.managedObjectContext performBlockAndWait:
-     ^{
-         code = [self MR_createInContext:device.managedObjectContext];
-         code.device = device;
-     }];
 
-    return code;
-}
-+ (instancetype)userCodeForDevice:(ComponentDevice *)device
+- (void)setProntoHex:(NSString *)prontoHex
 {
-    IRCode * code = [self codeForDevice:device];
-    if (code)
-        [code.managedObjectContext performBlockAndWait:
-         ^{
-             code.info.user = @YES;
-             code.info.category = device.name;
-         }];
-    return code;
-}
+    [self willChangeValueForKey:@"prontoHex"];
+    [self setPrimitiveValue:prontoHex forKey:@"prontoHex"];
+    [self didChangeValueForKey:@"prontoHex"];
 
-+ (instancetype)codeFromProntoHex:(NSString *)hex context:(NSManagedObjectContext *)context
-{
-    assert(context && hex);
-    __block IRCode * code = nil;
-    [context performBlockAndWait:
-     ^{
-         code = [[self MR_createInContext:context] initWithProntoHex:hex];
-     }];
-
-    return code;
-}
-+ (instancetype)userCodeFromProntoHex:(NSString *)hex context:(NSManagedObjectContext *)context
-{
-    IRCode * code = [self codeFromProntoHex:hex context:context];
-    if (code) [context performBlockAndWait:^{ code.info.user = @YES; }];
-    return code;
-}
-
-+ (instancetype)codeFromProntoHex:(NSString *)hex device:(ComponentDevice *)device
-{
-    assert(device && hex);
-    __block IRCode * code = nil;
-    [device.managedObjectContext performBlockAndWait:
-     ^{
-         code = [[self codeForDevice:device] initWithProntoHex:hex];
-     }];
-
-    return code;
-}
-+ (instancetype)userCodeFromProntoHex:(NSString *)hex device:(ComponentDevice *)device
-{
-    IRCode * code = [self userCodeFromProntoHex:hex device:device];
-    if (code) [code.managedObjectContext performBlockAndWait:^{ code.info.user = @YES; }];
-    return code;
-}
-
-- (id)initWithProntoHex:(NSString *)hex
-{
-    if (self)
+    if (prontoHex)
     {
-        self.prontoHex = hex;
-
-        NSDictionary * prontoParts = getProntoHexFormatPartsFromString(hex);
-
-        if (ValueIsNil(prontoParts))
+        NSDictionary * d = parseIRCodeFromProntoHex(prontoHex);
+        self.frequency = NSUIntegerValue(d[IRCodeFrequencyKey]);
+        struct HexPair hexpair;
+        [d[IRCodeLeadInKey] getValue:&hexpair];
+        NSMutableString * pattern = [$(@"%u,%u", hexpair.num1, hexpair.num2) mutableCopy];
+        //???: why wasn't the preamble used?
+        for (NSValue * hexPairValue in d[IRCodeRepeatablePairsKey])
         {
-            [self.managedObjectContext deleteObject:self];
-            return nil;
+            [hexPairValue getValue:&hexpair];
+            [pattern appendFormat:@",%u,%u,", hexpair.num1, hexpair.num2];
         }
-
-        // Set the code's frequency
-        self.frequency = [prontoParts[BOIRCodeFrequencyKey] unsignedIntegerValue];
-
-        struct HexPair   leadInPair;
-
-        [prontoParts[BOIRCodeLeadInKey] getValue:&leadInPair];
-
-        NSMutableString * pattern = [$(@"%u,%u", leadInPair.num1, leadInPair.num2) mutableCopy];
-
-        // Determine if there is a preamble
-        NSArray * preamblePairs = prontoParts[BOIRCodePreamblePairsKey];
-
-        if (ValueIsNotNil(preamblePairs)) {
-            //???: Why was this here?
-        }
-
-        // Add repeatable portion
-        NSArray * repeatablePairs = prontoParts[BOIRCodeRepeatablePairsKey];
-
-        if (ValueIsNotNil(repeatablePairs))
-            for (NSValue * hexPairValue in repeatablePairs)
-            {
-                struct HexPair hexPair;
-                [hexPairValue getValue:&hexPair];
-                [pattern appendFormat:@",%u,%u", hexPair.num1, hexPair.num2];
-            }
-
         self.onOffPattern = pattern;
     }
-
-    return self;
 }
 
-- (NSString *)globalCacheFromProntoHex
+- (void)updateCategory
 {
-    if (!self.prontoHex) return nil;
-
-    NSDictionary * prontoParts = getProntoHexFormatPartsFromString(self.prontoHex);
-
-    if (ValueIsNil(prontoParts)) return nil;
-
-    // Set the code's frequency
-    self.frequency = [prontoParts[BOIRCodeFrequencyKey] unsignedIntegerValue];
-
-    struct HexPair   leadInPair = {0, 0};
-
-    [prontoParts[BOIRCodeLeadInKey] getValue:&leadInPair];
-
-    NSMutableString * pattern =
-        [NSMutableString stringWithFormat:@"%u,%u", leadInPair.num1, leadInPair.num2];
-
-    // Determine if there is a preamble
-    NSArray * preamblePairs = prontoParts[BOIRCodePreamblePairsKey];
-
-    if (ValueIsNotNil(preamblePairs)) {
-        //
-    }
-
-    // Add repeatable portion
-    NSArray * repeatablePairs = prontoParts[BOIRCodeRepeatablePairsKey];
-
-    if (ValueIsNotNil(repeatablePairs))
-        for (NSValue * hexPairValue in repeatablePairs) {
-            struct HexPair   hexPair;
-
-            [hexPairValue getValue:&hexPair];
-            [pattern appendFormat:@",%u,%u", hexPair.num1, hexPair.num2];
-        }
-
-
-    return pattern;
+    NSString * manufacturerName = (self.manufacturer.name
+                                   ? $(@"(%@) ", self.manufacturer.name)
+                                   : @"");
+    NSString * codesetName = (self.codeset ?: @"-");
+    NSString * deviceName = (self.device.name ? $(@" [%@]", self.device.name) : @"");
+    self.info.category = [@"" join:@[manufacturerName, codesetName, deviceName]];
 }
 
-- (void)setCodeset:(IRCodeset *)codeset
+- (void)setDevice:(ComponentDevice *)device
+{
+    [self willChangeValueForKey:@"device"];
+    [self setPrimitiveValue:device forKey:@"device"];
+    [self didChangeValueForKey:@"device"];
+
+    self.manufacturer = device.manufacturer;
+    self.codeset = nil;
+}
+
+- (void)setCodeset:(NSString *)codeset
 {
     [self willChangeValueForKey:@"codeset"];
     [self setPrimitiveValue:codeset forKey:@"codeset"];
     [self didChangeValueForKey:@"codeset"];
 
-    if (codeset)
-    {
-        Manufacturer * manufacturer = codeset.manufacturer;
-        assert(manufacturer);
-        self.manufacturer = manufacturer;
-        self.info.category = $(@"%@ - %@", manufacturer.name, codeset.name);
-    }
-
+    [self updateCategory];
 }
 
 - (void)setManufacturer:(Manufacturer *)manufacturer
@@ -281,8 +162,73 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
     [self setPrimitiveValue:manufacturer forKey:@"manufacturer"];
     [self didChangeValueForKey:@"manufacturer"];
 
-    if (self.codeset && manufacturer != self.codeset.manufacturer)
-        self.codeset = nil;
+    [self updateCategory];
+}
+
+- (NSDictionary *)JSONDictionary
+{
+    id(^defaultForKey)(NSString *) = ^(NSString * key)
+    {
+        static const NSDictionary * index;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken,
+                      ^{
+                          MSDictionary * dictionary = [MSDictionary dictionary];
+                          for (NSString * attribute in @[@"device",
+                                                         @"codeset",
+                                                         @"setsDeviceInput",
+                                                         @"offset",
+                                                         @"repeatCount",
+                                                         @"frequency",
+                                                         @"onOffPattern",
+                                                         @"prontoHex"])
+                              dictionary[attribute] =
+                                  CollectionSafeValue([self defaultValueForAttribute:attribute]);
+                          [dictionary removeKeysWithNullObjectValues];
+                          index = dictionary;
+                      });
+
+        return index[key];
+    };
+
+    void(^addIfCustom)(id, MSDictionary*, NSString*, id) =
+    ^(id object, MSDictionary *dictionary, NSString *attribute, id addition )
+    {
+        BOOL isCustom = YES;
+
+        id defaultValue = defaultForKey(attribute);
+        id setValue = [object valueForKey:attribute];
+
+        if (defaultValue && setValue)
+        {
+            if ([setValue isKindOfClass:[NSNumber class]])
+                isCustom = ![defaultValue isEqualToNumber:setValue];
+
+            else if ([setValue isKindOfClass:[NSString class]])
+                isCustom = ![defaultValue isEqualToString:setValue];
+
+            else
+                isCustom = ![defaultValue isEqual:setValue];
+        }
+
+        if (isCustom)
+            dictionary[attribute] = CollectionSafeValue(addition);
+    };
+
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    addIfCustom(self, dictionary, @"device",          self.device.uuid);
+    addIfCustom(self, dictionary, @"codeset",         self.codeset);
+    addIfCustom(self, dictionary, @"setsDeviceInput", @(self.setsDeviceInput));
+    addIfCustom(self, dictionary, @"offset",          @(self.offset));
+    addIfCustom(self, dictionary, @"repeatCount",     @(self.repeatCount));
+    addIfCustom(self, dictionary, @"frequency",       @(self.frequency));
+    addIfCustom(self, dictionary, @"onOffPattern",    self.onOffPattern);
+    addIfCustom(self, dictionary, @"prontoHex",       self.prontoHex);
+
+    [dictionary removeKeysWithNullObjectValues];
+    
+    return dictionary;
 }
 
 - (MSDictionary *)deepDescriptionDictionary
@@ -290,15 +236,16 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
     IRCode * code = [self faultedObject];
     assert(code);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"name"]            = [code name];
     dd[@"device"]          = $(@"'%@':%@", code.device.name, code.device.uuid);
+    dd[@"codeset"]         = code.codeset;
     dd[@"setsDeviceInput"] = BOOLString(code.setsDeviceInput);
     dd[@"offset"]          = $(@"%i",code.offset);
     dd[@"repeatCount"]     = $(@"%i", code.repeatCount);
     dd[@"frequency"]       = $(@"%llu", code.frequency);
     dd[@"onOffPattern"]    = code.onOffPattern;
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 
@@ -311,5 +258,7 @@ NSDictionary * getProntoHexFormatPartsFromString(NSString * prontoHex)
 + (BankFlags)bankFlags { return (BankDetail|BankEditable); }
 
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
+
+- (void)setCategory:(NSString *)category {}
 
 @end

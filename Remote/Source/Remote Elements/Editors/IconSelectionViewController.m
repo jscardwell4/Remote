@@ -12,7 +12,7 @@
 #define MIN_COL 1
 
 static UIColor * kSelectedIconColor;
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 

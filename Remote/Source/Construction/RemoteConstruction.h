@@ -7,6 +7,9 @@
 //
 #import "RemoteElementConstructionManager_Private.h"
 #import "RemoteElement.h"
+#import "Remote.h"
+#import "ButtonGroup.h"
+#import "Button.h"
 #import "RemoteElementView.h"
 #import "ConfigurationDelegate.h"
 #import "ComponentDeviceConfiguration.h"
@@ -40,6 +43,6 @@
 #define kDownArrow            @"\u25BC"
 #define kLeftArrow            @"\u25C0"
 #define kRightArrow           @"\u25B6"
-#define kTVConfiguration      @"kTVConfiguration"
+#define kTVMode               @"tv"
 #define kPanelBackgroundColor DarkGrayColor
 #define kHighlightColor       defaultTitleHighlightColor()

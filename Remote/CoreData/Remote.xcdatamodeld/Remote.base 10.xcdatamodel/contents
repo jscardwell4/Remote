@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ActivityButton" representedClassName="ActivityButton" parentEntity="Button" syncable="YES">
         <attribute name="activityButtonType" attributeType="Integer 16" minValueString="0" maxValueString="1" defaultValueString="0" syncable="YES"/>
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceConfiguration" inverseName="activityButtons" inverseEntity="DeviceConfiguration" indexed="YES" syncable="YES"/>
@@ -184,7 +184,7 @@
         <userInfo/>
     </entity>
     <entity name="ConfigurationDelegate" representedClassName="ConfigurationDelegate" isAbstract="YES">
-        <attribute name="configurationKeys" attributeType="Transformable">
+        <attribute name="modeKeys" attributeType="Transformable">
             <userInfo/>
         </attribute>
         <userInfo/>
@@ -334,7 +334,7 @@
     <entity name="NetworkDevice" representedClassName="NetworkDevice" syncable="YES">
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="NumberPad" representedClassName="NumberPad" parentEntity="CommandSet">
+    <entity name="Numberpad" representedClassName="NumberPad" parentEntity="CommandSet">
         <attribute name="aux1" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
@@ -452,7 +452,7 @@
         <attribute name="backgroundImageAlpha" attributeType="Float" defaultValueString="1">
             <userInfo/>
         </attribute>
-        <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO">
+        <attribute name="topBarHidden" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
         <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="REBackgroundImage" inverseName="remotes" inverseEntity="REBackgroundImage" indexed="YES">
@@ -574,6 +574,8 @@
     <elements>
         <element name="ActivityButton" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankObject" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="BankPreset" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Button" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ButtonConfigurationDelegate" positionX="0" positionY="0" width="0" height="0"/>
@@ -597,9 +599,7 @@
         <element name="DeviceConfiguration" positionX="0" positionY="0" width="0" height="0"/>
         <element name="DPad" positionX="0" positionY="0" width="0" height="0"/>
         <element name="FactoryIRCode" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BankObjectButtonPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GalleryGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BankObjectPreview" positionX="0" positionY="0" width="0" height="0"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCode" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCodeSet" positionX="0" positionY="0" width="0" height="0"/>
@@ -607,7 +607,7 @@
         <element name="MacroCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="0" height="0"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="NumberPad" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Numberpad" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PresetInfo" positionX="0" positionY="0" width="0" height="0"/>

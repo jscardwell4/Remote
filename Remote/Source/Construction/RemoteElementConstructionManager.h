@@ -45,7 +45,7 @@
 @interface ButtonGroupBuilder : NSObject
 
 + (ButtonGroup *)dPadInContext:(NSManagedObjectContext *)moc;
-+ (ButtonGroup *)numberPadInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)numberpadInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)transportInContext:(NSManagedObjectContext *)moc;
 + (PickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)oneByThreeInContext:(NSManagedObjectContext *)moc;

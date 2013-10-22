@@ -10,7 +10,7 @@
 #pragma mark - Remote Element Appearance
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum REShape : int16_t REShape; enum REShape : int16_t
+typedef NS_ENUM(uint8_t, REShape)
 {
     REShapeUndefined        = 0,
     REShapeRoundedRectangle = 1,
@@ -36,17 +36,17 @@ static inline NSString *NSStringFromREShape(REShape shape)
     return index[@(shape)];
 }
 
-typedef enum REStyle : int16_t REStyle; enum REStyle : int16_t
+typedef NS_OPTIONS(uint8_t, REStyle)
 {
-    REStyleUndefined        = 0b0000000000000000,
-    REStyleApplyGloss       = 0b0000000000000001,
-    REStyleDrawBorder       = 0b0000000000000010,
-    REStyleStretchable      = 0b0000000000000100,
+    REStyleUndefined        = 0b00000000,
+    REStyleApplyGloss       = 0b00000001,
+    REStyleDrawBorder       = 0b00000010,
+    REStyleStretchable      = 0b00000100,
     REStyleGlossStyle1      = REStyleApplyGloss,  // 50-50 split
-    REStyleGlossStyle2      = 0b0000000000001001, // Top ⅓
-    REStyleGlossStyle3      = 0b0000000000010001, // Unused
-    REStyleGlossStyle4      = 0b0000000000100001, // Unused
-    REGlossStyleMask        = 0b0000000000111001
+    REStyleGlossStyle2      = 0b00001001, // Top ⅓
+    REStyleGlossStyle3      = 0b00010001, // Unused
+    REStyleGlossStyle4      = 0b00100001, // Unused
+    REGlossStyleMask        = 0b00111001
 };
 
 static inline NSString *NSStringFromREStyle(REStyle style)
@@ -61,9 +61,9 @@ static inline NSString *NSStringFromREStyle(REStyle style)
     return (stringArray.count ? [stringArray componentsJoinedByString:@"|"] : @"REStyleUndefined");
 }
 
-typedef enum REThemeFlags : int32_t REThemeFlags; enum REThemeFlags : int32_t
+typedef NS_OPTIONS(uint32_t, REThemeOverrideFlags)
 {
-    REThemeAll                    = 0b000000000000000000000000000000,
+    REThemeNone                    = 0b000000000000000000000000000000,
 
     REThemeNoBackgroundImage	  = 0b000000000000000000000000000001,
     REThemeNoBackgroundImageAlpha = 0b000000000000000000000000000010,
@@ -103,10 +103,10 @@ typedef enum REThemeFlags : int32_t REThemeFlags; enum REThemeFlags : int32_t
     REThemeNoShape                = 0b000000100000000000000000000000,
 
     REThemeReserved               = 0b111111000000000000000000000000,
-    REThemeNone                   = 0b111111111111111111111111111111
+    REThemeAll                   = 0b111111111111111111111111111111
 };
 
-static inline NSString *NSStringFromREThemeFlags(REThemeFlags themeFlags)
+static inline NSString *NSStringFromREThemeFlags(REThemeOverrideFlags themeFlags)
 {
     static dispatch_once_t onceToken;
     static NSDictionary const * index;
@@ -140,15 +140,24 @@ static inline NSString *NSStringFromREThemeFlags(REThemeFlags themeFlags)
     });
 
     NSArray * flagKeys = [[index allKeys] objectsPassingTest:
-    ^BOOL(NSNumber * obj, NSUInteger idx, BOOL *stop) {
-        return (themeFlags & [obj intValue]);
-    }];
+                          ^BOOL(NSNumber * obj, NSUInteger idx, BOOL *stop)
+                          {
+                              uint32_t flag = [obj unsignedIntValue];
+                              BOOL hasFlag = ((themeFlags & flag) == flag ? YES : NO);
+                              return hasFlag;
+                          }];
 
-    if (!flagKeys || ![flagKeys count]) return @"REThemeAll";
-    else if ([flagKeys count] == [index count]) return @"REThemeNone";
+    if (![flagKeys count])
+    {
+        assert(themeFlags == 0);
+        return @"REThemeNone";
+    }
+
+    else if ([flagKeys count] == [index count]) return @"REThemeAll";
 
     else
-        return [[index objectsForKeys:flagKeys notFoundMarker:NullObject] componentsJoinedByString:@"|"];
+        return [[index objectsForKeys:flagKeys notFoundMarker:NullObject]
+                componentsJoinedByString:@"|"];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,188 +165,180 @@ static inline NSString *NSStringFromREThemeFlags(REThemeFlags themeFlags)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/*
-
- 0000000000 0000 00
-      │      │  └ base type
-      │      └ button group
-      └ button
-
- */
-typedef enum REType : int16_t REType; enum REType : int16_t
+typedef NS_OPTIONS(uint8_t, REType)
 {
-    // unknown
-    RETypeUndefined                 = 0b0000000000000000,
-
-    // base types
-    RETypeRemote                    = 0b0000000000000001,
-    RETypeButtonGroup               = 0b0000000000000010,
-    RETypeButton                    = 0b0000000000000011,
-    RETypeBaseMask                  = 0b0000000000000011,
-
-    // button group types
-    REButtonGroupTypePanel          = 0b0000000000000110,
-    REButtonGroupTypeSelectionPanel = 0b0000000000001110,
-    REButtonGroupTypeToolbar        = 0b0000000000001010,
-    REButtonGroupTypeDPad           = 0b0000000000010010,
-    REButtonGroupTypeNumberpad      = 0b0000000000011010,
-    REButtonGroupTypeTransport      = 0b0000000000100010,
-    REButtonGroupTypePickerLabel    = 0b0000000000101010,
-    REButtonGroupTypeMask           = 0b0000000000111100,
-
-    // button types
-    REButtonTypeToolbar             = 0b0000000000001011,
-    REButtonTypeConnectionStatus    = 0b0000000001001011,
-    REButtonTypeBatteryStatus       = 0b0000000010001011,
-
-    REButtonTypePickerLabel         = 0b0000000000101011,
-    REButtonTypePickerLabelTop      = 0b0000000001101011,
-    REButtonTypePickerLabelBottom   = 0b0000000010101011,
-
-    REButtonTypePanel               = 0b0000000000000111,
-    REButtonTypeTuck                = 0b0000000001000111,
-    REButtonTypeSelectionPanel      = 0b0000000000001111,
-
-    REButtonTypeDPad                = 0b0000000000010011,
-    REButtonTypeDPadUp              = 0b0000000001010011,
-    REButtonTypeDPadDown            = 0b0000000010010011,
-    REButtonTypeDPadLeft            = 0b0000000011010011,
-    REButtonTypeDPadRight           = 0b0000000100010011,
-    REButtonTypeDPadCenter          = 0b0000000101010011,
-
-    REButtonTypeNumberpad           = 0b0000000000011011,
-    REButtonTypeNumberpad1          = 0b0000000001011011,
-    REButtonTypeNumberpad2          = 0b0000000010011011,
-    REButtonTypeNumberpad3          = 0b0000000011011011,
-    REButtonTypeNumberpad4          = 0b0000000100011011,
-    REButtonTypeNumberpad5          = 0b0000000101011011,
-    REButtonTypeNumberpad6          = 0b0000000111011011,
-    REButtonTypeNumberpad7          = 0b0000001000011011,
-    REButtonTypeNumberpad8          = 0b0000001001011011,
-    REButtonTypeNumberpad9          = 0b0000001010011011,
-    REButtonTypeNumberpad0          = 0b0000001011011011,
-    REButtonTypeNumberpadAux1       = 0b0000001100011011,
-    REButtonTypeNumberpadAux2       = 0b0000001100111011,
-    REButtonTypeTransport           = 0b0000000000100011,
-    REButtonTypeTransportPlay       = 0b0000000001100011,
-    REButtonTypeTransportStop       = 0b0000000010100011,
-    REButtonTypeTransportPause      = 0b0000000011100011,
-    REButtonTypeTransportSkip       = 0b0000000100100011,
-    REButtonTypeTransportReplay     = 0b0000000101100011,
-    REButtonTypeTransportFF         = 0b0000000111100011,
-    REButtonTypeTransportRewind     = 0b0000001000100011,
-    REButtonTypeTransportRecord     = 0b0000001001100011,
-
-    REButtonTypeBaseMask            = 0b0000000000111111
+    RETypeUndefined                 = 0b00000000,
+    RETypeRemote                    = 0b00000001,
+    RETypeButtonGroup               = 0b00000010,
+    RETypeButton                    = 0b00000011
 };
-
-static inline REType baseTypeForREType(REType type)
-{
-    return type & RETypeBaseMask;
-}
-
-static inline REType buttonGroupTypeForREType(REType type)
-{
-    return type & REButtonGroupTypeMask;
-}
-
-static inline REType baseButtonTypeForREType(REType type)
-{
-    return type & REButtonTypeBaseMask;
-}
 
 static inline NSString *NSStringFromREType(REType type)
 {
     static dispatch_once_t onceToken;
     static NSDictionary const * index;
     dispatch_once(&onceToken, ^{
-        index = @{ @(RETypeUndefined)                 : @"RETypeUndefined",
-                   @(RETypeRemote)                    : @"RETypeRemote",
-                   @(RETypeButtonGroup)               : @"RETypeButtonGroup",
-                   @(RETypeButton)                    : @"RETypeButton",
-                   @(RETypeBaseMask)                  : @"RETypeBaseMask",
-                   @(REButtonGroupTypePanel)          : @"REButtonGroupTypePanel",
-                   @(REButtonGroupTypeSelectionPanel) : @"REButtonGroupTypeSelectionPanel",
-                   @(REButtonGroupTypeToolbar)        : @"REButtonGroupTypeToolbar",
-                   @(REButtonGroupTypeDPad)           : @"REButtonGroupTypeDPad",
-                   @(REButtonGroupTypeNumberpad)      : @"REButtonGroupTypeNumberpad",
-                   @(REButtonGroupTypeTransport)      : @"REButtonGroupTypeTransport",
-                   @(REButtonGroupTypePickerLabel)    : @"REButtonGroupTypePickerLabel",
-                   @(REButtonGroupTypeMask)           : @"REButtonGroupTypeMask",
-                   @(REButtonTypeToolbar)             : @"REButtonTypeToolbar",
-                   @(REButtonTypeConnectionStatus)    : @"REButtonTypeConnectionStatus",
-                   @(REButtonTypeBatteryStatus)       : @"REButtonTypeBatteryStatus",
-                   @(REButtonTypePickerLabel)         : @"REButtonTypePickerLabel",
-                   @(REButtonTypePickerLabelTop)      : @"REButtonTypePickerLabelTop",
-                   @(REButtonTypePickerLabelBottom)   : @"REButtonTypePickerLabelBottom",
-                   @(REButtonTypePanel)               : @"REButtonTypePanel",
-                   @(REButtonTypeTuck)                : @"REButtonTypeTuck",
-                   @(REButtonTypeSelectionPanel)      : @"REButtonTypeSelectionPanel",
-                   @(REButtonTypeDPad)                : @"REButtonTypeDPad",
-                   @(REButtonTypeDPadUp)              : @"REButtonTypeDPadUp",
-                   @(REButtonTypeDPadDown)            : @"REButtonTypeDPadDown",
-                   @(REButtonTypeDPadLeft)            : @"REButtonTypeDPadLeft",
-                   @(REButtonTypeDPadRight)           : @"REButtonTypeDPadRight",
-                   @(REButtonTypeDPadCenter)          : @"REButtonTypeDPadCenter",
-                   @(REButtonTypeNumberpad)           : @"REButtonTypeNumberpad",
-                   @(REButtonTypeNumberpad1)          : @"REButtonTypeNumberpad1",
-                   @(REButtonTypeNumberpad2)          : @"REButtonTypeNumberpad2",
-                   @(REButtonTypeNumberpad3)          : @"REButtonTypeNumberpad3",
-                   @(REButtonTypeNumberpad4)          : @"REButtonTypeNumberpad4",
-                   @(REButtonTypeNumberpad5)          : @"REButtonTypeNumberpad5",
-                   @(REButtonTypeNumberpad6)          : @"REButtonTypeNumberpad6",
-                   @(REButtonTypeNumberpad7)          : @"REButtonTypeNumberpad7",
-                   @(REButtonTypeNumberpad8)          : @"REButtonTypeNumberpad8",
-                   @(REButtonTypeNumberpad9)          : @"REButtonTypeNumberpad9",
-                   @(REButtonTypeNumberpad0)          : @"REButtonTypeNumberpad0",
-                   @(REButtonTypeNumberpadAux1)       : @"REButtonTypeNumberpadAux1",
-                   @(REButtonTypeNumberpadAux2)       : @"REButtonTypeNumberpadAux2",
-                   @(REButtonTypeTransport)           : @"REButtonTypeTransport",
-                   @(REButtonTypeTransportPlay)       : @"REButtonTypeTransportPlay",
-                   @(REButtonTypeTransportStop)       : @"REButtonTypeTransportStop",
-                   @(REButtonTypeTransportPause)      : @"REButtonTypeTransportPause",
-                   @(REButtonTypeTransportSkip)       : @"REButtonTypeTransportSkip",
-                   @(REButtonTypeTransportReplay)     : @"REButtonTypeTransportReplay",
-                   @(REButtonTypeTransportFF)         : @"REButtonTypeTransportFF",
-                   @(REButtonTypeTransportRewind)     : @"REButtonTypeTransportRewind",
-                   @(REButtonTypeTransportRecord)     : @"REButtonTypeTransportRecord" };
+        index = @{ @(RETypeUndefined)   : @"RETypeUndefined",
+                   @(RETypeRemote)      : @"RETypeRemote",
+                   @(RETypeButtonGroup) : @"RETypeButtonGroup",
+                   @(RETypeButton)      : @"RETypeButton" };
     });
-
-    if (   (baseTypeForREType(type) == RETypeButtonGroup)
-        && (type & REButtonGroupTypePanel) == REButtonGroupTypePanel
-        && type != REButtonGroupTypeSelectionPanel
-        )
-        type &= ~REButtonGroupTypePanel|RETypeButtonGroup;
 
     return index[@(type)];
 }
 
-typedef enum RESubtype : int16_t RESubtype; enum RESubtype : int16_t
+//TODO: incorportate panel assignments into role value
+typedef NS_ENUM(uint8_t, RERole)
 {
-    RESubtypeUndefined                  = 0b0000000000000000,
+    RERoleUndefined                 = 0b00000000,
 
-    REButtonGroupTopPanel               = 0b0000000000000001,
-    REButtonGroupTopPanel1              = 0b0000000000001001,
-    REButtonGroupTopPanel2              = 0b0000000000010001,
-    REButtonGroupTopPanel3              = 0b0000000000011001,
+    // button group roles
+    REButtonGroupRolePanel          = 0b00000001,
+    REButtonGroupRoleSelectionPanel = 0b00000011,
+    REButtonGroupRoleToolbar        = 0b00000010,
+    REButtonGroupRoleDPad           = 0b00000100,
+    REButtonGroupRoleNumberpad      = 0b00000110,
+    REButtonGroupRoleTransport      = 0b00001000,
+    REButtonGroupRolePickerLabel    = 0b00001010,
 
-    REButtonGroupBottomPanel            = 0b0000000000000010,
-    REButtonGroupBottomPanel1           = 0b0000000000001010,
-    REButtonGroupBottomPanel2           = 0b0000000000010010,
-    REButtonGroupBottomPanel3           = 0b0000000000011010,
+    // toolbar buttons
+    REButtonRoleToolbar             = 0b00000010,
+    REButtonRoleConnectionStatus    = 0b00010010,
+    REButtonRoleBatteryStatus       = 0b00100010,
+    REButtonRoleToolbarMask         = 0b00000010,
 
-    REButtonGroupLeftPanel              = 0b0000000000000011,
-    REButtonGroupLeftPanel1             = 0b0000000000001011,
-    REButtonGroupLeftPanel2             = 0b0000000000010011,
-    REButtonGroupLeftPanel3             = 0b0000000000011011,
+    // picker label buttons
+    REButtonRolePickerLabel         = 0b00001010,
+    REButtonRolePickerLabelTop      = 0b00011010,
+    REButtonRolePickerLabelBottom   = 0b00101010,
+    REButtonRolePickerLabelMask     = 0b00001010,
 
-    REButtonGroupRightPanel             = 0b0000000000000100,
-    REButtonGroupRightPanel1            = 0b0000000000001100,
-    REButtonGroupRightPanel2            = 0b0000000000010100,
-    REButtonGroupRightPanel3            = 0b0000000000011100,
+    // panel buttons
+    REButtonRolePanel               = 0b00000001,
+    REButtonRoleTuck                = 0b00010001,
+    REButtonRoleSelectionPanel      = 0b00000011,
+    REButtonRolePanelMask           = 0b00000001,
 
-    REButtonGroupPanelLocationMask      = 0b0000000000000111,
-    REButtonGroupPanelAssignmentMask    = 0b0000000000011000
+    // dpad buttons
+    REButtonRoleDPad                = 0b00000100,
+    REButtonRoleDPadUp              = 0b00010100,
+    REButtonRoleDPadDown            = 0b00100100,
+    REButtonRoleDPadLeft            = 0b00110100,
+    REButtonRoleDPadRight           = 0b01000100,
+    REButtonRoleDPadCenter          = 0b01010100,
+    REButtonRoleDPadMask            = 0b00000100,
+
+
+    // numberpad buttons
+    REButtonRoleNumberpad           = 0b00000110,
+    REButtonRoleNumberpad1          = 0b00010110,
+    REButtonRoleNumberpad2          = 0b00100110,
+    REButtonRoleNumberpad3          = 0b00110110,
+    REButtonRoleNumberpad4          = 0b01000110,
+    REButtonRoleNumberpad5          = 0b01010110,
+    REButtonRoleNumberpad6          = 0b01110110,
+    REButtonRoleNumberpad7          = 0b10000110,
+    REButtonRoleNumberpad8          = 0b10010110,
+    REButtonRoleNumberpad9          = 0b10100110,
+    REButtonRoleNumberpad0          = 0b10110110,
+    REButtonRoleNumberpadAux1       = 0b11000110,
+    REButtonRoleNumberpadAux2       = 0b11001110,
+    REButtonRoleNumberpadMask       = 0b00000110,
+
+    // transport buttons
+    REButtonRoleTransport           = 0b00001000,
+    REButtonRoleTransportPlay       = 0b00011000,
+    REButtonRoleTransportStop       = 0b00101000,
+    REButtonRoleTransportPause      = 0b00111000,
+    REButtonRoleTransportSkip       = 0b01001000,
+    REButtonRoleTransportReplay     = 0b01011000,
+    REButtonRoleTransportFF         = 0b01111000,
+    REButtonRoleTransportRewind     = 0b10001000,
+    REButtonRoleTransportRecord     = 0b10011000,
+    REButtonRoleTransportMask       = 0b00001000,
+
+};
+
+static inline NSString *NSStringFromRERole(RERole role)
+{
+    static dispatch_once_t onceToken;
+    static NSDictionary const * index;
+    dispatch_once(&onceToken, ^{
+        index = @{ @(REButtonGroupRolePanel)          : @"REButtonGroupRolePanel",
+                   @(REButtonGroupRoleSelectionPanel) : @"REButtonGroupRoleSelectionPanel",
+                   @(REButtonGroupRoleToolbar)        : @"REButtonGroupRoleToolbar",
+                   @(REButtonGroupRoleDPad)           : @"REButtonGroupRoleDPad",
+                   @(REButtonGroupRoleNumberpad)      : @"REButtonGroupRoleNumberpad",
+                   @(REButtonGroupRoleTransport)      : @"REButtonGroupRoleTransport",
+                   @(REButtonGroupRolePickerLabel)    : @"REButtonGroupRolePickerLabel",
+                   @(REButtonRoleToolbar)             : @"REButtonRoleToolbar",
+                   @(REButtonRoleConnectionStatus)    : @"REButtonRoleConnectionStatus",
+                   @(REButtonRoleBatteryStatus)       : @"REButtonRoleBatteryStatus",
+                   @(REButtonRolePickerLabel)         : @"REButtonRolePickerLabel",
+                   @(REButtonRolePickerLabelTop)      : @"REButtonRolePickerLabelTop",
+                   @(REButtonRolePickerLabelBottom)   : @"REButtonRolePickerLabelBottom",
+                   @(REButtonRolePanel)               : @"REButtonRolePanel",
+                   @(REButtonRoleTuck)                : @"REButtonRoleTuck",
+                   @(REButtonRoleSelectionPanel)      : @"REButtonRoleSelectionPanel",
+                   @(REButtonRoleDPad)                : @"REButtonRoleDPad",
+                   @(REButtonRoleDPadUp)              : @"REButtonRoleDPadUp",
+                   @(REButtonRoleDPadDown)            : @"REButtonRoleDPadDown",
+                   @(REButtonRoleDPadLeft)            : @"REButtonRoleDPadLeft",
+                   @(REButtonRoleDPadRight)           : @"REButtonRoleDPadRight",
+                   @(REButtonRoleDPadCenter)          : @"REButtonRoleDPadCenter",
+                   @(REButtonRoleNumberpad)           : @"REButtonRoleNumberpad",
+                   @(REButtonRoleNumberpad1)          : @"REButtonRoleNumberpad1",
+                   @(REButtonRoleNumberpad2)          : @"REButtonRoleNumberpad2",
+                   @(REButtonRoleNumberpad3)          : @"REButtonRoleNumberpad3",
+                   @(REButtonRoleNumberpad4)          : @"REButtonRoleNumberpad4",
+                   @(REButtonRoleNumberpad5)          : @"REButtonRoleNumberpad5",
+                   @(REButtonRoleNumberpad6)          : @"REButtonRoleNumberpad6",
+                   @(REButtonRoleNumberpad7)          : @"REButtonRoleNumberpad7",
+                   @(REButtonRoleNumberpad8)          : @"REButtonRoleNumberpad8",
+                   @(REButtonRoleNumberpad9)          : @"REButtonRoleNumberpad9",
+                   @(REButtonRoleNumberpad0)          : @"REButtonRoleNumberpad0",
+                   @(REButtonRoleNumberpadAux1)       : @"REButtonRoleNumberpadAux1",
+                   @(REButtonRoleNumberpadAux2)       : @"REButtonRoleNumberpadAux2",
+                   @(REButtonRoleTransport)           : @"REButtonRoleTransport",
+                   @(REButtonRoleTransportPlay)       : @"REButtonRoleTransportPlay",
+                   @(REButtonRoleTransportStop)       : @"REButtonRoleTransportStop",
+                   @(REButtonRoleTransportPause)      : @"REButtonRoleTransportPause",
+                   @(REButtonRoleTransportSkip)       : @"REButtonRoleTransportSkip",
+                   @(REButtonRoleTransportReplay)     : @"REButtonRoleTransportReplay",
+                   @(REButtonRoleTransportFF)         : @"REButtonRoleTransportFF",
+                   @(REButtonRoleTransportRewind)     : @"REButtonRoleTransportRewind",
+                   @(REButtonRoleTransportRecord)     : @"REButtonRoleTransportRecord" };
+    });
+
+    return index[@(role)];
+}
+
+typedef NS_OPTIONS(uint8_t, RESubtype)
+{
+    RESubtypeUndefined                  = 0b00000000,
+
+    REButtonGroupTopPanel               = 0b00000001,
+    REButtonGroupTopPanel1              = 0b00001001,
+    REButtonGroupTopPanel2              = 0b00010001,
+    REButtonGroupTopPanel3              = 0b00011001,
+
+    REButtonGroupBottomPanel            = 0b00000010,
+    REButtonGroupBottomPanel1           = 0b00001010,
+    REButtonGroupBottomPanel2           = 0b00010010,
+    REButtonGroupBottomPanel3           = 0b00011010,
+
+    REButtonGroupLeftPanel              = 0b00000011,
+    REButtonGroupLeftPanel1             = 0b00001011,
+    REButtonGroupLeftPanel2             = 0b00010011,
+    REButtonGroupLeftPanel3             = 0b00011011,
+
+    REButtonGroupRightPanel             = 0b00000100,
+    REButtonGroupRightPanel1            = 0b00001100,
+    REButtonGroupRightPanel2            = 0b00010100,
+    REButtonGroupRightPanel3            = 0b00011100,
+
+    REButtonGroupPanelLocationMask      = 0b00000111,
+    REButtonGroupPanelAssignmentMask    = 0b00011000
 };
 
 static inline NSString *NSStringFromRESubtype(RESubtype subtype)
@@ -366,13 +367,13 @@ static inline NSString *NSStringFromRESubtype(RESubtype subtype)
     return (index[@(subtype)] ?: @"RESubtypeUndefined");
 }
 
-typedef enum REPanelLocation : int16_t REPanelLocation; enum REPanelLocation : int16_t
+typedef NS_ENUM(uint8_t, REPanelLocation)
 {
-    REPanelLocationUnassigned = 0b0000000000000000,
-    REPanelLocationTop        = 0b0000000000000001,
-    REPanelLocationBottom     = 0b0000000000000010,
-    REPanelLocationLeft       = 0b0000000000000011,
-    REPanelLocationRight      = 0b0000000000000100
+    REPanelLocationUnassigned = 0b00000000,
+    REPanelLocationTop        = 0b00000001,
+    REPanelLocationBottom     = 0b00000010,
+    REPanelLocationLeft       = 0b00000011,
+    REPanelLocationRight      = 0b00000100
 };
 
 static inline
@@ -390,12 +391,12 @@ NSString *NSStringFromREPanelLocation(REPanelLocation location)
     return (index[@(location)] ?: @"REPanelLocationUnassigned");
 }
 
-typedef enum REPanelTrigger : int16_t REPanelTrigger; enum REPanelTrigger : int16_t
+typedef NS_ENUM(uint8_t, REPanelTrigger)
 {
-    REPanelNoTrigger  = 0b0000000000000000,
-    REPanelTrigger1   = 0b0000000000001000,
-    REPanelTrigger2   = 0b0000000000010000,
-    REPanelTrigger3   = 0b0000000000011000
+    REPanelNoTrigger  = 0b00000000,
+    REPanelTrigger1   = 0b00001000,
+    REPanelTrigger2   = 0b00010000,
+    REPanelTrigger3   = 0b00011000
 };
 
 static inline
@@ -412,11 +413,11 @@ NSString *NSStringFromREPanelTrigger(REPanelTrigger assignment)
     return (index[@(assignment)] ?: @"REPanelNoTrigger");
 }
 
-typedef enum REPanelAssignment : int16_t REPanelAssignment; enum REPanelAssignment : int16_t
+typedef NS_ENUM(uint8_t, REPanelAssignment)
 {
-    REPanelUnassigned             = 0b0000000000000000,
-    REPanelAssignmentLocationMask = 0b0000000000000111,
-    REPanelAssignmentTriggerMask  = 0b0000000000011000
+    REPanelUnassigned             = 0b00000000,
+    REPanelAssignmentLocationMask = 0b00000111,
+    REPanelAssignmentTriggerMask  = 0b00011000
 };
 
 static inline
@@ -429,13 +430,13 @@ NSString *NSStringFromREPanelAssignment(REPanelAssignment assignment)
                 NSStringFromREPanelTrigger(assignment & REPanelAssignmentTriggerMask)));
 }
 
-typedef enum REOptions : int16_t REOptions; enum REOptions : int16_t
+typedef NS_OPTIONS(uint8_t, REOptions)
 {
-    REOptionsUndefined               = 0b0000000000000000,
-    RERemoteOptionsDefault           = 0b0000000000000000,
-    RERemoteOptionTopBarHiddenOnLoad = 0b0000000000000001,
-    REButtonGroupOptionsDefault      = 0b0000000000000000,
-    REButtonGroupOptionAutohide      = 0b0000000000000001
+    REOptionsUndefined          = 0b00000000,
+    RERemoteOptionsDefault      = 0b00000000,
+    RERemoteOptionTopBarHidden  = 0b00000001,
+    REButtonGroupOptionsDefault = 0b00000000,
+    REButtonGroupOptionAutohide = 0b00000001
 };
 
 static inline NSString *NSStringFromREOptions(REOptions options, REType type)
@@ -443,21 +444,21 @@ static inline NSString *NSStringFromREOptions(REOptions options, REType type)
     switch (options)
     {
         case 1:
-            if ((type & RETypeBaseMask) == RETypeRemote)
-                return @"RERemoteOptionTopBarHiddenOnLoad";
-            else if ((type & RETypeBaseMask) == RETypeButtonGroup)
+            if (type == RETypeRemote)
+                return @"RERemoteOptionTopBarHidden";
+            else if (type == RETypeButtonGroup)
                 return @"REButtonGroupOptionAutohide";
         default: return @"REOptionsUndefined";
     }
 }
 
-typedef enum REState : int16_t REState; enum REState : int16_t
+typedef NS_OPTIONS(uint8_t, REState)
 {
-    REStateDefault     = 0b0000000000000000,
-    REStateNormal      = 0b0000000000000000,
-    REStateHighlighted = 0b0000000000000001,
-    REStateDisabled    = 0b0000000000000010,
-    REStateSelected    = 0b0000000000000100
+    REStateDefault     = 0b00000000,
+    REStateNormal      = 0b00000000,
+    REStateHighlighted = 0b00000001,
+    REStateDisabled    = 0b00000010,
+    REStateSelected    = 0b00000100
 };
 
 static inline NSString *NSStringFromREState(REState state)
@@ -477,47 +478,65 @@ static inline NSString *NSStringFromREState(REState state)
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum RECommandOptions : NSUInteger RECommandOptions; enum RECommandOptions : NSUInteger
+typedef NS_ENUM(NSUInteger, CommandOptions)
 {
-    RECommandOptionDefault   = 0 << 0,
-    RECommandOptionLongPress = 1 << 0
+    CommandOptionDefault   = 0 << 0,
+    CommandOptionLongPress = 1 << 0
 };
 
-typedef enum SystemCommandType : int16_t SystemCommandType; enum SystemCommandType : int16_t
+typedef NS_ENUM(uint8_t, SystemCommandType)
 {
-    SystemCommandToggleProximitySensor = 0,
-    SystemCommandURLRequest            = 1,
-    SystemCommandReturnToLaunchScreen  = 2,
-    SystemCommandOpenSettings          = 3,
-    SystemCommandOpenEditor            = 4
+    SystemCommandTypeUndefined         = 0,
+    SystemCommandProximitySensor = 1,
+    SystemCommandURLRequest            = 2,
+    SystemCommandLaunchScreen  = 3,
+    SystemCommandOpenSettings          = 4,
+    SystemCommandOpenEditor            = 5
 };
 
 static inline NSString * NSStringFromSystemCommandType(SystemCommandType type)
 {
-    switch (type) {
-        case SystemCommandOpenEditor: 			   return @"SystemCommandOpenEditor";
-        case SystemCommandOpenSettings: 		   return @"SystemCommandOpenSettings";
-        case SystemCommandReturnToLaunchScreen:  return @"SystemCommandReturnToLaunchScreen";
-        case SystemCommandToggleProximitySensor: return @"SystemCommandToggleProximitySensor";
-        case SystemCommandURLRequest:  			   return @"SystemCommandURLRequest";
-        default:  							 						   return nil;
+    switch (type)
+    {
+        case SystemCommandOpenEditor: 			 return @"SystemCommandOpenEditor";
+        case SystemCommandOpenSettings: 	     return @"SystemCommandOpenSettings";
+        case SystemCommandLaunchScreen:  return @"SystemCommandLaunchScreen";
+        case SystemCommandProximitySensor: return @"SystemCommandProximitySensor";
+        case SystemCommandURLRequest:  			 return @"SystemCommandURLRequest";
+        default:  							 	 return nil;
     }
 }
 
-typedef enum RECommandSetType : NSUInteger RECommandSetType; enum RECommandSetType : NSUInteger
+typedef NS_ENUM(uint8_t, SwitchCommandType)
 {
-    RECommandSetTypeUnspecified = 0,
-    RECommandSetTypeDPad		= 1,
-    RECommandSetTypeTransport	= 2,
-    RECommandSetTypeNumberPad	= 3,
-    RECommandSetTypeRocker		= 4
+    SwitchRemoteCommand = 0,
+    SwitchModeCommand = 1
 };
 
-typedef void (^ RECommandCompletionHandler)(BOOL success, NSError *);
+static inline NSString * NSStringFromSwitchCommandType(SwitchCommandType type)
+{
+    switch (type)
+    {
+        case SwitchModeCommand: return @"SwitchModeCommand";
+        case SwitchRemoteCommand: return @"SwitchRemoteCommand";
+        default:  			      return nil;
+    }
+}
+
+typedef NS_ENUM(uint8_t, CommandSetType)
+{
+    CommandSetTypeUnspecified = 0,
+    CommandSetTypeDPad		  = 1,
+    CommandSetTypeTransport	  = 2,
+    CommandSetTypeNumberpad	  = 3,
+    CommandSetTypeRocker	  = 4
+};
+
+typedef void (^ CommandCompletionHandler)(BOOL success, NSError *);
 
 typedef void (^ REActionHandler)(void);
 
-typedef enum REAction : NSUInteger REAction; enum REAction : NSUInteger
+typedef NS_ENUM(uint8_t, REAction)
 {
     RESingleTapAction = 0,
     RELongPressAction = 1
@@ -527,7 +546,7 @@ typedef enum REAction : NSUInteger REAction; enum REAction : NSUInteger
 #pragma mark - Editing
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum REEditingMode : uint64_t REEditingMode; enum REEditingMode : uint64_t
+typedef NS_ENUM(uint64_t, REEditingMode)
 {
     REEditingModeNotEditing  = RETypeUndefined,
     RERemoteEditingMode      = RETypeRemote,
@@ -554,7 +573,7 @@ static inline NSString * NSStringFromREEditingMode(REEditingMode mode)
     return modeString;
 }
 
-typedef enum REEditingState : NSUInteger REEditingState; enum REEditingState : NSUInteger
+typedef NS_ENUM(uint8_t, REEditingState)
 {
     REEditingStateNotEditing   = 0 << 0,
     REEditingStateSelected     = 1 << 0,
@@ -566,7 +585,7 @@ typedef enum REEditingState : NSUInteger REEditingState; enum REEditingState : N
 #pragma mark - Constraints
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum RERelationshipType : uint8_t RERelationshipType; enum RERelationshipType : uint8_t
+typedef NS_ENUM(uint8_t, RERelationshipType)
 {
     REUnspecifiedRelation   = 0,
     REParentRelationship    = 1,
@@ -590,7 +609,7 @@ static inline NSString * NSStringFromRERelationshipType(RERelationshipType relat
     return index[@(relationship)];
 }
 
-typedef enum RELayoutAxisDimension : uint8_t RELayoutAxisDimension; enum RELayoutAxisDimension : uint8_t
+typedef NS_ENUM(uint8_t, RELayoutAxisDimension)
 {
     RELayoutXAxis           = 0,
     RELayoutYAxis           = 1,
@@ -598,7 +617,7 @@ typedef enum RELayoutAxisDimension : uint8_t RELayoutAxisDimension; enum RELayou
     RELayoutHeightDimension = 3
 };
 
-typedef enum RELayoutAttribute : uint8_t RELayoutAttribute; enum RELayoutAttribute : uint8_t
+typedef NS_ENUM(uint8_t, RELayoutAttribute)
 {
     RELayoutAttributeHeight  = 1 << 0,
     RELayoutAttributeWidth   = 1 << 1,
@@ -610,14 +629,14 @@ typedef enum RELayoutAttribute : uint8_t RELayoutAttribute; enum RELayoutAttribu
     RELayoutAttributeLeft    = 1 << 7
 };
 
-typedef enum RELayoutConstraintOrder : NSUInteger RELayoutConstraintOrder; enum RELayoutConstraintOrder : NSUInteger
+typedef NS_ENUM(NSUInteger, RELayoutConstraintOrder)
 {
     RELayoutConstraintUnspecifiedOrder = 0,
     RELayoutConstraintFirstOrder       = 1,
     RELayoutConstraintSecondOrder      = 2
 };
 
-typedef enum RELayoutConstraintAffiliation : NSUInteger RELayoutConstraintAffiliation; enum RELayoutConstraintAffiliation : NSUInteger
+typedef NS_ENUM(NSUInteger, RELayoutConstraintAffiliation)
 {
     RELayoutConstraintUnspecifiedAffiliation    = 0,
     RELayoutConstraintFirstItemAffiliation      = 1 << 0,
@@ -638,7 +657,7 @@ static inline NSString * NSStringFromRELayoutConstraintAffiliation(RELayoutConst
     return [affiliations componentsJoinedByString:@"|"];
 }
 
-typedef enum RELayoutConfigurationDependencyType : uint8_t RELayoutConfigurationDependencyType; enum RELayoutConfigurationDependencyType : uint8_t
+typedef NS_ENUM(uint8_t, RELayoutConfigurationDependencyType)
 {
     RELayoutConfigurationUnspecifiedDependency = REUnspecifiedRelation,
     RELayoutConfigurationParentDependency 	   = REChildRelationship,
@@ -648,9 +667,9 @@ typedef enum RELayoutConfigurationDependencyType : uint8_t RELayoutConfiguration
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Configuration
+#pragma mark - Mode
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef NSString * RERemoteConfiguration;
+typedef NSString * RERemoteMode;
 
 

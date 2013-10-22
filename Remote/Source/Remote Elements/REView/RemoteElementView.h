@@ -118,7 +118,8 @@
 @property (nonatomic, assign)           BOOL                      proportionLock;
 @property (nonatomic, assign)           REShape                   shape;
 @property (nonatomic, assign)           REStyle                   style;
-@property (nonatomic, readonly)         REType                    type;
+@property (nonatomic, readonly)         REType                    elementType;
+@property (nonatomic, readonly)         RERole                    role;
 @property (nonatomic, readonly)         RESubtype                 subtype;
 @property (nonatomic, assign)           REOptions                 options;
 @property (nonatomic, readonly)         REState                   state;
@@ -176,7 +177,7 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 
 @property (nonatomic, strong, readonly)  Remote * model;
 @property (nonatomic, assign)   	 		 BOOL       locked;
-@property (nonatomic, readonly) 			 NSString * currentConfiguration;
+@property (nonatomic, readonly) 			 NSString * currentMode;
 @property (nonatomic, readonly) 			 NSArray  * registeredConfigurations;
 
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx;
@@ -186,10 +187,10 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 
 @interface RemoteView (RERemote)
 
-@property (nonatomic, assign, getter = isTopBarHiddenOnLoad) BOOL   topBarHiddenOnLoad;
+@property (nonatomic, assign, getter = isTopBarHidden) BOOL   topBarHidden;
 
-- (BOOL)registerConfiguration:(NSString *)configuration;
-- (BOOL)switchToConfiguration:(NSString *)configuration;
+- (BOOL)registerMode:(NSString *)mode;
+- (BOOL)switchToMode:(NSString *)mode;
 
 @end
 
@@ -253,7 +254,7 @@ MSEXTERN_NAMETAG(ButtonGroupViewLabel);
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * `SelectionPanelButtonGroupView` subclasses <RoundedPanelButtonGroupView> to add
- * configuration management functionality. Configurations are specified by the `key`
+ * mode management functionality. Configurations are specified by the `key`
  * values of the view's buttons. Pressing one of the buttons causes the view to post a
  * change notification to the default notification center. Instances of
  * <ConfigurationDelegate> registered for the notification can swap out <Command> or

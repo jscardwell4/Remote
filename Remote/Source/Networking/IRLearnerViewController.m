@@ -8,7 +8,7 @@
 
 #import "IRLearnerViewController.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 @interface IRLearnerViewController (Private)
 

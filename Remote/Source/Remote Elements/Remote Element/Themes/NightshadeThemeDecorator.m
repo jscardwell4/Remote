@@ -7,13 +7,19 @@
 //
 #import "Theme_Private.h"
 
-static const int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
-#define RemoteSettings(type)      ((ThemeRemoteSettings*)[theme settingsForType:type])
-#define ButtonGroupSettings(type) ((ThemeButtonGroupSettings*)[theme settingsForType:type])
-#define ButtonSettings(type)      ((ThemeButtonSettings*)[theme settingsForType:type])
+#define RemoteSettings(role)                                   \
+    ((ThemeRemoteSettings*)[theme settingsForType:RETypeRemote \
+                                         withRole:role])
+#define ButtonGroupSettings(role)                                        \
+    ((ThemeButtonGroupSettings*)[theme settingsForType:RETypeButtonGroup \
+                                              withRole:role])
+#define ButtonSettings(role)                                   \
+    ((ThemeButtonSettings*)[theme settingsForType:RETypeButton \
+                                         withRole:role])
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,13 +39,15 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^{
          /// default remote
 
-         ThemeRemoteSettings * remoteSettings = RemoteSettings(RETypeRemote);
+         ThemeRemoteSettings * remoteSettings = RemoteSettings(RERoleUndefined);
 
          // background color
          remoteSettings.backgroundColor = BlackColor;
 
          // background image
-         remoteSettings.backgroundImage = [Image fetchImageNamed:@"Pro Dots" context:moc];
+         remoteSettings.backgroundImage = [Image
+                                           objectWithUUID:@"32734604-9B4D-4511-BC47-7367A2C3A710"
+                                                  context:moc];
 
          // background image alpha
          remoteSettings.backgroundImageAlpha = @1;
@@ -56,7 +64,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      ^{
          /// default button group
 
-         ThemeButtonGroupSettings * buttonGroupSettings = ButtonGroupSettings(RETypeButtonGroup);
+         ThemeButtonGroupSettings * buttonGroupSettings = ButtonGroupSettings(RERoleUndefined);
          buttonGroupSettings.backgroundColor = DarkTextColor;
          buttonGroupSettings.backgroundImageAlpha = @0;
          buttonGroupSettings.backgroundImage = nil;
@@ -65,29 +73,29 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
          /// panel button group
 
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupTypePanel);
+         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRolePanel);
          buttonGroupSettings.backgroundColor = [WhiteColor colorWithAlphaComponent:0.75f];
 
          /// selection panel button group
 
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupTypeSelectionPanel);
+         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRoleSelectionPanel);
          buttonGroupSettings.shape = @(REShapeRoundedRectangle);
 
          /// picker label button group
 
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupTypePickerLabel);
+         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRolePickerLabel);
          buttonGroupSettings.style = @(REStyleDrawBorder);
          buttonGroupSettings.shape = @(REShapeRoundedRectangle);
          buttonGroupSettings.backgroundColor = ClearColor;
 
          /// toolbar button group
 
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupTypeToolbar);
+         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRoleToolbar);
          buttonGroupSettings.backgroundColor = FlipsideColor;
          buttonGroupSettings.shape = @(REShapeRectangle);
 
          /// dpad button group
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupTypeDPad);
+         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRoleDPad);
          buttonGroupSettings.style = @(REStyleGlossStyle1);
          buttonGroupSettings.shape = @(REShapeOval);
      }];
@@ -115,7 +123,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSettings = ButtonSettings(RETypeButton);
+         ThemeButtonSettings * buttonSettings = ButtonSettings(RERoleUndefined);
 
          // background colors
          buttonSettings.backgroundColors = [ControlStateColorSet
@@ -203,7 +211,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonTypeToolbar);
+         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRoleToolbar);
 
          // icons
          buttonSettings.icons = [ControlStateImageSet
@@ -238,7 +246,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
          ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings
-                                                      themeSettingsWithType:REButtonTypeBatteryStatus
+                                                      themeSettingsWithRole:REButtonRoleBatteryStatus
                                                                     context:moc];
 
          // icons
@@ -255,11 +263,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                         }
                                                 images:@{
                                                         @"normal":
-                                                            @"49-battery",
+                                                            @"BADA12DA-FAE1-4E2D-9843-0BD2BD7AD463",
                                                         @"selected":
-                                                            @"09-lightning",
+                                                            @"C25B5084-F167-44F8-9855-42A991936624",
                                                         @"disabled":
-                                                            @"396-power-plug"
+                                                            @"6ED6E547-EBF4-478A-B4F5-47ACF2C1FFDA"
                                                         }
                                               context:moc
                                     ];
@@ -273,7 +281,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeConnectionStatus
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleConnectionStatus
                                                                   context:moc];
 
          // icons
@@ -286,7 +294,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                         }
                                                 images:@{
                                                         @"normal":
-                                                            @"58-wifi"
+                                                            @"D112F2D8-5E77-405A-B8EA-1DD0E9DE7ED9"
                                                         }
                                               context:moc
                                     ];
@@ -306,7 +314,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonTypeDPad);
+         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRoleDPad);
 
          // style
          buttonSettings.style = @(REStyleUndefined);
@@ -332,8 +340,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ControlStateTitleSet * titles = [ButtonSettings(RETypeButton).titles copy];
          [titles setObject:@"OK" forTitleAttribute:RETitleTextKey];
 
-         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeDPadCenter
-                                                                                          context:moc];
+         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadCenter
+                                                                                      context:moc];
          buttonSubSettings.titles = titles;
 
          // add subsettings to dpad button settings
@@ -350,7 +358,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          [titles setObject:[UIFont fontAwesomeIconForName:@"caret-up"] forTitleAttribute:RETitleTextKey];
 
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeDPadUp
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadUp
                                                                   context:moc];
          buttonSubSettings.titles = titles;
 
@@ -365,7 +373,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          titles = [titles copy];
          [titles setObject:[UIFont fontAwesomeIconForName:@"caret-down"] forTitleAttribute:RETitleTextKey];
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeDPadDown
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadDown
                                                                   context:moc];
          buttonSubSettings.titles = titles;
 
@@ -381,7 +389,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          titles = [titles copy];
          [titles setObject:[UIFont fontAwesomeIconForName:@"caret-left"] forTitleAttribute:RETitleTextKey];
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeDPadLeft
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadLeft
                                                                   context:moc];
          buttonSubSettings.titles = titles;
 
@@ -397,7 +405,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          titles = [titles copy];
          [titles setObject:[UIFont fontAwesomeIconForName:@"caret-right"] forTitleAttribute:RETitleTextKey];
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeDPadRight
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadRight
                                                                   context:moc];
          buttonSubSettings.titles = titles;
 
@@ -423,14 +431,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     static dispatch_once_t onceToken;
     static NSDictionary const * index;
     dispatch_once(&onceToken, ^{
-        index = @{@(REButtonTypeTransportPlay)   : @"play",
-                  @(REButtonTypeTransportPause)  : @"pause",
-                  @(REButtonTypeTransportStop)   : @"stop",
-                  @(REButtonTypeTransportFF)     : @"fast-forward",
-                  @(REButtonTypeTransportRewind) : @"backward",
-                  @(REButtonTypeTransportSkip)   : @"step-forward",
-                  @(REButtonTypeTransportReplay) : @"step-backward",
-                  @(REButtonTypeTransportRecord) : @"circle"};
+        index = @{@(REButtonRoleTransportPlay)   : @"play",
+                  @(REButtonRoleTransportPause)  : @"pause",
+                  @(REButtonRoleTransportStop)   : @"stop",
+                  @(REButtonRoleTransportFF)     : @"fast-forward",
+                  @(REButtonRoleTransportRewind) : @"backward",
+                  @(REButtonRoleTransportSkip)   : @"step-forward",
+                  @(REButtonRoleTransportReplay) : @"step-backward",
+                  @(REButtonRoleTransportRecord) : @"circle"};
     });
 
     NSManagedObjectContext * moc = theme.managedObjectContext;
@@ -443,14 +451,15 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          [titles setObject:@"FontAwesome" forTitleAttribute:REFontNameKey];
          [titles setObject:@32 forTitleAttribute:REFontSizeKey];
 
-         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonTypeTransport);
+         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRoleTransport);
          buttonSettings.titles = titles;
 
          for (NSNumber * type in index)
          {
-             REType t = [type integerValue];
-             ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:t
-                                                                                              context:moc];
+             RERole role = [type unsignedShortValue];
+             ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings
+                                                        themeSettingsWithRole:role
+                                                                      context:moc];
              ControlStateTitleSet * subSettingTitles = [buttonSettings.titles copy];
              NSString * iconName = index[type];
              [subSettingTitles setObject:[UIFont fontAwesomeIconForName:iconName] forTitleAttribute:RETitleTextKey];
@@ -470,7 +479,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonTypePickerLabel);
+         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRolePickerLabel);
          buttonSettings.backgroundColors = [ControlStateColorSet
                                             controlStateSetInContext:moc
                                                          withObjects:@{
@@ -488,12 +497,13 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypePickerLabelTop
+         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRolePickerLabelTop
                                                                                           context:moc];
          buttonSubSettings.style = @(REStyleGlossStyle3);
          buttonSubSettings.icons = [ControlStateImageSet
                                     imageSetWithColors:ButtonSettings(RETypeButton).icons.colors
-                                                images:@{@"normal": @"436-plus"}
+                                                images:@{@"normal":
+                                                             @"439EF306-6036-47A8-B9A9-6CEE55ACD02A"}
                                                context:moc];
          [buttonSettings addSubSettingsObject:buttonSubSettings];
 
@@ -503,12 +513,13 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypePickerLabelBottom
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRolePickerLabelBottom
                                                                   context:moc];
          buttonSubSettings.style = @(REStyleGlossStyle4);
          buttonSubSettings.icons = [ControlStateImageSet
                                     imageSetWithColors:ButtonSettings(RETypeButton).icons.colors
-                                                images:@{@"normal": @"437-minus"}
+                                                images:@{@"normal":
+                                                             @"3DA6EC67-B294-4A7E-8E2C-B4939693D214"}
                                                context:moc];
          [buttonSettings addSubSettingsObject:buttonSubSettings];
      }];
@@ -522,12 +533,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
          /// tuck button
          ////////////////////////////////////////////////////////////////////////////////
-         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonTypePanel);
-         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithType:REButtonTypeTuck
-                                                                                          context:moc];
+         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRolePanel);
+         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings
+                                                    themeSettingsWithRole:REButtonRoleTuck
+                                                                  context:moc];
 
-         buttonSubSettings.backgroundColors = [ControlStateColorSet controlStateSetInContext:moc
-                                                                                   withObjects:@{@"normal": ClearColor}];
+         buttonSubSettings.backgroundColors = [ControlStateColorSet
+                                               controlStateSetInContext:moc
+                                                            withObjects:@{@"normal": ClearColor}];
          buttonSubSettings.icons = [ControlStateImageSet imageSetWithColors:@{}
                                                                        images:@{}
                                                                       context:moc];

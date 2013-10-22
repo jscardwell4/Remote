@@ -5,16 +5,17 @@
 // Created by Jason Cardwell on 2/19/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
+
 #import "DatabaseLoader.h"
-#import "BankGroup.h"
 #import "Bankables.h"
 #import "CoreDataManager.h"
-#import "MSRemoteAppController.h"
+#import <MSKit/MSLog.h>
+#import "RemoteController.h"
 
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -22,275 +23,146 @@ static const int   msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CON
 
 + (BOOL)loadData
 {
-    MSLogDebug(@"beginning data load...\nloading user codes...");
-    
-    [NSManagedObjectContext saveWithBlockAndWait:
+    MSLogDebug(@"beginning data load...");
+
+ /*
+   [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         @autoreleasepool { [self loadUsersCodes:context]; }
+         @autoreleasepool { [self loadImages:context]; }
      }];
 
-    MSLogDebug(@"loading background images...");
-    
-    [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         @autoreleasepool { [self loadBackgroundImages:context]; }
+         @autoreleasepool { [self loadManufacturers:context]; }
      }];
 
-    MSLogDebug(@"loading icon images...");
-    
-    [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         @autoreleasepool { [self loadIconImages:context]; }
+         @autoreleasepool { [self loadComponentDevices:context]; }
      }];
 
-
-
-    MSLogDebug(@"loading factory codes...");
-    
-    [NSManagedObjectContext saveWithBlockAndWait:
+    [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         @autoreleasepool { [self loadFactoryCodesInContext:context]; }
+         @autoreleasepool { [self loadIRCodes:context]; }
      }];
+
+    [CoreDataManager saveWithBlockAndWait:
+     ^(NSManagedObjectContext * context)
+     {
+         @autoreleasepool { [self loadPowerCommands:context]; }
+     }];
+*/
+
+    [CoreDataManager saveWithBlockAndWait:
+     ^(NSManagedObjectContext * context)
+     {
+         @autoreleasepool { [self loadRemoteController:context]; }
+     }];
+
 
     MSLogDebug(@"data load complete");
 
     return YES;
 }
 
-+ (void)loadFactoryCodesInContext:(NSManagedObjectContext *)context
++ (void)loadRemoteController:(NSManagedObjectContext *)context
 {
-    // Keys for plist entries
-    MSSTATIC_STRING_CONST   kDatabaseKey     = @"Pronto Hex Database";
-    MSSTATIC_STRING_CONST   kManufacturerKey = @"Manufacturer";
-    MSSTATIC_STRING_CONST   kCodesetKey      = @"Codeset";
-    MSSTATIC_STRING_CONST   kName1           = @"Name 1";
-//    MSSTATIC_STRING_CONST   kName2           = @"Name 2";
+    MSLogDebug(@"loading remote controller...");
 
+    NSString * filePath = [MainBundle pathForResource:@"RemoteController" ofType:@"json"];
 
-     NSArray * codesArray = [NSDictionary dictionaryWithContentsOfURL:
-                              [MainBundle URLForResource:CODE_DATABASE_PLIST
-                                           withExtension:@"plist"]][kDatabaseKey];
+    NSError * error = nil;
+    MSDictionary * importObject = [MSJSONSerialization objectByParsingFile:filePath
+                                                                   options:MSJSONFormatDefault
+                                                                     error:&error];
+    NSString * result = [MSJSONSerialization JSONFromObject:importObject];
+    MSLogDebug(@"result:\n%@", result);
 
-     IRCodeset * codeset = nil;
-    // Enumerate list content creating a code for each entry
-    for (NSDictionary * codeAttributes in codesArray)
-    {
-        // Get the code set for this entry
-        NSString * codesetName = codeAttributes[kCodesetKey];
-        NSString * manufacturerName = codeAttributes[kManufacturerKey];
-        assert(manufacturerName);
-        // Create a CodeSet object if necessary and set its manufacturer attribute
-        if (ValueIsNil(codeset) || ![codeset.name isEqualToString:codesetName])
-        {
-            codeset = [IRCodeset groupWithName:codesetName context:context];
-            Manufacturer * manufacturer =  [Manufacturer manufacturerWithName:manufacturerName
-                                                                      context:context];
-            [context MR_saveToPersistentStoreAndWait];
-            assert(manufacturer);
-            codeset.manufacturer = manufacturer;
-        }
-        
-        assert(codeset && codeset.manufacturer && codeset.manufacturer.name);
-             // Create an IRCode object for this code with attributes from the list entry
-        IRCode * code = [IRCode codeFromProntoHex:codeAttributes[@"Hex Code"]
-                                          context:context];
-        code.codeset       = codeset;
-        [code setName:codeAttributes[kName1]];
-        [context MR_saveToPersistentStoreAndWait];
-    }
+    if (error) MSHandleErrors(error);
 
+    id remoteController = [RemoteController MR_importFromObject:importObject inContext:context];
+    MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
 }
 
-/// Parses *CodeBank.plist* to create <ComponentDevice> objects and <IRCode> objects.
-+ (void)loadUsersCodes:(NSManagedObjectContext *)context
++ (void)loadManufacturers:(NSManagedObjectContext *)context
 {
-     // Create devices
-     NSDictionary * codeBankPlist = [NSDictionary dictionaryWithContentsOfURL:
-                                     [MainBundle URLForResource:USER_CODES_PLIST
-                                                  withExtension:@"plist"]];
-     assert(codeBankPlist);
+    MSLogDebug(@"loading manufacturers...");
 
-     @autoreleasepool
-     {
-         for (NSString * deviceName in [codeBankPlist allKeys])
-         {
-             // Create codes for this device
-             ComponentDevice * device = [ComponentDevice MR_createInContext:context];
-             device.name = deviceName;
-             [context MR_saveToPersistentStoreAndWait];
-             
-             if ([@"AV Receiver" isEqualToString:deviceName])
-             {
-                 device.port = 2;
-                 device.manufacturer = [Manufacturer manufacturerWithName:@"Sony" context:context];
-             }
+    NSString * filePath = [MainBundle pathForResource:@"Manufacturer" ofType:@"json"];
 
-             else if ([@"Dish Hopper" isEqualToString:deviceName])
-             {
-                 device.port = 1;
-                 device.manufacturer = [Manufacturer manufacturerWithName:@"Dish" context:context];
-             }
+    NSError * error = nil;
+    NSArray * importObjects = [MSJSONSerialization objectByParsingFile:filePath error:&error];
 
-             else if ([@"Samsung TV" isEqualToString:deviceName])
-             {
-                 device.port = 3;
-                 device.manufacturer = [Manufacturer manufacturerWithName:@"Samsung" context:context];
-             }
+    if (error) MSHandleErrors(error);
 
-             else if ([@"PS3" isEqualToString:deviceName])
-             {
-                 device.port = 3;
-                 device.manufacturer = [Manufacturer manufacturerWithName:@"Sony" context:context];
-             }
-
-             NSDictionary * deviceCodes = codeBankPlist[deviceName];
-
-             @autoreleasepool
-             {
-                 for (NSString * codeName in [deviceCodes allKeys])
-                 {
-                     NSDictionary * codeDict = deviceCodes[codeName];
-
-                     // Create this code
-                     IRCode * code = [IRCode userCodeForDevice:device];
-                     code.name            = codeName;
-                     code.frequency       = NSUIntegerValue(codeDict[@"Frequency"]);
-                     code.repeatCount     = NSUIntegerValue(codeDict[@"Repeat Count"]);
-                     code.offset          = NSUIntegerValue(codeDict[@"Offset"]);
-                     code.onOffPattern    = codeDict[@"On-Off Pattern"];
-                     code.setsDeviceInput = BOOLValue(codeDict[@"Input"]);
-                     [context MR_saveToPersistentStoreAndWait];
-                 }
-             }
-         }
-     }
+    NSArray * manufacturers = [Manufacturer MR_importFromArray:importObjects inContext:context];
+    MSLogDebug(@"%i manufacturers imported", [manufacturers count]);
 }
 
-/// Creates <IconImage> objects for files located in the bundle's *icons* directory.
-+ (void)loadIconImages:(NSManagedObjectContext *)context
+
++ (void)loadComponentDevices:(NSManagedObjectContext *)context
 {
-    for (NSString * indexFileName in @[@"Glyphish Icons"])
-    {
-        NSError  * error = nil;
-        NSString * iconFileList =
-        [NSString stringWithContentsOfFile:[MainBundle pathForResource:indexFileName ofType:@"txt"]
-                                  encoding:NSUTF8StringEncoding
-                                     error:&error];
+    MSLogDebug(@"loading component devices...");
 
-        if (error) [MagicalRecord handleErrors:[MSError errorWithError:error
-                                                               message:@"failed to get list of icons"]];
+    NSString * filePath = [MainBundle pathForResource:@"ComponentDevice" ofType:@"json"];
 
-        NSArray * iconFileNames = [iconFileList
-                                   componentsSeparatedByCharactersInSet:[NSCharacterSet
-                                                                         newlineCharacterSet]];
+    NSError * error = nil;
+    NSArray * importObjects = [MSJSONSerialization objectByParsingFile:filePath error:&error];
 
-        @autoreleasepool
-        {
-            for (NSString * fileName in iconFileNames)
-            {
-                if (StringIsEmpty(fileName)) continue;
+    if (error) MSHandleErrors(error);
 
-                // Create entry for this file
-                Image * image = [Image imageWithFileName:fileName category:@"Icon" context:context];
-                if (!image) MSLogErrorTag(@"failed to create model for icon image:%@", image);
-            }
-            [context MR_saveToPersistentStoreAndWait];
-        }
-    }
+    NSArray * componentDevices = [ComponentDevice MR_importFromArray:importObjects inContext:context];
+    MSLogDebug(@"%i component devices imported", [componentDevices count]);
 }
 
-/// Creates <BackgroundImage> objects for files located in the bundle's *backgrounds* directory.
-+ (void)loadBackgroundImages:(NSManagedObjectContext *)context
++ (void)loadIRCodes:(NSManagedObjectContext *)context
 {
-    NSError  * error = nil;
-    NSString * list =
-        [NSString stringWithContentsOfFile:[MainBundle pathForResource:@"Glyphish Backgrounds" ofType:@"txt"]
-                                  encoding:NSUTF8StringEncoding
-                                     error:&error];
+    MSLogDebug(@"loading ir codes...");
 
-    if (error) [MagicalRecord handleErrors:[MSError
-                                            errorWithError:error
-                                                   message:@"failed to get list of backgrounds"]];
+    NSString * filePath = [MainBundle pathForResource:@"IRCode" ofType:@"json"];
 
-    NSArray * names = [list componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    NSError * error = nil;
+    NSArray * importObjects = [MSJSONSerialization objectByParsingFile:filePath error:&error];
 
-    @autoreleasepool
-    {
-        for (NSString * fileName in names)
-        {
-            if (StringIsEmpty(fileName)) continue;
+    if (error) MSHandleErrors(error);
 
-            // Create entry for this file
-            Image * image = [Image imageWithFileName:fileName category:@"Background" context:context];
-            if (!image) MSLogErrorTag(@"failed to create model for background image:%@", image);
-        }
-        [context MR_saveToPersistentStoreAndWait];
-    }
+    NSArray * ircodes = [IRCode MR_importFromArray:importObjects inContext:context];
+    MSLogDebug(@"%i ir codes imported", [ircodes count]);
 }
 
-/// @name ￼Logging database content
-
-+ (void)logCodeBank
++ (void)loadPowerCommands:(NSManagedObjectContext *)context
 {
-    NSManagedObjectContext * context = [NSManagedObjectContext MR_defaultContext];
+    MSLogDebug(@"loading power commands...");
 
-    [context performBlockAndWait:
-     ^{
-         NSFetchRequest * fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ComponentDevice"];
+    NSString * filePath = [MainBundle pathForResource:@"PowerCommand" ofType:@"json"];
 
-         NSError * error = nil;
-         NSArray * fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    NSError * error = nil;
+    NSArray * importObjects = [MSJSONSerialization objectByParsingFile:filePath error:&error];
 
-         if (error)
-         {
-             [MagicalRecord handleErrors:
-              [MSError errorWithError:error message:@"failed to retrieve devices from database"]];
-             return;
-         }
+    if (error) MSHandleErrors(error);
 
-         else if (ValueIsNil(fetchedObjects))
-         {
-            MSLogWarnTag(@"fetch returned zero component devices");
-            return;
-         }
-
-         NSMutableString * logString = [@"\nIRCodes by ComponentDevice\n" mutableCopy];
-
-         for (ComponentDevice * device in fetchedObjects)
-         {
-            [logString appendFormat:@"deviceName: %@\n", device.name];
-
-            for (IRCode * irCode in device.codes)
-                [logString appendFormat:@"\t%@\n", irCode.name];
-         }
-
-         fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"IRCodeSet"];
-
-         fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-
-         if (error)
-         {
-             [MagicalRecord handleErrors:
-              [MSError errorWithError:error message:@"failed to retrieve codesets from database"]];
-             return;
-         }
-
-         else if (ValueIsNil(fetchedObjects)) { MSLogWarnTag(@"fetch returned zero codesets"); return; }
-
-         [logString appendString:@"\nIRCodes by IRCodeSet\n"];
-
-         for (IRCodeset * codeset in fetchedObjects)
-         {
-            [logString appendFormat:@"codeset: %@\n", codeset.name];
-            for (IRCode * irCode in codeset.codes) [logString appendFormat:@"\t%@\n", irCode.name];
-         }
-
-         MSLogInfo(@"%@", logString);
-     }];
+    NSArray * commands = [SendIRCommand MR_importFromArray:importObjects inContext:context];
+    MSLogDebug(@"%i power commands imported", [commands count]);
 }
+
++ (void)loadImages:(NSManagedObjectContext *)context
+{
+    MSLogDebug(@"loading images...");
+
+    NSString * filePath = [MainBundle pathForResource:@"Image" ofType:@"json"];
+
+    NSError * error = nil;
+    NSArray * importObjects = [MSJSONSerialization objectByParsingFile:filePath error:&error];
+
+    if (error) MSHandleErrors(error);
+
+    NSArray * images = [Image MR_importFromArray:importObjects inContext:context];
+    MSLogDebug(@"%i images imported", [images count]);
+}
+
 
 @end

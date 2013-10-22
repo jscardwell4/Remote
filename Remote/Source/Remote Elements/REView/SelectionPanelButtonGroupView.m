@@ -7,7 +7,7 @@
 //
 #import "RemoteElementView_Private.h"
 
-static int   ddLogLevel   = DefaultDDLogLevel;
+static int ddLogLevel   = DefaultDDLogLevel;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
 @implementation SelectionPanelButtonGroupView
@@ -25,15 +25,15 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     [super didMoveToSuperview];
     if (self.superview) {
         for (ButtonView * view in self.subelementViews) {
-            if (![self.parentElementView registerConfiguration:view.key])
-                MSLogWarnTag(@"failed to register configuration '%@' with remote controller..."
+            if (![self.parentElementView registerMode:view.key])
+                MSLogWarnTag(@"failed to register mode '%@' with remote controller..."
                           "perhaps it was already registered?", view.key);
             else
-                MSLogDebugTag(@"configuration '%@' registered successfully with remote controller",
+                MSLogDebugTag(@"mode '%@' registered successfully with remote controller",
                            view.key);
         }
-        if (!_selectedButton && self[REDefaultConfiguration])
-            [self selectButton:self[REDefaultConfiguration]];
+        if (!_selectedButton && self[REDefaultMode])
+            [self selectButton:self[REDefaultMode]];
     }
 }
 
@@ -42,13 +42,13 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     [super addSubelementView:view];
 
     if (self.parentElementView) {
-        if (![self.parentElementView registerConfiguration:view.key])
-            MSLogWarnTag(@"failed to register configuration '%@' with remote controller..."
+        if (![self.parentElementView registerMode:view.key])
+            MSLogWarnTag(@"failed to register mode '%@' with remote controller..."
                       "perhaps it was already registered?", view.key);
         else
-            MSLogDebugTag(@"new configuration '%@' registered successfully with remote controller",
+            MSLogDebugTag(@"new mode '%@' registered successfully with remote controller",
                        view.key);
-        if (!_selectedButton && [REDefaultConfiguration isEqualToString:view.key])
+        if (!_selectedButton && [REDefaultMode isEqualToString:view.key])
             [self selectButton:view];
     }
     __weak SelectionPanelButtonGroupView * weakself = self;
@@ -65,7 +65,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 - (void)selectButton:(ButtonView *)newSelection
 {
     if (   _selectedButton != newSelection
-        && [self.parentElementView switchToConfiguration:newSelection.key])
+        && [self.parentElementView switchToMode:newSelection.key])
     {
 
         if (_selectedButton) _selectedButton.model.selected = NO;

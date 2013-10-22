@@ -24,7 +24,7 @@
     NSString * themeString         = namedModelObjectDescription(element.theme);
 
 
-    MSMutableDictionary * appearanceDictionary = [MSMutableDictionary dictionary];
+    MSDictionary * appearanceDictionary = [MSDictionary dictionary];
     appearanceDictionary[@"theme"]                 = (themeString ?: @"nil");
     appearanceDictionary[@"shape"]                 = (shapeString ?: @"nil");
     appearanceDictionary[@"style"]                 = (styleString ?: @"nil");
@@ -33,7 +33,7 @@
     appearanceDictionary[@"backgroundColor"]       = (bgColorString ?: @"nil");
     appearanceDictionary[@"proportionLock"]        = (proportionString ?: @"nil");
 
-    return appearanceDictionary;
+    return (MSDictionary *)appearanceDictionary;
 }
 
 - (NSString *)appearanceDescription

@@ -7,14 +7,14 @@
 //
 
 #import "CoreDataTests.h"
-#import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import <Lumberjack/Lumberjack.h>
 #import <MSKit/MSKit.h>
 #import "CoreDataManager.h"
 #import "MSRemoteMacros.h"
 #import "RemoteElement.h"
 
-static const int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_COREDATATESTS|LOG_CONTEXT_CONSOLE|LOG_CONTEXT_FILE;
 
 @implementation CoreDataTests

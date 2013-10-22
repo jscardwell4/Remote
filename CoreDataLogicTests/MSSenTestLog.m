@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "MSSenTestLog.h"
-#import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "CoreDataManager.h"
 
-static const int ddLogLevel   = LOG_LEVEL_ERROR;
+static int ddLogLevel   = LOG_LEVEL_ERROR;
 static const int msLogContext = LOG_CONTEXT_UNITTEST;
 #pragma unused(ddLogLevel,msLogContext)
 

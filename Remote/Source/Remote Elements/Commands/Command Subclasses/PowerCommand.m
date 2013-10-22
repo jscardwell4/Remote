@@ -11,7 +11,7 @@
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
-@interface PowerCommandOperation : RECommandOperation @end
+@interface PowerCommandOperation : CommandOperation @end
 
 @implementation PowerCommand
 
@@ -33,7 +33,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return powerCommand;
 }
 
-- (RECommandOperation *)operation { return [PowerCommandOperation operationForCommand:self]; }
+- (CommandOperation *)operation { return [PowerCommandOperation operationForCommand:self]; }
 
 - (BOOL)importState:(id)data
 {
@@ -53,6 +53,19 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
         return NO;
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"device"] = CollectionSafeValue(self.device.uuid);
+    dictionary[@"state"] = (self.state ? @"on" : @"off");
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
 - (NSString *)shortDescription
 {
     return $(@"device:'%@', state:%@", self.primitiveDevice.name, (_state ?@"On": @"Off"));
@@ -69,7 +82,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     @try
     {
         PowerCommand * powerCommand = (PowerCommand *)_command;
-        RECommandCompletionHandler handler = ^(BOOL success, NSError * error)
+        CommandCompletionHandler handler = ^(BOOL success, NSError * error)
                                              {
                                                  _success = success;
                                                  _error   = error;

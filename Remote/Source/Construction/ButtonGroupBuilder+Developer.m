@@ -7,7 +7,7 @@
 //
 #import "RemoteConstruction.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_BUILDING;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -17,39 +17,44 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 + (ButtonGroup *)constructControllerTopToolbarInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithType:REButtonGroupTypeToolbar
-                                                             context:moc];
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleToolbar
+                                                         context:moc];
     buttonGroup.name = @"Top Toolbar";
 
-    Button * home = [Button buttonWithType:REButtonTypeToolbar context:moc];
+    Button * home = [Button buttonWithRole:REButtonRoleToolbar context:moc];
     home.name = @"Home Button";
-    Command * command = [SystemCommand commandWithType:SystemCommandReturnToLaunchScreen
+    Command * command = [SystemCommand commandWithType:SystemCommandLaunchScreen
                                                  inContext:moc];
     home.command = command;
 
     ControlStateImageSet * icons = [ControlStateImageSet
-                                          imageSetWithImages:@{@"normal": @"53-house"}
-                                          context:moc];
-    [home setIcons:icons configuration:REDefaultConfiguration];
+                                    imageSetWithImages:@{@"normal":
+                                                             @"7C7C50AF-6DD5-467C-A558-DCEB4B6A05A6"}
+                                               context:moc];
+    [home setIcons:icons mode:REDefaultMode];
 
 
-    Button * settings = [Button buttonWithType:REButtonTypeToolbar context:moc];
+    Button * settings = [Button buttonWithRole:REButtonRoleToolbar context:moc];
     settings.name = @"Settings Button";
     command = [SystemCommand commandWithType:SystemCommandOpenSettings inContext:moc];
     settings.command = command;
-    icons = [ControlStateImageSet imageSetWithImages:@{@"normal": @"19-gear"} context:moc];
-    [settings setIcons:icons configuration:REDefaultConfiguration];
+    icons = [ControlStateImageSet imageSetWithImages:@{@"normal":
+                                                           @"2A778160-8A33-49B0-AE53-D9B45786FFA7"}
+                                             context:moc];
+    [settings setIcons:icons mode:REDefaultMode];
 
-    Button * editRemote = [Button buttonWithType:REButtonTypeToolbar context:moc];
+    Button * editRemote = [Button buttonWithRole:REButtonRoleToolbar context:moc];
     editRemote.name = @"Edit Remote Button";
     command = [SystemCommand commandWithType:SystemCommandOpenEditor inContext:moc];
     editRemote.command = command;
-    icons = [ControlStateImageSet imageSetWithImages:@{@"normal": @"187-pencil"} context:moc];
-    [editRemote setIcons:icons configuration:REDefaultConfiguration];
+    icons = [ControlStateImageSet imageSetWithImages:@{@"normal":
+                                                           @"1132E160-C278-406A-A6AD-3EF817DCAA4E"}
+                                             context:moc];
+    [editRemote setIcons:icons mode:REDefaultMode];
 
-    Button * battery = [Button buttonWithType:REButtonTypeBatteryStatus context:moc];
+    Button * battery = [Button buttonWithRole:REButtonRoleBatteryStatus context:moc];
 
-    Button * connection = [Button buttonWithType:REButtonTypeConnectionStatus context:moc];
+    Button * connection = [Button buttonWithRole:REButtonRoleConnectionStatus context:moc];
 
     [buttonGroup addSubelements:[@[home, settings, editRemote, battery, connection] orderedSet]];
 
@@ -157,35 +162,35 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 + (ButtonGroup *)constructLightControlsInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithType:REButtonGroupTypeToolbar
-                                                             context:moc];
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleToolbar
+                                                         context:moc];
 
     HTTPCommand * command = [HTTPCommand commandWithURL:@"http://10.0.1.27/0?1201=I=0"
                                                     context:moc];
-    NSNumber * type = @(REButtonTypeToolbar);
+    NSNumber * role = @(REButtonRoleToolbar);
     NSDictionary * colors = @{ @"normal" : WhiteColor, @"highlighted" : kHighlightColor };
-    NSDictionary * icons = @{ @"normal" : @"306-light-switch" };
+    NSDictionary * icons = @{ @"normal" : @"A3110AD7-45A7-45BE-A2B5-67F9A3953D38" };
     NSNumber * flags = @(REThemeNoIcon);
     ControlStateImageSet * iconSet = [ControlStateImageSet imageSetWithColors:colors
-                                                                           images:icons
-                                                                          context:moc];
+                                                                       images:icons
+                                                                      context:moc];
     Button * lightsOnButton = [Button remoteElementInContext:moc
-                                                      attributes:@{ @"type"       : type,
-                                                                    @"command"    : command,
-                                                                    @"icons"      : iconSet,
-                                                                    @"themeFlags" : flags,
-                                                                    @"name"       : @"lights on" }];
+                                                  attributes:@{ @"role"       : role,
+                                                                @"command"    : command,
+                                                                @"icons"      : iconSet,
+                                                                @"themeFlags" : flags,
+                                                                @"name"       : @"lights on" }];
 
     command = [HTTPCommand commandWithURL:@"http://10.0.1.27/0?1401=I=0" context:moc];
     colors = @{@"normal": GrayColor, @"highlighted": kHighlightColor };
     iconSet = [ControlStateImageSet imageSetWithColors:colors images:icons context:moc];
 
     Button * lightsOffButton = [Button remoteElementInContext:moc
-                                                       attributes:@{ @"type"       : type,
-                                                                     @"command"    : command,
-                                                                     @"icons"      : iconSet,
-                                                                     @"themeFlags" : flags,
-                                                                     @"name"       : @"lights off" }];
+                                                   attributes:@{ @"role"       : role,
+                                                                 @"command"    : command,
+                                                                 @"icons"      : iconSet,
+                                                                 @"themeFlags" : flags,
+                                                                 @"name"       : @"lights off" }];
 
     [buttonGroup addSubelements:[@[lightsOnButton, lightsOffButton] orderedSet]];
 
@@ -217,9 +222,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     buttonGroup.name = @"DVR Activity DPad";
     CommandSet * commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Dish Hopper"
                                                                    context:moc];
-    [buttonGroup addCommandContainer:commandSet configuration:REDefaultConfiguration];
+    [buttonGroup addCommandContainer:commandSet mode:REDefaultMode];
     commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Samsung TV" context:moc];
-    [buttonGroup addCommandContainer:commandSet configuration:kTVConfiguration];
+    [buttonGroup addCommandContainer:commandSet mode:kTVMode];
 
     return buttonGroup;
 }
@@ -237,22 +242,22 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Number Pad
 ////////////////////////////////////////////////////////////////////////////////
-+ (ButtonGroup *)constructDVRNumberPadInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)constructDVRNumberpadInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [self numberPadInContext:moc];
+    ButtonGroup * buttonGroup = [self numberpadInContext:moc];
     buttonGroup.name = @"DVR Activity Number Pad";
-    CommandSet * commandSet = [CommandSetBuilder numberPadForDeviceWithName:@"Dish Hopper"
+    CommandSet * commandSet = [CommandSetBuilder numberpadForDeviceWithName:@"Dish Hopper"
                                                                         context:moc];
     buttonGroup.commandContainer = commandSet;
 
     return buttonGroup;
 }
 
-+ (ButtonGroup *)constructPS3NumberPadInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)constructPS3NumberpadInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [self numberPadInContext:moc];
+    ButtonGroup * buttonGroup = [self numberpadInContext:moc];
     buttonGroup.name = @"Playstation Activity Number Pad";
-    CommandSet * commandSet = [CommandSetBuilder numberPadForDeviceWithName:@"PS3"
+    CommandSet * commandSet = [CommandSetBuilder numberpadForDeviceWithName:@"PS3"
                                                                         context:moc];
     buttonGroup.commandContainer = commandSet;
 
@@ -268,9 +273,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     buttonGroup.name = @"DVR Activity Transport";
     CommandSet * commandSet = [CommandSetBuilder transportForDeviceWithName:@"Dish Hopper"
                                                                         context:moc];
-    [buttonGroup addCommandContainer:commandSet configuration:REDefaultConfiguration];
+    [buttonGroup addCommandContainer:commandSet mode:REDefaultMode];
     commandSet = [CommandSetBuilder transportForDeviceWithName:@"Samsung TV" context:moc];
-    [buttonGroup addCommandContainer:commandSet configuration:kTVConfiguration];
+    [buttonGroup addCommandContainer:commandSet mode:kTVMode];
 
     return buttonGroup;
 }
@@ -302,7 +307,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     commandSet = [CommandSetBuilder avReceiverVolumeCommandSet:moc];
     commandSetCollection[commandSet] = @"VOL";
 
-    [buttonGroup.groupConfigurationDelegate setCommandContainer:commandSetCollection configuration:REDefaultConfiguration];
+    [buttonGroup.groupConfigurationDelegate setCommandContainer:commandSetCollection mode:REDefaultMode];
 
     return buttonGroup;
 }
@@ -315,7 +320,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     CommandSet * commandSet = [CommandSetBuilder avReceiverVolumeCommandSet:moc];
     commandSetCollection[commandSet] = @"VOL";
 
-    [buttonGroup.groupConfigurationDelegate setCommandContainer:commandSetCollection configuration:REDefaultConfiguration];
+    [buttonGroup.groupConfigurationDelegate setCommandContainer:commandSetCollection mode:REDefaultMode];
 
     return buttonGroup;
 }
@@ -329,7 +334,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     CommandSet * commandSet = [CommandSetBuilder avReceiverVolumeCommandSet:moc];
     commandSetCollection[commandSet] = @"VOL";
 
-    [buttonGroup.groupConfigurationDelegate setCommandContainer:commandSetCollection configuration:REDefaultConfiguration];
+    [buttonGroup.groupConfigurationDelegate setCommandContainer:commandSetCollection mode:REDefaultMode];
 
     return buttonGroup;
 }
@@ -340,7 +345,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 + (ButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)moc
 {
     ButtonGroup * buttonGroup = [ButtonGroup remoteElementInContext:moc];
-    buttonGroup.themeFlags = REThemeNone;
+    buttonGroup.themeFlags = REThemeAll;
 
     ComponentDevice * avReceiver = [ComponentDevice fetchDeviceWithName:@"AV Receiver"
                                                                     context:moc];
@@ -367,19 +372,19 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 + (ButtonGroup *)constructSelectionPanelInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithType:REButtonGroupTypeSelectionPanel
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleSelectionPanel
                                                              context:moc];
 
 
-    Button * stbButton = [Button buttonWithType:REButtonTypeSelectionPanel
+    Button * stbButton = [Button buttonWithRole:REButtonRoleSelectionPanel
                                               title:@"STB"
                                             context:moc];
-    stbButton.key = REDefaultConfiguration;
+    stbButton.key = REDefaultMode;
 
-    Button * tvButton = [Button buttonWithType:REButtonTypeSelectionPanel
+    Button * tvButton = [Button buttonWithRole:REButtonRoleSelectionPanel
                                              title:@"TV"
                                            context:moc];
-    tvButton.key = kTVConfiguration;
+    tvButton.key = kTVMode;
 
     [buttonGroup addSubelements:[@[stbButton, tvButton] orderedSet]];
 
@@ -418,49 +423,50 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     // Configure "Guide" button and its delegate
     Button * guideButton = buttonGroup[0];
     guideButton.name = @"Guide / Tools";
-    ControlStateTitleSet * titleSet = [ControlStateTitleSet controlStateSetInContext:moc
-                                                                             withObjects:@{@"normal" : @"Guide"}];
-    [guideButton setTitles:titleSet configuration:REDefaultConfiguration];
+    ControlStateTitleSet * titleSet = [ControlStateTitleSet
+                                       controlStateSetInContext:moc
+                                                    withObjects:@{@"normal" : @"Guide"}];
+    [guideButton setTitles:titleSet mode:REDefaultMode];
     titleSet = [ControlStateTitleSet controlStateSetInContext:moc
-                                                    withObjects:@{@"normal": @"Tools"}];
-    [guideButton setTitles:titleSet configuration:kTVConfiguration];
+                                                  withObjects:@{@"normal": @"Tools"}];
+    [guideButton setTitles:titleSet mode:kTVMode];
 
     Command * command = [SendIRCommand commandWithIRCode:hopper[@"Guide"]];
-    [guideButton setCommand:command configuration:REDefaultConfiguration];
+    [guideButton setCommand:command mode:REDefaultMode];
 
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Tools"]];
-    [guideButton setCommand:command configuration:kTVConfiguration];
+    [guideButton setCommand:command mode:kTVMode];
 
     // Configure "DVR" button and add its delegate
     Button * hopperButton = buttonGroup[1];
     hopperButton.name = @"DVR / Internet@TV";
     titleSet = [ControlStateTitleSet controlStateSetInContext:moc
-                                                    withObjects:@{@"normal":@"DVR"}];
-    [hopperButton setTitles:titleSet configuration:REDefaultConfiguration];
+                                                  withObjects:@{@"normal":@"DVR"}];
+    [hopperButton setTitles:titleSet mode:REDefaultMode];
     titleSet = [ControlStateTitleSet controlStateSetInContext:moc
-                                                    withObjects:@{@"normal":@"Internet@TV"}];
-    [hopperButton setTitles:titleSet configuration:kTVConfiguration];
+                                                  withObjects:@{@"normal":@"Internet@TV"}];
+    [hopperButton setTitles:titleSet mode:kTVMode];
 
     command = [SendIRCommand commandWithIRCode:hopper[@"DVR"]];
-    [hopperButton setCommand:command configuration:REDefaultConfiguration];
+    [hopperButton setCommand:command mode:REDefaultMode];
 
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Internet@TV"]];
-    [hopperButton setCommand:command configuration:kTVConfiguration];
+    [hopperButton setCommand:command mode:kTVMode];
 
     // Configure "Info" button and its delegate
     Button * infoButton = buttonGroup[2];
     infoButton.name = @"Info";
 
     titleSet = [ControlStateTitleSet controlStateSetInContext:moc
-                                                    withObjects:@{@"normal" : @"Info"}];
-    [infoButton setTitles:titleSet configuration:REDefaultConfiguration];
-    [infoButton setTitles:[titleSet copy] configuration:kTVConfiguration];
+                                                  withObjects:@{@"normal" : @"Info"}];
+    [infoButton setTitles:titleSet mode:REDefaultMode];
+    [infoButton setTitles:[titleSet copy] mode:kTVMode];
 
     command = [SendIRCommand commandWithIRCode:hopper[@"Info"]];
-    [infoButton setCommand:command configuration:REDefaultConfiguration];
+    [infoButton setCommand:command mode:REDefaultMode];
 
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Info"]];
-    [infoButton setCommand:command configuration:kTVConfiguration];
+    [infoButton setCommand:command mode:kTVMode];
 
     return buttonGroup;
 }
@@ -468,8 +474,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 + (ButtonGroup *)constructPS3GroupOfThreeButtonsInContext:(NSManagedObjectContext *)moc
 {
     // fetch device
-    ComponentDevice * ps3 = [ComponentDevice fetchDeviceWithName:@"PS3"
-                                                             context:moc];
+    ComponentDevice * ps3 = [ComponentDevice fetchDeviceWithName:@"PS3" context:moc];
 
     // create button group
     ButtonGroup * buttonGroup = [self oneByThreeInContext:moc];
@@ -500,74 +505,74 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 + (ButtonGroup *)constructAdditionalButtonsLeftInContext:(NSManagedObjectContext *)moc
 {
     ComponentDevice * avReceiver = [ComponentDevice fetchDeviceWithName:@"AV Receiver"
-                                                                    context:moc];
+                                                                context:moc];
     ComponentDevice * samsungTV = [ComponentDevice  fetchDeviceWithName:@"Samsung TV"
-                                                                    context:moc];
+                                                                context:moc];
     ComponentDevice * hopper = [ComponentDevice fetchDeviceWithName:@"Dish Hopper"
-                                                                    context:moc];
+                                                            context:moc];
 
     ButtonGroup * buttonGroup = [self verticalPanelInContext:moc];
     buttonGroup.name = @"Left Overlay Panel";
 
     Button * button = buttonGroup[0];
     button.name = @"On Demand / Source";
-    [button setTitle:@"On Demand" configuration:REDefaultConfiguration];
-    [button setTitle:@"Source" configuration:kTVConfiguration];
+    [button setTitle:@"On Demand" mode:REDefaultMode];
+    [button setTitle:@"Source" mode:kTVMode];
 
     Command * command = [SendIRCommand commandWithIRCode:hopper[@"On Demand"]];
-    [button setCommand:command configuration:REDefaultConfiguration];
+    [button setCommand:command mode:REDefaultMode];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Source"]];
-    [button setCommand:command configuration:kTVConfiguration];
+    [button setCommand:command mode:kTVMode];
 
     button = buttonGroup[1];
     button.name = @"Menu";
-    [button setTitle:@"Menu" configuration:REDefaultConfiguration];
+    [button setTitle:@"Menu" mode:REDefaultMode];
 
     command = [SendIRCommand commandWithIRCode:hopper[@"Menu"]];
-    [button setCommand:command  configuration:REDefaultConfiguration];
+    [button setCommand:command  mode:REDefaultMode];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Menu"]];
-    [button setCommand:command  configuration:kTVConfiguration];
+    [button setCommand:command  mode:kTVMode];
 
     button = buttonGroup[2];
     button.name = @"Last / Return";
-    [button setTitle:@"Last" configuration:REDefaultConfiguration];
-    [button setTitle:@"Return" configuration:kTVConfiguration];
+    [button setTitle:@"Last" mode:REDefaultMode];
+    [button setTitle:@"Return" mode:kTVMode];
 
     command = [SendIRCommand commandWithIRCode:hopper[@"Last"]];
-    [button setCommand:command  configuration:REDefaultConfiguration];
+    [button setCommand:command  mode:REDefaultMode];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Return"]];
-    [button setCommand:command  configuration:kTVConfiguration];
+    [button setCommand:command  mode:kTVMode];
 
     button = buttonGroup[3];
     button.name = @"Exit";
-    [button setTitle:@"Exit" configuration:REDefaultConfiguration];
+    [button setTitle:@"Exit" mode:REDefaultMode];
 
     command = [SendIRCommand commandWithIRCode:hopper[@"Exit"]];
-    [button setCommand:command  configuration:REDefaultConfiguration];
+    [button setCommand:command  mode:REDefaultMode];
     command = [SendIRCommand commandWithIRCode:samsungTV[@"Exit"]];
-    [button setCommand:command  configuration:kTVConfiguration];
+    [button setCommand:command  mode:kTVMode];
 
     button = buttonGroup[4];
     button.name = @"DVR Audio Input";
-    [button setTitle:@"DVR Audio" configuration:REDefaultConfiguration];
+    [button setTitle:@"DVR Audio" mode:REDefaultMode];
 
     button.command = [SendIRCommand commandWithIRCode:avReceiver[@"TV/SAT"]];
 
     button = buttonGroup[5];
     button.name = @"TV Audio Input";
-    [button setTitle:@"TV Audio" configuration:REDefaultConfiguration];
+    [button setTitle:@"TV Audio" mode:REDefaultMode];
 
     button.command = [SendIRCommand commandWithIRCode:avReceiver[@"Video 3"]];
 
     button = buttonGroup[6];
     button.name = @"Mute";
-    [button setTitle:@"Mute" configuration:REDefaultConfiguration];
+    [button setTitle:@"Mute" mode:REDefaultMode];
 
     button.command = [SendIRCommand commandWithIRCode:avReceiver[@"Mute"]];
 
     button = buttonGroup[7];
     button.name = @"Tuck Panel";
-    [button setTitle:kLeftArrow configuration:REDefaultConfiguration];
+    [button setTitle:kLeftArrow mode:REDefaultMode];
 
     return buttonGroup;
 }
@@ -588,9 +593,10 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     homeButton.themeFlags = REThemeNoShape;
 
     ControlStateImageSet * iconSet = [ControlStateImageSet
-                                            imageSetWithImages:@{@"normal": @"502-house"}
+                                      imageSetWithImages:@{@"normal":
+                                                            @"DC256402-D8A9-461A-A158-F60D0EF63EF7"}
                                                      context:moc];
-    [homeButton setIcons:iconSet configuration:REDefaultConfiguration];
+    [homeButton setIcons:iconSet mode:REDefaultMode];
 
 
     Button * powerButton = [Button remoteElementInContext:moc];
@@ -599,8 +605,10 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     powerButton.key = $(@"activity%i", activity);
     powerButton.themeFlags = REThemeNoShape;
 
-    iconSet = [ControlStateImageSet imageSetWithImages:@{@"normal": @"51-power"} context:moc];
-    [powerButton setIcons:iconSet configuration:REDefaultConfiguration];
+    iconSet = [ControlStateImageSet imageSetWithImages:@{@"normal":
+                                                             @"0EA0C544-F7A7-4D69-BCB2-C3E6E8346BB8"}
+                                               context:moc];
+    [powerButton setIcons:iconSet mode:REDefaultMode];
 
     [buttonGroup addSubelements:[@[homeButton, powerButton] orderedSet]];
 

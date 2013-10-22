@@ -11,6 +11,7 @@
 @interface BankCollectionHeaderReusableView : UICollectionReusableView
 
 @property (nonatomic, weak) IBOutlet UIButton                     * button;
+@property (nonatomic, weak) IBOutlet UILabel                      * label;
 @property (nonatomic, weak) IBOutlet BankCollectionViewController * controller;
 @property (nonatomic, weak)          NSString                     * title;
 @property (nonatomic, assign)        NSInteger                      section;

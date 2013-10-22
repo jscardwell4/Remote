@@ -156,14 +156,14 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 #pragma mark - Sending commands
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)sendCommand:(NSManagedObjectID *)commandID completion:(RECommandCompletionHandler)completion
+- (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion
 {
     if (!_flags.wifiAvailable) { MSLogWarnTag(@"wifi not available"); return; }
 
 
     BOOL   success = NO, finished = NO;
-    NSManagedObject * command = [[NSManagedObjectContext MR_defaultContext] existingObjectWithID:commandID
-                                                                                    error:nil];
+    NSManagedObject * command = [[CoreDataManager defaultContext] existingObjectWithID:commandID
+                                                                                 error:nil];
 
     if ([command isKindOfClass:[SendIRCommand class]])
     {

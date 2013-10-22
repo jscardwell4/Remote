@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F37" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Activity" representedClassName="Activity" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
@@ -12,11 +12,11 @@
     <entity name="ActivityCommand" representedClassName="ActivityCommand" parentEntity="Command" syncable="YES">
         <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="commands" inverseEntity="Activity" syncable="YES"/>
     </entity>
-    <entity name="BankGroup" representedClassName="BankGroup" isAbstract="YES" syncable="YES">
+    <entity name="BankGroup" representedClassName="BankGroup" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
     </entity>
-    <entity name="BankInfo" syncable="YES">
+    <entity name="BankInfo" representedClassName="BankInfo" syncable="YES">
         <attribute name="category" attributeType="String" defaultValueString="Uncategorized" syncable="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="Unnamed" syncable="YES"/>
         <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -125,7 +125,7 @@
         <relationship name="input" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="deviceConfigurations" inverseEntity="IRCode" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="ConfigurationDelegate" representedClassName="ConfigurationDelegate" isAbstract="YES" syncable="YES">
-        <attribute name="autoPopulateFromDefaultConfiguration" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="autoPopulateFromDefaultMode" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="configurations" attributeType="Transformable" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="delegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConfigurationDelegate" inverseName="subscribers" inverseEntity="ConfigurationDelegate" syncable="YES"/>
@@ -206,37 +206,30 @@
         <attribute name="leftCap" attributeType="Float" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="previewData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES">
-            <userInfo/>
-        </attribute>
         <attribute name="size" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="topCap" attributeType="Float" defaultValueString="0">
             <userInfo/>
         </attribute>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ImageGroup" inverseName="images" inverseEntity="ImageGroup" indexed="YES">
-            <userInfo/>
-        </relationship>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="image" inverseEntity="BankInfo" syncable="YES"/>
         <relationship name="remoteElement" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgroundImage" inverseEntity="RemoteElement" syncable="YES"/>
         <relationship name="themeSettings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ThemeSettings" inverseName="backgroundImage" inverseEntity="ThemeSettings" syncable="YES"/>
     </entity>
-    <entity name="ImageGroup" representedClassName="ImageGroup" parentEntity="BankGroup" syncable="YES">
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="group" inverseEntity="Image" indexed="YES" syncable="YES"/>
-    </entity>
     <entity name="IRCode" representedClassName="IRCode" syncable="YES">
+        <attribute name="codeset" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="frequency" attributeType="Integer 64" defaultValueString="40000">
             <userInfo/>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="offset" attributeType="Integer 16" minValueString="1" defaultValueString="1">
             <userInfo/>
         </attribute>
         <attribute name="onOffPattern" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="prontoHex" optional="YES" attributeType="String">
-            <userInfo/>
+        <attribute name="prontoHex" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="mappedKeyName" value="hex"/>
+            </userInfo>
         </attribute>
         <attribute name="repeatCount" attributeType="Integer 16" minValueString="1" maxValueString="50" defaultValueString="1">
             <userInfo/>
@@ -245,9 +238,10 @@
             <userInfo/>
         </attribute>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="codeset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IRCodeset" inverseName="codes" inverseEntity="IRCodeset" syncable="YES"/>
-        <relationship name="device" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="codes" inverseEntity="ComponentDevice" indexed="YES">
-            <userInfo/>
+        <relationship name="device" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="codes" inverseEntity="ComponentDevice" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="relatedByAttribute" value="uuid"/>
+            </userInfo>
         </relationship>
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDeviceConfiguration" inverseName="input" inverseEntity="ComponentDeviceConfiguration" indexed="YES">
             <userInfo/>
@@ -257,10 +251,6 @@
         <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SendIRCommand" inverseName="code" inverseEntity="SendIRCommand" indexed="YES">
             <userInfo/>
         </relationship>
-    </entity>
-    <entity name="IRCodeset" representedClassName="IRCodeset" parentEntity="BankGroup" syncable="YES">
-        <relationship name="codes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IRCode" inverseName="codeset" inverseEntity="IRCode" indexed="YES" syncable="YES"/>
-        <relationship name="manufacturer" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="codesets" inverseEntity="Manufacturer" syncable="YES"/>
     </entity>
     <entity name="LayoutConfiguration" representedClassName="LayoutConfiguration" syncable="YES">
         <attribute name="bitVector" attributeType="Transformable" minValueString="0" maxValueString="255" syncable="YES"/>
@@ -275,7 +265,6 @@
     <entity name="Manufacturer" representedClassName="Manufacturer" syncable="YES">
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="manufacturer" inverseEntity="IRCode" syncable="YES"/>
-        <relationship name="codesets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IRCodeset" inverseName="manufacturer" inverseEntity="IRCodeset" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="manufacturer" inverseEntity="ComponentDevice" syncable="YES"/>
         <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="manufacturer" inverseEntity="BankInfo" syncable="YES"/>
     </entity>
@@ -310,10 +299,9 @@
     </entity>
     <entity name="Remote" representedClassName="Remote" parentEntity="RemoteElement" syncable="YES">
         <attribute name="panels" attributeType="Transformable" syncable="YES"/>
-        <attribute name="topBarHiddenOnLoad" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="topBarHidden" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="remote" inverseEntity="Activity" syncable="YES"/>
         <relationship name="controller" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="remotes" inverseEntity="RemoteController" syncable="YES"/>
-        <relationship name="remoteForSwitchToCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SwitchToRemoteCommand" inverseName="remote" inverseEntity="SwitchToRemoteCommand" syncable="YES"/>
     </entity>
     <entity name="RemoteConfigurationDelegate" representedClassName="RemoteConfigurationDelegate" parentEntity="ConfigurationDelegate" syncable="YES"/>
     <entity name="RemoteController" representedClassName="RemoteController" syncable="YES">
@@ -323,22 +311,22 @@
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Activity" inverseName="controller" inverseEntity="Activity" syncable="YES"/>
         <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Remote" inverseName="controller" inverseEntity="Remote" syncable="YES"/>
-        <relationship name="switchToConfigCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SwitchToConfigCommand" inverseName="remoteController" inverseEntity="SwitchToConfigCommand" syncable="YES"/>
         <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="RemoteElement" representedClassName="RemoteElement" isAbstract="YES" syncable="YES">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="backgroundImageAlpha" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
+        <attribute name="elementType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="options" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="role" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="shape" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="state" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="style" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="subtype" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="themeFlags" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="remoteElement" inverseEntity="Image" syncable="YES"/>
         <relationship name="configurationDelegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConfigurationDelegate" inverseName="element" inverseEntity="ConfigurationDelegate" syncable="YES"/>
@@ -359,12 +347,9 @@
             <userInfo/>
         </relationship>
     </entity>
-    <entity name="SwitchToConfigCommand" representedClassName="SwitchToConfigCommand" parentEntity="Command" syncable="YES">
-        <attribute name="configuration" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
-        <relationship name="remoteController" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="switchToConfigCommands" inverseEntity="RemoteController" syncable="YES"/>
-    </entity>
-    <entity name="SwitchToRemoteCommand" representedClassName="SwitchToRemoteCommand" parentEntity="Command" syncable="YES">
-        <relationship name="remote" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="remoteForSwitchToCommands" inverseEntity="Remote" syncable="YES"/>
+    <entity name="SwitchCommand" representedClassName="SwitchCommand" parentEntity="Command" syncable="YES">
+        <attribute name="mode" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="SystemCommand" representedClassName="SystemCommand" parentEntity="Command" syncable="YES">
         <attribute name="type" attributeType="Integer 16" defaultValueString="0">
@@ -402,7 +387,7 @@
         <attribute name="backgroundImageAlpha" optional="YES" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
     </entity>
     <entity name="ThemeSettings" representedClassName="ThemeSettings" isAbstract="YES" syncable="YES">
-        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="role" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="backgroundImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="themeSettings" inverseEntity="Image" syncable="YES"/>
         <relationship name="theme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Theme" inverseName="settings" inverseEntity="Theme" syncable="YES"/>
@@ -433,9 +418,7 @@
         <element name="DelayCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Image" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ImageGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="IRCode" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="IRCodeset" positionX="0" positionY="0" width="0" height="0"/>
         <element name="LayoutConfiguration" positionX="0" positionY="0" width="0" height="0"/>
         <element name="MacroCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="0" height="0"/>
@@ -449,8 +432,7 @@
         <element name="RemoteController" positionX="0" positionY="0" width="0" height="0"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SendIRCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SwitchToConfigCommand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SwitchToRemoteCommand" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SwitchCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Theme" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ThemeButtonGroupSettings" positionX="0" positionY="0" width="0" height="0"/>

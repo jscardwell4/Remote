@@ -9,7 +9,7 @@
 #import "CoreDataManager.h"
 #import <MSKit/MSKit.h>
 
-static const int ddLogLevel   = LOG_LEVEL_UNITTEST;
+static int ddLogLevel   = LOG_LEVEL_UNITTEST;
 static const int msLogContext = LOG_CONTEXT_UNITTEST;
 #pragma unused(ddLogLevel, msLogContext)
 

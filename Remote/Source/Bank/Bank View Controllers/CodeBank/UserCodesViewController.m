@@ -13,7 +13,7 @@
 #import "MSRemoteAppController.h"
 #import "CoreDataManager.h"
 
-static int   ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel = DefaultDDLogLevel;
 
 @interface UserCodesViewController ()
 

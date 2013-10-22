@@ -17,17 +17,8 @@
 
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context;
 
-@property (nonatomic, strong) NSSet * codesets;
+@property (nonatomic, weak, readonly) NSSet * codesets;
 @property (nonatomic, strong) NSSet * codes;
 @property (nonatomic, strong) NSSet * devices;
-
-@end
-
-@interface Manufacturer (CoreDataGeneratedAccessors)
-
-- (void)addCodesetsObject:(IRCodeset *)codeset;
-- (void)removeCodesetsObject:(IRCodeset *)codeset;
-- (void)addCodesets:(NSSet *)codesets;
-- (void)removeCodesets:(NSSet *)codesets;
 
 @end

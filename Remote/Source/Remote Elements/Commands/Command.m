@@ -6,6 +6,7 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
+#import "RemoteElementExportSupportFunctions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -16,7 +17,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 + (instancetype)command
 {
-    return [self commandInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
+    return [self commandInContext:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)commandInContext:(NSManagedObjectContext *)context
@@ -24,23 +25,32 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return [self MR_createInContext:context];
 }
 
-- (void)execute:(RECommandCompletionHandler)completion
+- (void)execute:(CommandCompletionHandler)completion
 {
     MSLogDebugTag(@"");
-    __weak RECommandOperation * operation = self.operation;
+    __weak CommandOperation * operation = self.operation;
     [operation setCompletionBlock:^{ if (completion) completion(operation.wasSuccessful, nil); }];
     [operation start];
 }
 
-- (RECommandOperation *)operation { return [RECommandOperation operationForCommand:self]; }
+- (CommandOperation *)operation { return [CommandOperation operationForCommand:self]; }
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    dictionary[@"class"] = classJSONValueForCommand(self);
+
+    return dictionary;
+}
 
 @end
 
-@implementation RECommandOperation
+@implementation CommandOperation
 
 + (instancetype)operationForCommand:(Command *)command
 {
-    RECommandOperation * operation = [self new];
+    CommandOperation * operation = [self new];
     operation->_command   = command;
     operation->_executing = NO;
     operation->_finished  = NO;
@@ -64,7 +74,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     }
 
     else if (self.dependencies.count && [self.dependencies objectPassingTest:
-                                         ^BOOL(RECommandOperation * operation, NSUInteger idx)
+                                         ^BOOL(CommandOperation * operation, NSUInteger idx)
                                          {
                                              _error = operation.error;
                                              return !operation.wasSuccessful;
@@ -117,7 +127,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 @end
 
-@implementation RECommandOperation (Logging)
+@implementation CommandOperation (Logging)
 
 + (int)ddLogLevel { return ddLogLevel; }
 

@@ -7,12 +7,13 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
+#import "Button.h"
 
 #define kChildContainerFrame     CGRectMake(0, 129, 320, 332)
 #define USE_CURL_DOWN_TRANSITION NO
 #define USE_CURL_DOWN_FOR_PUSH   NO
 
-static const int ddLogLevel = LOG_LEVEL_WARN;
+static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 

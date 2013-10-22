@@ -8,6 +8,7 @@
 #import "ComponentDevice.h"
 #import "IRCode.h"
 #import "NetworkDevice.h"
+#import "Manufacturer.h"
 
 @implementation ComponentDevice {
     BOOL _ignoreNextPowerCommand;
@@ -16,14 +17,38 @@
 @dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer, networkDevice;
 
 /*
-+ (id)MR_importFromObject:(id)objectData inContext:(NSManagedObjectContext *)context;
++ (ComponentDevice *)importDeviceWithData:(NSDictionary *)data context:(NSManagedObjectContext *)moc
 {
+    ComponentDevice * device = [self MR_createInContext:moc];
+
+    NSString     * name          = data[@"name"];
+    NSNumber     * port          = data[@"port"];
+    NSNumber     * inputPowersOn = data[@"inputPowersOn"];
+    NSDictionary * onCommand     = data[@"onCommand"];
+    NSDictionary * offCommand    = data[@"offCommand"];
+    NSNumber     * alwaysOn      = data[@"alwaysOn"];
+    NSArray      * codes         = data[@"codes"];
+
+    if (name) device.info.name = name;
+    if (port) device.port = [port intValue];
+    if (inputPowersOn) device.inputPowersOn = [inputPowersOn boolValue];
+    if (alwaysOn) device.alwaysOn = [alwaysOn boolValue];
+
+
+    return device;
+}
+
+*/
+/*
++ (ComponentDevice *)MR_importFromObject:(id)objectData inContext:(NSManagedObjectContext *)context;
+{
+
     NSAttributeDescription * primaryAttribute = [[self MR_entityDescription]
                                                  MR_primaryAttributeToRelateBy];
 
     id value = [objectData MR_valueForAttribute:primaryAttribute];
 
-    NSManagedObject * managedObject = [self MR_findFirstByAttribute:[primaryAttribute name]
+    ComponentDevice * managedObject = [self MR_findFirstByAttribute:[primaryAttribute name]
                                                           withValue:value
                                                           inContext:context];
     if (managedObject == nil)
@@ -32,6 +57,7 @@
     }
 
     [managedObject MR_importValuesForKeysWithObject:objectData];
+
 
     return managedObject;
 }
@@ -53,7 +79,7 @@
     return [self MR_findFirstByAttribute:@"info.name" withValue:name inContext:context];
 }
 
-- (BOOL)ignorePowerCommand:(RECommandCompletionHandler)handler
+- (BOOL)ignorePowerCommand:(CommandCompletionHandler)handler
 {
     if (_ignoreNextPowerCommand)
     {
@@ -65,7 +91,7 @@
     else return NO;
 }
 
-- (void)powerOn:(RECommandCompletionHandler)completion
+- (void)powerOn:(CommandCompletionHandler)completion
 {
     __weak ComponentDevice * weakself = self;
     if (![self ignorePowerCommand:completion])
@@ -75,7 +101,7 @@
         }];
 }
 
-- (void)powerOff:(RECommandCompletionHandler)completion
+- (void)powerOff:(CommandCompletionHandler)completion
 {
     __weak ComponentDevice * weakself = self;
     if (![self ignorePowerCommand:completion])
@@ -91,15 +117,73 @@
             ^BOOL(IRCode * obj){ return [name isEqualToString:obj.name]; }];
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    id(^defaultForKey)(NSString *) = ^(NSString * key)
+    {
+        static const NSDictionary * index;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken,
+                      ^{
+                          MSDictionary * dictionary = [MSDictionary dictionary];
+                          for (NSString * attribute in @[@"port", @"alwaysOn", @"inputPowersOn"])
+                              dictionary[attribute] = CollectionSafeValue([self defaultValueForAttribute:attribute]);
+                          [dictionary removeKeysWithNullObjectValues];
+                          index = dictionary;
+                      });
+
+        return index[key];
+    };
+
+    void(^addIfCustom)(id, MSDictionary*, NSString*, id) =
+    ^(id object, MSDictionary *dictionary, NSString *attribute, id addition )
+    {
+        BOOL isCustom = YES;
+
+        id defaultValue = defaultForKey(attribute);
+        id setValue = [object valueForKey:attribute];
+
+        if (defaultValue && setValue)
+        {
+            if ([setValue isKindOfClass:[NSNumber class]])
+                isCustom = ![defaultValue isEqualToNumber:setValue];
+            
+            else if ([setValue isKindOfClass:[NSString class]])
+                isCustom = ![defaultValue isEqualToString:setValue];
+            
+            else
+                isCustom = ![defaultValue isEqual:setValue];
+        }
+
+        if (isCustom)
+            dictionary[attribute] = CollectionSafeValue(addition);
+    };
+
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    addIfCustom(self, dictionary, @"port",          @(self.port));
+    addIfCustom(self, dictionary, @"alwaysOn",      @(self.alwaysOn));
+    addIfCustom(self, dictionary, @"inputPowersOn", @(self.inputPowersOn));
+    addIfCustom(self, dictionary, @"onCommand",     SelfKeyPathValue(@"onCommand.JSONDictionary"));
+    addIfCustom(self, dictionary, @"offCommand",    SelfKeyPathValue(@"offCommand.JSONDictionary"));
+    addIfCustom(self, dictionary, @"manufacturer",  SelfKeyPathValue(@"manufacturer.uuid"));
+    addIfCustom(self, dictionary, @"networkDevice", SelfKeyPathValue(@"networkDevice.uuid"));
+    addIfCustom(self, dictionary, @"codes",         SelfKeyPathValue(@"codes.JSONDictionary"));
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
 - (MSDictionary *)deepDescriptionDictionary
 {
     ComponentDevice * device = [self faultedObject];
     assert(device);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"name"] = device.name;
     dd[@"port"] = $(@"%i",device.port);
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

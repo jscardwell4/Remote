@@ -7,7 +7,7 @@
 //
 #import "RemoteConstruction.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_BUILDING;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -19,14 +19,14 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 + (ButtonGroup *)dPadInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithType:REButtonGroupTypeDPad
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleDPad
                                                              context:moc];
 
-    Button * ok = [Button buttonWithType:REButtonTypeDPadCenter context:moc];
-    Button * _up = [Button buttonWithType:REButtonTypeDPadUp context:moc];
-    Button * down = [Button buttonWithType:REButtonTypeDPadDown context:moc];
-    Button * _right = [Button buttonWithType:REButtonTypeDPadRight context:moc];
-    Button * _left = [Button buttonWithType:REButtonTypeDPadLeft context:moc];
+    Button * ok = [Button buttonWithRole:REButtonRoleDPadCenter context:moc];
+    Button * _up = [Button buttonWithRole:REButtonRoleDPadUp context:moc];
+    Button * down = [Button buttonWithRole:REButtonRoleDPadDown context:moc];
+    Button * _right = [Button buttonWithRole:REButtonRoleDPadRight context:moc];
+    Button * _left = [Button buttonWithRole:REButtonRoleDPadLeft context:moc];
     [buttonGroup addSubelements:[@[ok, _up, down, _left, _right] orderedSet]];
 
     SetConstraints(buttonGroup,
@@ -65,24 +65,24 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Number Pad
 ////////////////////////////////////////////////////////////////////////////////
-+ (ButtonGroup *)numberPadInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)numberpadInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithType:REButtonGroupTypeNumberpad
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleNumberpad
                                                              context:moc];
 
-    Button * one = [Button buttonWithType:REButtonTypeNumberpad1 title:@"1" context:moc];
-    Button * two = [Button buttonWithType:REButtonTypeNumberpad2 title:@"2" context:moc];
-    Button * three = [Button buttonWithType:REButtonTypeNumberpad3 title:@"3" context:moc];
-    Button * four = [Button buttonWithType:REButtonTypeNumberpad4 title:@"4" context:moc];
-    Button * five = [Button buttonWithType:REButtonTypeNumberpad5 title:@"5" context:moc];
-    Button * six = [Button buttonWithType:REButtonTypeNumberpad6 title:@"6" context:moc];
-    Button * seven = [Button buttonWithType:REButtonTypeNumberpad7 title:@"7" context:moc];
-    Button * _eight = [Button buttonWithType:REButtonTypeNumberpad8 title:@"8" context:moc];
-    Button * nine = [Button buttonWithType:REButtonTypeNumberpad9 title:@"9" context:moc];
-    Button * zero = [Button buttonWithType:REButtonTypeNumberpad0 title:@"0" context:moc];
-    Button * tuck = [Button buttonWithType:REButtonTypeTuck title:kUpArrow context:moc];
-    Button * aux1 = [Button buttonWithType:REButtonTypeNumberpadAux1 title:@"Exit" context:moc];
-    Button * aux2 = [Button buttonWithType:REButtonTypeNumberpadAux2 title:@"Enter" context:moc];
+    Button * one = [Button buttonWithRole:REButtonRoleNumberpad1 title:@"1" context:moc];
+    Button * two = [Button buttonWithRole:REButtonRoleNumberpad2 title:@"2" context:moc];
+    Button * three = [Button buttonWithRole:REButtonRoleNumberpad3 title:@"3" context:moc];
+    Button * four = [Button buttonWithRole:REButtonRoleNumberpad4 title:@"4" context:moc];
+    Button * five = [Button buttonWithRole:REButtonRoleNumberpad5 title:@"5" context:moc];
+    Button * six = [Button buttonWithRole:REButtonRoleNumberpad6 title:@"6" context:moc];
+    Button * seven = [Button buttonWithRole:REButtonRoleNumberpad7 title:@"7" context:moc];
+    Button * _eight = [Button buttonWithRole:REButtonRoleNumberpad8 title:@"8" context:moc];
+    Button * nine = [Button buttonWithRole:REButtonRoleNumberpad9 title:@"9" context:moc];
+    Button * zero = [Button buttonWithRole:REButtonRoleNumberpad0 title:@"0" context:moc];
+    Button * tuck = [Button buttonWithRole:REButtonRoleTuck title:kUpArrow context:moc];
+    Button * aux1 = [Button buttonWithRole:REButtonRoleNumberpadAux1 title:@"Exit" context:moc];
+    Button * aux2 = [Button buttonWithRole:REButtonRoleNumberpadAux2 title:@"Enter" context:moc];
 
     [buttonGroup addSubelements:[@[one, two, three, four, five, six,
                                    seven, _eight, nine, zero, aux1, aux2, tuck] orderedSet]];
@@ -165,18 +165,18 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 + (ButtonGroup *)transportInContext:(NSManagedObjectContext *)moc
 {
-    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithType:REButtonGroupTypeTransport
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleTransport
                                                              context:moc];
 
-    Button * rewind = [Button buttonWithType:REButtonTypeTransportRewind context:moc];
-    Button * pause = [Button buttonWithType:REButtonTypeTransportPause context:moc];
-    Button * fastForward = [Button buttonWithType:REButtonTypeTransportFF context:moc];
-    Button * previous = [Button buttonWithType:REButtonTypeTransportReplay context:moc];
-    Button * play = [Button buttonWithType:REButtonTypeTransportPlay context:moc];
-    Button * next = [Button buttonWithType:REButtonTypeTransportSkip context:moc];
-    Button * record = [Button buttonWithType:REButtonTypeTransportRecord context:moc];
-    Button * stop = [Button buttonWithType:REButtonTypeTransportStop context:moc];
-    Button * tuck = [Button buttonWithType:REButtonTypeTuck title:kDownArrow context:moc];
+    Button * rewind = [Button buttonWithRole:REButtonRoleTransportRewind context:moc];
+    Button * pause = [Button buttonWithRole:REButtonRoleTransportPause context:moc];
+    Button * fastForward = [Button buttonWithRole:REButtonRoleTransportFF context:moc];
+    Button * previous = [Button buttonWithRole:REButtonRoleTransportReplay context:moc];
+    Button * play = [Button buttonWithRole:REButtonRoleTransportPlay context:moc];
+    Button * next = [Button buttonWithRole:REButtonRoleTransportSkip context:moc];
+    Button * record = [Button buttonWithRole:REButtonRoleTransportRecord context:moc];
+    Button * stop = [Button buttonWithRole:REButtonRoleTransportStop context:moc];
+    Button * tuck = [Button buttonWithRole:REButtonRoleTuck title:kDownArrow context:moc];
 
     [buttonGroup addSubelements:[@[play, pause, rewind, fastForward, stop,
                                    previous, tuck, next, record] orderedSet]];
@@ -232,14 +232,14 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 + (PickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc
 {
-    PickerLabelButtonGroup * buttonGroup = [PickerLabelButtonGroup buttonGroupWithType:REButtonGroupTypePickerLabel
+    PickerLabelButtonGroup * buttonGroup = [PickerLabelButtonGroup buttonGroupWithRole:REButtonGroupRolePickerLabel
                                                                                    context:moc];
 
     // Create top button and add to button group
-    Button * _up = [Button buttonWithType:REButtonTypePickerLabelTop context:moc];
+    Button * _up = [Button buttonWithRole:REButtonRolePickerLabelTop context:moc];
 
     // Create bottom button and add to button group
-    Button * down = [Button buttonWithType:REButtonTypePickerLabelBottom context:moc];
+    Button * down = [Button buttonWithRole:REButtonRolePickerLabelBottom context:moc];
 
     [buttonGroup addSubelements:[@[_up, down] orderedSet]];
 
@@ -313,7 +313,7 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     Button * button5 = [Button remoteElementInContext:moc];
     Button * button6 = [Button remoteElementInContext:moc];
     Button * button7 = [Button remoteElementInContext:moc];
-    Button * button8 = [Button buttonWithType:REButtonTypeTuck context:moc];
+    Button * button8 = [Button buttonWithRole:REButtonRoleTuck context:moc];
 
     [buttonGroup addSubelements:[@[button1, button2, button3, button4,
                                    button5, button6, button7, button8] orderedSet]];

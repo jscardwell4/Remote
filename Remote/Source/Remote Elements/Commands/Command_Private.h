@@ -11,13 +11,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Command Class Extension and Categories
 ////////////////////////////////////////////////////////////////////////////////
-@interface RECommandOperation : NSOperation {
+@interface CommandOperation : NSOperation {
     @protected
-    BOOL        _executing;
-    BOOL        _finished;
-    BOOL        _success;
+    BOOL      _executing;
+    BOOL      _finished;
+    BOOL      _success;
     Command * _command;
-    NSError   * _error;
+    NSError * _error;
 }
 
 @property (nonatomic, assign, readonly)                         BOOL        executing;
@@ -33,7 +33,7 @@
 
 @interface Command () {
     @protected
-    RECommandCompletionHandler _completion;
+    CommandCompletionHandler _completion;
 }
 /// `ComponentDevice` this command powers on.
 @property (nonatomic, strong) ComponentDevice * onDevice;
@@ -41,8 +41,8 @@
 @property (nonatomic, strong) Button * button;
 /// `ComponentDevice` this command powers off.
 @property (nonatomic, strong) ComponentDevice * offDevice;
-/// `RECommandOperation` object that encapsulates the task performed by the command
-@property (nonatomic, readonly) RECommandOperation * operation;
+/// `CommandOperation` object that encapsulates the task performed by the command
+@property (nonatomic, readonly) CommandOperation * operation;
 @end
 
 @interface Command (CoreDataGeneratedAccessors)
@@ -72,50 +72,64 @@
 #pragma mark - SendIRCommand Class Extension
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface SendIRCommand () {
-    @private
-    int16_t        __port;
-    int16_t        __offset;
-    int16_t        __repeatCount;
-    int64_t        __frequency;
-    NSString     * __pattern;
-    NSString     * __name;
-    int16_t        _portOverride;
+@interface SendIRCommand ()
+{
+@private
+    int16_t    __port;
+    int16_t    __offset;
+    int16_t    __repeatCount;
+    int64_t    __frequency;
+    NSString * __pattern;
+    NSString * __name;
+    int16_t    _portOverride;
 }
 @end
 
 @interface SendIRCommand (CoreDataGeneratedAccessors)
+
 @property (nonatomic) IRCode * primitiveCode;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - DelayCommand Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
+
 @interface DelayCommand (CoreDataGeneratedAccessors)
+
 @property (nonatomic) NSNumber * primitiveDuration;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - PowerCommand Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
-@interface PowerCommand () {
+
+@interface PowerCommand ()
+{
     BOOL _state;
 }
 @end
+
 @interface PowerCommand (CoreDataGeneratedAccessors)
+
 @property (nonatomic) ComponentDevice * primitiveDevice;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - SystemCommand Class Extension and Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface SystemCommand () {
-    @private
+@interface SystemCommand ()
+{
+@private
     SystemCommandType _type;
 }
+
 /// Specifies the action performed by the system command
 @property (nonatomic, assign) SystemCommandType   type;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,27 +137,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 @interface HTTPCommand (CoreDataGeneratedAccessors)
+
 @property (nonatomic) NSURL * primitiveUrl;
-@end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - SwitchToRemoteCommand Core Data Generated Accessors
-////////////////////////////////////////////////////////////////////////////////
-
-@interface SwitchToRemoteCommand (CoreDataGeneratedAccessors)
-@end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - SwitchToConfigCommand Core Data Generated Accessors
-////////////////////////////////////////////////////////////////////////////////
-@interface SwitchToConfigCommand ()
-
-@property (nonatomic, strong, readwrite) RemoteController    * remoteController;
-@property (nonatomic, copy,   readwrite) RERemoteConfiguration   configuration;
 
 @end
 
-@interface SwitchToConfigCommand (CoreDataGeneratedAccessors)
-@property (nonatomic) RemoteController    * primitiveRemoteController;
-@property (nonatomic) RERemoteConfiguration   primitiveConfiguration;
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - SwitchCommand Class Extension
+////////////////////////////////////////////////////////////////////////////////
+
+@interface SwitchCommand ()
+
+@property (nonatomic, copy, readwrite) NSString * target;
+
 @end

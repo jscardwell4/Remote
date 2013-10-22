@@ -9,7 +9,7 @@
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 
-@interface MacroCommandOperation : RECommandOperation @end
+@interface MacroCommandOperation : CommandOperation @end
 
 @implementation MacroCommand
 
@@ -34,15 +34,15 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return __queue;
 }
 
-- (void)execute:(RECommandCompletionHandler)completion
+- (void)execute:(CommandCompletionHandler)completion
 {
     if (self.commands.count)
     {
         _operations = [[self.commands valueForKey:@"operation"] array];
 
 
-        RECommandOperation * precedingOperation = nil;
-        for (RECommandOperation * operation in _operations) {
+        CommandOperation * precedingOperation = nil;
+        for (CommandOperation * operation in _operations) {
             if (precedingOperation) [operation addDependency:precedingOperation];
             precedingOperation = operation;
         }
@@ -54,7 +54,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
              {
                  __block NSError * error = nil;
                  BOOL success = !([_operations objectPassingTest:
-                                   ^BOOL(RECommandOperation * op, NSUInteger idx)
+                                   ^BOOL(CommandOperation * op, NSUInteger idx)
                                    {
                                        return (!op.wasSuccessful && (error = op.error));
                                    }]);
@@ -68,7 +68,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     else if (completion) completion(YES, nil);
 }
 
-- (RECommandOperation *)operation { return [MacroCommandOperation operationForCommand:self]; }
+- (CommandOperation *)operation { return [MacroCommandOperation operationForCommand:self]; }
 
 
 - (void)insertObject:(Command *)command inCommandsAtIndex:(NSUInteger)idx
@@ -170,6 +170,19 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     [self insertObject:obj inCommandsAtIndex:idx];
 }
 
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    if ([self.commands count])
+        dictionary[@"commands"] = [self valueForKeyPath:@"commands.JSONDictionary"];
+
+    [dictionary removeKeysWithNullObjectValues];
+
+    return dictionary;
+}
+
+
 - (NSString *)name
 {
     [self willAccessValueForKey:@"name"];
@@ -198,15 +211,15 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
         NSOrderedSet * commandOperations = [command.commands valueForKey:@"operation"];
 
         [commandOperations enumerateObjectsUsingBlock:
-         ^(RECommandOperation * operation, NSUInteger idx, BOOL *stop)
+         ^(CommandOperation * operation, NSUInteger idx, BOOL *stop)
          {
-             if (idx) [operation addDependency:(RECommandOperation *)commandOperations[idx - 1]];
+             if (idx) [operation addDependency:(CommandOperation *)commandOperations[idx - 1]];
          }];
 
         [command.queue addOperations:[commandOperations array] waitUntilFinished:YES];
 
         _success = !([commandOperations objectPassingTest:
-                      ^BOOL(RECommandOperation * op, NSUInteger idx)
+                      ^BOOL(CommandOperation * op, NSUInteger idx)
                       {
                           return (!op.wasSuccessful && (_error = op.error));
                       }]);

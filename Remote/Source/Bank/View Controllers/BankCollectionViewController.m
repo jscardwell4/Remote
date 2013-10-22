@@ -15,7 +15,7 @@
 #import "MSRemoteAppController.h"
 #import "CoreDataManager.h"
 
-static const int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -47,8 +47,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation BankCollectionViewController
 {
-    BankFlags    _bankFlags;
-    id<Bankable> _zoomedItem;
+    NSManagedObject<Bankable> * _zoomedItem;
+    NSIndexPath               * _swipeToDeleteCellIndexPath;
 }
 
 - (void)viewDidLoad
@@ -64,6 +64,12 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                              filteredArrayUsingPredicateWithFormat:@"self != %@",
                                                                    _displayOptionsBarButtonItem];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,9 +100,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                              "reporter.height = view.height\n"
                                                              "reporter.centerX = view.centerX\n"
                                                              "reporter.centerY = view.centerY"
-                                 views:@{ @"zoom"     : _zoomView,
-                                          @"reporter" : _touchReporterView,
-                                          @"view"     : self.view }];
+                                                      views:@{ @"zoom"     : _zoomView,
+                                                               @"reporter" : _touchReporterView,
+                                                               @"view"     : self.view }];
         [self.view addConstraints:constraints];
     }
 }
@@ -105,25 +111,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     if (!_bankableItems && self.itemClass)
     {
-        assert(_itemClass && [(Class)_itemClass isSubclassOfClass:[NSManagedObject class]]);
-        NSManagedObjectContext * context = [NSManagedObjectContext MR_defaultContext];
-        NSFetchRequest * request = [(Class)_itemClass MR_requestAllSortedBy:@"info.category"
-                                                                  ascending:YES inContext:context];
-        NSFetchedResultsController * controller = [[NSFetchedResultsController alloc]
-                                                   initWithFetchRequest:request
-                                                   managedObjectContext:context
-                                                     sectionNameKeyPath:@"info.category"
-                                                              cacheName:nil];
-        NSError * error = nil;
-        [controller performFetch:&error];
-        if (error) [CoreDataManager handleErrors:error];
-        else
-        {
-            self.bankableItems = controller;
-            _bankableItems.delegate = self;
-            self.hiddenSections = [NSMutableSet set];
-        }
-
+        self.bankableItems = [self.itemClass bankableItems];
+        _bankableItems.delegate = self;
+        self.hiddenSections = [NSMutableSet set];
     }
 
     return _bankableItems;
@@ -160,14 +150,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     return _zoomView;
 }
 
-- (id<Bankable>)itemForCell:(BankCollectionViewCell *)cell
+- (NSManagedObject<Bankable> *)itemForCell:(BankCollectionViewCell *)cell
 {
     return self.bankableItems[[self.collectionView indexPathForCell:cell]];
 }
 
 - (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    id<Bankable>   item = self.bankableItems[indexPath];
+    NSManagedObject<Bankable>  * item = self.bankableItems[indexPath];
     cell.bankFlags      = _bankFlags;
     cell.thumbnailImage = item.thumbnail;
     cell.name           = item.name;
@@ -198,21 +188,28 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (void)previewItemForCell:(BankCollectionViewCell *)cell
 {
-    id<Bankable> item = [self itemForCell:cell];
+    NSManagedObject<Bankable> * item = [self itemForCell:cell];
     self.previewController.image = item.preview;
     [self presentViewController:_previewController animated:YES completion:nil];
 }
 
+- (void)deleteItemForCell:(BankCollectionViewCell *)cell
+{
+    NSManagedObject<Bankable> * item = [self itemForCell:cell];
+    assert([item isEditable]);
+    [item MR_deleteInContext:item.managedObjectContext];
+}
+
 - (void)editItemForCell:(BankCollectionViewCell *)cell
 {
-    id<Bankable> item = [self itemForCell:cell];
+    NSManagedObject<Bankable> * item = [self itemForCell:cell];
     [self.navigationController pushViewController:[Bank editingControllerForItem:item]
                                          animated:YES];
 }
 
 - (void)detailItemForCell:(BankCollectionViewCell *)cell
 {
-    id<Bankable> item = [self itemForCell:cell];
+    NSManagedObject<Bankable> * item = [self itemForCell:cell];
     [self.navigationController pushViewController:[Bank detailControllerForItem:item]
                                          animated:YES];
 }
@@ -324,6 +321,18 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                animated:YES];
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView
+      canPerformAction:(SEL)action
+    forItemAtIndexPath:(NSIndexPath *)indexPath
+            withSender:(id)sender
+{
+    BOOL answer = NO;
+
+    NSManagedObject<Bankable> * item = self.bankableItems[indexPath];
+    if (action == @selector(deleteItemForCell:) && [item isEditable]) answer = YES;
+
+    return answer;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Collection view delegate - flow layout
@@ -367,16 +376,16 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     __weak BankCollectionViewController * weakSelf = self;
 
-    [self.updatesBlockOperation addExecutionBlock:
+    [_updatesBlockOperation addExecutionBlock:
      ^{
          switch(type)
          {
              case NSFetchedResultsChangeInsert:
-                 [weakSelf.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                 [weakSelf.collectionView insertSections:NSIndexSetMake(sectionIndex)];
                  break;
                  
              case NSFetchedResultsChangeDelete:
-                 [weakSelf.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                 [weakSelf.collectionView deleteSections:NSIndexSetMake(sectionIndex)];
                  break;
          }
      }];
@@ -390,7 +399,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
       newIndexPath:(NSIndexPath *)newIndexPath
 {
     __weak BankCollectionViewController * weakSelf = self;
-    [self.updatesBlockOperation addExecutionBlock:
+    [_updatesBlockOperation addExecutionBlock:
      ^{
          switch(type)
          {
@@ -420,12 +429,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self.collectionView performBatchUpdates:^{ [MainQueue addOperation:_updatesBlockOperation]; }
-                                  completion:^(BOOL finished)
-                                             {
-                                                 _updatesBlockOperation = nil;
-                                                 [_bankableItems.managedObjectContext processPendingChanges];
-                                             }];
+    [self.collectionView performBatchUpdates:^{ [_updatesBlockOperation start]; } completion:nil];
 }
 
 

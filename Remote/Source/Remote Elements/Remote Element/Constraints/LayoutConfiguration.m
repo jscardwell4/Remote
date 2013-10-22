@@ -18,7 +18,7 @@
 
 @end
 
-static const int   ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -333,13 +333,13 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
     LayoutConfiguration * config = [self faultedObject];
     assert(config);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"element"]     = (config.element
                                              ? $(@"%@:%@", config.element.key, config.element.uuid)
                                              : @"nil");
     dd[@"description"] = $(@"'%@'", [config layoutDescription]);
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 - (NSString *)name { return [self layoutDescription]; }

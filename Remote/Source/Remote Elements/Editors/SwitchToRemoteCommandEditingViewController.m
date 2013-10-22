@@ -10,7 +10,7 @@
 #import "RemoteController.h"
 #import "RemoteElement.h"
 #import "ViewDecorator.h"
-
+#import "Remote.h"
 @interface SwitchToRemoteCommandEditingViewController ()
 
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * pickerInputButton;
@@ -36,9 +36,10 @@ command           = _command;
     _pickerInputButton.inputView.selectBarButtonItem = [ViewDecorator
                                                         pickerInputSelectBarButtonItem];
 
-    if (ValueIsNotNil(_command)) {
-        self.selectedRemote = self.command.remote;
-        self.remotes        = [_command.remote.controller.remotes allObjects];
+    if (ValueIsNotNil(_command))
+    {
+//        self.selectedRemote = self.command.remote;
+//        self.remotes        = [_command.remote.controller.remotes allObjects];
     }
 }
 
@@ -76,7 +77,7 @@ command           = _command;
         NSInteger   remoteIndex = [(NSNumber *)rows[0] integerValue];
 
         self.selectedRemote = self.remotes[remoteIndex];
-        _command.remote  = _selectedRemote;
+//        _command.remote  = _selectedRemote;
     }
 
     [_pickerInputButton resignFirstResponder];

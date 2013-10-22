@@ -8,7 +8,7 @@
 #import "ControlStateSet.h"
 #import "Image.h"
 
-static const int ddLogLevel   = LOG_LEVEL_WARN;
+static int ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -32,21 +32,21 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
          [objects enumerateKeysAndObjectsUsingBlock:
           ^(id key, id obj, BOOL *stop)
           {
-              imageSet[stateForProperty(key)] = obj;
+              imageSet[[ControlStateSet stateForProperty:key]] = obj;
           }];
      }];
     return imageSet;
 }
 
 + (ControlStateImageSet *)imageSetWithImages:(NSDictionary *)images
-                                       context:(NSManagedObjectContext *)moc
+                                     context:(NSManagedObjectContext *)moc
 {
     return [self imageSetWithColors:@{} images:images context:moc];
 }
 
 + (ControlStateImageSet *)imageSetWithColors:(id)colors
-                                         images:(NSDictionary *)images
-                                       context:(NSManagedObjectContext *)moc
+                                      images:(NSDictionary *)images
+                                     context:(NSManagedObjectContext *)moc
 {
 
     __block ControlStateImageSet * imageSet = nil;
@@ -54,7 +54,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     [images enumerateKeysAndObjectsUsingBlock:
      ^(id key, id obj, BOOL *stop) {
          if ([obj isKindOfClass:[NSString class]])
-             filteredImages[key] = [Image fetchImageNamed:(NSString *)obj context:moc];
+             filteredImages[key] = [Image objectWithUUID:obj context:moc];
      }];
 
     [moc performBlockAndWait:
@@ -88,7 +88,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
 - (Image *)objectAtIndexedSubscript:(NSUInteger)state
 {
-    id object = (validState(state) ? [super objectAtIndexedSubscript:state] : nil);
+    id object = ([ControlStateSet validState:state] ? [super objectAtIndexedSubscript:state] : nil);
 
     if ([object isKindOfClass:[Image class]]) return (Image *)object;
 
@@ -110,7 +110,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     ControlStateImageSet * stateSet = [self faultedObject];
     assert(stateSet);
 
-    MSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
     dd[@"normal"]                         = (stateSet[0].name ?: @"nil");
     dd[@"selected"]                       = (stateSet[1].name ?: @"nil");
     dd[@"highlighted"]                    = (stateSet[2].name ?: @"nil");
@@ -120,14 +120,42 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     dd[@"disabledAndSelected"]            = (stateSet[6].name ?: @"nil");
     dd[@"selectedHighlightedAndDisabled"] = (stateSet[7].name ?: @"nil");
 
-    return dd;
+    return (MSDictionary *)dd;
 }
 
 - (NSDictionary *)dictionaryFromSetObjects
 {
-    return [[super dictionaryFromSetObjects]
-            dictionaryByAddingEntriesFromDictionary:@{@"colors":
-                                                          [self.colors dictionaryFromSetObjects]}];
+    NSMutableDictionary * dictionary = [[super dictionaryFromSetObjects] mutableCopy];
+    if (![self.colors isEmptySet])
+        dictionary[@"colors"] = [self.colors dictionaryFromSetObjects];
+
+    return dictionary;
+}
+
+
+- (NSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+
+    NSArray * keys = [[self dictionaryFromSetObjects] allKeys];
+    for (NSString * key in keys)
+    {
+        if ([@"colors" isEqualToString:key])
+        {
+            dictionary[key] = [self.colors JSONDictionary];
+            continue;
+        }
+
+        else if ([ControlStateSet stateForProperty:key] == NSUIntegerMax)
+            continue;
+
+        Image * i = self[key];
+        assert(i);
+        NSDictionary * imageDictionary = [i JSONDictionary];
+        dictionary[key] = imageDictionary;
+    }
+
+    return dictionary;
 }
 
 - (void)copyObjectsFromSet:(ControlStateImageSet *)set
@@ -135,5 +163,6 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     for (int i = 0; i < 8; i++) self[i] = set[i];
     [self.colors copyObjectsFromSet:set.colors];
 }
+
 
 @end

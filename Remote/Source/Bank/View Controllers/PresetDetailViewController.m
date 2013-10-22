@@ -48,6 +48,11 @@ static NSIndexPath * kPreviewCellIndexPath;
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
+- (void)setItem:(NSManagedObject<Bankable> *)item
+{
+    [super setItem:item];
+    _preset = (Preset *)item;
+}
 
 - (Preset *)preset { if (!_preset) _preset = (Preset *)self.item; return _preset; }
 
@@ -69,51 +74,70 @@ static NSIndexPath * kPreviewCellIndexPath;
 
     switch (indexPath.section)
     {
-        case 0: // Info
+        case 0:  // Info
         {
             switch (indexPath.row)
             {
-                case 0: // Category
+                case 0:  // Category
                 {
                     cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
                                                       forIndexPath:indexPath];
-                    cell.nameLabel.text = @"Category";
-                    cell.infoTextField.text = (self.preset.category ?: @"Uncategorized");
-                    BankableDetailTextFieldChangeHandler changeHandler = ^{
-                        _preset.category = cell.infoTextField.text;
+                    cell.name = @"Category";
+                    cell.text = (_preset.category ?: @"Uncategorized");
+                    BankableChangeHandler change =
+                    ^{
+                        NSString * text = cell.text;
+
+                        _preset.category = (text.length ? text : nil);
+
                         if (![_categories containsObject:_preset.category]) _categories = nil;
                     };
+
                     [self registerTextField:cell.infoTextField
                                forIndexPath:indexPath
-                                   handlers:@{BankableDetailTextFieldChangeHandlerKey:changeHandler}];
-                    [self registerPickerView:cell.pickerView forIndexPath:indexPath];
-                } break;
+                                   handlers:@{ BankableChangeHandlerKey : change }];
 
-                case 1: // Type
+                    [self registerPickerView:cell.pickerView forIndexPath:indexPath];
+
+                    break;
+                }
+
+                case 1:  // Type
                 {
                     cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
                                                       forIndexPath:indexPath];
-                    cell.nameLabel.text = @"Type";
-                    cell.infoLabel.text = NSStringFromREType([[self.preset
-                                                               valueForKeyPath:@"element.type"]
-                                                              intValue]);
-                } break;
-            }
-        } break;
+                    cell.name = @"Type";
+                    REType type = [[_preset valueForKeyPath:@"element.type"] intValue];
+                    cell.text = NSStringFromREType(type);
 
-        case 1: // Preview
+                    break;
+                }
+            }
+
+            break;
+        }
+
+        case 1:  // Preview
         {
             cell = [self dequeueReusableCellWithIdentifier:ImageCellIdentifier
                                               forIndexPath:indexPath];
-            cell.infoImageView.image = self.preset.preview;
-            if (CGSizeContainsSize(cell.infoImageView.bounds.size, cell.infoImageView.image.size))
-                cell.infoImageView.contentMode = UIViewContentModeCenter;
-        } break;
+            UIImage * image = _preset.preview;
+            cell.image = image;
 
+            CGSize imageSize = image.size;
+            CGSize boundsSize = cell.infoImageView.bounds.size;
+
+            if (CGSizeContainsSize(boundsSize, imageSize))
+                cell.infoImageView.contentMode = UIViewContentModeCenter;
+
+            break;
+        }
     }
 
     return cell;
 }
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -152,7 +176,8 @@ static NSIndexPath * kPreviewCellIndexPath;
         NSMutableArray * categories = [[objects valueForKey:@"info.category"] mutableCopy];
         if (![categories containsObject:self.preset.category])
             [categories addObject:self.preset.category];
-        [categories sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES]]];
+        [categories sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self"
+                                                                         ascending:YES]]];
 
         if (error) [CoreDataManager handleErrors:error];
         else
@@ -169,24 +194,5 @@ static NSIndexPath * kPreviewCellIndexPath;
     return (type == BankableDetailPickerViewData ? self.categories : self.preset.category);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Managing text fields
-////////////////////////////////////////////////////////////////////////////////
-
-
-- (void)textFieldForIndexPath:(NSIndexPath *)indexPath didSetText:(NSString *)text
-{
-    if ([indexPath isEqual:kCategoryCellIndexPath])
-    {
-        self.preset.category = text;
-        if (![self.categories containsObject:text])
-        {
-            _categories = nil;
-//            [self.preset.managedObjectContext processPendingChanges];
-        }
-    }
-    [super textFieldForIndexPath:indexPath didSetText:text];
-}
 
 @end

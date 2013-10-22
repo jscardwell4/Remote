@@ -15,15 +15,16 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 MSNAMETAG_DEFINITION(BankableDetailHiddenNeighborConstraint);
 
-#define TextFieldNibName @"BankableDetailTableViewCell-TextField"
-#define LabelNibName     @"BankableDetailTableViewCell-Label"
-#define ListNibName      @"BankableDetailTableViewCell-List"
-#define ImageNibName     @"BankableDetailTableViewCell-Image"
-#define TextViewNibName  @"BankableDetailTableViewCell-TextView"
-#define StepperNibName   @"BankableDetailTableViewCell-Stepper"
-#define SwitchNibName    @"BankableDetailTableViewCell-Switch"
-#define ButtonNibName    @"BankableDetailTableViewCell-Button"
-#define TableNibName     @"BankableDetailTableViewCell-Table"
+#define TextFieldNibName        @"BankableDetailTableViewCell-TextField"
+#define LabelNibName            @"BankableDetailTableViewCell-Label"
+#define ListNibName             @"BankableDetailTableViewCell-List"
+#define DetailDisclosureNibName @"BankableDetailTableViewCell-DetailDisclosure"
+#define ImageNibName            @"BankableDetailTableViewCell-Image"
+#define TextViewNibName         @"BankableDetailTableViewCell-TextView"
+#define StepperNibName          @"BankableDetailTableViewCell-Stepper"
+#define SwitchNibName           @"BankableDetailTableViewCell-Switch"
+#define ButtonNibName           @"BankableDetailTableViewCell-Button"
+#define TableNibName            @"BankableDetailTableViewCell-Table"
 
 MSIDENTIFIER_DEFINITION(StepperCell);
 MSIDENTIFIER_DEFINITION(SwitchCell);
@@ -34,9 +35,10 @@ MSIDENTIFIER_DEFINITION(ImageCell);
 MSIDENTIFIER_DEFINITION(TextFieldCell);
 MSIDENTIFIER_DEFINITION(TextViewCell);
 MSIDENTIFIER_DEFINITION(TableCell);
+MSIDENTIFIER_DEFINITION(DetailDisclosureCell);
 
-MSKEY_DEFINITION(BankableDetailTextFieldChangeHandler);
-MSKEY_DEFINITION(BankableDetailTextFieldValidationHandler);
+MSKEY_DEFINITION(BankableChangeHandler);
+MSKEY_DEFINITION(BankableValidationHandler);
 
 const CGFloat BankableDetailDefaultRowHeight = 38;
 const CGFloat BankableDetailExpandedRowHeight = 200;
@@ -66,14 +68,14 @@ NSString * textForSelection(id selection)
     NSMutableDictionary * _registeredNibs;
     NSHashTable         * _editableViews;
 
-    MSMutableDictionary * _steppersByIndexPath;
+    MSDictionary * _steppersByIndexPath;
     MSDictionaryIndex   * _indexPathsByStepper;
     NSMutableDictionary * _stepperLabelsByIndexPath;
 
-    MSMutableDictionary * _pickersByIndexPath;
+    MSDictionary * _pickersByIndexPath;
     MSDictionaryIndex   * _indexPathsByPicker;
 
-    MSMutableDictionary * _textFieldsByIndexPath;
+    MSDictionary * _textFieldsByIndexPath;
     MSDictionaryIndex   * _indexPathsByTextField;
     NSMutableDictionary * _textFieldHandlersByIndexPath;
 }
@@ -116,7 +118,10 @@ NSString * textForSelection(id selection)
 {
     [super setEditing:editing animated:animated];
 
-    self.navigationItem.leftBarButtonItem = (editing ? self.cancelBarButtonItem : nil);
+    self.navigationItem.leftBarButtonItem = (editing
+                                             ? SystemBarButton(UIBarButtonSystemItemCancel,
+                                                               @selector(cancel:))
+                                             : nil);
 
     [self.editableViews setValue:@(editing) forKeyPath:@"userInteractionEnabled"];
 
@@ -133,10 +138,8 @@ NSString * textForSelection(id selection)
 
     if (!editing)
     {
-
         [self save:nil];
-        if (_visiblePickerCellIndexPath)
-            [self dismissPickerView:[self pickerViewForIndexPath:_visiblePickerCellIndexPath]];
+        self.visiblePickerCellIndexPath = nil;
     }
 
 }
@@ -190,7 +193,6 @@ NSString * textForSelection(id selection)
     if ([item isKindOfClass:self.itemClass])
     {
        _item = item;
-
         if ([self isViewLoaded]) [self updateDisplay];
     }
 }
@@ -285,13 +287,13 @@ NSString * textForSelection(id selection)
 #pragma mark Managing stepper/label pairs
 ////////////////////////////////////////////////////////////////////////////////
 
-- (MSMutableDictionary *)steppersByIndexPath
+- (MSDictionary *)steppersByIndexPath
 {
     if (!_steppersByIndexPath)
     {
-        _steppersByIndexPath = [MSMutableDictionary dictionary];
+        _steppersByIndexPath = [MSDictionary dictionary];
         _indexPathsByStepper = [MSDictionaryIndex
-                                dictionaryIndexForDictionary:_steppersByIndexPath
+                                dictionaryIndexForDictionary:(MSDictionary *)_steppersByIndexPath
                                 handler:^NSArray *(MSDictionary * dictionary, id key)
                                         {
                                             return @[NSValueWithObjectPointer(dictionary[key]), key];
@@ -327,13 +329,13 @@ NSString * textForSelection(id selection)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (MSMutableDictionary *)pickersByIndexPath
+- (MSDictionary *)pickersByIndexPath
 {
     if (!_pickersByIndexPath)
     {
-        _pickersByIndexPath = [MSMutableDictionary dictionary];
+        _pickersByIndexPath = [MSDictionary dictionary];
         _indexPathsByPicker = [MSDictionaryIndex
-                               dictionaryIndexForDictionary:_pickersByIndexPath
+                               dictionaryIndexForDictionary:(MSDictionary *)_pickersByIndexPath
                                handler:^NSArray *(MSDictionary * dictionary, id key)
                                        {
                                            return @[NSValueWithObjectPointer(dictionary[key]), key];
@@ -357,9 +359,41 @@ NSString * textForSelection(id selection)
 
 - (void)setVisiblePickerCellIndexPath:(NSIndexPath *)visiblePickerCellIndexPath
 {
+    [self.tableView beginUpdates];
     if (_visiblePickerCellIndexPath)
+    {
         [_pickersByIndexPath[_visiblePickerCellIndexPath] setHidden:YES];
-    _visiblePickerCellIndexPath = visiblePickerCellIndexPath;
+    }
+    _visiblePickerCellIndexPath = ([_visiblePickerCellIndexPath isEqual:visiblePickerCellIndexPath]
+                                   ? nil
+                                   : visiblePickerCellIndexPath);
+
+    if (_visiblePickerCellIndexPath)
+    {
+        UIPickerView * pickerView = self.pickersByIndexPath[_visiblePickerCellIndexPath];
+        assert(pickerView);
+
+        [pickerView reloadAllComponents];
+
+        NSUInteger row = 0;
+
+        id object = [self dataForIndexPath:_visiblePickerCellIndexPath
+                                      type:BankableDetailPickerViewSelection];
+
+        if (object)
+        {
+            NSUInteger idx = [[self dataForIndexPath:_visiblePickerCellIndexPath
+                                                type:BankableDetailPickerViewData]
+                              indexOfObject:object];
+
+            if (idx != NSNotFound) row = idx;
+        }
+
+        [pickerView selectRow:row inComponent:0 animated:NO];
+
+        pickerView.hidden = NO;
+    }
+    [self.tableView endUpdates];
 }
 
 - (void)registerPickerView:(UIPickerView *)pickerView forIndexPath:(NSIndexPath *)indexPath
@@ -368,61 +402,6 @@ NSString * textForSelection(id selection)
     pickerView.dataSource = self;
     pickerView.hidden = YES;
     self.pickersByIndexPath[indexPath] = pickerView;
-}
-
-- (void)showPickerViewForIndexPath:(NSIndexPath *)indexPath
-{
-    [self showPickerViewForIndexPath:indexPath selectedObject:nil];
-}
-
-- (void)showPickerViewForIndexPath:(NSIndexPath *)indexPath selectedObject:(id)object
-{
-
-    UIPickerView * pickerView = self.pickersByIndexPath[indexPath];
-
-    if ([_visiblePickerCellIndexPath isEqual:indexPath])
-    {
-        assert(pickerView);
-        [self dismissPickerView:pickerView];
-        return;
-    }
-
-    if (!pickerView)
-    {
-        BankableDetailTableViewCell * cell = [self cellForRowAtIndexPath:indexPath];
-        assert(cell);
-        pickerView = cell.pickerView;
-        [self registerPickerView:pickerView forIndexPath:indexPath];
-    }
-
-    assert(pickerView);
-    [pickerView reloadAllComponents];
-
-    self.visiblePickerCellIndexPath = indexPath;
-
-    [self.tableView beginUpdates];
-    pickerView.hidden = NO;
-    [self.tableView endUpdates];
-
-    if (object)
-    {
-        NSUInteger idx = [[self dataForIndexPath:indexPath
-                                            type:BankableDetailPickerViewData] indexOfObject:object];
-        if (idx != NSNotFound)
-            [pickerView selectRow:idx inComponent:0 animated:YES];
-    }
-
-    else
-        [pickerView selectRow:0 inComponent:0 animated:YES];
-
-}
-
-- (void)dismissPickerView:(UIPickerView *)pickerView
-{
-    _visiblePickerCellIndexPath = nil;
-    [self.tableView beginUpdates];
-    pickerView.hidden = YES;
-    [self.tableView endUpdates];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView
@@ -439,15 +418,7 @@ NSString * textForSelection(id selection)
         return;
     }
 
-    UIButton * button = [self cellForRowAtIndexPath:indexPath].infoButton;
-
-    if (button)
-    {
-        id buttonData = [self dataForIndexPath:indexPath type:BankableDetailPickerButtonData];
-        [button setTitle:textForSelection(buttonData) forState:UIControlStateNormal];
-    }
-
-    [self dismissPickerView:pickerView];
+    self.visiblePickerCellIndexPath = nil;
 }
 
 
@@ -471,19 +442,7 @@ NSString * textForSelection(id selection)
 {
     NSIndexPath * indexPath = [self indexPathForPickerView:pickerView];
     NSArray * data = [self dataForIndexPath:indexPath type:BankableDetailPickerViewData];
-    if (data)
-    {
-        id dataObject = data[row];
-        NSString * title = nil;
-        if ([dataObject isKindOfClass:[NSString class]])
-            title = dataObject;
-        else if ([dataObject respondsToSelector:@selector(name)])
-            title = [dataObject name];
-
-        return title;
-    }
-
-    else return nil;
+    return (data ? textForSelection(data[row]) : nil);
 }
 
 
@@ -502,7 +461,7 @@ NSString * textForSelection(id selection)
     assert(dataObject);
 
     [self pickerView:pickerView didSelectObject:dataObject row:row indexPath:indexPath];
-    [self dismissPickerView:pickerView];
+    self.visiblePickerCellIndexPath = nil;
 }
 
 
@@ -515,7 +474,7 @@ NSString * textForSelection(id selection)
     NSManagedObjectContext * moc = _item.managedObjectContext;
     [moc performBlockAndWait:^{ [moc rollback]; }];
     [self setEditing:NO animated:YES];
-    [self updateDisplay];
+    [self.tableView reloadData];
 }
 
 - (IBAction)save:(id)sender
@@ -534,13 +493,13 @@ NSString * textForSelection(id selection)
 #pragma mark Managing text fields
 ////////////////////////////////////////////////////////////////////////////////
 
-- (MSMutableDictionary *)textFieldsByIndexPath
+- (MSDictionary *)textFieldsByIndexPath
 {
     if (!_textFieldsByIndexPath)
     {
-        _textFieldsByIndexPath = [MSMutableDictionary dictionary];
+        _textFieldsByIndexPath = [MSDictionary dictionary];
         _indexPathsByTextField = [MSDictionaryIndex
-                                  dictionaryIndexForDictionary:_textFieldsByIndexPath
+                                  dictionaryIndexForDictionary:(MSDictionary *)_textFieldsByIndexPath
                                   handler:^NSArray *(MSDictionary * dictionary, id key)
                                       {
                                           return @[NSValueWithObjectPointer(dictionary[key]), key];
@@ -570,12 +529,6 @@ NSString * textForSelection(id selection)
 - (NSIndexPath *)indexPathForTextField:(UITextField *)textField
 {
     return _indexPathsByTextField[NSValueWithObjectPointer(textField)];
-}
-
-- (void)textFieldForIndexPath:(NSIndexPath *)indexPath didSetText:(NSString *)text
-{
-    UIPickerView * pickerView = [self pickerViewForIndexPath:indexPath];
-    if (pickerView) [self dismissPickerView:pickerView];
 }
 
 - (UIView *)integerKeyboardViewForTextField:(UITextField *)textField
@@ -642,38 +595,38 @@ NSString * textForSelection(id selection)
 #pragma mark Text field delegate
 ////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {return [self isEditing];}
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField { return [self isEditing]; }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [textField selectAll:nil];
-    NSIndexPath * indexPath = [self indexPathForTextField:textField];
-    if (indexPath)
-    {
-        UIPickerView * pickerView = [self pickerViewForIndexPath:indexPath];
-        if (pickerView) [self showPickerViewForIndexPath:indexPath selectedObject:textField.text];
 
-        else if (_visiblePickerCellIndexPath)
-        {
-            pickerView = [self pickerViewForIndexPath:_visiblePickerCellIndexPath];
-            [self dismissPickerView:pickerView];
-        }
-    }
+    NSIndexPath * indexPath = [self indexPathForTextField:textField];
+
+    if (indexPath)
+        self.visiblePickerCellIndexPath = ([self pickerViewForIndexPath:indexPath]
+                                           ? indexPath
+                                           : nil);
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == _nameTextField) self.item.name = textField.text;
+    if (textField == _nameTextField)
+    {
+        if (textField.text.length) self.item.name = textField.text;
+        return;
+    }
 
     NSIndexPath * indexPath = [self indexPathForTextField:textField];
     if (!indexPath) return;
 
     NSDictionary * handlers = _textFieldHandlersByIndexPath[indexPath];
-    BankableDetailTextFieldChangeHandler handler = handlers[BankableDetailTextFieldChangeHandlerKey];
+
+    // validation handled in textFieldShouldEndEditing:
+    BankableChangeHandler handler = handlers[BankableChangeHandlerKey];
     if (handler) handler();
-    
-    UIPickerView * pickerView = [self pickerViewForIndexPath:indexPath];
-    if (pickerView) [self dismissPickerView:pickerView];
+
+    self.visiblePickerCellIndexPath = nil;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
@@ -684,8 +637,7 @@ NSString * textForSelection(id selection)
     NSDictionary * handlers = _textFieldHandlersByIndexPath[indexPath];
     if (!handlers) return YES;
 
-    BankableDetailTextFieldValidationHandler handler =
-        handlers[BankableDetailTextFieldValidationHandlerKey];
+    BankableValidationHandler handler = handlers[BankableValidationHandlerKey];
     if (!handler) return YES;
 
     return handler();
@@ -781,15 +733,16 @@ NSString * textForSelection(id selection)
     static const NSDictionary * nibNameIndex = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        nibNameIndex = @{TextFieldCellIdentifier : TextFieldNibName,
-                         LabelCellIdentifier     : LabelNibName,
-                         LabelListCellIdentifier : ListNibName,
-                         ImageCellIdentifier     : ImageNibName,
-                         TextViewCellIdentifier  : TextViewNibName,
-                         StepperCellIdentifier   : StepperNibName,
-                         SwitchCellIdentifier    : SwitchNibName,
-                         ButtonCellIdentifier    : ButtonNibName,
-                         TableCellIdentifier     : TableNibName};
+        nibNameIndex = @{TextFieldCellIdentifier        : TextFieldNibName,
+                         LabelCellIdentifier            : LabelNibName,
+                         LabelListCellIdentifier        : ListNibName,
+                         DetailDisclosureCellIdentifier : DetailDisclosureNibName,
+                         ImageCellIdentifier            : ImageNibName,
+                         TextViewCellIdentifier         : TextViewNibName,
+                         StepperCellIdentifier          : StepperNibName,
+                         SwitchCellIdentifier           : SwitchNibName,
+                         ButtonCellIdentifier           : ButtonNibName,
+                         TableCellIdentifier            : TableNibName};
     });
     NSString * nibName = nibNameIndex[identifier];
     UINib * nib = [UINib nibWithNibName:nibName bundle:nil];

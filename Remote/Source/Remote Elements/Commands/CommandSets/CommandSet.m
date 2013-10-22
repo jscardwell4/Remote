@@ -10,7 +10,7 @@
 #import "Command.h"
 //#import "BankObject.h"
 
-static int   ddLogLevel   = DefaultDDLogLevel;
+static int ddLogLevel   = DefaultDDLogLevel;
 static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel,msLogContext)
 
@@ -28,53 +28,53 @@ static const NSDictionary * kValidKeysets;
         dispatch_once(&onceToken, ^{
             kValidKeysets =
             @{
-                @(RECommandSetTypeDPad):
-                    [@[@(REButtonTypeDPadCenter),
-                       @(REButtonTypeDPadUp),
-                       @(REButtonTypeDPadDown),
-                       @(REButtonTypeDPadLeft),
-                       @(REButtonTypeDPadRight)] set],
+                @(CommandSetTypeDPad):
+                    [@[@(REButtonRoleDPadCenter),
+                       @(REButtonRoleDPadUp),
+                       @(REButtonRoleDPadDown),
+                       @(REButtonRoleDPadLeft),
+                       @(REButtonRoleDPadRight)] set],
 
-                @(RECommandSetTypeNumberPad):
-                    [@[@(REButtonTypeNumberpad1),
-                       @(REButtonTypeNumberpad2),
-                       @(REButtonTypeNumberpad3),
-                       @(REButtonTypeNumberpad4),
-                       @(REButtonTypeNumberpad5),
-                       @(REButtonTypeNumberpad6),
-                       @(REButtonTypeNumberpad7),
-                       @(REButtonTypeNumberpad8),
-                       @(REButtonTypeNumberpad9),
-                       @(REButtonTypeNumberpad0),
-                       @(REButtonTypeNumberpadAux1),
-                       @(REButtonTypeNumberpadAux2)] set],
+                @(CommandSetTypeNumberpad):
+                    [@[@(REButtonRoleNumberpad1),
+                       @(REButtonRoleNumberpad2),
+                       @(REButtonRoleNumberpad3),
+                       @(REButtonRoleNumberpad4),
+                       @(REButtonRoleNumberpad5),
+                       @(REButtonRoleNumberpad6),
+                       @(REButtonRoleNumberpad7),
+                       @(REButtonRoleNumberpad8),
+                       @(REButtonRoleNumberpad9),
+                       @(REButtonRoleNumberpad0),
+                       @(REButtonRoleNumberpadAux1),
+                       @(REButtonRoleNumberpadAux2)] set],
 
-                @(RECommandSetTypeRocker):
-                    [@[@(REButtonTypePickerLabelTop),
-                       @(REButtonTypePickerLabelBottom)] set],
+                @(CommandSetTypeRocker):
+                    [@[@(REButtonRolePickerLabelTop),
+                       @(REButtonRolePickerLabelBottom)] set],
 
-                @(RECommandSetTypeTransport):
-                    [@[@(REButtonTypeTransportPlay),
-                       @(REButtonTypeTransportPause),
-                       @(REButtonTypeTransportStop),
-                       @(REButtonTypeTransportRecord),
-                       @(REButtonTypeTransportSkip),
-                       @(REButtonTypeTransportReplay),
-                       @(REButtonTypeTransportFF),
-                       @(REButtonTypeTransportRewind)] set]
+                @(CommandSetTypeTransport):
+                    [@[@(REButtonRoleTransportPlay),
+                       @(REButtonRoleTransportPause),
+                       @(REButtonRoleTransportStop),
+                       @(REButtonRoleTransportRecord),
+                       @(REButtonRoleTransportSkip),
+                       @(REButtonRoleTransportReplay),
+                       @(REButtonRoleTransportFF),
+                       @(REButtonRoleTransportRewind)] set]
             };
         });
     }
 }
 
-+ (instancetype)commandSetWithType:(RECommandSetType)type
++ (instancetype)commandSetWithType:(CommandSetType)type
 {
     CommandSet * commandSet = [self MR_createEntity];
     commandSet.type = type;
     return commandSet;
 }
 
-+ (instancetype)commandSetWithType:(RECommandSetType)type
++ (instancetype)commandSetWithType:(CommandSetType)type
                               name:(NSString *)name
                             values:(NSDictionary *)values
 {
@@ -85,7 +85,7 @@ static const NSDictionary * kValidKeysets;
 }
 
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context
-                           withType:(RECommandSetType)type
+                           withType:(CommandSetType)type
                                name:(NSString *)name
                              values:(NSDictionary *)values
 {
@@ -96,7 +96,7 @@ static const NSDictionary * kValidKeysets;
 }
 
 
-+ (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(RECommandSetType)type
++ (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(CommandSetType)type
 {
     __block CommandSet * commandSet = nil;
     [context performBlockAndWait:
@@ -122,15 +122,15 @@ static const NSDictionary * kValidKeysets;
     return (Command *)[self.managedObjectContext objectForURI:self.index[key]];
 }
 
-- (RECommandSetType)type
+- (CommandSetType)type
 {
     [self willAccessValueForKey:@"type"];
-    RECommandSetType type = NSUIntegerValue(self.primitiveType);
+    CommandSetType type = NSUIntegerValue(self.primitiveType);
     [self didAccessValueForKey:@"type"];
     return type;
 }
 
-- (void)setType:(RECommandSetType)type
+- (void)setType:(CommandSetType)type
 {
     [self willChangeValueForKey:@"type"];
     self.primitiveType = @(type);
