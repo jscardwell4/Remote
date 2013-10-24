@@ -33,25 +33,42 @@ CGSize const       REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
 
 + (instancetype)viewWithModel:(RemoteElement *)model
 {
-    static NSDictionary const * kClassMap = nil;
+    static NSDictionary const * index = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        kClassMap = @{ @(RETypeUndefined)                 : NullObject,
-                       @(RETypeRemote)                    : @"RemoteView",
-                       @(RETypeButtonGroup)               : @"ButtonGroupView",
-                       @(RETypeButton)                    : @"ButtonView",
-                       @(REButtonGroupRoleSelectionPanel) : @"SelectionPanelButtonGroupView",
-                       @(REButtonGroupRolePickerLabel)    : @"PickerLabelButtonGroupView",
-                       @(REButtonRoleConnectionStatus)    : @"ConnectionStatusButtonView",
-                       @(REButtonRoleBatteryStatus)       : @"BatteryStatusButtonView" };
-
-    });
+    dispatch_once(&onceToken,
+                  ^{
+                      index = @{ // type
+                                @(RETypeRemote):
+                                    @{ // remote roles
+                                        @(RERoleUndefined):
+                                            @"RemoteView"
+                                        },
+                                @(RETypeButtonGroup):
+                                    @{ // button group roles
+                                        @(RERoleUndefined):
+                                            @"ButtonGroupView",
+                                        @(REButtonGroupRoleRocker):
+                                            @"PickerLabelButtonGroupView",
+                                        @(REButtonGroupRoleSelectionPanel):
+                                            @"SelectionPanelButtonGroupView"
+                                        },
+                                @(RETypeButton):
+                                    @{ // button roles
+                                        @(RERoleUndefined):
+                                            @"ButtonView",
+                                        @(REButtonRoleBatteryStatus):
+                                            @"BatteryStatusButtonView",
+                                        @(REButtonRoleConnectionStatus):
+                                            @"ConnectionStatusButtonView"
+                                        }
+                                };
+                  });
 
     model = (RemoteElement *)[model.managedObjectContext existingObjectWithID:model.objectID
-                                                                       error:nil];
+                                                                        error:nil];
 
-    NSString * className = kClassMap[@(model.role)];
-    if (!className) className = kClassMap[@(model.elementType)];
+    NSString * className = index[@(model.elementType)][@(model.role)];
+    if (!className) className = index[@(model.elementType)][@(RERoleUndefined)];
 
     return (className ? [[NSClassFromString(className) alloc] initWithModel:model] : nil);
 }
@@ -119,25 +136,25 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
                                                               _overlayView);
         NSString * constraints =
             $(@"'%1$@' _backdropView.width = self.width\n"
-             "'%1$@' _backdropView.height = self.height\n"
-             "'%1$@' _backdropView.centerX = self.centerX\n"
-             "'%1$@' _backdropView.centerY = self.centerY\n"
-             "'%1$@' _backgroundImageView.width = self.width\n"
-             "'%1$@' _backgroundImageView.height = self.height\n"
-             "'%1$@' _backgroundImageView.centerX = self.centerX\n"
-             "'%1$@' _backgroundImageView.centerY = self.centerY\n"
-             "'%1$@' _contentView.width = self.width\n"
-             "'%1$@' _contentView.height = self.height\n"
-             "'%1$@' _contentView.centerX = self.centerX\n"
-             "'%1$@' _contentView.centerY = self.centerY\n"
-             "'%1$@' _subelementsView.width = self.width\n"
-             "'%1$@' _subelementsView.height = self.height\n"
-             "'%1$@' _subelementsView.centerX = self.centerX\n"
-             "'%1$@' _subelementsView.centerY = self.centerY\n"
-             "'%1$@' _overlayView.width = self.width\n"
-             "'%1$@' _overlayView.height = self.height\n"
-             "'%1$@' _overlayView.centerX = self.centerX\n"
-             "'%1$@' _overlayView.centerY = self.centerY",
+               "'%1$@' _backdropView.height = self.height\n"
+               "'%1$@' _backdropView.centerX = self.centerX\n"
+               "'%1$@' _backdropView.centerY = self.centerY\n"
+               "'%1$@' _backgroundImageView.width = self.width\n"
+               "'%1$@' _backgroundImageView.height = self.height\n"
+               "'%1$@' _backgroundImageView.centerX = self.centerX\n"
+               "'%1$@' _backgroundImageView.centerY = self.centerY\n"
+               "'%1$@' _contentView.width = self.width\n"
+               "'%1$@' _contentView.height = self.height\n"
+               "'%1$@' _contentView.centerX = self.centerX\n"
+               "'%1$@' _contentView.centerY = self.centerY\n"
+               "'%1$@' _subelementsView.width = self.width\n"
+               "'%1$@' _subelementsView.height = self.height\n"
+               "'%1$@' _subelementsView.centerX = self.centerX\n"
+               "'%1$@' _subelementsView.centerY = self.centerY\n"
+               "'%1$@' _overlayView.width = self.width\n"
+               "'%1$@' _overlayView.height = self.height\n"
+               "'%1$@' _overlayView.centerX = self.centerX\n"
+               "'%1$@' _overlayView.centerY = self.centerY",
               REViewInternalNametag);
 
         [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraints
@@ -161,9 +178,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 /**
  * Unregisters as observer for model KVO notifications.
  */
-- (void)dealloc {
-    [self unregisterForChangeNotification];
-}
+- (void)dealloc { [self unregisterForChangeNotification]; }
 
 /**
  * Override point for subclasses to return an array of KVO registration dictionaries for observing
@@ -230,9 +245,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 /**
  * Removes registration for keypaths observed via `registerForChangeNotification`.
  */
-- (void)unregisterForChangeNotification {
-    _kvoReceptionists = nil;
-}
+- (void)unregisterForChangeNotification { _kvoReceptionists = nil; }
 
 /**
  * Override point for subclasses to update themselves with data from the model.
@@ -298,8 +311,8 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
     // sort collections by range location
     [xAxisRanges sortUsingComparator:^NSComparisonResult (NSValue * obj1, NSValue * obj2)
      {
-         NSRange r1 = NSRangeValue(obj1);
-         NSRange r2 = NSRangeValue(obj2);
+         NSRange r1 = RangeValue(obj1);
+         NSRange r2 = RangeValue(obj2);
 
          return (r1.location < r2.location
                  ? NSOrderedAscending
@@ -310,8 +323,8 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
     [yAxisRanges sortUsingComparator:^NSComparisonResult (NSValue * obj1, NSValue * obj2)
      {
-         NSRange r1 = NSRangeValue(obj1);
-         NSRange r2 = NSRangeValue(obj2);
+         NSRange r1 = RangeValue(obj1);
+         NSRange r2 = RangeValue(obj2);
 
          return (r1.location < r2.location
                  ? NSOrderedAscending
@@ -325,7 +338,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
     do
     {
-        NSRange   tmpRange = NSRangeValue(xAxisRanges[0]);
+        NSRange   tmpRange = RangeValue(xAxisRanges[0]);
 
         joinCount = 0;
 
@@ -333,7 +346,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
         for (int i = 1; i < xAxisRanges.count; i++)
         {
-            NSRange   r = NSRangeValue(xAxisRanges[i]);
+            NSRange   r = RangeValue(xAxisRanges[i]);
             NSRange   j = NSIntersectionRange(tmpRange, r);
 
             if (j.length > 0)
@@ -355,7 +368,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
     do
     {
-        NSRange   tmpRange = NSRangeValue(yAxisRanges[0]);
+        NSRange   tmpRange = RangeValue(yAxisRanges[0]);
 
         joinCount = 0;
 
@@ -363,7 +376,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
         for (int i = 1; i < yAxisRanges.count; i++)
         {
-            NSRange   r = NSRangeValue(yAxisRanges[i]);
+            NSRange   r = RangeValue(yAxisRanges[i]);
             NSRange   j = NSIntersectionRange(tmpRange, r);
 
             if (j.length > 0)
@@ -385,14 +398,14 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
     } while (joinCount);
 
     // calculate min size and width by summing range lengths
-    CGFloat   minWidth = CGFloatValue([[xAxisRanges arrayByMappingToBlock:
+    CGFloat   minWidth = FloatValue([[xAxisRanges arrayByMappingToBlock:
                                         ^id (NSValue * obj, NSUInteger idx){
-                                            return @(NSRangeValue(obj).length);
+                                            return @(RangeValue(obj).length);
                                         }] valueForKeyPath:@"@sum.self"]);
 
-    CGFloat   minHeight = CGFloatValue([[yAxisRanges arrayByMappingToBlock:
+    CGFloat   minHeight = FloatValue([[yAxisRanges arrayByMappingToBlock:
                                          ^id (NSValue * obj, NSUInteger idx){
-                                             return @(NSRangeValue(obj).length);
+                                             return @(RangeValue(obj).length);
                                          }] valueForKeyPath:@"@sum.self"]);
 
     CGSize   s = CGSizeMake(minWidth, minHeight);

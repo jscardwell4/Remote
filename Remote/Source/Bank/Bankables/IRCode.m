@@ -113,7 +113,7 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     if (prontoHex)
     {
         NSDictionary * d = parseIRCodeFromProntoHex(prontoHex);
-        self.frequency = NSUIntegerValue(d[IRCodeFrequencyKey]);
+        self.frequency = UnsignedIntegerValue(d[IRCodeFrequencyKey]);
         struct HexPair hexpair;
         [d[IRCodeLeadInKey] getValue:&hexpair];
         NSMutableString * pattern = [$(@"%u,%u", hexpair.num1, hexpair.num2) mutableCopy];
@@ -165,7 +165,7 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     [self updateCategory];
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
     id(^defaultForKey)(NSString *) = ^(NSString * key)
     {
@@ -183,8 +183,8 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
                                                          @"onOffPattern",
                                                          @"prontoHex"])
                               dictionary[attribute] =
-                                  CollectionSafeValue([self defaultValueForAttribute:attribute]);
-                          [dictionary removeKeysWithNullObjectValues];
+                                  CollectionSafe([self defaultValueForAttribute:attribute]);
+                          [dictionary compact];
                           index = dictionary;
                       });
 
@@ -212,10 +212,10 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
         }
 
         if (isCustom)
-            dictionary[attribute] = CollectionSafeValue(addition);
+            dictionary[attribute] = CollectionSafe(addition);
     };
 
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     addIfCustom(self, dictionary, @"device",          self.device.uuid);
     addIfCustom(self, dictionary, @"codeset",         self.codeset);
@@ -226,8 +226,9 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     addIfCustom(self, dictionary, @"onOffPattern",    self.onOffPattern);
     addIfCustom(self, dictionary, @"prontoHex",       self.prontoHex);
 
-    [dictionary removeKeysWithNullObjectValues];
-    
+    [dictionary compact];
+    [dictionary compress];
+
     return dictionary;
 }
 

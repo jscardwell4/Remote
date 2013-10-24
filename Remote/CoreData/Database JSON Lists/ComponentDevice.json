@@ -1,17 +1,14 @@
 [
   {
     "uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5",
-    "info": {
-      "name": "AV Receiver"
-    },
+    "info.name": "AV Receiver",
     "port": 2,
     "inputPowersOn": true,
     "offCommand": {
-      "uuid": "2B400245-E870-4225-A9CD-D0BDEF67FB53",
       "class": "sendir",
-      "code": "12470A9F-CC42-4C31-B261-213DFDA79BEC"
+      "code.uuid": "12470A9F-CC42-4C31-B261-213DFDA79BEC"
     },
-    "manufacturer": "C4149194-D03B-43A7-84CB-DA80EE20FC70",
+    "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70",
     "codes": [
       {
         "uuid": "12470A9F-CC42-4C31-B261-213DFDA79BEC",
@@ -167,11 +164,9 @@
   },
   {
     "uuid": "F0419941-0226-4D06-A4F0-4F3B70BE23CF",
-    "info": {
-      "name": "Dish Hopper"
-    },
+    "info.name": "Dish Hopper",
     "alwaysOn": true,
-    "manufacturer": "34D0583C-BA66-4C1C-9FD0-F59612B38E18",
+    "manufacturer.uuid": "34D0583C-BA66-4C1C-9FD0-F59612B38E18",
     "codes": [
       {
         "uuid": "0BBC99B9-E435-490E-ACE7-DF53DDD4E2F7",
@@ -686,21 +681,17 @@
   },
   {
     "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
-    "info": {
-      "name": "PS3"
-    },
+    "info.name": "PS3",
     "port": 3,
     "onCommand": {
-      "uuid": "1934E3D2-04A8-487A-9CED-5330924E5180",
       "class": "sendir",
-      "code": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3"
+      "code.uuid": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3"
     },
     "offCommand": {
-      "uuid": "ABC4D61E-3F36-48DF-8E91-35608780F8B5",
       "class": "sendir",
-      "code": "9326516F-1923-4461-AD31-E726B4AAAFB1"
+      "code.uuid": "9326516F-1923-4461-AD31-E726B4AAAFB1"
     },
-    "manufacturer": "C4149194-D03B-43A7-84CB-DA80EE20FC70",
+    "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70",
     "codes": [
       {
         "uuid": "9A90A48A-3F92-4340-ADC0-1D24830E33D9",
@@ -1280,21 +1271,17 @@
   },
   {
     "uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F",
-    "info": {
-      "name": "Samsung TV"
-    },
+    "info.name": "Samsung TV",
     "port": 3,
     "onCommand": {
-      "uuid": "FB5775A1-BF89-4990-B1F7-20D9DC83CE57",
       "class": "sendir",
-      "code": "4386551B-5B7B-4017-A187-62AAFBB49399"
+      "code.uuid": "4386551B-5B7B-4017-A187-62AAFBB49399"
     },
     "offCommand": {
-      "uuid": "FD554F91-A0AE-4FC3-84BE-06CFC68CC074",
       "class": "sendir",
-      "code": "45693E54-0E98-4D15-89D5-97E89488EDCE"
+      "code.uuid": "45693E54-0E98-4D15-89D5-97E89488EDCE"
     },
-    "manufacturer": "CDA611FD-95C1-4981-ABE6-B07B8CB79A7E",
+    "manufacturer.uuid": "CDA611FD-95C1-4981-ABE6-B07B8CB79A7E",
     "codes": [
       {
         "uuid": "F39821FE-3AA2-44B9-84C5-BBC275C4623F",

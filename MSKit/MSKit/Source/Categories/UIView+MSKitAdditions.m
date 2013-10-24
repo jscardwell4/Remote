@@ -275,46 +275,44 @@ static const char * kUIViewNametagKey = "kUIViewNametagKey";
     return outstring;
 }
 
-- (NSString *)viewTreeDescriptionWithProperties:(NSArray *)properties {
+- (NSString *)viewTreeDescriptionWithProperties:(NSArray *)properties
+{
     NSMutableString * outstring = [[NSMutableString alloc] init];
     __block void (^dumpView)(UIView *, int) = nil;
-    __block void (__weak ^weakDumpView)(UIView *, int) = dumpView;
-    dumpView = ^(UIView * view, int indent) {
-                for (int i = 0; i < indent; i++)
-                    [outstring appendString:@"--"];
+    __block void (__weak ^weakDumpView)(UIView *, int) = nil;
+    weakDumpView = dumpView = ^(UIView * view, int indent)
+    {
+        for (int i = 0; i < indent; i++)
+        [outstring appendString:@"--"];
 
-                NSMutableDictionary * propertyValues = [@{} mutableCopy];
-                for (int i = 0; i < properties.count; i++) {
-                    NSString * property = properties[i];
-                    BOOL isBool = ([property characterAtIndex:property.length-1] == '?');
-                    if (isBool)
-                        property = [property substringToIndex:property.length-1];
-                    
-                    if ([view respondsToSelector:NSSelectorFromString(property)]) {
-                        id  val = [view valueForKey:property];
-                        if (ValueIsNil(val) || ([val respondsToSelector:@selector(count)] && [val count] == 0)) {
-                            continue;
-                        }
-                        propertyValues[properties[i]] = (val
-                                                         ? (isBool ? BOOLString([val boolValue]) : val)
-                                                         : [NSNull null]);
-                    }
+        NSMutableDictionary * propertyValues = [@{} mutableCopy];
+        for (int i = 0; i < properties.count; i++) {
+            NSString * property = properties[i];
+            BOOL isBool = ([property characterAtIndex:property.length-1] == '?');
+            if (isBool)
+            property = [property substringToIndex:property.length-1];
+            
+            if ([view respondsToSelector:NSSelectorFromString(property)]) {
+                id  val = [view valueForKey:property];
+                if (ValueIsNil(val) || ([val respondsToSelector:@selector(count)] && [val count] == 0)) {
+                    continue;
                 }
-
-                NSString * valueDump = (propertyValues.count > 0
-                                        ? [[propertyValues description] stringByReplacingOccurrencesOfRegEx:@"=[\t ]+" withString:@"= "]
-                                        : @"");
-                [outstring appendFormat:@"[%2d] %@%@%@\n",
-                                        indent, ClassString([view class]),
-                                        propertyValues.count > 0?@":":@"",
-                                        valueDump];
-
-                for (UIView * subview in view.subviews)
-                    weakDumpView(subview, indent + 1);
-            };
-
+                propertyValues[properties[i]] = (val
+                                                 ? (isBool ? BOOLString([val boolValue]) : val)
+                                                 : [NSNull null]);
+            }
+        }
+        
+        NSString * valueDump = (propertyValues.count > 0
+                                ? [[propertyValues description] stringByReplacingRegEx:@"=[\t ]+" withString:@"= "]
+                                : @"");
+        [outstring appendFormat:@"[%2d] %@%@%@\n", indent, ClassString([view class]), propertyValues.count > 0?@":":@"", valueDump];
+        
+        for (UIView * subview in view.subviews) weakDumpView(subview, indent + 1);
+    };
+    
     dumpView(self, 0);
-
+    
     return outstring;
 }
 

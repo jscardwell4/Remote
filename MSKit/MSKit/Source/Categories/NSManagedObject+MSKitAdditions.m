@@ -15,7 +15,7 @@ MSKEY_DEFINITION(MSDefaultValueForContainingClass);
 @implementation NSManagedObject (MSKitAdditions)
 
 - (id)committedValueForKey:(NSString *)key {
-    return NilSafeValue([self committedValuesForKeys:@[key]][key]);
+    return NilSafe([self committedValuesForKeys:@[key]][key]);
 }
 
 - (BOOL)hasChangesForKey:(NSString *)key {

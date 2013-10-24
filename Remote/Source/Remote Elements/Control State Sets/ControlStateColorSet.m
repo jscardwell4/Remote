@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-#import "ControlStateSet.h"
+#import "ControlStateColorSet.h"
 #import "RemoteElementExportSupportFunctions.h"
 
 @implementation ControlStateColorSet
@@ -26,21 +26,21 @@
     assert(stateSet);
 
     MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"normal"]                         = NSStringFromUIColor(stateSet[0]);
-    dd[@"selected"]                       = NSStringFromUIColor(stateSet[1]);
-    dd[@"highlighted"]                    = NSStringFromUIColor(stateSet[2]);
-    dd[@"disabled"]                       = NSStringFromUIColor(stateSet[3]);
-    dd[@"highlightedAndSelected"]         = NSStringFromUIColor(stateSet[4]);
-    dd[@"highlightedAndDisabled"]         = NSStringFromUIColor(stateSet[5]);
-    dd[@"disabledAndSelected"]            = NSStringFromUIColor(stateSet[6]);
-    dd[@"selectedHighlightedAndDisabled"] = NSStringFromUIColor(stateSet[7]);
+    dd[@"normal"]                         = NSStringFromUIColor([stateSet valueForKey:@"normal"]);
+    dd[@"selected"]                       = NSStringFromUIColor([stateSet valueForKey:@"selected"]);
+    dd[@"highlighted"]                    = NSStringFromUIColor([stateSet valueForKey:@"highlighted"]);
+    dd[@"disabled"]                       = NSStringFromUIColor([stateSet valueForKey:@"disabled"]);
+    dd[@"highlightedAndSelected"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedAndSelected"]);
+    dd[@"highlightedAndDisabled"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedAndDisabled"]);
+    dd[@"disabledAndSelected"]            = NSStringFromUIColor([stateSet valueForKey:@"disabledAndSelected"]);
+    dd[@"selectedHighlightedAndDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedAndDisabled"]);
 
     return (MSDictionary *)dd;
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)] arrayByMappingToBlock:
                       ^id(id obj, NSUInteger idx)
@@ -53,10 +53,11 @@
     {
         UIColor * color = [self valueForKey:key];
         if (color)
-            dictionary[key] = CollectionSafeValue(normalizedColorJSONValueForColor(color));
+            dictionary[key] = CollectionSafe(normalizedColorJSONValueForColor(color));
     }
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

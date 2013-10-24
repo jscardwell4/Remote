@@ -11,19 +11,6 @@
 
 @implementation RemoteConfigurationDelegate
 
-
-+ (instancetype)delegateForRemoteElement:(Remote *)element
-{
-    assert(element);
-    __block RemoteConfigurationDelegate * configurationDelegate = nil;
-    [element.managedObjectContext performBlockAndWait:
-     ^{
-         configurationDelegate = [self MR_createInContext:element.managedObjectContext];
-         configurationDelegate.element = element;
-     }];
-
-    return configurationDelegate;
-}
 - (Remote *)remote { return (Remote *)self.element; }
 - (ConfigurationDelegate *)delegate { return self; }
 - (void)setDelegate:(ConfigurationDelegate *)delegate {}

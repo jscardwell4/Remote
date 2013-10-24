@@ -11,197 +11,263 @@
 #import "JSONObjectKeys.h"
 
 // remote element types
-MSSTRING_CONST   RETypeUndefinedKey   = @"undefined";
-MSSTRING_CONST   RETypeRemoteKey      = @"remote";
-MSSTRING_CONST   RETypeButtonGroupKey = @"button-group";
-MSSTRING_CONST   RETypeButtonKey      = @"button";
+MSSTRING_CONST   RETypeUndefinedJSONKey   = @"undefined";
+MSSTRING_CONST   RETypeRemoteJSONKey      = @"remote";
+MSSTRING_CONST   RETypeButtonGroupJSONKey = @"button-group";
+MSSTRING_CONST   RETypeButtonJSONKey      = @"button";
 
 // remote element subtypes
-MSSTRING_CONST   RESubtypeUndefinedKey = @"undefined";
+MSSTRING_CONST   RESubtypeUndefinedJSONKey = @"undefined";
 
-MSSTRING_CONST   REButtonGroupTopPanel1Key = @"top1";
-MSSTRING_CONST   REButtonGroupTopPanel2Key = @"top2";
-MSSTRING_CONST   REButtonGroupTopPanel3Key = @"top3";
+MSSTRING_CONST   REButtonGroupTopPanel1JSONKey = @"top1";
+MSSTRING_CONST   REButtonGroupTopPanel2JSONKey = @"top2";
+MSSTRING_CONST   REButtonGroupTopPanel3JSONKey = @"top3";
 
-MSSTRING_CONST   REButtonGroupBottomPanel1Key = @"bottom1";
-MSSTRING_CONST   REButtonGroupBottomPanel2Key = @"bottom2";
-MSSTRING_CONST   REButtonGroupBottomPanel3Key = @"bottom3";
+MSSTRING_CONST   REButtonGroupBottomPanel1JSONKey = @"bottom1";
+MSSTRING_CONST   REButtonGroupBottomPanel2JSONKey = @"bottom2";
+MSSTRING_CONST   REButtonGroupBottomPanel3JSONKey = @"bottom3";
 
-MSSTRING_CONST   REButtonGroupLeftPanel1Key = @"left1";
-MSSTRING_CONST   REButtonGroupLeftPanel2Key = @"left2";
-MSSTRING_CONST   REButtonGroupLeftPanel3Key = @"left3";
+MSSTRING_CONST   REButtonGroupLeftPanel1JSONKey = @"left1";
+MSSTRING_CONST   REButtonGroupLeftPanel2JSONKey = @"left2";
+MSSTRING_CONST   REButtonGroupLeftPanel3JSONKey = @"left3";
 
-MSSTRING_CONST   REButtonGroupRightPanel1Key = @"right1";
-MSSTRING_CONST   REButtonGroupRightPanel2Key = @"right2";
-MSSTRING_CONST   REButtonGroupRightPanel3Key = @"right3";
+MSSTRING_CONST   REButtonGroupRightPanel1JSONKey = @"right1";
+MSSTRING_CONST   REButtonGroupRightPanel2JSONKey = @"right2";
+MSSTRING_CONST   REButtonGroupRightPanel3JSONKey = @"right3";
 
-MSSTRING_CONST   REPanelLocationUnassignedKey = @"unassigned";
-MSSTRING_CONST   REPanelLocationTopKey        = @"top";
-MSSTRING_CONST   REPanelLocationBottomKey     = @"bottom";
-MSSTRING_CONST   REPanelLocationLeftKey       = @"left";
-MSSTRING_CONST   REPanelLocationRightKey      = @"right";
+MSSTRING_CONST   REPanelLocationUnassignedJSONKey = @"unassigned";
+MSSTRING_CONST   REPanelLocationTopJSONKey        = @"top";
+MSSTRING_CONST   REPanelLocationBottomJSONKey     = @"bottom";
+MSSTRING_CONST   REPanelLocationLeftJSONKey       = @"left";
+MSSTRING_CONST   REPanelLocationRightJSONKey      = @"right";
 
-MSSTRING_CONST   REPanelNoTriggerKey = @"none";
-MSSTRING_CONST   REPanelTrigger1Key  = @"1";
-MSSTRING_CONST   REPanelTrigger2Key  = @"2";
-MSSTRING_CONST   REPanelTrigger3Key  = @"3";
+MSSTRING_CONST   REPanelNoTriggerJSONKey = @"none";
+MSSTRING_CONST   REPanelTrigger1JSONKey  = @"1";
+MSSTRING_CONST   REPanelTrigger2JSONKey  = @"2";
+MSSTRING_CONST   REPanelTrigger3JSONKey  = @"3";
 
 // remote element options
-MSSTRING_CONST   REOptionsUndefinedKey          = @"undefined";
-MSSTRING_CONST   RERemoteOptionsDefaultKey      = @"default";
-MSSTRING_CONST   RERemoteOptionTopBarHiddenKey  = @"top-bar-hidden";
-MSSTRING_CONST   REButtonGroupOptionsDefaultKey = @"default";
-MSSTRING_CONST   REButtonGroupOptionAutohideKey = @"autohide";
+MSSTRING_CONST   REOptionsDefaultJSONKey                       = @"default";
+MSSTRING_CONST   RERemoteOptionTopBarHiddenJSONKey             = @"top-bar-hidden";
+MSSTRING_CONST   REButtonGroupOptionAutohideJSONKey            = @"autohide";
+MSSTRING_CONST   REButtonGroupOptionCommandSetContainerJSONKey = @"command-set-container";
 
 // remote element shapes
-MSSTRING_CONST   REShapeUndefinedKey        = @"undefined";
-MSSTRING_CONST   REShapeRoundedRectangleKey = @"rounded-rectangle";
-MSSTRING_CONST   REShapeOvalKey             = @"oval";
-MSSTRING_CONST   REShapeRectangleKey        = @"rectangle";
-MSSTRING_CONST   REShapeTriangleKey         = @"triangle";
-MSSTRING_CONST   REShapeDiamondKey          = @"diamond";
+MSSTRING_CONST   REShapeUndefinedJSONKey        = @"undefined";
+MSSTRING_CONST   REShapeRoundedRectangleJSONKey = @"rounded-rectangle";
+MSSTRING_CONST   REShapeOvalJSONKey             = @"oval";
+MSSTRING_CONST   REShapeRectangleJSONKey        = @"rectangle";
+MSSTRING_CONST   REShapeTriangleJSONKey         = @"triangle";
+MSSTRING_CONST   REShapeDiamondJSONKey          = @"diamond";
 
-MSSTRING_CONST   REStyleUndefinedKey   = @"undefined";
-MSSTRING_CONST   REStyleApplyGlossKey  = @"gloss";
-MSSTRING_CONST   REStyleGlossStyle1Key = @"gloss1";
-MSSTRING_CONST   REStyleGlossStyle2Key = @"gloss2";
-MSSTRING_CONST   REStyleGlossStyle3Key = @"gloss3";
-MSSTRING_CONST   REStyleGlossStyle4Key = @"gloss4";
-MSSTRING_CONST   REStyleDrawBorderKey  = @"border";
-MSSTRING_CONST   REStyleStretchableKey = @"stretchable";
+MSSTRING_CONST   REStyleUndefinedJSONKey   = @"undefined";
+MSSTRING_CONST   REStyleApplyGlossJSONKey  = @"gloss";
+MSSTRING_CONST   REStyleGlossStyle1JSONKey = @"gloss1";
+MSSTRING_CONST   REStyleGlossStyle2JSONKey = @"gloss2";
+MSSTRING_CONST   REStyleGlossStyle3JSONKey = @"gloss3";
+MSSTRING_CONST   REStyleGlossStyle4JSONKey = @"gloss4";
+MSSTRING_CONST   REStyleDrawBorderJSONKey  = @"border";
+MSSTRING_CONST   REStyleStretchableJSONKey = @"stretchable";
 
 // remote element theme override flags
-MSSTRING_CONST   REThemeNoneKey = @"none";
+MSSTRING_CONST   REThemeNoneJSONKey = @"none";
 
-MSSTRING_CONST   REThemeNoBackgroundImageKey      = @"background-image";
-MSSTRING_CONST   REThemeNoBackgroundImageAlphaKey = @"background-image-alpha";
-MSSTRING_CONST   REThemeNoBackgroundColorKey      = @"background-color";
-MSSTRING_CONST   REThemeNoBackgroundKey           = @"background";
+MSSTRING_CONST   REThemeNoBackgroundImageJSONKey          = @"background-image";
+MSSTRING_CONST   REThemeNoBackgroundImageAlphaJSONKey     = @"background-image-alpha";
+MSSTRING_CONST   REThemeNoBackgroundColorAttributeJSONKey = @"background-color";
+MSSTRING_CONST   REThemeNoBackgroundJSONKey               = @"background";
 
-MSSTRING_CONST   REThemeNoBorderKey      = @"border";
-MSSTRING_CONST   REThemeNoGlossKey       = @"gloss";
-MSSTRING_CONST   REThemeNoStretchableKey = @"stretchable";
-MSSTRING_CONST   REThemeNoStyleKey       = @"style";
+MSSTRING_CONST   REThemeNoBorderJSONKey      = @"border";
+MSSTRING_CONST   REThemeNoGlossJSONKey       = @"gloss";
+MSSTRING_CONST   REThemeNoStretchableJSONKey = @"stretchable";
+MSSTRING_CONST   REThemeNoStyleJSONKey       = @"style";
 
-MSSTRING_CONST   REThemeNoIconImageKey  = @"icon-image";
-MSSTRING_CONST   REThemeNoIconColorKey  = @"icon-color";
-MSSTRING_CONST   REThemeNoIconInsetsKey = @"icon-insets";
-MSSTRING_CONST   REThemeNoIconKey       = @"icon";
+MSSTRING_CONST   REThemeNoIconImageJSONKey          = @"icon-image";
+MSSTRING_CONST   REThemeNoIconColorAttributeJSONKey = @"icon-color";
+MSSTRING_CONST   REThemeNoIconInsetsJSONKey         = @"icon-insets";
+MSSTRING_CONST   REThemeNoIconJSONKey               = @"icon";
 
-MSSTRING_CONST   REThemeNoTitleForegroundColorKey = @"title-foreground-color";
-MSSTRING_CONST   REThemeNoTitleBackgroundColorKey = @"title-background-color";
-MSSTRING_CONST   REThemeNoTitleShadowColorKey     = @"title-shadow-color";
-MSSTRING_CONST   REThemeNoTitleStrokeColorKey     = @"title-stroke-color";
-MSSTRING_CONST   REThemeNoTitleColorKey           = @"title-color";
-MSSTRING_CONST   REThemeNoFontNameKey             = @"font-name";
-MSSTRING_CONST   REThemeNoFontSizeKey             = @"font-size";
-MSSTRING_CONST   REThemeNoFontKey                 = @"font";
-MSSTRING_CONST   REThemeNoStrokeWidthKey          = @"stroke-width";
-MSSTRING_CONST   REThemeNoStrikethroughKey        = @"strikethrough";
-MSSTRING_CONST   REThemeNoUnderlineKey            = @"underline";
-MSSTRING_CONST   REThemeNoLigatureKey             = @"ligature";
-MSSTRING_CONST   REThemeNoKernKey                 = @"kern";
-MSSTRING_CONST   REThemeNoParagraphStyleKey       = @"paragraph-style";
-MSSTRING_CONST   REThemeNoTitleAttributesKey      = @"title-attributes";
-MSSTRING_CONST   REThemeNoTitleInsetsKey          = @"title-insets";
-MSSTRING_CONST   REThemeNoTitleTextKey            = @"title-text";
-MSSTRING_CONST   REThemeNoTitleKey                = @"title";
+MSSTRING_CONST   REThemeNoTitleForegroundColorAttributeJSONKey = @"title-foreground-color";
+MSSTRING_CONST   REThemeNoTitleBackgroundColorAttributeJSONKey = @"title-background-color";
+MSSTRING_CONST   REThemeNoTitleShadowColorAttributeJSONKey     = @"title-shadow-color";
+MSSTRING_CONST   REThemeNoTitleStrokeColorAttributeJSONKey     = @"title-stroke-color";
+MSSTRING_CONST   REThemeNoTitleColorAttributeJSONKey           = @"title-color";
 
-MSSTRING_CONST   REThemeNoContentInsetsKey = @"content-insets";
-MSSTRING_CONST   REThemeNoShapeKey         = @"shape";
+MSSTRING_CONST   REThemeNoFontNameJSONKey             = @"font-name";
+MSSTRING_CONST   REThemeNoFontSizeJSONKey             = @"font-size";
+MSSTRING_CONST   REThemeNoFontJSONKey                 = @"font";
+MSSTRING_CONST   REThemeNoStrokeWidthJSONKey          = @"stroke-width";
+MSSTRING_CONST   REThemeNoStrikethroughJSONKey        = @"strikethrough";
+MSSTRING_CONST   REThemeNoUnderlineJSONKey            = @"underline";
+MSSTRING_CONST   REThemeNoLigatureJSONKey             = @"ligature";
+MSSTRING_CONST   REThemeNoKernJSONKey                 = @"kern";
+MSSTRING_CONST   REThemeNoParagraphStyleJSONKey       = @"paragraph-style";
+MSSTRING_CONST   REThemeNoTitleAttributesJSONKey      = @"title-attributes";
+MSSTRING_CONST   REThemeNoTitleInsetsJSONKey          = @"title-insets";
+MSSTRING_CONST   REThemeNoTitleTextJSONKey            = @"title-text";
+MSSTRING_CONST   REThemeNoTitleJSONKey                = @"title";
 
-MSSTRING_CONST   REThemeAllKey = @"all";
+MSSTRING_CONST   REThemeNoContentInsetsJSONKey = @"content-insets";
+MSSTRING_CONST   REThemeNoShapeJSONKey         = @"shape";
+
+MSSTRING_CONST   REThemeAllJSONKey = @"all";
 
 // remote element roles
-MSSTRING_CONST   RERoleUndefinedKey = @"undefined";
+MSSTRING_CONST   RERoleUndefinedJSONKey = @"undefined";
 
-MSSTRING_CONST   REButtonGroupRolePanelKey          = @"panel";
-MSSTRING_CONST   REButtonGroupRoleSelectionPanelKey = @"selection-panel";
-MSSTRING_CONST   REButtonGroupRoleToolbarKey        = @"toolbar";
-MSSTRING_CONST   REButtonGroupRoleDPadKey           = @"dpad";
-MSSTRING_CONST   REButtonGroupRoleNumberpadKey      = @"numberpad";
-MSSTRING_CONST   REButtonGroupRoleTransportKey      = @"transport";
-MSSTRING_CONST   REButtonGroupRolePickerLabelKey    = @"picker";
+MSSTRING_CONST   REButtonGroupRoleSelectionPanelJSONKey = @"selection-panel";
+MSSTRING_CONST   REButtonGroupRoleToolbarJSONKey        = @"toolbar";
+MSSTRING_CONST   REButtonGroupRoleDPadJSONKey           = @"dpad";
+MSSTRING_CONST   REButtonGroupRoleNumberpadJSONKey      = @"numberpad";
+MSSTRING_CONST   REButtonGroupRoleTransportJSONKey      = @"transport";
+MSSTRING_CONST   REButtonGroupRoleRockerJSONKey         = @"rocker";
 
-MSSTRING_CONST   REButtonRoleToolbarKey          = @"toolbar";
-MSSTRING_CONST   REButtonRoleConnectionStatusKey = @"connection-status";
-MSSTRING_CONST   REButtonRoleBatteryStatusKey    = @"battery-status";
+MSSTRING_CONST   REButtonRoleToolbarJSONKey          = @"toolbar";
+MSSTRING_CONST   REButtonRoleConnectionStatusJSONKey = @"connection-status";
+MSSTRING_CONST   REButtonRoleBatteryStatusJSONKey    = @"battery-status";
 
-MSSTRING_CONST   REButtonRolePickerLabelTopKey    = @"picker-top";
-MSSTRING_CONST   REButtonRolePickerLabelBottomKey = @"picker-bottom";
+MSSTRING_CONST   REButtonRoleRockerTopJSONKey    = @"top";
+MSSTRING_CONST   REButtonRoleRockerBottomJSONKey = @"bottom";
 
-MSSTRING_CONST   REButtonRolePanelKey          = @"panel";
-MSSTRING_CONST   REButtonRoleTuckKey           = @"tuck";
-MSSTRING_CONST   REButtonRoleSelectionPanelKey = @"selection-panel";
+MSSTRING_CONST   REButtonRolePanelJSONKey          = @"panel";
+MSSTRING_CONST   REButtonRoleTuckJSONKey           = @"tuck";
+MSSTRING_CONST   REButtonRoleSelectionPanelJSONKey = @"selection-panel";
 
-MSSTRING_CONST   REButtonRoleDPadUpKey     = @"dpad-up";
-MSSTRING_CONST   REButtonRoleDPadDownKey   = @"dpad-down";
-MSSTRING_CONST   REButtonRoleDPadLeftKey   = @"dpad-left";
-MSSTRING_CONST   REButtonRoleDPadRightKey  = @"dpad-right";
-MSSTRING_CONST   REButtonRoleDPadCenterKey = @"dpad-center";
+MSSTRING_CONST   REButtonRoleDPadUpJSONKey     = @"up";
+MSSTRING_CONST   REButtonRoleDPadDownJSONKey   = @"down";
+MSSTRING_CONST   REButtonRoleDPadLeftJSONKey   = @"left";
+MSSTRING_CONST   REButtonRoleDPadRightJSONKey  = @"right";
+MSSTRING_CONST   REButtonRoleDPadCenterJSONKey = @"center";
 
-MSSTRING_CONST   REButtonRoleNumberpad1Key    = @"numberpad-1";
-MSSTRING_CONST   REButtonRoleNumberpad2Key    = @"numberpad-2";
-MSSTRING_CONST   REButtonRoleNumberpad3Key    = @"numberpad-3";
-MSSTRING_CONST   REButtonRoleNumberpad4Key    = @"numberpad-4";
-MSSTRING_CONST   REButtonRoleNumberpad5Key    = @"numberpad-5";
-MSSTRING_CONST   REButtonRoleNumberpad6Key    = @"numberpad-6";
-MSSTRING_CONST   REButtonRoleNumberpad7Key    = @"numberpad-7";
-MSSTRING_CONST   REButtonRoleNumberpad8Key    = @"numberpad-8";
-MSSTRING_CONST   REButtonRoleNumberpad9Key    = @"numberpad-9";
-MSSTRING_CONST   REButtonRoleNumberpad0Key    = @"numberpad-0";
-MSSTRING_CONST   REButtonRoleNumberpadAux1Key = @"numberpad-aux1";
-MSSTRING_CONST   REButtonRoleNumberpadAux2Key = @"numberpad-aux2";
+MSSTRING_CONST   REButtonRoleNumberpad1JSONKey    = @"1";
+MSSTRING_CONST   REButtonRoleNumberpad2JSONKey    = @"2";
+MSSTRING_CONST   REButtonRoleNumberpad3JSONKey    = @"3";
+MSSTRING_CONST   REButtonRoleNumberpad4JSONKey    = @"4";
+MSSTRING_CONST   REButtonRoleNumberpad5JSONKey    = @"5";
+MSSTRING_CONST   REButtonRoleNumberpad6JSONKey    = @"6";
+MSSTRING_CONST   REButtonRoleNumberpad7JSONKey    = @"7";
+MSSTRING_CONST   REButtonRoleNumberpad8JSONKey    = @"8";
+MSSTRING_CONST   REButtonRoleNumberpad9JSONKey    = @"9";
+MSSTRING_CONST   REButtonRoleNumberpad0JSONKey    = @"0";
+MSSTRING_CONST   REButtonRoleNumberpadAux1JSONKey = @"aux1";
+MSSTRING_CONST   REButtonRoleNumberpadAux2JSONKey = @"aux2";
 
-MSSTRING_CONST   REButtonRoleTransportPlayKey   = @"transport-play";
-MSSTRING_CONST   REButtonRoleTransportStopKey   = @"transport-stop";
-MSSTRING_CONST   REButtonRoleTransportPauseKey  = @"transport-pause";
-MSSTRING_CONST   REButtonRoleTransportSkipKey   = @"transport-skip";
-MSSTRING_CONST   REButtonRoleTransportReplayKey = @"transport-replay";
-MSSTRING_CONST   REButtonRoleTransportFFKey     = @"transport-fast-forward";
-MSSTRING_CONST   REButtonRoleTransportRewindKey = @"transport-rewind";
-MSSTRING_CONST   REButtonRoleTransportRecordKey = @"transport-record";
+MSSTRING_CONST   REButtonRoleTransportPlayJSONKey   = @"play";
+MSSTRING_CONST   REButtonRoleTransportStopJSONKey   = @"stop";
+MSSTRING_CONST   REButtonRoleTransportPauseJSONKey  = @"pause";
+MSSTRING_CONST   REButtonRoleTransportSkipJSONKey   = @"skip";
+MSSTRING_CONST   REButtonRoleTransportReplayJSONKey = @"replay";
+MSSTRING_CONST   REButtonRoleTransportFFJSONKey     = @"fast-forward";
+MSSTRING_CONST   REButtonRoleTransportRewindJSONKey = @"rewind";
+MSSTRING_CONST   REButtonRoleTransportRecordJSONKey = @"record";
 
 // remote element states
-MSSTRING_CONST   REStateDefaultKey     = @"default";
-MSSTRING_CONST   REStateNormalKey      = @"normal";
-MSSTRING_CONST   REStateHighlightedKey = @"highlighted";
-MSSTRING_CONST   REStateDisabledKey    = @"disabled";
-MSSTRING_CONST   REStateSelectedKey    = @"selected";
+MSSTRING_CONST   REStateDefaultJSONKey     = @"default";
+MSSTRING_CONST   REStateNormalJSONKey      = @"normal";
+MSSTRING_CONST   REStateHighlightedJSONKey = @"highlighted";
+MSSTRING_CONST   REStateDisabledJSONKey    = @"disabled";
+MSSTRING_CONST   REStateSelectedJSONKey    = @"selected";
 
 // command classes
-MSSTRING_CONST   PowerCommandTypeKey    = @"power";
-MSSTRING_CONST   SendIRCommandTypeKey   = @"sendir";
-MSSTRING_CONST   HTTPCommandTypeKey     = @"http";
-MSSTRING_CONST   DelayCommandTypeKey    = @"delay";
-MSSTRING_CONST   MacroCommandTypeKey    = @"macro";
-MSSTRING_CONST   SystemCommandTypeKey   = @"system";
-MSSTRING_CONST   SwitchCommandTypeKey   = @"switch";
-MSSTRING_CONST   ActivityCommandTypeKey = @"activity";
+MSSTRING_CONST   PowerCommandTypeJSONKey    = @"power";
+MSSTRING_CONST   SendIRCommandTypeJSONKey   = @"sendir";
+MSSTRING_CONST   HTTPCommandTypeJSONKey     = @"http";
+MSSTRING_CONST   DelayCommandTypeJSONKey    = @"delay";
+MSSTRING_CONST   MacroCommandTypeJSONKey    = @"macro";
+MSSTRING_CONST   SystemCommandTypeJSONKey   = @"system";
+MSSTRING_CONST   SwitchCommandTypeJSONKey   = @"switch";
+MSSTRING_CONST   ActivityCommandTypeJSONKey = @"activity";
 
 // command options
-MSSTRING_CONST   CommandOptionDefaultKey   = @"default";
-MSSTRING_CONST   CommandOptionLongPressKey = @"long-press";
+MSSTRING_CONST   CommandOptionDefaultJSONKey   = @"default";
+MSSTRING_CONST   CommandOptionLongPressJSONKey = @"long-press";
 
 // system command types
-MSSTRING_CONST   SystemCommandTypeUndefinedKey         = @"undefined";
-MSSTRING_CONST   SystemCommandProximitySensorKey = @"proximity-sensor";
-MSSTRING_CONST   SystemCommandURLRequestKey            = @"url-request";
-MSSTRING_CONST   SystemCommandLaunchScreenKey  = @"return-to-launch-screen";
-MSSTRING_CONST   SystemCommandOpenSettingsKey          = @"open-settings";
-MSSTRING_CONST   SystemCommandOpenEditorKey            = @"open-editor";
+MSSTRING_CONST   SystemCommandTypeUndefinedJSONKey   = @"undefined";
+MSSTRING_CONST   SystemCommandProximitySensorJSONKey = @"proximity-sensor";
+MSSTRING_CONST   SystemCommandURLRequestJSONKey      = @"url-request";
+MSSTRING_CONST   SystemCommandLaunchScreenJSONKey    = @"return-to-launch-screen";
+MSSTRING_CONST   SystemCommandOpenSettingsJSONKey    = @"open-settings";
+MSSTRING_CONST   SystemCommandOpenEditorJSONKey      = @"open-editor";
 
 // switch command types
-MSSTRING_CONST   SwitchRemoteCommandKey = @"remote";
-MSSTRING_CONST   SwitchModeCommandKey   = @"mode";
+MSSTRING_CONST   SwitchRemoteCommandJSONKey = @"remote";
+MSSTRING_CONST   SwitchModeCommandJSONKey   = @"mode";
 
-// command set types
-MSSTRING_CONST   CommandSetTypeUnspecifiedKey = @"undefined";
-MSSTRING_CONST   CommandSetTypeDPadKey        = @"dpad";
-MSSTRING_CONST   CommandSetTypeTransportKey   = @"transport";
-MSSTRING_CONST   CommandSetTypeNumberpadKey   = @"numberpad";
-MSSTRING_CONST   CommandSetTypeRockerKey      = @"rocker";
+// command sets
+MSSTRING_CONST   ButtonGroupCommandSetJSONKey           = @"command-set";
+MSSTRING_CONST   ButtonGroupCommandSetCollectionJSONKey = @"command-set-collection";
+MSSTRING_CONST   CommandSetTypeJSONKey                  = @"type";
+MSSTRING_CONST   CommandSetTypeUnspecifiedJSONKey       = @"undefined";
+MSSTRING_CONST   CommandSetTypeDPadJSONKey              = @"dpad";
+MSSTRING_CONST   CommandSetTypeTransportJSONKey         = @"transport";
+MSSTRING_CONST   CommandSetTypeNumberpadJSONKey         = @"numberpad";
+MSSTRING_CONST   CommandSetTypeRockerJSONKey            = @"rocker";
 
 // remote element actions
-MSSTRING_CONST   RESingleTapActionKey = @"tap";
-MSSTRING_CONST   RELongPressActionKey = @"long-press";
+MSSTRING_CONST   RESingleTapActionJSONKey = @"tap";
+MSSTRING_CONST   RELongPressActionJSONKey = @"long-press";
+
+// control state title set attributes
+MSSTRING_CONST   REFontAttributeJSONKey               = @"font";
+MSSTRING_CONST   REParagraphStyleAttributeJSONKey     = @"paragraph-style";
+MSSTRING_CONST   REForegroundColorAttributeJSONKey    = @"foreground-color";
+MSSTRING_CONST   REBackgroundColorAttributeJSONKey    = @"background-color";
+MSSTRING_CONST   RELigatureAttributeJSONKey           = @"ligature";
+MSSTRING_CONST   REKernAttributeJSONKey               = @"kern";
+MSSTRING_CONST   REStrikethroughStyleAttributeJSONKey = @"strikethrough-style";
+MSSTRING_CONST   REUnderlineStyleAttributeJSONKey     = @"underline-style";
+MSSTRING_CONST   REStrokeColorAttributeJSONKey        = @"stroke-color";
+MSSTRING_CONST   REStrokeWidthAttributeJSONKey        = @"stroke-width";
+MSSTRING_CONST   RETextEffectAttributeJSONKey         = @"text-effect";
+MSSTRING_CONST   REBaselineOffsetAttributeJSONKey     = @"baseline-offset";
+MSSTRING_CONST   REUnderlineColorAttributeJSONKey     = @"underline-color";
+MSSTRING_CONST   REStrikethroughColorAttributeJSONKey = @"strikethrough-color";
+MSSTRING_CONST   REObliquenessAttributeJSONKey        = @"obliqueness";
+MSSTRING_CONST   REExpansionAttributeJSONKey          = @"expansion";
+MSSTRING_CONST   REShadowAttributeJSONKey             = @"shadow";
+MSSTRING_CONST   RETitleTextAttributeJSONKey          = @"text";
+MSSTRING_CONST   REFontAwesomeIconJSONKey             = @"icon-name";
+
+MSSTRING_CONST   RELineSpacingAttributeJSONKey            = @"line-spacing";
+MSSTRING_CONST   REParagraphSpacingAttributeJSONKey       = @"paragraph-spacing";
+MSSTRING_CONST   RETextAlignmentAttributeJSONKey          = @"alignment";
+MSSTRING_CONST   REFirstLineHeadIndentAttributeJSONKey    = @"first-line-head-indent";
+MSSTRING_CONST   REHeadIndentAttributeJSONKey             = @"head-indent";
+MSSTRING_CONST   RETailIndentAttributeJSONKey             = @"tail-indent";
+MSSTRING_CONST   RELineBreakModeAttributeJSONKey          = @"line-break-mode";
+MSSTRING_CONST   REMinimumLineHeightAttributeJSONKey      = @"minimum-line-height";
+MSSTRING_CONST   REMaximumLineHeightAttributeJSONKey      = @"maximum-line-height";
+MSSTRING_CONST   RELineHeightMultipleAttributeJSONKey     = @"line-height-multiple";
+MSSTRING_CONST   REParagraphSpacingBeforeAttributeJSONKey = @"paragraph-spacing-before";
+MSSTRING_CONST   REHyphenationFactorAttributeJSONKey      = @"hyphenation-factor";
+MSSTRING_CONST   RETabStopsAttributeJSONKey               = @"tab-stops";
+MSSTRING_CONST   REDefaultTabIntervalAttributeJSONKey     = @"default-tab-interval";
+
+MSSTRING_CONST   RETextAlignmentLeftJSONKey      = @"left";
+MSSTRING_CONST   RETextAlignmentCenterJSONKey    = @"center";
+MSSTRING_CONST   RETextAlignmentRightJSONKey     = @"right";
+MSSTRING_CONST   RETextAlignmentJustifiedJSONKey = @"justified";
+MSSTRING_CONST   RETextAlignmentNaturalJSONKey   = @"natural";
+
+MSSTRING_CONST   RELineBreakByWordWrappingJSONKey     = @"word-wrap";
+MSSTRING_CONST   RELineBreakByCharWrappingJSONKey     = @"character-wrap";
+MSSTRING_CONST   RELineBreakByClippingJSONKey         = @"clip";
+MSSTRING_CONST   RELineBreakByTruncatingHeadJSONKey   = @"truncate-head";
+MSSTRING_CONST   RELineBreakByTruncatingTailJSONKey   = @"truncate-tail";
+MSSTRING_CONST   RELineBreakByTruncatingMiddleJSONKey = @"truncate-middle";
+
+MSSTRING_CONST   RETextEffectLetterPressJSONKey = @"letter-press";
+
+MSSTRING_CONST   REUnderlineStyleNoneJSONKey         = @"none";
+MSSTRING_CONST   REUnderlineStyleSingleJSONKey       = @"single";
+MSSTRING_CONST   REUnderlineStyleThickJSONKey        = @"thick";
+MSSTRING_CONST   REUnderlineStyleDoubleJSONKey       = @"double";
+MSSTRING_CONST   REUnderlinePatternSolidJSONKey      = @"solid";
+MSSTRING_CONST   REUnderlinePatternDotJSONKey        = @"dot";
+MSSTRING_CONST   REUnderlinePatternDashJSONKey       = @"dash";
+MSSTRING_CONST   REUnderlinePatternDashDotJSONKey    = @"dash-dot";
+MSSTRING_CONST   REUnderlinePatternDashDotDotJSONKey = @"dash-dot-dot";
+MSSTRING_CONST   REUnderlineByWordJSONKey            = @"by-word";
+
+

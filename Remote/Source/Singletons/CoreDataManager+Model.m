@@ -122,7 +122,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     modifyAttributeForEntities([entities objectsForKeys:@[@"RemoteElement",
                                                           @"Remote",
                                                           @"ButtonGroup",
-                                                          @"PickerLabelButtonGroup",
                                                           @"Button"]
                                          notFoundMarker:NullObject],
                                @"backgroundColor",
@@ -194,6 +193,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                nil);
 
     // configurations attribute on configuration delegates
+
     modifyAttributeForEntities([entities
                                 objectsForKeys:@[@"ConfigurationDelegate",
                                                  @"RemoteConfigurationDelegate",
@@ -215,8 +215,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                nil);
 
     // label attribute on button groups
-    modifyAttributeForEntities([entities objectsForKeys:@[@"ButtonGroup",
-                                                          @"PickerLabelButtonGroup"]
+    modifyAttributeForEntities([entities objectsForKeys:@[@"ButtonGroup"]
                                          notFoundMarker:NullObject],
                                @"label",
                                @"NSAttributedString",
@@ -321,7 +320,7 @@ NSString * (^descriptionForModel)(NSManagedObjectModel *) = ^NSString *(NSManage
              {
                  NSAttributeDescription * ad = (NSAttributeDescription *)property;
                  d[@"attribute value  class name"]       = NSAttributeTypeString(ad.attributeType);
-                 d[@"default value"]                     = CollectionSafeValue(ad.defaultValue);
+                 d[@"default value"]                     = CollectionSafe(ad.defaultValue);
                  d[@"allows extern binary data storage"] = BOOLString(ad.allowsExternalBinaryDataStorage);
              }
 

@@ -51,11 +51,19 @@
 
 - (NSString *)quotedString;
 
+- (NSString *)stringByReplacingOccurrencesWithDictionary:(NSDictionary *)replacements;
+
 /// Right shifts all lines by the specified amount using leading spaces
 - (NSString *)stringByShiftingRight:(NSUInteger)shiftAmount;
 
 /// Right shifts all lines by the specified amount with the option to leave first line unshifted
 - (NSString *)stringByShiftingRight:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine;
+
+/// Left shifts all lines by the specified amount removing leading spaces
+- (NSString *)stringByShiftingLeft:(NSUInteger)shiftAmount;
+
+/// Left shifts all lines by the specified amount with the option to leave first line unshifted
+- (NSString *)stringByShiftingLeft:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine;
 
 /// Replace returns with ⏎
 - (NSString *)stringByReplacingReturnsWithSymbol;
@@ -131,46 +139,9 @@
 
 /// Returns `YES` if the string has length greater than zero 
 + (BOOL)isNotEmptyString:(NSString *)string;
+- (NSArray *)keyPathComponents;
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Regular Expressions
-////////////////////////////////////////////////////////////////////////////////
-
-- (NSRange)rangeOfRegEX:(NSString *)regex;
-
-- (NSRange)rangeOfCapture:(NSUInteger)capture forRegEx:(NSString *)regex;
-
-- (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex;
-
-- (NSRange)rangeOfCapture:(NSUInteger)capture inMatch:(NSUInteger)match forRegEx:(NSString *)regex;
-
-- (NSArray *)rangesOfMatchesForRegEx:(NSString *)regex;
-
-- (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture;
-
-- (NSString *)stringByMatchingOccurrencesOfRegEx:(NSString *)regex
-                                           match:(NSUInteger)match
-                                         capture:(NSUInteger)capture;
-
-- (NSString *)sub:(NSString *)regex
-         template:(NSString *)temp
-          options:(NSRegularExpressionOptions)opts;
-
-- (NSString *)stringByReplacingOccurrencesOfRegEx:(NSString *)regex withString:(NSString *)string;
-
-- (NSString *)stringByReplacingOccurrencesWithDictionary:(NSDictionary *)replacements;
-
-- (NSArray *)componentsSeparatedByRegEx:(NSString *)regex;
-
-- (NSArray *)matchingSubstringsForRegEx:(NSString *)regex;
-
-- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex;
-- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex options:(NSRegularExpressionOptions)opts;
-
-- (NSArray *)matchesForRegEx:(NSString *)regex;
-
-- (BOOL)hasSubstring:(NSString *)substring;
-- (BOOL)hasSubstring:(NSString *)substring options:(NSRegularExpressionOptions)options;
+- (BOOL)writeToFile:(NSString *)filePath;
 
 @end
 
@@ -182,18 +153,62 @@
 
 - (void)insertString:(NSString *)aString atIndexes:(NSIndexSet *)indexes;
 
-/**
- Replacement strings can include captures using $(capture). i.e. @"$1"
- Text can be specifed for a particular capture with $(capture)=(text)=. i.e. @"$1 $2=%0A="
- */
-- (void)replaceOccurrencesOfRegEx:(NSString *)regex withString:(NSString *)string;
-
-- (void)replaceOccurrencesOfStringsWithDictionary:(NSDictionary *)replacements;
-
 - (void)removeCharacter:(unichar)character;
 
 - (void)removeCharactersFromSet:(NSCharacterSet *)characterSet;
 
+- (void)replaceOccurrencesOfStringsWithDictionary:(NSDictionary *)replacements;
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Regular Expressions
+////////////////////////////////////////////////////////////////////////////////
+
+
+@interface NSString (MSKitRegularExpressionAdditions)
+
+- (NSRange)rangeOfCapture:(NSUInteger)capture forRegEx:(NSString *)regex;
+- (NSRange)rangeOfCapture:(NSUInteger)capture inMatch:(NSUInteger)match forRegEx:(NSString *)regex;
+
+- (NSRange)rangeOfRegEX:(NSString *)regex;
+- (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex;
+- (NSArray *)rangesOfMatchesForRegEx:(NSString *)regex;
+
+- (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture;
+- (NSString *)stringByMatchingRegEx:(NSString *)regex
+                              match:(NSUInteger)match
+                            capture:(NSUInteger)capture;
+
+- (NSString *)sub:(NSString *)regex
+         template:(NSString *)temp
+          options:(NSRegularExpressionOptions)opts;
+
+- (NSString *)stringByReplacingRegEx:(NSString *)regex withString:(NSString *)string;
+
+- (NSArray *)componentsSeparatedByRegEx:(NSString *)regex;
+- (NSArray *)matchesForRegEx:(NSString *)regex;
+- (NSArray *)matchingSubstringsForRegEx:(NSString *)regex;
+- (NSArray *)capturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex;
+- (NSArray *)capturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex
+                                                     options:(NSRegularExpressionOptions)opts;
+
+- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex;
+- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex options:(NSRegularExpressionOptions)opts;
+
+- (BOOL)hasSubstring:(NSString *)substring;
+- (BOOL)hasSubstring:(NSString *)substring options:(NSRegularExpressionOptions)options;
+
+@end
+
+@interface NSMutableString (MSKitRegularExpressionAdditions)
+
+/**
+ Replacement strings can include captures using $(capture). i.e. @"$1"
+ Text can be specifed for a particular capture with $(capture)=(text)=. i.e. @"$1 $2=%0A="
+ */
+- (void)replaceRegEx:(NSString *)regex withString:(NSString *)string;
 - (void)sub:(NSString *)regex template:(NSString *)temp options:(NSRegularExpressionOptions)opts;
 
 @end

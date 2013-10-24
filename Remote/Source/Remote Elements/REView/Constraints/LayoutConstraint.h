@@ -13,10 +13,10 @@
  */
 @interface LayoutConstraint:NSLayoutConstraint
 
-@property (nonatomic, strong) Constraint                     * modelConstraint;
-@property (readonly, weak)    RemoteElementView                           * firstItem;
-@property (readonly, weak)    RemoteElementView                           * secondItem;
-@property (nonatomic, weak)   RemoteElementView                           * owner;
+@property (nonatomic, strong) Constraint                       * modelConstraint;
+@property (readonly, weak)    RemoteElementView                * firstItem;
+@property (readonly, weak)    RemoteElementView                * secondItem;
+@property (nonatomic, weak)   RemoteElementView                * owner;
 @property (nonatomic, weak, readonly)   NSString               * uuid;
 @property (nonatomic, assign, readonly, getter = isValid) BOOL   valid;
 

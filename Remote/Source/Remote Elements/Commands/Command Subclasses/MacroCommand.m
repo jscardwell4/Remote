@@ -70,7 +70,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 - (CommandOperation *)operation { return [MacroCommandOperation operationForCommand:self]; }
 
-
 - (void)insertObject:(Command *)command inCommandsAtIndex:(NSUInteger)idx
 {
     NSIndexSet * indices = [NSIndexSet indexSetWithIndex:idx];
@@ -170,18 +169,18 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     [self insertObject:obj inCommandsAtIndex:idx];
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     if ([self.commands count])
         dictionary[@"commands"] = [self valueForKeyPath:@"commands.JSONDictionary"];
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
-
 
 - (NSString *)name
 {
@@ -197,6 +196,27 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 {
     return $(@"commands:(%@)",
              ([[[self.primitiveCommands array] valueForKeyPath:@"className"] componentsJoinedByString:@", "]) ?: @"nil");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)shouldImportActivityLaunch:(id)data {return NO;}
+- (BOOL)shouldImportActivityHalt:(id)data {return NO;}
+
+- (void)importCommands:(NSDictionary *)data
+{
+    assert([data isKindOfClass:[NSDictionary class]]);
+    for (NSDictionary * commandData in data[@"commands"])
+    {
+        NSString * classKey = commandData[@"class"];
+        Class commandClass = commandClassForImportKey(classKey);
+        if (!commandClass) continue;
+        Command * command = [commandClass MR_importFromObject:commandData
+                                                    inContext:self.managedObjectContext];
+        if (command) [self addCommandsObject:command];
+    }
 }
 
 @end

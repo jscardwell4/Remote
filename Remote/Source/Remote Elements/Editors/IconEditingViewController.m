@@ -9,6 +9,9 @@
 #import "IconEditingViewController.h"
 #import "RemoteElementEditingViewController.h"
 #import "ControlStateSet.h"
+#import "ControlStateImageSet.h"
+#import "ControlStateTitleSet.h"
+#import "ControlStateColorSet.h"
 #import "Image.h"
 #import <QuartzCore/QuartzCore.h>
 #import "RemoteElementView.h"
@@ -144,9 +147,9 @@ delegate             = _delegate;
 #pragma mark - Methods for managing initial/selected values
 - (void)setInitialValuesFromDictionary:(NSDictionary *)initialValues {
     [super setInitialValuesFromDictionary:initialValues];
-    self.initialIconImage  = NilSafeValue(initialValues[kAttributeEditingImageKey]);
-    self.initialEdgeInsets = NilSafeValue(initialValues[kAttributeEditingEdgeInsetsKey]);
-    self.initialColor      = NilSafeValue(initialValues[kAttributeEditingColorKey]);
+    self.initialIconImage  = NilSafe(initialValues[kAttributeEditingImageKey]);
+    self.initialEdgeInsets = NilSafe(initialValues[kAttributeEditingEdgeInsetsKey]);
+    self.initialColor      = NilSafe(initialValues[kAttributeEditingColorKey]);
     self.button            = initialValues[kAttributeEditingButtonKey];
     self.controlState      = [initialValues[kAttributeEditingControlStateKey] unsignedIntegerValue];
     [self syncCurrentValuesWithIntialValues];

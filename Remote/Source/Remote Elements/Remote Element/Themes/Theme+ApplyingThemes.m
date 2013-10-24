@@ -20,117 +20,123 @@
                               templateAttributes:(NSDictionary *)templateAttributes
                                            flags:(REThemeOverrideFlags)flags
 {
-    NSString * stringText = attributes[RETitleTextKey];
+    NSString * stringText = attributes[RETitleTextAttributeKey];
     if (!stringText) return nil;
 
     NSMutableDictionary * themeAttributes = [templateAttributes mutableCopy];
 
     // foreground color?
-    if (flags & REThemeNoTitleForegroundColor)
+    if (flags & REThemeNoTitleForegroundColorAttribute)
     {
-        [themeAttributes removeObjectForKey:REForegroundColorKey];
-        UIColor * foregroundColor = attributes[REForegroundColorKey];
-        if (foregroundColor) themeAttributes[REForegroundColorKey] = foregroundColor;
+        [themeAttributes removeObjectForKey:REForegroundColorAttributeKey];
+        UIColor * foregroundColor = attributes[REForegroundColorAttributeKey];
+        if (foregroundColor) themeAttributes[REForegroundColorAttributeKey] = foregroundColor;
     }
 
     // background color?
-    if (flags & REThemeNoTitleBackgroundColor)
+    if (flags & REThemeNoTitleBackgroundColorAttribute)
     {
-        [themeAttributes removeObjectForKey:REBackgroundColorKey];
-        UIColor * backgroundColor = attributes[REBackgroundColorKey];
-        if (backgroundColor) themeAttributes[REBackgroundColorKey] = backgroundColor;
+        [themeAttributes removeObjectForKey:REBackgroundColorAttributeKey];
+        UIColor * backgroundColor = attributes[REBackgroundColorAttributeKey];
+        if (backgroundColor) themeAttributes[REBackgroundColorAttributeKey] = backgroundColor;
     }
 
     // shadow color?
-    if (flags & REThemeNoTitleShadowColor)
+    if (flags & REThemeNoTitleShadowColorAttribute)
     {
-        [themeAttributes removeObjectForKey:REShadowKey];
-        NSShadow * shadow = attributes[REShadowKey];
-        if (shadow) themeAttributes[REShadowKey] = shadow;
+        [themeAttributes removeObjectForKey:REShadowAttributeKey];
+        NSShadow * shadow = attributes[REShadowAttributeKey];
+        if (shadow) themeAttributes[REShadowAttributeKey] = shadow;
     }
 
     // stroke color?
-    if (flags & REThemeNoTitleStrokeColor)
+    if (flags & REThemeNoTitleStrokeColorAttribute)
     {
-        [themeAttributes removeObjectForKey:REStrokeColorKey];
-        UIColor * strokeColor = attributes[REStrokeColorKey];
-        if (strokeColor) themeAttributes[REStrokeColorKey] = strokeColor;
+        [themeAttributes removeObjectForKey:REStrokeColorAttributeKey];
+        UIColor * strokeColor = attributes[REStrokeColorAttributeKey];
+        if (strokeColor) themeAttributes[REStrokeColorAttributeKey] = strokeColor;
     }
 
     // font name?
+    //FIXME: Needs updating
+/*
     if (flags & REThemeNoFontName)
     {
-        [themeAttributes removeObjectForKey:REFontNameKey];
-        NSString * fontName = attributes[REFontNameKey];
-        if (fontName) themeAttributes[REFontNameKey] = fontName;
-    }
+        NSString * themeFont = attributes[REFontAttributeKey];
+        NSArray * themeFontComponents = [themeFont componentsSeparatedByString:@"@"];
+        
+        [themeAttributes removeObjectForKey:REFontAttributeKey];
+        NSString * font = attributes[REFontAttributeKey];
+        if (font) themeAttributes[REFontAttributeKey] = font;
 
-    // font size?
-    if (flags & REThemeNoFontSize)
-    {
-        [themeAttributes removeObjectForKey:REFontSizeKey];
-        NSNumber * fontSize = attributes[REFontSizeKey];
-        if (fontSize) themeAttributes[REFontSizeKey] = fontSize;
+        // font size?
+        if (flags & REThemeNoFontSize)
+        {
+            [themeAttributes removeObjectForKey:REFontSizeAttributeKey];
+            NSNumber * fontSize = attributes[REFontSizeAttributeKey];
+            if (fontSize) themeAttributes[REFontSizeAttributeKey] = fontSize;
+        }
     }
+*/
 
     // stroke width?
     if (flags & REThemeNoStrokeWidth)
     {
-        [themeAttributes removeObjectForKey:REStrokeWidthKey];
-        NSNumber * strokeWidth = attributes[REStrokeWidthKey];
-        if (strokeWidth) themeAttributes[REStrokeWidthKey] = strokeWidth;
+        [themeAttributes removeObjectForKey:REStrokeWidthAttributeKey];
+        NSNumber * strokeWidth = attributes[REStrokeWidthAttributeKey];
+        if (strokeWidth) themeAttributes[REStrokeWidthAttributeKey] = strokeWidth;
     }
 
     // strikethrough?
     if (flags & REThemeNoStrikethrough)
     {
-        [themeAttributes removeObjectForKey:REStrikethroughStyleKey];
-        NSNumber * strikethrough = attributes[REStrikethroughStyleKey];
-        if (strikethrough) themeAttributes[REStrikethroughStyleKey] = strikethrough;
+        [themeAttributes removeObjectForKey:REStrikethroughStyleAttributeKey];
+        NSNumber * strikethrough = attributes[REStrikethroughStyleAttributeKey];
+        if (strikethrough) themeAttributes[REStrikethroughStyleAttributeKey] = strikethrough;
     }
 
     // underline?
     if (flags & REThemeNoUnderline)
     {
-        [themeAttributes removeObjectForKey:REUnderlineStyleKey];
-        NSNumber * underline = attributes[REUnderlineStyleKey];
-        if (underline) themeAttributes[REUnderlineStyleKey] = underline;
+        [themeAttributes removeObjectForKey:REUnderlineStyleAttributeKey];
+        NSNumber * underline = attributes[REUnderlineStyleAttributeKey];
+        if (underline) themeAttributes[REUnderlineStyleAttributeKey] = underline;
     }
 
     // ligature?
     if (flags & REThemeNoLigature)
     {
-        [themeAttributes removeObjectForKey:RELigatureKey];
-        NSNumber * ligature = attributes[RELigatureKey];
-        if (ligature) themeAttributes[RELigatureKey] = ligature;
+        [themeAttributes removeObjectForKey:RELigatureAttributeKey];
+        NSNumber * ligature = attributes[RELigatureAttributeKey];
+        if (ligature) themeAttributes[RELigatureAttributeKey] = ligature;
     }
 
     // kern?
     if (flags & REThemeNoKern)
     {
-        [themeAttributes removeObjectForKey:REKernKey];
-        NSNumber * kern = attributes[REKernKey];
-        if (kern) themeAttributes[REKernKey] = kern;
+        [themeAttributes removeObjectForKey:REKernAttributeKey];
+        NSNumber * kern = attributes[REKernAttributeKey];
+        if (kern) themeAttributes[REKernAttributeKey] = kern;
     }
 
     // paragraph style?
     if (flags & REThemeNoParagraphStyle)
     {
-        [themeAttributes removeObjectForKey:REParagraphStyleKey];
-        NSParagraphStyle * paragraphStyle = attributes[REParagraphStyleKey];
-        if (paragraphStyle) themeAttributes[REParagraphStyleKey] = paragraphStyle;
+        [themeAttributes removeObjectForKey:REParagraphStyleAttributeKey];
+        NSParagraphStyle * paragraphStyle = attributes[REParagraphStyleAttributeKey];
+        if (paragraphStyle) themeAttributes[REParagraphStyleAttributeKey] = paragraphStyle;
     }
 
-    if (!themeAttributes[RETitleTextKey] && attributes[RETitleTextKey])
+    if (!themeAttributes[RETitleTextAttributeKey] && attributes[RETitleTextAttributeKey])
     {
-        themeAttributes[RETitleTextKey] = attributes[RETitleTextKey];
+        themeAttributes[RETitleTextAttributeKey] = attributes[RETitleTextAttributeKey];
     }
 
     else if (flags & REThemeNoTitleText)
     {
-        [themeAttributes removeObjectForKey:RETitleTextKey];
-        NSString * titleText = attributes[RETitleTextKey];
-        if (titleText) themeAttributes[RETitleTextKey] = titleText;
+        [themeAttributes removeObjectForKey:RETitleTextAttributeKey];
+        NSString * titleText = attributes[RETitleTextAttributeKey];
+        if (titleText) themeAttributes[RETitleTextAttributeKey] = titleText;
     }
 
     return themeAttributes;
@@ -180,7 +186,7 @@
          UIColor * backgroundColor = settings.backgroundColor;
 
          // background color
-         if (!(flags & REThemeNoBackgroundColor) && backgroundColor)
+         if (!(flags & REThemeNoBackgroundColorAttribute) && backgroundColor)
              remote.backgroundColor = backgroundColor;
 
          // background image
@@ -203,9 +209,12 @@
      ^{
          REThemeOverrideFlags flags = buttonGroup.themeFlags;
          ThemeButtonGroupSettings * defaultSettings = [self buttonGroupSettingsForRole:RERoleUndefined];
-         ThemeButtonGroupSettings * panelSettings = ([buttonGroup isPanel]
-                                                       ? [self buttonGroupSettingsForRole:REButtonGroupRolePanel]
-                                                       : nil);
+         ThemeButtonGroupSettings * panelSettings = nil;/*
+                                                         ([buttonGroup isPanel]
+                                                          ? [self buttonGroupSettingsForRole:REButtonGroupRolePanel]
+                                                          : nil);
+                                                         */
+
          ThemeButtonGroupSettings * settings = [self buttonGroupSettingsForRole:buttonGroup.role];
          if (!(settings || panelSettings)) return;
 
@@ -239,7 +248,7 @@
              buttonGroup.backgroundImageAlpha = [backgroundImageAlpha floatValue];
 
          // background color
-         if (!(flags & REThemeNoBackgroundColor) && backgroundColor) buttonGroup.backgroundColor = backgroundColor;
+         if (!(flags & REThemeNoBackgroundColorAttribute) && backgroundColor) buttonGroup.backgroundColor = backgroundColor;
 
          // label
          // TODO: Add property for button group label style
@@ -322,7 +331,7 @@
              button.buttonConfigurationDelegate.currentMode = mode;
 
              // background color
-             if (!(flags & REThemeNoBackgroundColor) && backgroundColors)
+             if (!(flags & REThemeNoBackgroundColorAttribute) && backgroundColors)
              {
                  ControlStateColorSet * colorSet = button.backgroundColors;
                  if (!colorSet)
@@ -365,7 +374,7 @@
                                                          templateAttributes:templateObj
                                                                       flags:flags];
                      }
-                     else if (!(flags & REThemeNoTitleText) && templateObj[RETitleTextKey])
+                     else if (!(flags & REThemeNoTitleText) && templateObj[RETitleTextAttributeKey])
                          titleSet[i] = [templateObj copy];
                  }
 
@@ -388,7 +397,7 @@
                  }
 
                  ControlStateColorSet * colorSet = iconSet.colors;
-                 if (!(flags & REThemeNoIconColor))
+                 if (!(flags & REThemeNoIconColorAttribute))
                      [colorSet copyObjectsFromSet:icons.colors];
 
                  [button setIcons:iconSet mode:mode];

@@ -425,6 +425,7 @@
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C275D86417A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchCommand.m */; };
+		C279E08A182179E500C17FB1 /* REFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C279E089182179E500C17FB1 /* REFont.m */; };
 		C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */; };
 		C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */; };
 		C27BCC8E1801C16A0002464C /* IntegerKeyboard_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */; };
@@ -501,6 +502,7 @@
 		C2F46136172855250009AE53 /* JSONImportDatabaseConstructionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F46135172855250009AE53 /* JSONImportDatabaseConstructionTests.m */; };
 		C2F4613A172891D40009AE53 /* BOBackgroundImage.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F46138172891D40009AE53 /* BOBackgroundImage.json */; };
 		C2F4613B172891D40009AE53 /* BOIconImage.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F46139172891D40009AE53 /* BOIconImage.json */; };
+		C2FD3B461825BD6000E1431A /* Button+ImportingAndExporting.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FD3B451825BD6000E1431A /* Button+ImportingAndExporting.m */; };
 		C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -526,6 +528,13 @@
 			remoteGlobalIDString = C2CE884D18138C4900555D63;
 			remoteInfo = MSKit;
 		};
+		C2FD3B481825BD6100E1431A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C268299F18257EDC0026A520;
+			remoteInfo = "MSKit-OSX";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -549,17 +558,6 @@
 		C208DE0116DDC6BA00084C49 /* Config-Remote-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote-Debug.xcconfig"; sourceTree = "<group>"; };
 		C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Remote-Release.xcconfig"; sourceTree = "<group>"; };
 		C208DE0316DE763900084C49 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Notes; sourceTree = "<group>"; };
-		C209B56718071D5C003EC1FD /* Building */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Building; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/28B1C433-4BD6-491A-9998-5FDDB8ADEE93/Library/Caches/Logs/Building"; sourceTree = "<group>"; };
-		C209B56818071D5C003EC1FD /* CoreData */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CoreData; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/28B1C433-4BD6-491A-9998-5FDDB8ADEE93/Library/Caches/Logs/CoreData"; sourceTree = "<group>"; };
-		C209B56918071D5C003EC1FD /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Default; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/28B1C433-4BD6-491A-9998-5FDDB8ADEE93/Library/Caches/Logs/Default"; sourceTree = "<group>"; };
-		C209B56A18071D5C003EC1FD /* MagicalRecord */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MagicalRecord; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/28B1C433-4BD6-491A-9998-5FDDB8ADEE93/Library/Caches/Logs/MagicalRecord"; sourceTree = "<group>"; };
-		C209B56B18071D5C003EC1FD /* Remote */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Remote; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/28B1C433-4BD6-491A-9998-5FDDB8ADEE93/Library/Caches/Logs/Remote"; sourceTree = "<group>"; };
-		C209B57218071D7C003EC1FD /* Building */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Building; path = "../../../Library/Application Support/iPhone Simulator/7.0/Applications/6C9A67FC-D11A-4021-ADC8-721E1992C763/Library/Caches/Logs/Building"; sourceTree = "<group>"; };
-		C209B57318071D7C003EC1FD /* Command */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Command; path = "../../../Library/Application Support/iPhone Simulator/7.0/Applications/6C9A67FC-D11A-4021-ADC8-721E1992C763/Library/Caches/Logs/Command"; sourceTree = "<group>"; };
-		C209B57418071D7C003EC1FD /* CoreData */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CoreData; path = "../../../Library/Application Support/iPhone Simulator/7.0/Applications/6C9A67FC-D11A-4021-ADC8-721E1992C763/Library/Caches/Logs/CoreData"; sourceTree = "<group>"; };
-		C209B57818071D7C003EC1FD /* Default */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Default; path = "../../../Library/Application Support/iPhone Simulator/7.0/Applications/6C9A67FC-D11A-4021-ADC8-721E1992C763/Library/Caches/Logs/Default"; sourceTree = "<group>"; };
-		C209B57C18071D7C003EC1FD /* Networking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Networking; path = "../../../Library/Application Support/iPhone Simulator/7.0/Applications/6C9A67FC-D11A-4021-ADC8-721E1992C763/Library/Caches/Logs/Networking"; sourceTree = "<group>"; };
-		C209B57E18071D7C003EC1FD /* Remote */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Remote; path = "../../../Library/Application Support/iPhone Simulator/7.0/Applications/6C9A67FC-D11A-4021-ADC8-721E1992C763/Library/Caches/Logs/Remote"; sourceTree = "<group>"; };
 		C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionZoomView.h; sourceTree = "<group>"; };
 		C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionZoomView.m; sourceTree = "<group>"; };
 		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankCollectionZoomView.xib; path = "../../Source/Bank/View Controllers/BankCollectionZoomView.xib"; sourceTree = "<group>"; };
@@ -790,6 +788,7 @@
 		C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Editing.m"; sourceTree = "<group>"; };
 		C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+SubelementViews.m"; sourceTree = "<group>"; };
 		C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+InternalSubviews.m"; sourceTree = "<group>"; };
+		C25B6D3518206B1E00E40E61 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/8CD3AA9B-8208-4849-8E81-E0AEF4A0B17B/Library/Caches/Logs"; sourceTree = "<group>"; };
 		C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Table.xib"; sourceTree = "<group>"; };
 		C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-List.xib"; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
@@ -1011,8 +1010,13 @@
 		C26BBB4016DC1C960093D5B4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C26DE4E31731C85300CEF17D /* RERemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RERemoteController.json; sourceTree = "<group>"; };
 		C26DE4E51731CE1000CEF17D /* ExtendedJSONTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExtendedJSONTest.json; sourceTree = "<group>"; };
+		C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateColorSet.h; sourceTree = "<group>"; };
+		C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateImageSet.h; sourceTree = "<group>"; };
+		C275A0DE181F4DF900C9D446 /* ControlStateTitleSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateTitleSet.h; sourceTree = "<group>"; };
 		C275D86217A03130004E0BE5 /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		C277343F1701365C00E85F8D /* SwitchCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCommand.m; sourceTree = "<group>"; };
+		C279E088182179E500C17FB1 /* REFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REFont.h; sourceTree = "<group>"; };
+		C279E089182179E500C17FB1 /* REFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REFont.m; sourceTree = "<group>"; };
 		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_0.png; sourceTree = "<group>"; };
 		C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0@2x.png"; sourceTree = "<group>"; };
@@ -1153,6 +1157,7 @@
 		C2F46135172855250009AE53 /* JSONImportDatabaseConstructionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONImportDatabaseConstructionTests.m; sourceTree = "<group>"; };
 		C2F46138172891D40009AE53 /* BOBackgroundImage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BOBackgroundImage.json; sourceTree = "<group>"; };
 		C2F46139172891D40009AE53 /* BOIconImage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BOIconImage.json; sourceTree = "<group>"; };
+		C2FD3B451825BD6000E1431A /* Button+ImportingAndExporting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Button+ImportingAndExporting.m"; sourceTree = "<group>"; };
 		C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPresetCollectionViewController.h; sourceTree = "<group>"; };
 		C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPresetCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1257,31 +1262,6 @@
 				C208DE0216DDC6C100084C49 /* Config-Remote-Release.xcconfig */,
 			);
 			path = "Build Configurations";
-			sourceTree = "<group>";
-		};
-		C209B56618071D54003EC1FD /* Logs-64 */ = {
-			isa = PBXGroup;
-			children = (
-				C209B56718071D5C003EC1FD /* Building */,
-				C209B56818071D5C003EC1FD /* CoreData */,
-				C209B56918071D5C003EC1FD /* Default */,
-				C209B56A18071D5C003EC1FD /* MagicalRecord */,
-				C209B56B18071D5C003EC1FD /* Remote */,
-			);
-			name = "Logs-64";
-			sourceTree = "<group>";
-		};
-		C209B57118071D72003EC1FD /* Logs */ = {
-			isa = PBXGroup;
-			children = (
-				C209B57218071D7C003EC1FD /* Building */,
-				C209B57318071D7C003EC1FD /* Command */,
-				C209B57418071D7C003EC1FD /* CoreData */,
-				C209B57818071D7C003EC1FD /* Default */,
-				C209B57C18071D7C003EC1FD /* Networking */,
-				C209B57E18071D7C003EC1FD /* Remote */,
-			);
-			name = Logs;
 			sourceTree = "<group>";
 		};
 		C21687AF1722F1CB00064C95 /* Remote Element Tests */ = {
@@ -1524,6 +1504,7 @@
 		C25B457116FF629F0042B59E /* Remote Element */ = {
 			isa = PBXGroup;
 			children = (
+				C279E087182179B900C17FB1 /* Other */,
 				C26329491713B0110080330D /* Themes */,
 				C25B46C216FF688F0042B59E /* Constraints */,
 				C25B46B316FF68840042B59E /* Configurations */,
@@ -1537,6 +1518,7 @@
 				C25B457716FF62A00042B59E /* ButtonGroup.m */,
 				C25B2715180A185D0078C8D8 /* Button.h */,
 				C25B457416FF62A00042B59E /* Button.m */,
+				C2FD3B451825BD6000E1431A /* Button+ImportingAndExporting.m */,
 			);
 			path = "Remote Element";
 			sourceTree = "<group>";
@@ -1612,6 +1594,9 @@
 				C25B468216FF67AF0042B59E /* ControlStateColorSet.m */,
 				C25B468416FF67AF0042B59E /* ControlStateImageSet.m */,
 				C25B468516FF67AF0042B59E /* ControlStateSet.h */,
+				C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */,
+				C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */,
+				C275A0DE181F4DF900C9D446 /* ControlStateTitleSet.h */,
 				C25B468616FF67AF0042B59E /* ControlStateSet.m */,
 				C25B468716FF67AF0042B59E /* ControlStateTitleSet.m */,
 				C253B09417E61619007CDFE4 /* disabled */,
@@ -1815,8 +1800,7 @@
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
-				C209B57118071D72003EC1FD /* Logs */,
-				C209B56618071D54003EC1FD /* Logs-64 */,
+				C25B6D3518206B1E00E40E61 /* Logs */,
 				C208DE0316DE763900084C49 /* Notes */,
 				C208DDFC16DDC5A300084C49 /* Build Configurations */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
@@ -2224,6 +2208,15 @@
 			path = png;
 			sourceTree = "<group>";
 		};
+		C279E087182179B900C17FB1 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C279E088182179E500C17FB1 /* REFont.h */,
+				C279E089182179E500C17FB1 /* REFont.m */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
@@ -2322,6 +2315,7 @@
 			isa = PBXGroup;
 			children = (
 				C2CE8AA31814231F00555D63 /* libMSKit.a */,
+				C2FD3B491825BD6100E1431A /* MSKit-OSX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2567,6 +2561,13 @@
 			fileType = archive.ar;
 			path = libMSKit.a;
 			remoteRef = C2CE8AA21814231F00555D63 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C2FD3B491825BD6100E1431A /* MSKit-OSX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = "MSKit-OSX.framework";
+			remoteRef = C2FD3B481825BD6100E1431A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2986,6 +2987,7 @@
 				C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */,
 				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
+				C2FD3B461825BD6000E1431A /* Button+ImportingAndExporting.m in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
 				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
@@ -3030,6 +3032,7 @@
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */,
 				C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */,
+				C279E08A182179E500C17FB1 /* REFont.m in Sources */,
 				C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */,
 				C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */,
 				C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */,
@@ -3365,6 +3368,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (

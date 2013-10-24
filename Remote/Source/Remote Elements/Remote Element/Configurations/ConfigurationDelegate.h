@@ -21,12 +21,12 @@ MSEXTERN_STRING REDefaultMode;
  */
 @interface ConfigurationDelegate : ModelObject
 
-+ (instancetype)configurationDelegate;
++ (instancetype)configurationDelegateForElement:(RemoteElement *)element;
 
 - (BOOL)addMode:(RERemoteMode)mode;
 
-- (void)setObject:(id)object forKeyedSubscript:(NSString *)key;
-- (id)objectForKeyedSubscript:(NSString *)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)key;
+- (id)objectForKeyedSubscript:(id)key;
 
 - (BOOL)hasMode:(RERemoteMode)key;
 
@@ -87,7 +87,7 @@ MSEXTERN_STRING REDefaultMode;
 
 @interface ButtonConfigurationDelegate : ConfigurationDelegate
 
-- (NSAttributedString *)titleForState:(REState)state;
+//- (NSAttributedString *)titleForState:(REState)state;
 
 - (void)setCommand:(Command *)command mode:(RERemoteMode)mode;
 - (Command *)commandForMode:(RERemoteMode)mode;

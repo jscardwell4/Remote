@@ -50,8 +50,8 @@ static const NSDictionary * kValidKeysets;
                        @(REButtonRoleNumberpadAux2)] set],
 
                 @(CommandSetTypeRocker):
-                    [@[@(REButtonRolePickerLabelTop),
-                       @(REButtonRolePickerLabelBottom)] set],
+                    [@[@(REButtonRoleRockerTop),
+                       @(REButtonRoleRockerBottom)] set],
 
                 @(CommandSetTypeTransport):
                     [@[@(REButtonRoleTransportPlay),
@@ -125,7 +125,7 @@ static const NSDictionary * kValidKeysets;
 - (CommandSetType)type
 {
     [self willAccessValueForKey:@"type"];
-    CommandSetType type = NSUIntegerValue(self.primitiveType);
+    CommandSetType type = UnsignedIntegerValue(self.primitiveType);
     [self didAccessValueForKey:@"type"];
     return type;
 }

@@ -23,68 +23,86 @@
  * UIControlStateSelected|UIControlStateHighlighted|UIControlStateDisabled: 7
  *
  */
-+ (BOOL)validState:(NSUInteger)state
++ (BOOL)validState:(id)state
 {
-    static const NSSet * validStates = nil;
+    static const NSSet * validNumbers, * validKeys;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        validStates = [@[@0,@1,@2,@3,@4,@5,@6,@7] set];
-    });
-    return [validStates containsObject:@(state)];
+    dispatch_once(&onceToken,
+                  ^{
+                      validNumbers = [@[@0,@1,@2,@3,@4,@5,@6,@7] set];
+                      validKeys    = [@[@"normal",
+                                        @"highlighted",
+                                        @"disabled",
+                                        @"highlightedAndDisabled",
+                                        @"selected",
+                                        @"highlightedAndSelected",
+                                        @"disabledAndSelected",
+                                        @"selectedHighlightedAndDisabled"] set];
+                  });
+
+    return (isNumberKind(state)
+            ? [validNumbers containsObject:state]
+            : (isStringKind(state)
+               ? [validKeys containsObject:state]
+               : NO
+               )
+            );
 }
 
 + (NSString *)propertyForState:(NSUInteger)state
 {
-    switch (state) {
-        case UIControlStateNormal:
-            return @"normal";
-
-        case UIControlStateHighlighted:
-            return @"highlighted";
-
-        case UIControlStateDisabled:
-            return @"disabled";
-
-        case UIControlStateHighlighted|UIControlStateDisabled:
-            return @"highlightedAndDisabled";
-
-        case UIControlStateSelected:
-            return @"selected";
-
-        case UIControlStateSelected|UIControlStateHighlighted:
-            return @"highlightedAndSelected";
-
-        case UIControlStateSelected|UIControlStateDisabled:
-            return @"disabledAndSelected";
-
-        case UIControlStateSelected|UIControlStateDisabled|UIControlStateHighlighted:
-            return @"selectedHighlightedAndDisabled";
-            
-        default:
-            return nil;
-    }
+    static const NSDictionary * states;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken,
+                  ^{
+                      states = @{@0: @"normal",
+                                 @1: @"highlighted",
+                                 @2: @"disabled",
+                                 @3: @"highlightedAndDisabled",
+                                 @4: @"selected",
+                                 @5: @"highlightedAndSelected",
+                                 @6: @"disabledAndSelected",
+                                 @7: @"selectedHighlightedAndDisabled"};
+                  });
+    return states[@(state)];
 }
 
 + (NSUInteger)stateForProperty:(NSString *)property
 {
     static const NSDictionary * properties = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        properties = @{@"normal"                         : @0,
-                       @"highlighted"                    : @1,
-                       @"disabled"                       : @2,
-                       @"highlightedAndDisabled"         : @3,
-                       @"selected"                       : @4,
-                       @"highlightedAndSelected"         : @5,
-                       @"disabledAndSelected"            : @6,
-                       @"selectedHighlightedAndDisabled" : @7};
-
-    });
+    dispatch_once(&onceToken,
+                  ^{
+                      properties = @{@"normal"                         : @0,
+                                     @"highlighted"                    : @1,
+                                     @"disabled"                       : @2,
+                                     @"highlightedAndDisabled"         : @3,
+                                     @"selected"                       : @4,
+                                     @"highlightedAndSelected"         : @5,
+                                     @"disabledAndSelected"            : @6,
+                                     @"selectedHighlightedAndDisabled" : @7};
+                  });
     NSNumber * state = properties[property];
-    return (state ? NSUIntegerValue(state) : NSUIntegerMax);
+    return (state ? UnsignedIntegerValue(state) : NSUIntegerMax);
 }
 
-
++ (NSSet *)validProperties
+{
+    static dispatch_once_t onceToken;
+    static NSSet const * validProperties;
+    dispatch_once(&onceToken,
+                  ^{
+                      validProperties = [@[@"normal",
+                                           @"highlighted",
+                                           @"disabled",
+                                           @"highlightedAndDisabled",
+                                           @"selected",
+                                           @"highlightedAndSelected",
+                                           @"disabledAndSelected",
+                                           @"selectedHighlightedAndDisabled"] set];
+                  });
+    return (NSSet *)validProperties;
+}
 
 /*
 @dynamic disabled;
@@ -116,15 +134,16 @@
 
 - (NSDictionary *)dictionaryFromSetObjects
 {
-    NSMutableDictionary * dict = [@{} mutableCopy];
+    MSDictionary * dictionary = [MSDictionary dictionary];
     for (NSUInteger i = 0; i < 8; i++)
     {
         NSString * property = [ControlStateSet propertyForState:i];
-        id obj = [self valueForKey:property];
-        if (obj) dict[[ControlStateSet propertyForState:i]] = obj;
+        dictionary[property] = CollectionSafe([self valueForKey:property]);
     }
 
-    return dict;
+    [dictionary compact];
+
+    return dictionary;
 }
 
 - (BOOL)isEmptySet { return ([[self dictionaryFromSetObjects] count] == 0); }
@@ -136,70 +155,58 @@
 
 - (id)objectAtIndex:(NSUInteger)state
 {
-    return [self valueForKey:[ControlStateSet propertyForState:state]];
+    return ([ControlStateSet validState:@(state)]
+            ? [self valueForKey:[ControlStateSet propertyForState:state]]
+            : nil);
 }
 
 - (id)objectForKey:(NSString *)key
 {
-    return ([ControlStateSet validState:[ControlStateSet stateForProperty:key]] ? [self valueForKey:key] : nil);
+    return ([ControlStateSet validState:key] ? [self valueForKey:key] : nil);
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)state
 {
-    if (![ControlStateSet validState:state]) return nil;
+    if (![ControlStateSet validState:@(state)])
+        return nil;
     
     id object = [self valueForKey:[ControlStateSet propertyForState:state]];
 
-    if (object) return object;
+    if (!object && (state & UIControlStateSelected))
+        object = self[state & ~UIControlStateSelected];
 
-    else if (state & UIControlStateSelected) return self[state & ~UIControlStateSelected];
+    if (!object && (state & UIControlStateHighlighted))
+        object = self[state & ~ UIControlStateHighlighted];
 
-    else if (state & UIControlStateHighlighted) return self[state & ~ UIControlStateHighlighted];
+    if (!object)
+        object = [self valueForKey:@"normal"];
 
-    else return [self valueForKey:@"normal"];
+    return object;
 }
 
-- (void)setObject:(id)obj forStates:(NSArray *)states
+- (void)setObject:(id)object forStates:(NSArray *)states
 {
     for (id state in states)
     {
-        if ([state isKindOfClass:[NSNumber class]])
-            self[[state unsignedIntegerValue]] = obj;
-        else
-            self[state] = obj;
+        if (isNumberKind(state)) self[[state unsignedIntegerValue]] = object;
+        else if (isStringKind(state)) self[state] = object;
     }
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key
 {
-    NSUInteger state = [ControlStateSet stateForProperty:key];
-    return self[state];
+    return ([ControlStateSet validState:key] ? [self valueForKey:key] : nil);
 }
 
-- (void)setObject:(id)obj forKeyedSubscript:(NSString *)key
+- (void)setObject:(id)object forKeyedSubscript:(NSString *)key
 {
-    NSUInteger state = [ControlStateSet stateForProperty:key];
-    @try
-    {
-        self[state] = obj;
-    }
-
-    @catch (NSException * exception)
-    {
-        if ([exception.name isEqualToString:NSRangeException])
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:@"invalid state key"
-                                         userInfo:nil];
-        else
-            @throw exception;
-    }
-
+    if (![ControlStateSet validState:key]) ThrowInvalidArgument(key, is not a valid state key);
+    else [self setValue:object forKey:key];
 }
 
 - (void)setObject:(id)object atIndexedSubscript:(NSUInteger)state
 {
-    if (!object) return; //@throw InvalidNilArgument(object);
-    else if (![ControlStateSet validState:state]) @throw InvalidIndexArgument(state);
+    if (![ControlStateSet validState:@(state)]) ThrowInvalidIndexArgument(state);
     else [self setValue:object forKey:[ControlStateSet propertyForState:state]];
 }
 
@@ -219,10 +226,15 @@
     return controlStateSet;
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
+
     [dictionary addEntriesFromDictionary:[self dictionaryFromSetObjects]];
+
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

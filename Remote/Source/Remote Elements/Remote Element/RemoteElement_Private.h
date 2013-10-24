@@ -14,6 +14,10 @@
 #import "Constraint.h"
 
 @interface RemoteElement ()
+{
+    @protected
+    struct {BOOL pendingSubelements;BOOL pendingConstraints;} _importStatus;
+}
 
 @property (nonatomic, assign, readwrite) REType                  elementType;
 @property (nonatomic, strong, readwrite) ConstraintManager     * constraintManager;
@@ -66,18 +70,6 @@
 
 @end
 
-@interface ButtonGroup (CoreDataGeneratedAccessors)
-
-@property (nonatomic) CommandSet * primitiveCommandSet;
-
-@end
-
-@interface PickerLabelButtonGroup (CoreDataGeneratedAccessors)
-
-@property (nonatomic, strong) CommandSetCollection * primitiveCommandSetCollection;
-
-@end
-
 @class ControlStateButtonImageSetProxy,
        ControlStateColorSetProxy,
        ControlStateIconImageSetProxy,
@@ -106,6 +98,9 @@
 #import "CommandContainer.h"
 #import "ConfigurationDelegate.h"
 #import "ControlStateSet.h"
+#import "ControlStateImageSet.h"
+#import "ControlStateTitleSet.h"
+#import "ControlStateColorSet.h"
 #import "CoreDataManager.h"
 #import "Theme.h"
 #import "RemoteElementImportSupportFunctions.h"

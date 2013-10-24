@@ -23,13 +23,9 @@
 #define CGRectValue(v)            [v CGRectValue]
 #define CGAffineTransformValue(v) [v CGAffineTransformValue]
 #define UIEdgeInsetsValue(v)      [v UIEdgeInsetsValue]
-#define NSRangeValue(v)           [v rangeValue]
-#define CGFloatValue(v)           [(NSNumber *)v floatValue]
-#define NSIntegerValue(v)         [v integerValue]
-#define NSUIntegerValue(v)        [v unsignedIntegerValue]
-#define BOOLValue(v)              [v boolValue]
-#define INTValue(v)               [v intValue]
+#define RangeValue(v)             [v rangeValue]
 #define PointerValue(v)           [v pointerValue]
+
 
 @interface NSValue (MSKitAdditions)
 

@@ -135,13 +135,15 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 {
     assert(_labelContainer.subviews.count == 0);
 
-    CommandSetCollection * collection = ((PickerLabelButtonGroup*)self.model).commandSetCollection;
+    CommandSetCollection * collection = self.model.commandSetCollection;
 
     NSMutableArray * labels = [@[] mutableCopy];
     for (CommandSet * commandSet in collection.commandSets)
         [labels addObject:collection[commandSet]];
 
     _pickerFlags.labelCount = [labels count];
+
+    if (!_pickerFlags.labelCount) return;
 
     NSMutableString     * s     = [NSMutableString stringWithString:@"H:|"];
     NSMutableDictionary * views = [NSMutableDictionary dictionaryWithCapacity:labels.count];
@@ -316,7 +318,7 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 {
     if (!_pickerFlags.labelCount) return;
 
-    CommandSetCollection * collection = ((PickerLabelButtonGroup *)self.model).commandSetCollection;
+    CommandSetCollection * collection = ((ButtonGroup *)self.model).commandSetCollection;
     NSOrderedSet           * commandSets = collection.commandSets;
     assert(commandSets.count >= _pickerFlags.labelCount);
     CommandSet * commandSet = commandSets[_pickerFlags.labelIndex];

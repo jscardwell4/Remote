@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>MSKit-OSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>17</integer>
+		</dict>
 		<key>MSKit.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -13,6 +18,26 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>C264335318157B45005E0105</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C268299E18257EDC0026A520</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C26829AE18257EDC0026A520</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2989A9F182550F600E8DCBF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2989AB4182550F600E8DCBF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

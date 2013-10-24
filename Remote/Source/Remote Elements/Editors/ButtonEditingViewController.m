@@ -289,7 +289,7 @@ presentedControlState = _presentedControlState;
 }
 
 - (IBAction)editButtonDetails:(id)sender {
-    NSDictionary                        * initialValues  = @{REDetailedButtonEditingButtonKey : CollectionSafeValue(self.remoteElement), REDetailedButtonEditingControlStateKey : CollectionSafeValue(@(_presentedControlState))};
+    NSDictionary                        * initialValues  = @{REDetailedButtonEditingButtonKey : CollectionSafe(self.remoteElement), REDetailedButtonEditingControlStateKey : CollectionSafe(@(_presentedControlState))};
     DetailedButtonEditingViewController * detailedEditor =
         [StoryboardProxy detailedButtonEditingViewController];
 

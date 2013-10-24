@@ -90,9 +90,10 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
     });
 
     if (![[pseudoRelations allKeys] containsObject:pseudoName])
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:[NSString stringWithFormat:@"%@ is not a valid pseudo name",pseudoName]
-                                     userInfo:nil];
+        ThrowInvalidArgument(pseudoName, is not a valid pseudo name);
+//        @throw [NSException exceptionWithName:NSInvalidArgumentException
+//                                       reason:[NSString stringWithFormat:@"%@ is not a valid pseudo name",pseudoName]
+//                                     userInfo:nil];
     return [pseudoRelations[pseudoName] integerValue];
 }
 
@@ -124,8 +125,9 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
                                   views:(NSDictionary *)views
 {
     if (StringIsEmpty(string))
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"string cannot be empty or nil" userInfo:nil];
+        ThrowInvalidNilArgument(string);
+//        @throw [NSException exceptionWithName:NSInvalidArgumentException
+//                                       reason:@"string cannot be empty or nil" userInfo:nil];
 
 	NSMutableArray * constraintObjects = [@[] mutableCopy];
 
@@ -293,8 +295,9 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 {
 
 	if (!dictionary)
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"dictionary cannot be nil" userInfo:nil];
+        ThrowInvalidNilArgument(dictionary);
+//        @throw [NSException exceptionWithName:NSInvalidArgumentException
+//                                       reason:@"dictionary cannot be nil" userInfo:nil];
 
 	// replace item names with views
 	NSMutableDictionary * newDictionary = [@{} mutableCopy];
@@ -380,9 +383,11 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 /**
  Creates a constraint using the objects in the specified dictionary.
  */
-+ (NSLayoutConstraint *)constraintFromDictionary:(NSDictionary *)dictionary {
-	if (!dictionary) @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                                    reason:@"dictionary cannot be nil" userInfo:nil];
++ (NSLayoutConstraint *)constraintFromDictionary:(NSDictionary *)dictionary
+{
+	if (!dictionary) ThrowInvalidNilArgument(dictionary);
+//        @throw [NSException exceptionWithName:NSInvalidArgumentException
+//                                       reason:@"dictionary cannot be nil" userInfo:nil];
 
     NSString * nametag              = dictionary[MSExtendedVisualFormatNametagName];
     UIView * item1 					= dictionary[MSExtendedVisualFormatItem1Name];
@@ -419,19 +424,20 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
  Creates a dictionary containing the objects from the specified constraint
  */
 + (NSDictionary *)dictionaryFromConstraint:(NSLayoutConstraint *)constraint {
-	if (!constraint) @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                                    reason:@"constraint cannot be nil" userInfo:nil];
+	if (!constraint) ThrowInvalidNilArgument(constraint);
+//        @throw [NSException exceptionWithName:NSInvalidArgumentException
+//                                       reason:@"constraint cannot be nil" userInfo:nil];
 
     NSMutableDictionary * dictionary = [NSMutableDictionary dictionaryWithCapacity:8];
     dictionary[MSExtendedVisualFormatItem1Name] = constraint.firstItem;
     dictionary[MSExtendedVisualFormatAttribute1Name] = @(constraint.firstAttribute);
     dictionary[MSExtendedVisualFormatRelationName] = @(constraint.relation);
-    dictionary[MSExtendedVisualFormatItem2Name] = NilSafeValue(constraint.secondItem);
+    dictionary[MSExtendedVisualFormatItem2Name] = NilSafe(constraint.secondItem);
     dictionary[MSExtendedVisualFormatAttribute2Name] = @(constraint.secondAttribute);
     dictionary[MSExtendedVisualFormatMultiplierName] = @(constraint.multiplier);
     dictionary[MSExtendedVisualFormatConstantName] = @(constraint.constant);
     dictionary[MSExtendedVisualFormatPriorityName] = @(constraint.priority);
-    dictionary[MSExtendedVisualFormatNametagName] = NilSafeValue(constraint.nametag);
+    dictionary[MSExtendedVisualFormatNametagName] = NilSafe(constraint.nametag);
 
 	return dictionary;
 }

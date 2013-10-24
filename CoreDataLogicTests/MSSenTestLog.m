@@ -274,7 +274,7 @@ static NSString         * testName_           = nil;
                       file:__FILE__
                   function:sel_getName(_cmd)
                       line:__LINE__
-                       tag:@{ MSLogClassNameKey  : CollectionSafeValue(ClassString([_self class])) }
+                       tag:@{ MSLogClassNameKey  : CollectionSafe(ClassString([_self class])) }
                     format:@"%@", message];
         }
     };

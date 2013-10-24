@@ -8,8 +8,12 @@
 
 #import "Theme.h"
 #import "ControlStateSet.h"
+#import "ControlStateImageSet.h"
+#import "ControlStateTitleSet.h"
+#import "ControlStateColorSet.h"
 #import "Image.h"
 #import "RemoteElement.h"
+#import "REFont.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -83,8 +83,8 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
         [_panelPickerButton resignFirstResponder];
         
         ButtonGroupView * selectedPanel =
-            (ButtonGroupView *)self.sourceView[[self panelKeyForLocation:NSIntegerValue(rows[0])
-                                                           numberOfTouches:NSIntegerValue(rows[1])]];
+            (ButtonGroupView *)self.sourceView[[self panelKeyForLocation:IntegerValue(rows[0])
+                                                           numberOfTouches:IntegerValue(rows[1])]];
 
         if (selectedPanel) [self openSubelementInEditor:selectedPanel.model];
 

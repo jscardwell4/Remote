@@ -10,6 +10,9 @@
 #import "AttributeEditingViewController_Private.h"
 #import "RemoteElementEditingViewController.h"
 #import "ControlStateSet.h"
+#import "ControlStateImageSet.h"
+#import "ControlStateTitleSet.h"
+#import "ControlStateColorSet.h"
 #import "RemoteElementView.h"
 #import "Button.h"
 #import "StoryboardProxy.h"
@@ -105,11 +108,11 @@ delegate             = _delegate;
 
 - (void)setInitialValuesFromDictionary:(NSDictionary *)initialValues {
     [super setInitialValuesFromDictionary:initialValues];
-    self.initialTitleText  = NilSafeValue(initialValues[kAttributeEditingTitleTextKey]);
-    self.initialFontSize   = NilSafeValue(initialValues[kAttributeEditingFontSizeKey]);
-    self.initialFontName   = NilSafeValue(initialValues[kAttributeEditingFontNameKey]);
-    self.initialEdgeInsets = NilSafeValue(initialValues[kAttributeEditingEdgeInsetsKey]);
-    self.initialColor      = NilSafeValue(initialValues[kAttributeEditingTitleColorKey]);
+    self.initialTitleText  = NilSafe(initialValues[kAttributeEditingTitleTextKey]);
+    self.initialFontSize   = NilSafe(initialValues[kAttributeEditingFontSizeKey]);
+    self.initialFontName   = NilSafe(initialValues[kAttributeEditingFontNameKey]);
+    self.initialEdgeInsets = NilSafe(initialValues[kAttributeEditingEdgeInsetsKey]);
+    self.initialColor      = NilSafe(initialValues[kAttributeEditingTitleColorKey]);
     self.button            = initialValues[kAttributeEditingButtonKey];
     self.controlState      = [initialValues[kAttributeEditingControlStateKey] unsignedIntegerValue];
     [self syncCurrentValuesWithIntialValues];

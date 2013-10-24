@@ -63,10 +63,10 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 - (UIImage *)imageWithColor:(UIColor *)color
 {
-    if ([color isPatternBased])
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"color cannot be pattern-based"
-                                     userInfo:nil];
+    if ([color isPatternBased]) ThrowInvalidArgument(color, may not be pattern-based);
+//        @throw [NSException exceptionWithName:NSInvalidArgumentException
+//                                       reason:@"color cannot be pattern-based"
+//                                     userInfo:nil];
 
     return [self.image recoloredImageWithColor:color];
 }
@@ -171,7 +171,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 - (UIImage *)preview { return [self image]; }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
     id(^defaultForKey)(NSString *) = ^(NSString * key)
     {
@@ -182,8 +182,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
                           MSDictionary * dictionary = [MSDictionary dictionary];
                           for (NSString * attribute in @[@"fileName", @"leftCap", @"topCap"])
                               dictionary[attribute] =
-                              CollectionSafeValue([self defaultValueForAttribute:attribute]);
-                          [dictionary removeKeysWithNullObjectValues];
+                              CollectionSafe([self defaultValueForAttribute:attribute]);
+                          [dictionary compact];
                           index = dictionary;
                       });
 
@@ -211,17 +211,18 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
         }
 
         if (isCustom)
-            dictionary[attribute] = CollectionSafeValue(addition);
+            dictionary[attribute] = CollectionSafe(addition);
     };
 
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     addIfCustom(self, dictionary, @"fileName", self.fileName);
     addIfCustom(self, dictionary, @"leftCap",  @(self.leftCap));
     addIfCustom(self, dictionary, @"topCap",   @(self.topCap));
 
-    [dictionary removeKeysWithNullObjectValues];
-    
+    [dictionary compact];
+    [dictionary compress];
+
     return dictionary;
 }
 

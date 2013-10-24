@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13A603" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Activity" representedClassName="Activity" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
@@ -83,7 +83,6 @@
     </entity>
     <entity name="CommandSetCollection" representedClassName="CommandSetCollection" parentEntity="CommandContainer" syncable="YES">
         <relationship name="commandSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CommandSet" inverseName="commandSetCollections" inverseEntity="CommandSet" syncable="YES"/>
-        <relationship name="pickerLabelButtonGroup" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PickerLabelButtonGroup" inverseName="commandSetCollection" inverseEntity="PickerLabelButtonGroup" syncable="YES"/>
     </entity>
     <entity name="ComponentDevice" representedClassName="ComponentDevice" syncable="YES">
         <attribute name="alwaysOn" attributeType="Boolean" defaultValueString="NO">
@@ -284,9 +283,6 @@
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="componentDevices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="networkDevice" inverseEntity="ComponentDevice" syncable="YES"/>
     </entity>
-    <entity name="PickerLabelButtonGroup" representedClassName="PickerLabelButtonGroup" parentEntity="ButtonGroup" syncable="YES">
-        <relationship name="commandSetCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="CommandSetCollection" inverseName="pickerLabelButtonGroup" inverseEntity="CommandSetCollection" syncable="YES"/>
-    </entity>
     <entity name="PowerCommand" representedClassName="PowerCommand" parentEntity="Command" syncable="YES">
         <attribute name="state" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="device" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="powerCommands" inverseEntity="ComponentDevice" indexed="YES" syncable="YES"/>
@@ -314,19 +310,55 @@
         <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="RemoteElement" representedClassName="RemoteElement" isAbstract="YES" syncable="YES">
-        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
         <attribute name="backgroundImageAlpha" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
-        <attribute name="elementType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="elementType" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="options" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="role" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="shape" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="state" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="style" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="subtype" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="options" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
+        <attribute name="role" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
+        <attribute name="shape" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
+        <attribute name="state" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
+        <attribute name="style" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
+        <attribute name="subtype" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
         <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="themeFlags" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="themeFlags" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
+        </attribute>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="backgroundImage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="remoteElement" inverseEntity="Image" syncable="YES"/>
         <relationship name="configurationDelegate" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConfigurationDelegate" inverseName="element" inverseEntity="ConfigurationDelegate" syncable="YES"/>
@@ -348,12 +380,14 @@
         </relationship>
     </entity>
     <entity name="SwitchCommand" representedClassName="SwitchCommand" parentEntity="Command" syncable="YES">
-        <attribute name="mode" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
+        <attribute name="target" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="SystemCommand" representedClassName="SystemCommand" parentEntity="Command" syncable="YES">
-        <attribute name="type" attributeType="Integer 16" defaultValueString="0">
-            <userInfo/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSString"/>
+            </userInfo>
         </attribute>
     </entity>
     <entity name="Theme" representedClassName="Theme" isAbstract="YES" syncable="YES">
@@ -424,7 +458,6 @@
         <element name="Manufacturer" positionX="0" positionY="0" width="0" height="0"/>
         <element name="NDiTachDevice" positionX="0" positionY="0" width="0" height="0"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PickerLabelButtonGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Preset" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Remote" positionX="0" positionY="0" width="0" height="0"/>

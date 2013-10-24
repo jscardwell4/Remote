@@ -7,7 +7,7 @@
 //
 #import "RemoteElement.h"
 
-@class CommandContainer, Button;
+@class CommandContainer, CommandSetCollection, CommandSet, Button;
 
 /**
 * `ButtonGroup` is an `NSManagedObject` subclass that models a group of buttons for a home
@@ -29,8 +29,14 @@
 - (Button *)objectForKeyedSubscript:(NSString *)subscript;
 - (Button *)objectAtIndexedSubscript:(NSUInteger)subscript;
 
-- (void)addCommandContainer:(CommandContainer *)container
-             mode:(RERemoteMode)mode;
+- (void)addCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode;
+
+/**
+ * Add a new `CommandSet` for the specified label text.
+ * @param commandSet The `CommandSet` object to add the `PickerLabelButtonGroup`'s collection.
+ * @param label The display name for selecting the `CommandSet`.
+ */
+- (void)addCommandSet:(CommandSet *)commandSet withLabel:(id)label;
 
 /**
 * Label text for the optional `UILabelView`.
@@ -56,34 +62,8 @@
 - (BOOL)isPanel;
 - (void)setCommandContainer:(CommandContainer *)container;
 
+@property (nonatomic, readonly) CommandSetCollection * commandSetCollection;
+
 @end
 
 MSEXTERN_NAMETAG(REButtonGroupPanel);
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark REPickerLabelButtonGroup
-////////////////////////////////////////////////////////////////////////////////
-@class CommandSetCollection, CommandSet;
-
-/**
-* The PickerLabelButtonGroup is a `ButtonGroup` subclass that manages multiple CommandSet objects,
-* allowing for the buttons of the `ButtonGroup` to provide a different set of commands per user
-* selection. The command sets are represented by a label title. The titles are displayed on a
-* scroll view, which the user swipes left or right to load the next/previous command set.
-*/
-@interface PickerLabelButtonGroup : ButtonGroup
-
-#pragma mark - Managing the CommandSets
-/// @name ￼Managing the CommandSets
-
-/**
-* Add a new `CommandSet` for the specified label text.
-* @param commandSet The `CommandSet` object to add the `PickerLabelButtonGroup`'s collection.
-* @param label The display name for selecting the `CommandSet`.
-*/
-- (void)addCommandSet:(CommandSet *)commandSet withLabel:(id)label;
-
-/// Container object which holds the `CommandSet`- `Label` combiniations
-@property (nonatomic, strong) CommandSetCollection * commandSetCollection;
-
-@end

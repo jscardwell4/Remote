@@ -54,7 +54,7 @@
 
 @interface Button (REButtonConfigurationDelegate)
 
-@property (nonatomic, strong, readonly ) NSSet                         * commands;
+@property (nonatomic, strong, readonly ) NSSet                       * commands;
 @property (nonatomic, strong, readonly ) ControlStateTitleSet        * titles;
 @property (nonatomic, strong, readonly ) ControlStateImageSet        * icons;
 @property (nonatomic, strong, readonly ) ControlStateColorSet        * backgroundColors;

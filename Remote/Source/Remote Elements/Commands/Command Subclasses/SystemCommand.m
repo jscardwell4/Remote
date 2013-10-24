@@ -54,46 +54,45 @@ static __weak RemoteViewController * _remoteViewController;
 - (void)setType:(SystemCommandType)type
 {
     [self willChangeValueForKey:@"type"];
-    _type = type;
+    self.primitiveType = @(type);
     [self didAccessValueForKey:@"type"];
 }
 
 - (SystemCommandType)type
 {
     [self willAccessValueForKey:@"type"];
-    SystemCommandType type = _type;
+    NSNumber * type = self.primitiveType;
     [self didAccessValueForKey:@"type"];
-    return type;
+    return (type ? [type unsignedShortValue] : SystemCommandTypeUndefined);
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
 
-    dictionary[@"type"] = CollectionSafeValue(systemCommandTypeJSONValueForSystemCommand(self));
+    dictionary[@"type"] = CollectionSafe(systemCommandTypeJSONValueForSystemCommand(self));
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
 
+- (void)importType:(NSString *)data
+{
+    self.type = systemCommandTypeFromImportKey(data);
+}
 
 + (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController
 {
     _remoteViewController = remoteViewController;
-
     return YES;
 }
 
-- (CommandOperation *)operation
-{
-    return [SystemCommandOperation operationForCommand:self];
-}
+- (CommandOperation *)operation {return [SystemCommandOperation operationForCommand:self];}
 
-- (NSString *)shortDescription
-{
-    return $(@"type:%@", NSStringFromSystemCommandType(_type));
-}
+- (NSString *)shortDescription {return $(@"type:%@", NSStringFromSystemCommandType(self.type));}
 
 @end
 

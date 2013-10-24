@@ -25,6 +25,7 @@
 - (NSDictionary *)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block;
 
 - (BOOL)hasKey:(id)key;
+
 @end
 
 @interface NSMutableDictionary (MSKitAdditions)

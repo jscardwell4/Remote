@@ -12,6 +12,12 @@
 
 + (UIFont*)fontAwesomeFontWithSize:(CGFloat)size;
 
++ (NSSet *)fontAwesomeIconNames;
+
++ (NSSet *)fontAwesomeIconCharacters;
+
 + (NSString *)fontAwesomeIconForName:(NSString *)name;
+
++ (NSString *)fontAwesomeNameForIcon:(NSString *)icon;
 
 @end

@@ -96,20 +96,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
              __pattern);
 }
 
-- (NSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
-
-    dictionary[@"code"] = CollectionSafeValue(self.code.uuid);
-    if (self.portOverride)
-        dictionary[@"portOverride"] = CollectionSafeValue(@(self.portOverride));
-
-    [dictionary removeKeysWithNullObjectValues];
-
-    return dictionary;
-}
-
-
 + (SendIRCommand *)commandWithIRCode:(IRCode *)code
 {
     SendIRCommand * sendIR = [self commandInContext:code.managedObjectContext];
@@ -117,11 +103,45 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return sendIR;
 }
 
-- (NSString *)shortDescription
+- (NSString *)shortDescription {return $(@"SendIRCommand(%@)", __name);}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (void)importPortOverride:(id)data {}
+
+- (BOOL)shouldImportCode:(id)data {return YES;}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Exporting
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (MSDictionary *)JSONDictionary
 {
-    return $(@"SendIRCommand(%@)",//:'%@'",
-             __name);//,
-                     //[[self commandString] stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"]);
+    MSDictionary * dictionary = [super JSONDictionary];
+
+    dictionary[@"uuid"] = NullObject;
+
+    IRCode * code = self.code;
+
+    if (code)
+    {
+        dictionary[@"code.uuid"] = code.uuid;
+        dictionary.userInfo[MSJSONCommentKey] = [MSDictionary dictionaryWithObject:code.name
+                                                                            forKey:@"code.uuid"];
+    }
+
+    if (self.portOverride) dictionary[@"portOverride"] = @(self.portOverride);
+
+    [dictionary compact];
+    [dictionary compress];
+
+    return dictionary;
 }
 
 @end

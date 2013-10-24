@@ -80,6 +80,7 @@ NSString * NSStringFromUIColor(UIColor * color);
 + (UIColor *)colorWithRGBAHexString:(NSString *)string;
 
 + (UIColor *)colorWithName:(NSString *)name;
++ (NSArray *)colorNames;
 + (NSString *)nameForColor:(UIColor *)color ignoreAlpha:(BOOL)ignoreAlpha;
 
 + (UIColor *)randomColor;

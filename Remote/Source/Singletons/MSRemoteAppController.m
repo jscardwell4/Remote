@@ -151,12 +151,13 @@ static const int   msLogContext = 0;
        @(LOG_CONTEXT_COMMAND)       : $(@"%@/Command",       logsDirectory),
        @(LOG_CONTEXT_CONSTRAINT)    : $(@"%@/Constraints",   logsDirectory),
        @(LOG_CONTEXT_BUILDING)      : $(@"%@/Building",      logsDirectory),
-       @(LOG_CONTEXT_MAGICALRECORD) : $(@"%@/MagicalRecord", logsDirectory)
+       @(LOG_CONTEXT_MAGICALRECORD) : $(@"%@/MagicalRecord", logsDirectory),
+       @(LOG_CONTEXT_IMPORT)        : $(@"%@/Import",        logsDirectory)
     };
 
     [fileLoggers enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * obj, BOOL *stop)
     {
-        NSUInteger context = NSUIntegerValue(key);
+        NSUInteger context = UnsignedIntegerValue(key);
         if (context == LOG_CONTEXT_MAGICALRECORD)
         {
             DDFileLogger * fileLogger = [MSLog defaultFileLoggerForContext:context directory:obj];
@@ -164,6 +165,26 @@ static const int   msLogContext = 0;
             formatter.includeSEL = NO;
             [DDLog addLogger:fileLogger];
         }
+
+        else if (context == LOG_CONTEXT_IMPORT)
+        {
+            DDFileLogger * fileLogger = [MSLog defaultFileLoggerForContext:context directory:obj];
+            fileLogger.rollingFrequency = 30;
+            MSLogFormatter * formatter = fileLogger.logFormatter;
+            formatter.includeSEL = NO;
+            [DDLog addLogger:fileLogger];
+        }
+
+        else if (context == LOG_CONTEXT_REMOTE)
+        {
+            DDFileLogger * fileLogger = [MSLog defaultFileLoggerForContext:context directory:obj];
+            fileLogger.rollingFrequency = 30;
+            MSLogFormatter * formatter = fileLogger.logFormatter;
+            formatter.includeObjectName = NO;
+//            formatter.includeSEL = NO;
+            [DDLog addLogger:fileLogger];
+        }
+
 
         else [MSLog addDefaultFileLoggerForContext:context directory:obj];
     }];

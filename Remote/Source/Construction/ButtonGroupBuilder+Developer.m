@@ -294,9 +294,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Rocker
 ////////////////////////////////////////////////////////////////////////////////
-+ (PickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)moc
 {
-    PickerLabelButtonGroup * buttonGroup = [self rockerInContext:moc];
+    ButtonGroup * buttonGroup = [self rockerInContext:moc];
     buttonGroup.name = @"DVR Activity Rocker";
     CommandSetCollection * commandSetCollection = [CommandSetCollection commandContainerInContext:moc];
     CommandSet * commandSet = [CommandSetBuilder hopperChannelsCommandSet:moc];
@@ -312,9 +312,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     return buttonGroup;
 }
 
-+ (PickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)moc
 {
-    PickerLabelButtonGroup * buttonGroup = [self rockerInContext:moc];
+    ButtonGroup * buttonGroup = [self rockerInContext:moc];
     buttonGroup.name = @"Playstation Activity Rocker";
     CommandSetCollection * commandSetCollection = [CommandSetCollection commandContainerInContext:moc];
     CommandSet * commandSet = [CommandSetBuilder avReceiverVolumeCommandSet:moc];
@@ -325,9 +325,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     return buttonGroup;
 }
 
-+ (PickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)moc
 {
-    PickerLabelButtonGroup * buttonGroup = [self rockerInContext:moc];
+    ButtonGroup * buttonGroup = [self rockerInContext:moc];
     buttonGroup.name = @"Sonos Activity Rocker";
 
     CommandSetCollection * commandSetCollection = [CommandSetCollection commandContainerInContext:moc];

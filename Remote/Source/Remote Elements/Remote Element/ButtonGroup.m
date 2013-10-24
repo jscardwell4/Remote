@@ -9,7 +9,7 @@
 #import "ButtonGroup.h"
 #import "RemoteElement_Private.h"
 
-static int ddLogLevel   = DefaultDDLogLevel;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
@@ -22,10 +22,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 @implementation ButtonGroup
 
-@dynamic label;
-@dynamic labelConstraints;
-@dynamic parentElement;
-@dynamic controller;
+@dynamic label, labelConstraints, parentElement, controller;
 
 + (instancetype)buttonGroupWithRole:(RERole)role
 {
@@ -47,7 +44,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
          ^{
              self.elementType = RETypeButtonGroup;
              self.configurationDelegate = [ButtonGroupConfigurationDelegate
-                                           delegateForRemoteElement:self];
+                                           configurationDelegateForElement:self];
          }];
 }
 
@@ -94,12 +91,6 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     REPanelTrigger trigger = panelAssignment & REPanelAssignmentTriggerMask;
     self.panelLocation = location;
     self.panelTrigger = trigger;
-
-    if (self.panelLocation == REPanelLocationUnassigned || self.panelTrigger == REPanelNoTrigger)
-        self.role &= ~REButtonGroupRolePanel;
-
-    else
-        self.role |= REButtonGroupRolePanel;
 }
 
 - (REPanelAssignment)panelAssignment { return (REPanelAssignment)self.subtype; }
@@ -108,7 +99,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 - (REPanelLocation)panelLocation { return self.panelAssignment & REPanelAssignmentLocationMask; }
 
-- (BOOL)isPanel { return ((self.role & REButtonGroupRolePanel) == REButtonGroupRolePanel); }
+- (BOOL)isPanel { return (self.subtype ? YES : NO); }
 
 - (ButtonGroupConfigurationDelegate *)groupConfigurationDelegate
 {
@@ -124,15 +115,14 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     return (Button *)[super objectAtIndexedSubscript:subscript];
 }
 
-- (void)addCommandContainer:(CommandContainer *)container
-              mode:(RERemoteMode)mode
+- (void)addCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode
 {
-    [self.groupConfigurationDelegate setCommandContainer:container
-                                     mode:mode];
+    [self.groupConfigurationDelegate setCommandContainer:container mode:mode];
 }
 
 - (void)setCommandContainer:(CommandContainer *)container
 {
+    //TODO: Update
     CommandSet * commandSet = ([container isKindOfClass:[CommandSet class]]
                                  ? (CommandSet *)container
                                  : ([container isKindOfClass:[CommandSetCollection class]]
@@ -153,70 +143,78 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     return (self.parentElement ? self.parentElement.controller : nil);
 }
 
-@end
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REPickerLabelButtonGroup
+#pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation PickerLabelButtonGroup
+- (BOOL)shouldImportTopToolbarForController:(id)data {return NO;}
 
-@dynamic commandSetCollection;
+/*
+- (void)importLabel:(id)data {}
 
-- (void)awakeFromInsert
+- (void)importLabelConstraints:(id)data {}
+*/
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Command set collections
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (BOOL)shouldUseCommandSetCollection
 {
-    [super awakeFromInsert];
-
-    if (ModelObjectShouldInitialize)
-        self.role |= REButtonGroupRolePickerLabel;
-}
-
-- (CommandSetCollection *)commandSetCollection
-{
-    [self willAccessValueForKey:@"commandSetColleciton"];
-    CommandSetCollection * collection = self.primitiveCommandSetCollection;
-    [self didAccessValueForKey:@"commandSetCollection"];
-    if (!collection)
-    {
-        collection = (CommandSetCollection *)[self.groupConfigurationDelegate commandContainer];
-        if (collection) self.primitiveCommandSetCollection = collection;
-    }
-    return collection;
-}
-
-- (void)setCommandSetCollection:(CommandSetCollection *)commandSetCollection
-{
-    [self willChangeValueForKey:@"commandSetCollection"];
-    self.primitiveCommandSetCollection = commandSetCollection;
-    [self didChangeValueForKey:@"commandSetCollection"];
-    [self setCommandContainer:commandSetCollection[0]];
+    return ((self.options & REButtonGroupOptionCommandSetContainer) ==
+            REButtonGroupOptionCommandSetContainer);
 }
 
 - (void)addCommandSet:(CommandSet *)commandSet withLabel:(id)label
 {
-    self.commandSetCollection[commandSet] = ([label isKindOfClass:[NSAttributedString class]]
-                                             ? label
-                                             : ([label isKindOfClass:[NSString class]]
-                                                ? [NSAttributedString
-                                                   attributedStringWithString:label]
-                                                : nil
-                                                )
-                                             );
+    if (!([self shouldUseCommandSetCollection] && commandSet && label)) return;
+
+    CommandContainer * container = self.groupConfigurationDelegate.commandContainer;
+    if (!isKind(container, CommandSetCollection)) return;
+
+    ((CommandSetCollection *)container)[commandSet] =
+        (isAttributedStringKind(label)
+         ? label
+         : (isStringKind(label)
+            ? [NSAttributedString attributedStringWithString:label]
+            : nil));
+
+}
+
+- (CommandSetCollection *)commandSetCollection
+{
+    CommandSetCollection * collection = nil;
+
+    if ([self shouldUseCommandSetCollection])
+    {
+        CommandContainer * container = self.groupConfigurationDelegate.commandContainer;
+        if (isKind(container, CommandSetCollection)) collection = (CommandSetCollection *)container;
+    }
+
+    return collection;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    //TODO: Update
+
+    MSDictionary * dictionary = [super JSONDictionary];
 
     if (self.label)
         dictionary[@"label"] = self.label;
 
     if (self.labelConstraints)
         dictionary[@"labelConstraints"] = self.labelConstraints;
+
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
@@ -227,12 +225,14 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 - (MSDictionary *)deepDescriptionDictionary
 {
+    //TODO: Update
+
     ButtonGroup * element = [self faultedObject];
     assert(element);
     
     MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"label"] = (element.label ? element.label.string : @"nil");
-    dd[@"labelConstraints"] = (element.labelConstraints ? : @"nil");
+//    dd[@"label"] = (element.label ? element.label.string : @"nil");
+//    dd[@"labelConstraints"] = (element.labelConstraints ? : @"nil");
     dd[@"panelAssignment"] = NSStringFromREPanelAssignment(element.panelAssignment);
 
     return (MSDictionary *)dd;

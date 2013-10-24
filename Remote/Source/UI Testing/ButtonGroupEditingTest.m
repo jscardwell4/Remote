@@ -795,7 +795,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                 [self logRemoteElementView:bgv
                 includingSubelementViews:subelements
                         after:0
-                      message:[NSString stringWithFormat:@"before scaling - %.2f", CGFloatValue(scale)]];
+                      message:[NSString stringWithFormat:@"before scaling - %.2f", FloatValue(scale)]];
                 }];
 
             __block CGFloat   appliedScale;
@@ -805,7 +805,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
             sleep(SLEEP_DURATION);
 
             [MainQueue addOperations:@[BlockOperation(appliedScale = [bgEditor
-                                                                      scaleSelectedViews:CGFloatValue(scale)
+                                                                      scaleSelectedViews:FloatValue(scale)
                                                                       validation:nil];)]
                    waitUntilFinished:YES];
 
@@ -821,7 +821,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
                 [self logRemoteElementView:bgv
                 includingSubelementViews:subelements
                         after:0
-                      message:[NSString stringWithFormat:@"after scaling - %.2f", CGFloatValue(scale)]];
+                      message:[NSString stringWithFormat:@"after scaling - %.2f", FloatValue(scale)]];
                 }];
             }
             if (assertions && assertions[depth]) {

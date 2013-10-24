@@ -29,11 +29,15 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return delayCommand;
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"duration"] = @(self.duration);
+
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

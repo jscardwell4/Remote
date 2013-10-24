@@ -11,28 +11,25 @@
 
 @implementation ButtonConfigurationDelegate
 
-@dynamic commands, titleSets, iconSets, imageSets, backgroundColorSets;
+@dynamic
+commands,
+titleSets,
+iconSets,
+imageSets,
+backgroundColorSets;
 
-@synthesize command = _command,
-            titles = _titles,
-            backgroundColors = _backgroundColors,
-            icons = _icons,
-            images = _images,
-            kvoReceptionist = _kvoReceptionist;
+@synthesize
+command          = _command,
+titles           = _titles,
+backgroundColors = _backgroundColors,
+icons            = _icons,
+images           = _images,
+kvoReceptionist  = _kvoReceptionist;
 
-+ (instancetype)delegateForRemoteElement:(Button *)element
-{
-    __block ButtonConfigurationDelegate * configurationDelegate = nil;
-    assert(element);
-    [element.managedObjectContext performBlockAndWait:
-     ^{
-         configurationDelegate = [self MR_createInContext:element.managedObjectContext];
-         
-         configurationDelegate.element = element;
-     }];
 
-    return configurationDelegate;
-}
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Lifecycle
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)awakeFromInsert
 {
@@ -56,6 +53,10 @@
     self.images = nil;
     self.kvoReceptionist = nil;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark KVO
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)kvoRegistration
 {
@@ -85,12 +86,13 @@
 - (Button *)button { return (Button *)self.element; }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Updating State
+#pragma mark Updating State
 ////////////////////////////////////////////////////////////////////////////////
+
 - (void)updateButtonForState:(REState)state
 {
     self.button.command         = self.command;
-    self.button.title           = [self titleForState:state];
+    self.button.title           = self.titles[state];//[self titleForState:state];
     self.button.icon            = [self.icons UIImageForState:state];
     self.button.image           = [self.images UIImageForState:state];
     self.button.backgroundColor = self.backgroundColors[state];
@@ -99,8 +101,9 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Updating Configurations
+#pragma mark Updating Configurations
 ////////////////////////////////////////////////////////////////////////////////
+
 - (void)updateForMode:(RERemoteMode)mode
 {
     if (![self hasMode:mode]) return;
@@ -116,176 +119,108 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Mode Members
+#pragma mark Commands
 ////////////////////////////////////////////////////////////////////////////////
 
 - (void)setCommand:(Command *)command mode:(RERemoteMode)mode
 {
-    Command * currentCommand = (Command *)NilSafeValue(self[$(@"%@.command", mode)]);
-    if (currentCommand && currentCommand != command) [self removeCommandsObject:currentCommand];
-
-    assert(mode);
-    if (![self hasMode:mode]) [self addMode:mode];
-
+    ControlStateKeyPath * kp = makeKeyPath(mode, @"command");
+    self[kp] = [[command permanentURI] absoluteString];
     if (command) [self addCommandsObject:command];
-    self[$(@"%@.command", mode)] = CollectionSafeValue(command.uuid);
 }
 
 - (Command *)commandForMode:(RERemoteMode)mode
 {
-    return (Command *)memberOfCollectionWithUUID(self.commands,
-                                                 self[$(@"%@.command", mode)]);
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"command");
+    NSString * uri = self[kp];
+    return (uri ? [self.managedObjectContext objectForURI:[NSURL URLWithString:uri]] : nil);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Titles
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)setTitle:(id)title mode:(RERemoteMode)mode
 {
-    ControlStateTitleSet * titleSet = [ControlStateTitleSet
-                                         controlStateSetInContext:self.managedObjectContext
-                                                      withObjects:@{@"normal": title}];
-    if (titleSet) [self setTitles:titleSet mode:mode];
+    [self setTitles:[ControlStateTitleSet controlStateSetInContext:self.managedObjectContext
+                                                       withObjects:@{@"normal": title}]
+               mode:mode];
 }
 
 - (void)setTitles:(ControlStateTitleSet *)titles mode:(RERemoteMode)mode
 {
-    assert(titles && mode);
-    [self addTitleSetsObject:titles];
-    self[$(@"%@.titles", mode)] = titles.uuid;
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"titles");
+    self[kp] = [[titles permanentURI] absoluteString];
+    if (titles) [self addTitleSetsObject:titles];
 }
 
 - (ControlStateTitleSet *)titlesForMode:(RERemoteMode)mode
 {
-    return (ControlStateTitleSet*)memberOfCollectionWithUUID(self.titleSets,
-                                                             self[$(@"%@.titles", mode)]);
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"titles");
+    NSString * uri = self[kp];
+    return (uri ? [self.managedObjectContext objectForURI:[NSURL URLWithString:uri]] : nil);
 }
 
-- (NSAttributedString *)titleForState:(REState)state
-{
+- (ControlStateTitleSet *)titles { return [self titlesForMode:self.currentMode]; }
 
-    NSDictionary * titleAttributes = self.titles[state];
-    NSAttributedString * title = nil;
-    NSString * titleText = titleAttributes[RETitleTextKey];
-
-    if (titleText)
-    {
-        UIColor          * foregroundColor = titleAttributes[REForegroundColorKey];
-        UIColor          * backgroundColor = titleAttributes[REBackgroundColorKey];
-        NSShadow         * shadow          = titleAttributes[REShadowKey];
-        UIColor          * strokeColor     = titleAttributes[REStrokeColorKey];
-        NSNumber         * strokeWidth     = titleAttributes[REStrokeWidthKey];
-        NSNumber         * strikethrough   = titleAttributes[REStrikethroughStyleKey];
-        NSNumber         * underline       = titleAttributes[REUnderlineStyleKey];
-        NSNumber         * kern            = titleAttributes[REKernKey];
-        NSNumber         * ligature        = titleAttributes[RELigatureKey];
-        NSString         * fontName        = titleAttributes[REFontNameKey];
-        NSNumber         * fontSize        = titleAttributes[REFontSizeKey];
-        NSParagraphStyle * paragraph       = titleAttributes[REParagraphStyleKey];
-
-        NSMutableDictionary * stringAttributes = [@{} mutableCopy];
-        if (foregroundColor) stringAttributes[NSForegroundColorAttributeName]    = foregroundColor;
-        if (backgroundColor) stringAttributes[NSBackgroundColorAttributeName]    = backgroundColor;
-        if (shadow)          stringAttributes[NSShadowAttributeName]             = shadow;
-        if (strokeColor)     stringAttributes[NSStrokeColorAttributeName]        = strokeColor;
-        if (strokeWidth)     stringAttributes[NSStrokeWidthAttributeName]        = strokeWidth;
-        if (strikethrough)   stringAttributes[NSStrikethroughStyleAttributeName] = strikethrough;
-        if (underline)       stringAttributes[NSUnderlineStyleAttributeName]     = underline;
-        if (kern)            stringAttributes[NSKernAttributeName]               = kern;
-        if (ligature)        stringAttributes[NSLigatureAttributeName]           = ligature;
-        if (paragraph)       stringAttributes[NSParagraphStyleAttributeName]     = paragraph;
-        if (fontName && fontSize)
-            stringAttributes[NSFontAttributeName] = [UIFont fontWithName:fontName
-                                                                    size:CGFloatValue(fontSize)];
-
-        title = [NSAttributedString attributedStringWithString:titleText attributes:stringAttributes];
-    }
-
-    return title;
-}
-
-- (ControlStateTitleSet *)titles
-{
-    RERemoteMode mode = self.currentMode;
-    assert(mode);
-    if (![self hasMode:mode]) [self addMode:mode];
-    NSString * uuid = self[$(@"%@.titles", mode)];
-    if (!uuid) return nil;
-    ControlStateTitleSet * titleSet = (ControlStateTitleSet *)memberOfCollectionWithUUID(self.titleSets, uuid);
-    assert(titleSet);
-    return titleSet;
-}
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Background colors
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)setBackgroundColors:(ControlStateColorSet *)colors mode:(RERemoteMode)mode
 {
-    assert(colors && mode);
-    [self addBackgroundColorSetsObject:colors];
-    self[$(@"%@.backgroundColors", mode)] = colors.uuid;
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"backgroundColors");
+    self[kp] = [[colors permanentURI] absoluteString];
+    if (colors) [self addBackgroundColorSetsObject:colors];
 }
 
 - (ControlStateColorSet *)backgroundColorsForMode:(RERemoteMode)mode
 {
-    return (ControlStateColorSet*)memberOfCollectionWithUUID(self.backgroundColorSets,
-                                                             self[$(@"%@.backgroundColors", mode)]);
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"backgroundColors");
+    NSString * uri = self[kp];
+    return (uri ? [self.managedObjectContext objectForURI:[NSURL URLWithString:uri]] : nil);
 }
 
-- (ControlStateColorSet *)backgroundColors
-{
-    RERemoteMode mode = self.currentMode;
-    assert(mode);
-    if (![self hasMode:mode]) [self addMode:mode];
-    NSString * uuid = self[$(@"%@.backgroundColors", mode)];
-    if (!uuid) return nil;
-    ControlStateColorSet * colorSet = (ControlStateColorSet *)memberOfCollectionWithUUID(self.backgroundColorSets, uuid);
-    assert(colorSet);
-    return colorSet;
-}
+- (ControlStateColorSet *)backgroundColors { return [self backgroundColorsForMode:self.currentMode]; }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Icons
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)setIcons:(ControlStateImageSet *)icons mode:(RERemoteMode)mode
 {
-    assert(icons && mode);
-    [self addIconSetsObject:icons];
-    self[$(@"%@.icons", mode)] = icons.uuid;
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"icons");
+    self[kp] = [[icons permanentURI] absoluteString];
+    if (icons) [self addIconSetsObject:icons];
 }
 
 - (ControlStateImageSet *)iconsForMode:(RERemoteMode)mode
 {
-    return (ControlStateImageSet*)memberOfCollectionWithUUID(self.iconSets,
-                                                             self[$(@"%@.icons", mode)]);
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"icons");
+    NSString * uri = self[kp];
+    return (uri ? [self.managedObjectContext objectForURI:[NSURL URLWithString:uri]] : nil);
 }
 
-- (ControlStateImageSet *)icons
-{
-    RERemoteMode mode = self.currentMode;
-    assert(mode);
-    if (![self hasMode:mode]) return nil;
-    NSString * uuid = self[$(@"%@.icons", mode)];
-    if (!uuid) return nil;
-    ControlStateImageSet * iconSet = (ControlStateImageSet *)memberOfCollectionWithUUID(self.iconSets, uuid);
-    assert(iconSet);
-    return iconSet;
-}
+- (ControlStateImageSet *)icons { return [self iconsForMode:self.currentMode]; }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Images
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)setImages:(ControlStateImageSet *)images mode:(RERemoteMode)mode
 {
-    assert(images && mode);
-    [self addImageSetsObject:images];
-    self[$(@"%@.images",mode)] = images.uuid;
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"images");
+    self[kp] = [[images permanentURI] absoluteString];
+    if (images) [self addImageSetsObject:images];
 }
 
 - (ControlStateImageSet *)imagesForMode:(RERemoteMode)mode
 {
-    return (ControlStateImageSet*)memberOfCollectionWithUUID(self.imageSets,
-                                                             self[$(@"%@.images", mode)]);
+    ControlStateKeyPath * kp = makeKeyPath(mode,@"images");
+    NSString * uri = self[kp];
+    return (uri ? [self.managedObjectContext objectForURI:[NSURL URLWithString:uri]] : nil);
 }
 
-- (ControlStateImageSet *)images
-{
-    RERemoteMode mode = self.currentMode;
-    assert(mode);
-    if (![self hasMode:mode]) [self addMode:mode];
-    NSString * uuid = self[$(@"%@.images", mode)];
-    if (!uuid) return nil;
-    ControlStateImageSet * imageSet = (ControlStateImageSet *)memberOfCollectionWithUUID(self.imageSets, uuid);
-    assert(imageSet);
-    return imageSet;
-}
+- (ControlStateImageSet *)images { return [self imagesForMode:self.currentMode]; }
 
 @end

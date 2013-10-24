@@ -61,9 +61,9 @@
 + (ButtonGroup *)constructPS3TransportInContext:(NSManagedObjectContext *)moc;
 
 // Rocker construction
-+ (PickerLabelButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)moc;
-+ (PickerLabelButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)moc;
-+ (PickerLabelButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructDVRRockerInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructPS3RockerInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)constructSonosRockerInContext:(NSManagedObjectContext *)moc;
 
 // Constructing other button groups
 + (ButtonGroup *)constructSonosMuteButtonGroupInContext:(NSManagedObjectContext *)moc;

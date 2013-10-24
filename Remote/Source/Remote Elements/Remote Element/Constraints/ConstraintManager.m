@@ -107,10 +107,10 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
               NSString      * element2ID = obj[MSExtendedVisualFormatItem2Name];
               RemoteElement * element2   = (ValueIsNotNil(element2ID) ? directory[element2ID] : nil);
               CGFloat         multiplier = (ValueIsNotNil(obj[MSExtendedVisualFormatMultiplierName])
-                                            ? CGFloatValue(obj[MSExtendedVisualFormatMultiplierName])
+                                            ? FloatValue(obj[MSExtendedVisualFormatMultiplierName])
                                             : 1.0f);
               CGFloat   constant = (ValueIsNotNil(obj[MSExtendedVisualFormatConstantName])
-                                    ? CGFloatValue(obj[MSExtendedVisualFormatConstantName])
+                                    ? FloatValue(obj[MSExtendedVisualFormatConstantName])
                                     : 0.0f);
 
               if ([@"-" isEqualToString:obj[MSExtendedVisualFormatConstantOperatorName]])
@@ -133,7 +133,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
                                          constant:constant];
 
              if (ValueIsNotNil(obj[MSExtendedVisualFormatPriorityName]))
-                 constraint.priority = CGFloatValue(obj[MSExtendedVisualFormatPriorityName]);
+                 constraint.priority = FloatValue(obj[MSExtendedVisualFormatPriorityName]);
 
              [_remoteElement addConstraint:constraint];
           }];
@@ -629,7 +629,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
              CGRect bounds = (CGRect){.size = CGRectValue(metrics[_remoteElement.uuid]).size};
              CGRect frame  = CGRectValue(metrics[constraint.firstItem.uuid]);
 
-             switch (NSUIntegerValue(constraintValues[@"firstAttribute"]))
+             switch (UnsignedIntegerValue(constraintValues[@"firstAttribute"]))
              {
                  case NSLayoutAttributeBottom :
                      constraintValues[@"constant"] = @(CGRectGetMaxY(frame) - bounds.size.height);
@@ -841,7 +841,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
 
         for (NSNumber * n in additions)
         {
-            NSLayoutAttribute firstAttribute = NSUIntegerValue(n), secondAttribute;
+            NSLayoutAttribute firstAttribute = UnsignedIntegerValue(n), secondAttribute;
             CGFloat constant;
             RemoteElement * owner, * firstItem = constraint.firstItem, * secondItem = nil;
             

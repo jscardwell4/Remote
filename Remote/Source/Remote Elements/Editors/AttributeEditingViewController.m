@@ -25,7 +25,7 @@ MSSTRING_CONST   kAttributeEditingImageKey        = @"kAttributeEditingImageKey"
 @synthesize detailedButtonEditor, button;
 
 - (void)setInitialValuesFromDictionary:(NSDictionary *)initialValues {
-    self.button = NilSafeValue(initialValues[kAttributeEditingButtonKey]);
+    self.button = NilSafe(initialValues[kAttributeEditingButtonKey]);
 }
 
 - (void)resetToInitialState

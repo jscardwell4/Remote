@@ -47,7 +47,15 @@ NSString * classJSONValueForCommand(Command * command);
 
 NSString * panelKeyForPanelAssignment(REPanelAssignment assignment);
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state sets
+////////////////////////////////////////////////////////////////////////////////
 
+NSString * titleSetAttributeJSONKeyForKey(NSString * key);
+NSString * titleSetAttributeJSONKeyForName(NSString * key);
+NSString * titleSetAlignmentJSONValueForAlignment(NSTextAlignment alignment);
+NSString * titleSetLineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode);
+NSString * titleSetUnderlineStyleJSONValueForStyle(NSUnderlineStyle style);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Utility functions

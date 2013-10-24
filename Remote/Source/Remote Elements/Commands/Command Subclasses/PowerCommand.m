@@ -33,8 +33,35 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return powerCommand;
 }
 
+- (void)setState:(BOOL)state
+{
+    [self willChangeValueForKey:@"state"];
+    self.primitiveState = @(state);
+    [self didChangeValueForKey:@"state"];
+}
+
+- (BOOL)state
+{
+    [self willAccessValueForKey:@"state"];
+    NSNumber * state = self.primitiveState;
+    [self didAccessValueForKey:@"state"];
+    return [state boolValue];
+}
+
 - (CommandOperation *)operation { return [PowerCommandOperation operationForCommand:self]; }
 
+- (NSString *)shortDescription
+{
+    return $(@"device:'%@', state:%@", self.primitiveDevice.name, (self.state ?@"On": @"Off"));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (BOOL)shouldImportDevice:(id)data {return YES;}
 - (BOOL)importState:(id)data
 {
     if ([data isKindOfClass:[NSString class]])
@@ -53,23 +80,26 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
         return NO;
 }
 
-- (NSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
 
-    dictionary[@"device"] = CollectionSafeValue(self.device.uuid);
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Exporting
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (MSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
+
+    dictionary[@"device.uuid"] = CollectionSafe(self.device.uuid);
     dictionary[@"state"] = (self.state ? @"on" : @"off");
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
 
-
-- (NSString *)shortDescription
-{
-    return $(@"device:'%@', state:%@", self.primitiveDevice.name, (_state ?@"On": @"Off"));
-}
 
 @end
 

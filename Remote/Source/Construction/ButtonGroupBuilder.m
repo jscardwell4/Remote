@@ -230,16 +230,15 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Rocker
 ////////////////////////////////////////////////////////////////////////////////
-+ (PickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc
++ (ButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc
 {
-    PickerLabelButtonGroup * buttonGroup = [PickerLabelButtonGroup buttonGroupWithRole:REButtonGroupRolePickerLabel
-                                                                                   context:moc];
+    ButtonGroup * buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleRocker context:moc];
 
     // Create top button and add to button group
-    Button * _up = [Button buttonWithRole:REButtonRolePickerLabelTop context:moc];
+    Button * _up = [Button buttonWithRole:REButtonRoleRockerTop context:moc];
 
     // Create bottom button and add to button group
-    Button * down = [Button buttonWithRole:REButtonRolePickerLabelBottom context:moc];
+    Button * down = [Button buttonWithRole:REButtonRoleRockerBottom context:moc];
 
     [buttonGroup addSubelements:[@[_up, down] orderedSet]];
 

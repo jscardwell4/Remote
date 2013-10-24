@@ -46,7 +46,7 @@ static uint8_t     msTestOptions = 0;
                                                                          context:context];
               assertThat(device, notNilValue());
 
-              device.port = NSUIntegerValue(portNumber);
+              device.port = UnsignedIntegerValue(portNumber);
               assertThat(@(device.port), is(portNumber));
           }];
      }];
@@ -211,9 +211,9 @@ static uint8_t     msTestOptions = 0;
                {
                    BOUserIRCode * code = [BOUserIRCode codeForDevice:deviceDirectory[deviceName]];
                    code.name            = codeName;
-                   code.frequency       = NSUIntegerValue(codeAttributes[@"Frequency"]);
-                   code.repeatCount     = NSUIntegerValue(codeAttributes[@"Repeat Count"]);
-                   code.offset          = NSUIntegerValue(codeAttributes[@"Offset"]);
+                   code.frequency       = UnsignedIntegerValue(codeAttributes[@"Frequency"]);
+                   code.repeatCount     = UnsignedIntegerValue(codeAttributes[@"Repeat Count"]);
+                   code.offset          = UnsignedIntegerValue(codeAttributes[@"Offset"]);
                    code.onOffPattern    = codeAttributes[@"On-Off Pattern"];
                    code.setsDeviceInput = BOOLValue(codeAttributes[@"Input"]);
                    
@@ -299,7 +299,7 @@ static uint8_t     msTestOptions = 0;
      ^{
          for (NSString * fileName in fileNames)
          {
-             NSInteger tag = NSIntegerValue([fileName
+             NSInteger tag = IntegerValue([fileName
                                              stringByMatchingFirstOccurrenceOfRegEx:@"\\[([0-9]{1,4})\\]"
                                                                             capture:1]);
              BOImage * iconImage = [BOImage fetchImageWithTag:tag

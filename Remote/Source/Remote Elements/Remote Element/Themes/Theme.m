@@ -51,9 +51,9 @@
                             [ThemeButtonSettings
                                       themeSettingsWithRole:RETypeButton
                                                     context:moc],
-                            [ThemeButtonGroupSettings
-                                      themeSettingsWithRole:REButtonGroupRolePanel
-                                                    context:moc],
+//                            [ThemeButtonGroupSettings
+//                                      themeSettingsWithRole:REButtonGroupRolePanel
+//                                                    context:moc],
                             [ThemeButtonGroupSettings
                                       themeSettingsWithRole:REButtonGroupRoleSelectionPanel
                                                     context:moc],
@@ -70,13 +70,13 @@
                                       themeSettingsWithRole:REButtonGroupRoleTransport
                                                     context:moc],
                             [ThemeButtonGroupSettings
-                                      themeSettingsWithRole:REButtonGroupRolePickerLabel
+                                      themeSettingsWithRole:REButtonGroupRoleRocker
                                                     context:moc],
                             [ThemeButtonSettings
                                       themeSettingsWithRole:REButtonRoleToolbar
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithRole:REButtonRolePickerLabel
+                                      themeSettingsWithRole:REButtonRoleRocker
                                                     context:moc],
                             [ThemeButtonSettings
                                       themeSettingsWithRole:RERoleUndefined

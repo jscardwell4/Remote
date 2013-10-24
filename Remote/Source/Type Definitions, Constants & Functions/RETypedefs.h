@@ -43,9 +43,9 @@ typedef NS_OPTIONS(uint8_t, REStyle)
     REStyleDrawBorder       = 0b00000010,
     REStyleStretchable      = 0b00000100,
     REStyleGlossStyle1      = REStyleApplyGloss,  // 50-50 split
-    REStyleGlossStyle2      = 0b00001001, // Top ⅓
-    REStyleGlossStyle3      = 0b00010001, // Unused
-    REStyleGlossStyle4      = 0b00100001, // Unused
+    REStyleGlossStyle2      = 0b00001001,         // Top ⅓
+    REStyleGlossStyle3      = 0b00010001,         // Unused
+    REStyleGlossStyle4      = 0b00100001,         // Unused
     REGlossStyleMask        = 0b00111001
 };
 
@@ -63,80 +63,82 @@ static inline NSString *NSStringFromREStyle(REStyle style)
 
 typedef NS_OPTIONS(uint32_t, REThemeOverrideFlags)
 {
-    REThemeNone                    = 0b000000000000000000000000000000,
+    REThemeNone = 0b000000000000000000000000000000,
 
-    REThemeNoBackgroundImage	  = 0b000000000000000000000000000001,
-    REThemeNoBackgroundImageAlpha = 0b000000000000000000000000000010,
-    REThemeNoBackgroundColor      = 0b000000000000000000000000000100,
-    REThemeNoBackground           = 0b000000000000000000000000000111,
+    REThemeNoBackgroundImage          = 0b000000000000000000000000000001,
+    REThemeNoBackgroundImageAlpha     = 0b000000000000000000000000000010,
+    REThemeNoBackgroundColorAttribute = 0b000000000000000000000000000100,
+    REThemeNoBackground               = 0b000000000000000000000000000111,
 
-    REThemeNoBorder			      = 0b000000000000000000000000001000,
-    REThemeNoGloss			      = 0b000000000000000000000000010000,
-    REThemeNoStretchable          = 0b000000000000000000000000100000,
-    REThemeNoStyle			      = 0b000000000000000000000000111000,
+    REThemeNoBorder      = 0b000000000000000000000000001000,
+    REThemeNoGloss       = 0b000000000000000000000000010000,
+    REThemeNoStretchable = 0b000000000000000000000000100000,
+    REThemeNoStyle       = 0b000000000000000000000000111000,
 
-    REThemeNoIconImage            = 0b000000000000000000000001000000,
-    REThemeNoIconColor            = 0b000000000000000000000010000000,
-    REThemeNoIconInsets           = 0b000000000000000000000100000000,
-    REThemeNoIcon                 = 0b000000000000000000000111000000,
+    REThemeNoIconImage          = 0b000000000000000000000001000000,
+    REThemeNoIconColorAttribute = 0b000000000000000000000010000000,
+    REThemeNoIconInsets         = 0b000000000000000000000100000000,
+    REThemeNoIcon               = 0b000000000000000000000111000000,
 
-    REThemeNoTitleForegroundColor = 0b000000000000000000001000000000,
-    REThemeNoTitleBackgroundColor = 0b000000000000000000010000000000,
-    REThemeNoTitleShadowColor     = 0b000000000000000000100000000000,
-    REThemeNoTitleStrokeColor     = 0b000000000000000001000000000000,
-    REThemeNoTitleColor           = 0b000000000000000001111000000000,
-    REThemeNoFontName		      = 0b000000000000000001000000000000,
-    REThemeNoFontSize             = 0b000000000000000010000000000000,
-    REThemeNoFont                 = 0b000000000000000011000000000000,
-    REThemeNoStrokeWidth          = 0b000000000000000100000000000000,
-    REThemeNoStrikethrough        = 0b000000000000001000000000000000,
-    REThemeNoUnderline            = 0b000000000000010000000000000000,
-    REThemeNoLigature             = 0b000000000000100000000000000000,
-    REThemeNoKern                 = 0b000000000001000000000000000000,
-    REThemeNoParagraphStyle       = 0b000000000010000000000000000000,
-    REThemeNoTitleAttributes      = 0b000000000011111111111000000000,
-    REThemeNoTitleInsets          = 0b000000000100000000000000000000,
-    REThemeNoTitleText            = 0b000000001000000000000000000000,
-    REThemeNoTitle                = 0b000000001111111111111000000000,
+    REThemeNoTitleForegroundColorAttribute = 0b000000000000000000001000000000,
+    REThemeNoTitleBackgroundColorAttribute = 0b000000000000000000010000000000,
+    REThemeNoTitleShadowColorAttribute     = 0b000000000000000000100000000000,
+    REThemeNoTitleStrokeColorAttribute     = 0b000000000000000001000000000000,
+    REThemeNoTitleColorAttribute           = 0b000000000000000001111000000000,
+    REThemeNoFontName                      = 0b000000000000000001000000000000,
+    REThemeNoFontSize                      = 0b000000000000000010000000000000,
+    REThemeNoFont                          = 0b000000000000000011000000000000,
+    REThemeNoStrokeWidth                   = 0b000000000000000100000000000000,
+    REThemeNoStrikethrough                 = 0b000000000000001000000000000000,
+    REThemeNoUnderline                     = 0b000000000000010000000000000000,
+    REThemeNoLigature                      = 0b000000000000100000000000000000,
+    REThemeNoKern                          = 0b000000000001000000000000000000,
+    REThemeNoParagraphStyle                = 0b000000000010000000000000000000,
+    REThemeNoTitleAttributes               = 0b000000000011111111111000000000,
+    REThemeNoTitleInsets                   = 0b000000000100000000000000000000,
+    REThemeNoTitleText                     = 0b000000001000000000000000000000,
+    REThemeNoTitle                         = 0b000000001111111111111000000000,
 
-    REThemeNoContentInsets        = 0b000000010000000000000000000000,
-    REThemeNoShape                = 0b000000100000000000000000000000,
+    REThemeNoContentInsets = 0b000000010000000000000000000000,
+    REThemeNoShape         = 0b000000100000000000000000000000,
 
-    REThemeReserved               = 0b111111000000000000000000000000,
-    REThemeAll                   = 0b111111111111111111111111111111
-};
+    REThemeReserved = 0b111111000000000000000000000000,
+    REThemeAll      = 0b111111111111111111111111111111
+}
+;
 
 static inline NSString *NSStringFromREThemeFlags(REThemeOverrideFlags themeFlags)
 {
     static dispatch_once_t onceToken;
     static NSDictionary const * index;
     dispatch_once(&onceToken, ^{
-        index = @{ @(REThemeNoBackgroundImage)      : @"REThemeNoBackgroundImage",
-                   @(REThemeNoBackgroundImageAlpha) : @"REThemeNoBackgroundImageAlpha",
-                   @(REThemeNoBackgroundColor)      : @"REThemeNoBackgroundColor",
-                   @(REThemeNoBorder)               : @"REThemeNoBorder",
-                   @(REThemeNoGloss)                : @"REThemeNoGloss",
-                   @(REThemeNoStretchable)          : @"REThemeNoStretchable",
-                   @(REThemeNoIconImage)            : @"REThemeNoIconImage",
-                   @(REThemeNoIconColor)            : @"REThemeNoIconColor",
-                   @(REThemeNoIconInsets)           : @"REThemeNoIconInsets",
-                   @(REThemeNoTitleForegroundColor) : @"REThemeNoTitleForegroundColor",
-                   @(REThemeNoTitleBackgroundColor) : @"REThemeNoTitleBackgroundColor",
-                   @(REThemeNoTitleShadowColor)     : @"REThemeNoTitleShadowColor",
-                   @(REThemeNoTitleStrokeColor)     : @"REThemeNoTitleStrokeColor",
-                   @(REThemeNoFontName)             : @"REThemeNoFontName",
-                   @(REThemeNoFontSize)             : @"REThemeNoFontSize",
-                   @(REThemeNoStrokeWidth)          : @"REThemeNoStrokeWidth",
-                   @(REThemeNoStrikethrough)        : @"REThemeNoStrikethrough",
-                   @(REThemeNoUnderline)            : @"REThemeNoUnderline",
-                   @(REThemeNoLigature)             : @"REThemeNoLigature",
-                   @(REThemeNoKern)                 : @"REThemeNoKern",
-                   @(REThemeNoParagraphStyle)       : @"REThemeNoParagraphStyle",
-                   @(REThemeNoTitleAttributes)      : @"REThemeNoTitleAttributes",
-                   @(REThemeNoTitleInsets)          : @"REThemeNoTitleInsets",
-                   @(REThemeNoTitleText)            : @"REThemeNoTitleText",
-                   @(REThemeNoContentInsets)        : @"REThemeNoContentInsets",
-                   @(REThemeNoShape)                : @"REThemeNoShape" };
+        index =
+        @{ @(REThemeNoBackgroundImage)               : @"REThemeNoBackgroundImage",
+           @(REThemeNoBackgroundImageAlpha)          : @"REThemeNoBackgroundImageAlpha",
+           @(REThemeNoBackgroundColorAttribute)      : @"REThemeNoBackgroundColorAttribute",
+           @(REThemeNoBorder)                        : @"REThemeNoBorder",
+           @(REThemeNoGloss)                         : @"REThemeNoGloss",
+           @(REThemeNoStretchable)                   : @"REThemeNoStretchable",
+           @(REThemeNoIconImage)                     : @"REThemeNoIconImage",
+           @(REThemeNoIconColorAttribute)            : @"REThemeNoIconColorAttribute",
+           @(REThemeNoIconInsets)                    : @"REThemeNoIconInsets",
+           @(REThemeNoTitleForegroundColorAttribute) : @"REThemeNoTitleForegroundColorAttribute",
+           @(REThemeNoTitleBackgroundColorAttribute) : @"REThemeNoTitleBackgroundColorAttribute",
+           @(REThemeNoTitleShadowColorAttribute)     : @"REThemeNoTitleShadowColorAttribute",
+           @(REThemeNoTitleStrokeColorAttribute)     : @"REThemeNoTitleStrokeColorAttribute",
+           @(REThemeNoFontName)                      : @"REThemeNoFontName",
+           @(REThemeNoFontSize)                      : @"REThemeNoFontSize",
+           @(REThemeNoStrokeWidth)                   : @"REThemeNoStrokeWidth",
+           @(REThemeNoStrikethrough)                 : @"REThemeNoStrikethrough",
+           @(REThemeNoUnderline)                     : @"REThemeNoUnderline",
+           @(REThemeNoLigature)                      : @"REThemeNoLigature",
+           @(REThemeNoKern)                          : @"REThemeNoKern",
+           @(REThemeNoParagraphStyle)                : @"REThemeNoParagraphStyle",
+           @(REThemeNoTitleAttributes)               : @"REThemeNoTitleAttributes",
+           @(REThemeNoTitleInsets)                   : @"REThemeNoTitleInsets",
+           @(REThemeNoTitleText)                     : @"REThemeNoTitleText",
+           @(REThemeNoContentInsets)                 : @"REThemeNoContentInsets",
+           @(REThemeNoShape)                         : @"REThemeNoShape" };
     });
 
     NSArray * flagKeys = [[index allKeys] objectsPassingTest:
@@ -193,13 +195,12 @@ typedef NS_ENUM(uint8_t, RERole)
     RERoleUndefined                 = 0b00000000,
 
     // button group roles
-    REButtonGroupRolePanel          = 0b00000001,
     REButtonGroupRoleSelectionPanel = 0b00000011,
     REButtonGroupRoleToolbar        = 0b00000010,
     REButtonGroupRoleDPad           = 0b00000100,
     REButtonGroupRoleNumberpad      = 0b00000110,
     REButtonGroupRoleTransport      = 0b00001000,
-    REButtonGroupRolePickerLabel    = 0b00001010,
+    REButtonGroupRoleRocker         = 0b00001010,
 
     // toolbar buttons
     REButtonRoleToolbar             = 0b00000010,
@@ -208,10 +209,10 @@ typedef NS_ENUM(uint8_t, RERole)
     REButtonRoleToolbarMask         = 0b00000010,
 
     // picker label buttons
-    REButtonRolePickerLabel         = 0b00001010,
-    REButtonRolePickerLabelTop      = 0b00011010,
-    REButtonRolePickerLabelBottom   = 0b00101010,
-    REButtonRolePickerLabelMask     = 0b00001010,
+    REButtonRoleRocker         = 0b00001010,
+    REButtonRoleRockerTop      = 0b00011010,
+    REButtonRoleRockerBottom   = 0b00101010,
+    REButtonRoleRockerMask     = 0b00001010,
 
     // panel buttons
     REButtonRolePanel               = 0b00000001,
@@ -264,19 +265,18 @@ static inline NSString *NSStringFromRERole(RERole role)
     static dispatch_once_t onceToken;
     static NSDictionary const * index;
     dispatch_once(&onceToken, ^{
-        index = @{ @(REButtonGroupRolePanel)          : @"REButtonGroupRolePanel",
-                   @(REButtonGroupRoleSelectionPanel) : @"REButtonGroupRoleSelectionPanel",
+        index = @{ @(REButtonGroupRoleSelectionPanel) : @"REButtonGroupRoleSelectionPanel",
                    @(REButtonGroupRoleToolbar)        : @"REButtonGroupRoleToolbar",
                    @(REButtonGroupRoleDPad)           : @"REButtonGroupRoleDPad",
                    @(REButtonGroupRoleNumberpad)      : @"REButtonGroupRoleNumberpad",
                    @(REButtonGroupRoleTransport)      : @"REButtonGroupRoleTransport",
-                   @(REButtonGroupRolePickerLabel)    : @"REButtonGroupRolePickerLabel",
+                   @(REButtonGroupRoleRocker)         : @"REButtonGroupRoleRocker",
                    @(REButtonRoleToolbar)             : @"REButtonRoleToolbar",
                    @(REButtonRoleConnectionStatus)    : @"REButtonRoleConnectionStatus",
                    @(REButtonRoleBatteryStatus)       : @"REButtonRoleBatteryStatus",
-                   @(REButtonRolePickerLabel)         : @"REButtonRolePickerLabel",
-                   @(REButtonRolePickerLabelTop)      : @"REButtonRolePickerLabelTop",
-                   @(REButtonRolePickerLabelBottom)   : @"REButtonRolePickerLabelBottom",
+                   @(REButtonRoleRocker)         : @"REButtonRoleRocker",
+                   @(REButtonRoleRockerTop)      : @"REButtonRoleRockerTop",
+                   @(REButtonRoleRockerBottom)   : @"REButtonRoleRockerBottom",
                    @(REButtonRolePanel)               : @"REButtonRolePanel",
                    @(REButtonRoleTuck)                : @"REButtonRoleTuck",
                    @(REButtonRoleSelectionPanel)      : @"REButtonRoleSelectionPanel",
@@ -432,23 +432,39 @@ NSString *NSStringFromREPanelAssignment(REPanelAssignment assignment)
 
 typedef NS_OPTIONS(uint8_t, REOptions)
 {
-    REOptionsUndefined          = 0b00000000,
-    RERemoteOptionsDefault      = 0b00000000,
-    RERemoteOptionTopBarHidden  = 0b00000001,
-    REButtonGroupOptionsDefault = 0b00000000,
-    REButtonGroupOptionAutohide = 0b00000001
+    REOptionsDefault                       = 0b00000000,
+    RERemoteOptionTopBarHidden             = 0b00000001,
+    REButtonGroupOptionAutohide            = 0b00000001,
+    REButtonGroupOptionCommandSetContainer = 0b00000010
 };
 
 static inline NSString *NSStringFromREOptions(REOptions options, REType type)
 {
-    switch (options)
+
+    switch (type)
     {
-        case 1:
-            if (type == RETypeRemote)
-                return @"RERemoteOptionTopBarHidden";
-            else if (type == RETypeButtonGroup)
-                return @"REButtonGroupOptionAutohide";
-        default: return @"REOptionsUndefined";
+        case RETypeRemote:
+            return (options ? @"RERemoteOptionTopBarHidden" : @"REOptionsDefault");
+
+        case RETypeButtonGroup:
+        {
+            NSMutableArray * components = [@[] mutableCopy];
+
+            if ((options & REButtonGroupOptionAutohide) == REButtonGroupOptionAutohide)
+                [components addObject:@"REButtonGroupOptionAutohide"];
+
+            if ((options & REButtonGroupOptionCommandSetContainer) ==
+                REButtonGroupOptionCommandSetContainer)
+                [components addObject:@"REButtonGroupOptionCommandSetContainer"];
+
+            return ([components count]
+                    ? [components componentsJoinedByString:@"|"]
+                    : @"REOptionsDefault");
+        }
+
+        case RETypeButton:
+        default:
+            return @"REOptionsDefault";
     }
 }
 

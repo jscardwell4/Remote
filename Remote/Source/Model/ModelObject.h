@@ -10,12 +10,12 @@
 
 MSEXTERN_STRING ModelObjectInitializingContextName;
 
+BOOL UUIDIsValid(NSString * uuid);
+
 @property (nonatomic, copy, readonly) NSString     * uuid;
 
 + (instancetype)objectWithUUID:(NSString *)uuid;
 + (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)context;
-
-- (void)importFromDictionary:(MSDictionary *)data;
 
 - (id)objectForKeyedSubscript:(NSString *)uuid;
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;

@@ -14,6 +14,9 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation Remote
+{
+    BOOL _pendingPanels;
+}
 
 @dynamic controller, panels;
 
@@ -26,18 +29,12 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
          ^{
              self.elementType = RETypeRemote;
              self.configurationDelegate = [RemoteConfigurationDelegate
-                                           delegateForRemoteElement:self];
+                                           configurationDelegateForElement:self];
              [self registerMode:REDefaultMode];
          }];
 }
 
-- (void)setParentElement:(RemoteElement *)parentElement
-{
-    if (parentElement)
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"remotes cannot have a parent element"
-                                     userInfo:nil];
-}
+- (void)setParentElement:(RemoteElement *)parentElement {}
 
 - (RemoteElement *)parentElement { return nil; }
 
@@ -92,34 +89,78 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 - (void)assignButtonGroup:(ButtonGroup *)buttonGroup assignment:(REPanelAssignment)assignment
 {
     NSMutableDictionary * panels = [self.panels mutableCopy];
-    panels[@(assignment)] = CollectionSafeValue(buttonGroup.uuid);
+    panels[@(assignment)] = CollectionSafe(buttonGroup.uuid);
     self.panels = panels;
     buttonGroup.panelAssignment = assignment;
 }
 
 - (ButtonGroup *)buttonGroupForAssignment:(REPanelAssignment)assignment
 {
-    NSString * uuid = NilSafeValue(self.panels[@(assignment)]);
+    NSString * uuid = NilSafe(self.panels[@(assignment)]);
     return (uuid ? [ButtonGroup objectWithUUID:uuid context:self.managedObjectContext] : nil);
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)willImport:(id)data
+{
+    [super willImport:data];
+    _pendingPanels = [data hasKey:@"panels"];
+}
+
+- (void)didImport:(id)data
+{
+    [super didImport:data];
+    if (_pendingPanels) [self importPanels:data[@"panels"]];
+}
+
+- (BOOL)shouldImportController:(id)data {return NO;}
+
+- (void)importPanels:(NSDictionary *)data
+{
+    if (!_importStatus.pendingSubelements && _pendingPanels)
+    {
+        [data enumerateKeysAndObjectsUsingBlock:
+         ^(NSString * assignmentKey, NSString * uuid, BOOL *stop)
+         {
+             ButtonGroup * panel = (ButtonGroup *)memberOfCollectionWithUUID(self.subelements, uuid);
+             if (panel)
+             {
+                 REPanelAssignment assignment = panelAssignmentFromImportKey(assignmentKey);
+                 [self assignButtonGroup:panel assignment:assignment];
+             }
+         }];
+
+        _pendingPanels = NO;
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
     if ([self.panels count])
         dictionary[@"panels"] = [self.panels dictionaryByMappingKeysToBlock:
                                  ^NSString *(NSNumber * key, id obj)
                                  {
-                                     NSString * keyString = panelKeyForPanelAssignment(INTValue(key));
+                                     NSString * keyString = panelKeyForPanelAssignment(IntValue(key));
                                      return (keyString ?: [key stringValue]);
                                  }];
 
-    NSArray * modes = self.modes;
+    NSMutableArray * modes = [self.modes mutableCopy];
+    [modes removeObject:REDefaultMode];
+
     if ([modes count]) dictionary[@"modes"] = modes;
+
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

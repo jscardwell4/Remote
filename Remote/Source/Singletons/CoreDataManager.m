@@ -117,27 +117,9 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        // register error handler
-        [MagicalRecord setErrorHandlerTarget:self action:@selector(handleErrors:)];
 
-        // register log handler
-        LogHandlerBlock handler = ^(id _self, id object, NSString * format, va_list args)
-        {
-            if (format)
-            {
-                [DDLog log:YES
-                     level:[MagicalRecord logLevel]
-                      flag:LOG_FLAG_MAGICALRECORD
-                   context:magicalRecordContext
-                      file:__FILE__
-                  function:sel_getName(_cmd)
-                      line:__LINE__
-                       tag:@{ MSLogContextKey : @"MagicalRecord" }
-                    format:format
-                      args:args];
-            }
-        };
-        [MagicalRecord setLogHandler:handler];
+        [MagicalRecord setLogContext:magicalRecordContext];
+        [MagicalRecord setLogLevel:ddLogLevel];
 
         NSManagedObjectModel * model = [self augmentModel:[NSManagedObjectModel
                                                            MR_mergedObjectModelFromMainBundle]];
@@ -220,11 +202,15 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 {
     static NSURL * databaseStoreURL = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        databaseStoreURL = [NSURL fileURLWithPath:
-                            [[NSPersistentStore MR_applicationStorageDirectory]
-                             stringByAppendingPathComponent:kCoreDataManagerSQLiteName]];
-    });
+    dispatch_once(&onceToken,
+                  ^{
+                      NSMutableArray * path =
+                          [[[MainBundle executablePath] pathComponents] mutableCopy];
+                      [path replaceObjectsInRange:NSMakeRange([path count] - 2, 1)
+                                       withObjectsFromArray:@[@"Library", @"Application Support"]];
+                      [path addObject:kCoreDataManagerSQLiteName];
+                      databaseStoreURL = [NSURL fileURLWithPath:[NSString pathWithComponents:path]];
+                  });
     return databaseStoreURL;
 }
 
@@ -251,7 +237,7 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     if (error)
     {
-        [MagicalRecord handleErrors:error];
+        MSHandleErrors(error);
         return NO;
     }
 
@@ -280,7 +266,7 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
     else if (![FileManager removeItemAtURL:[self databaseStoreURL] error:&error])
     {
-        [MagicalRecord handleErrors:error];
+        MSHandleErrors(error);
         return NO;
     }
 

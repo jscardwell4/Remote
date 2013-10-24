@@ -434,10 +434,10 @@
             : nil);
 }
 
-MSSTRING_CONST   MSLogClassNameKey  = @"MSLogClassNameKey";
-MSSTRING_CONST   MSLogObjectNameKey = @"MSLogObjectNameKey";
-MSSTRING_CONST   MSLogObjectKey     = @"MSLogObjectKey";
-MSSTRING_CONST   MSLogContextKey    = @"MSLogContextKey";
+MSKEY_DEFINITION(MSLogClassName);
+MSKEY_DEFINITION(MSLogObjectName);
+MSKEY_DEFINITION(MSLogObject);
+MSKEY_DEFINITION(MSLogContext);
 
 - (NSString *)formattedLogMessageForMessage:(DDLogMessage *)logMessage
 {
@@ -448,10 +448,11 @@ MSSTRING_CONST   MSLogContextKey    = @"MSLogContextKey";
     NSString * className  = nil;
     NSString * contextName = nil;
     id         object     = nil;
-    if ([logMessage->tag isKindOfClass:[NSDictionary  class]]) {
+    if (isDictionaryKind(logMessage->tag))
+    {
         NSDictionary * tagDict = (NSDictionary *)logMessage->tag;
-        object     = tagDict[MSLogObjectKey];
-        objectName = tagDict[MSLogObjectNameKey];
+        object      = tagDict[MSLogObjectKey];
+        objectName  = tagDict[MSLogObjectNameKey];
         contextName = tagDict[MSLogContextKey];
         if (object && !objectName) objectName = [object shortDescription];
         className  = tagDict[MSLogClassNameKey];
@@ -471,7 +472,7 @@ MSSTRING_CONST   MSLogContextKey    = @"MSLogContextKey";
             case LOG_FLAG_DEBUG:    logLevel = @"D"; break;
             case LOG_FLAG_VERBOSE:  logLevel = @"V"; break;
             default:                logLevel = @"?"; break;
-        }  /* switch */
+        }
         [formattedLogMessage appendFormat:@"[%@", logLevel];
     }
 
@@ -515,11 +516,11 @@ MSSTRING_CONST   MSLogContextKey    = @"MSLogContextKey";
     {
         NSString * message = [logMessage->logMsg stringByUnescapingControlCharacters];
 
-        if (_indentMessageBody) message = [message stringByReplacingOccurrencesOfRegEx:@"\n" withString:@"\n\t"];
+        if (_indentMessageBody) message = [message stringByReplacingRegEx:@"\n" withString:@"\n\t"];
 
         [formattedLogMessage appendString:message];
         if (_addReturnAfterMessage) [formattedLogMessage appendString:@"\n\n"];
-        if (_collapseTrailingReturns) [formattedLogMessage replaceOccurrencesOfRegEx:@"[\\n]+$"
+        if (_collapseTrailingReturns) [formattedLogMessage replaceRegEx:@"[\\n]+$"
                                                                           withString:@""];
     }
 
@@ -528,6 +529,7 @@ MSSTRING_CONST   MSLogContextKey    = @"MSLogContextKey";
 
 @end
 
+/*
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - MSASLFileLogger
 ////////////////////////////////////////////////////////////////////////////////
@@ -585,3 +587,4 @@ MSSTRING_CONST   MSLogContextKey    = @"MSLogContextKey";
 }
 
 @end
+*/

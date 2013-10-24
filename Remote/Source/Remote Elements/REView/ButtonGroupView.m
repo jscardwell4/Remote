@@ -158,7 +158,8 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     }
 }
 
-- (void)initializeViewFromModel {
+- (void)initializeViewFromModel
+{
     [super initializeViewFromModel];
     _isPanel = [self.model isPanel];
 }
@@ -166,7 +167,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
 
-    if (self.superview && _isPanel && !self.isEditing)
+    if (self.superview && [self.model isPanel] && !self.isEditing)
     {
         _tuckGesture = [[MSSwipeGestureRecognizer alloc] initWithTarget:self
                                                                  action:@selector(handleSwipe:)];

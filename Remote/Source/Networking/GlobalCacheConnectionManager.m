@@ -618,7 +618,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
     // command success
     if ([message hasPrefix:kCompleteIR])
         [self
-             dispatchCompletionHandlerForTag:@(NSIntegerValue([message substringFromIndex:15]))
+             dispatchCompletionHandlerForTag:@(IntegerValue([message substringFromIndex:15]))
                                      success:YES];
 
     // error

@@ -348,7 +348,7 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
 {
     NSMutableString * s = [@"" mutableCopy];
 
-    if (!NSUIntegerValue(_bitVector.bits)) [self refreshConfig];
+    if (!UnsignedIntegerValue(_bitVector.bits)) [self refreshConfig];
     
     if ([_bitVector[7] boolValue]) [s appendString:@"L"];
     if ([_bitVector[6] boolValue]) [s appendString:@"R"];

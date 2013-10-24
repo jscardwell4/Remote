@@ -14,16 +14,15 @@
 #import "Command.h"
 
 // #define DUMP_ELEMENT_HIERARCHY
-// #define DUMP_LAYOUT_DATA
+ #define DUMP_LAYOUT_DATA
 
 // #define INACTIVITY_TIMER
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
+static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
-MSSTATIC_STRING_CONST   kRemoteViewNameTag                     = @"kRemoteViewNameTag";
-MSSTATIC_STRING_CONST   kTopToolbarConstraintNameTag           = @"kTopToolbarConstraintNameTag";
-MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRemoteViewConstraintNameTag";
+MSSTATIC_NAMETAG(kRemoteView);
+MSSTATIC_NAMETAG(kTopToolbarConstraint);
 
 @implementation RemoteViewController {
     struct {
@@ -150,12 +149,13 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    DDLogWarn(@"%@ is view loaded? %@  is toolbar allocated? %@",
+    MSLogWarn(@"%@ is view loaded? %@  is toolbar allocated? %@",
               ClassTagSelectorString,
               BOOLString([self isViewLoaded]),
               BOOLString(_topToolbar == nil));
 }
 
+/*
 #ifdef INACTIVITY_TIMER
 - (void)resumeInactivityTimer
 {
@@ -266,7 +266,8 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
             _flags.monitoringInactivity = NO;
     }
 }
-#endif  /* ifdef INACTIVITY_TIMER */
+#endif
+*/
 
 - (void)viewDidLoad
 {
@@ -286,7 +287,7 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
     assert(!_topToolbar);
     [self initializeTopToolbar];
     
-    assert(![self.view viewWithNametag:kRemoteViewNameTag]);
+    assert(![self.view viewWithNametag:kRemoteViewNametag]);
 
     Remote * remote = _remoteController.currentRemote;
     if (!remote && [_remoteController switchToRemote:_remoteController.homeRemote])
@@ -302,7 +303,10 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
      {
          if ([obj isMemberOfClass:[MSPinchGestureRecognizer class]])
          {
-             ((MSPinchGestureRecognizer*)obj).threshold = (MSBoundary) {.lower = -44.0f, .upper = 44.0f};
+             ((MSPinchGestureRecognizer*)obj).threshold = (MSBoundary) {
+                 .lower = -44.0f,
+                 .upper = 44.0f
+             };
              *stop = YES;
          }
      }];
@@ -312,21 +316,19 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 {
     [super updateViewConstraints];
 
-    RemoteView * remoteView = (RemoteView*)[self.view viewWithNametag:kRemoteViewNameTag];
+    RemoteView * remoteView = (RemoteView*)[self.view viewWithNametag:kRemoteViewNametag];
 
-    if (remoteView && ![self.view constraintsWithNametag:kRemoteViewNameTag])
+    if (remoteView && ![self.view constraintsWithNametag:kRemoteViewNametag])
     {
         UIView  * parentView  = self.view;
-        NSArray * constraints = [NSLayoutConstraint
-                                 constraintsByParsingString:@"remoteView.centerX = parentView.centerX\n"
-                                                             "remoteView.bottom = parentView.bottom\n"
-                                                             "remoteView.top = parentView.top"
-                                                      views:NSDictionaryOfVariableBindings(remoteView,
-                                                                                           parentView,
-                                                                                           _topToolbar)];
+        NSArray * constraints =
+            [NSLayoutConstraint
+             constraintsByParsingString:@"remoteView.centerX = parentView.centerX\n"
+                                         "remoteView.bottom = parentView.bottom\n"
+                                         "remoteView.top = parentView.top"
+             views:NSDictionaryOfVariableBindings(remoteView, parentView, _topToolbar)];
 
-        for (NSLayoutConstraint * lc in constraints)
-            lc.nametag = kRemoteViewNameTag;
+        for (NSLayoutConstraint * lc in constraints) lc.nametag = kRemoteViewNametag;
 
         [parentView addConstraints:constraints];
     }
@@ -336,13 +338,13 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 {
     assert(OnMainThread && remoteView);
 
-    RemoteView * currentRV = (RemoteView*)[self.view viewWithNametag:kRemoteViewNameTag];
+    RemoteView * currentRV = (RemoteView*)[self.view viewWithNametag:kRemoteViewNametag];
 
     assert([currentRV isKindOfClass:[RemoteView class]] || currentRV == nil);
 
     BOOL shouldToggleToolbar = ([self isTopToolbarVisible] == remoteView.topBarHidden);
 
-    remoteView.nametag = kRemoteViewNameTag;
+    remoteView.nametag = kRemoteViewNametag;
 
     if (currentRV)
     {
@@ -366,55 +368,56 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
     }
 
 #ifdef DUMP_LAYOUT_DATA
-    NSOperationQueue * queue = [NSOperationQueue new];
 
-    [queue addOperationWithBlock:^{
+    [[NSOperationQueue new] addOperationWithBlock:^{
          int64_t delayInSeconds = 2.0;
          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                            [self dumpLayoutData];
-#  ifdef DUMP_ELEMENT_HIERARCHY
-                            [self dumpElements];
-#  endif
-                        }
+             MSLogDebugInContextTag((LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE),
+                                    @"%@ dumping constraints...\n\n%@\n\n",
+                                    ClassTagSelectorString,
+                                    [[UIWindow keyWindow]
+                                     viewTreeDescriptionWithProperties:@[@"frame",
+                                                                         @"hasAmbiguousLayout?",
+                                                                         @"key",
+                                                                         @"nametag",
+                                                                         @"name",
+                                                                         @"constraints"]]);
+         });
+    }];
+#endif
 
-         );
-     }
+#ifdef DUMP_ELEMENT_HIERARCHY
 
-    ];
-#else  /* ifdef DUMP_LAYOUT_DATA */
-#  ifdef DUMP_ELEMENT_HIERARCHY
-    NSOperationQueue * queue = [NSOperationQueue new];
-
-    [queue addOperationWithBlock:^{
+    [[NSOperationQueue new] addOperationWithBlock:^{
          int64_t delayInSeconds = 2.0;
          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                            [self dumpElements];
-                        }
+             MSLogDebug(@"%@ dumping elements...\n\n%@\n\n",
+                        ClassTagSelectorString,
+                        [[(RemoteView*)[self.view viewWithNametag:kRemoteViewNametag] model]
+                         dumpElementHierarchy]);
+         });
+     }];
 
-         );
-     }
-
-    ];
-#  endif  /* ifdef DUMP_ELEMENT_HIERARCHY */
-#endif   /* ifdef DUMP_LAYOUT_DATA */
+#endif
 
 #define LOG_ELEMENTS
 #ifdef LOG_ELEMENTS
 
-    NSOperationQueue * queue = [NSOperationQueue new];
-
-    [queue addOperationWithBlock:^{
+    [[NSOperationQueue new] addOperationWithBlock:^{
         int64_t delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
-            MSLogDebugInContext(LOG_CONTEXT_CONSOLE,
-                                @"%@\n%@\n%@\n",
-                                [@"Displayed Remote Elements" singleBarMessageBox],
-                                [_topToolbar.model recursiveDeepDescription],
-                                [remoteView.model recursiveDeepDescription]);
+            MSLogDebugInContextTag((LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE),
+                                   @"%@\n%@\n%@\n\n%@\n%@\n%@\n",
+                                   [@"Displayed Remote Element Descriptions" singleBarMessageBox],
+                                   [_topToolbar.model recursiveDeepDescription],
+                                   [remoteView.model recursiveDeepDescription],
+                                   [@"Displayed Remote Element JSON" singleBarMessageBox],
+                                   [_topToolbar.model JSONString],
+                                   [remoteView.model JSONString]);
             
         });
     }];
@@ -439,9 +442,11 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 {
     if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = YES;
 
+/*
 #ifdef INACTIVITY_TIMER
     if (_flags.inactivityTimeout) [self startInactivityTimer];
 #endif
+*/
 
 }
 
@@ -453,9 +458,11 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 {
     if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = NO;
 
+/*
 #ifdef INACTIVITY_TIMER
     if (_flags.monitoringInactivity) [self stopInactivityTimer:NO];
 #endif
+*/
 }
 
 #pragma mark - Managing the top toolbar
@@ -594,7 +601,7 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
                                                          attribute:NSLayoutAttributeTop
                                                         multiplier:1
                                                           constant:0];
-    _topToolbarConstraint.nametag = kTopToolbarConstraintNameTag;
+    _topToolbarConstraint.nametag = kTopToolbarConstraintNametag;
     [self.view addConstraint:_topToolbarConstraint];
     [self.view addConstraints:
      [NSLayoutConstraint constraintsByParsingString:@"H:|[_topToolbar]|"
@@ -629,29 +636,6 @@ MSSTATIC_STRING_CONST   kTopToolbarRemoteViewConstraintNameTag = @"kTopToolbarRe
 }
 
 #pragma mark - Debugging
-
-- (void)dumpLayoutData
-{
-    MSLogDebug(@"%@ dumping constraints...\n\n%@\n\n",
-               ClassTagSelectorString,
-               [[UIWindow keyWindow] viewTreeDescriptionWithProperties:@[@"frame",
-                                                                         @"hasAmbiguousLayout?",
-                                                                         @"key",
-                                                                         @"nametag",
-                                                                         @"name",
-                                                                         @"constraints"]]);
-}
-
-
-- (void)dumpElements
-{
-    MSLogDebug(@"%@ dumping elements...\n\n%@\n\n",
-               ClassTagSelectorString,
-               [[(RemoteView*)[self.view
-                                 viewWithNametag:kRemoteViewNameTag]
-                 model]
-                dumpElementHierarchy]);
-}
 
 - (IBAction)debugAmbiguity:(id)sender
 {

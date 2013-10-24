@@ -10,7 +10,7 @@
 
 @class MagicalRecordStack;
 
-typedef void (^ LogHandlerBlock)(id _self, id object, NSString * format, va_list args);
+//typedef void (^ LogHandlerBlock)(id _self, id object, NSString * format, va_list args);
 
 @interface MagicalRecord (MSKitAdditions)
 
@@ -20,6 +20,7 @@ typedef void (^ LogHandlerBlock)(id _self, id object, NSString * format, va_list
                                                   model:(NSManagedObjectModel *)model;
 
 
+/*
 + (void)performLogForObject:(id)object message:(NSString *)format args:(va_list)args;
 
 + (void)performLogForObject:(id)object message:(NSString *)format, ... __attribute__ ((format (__NSString__, 2, 3)));
@@ -35,5 +36,6 @@ typedef void (^ LogHandlerBlock)(id _self, id object, NSString * format, va_list
 + (SEL)errorHandlerAction;
 
 + (id)errorHandlerTarget;
+*/
 
 @end

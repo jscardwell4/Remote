@@ -47,7 +47,7 @@
 + (ButtonGroup *)dPadInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)numberpadInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)transportInContext:(NSManagedObjectContext *)moc;
-+ (PickerLabelButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc;
++ (ButtonGroup *)rockerInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)oneByThreeInContext:(NSManagedObjectContext *)moc;
 + (ButtonGroup *)verticalPanelInContext:(NSManagedObjectContext *)moc;
 

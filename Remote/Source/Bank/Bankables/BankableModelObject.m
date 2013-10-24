@@ -85,13 +85,14 @@
     }
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"info"] = CollectionSafeValue(self.info.JSONDictionary);
+    dictionary[@"info"] = CollectionSafe(self.info.JSONDictionary);
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

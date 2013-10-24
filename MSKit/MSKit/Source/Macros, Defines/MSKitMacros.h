@@ -11,12 +11,41 @@
 #import "MSKitDefines.h"
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Strings
 ////////////////////////////////////////////////////////////////////////////////
 
+#define isKind(OBJ, CLASS)                 [OBJ isKindOfClass:[CLASS class]]
+#define isStringKind(OBJ)                  isKind(OBJ, NSString)
+#define isAttributedStringKind(OBJ)        isKind(OBJ, NSAttributedString)
+#define isArrayKind(OBJ)                   isKind(OBJ, NSArray)
+#define isDictionaryKind(OBJ)              isKind(OBJ, NSDictionary)
+#define isSetKind(OBJ)                     isKind(OBJ, NSSet)
+#define isOrderedSetKind(OBJ)              isKind(OBJ, NSOrderedSet)
+#define isMutableStringKind(OBJ)           isKind(OBJ, NSMutableString)
+#define isMutableAttributedStringKind(OBJ) isKind(OBJ, NSMutableAttributedString)
+#define isMutableArrayKind(OBJ)            isKind(OBJ, NSMutableArray)
+#define isMutableDictionaryKind(OBJ)       isKind(OBJ, NSMutableDictionary)
+#define isMutableSetKind(OBJ)              isKind(OBJ, NSMutableSet)
+#define isMutableOrderedSetKind(OBJ)       isKind(OBJ, NSMutableOrderedSet)
+#define isNumberKind(OBJ)                  isKind(OBJ, NSNumber)   
 
+#define isMember(OBJ, CLASS)           [OBJ isMemberOfClass:[CLASS class]]
+#define isString(OBJ)                  isMember(OBJ, NSString)
+#define isAttributedString(OBJ)        isMember(OBJ, NSAttributedString)
+#define isArray(OBJ)                   isMember(OBJ, NSArray)
+#define isDictionary(OBJ)              isMember(OBJ, NSDictionary)
+#define isMSDictionary(OBJ)            isMember(OBJ, MSDictionary)
+#define isSet(OBJ)                     isMember(OBJ, NSSet)
+#define isOrderedSet(OBJ)              isMember(OBJ, NSOrderedSet)
+#define isMutableString(OBJ)           isMember(OBJ, NSMutableString)
+#define isMutableAttributedString(OBJ) isMember(OBJ, NSMutableAttributedString)
+#define isMutableArray(OBJ)            isMember(OBJ, NSMutableArray)
+#define isMutableDictionary(OBJ)       isMember(OBJ, NSMutableDictionary)
+#define isMutableSet(OBJ)              isMember(OBJ, NSMutableSet)
+#define isMutableOrderedSet(OBJ)       isMember(OBJ, NSMutableOrderedSet)
+
+#define WRAP(BLOCK) do { BLOCK } while(0)
 #define JOIN(x,y,z) x##y##z
 #define NSStringify(a)@__STRING(a)
 #define NSStringifyJoin(x,y,z) NSStringify(JOIN(x,y,z))
@@ -26,6 +55,7 @@
 
 #define MSKEY_DEFINITION(k)          MSTOKEN_TO_STRING_DEFINITION(__CONCAT(k,Key))
 #define MSNAMETAG_DEFINITION(n)      MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Nametag))
+#define MSNAME_DEFINITION(n)         MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Name))
 #define MSNOTIFICATION_DEFINITION(n) MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Notification))
 #define MSIDENTIFIER_DEFINITION(n)   MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Identifier))
 #define MSSTATIC_NAMETAG(n)          MSTOKEN_TO_STATIC_STRING_DEFINITION(__CONCAT(n,Nametag))
@@ -33,6 +63,7 @@
 
 #define MSEXTERN_KEY(k)          MSEXTERN_STRING __CONCAT(k,Key)
 #define MSEXTERN_NAMETAG(n)      MSEXTERN_STRING __CONCAT(n,Nametag)
+#define MSEXTERN_NAME(n)         MSEXTERN_STRING __CONCAT(n,Name)
 #define MSEXTERN_NOTIFICATION(n) MSEXTERN_STRING __CONCAT(n,Notification)
 #define MSEXTERN_IDENTIFIER(i)   MSEXTERN_STRING __CONCAT(i,Identifier)
 
@@ -53,31 +84,46 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // exceptions
-#define InvalidNilArgument(ARG)    [NSException exceptionWithName:NSInvalidArgumentException\
-                                                           reason:$(@"%@ must not be nil", \
-                                                                    NSStringify(ARG))\
-                                                         userInfo:nil]
+#define InvalidNilArgument(ARG)                                               \
+    [NSException exceptionWithName:NSInvalidArgumentException                 \
+                            reason:$(@"%@ must not be nil", NSStringify(ARG)) \
+                          userInfo:nil]
 
-#define InvalidIndexArgument(ARG)  [NSException exceptionWithName:NSRangeException\
-                                                           reason:$(@"%@ out of range", \
-                                                                    NSStringify(ARG))\
-                                                         userInfo:nil]
+#define InvalidArgument(ARG, REASON)                                                  \
+    [NSException exceptionWithName:NSInvalidArgumentException                         \
+                            reason:$(@"%@ %@", NSStringify(ARG), NSStringify(REASON)) \
+                          userInfo:nil]
+
+#define InvalidIndexArgument(ARG)                                          \
+    [NSException exceptionWithName:NSRangeException                        \
+                            reason:$(@"%@ out of range", NSStringify(ARG)) \
+                          userInfo:nil]
+
+#define InvalidInternalInconsistency(REASON)                        \
+    [NSException exceptionWithName:NSInternalInconsistencyException \
+                            reason:$(@"%@", NSStringify(REASON))    \
+                          userInfo:nil]
+
+#define ThrowInvalidNilArgument(ARG)              @throw InvalidNilArgument(ARG)
+#define ThrowInvalidIndexArgument(ARG)            @throw InvalidIndexArgument(ARG)
+#define ThrowInvalidArgument(ARG,REASON)          @throw InvalidArgument(ARG,REASON)
+#define ThrowInvalidInternalInconsistency(REASON) @throw InvalidInternalInconsistency(REASON)
 
 #define KeyPathValue(OBJECT, KEYPATH) [OBJECT valueForKeyPath:KEYPATH]
 #define SelfKeyPathValue(KEYPATH)     KeyPathValue(self, KEYPATH)
 
-#define CollectionSafeKeyPathValue(OBJECT, KEYPATH)  CollectionSafeValue(KeyPathValue(OBJECT, KEYPATH))
-#define CollectionSafeSelfKeyPathValue(KEYPATH)      CollectionSafeKeyPathValue(self, KEYPATH)
+#define CollectionSafeKeyPathValue(OBJECT, KEYPATH) CollectionSafe(KeyPathValue(OBJECT, KEYPATH))
+#define CollectionSafeSelfKeyPathValue(KEYPATH)     CollectionSafeKeyPathValue(self, KEYPATH)
 
 
 #if TARGET_OS_IPHONE
-#define UIApp                 [UIApplication sharedApplication]
-#define SharedApp             [UIApplication sharedApplication]
-#define AppDelegate           [SharedApp delegate]
-#define CurrentDevice         [UIDevice currentDevice]
-#define MainScreen            [UIScreen mainScreen]
-#define MainScreenScale       [MainScreen scale]
-#define MenuController  	  [UIMenuController sharedMenuController]
+#define UIApp           [UIApplication sharedApplication]
+#define SharedApp       [UIApplication sharedApplication]
+#define AppDelegate     [SharedApp delegate]
+#define CurrentDevice   [UIDevice currentDevice]
+#define MainScreen      [UIScreen mainScreen]
+#define MainScreenScale [MainScreen scale]
+#define MenuController  [UIMenuController sharedMenuController]
 
 #define NSIndexPathMake(SECTION, ROW) [NSIndexPath indexPathForRow:ROW inSection:SECTION]
 #endif

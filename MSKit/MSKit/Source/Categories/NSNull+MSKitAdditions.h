@@ -10,10 +10,10 @@
 
 #define NullObject            [NSNull null]
 
-#define ValueIsNil(v)             [NSNull valueIsNil:v]
-#define ValueIsNotNil(v)          [NSNull valueIsNotNil:v]
-#define CollectionSafeValue(v)    [NSNull collectionSafeValue:v]
-#define NilSafeValue(v)           [NSNull nilSafeValue:v]
+#define ValueIsNil(v)        [NSNull valueIsNil:v]
+#define ValueIsNotNil(v)     [NSNull valueIsNotNil:v]
+#define CollectionSafe(v)    [NSNull collectionSafeValue:v]
+#define NilSafe(v)           [NSNull nilSafeValue:v]
 
 @interface NSNull (MSKitAdditions)
 

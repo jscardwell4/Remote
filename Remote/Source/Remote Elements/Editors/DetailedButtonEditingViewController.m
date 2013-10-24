@@ -68,7 +68,7 @@ editorState;
     _editorState.presentedState =
         [values[REDetailedButtonEditingControlStateKey] unsignedIntegerValue];
 
-    Button * buttonModel = NilSafeValue(values[REDetailedButtonEditingButtonKey]);
+    Button * buttonModel = NilSafe(values[REDetailedButtonEditingButtonKey]);
 
     if (ValueIsNotNil(buttonModel)) self.remoteElement = buttonModel;
 }
@@ -263,24 +263,26 @@ editorState;
                ClassTagString);
     switch (pageNumber) {
         case LabelEditingChildController : {
-            NSString * titleText = _buttonModel.titles[_editorState.presentedState][RETitleTextKey];
+/*
+            NSString * titleText = _buttonModel.titles[_editorState.presentedState][RETitleTextAttributeKey];
 // NSNumber * fontSize = @(_buttonModel.fontSize);
 // NSString * fontName = _buttonModel.fontName;
             NSValue * edgeInsets = [NSValue valueWithUIEdgeInsets:_buttonModel.titleEdgeInsets];
 // UIColor * titleColor = [_buttonModel titleBaseColorForState:_editorState.presentedState];
             NSValue      * bounds        = [NSValue valueWithCGRect:_buttonView.bounds];
-            NSDictionary * initialValues = @{kAttributeEditingTitleTextKey : CollectionSafeValue(titleText),
-// kAttributeEditingFontSizeKey : CollectionSafeValue(fontSize),
-// kAttributeEditingFontNameKey : CollectionSafeValue(fontName),
-                                             kAttributeEditingEdgeInsetsKey : CollectionSafeValue(edgeInsets),
-// kAttributeEditingTitleColorKey : CollectionSafeValue(titleColor),
-                                             kAttributeEditingBoundsKey : CollectionSafeValue(bounds),
+            NSDictionary * initialValues = @{kAttributeEditingTitleTextKey : CollectionSafe(titleText),
+// kAttributeEditingFontSizeKey : CollectionSafe(fontSize),
+// kAttributeEditingFontNameKey : CollectionSafe(fontName),
+                                             kAttributeEditingEdgeInsetsKey : CollectionSafe(edgeInsets),
+// kAttributeEditingTitleColorKey : CollectionSafe(titleColor),
+                                             kAttributeEditingBoundsKey : CollectionSafe(bounds),
                                              kAttributeEditingButtonKey : _buttonModel,
                                              kAttributeEditingControlStateKey : @(_editorState.presentedState)};
             LabelEditingViewController * labelEditor = [StoryboardProxy labelEditingViewController];
 
             [labelEditor setInitialValuesFromDictionary:initialValues];
             childController = labelEditor;
+*/
             break;
         }
 
@@ -288,7 +290,7 @@ editorState;
             Image * iconImage = (Image *)_buttonModel.icons[_editorState.presentedState];
             UIColor * iconColor = _buttonModel.icons.colors[_editorState.presentedState];
             NSValue                   * edgeInsets    = [NSValue valueWithUIEdgeInsets:_buttonModel.imageEdgeInsets];
-            NSDictionary              * initialValues = @{kAttributeEditingImageKey : CollectionSafeValue(iconImage), kAttributeEditingColorKey : CollectionSafeValue(iconColor), kAttributeEditingEdgeInsetsKey : CollectionSafeValue(edgeInsets), kAttributeEditingButtonKey : _buttonModel, kAttributeEditingControlStateKey : @(_editorState.presentedState)};
+            NSDictionary              * initialValues = @{kAttributeEditingImageKey : CollectionSafe(iconImage), kAttributeEditingColorKey : CollectionSafe(iconColor), kAttributeEditingEdgeInsetsKey : CollectionSafe(edgeInsets), kAttributeEditingButtonKey : _buttonModel, kAttributeEditingControlStateKey : @(_editorState.presentedState)};
             IconEditingViewController * iconEditor    = [StoryboardProxy iconEditingViewController];
 
             [iconEditor setInitialValuesFromDictionary:initialValues];

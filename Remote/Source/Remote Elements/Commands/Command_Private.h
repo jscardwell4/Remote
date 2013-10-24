@@ -105,30 +105,21 @@
 #pragma mark - PowerCommand Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface PowerCommand ()
-{
-    BOOL _state;
-}
-@end
-
 @interface PowerCommand (CoreDataGeneratedAccessors)
 
 @property (nonatomic) ComponentDevice * primitiveDevice;
+@property (nonatomic) NSNumber        * primitiveState;
 
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - SystemCommand Class Extension and Core Data Generated Accessors
+#pragma mark - SystemCommand Core Data Generated Accessors
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface SystemCommand ()
-{
-@private
-    SystemCommandType _type;
-}
+@interface SystemCommand (CoreDataGeneratedAccessors)
 
 /// Specifies the action performed by the system command
-@property (nonatomic, assign) SystemCommandType   type;
+@property (nonatomic) NSNumber * primitiveType;
 
 @end
 
@@ -151,3 +142,6 @@
 @property (nonatomic, copy, readwrite) NSString * target;
 
 @end
+
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"

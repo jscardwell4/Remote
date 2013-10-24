@@ -19,10 +19,9 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 - (void)setObject:(id)label forKeyedSubscript:(CommandSet *)commandSet
 {
     assert(label && commandSet);
-    if (!([label isKindOfClass:[NSAttributedString class]] || [label isKindOfClass:[NSString class]]))
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"label must be some form of string"
-                                     userInfo:nil];
+    if (!(isAttributedStringKind(label) || isStringKind(label)))
+        ThrowInvalidArgument(label, must be some kind of string);
+
     else
     {
         [self addCommandSetsObject:commandSet];

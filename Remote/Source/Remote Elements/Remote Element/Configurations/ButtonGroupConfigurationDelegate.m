@@ -22,44 +22,33 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
 @dynamic commandContainers;
 
-+ (instancetype)delegateForRemoteElement:(ButtonGroup *)element
-{
-    assert(element);
-    __block ButtonGroupConfigurationDelegate * configurationDelegate = nil;
-    [element.managedObjectContext performBlockAndWait:
-     ^{
-         configurationDelegate = [self MR_createInContext:element.managedObjectContext];
-         configurationDelegate.element = element;
-     }];
-
-    return configurationDelegate;
-}
-
 - (ButtonGroup *)buttonGroup { return (ButtonGroup *)self.element; }
 
-- (void)setCommandContainer:(CommandContainer *)container
-        mode:(RERemoteMode)mode
+- (void)setCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode
 {
-    assert(container && mode);
+    self[makeKeyPath(mode,@"commandContainer")] = container.uuid;
     [self addCommandContainersObject:container];
-    self[$(@"%@.commandContainer", mode)] = container.uuid;
 }
 
 - (void)setLabel:(NSAttributedString *)label mode:(RERemoteMode)mode
 {
-    assert(label && mode);
-    self[$(@"%@.label", mode)] = label;
+    self[makeKeyPath(mode,@"label")] = label;
 }
 
 - (void)updateForMode:(RERemoteMode)mode
 {
     if (![self hasMode:mode]) return;
 
-    NSAttributedString * label = self[$(@"%@.label", mode)];
+
+    ControlStateKeyPath * keypath = makeKeyPath(mode,@"label");
+
+    NSAttributedString * label = self[keypath];
     if (label) self.buttonGroup.label = label;
 
-    NSString * uuid = self[$(@"%@.commandContainer", mode)];
-    if (uuid) {
+    keypath.property = @"commandContainer";
+    NSString * uuid = self[keypath];
+    if (uuid)
+    {
         CommandContainer * container = (CommandContainer *)
                                          memberOfCollectionWithUUID(self.commandContainers, uuid);
         assert(container);
@@ -70,8 +59,9 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
 - (CommandContainer *)commandContainer
 {
-    NSString * uuid = self[$(@"%@.commandContainer", self.currentMode)];
-    if (!uuid) uuid = self[$(@"%@.commandContainer", REDefaultMode)];
+    ControlStateKeyPath * keypath = makeKeyPath(self.currentMode, @"commandContainer");
+    NSString * uuid = self[keypath];
+    if (!uuid) { keypath.mode = REDefaultMode; uuid = self[keypath];}
     return ((CommandContainer *)memberOfCollectionWithUUID(self.commandContainers, uuid) ?: nil);
 }
 

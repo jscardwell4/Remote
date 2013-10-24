@@ -35,14 +35,15 @@
     return manufacturer;
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     dictionary[@"codes"] = CollectionSafeSelfKeyPathValue(@"codes.JSONDictionary");
     dictionary[@"devices"] = CollectionSafeSelfKeyPathValue(@"devices.uuid");
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

@@ -403,7 +403,11 @@ NSString *NSStringFromUIColor(UIColor * color)
     else if ([string characterAtIndex:0] == '#')
         string = [string substringFromIndex:1];
 
-    return [UIColor colorWithRGBAHex:(uint32_t)[string intValue]];
+    NSScanner * scanner = [NSScanner scannerWithString:string];
+    uint32_t hexValue;
+    [scanner scanHexInt:&hexValue];
+
+    return [UIColor colorWithRGBAHex:hexValue];
 }
 
 + (UIColor *)colorWithName:(NSString *)name
@@ -435,6 +439,8 @@ NSString *NSStringFromUIColor(UIColor * color)
         return ([keys count] ? [keys anyObject] : nil);
     }
 }
+
++ (NSArray *)colorNames { return [kColorIndex allKeys]; }
 
 + (void)load
 {

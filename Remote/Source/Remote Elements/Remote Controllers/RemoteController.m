@@ -10,14 +10,12 @@
 #import "Activity.h"
 #import "RemoteElement_Private.h"
 #import "Constraint.h"
-
-
 #import "ComponentDeviceConfiguration.h"
 #import "Command.h"
 #import "CoreDataManager.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
 
 @interface RemoteController ()
@@ -59,7 +57,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Top Toolbar
+#pragma mark Top toolbar
 ////////////////////////////////////////////////////////////////////////////////
 
 - (BOOL)registerTopToolbar:(ButtonGroup *)buttonGroup
@@ -70,7 +68,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Remotes
+#pragma mark Remotes
 ////////////////////////////////////////////////////////////////////////////////
 
 - (Remote *)homeRemote
@@ -80,9 +78,8 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 - (Remote *)currentRemote
 {
-    Remote * currentRemote = (Remote *)memberOfCollectionWithUUID(self.remotes,
-                                                                      self.currentRemoteUUID);
-    return (currentRemote ? : self.homeRemote);
+    return ((Remote *)memberOfCollectionWithUUID(self.remotes, self.currentRemoteUUID)
+            ?: self.homeRemote);
 }
 
 - (void)registerRemote:(Remote *)remote
@@ -118,19 +115,18 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 - (Remote *)objectForKeyedSubscript:(NSString *)key
 {
-    return [self.remotes objectPassingTest:
-            ^BOOL (Remote * remote) { return REStringIdentifiesRemoteElement(key, remote); }];
+    return [self.remotes objectPassingTest:^BOOL (Remote * remote) {
+        return REStringIdentifiesRemoteElement(key, remote);
+    }];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Activities
+#pragma mark Activities
 ////////////////////////////////////////////////////////////////////////////////
 
 - (Activity *)currentActivity
 {
-    Activity * currentActivity = (Activity *)memberOfCollectionWithUUID(self.activities,
-                                                                            self.currentActivityUUID);
-    return currentActivity;
+    return (Activity *)memberOfCollectionWithUUID(self.activities, self.currentActivityUUID);
 }
 
 - (BOOL)registerActivity:(Activity *)activity
@@ -149,35 +145,6 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     }
 }
 
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - JSON export
-////////////////////////////////////////////////////////////////////////////////
-
-- (NSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
-
-    dictionary[@"remotes"]             = CollectionSafeSelfKeyPathValue(@"remotes.uuid");
-    dictionary[@"homeRemoteUUID"]      = CollectionSafeValue(self.homeRemoteUUID);
-    dictionary[@"currentRemoteUUID"]   = CollectionSafeValue(self.currentRemoteUUID);
-    dictionary[@"currentActivityUUID"] = CollectionSafeValue(self.currentActivityUUID);
-    dictionary[@"topToolbar"]          = CollectionSafeValue([self.topToolbar JSONDictionary]);
-    dictionary[@"activities"]          =
-        CollectionSafeSelfKeyPathValue(@"activities.JSONDictionary");
-
-    [dictionary removeKeysWithNullObjectValues];
-
-    return dictionary;
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Switching
-////////////////////////////////////////////////////////////////////////////////
-
 - (BOOL)switchToActivity:(Activity *)activity
 {
     if ([self.activities containsObject:activity])
@@ -190,5 +157,42 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
     else
         return NO;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark JSON export
+////////////////////////////////////////////////////////////////////////////////
+
+- (MSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [super JSONDictionary];
+
+    dictionary[@"remotes.uuid"]        = CollectionSafeSelfKeyPathValue(@"remotes.uuid");
+    dictionary[@"homeRemoteUUID"]      = CollectionSafe(self.homeRemoteUUID);
+    dictionary[@"currentRemoteUUID"]   = CollectionSafe(self.currentRemoteUUID);
+    dictionary[@"currentActivityUUID"] = CollectionSafe(self.currentActivityUUID);
+    dictionary[@"topToolbar"]          = CollectionSafe([self.topToolbar JSONDictionary]);
+    id activities = CollectionSafeSelfKeyPathValue(@"activities.JSONDictionary");
+    if (isSetKind(activities))
+    {
+        NSMutableArray * activitiesArray = [[(NSSet *)activities allObjects] mutableCopy];
+        [activitiesArray sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                              ascending:YES]]];
+        dictionary[@"activities"] = activitiesArray;
+    }
+
+    [dictionary compact];
+    [dictionary compress];
+
+    return dictionary;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)shouldImportRemotes:(id)data {return YES;}
+- (BOOL)shouldImportTopToolbar:(id)data {return YES;}
+- (BOOL)shouldImportActivities:(id)data {return YES;}
 
 @end

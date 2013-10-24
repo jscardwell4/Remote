@@ -9,6 +9,7 @@
 #import "RemoteController.h"
 #import "Remote.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "RemoteElementImportSupportFunctions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -29,19 +30,34 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     [self willAccessValueForKey:@"type"];
     NSNumber * type = [self primitiveValueForKey:@"type"];
     [self didAccessValueForKey:@"type"];
-    return INTValue(type);
+    return IntValue(type);
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"type"]   = switchCommandTypeJSONValueForSwitchCommand(self);
-    dictionary[@"target"] = CollectionSafeValue(self.target);
+    dictionary[@"target"] = CollectionSafe(self.target);
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
+}
+
+- (void)importTarget:(id)data
+{
+    if (!isStringKind(data) || StringIsEmpty(data) || (!self.type && !UUIDIsValid(data))) return;
+
+    self.target = data;
+}
+
+- (void)importType:(id)data
+{
+    SwitchCommandType type = switchCommandTypeFromImportKey(data);
+    [self setValue:@(type) forKey:@"type"];
 }
 
 @end
@@ -64,9 +80,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
         else if (((SwitchCommand *)_command).type == SwitchRemoteCommand)
         {
-            NSString * uriString = ((SwitchCommand *)_command).target;
-            NSURL * uri = [NSURL URLWithString:uriString];
-            Remote * remote = (Remote *)[moc objectForURI:uri];
+            Remote * remote = [Remote objectWithUUID:((SwitchCommand *)_command).target context:moc];
             if (remote) _success = [controller switchToRemote:remote];
             else _success = NO;
         }
@@ -79,7 +93,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     
     @catch (NSException * exception)
     {
-        MSLogDebugTag(@"seriously, wtf?");
+        MSLogError(@"command failed");
     }
 }
 

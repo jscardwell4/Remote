@@ -23,9 +23,9 @@
          ComponentDevice * av = [ComponentDevice fetchDeviceWithName:@"AV Receiver" context:moc];
          commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeRocker];
          commandSet.name = @"Receiver Volume";
-         commandSet[@(REButtonRolePickerLabelTop)]    =
+         commandSet[@(REButtonRoleRockerTop)]    =
              [SendIRCommand commandWithIRCode:av[@"Volume Up"]];
-         commandSet[@(REButtonRolePickerLabelBottom)] =
+         commandSet[@(REButtonRoleRockerBottom)] =
              [SendIRCommand commandWithIRCode:av[@"Volume Down"]];
      }];
 
@@ -48,9 +48,9 @@
          }];
          commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeRocker];
          commandSet.name = @"DVR Channels";
-         commandSet[@(REButtonRolePickerLabelTop)]    =
+         commandSet[@(REButtonRoleRockerTop)]    =
              [SendIRCommand commandWithIRCode:channelUp];
-         commandSet[@(REButtonRolePickerLabelBottom)] =
+         commandSet[@(REButtonRoleRockerBottom)] =
              [SendIRCommand commandWithIRCode:channelDown];
      }];
 
@@ -77,9 +77,9 @@
 
          commandSet = [CommandSet commandSetInContext:moc type:CommandSetTypeRocker];
          commandSet.name = @"DVR Paging";
-         commandSet[@(REButtonRolePickerLabelTop)]    =
+         commandSet[@(REButtonRoleRockerTop)]    =
              [SendIRCommand commandWithIRCode:pageUp];
-         commandSet[@(REButtonRolePickerLabelBottom)] =
+         commandSet[@(REButtonRoleRockerBottom)] =
              [SendIRCommand commandWithIRCode:pageDown];
      }];
 

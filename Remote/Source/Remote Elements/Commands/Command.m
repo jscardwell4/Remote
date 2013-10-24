@@ -35,14 +35,29 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 - (CommandOperation *)operation { return [CommandOperation operationForCommand:self]; }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     dictionary[@"class"] = classJSONValueForCommand(self);
 
+    [dictionary compact];
+    [dictionary compress];
+
     return dictionary;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)shouldImportButton:(id)data {return NO;}
+- (BOOL)shouldImportButtonDelegates:(id)data {return NO;}
+- (BOOL)shouldImportCommandSets:(id)data {return NO;}
+- (BOOL)shouldImportLongPressButton:(id)data {return NO;}
+- (BOOL)shouldImportMacroCommands:(id)data {return NO;}
+- (BOOL)shouldImportOffDevice:(id)data {return NO;}
+- (BOOL)shouldImportOnDevice:(id)data {return NO;}
 
 @end
 

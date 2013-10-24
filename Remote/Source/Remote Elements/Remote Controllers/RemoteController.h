@@ -17,7 +17,7 @@
  * actually implenting the remote control functionality within the application. One remote can be
  * designated as the 'home' remote to serve as the base for loading other remotes.
  */
-@interface RemoteController : ModelObject {}
+@interface RemoteController : ModelObject
 
 #pragma mark Getting the controller
 

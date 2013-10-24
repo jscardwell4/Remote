@@ -131,7 +131,7 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
     NSString * action = SelectorString(selector);
     if ([action hasPrefix:@"menuAction_"]) {
         [invocation setSelector:@selector(menuAction:)];
-        NSString * identifier = [action stringByReplacingOccurrencesOfRegEx:@"(?:menuAction)|(?::)"
+        NSString * identifier = [action stringByReplacingRegEx:@"(?:menuAction)|(?::)"
                                                                 withString:@""];
         RemoteElementView * view = _sourceView[identifier];
         assert(view);
@@ -381,8 +381,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
     CGFloat appliedScale = (scaleRejections.count
                             ? (scale > 1.0f
-                               ? CGFloatValue([scaleRejections valueForKeyPath:@"@min.self"])
-                               : CGFloatValue([scaleRejections valueForKeyPath:@"@max.self"]))
+                               ? FloatValue([scaleRejections valueForKeyPath:@"@min.self"])
+                               : FloatValue([scaleRejections valueForKeyPath:@"@max.self"]))
                             : scale);
 
      MSLogDebugTagIf((scale != appliedScale),

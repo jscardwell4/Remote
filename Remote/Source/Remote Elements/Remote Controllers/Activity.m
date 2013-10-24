@@ -42,6 +42,7 @@
     return activity;
 }
 
+/*
 - (MacroCommand *)importMacroWithData:(NSDictionary *)data
 {
     NSString * uuid = data[@"uuid"];
@@ -73,7 +74,9 @@
      }];
     return macroCommand;
 }
+*/
 
+/*
 - (BOOL)importController:(id)data
 {
     assert([data isKindOfClass:[NSDictionary class]]);
@@ -95,8 +98,10 @@
      }];
     return YES;
 }
+*/
 
 
+/*
 - (BOOL)importHaltMacro:(id)data
 {
     assert([data isKindOfClass:[NSDictionary class]]);
@@ -110,7 +115,13 @@
 
     return YES;
 }
+*/
 
+- (BOOL)shouldImportRemote:(id)data {return YES;}
+- (BOOL)shouldImportLaunchMacro:(id)data {return YES;}
+- (BOOL)shouldImportHaltMacro:(id)data {return YES;}
+
+/*
 - (BOOL)importLaunchMacro:(id)data
 {
     assert([data isKindOfClass:[NSDictionary class]]);
@@ -123,6 +134,7 @@
 
     return YES;
 }
+*/
 
 - (void)setController:(RemoteController *)controller
 {
@@ -291,16 +303,17 @@
         completion(NO, nil);
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"name"]        = CollectionSafeValue(self.name);
-    dictionary[@"remote"]      = CollectionSafeValue(self.remote.uuid);
-    dictionary[@"launchMacro"] = CollectionSafeValue(self.launchMacro.JSONDictionary);
-    dictionary[@"haltMacro"]   = CollectionSafeValue(self.haltMacro.JSONDictionary);
+    dictionary[@"name"]        = CollectionSafe(self.name);
+    dictionary[@"remote.uuid"] = CollectionSafe(self.remote.uuid);
+    dictionary[@"launchMacro"] = CollectionSafe(self.launchMacro.JSONDictionary);
+    dictionary[@"haltMacro"]   = CollectionSafe(self.haltMacro.JSONDictionary);
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

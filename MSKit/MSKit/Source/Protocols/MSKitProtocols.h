@@ -44,7 +44,7 @@
 @property (nonatomic, weak, readonly) NSString * JSONString;
 
 @optional
-@property (nonatomic, weak, readonly) NSDictionary * JSONDictionary;
+@property (nonatomic, weak, readonly) MSDictionary * JSONDictionary;
 
 @end
 

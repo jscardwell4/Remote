@@ -9,6 +9,35 @@
 #import "NSMapTable+MSKitAdditions.h"
 
 @implementation NSMapTable (MSKitAdditions)
+
++ (id)weakToWeakObjectsMapTableFromDictionary:(NSDictionary *)dictionary
+{
+    NSMapTable * mapTable = [self weakToWeakObjectsMapTable];
+    for (id key in dictionary) mapTable[key] = dictionary[key];
+    return mapTable;
+}
+
++ (id)weakToStrongObjectsMapTableFromDictionary:(NSDictionary *)dictionary
+{
+    NSMapTable * mapTable = [self weakToStrongObjectsMapTable];
+    for (id key in dictionary) mapTable[key] = dictionary[key];
+    return mapTable;
+}
+
++ (id)strongToWeakObjectsMapTableFromDictionary:(NSDictionary *)dictionary
+{
+    NSMapTable * mapTable = [self strongToWeakObjectsMapTable];
+    for (id key in dictionary) mapTable[key] = dictionary[key];
+    return mapTable;
+}
+
++ (id)strongToStrongObjectsMapTableFromDictionary:(NSDictionary *)dictionary
+{
+    NSMapTable * mapTable = [self strongToStrongObjectsMapTable];
+    for (id key in dictionary) mapTable[key] = dictionary[key];
+    return mapTable;
+}
+
 - (id)objectForKeyedSubscript:(id)key { return [self objectForKey:key]; }
 
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key

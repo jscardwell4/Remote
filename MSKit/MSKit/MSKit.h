@@ -28,6 +28,7 @@
 #import <MSKit/NSHashTable+MSKitAdditions.h>
 #import <MSKit/NSOperationQueue+MSKitAdditions.h>
 #import <MSKit/NSPointerArray+MSKitAdditions.h>
+#import <MSKit/NSAssertionHandler+MSKitAdditions.h>
 
 /* objects */
 #import <MSKit/MSAssertionHandler.h>

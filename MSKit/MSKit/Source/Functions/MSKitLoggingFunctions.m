@@ -12,10 +12,12 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <CoreData/CoreData.h>
-#ifdef TARGET_OS_IPHONE
+
+#if TARGET_OS_IPHONE
 #import "UIView+MSKitAdditions.h"
 #import "UIColor+MSKitAdditions.h"
 #endif
+
 #import "NSArray+MSKitAdditions.h"
 #import "NSDictionary+MSKitAdditions.h"
 #import "NSSet+MSKitAdditions.h"

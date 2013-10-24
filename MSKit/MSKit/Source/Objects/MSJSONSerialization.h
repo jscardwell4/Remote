@@ -59,7 +59,7 @@ typedef NS_OPTIONS(NSUInteger, MSJSONFormatOptions)
 + (NSString *)JSONFromObject:(id)object;
 
 /// Writes a valid json object to the specified file
-+ (BOOL)writeJSONObject:(id<MSJSONExport>)object toFileNamed:(NSString *)name;
++ (BOOL)writeJSONObject:(id<MSJSONExport>)object filePath:(NSString *)filePath;
 
 
 + (NSString *)parseString:(NSString *)string error:(NSError *__autoreleasing *)error;
@@ -82,6 +82,10 @@ typedef NS_OPTIONS(NSUInteger, MSJSONFormatOptions)
                     error:(NSError *__autoreleasing *)error;
 
 @end
+
+MSEXTERN_KEY(MSJSONComment);
+MSEXTERN_KEY(MSJSONLeadingComment);
+MSEXTERN_KEY(MSJSONTrailingComment);
 
 #import "MSDictionary.h"
 

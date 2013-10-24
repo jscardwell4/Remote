@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface NSMapTable (MSKitAdditions)
+
++ (id)weakToWeakObjectsMapTableFromDictionary:(NSDictionary *)dictionary;
++ (id)weakToStrongObjectsMapTableFromDictionary:(NSDictionary *)dictionary;
++ (id)strongToWeakObjectsMapTableFromDictionary:(NSDictionary *)dictionary;
++ (id)strongToStrongObjectsMapTableFromDictionary:(NSDictionary *)dictionary;
 - (void)setObject:(id)object forKeyedSubscript:(id <NSCopying>)key;
 - (id)objectForKeyedSubscript:(id)key;
 - (NSArray *)allKeys;

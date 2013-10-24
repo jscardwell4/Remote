@@ -10,15 +10,15 @@
 
 @implementation NSAttributedString (MSKitAdditions)
 
-+ (NSAttributedString *)attributedStringWithString:(NSString *)string
++ (instancetype)attributedStringWithString:(NSString *)string
                                         attributes:(NSDictionary *)attributes
 {
-    return [[NSAttributedString alloc] initWithString:string attributes:attributes];
+    return [[self alloc] initWithString:string attributes:attributes];
 }
 
-+ (NSAttributedString *)attributedStringWithString:(NSString *)string
++ (instancetype)attributedStringWithString:(NSString *)string
 {
-    return [[NSAttributedString alloc] initWithString:string];
+    return [[self alloc] initWithString:string];
 }
 
 - (NSAttributedString *)attributedStringWithAttribute:(NSString *)attribute value:(id)value
@@ -35,6 +35,7 @@
     return attributedString;
 }
 
+#if TARGET_OS_IPHONE
 - (NSAttributedString *)attributedStringWithForegroundColor:(UIColor *)color
 {
     NSMutableAttributedString * attributedString = [self mutableCopy];
@@ -55,7 +56,7 @@
     [attributedString applyFont:font];
     return attributedString;
 }
-
+#endif
 - (NSAttributedString *)attributedStringWithParagraphStyle:(NSParagraphStyle *)paragraphStyle
 {
     NSMutableAttributedString * attributedString = [self mutableCopy];
@@ -91,13 +92,14 @@
     return attributedString;
 }
 
+#if TARGET_OS_IPHONE
 - (NSAttributedString *)attributedStringWithStrokeColor:(UIColor *)color
 {
     NSMutableAttributedString * attributedString = [self mutableCopy];
     [attributedString applyStrokeColor:color];
     return attributedString;
 }
-
+#endif
 - (NSAttributedString *)attributedStringWithStrokeWidth:(NSNumber *)strokeWidth
 {
     NSMutableAttributedString * attributedString = [self mutableCopy];
@@ -132,6 +134,7 @@
     [self addAttributes:attributes range:range];
 }
 
+#if TARGET_OS_IPHONE
 - (void)applyForegroundColor:(UIColor *)color
 {
     [self applyAttribute:NSForegroundColorAttributeName value:color];
@@ -146,7 +149,7 @@
 {
     [self applyAttribute:NSFontAttributeName value:font];
 }
-
+#endif
 - (void)applyParagraphStyle:(NSParagraphStyle *)paragraphStyle
 {
     [self applyAttribute:NSParagraphStyleAttributeName value:paragraphStyle];
@@ -172,11 +175,12 @@
     [self applyAttribute:NSUnderlineStyleAttributeName value:underlineStyle];
 }
 
+#if TARGET_OS_IPHONE
 - (void)applyStrokeColor:(UIColor *)color
 {
     [self applyAttribute:NSStrokeColorAttributeName value:color];
 }
-
+#endif
 - (void)applyStrokeWidth:(NSNumber *)strokeWidth
 {
     [self applyAttribute:NSStrokeWidthAttributeName value:strokeWidth];

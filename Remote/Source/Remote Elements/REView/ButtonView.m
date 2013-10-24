@@ -355,7 +355,7 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
            @"title"       : MSMakeKVOHandler(
                                              {
                                                  ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 NSAttributedString * title = NilSafeValue(change[NSKeyValueChangeNewKey]);
+                                                 NSAttributedString * title = NilSafe(change[NSKeyValueChangeNewKey]);
                                                  buttonView->_labelView.attributedText = title;
                                              }
                                             ),
@@ -367,7 +367,7 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
            @"icon"        : MSMakeKVOHandler(
                                              {
                                                  ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 UIImage * icon = NilSafeValue(change[NSKeyValueChangeNewKey]);
+                                                 UIImage * icon = NilSafe(change[NSKeyValueChangeNewKey]);
                                                  buttonView->_icon = icon;
                                                  [buttonView setNeedsDisplay];
                                              }

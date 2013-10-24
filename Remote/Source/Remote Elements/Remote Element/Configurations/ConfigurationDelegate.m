@@ -30,44 +30,52 @@ Class delegateClassForElement(RemoteElement * element)
 */
 
 @implementation ConfigurationDelegate
+//{
+//    MSDictionary * _primitiveConfigurations;
+//}
 
-@synthesize currentMode = _currentMode;
+@synthesize
+currentMode = _currentMode;
 
-@dynamic configurations, subscribers, delegate, element, autoPopulateFromDefaultMode;
+@dynamic
+configurations,
+subscribers,
+delegate,
+element,
+autoPopulateFromDefaultMode;
 
-+ (instancetype)configurationDelegate
++ (instancetype)configurationDelegateForElement:(RemoteElement *)element
 {
-    return [self MR_createEntity];
+    if (!element) ThrowInvalidNilArgument(element);
+
+    __block ConfigurationDelegate * configurationDelegate = nil;
+    [element.managedObjectContext performBlockAndWait:
+     ^{
+         configurationDelegate = [self MR_createInContext:element.managedObjectContext];
+         configurationDelegate.element = element;
+     }];
+
+    return configurationDelegate;
 }
 
-- (void)setObject:(id)object forKeyedSubscript:(NSString *)key
+- (void)setObject:(id)object forKeyedSubscript:(id)key
 {
-    NSArray * keys = [key componentsSeparatedByString:@"."];
-    if (keys.count != 2) return;
+    ControlStateKeyPath * kp = (isKind(key, [ControlStateKeyPath class]) ? key : makeKeyPath(key));
 
-    RERemoteMode mode = keys[0];
-    NSString * property = keys[1];
-
-    if (![self hasMode:mode]) [self addMode:mode];
+    if (![self hasMode:kp.mode]) [self addMode:kp.mode];
 
     NSMutableDictionary * configurations = [self.configurations mutableCopy];
-    NSMutableDictionary * registration = [configurations[mode] mutableCopy];
-    registration[property] = CollectionSafeValue(object);
-    configurations[mode] = registration;
-    self.configurations = [NSDictionary dictionaryWithDictionary:configurations];
+    NSMutableDictionary * registration = [configurations[kp.mode] mutableCopy];
+    if (object) registration[kp.property] = [object copy];
+    else [registration removeObjectForKey:kp.property];
+    configurations[kp.mode] = registration;
+    self.configurations = configurations;
 }
 
-- (id)objectForKeyedSubscript:(NSString *)key
+- (id)objectForKeyedSubscript:(id)key
 {
-    NSArray * keys = [key componentsSeparatedByString:@"."];
-    if (keys.count != 2) return nil;
-
-    RERemoteMode mode = keys[0];
-    NSString * property = keys[1];
-    id object = ([self hasMode:mode]
-                 ? self.configurations[mode][property]
-                 : nil);
-    return NilSafeValue(object);
+    ControlStateKeyPath * kp = (isKind(key, [ControlStateKeyPath class]) ? key : makeKeyPath(key));
+    return NilSafe(([self hasMode:kp.mode] ? self.configurations[kp.mode][kp.property] : nil));
 }
 
 - (NSArray *)modeKeys { return [self.configurations allKeys]; }
@@ -77,12 +85,15 @@ Class delegateClassForElement(RemoteElement * element)
     if (![self hasMode:mode])
     {
         NSMutableDictionary * configurations = [self.configurations mutableCopy];
-        configurations[mode] = (  ![mode isEqualToString:REDefaultMode]
-                                         && self.autoPopulateFromDefaultMode
-                                         && configurations[REDefaultMode]
-                                         ? [configurations[REDefaultMode] copy]
-                                         : @{});
-        self.configurations = [NSDictionary dictionaryWithDictionary:configurations];
+        configurations[mode] = @{};/*
+(  ![mode isEqualToString:REDefaultMode]
+                                && self.autoPopulateFromDefaultMode
+                                && configurations[REDefaultMode]
+                                ? [configurations[REDefaultMode] copy]
+                                : [MSDictionary dictionary]);
+*/
+
+        self.configurations = configurations;
         return YES;
     }
     
@@ -119,11 +130,7 @@ Class delegateClassForElement(RemoteElement * element)
 
 - (void)updateForMode:(RERemoteMode)mode {}
 
-- (BOOL)hasMode:(RERemoteMode)key
-{
-    BOOL hasMode = [self.configurations hasKey:key];
-    return hasMode;
-}
+- (BOOL)hasMode:(RERemoteMode)key { return [self.configurations hasKey:key]; }
 
 - (void)awakeFromFetch
 {
@@ -142,5 +149,33 @@ Class delegateClassForElement(RemoteElement * element)
             ? $(@"registered configurations:%@", [self.modeKeys componentsJoinedByString:@"\n\t"])
             : @"no registered configurations");
 }
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - ControlStateKeyPath
+////////////////////////////////////////////////////////////////////////////////
+
+@implementation ControlStateKeyPath
+
++ (ControlStateKeyPath *)keyPathFromString:(NSString *)keypath { return makeKeyPath(keypath); }
+
++ (ControlStateKeyPath *)keyPathWithMode:(RERemoteMode)mode property:(NSString *)property
+{
+    if (!mode)
+        ThrowInvalidNilArgument(mode);
+
+    else if (!property)
+        ThrowInvalidNilArgument(property);
+
+    ControlStateKeyPath * controlStateKeyPath = [self new];
+    controlStateKeyPath.mode = mode;
+    controlStateKeyPath.property = property;
+
+    return controlStateKeyPath;
+}
+
+- (NSString *)keypath { return [@"." join:@[_mode,_property]]; }
 
 @end

@@ -13,6 +13,7 @@
 #import "NSValue+MSKitAdditions.h"
 #import "MSJSONSerialization.h"
 #import "NSPointerArray+MSKitAdditions.h"
+#import "NSNumber+MSKitAdditions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -44,32 +45,71 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark - MSDictionary
 ////////////////////////////////////////////////////////////////////////////////
 
+@interface MSDictionary ()
+
+@property (nonatomic, strong, readwrite) NSMutableArray * keys;
+@property (nonatomic, strong, readwrite) NSMutableArray * values;
+@property (nonatomic ,strong, readwrite) NSMutableDictionary * dictionary;
+@end
+
 
 @implementation MSDictionary {
     @protected
-    NSPointerArray      * _orderedKeys;    /// Holds keys and maintains order
-    NSPointerArray      * _orderedValues;  /// Holds ordered values, may change to use indexed values
-    NSMutableDictionary * _dictionary;  /// Holds a regular dictionary representation
+//    NSPointerArray      * _keys;        /// Holds keys and maintains order
+//    NSPointerArray      * _values;      /// Holds ordered values, may change to use indexed values
+//    NSMutableDictionary * _dictionary;  /// Holds a regular dictionary representation
 }
 
 - (id)init
 {
     if (self = [super init])
     {
-        _orderedKeys   = [NSPointerArray weakObjectsPointerArray];
-        _orderedValues = [NSPointerArray weakObjectsPointerArray];
-        _dictionary    = [@{} mutableCopy];
+        self.keys       = [@[] mutableCopy];    //[NSPointerArray weakObjectsPointerArray];
+        self.values     = [@[] mutableCopy];    //[NSPointerArray weakObjectsPointerArray];
+        self.dictionary = [@{} mutableCopy];
     }
     return self;
 }
 
-- (instancetype)dictionaryByRemovingKeysWithNullObjectValues
+- (void)setRequiresStringKeys:(BOOL)requiresStringKeys
+{
+    if (!requiresStringKeys) _requiresStringKeys = requiresStringKeys;
+    else
+    {
+        BOOL isCompliant = YES;
+        for (id object in self.keys) if (!isStringKind(object)) { isCompliant = NO; break; }
+        if (!isCompliant) ThrowInvalidInternalInconsistency(current set of keys are not all strings);
+        else _requiresStringKeys = requiresStringKeys;
+    }
+}
+
+- (MSDictionary *)dictionaryByRemovingKeysWithNullObjectValues
 {
     MSDictionary * dictionary = [self mutableCopy];
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
     return dictionary;
 }
 
+- (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys
+{
+    MSDictionary * dictionary = [MSDictionary dictionaryWithDictionary:[super dictionaryWithValuesForKeys:keys]];
+    [dictionary compact];
+    return dictionary;
+}
+
+//- (NSArray *)keys { return [_keys allObjects]; }
+//- (void)setKeys:(NSArray *)keys { [_keys setObjectsFromArray:keys]; }
+
+//- (NSArray *)values { return [_values allObjects]; }
+//- (void)setValues:(NSArray *)values { [_values setObjectsFromArray:values]; }
+
++ (instancetype)dictionaryWithValuesForKeys:(NSArray *)keys fromDictionary:(NSDictionary *)dictionary
+{
+    MSDictionary * sourceDictionary = [MSDictionary dictionaryWithDictionary:dictionary];
+    MSDictionary * returnDictionary = [sourceDictionary dictionaryWithValuesForKeys:keys];
+    [returnDictionary compact];
+    return returnDictionary;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark JSON export
@@ -138,7 +178,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                                               error:&error];
         if (error) MSHandleErrors(error);
         else jsonString = [[NSString stringWithData:jsonData]
-                           stringByReplacingOccurrencesOfRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
+                           stringByReplacingRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
     }
 
     NSAssert(jsonString, @"failed to create JSON string for %@", ClassTagStringForInstance(self));
@@ -149,47 +189,58 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (MSDictionary *)JSONDictionary { return self; }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark NSSecureCoding
-////////////////////////////////////////////////////////////////////////////////
+
+- (NSUInteger)count { return [self.dictionary count]; }
+
+- (id)objectForKey:(id)aKey { return [self.dictionary objectForKey:aKey]; }
 
 + (BOOL)supportsSecureCoding { return YES; }
+
+- (Class)classForCoder { return [self class]; }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:_orderedKeys forKey:@"keys"];
-    [aCoder encodeObject:_orderedValues forKey:@"values"];
+    [aCoder encodeObject:_keys forKey:@"keys"];
+    [aCoder encodeObject:_values forKey:@"values"];
+    [aCoder encodeObject:_dictionary forKey:@"dictionary"];
+    [aCoder encodeObject:@(_requiresStringKeys) forKey:@"requiresStringKeys"];
+    [aCoder encodeObject:_userInfo forKey:@"userInfo"];
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
+- (MSDictionary *)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {
-        _orderedKeys   = [aDecoder decodeObjectOfClass:[NSOrderedSet class] forKey:@"keys"  ];
-        _orderedValues = [aDecoder decodeObjectOfClass:[NSArray      class] forKey:@"values"];
+        self.keys               = [aDecoder decodeObjectForKey:@"keys"];
+        self.values             = [aDecoder decodeObjectForKey:@"values"];
+        self.dictionary         = [aDecoder decodeObjectForKey:@"dictionary"];
+        self.requiresStringKeys = [[aDecoder decodeObjectForKey:@"requiresStringKeys"] boolValue];
+        self.userInfo           = [aDecoder decodeObjectForKey:@"userInfo"];
     }
     return self;
 }
 
-- (NSEnumerator *)keyEnumerator { return [[_orderedKeys allObjects] objectEnumerator]; }
+- (NSEnumerator *)keyEnumerator { return [self.keys objectEnumerator]; }
 
 - (NSArray *)allKeysForObject:(id)anObject
 {
-    NSIndexSet * indexes = [[_orderedValues allObjects] indexesOfObjectsPassingTest:
+    NSIndexSet * indexes = [self.values indexesOfObjectsPassingTest:
                             ^BOOL(id obj, NSUInteger idx, BOOL *stop)
                             {
                                 return [obj isEqual:anObject];
                             }];
-    return (indexes.count ? [[_orderedKeys allObjects] objectsAtIndexes:indexes] : nil);
+    return (indexes.count ? [self.keys objectsAtIndexes:indexes] : nil);
 }
 
-- (NSArray *)allValues { return [_orderedValues copy]; }
+- (NSArray *)allKeys { return self.keys; }
+- (NSArray *)allValues { return self.values; }
 
 - (NSString *)description
 {
     NSMutableArray * keyValuePairs = [@[] mutableCopy];
     for (int i = 0; i < [self count]; i++)
-        [keyValuePairs addObject:$(@"'%@': '%@'", _orderedKeys[i], _orderedValues[i])];
+        [keyValuePairs addObject:$(@"'%@': '%@'", self.keys[i], self.values[i])];
 
     return $(@"<%@:%p> {\n\t%@\n};",
              ClassString([self class]),
@@ -204,7 +255,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     NSMutableArray * descriptionComponents = [@[] mutableCopy];
 
     NSUInteger maxKeyDescriptionLength =
-        NSUIntegerValue([_orderedKeys valueForKeyPath:@"@max.description.length"]);
+        UnsignedIntegerValue([self.keys valueForKeyPath:@"@max.description.length"]);
     NSString * indentString = [NSString stringWithCharacter:' ' count:levelIndent * 4];
 
     [self enumerateKeysAndObjectsUsingBlock:
@@ -234,29 +285,29 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [descriptionComponents componentsJoinedByString:@"\n"];
 }
 
-- (NSEnumerator *)objectEnumerator { return [[_orderedValues allObjects] objectEnumerator]; }
+- (NSEnumerator *)objectEnumerator { return [self.values objectEnumerator]; }
 
 - (NSArray *)objectsForKeys:(NSArray *)keys notFoundMarker:(id)marker
 {
     NSMutableArray * objects = [@[] mutableCopy];
-    for (id key in keys) [objects addObject:(self[key] ? : marker)];
+    for (id key in keys) [objects addObject:(self[key] ?: marker)];
     return objects;
 }
 
 - (void)getObjects:(id __unsafe_unretained [])objects andKeys:(id __unsafe_unretained [])keys
 {
-    NSUInteger count = [self count];
-    [[_orderedValues allObjects] getObjects:objects range:NSMakeRange(0, count)];
-    [[_orderedKeys allObjects] getObjects:keys range:NSMakeRange(0, count)];
+    NSRange r = NSMakeRange(0, [self count]);
+    if (objects) [self.values getObjects:objects range:r];
+    if (keys) [self.keys getObjects:keys range:r];
 }
 
-- (id)objectAtIndexedSubscript:(NSUInteger)idx { return _orderedValues[idx]; }
+- (id)objectAtIndexedSubscript:(NSUInteger)idx { return self.values[idx]; }
 
 - (id)objectAtIndex:(NSUInteger)idx { return [self objectAtIndexedSubscript:idx]; }
 
-- (id)keyAtIndex:(NSUInteger)idx { return _orderedKeys[idx]; }
+- (id)keyAtIndex:(NSUInteger)idx { return self.keys[idx]; }
 
-- (instancetype)dictionaryBySortingByKeys:(NSArray *)sortedKeys
+- (MSDictionary *)dictionaryBySortingByKeys:(NSArray *)sortedKeys
 {
     MSDictionary * dictionary = [MSDictionary dictionaryWithDictionary:self];
     [dictionary sortByKeys:sortedKeys];
@@ -269,22 +320,16 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     if (self = [super initWithObjects:objects forKeys:keys count:cnt])
     {
-        _dictionary = [[NSMutableDictionary alloc] initWithObjects:objects forKeys:keys count:cnt];
-        _orderedKeys   = [NSPointerArray weakObjectsPointerArray];
-        _orderedValues = [NSPointerArray weakObjectsPointerArray];
-        for (int i = 0; i < cnt; i++)
-        {
-            [_orderedKeys addPointer:(__bridge void *)(keys[i])];
-            [_orderedKeys addPointer:(__bridge void *)(objects[i])];
-        }
+        self.dictionary = [[NSMutableDictionary alloc] initWithObjects:objects forKeys:keys count:cnt];
+        self.keys = [NSMutableArray arrayWithObjects:keys count:cnt];
+        self.values = [NSMutableArray arrayWithObjects:objects count:cnt];
     }
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    return [MSDictionary dictionaryWithObjects:[_orderedValues allObjects]
-                                       forKeys:[_orderedKeys allObjects]];
+    return [MSDictionary dictionaryWithObjects:self.values forKeys:self.keys];
 }
 
 - (id)mutableCopyWithZone:(NSZone *)zone { return [self copyWithZone:zone]; }
@@ -293,89 +338,146 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                   objects:(__unsafe_unretained id [])buffer
                                     count:(NSUInteger)len
 {
-    return [_orderedKeys countByEnumeratingWithState:state objects:buffer count:len];
+    return [self.keys countByEnumeratingWithState:state objects:buffer count:len];
 }
 
-- (void)removeKeysWithNullObjectValues
+- (void)compact
 {
-    [self removeObjectsAtIndexes:[[_orderedValues allObjects] indexesOfObjectsPassingTest:
-                                  ^BOOL(id obj, NSUInteger idx, BOOL *stop)
-                                  {
-                                      return ValueIsNil(obj);
-                                  }]];
+    [self removeObjectsForKeys:[[self.dictionary keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop)
+                                {
+                                    return ValueIsNil(obj);
+                                }] allObjects]];
+}
+
+- (void)compress
+{
+    MSDictionary * replacementKeys = [MSDictionary dictionary];
+    MSDictionary * replacementValues = [MSDictionary dictionary];
+
+    [self enumerateKeysAndObjectsUsingBlock:
+     ^(id key, id obj, BOOL *stop)
+     {
+         if (!(isStringKind(key) && isDictionaryKind(obj) && [obj count] == 1)) return;
+         id innerKey = [obj allKeys][0];
+         if (!isStringKind(innerKey)) return;
+
+         NSString * keypath = [@"." join:@[key, innerKey]];
+         id value = obj[innerKey];
+         NSUInteger index = [self.keys indexOfObject:key];
+         replacementKeys[@(index)] = keypath;
+         replacementValues[@(index)] = value;
+     }];
+
+    for (NSNumber * indexValue in replacementKeys)
+    {
+        NSUInteger index = [indexValue unsignedIntegerValue];
+        id key = self.keys[index];
+        [self removeObjectForKey:key];
+
+        NSString * replacementKey = replacementKeys[indexValue];
+        id value = replacementValues[indexValue];
+
+        while (isDictionaryKind(value) && [value count] == 1 && isStringKind([value allKeys][0]))
+        {
+            replacementKey = [@"." join:@[replacementKey, [value allKeys][0]]];
+            value = value[[value allKeys][0]];
+        }
+
+        self.dictionary[replacementKey] = value;
+        [self.keys insertObject:replacementKey atIndex:index];
+        [self.values insertObject:value atIndex:index];
+    }
+}
+
+- (void)inflate
+{
+    assert(NO);
 }
 
 - (void)sortByKeys:(NSArray *)sortedKeys
 {
-    NSMutableOrderedSet * orderedKeys = [NSMutableOrderedSet orderedSetWithArray:sortedKeys];
-    [orderedKeys intersectOrderedSet:[NSOrderedSet orderedSetWithArray:[_orderedKeys allObjects]]];
+    NSMutableOrderedSet * keys = [NSMutableOrderedSet orderedSetWithArray:sortedKeys];
+    [keys intersectOrderedSet:[NSOrderedSet orderedSetWithArray:self.keys]];
 
-    NSMutableOrderedSet * extraKeys = [_orderedKeys mutableCopy];
-    [extraKeys minusOrderedSet:orderedKeys];
+    NSMutableOrderedSet * extraKeys = [keys mutableCopy];
+    [extraKeys minusOrderedSet:keys];
 
-    NSMutableArray * orderedValues = [@[] mutableCopy];
-    for (id key in orderedKeys)
-        [orderedValues addObject:self[key]];
+    NSMutableArray * values = [@[] mutableCopy];
+    for (id key in keys)
+        [values addObject:self[key]];
     
     for (id key in extraKeys)
-        [orderedValues addObject:self[key]];
+        [values addObject:self[key]];
 
-    [orderedKeys addObjectsFromArray:[extraKeys array]];
+    [keys addObjectsFromArray:[extraKeys array]];
 
-    _orderedKeys = [NSPointerArray weakObjectsPointerArray];
-    _orderedValues = [NSPointerArray weakObjectsPointerArray];
+    self.keys = [[keys array] mutableCopy];
+    self.values = values;
+}
+
+- (void)sortKeysUsingSelector:(SEL)comparator
+{
+    [self.keys sortUsingSelector:comparator];
+    self.values = [[self.dictionary objectsForKeys:self.keys notFoundMarker:NullObject] mutableCopy];
 }
 
 - (void)removeObjectForKey:(id)aKey
 {
-    if ([_orderedKeys containsObject:aKey])
+    if ([self.keys containsObject:aKey])
     {
-        [_orderedKeys removeObject:aKey];
-        [_orderedValues removeObject:self[aKey]];
-        [super removeObjectForKey:aKey];
+        NSUInteger index = [self.keys indexOfObject:aKey];
+        assert(index < [self.keys count]);
+        [self.keys removeObjectAtIndex:index];
+        [self.values removeObjectAtIndex:index];
+        [self.dictionary removeObjectForKey:aKey];
     }
+}
+
+- (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key
+{
+    [self setObject:obj forKey:key];
 }
 
 - (void)setObject:(id)anObject forKey:(id <NSCopying>)aKey
 {
-    [super setObject:anObject forKey:aKey];
-
-    if ([_orderedKeys containsObject:aKey])
+    if ([self.keys containsObject:aKey])
     {
-        NSUInteger index = [_orderedKeys indexOfObject:aKey];
-        [_orderedValues replaceObjectAtIndex:index withObject:anObject];
+        NSUInteger index = [_keys indexOfObject:aKey];
+        [self.values replaceObjectAtIndex:index withObject:anObject];
+        [self.dictionary setObject:anObject forKey:aKey];
     }
 
     else
     {
         [self willChange:NSKeyValueChangeInsertion
-         valuesAtIndexes:NSIndexSetMake([_orderedKeys count])
+         valuesAtIndexes:NSIndexSetMake([_keys count])
                   forKey:@"allKeys"];
-        [_orderedKeys addObject:aKey];
-        [_orderedValues addObject:anObject];
+        [self.keys addObject:aKey];
+        [self.values addObject:anObject];
+        [self.dictionary setObject:anObject forKey:aKey];
         [self didChange:NSKeyValueChangeInsertion
-        valuesAtIndexes:NSIndexSetMake([_orderedKeys count] - 1)
+        valuesAtIndexes:NSIndexSetMake([_keys count] - 1)
                  forKey:@"allKeys"];
     }
 }
 
 - (void)removeAllObjects
 {
-    [super removeAllObjects];
-    [_orderedKeys removeAllObjects];
-    [_orderedValues removeAllObjects];
+    [self.dictionary removeAllObjects];
+    [self.keys removeAllObjects];
+    [self.values removeAllObjects];
 }
 
 - (void)removeObjectsForKeys:(NSArray *)keyArray
 {
-    NSIndexSet * indexes = [_orderedKeys indexesOfObjectsPassingTest:
+    NSIndexSet * indexes = [_keys indexesOfObjectsPassingTest:
                             ^BOOL(id obj, NSUInteger idx, BOOL *stop)
                             {
                                 return [keyArray containsObject:obj];
                             }];
-    [_orderedKeys removeObjectsAtIndexes:indexes];
-    [_orderedValues removeObjectsAtIndexes:indexes];
-    [super removeObjectsForKeys:keyArray];
+    [self.keys removeObjectsAtIndexes:indexes];
+    [self.values removeObjectsAtIndexes:indexes];
+    [self.dictionary removeObjectsForKeys:keyArray];
 }
 
 
@@ -383,19 +485,64 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     if (self = [super init])
     {
-        _orderedKeys   = [NSMutableOrderedSet orderedSetWithCapacity:numItems];
-        _orderedValues = [NSMutableArray arrayWithCapacity:numItems];
+        self.keys       = [NSMutableArray arrayWithCapacity:numItems];
+        self.values     = [NSMutableArray arrayWithCapacity:numItems];
+        self.dictionary = [NSMutableDictionary dictionaryWithCapacity:numItems];
     }
+
     return self;
+}
+
+- (void)removeObjectAtIndex:(NSUInteger)index
+{
+    if (index >= [self.keys count]) ThrowInvalidIndexArgument(index);
+    else [self removeObjectForKey:self.keys[index]];
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes
 {
-    NSArray * keysToRemove = [_orderedKeys objectsAtIndexes:indexes];
-    [_orderedKeys removeObjectsAtIndexes:indexes];
-    [_orderedValues removeObjectsAtIndexes:indexes];
-    [super removeObjectsForKeys:keysToRemove];
+    [self removeObjectsForKeys:[self.keys objectsAtIndexes:indexes]];
 }
 
+- (void)replaceKey:(id)key withKey:(id)replacementKey
+{
+    if (!replacementKey)
+        ThrowInvalidNilArgument(replacementKey);
+
+    else if ([self.keys containsObject:replacementKey])
+        ThrowInvalidArgument(replacementKey, already has an entry);
+
+    else if (![self.keys containsObject:key])
+        ThrowInvalidArgument(key, has no entry);
+
+    else
+    {
+        NSUInteger idx = [self.keys indexOfObject:key];
+        id value = self.values[idx];
+        [self.keys replaceObjectAtIndex:idx withObject:replacementKey];
+        self.dictionary[replacementKey] = value;
+        [self.dictionary removeObjectForKey:key];
+    }
+}
+
+- (void)exchangeIndex:(NSUInteger)index withIndex:(NSUInteger)otherIndex
+{
+    if (index >= [self count]) ThrowInvalidIndexArgument(index);
+    else if (otherIndex >= [self count]) ThrowInvalidIndexArgument(otherIndex);
+    else
+    {
+        [self.keys exchangeObjectAtIndex:index withObjectAtIndex:otherIndex];
+        [self.values exchangeObjectAtIndex:index withObjectAtIndex:otherIndex];
+    }
+}
+
+- (NSUInteger)indexForKey:(id)key { return [self.keys indexOfObject:key]; }
+- (NSUInteger)indexForValue:(id)value { return [self.values indexOfObject:value]; }
+
+- (MSDictionary *)userInfo
+{
+    if (!_userInfo) self.userInfo = [MSDictionary dictionary];
+    return _userInfo;
+}
 
 @end

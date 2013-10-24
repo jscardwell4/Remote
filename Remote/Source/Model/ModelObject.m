@@ -7,11 +7,17 @@
 //
 #import "ModelObject.h"
 
-static int ddLogLevel = LOG_LEVEL_ERROR;
+static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingContextName";
+
+BOOL UUIDIsValid(NSString * uuid)
+{
+    NSRange r = [uuid rangeOfRegEX:@"[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"];
+    return (uuid && r.location == 0 && r.length == [uuid length]);
+}
 
 @interface ModelObject (CoreDataGeneratedAccessors)
 
@@ -35,90 +41,14 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 
 + (instancetype)objectWithUUID:(NSString *)uuid
 {
-    return (StringIsNotEmpty(uuid)
-            ? [self objectWithUUID:uuid context:[CoreDataManager defaultContext]]
-            : nil);
+    return [self objectWithUUID:uuid context:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)context
 {
-    return (StringIsNotEmpty(uuid)
-            ? [self MR_findFirstByAttribute:@"uuid" withValue:uuid inContext:context]
-            : nil);
-}
-
-- (void)importFromDictionary:(MSDictionary *)data
-{
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark MagicalRecord overrides
-////////////////////////////////////////////////////////////////////////////////
-
-//- (BOOL) MR_importValue:(id)value forKey:(NSString *)key {}
-//- (void) MR_setAttributes:(NSDictionary *)attributes forKeysWithObject:(id)objectData {}
-//- (NSManagedObject *) MR_findObjectForRelationship:(NSRelationshipDescription *)relationshipInfo
-//                                          withData:(id)singleRelatedObjectData {}
-//- (void) MR_addObject:(NSManagedObject *)relatedObject
-//      forRelationship:(NSRelationshipDescription *)relationshipInfo {}
-//- (BOOL) MR_shouldImportData:(id)relatedObjectData
-//        forRelationshipNamed:(NSString *)relationshipName {}
-//- (void) MR_setRelationships:(NSDictionary *)relationships
-//           forKeysWithObject:(id)relationshipData
-//                   withBlock:(void(^)(NSRelationshipDescription *,id))setRelationshipBlock {}
-//- (BOOL) MR_preImport:(id)objectData {}
-//- (BOOL) MR_postImport:(id)objectData {}
-//- (BOOL) MR_performDataImportFromObject:(id)objectData
-//                      relationshipBlock:(void(^)(NSRelationshipDescription*, id))relationshipBlock {}
-
-- (BOOL)shouldImport:(id)data
-{
-    MSLogDebug(@"data:%@", data);
-    return NO;
-}
-
-- (void)willImport:(id)data
-{
-    MSLogDebug(@"");
-
-}
-
-- (void)didImport:(id)data
-{
-    MSLogDebug(@"");
-
-}
-
-- (BOOL)MR_importValuesForKeysWithObject:(id)objectData
-{
-    MSLogDebug(@"");
-    return [super MR_importValuesForKeysWithObject:objectData];
-}
-
-+ (id)MR_importFromObject:(id)objectData inContext:(NSManagedObjectContext *)context;
-{
-    MSLogDebug(@"");
-    return [super MR_importFromObject:objectData inContext:context];
-}
-
-+ (id)MR_importFromObject:(id)objectData
-{
-    MSLogDebug(@"");
-    return [super MR_importFromObject:objectData];
-}
-
-+ (NSArray *)MR_importFromArray:(NSArray *)listOfObjectData
-{
-    MSLogDebug(@"");
-    return [super MR_importFromArray:listOfObjectData];
-}
-
-+ (NSArray *)MR_importFromArray:(NSArray *)listOfObjectData
-                      inContext:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"");
-    return [super MR_importFromArray:listOfObjectData inContext:context];
+    if (!context) ThrowInvalidNilArgument(context);
+    else if (!UUIDIsValid(uuid)) ThrowInvalidArgument(uuid, is not of proper form);
+    return [self MR_findFirstByAttribute:@"uuid" withValue:uuid inContext:context];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -181,8 +111,8 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 - (NSString *)JSONString { return [self.JSONDictionary JSONString]; }
 
 
-- (NSDictionary *)JSONDictionary { return [MSDictionary dictionaryWithObject:self.uuid
-                                                                      forKey:@"uuid"]; }
+- (MSDictionary *)JSONDictionary { assert(self.uuid); return [MSDictionary dictionaryWithObject:self.uuid
+                                                                                         forKey:@"uuid"]; }
 
 - (id)JSONObject { return [self.JSONDictionary JSONObject]; }
 

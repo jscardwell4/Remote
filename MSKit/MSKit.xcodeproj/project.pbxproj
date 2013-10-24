@@ -11,6 +11,100 @@
 		C264338418159578005E0105 /* PKAssembly+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */; };
 		C264338F18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C264339018162E8A005E0105 /* NSPointerArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */; };
+		C26433E51816D501005E0105 /* libMagicalRecord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C264339B1816D238005E0105 /* libMagicalRecord.a */; };
+		C26829A018257EDC0026A520 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2989AA1182550F600E8DCBF /* Cocoa.framework */; };
+		C26829C9182580CA0026A520 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C268295C182567D60026A520 /* Lumberjack.framework */; };
+		C26829CA182580CA0026A520 /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C264339F1816D238005E0105 /* MagicalRecord.framework */; };
+		C26829CB182580CA0026A520 /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AFF18142E4A00555D63 /* ParseKit.framework */; };
+		C26829CE182580FD0026A520 /* NSValue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A618138CF700555D63 /* NSValue+MSKitAdditions.m */; };
+		C26829D1182580FD0026A520 /* MSContextChangeReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F418138CF700555D63 /* MSContextChangeReceptionist.m */; };
+		C26829D2182580FD0026A520 /* NSSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889E18138CF700555D63 /* NSSet+MSKitAdditions.m */; };
+		C26829D4182580FD0026A520 /* MSKitMiscellaneousFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D818138CF700555D63 /* MSKitMiscellaneousFunctions.m */; };
+		C26829D5182580FD0026A520 /* NSAttributedString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888018138CF700555D63 /* NSAttributedString+MSKitAdditions.m */; };
+		C26829D8182580FD0026A520 /* MagicalRecord+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */; };
+		C26829DB182580FD0026A520 /* MSNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890318138CF700555D63 /* MSNetworkReachability.m */; };
+		C26829DC182580FD0026A520 /* NSURL+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A218138CF700555D63 /* NSURL+MSKitAdditions.m */; };
+		C26829DE182580FD0026A520 /* MSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890118138CF700555D63 /* MSLog.m */; };
+		C26829DF182580FD0026A520 /* NSAssertionHandler+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */; };
+		C26829E2182580FD0026A520 /* NSManagedObjectContext+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888E18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m */; };
+		C26829E3182580FD0026A520 /* NSDictionary+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888218138CF700555D63 /* NSDictionary+MSKitAdditions.m */; };
+		C26829E7182580FD0026A520 /* MSError.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FA18138CF700555D63 /* MSError.m */; };
+		C26829E9182580FD0026A520 /* MSBitVector.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F018138CF700555D63 /* MSBitVector.m */; };
+		C26829EB182580FD0026A520 /* MSCompletionBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F218138CF700555D63 /* MSCompletionBlockOperation.m */; };
+		C26829ED182580FD0026A520 /* NSPointerArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */; };
+		C26829EE182580FD0026A520 /* NSManagedObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888C18138CF700555D63 /* NSManagedObject+MSKitAdditions.m */; };
+		C26829F0182580FD0026A520 /* MSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890718138CF700555D63 /* MSQueue.m */; };
+		C26829F2182580FD0026A520 /* NSNull+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889218138CF700555D63 /* NSNull+MSKitAdditions.m */; };
+		C26829F4182580FD0026A520 /* MSDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F618138CF700555D63 /* MSDictionary.m */; };
+		C26829F6182580FD0026A520 /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
+		C26829F7182580FD0026A520 /* MSJSONAssembler.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828461814880E00FC8D54 /* MSJSONAssembler.m */; };
+		C26829F8182580FD0026A520 /* MSKitLoggingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D618138CF700555D63 /* MSKitLoggingFunctions.m */; };
+		C26829F9182580FD0026A520 /* MSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828421814629700FC8D54 /* MSJSONSerialization.m */; };
+		C26829FC182580FD0026A520 /* MSDictionaryIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */; };
+		C26829FD182580FD0026A520 /* NSOrderedSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889A18138CF700555D63 /* NSOrderedSet+MSKitAdditions.m */; };
+		C26829FE182580FD0026A520 /* NSNumber+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889418138CF700555D63 /* NSNumber+MSKitAdditions.m */; };
+		C26829FF182580FD0026A520 /* PKAssembly+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */; };
+		C2682A05182580FD0026A520 /* NSUserDefaults+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A418138CF700555D63 /* NSUserDefaults+MSKitAdditions.m */; };
+		C2682A07182580FD0026A520 /* MSJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FD18138CF700555D63 /* MSJSONParser.m */; };
+		C2682A0E182580FE0026A520 /* NSHashTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888818138CF700555D63 /* NSHashTable+MSKitAdditions.m */; };
+		C2682A0F182580FE0026A520 /* NSObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889618138CF700555D63 /* NSObject+MSKitAdditions.m */; };
+		C2682A12182580FE0026A520 /* MSStack.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890D18138CF700555D63 /* MSStack.m */; };
+		C2682A14182580FE0026A520 /* NSRegularExpression+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889C18138CF700555D63 /* NSRegularExpression+MSKitAdditions.m */; };
+		C2682A15182580FE0026A520 /* NSFetchRequest+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888618138CF700555D63 /* NSFetchRequest+MSKitAdditions.m */; };
+		C2682A18182580FE0026A520 /* MSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88EE18138CF700555D63 /* MSAssertionHandler.m */; };
+		C2682A19182580FE0026A520 /* NSMapTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889018138CF700555D63 /* NSMapTable+MSKitAdditions.m */; };
+		C2682A1C182580FE0026A520 /* NSString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A018138CF700555D63 /* NSString+MSKitAdditions.m */; };
+		C2682A1D182580FE0026A520 /* NSOperationQueue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889818138CF700555D63 /* NSOperationQueue+MSKitAdditions.m */; };
+		C2682A211825810E0026A520 /* CALayer+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A221825810E0026A520 /* MagicalRecord+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A231825810E0026A520 /* NSArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A241825810E0026A520 /* NSAttributedString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A251825810E0026A520 /* NSDictionary+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888118138CF700555D63 /* NSDictionary+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A271825810E0026A520 /* NSFetchRequest+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888518138CF700555D63 /* NSFetchRequest+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A281825810E0026A520 /* NSHashTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888718138CF700555D63 /* NSHashTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A2A1825810E0026A520 /* NSManagedObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888B18138CF700555D63 /* NSManagedObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A2B1825810E0026A520 /* NSManagedObjectContext+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888D18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A2C1825810E0026A520 /* NSMapTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888F18138CF700555D63 /* NSMapTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A2D1825810E0026A520 /* NSNull+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889118138CF700555D63 /* NSNull+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A2E1825810E0026A520 /* NSNumber+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889318138CF700555D63 /* NSNumber+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A2F1825810E0026A520 /* NSObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889518138CF700555D63 /* NSObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A301825810E0026A520 /* NSOperationQueue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889718138CF700555D63 /* NSOperationQueue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A311825810E0026A520 /* NSOrderedSet+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889918138CF700555D63 /* NSOrderedSet+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A321825810E0026A520 /* NSRegularExpression+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889B18138CF700555D63 /* NSRegularExpression+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A331825810E0026A520 /* NSSet+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889D18138CF700555D63 /* NSSet+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A341825810E0026A520 /* NSString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889F18138CF700555D63 /* NSString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A351825810E0026A520 /* NSURL+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A118138CF700555D63 /* NSURL+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A361825810E0026A520 /* NSUserDefaults+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A318138CF700555D63 /* NSUserDefaults+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A371825810E0026A520 /* NSValue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A518138CF700555D63 /* NSValue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A3C1825810E0026A520 /* NSAssertionHandler+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A481825810E0026A520 /* NSPointerArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A4E1825810E0026A520 /* MSKitGeometryFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D418138CF700555D63 /* MSKitGeometryFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A4F1825810E0026A520 /* MSKitLoggingFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D518138CF700555D63 /* MSKitLoggingFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A501825810E0026A520 /* PKAssembly+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338118159578005E0105 /* PKAssembly+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A511825810E0026A520 /* MSKitMiscellaneousFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D718138CF700555D63 /* MSKitMiscellaneousFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A541825810E0026A520 /* MSMultiselectGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88DE18138CF700555D63 /* MSMultiselectGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A581825810E0026A520 /* MSKitDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88E918138CF700555D63 /* MSKitDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A591825810E0026A520 /* MSKitMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88EA18138CF700555D63 /* MSKitMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A5A1825810E0026A520 /* MSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88ED18138CF700555D63 /* MSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A5B1825810E0026A520 /* MSBitVector.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88EF18138CF700555D63 /* MSBitVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A5C1825810E0026A520 /* MSCompletionBlockOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F118138CF700555D63 /* MSCompletionBlockOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A5D1825810E0026A520 /* MSContextChangeReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F318138CF700555D63 /* MSContextChangeReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A5E1825810E0026A520 /* MSDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F518138CF700555D63 /* MSDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A5F1825810E0026A520 /* MSDictionaryIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F718138CF700555D63 /* MSDictionaryIndex.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A601825810E0026A520 /* MSLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E3777F181C2F900066ACDB /* MSLogMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A611825810E0026A520 /* MSError.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F918138CF700555D63 /* MSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A621825810E0026A520 /* MSKVOReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A631825810E0026A520 /* MSLog.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890018138CF700555D63 /* MSLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A641825810E0026A520 /* MSNetworkReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890218138CF700555D63 /* MSNetworkReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A661825810E0026A520 /* MSQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890618138CF700555D63 /* MSQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A691825810E0026A520 /* MSStack.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890C18138CF700555D63 /* MSStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A6B1825810E0026A520 /* MSKitProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891118138CF700555D63 /* MSKitProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A741825810E0026A520 /* MSJSONSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828411814629700FC8D54 /* MSJSONSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A76182581220026A520 /* MSJSONParser.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88FC18138CF700555D63 /* MSJSONParser.h */; };
+		C2682A77182581220026A520 /* MSJSONAssembler.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828451814880E00FC8D54 /* MSJSONAssembler.h */; };
+		C2682A7A182581410026A520 /* MSKit-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = C2989AAE182550F600E8DCBF /* MSKit-OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2682A7C1825820A0026A520 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2682A7B1825820A0026A520 /* CoreData.framework */; };
+		C2682A7E1825851B0026A520 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C2682A7D1825851B0026A520 /* InfoPlist.strings */; };
 		C27828431814629700FC8D54 /* MSJSONSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828411814629700FC8D54 /* MSJSONSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C27828441814629700FC8D54 /* MSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828421814629700FC8D54 /* MSJSONSerialization.m */; };
 		C27828471814880E00FC8D54 /* MSJSONAssembler.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828451814880E00FC8D54 /* MSJSONAssembler.h */; };
@@ -180,31 +274,89 @@
 		C2CE89D018138E0100555D63 /* MSBarButtonItem_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88C818138CF700555D63 /* MSBarButtonItem_Private.h */; };
 		C2CE89D118138E0100555D63 /* MSPopupBarButton_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88CF18138CF700555D63 /* MSPopupBarButton_Private.h */; };
 		C2CE8B151814301100555D63 /* libLumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AC2181426D600555D63 /* libLumberjack.a */; };
-		C2CE8B161814301100555D63 /* libMagicalRecord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AE2181426E400555D63 /* libMagicalRecord.a */; };
 		C2CE8B171814301100555D63 /* libParseKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8B0318142E4A00555D63 /* libParseKit.a */; };
+		C2E37780181C2F900066ACDB /* MSLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E3777F181C2F900066ACDB /* MSLogMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2E37784181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2E37785181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C264339A1816D238005E0105 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C7CF97AB17498414008D9D13;
+			remoteInfo = "libMagicalRecord-iOS";
+		};
+		C264339C1816D238005E0105 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C7CF97FF174984CA008D9D13;
+			remoteInfo = "libMagicalRecordTests-iOS";
+		};
+		C264339E1816D238005E0105 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C779107F17E63C8900D20ACF;
+			remoteInfo = MagicalRecord;
+		};
+		C26433A01816D238005E0105 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C779109317E63C8900D20ACF;
+			remoteInfo = MagicalRecordTests;
+		};
+		C26433E21816D4EB005E0105 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C7CF97AA17498414008D9D13;
+			remoteInfo = "libMagicalRecord-iOS";
+		};
+		C268295B182567D60026A520 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DCB3185114EB418E001CFBEE;
+			remoteInfo = Lumberjack;
+		};
+		C268295D182567D60026A520 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DCB318CA14ED6C3B001CFBEE;
+			remoteInfo = FmwkTest;
+		};
+		C26829C3182580C20026A520 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
+			remoteInfo = Lumberjack;
+		};
+		C26829C5182580C20026A520 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C779107E17E63C8900D20ACF;
+			remoteInfo = MagicalRecord;
+		};
+		C26829C7182580C20026A520 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = ParseKit;
+		};
 		C2CE8AC1181426D600555D63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C2CE86F51813817F00555D63;
 			remoteInfo = Lumberjack;
-		};
-		C2CE8AE1181426E400555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8ADC181426E400555D63 /* MagicalRecord.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2CE87501813864800555D63;
-			remoteInfo = MagicalRecord;
-		};
-		C2CE8AE3181426FA00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8ADC181426E400555D63 /* MagicalRecord.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2CE874F1813864800555D63;
-			remoteInfo = MagicalRecord;
 		};
 		C2CE8AE7181426FA00555D63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -290,10 +442,22 @@
 		C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PKAssembly+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
+		C26433911816D238005E0105 /* MagicalRecord.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MagicalRecord.xcodeproj; path = ../../../../GitHub/MagicalRecord/MagicalRecord.xcodeproj; sourceTree = "<group>"; };
+		C2682956182567D60026A520 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = ../../../../GitHub/CocoaLumberjack/Xcode/LumberjackFramework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
+		C268299F18257EDC0026A520 /* MSKit-OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "MSKit-OSX.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2682A7B1825820A0026A520 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C2682A7D1825851B0026A520 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C27828451814880E00FC8D54 /* MSJSONAssembler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONAssembler.h; sourceTree = "<group>"; };
 		C27828461814880E00FC8D54 /* MSJSONAssembler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONAssembler.m; sourceTree = "<group>"; };
+		C2989AA1182550F600E8DCBF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		C2989AA4182550F600E8DCBF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C2989AA5182550F600E8DCBF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C2989AA6182550F600E8DCBF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		C2989AA9182550F600E8DCBF /* MSKit-OSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MSKit-OSX-Info.plist"; sourceTree = "<group>"; };
+		C2989AAD182550F600E8DCBF /* MSKit-OSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-OSX-Prefix.pch"; sourceTree = "<group>"; };
+		C2989AAE182550F600E8DCBF /* MSKit-OSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-OSX.h"; sourceTree = "<group>"; };
 		C2CE884E18138C4900555D63 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CE885118138C4900555D63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C2CE885518138C4900555D63 /* MSKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-Prefix.pch"; sourceTree = "<group>"; };
@@ -466,17 +630,31 @@
 		C2CE892A18138CF700555D63 /* MSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSView.m; sourceTree = "<group>"; };
 		C2CE897B18138D6C00555D63 /* MSKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKit.h; sourceTree = "<group>"; };
 		C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Frameworks/Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
-		C2CE8ADC181426E400555D63 /* MagicalRecord.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MagicalRecord.xcodeproj; path = Frameworks/MagicalRecord/MagicalRecord.xcodeproj; sourceTree = "<group>"; };
 		C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = Frameworks/ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
+		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
+		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
+		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C268299B18257EDC0026A520 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2682A7C1825820A0026A520 /* CoreData.framework in Frameworks */,
+				C26829C9182580CA0026A520 /* Lumberjack.framework in Frameworks */,
+				C26829CA182580CA0026A520 /* MagicalRecord.framework in Frameworks */,
+				C26829CB182580CA0026A520 /* ParseKit.framework in Frameworks */,
+				C26829A018257EDC0026A520 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2CE884B18138C4900555D63 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C26433E51816D501005E0105 /* libMagicalRecord.a in Frameworks */,
 				C2CE8B151814301100555D63 /* libLumberjack.a in Frameworks */,
-				C2CE8B161814301100555D63 /* libMagicalRecord.a in Frameworks */,
 				C2CE8B171814301100555D63 /* libParseKit.a in Frameworks */,
 				C2CE885218138C4900555D63 /* Foundation.framework in Frameworks */,
 			);
@@ -485,10 +663,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C26433921816D238005E0105 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C264339B1816D238005E0105 /* libMagicalRecord.a */,
+				C264339D1816D238005E0105 /* libMagicalRecordTests-iOS.octest */,
+				C264339F1816D238005E0105 /* MagicalRecord.framework */,
+				C26433A11816D238005E0105 /* MagicalRecordTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2682957182567D60026A520 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C268295C182567D60026A520 /* Lumberjack.framework */,
+				C268295E182567D60026A520 /* FmwkTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2989AA3182550F600E8DCBF /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C2989AA4182550F600E8DCBF /* Foundation.framework */,
+				C2989AA5182550F600E8DCBF /* CoreData.framework */,
+				C2989AA6182550F600E8DCBF /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		C2989AA7182550F600E8DCBF /* MSKit-OSX */ = {
+			isa = PBXGroup;
+			children = (
+				C2989AAE182550F600E8DCBF /* MSKit-OSX.h */,
+				C2989AA8182550F600E8DCBF /* Supporting Files */,
+			);
+			path = "MSKit-OSX";
+			sourceTree = "<group>";
+		};
+		C2989AA8182550F600E8DCBF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C2682A7D1825851B0026A520 /* InfoPlist.strings */,
+				C2989AA9182550F600E8DCBF /* MSKit-OSX-Info.plist */,
+				C2989AAD182550F600E8DCBF /* MSKit-OSX-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
 				C2CE885318138C4900555D63 /* MSKit */,
+				C2989AA7182550F600E8DCBF /* MSKit-OSX */,
 				C2CE885018138C4900555D63 /* Frameworks */,
 				C2CE884F18138C4900555D63 /* Products */,
 			);
@@ -498,6 +726,7 @@
 			isa = PBXGroup;
 			children = (
 				C2CE884E18138C4900555D63 /* libMSKit.a */,
+				C268299F18257EDC0026A520 /* MSKit-OSX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -505,12 +734,16 @@
 		C2CE885018138C4900555D63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C2682A7B1825820A0026A520 /* CoreData.framework */,
+				C2682956182567D60026A520 /* Lumberjack.xcodeproj */,
+				C26433911816D238005E0105 /* MagicalRecord.xcodeproj */,
 				C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */,
-				C2CE8ADC181426E400555D63 /* MagicalRecord.xcodeproj */,
 				C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */,
 				C2CE885118138C4900555D63 /* Foundation.framework */,
 				C264335518157B46005E0105 /* XCTest.framework */,
 				C264335818157B46005E0105 /* UIKit.framework */,
+				C2989AA1182550F600E8DCBF /* Cocoa.framework */,
+				C2989AA3182550F600E8DCBF /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -629,6 +862,8 @@
 				C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */,
 				C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */,
 				C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */,
+				C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */,
+				C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -733,6 +968,7 @@
 				C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */,
 				C2CE88FF18138CF700555D63 /* MSKVOReceptionist.m */,
 				C2CE890018138CF700555D63 /* MSLog.h */,
+				C2E3777F181C2F900066ACDB /* MSLogMacros.h */,
 				C2CE890118138CF700555D63 /* MSLog.m */,
 				C2CE890218138CF700555D63 /* MSNetworkReachability.h */,
 				C2CE890318138CF700555D63 /* MSNetworkReachability.m */,
@@ -811,14 +1047,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C2CE8ADD181426E400555D63 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C2CE8AE2181426E400555D63 /* libMagicalRecord.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C2CE8AF518142E4900555D63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -836,6 +1064,61 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		C268299C18257EDC0026A520 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2682A5C1825810E0026A520 /* MSCompletionBlockOperation.h in Headers */,
+				C2682A581825810E0026A520 /* MSKitDefines.h in Headers */,
+				C2682A351825810E0026A520 /* NSURL+MSKitAdditions.h in Headers */,
+				C2682A231825810E0026A520 /* NSArray+MSKitAdditions.h in Headers */,
+				C2682A601825810E0026A520 /* MSLogMacros.h in Headers */,
+				C2682A5B1825810E0026A520 /* MSBitVector.h in Headers */,
+				C2682A661825810E0026A520 /* MSQueue.h in Headers */,
+				C2682A5E1825810E0026A520 /* MSDictionary.h in Headers */,
+				C2682A301825810E0026A520 /* NSOperationQueue+MSKitAdditions.h in Headers */,
+				C2682A2C1825810E0026A520 /* NSMapTable+MSKitAdditions.h in Headers */,
+				C2682A4E1825810E0026A520 /* MSKitGeometryFunctions.h in Headers */,
+				C2682A331825810E0026A520 /* NSSet+MSKitAdditions.h in Headers */,
+				C2682A2B1825810E0026A520 /* NSManagedObjectContext+MSKitAdditions.h in Headers */,
+				C2682A2A1825810E0026A520 /* NSManagedObject+MSKitAdditions.h in Headers */,
+				C2682A511825810E0026A520 /* MSKitMiscellaneousFunctions.h in Headers */,
+				C2682A641825810E0026A520 /* MSNetworkReachability.h in Headers */,
+				C2682A5F1825810E0026A520 /* MSDictionaryIndex.h in Headers */,
+				C2682A611825810E0026A520 /* MSError.h in Headers */,
+				C2682A631825810E0026A520 /* MSLog.h in Headers */,
+				C2682A6B1825810E0026A520 /* MSKitProtocols.h in Headers */,
+				C2682A481825810E0026A520 /* NSPointerArray+MSKitAdditions.h in Headers */,
+				C2682A221825810E0026A520 /* MagicalRecord+MSKitAdditions.h in Headers */,
+				C2682A77182581220026A520 /* MSJSONAssembler.h in Headers */,
+				C2682A341825810E0026A520 /* NSString+MSKitAdditions.h in Headers */,
+				C2682A4F1825810E0026A520 /* MSKitLoggingFunctions.h in Headers */,
+				C2682A591825810E0026A520 /* MSKitMacros.h in Headers */,
+				C2682A691825810E0026A520 /* MSStack.h in Headers */,
+				C2682A321825810E0026A520 /* NSRegularExpression+MSKitAdditions.h in Headers */,
+				C2682A3C1825810E0026A520 /* NSAssertionHandler+MSKitAdditions.h in Headers */,
+				C2682A5D1825810E0026A520 /* MSContextChangeReceptionist.h in Headers */,
+				C2682A2D1825810E0026A520 /* NSNull+MSKitAdditions.h in Headers */,
+				C2682A5A1825810E0026A520 /* MSAssertionHandler.h in Headers */,
+				C2682A501825810E0026A520 /* PKAssembly+MSKitAdditions.h in Headers */,
+				C2682A311825810E0026A520 /* NSOrderedSet+MSKitAdditions.h in Headers */,
+				C2682A271825810E0026A520 /* NSFetchRequest+MSKitAdditions.h in Headers */,
+				C2682A2F1825810E0026A520 /* NSObject+MSKitAdditions.h in Headers */,
+				C2682A251825810E0026A520 /* NSDictionary+MSKitAdditions.h in Headers */,
+				C2682A241825810E0026A520 /* NSAttributedString+MSKitAdditions.h in Headers */,
+				C2682A361825810E0026A520 /* NSUserDefaults+MSKitAdditions.h in Headers */,
+				C2682A281825810E0026A520 /* NSHashTable+MSKitAdditions.h in Headers */,
+				C2682A621825810E0026A520 /* MSKVOReceptionist.h in Headers */,
+				C2682A2E1825810E0026A520 /* NSNumber+MSKitAdditions.h in Headers */,
+				C2682A541825810E0026A520 /* MSMultiselectGestureRecognizer.h in Headers */,
+				C2682A76182581220026A520 /* MSJSONParser.h in Headers */,
+				C2682A741825810E0026A520 /* MSJSONSerialization.h in Headers */,
+				C2682A371825810E0026A520 /* NSValue+MSKitAdditions.h in Headers */,
+				C2682A211825810E0026A520 /* CALayer+MSKitAdditions.h in Headers */,
+				C2682A7A182581410026A520 /* MSKit-OSX.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2CE897D18138DBE00555D63 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -868,6 +1151,7 @@
 				C2CE899718138DEB00555D63 /* UICollectionViewFlowLayout+MSKitAdditions.h in Headers */,
 				C2CE899818138DEB00555D63 /* UIColor+MSKitAdditions.h in Headers */,
 				C2CE899918138DEB00555D63 /* UIControl+MSKitAdditions.h in Headers */,
+				C2E37784181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h in Headers */,
 				C2CE899A18138DEB00555D63 /* UIFont+MSKitAdditions.h in Headers */,
 				C2CE899B18138DEB00555D63 /* UIGestureRecognizer+MSKitAdditions.h in Headers */,
 				C2CE899C18138DEB00555D63 /* UIImage+ImageEffects.h in Headers */,
@@ -905,6 +1189,7 @@
 				C2CE89B818138DEB00555D63 /* MSContextChangeReceptionist.h in Headers */,
 				C2CE89B918138DEB00555D63 /* MSDictionary.h in Headers */,
 				C2CE89BA18138DEB00555D63 /* MSDictionaryIndex.h in Headers */,
+				C2E37780181C2F900066ACDB /* MSLogMacros.h in Headers */,
 				C2CE89BB18138DEB00555D63 /* MSError.h in Headers */,
 				C2CE89BD18138DEB00555D63 /* MSKVOReceptionist.h in Headers */,
 				C2CE89BE18138DEB00555D63 /* MSLog.h in Headers */,
@@ -934,6 +1219,27 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		C268299E18257EDC0026A520 /* MSKit-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C26829BD18257EDD0026A520 /* Build configuration list for PBXNativeTarget "MSKit-OSX" */;
+			buildPhases = (
+				C268299A18257EDC0026A520 /* Sources */,
+				C268299B18257EDC0026A520 /* Frameworks */,
+				C268299C18257EDC0026A520 /* Headers */,
+				C268299D18257EDC0026A520 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C26829C4182580C20026A520 /* PBXTargetDependency */,
+				C26829C6182580C20026A520 /* PBXTargetDependency */,
+				C26829C8182580C20026A520 /* PBXTargetDependency */,
+			);
+			name = "MSKit-OSX";
+			productName = "MSKit-OSX";
+			productReference = C268299F18257EDC0026A520 /* MSKit-OSX.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		C2CE884D18138C4900555D63 /* MSKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2CE887118138C4900555D63 /* Build configuration list for PBXNativeTarget "MSKit" */;
@@ -947,8 +1253,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				C26433E31816D4EB005E0105 /* PBXTargetDependency */,
 				C2CE8B1218142F7900555D63 /* PBXTargetDependency */,
-				C2CE8AE4181426FA00555D63 /* PBXTargetDependency */,
 				C2CE8AE8181426FA00555D63 /* PBXTargetDependency */,
 			);
 			name = MSKit;
@@ -977,12 +1283,16 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = C2682957182567D60026A520 /* Products */;
+					ProjectRef = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
+				},
+				{
 					ProductGroup = C2CE8ABD181426D600555D63 /* Products */;
 					ProjectRef = C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */;
 				},
 				{
-					ProductGroup = C2CE8ADD181426E400555D63 /* Products */;
-					ProjectRef = C2CE8ADC181426E400555D63 /* MagicalRecord.xcodeproj */;
+					ProductGroup = C26433921816D238005E0105 /* Products */;
+					ProjectRef = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
 				},
 				{
 					ProductGroup = C2CE8AF518142E4900555D63 /* Products */;
@@ -992,23 +1302,59 @@
 			projectRoot = "";
 			targets = (
 				C2CE884D18138C4900555D63 /* MSKit */,
+				C268299E18257EDC0026A520 /* MSKit-OSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C264339B1816D238005E0105 /* libMagicalRecord.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMagicalRecord.a;
+			remoteRef = C264339A1816D238005E0105 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C264339D1816D238005E0105 /* libMagicalRecordTests-iOS.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "libMagicalRecordTests-iOS.octest";
+			remoteRef = C264339C1816D238005E0105 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C264339F1816D238005E0105 /* MagicalRecord.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MagicalRecord.framework;
+			remoteRef = C264339E1816D238005E0105 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C26433A11816D238005E0105 /* MagicalRecordTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MagicalRecordTests.xctest;
+			remoteRef = C26433A01816D238005E0105 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C268295C182567D60026A520 /* Lumberjack.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Lumberjack.framework;
+			remoteRef = C268295B182567D60026A520 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C268295E182567D60026A520 /* FmwkTest.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FmwkTest.app;
+			remoteRef = C268295D182567D60026A520 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C2CE8AC2181426D600555D63 /* libLumberjack.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libLumberjack.a;
 			remoteRef = C2CE8AC1181426D600555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8AE2181426E400555D63 /* libMagicalRecord.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libMagicalRecord.a;
-			remoteRef = C2CE8AE1181426E400555D63 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C2CE8AFF18142E4A00555D63 /* ParseKit.framework */ = {
@@ -1062,6 +1408,17 @@
 		};
 /* End PBXReferenceProxy section */
 
+/* Begin PBXResourcesBuildPhase section */
+		C268299D18257EDC0026A520 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2682A7E1825851B0026A520 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
 		C2CE897C18138D8800555D63 /* Prepare Framework */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1080,6 +1437,52 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C268299A18257EDC0026A520 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C26829D2182580FD0026A520 /* NSSet+MSKitAdditions.m in Sources */,
+				C26829E3182580FD0026A520 /* NSDictionary+MSKitAdditions.m in Sources */,
+				C26829F7182580FD0026A520 /* MSJSONAssembler.m in Sources */,
+				C26829FC182580FD0026A520 /* MSDictionaryIndex.m in Sources */,
+				C2682A14182580FE0026A520 /* NSRegularExpression+MSKitAdditions.m in Sources */,
+				C26829E9182580FD0026A520 /* MSBitVector.m in Sources */,
+				C26829F6182580FD0026A520 /* NSArray+MSKitAdditions.m in Sources */,
+				C26829F0182580FD0026A520 /* MSQueue.m in Sources */,
+				C26829F8182580FD0026A520 /* MSKitLoggingFunctions.m in Sources */,
+				C26829D4182580FD0026A520 /* MSKitMiscellaneousFunctions.m in Sources */,
+				C26829F4182580FD0026A520 /* MSDictionary.m in Sources */,
+				C2682A0F182580FE0026A520 /* NSObject+MSKitAdditions.m in Sources */,
+				C2682A07182580FD0026A520 /* MSJSONParser.m in Sources */,
+				C26829FE182580FD0026A520 /* NSNumber+MSKitAdditions.m in Sources */,
+				C26829EB182580FD0026A520 /* MSCompletionBlockOperation.m in Sources */,
+				C26829EE182580FD0026A520 /* NSManagedObject+MSKitAdditions.m in Sources */,
+				C26829DE182580FD0026A520 /* MSLog.m in Sources */,
+				C2682A12182580FE0026A520 /* MSStack.m in Sources */,
+				C2682A1D182580FE0026A520 /* NSOperationQueue+MSKitAdditions.m in Sources */,
+				C2682A15182580FE0026A520 /* NSFetchRequest+MSKitAdditions.m in Sources */,
+				C2682A0E182580FE0026A520 /* NSHashTable+MSKitAdditions.m in Sources */,
+				C26829DB182580FD0026A520 /* MSNetworkReachability.m in Sources */,
+				C26829DC182580FD0026A520 /* NSURL+MSKitAdditions.m in Sources */,
+				C26829D5182580FD0026A520 /* NSAttributedString+MSKitAdditions.m in Sources */,
+				C2682A1C182580FE0026A520 /* NSString+MSKitAdditions.m in Sources */,
+				C26829F2182580FD0026A520 /* NSNull+MSKitAdditions.m in Sources */,
+				C2682A19182580FE0026A520 /* NSMapTable+MSKitAdditions.m in Sources */,
+				C26829ED182580FD0026A520 /* NSPointerArray+MSKitAdditions.m in Sources */,
+				C26829D8182580FD0026A520 /* MagicalRecord+MSKitAdditions.m in Sources */,
+				C26829F9182580FD0026A520 /* MSJSONSerialization.m in Sources */,
+				C26829FF182580FD0026A520 /* PKAssembly+MSKitAdditions.m in Sources */,
+				C26829FD182580FD0026A520 /* NSOrderedSet+MSKitAdditions.m in Sources */,
+				C26829D1182580FD0026A520 /* MSContextChangeReceptionist.m in Sources */,
+				C26829CE182580FD0026A520 /* NSValue+MSKitAdditions.m in Sources */,
+				C26829DF182580FD0026A520 /* NSAssertionHandler+MSKitAdditions.m in Sources */,
+				C26829E2182580FD0026A520 /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
+				C2682A05182580FD0026A520 /* NSUserDefaults+MSKitAdditions.m in Sources */,
+				C2682A18182580FE0026A520 /* MSAssertionHandler.m in Sources */,
+				C26829E7182580FD0026A520 /* MSError.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2CE884A18138C4900555D63 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1103,6 +1506,7 @@
 				C2CE893F18138CF700555D63 /* NSURL+MSKitAdditions.m in Sources */,
 				C2CE895D18138CF700555D63 /* MSGLossLayer.m in Sources */,
 				C2CE896918138CF700555D63 /* MSLog.m in Sources */,
+				C2E37785181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m in Sources */,
 				C2CE895218138CF700555D63 /* MSPickerInputButton.m in Sources */,
 				C2CE895818138CF700555D63 /* MSGestureManager.m in Sources */,
 				C2CE893518138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
@@ -1173,10 +1577,25 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C2CE8AE4181426FA00555D63 /* PBXTargetDependency */ = {
+		C26433E31816D4EB005E0105 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libMagicalRecord-iOS";
+			targetProxy = C26433E21816D4EB005E0105 /* PBXContainerItemProxy */;
+		};
+		C26829C4182580C20026A520 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Lumberjack;
+			targetProxy = C26829C3182580C20026A520 /* PBXContainerItemProxy */;
+		};
+		C26829C6182580C20026A520 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MagicalRecord;
-			targetProxy = C2CE8AE3181426FA00555D63 /* PBXContainerItemProxy */;
+			targetProxy = C26829C5182580C20026A520 /* PBXContainerItemProxy */;
+		};
+		C26829C8182580C20026A520 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ParseKit;
+			targetProxy = C26829C7182580C20026A520 /* PBXContainerItemProxy */;
 		};
 		C2CE8AE8181426FA00555D63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1191,43 +1610,72 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C2CE886F18138C4900555D63 /* Debug */ = {
+		C26829BE18257EDD0026A520 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MSKit-OSX/MSKit-OSX-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				INFOPLIST_FILE = "MSKit-OSX/MSKit-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = NO;
-				STRIP_STYLE = "non-global";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		C26829BF18257EDD0026A520 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MSKit-OSX/MSKit-OSX-Prefix.pch";
+				INFOPLIST_FILE = "MSKit-OSX/MSKit-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		C2CE886F18138C4900555D63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
@@ -1235,79 +1683,63 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = NO;
-				STRIP_STYLE = "non-global";
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		C2CE887218138C4900555D63 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DSTROOT = /tmp/MSKit.dst;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks,
-				);
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MSKit/MSKit-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "DEBUG=1";
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)Headers";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
 			};
 			name = Debug;
 		};
 		C2CE887318138C4900555D63 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DSTROOT = /tmp/MSKit.dst;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks,
-				);
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MSKit/MSKit-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)Headers";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C26829BD18257EDD0026A520 /* Build configuration list for PBXNativeTarget "MSKit-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C26829BE18257EDD0026A520 /* Debug */,
+				C26829BF18257EDD0026A520 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C2CE884918138C4900555D63 /* Build configuration list for PBXProject "MSKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -23,7 +23,7 @@
 - (void)deleteObjects:(NSSet *)objects;
 
 /// Method of convenience for going straight from `NSURL` to `NSManagedObject`
-- (NSManagedObject *)objectForURI:(NSURL *)uri;
+- (id)objectForURI:(NSURL *)uri;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Wrappers for MagicalRecord Save Actions

@@ -57,22 +57,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Singletons/CoreDataManager.m"
-            timestampString = "403727238.345467"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "+initializeDatabase"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CoreDataTests/CoreDataTests.m"
             timestampString = "387775216.551303"
             startingColumnNumber = "9223372036854775807"
@@ -80,38 +64,6 @@
             startingLineNumber = "88"
             endingLineNumber = "88"
             landmarkName = "-testCreateRemoteAndSaveViaReferencedContext"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Construction/RemoteElementConstructionManager.m"
-            timestampString = "403381596.052899"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "+buildController"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Remote Elements/Remote Element/Configurations/ButtonConfigurationDelegate.m"
-            timestampString = "403563613.071647"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "243"
-            endingLineNumber = "243"
-            landmarkName = "-setIcons:mode:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -170,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "403381596.052899"
+            timestampString = "404681529.843466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -266,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Element/RemoteElement.m"
-            timestampString = "403975209.277171"
+            timestampString = "404681529.843466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "-awakeFromInsert"
             landmarkType = "5">
          </BreakpointContent>
@@ -299,11 +251,11 @@
             condition = "(BOOL)[self isKindOfClass:(Class)[REButtonGroup class]]"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Element/RemoteElement.m"
-            timestampString = "403975209.277171"
+            timestampString = "404681529.843466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "-awakeFromInsert"
             landmarkType = "5">
          </BreakpointContent>
@@ -449,22 +401,6 @@
             startingLineNumber = "356"
             endingLineNumber = "356"
             landmarkName = "+initializeManagedObjectContexts"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Remote/CoreData/ModelObject.m"
-            timestampString = "403462543.698406"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "-awakeFromInsert"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

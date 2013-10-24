@@ -9,6 +9,8 @@
 #import "IRCode.h"
 #import "NetworkDevice.h"
 #import "Manufacturer.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
 
 @implementation ComponentDevice {
     BOOL _ignoreNextPowerCommand;
@@ -117,7 +119,7 @@
             ^BOOL(IRCode * obj){ return [name isEqualToString:obj.name]; }];
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
     id(^defaultForKey)(NSString *) = ^(NSString * key)
     {
@@ -127,8 +129,8 @@
                       ^{
                           MSDictionary * dictionary = [MSDictionary dictionary];
                           for (NSString * attribute in @[@"port", @"alwaysOn", @"inputPowersOn"])
-                              dictionary[attribute] = CollectionSafeValue([self defaultValueForAttribute:attribute]);
-                          [dictionary removeKeysWithNullObjectValues];
+                              dictionary[attribute] = CollectionSafe([self defaultValueForAttribute:attribute]);
+                          [dictionary compact];
                           index = dictionary;
                       });
 
@@ -156,10 +158,10 @@
         }
 
         if (isCustom)
-            dictionary[attribute] = CollectionSafeValue(addition);
+            dictionary[attribute] = CollectionSafe(addition);
     };
 
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
 
     addIfCustom(self, dictionary, @"port",          @(self.port));
     addIfCustom(self, dictionary, @"alwaysOn",      @(self.alwaysOn));
@@ -170,7 +172,8 @@
     addIfCustom(self, dictionary, @"networkDevice", SelfKeyPathValue(@"networkDevice.uuid"));
     addIfCustom(self, dictionary, @"codes",         SelfKeyPathValue(@"codes.JSONDictionary"));
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
@@ -184,6 +187,58 @@
     dd[@"name"] = device.name;
     dd[@"port"] = $(@"%i",device.port);
     return (MSDictionary *)dd;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Importing
+////////////////////////////////////////////////////////////////////////////////
+
+/*
+- (BOOL)shouldImportCodes:(id)data { return YES; }
+- (BOOL)shouldImportConfigurations:(id)data { return YES; }
+- (BOOL)shouldImportInfo:(id)data { return YES; }
+- (BOOL)shouldImportManufacturer:(id)data { return YES; }
+- (BOOL)shouldImportNetworkDevice:(id)data { return YES; }
+- (BOOL)shouldImportOffCommand:(id)data { return YES; }
+- (BOOL)shouldImportOnCommand:(id)data { return YES; }
+- (BOOL)shouldImportPowerCommands:(id)data { return YES; }
+*/
+
+MSSTATIC_STRING_CONST kOnCommandKey = @"onCommand";
+MSSTATIC_STRING_CONST kOffCommandKey = @"offCommand";
+
+- (void)importCommandForKey:(NSString *)key data:(NSDictionary *)data
+{
+    if (![@[kOnCommandKey, kOffCommandKey] containsObject:key]) return;
+
+    NSString * classKey = data[@"class"];
+    Class commandClass = commandClassForImportKey(classKey);
+
+    if (!commandClass) return;
+
+    Command * command = [commandClass MR_importFromObject:data
+                                                inContext:self.managedObjectContext];
+
+    if (command) [self setValue:command forKey:key];
+}
+
+- (void)importOnCommand:(id)data
+{
+    if (isDictionaryKind(data) && [data hasKey:kOnCommandKey])
+    {
+        NSDictionary * commandData = data[kOnCommandKey];
+        if (isDictionaryKind(commandData)) [self importCommandForKey:kOnCommandKey data:commandData];
+    }
+}
+
+- (void)importOffCommand:(id)data
+{
+    if (isDictionaryKind(data) && [data hasKey:kOffCommandKey])
+    {
+        NSDictionary * commandData = data[kOffCommandKey];
+        if (isDictionaryKind(commandData)) [self importCommandForKey:kOffCommandKey data:commandData];
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

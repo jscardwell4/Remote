@@ -73,7 +73,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
          /// panel button group
 
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRolePanel);
+//         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRolePanel);
          buttonGroupSettings.backgroundColor = [WhiteColor colorWithAlphaComponent:0.75f];
 
          /// selection panel button group
@@ -83,7 +83,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
          /// picker label button group
 
-         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRolePickerLabel);
+         buttonGroupSettings = ButtonGroupSettings(REButtonGroupRoleRocker);
          buttonGroupSettings.style = @(REStyleDrawBorder);
          buttonGroupSettings.shape = @(REShapeRoundedRectangle);
          buttonGroupSettings.backgroundColor = ClearColor;
@@ -159,33 +159,29 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                   withObjects:@{
                                                 @"normal":
                                                     @{
-                                                        REFontNameKey:
-                                                            MSDefaultFontName,
-                                                        REFontSizeKey:
-                                                            @20,
-                                                        REForegroundColorKey:
+                                                        REFontAttributeKey:
+                                                            [REFont fontWithName:MSDefaultFontName size:@20],//[@"@" join:@[MSDefaultFontName, @"20"]],
+                                                        REForegroundColorAttributeKey:
                                                             WhiteColor,
-                                                        REStrokeWidthKey:
+                                                        REStrokeWidthAttributeKey:
                                                             @(-2.0),
-                                                        REStrokeColorKey:
-                                                            [WhiteColor colorWithAlphaComponent:.5],
-                                                        REParagraphStyleKey:
-                                                            paragraphStyle
+                                                        REStrokeColorAttributeKey:
+                                                            [WhiteColor colorWithAlphaComponent:.5]//,
+//                                                        REParagraphStyleAttributeKey:
+//                                                            [paragraphStyle copy]
                                                         },
                                                 @"highlighted":
                                                     @{
-                                                        REFontNameKey:
-                                                            MSDefaultFontName,
-                                                        REFontSizeKey:
-                                                            @20,
-                                                        REForegroundColorKey:
+                                                        REFontAttributeKey:
+                                                            [REFont fontWithName:MSDefaultFontName size:@20],//[@"@" join:@[MSDefaultFontName, @"20"]],
+                                                        REForegroundColorAttributeKey:
                                                             [UIColor colorWithR:0 G:175 B:255 A:255],
-                                                        REStrokeWidthKey:
+                                                        REStrokeWidthAttributeKey:
                                                             @(-2.0),
-                                                        REStrokeColorKey:
-                                                            [UIColor colorWithR:0 G:255 B:255 A:127],
-                                                        REParagraphStyleKey:
-                                                            paragraphStyle
+                                                        REStrokeColorAttributeKey:
+                                                            [UIColor colorWithR:0 G:255 B:255 A:127]//,
+//                                                        REParagraphStyleAttributeKey:
+//                                                            [paragraphStyle copy]
                                                         }
                                                 }
                                   ];
@@ -338,7 +334,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
          ControlStateTitleSet * titles = [ButtonSettings(RETypeButton).titles copy];
-         [titles setObject:@"OK" forTitleAttribute:RETitleTextKey];
+         titles[[@"." join:@[@"normal", RETitleTextAttributeKey]]] = @"OK";
 
          ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadCenter
                                                                                       context:moc];
@@ -353,9 +349,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
          titles = [titles copy];
-         [titles setObject:@"FontAwesome" forTitleAttribute:REFontNameKey];
-         [titles setObject:@32.0f forTitleAttribute:REFontSizeKey];
-         [titles setObject:[UIFont fontAwesomeIconForName:@"caret-up"] forTitleAttribute:RETitleTextKey];
+         titles[[@"." join:@[@"normal", REFontAttributeKey]]] =
+             [REFont fontFromString:@"FontAwesome@32"];
+         titles[[@"." join:@[@"normal", RETitleTextAttributeKey]]] =
+             [UIFont fontAwesomeIconForName:@"caret-up"];
 
 
          buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadUp
@@ -371,7 +368,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
          titles = [titles copy];
-         [titles setObject:[UIFont fontAwesomeIconForName:@"caret-down"] forTitleAttribute:RETitleTextKey];
+         titles[[@"." join:@[@"normal", RETitleTextAttributeKey]]] =
+             [UIFont fontAwesomeIconForName:@"caret-down"];
 
          buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadDown
                                                                   context:moc];
@@ -387,7 +385,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
          titles = [titles copy];
-         [titles setObject:[UIFont fontAwesomeIconForName:@"caret-left"] forTitleAttribute:RETitleTextKey];
+         titles[[@"." join:@[@"normal", RETitleTextAttributeKey]]] =
+             [UIFont fontAwesomeIconForName:@"caret-left"];
 
          buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadLeft
                                                                   context:moc];
@@ -403,7 +402,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
          titles = [titles copy];
-         [titles setObject:[UIFont fontAwesomeIconForName:@"caret-right"] forTitleAttribute:RETitleTextKey];
+         titles[[@"." join:@[@"normal", RETitleTextAttributeKey]]] =
+             [UIFont fontAwesomeIconForName:@"caret-right"];
 
          buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleDPadRight
                                                                   context:moc];
@@ -448,8 +448,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          /// transport button
          ////////////////////////////////////////////////////////////////////////////////
          ControlStateTitleSet * titles = [ButtonSettings(RETypeButton).titles copy];
-         [titles setObject:@"FontAwesome" forTitleAttribute:REFontNameKey];
-         [titles setObject:@32 forTitleAttribute:REFontSizeKey];
+         titles[[@"." join:@[@"normal", REFontAttributeKey]]] =
+             [REFont fontFromString:@"FontAwesome@32"];
+
 
          ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRoleTransport);
          buttonSettings.titles = titles;
@@ -462,7 +463,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                                       context:moc];
              ControlStateTitleSet * subSettingTitles = [buttonSettings.titles copy];
              NSString * iconName = index[type];
-             [subSettingTitles setObject:[UIFont fontAwesomeIconForName:iconName] forTitleAttribute:RETitleTextKey];
+             subSettingTitles[[@"." join:@[@"normal", RETitleTextAttributeKey]]] =
+                 [UIFont fontAwesomeIconForName:iconName];
              buttonSubSettings.titles = subSettingTitles;
              [buttonSettings addSubSettingsObject:buttonSubSettings];
          }
@@ -479,7 +481,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRolePickerLabel);
+         ThemeButtonSettings * buttonSettings = ButtonSettings(REButtonRoleRocker);
          buttonSettings.backgroundColors = [ControlStateColorSet
                                             controlStateSetInContext:moc
                                                          withObjects:@{
@@ -497,7 +499,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRolePickerLabelTop
+         ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleRockerTop
                                                                                           context:moc];
          buttonSubSettings.style = @(REStyleGlossStyle3);
          buttonSubSettings.icons = [ControlStateImageSet
@@ -513,7 +515,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ////////////////////////////////////////////////////////////////////////////////
 
 
-         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRolePickerLabelBottom
+         buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleRockerBottom
                                                                   context:moc];
          buttonSubSettings.style = @(REStyleGlossStyle4);
          buttonSubSettings.icons = [ControlStateImageSet

@@ -31,12 +31,28 @@ REShape remoteElementShapeFromImportKey(NSString * importKey);
 REStyle remoteElementStyleFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Remote
+////////////////////////////////////////////////////////////////////////////////
+
+REPanelAssignment panelAssignmentFromImportKey(NSString * importKey);
+
+////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
 SystemCommandType systemCommandTypeFromImportKey(NSString * importKey);
+SwitchCommandType switchCommandTypeFromImportKey(NSString * importKey);
 CommandSetType commandSetTypeFromImportKey(NSString * importKey);
 Class commandClassForImportKey(NSString * importKey);
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state sets
+////////////////////////////////////////////////////////////////////////////////
+
+NSString * titleSetAttributeKeyForJSONKey(NSString * key);
+NSTextAlignment titleSetAlignmentForJSONKey(NSString * key);
+NSLineBreakMode titleSetLineBreakModeForJSONKey(NSString * key);
+NSUnderlineStyle titleSetUnderlineStyleForJSONKey(NSString * key);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Utility functions

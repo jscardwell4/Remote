@@ -24,7 +24,7 @@
 @implementation LayoutConstraint
 
 + (LayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
-                                    forView:(RemoteElementView *)view
+                                  forView:(RemoteElementView *)view
 {
     if (!modelConstraint || modelConstraint.owner != view.model) return nil;
 

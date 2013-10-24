@@ -70,6 +70,22 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
             : [self stringByReplacingOccurrencesOfString:@"\n" withString:$(@"\n%@",padding)]);
 }
 
+- (NSString *)stringByShiftingLeft:(NSUInteger)shiftAmount
+{
+    return [self stringByShiftingLeft:shiftAmount shiftFirstLine:YES];
+}
+
+- (NSString *)stringByShiftingLeft:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine
+{
+    NSMutableString * shiftedString = [self mutableCopy];
+    [shiftedString replaceRegEx:$(@"\n {%lu}", (unsigned long)shiftAmount)
+                     withString:@"\n"];
+    if (shiftFirstLine)
+        [shiftedString replaceRegEx:$(@"^ {%lu}", (unsigned long)shiftAmount)
+                         withString:@""];
+    return shiftedString;
+}
+
 + (NSString *)stringWithCharacter:(unichar)character count:(NSUInteger)count
 {
     NSString  *returnString = @"";
@@ -118,7 +134,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSString *)stringByUnescapingControlCharacters
 {
     return [[[self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-             stringByReplacingOccurrencesOfRegEx:@"%5C(?:(%[0-9A-F]{2})|(n))" withString:@"$1$2=%0A="]
+             stringByReplacingRegEx:@"%5C(?:(%[0-9A-F]{2})|(n))" withString:@"$1$2=%0A="]
             stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
@@ -163,7 +179,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (NSString *)stringByStrippingTrailingZeroes
 {
-    return [self stringByReplacingOccurrencesOfRegEx:@"(?:([0-9]+\\.[0-9]*[1-9])0+)|(?:([0-9]+)\\.0+)" withString:@"$1$2"];
+    return [self stringByReplacingRegEx:@"(?:([0-9]+\\.[0-9]*[1-9])0+)|(?:([0-9]+)\\.0+)" withString:@"$1$2"];
 }
 
 - (NSString *)camelCaseString
@@ -190,7 +206,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (NSString *)stringByReplacingReturnsWithSymbol
 {
-    return [self stringByReplacingOccurrencesOfRegEx:@"[\n\r]" withString:@"⏎"];  // \u23CE
+    return [self stringByReplacingRegEx:@"[\n\r]" withString:@"⏎"];  // \u23CE
 }
 
 - (NSString *)stringByRemovingCharacter:(unichar)character
@@ -284,6 +300,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
     return newString;
 }
+
+- (NSArray *)keyPathComponents { return [self componentsSeparatedByString:@"."]; }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Logging Headers/Footers
@@ -402,147 +420,12 @@ MSSTATIC_STRING_CONST   kBoxMiddle = @"\u2502                                   
             kBoxBottom];
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Regular Expressions
-////////////////////////////////////////////////////////////////////////////////
-
-// Range of regular expression
-- (NSRange)rangeOfRegEX:(NSString *)regex { return [self rangeOfMatch:0 forRegEx:regex]; }
-
-- (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex
+- (BOOL)writeToFile:(NSString *)filePath
 {
-    return [self rangeOfCapture:0 inMatch:match forRegEx:regex];
-}
-
-- (NSRange)rangeOfCapture:(NSUInteger)capture forRegEx:(NSString *)regex
-{
-    return [self rangeOfCapture:capture inMatch:0 forRegEx:regex];
-}
-
-- (NSRange)rangeOfCapture:(NSUInteger)capture inMatch:(NSUInteger)match forRegEx:(NSString *)regex
-{
-    NSError             * error;
-    NSRegularExpression * re = [NSRegularExpression
-                                regularExpressionWithPattern:regex
-                                                     options:NSRegularExpressionAnchorsMatchLines
-                                                       error:&error];
-    if (error) { MSHandleErrors(error); return NSNotFoundRange; }
-
-    NSArray  *matches = [re matchesInString:self options:0 range:NSMakeRange(0, [self length])];
-
-    return ([matches count] > match && [matches[match] numberOfRanges] > capture
-            ?[matches[match] rangeAtIndex:capture]
-            : NSNotFoundRange);
-}
-
-- (NSArray *)rangesOfMatchesForRegEx:(NSString *)regex
-{
-    NSError             * error;
-    NSRegularExpression * re = [NSRegularExpression
-                                regularExpressionWithPattern:regex
-                                                     options:NSRegularExpressionAnchorsMatchLines
-                                                       error:&error];
-    if (error) { MSHandleErrors(error); return nil; }
-
-    return [[re matchesInString:self options:0 range:NSMakeRange(0, [self length])]
-            valueForKeyPath:@"range"];
-}
-
-- (NSArray *)componentsSeparatedByRegEx:(NSString *)regex
-{
-    NSMutableString     * string = [NSMutableString stringWithString:self];
-    NSError             * error;
-    NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                         options:NSRegularExpressionAnchorsMatchLines
-                                                                           error:&error];
-    if (error) { MSHandleErrors(error); return nil; }
-
-    [re replaceMatchesInString:string options:0 range:NSMakeRange(0, self.length) withTemplate:@"<match>"];
-
-    return [string componentsSeparatedByString:@"<match>"];
-}
-
-- (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture
-{
-    return [self stringByMatchingOccurrencesOfRegEx:regex match:0 capture:capture];
-}
-
-- (NSString *)stringByMatchingOccurrencesOfRegEx:(NSString *)regex
-                                           match:(NSUInteger)match
-                                         capture:(NSUInteger)capture
-{
-    NSRange   range = [self rangeOfCapture:capture inMatch:match forRegEx:regex];
-
-    return (range.location == NSNotFound ? nil : [self substringWithRange:range]);
-}
-
-- (NSArray *)matchingSubstringsForRegEx:(NSString *)regex
-{
-    return [[self rangesOfMatchesForRegEx:regex] arrayByMappingToBlock:
-            ^NSString *(NSValue * range, NSUInteger idx) {
-                return [self substringWithRange:[range rangeValue]];
-            }];
-}
-
-- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex
-{
-    return [self numberOfMatchesForRegEx:regex options:0];
-}
-
-- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex options:(NSRegularExpressionOptions)opts
-{
-    NSError             * error = NULL;
-    NSRegularExpression * re    = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                            options:opts
-                                                                              error:&error];
-    if (error) { MSHandleErrors(error); return 0; }
-
-    return [re numberOfMatchesInString:self options:0 range:NSMakeRange(0, [self length])];
-}
-
-- (BOOL)hasSubstring:(NSString *)substring options:(NSRegularExpressionOptions)options
-{
-    return ([self numberOfMatchesForRegEx:[NSRegularExpression escapedPatternForString:substring]
-                                  options:options]);
-}
-
-- (BOOL)hasSubstring:(NSString *)substring { return [self hasSubstring:substring options:0]; }
-
-- (NSArray *)matchesForRegEx:(NSString *)regex
-{
-    NSError             * error = NULL;
-    NSRegularExpression * re = [NSRegularExpression
-                                   regularExpressionWithPattern:regex
-                                                        options:NSRegularExpressionAnchorsMatchLines
-                                                          error:&error];
-
-    if (error) { MSHandleErrors(error); return nil; }
-
-    NSArray  *matches = [re matchesInString:self options:0 range:NSMakeRange(0, [self length])];
-
-    return matches;
-}
-
-- (NSString *)sub:(NSString *)regex template:(NSString *)temp options:(NSRegularExpressionOptions)opts
-{
-    NSError * error = nil;
-    NSRegularExpression * exp = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                          options:opts
-                                                                            error:&error];
-    if (error) { MSHandleErrors(error); return nil; }
-
-    return [exp stringByReplacingMatchesInString:self
-                                         options:0
-                                           range:NSMakeRange(0, self.length)
-                                    withTemplate:temp];
-}
-
-- (NSString *)stringByReplacingOccurrencesOfRegEx:(NSString *)regex withString:(NSString *)string
-{
-    NSMutableString * newString = [self mutableCopy];
-    [newString replaceOccurrencesOfRegEx:regex withString:string];
-
-    return newString;
+    NSError * error;
+    [self writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    if (error) MSHandleErrors(error);
+    return (!error);
 }
 
 @end
@@ -597,7 +480,7 @@ MSSTATIC_STRING_CONST   kBoxMiddle = @"\u2502                                   
          {
              if ([NSLinguisticTagPunctuation isEqualToString:tag])
              {
-                 NSRange tagRange = NSRangeValue(tokenRanges[idx]);
+                 NSRange tagRange = RangeValue(tokenRanges[idx]);
                  NSUInteger insertionIndex = NSMaxRange(tagRange);
                  [lineBreaks addIndex:insertionIndex];
                  range.location = insertionIndex;
@@ -647,7 +530,199 @@ MSSTATIC_STRING_CONST   kBoxMiddle = @"\u2502                                   
     ];
 }
 
-- (void)replaceOccurrencesOfRegEx:(NSString *)regex withString:(NSString *)string
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Regular expressions
+////////////////////////////////////////////////////////////////////////////////
+
+
+@implementation NSString (MSKitRegularExpressionAdditions)
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Regular Expressions
+////////////////////////////////////////////////////////////////////////////////
+
+// Range of regular expression
+- (NSRange)rangeOfRegEX:(NSString *)regex { return [self rangeOfMatch:0 forRegEx:regex]; }
+
+- (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex
+{
+    return [self rangeOfCapture:0 inMatch:match forRegEx:regex];
+}
+
+- (NSRange)rangeOfCapture:(NSUInteger)capture forRegEx:(NSString *)regex
+{
+    return [self rangeOfCapture:capture inMatch:0 forRegEx:regex];
+}
+
+- (NSRange)rangeOfCapture:(NSUInteger)capture inMatch:(NSUInteger)match forRegEx:(NSString *)regex
+{
+    NSError             * error;
+    NSRegularExpression * re = [NSRegularExpression
+                                regularExpressionWithPattern:regex
+                                options:NSRegularExpressionAnchorsMatchLines
+                                error:&error];
+    if (error) { MSHandleErrors(error); return NSNotFoundRange; }
+
+    NSArray  *matches = [re matchesInString:self options:0 range:NSMakeRange(0, [self length])];
+
+    return ([matches count] > match && [matches[match] numberOfRanges] > capture
+            ?[matches[match] rangeAtIndex:capture]
+            : NSNotFoundRange);
+}
+
+- (NSArray *)rangesOfMatchesForRegEx:(NSString *)regex
+{
+    NSError             * error;
+    NSRegularExpression * re = [NSRegularExpression
+                                regularExpressionWithPattern:regex
+                                options:NSRegularExpressionAnchorsMatchLines
+                                error:&error];
+    if (error) { MSHandleErrors(error); return nil; }
+
+    return [[re matchesInString:self options:0 range:NSMakeRange(0, [self length])]
+            valueForKeyPath:@"range"];
+}
+
+- (NSArray *)componentsSeparatedByRegEx:(NSString *)regex
+{
+    NSMutableString     * string = [NSMutableString stringWithString:self];
+    NSError             * error;
+    NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:regex
+                                                                         options:NSRegularExpressionAnchorsMatchLines
+                                                                           error:&error];
+    if (error) { MSHandleErrors(error); return nil; }
+
+    [re replaceMatchesInString:string options:0 range:NSMakeRange(0, self.length) withTemplate:@"<match>"];
+
+    return [string componentsSeparatedByString:@"<match>"];
+}
+
+- (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture
+{
+    return [self stringByMatchingRegEx:regex match:0 capture:capture];
+}
+
+- (NSString *)stringByMatchingRegEx:(NSString *)regex
+                              match:(NSUInteger)match
+                            capture:(NSUInteger)capture
+{
+    NSRange   range = [self rangeOfCapture:capture inMatch:match forRegEx:regex];
+
+    return (range.location == NSNotFound ? nil : [self substringWithRange:range]);
+}
+
+- (NSArray *)matchingSubstringsForRegEx:(NSString *)regex
+{
+    return [[self rangesOfMatchesForRegEx:regex]
+            arrayByMappingToBlock:^NSString *(NSValue * range, NSUInteger idx)
+            {
+                NSRange r = RangeValue(range);
+                return (r.location == NSNotFound ? @"" : [self substringWithRange:r]);
+            }];
+}
+
+- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex
+{
+    return [self numberOfMatchesForRegEx:regex options:0];
+}
+
+- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex options:(NSRegularExpressionOptions)opts
+{
+    NSError             * error = NULL;
+    NSRegularExpression * re    = [NSRegularExpression regularExpressionWithPattern:regex
+                                                                            options:opts
+                                                                              error:&error];
+    if (error) { MSHandleErrors(error); return 0; }
+
+    return [re numberOfMatchesInString:self options:0 range:NSMakeRange(0, [self length])];
+}
+
+- (BOOL)hasSubstring:(NSString *)substring options:(NSRegularExpressionOptions)options
+{
+    return ([self numberOfMatchesForRegEx:substring//[NSRegularExpression escapedPatternForString:substring]
+                                  options:options]);
+}
+
+- (BOOL)hasSubstring:(NSString *)substring { return [self hasSubstring:substring options:0]; }
+
+- (NSArray *)matchesForRegEx:(NSString *)regex
+{
+    NSError             * error = NULL;
+    NSRegularExpression * re = [NSRegularExpression
+                                regularExpressionWithPattern:regex
+                                options:NSRegularExpressionAnchorsMatchLines
+                                error:&error];
+
+    if (error) { MSHandleErrors(error); return nil; }
+
+    NSArray  *matches = [re matchesInString:self options:0 range:NSMakeRange(0, [self length])];
+
+    return matches;
+}
+
+- (NSString *)sub:(NSString *)regex template:(NSString *)temp options:(NSRegularExpressionOptions)opts
+{
+    NSError * error = nil;
+    NSRegularExpression * exp = [NSRegularExpression regularExpressionWithPattern:regex
+                                                                          options:opts
+                                                                            error:&error];
+    if (error) { MSHandleErrors(error); return nil; }
+
+    return [exp stringByReplacingMatchesInString:self
+                                         options:0
+                                           range:NSMakeRange(0, self.length)
+                                    withTemplate:temp];
+}
+
+- (NSString *)stringByReplacingRegEx:(NSString *)regex withString:(NSString *)string
+{
+    NSMutableString * newString = [self mutableCopy];
+    [newString replaceRegEx:regex withString:string];
+
+    return newString;
+}
+
+- (NSArray *)capturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex
+{
+    return [self capturedStringsByMatchingFirstOccurrenceOfRegex:regex options:0];
+}
+
+- (NSArray *)capturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex
+                                                     options:(NSRegularExpressionOptions)options
+{
+    NSError * error = nil;
+    NSRegularExpression * exp = [NSRegularExpression regularExpressionWithPattern:regex
+                                                                          options:options
+                                                                            error:&error];
+    if (error) { MSHandleErrors(error); return nil; }
+
+    NSTextCheckingResult * match = [exp firstMatchInString:self
+                                                   options:0
+                                                     range:NSMakeRange(0, [self length])];
+
+    NSMutableArray * captures = [NSMutableArray arrayWithNullCapacity:exp.numberOfCaptureGroups];
+    if (match)
+    {
+        for (NSUInteger i = 0; i < exp.numberOfCaptureGroups; i++)
+        {
+            NSRange captureGroupRange = [match rangeAtIndex:i+1];
+            if (captureGroupRange.location == NSNotFound) continue;
+
+            captures[i] = [self substringWithRange:captureGroupRange];
+        }
+    }
+
+    return captures;
+}
+
+@end
+
+@implementation NSMutableString (MSKitRegularExpressionAdditions)
+
+- (void)replaceRegEx:(NSString *)regex withString:(NSString *)string
 {
     NSInteger   startingLength = self.length;
     NSArray   * matches        = [self matchesForRegEx:regex];

@@ -102,7 +102,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (NSString *)JSONString { return [self.JSONDictionary JSONString]; }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
     id(^defaultForKey)(BankInfo *, NSString *) = ^(BankInfo *info, NSString * key)
     {
@@ -121,17 +121,17 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                               BOOL useDefault = [@"none" isEqualToString:name];
                               MSDictionary * d = [MSDictionary dictionary];
                               d[@"category"] =
-                                  CollectionSafeValue([self defaultValueForAttribute:@"category"
+                                  CollectionSafe([self defaultValueForAttribute:@"category"
                                                                   forContainingClass:(useDefault
                                                                                       ? nil
                                                                                       : name)]);
 
                               d[@"user"] =
-                                  CollectionSafeValue([self defaultValueForAttribute:@"user"
+                                  CollectionSafe([self defaultValueForAttribute:@"user"
                                                                   forContainingClass:(useDefault
                                                                                       ? nil
                                                                                       : name)]);
-                              [d removeKeysWithNullObjectValues];
+                              [d compact];
 
                               if ([d count]) dictionary[name] = d;
                           }
@@ -153,7 +153,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     if (![@(self.user) isEqualToNumber:defaultForKey(self, @"user")])
         dictionary[@"user"] = @(self.user);
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }

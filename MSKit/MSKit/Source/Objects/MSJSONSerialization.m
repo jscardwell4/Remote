@@ -11,6 +11,7 @@
 #import "MSStack.h"
 #import "MSDictionary.h"
 #import "NSArray+MSKitAdditions.h"
+#import "NSDictionary+MSKitAdditions.h"
 #import "MSJSONParser.h"
 #import "MSJSONAssembler.h"
 #import "NSString+MSKitAdditions.h"
@@ -18,6 +19,16 @@
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
+
+MSKEY_DEFINITION(MSJSONComment);
+MSKEY_DEFINITION(MSJSONLeadingComment);
+MSKEY_DEFINITION(MSJSONTrailingComment);
+
+@interface NSObject (MSJSONAssembler)
+
+@property (nonatomic, copy) NSString * comment;
+
+@end
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,150 +58,102 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     NSString *(^__block stringFromObject)(id, NSUInteger);
     weakStringFromObject = stringFromObject = ^(id object, NSUInteger depth)
     {
-        NSString * indent = [NSString stringWithCharacter:' ' count:depth*2];
+        NSString * indent = [NSString stringWithCharacter:' ' count:depth*4];
         NSMutableString * string = [indent mutableCopy];
 
         if ([object isKindOfClass:[NSArray class]])
         {
             [string appendString:@"["];
             NSArray * array = (NSArray *)object;
-            if ([array count] > 1)
-                [array enumerateObjectsAtIndexes:NSIndexSetMake(0, ([array count] - 1))
-                                         options:0
-                                      usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                          [string appendFormat:@"\n%@,",
-                                           [weakStringFromObject(obj, depth + 1)
-                                            stringByTrimmingTrailingWhitespace]];
-                                      }];
 
-            if ([array count])
-                [string appendFormat:@"\n%@", [weakStringFromObject([array lastObject], depth + 1)
-                                                    stringByTrimmingTrailingWhitespace]];
-            [string appendFormat:@"\n%@]", indent];
+            NSString * comment = array.comment;
+
+            if (comment) [string appendFormat:@" %@", comment];
+
+            NSUInteger objectCount = [array count];
+            for (NSUInteger i = 0; i < objectCount; i++)
+            {
+                NSString * valueString = weakStringFromObject(array[i], depth + 1);
+                valueString = [valueString stringByTrimmingTrailingWhitespace];
+                [string appendFormat:@"\n%@", valueString];
+                if (i + 1 < objectCount) [string appendString:@","];
+                comment = ((NSObject *)array[i]).comment;
+                if (comment) [string appendFormat:@" %@", comment];
+            }
+            if (objectCount) [string appendFormat:@"\n%@", indent];
+            [string appendString:@"]"];
         }
 
         else if ([object isKindOfClass:[NSDictionary class]])
         {
             [string appendString:@"{"];
+            MSDictionary * comments = nil;
+            
+            if (isMSDictionary(object))
+                comments = ((MSDictionary *)object).userInfo[MSJSONCommentKey];
+
+            if ([comments hasKey:MSJSONLeadingCommentKey])
+                [string appendFormat:@" /* %@ */", comments[MSJSONLeadingCommentKey]];
+
+            else if (((NSObject *)object).comment)
+                [string appendFormat:@" %@", ((NSObject *)object).comment];
+
             NSDictionary * dictionary = (NSDictionary *)object;
             NSArray * keys = [dictionary allKeys];
-            if ([keys count] > 1)
-                [keys enumerateObjectsAtIndexes:NSIndexSetMake(0, ([keys count] - 1))
-                                        options:0
-                                     usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                         [string appendFormat:@"\n%@: %@,",
-                                                              weakStringFromObject(obj, depth + 1),
-                                                              [weakStringFromObject(dictionary[obj], depth + 1)
-                                                               stringByTrimmingWhitespace]];
-                                     }];
+            NSUInteger keyCount = [keys count];
 
-            if ([keys count])
-                [string appendFormat:@"\n%@: %@",
-                                     weakStringFromObject([keys lastObject], depth + 1),
-                                     [weakStringFromObject(dictionary[[keys lastObject]], depth + 1)
-                                      stringByTrimmingWhitespace]];
+            for (NSUInteger i = 0; i < keyCount; i++)
+            {
+                id key = keys[i];
+                NSString * keyString = weakStringFromObject(key, depth + 1);
+                NSString * valueString = weakStringFromObject(dictionary[key], depth + 1);
+                valueString = [valueString stringByTrimmingWhitespace];
+                
+                [string appendFormat:@"\n%@: %@", keyString, valueString];
+                if (i + 1 < keyCount) [string appendString:@","];
+                
+                if ([comments hasKey:key]) [string appendFormat:@" /* %@ */", comments[key]];
+                else if (((NSObject *)dictionary[key]).comment)
+                    [string appendFormat:@" %@", ((NSObject *)dictionary[key]).comment];
+            }
 
-            [string appendFormat:@"\n%@}", indent];
+            if (keyCount) [string appendFormat:@"\n%@", indent];
+            [string appendString:@"}"];
+
+            if ([comments hasKey:MSJSONTrailingCommentKey])
+                [string appendFormat:@" /* %@ */", comments[MSJSONTrailingCommentKey]];
         }
 
         else if ([object isKindOfClass:[NSNumber class]])
         {
-            NSNumber *number = (NSNumber *)object;
-            if (number == (void*)kCFBooleanFalse || number == (void*)kCFBooleanTrue)
-            {
-                [string appendString:([number boolValue] ? @"true" : @"false")];
-            } else {
-                // num is not boolean
-                [string appendString:[(NSNumber *)object stringValue]];
-            }
+            if (object == (void *)kCFBooleanFalse || object == (void *)kCFBooleanTrue)
+                [string appendString:([object boolValue] ? @"true" : @"false")];
+
+            else // num is not boolean
+                [string appendString:[object stringValue]];
         }
 
-        else if ([object isKindOfClass:[NSNull class]])
-            [string appendString:@"null"];
-        else if ([object isKindOfClass:[NSString class]])
-            [string appendFormat:@"\"%@\"", object];
+        else if ([object isKindOfClass:[NSNull class]]) [string appendString:@"null"];
+
+        else if ([object isKindOfClass:[NSString class]]) [string appendFormat:@"\"%@\"", object];
 
         return (NSString *)string;
     };
 
     if (![NSJSONSerialization isValidJSONObject:object]) return nil;
 
-    NSString * jsonString = stringFromObject(object, 0);
-
-    return jsonString;
+    return [stringFromObject(object, 0) stringByAppendingString:@"\n"];
 }
 
-//#define CUSTOM_STRING_GENERATION
-
-+ (NSString *)stringFromTopLevelJSONObject:(id)jsonObject
-{
-
-    NSString *(^stringFromObject)(id) = ^(id obj)
-    {
-        if ([obj isKindOfClass:[NSArray class]])
-        {
-            return (NSString *)nil;
-        }
-
-        else if ([obj isKindOfClass:[NSDictionary class]])
-        {
-            return (NSString *)nil;
-        }
-
-        else
-            return (NSString *)nil;
-    };
-
-
-    if (![NSJSONSerialization isValidJSONObject:jsonObject]) return nil;
-
-    else return stringFromObject(jsonObject);
-}
-
-+ (BOOL)writeJSONObject:(id<MSJSONExport>)object toFileNamed:(NSString *)name
++ (BOOL)writeJSONObject:(id<MSJSONExport>)object filePath:(NSString *)filePath
 {
     id jsonObject = object.JSONObject;
-    NSAssert(jsonObject, @"failed to get JSON object for %@", ClassTagStringForInstance(object));
+    if (!jsonObject) ThrowInvalidArgument(object, is not a valid JSON object);
 
-    NSString * jsonString = nil;
-
-    if (jsonObject)
-    {
-#ifdef CUSTOM_STRING_GENERATION
-        jsonString = [self stringFromTopLevelJSONObject:jsonObject];
-#else
-        NSError * error = nil;
-        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                            options:NSJSONWritingPrettyPrinted
-                                                              error:&error];
-        if (error) MSHandleErrors(error);
-        else jsonString = [[NSString stringWithData:jsonData]
-                           stringByReplacingOccurrencesOfRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
-#endif
-    }
-
-    else
-        return NO;
-
+    NSString * jsonString = [self JSONFromObject:jsonObject];
     NSAssert(jsonString, @"failed to create JSON string for %@", ClassTagStringForInstance(object));
 
-    if (!jsonString) return NO;
-
-    NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:name];
-    NSError * error;
-    [jsonString writeToFile:filePath
-                 atomically:YES
-                   encoding:NSUTF8StringEncoding
-                      error:&error];
-
-    if (error)
-    {
-        MSHandleErrors(error);
-        return NO;
-    }
-
-    else
-        return YES;
+    return (jsonString ? [jsonString writeToFile:filePath] : NO);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

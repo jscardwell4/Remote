@@ -18,6 +18,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     MSLogDebugTag(@"beginning remote construction...");
 
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -29,6 +30,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          controller = [RemoteController remoteControllerInContext:localContext];
          assert(controller);
      }];
+*/
+
 
     [CoreDataManager saveWithBlockAndWait:
       ^(NSManagedObjectContext * localContext)
@@ -48,6 +51,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
           assert(powerBlueTheme);
      }];
 
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -60,7 +64,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          assert(topToolbar.managedObjectContext == controller.managedObjectContext);
          [controller registerTopToolbar:topToolbar];
      }];
+*/
 
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -84,8 +90,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ps3.offCommand                 = [SendIRCommand commandWithIRCode:ps3[@"Discrete Off"]];
          ps3.onCommand                  = [SendIRCommand commandWithIRCode:ps3[@"Discrete On"]];
      }];
+*/
 
     // [NSManagedObjectContext saveWithBlockAndWait:
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -104,20 +112,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          Remote   * hopperRemote   = [RemoteBuilder constructDVRRemoteInContext:localContext];
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:hopperRemote];
          hopperActivity.remote = hopperRemote;
-
-/*
-         NSString * hopperRemoteJSON = [hopperRemote JSONString];
-         NSError * error = nil;
-         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"hopper.json"];
-         [hopperRemoteJSON writeToFile:filePath
-                            atomically:YES
-                              encoding:NSUTF8StringEncoding
-                                 error:&error];
-         if (error) MSHandleErrors(error);
-*/
      }];
+*/
 
     // [NSManagedObjectContext saveWithBlockAndWait:
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -136,20 +135,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          Remote   * ps3Remote   = [RemoteBuilder constructPS3RemoteInContext:localContext];
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:ps3Remote];
          ps3Activity.remote = ps3Remote;
-
-/*
-         NSString * ps3RemoteJSON = [ps3Remote JSONString];
-         NSError * error = nil;
-         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"ps3.json"];
-         [ps3RemoteJSON writeToFile:filePath
-                         atomically:YES
-                           encoding:NSUTF8StringEncoding
-                              error:&error];
-         if (error) MSHandleErrors(error);
-*/
      }];
+*/
 
     // [NSManagedObjectContext saveWithBlockAndWait:
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -165,8 +155,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                                 toInitiateState:YES
                                                                         context:localContext];
      }];
+*/
 
     // [NSManagedObjectContext saveWithBlockAndWait:
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -185,20 +177,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          Remote   * sonosRemote   = [RemoteBuilder constructSonosRemoteInContext:localContext];
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:sonosRemote];
          sonosActivity.remote = sonosRemote;
-
-/*
-         NSString * sonosRemoteJSON = [sonosRemote JSONString];
-         NSError * error = nil;
-         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"sonos.json"];
-         [sonosRemoteJSON writeToFile:filePath
-                         atomically:YES
-                           encoding:NSUTF8StringEncoding
-                              error:&error];
-         if (error) MSHandleErrors(error);
-*/
     }];
+*/
 
     // [NSManagedObjectContext saveWithBlockAndWait:
+/*
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * localContext)
      {
@@ -207,39 +190,29 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          [[BuiltinTheme themeWithName:@"Nightshade" context:localContext] applyThemeToElement:homeRemote];
          RemoteController * controller = [RemoteController MR_findFirstInContext:localContext];
          [controller registerHomeRemote:homeRemote];
-
-/*
-         NSString * homeRemoteJSON = [homeRemote JSONString];
-         NSError * error = nil;
-         NSString * filePath = [DocumentsFilePath stringByAppendingPathComponent:@"home.json"];
-         [homeRemoteJSON writeToFile:filePath
-                         atomically:YES
-                           encoding:NSUTF8StringEncoding
-                              error:&error];
-         if (error) MSHandleErrors(error);
-*/
-
      }];
+*/
 
     [CoreDataManager resetDefaultContext];
 
     [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
-                      toFileNamed:@"RemoteController.json"];
+                                filePath:[@"/" join:@[DocumentsFilePath, @"RemoteController.json"]]];
 
     [MSJSONSerialization writeJSONObject:[[Remote MR_findAll] valueForKeyPath:@"JSONDictionary"]
-                      toFileNamed:@"Remote.json"];
+                                filePath:[@"/" join:@[DocumentsFilePath, @"Remote.json"]]];
 
     [MSJSONSerialization writeJSONObject:[[ComponentDevice MR_findAll] valueForKeyPath:@"JSONDictionary"]
-                      toFileNamed:@"ComponentDevice.json"];
+                                filePath:[@"/" join:@[DocumentsFilePath, @"ComponentDevice.json"]]];
 
     [MSJSONSerialization writeJSONObject:[[Manufacturer MR_findAll] valueForKeyPath:@"JSONDictionary"]
-                      toFileNamed:@"Manufacturer.json"];
-
+                                filePath:[@"/" join:@[DocumentsFilePath, @"Manufacturer.json"]]];
+    
     [MSJSONSerialization writeJSONObject:[[Image MR_findAll] valueForKeyPath:@"JSONDictionary"]
-                      toFileNamed:@"Image.json"];
+                                filePath:[@"/" join:@[DocumentsFilePath, @"Image.json"]]];
 
 
 //#define LOG_CONSTRUCTED_ELEMENTS
+/*
 #ifdef LOG_CONSTRUCTED_ELEMENTS
 
     RERemoteController * controller = [RERemoteController MR_findFirst];
@@ -272,6 +245,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                         constructedElementsDescription);
 
 #endif
+*/
 
     MSLogDebugTag(@"remote construction complete");
 }

@@ -105,7 +105,7 @@ static const char * kNSMOCChildContextsKey = "kNSMMOCChildContextsKey";
     }
 }
 
-- (NSManagedObject *)objectForURI:(NSURL *)uri
+- (id)objectForURI:(NSURL *)uri
 {
     NSManagedObjectID * objectID = [self.persistentStoreCoordinator
                                     managedObjectIDForURIRepresentation:uri];

@@ -1,0 +1,252 @@
+{
+    "uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD",
+    "name": "Home Screen",
+    "elementType": "remote",
+    "constraints": {
+        "index": {
+            "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
+            "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+            "homeScreen": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD"
+        },
+        "format": [
+            "activityButtons.centerX = homeScreen.centerX",
+            "activityButtons.centerY = homeScreen.centerY - 22",
+            "bottomToolbar.bottom = homeScreen.bottom",
+            "bottomToolbar.left = homeScreen.left",
+            "bottomToolbar.right = homeScreen.right"
+        ]
+    },
+    "backgroundColor": "black",
+    "subelements": [
+        {
+            "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
+            "name": "Activity Buttons",
+            "elementType": "button-group",
+            "themeFlags": "-gloss stretchable icon-image border icon-color",
+            "constraints": {
+                "index": {
+                    "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
+                    "dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+                    "playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+                    "sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
+                    "Tv": "58A7D2DB-9635-486A-9336-43D6292674BA"
+                },
+                "format": [
+                    "activityButtons.height = activityButtons.width",
+                    "activityButtons.width = 300",
+                    "dish.centerX = activityButtons.centerX * 0.5",
+                    "dish.width = activityButtons.width * 0.5",
+                    "dish.width = dish.width",
+                    "playstation.centerX = activityButtons.centerX * 1.5",
+                    "playstation.width = dish.width",
+                    "sonos.centerY = activityButtons.centerY * 1.5",
+                    "Tv.centerY = activityButtons.centerY * 0.5",
+                    "Tv.width = dish.width"
+                ]
+            },
+            "subelements": [
+                {
+                    "uuid": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+                    "name": "Dish",
+                    "elementType": "button",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss1",
+                    "constraints": {
+                        "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+                        "format": "dish.height = dish.width"
+                    },
+                    "commands.default": {
+                        "class": "activity",
+                        "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
+                    },
+                    "titles.default.normal": {
+                        "fontName": "Optima-Bold",
+                        "fontSize": 20,
+                        "foregroundColor": "white",
+                        "strokeColor": "white@50%",
+                        "strokeWidth": -2,
+                        "text": "Dish"
+                    },
+                    "icons.default.colors": {
+                        "highlighted": "#00AFFFFF",
+                        "disabled": "#7F7F7FFF",
+                        "normal": "white"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                },
+                {
+                    "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+                    "name": "Playstation",
+                    "elementType": "button",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss1",
+                    "constraints": {
+                        "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+                        "format": "playstation.height = playstation.width"
+                    },
+                    "commands.default": {
+                        "class": "activity",
+                        "activity.uuid": "863844ED-4BCD-4B75-AD67-DEE8A23233D1"
+                    },
+                    "titles.default.normal": {
+                        "fontName": "Optima-Bold",
+                        "fontSize": 20,
+                        "foregroundColor": "white",
+                        "strokeColor": "white@50%",
+                        "strokeWidth": -2,
+                        "text": "Playstation"
+                    },
+                    "icons.default.colors": {
+                        "highlighted": "#00AFFFFF",
+                        "disabled": "#7F7F7FFF",
+                        "normal": "white"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                },
+                {
+                    "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
+                    "name": " TV",
+                    "elementType": "button",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss1",
+                    "constraints": {
+                        "index.Tv": "58A7D2DB-9635-486A-9336-43D6292674BA",
+                        "format": "Tv.height = Tv.width"
+                    },
+                    "commands.default": {
+                        "class": "activity",
+                        "activity.uuid": "DEB5EAC1-7040-4CA1-A309-423BACB533A4"
+                    },
+                    "titles.default.normal": {
+                        "fontName": "Optima-Bold",
+                        "fontSize": 20,
+                        "foregroundColor": "white",
+                        "strokeColor": "white@50%",
+                        "strokeWidth": -2,
+                        "text": " TV"
+                    },
+                    "icons.default.colors": {
+                        "highlighted": "#00AFFFFF",
+                        "disabled": "#7F7F7FFF",
+                        "normal": "white"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                },
+                {
+                    "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
+                    "name": "Sonos",
+                    "elementType": "button",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss1",
+                    "constraints": {
+                        "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
+                        "format": "sonos.height = sonos.width"
+                    },
+                    "commands.default": {
+                        "uuid": "E8565A0A-C72E-4C27-8093-C9FFDE2ED304",
+                        "class": "activity",
+                        "activity": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
+                    },
+                    "titles.default.normal": {
+                        "fontName": "Optima-Bold",
+                        "fontSize": 20,
+                        "foregroundColor": "white",
+                        "strokeColor": "white@50%",
+                        "strokeWidth": -2,
+                        "text": "Sonos"
+                    },
+                    "icons.default.colors": {
+                        "highlighted": "#00AFFFFF",
+                        "disabled": "#7F7F7FFF",
+                        "normal": "white"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                }
+            ]
+        },
+        {
+            "uuid": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+            "name": "Bottom Toolbar",
+            "elementType": "button-group",
+            "role": "toolbar",
+            "shape": "rectangle",
+            "constraints": {
+                "index": {
+                    "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+                    "lightsOff": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
+                    "lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4"
+                },
+                "format": [
+                    "bottomToolbar.height = 44",
+                    "lightsOff.bottom = bottomToolbar.bottom",
+                    "lightsOff.left = lightsOn.right + 40",
+                    "lightsOff.top = bottomToolbar.top",
+                    "lightsOff.width = lightsOn.width",
+                    "lightsOn.bottom = bottomToolbar.bottom",
+                    "lightsOn.left = bottomToolbar.left + 20",
+                    "lightsOn.top = bottomToolbar.top"
+                ]
+            },
+            "backgroundColor": "flipside",
+            "subelements": [
+                {
+                    "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",
+                    "name": "Lights On",
+                    "elementType": "button",
+                    "role": "toolbar",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss1",
+                    "themeFlags": "-gloss stretchable background-image-alpha border background-image background-color",
+                    "constraints": {
+                        "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
+                        "format": "lightsOn.width = 44"
+                    },
+                    "commands.default": {
+                        "class": "http",
+                        "url": "http://10.0.1.27/0?1201=I=0"
+                    },
+                    "icons.default": {
+                        "colors": {
+                            "highlighted": "#00AFFFFF",
+                            "normal": "white"
+                        },
+                        "normal.uuid": "A3110AD7-45A7-45BE-A2B5-67F9A3953D38"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                },
+                {
+                    "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
+                    "name": "Lights Off",
+                    "elementType": "button",
+                    "role": "toolbar",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss1",
+                    "themeFlags": "-gloss stretchable background-image-alpha border background-image background-color",
+                    "backgroundColor": "#060606FF",
+                    "theme": "Nightshade",
+                    "commands.default": {
+                        "class": "http",
+                        "url": "http://10.0.1.27/0?1401=I=0"
+                    },
+                    "icons.default": {
+                        "colors": {
+                            "highlighted": "#00AFFFFF",
+                            "normal": "#7F7F7FFF"
+                        },
+                        "normal.uuid": "A3110AD7-45A7-45BE-A2B5-67F9A3953D38"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                }
+            ]
+        }
+    ],
+    "modes": [
+        "default"
+    ]
+}

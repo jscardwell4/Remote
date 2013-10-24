@@ -26,17 +26,20 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
     return command;
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
 
-    dictionary[@"activity"] = CollectionSafeValue(self.activity.uuid);
+    dictionary[@"activity.uuid"] = CollectionSafe(self.activity.uuid);
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
 
+- (BOOL)shouldImportActivity:(id)data {return YES;}
 
 - (CommandOperation *)operation { return [ActivityCommandOperation operationForCommand:self]; }
 

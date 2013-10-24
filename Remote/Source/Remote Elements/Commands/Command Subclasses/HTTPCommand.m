@@ -28,17 +28,20 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return command;
 }
 
-- (NSDictionary *)JSONDictionary
+- (MSDictionary *)JSONDictionary
 {
-    MSDictionary * dictionary = [[super JSONDictionary] mutableCopy];
+    MSDictionary * dictionary = [super JSONDictionary];
+    dictionary[@"uuid"] = NullObject;
 
-    dictionary[@"url"] = CollectionSafeValue([self.url absoluteString]);
+    dictionary[@"url"] = CollectionSafe([self.url absoluteString]);
 
-    [dictionary removeKeysWithNullObjectValues];
+    [dictionary compact];
+    [dictionary compress];
 
     return dictionary;
 }
 
+- (void)importUrl:(NSString *)data {self.url = [NSURL URLWithString:data];}
 
 - (NSString *)shortDescription { return $(@"url:'%@'", self.primitiveUrl); }
 

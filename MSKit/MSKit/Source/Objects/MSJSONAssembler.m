@@ -13,14 +13,51 @@
 #import "NSArray+MSKitAdditions.h"
 #import "PKAssembly+MSKitAdditions.h"
 #import "MSJSONParser.h"
+#import <objc/runtime.h>
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
+
+@interface NSObject (MSJSONAssembler)
+
+@property (nonatomic, copy) NSString * comment;
+
+@end
+
+@implementation NSObject (MSJSONAssembler)
+
+static const char * kMSJSONAsemblerCommentKey = "kMSJSONAsemblerCommentKey";
+
+- (NSString *)comment { return objc_getAssociatedObject(self, (void *)kMSJSONAsemblerCommentKey); }
+
+- (void)setComment:(NSString *)comment
+{
+    objc_setAssociatedObject(self,
+                             (void *)kMSJSONAsemblerCommentKey,
+                             comment,
+                             OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+@end
+
+typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
+{
+    MSJSONAssemblerStringValueType = 0,
+    MSJSONAssemblerNumberValueType,
+    MSJSONAssemblerBooleanValueType,
+    MSJSONAssemblerNullValueType,
+    MSJSONAssemblerArrayValueType,
+    MSJSONAssemblerObjectValueType
+};
+
 @interface MSJSONAssembler ()
 
-@property (nonatomic, strong, readwrite) id assembledObject;
+@property (nonatomic, strong, readwrite) id         assembledObject;
+@property (nonatomic, strong, readwrite) id         pendingValue;
+@property (nonatomic, strong, readwrite) NSString * pendingKey;
+@property (nonatomic, strong, readwrite) NSString * pendingValueKey;
 
 @end
 
@@ -28,9 +65,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     MSStack         * _activeObjects;
     MSStack         * _pendingKeys;
-    NSString        * _pendingKey;
-    id                _pendingValue;
     BOOL              _splitKeyPaths;
+    MSDictionary    * _commentIndex;
+    id                _commentTarget;
 }
 
 + (MSJSONAssembler *)assemblerWithOptions:(MSJSONFormatOptions)options
@@ -48,31 +85,115 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     _splitKeyPaths = !((options & MSJSONFormatKeepKeyPaths) == MSJSONFormatKeepKeyPaths);
 }
 
+- (void)setPendingValue:(id)pendingValue
+{
+    _pendingValue = pendingValue;
+    self.pendingValueKey = _pendingKey;
+}
+
+/*
+- (void)setPendingKey:(NSString *)pendingKey
+{
+    _pendingKey = pendingKey;
+}
+
+- (void)setPendingValueKey:(NSString *)pendingValueKey
+{
+    _pendingValueKey = pendingValueKey;
+}
+*/
+
+- (void)popKey { self.pendingKey = [_pendingKeys pop]; }
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Helpers
 ////////////////////////////////////////////////////////////////////////////////
 
+- (void)processValue:(id)value ofType:(MSJSONAssemblerValueType)type
+{
+    switch (type)
+    {
+        case MSJSONAssemblerArrayValueType:
+        {
+            if (!_assembledObject) self.assembledObject = value;
+            else if ([_pendingKeys isEmpty]) [self addObjectToActiveObject:value];
+            else if (!_pendingValue) self.pendingValue = value;
+            else assert(NO);
+            [_activeObjects push:value];
+
+            break;
+        }
+
+        case MSJSONAssemblerObjectValueType:
+        {
+            if (!_assembledObject) self.assembledObject = value;
+            else if ([_pendingKeys isEmpty]) [self addObjectToActiveObject:value];
+            else if (!_pendingValue) self.pendingValue = value;
+            else
+            {
+                assert(isMSDictionary(_pendingValue) && _pendingKey);
+                _pendingValue[_pendingKey] = value;
+                [self popKey];
+            }
+            
+            [_activeObjects push:value];
+            break;
+        }
+
+        case MSJSONAssemblerBooleanValueType:
+        case MSJSONAssemblerNullValueType:
+        case MSJSONAssemblerNumberValueType:
+        case MSJSONAssemblerStringValueType:
+        default:
+        {
+            if ([_pendingKeys isEmpty])
+                [self addObjectToActiveObject:value];
+
+            else if (_pendingValue)
+            {
+                id pendingValueChild = value;
+                
+                while (   isMSDictionary(_pendingValue)
+                       && _pendingKey
+                       && [_pendingKeys peek] != _pendingValueKey)
+                {
+                    pendingValueChild = [MSDictionary dictionaryWithObject:pendingValueChild
+                                                                    forKey:_pendingKey];
+                    [self popKey];
+                }
+                [self addObjectToActiveObject:pendingValueChild];
+            }
+            else
+            {
+                self.pendingValue = value;
+                [self resolveKeyPathsForPendingValue];
+            }
+            break;
+        }
+    }
+
+    _commentTarget = value;
+}
+
 - (void)resolveKeyPathsForPendingValue
 {
-//    assert(![_pendingKeys isEmpty]);
     assert(_pendingKey);
 
     if ([_pendingValue isKindOfClass:[NSMutableArray class]])
-        [(NSMutableArray *)_pendingValue mapToBlock:^id(id obj, NSUInteger idx) {
-            return [MSDictionary dictionaryWithObject:obj forKey:_pendingKey];
-        }];
-
-    else
-        _pendingValue = [MSDictionary dictionaryWithObject:_pendingValue forKey:_pendingKey];
-
-    _pendingKey = [_pendingKeys pop];
-//    _pendingValue = value;
-
+    {
+        [(NSMutableArray *)_pendingValue mapToBlock:
+         ^id(id obj, NSUInteger idx)
+         {
+             return [MSDictionary dictionaryWithObject:obj forKey:_pendingKey];
+         }];
+        
+        [self popKey];
+    }
 
     while (![_pendingKeys isEmpty])
     {
         _pendingValue = [MSDictionary dictionaryWithObject:_pendingValue forKey:_pendingKey];
-        _pendingKey = [_pendingKeys pop];
+        [self popKey];
         assert(_pendingKey);
     }
 
@@ -86,25 +207,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     id activeObject = [_activeObjects peek];
 
-    if ([activeObject isKindOfClass:[MSDictionary class]])
+    if (isMSDictionary(activeObject))
     {
         assert(_pendingKey);
 
-        if ([_pendingKeys isEmpty])
-        {
-            [activeObject setObject:object forKey:_pendingKey];
-            _pendingKey = nil;
-        }
-
-        else
-        {
-            assert(!_pendingValue);
-            _pendingValue = object;
-            [self resolveKeyPathsForPendingValue];
-        }
+        [activeObject setObject:object forKey:_pendingKey];
+        [self popKey];
     }
 
-    else if ([activeObject isKindOfClass:[NSMutableArray class]])
+    else if (isMutableArrayKind(activeObject))
              [activeObject addObject:object];
 
     else
@@ -118,9 +229,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)parser:(PKSParser *)parser willStart:(PKSTokenAssembly *)assembly
 {
     self.assembledObject = nil;
-    _activeObjects   = [MSStack stack];
-    _pendingKeys     = [MSStack stack];
-    _pendingKey      = nil;
+    _commentIndex        = [MSDictionary dictionary];
+    _activeObjects       = [MSStack stack];
+    _pendingKeys         = [MSStack stack];
+    _pendingKey          = nil;
+    _pendingValueKey     = nil;
+    _commentTarget       = nil;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -131,18 +245,31 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)parser:(PKSParser *)parser didMatchKeyPath:(PKSTokenAssembly *)assembly
 {
     if (!_splitKeyPaths)
-        _pendingKey = ((PKToken *)[assembly MS_peek]).quotedStringValue;
+        self.pendingKey = ((PKToken *)[assembly MS_peek]).quotedStringValue;
 
     else
     {
         NSString * keyPath = ((PKToken *)[assembly MS_peek]).quotedStringValue;
         NSArray * keys = [keyPath componentsSeparatedByString:@"."];
+        if ([keys count] && _pendingKey) [_pendingKeys push:_pendingKey];
         [_pendingKeys pushObjectsFromArray:keys];
-        _pendingKey = [_pendingKeys pop];
+        [self popKey];
     }
 
     assert(_pendingKey);
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Matching comments
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)parser:(PKSParser *)parser didMatchComment:(PKSTokenAssembly *)assembly
+{
+    NSString * comment = ((PKToken *)[assembly pop]).stringValue;
+    if (_commentTarget) ((NSObject *)_commentTarget).comment = comment;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Matching string, number, and boolean terminals
@@ -150,27 +277,28 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (void)parser:(PKSParser *)parser didMatchString:(PKSTokenAssembly *)assembly
 {
-    [self addObjectToActiveObject:((PKToken *)[assembly MS_peek]).quotedStringValue];
+    [self processValue:((PKToken *)[assembly MS_peek]).quotedStringValue
+                ofType:MSJSONAssemblerStringValueType];
 }
 
 - (void)parser:(PKSParser *)parser didMatchNumber:(PKSTokenAssembly *)assembly
 {
-    [self addObjectToActiveObject:((PKToken *)[assembly MS_peek]).value];
+    [self processValue:((PKToken *)[assembly MS_peek]).value ofType:MSJSONAssemblerNumberValueType];
 }
 
 - (void)parser:(PKSParser *)parser didMatchNullLiteral:(PKSTokenAssembly *)assembly
 {
-    [self addObjectToActiveObject:[NSNull null]];
+    [self processValue:NullObject ofType:MSJSONAssemblerNullValueType];
 }
 
 - (void)parser:(PKSParser *)parser didMatchTrueLiteral:(PKSTokenAssembly *)assembly
 {
-    [self addObjectToActiveObject:@YES];
+    [self processValue:@YES ofType:MSJSONAssemblerBooleanValueType];
 }
 
 - (void)parser:(PKSParser *)parser didMatchFalseLiteral:(PKSTokenAssembly *)assembly
 {
-    [self addObjectToActiveObject:@NO];
+    [self processValue:@NO ofType:MSJSONAssemblerBooleanValueType];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -179,18 +307,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (void)parser:(PKSParser *)parser didMatchOpenCurly:(PKSTokenAssembly *)assembly
 {
-    MSDictionary * dictionary = [MSDictionary dictionary];
-
-    if (!_assembledObject)
-        self.assembledObject = dictionary;
-
-    else if ([_pendingKeys isEmpty])
-        [self addObjectToActiveObject:dictionary];
-
-    else if (!_pendingValue)
-        _pendingValue = dictionary;
-
-    [_activeObjects push:dictionary];
+    [self processValue:[MSDictionary dictionary] ofType:MSJSONAssemblerObjectValueType];
 }
 
 - (void)parser:(PKSParser *)parser didMatchCloseCurly:(PKSTokenAssembly *)assembly
@@ -201,18 +318,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (void)parser:(PKSParser *)parser didMatchOpenBracket:(PKSTokenAssembly *)assembly
 {
-    NSMutableArray * array = [@[] mutableCopy];
-
-    if (!_assembledObject)
-        self.assembledObject = array;
-
-    else if ([_pendingKeys isEmpty])
-        [self addObjectToActiveObject:array];
-
-    else if (!_pendingValue)
-        _pendingValue = array;
-
-    [_activeObjects push:array];
+    [self processValue:[@[] mutableCopy] ofType:MSJSONAssemblerArrayValueType];
 }
 
 - (void)parser:(PKSParser *)parser didMatchCloseBracket:(PKSTokenAssembly *)assembly
