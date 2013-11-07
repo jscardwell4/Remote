@@ -5,9 +5,48 @@
 // Created by Jason Cardwell on 7/11/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+#import "ButtonConfigurationDelegate.h"
 #import "ConfigurationDelegate_Private.h"
 #import "ControlStateSet.h"
 #import "Command.h"
+
+@interface ButtonConfigurationDelegate ()
+
+@property (nonatomic, strong, readwrite) NSSet    * commands;
+@property (nonatomic, strong, readwrite) NSSet    * titleSets;
+@property (nonatomic, strong, readwrite) NSSet    * backgroundColorSets;
+@property (nonatomic, strong, readwrite) NSSet    * iconSets;
+@property (nonatomic, strong, readwrite) NSSet    * imageSets;
+
+@property (nonatomic, assign, readwrite) Command              * command;
+@property (nonatomic, assign, readwrite) ControlStateTitleSet * titles;
+@property (nonatomic, assign, readwrite) ControlStateColorSet * backgroundColors;
+@property (nonatomic, assign, readwrite) ControlStateImageSet * icons;
+@property (nonatomic, assign, readwrite) ControlStateImageSet * images;
+
+@property (nonatomic, strong, readwrite) MSKVOReceptionist * kvoReceptionist;
+
+- (void)kvoRegistration;
+- (void)updateButtonForState:(REState)state;
+
+@end
+
+@interface ButtonConfigurationDelegate (CoreDataGeneratedAccessors)
+
+- (void)addCommandsObject:(Command *)command;
+- (void)addTitleSetsObject:(ControlStateTitleSet *)titleSet;
+- (void)addIconSetsObject:(ControlStateImageSet *)iconSet;
+- (void)addImageSetsObject:(ControlStateImageSet *)imageSet;
+- (void)addBackgroundColorSetsObject:(ControlStateColorSet *)colorSet;
+
+- (void)removeCommandsObject:(Command *)command;
+- (void)removeTitleSetsObject:(ControlStateTitleSet *)titleSet;
+- (void)removeIconSetsObject:(ControlStateImageSet *)iconSet;
+- (void)removeImageSetsObject:(ControlStateImageSet *)imageSet;
+- (void)removeBackgroundColorSetsObject:(ControlStateColorSet *)colorSet;
+
+@end
+
 
 @implementation ButtonConfigurationDelegate
 
@@ -60,7 +99,7 @@ kvoReceptionist  = _kvoReceptionist;
 
 - (void)kvoRegistration
 {
-    if ([self.managedObjectContext.nametag isEqualToString:@"remote"])
+//    if ([self.managedObjectContext.nametag isEqualToString:@"remote"])
         self.kvoReceptionist = [MSKVOReceptionist
                                 receptionistForObject:self.element
                                               keyPath:@"state"
@@ -75,10 +114,12 @@ kvoReceptionist  = _kvoReceptionist;
                                 {
                                     ButtonConfigurationDelegate * delegate =
                                         (__bridge ButtonConfigurationDelegate*)context;
-                                    [delegate.managedObjectContext performBlock:
-                                     ^{
-                                         [delegate updateButtonForState: ((Button*)object).state];
-                                     }];
+                                    id state = change[NSKeyValueChangeNewKey];
+                                    if (state)
+                                        [delegate.managedObjectContext performBlock:
+                                         ^{
+                                             [delegate updateButtonForState:UnsignedShortValue(state)];
+                                         }];
                                 }];
 }
 

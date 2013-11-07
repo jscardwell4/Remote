@@ -98,7 +98,7 @@ autoPopulateFromDefaultMode;
     }
     
     else
-        return NO;
+        return YES;
 }
 
 - (RERemoteMode)currentMode

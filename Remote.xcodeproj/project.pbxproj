@@ -10,7 +10,6 @@
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C2014FBB180E007900C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C2014FBC180E007C00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
-		C203BBB91726DB96002FD3EA /* CommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */; };
 		C203BBC01726EBD6002FD3EA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAECE16DC10FE0093D5B4 /* SenTestingKit.framework */; };
 		C203BBC21726EBD6002FD3EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */; };
 		C203BBC81726EBD7002FD3EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C203BBC61726EBD7002FD3EA /* InfoPlist.strings */; };
@@ -30,7 +29,6 @@
 		C203BBE41726ECF1002FD3EA /* MacroBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469A16FF67D00042B59E /* MacroBuilder.m */; };
 		C203BBE51726ECF1002FD3EA /* RemoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469C16FF67D00042B59E /* RemoteBuilder.m */; };
 		C203BBE61726ECF1002FD3EA /* RemoteElementConstructionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B469F16FF67D00042B59E /* RemoteElementConstructionManager.m */; };
-		C203BBE71726ECF1002FD3EA /* CommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */; };
 		C203BBE91726ECFA002FD3EA /* ControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* ControlStateColorSet.m */; };
 		C203BBEB1726ECFA002FD3EA /* ControlStateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468416FF67AF0042B59E /* ControlStateImageSet.m */; };
 		C203BBEC1726ECFA002FD3EA /* ControlStateSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468616FF67AF0042B59E /* ControlStateSet.m */; };
@@ -462,8 +460,6 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
-		C28C7B701798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */; };
-		C28C7B711798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */ = {isa = PBXBuildFile; fileRef = C28C7B6F1798424400E4F9FC /* ButtonGroupBuilder+Developer.m */; };
 		C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */; };
 		C28F7E321803931D00E007B5 /* Glyphish Images.txt in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E311803931D00E007B5 /* Glyphish Images.txt */; };
 		C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */; };
@@ -475,15 +471,20 @@
 		C29B27F3172E1CD7006046A5 /* JSON-Grammar.parsekit in Resources */ = {isa = PBXBuildFile; fileRef = C29B27F1172E1CD7006046A5 /* JSON-Grammar.parsekit */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F23ED178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
+		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2A8F827172C820B007CFE0B /* HomeRERemote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F824172C820B007CFE0B /* HomeRERemote.json */; };
 		C2A8F828172C820B007CFE0B /* REActivity.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F825172C820B007CFE0B /* REActivity.json */; };
 		C2A8F829172C820B007CFE0B /* DVR-RERemote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A8F826172C820B007CFE0B /* DVR-RERemote.json */; };
 		C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */; };
+		C2C6A173182AFFFF0036261E /* Glyphish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C6A172182AFFFF0036261E /* Glyphish.json */; };
 		C2CE8AE91814289300555D63 /* libMSKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AA31814231F00555D63 /* libMSKit.a */; };
-		C2D09DEC18088D620036F87F /* Image.json in Resources */ = {isa = PBXBuildFile; fileRef = C2D09DEB18088D620036F87F /* Image.json */; };
 		C2D09DEE18089ED40036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D09DED18089ED30036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib */; };
+		C2D361D8182B265300775239 /* CommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */; };
+		C2D361D9182B265300775239 /* CommandSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBB81726DB96002FD3EA /* CommandSetBuilder.m */; };
+		C2D361DC182BE21D00775239 /* StringAttributesValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DB182BE21D00775239 /* StringAttributesValueTransformer.m */; };
+		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
 		C2D635B91805D9B400960B10 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2D635B81805D9B400960B10 /* Manufacturer.json */; };
 		C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
 		C2E953F117E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
@@ -788,7 +789,6 @@
 		C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Editing.m"; sourceTree = "<group>"; };
 		C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+SubelementViews.m"; sourceTree = "<group>"; };
 		C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+InternalSubviews.m"; sourceTree = "<group>"; };
-		C25B6D3518206B1E00E40E61 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/7.0-64/Applications/8CD3AA9B-8208-4849-8E81-E0AEF4A0B17B/Library/Caches/Logs"; sourceTree = "<group>"; };
 		C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Table.xib"; sourceTree = "<group>"; };
 		C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-List.xib"; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
@@ -808,6 +808,9 @@
 		C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Button.xib"; sourceTree = "<group>"; };
 		C26B199217A05A2300C22BE6 /* Glyphish Backgrounds.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Glyphish Backgrounds.txt"; sourceTree = "<group>"; };
 		C26B199317A05A2300C22BE6 /* Glyphish Icons.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Glyphish Icons.txt"; sourceTree = "<group>"; };
+		C26B5CD41827EA21005AB70E /* Documents */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Documents; path = "../../../Library/Application Support/iPhone Simulator/7.0.3-64/Applications/B61DC871-82F6-4241-B65F-8E637B7F4636/Documents"; sourceTree = "<group>"; };
+		C26B5CE0182803DE005AB70E /* CommandSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSet.h; sourceTree = "<group>"; };
+		C26B5CE1182803DE005AB70E /* CommandSetCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSetCollection.h; sourceTree = "<group>"; };
 		C26B8A6E18006CD700912DBB /* IntegerKeyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntegerKeyboard.xib; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26BAEAD16DC10FE0093D5B4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1094,6 +1097,9 @@
 		C29F23E9178505AA00CD782B /* Remote.base 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 8.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23EA178505AA00CD782B /* Remote.base 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 9.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23EB178505AA00CD782B /* Remote.base.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Remote.base.xcdatamodel; sourceTree = "<group>"; };
+		C29F8F8B18269E150073EF09 /* NamedModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamedModelObject.h; sourceTree = "<group>"; };
+		C29F8F8C18269E150073EF09 /* NamedModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NamedModelObject.m; sourceTree = "<group>"; };
+		C29F8F8F1826B9550073EF09 /* Logs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Logs; path = "../../../Library/Application Support/iPhone Simulator/7.0.3-64/Applications/B61DC871-82F6-4241-B65F-8E637B7F4636/Library/Caches/Logs"; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
 		C2A8F824172C820B007CFE0B /* HomeRERemote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HomeRERemote.json; sourceTree = "<group>"; };
@@ -1116,9 +1122,13 @@
 		C2C54D6B171DA93800E01E82 /* CoreDataLogicTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreDataLogicTests-Prefix.pch"; sourceTree = "<group>"; };
 		C2C54DCC171DC76800E01E82 /* MSSenTestLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSenTestLog.h; sourceTree = "<group>"; };
 		C2C54DCD171DC76800E01E82 /* MSSenTestLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSenTestLog.m; sourceTree = "<group>"; };
+		C2C6A172182AFFFF0036261E /* Glyphish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish.json; sourceTree = "<group>"; };
 		C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
-		C2D09DEB18088D620036F87F /* Image.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.json; sourceTree = "<group>"; };
 		C2D09DED18089ED30036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-DetailDisclosure.xib"; sourceTree = "<group>"; };
+		C2D361DA182BE21D00775239 /* StringAttributesValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringAttributesValueTransformer.h; sourceTree = "<group>"; };
+		C2D361DB182BE21D00775239 /* StringAttributesValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringAttributesValueTransformer.m; sourceTree = "<group>"; };
+		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
+		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
 		C2D635B81805D9B400960B10 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
 		C2D7662C17246C7D00BC2E43 /* MagicalConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C2D7662D17246C7D00BC2E43 /* MagicalConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagicalConstructDVRRemoteTests.m; sourceTree = "<group>"; };
@@ -1129,6 +1139,9 @@
 		C2D7663517246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentMagicalConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C2D7663617246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentMagicalConstructDVRRemoteTests.m; sourceTree = "<group>"; };
 		C2DB0BDB179DA6EA0005ECA4 /* RemoteElementConstructionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager_Private.h; sourceTree = "<group>"; };
+		C2E748771827245B00112667 /* ButtonConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonConfigurationDelegate.h; sourceTree = "<group>"; };
+		C2E748791827245B00112667 /* RemoteConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConfigurationDelegate.h; sourceTree = "<group>"; };
+		C2E7487C1827248600112667 /* ButtonGroupConfigurationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ButtonGroupConfigurationDelegate.h; sourceTree = "<group>"; };
 		C2E953EE17E8BAA70052518D /* BankableModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableModelObject.h; sourceTree = "<group>"; };
 		C2E953EF17E8BAA70052518D /* BankableModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankableModelObject.m; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
@@ -1217,12 +1230,16 @@
 			children = (
 				C2F2254B1715E39600D22B5F /* ModelObject.h */,
 				C2F2254C1715E39600D22B5F /* ModelObject.m */,
+				C29F8F8B18269E150073EF09 /* NamedModelObject.h */,
+				C29F8F8C18269E150073EF09 /* NamedModelObject.m */,
 				C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */,
 				C28FAF7E173014D8002902D9 /* RemoteElementImportSupportFunctions.h */,
 				C25B2718180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.h */,
 				C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */,
 				C2014FB8180DFC1200C31780 /* JSONObjectKeys.h */,
 				C2014FB9180E004E00C31780 /* JSONObjectKeys.m */,
+				C2D361DA182BE21D00775239 /* StringAttributesValueTransformer.h */,
+				C2D361DB182BE21D00775239 /* StringAttributesValueTransformer.m */,
 			);
 			name = Model;
 			path = /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Model;
@@ -1556,6 +1573,8 @@
 		C25B45BE16FF66FE0042B59E /* CommandSets */ = {
 			isa = PBXGroup;
 			children = (
+				C26B5CE0182803DE005AB70E /* CommandSet.h */,
+				C26B5CE1182803DE005AB70E /* CommandSetCollection.h */,
 				C25B45BB16FF66FE0042B59E /* CommandContainer.h */,
 				C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */,
 				C25B45BC16FF66FE0042B59E /* CommandContainer.m */,
@@ -1637,11 +1656,14 @@
 		C25B46B316FF68840042B59E /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				C2E748771827245B00112667 /* ButtonConfigurationDelegate.h */,
 				C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */,
+				C2E7487C1827248600112667 /* ButtonGroupConfigurationDelegate.h */,
 				C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */,
 				C25B46B616FF68840042B59E /* ConfigurationDelegate.h */,
 				C25B46B716FF68840042B59E /* ConfigurationDelegate.m */,
 				C25B46B816FF68840042B59E /* ConfigurationDelegate_Private.h */,
+				C2E748791827245B00112667 /* RemoteConfigurationDelegate.h */,
 				C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */,
 			);
 			path = Configurations;
@@ -1800,7 +1822,8 @@
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
-				C25B6D3518206B1E00E40E61 /* Logs */,
+				C26B5CD41827EA21005AB70E /* Documents */,
+				C29F8F8F1826B9550073EF09 /* Logs */,
 				C208DE0316DE763900084C49 /* Notes */,
 				C208DDFC16DDC5A300084C49 /* Build Configurations */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
@@ -2009,6 +2032,8 @@
 				C26BB00116DC18530093D5B4 /* MSRemoteMacros.h */,
 				C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */,
 				C2997F2316FA563900290737 /* RETypedefs.h */,
+				C2D361DD182BE49600775239 /* RemoteElementKeys.m */,
+				C2D361DF182BE4B400775239 /* RemoteElementKeys.h */,
 			);
 			path = "Type Definitions, Constants & Functions";
 			sourceTree = "<group>";
@@ -2220,10 +2245,10 @@
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
+				C2C6A172182AFFFF0036261E /* Glyphish.json */,
 				C26296811811F9AE00760056 /* Remote.json */,
 				C2D635B81805D9B400960B10 /* Manufacturer.json */,
 				C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */,
-				C2D09DEB18088D620036F87F /* Image.json */,
 				C25B2713180A167B0078C8D8 /* RemoteController.json */,
 			);
 			name = "Database JSON lists";
@@ -2736,7 +2761,6 @@
 				C26BBAED16DC1B5C0093D5B4 /* AlignBottomEdgeIcon@2x.png in Resources */,
 				C26BBAEE16DC1B5C0093D5B4 /* AlignHorizCenterIcon.png in Resources */,
 				C26BBAEF16DC1B5C0093D5B4 /* AlignHorizCenterIcon@2x.png in Resources */,
-				C2D09DEC18088D620036F87F /* Image.json in Resources */,
 				C26BBAF016DC1B5C0093D5B4 /* AlignLeftEdgeIcon.png in Resources */,
 				C26BBAF116DC1B5C0093D5B4 /* AlignLeftEdgeIcon@2x.png in Resources */,
 				C26BBAF216DC1B5C0093D5B4 /* AlignRightEdgeIcon.png in Resources */,
@@ -2765,6 +2789,7 @@
 				C26BBB0116DC1B5C0093D5B4 /* CopyStyleIcon@2x.png in Resources */,
 				C26BBB0216DC1B5C0093D5B4 /* DashedBox.png in Resources */,
 				C27BCC981801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png in Resources */,
+				C2C6A173182AFFFF0036261E /* Glyphish.json in Resources */,
 				C26BBB0316DC1B5C0093D5B4 /* DashedBox@2x.png in Resources */,
 				C26BBB0416DC1B5C0093D5B4 /* Default-568h@2x.png in Resources */,
 				C26BBB0516DC1B5C0093D5B4 /* Default.png in Resources */,
@@ -2882,7 +2907,6 @@
 				C203BBD91726ECE3002FD3EA /* ComponentDevice.m in Sources */,
 				C203BBDD1726ECE3002FD3EA /* Image.m in Sources */,
 				C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
-				C28C7B711798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */,
 				C203BBDE1726ECE3002FD3EA /* Manufacturer.m in Sources */,
 				C203BBE01726ECE7002FD3EA /* BankGroup.m in Sources */,
 				C203BBE11726ECE7002FD3EA /* BankObjectPreview.m in Sources */,
@@ -2891,7 +2915,6 @@
 				C203BBE41726ECF1002FD3EA /* MacroBuilder.m in Sources */,
 				C203BBE51726ECF1002FD3EA /* RemoteBuilder.m in Sources */,
 				C203BBE61726ECF1002FD3EA /* RemoteElementConstructionManager.m in Sources */,
-				C203BBE71726ECF1002FD3EA /* CommandSetBuilder.m in Sources */,
 				C203BBE91726ECFA002FD3EA /* ControlStateColorSet.m in Sources */,
 				C225FC0C1794A6A5008B8FF6 /* CustomTheme.m in Sources */,
 				C203BBEB1726ECFA002FD3EA /* ControlStateImageSet.m in Sources */,
@@ -2925,6 +2948,7 @@
 				C203BC051726ED21002FD3EA /* ButtonGroupConfigurationDelegate.m in Sources */,
 				C203BC061726ED21002FD3EA /* ConfigurationDelegate.m in Sources */,
 				C203BC071726ED21002FD3EA /* RemoteConfigurationDelegate.m in Sources */,
+				C2D361D9182B265300775239 /* CommandSetBuilder.m in Sources */,
 				C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */,
 				C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */,
 				C203BC0B1726ED24002FD3EA /* Remote.m in Sources */,
@@ -2970,7 +2994,6 @@
 				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */,
-				C28C7B701798424400E4F9FC /* ButtonGroupBuilder+Developer.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */,
 				C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */,
@@ -3002,6 +3025,7 @@
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
 				C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */,
 				C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */,
+				C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */,
 				C25B475B16FF8D5E0042B59E /* ButtonEditingViewController.m in Sources */,
 				C25B475C16FF8D5E0042B59E /* ButtonGroupEditingViewController.m in Sources */,
 				C25B475D16FF8D5E0042B59E /* DetailedButtonEditingViewController.m in Sources */,
@@ -3023,6 +3047,7 @@
 				C29ABADC17F8761F007D185F /* BankCollectionViewCell.m in Sources */,
 				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
+				C2D361D8182B265300775239 /* CommandSetBuilder.m in Sources */,
 				C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */,
 				C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
@@ -3043,6 +3068,7 @@
 				C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */,
 				C25B478016FF8D5E0042B59E /* Remote.m in Sources */,
 				C25B478116FF8D5E0042B59E /* RemoteElementView.m in Sources */,
+				C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */,
 				C25B478216FF8D5E0042B59E /* RemoteElementView+Editing.m in Sources */,
 				C25B478316FF8D5E0042B59E /* RemoteElementView+SubelementViews.m in Sources */,
 				C25B478416FF8D5E0042B59E /* RemoteElementView+InternalSubviews.m in Sources */,
@@ -3086,6 +3112,7 @@
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
 				C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */,
+				C2D361DC182BE21D00775239 /* StringAttributesValueTransformer.m in Sources */,
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
 				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,
 				C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */,
@@ -3099,7 +3126,6 @@
 				C2F2254A1715CB8500D22B5F /* Activity.m in Sources */,
 				C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */,
 				C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */,
-				C203BBB91726DB96002FD3EA /* CommandSetBuilder.m in Sources */,
 				C203BC221726F30D002FD3EA /* LayoutConstraint.m in Sources */,
 				C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */,
 				C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */,

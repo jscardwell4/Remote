@@ -10,13 +10,20 @@
 
 #import "JSONObjectKeys.h"
 
-// remote element types
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element types
+ ////////////////////////////////////////////////////////////////////////////////
+ 
 MSSTRING_CONST   RETypeUndefinedJSONKey   = @"undefined";
 MSSTRING_CONST   RETypeRemoteJSONKey      = @"remote";
 MSSTRING_CONST   RETypeButtonGroupJSONKey = @"button-group";
 MSSTRING_CONST   RETypeButtonJSONKey      = @"button";
 
-// remote element subtypes
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element subtypes
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   RESubtypeUndefinedJSONKey = @"undefined";
 
 MSSTRING_CONST   REButtonGroupTopPanel1JSONKey = @"top1";
@@ -46,13 +53,19 @@ MSSTRING_CONST   REPanelTrigger1JSONKey  = @"1";
 MSSTRING_CONST   REPanelTrigger2JSONKey  = @"2";
 MSSTRING_CONST   REPanelTrigger3JSONKey  = @"3";
 
-// remote element options
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element options
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   REOptionsDefaultJSONKey                       = @"default";
 MSSTRING_CONST   RERemoteOptionTopBarHiddenJSONKey             = @"top-bar-hidden";
 MSSTRING_CONST   REButtonGroupOptionAutohideJSONKey            = @"autohide";
 MSSTRING_CONST   REButtonGroupOptionCommandSetContainerJSONKey = @"command-set-container";
 
-// remote element shapes
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element shapes
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   REShapeUndefinedJSONKey        = @"undefined";
 MSSTRING_CONST   REShapeRoundedRectangleJSONKey = @"rounded-rectangle";
 MSSTRING_CONST   REShapeOvalJSONKey             = @"oval";
@@ -69,7 +82,10 @@ MSSTRING_CONST   REStyleGlossStyle4JSONKey = @"gloss4";
 MSSTRING_CONST   REStyleDrawBorderJSONKey  = @"border";
 MSSTRING_CONST   REStyleStretchableJSONKey = @"stretchable";
 
-// remote element theme override flags
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element theme override flags
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   REThemeNoneJSONKey = @"none";
 
 MSSTRING_CONST   REThemeNoBackgroundImageJSONKey          = @"background-image";
@@ -112,7 +128,10 @@ MSSTRING_CONST   REThemeNoShapeJSONKey         = @"shape";
 
 MSSTRING_CONST   REThemeAllJSONKey = @"all";
 
-// remote element roles
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element roles
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   RERoleUndefinedJSONKey = @"undefined";
 
 MSSTRING_CONST   REButtonGroupRoleSelectionPanelJSONKey = @"selection-panel";
@@ -161,14 +180,20 @@ MSSTRING_CONST   REButtonRoleTransportFFJSONKey     = @"fast-forward";
 MSSTRING_CONST   REButtonRoleTransportRewindJSONKey = @"rewind";
 MSSTRING_CONST   REButtonRoleTransportRecordJSONKey = @"record";
 
-// remote element states
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element states
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   REStateDefaultJSONKey     = @"default";
 MSSTRING_CONST   REStateNormalJSONKey      = @"normal";
 MSSTRING_CONST   REStateHighlightedJSONKey = @"highlighted";
 MSSTRING_CONST   REStateDisabledJSONKey    = @"disabled";
 MSSTRING_CONST   REStateSelectedJSONKey    = @"selected";
 
-// command classes
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Command classes
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   PowerCommandTypeJSONKey    = @"power";
 MSSTRING_CONST   SendIRCommandTypeJSONKey   = @"sendir";
 MSSTRING_CONST   HTTPCommandTypeJSONKey     = @"http";
@@ -178,11 +203,18 @@ MSSTRING_CONST   SystemCommandTypeJSONKey   = @"system";
 MSSTRING_CONST   SwitchCommandTypeJSONKey   = @"switch";
 MSSTRING_CONST   ActivityCommandTypeJSONKey = @"activity";
 
-// command options
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Command options
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   CommandOptionDefaultJSONKey   = @"default";
 MSSTRING_CONST   CommandOptionLongPressJSONKey = @"long-press";
 
-// system command types
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark System command types
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   SystemCommandTypeUndefinedJSONKey   = @"undefined";
 MSSTRING_CONST   SystemCommandProximitySensorJSONKey = @"proximity-sensor";
 MSSTRING_CONST   SystemCommandURLRequestJSONKey      = @"url-request";
@@ -190,11 +222,18 @@ MSSTRING_CONST   SystemCommandLaunchScreenJSONKey    = @"return-to-launch-screen
 MSSTRING_CONST   SystemCommandOpenSettingsJSONKey    = @"open-settings";
 MSSTRING_CONST   SystemCommandOpenEditorJSONKey      = @"open-editor";
 
-// switch command types
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Switch command types
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   SwitchRemoteCommandJSONKey = @"remote";
 MSSTRING_CONST   SwitchModeCommandJSONKey   = @"mode";
 
-// command sets
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Command sets
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   ButtonGroupCommandSetJSONKey           = @"command-set";
 MSSTRING_CONST   ButtonGroupCommandSetCollectionJSONKey = @"command-set-collection";
 MSSTRING_CONST   CommandSetTypeJSONKey                  = @"type";
@@ -204,11 +243,17 @@ MSSTRING_CONST   CommandSetTypeTransportJSONKey         = @"transport";
 MSSTRING_CONST   CommandSetTypeNumberpadJSONKey         = @"numberpad";
 MSSTRING_CONST   CommandSetTypeRockerJSONKey            = @"rocker";
 
-// remote element actions
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Remote element actions
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   RESingleTapActionJSONKey = @"tap";
 MSSTRING_CONST   RELongPressActionJSONKey = @"long-press";
 
-// control state title set attributes
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state title set attributes
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   REFontAttributeJSONKey               = @"font";
 MSSTRING_CONST   REParagraphStyleAttributeJSONKey     = @"paragraph-style";
 MSSTRING_CONST   REForegroundColorAttributeJSONKey    = @"foreground-color";
@@ -229,6 +274,10 @@ MSSTRING_CONST   REShadowAttributeJSONKey             = @"shadow";
 MSSTRING_CONST   RETitleTextAttributeJSONKey          = @"text";
 MSSTRING_CONST   REFontAwesomeIconJSONKey             = @"icon-name";
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state title set paragraph attributes
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   RELineSpacingAttributeJSONKey            = @"line-spacing";
 MSSTRING_CONST   REParagraphSpacingAttributeJSONKey       = @"paragraph-spacing";
 MSSTRING_CONST   RETextAlignmentAttributeJSONKey          = @"alignment";
@@ -244,11 +293,19 @@ MSSTRING_CONST   REHyphenationFactorAttributeJSONKey      = @"hyphenation-factor
 MSSTRING_CONST   RETabStopsAttributeJSONKey               = @"tab-stops";
 MSSTRING_CONST   REDefaultTabIntervalAttributeJSONKey     = @"default-tab-interval";
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state title set text alignment
+////////////////////////////////////////////////////////////////////////////////
+
 MSSTRING_CONST   RETextAlignmentLeftJSONKey      = @"left";
 MSSTRING_CONST   RETextAlignmentCenterJSONKey    = @"center";
 MSSTRING_CONST   RETextAlignmentRightJSONKey     = @"right";
 MSSTRING_CONST   RETextAlignmentJustifiedJSONKey = @"justified";
 MSSTRING_CONST   RETextAlignmentNaturalJSONKey   = @"natural";
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state title set line break mode
+////////////////////////////////////////////////////////////////////////////////
 
 MSSTRING_CONST   RELineBreakByWordWrappingJSONKey     = @"word-wrap";
 MSSTRING_CONST   RELineBreakByCharWrappingJSONKey     = @"character-wrap";
@@ -256,6 +313,10 @@ MSSTRING_CONST   RELineBreakByClippingJSONKey         = @"clip";
 MSSTRING_CONST   RELineBreakByTruncatingHeadJSONKey   = @"truncate-head";
 MSSTRING_CONST   RELineBreakByTruncatingTailJSONKey   = @"truncate-tail";
 MSSTRING_CONST   RELineBreakByTruncatingMiddleJSONKey = @"truncate-middle";
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Control state title set underline style and text effect
+////////////////////////////////////////////////////////////////////////////////
 
 MSSTRING_CONST   RETextEffectLetterPressJSONKey = @"letter-press";
 

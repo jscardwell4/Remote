@@ -1,12 +1,6 @@
 {
     "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
-    "remotes.uuid": [
-        "EDF6C7E5-677B-4936-8BB5-623A07AAB61E",
-        "F823B227-7DEF-4185-87F0-457FC42065C2",
-        "F668F0D5-80E4-46A4-A703-EF5A1601C645",
-        "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD"
-    ],
-    "homeRemoteUUID": "F668F0D5-80E4-46A4-A703-EF5A1601C645", //"B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD",
+    "homeRemoteUUID": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
     "topToolbar": {
         "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
         "name": "Top Toolbar",
@@ -56,11 +50,11 @@
                 },
                 "icons.default": {
                     "colors": {
+                        "normal": "white",
                         "highlighted": "#00AFFFFF",
-                        "disabled": "#7F7F7FFF",
-                        "normal": "white"
+                        "disabled": "#7F7F7FFF"
                     },
-                    "normal.uuid": "71C7FC63-A112-4424-A367-B112F7243263" // 750-home.png
+                    "normal.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147" // 750-gray-home.png
                 }
             },
             {
@@ -74,11 +68,11 @@
                 },
                 "icons.default": {
                     "colors": {
+                        "normal": "white",
                         "highlighted": "#00AFFFFF",
-                        "disabled": "#7F7F7FFF",
-                        "normal": "white"
+                        "disabled": "#7F7F7FFF"
                     },
-                    "normal.uuid": "5D131356-1B73-413C-9858-482E605AF15E" // 740-gear.png
+                    "normal.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73" // 740-gray-gear.png
                 }
             },
             {
@@ -88,11 +82,11 @@
                 "role": "toolbar",
                 "icons.default": {
                     "colors": {
+                        "normal": "white",
                         "highlighted": "#00AFFFFF",
-                        "disabled": "#7F7F7FFF",
-                        "normal": "white"
+                        "disabled": "#7F7F7FFF"
                     },
-                    "normal.uuid": "9420D920-72DE-4712-92C4-298CD1C91BB4" // 832-pencil.png
+                    "normal.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4" // 830-gray-pencil.png
                 }
             },
             {
@@ -102,13 +96,13 @@
                 "role": "battery-status",
                 "icons.default": {
                     "colors": {
+                        "normal": "white",
                         "highlighted": "#00AFFFFF",
-                        "disabled": "#7F7F7FFF",
-                        "normal": "white"
+                        "disabled": "#7F7F7FFF"
                     },
-                    "normal.uuid": "BADA12DA-FAE1-4E2D-9843-0BD2BD7AD463", // 49-battery.png
-                    "selected.uuid": "6ED6E547-EBF4-478A-B4F5-47ACF2C1FFDA", // 396-power-plug.png
-                    "disabled.uuid": "C25B5084-F167-44F8-9855-42A991936624" // 09-lightning.png
+                    "normal.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
+                    "disabled.uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384", // 856-gray-lightning-bolt.png
+                    "selected.uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC" // 396-gray-power-plug.png
                 }
             },
             {
@@ -118,14 +112,15 @@
                 "role": "connection-status",
                 "icons.default": {
                     "colors": {
+                        "normal": "white",
                         "highlighted": "#00AFFFFF",
-                        "disabled": "#7F7F7FFF",
-                        "normal": "white"
+                        "disabled": "#7F7F7FFF"
                     },
-                    "normal.uuid": "D112F2D8-5E77-405A-B8EA-1DD0E9DE7ED9" // 58-wifi.png
+                    "normal.uuid": "2CBE6763-64AC-4438-A169-1A759620381B" // 937-gray-wifi-signal.png
                 }
             }
-        ]
+        ],
+        "labelAttributes": {}
     },
     "activities": [
         {
@@ -137,11 +132,11 @@
                 "commands": [
                     {
                         "class": "sendir",
-                        "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
+                        "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883" // TV\/SAT
                     },
                     {
                         "class": "power",
-                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F",
+                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
                         "state": "on"
                     },
                     {
@@ -150,7 +145,22 @@
                     },
                     {
                         "class": "sendir",
-                        "code.uuid": "FBB3BC24-1AFA-4AAF-B477-FC28855EE0E5"
+                        "code.uuid": "FBB3BC24-1AFA-4AAF-B477-FC28855EE0E5" // HDMI 4
+                    }
+                ]
+            },
+            "haltMacro": {
+                "class": "macro",
+                "commands": [
+                    {
+                        "class": "power",
+                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
+                        "state": "off"
+                    },
+                    {
+                        "class": "power",
+                        "device.uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5", // AV Receiver
+                        "state": "off"
                     }
                 ]
             }
@@ -164,11 +174,11 @@
                 "commands": [
                     {
                         "class": "sendir",
-                        "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
+                        "code.uuid": "7456619C-3B46-4EA6-8F9D-95172B781148" // Video 2
                     },
                     {
                         "class": "power",
-                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F",
+                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
                         "state": "on"
                     },
                     {
@@ -177,7 +187,32 @@
                     },
                     {
                         "class": "sendir",
-                        "code.uuid": "FBB3BC24-1AFA-4AAF-B477-FC28855EE0E5"
+                        "code.uuid": "091DB56C-F35E-4D8C-A49B-3DC47A76542B" // HDMI 3
+                    },
+                    {
+                        "class": "power",
+                        "device.uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5", // PS3
+                        "state": "on"
+                    }
+                ]
+            },
+            "haltMacro": {
+                "class": "macro",
+                "commands": [
+                    {
+                        "class": "power",
+                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
+                        "state": "off"
+                    },
+                    {
+                        "class": "power",
+                        "device.uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5", // PS3
+                        "state": "off"
+                    },
+                    {
+                        "class": "power",
+                        "device.uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5", // AV Receiver
+                        "state": "off"
                     }
                 ]
             }
@@ -191,20 +226,17 @@
                 "commands": [
                     {
                         "class": "sendir",
-                        "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
-                    },
+                        "code.uuid": "060F0E1E-EB34-447E-803C-536E26718C4F" // MD\/Tape
+                    }
+                ]
+            },
+            "haltMacro": {
+                "class": "macro",
+                "commands": [
                     {
                         "class": "power",
-                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F",
-                        "state": "on"
-                    },
-                    {
-                        "class": "delay",
-                        "duration": 6
-                    },
-                    {
-                        "class": "sendir",
-                        "code.uuid": "FBB3BC24-1AFA-4AAF-B477-FC28855EE0E5"
+                        "device.uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5", // AV Receiver
+                        "state": "off"
                     }
                 ]
             }
@@ -217,11 +249,11 @@
                 "commands": [
                     {
                         "class": "sendir",
-                        "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
+                        "code.uuid": "D75B5099-7C81-44D4-B12D-38C36314FAAB" // DVD
                     },
                     {
                         "class": "power",
-                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F",
+                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
                         "state": "on"
                     },
                     {
@@ -230,7 +262,22 @@
                     },
                     {
                         "class": "sendir",
-                        "code.uuid": "FBB3BC24-1AFA-4AAF-B477-FC28855EE0E5"
+                        "code.uuid": "9B610062-5553-41BB-AB0D-49D787E06A5F" // HDMI 2
+                    }
+                ]
+            },
+            "haltMacro": {
+                "class": "macro",
+                "commands": [
+                    {
+                        "class": "power",
+                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
+                        "state": "off"
+                    },
+                    {
+                        "class": "power",
+                        "device.uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5", // AV Receiver
+                        "state": "off"
                     }
                 ]
             }

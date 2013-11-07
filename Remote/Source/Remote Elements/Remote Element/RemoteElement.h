@@ -5,10 +5,13 @@
 // Created by Jason Cardwell on 10/3/12.
 // Copyright © 2012 Moondeer Studios. All rights reserved.
 //
-#import "ModelObject.h"
+#import "NamedModelObject.h"
 #import "RETypedefs.h"
 #import "REEditableBackground.h"
 #import "ConfigurationDelegate.h"
+#import "RemoteConfigurationDelegate.h"
+#import "ButtonGroupConfigurationDelegate.h"
+#import "ButtonConfigurationDelegate.h"
 #import "LayoutConfiguration.h"
 #import "Constraint.h"
 
@@ -19,7 +22,7 @@
 
 
 
-@interface RemoteElement : ModelObject <REEditableBackground, NamedModelObject>
+@interface RemoteElement : NamedModelObject <REEditableBackground>
 
 // model backed properties
 @property (nonatomic, assign, readwrite) int16_t                 tag;
@@ -32,7 +35,6 @@
 @property (nonatomic, assign, readwrite) REStyle                 style;
 @property (nonatomic, assign, readwrite) REThemeOverrideFlags    themeFlags;
 @property (nonatomic, copy,   readwrite) NSString              * key;
-@property (nonatomic, copy,   readwrite) NSString              * name;
 @property (nonatomic, copy,   readonly ) NSString              * identifier;
 @property (nonatomic, strong, readwrite) NSSet                 * constraints;
 @property (nonatomic, strong, readonly ) NSSet                 * firstItemConstraints;

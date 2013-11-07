@@ -10,11 +10,12 @@
 #import "Image.h"
 #import "IRCode.h"
 
-static int ddLogLevel = DefaultDDLogLevel;
-
-#pragma unused(ddLogLevel)
+static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
 
 @implementation BankGroup
+
 @dynamic name;
 
 + (instancetype)groupWithName:(NSString *)name context:(NSManagedObjectContext *)context

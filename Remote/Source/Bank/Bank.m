@@ -127,10 +127,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                                                       : name)]);
 
                               d[@"user"] =
-                                  CollectionSafe([self defaultValueForAttribute:@"user"
-                                                                  forContainingClass:(useDefault
-                                                                                      ? nil
-                                                                                      : name)]);
+                              CollectionSafe([self defaultValueForAttribute:@"user"
+                                                         forContainingClass:(useDefault
+                                                                             ? nil
+                                                                             : name)]);
                               [d compact];
 
                               if ([d count]) dictionary[name] = d;

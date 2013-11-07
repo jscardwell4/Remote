@@ -8,6 +8,10 @@
 #import "RemoteElementView_Private.h"
 
 // #define DEBUG_BV_COLOR_BG
+
+#define MIN_HIGHLIGHT_INTERVAL 1.0
+#define CORNER_RADII           CGSizeMake(5.0f, 5.0f)
+
 MSNAMETAG_DEFINITION(REButtonViewInternal);
 MSNAMETAG_DEFINITION(REButtonViewLabel);
 MSNAMETAG_DEFINITION(REButtonViewActivityIndicator);
@@ -16,7 +20,30 @@ static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
+
 @implementation ButtonView
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Internal subviews and constraints
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (void)addInternalSubviews
+{
+    [super addInternalSubviews];
+
+    self.subelementInteractionEnabled = NO;
+    self.contentInteractionEnabled    = NO;
+
+    _labelView = [UILabel newForAutolayout];
+    [self addViewToContent:_labelView];
+
+    _activityIndicator = [UIActivityIndicatorView newForAutolayout];
+    _activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    _activityIndicator.color = defaultTitleHighlightColor();
+    [self addViewToOverlay:_activityIndicator];
+}
 
 - (void)updateConstraints
 {
@@ -26,17 +53,16 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
     {
         UIEdgeInsets   titleInsets = self.model.titleEdgeInsets;
         NSString     * constraints =
-            [NSString stringWithFormat:
-             @"'%1$@' _labelView.left = self.left + %3$f @900\n"
-              "'%1$@' _labelView.top = self.top + %4$f @900\n"
-              "'%1$@' _labelView.bottom = self.bottom - %5$f @900\n"
-              "'%1$@' _labelView.right = self.right - %6$f @900\n"
-              "'%2$@' _activityIndicator.centerX = self.centerX\n"
-              "'%2$@' _activityIndicator.centerY = self.centerY",
+            $(@"'%1$@' _labelView.left = self.left + %3$f @900\n"
+               "'%1$@' _labelView.top = self.top + %4$f @900\n"
+               "'%1$@' _labelView.bottom = self.bottom - %5$f @900\n"
+               "'%1$@' _labelView.right = self.right - %6$f @900\n"
+               "'%2$@' _activityIndicator.centerX = self.centerX\n"
+               "'%2$@' _activityIndicator.centerY = self.centerY",
              $(@"%@-%@", REButtonViewInternalNametag, REButtonViewLabelNametag),
              $(@"%@-%@", REButtonViewInternalNametag, REButtonViewActivityIndicatorNametag),
              titleInsets.left, titleInsets.top,
-             titleInsets.bottom, titleInsets.right];
+             titleInsets.bottom, titleInsets.right);
 
         NSDictionary * views = NSDictionaryOfVariableBindings(self, _labelView, _activityIndicator);
 
@@ -44,114 +70,123 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
     }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Gestures
+#pragma mark Gestures
 ////////////////////////////////////////////////////////////////////////////////
 
-/*******************************************************************************
-*  Single tap action executes the primary button command
-*******************************************************************************/
+
+- (void)attachGestureRecognizers
+{
+    [super attachGestureRecognizers];
+
+    _longPressGesture = [MSLongPressGestureRecognizer gestureWithTarget:self
+                                                                 action:@selector(handleLongPress:)];
+    _longPressGesture.delaysTouchesBegan = NO;
+    _longPressGesture.delegate           = self;
+    [self addGestureRecognizer:_longPressGesture];
+
+    _tapGesture = [UITapGestureRecognizer gestureWithTarget:self action:@selector(handleTap:)];
+    _tapGesture.numberOfTapsRequired    = 1;
+    _tapGesture.numberOfTouchesRequired = 1;
+    _tapGesture.delaysTouchesBegan      = NO;
+    _tapGesture.delegate                = self;
+    [self addGestureRecognizer:_tapGesture];
+}
+
+/**
+ Single tap action executes the primary button command
+*/
 - (void)handleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
-    switch (gestureRecognizer.state)
+    if (gestureRecognizer.state == UIGestureRecognizerStateRecognized)
     {
-        case UIGestureRecognizerStateEnded:
-        {
-            self.highlighted = YES;
+        self.highlighted = YES;
+        assert(self.model.highlighted);
+        
+        MSDelayedRunOnMain(_options.minHighlightInterval,
+                           ^{
+                               _flags.highlightActionQueued = NO;
+                               self.highlighted = NO;
+                               [self setNeedsDisplay];
+                           });
+        
+        REActionHandler   handler = _actionHandlers[@(RESingleTapAction)];
+        
+        if (handler)
+            handler();
+        
+        else
+            [self buttonActionWithOptions:CommandOptionDefault];
+    }
 
-            int64_t           delayInSeconds = _options.minHighlightInterval * NSEC_PER_SEC;
-            dispatch_time_t   popTime        = dispatch_time(DISPATCH_TIME_NOW,
-                                                             delayInSeconds);
-
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                _flags.highlightActionQueued = NO;
-                self.highlighted = NO;
-                [self setNeedsDisplay];
-            }
-
-                           );
-
-            REActionHandler   handler = _actionHandlers[@(RESingleTapAction)];
-
-            if (handler) handler();
-            else [self buttonActionWithOptions:CommandOptionDefault];
-        }
-        break;
-
-        case UIGestureRecognizerStateCancelled:
-        {
-            if (!_flags.longPressActive)
-            {
-                self.highlighted = NO;
-                [self setNeedsDisplay];
-            }
-        }
-        break;
-
-        case UIGestureRecognizerStateChanged:
-        case UIGestureRecognizerStateBegan:
-        case UIGestureRecognizerStateFailed:
-        case UIGestureRecognizerStatePossible:
-            break;
+    else if (gestureRecognizer.state == UIGestureRecognizerStateCancelled && !_flags.longPressActive)
+    {
+//        self.highlighted = NO;
+//        [self setNeedsDisplay];
     }
 }
 
+/**
+ Long press action executes the secondary button command
+ */
 - (void)handleLongPress:(MSLongPressGestureRecognizer *)gestureRecognizer
 {
-    switch (gestureRecognizer.state)
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        case UIGestureRecognizerStateBegan:
-        {
-            REActionHandler   handler = _actionHandlers[@(RELongPressAction)];
+        REActionHandler   handler = _actionHandlers[@(RELongPressAction)];
 
-            if (handler) handler();
-            else [self buttonActionWithOptions:CommandOptionLongPress];
-        }
-        break;
+        if (handler)
+            handler();
 
-        case UIGestureRecognizerStatePossible:
-        {
-            _flags.longPressActive = YES;
-            self.highlighted       = YES;
-            [self setNeedsDisplay];
-        }
-        break;
+        else
+            [self buttonActionWithOptions:CommandOptionLongPress];
+    }
 
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateChanged:
-        case UIGestureRecognizerStateFailed:
-            break;
+    else if (gestureRecognizer.state == UIGestureRecognizerStatePossible)
+    {
+        _flags.longPressActive = YES;
+        self.highlighted       = YES;
+        [self setNeedsDisplay];
     }
 }
 
+/** 
+ Enables or disables tap and long press gestures
+ */
 - (void)updateGesturesEnabled:(BOOL)enabled
 {
     _tapGesture.enabled       = enabled;
     _longPressGesture.enabled = enabled;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - ￼Button State
+#pragma mark ￼Button state
 ////////////////////////////////////////////////////////////////////////////////
+
 
 - (void)updateState
 {
-
-    UIControlState   currentState = self.state;
+    UIControlState currentState = self.state;
 
     self.userInteractionEnabled = ((currentState & UIControlStateDisabled) ? NO : YES);
-    BOOL                 invalidate = NO;
-    NSAttributedString * title      = self.model.title;
+
+    BOOL invalidate = NO;
+
+    NSAttributedString * title = self.model.title;
+
     if (![_labelView.attributedText isEqualToAttributedString:title])
     {
         _labelView.attributedText = title;
-        invalidate                = YES;
+        invalidate = YES;
     }
+
     UIImage * icon = self.model.icon;
+
     if (_icon != icon)
     {
-        _icon      = icon;
+        _icon = icon;
         invalidate = YES;
     }
 
@@ -167,9 +202,11 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
 
 - (UIControlState)state { return (UIControlState)self.model.state; }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Button Actions
+#pragma mark Button actions
 ////////////////////////////////////////////////////////////////////////////////
+
 
 - (void)setActionHandler:(REActionHandler)handler forAction:(REAction)action
 {
@@ -179,6 +216,7 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
 - (void)buttonActionWithOptions:(CommandOptions)options
 {
     assert(self.model);
+
     if (!self.editing && _flags.commandsActive)
     {
         if (_flags.longPressActive)
@@ -189,59 +227,57 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
 
         if (_flags.activityIndicator) [_activityIndicator startAnimating];
 
-//        if (self.model.type == REButtonTypeTuck)
-//            [self.parentElementView tuck];
-//        else
-        [self.model executeCommandWithOptions:options
-                                   completion:^(BOOL success, NSError * error)
-                                              {
-                                                  if ([_activityIndicator isAnimating])
-                                                      MSRunAsyncOnMain (^{
-                                                          [_activityIndicator stopAnimating];
-                                                      });
-                                              }];
+        CommandCompletionHandler completion =
+        ^(BOOL success, NSError * error)
+        {
+            if ([_activityIndicator isAnimating])
+                MSRunAsyncOnMain (^{ [_activityIndicator stopAnimating]; });
+        };
+
+        [self.model executeCommandWithOptions:options completion:completion];
     }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REView Overrides
+#pragma mark Content size
 ////////////////////////////////////////////////////////////////////////////////
 
-- (CGSize)intrinsicContentSize
-{
-    return self.minimumSize;
-}
+
+- (CGSize)intrinsicContentSize { return self.minimumSize; }
 
 - (CGSize)minimumSize
 {
-    CGRect               frame = (CGRect){.size = REMinimumSize };
+    CGRect frame = (CGRect){.size = REMinimumSize };
     NSAttributedString * title = self.model.title;
 
     if (title)
     {
-        CGSize         titleSize   = [title size];
-        UIEdgeInsets   titleInsets = self.titleEdgeInsets;
+        CGSize titleSize = [title size];
+        UIEdgeInsets titleInsets = self.titleEdgeInsets;
+
         titleSize.width  += titleInsets.left + titleInsets.right;
         titleSize.height += titleInsets.top + titleInsets.bottom;
-        frame             = CGRectUnion(frame, (CGRect){.size = titleSize });
+        frame = CGRectUnion(frame, (CGRect){.size = titleSize });
     }
 
     if (_icon)
     {
-        CGSize         iconSize    = [_icon size];
-        UIEdgeInsets   imageInsets = self.imageEdgeInsets;
+        CGSize iconSize = [_icon size];
+        UIEdgeInsets imageInsets = self.imageEdgeInsets;
+
         iconSize.width  += imageInsets.left + imageInsets.right;
         iconSize.height += imageInsets.top + imageInsets.bottom;
-        frame            = CGRectUnion(frame, (CGRect){.size = iconSize });
+        frame = CGRectUnion(frame, (CGRect){.size = iconSize });
     }
 
-    UIEdgeInsets   contentInsets = self.contentEdgeInsets;
+    UIEdgeInsets contentInsets = self.contentEdgeInsets;
     frame.size.width  += contentInsets.left + contentInsets.right;
     frame.size.height += contentInsets.top + contentInsets.bottom;
 
     if (self.proportionLock && !CGSizeEqualToSize(self.bounds.size, CGSizeZero))
     {
-        CGSize   currentSize = self.bounds.size;
+        CGSize currentSize = self.bounds.size;
 
         if (currentSize.width > currentSize.height)
             frame.size.height = (frame.size.width * currentSize.height) / currentSize.width;
@@ -253,6 +289,12 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
     return frame.size;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Subelement views
+////////////////////////////////////////////////////////////////////////////////
+
+
 - (void)addSubelementView:(RemoteElementView *)view {}
 
 - (void)removeSubelementView:(RemoteElementView *)view {}
@@ -263,44 +305,21 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
 
 - (NSArray *)subelementViews { return nil; }
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Initialization
+////////////////////////////////////////////////////////////////////////////////
+
+
 - (void)initializeIVARs
 {
-    _actionHandlers               = [@{} mutableCopy];
-    self.cornerRadii              = CGSizeMake(5.0f, 5.0f);
-    _options.minHighlightInterval = 0.5;
-    _flags.commandsActive         = YES;
+    _actionHandlers = [@{} mutableCopy];
+    self.cornerRadii = CORNER_RADII;
+    _options.minHighlightInterval = MIN_HIGHLIGHT_INTERVAL;
+    _flags.commandsActive = YES;
+
     [super initializeIVARs];
-}
-
-- (void)addInternalSubviews
-{
-    [super addInternalSubviews];
-    self.subelementInteractionEnabled = NO;
-    self.contentInteractionEnabled    = NO;
-    _labelView                        = [UILabel newForAutolayout];  //[RELabelView newForAutolayout];
-    [self addViewToContent:_labelView];
-
-    _activityIndicator                            = [UIActivityIndicatorView newForAutolayout];
-    _activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    _activityIndicator.color                      = defaultTitleHighlightColor();
-    [self addViewToOverlay:_activityIndicator];
-}
-
-- (void)attachGestureRecognizers
-{
-    [super attachGestureRecognizers];
-    _longPressGesture = [MSLongPressGestureRecognizer gestureWithTarget:self
-                                                                 action:@selector(handleLongPress:)];
-    _longPressGesture.delaysTouchesBegan = NO;
-    _longPressGesture.delegate           = self;
-    [self addGestureRecognizer:_longPressGesture];
-
-    _tapGesture = [UITapGestureRecognizer gestureWithTarget:self action:@selector(handleTap:)];
-    _tapGesture.numberOfTapsRequired    = 1;
-    _tapGesture.numberOfTouchesRequired = 1;
-    _tapGesture.delaysTouchesBegan      = NO;
-    _tapGesture.delegate                = self;
-    [self addGestureRecognizer:_tapGesture];
 }
 
 - (void)initializeViewFromModel
@@ -314,75 +333,73 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
     [self setNeedsDisplay];
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Key-value observing
+////////////////////////////////////////////////////////////////////////////////
+
+
 - (NSDictionary *)kvoRegistration
 {
     __strong NSDictionary * kvoRegistration =
-        @{/*
-           @"selected"    : MSMakeKVOHandler(
-                                             {
-                                                 REButtonView * buttonView = (__bridge REButtonView *)context;
-                                                 [(__bridge REButtonView *)context updateState];
-                                             }
-                                            ),
-           */
-           @"enabled"     : MSMakeKVOHandler(
-                                             {
-                                                 ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 BOOL enabled = [change[NSKeyValueChangeNewKey] boolValue];
-                                                 buttonView.enabled = enabled;
-                                             }
-                                            ),
-           /*
-           @"highlighted" : MSMakeKVOHandler(
-                                             {
-                                                 REButtonView * buttonView = (__bridge REButtonView *)context;
-                                                 [(__bridge REButtonView *)context updateState];
-                                             }
-                                            ),
-           */
-           @"command"     : MSMakeKVOHandler(
-                                             {
-                                                 ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 buttonView->_flags.activityIndicator = buttonView.model.command.indicator;
-                                             }
-                                            ),
-           @"style"       : MSMakeKVOHandler(
-                                             {
-                                                 ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 [buttonView setNeedsDisplay];
-                                             }
-                                            ),
-           @"title"       : MSMakeKVOHandler(
-                                             {
-                                                 ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 NSAttributedString * title = NilSafe(change[NSKeyValueChangeNewKey]);
-                                                 buttonView->_labelView.attributedText = title;
-                                             }
-                                            ),
-           @"image"       : MSMakeKVOHandler(
-                                             {
-//                                                 [(__bridge REButtonView *)context updateState];
-                                             }
-                                            ),
-           @"icon"        : MSMakeKVOHandler(
-                                             {
-                                                 ButtonView * buttonView = (__bridge ButtonView *)context;
-                                                 UIImage * icon = NilSafe(change[NSKeyValueChangeNewKey]);
-                                                 buttonView->_icon = icon;
-                                                 [buttonView setNeedsDisplay];
-                                             }
-                                            )
-        };
+        @{ @"selected" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   [(__bridge ButtonView *)context updateState];
+               }),
+
+           @"enabled" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   BOOL enabled = [change[NSKeyValueChangeNewKey] boolValue];
+                   buttonView.enabled = enabled;
+               }),
+           
+           @"highlighted" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   [(__bridge ButtonView *)context updateState];
+               }),
+
+           @"command" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   buttonView->_flags.activityIndicator = buttonView.model.command.indicator;
+               }),
+
+           @"style" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   [buttonView setNeedsDisplay];
+               }),
+
+           @"title" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   NSAttributedString * title = NilSafe(change[NSKeyValueChangeNewKey]);
+                   buttonView->_labelView.attributedText = title;
+               }),
+
+           @"image" :
+               MSMakeKVOHandler({ [(__bridge ButtonView *)context updateState]; }),
+
+           @"icon" :
+               MSMakeKVOHandler({
+                   ButtonView * buttonView = (__bridge ButtonView *)context;
+                   UIImage * icon = NilSafe(change[NSKeyValueChangeNewKey]);
+                   buttonView->_icon = icon;
+                   [buttonView setNeedsDisplay];
+               }) };
 
     return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }
 
-/*
-- (UIColor *)backgroundColor
-{
-    return self.model.backgroundColor;
-}
-*/
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Editing
+////////////////////////////////////////////////////////////////////////////////
+
 
 - (void)setEditingMode:(REEditingMode)editingMode
 {
@@ -390,6 +407,12 @@ static const int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTE
     _flags.commandsActive = (editingMode == REEditingModeNotEditing) ? YES : NO;
     [self updateGesturesEnabled:_flags.commandsActive];
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Drawing
+////////////////////////////////////////////////////////////////////////////////
+
 
 - (void)drawContentInContext:(CGContextRef)ctx inRect:(CGRect)rect
 {

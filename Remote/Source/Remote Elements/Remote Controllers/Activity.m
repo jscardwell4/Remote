@@ -15,7 +15,6 @@
 @interface Activity ()
 
 @property (nonatomic, strong, readonly) RemoteController  * controller;
-@property (nonatomic, copy, readwrite)  NSString            * name;
 
 @end
 
@@ -141,7 +140,6 @@
     [self willChangeValueForKey:@"controller"];
     self.primitiveController = controller;
     [self didChangeValueForKey:@"controller"];
-    if (controller && self.remote) [controller registerRemote:self.remote];
 }
 
 - (void)setRemote:(Remote *)remote
@@ -149,7 +147,6 @@
     [self willChangeValueForKey:@"remote"];
     self.primitiveRemote = remote;
     [self didChangeValueForKey:@"remote"];
-    if (remote && self.controller) [self.controller registerRemote:remote];
 }
 
 - (BOOL)updateName:(NSString *)name

@@ -16,6 +16,7 @@
 NSString * typeJSONValueForRemoteElement(RemoteElement * element);
 NSString * subtypeJSONValueForRemoteElement(RemoteElement * element);
 NSString * roleJSONValueForRemoteElement(RemoteElement * element);
+NSString * roleJSONValueForRERole(RERole role);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element State & Options

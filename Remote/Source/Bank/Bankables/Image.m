@@ -56,10 +56,17 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
         [self didChangeValueForKey:@"fileName"];
         self.size = image.size;
     }
+
+    else
+        ThrowInvalidArgument(fileName, "could not produce image for file");
 }
 
 
-- (UIImage *)image { return [UIImage imageNamed:self.fileName]; }
+- (UIImage *)image
+{
+    UIImage * image = [UIImage imageNamed:self.fileName];
+    return image;
+}
 
 - (UIImage *)imageWithColor:(UIColor *)color
 {
@@ -238,6 +245,18 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     dd[@"topCap"]            = $(@"%f", image.topCap);
     dd[@"size"]              = CGSizeString(image.size);
     return (MSDictionary *)dd;
+}
+
+- (NSString *)commentedUUID
+{
+    NSString * uuid = self.uuid;
+    if (uuid)
+    {
+        NSString * filename = self.fileName;
+        if (filename) uuid.comment = MSSingleLineComment(filename);
+    }
+
+    return uuid;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

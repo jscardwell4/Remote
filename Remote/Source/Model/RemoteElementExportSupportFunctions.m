@@ -12,10 +12,13 @@
 #import "Button.h"
 #import "Command.h"
 #import "CommandContainer.h"
+#import "CommandSet.h"
+#import "CommandSetCollection.h"
 #import "ControlStateSet.h"
 #import "ControlStateImageSet.h"
 #import "ControlStateTitleSet.h"
 #import "ControlStateColorSet.h"
+#import "RemoteElementKeys.h"
 #import "JSONObjectKeys.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
@@ -70,6 +73,11 @@ NSString * subtypeJSONValueForRemoteElement(RemoteElement * element)
 
 NSString * roleJSONValueForRemoteElement(RemoteElement * element)
 {
+    return (element ? roleJSONValueForRERole(element.role) : nil);
+}
+
+NSString * roleJSONValueForRERole(RERole role)
+{
     static NSDictionary const * index;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken,
@@ -83,7 +91,7 @@ NSString * roleJSONValueForRemoteElement(RemoteElement * element)
                          @(REButtonGroupRoleDPad)           : REButtonGroupRoleDPadJSONKey,
                          @(REButtonGroupRoleNumberpad)      : REButtonGroupRoleNumberpadJSONKey,
                          @(REButtonGroupRoleTransport)      : REButtonGroupRoleTransportJSONKey,
-                         @(REButtonGroupRoleRocker)    : REButtonGroupRoleRockerJSONKey,
+                         @(REButtonGroupRoleRocker)         : REButtonGroupRoleRockerJSONKey,
 
                          // toolbar buttons
                          @(REButtonRoleToolbar)             : REButtonRoleToolbarJSONKey,
@@ -91,8 +99,8 @@ NSString * roleJSONValueForRemoteElement(RemoteElement * element)
                          @(REButtonRoleBatteryStatus)       : REButtonRoleBatteryStatusJSONKey,
 
                          // picker label buttons
-                         @(REButtonRoleRockerTop)      : REButtonRoleRockerTopJSONKey,
-                         @(REButtonRoleRockerBottom)   : REButtonRoleRockerBottomJSONKey,
+                         @(REButtonRoleRockerTop)           : REButtonRoleRockerTopJSONKey,
+                         @(REButtonRoleRockerBottom)        : REButtonRoleRockerBottomJSONKey,
 
                          // panel buttons
                          @(REButtonRolePanel)               : REButtonRolePanelJSONKey,
@@ -132,7 +140,7 @@ NSString * roleJSONValueForRemoteElement(RemoteElement * element)
                          @(REButtonRoleTransportRecord)     : REButtonRoleTransportRecordJSONKey };
                   });
 
-    return (element ? index[@(element.role)] : nil);
+    return index[@(role)];
 }
 
 ////////////////////////////////////////////////////////////////////////////////

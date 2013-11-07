@@ -12,6 +12,9 @@
 #import "Button.h"
 #import "RemoteElementView.h"
 #import "ConfigurationDelegate.h"
+#import "RemoteConfigurationDelegate.h"
+#import "ButtonGroupConfigurationDelegate.h"
+#import "ButtonConfigurationDelegate.h"
 #import "ComponentDeviceConfiguration.h"
 //#import "BankObject.h"
 #import "CoreDataManager.h"
@@ -24,6 +27,8 @@
 #import "ControlStateColorSet.h"
 #import "Command.h"
 #import "CommandContainer.h"
+#import "CommandSet.h"
+#import "CommandSetCollection.h"
 #import "Theme.h"
 #import "Activity.h"
 

@@ -14,7 +14,7 @@
 #import "Image.h"
 #import "RemoteElement.h"
 #import "REFont.h"
-
+#import "RemoteElementKeys.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - RETheme Class Extension and Core Data Generated

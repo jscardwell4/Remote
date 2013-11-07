@@ -9,20 +9,26 @@
 #import <Foundation/Foundation.h>
 #import "MSKitProtocols.h"
 
+typedef void(^NSDictionaryEnumerationBlock)(id obj, id key, BOOL *stop);
+typedef BOOL(^NSDictionaryPredicateBlock)  (id obj, id key, BOOL *stop);
+typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
+
 @interface NSDictionary (MSKitAdditions) <MSJSONExport>
 
-+ (NSDictionary *)dictionaryFromDictionary:(NSDictionary *)dictionary
-                              replacements:(NSDictionary *)replacements;
++ (instancetype)dictionaryFromDictionary:(NSDictionary *)dictionary
+                            replacements:(NSDictionary *)replacements;
 
-- (NSDictionary *)dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary;
++ (instancetype)dictionaryWithSharedKeys:(NSArray *)keys;
 
-- (NSDictionary *)dictionaryByRemovingEntryForKey:(id<NSCopying>)key;
+- (instancetype)dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary;
 
-- (NSDictionary *)dictionaryByRemovingEntriesForKeys:(NSArray *)keys;
+- (instancetype)dictionaryByRemovingEntryForKey:(id<NSCopying>)key;
 
-- (NSDictionary *)dictionaryByMappingObjectsToBlock:(id (^)(id key, id obj))block;
+- (instancetype)dictionaryByRemovingEntriesForKeys:(NSArray *)keys;
 
-- (NSDictionary *)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block;
+- (instancetype)dictionaryByMappingObjectsToBlock:(id (^)(id key, id obj))block;
+
+- (instancetype)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block;
 
 - (BOOL)hasKey:(id)key;
 

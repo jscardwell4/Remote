@@ -168,8 +168,8 @@
     addIfCustom(self, dictionary, @"inputPowersOn", @(self.inputPowersOn));
     addIfCustom(self, dictionary, @"onCommand",     SelfKeyPathValue(@"onCommand.JSONDictionary"));
     addIfCustom(self, dictionary, @"offCommand",    SelfKeyPathValue(@"offCommand.JSONDictionary"));
-    addIfCustom(self, dictionary, @"manufacturer",  SelfKeyPathValue(@"manufacturer.uuid"));
-    addIfCustom(self, dictionary, @"networkDevice", SelfKeyPathValue(@"networkDevice.uuid"));
+    addIfCustom(self, dictionary, @"manufacturer",  SelfKeyPathValue(@"manufacturer.commentedUUID"));
+    addIfCustom(self, dictionary, @"networkDevice", SelfKeyPathValue(@"networkDevice.commentedUUID"));
     addIfCustom(self, dictionary, @"codes",         SelfKeyPathValue(@"codes.JSONDictionary"));
 
     [dictionary compact];

@@ -3,28 +3,28 @@
     {
       "idiom" : "iphone",
       "scale" : "1x",
-      "filename" : "Apple Wood~iphone.png"
+      "filename" : "AppleWood~iphone.png"
     },
     {
       "idiom" : "iphone",
       "scale" : "2x",
-      "filename" : "Apple Wood@2x~iphone.png"
+      "filename" : "AppleWood@2x~iphone.png"
     },
     {
       "idiom" : "iphone",
-      "filename" : "Apple Wood-568h@2x~iphone.png",
+      "filename" : "AppleWood-568h@2x~iphone.png",
       "subtype" : "retina4",
       "scale" : "2x"
     },
     {
       "idiom" : "ipad",
       "scale" : "1x",
-      "filename" : "Apple Wood~ipad.png"
+      "filename" : "AppleWood~ipad.png"
     },
     {
       "idiom" : "ipad",
       "scale" : "2x",
-      "filename" : "Apple Wood@2x~ipad.png"
+      "filename" : "AppleWood@2x~ipad.png"
     }
   ],
   "info" : {

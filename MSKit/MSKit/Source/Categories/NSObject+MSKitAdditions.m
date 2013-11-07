@@ -9,6 +9,7 @@
 #import "NSObject+MSKitAdditions.h"
 #import "NSString+MSKitAdditions.h"
 #import <objc/runtime.h>
+#import "MSKitLoggingFunctions.h"
 
 @implementation NSObject (MSKitAdditions)
 
@@ -66,5 +67,18 @@
 
 - (NSString *)classTag { return [NSString stringWithFormat:@"<%@:%p", self.className, self]; }
 
+static const char * MSObjectCommentKey = "MSObjectCommentKey";
+
+- (NSString *)comment { return objc_getAssociatedObject(self, (void *)MSObjectCommentKey); }
+
+- (void)setComment:(NSString *)comment
+{
+    objc_setAssociatedObject(self,
+                             (void *)MSObjectCommentKey,
+                             comment,
+                             OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)dumpIntrospection { dumpObjectIntrospection(self); }
 
 @end

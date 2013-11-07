@@ -5,53 +5,139 @@
 // Created by Jason Cardwell on 6/29/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
-
+#import "CommandSetCollection.h"
+#import "CommandSet.h"
 #import "CommandContainer_Private.h"
 
-static int ddLogLevel   = DefaultDDLogLevel;
-static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
+static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation CommandSetCollection
 
 @dynamic commandSets;
 
-- (void)setObject:(id)label forKeyedSubscript:(CommandSet *)commandSet
+
+/// Assigning a `CommandSet` to a label
+- (void)setObject:(CommandSet *)commandSet forKeyedSubscript:(NSString *)label
 {
-    assert(label && commandSet);
-    if (!(isAttributedStringKind(label) || isStringKind(label)))
-        ThrowInvalidArgument(label, must be some kind of string);
+    if (!commandSet) ThrowInvalidNilArgument(commandSet);
+    else if (!label) ThrowInvalidNilArgument(label);
 
     else
     {
         [self addCommandSetsObject:commandSet];
-        NSMutableDictionary * index = [self.index mutableCopy];
-        index[commandSet.uuid] = ([label isKindOfClass:[NSAttributedString class]]
-                                  ? label
-                                  : [NSAttributedString attributedStringWithString:label]);
-        self.index = [NSDictionary dictionaryWithDictionary:index];
+        _index[label] = commandSet.uuid;
     }
 }
 
-- (NSAttributedString *)objectForKeyedSubscript:(CommandSet *)commandSet
+/// Retrieving the label for a `CommandSet`
+- (NSString *)labelForCommandSet:(CommandSet *)commandSet
 {
-    assert(commandSet);
-    return (NSAttributedString *)self.index[commandSet.uuid];
+    return [_index keyForObject:commandSet.uuid];
 }
 
-- (void)setObject:(CommandSet *)commandSet atIndexedSubscript:(NSUInteger)idx
+/// Retrieving the `CommandSet` for a label
+- (CommandSet *)objectForKeyedSubscript:(NSString *)label
 {
-    NSUInteger currentCount = [self.commandSets count];
-    if (commandSet && currentCount > idx) [self insertObject:commandSet inCommandSetsAtIndex:idx];
-    else if (commandSet && currentCount == idx) [self addCommandSetsObject:commandSet];
+    if (!label) ThrowInvalidNilArgument(label);
+
+    return [CommandSet objectWithUUID:_index[label] context:self.managedObjectContext];
 }
 
-- (CommandSet *)objectAtIndexedSubscript:(NSUInteger)idx
+- (void)insertCommandSet:(CommandSet *)commandSet forLabel:(NSString *)label atIndex:(NSUInteger)index
 {
-    return ([self.commandSets count] > idx ? self.commandSets[idx] : nil);
+    if (!commandSet) ThrowInvalidNilArgument(commandSet);
+    else if (!label) ThrowInvalidNilArgument(label);
+    else if (index >= self.count) ThrowInvalidIndexArgument(index);
+    else
+    {
+        [self insertObject:commandSet inCommandSetsAtIndex:index];
+        [_index insertObject:commandSet.uuid forKey:label atIndex:index];
+    }
 }
+
+- (CommandSet *)commandSetAtIndex:(NSUInteger)idx
+{
+    NSOrderedSet * commandSets = self.commandSets;
+    if ([commandSets count] <= idx) ThrowInvalidIndexArgument(idx);
+    
+    return commandSets[idx];
+}
+
+- (NSString *)labelAtIndex:(NSUInteger)index
+{
+    if (index >= self.count) ThrowInvalidIndexArgument(index);
+    else
+        return [_index keyAtIndex:index];
+}
+
+- (NSArray *)labels { return [_index allKeys]; }
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+                                  objects:(__unsafe_unretained id *)stackbuf
+                                    count:(NSUInteger)len
+{
+    return [_index countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Import and export
+////////////////////////////////////////////////////////////////////////////////
+
++ (id)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+{
+    if (!context) ThrowInvalidNilArgument(context);
+    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
+
+    CommandSetCollection * collection = [self commandContainerInContext:context];
+    assert(collection.count == 0);
+
+    for (NSString * label in data)
+    {
+        if (!isStringKind(label)) continue;
+
+        CommandSet * commandSet = [CommandSet MR_importFromObject:data[label] inContext:context];
+
+        if (commandSet) collection[label] = commandSet;
+    }
+
+    return collection;
+}
+
+- (MSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [super JSONDictionary];
+    [dictionary removeObjectForKey:@"uuid"];
+
+    for (NSString * label in _index)
+    {
+        CommandSet * commandSet = self[label];
+        if (commandSet) dictionary[label] = CollectionSafe(commandSet.JSONDictionary);
+    }
+
+    [dictionary compact];
+    [dictionary compress];
+    
+    return dictionary;
+}
+
 
 @end
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Accessors
+////////////////////////////////////////////////////////////////////////////////
+
+
+@interface CommandSetCollection (CoreDataGeneratedAccessors)
+
+@property (nonatomic, strong) NSMutableOrderedSet * primitiveCommandSets;
+
+@end
+
 
 @implementation CommandSetCollection (CommandSetAccessors)
 
@@ -61,7 +147,7 @@ MSSTATIC_STRING_CONST kCommandSetsKey = @"commandSets";
 {
     NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:index];
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [[self primitiveCommandSets] insertObject:value atIndex:index];
+    [self.primitiveCommandSets insertObject:value atIndex:index];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
@@ -69,21 +155,21 @@ MSSTATIC_STRING_CONST kCommandSetsKey = @"commandSets";
 {
     NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:index];
     [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [[self primitiveCommandSets] removeObjectAtIndex:index];
+    [self.primitiveCommandSets removeObjectAtIndex:index];
     [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
 - (void)insertCommandSets:(NSArray *)values atIndexes:(NSIndexSet *)indexes
 {
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [[self primitiveCommandSets] insertObjects:values atIndexes:indexes];
+    [self.primitiveCommandSets insertObjects:values atIndexes:indexes];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
 - (void)removeCommandSetsAtIndexes:(NSIndexSet *)indexes
 {
     [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [[self primitiveCommandSets] removeObjectsAtIndexes:indexes];
+    [self.primitiveCommandSets removeObjectsAtIndexes:indexes];
     [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
@@ -91,32 +177,32 @@ MSSTATIC_STRING_CONST kCommandSetsKey = @"commandSets";
 {
     NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:index];
     [self willChange:NSKeyValueChangeReplacement valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [self primitiveCommandSets][index] = value;
+    self.primitiveCommandSets[index] = value;
     [self didChange:NSKeyValueChangeReplacement valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
 - (void)replaceCommandSetsAtIndexes:(NSIndexSet *)indexes withCommandSets:(NSArray *)values
 {
     [self willChange:NSKeyValueChangeReplacement valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [[self primitiveCommandSets] replaceObjectsAtIndexes:indexes withObjects:values];
+    [self.primitiveCommandSets replaceObjectsAtIndexes:indexes withObjects:values];
     [self didChange:NSKeyValueChangeReplacement valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
 - (void)addCommandSetsObject:(CommandSet *)value
 {
-    NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:[[self primitiveCommandSets] count]];
+    NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:[self.primitiveCommandSets count]];
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
-    [[self primitiveCommandSets] addObject:value];
+    [self.primitiveCommandSets addObject:value];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
 }
 
 - (void)removeCommandSetsObject:(CommandSet *)value
 {
-    NSUInteger   index = [[self primitiveCommandSets] indexOfObject:value];
+    NSUInteger   index = [self.primitiveCommandSets indexOfObject:value];
     if (index != NSNotFound) {
         NSIndexSet * indexes = [NSIndexSet indexSetWithIndex:index];
         [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
-        [[self primitiveCommandSets] removeObject:value];
+        [self.primitiveCommandSets removeObject:value];
         [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
     }
 }
@@ -125,16 +211,16 @@ MSSTATIC_STRING_CONST kCommandSetsKey = @"commandSets";
 {
     if ([values count]) {
         NSIndexSet * indexes = [NSIndexSet indexSetWithIndexesInRange:
-                                NSMakeRange([[self primitiveCommandSets] count], [values count])];
+                                NSMakeRange([self.primitiveCommandSets count], [values count])];
         [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
-        [[self primitiveCommandSets] addObjectsFromArray:[values array]];
+        [self.primitiveCommandSets addObjectsFromArray:[values array]];
         [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:kCommandSetsKey];
     }
 }
 
 - (void)removeCommandSets:(NSOrderedSet *)values
 {
-    NSIndexSet * indexes = [[self primitiveCommandSets]
+    NSIndexSet * indexes = [self.primitiveCommandSets
                             indexesOfObjectsPassingTest:
                             ^BOOL(id obj, NSUInteger index, BOOL *stop)
                             {
@@ -143,10 +229,9 @@ MSSTATIC_STRING_CONST kCommandSetsKey = @"commandSets";
 
     if ([indexes count]) {
         [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
-        [[self primitiveCommandSets] removeObjectsAtIndexes:indexes];
+        [self.primitiveCommandSets removeObjectsAtIndexes:indexes];
         [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:kCommandSetsKey];
     }
 }
-
 
 @end

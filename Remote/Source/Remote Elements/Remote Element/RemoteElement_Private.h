@@ -49,53 +49,12 @@
 @end
 
 
-@interface Remote ()
-
-@property (nonatomic, strong, readonly)  RemoteController * controller;
-@property (nonatomic, strong, readwrite) NSDictionary     * panels;
-
-@end
-
-@interface Remote (CoreDataGeneratedAccessors)
-
-@property (nonatomic) RemoteController * primitiveController;
-@property (nonatomic) NSDictionary       * primitivePanels;
-
-@end
-
-@interface ButtonGroup ()
-
-@property (nonatomic, strong, readwrite) Remote           * parentElement;
-@property (nonatomic, weak,   readonly)  RemoteController * controller;
-
-@end
-
-@class ControlStateButtonImageSetProxy,
-       ControlStateColorSetProxy,
-       ControlStateIconImageSetProxy,
-       ControlStateTitleSetProxy;
-
-@interface Button ()
-
-@property (nonatomic, strong, readwrite) ButtonGroup      * parentElement;
-@property (nonatomic, weak,   readonly)  RemoteController * controller;
-
-@end
-
-@interface Button (CoreDataGeneratedAccessors)
-
-@property (nonatomic) Command   * primitiveCommand;
-@property (nonatomic) NSValue   * primitiveTitleEdgeInsets;
-@property (nonatomic) NSValue   * primitiveImageEdgeInsets;
-@property (nonatomic) NSValue   * primitiveContentEdgeInsets;
-
-@end
-
-
 #import "RemoteController.h"
 #import "Bankables.h"
 #import "Command.h"
 #import "CommandContainer.h"
+#import "CommandSet.h"
+#import "CommandSetCollection.h"
 #import "ConfigurationDelegate.h"
 #import "ControlStateSet.h"
 #import "ControlStateImageSet.h"
@@ -105,3 +64,5 @@
 #import "Theme.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "RemoteElementKeys.h"
+#import "JSONObjectKeys.h"

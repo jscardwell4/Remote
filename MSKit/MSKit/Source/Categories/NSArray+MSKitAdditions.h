@@ -9,6 +9,11 @@
 #import "MSKitDefines.h"
 #import "MSKitProtocols.h"
 
+typedef void(^NSArrayEnumerationBlock)(id obj, NSUInteger idx, BOOL *stop);
+typedef BOOL(^NSArrayPredicateBlock)  (id obj, NSUInteger idx, BOOL *stop);
+typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
+
+
 @interface NSArray (MSKitAdditions) <MSJSONExport>
 
 + (NSArray *)arrayFromRange:(NSRange)range;

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+find Glyphish.xcassets/ -regex ".*/[0-9][0-9]*[^/]*\.imageset" | sed -e "s/.*\/\([0-9][0-9]*[^.]*\)\.imageset/\1/" | sort -n > Glyphish\ Icons.txt

@@ -25,9 +25,12 @@
 
 + (NSArray *)propertyList;
 
+- (void)dumpIntrospection;
+
 @property (nonatomic, readonly) id         JSONValue;
 @property (nonatomic, readonly) NSString * shortDescription;
 @property (nonatomic, readonly) NSString * className;
 @property (nonatomic, readonly) NSString * classTag;
+@property (nonatomic, copy)     NSString * comment;
 
 @end

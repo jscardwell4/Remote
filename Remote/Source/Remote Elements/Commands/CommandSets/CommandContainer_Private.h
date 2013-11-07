@@ -9,36 +9,22 @@
 #import "CommandContainer.h"
 
 @interface CommandContainer ()
+{
+@protected
+    MSDictionary * _index;
+}
 
-@property (nonatomic, strong) NSDictionary * index;
+@property (nonatomic, strong) MSDictionary * index;
 
 @end
 
 @interface CommandContainer (CoreDataGeneratedAccessors)
 
-@property (nonatomic, strong)  NSDictionary * primitiveIndex;
-
-@end
-
-@interface CommandSet ()
-
-@property (nonatomic, readwrite) CommandSetType   type;
-@property (nonatomic, strong)    NSSet            * commands;
-@property (nonatomic, strong)    ButtonGroup    * buttonGroup;
-
-@end
-
-@interface CommandSet (CoreDataGeneratedAccessors)
-
-@property (nonatomic, strong) NSMutableSet  * primitiveCommands;
-@property (nonatomic, strong) ButtonGroup * primitiveButtonGroup;
-@property (nonatomic, strong) NSNumber      * primitiveType;
+@property (nonatomic, strong)  MSDictionary * primitiveIndex;
 
 @end
 
 
-@interface CommandSetCollection (CoreDataGeneratedAccessors)
-
-@property (nonatomic, strong) NSMutableOrderedSet * primitiveCommandSets;
-
-@end
+#import "RemoteElementExportSupportFunctions.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "JSONObjectKeys.h"

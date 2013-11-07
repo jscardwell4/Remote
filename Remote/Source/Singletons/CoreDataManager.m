@@ -31,8 +31,8 @@ typedef NS_OPTIONS (NSUInteger, CoreDataObjectRemovalOptions) {
 static MagicalRecordStack * kDefaultStack;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int   msLogContext = (LOG_CONTEXT_COREDATA|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
-static const int   magicalRecordContext = (LOG_CONTEXT_MAGICALRECORD);//|LOG_CONTEXT_CONSOLE);
+static const int msLogContext = (LOG_CONTEXT_COREDATA|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static const int magicalRecordContext = (LOG_CONTEXT_MAGICALRECORD);//|LOG_CONTEXT_CONSOLE);
 
 struct DatabaseFlags_s {
     NSUInteger   objectRemoval;

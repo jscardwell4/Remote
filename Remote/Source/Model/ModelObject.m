@@ -111,12 +111,21 @@ BOOL UUIDIsValid(NSString * uuid)
 - (NSString *)JSONString { return [self.JSONDictionary JSONString]; }
 
 
-- (MSDictionary *)JSONDictionary { assert(self.uuid); return [MSDictionary dictionaryWithObject:self.uuid
-                                                                                         forKey:@"uuid"]; }
+- (MSDictionary *)JSONDictionary
+{
+    assert(self.uuid);
+    return [MSDictionary dictionaryWithObject:self.uuid forKey:@"uuid"];
+}
 
 - (id)JSONObject { return [self.JSONDictionary JSONObject]; }
 
 @end
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Functions
+////////////////////////////////////////////////////////////////////////////////
+
 
 ModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid)
 {

@@ -515,9 +515,9 @@ static inline NSString * NSStringFromSystemCommandType(SystemCommandType type)
     switch (type)
     {
         case SystemCommandOpenEditor: 			 return @"SystemCommandOpenEditor";
-        case SystemCommandOpenSettings: 	     return @"SystemCommandOpenSettings";
-        case SystemCommandLaunchScreen:  return @"SystemCommandLaunchScreen";
-        case SystemCommandProximitySensor: return @"SystemCommandProximitySensor";
+        case SystemCommandOpenSettings: 	         return @"SystemCommandOpenSettings";
+        case SystemCommandLaunchScreen:          return @"SystemCommandLaunchScreen";
+        case SystemCommandProximitySensor:       return @"SystemCommandProximitySensor";
         case SystemCommandURLRequest:  			 return @"SystemCommandURLRequest";
         default:  							 	 return nil;
     }
@@ -541,11 +541,11 @@ static inline NSString * NSStringFromSwitchCommandType(SwitchCommandType type)
 
 typedef NS_ENUM(uint8_t, CommandSetType)
 {
-    CommandSetTypeUnspecified = 0,
-    CommandSetTypeDPad		  = 1,
-    CommandSetTypeTransport	  = 2,
-    CommandSetTypeNumberpad	  = 3,
-    CommandSetTypeRocker	  = 4
+    CommandSetTypeUnspecified = RERoleUndefined,
+    CommandSetTypeDPad		  = REButtonGroupRoleDPad,
+    CommandSetTypeTransport	  = REButtonGroupRoleTransport,
+    CommandSetTypeNumberpad	  = REButtonGroupRoleNumberpad,
+    CommandSetTypeRocker	      = REButtonGroupRoleRocker
 };
 
 typedef void (^ CommandCompletionHandler)(BOOL success, NSError *);
@@ -687,5 +687,3 @@ typedef NS_ENUM(uint8_t, RELayoutConfigurationDependencyType)
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef NSString * RERemoteMode;
-
-

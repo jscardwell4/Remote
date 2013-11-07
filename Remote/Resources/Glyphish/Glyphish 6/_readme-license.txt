@@ -1,5 +1,5 @@
-GLYPHISH 6 - 200 GREAT THIN ICONS
-(revision 1, 17 July 2013)
+GLYPHISH 6 - 200 GREAT OUTLINE ICONS for IOS 7
+(revision 2, 18 October 2013)
 Created by Joseph Wain, 2010 – 2013
 Web: http://www.glyphish.com or http://www.penandthink.com
 Twitter: @glyphish or @jpwain

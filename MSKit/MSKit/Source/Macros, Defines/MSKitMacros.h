@@ -58,7 +58,11 @@
 #define MSNAME_DEFINITION(n)         MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Name))
 #define MSNOTIFICATION_DEFINITION(n) MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Notification))
 #define MSIDENTIFIER_DEFINITION(n)   MSTOKEN_TO_STRING_DEFINITION(__CONCAT(n,Identifier))
+
+#define MSSTATIC_KEY(n)              MSTOKEN_TO_STATIC_STRING_DEFINITION(__CONCAT(n,Key))
 #define MSSTATIC_NAMETAG(n)          MSTOKEN_TO_STATIC_STRING_DEFINITION(__CONCAT(n,Nametag))
+#define MSSTATIC_NAME(n)             MSTOKEN_TO_STATIC_STRING_DEFINITION(__CONCAT(n,Name))
+#define MSSTATIC_NOTIFICATION(n)     MSTOKEN_TO_STATIC_STRING_DEFINITION(__CONCAT(n,Notification))
 #define MSSTATIC_IDENTIFIER(n)       MSTOKEN_TO_STATIC_STRING_DEFINITION(__CONCAT(n,Identifier))
 
 #define MSEXTERN_KEY(k)          MSEXTERN_STRING __CONCAT(k,Key)
@@ -66,6 +70,9 @@
 #define MSEXTERN_NAME(n)         MSEXTERN_STRING __CONCAT(n,Name)
 #define MSEXTERN_NOTIFICATION(n) MSEXTERN_STRING __CONCAT(n,Notification)
 #define MSEXTERN_IDENTIFIER(i)   MSEXTERN_STRING __CONCAT(i,Identifier)
+
+#define MSSingleLineComment(COMMENT) [@" // " stringByAppendingString:COMMENT]
+#define MSMultiLineComment(COMMENT) [NSString stringWithFormat:@" /* %@ */", COMMENT]
 
 #define SuppressWarning(warning, block)                      \
     {                                                        \

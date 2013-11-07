@@ -8,6 +8,9 @@
 
 #import "ControlStateColorSet.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
+#import "JSONObjectKeys.h"
 
 @implementation ControlStateColorSet
 
@@ -36,6 +39,30 @@
     dd[@"selectedHighlightedAndDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedAndDisabled"]);
 
     return (MSDictionary *)dd;
+}
+
++ (instancetype)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+{
+    ControlStateColorSet * colorSet = nil;
+
+    if (!context) ThrowInvalidNilArgument(context);
+    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some form of dictionary");
+
+    else
+    {
+        colorSet = [self MR_createInContext:context];
+        [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:
+         ^(id key, id obj, BOOL *stop)
+         {
+             if ([ControlStateSet validState:key])
+             {
+                 UIColor * color = colorFromImportValue(obj);
+                 if (color) colorSet[key] = color;
+             }
+         }];
+    }
+
+    return colorSet;
 }
 
 - (MSDictionary *)JSONDictionary

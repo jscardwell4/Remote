@@ -17,6 +17,22 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 static const NSSet * kConfigurationDelegateSelectors;
 static const NSSet * kConfigurationDelegateKeys;
 
+@interface Button ()
+
+@property (nonatomic, strong, readwrite) ButtonGroup      * parentElement;
+@property (nonatomic, weak,   readonly)  RemoteController * controller;
+
+@end
+
+@interface Button (CoreDataGeneratedAccessors)
+
+@property (nonatomic) Command   * primitiveCommand;
+@property (nonatomic) NSValue   * primitiveTitleEdgeInsets;
+@property (nonatomic) NSValue   * primitiveImageEdgeInsets;
+@property (nonatomic) NSValue   * primitiveContentEdgeInsets;
+
+@end
+
 @implementation Button
 
 // modeled properties

@@ -1,0 +1,70 @@
+#!/opt/local/bin/python3.3
+import argparse
+import glob
+import uuid
+import copy
+import os
+import re
+
+json_file_string = '['
+
+def add_image_set(image_set, category):
+    
+    global json_file_string
+
+    # create first part of entry
+    image_set_json = '\n' + ' ' * 4 + '{\n' + ' ' * 8
+    
+    # add uuid
+    uuid_value = str(uuid.uuid4()).upper()
+    image_set_json += '"uuid": "' + str(uuid.uuid4()).upper() + '",\n' + ' ' * 8
+        
+    # add info
+    image_set_json += '"info": {\n' + ' ' * 12
+    
+    image_set_name = os.path.basename(image_set[:-9])
+    # TODO: regex match to reformat name
+    image_set_pretty_name = re.sub(r'(?<=[^ ])-(?=[^ ])', ' ', re.sub(r'^[0-9]+-', '', image_set_name)).title()
+    image_set_pretty_name = re.sub(r'(?:White )|(?:Gray )|(?: Selected)', '', image_set_pretty_name)
+    image_set_json += '"name": "' + image_set_pretty_name + '",\n' + ' ' * 12
+        
+    # create category value
+    category_value = '/'.join(category) if len(category) > 0 else 'Default'
+    image_set_json += '"category": "' + category_value + '"\n' + ' ' * 8 + '},\n' + ' ' * 8
+
+    # add file name
+    image_set_json += '"fileName": "' + image_set_name + '.png"\n' + ' ' * 4 + '},'
+    
+    json_file_string += image_set_json
+
+def process_directory(directory, category):
+
+    # get the directory listing
+    directories = glob.glob(directory+'/*')
+    
+    # look for directory with 'imageset' suffix
+    for subdirectory in directories:
+    
+        if subdirectory.endswith('imageset'):
+        # add entry for image set
+            add_image_set(subdirectory, category)
+            
+        else:
+        # add to category path and parse subdirectory
+            subcategory = copy.copy(category)
+            subcategory.append(os.path.basename(subdirectory))
+            process_directory(subdirectory, subcategory)
+
+# parse command line for xcassets
+parser = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('xcassets', help="Path to Xcode assets to fix")
+args = parser.parse_args()
+
+# recursively build from xcassets root
+process_directory(args.xcassets, [])
+
+json_file_string = json_file_string[:-1]
+json_file_string += '\n]\n'
+
+print(json_file_string)

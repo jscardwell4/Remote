@@ -13,12 +13,26 @@ static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_REMOTE;
 #pragma unused(ddLogLevel, msLogContext)
 
+
+@interface Remote ()
+
+@property (nonatomic, strong, readwrite) NSDictionary     * panels;
+
+@end
+
+@interface Remote (CoreDataGeneratedAccessors)
+
+@property (nonatomic) NSDictionary       * primitivePanels;
+
+@end
+
+
 @implementation Remote
 {
     BOOL _pendingPanels;
 }
 
-@dynamic controller, panels;
+@dynamic panels;
 
 - (void)awakeFromInsert
 {
@@ -117,8 +131,6 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
     if (_pendingPanels) [self importPanels:data[@"panels"]];
 }
 
-- (BOOL)shouldImportController:(id)data {return NO;}
-
 - (void)importPanels:(NSDictionary *)data
 {
     if (!_importStatus.pendingSubelements && _pendingPanels)
@@ -147,12 +159,19 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 {
     MSDictionary * dictionary = [super JSONDictionary];
     if ([self.panels count])
-        dictionary[@"panels"] = [self.panels dictionaryByMappingKeysToBlock:
-                                 ^NSString *(NSNumber * key, id obj)
-                                 {
-                                     NSString * keyString = panelKeyForPanelAssignment(IntValue(key));
-                                     return (keyString ?: [key stringValue]);
-                                 }];
+    {
+        MSDictionary * panels = [MSDictionary dictionary];
+        for (NSNumber * key in self.panels)
+        {
+            REPanelAssignment panelAssignment = IntValue(key);
+            NSString * keyString = panelKeyForPanelAssignment(panelAssignment);
+            ButtonGroup * buttonGroup = [self buttonGroupForAssignment:panelAssignment];
+            NSString * uuid = buttonGroup.commentedUUID;
+            if (keyString && uuid) panels[keyString] = uuid;
+        }
+
+        dictionary[@"panels"] = ([panels count] ? panels : NullObject);
+    }
 
     NSMutableArray * modes = [self.modes mutableCopy];
     [modes removeObject:REDefaultMode];

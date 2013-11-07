@@ -6,95 +6,90 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 
+#import "CommandSet.h"
 #import "CommandContainer_Private.h"
 #import "Command.h"
-//#import "BankObject.h"
+#import "ButtonGroup.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
-static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
+static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel,msLogContext)
 
-static const NSDictionary * kValidKeysets;
+@interface CommandSet ()
+
+@property (nonatomic, readwrite) CommandSetType   type;
+@property (nonatomic, strong)    NSSet          * commands;
+@property (nonatomic, strong)    ButtonGroup    * buttonGroup;
+
+@end
+
+@interface CommandSet (CoreDataGeneratedAccessors)
+
+- (void)addCommandsObject:(Command *)value;
+- (void)removeCommandsObject:(Command *)value;
+- (void)addCommands:(NSSet *)values;
+- (void)removeCommands:(NSSet *)values;
+
+@property (nonatomic, strong) NSMutableSet  * primitiveCommands;
+@property (nonatomic, strong) ButtonGroup   * primitiveButtonGroup;
+@property (nonatomic, strong) NSNumber      * primitiveType;
+
+@end
+
+
+NSArray * sharedKeysForType(CommandSetType type)
+{
+    static NSDictionary const * index = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken,
+                  ^{
+                      index = @{ @(CommandSetTypeDPad):
+                                     @[@(REButtonRoleDPadCenter),
+                                       @(REButtonRoleDPadUp),
+                                       @(REButtonRoleDPadDown),
+                                       @(REButtonRoleDPadLeft),
+                                       @(REButtonRoleDPadRight)],
+
+                                 @(CommandSetTypeNumberpad):
+                                     @[@(REButtonRoleNumberpad1),
+                                       @(REButtonRoleNumberpad2),
+                                       @(REButtonRoleNumberpad3),
+                                       @(REButtonRoleNumberpad4),
+                                       @(REButtonRoleNumberpad5),
+                                       @(REButtonRoleNumberpad6),
+                                       @(REButtonRoleNumberpad7),
+                                       @(REButtonRoleNumberpad8),
+                                       @(REButtonRoleNumberpad9),
+                                       @(REButtonRoleNumberpad0),
+                                       @(REButtonRoleNumberpadAux1),
+                                       @(REButtonRoleNumberpadAux2)],
+
+                                 @(CommandSetTypeRocker):
+                                     @[@(REButtonRoleRockerTop),
+                                       @(REButtonRoleRockerBottom)],
+
+                                 @(CommandSetTypeTransport):
+                                     @[@(REButtonRoleTransportPlay),
+                                       @(REButtonRoleTransportPause),
+                                       @(REButtonRoleTransportStop),
+                                       @(REButtonRoleTransportRecord),
+                                       @(REButtonRoleTransportSkip),
+                                       @(REButtonRoleTransportReplay),
+                                       @(REButtonRoleTransportFF),
+                                       @(REButtonRoleTransportRewind)] };
+                  });
+
+    return index[@(type)];
+}
 
 @implementation CommandSet
 
 @dynamic buttonGroup, commands;
 
-+ (void)initialize
-{
-    if (self == [CommandSet class])
-    {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            kValidKeysets =
-            @{
-                @(CommandSetTypeDPad):
-                    [@[@(REButtonRoleDPadCenter),
-                       @(REButtonRoleDPadUp),
-                       @(REButtonRoleDPadDown),
-                       @(REButtonRoleDPadLeft),
-                       @(REButtonRoleDPadRight)] set],
-
-                @(CommandSetTypeNumberpad):
-                    [@[@(REButtonRoleNumberpad1),
-                       @(REButtonRoleNumberpad2),
-                       @(REButtonRoleNumberpad3),
-                       @(REButtonRoleNumberpad4),
-                       @(REButtonRoleNumberpad5),
-                       @(REButtonRoleNumberpad6),
-                       @(REButtonRoleNumberpad7),
-                       @(REButtonRoleNumberpad8),
-                       @(REButtonRoleNumberpad9),
-                       @(REButtonRoleNumberpad0),
-                       @(REButtonRoleNumberpadAux1),
-                       @(REButtonRoleNumberpadAux2)] set],
-
-                @(CommandSetTypeRocker):
-                    [@[@(REButtonRoleRockerTop),
-                       @(REButtonRoleRockerBottom)] set],
-
-                @(CommandSetTypeTransport):
-                    [@[@(REButtonRoleTransportPlay),
-                       @(REButtonRoleTransportPause),
-                       @(REButtonRoleTransportStop),
-                       @(REButtonRoleTransportRecord),
-                       @(REButtonRoleTransportSkip),
-                       @(REButtonRoleTransportReplay),
-                       @(REButtonRoleTransportFF),
-                       @(REButtonRoleTransportRewind)] set]
-            };
-        });
-    }
-}
-
 + (instancetype)commandSetWithType:(CommandSetType)type
 {
-    CommandSet * commandSet = [self MR_createEntity];
-    commandSet.type = type;
-    return commandSet;
+    return [self commandSetInContext:[CoreDataManager defaultContext] type:type];
 }
-
-+ (instancetype)commandSetWithType:(CommandSetType)type
-                              name:(NSString *)name
-                            values:(NSDictionary *)values
-{
-    CommandSet * commandSet = [self commandSetWithType:type];
-    commandSet.name = name;
-    for (id<NSCopying> key in values) commandSet[key] = values[key];
-    return commandSet;
-}
-
-+ (instancetype)commandSetInContext:(NSManagedObjectContext *)context
-                           withType:(CommandSetType)type
-                               name:(NSString *)name
-                             values:(NSDictionary *)values
-{
-    CommandSet * commandSet = [self commandSetInContext:context type:type];
-    commandSet.name = name;
-    for (id<NSCopying> key in values) commandSet[key] = values[key];
-    return commandSet;
-}
-
 
 + (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(CommandSetType)type
 {
@@ -103,23 +98,27 @@ static const NSDictionary * kValidKeysets;
      ^{
          commandSet = [self commandContainerInContext:context];
          commandSet.type = type;
+         NSArray * sharedKeys = sharedKeysForType(type);
+         if (sharedKeys)
+             commandSet.primitiveIndex = [MSDictionary dictionaryWithSharedKeys:sharedKeys];
      }];
     return commandSet;
 }
 
 - (void)setObject:(Command *)command forKeyedSubscript:(NSString *)key
 {
-    if ([kValidKeysets[self.primitiveType] containsObject:key])
-    {
-        NSMutableDictionary * index = [self.index mutableCopy];
-        index[key] = [command permanentURI];
-        self.index = [NSDictionary dictionaryWithDictionary:index];
-    }
+    if (!command) ThrowInvalidNilArgument(command);
+    else if (![_index isValidKey:key]) ThrowInvalidArgument(key, "is not valid for this command set");
+
+    [self addCommandsObject:command];
+    _index[key] = [command permanentURI];
 }
 
 - (Command *)objectForKeyedSubscript:(id<NSCopying>)key
 {
-    return (Command *)[self.managedObjectContext objectForURI:self.index[key]];
+    return ([_index isValidKey:key]
+            ? [Command objectForURI:_index[key] context:self.managedObjectContext]
+            : nil);
 }
 
 - (CommandSetType)type
@@ -135,6 +134,69 @@ static const NSDictionary * kValidKeysets;
     [self willChangeValueForKey:@"type"];
     self.primitiveType = @(type);
     [self didChangeValueForKey:@"type"];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Import and export
+////////////////////////////////////////////////////////////////////////////////
+
+
++ (id)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+{
+    if (!context) ThrowInvalidNilArgument(context);
+    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
+
+    NSString * typeString = data[CommandSetTypeJSONKey];
+    CommandSetType type = commandSetTypeFromImportKey(typeString);
+    if (!type) return nil;
+
+    CommandSet * commandSet = [CommandSet commandSetInContext:context type:type];
+    if (!commandSet) return nil;
+
+    for (NSString * key in data)
+    {
+        if ([key isEqualToString:CommandSetTypeJSONKey]) continue;
+
+        RERole buttonRole = remoteElementRoleFromImportKey(key);
+        if (!(type & buttonRole)) continue;
+
+        NSDictionary * commandData = data[key];
+        if (!isDictionaryKind(commandData)) continue;
+
+        Class commandClass = commandClassForImportKey(commandData[@"class"]);
+        if (!commandClass) continue;
+
+        Command * command = [commandClass MR_importFromObject:commandData inContext:context];
+
+        if (command) commandSet[@(buttonRole)] = command;
+    }
+
+    return commandSet;
+}
+
+- (MSDictionary *)JSONDictionary
+{
+    MSDictionary * dictionary = [super JSONDictionary];
+    [dictionary removeObjectForKey:@"uuid"];
+
+    dictionary[CommandSetTypeJSONKey] = CollectionSafe(commandSetTypeJSONValueForCommandSet(self));
+
+    for (NSNumber * key in _index)
+    {
+        NSString * jsonKey = roleJSONValueForRERole(UnsignedShortValue(key));
+        assert(jsonKey);
+
+        Command * command = [Command objectForURI:_index[key] context:self.managedObjectContext];
+        assert(command);
+
+        dictionary[jsonKey] = CollectionSafe(command.JSONDictionary);
+    }
+
+    [dictionary compact];
+    [dictionary compress];
+
+    return dictionary;
 }
 
 @end

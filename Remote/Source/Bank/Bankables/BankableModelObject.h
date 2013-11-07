@@ -6,12 +6,13 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import "ModelObject.h"
+#import "NamedModelObject.h"
 #import "Bank.h"
 
-@interface BankableModelObject : ModelObject<Bankable>
+@interface BankableModelObject : NamedModelObject<Bankable>
 
 @property (nonatomic, strong, readonly) BankInfo * info;
+
 + (NSFetchedResultsController *)bankableItems;
 
 @end

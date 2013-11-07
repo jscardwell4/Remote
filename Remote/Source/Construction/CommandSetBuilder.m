@@ -12,6 +12,7 @@
 
 @end
 
+/*
 @implementation CommandSetBuilder (Developer)
 
 + (CommandSet *)avReceiverVolumeCommandSet:(NSManagedObjectContext *)moc
@@ -285,3 +286,5 @@
 }
 
 @end
+*/
+

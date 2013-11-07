@@ -5,13 +5,12 @@
 //  Created by Jason Cardwell on 4/10/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import "ModelObject.h"
+#import "NamedModelObject.h"
 @class REActivityButton, Remote, RemoteController, MacroCommand;
 
-@interface Activity : ModelObject <NamedModelObject>
+@interface Activity : NamedModelObject
 
-@property (nonatomic, strong)           Remote * remote;
-@property (nonatomic, copy, readonly)   NSString * name;
+@property (nonatomic, strong) Remote   * remote;
 
 /**
  * Default initializer for creating an `REActivity` using the current thread context.

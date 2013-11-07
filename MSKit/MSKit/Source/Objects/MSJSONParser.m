@@ -175,14 +175,14 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self tryAndRecover:TOKEN_KIND_BUILTIN_EOF
                   block:^{
                               if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0])
-                                  [self comment];
+                                  [self __comment];
                               else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENBRACKET, 0])
                                   [self array];
                               else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENCURLY, 0])
                                   [self object];
                               else [self raise:@"No viable alternative found in rule '_start'."];
 
-                              if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+                              if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 
                               [self matchEOF:YES];
                           }
@@ -206,7 +206,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
                                         block:^{ [self colon]; }
                                    completion:^{ [self colon]; }];
 
-                          [self value];
+                          [self _value];
 
                           while ([self predicts:MSJSONPARSER_TOKEN_KIND_COMMA, 0])
                           {
@@ -217,7 +217,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 
                                        [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON
                                                      block:^{ [self keyPath]; [self colon]; }
-                                                completion:^{ [self colon]; }];[self value];
+                                                completion:^{ [self colon]; }];[self _value];
                                    }];
 
                               if (commaKeyValue)
@@ -228,7 +228,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
                                                 block:^{ [self keyPath]; [self colon]; }
                                            completion:^{ [self colon]; }];
 
-                                  [self value];
+                                  [self _value];
                               }
 
                               else break;
@@ -241,7 +241,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 
     [self fireAssemblerSelector:@selector(parser:didMatchObject:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 
 - (void)object { [self parseRule:@selector(__object) withMemo:_object_memo]; }
@@ -255,7 +255,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:TOKEN_KIND_BUILTIN_QUOTEDSTRING discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchKeyPath:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)keyPath { [self parseRule:@selector(__keyPath) withMemo:_keyPath_memo]; }
 
@@ -276,14 +276,14 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
                                          TOKEN_KIND_BUILTIN_NUMBER,
                                          TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0])
                       {
-                          [self value];
+                          [self _value];
 
                           while ([self predicts:MSJSONPARSER_TOKEN_KIND_COMMA, 0])
                           {
-                              if ([self speculate:^{ [self comma]; [self value]; }])
+                              if ([self speculate:^{ [self comma]; [self _value]; }])
                               {
                                   [self comma];
-                                  [self value];
+                                  [self _value];
                               }
 
                               else  break;
@@ -297,7 +297,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 
     [self fireAssemblerSelector:@selector(parser:didMatchArray:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)array { [self parseRule:@selector(__array) withMemo:_array_memo]; }
 
@@ -319,10 +319,10 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
         [self raise:@"No viable alternative found in rule 'value'."];
     
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 
-- (void)value { [self parseRule:@selector(__value) withMemo:_value_memo]; }
+- (void)_value { [self parseRule:@selector(__value) withMemo:_value_memo]; }
 
 
 
@@ -330,7 +330,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark Comments
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)comment
+- (void)__comment
 {
 
     [self matchComment:NO];
@@ -348,7 +348,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self matchQuotedString:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchString:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)string { [self parseRule:@selector(__string) withMemo:_string_memo]; }
 
@@ -357,7 +357,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self matchNumber:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchNumber:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)number { [self parseRule:@selector(__number) withMemo:_number_memo]; }
 
@@ -366,7 +366,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_NULLLITERAL discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchNullLiteral:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)nullLiteral { [self parseRule:@selector(__nullLiteral) withMemo:_nullLiteral_memo]; }
 
@@ -375,7 +375,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_TRUELITERAL discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchTrueLiteral:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)trueLiteral { [self parseRule:@selector(__trueLiteral) withMemo:_trueLiteral_memo]; }
 
@@ -384,7 +384,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_FALSELITERAL discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchFalseLiteral:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)falseLiteral { [self parseRule:@selector(__falseLiteral) withMemo:_falseLiteral_memo]; }
 
@@ -397,7 +397,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_OPENCURLY discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchOpenCurly:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)openCurly { [self parseRule:@selector(__openCurly) withMemo:_openCurly_memo]; }
 
@@ -406,7 +406,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_CLOSECURLY discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchCloseCurly:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)closeCurly { [self parseRule:@selector(__closeCurly) withMemo:_closeCurly_memo]; }
 
@@ -415,7 +415,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_OPENBRACKET discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchOpenBracket:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)openBracket { [self parseRule:@selector(__openBracket) withMemo:_openBracket_memo]; }
 
@@ -424,7 +424,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
     [self match:MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET discard:NO];
     [self fireAssemblerSelector:@selector(parser:didMatchCloseBracket:)];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)closeBracket { [self parseRule:@selector(__closeBracket) withMemo:_closeBracket_memo]; }
 
@@ -432,7 +432,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 {
     [self match:MSJSONPARSER_TOKEN_KIND_COMMA discard:NO];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)comma { [self parseRule:@selector(__comma) withMemo:_comma_memo]; }
 
@@ -440,7 +440,7 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 {
     [self match:MSJSONPARSER_TOKEN_KIND_COLON discard:NO];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self comment];
+    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
 - (void)colon { [self parseRule:@selector(__colon) withMemo:_colon_memo]; }
 

@@ -12,7 +12,7 @@
 
 @class RemoteElement;
 
-@interface LayoutConfiguration : ModelObject <NamedModelObject>
+@interface LayoutConfiguration : ModelObject
 
 @property (nonatomic, strong, readonly) RemoteElement  *element;
 @property (nonatomic, assign, readonly) BOOL            proportionLock;

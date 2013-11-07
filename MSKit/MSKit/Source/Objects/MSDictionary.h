@@ -9,18 +9,24 @@
 
 @interface MSDictionary : NSMutableDictionary <MSJSONExport>
 
-@property (nonatomic, strong) MSDictionary * userInfo;
-
-@property (nonatomic, assign) BOOL requiresStringKeys;
+@property (nonatomic, strong)   MSDictionary * userInfo;
+@property (nonatomic, readonly) NSSet        * validKeys;
+@property (nonatomic, assign)   BOOL           requiresStringKeys;
 
 - (MSDictionary *)dictionaryBySortingByKeys:(NSArray *)sortedKeys;
-- (MSDictionary *)dictionaryByRemovingKeysWithNullObjectValues;
+- (MSDictionary *)compactedDictionary;
 - (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
-+ (instancetype)dictionaryWithValuesForKeys:(NSArray *)keys fromDictionary:(NSDictionary *)dictionary;
++ (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys
+                               fromDictionary:(NSDictionary *)dictionary;
+
+- (BOOL)isValidKey:(id<NSCopying>)key;
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
 - (id)objectAtIndex:(NSUInteger)idx;
 - (id)keyAtIndex:(NSUInteger)idx;
+
+- (id)keyForObject:(id)object;
+- (NSUInteger)indexOfObject:(id)object;
 
 - (NSString *)formattedDescriptionWithOptions:(NSUInteger)options levelIndent:(NSUInteger)levelIndent;
 
@@ -42,7 +48,9 @@
 
 - (void)replaceKey:(id)key withKey:(id)replacementKey;
 
-- (void)exchangeIndex:(NSUInteger)index withIndex:(NSUInteger)otherIndex;
+- (void)exchangeKeyValueAtIndex:(NSUInteger)index withKeyValueAtIndex:(NSUInteger)otherIndex;
+
+- (void)insertObject:(id)object forKey:(id<NSCopying>)key atIndex:(NSUInteger)index;
 
 - (NSUInteger)indexForKey:(id)key;
 - (NSUInteger)indexForValue:(id)value;

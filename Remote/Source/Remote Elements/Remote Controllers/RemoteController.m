@@ -21,7 +21,6 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 @interface RemoteController ()
 
 @property (nonatomic, strong)              NSSet       * currentDeviceConfigurations;
-@property (nonatomic, strong, readwrite)   NSSet       * remotes;
 @property (nonatomic, strong, readwrite)   NSString    * homeRemoteUUID;
 @property (nonatomic, strong, readwrite)   NSString    * currentRemoteUUID;
 @property (nonatomic, strong, readwrite)   NSString    * currentActivityUUID;
@@ -32,7 +31,6 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 
 @interface RemoteController (CoreDataGeneratedAccessors)
 
-- (void)addRemotesObject:(Remote *)remote;
 - (void)addActivitiesObject:(Activity *)activity;
 
 @end
@@ -40,7 +38,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 @implementation RemoteController
 
 @dynamic currentRemoteUUID, currentActivityUUID, homeRemoteUUID;
-@dynamic remotes, topToolbar, activities;
+@dynamic topToolbar, activities;
 @synthesize currentDeviceConfigurations = _currentDeviceConfigurations;
 
 
@@ -73,33 +71,23 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 
 - (Remote *)homeRemote
 {
-    return (Remote *)memberOfCollectionWithUUID(self.remotes, self.homeRemoteUUID);
+    Remote * remote = nil;
+    NSString * uuid = self.homeRemoteUUID;
+    if (uuid) remote = [Remote objectWithUUID:uuid context:self.managedObjectContext];
+    return remote;
 }
 
 - (Remote *)currentRemote
 {
-    return ((Remote *)memberOfCollectionWithUUID(self.remotes, self.currentRemoteUUID)
-            ?: self.homeRemote);
-}
-
-- (void)registerRemote:(Remote *)remote
-{
-    assert(remote);
-    //TODO: Add validation?
-    [self addRemotesObject:remote];
-}
-
-- (BOOL)registerHomeRemote:(Remote *)remote
-{
-    //TODO: Add validation
-    [self registerRemote:remote];
-    self.homeRemoteUUID = remote.uuid;
-    return YES;
+    Remote * remote = nil;
+    NSString * uuid = self.currentRemoteUUID;
+    if (uuid) remote = [Remote objectWithUUID:uuid context:self.managedObjectContext];
+    return remote;
 }
 
 - (BOOL)switchToRemote:(Remote *)remote
 {
-    if ([self.remotes containsObject:remote])
+    if (remote)
     {
         [self willChangeValueForKey:@"currentRemote"];
         self.currentRemoteUUID = remote.uuid;
@@ -113,16 +101,11 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
     else return NO;
 }
 
-- (Remote *)objectForKeyedSubscript:(NSString *)key
-{
-    return [self.remotes objectPassingTest:^BOOL (Remote * remote) {
-        return REStringIdentifiesRemoteElement(key, remote);
-    }];
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Activities
 ////////////////////////////////////////////////////////////////////////////////
+
 
 - (Activity *)currentActivity
 {
@@ -167,10 +150,9 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 {
     MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"remotes.uuid"]        = CollectionSafeSelfKeyPathValue(@"remotes.uuid");
-    dictionary[@"homeRemoteUUID"]      = CollectionSafe(self.homeRemoteUUID);
-    dictionary[@"currentRemoteUUID"]   = CollectionSafe(self.currentRemoteUUID);
-    dictionary[@"currentActivityUUID"] = CollectionSafe(self.currentActivityUUID);
+    dictionary[@"homeRemoteUUID"]      = CollectionSafe(self.homeRemote.commentedUUID);
+    dictionary[@"currentRemoteUUID"]   = CollectionSafe(self.currentRemote.commentedUUID);
+    dictionary[@"currentActivityUUID"] = CollectionSafe(self.currentActivity.commentedUUID);
     dictionary[@"topToolbar"]          = CollectionSafe([self.topToolbar JSONDictionary]);
     id activities = CollectionSafeSelfKeyPathValue(@"activities.JSONDictionary");
     if (isSetKind(activities))
@@ -191,7 +173,6 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)shouldImportRemotes:(id)data {return YES;}
 - (BOOL)shouldImportTopToolbar:(id)data {return YES;}
 - (BOOL)shouldImportActivities:(id)data {return YES;}
 

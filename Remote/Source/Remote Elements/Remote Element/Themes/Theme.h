@@ -5,7 +5,7 @@
 //  Created by Jason Cardwell on 4/8/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import "ModelObject.h"
+#import "NamedModelObject.h"
 #import "RETypedefs.h"
 
 
@@ -14,10 +14,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-@interface Theme : ModelObject <NamedModelObject>
+@interface Theme : NamedModelObject
 
-@property (nonatomic, copy,   readonly) NSString * name;
-@property (nonatomic, strong, readonly) NSSet    * elements;
+@property (nonatomic, strong, readonly) NSSet * elements;
 
 + (instancetype)themeWithName:(NSString *)name;
 + (instancetype)themeWithName:(NSString *)name context:(NSManagedObjectContext *)context;

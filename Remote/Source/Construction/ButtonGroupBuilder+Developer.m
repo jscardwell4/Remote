@@ -222,9 +222,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     buttonGroup.name = @"DVR Activity DPad";
     CommandSet * commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Dish Hopper"
                                                                    context:moc];
-    [buttonGroup addCommandContainer:commandSet mode:REDefaultMode];
+    [buttonGroup setCommandContainer:commandSet mode:REDefaultMode];
     commandSet = [CommandSetBuilder dPadForDeviceWithName:@"Samsung TV" context:moc];
-    [buttonGroup addCommandContainer:commandSet mode:kTVMode];
+    [buttonGroup setCommandContainer:commandSet mode:kTVMode];
 
     return buttonGroup;
 }
@@ -273,9 +273,9 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     buttonGroup.name = @"DVR Activity Transport";
     CommandSet * commandSet = [CommandSetBuilder transportForDeviceWithName:@"Dish Hopper"
                                                                         context:moc];
-    [buttonGroup addCommandContainer:commandSet mode:REDefaultMode];
+    [buttonGroup setCommandContainer:commandSet mode:REDefaultMode];
     commandSet = [CommandSetBuilder transportForDeviceWithName:@"Samsung TV" context:moc];
-    [buttonGroup addCommandContainer:commandSet mode:kTVMode];
+    [buttonGroup setCommandContainer:commandSet mode:kTVMode];
 
     return buttonGroup;
 }

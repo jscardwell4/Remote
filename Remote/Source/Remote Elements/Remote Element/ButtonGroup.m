@@ -8,6 +8,9 @@
 
 #import "ButtonGroup.h"
 #import "RemoteElement_Private.h"
+#import "CommandSetCollection.h"
+#import "JSONObjectKeys.h"
+#import "StringAttributesValueTransformer.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -15,14 +18,20 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 
 MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
+@interface ButtonGroup ()
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REButtonGroup
-////////////////////////////////////////////////////////////////////////////////
+@property (nonatomic, strong, readwrite) Remote           * parentElement;
+@property (nonatomic, weak,   readonly)  RemoteController * controller;
+
+@end
 
 @implementation ButtonGroup
+{
+    NSUInteger _commandSetCollectionIndex; /// index of command set in collection currently in use
+}
 
-@dynamic label, labelConstraints, parentElement, controller;
+@dynamic labelConstraints, labelAttributes, parentElement, controller;
+@synthesize label = _label, commandContainer = _commandContainer;
 
 + (instancetype)buttonGroupWithRole:(RERole)role
 {
@@ -106,6 +115,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     return (ButtonGroupConfigurationDelegate *)self.configurationDelegate;
 }
 
+/*
 - (Button *)objectForKeyedSubscript:(NSString *)subscript
 {
     return (Button *)[super objectForKeyedSubscript:subscript];
@@ -114,28 +124,87 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 - (Button *)objectAtIndexedSubscript:(NSUInteger)subscript {
     return (Button *)[super objectAtIndexedSubscript:subscript];
 }
+*/
 
-- (void)addCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode
+- (NSAttributedString *)label
+{
+    [self willAccessValueForKey:@"label"];
+    NSAttributedString * label = _label;
+    [self didAccessValueForKey:@"label"];
+    if (!label)
+    {
+        label = self.groupConfigurationDelegate.label;
+        if (label) _label = label;
+    }
+    return label;
+}
+
+- (CommandContainer *)commandContainer
+{
+    [self willAccessValueForKey:@"commandContainer"];
+    CommandContainer * container = _commandContainer;
+    [self didAccessValueForKey:@"commandContainer"];
+    if (!container)
+    {
+        container = self.groupConfigurationDelegate.commandContainer;
+        if (container) _commandContainer = container;
+    }
+    return container;
+}
+
+- (void)setCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode
 {
     [self.groupConfigurationDelegate setCommandContainer:container mode:mode];
 }
 
-- (void)setCommandContainer:(CommandContainer *)container
+- (void)setLabel:(id)label mode:(RERemoteMode)mode
 {
-    //TODO: Update
+    if (!isAttributedStringKind(label))
+        label = (isStringKind(label)
+                 ? [NSAttributedString attributedStringWithString:label]
+                 : nil);
+    if (label && mode)
+        [self.groupConfigurationDelegate setLabel:label mode:mode];
+}
+
+- (void)setLabel:(NSAttributedString *)label
+{
+    [self willChangeValueForKey:@"label"];
+    _label = label;
+    [self didChangeValueForKey:@"label"];
+}
+
+- (void)updateButtons
+{
+    CommandContainer * container = self.commandContainer;
+
+    if (!(isKind(container, CommandSet) || isKind(container, CommandSetCollection))) return;
+
     CommandSet * commandSet = ([container isKindOfClass:[CommandSet class]]
-                                 ? (CommandSet *)container
-                                 : ([container isKindOfClass:[CommandSetCollection class]]
-                                    ? ((CommandSetCollection *)container)[0]
-                                    : nil
-                                    )
-                                 );
+                               ? (CommandSet *)container
+                               : [(CommandSetCollection *)container
+                                  commandSetAtIndex:_commandSetCollectionIndex]);
+
+    if (commandSet) commandSet = [commandSet faultedObject];
+
     for (Button * button in self.subelements)
     {
-        Command * cmd = commandSet[@(button.elementType)];
+        if (button.role == REButtonRoleTuck) continue;
+
+        Command * cmd = commandSet[@(button.role)];
         button.command = cmd;
         button.enabled = (cmd != nil);
+        assert(button.enabled);
     }
+}
+
+- (void)setCommandContainer:(CommandContainer *)container
+{
+    [self willChangeValueForKey:@"commandContainer"];
+    _commandContainer = container;
+    [self didChangeValueForKey:@"commandContainer"];
+
+    [self updateButtons];
 }
 
 - (RemoteController *)controller
@@ -143,59 +212,65 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     return (self.parentElement ? self.parentElement.controller : nil);
 }
 
+- (NSAttributedString *)labelForCommandSetAtIndex:(NSUInteger)index
+{
+    CommandContainer * container = self.commandContainer;
+
+    if (!(container && isKind(self.commandContainer, CommandSetCollection) && index < container.count))
+        return nil;
+
+    NSString * labelText = [(CommandSetCollection *)container labelAtIndex:index];
+    if (!labelText) return nil;
+
+    MSDictionary * labelAttributes = self.labelAttributes;
+    if (!labelAttributes) labelAttributes = [MSDictionary dictionary];
+    labelAttributes[RETitleTextAttributeKey] = labelText;
+
+    return [[StringAttributesValueTransformer new] transformedValue:labelAttributes];
+}
+
+- (void)selectCommandSetAtIndex:(NSUInteger)index
+{
+    CommandContainer * container = self.commandContainer;
+    if (container && isKind(self.commandContainer, CommandSetCollection) && index < container.count)
+    {
+        _commandSetCollectionIndex = index;
+        [self updateButtons];
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
+
+- (void)didImport:(id)data
+{
+    [super didImport:data];
+    [self.groupConfigurationDelegate importCommandContainer:data];
+}
+
 - (BOOL)shouldImportTopToolbarForController:(id)data {return NO;}
 
-/*
-- (void)importLabel:(id)data {}
+- (void)importLabelAttributes:(id)data
+{
+    if (isDictionaryKind(data))
+    {
+        MSDictionary * attributes = [[StringAttributesJSONValueTransformer new]
+                                     reverseTransformedValue:data];
+        if (isMSDictionary(attributes)) self.labelAttributes = attributes;
+    }
+}
 
+- (void)importLabel:(id)data
+{
+    if (isDictionaryKind(data))
+        for (NSString * mode in data) if (isStringKind(mode)) [self setLabel:data[mode] mode:mode];
+}
+
+/*
 - (void)importLabelConstraints:(id)data {}
 */
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Command set collections
-////////////////////////////////////////////////////////////////////////////////
-
-
-- (BOOL)shouldUseCommandSetCollection
-{
-    return ((self.options & REButtonGroupOptionCommandSetContainer) ==
-            REButtonGroupOptionCommandSetContainer);
-}
-
-- (void)addCommandSet:(CommandSet *)commandSet withLabel:(id)label
-{
-    if (!([self shouldUseCommandSetCollection] && commandSet && label)) return;
-
-    CommandContainer * container = self.groupConfigurationDelegate.commandContainer;
-    if (!isKind(container, CommandSetCollection)) return;
-
-    ((CommandSetCollection *)container)[commandSet] =
-        (isAttributedStringKind(label)
-         ? label
-         : (isStringKind(label)
-            ? [NSAttributedString attributedStringWithString:label]
-            : nil));
-
-}
-
-- (CommandSetCollection *)commandSetCollection
-{
-    CommandSetCollection * collection = nil;
-
-    if ([self shouldUseCommandSetCollection])
-    {
-        CommandContainer * container = self.groupConfigurationDelegate.commandContainer;
-        if (isKind(container, CommandSetCollection)) collection = (CommandSetCollection *)container;
-    }
-
-    return collection;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting
@@ -203,15 +278,34 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 - (MSDictionary *)JSONDictionary
 {
-    //TODO: Update
-
     MSDictionary * dictionary = [super JSONDictionary];
 
-    if (self.label)
-        dictionary[@"label"] = self.label;
+    MSDictionary * commandSets           = [MSDictionary dictionary];
+    MSDictionary * commandSetCollections = [MSDictionary dictionary];
 
+    for (RERemoteMode mode  in self.groupConfigurationDelegate.modeKeys)
+    {
+        CommandContainer * container = [self.groupConfigurationDelegate commandContainerForMode:mode];
+        if (isKind(container, CommandSetCollection))
+            commandSetCollections[mode] = container.JSONDictionary;
+        else if (isKind(container, CommandSet))
+            commandSets[mode] = container.JSONDictionary;
+    }
+
+    dictionary[ButtonGroupCommandSetCollectionJSONKey] =
+        ([commandSetCollections count] ? commandSetCollections : NullObject);
+
+    dictionary[ButtonGroupCommandSetJSONKey] =
+        ([commandSets count] ? commandSets : NullObject);
+
+/*
     if (self.labelConstraints)
         dictionary[@"labelConstraints"] = self.labelConstraints;
+*/
+
+    dictionary[@"label"] = CollectionSafe(self.label);
+    dictionary[@"labelAttributes"] = CollectionSafe([[StringAttributesJSONValueTransformer new]
+                                                     transformedValue:self.labelAttributes]);
 
     [dictionary compact];
     [dictionary compress];
@@ -231,6 +325,11 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     assert(element);
     
     MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+
+    for (NSString * mode in self.groupConfigurationDelegate.modeKeys)
+    {
+//        CommandContainer * container = [self.groupConfigurationDelegate con]
+    }
 //    dd[@"label"] = (element.label ? element.label.string : @"nil");
 //    dd[@"labelConstraints"] = (element.labelConstraints ? : @"nil");
     dd[@"panelAssignment"] = NSStringFromREPanelAssignment(element.panelAssignment);

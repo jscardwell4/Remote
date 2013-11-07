@@ -5,12 +5,11 @@
 // Created by Jason Cardwell on 4/18/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "ModelObject.h"
+#import "NamedModelObject.h"
 
-@interface BankObjectPreview : ModelObject <NamedModelObject>
+@interface BankObjectPreview : NamedModelObject
 
-@property (nonatomic) 			 		int16_t     tag;
-@property (nonatomic, strong)   NSString  * name;
+@property (nonatomic) int16_t     tag;
 
 + (instancetype)previewInContext:(NSManagedObjectContext *)context;
 

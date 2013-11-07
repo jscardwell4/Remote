@@ -91,7 +91,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     MSDictionary * dictionary = [super JSONDictionary];
     dictionary[@"uuid"] = NullObject;
 
-    dictionary[@"device.uuid"] = CollectionSafe(self.device.uuid);
+    dictionary[@"device.uuid"] = CollectionSafe(self.device.commentedUUID);
     dictionary[@"state"] = (self.state ? @"on" : @"off");
 
     [dictionary compact];

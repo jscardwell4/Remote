@@ -1,161 +1,70 @@
 [
     {
-        "uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD",
-        "name": "Home Screen",
+        "uuid": "EDF6C7E5-677B-4936-8BB5-623A07AAB61E",
+        "elementType": "remote"
+    },
+    {
+        "uuid": "F823B227-7DEF-4185-87F0-457FC42065C2",
+        "name": "Sonos Activity",
         "elementType": "remote",
-        "backgroundImage.uuid": "32734604-9B4D-4511-BC47-7367A2C3A710", // Pro Dots.png
+        "key": "activity4",
         "constraints": {
             "index": {
-                "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
-                "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
-                "homeScreen": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD"
+                "buttonGroup": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
+                "homeAndPowerButtons": "D393B9CC-1FCD-4534-BDFB-500785C54951",
+                "sonosActivity": "F823B227-7DEF-4185-87F0-457FC42065C2",
+                "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
             },
             "format": [
-                "activityButtons.centerX = homeScreen.centerX",
-                "activityButtons.centerY = homeScreen.centerY - 22",
-                "bottomToolbar.bottom = homeScreen.bottom",
-                "bottomToolbar.left = homeScreen.left",
-                "bottomToolbar.right = homeScreen.right"
+                "buttonGroup.centerX = sonosActivity.centerX - 60",
+                "buttonGroup.centerY = sonosActivity.centerY - 25",
+                "buttonGroup.height = sonosActivityRocker.height * 0.33",
+                "homeAndPowerButtons.bottom = sonosActivity.bottom - 20",
+                "homeAndPowerButtons.left = sonosActivity.left + 10",
+                "homeAndPowerButtons.right = sonosActivity.right - 10",
+                "sonosActivityRocker.centerX = sonosActivity.centerX + 65",
+                "sonosActivityRocker.centerY = buttonGroup.centerY"
             ]
         },
         "backgroundColor": "black",
+        "backgroundImage.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388", // Pro Dots.png
         "subelements": [
             {
-                "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
-                "name": "Activity Buttons",
+                "uuid": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
+                "name": "Mute Button Group",
                 "elementType": "button-group",
                 "constraints": {
                     "index": {
-                        "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
-                        "appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
-                        "dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
-                        "playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
-                        "sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993"
+                        "muteButtonGroup": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
+                        "muteButton": "5E6FC0B8-0F7A-4453-80F5-EC41B364F235"
                     },
                     "format": [
-                        "activityButtons.height = activityButtons.width",
-                        "activityButtons.width = 300",
-                        "appleTV.centerY = activityButtons.centerY * 1.5",
-                        "appleTV.centerX = activityButtons.centerX * 0.5",
-                        "appleTV.width = dish.width",
-                        "dish.centerX = activityButtons.centerX * 0.5",
-                        "dish.centerY = activityButtons.centerY * 0.5",
-                        "dish.width = activityButtons.width * 0.5",
-                        "playstation.centerX = activityButtons.centerX * 1.5",
-                        "playstation.centerY = activityButtons.centerY * 0.5",
-                        "playstation.width = dish.width",
-                        "sonos.centerX = activityButtons.centerX * 1.5",
-                        "sonos.centerY = activityButtons.centerY * 1.5",
-                        "sonos.width = dish.width"
+                        "muteButtonGroup.width ≥ 132",
+                        "muteButton.centerX = muteButtonGroup.centerX",
+                        "muteButton.centerY = muteButtonGroup.centerY",
+                        "muteButton.height = muteButtonGroup.height",
+                        "muteButton.width = muteButtonGroup.width"
                     ]
                 },
                 "subelements": [
                     {
-                        "uuid": "92E33ABD-9893-47A9-8922-86146A94C0E4",
-                        "name": "Dish",
+                        "uuid": "5E6FC0B8-0F7A-4453-80F5-EC41B364F235",
+                        "name": "Mute Button",
                         "elementType": "button",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
-                        "constraints": {
-                            "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
-                            "format": "dish.height = dish.width"
-                        },
                         "commands.default": {
-                            "class": "activity",
-                            "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
+                            "class": "sendir",
+                            "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
                         },
                         "titles.default": {
                             "normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "Dish"
-                            },
-                            "highlighted.foreground-color": "#00AFFFFF"
-                        },
-                        "backgroundColors.default.normal": "#060606FF",
-                        "titleEdgeInsets": "{20, 20, 20, 20}"
-                    },
-                    {
-                        "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
-                        "name": "Playstation",
-                        "elementType": "button",
-                        "shape": "rounded-rectangle",
-                        "style": "gloss2",
-                        "constraints": {
-                            "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
-                            "format": "playstation.height = playstation.width"
-                        },
-                        "commands.default": {
-                            "class": "activity",
-                            "activity.uuid": "863844ED-4BCD-4B75-AD67-DEE8A23233D1"
-                        },
-                        "titles.default": {
-                            "normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "Playstation"
-                            },
-                            "highlighted.foreground-color": "#00AFFFFF"
-                        },
-                        "backgroundColors.default.normal": "#060606FF",
-                        "titleEdgeInsets": "{20, 20, 20, 20}"
-                    },
-                    {
-                        "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
-                        "name": "Apple TV",
-                        "elementType": "button",
-                        "shape": "rounded-rectangle",
-                        "style": "gloss2",
-                        "constraints": {
-                            "index.appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
-                            "format": "appleTV.height = appleTV.width"
-                        },
-                        "commands.default": {
-                            "class": "activity",
-                            "activity.uuid": "DEB5EAC1-7040-4CA1-A309-423BACB533A4"
-                        },
-                        "titles.default": {
-                            "normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": " TV"
-                            },
-                            "highlighted.foreground-color": "#00AFFFFF"
-                        },
-                        "backgroundColors.default.normal": "#060606FF",
-                        "titleEdgeInsets": "{20, 20, 20, 20}"
-                    },
-                    {
-                        "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
-                        "name": "Sonos",
-                        "elementType": "button",
-                        "shape": "rounded-rectangle",
-                        "style": "gloss2",
-                        "constraints": {
-                            "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
-                            "format": "sonos.height = sonos.width"
-                        },
-                        "commands.default": {
-                            "class": "activity",
-                            "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
-                        },
-                        "titles.default": {
-                            "normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "Sonos"
+                            "font": "HelveticaNeue@20",
+                            "foreground-color": "white",
+                            "stroke-color": "white@50%",
+                            "stroke-width": -2,
+                            "paragraph-style.alignment": "center",
+                            "text": "Mute"
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -165,67 +74,158 @@
                 ]
             },
             {
-                "uuid": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
-                "name": "Bottom Toolbar",
+                "uuid": "3D15E6CA-A182-476D-87D1-8E2CE774346E",
+                "name": "Sonos Activity Rocker",
                 "elementType": "button-group",
-                "role": "toolbar",
-                "shape": "rectangle",
+                "role": "rocker",
+                "shape": "rounded-rectangle",
+                "style": "border gloss1",
                 "constraints": {
                     "index": {
-                        "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
-                        "lightsOff": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
-                        "lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4"
+                        "buttonTop": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
+                        "buttonBottom": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
+                        "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
                     },
                     "format": [
-                        "bottomToolbar.height = 44",
-                        "lightsOff.bottom = bottomToolbar.bottom",
-                        "lightsOff.left = lightsOn.right + 40",
-                        "lightsOff.top = bottomToolbar.top",
-                        "lightsOff.width = lightsOn.width",
-                        "lightsOn.bottom = bottomToolbar.bottom",
-                        "lightsOn.left = bottomToolbar.left + 20",
-                        "lightsOn.top = bottomToolbar.top"
+                            "buttonBottom.height = buttonTop.height",
+                            "buttonBottom.left = sonosActivityRocker.left",
+                            "buttonBottom.right = sonosActivityRocker.right",
+                            "buttonBottom.top = buttonTop.bottom",
+                            "buttonTop.height = sonosActivityRocker.height * 0.5",
+                            "buttonTop.left = sonosActivityRocker.left",
+                            "buttonTop.right = sonosActivityRocker.right",
+                            "buttonTop.top = sonosActivityRocker.top",
+                            "sonosActivityRocker.height ≥ 150",
+                            "sonosActivityRocker.width = 70"
                     ]
                 },
-                "backgroundColor": "flipside",
+                "backgroundColor": "black",
                 "subelements": [
                     {
-                        "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",
-                        "name": "Lights On",
+                            "uuid": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
+                            "name": "Button Top",
+                            "elementType": "button",
+                            "role": "top",
+                            "icons.default": {
+                                "colors": {
+                                    "normal": "white",
+                                    "highlighted": "#00AFFFFF",
+                                    "disabled": "#7F7F7FFF"
+                                },
+                                "normal.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D" // 436-gray-plus.png
+                            }
+                        },
+                        {
+                            "uuid": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
+                            "name": "Button Bottom",
+                            "elementType": "button",
+                            "role": "bottom",
+                            "icons.default": {
+                                "colors": {
+                                    "normal": "white",
+                                    "highlighted": "#00AFFFFF",
+                                    "disabled": "#7F7F7FFF"
+                                },
+                                "normal.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836" // 437-gray-minus.png
+                            }
+                        }
+                ],
+                "command-set-collection.default": {
+                    "VOL": {
+                        "type": "rocker",
+                        "top": {
+                            "class": "sendir",
+                            "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C" // Volume Up
+                        },
+                        "bottom": {
+                            "class": "sendir",
+                            "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0" // Volume Down
+                        }
+                    }
+                },
+                "labelAttributes": {
+                    "font": "HelveticaNeue@20",
+                    "foreground-color": "white",
+                    "stroke-color": "white@50%",
+                    "stroke-width": -2,
+                    "paragraph-style.alignment": "center"
+                }
+            },
+            {
+                "uuid": "D393B9CC-1FCD-4534-BDFB-500785C54951",
+                "name": "Home and Power Buttons",
+                "elementType": "button-group",
+                "constraints": {
+                    "index": {
+                        "homeAndPowerButtons": "D393B9CC-1FCD-4534-BDFB-500785C54951",
+                        "homeButton": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
+                        "powerOffAndExitActivity": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF"
+                    },
+                    "format": [
+                        "homeAndPowerButtons.height = 50",
+                        "homeAndPowerButtons.width = 300",
+                        "homeButton.centerY = homeAndPowerButtons.centerY",
+                        "homeButton.left = homeAndPowerButtons.left",
+                        "powerOffAndExitActivity.centerY = homeAndPowerButtons.centerY",
+                        "powerOffAndExitActivity.right = homeAndPowerButtons.right"
+                    ]
+                },
+                "subelements": [
+                    {
+                        "uuid": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
+                        "name": "Home Button",
                         "elementType": "button",
-                        "role": "toolbar",
+                        "shape": "oval",
+                        "style": "gloss1",
                         "constraints": {
-                            "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
-                            "format": "lightsOn.width = 44"
+                            "index.homeButton": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
+                            "format": [
+                                "homeButton.height = homeButton.width",
+                                "homeButton.width = 50"
+                            ]
                         },
                         "commands.default": {
-                            "class": "http",
-                            "url": "http://10.0.1.27/0?1201=I=0"
+                            "class": "switch",
+                            "type": "remote",
+                            "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
                         },
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "A3110AD7-45A7-45BE-A2B5-67F9A3953D38"
-                        }
+                            "normal.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147" // 750-gray-home.png
+                        },
+                        "backgroundColors.default.normal": "#060606FF"
                     },
                     {
-                        "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
-                        "name": "Lights Off",
+                        "uuid": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF",
+                        "name": "Power Off and Exit Activity",
                         "elementType": "button",
-                        "role": "toolbar",
+                        "key": "activity4",
+                        "shape": "oval",
+                        "style": "gloss1",
+                        "constraints": {
+                            "index.powerOffAndExitActivity": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF",
+                            "format": [
+                                "powerOffAndExitActivity.height = powerOffAndExitActivity.width",
+                                "powerOffAndExitActivity.width = 50"
+                            ]
+                        },
                         "commands.default": {
-                            "class": "http",
-                            "url": "http://10.0.1.27/0?1401=I=0"
+                            "class": "activity",
+                            "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290" // Sonos Activity
                         },
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "normal": "#7F7F7FFF"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "A3110AD7-45A7-45BE-A2B5-67F9A3953D38"
-                        }
+                            "normal.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F" // 51-gray-power.png
+                        },
+                        "backgroundColors.default.normal": "#060606FF"
                     }
                 ]
             }
@@ -236,19 +236,18 @@
         "name": "Dish Hopper Activity",
         "elementType": "remote",
         "key": "activity1",
-        "backgroundImage.uuid": "32734604-9B4D-4511-BC47-7367A2C3A710", // Pro Dots.png
         "options": "top-bar-hidden",
         "constraints": {
             "index": {
                 "dishHopperActivity": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
                 "dVRActivity1x3": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
                 "dVRActivityDPad": "B0398BDA-B312-4FD8-8CD4-2847A41F8E35",
-                "dVRActivityNumberPad": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7",
+                "dVRActivityNumberPad": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7", // DVR Activity Number Pad
                 "dVRActivityRocker": "7A847BB9-88AE-4F64-B535-FD095EE5DB83",
-                "dVRActivityTransport": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69",
+                "dVRActivityTransport": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69", // DVR Activity Transport
                 "homeAndPowerButtons": "B8BEFBE3-9D3C-4DA0-9D2E-FD8EA4BBCB7D",
-                "leftOverlayPanel": "7521F420-F677-44C9-97BA-4AF836779C21",
-                "selectionPanel": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F"
+                "leftOverlayPanel": "7521F420-F677-44C9-97BA-4AF836779C21", // Left Overlay Panel
+                "selectionPanel": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F" // Selection Panel
             },
             "format": [
                 "dVRActivity1x3.left = dishHopperActivity.left + 20",
@@ -276,6 +275,7 @@
             ]
         },
         "backgroundColor": "black",
+        "backgroundImage.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388", // Pro Dots.png
         "subelements": [
             {
                 "uuid": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
@@ -315,11 +315,11 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "CC3DAB57-1897-44CB-AA05-6B48CBE96A6D"
+                                "code.uuid": "CC3DAB57-1897-44CB-AA05-6B48CBE96A6D" // Guide
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5"
+                                "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5" // Tools
                             }
                         },
                         "titles": {
@@ -358,11 +358,11 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "A4A417A0-F5AA-45E4-839E-F0727EC81A3F"
+                                "code.uuid": "A4A417A0-F5AA-45E4-839E-F0727EC81A3F" // DVR
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "31E6CBAC-BA05-42DD-827D-45496EBDC78B"
+                                "code.uuid": "31E6CBAC-BA05-42DD-827D-45496EBDC78B" // Internet@TV
                             }
                         },
                         "titles": {
@@ -401,11 +401,11 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "456D6184-88CF-473C-BF42-16ABF13D1F10"
+                                "code.uuid": "456D6184-88CF-473C-BF42-16ABF13D1F10" // Info
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "30B1392A-7827-48AB-81DE-CA17439BC738"
+                                "code.uuid": "30B1392A-7827-48AB-81DE-CA17439BC738" // Info
                             }
                         },
                         "titles.default": {
@@ -422,50 +422,15 @@
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
                     }
-                ]
+                ],
+                "labelAttributes": {}
             },
             {
                 "uuid": "7A847BB9-88AE-4F64-B535-FD095EE5DB83",
                 "name": "DVR Activity Rocker",
                 "elementType": "button-group",
                 "role": "rocker",
-                "command-set-collection.default": {
-                    "CH": {
-                        "type": "rocker",
-                        "top": {
-                            "class": "sendir",
-                            "code.uuid": "11B0541B-5C94-49A0-853A-D8C94A76998B"
-                        },
-                        "bottom": {
-                            "class": "sendir",
-                            "code.uuid": "034EC537-9817-45BE-A66E-E58C7EC3AEF9"
-                        }
-                    },
-                    "PAGE": {
-                        "type": "rocker",
-                        "top": {
-                            "class": "sendir",
-                            "code.uuid": "8F9E00ED-FAFA-40B3-A1FA-01B0DF073A75"
-                        },
-                        "bottom": {
-                            "class": "sendir",
-                            "code.uuid": "8A77DAEA-8B71-4525-917F-916AA636AEBA"
-                        }
-                    },
-                    "VOL": {
-                        "type": "rocker",
-                        "top": {
-                            "class": "sendir",
-                            "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
-                        },
-                        "bottom": {
-                            "class": "sendir",
-                            "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
-                        }
-                    }
-                },
                 "shape": "rounded-rectangle",
-                "backgroundColor": "black",
                 "style": "border gloss1",
                 "constraints": {
                     "index": {
@@ -486,36 +451,79 @@
                         "dVRActivityRocker.width = 70"
                     ]
                 },
+                "backgroundColor": "black",
                 "subelements": [
                     {
                         "uuid": "91C3F776-6FB3-438F-9657-758A007CC23E",
                         "name": "Button Top",
                         "elementType": "button",
-                        "role": "rocker-top",
+                        "role": "top",
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "A4462840-4238-4F3F-9C5F-CA4BEBBF1516" // 709-plus.png
+                            "normal.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D" // 436-gray-plus.png
                         }
                     },
                     {
                         "uuid": "A947EAE0-0FFE-4448-8269-76F8954DF865",
                         "name": "Button Bottom",
                         "elementType": "button",
-                        "role": "rocker-bottom",
+                        "role": "bottom",
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "EC43A955-CEB8-4331-AC89-C071F71346E9" // 901-minus.png
+                            "normal.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836" // 437-gray-minus.png
                         }
                     }
-                ]
+                ],
+                "command-set-collection.default": {
+                    "CH": {
+                        "type": "rocker",
+                        "top": {
+                            "class": "sendir",
+                            "code.uuid": "11B0541B-5C94-49A0-853A-D8C94A76998B" // Channel Up
+                        },
+                        "bottom": {
+                            "class": "sendir",
+                            "code.uuid": "034EC537-9817-45BE-A66E-E58C7EC3AEF9" // Channel Down
+                        }
+                    },
+                    "PAGE": {
+                        "type": "rocker",
+                        "top": {
+                            "class": "sendir",
+                            "code.uuid": "8F9E00ED-FAFA-40B3-A1FA-01B0DF073A75" // Page Up
+                        },
+                        "bottom": {
+                            "class": "sendir",
+                            "code.uuid": "8A77DAEA-8B71-4525-917F-916AA636AEBA" // Page Down
+                        }
+                    },
+                    "VOL": {
+                        "type": "rocker",
+                        "top": {
+                            "class": "sendir",
+                            "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C" // Volume Up
+                        },
+                        "bottom": {
+                            "class": "sendir",
+                            "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0" // Volume Down
+                        }
+                    }
+                },
+                "labelAttributes": {
+                    "font": "HelveticaNeue@20",
+                    "foreground-color": "white",
+                    "stroke-color": "white@50%",
+                    "stroke-width": -2,
+                    "paragraph-style.alignment": "center"
+                }
             },
             {
                 "uuid": "B0398BDA-B312-4FD8-8CD4-2847A41F8E35",
@@ -524,29 +532,6 @@
                 "role": "dpad",
                 "shape": "oval",
                 "style": "gloss2",
-                "command-set.default": {
-                    "type": "dpad",
-                    "up": {
-                        "class": "sendir",
-                        "code.uuid": "1C8D165D-4BCD-4CC7-B89F-8FAF9047B0A5"
-                    },
-                    "down": {
-                        "class": "sendir",
-                        "code.uuid": "EE477ADE-805D-46BF-958E-711561A0E621"
-                    },
-                    "left": {
-                        "class": "sendir",
-                        "code.uuid": "7CB204B0-2837-4612-BF3D-6638D8B3D93B"
-                    },
-                    "right": {
-                        "class": "sendir",
-                        "code.uuid": "0BBC99B9-E435-490E-ACE7-DF53DDD4E2F7"
-                    },
-                    "center": {
-                        "class": "sendir",
-                        "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
-                    }
-                },
                 "constraints": {
                     "index": {
                         "buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
@@ -586,7 +571,11 @@
                         "uuid": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
                         "name": "Button Center",
                         "elementType": "button",
-                        "role": "dpad-center",
+                        "role": "center",
+                        "constraints": {
+                            "index.buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
+                            "format": "buttonCenter.height = buttonCenter.width"
+                        },
                         "titles.default": {
                             "normal": {
                                 "font": "HelveticaNeue@28",
@@ -598,71 +587,89 @@
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
-                        "constraints": {
-                            "index.buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
-                            "format": [
-                                "buttonCenter.height = buttonCenter.width"
-                            ]
-                        },
                         "titleEdgeInsets": "{20, 20, 20, 20}"
                     },
                     {
                         "uuid": "DAAF0866-265A-41C8-AA68-CAFF633E1190",
                         "name": "Button Up",
                         "elementType": "button",
-                        "role": "dpad-up",
+                        "role": "up",
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "915A2613-9056-464D-8D89-5777CD05B7D8" // 763-arrow-up.png
+                            "normal.uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677" // 763-gray-arrow-up.png
                         }
                     },
                     {
                         "uuid": "9A4F22FD-A164-4278-BB62-C757E2DE35B1",
                         "name": "Button Down",
                         "elementType": "button",
-                        "role": "dpad-down",
+                        "role": "down",
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "03A0DB5D-2091-4896-BC7F-E4067373C8B4" // 764-arrow-down.png
+                            "normal.uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00" // 764-gray-arrow-down.png
                         }
                     },
                     {
                         "uuid": "5B3195B3-64BA-44BD-A233-52A6C35BBF91",
                         "name": "Button Left",
                         "elementType": "button",
-                        "role": "dpad-left",
+                        "role": "left",
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "7D376411-412E-43E3-BB70-FB5ECD73C5E4" // 765-arrow-left.png
+                            "normal.uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869" // 765-gray-arrow-left.png
                         }
                     },
                     {
                         "uuid": "4DC81EAD-9EAA-4AD6-8F36-58149CCB737D",
                         "name": "Button Right",
                         "elementType": "button",
-                        "role": "dpad-right",
+                        "role": "right",
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "7483F603-A928-4E61-8042-41A82F8424EA" // 766-arrow-right.png
+                            "normal.uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226" // 766-gray-arrow-right.png
                         }
                     }
-                ]
+                ],
+                "command-set.default": {
+                    "type": "dpad",
+                    "up": {
+                        "class": "sendir",
+                        "code.uuid": "1C8D165D-4BCD-4CC7-B89F-8FAF9047B0A5" // Up
+                    },
+                    "down": {
+                        "class": "sendir",
+                        "code.uuid": "EE477ADE-805D-46BF-958E-711561A0E621" // Down
+                    },
+                    "left": {
+                        "class": "sendir",
+                        "code.uuid": "7CB204B0-2837-4612-BF3D-6638D8B3D93B" // Left
+                    },
+                    "right": {
+                        "class": "sendir",
+                        "code.uuid": "0BBC99B9-E435-490E-ACE7-DF53DDD4E2F7" // Right
+                    },
+                    "center": {
+                        "class": "sendir",
+                        "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB" // OK
+                    }
+                },
+                "labelAttributes": {}
             },
             {
                 "uuid": "B8BEFBE3-9D3C-4DA0-9D2E-FD8EA4BBCB7D",
@@ -690,11 +697,6 @@
                         "elementType": "button",
                         "shape": "oval",
                         "style": "gloss1",
-                        "commands.default": {
-                            "class": "switch",
-                            "type": "remote",
-                            "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD"
-                        },
                         "constraints": {
                             "index.homeButton": "8FD73238-A965-40D3-954E-1E486D5964F7",
                             "format": [
@@ -702,13 +704,18 @@
                                 "homeButton.width = 50"
                             ]
                         },
+                        "commands.default": {
+                            "class": "switch",
+                            "type": "remote",
+                            "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
+                        },
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "DC256402-D8A9-461A-A158-F60D0EF63EF7" // 502-house.png
+                            "normal.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147" // 750-gray-home.png
                         },
                         "backgroundColors.default.normal": "#060606FF"
                     },
@@ -719,10 +726,6 @@
                         "key": "activity1",
                         "shape": "oval",
                         "style": "gloss1",
-                        "commands.default": {
-                            "class": "activity",
-                            "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
-                        },
                         "constraints": {
                             "index.powerOffAndExitActivity": "A60C6C80-513A-47EC-A720-0D9A28E18D94",
                             "format": [
@@ -730,75 +733,29 @@
                                 "powerOffAndExitActivity.width = 50"
                             ]
                         },
+                        "commands.default": {
+                            "class": "activity",
+                            "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5" // Dish Hopper Activity
+                        },
                         "icons.default": {
                             "colors": {
+                                "normal": "white",
                                 "highlighted": "#00AFFFFF",
-                                "disabled": "#7F7F7FFF",
-                                "normal": "white"
+                                "disabled": "#7F7F7FFF"
                             },
-                            "normal.uuid": "0EA0C544-F7A7-4D69-BCB2-C3E6E8346BB8" // 51-power.png
+                            "normal.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F" // 51-gray-power.png
                         },
                         "backgroundColors.default.normal": "#060606FF"
                     }
-                ]
+                ],
+                "labelAttributes": {}
             },
             {
-                "uuid": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7",
+                "uuid": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7", // DVR Activity Number Pad
                 "name": "DVR Activity Number Pad",
                 "elementType": "button-group",
                 "role": "numberpad",
                 "subtype": "top1",
-                "command-set.default": {
-                    "type": "numberpad",
-                    "1": {
-                        "class": "sendir",
-                        "code.uuid": "0313E4A0-996F-4968-8DAB-0C799BD4D2A6"
-                    },
-                    "2": {
-                        "class": "sendir",
-                        "code.uuid": "1B86BE5A-F8D6-4798-895A-B881E6E623D1"
-                    },
-                    "3": {
-                        "class": "sendir",
-                        "code.uuid": "266FC2EF-2EDB-4A41-A42D-2BC1129DFECA"
-                    },
-                    "4": {
-                        "class": "sendir",
-                        "code.uuid": "4D24C204-E3FC-4473-A438-38E5B6EE3FE6"
-                    },
-                    "5": {
-                        "class": "sendir",
-                        "code.uuid": "40BCAC68-BC65-4AD4-A5F9-39A541AEF71E"
-                    },
-                    "6": {
-                        "class": "sendir",
-                        "code.uuid": "E57C7D62-3597-45B0-9B80-45F5559F7C18"
-                    },
-                    "7": {
-                        "class": "sendir",
-                        "code.uuid": "B9007475-33AA-4CD7-87E7-3EEF413486FD"
-                    },
-                    "8": {
-                        "class": "sendir",
-                        "code.uuid": "E6195194-F7FE-42C2-962A-13A6AA6858E0"
-                    },
-                    "9": {
-                        "class": "sendir",
-                        "code.uuid": "019887BD-C57E-4CBD-A8C0-62C1167601D9"
-                    },
-                    "0": {
-                        "class": "sendir",
-                        "code.uuid": "4D359D0D-BBE0-4BF5-85D3-9BF2CD338563"
-                    },
-                    "aux1": {
-                        "class": "sendir",
-                        "code.uuid": "60500AB6-9450-4BEA-86AD-CDB74E90A768"
-                    },
-                    "aux2": {
-                        "class": "sendir",
-                        "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
-                    }
-                },
                 "constraints": {
                     "index": {
                         "button0": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
@@ -813,62 +770,62 @@
                         "button9": "2F310C3B-37A8-4AE0-B652-21160A3DBB00",
                         "buttonAux1": "6F2F49AE-EC61-404B-A544-468A8D9EB74A",
                         "buttonAux2": "D7E718BE-7E0D-4C19-8A75-625C8C5445A1",
-                        "dVRActivityNumberPad": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7",
+                        "dVRActivityNumberPad": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7", // DVR Activity Number Pad
                         "tuck": "E9D65885-43D4-4DFA-A3A6-C4ADCF70D94A"
                     },
                     "format": [
+                        "button0.bottom = tuck.top",
+                        "button0.height = button2.height",
+                        "button0.left = button8.left",
+                        "button0.right = button8.right",
+                        "button0.top = button8.bottom",
+                        "button1.bottom = button2.bottom",
                         "button1.left = dVRActivityNumberPad.left",
                         "button1.top = dVRActivityNumberPad.top",
-                        "button1.bottom = button2.bottom",
                         "button2.left = button1.right",
                         "button2.top = dVRActivityNumberPad.top",
                         "button2.width = button1.width",
+                        "button3.bottom = button2.bottom",
                         "button3.left = button2.right",
                         "button3.right = dVRActivityNumberPad.right",
                         "button3.top = dVRActivityNumberPad.top",
-                        "button3.bottom = button2.bottom",
                         "button3.width = button1.width",
-                        "button4.left = dVRActivityNumberPad.left",
-                        "button4.top = button1.bottom",
-                        "button4.right = button1.right",
                         "button4.bottom = button5.bottom",
-                        "button5.left = button2.left",
-                        "button5.top = button2.bottom",
-                        "button5.right = button2.right",
+                        "button4.left = dVRActivityNumberPad.left",
+                        "button4.right = button1.right",
+                        "button4.top = button1.bottom",
                         "button5.height = button2.height",
+                        "button5.left = button2.left",
+                        "button5.right = button2.right",
+                        "button5.top = button2.bottom",
+                        "button6.bottom = button5.bottom",
                         "button6.left = button3.left",
                         "button6.right = dVRActivityNumberPad.right",
                         "button6.top = button3.bottom",
-                        "button6.bottom = button5.bottom",
-                        "button7.left = dVRActivityNumberPad.left",
-                        "button7.top = button4.bottom",
-                        "button7.right = button4.right",
                         "button7.bottom = button8.bottom",
-                        "button8.left = button5.left",
-                        "button8.top = button5.bottom",
-                        "button8.right = button5.right",
+                        "button7.left = dVRActivityNumberPad.left",
+                        "button7.right = button4.right",
+                        "button7.top = button4.bottom",
                         "button8.height = button2.height",
+                        "button8.left = button5.left",
+                        "button8.right = button5.right",
+                        "button8.top = button5.bottom",
+                        "button9.bottom = button8.bottom",
                         "button9.left = button6.left",
                         "button9.right = button6.right",
                         "button9.top = button6.bottom",
-                        "button9.bottom = button8.bottom",
-                        "buttonAux1.left = dVRActivityNumberPad.left",
-                        "buttonAux1.top = button7.bottom",
                         "buttonAux1.bottom = button0.bottom",
+                        "buttonAux1.left = dVRActivityNumberPad.left",
                         "buttonAux1.right = button7.right",
-                        "button0.left = button8.left",
-                        "button0.top = button8.bottom",
-                        "button0.right = button8.right",
-                        "button0.bottom = tuck.top",
-                        "button0.height = button2.height",
+                        "buttonAux1.top = button7.bottom",
+                        "buttonAux2.bottom = button0.bottom",
                         "buttonAux2.left = button9.left",
                         "buttonAux2.right = dVRActivityNumberPad.right",
                         "buttonAux2.top = button9.bottom",
-                        "buttonAux2.bottom = button0.bottom",
-                        "tuck.left = dVRActivityNumberPad.left",
-                        "tuck.right = dVRActivityNumberPad.right",
                         "tuck.bottom = dVRActivityNumberPad.bottom",
-                        "tuck.height = button2.height"
+                        "tuck.height = button2.height",
+                        "tuck.left = dVRActivityNumberPad.left",
+                        "tuck.right = dVRActivityNumberPad.right"
                     ]
                 },
                 "backgroundColor": "white@75%",
@@ -877,7 +834,7 @@
                         "uuid": "4A9A5126-CCDD-4282-9D6E-581EB1A7768D",
                         "name": "Button 1",
                         "elementType": "button",
-                        "role": "numberpad-1",
+                        "role": "1",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default.normal": {
@@ -886,7 +843,7 @@
                             "stroke-color": "white@50%",
                             "stroke-width": -2,
                             "paragraph-style.alignment": "center",
-                            "text": "1"
+                            "text": 1
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -895,7 +852,7 @@
                         "uuid": "FD25B8D7-B6A3-46F5-A14D-BA66EC9B6624",
                         "name": "Button 2",
                         "elementType": "button",
-                        "role": "numberpad-2",
+                        "role": "2",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -905,7 +862,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "2"
+                                "text": 2
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -916,7 +873,7 @@
                         "uuid": "26D4A4EA-AD0A-4A4F-8F19-AD2EBDF2B4DD",
                         "name": "Button 3",
                         "elementType": "button",
-                        "role": "numberpad-3",
+                        "role": "3",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -926,7 +883,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "3"
+                                "text": 3
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -937,7 +894,7 @@
                         "uuid": "F7E72BB6-7C56-4D71-8B09-4FE29EF76EB6",
                         "name": "Button 4",
                         "elementType": "button",
-                        "role": "numberpad-4",
+                        "role": "4",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -947,7 +904,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "4"
+                                "text": 4
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -958,7 +915,7 @@
                         "uuid": "FD56CF91-26C4-47A2-9052-7D3504C85F59",
                         "name": "Button 5",
                         "elementType": "button",
-                        "role": "numberpad-5",
+                        "role": "5",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -968,7 +925,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "5"
+                                "text": 5
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -979,7 +936,7 @@
                         "uuid": "A9A11EB5-341F-42BB-A482-D81EED4D6436",
                         "name": "Button 6",
                         "elementType": "button",
-                        "role": "numberpad-6",
+                        "role": "6",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -989,7 +946,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "6"
+                                "text": 6
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -1000,7 +957,7 @@
                         "uuid": "8C750F21-4D8D-4F5A-8E1B-0B9294AF2A7C",
                         "name": "Button 7",
                         "elementType": "button",
-                        "role": "numberpad-7",
+                        "role": "7",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1010,7 +967,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "7"
+                                "text": 7
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -1021,7 +978,7 @@
                         "uuid": "789737C2-D0D7-401B-B079-D305C65DA5F9",
                         "name": "Button 8",
                         "elementType": "button",
-                        "role": "numberpad-8",
+                        "role": "8",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1031,7 +988,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "8"
+                                "text": 8
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -1042,7 +999,7 @@
                         "uuid": "2F310C3B-37A8-4AE0-B652-21160A3DBB00",
                         "name": "Button 9",
                         "elementType": "button",
-                        "role": "numberpad-9",
+                        "role": "9",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1052,7 +1009,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "9"
+                                "text": 9
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -1063,7 +1020,7 @@
                         "uuid": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
                         "name": "Button 0",
                         "elementType": "button",
-                        "role": "numberpad-0",
+                        "role": "0",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1073,7 +1030,7 @@
                                 "stroke-color": "white@50%",
                                 "stroke-width": -2,
                                 "paragraph-style.alignment": "center",
-                                "text": "0"
+                                "text": 0
                             },
                             "highlighted.foreground-color": "#00AFFFFF"
                         },
@@ -1084,7 +1041,7 @@
                         "uuid": "6F2F49AE-EC61-404B-A544-468A8D9EB74A",
                         "name": "Button Aux 1",
                         "elementType": "button",
-                        "role": "numberpad-aux1",
+                        "role": "aux1",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1105,7 +1062,7 @@
                         "uuid": "D7E718BE-7E0D-4C19-8A75-625C8C5445A1",
                         "name": "Button Aux 2",
                         "elementType": "button",
-                        "role": "numberpad-aux2",
+                        "role": "aux2",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1140,49 +1097,66 @@
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
                     }
-                ]
+                ],
+                "command-set.default": {
+                    "type": "numberpad",
+                    "1": {
+                        "class": "sendir",
+                        "code.uuid": "0313E4A0-996F-4968-8DAB-0C799BD4D2A6" // One
+                    },
+                    "2": {
+                        "class": "sendir",
+                        "code.uuid": "1B86BE5A-F8D6-4798-895A-B881E6E623D1" // Two
+                    },
+                    "3": {
+                        "class": "sendir",
+                        "code.uuid": "266FC2EF-2EDB-4A41-A42D-2BC1129DFECA" // Three
+                    },
+                    "4": {
+                        "class": "sendir",
+                        "code.uuid": "4D24C204-E3FC-4473-A438-38E5B6EE3FE6" // Four
+                    },
+                    "5": {
+                        "class": "sendir",
+                        "code.uuid": "40BCAC68-BC65-4AD4-A5F9-39A541AEF71E" // Five
+                    },
+                    "6": {
+                        "class": "sendir",
+                        "code.uuid": "E57C7D62-3597-45B0-9B80-45F5559F7C18" // Six
+                    },
+                    "7": {
+                        "class": "sendir",
+                        "code.uuid": "B9007475-33AA-4CD7-87E7-3EEF413486FD" // Seven
+                    },
+                    "8": {
+                        "class": "sendir",
+                        "code.uuid": "E6195194-F7FE-42C2-962A-13A6AA6858E0" // Eight
+                    },
+                    "9": {
+                        "class": "sendir",
+                        "code.uuid": "019887BD-C57E-4CBD-A8C0-62C1167601D9" // Nine
+                    },
+                    "0": {
+                        "class": "sendir",
+                        "code.uuid": "4D359D0D-BBE0-4BF5-85D3-9BF2CD338563" // Zero
+                    },
+                    "aux1": {
+                        "class": "sendir",
+                        "code.uuid": "60500AB6-9450-4BEA-86AD-CDB74E90A768" // Exit
+                    },
+                    "aux2": {
+                        "class": "sendir",
+                        "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB" // OK
+                    }
+                },
+                "labelAttributes": {}
             },
             {
-                "uuid": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69",
+                "uuid": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69", // DVR Activity Transport
                 "name": "DVR Activity Transport",
                 "elementType": "button-group",
                 "role": "transport",
                 "subtype": "bottom1",
-                "command-set.default": {
-                    "type": "transport",
-                    "record": {
-                        "class": "sendir",
-                        "code.uuid": "C613F7A8-5089-4440-B427-C121165DE70C"
-                    },
-                    "play": {
-                        "class": "sendir",
-                        "code.uuid": "7EE63EAB-1054-4DF7-A66B-9E51816AB8D0"
-                    },
-                    "pause": {
-                        "class": "sendir",
-                        "code.uuid": "5AA092F8-2D93-437F-B3D0-4006E52DC371"
-                    },
-                    "stop": {
-                        "class": "sendir",
-                        "code.uuid": "4376CED6-A57A-4930-B3A7-1A234B86291D"
-                    },
-                    "skip": {
-                        "class": "sendir",
-                        "code.uuid": "4DDE9552-4EE5-492E-98F4-8EF6600CED85"
-                    },
-                    "replay": {
-                        "class": "sendir",
-                        "code.uuid": "FEA29DF1-DA83-4775-9C73-85291A51961C"
-                    },
-                    "rewind": {
-                        "class": "sendir",
-                        "code.uuid": "3A8A1370-8842-42C7-9FB3-F01BDCCA9475"
-                    },
-                    "fast-forward": {
-                        "class": "sendir",
-                        "code.uuid": "502E0C1F-9524-4271-893C-089A45FF4BCF"
-                    }
-                },
                 "constraints": {
                     "index": {
                         "buttonFastForward": "804894ED-2BA4-467D-A7E2-43E45ECC946B",
@@ -1193,7 +1167,7 @@
                         "buttonRewind": "D4F04A8A-C2CA-4235-8C6E-080AD7DA5A3B",
                         "buttonSkip": "08FF87FF-685F-4A56-A40C-BF954852152B",
                         "buttonStop": "5996C324-C978-4AE8-97BA-4F5468CCDEFB",
-                        "dVRActivityTransport": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69",
+                        "dVRActivityTransport": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69", // DVR Activity Transport
                         "tuck": "051E7613-FE45-47CE-AE8A-F50B776348AC"
                     },
                     "format": [
@@ -1242,7 +1216,7 @@
                         "uuid": "DF2C7FAF-D979-427E-8626-2411E79F59F1",
                         "name": "Button Play",
                         "elementType": "button",
-                        "role": "transport-play",
+                        "role": "play",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1254,8 +1228,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "play"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1264,7 +1238,7 @@
                         "uuid": "7754F230-C17E-4333-AD7F-202A34AB71E1",
                         "name": "Button Pause",
                         "elementType": "button",
-                        "role": "transport-pause",
+                        "role": "pause",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1276,8 +1250,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "pause"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1286,7 +1260,7 @@
                         "uuid": "D4F04A8A-C2CA-4235-8C6E-080AD7DA5A3B",
                         "name": "Button Rewind",
                         "elementType": "button",
-                        "role": "transport-rewind",
+                        "role": "rewind",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1298,8 +1272,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "backward"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1308,7 +1282,7 @@
                         "uuid": "804894ED-2BA4-467D-A7E2-43E45ECC946B",
                         "name": "Button Fast Forward",
                         "elementType": "button",
-                        "role": "transport-fast-forward",
+                        "role": "fast-forward",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1320,8 +1294,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "fast-forward"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1330,7 +1304,7 @@
                         "uuid": "5996C324-C978-4AE8-97BA-4F5468CCDEFB",
                         "name": "Button Stop",
                         "elementType": "button",
-                        "role": "transport-stop",
+                        "role": "stop",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1342,8 +1316,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "stop"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1352,7 +1326,7 @@
                         "uuid": "4BD189E1-996D-4667-B1C0-80C43BC27445",
                         "name": "Button Replay",
                         "elementType": "button",
-                        "role": "transport-replay",
+                        "role": "replay",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1364,8 +1338,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "step-backward"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1392,7 +1366,7 @@
                         "uuid": "08FF87FF-685F-4A56-A40C-BF954852152B",
                         "name": "Button Skip",
                         "elementType": "button",
-                        "role": "transport-skip",
+                        "role": "skip",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1404,8 +1378,8 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "step-forward"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
@@ -1414,7 +1388,7 @@
                         "uuid": "FC1F0B10-D228-48E5-940E-997D6DD3ED67",
                         "name": "Button Record",
                         "elementType": "button",
-                        "role": "transport-record",
+                        "role": "record",
                         "shape": "rounded-rectangle",
                         "style": "gloss2",
                         "titles.default": {
@@ -1426,16 +1400,52 @@
                                 "paragraph-style.alignment": "center",
                                 "icon-name": "circle"
                             },
-                            "highlighted.foreground-color": "#00AFFFFF",
-                            "disabled.foreground-color": "#7F7F7FFF"
+                            "disabled.foreground-color": "#7F7F7FFF",
+                            "highlighted.foreground-color": "#00AFFFFF"
                         },
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
                     }
-                ]
+                ],
+                "command-set.default": {
+                    "type": "transport",
+                    "record": {
+                        "class": "sendir",
+                        "code.uuid": "C613F7A8-5089-4440-B427-C121165DE70C" // Record
+                    },
+                    "play": {
+                        "class": "sendir",
+                        "code.uuid": "7EE63EAB-1054-4DF7-A66B-9E51816AB8D0" // Play
+                    },
+                    "pause": {
+                        "class": "sendir",
+                        "code.uuid": "5AA092F8-2D93-437F-B3D0-4006E52DC371" // Pause
+                    },
+                    "stop": {
+                        "class": "sendir",
+                        "code.uuid": "4376CED6-A57A-4930-B3A7-1A234B86291D" // Stop
+                    },
+                    "skip": {
+                        "class": "sendir",
+                        "code.uuid": "4DDE9552-4EE5-492E-98F4-8EF6600CED85" // Next
+                    },
+                    "replay": {
+                        "class": "sendir",
+                        "code.uuid": "FEA29DF1-DA83-4775-9C73-85291A51961C" // Prev
+                    },
+                    "rewind": {
+                        "class": "sendir",
+                        "code.uuid": "3A8A1370-8842-42C7-9FB3-F01BDCCA9475" // Rewind
+                    },
+                    "fast-forward": {
+                        "class": "sendir",
+                        "code.uuid": "502E0C1F-9524-4271-893C-089A45FF4BCF" // Fast Forward
+                    }
+                },
+                "labelAttributes": {}
             },
             {
-                "uuid": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F",
+                "uuid": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F", // Selection Panel
                 "name": "Selection Panel",
                 "elementType": "button-group",
                 "role": "selection-panel",
@@ -1445,7 +1455,7 @@
                     "index": {
                         "buttonSTB": "60FBB7D9-D48A-42E5-A6FD-B47FC13EC23F",
                         "buttonTV": "DDF69EC8-CE1A-45A0-8721-CD91DBEA2135",
-                        "selectionPanel": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F"
+                        "selectionPanel": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F" // Selection Panel
                     },
                     "format": [
                         "buttonSTB.bottom = buttonTV.top",
@@ -1500,60 +1510,61 @@
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
                     }
-                ]
+                ],
+                "labelAttributes": {}
             },
             {
-                "uuid": "7521F420-F677-44C9-97BA-4AF836779C21",
+                "uuid": "7521F420-F677-44C9-97BA-4AF836779C21", // Left Overlay Panel
                 "name": "Left Overlay Panel",
                 "elementType": "button-group",
                 "role": "panel",
                 "subtype": "left1",
                 "constraints": {
                     "index": {
-                        "menu": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
+                        "dVRAudioInput": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
+                        "exit": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
                         "lastReturn": "1490C210-7F20-4276-810D-232396713B76",
+                        "leftOverlayPanel": "7521F420-F677-44C9-97BA-4AF836779C21", // Left Overlay Panel
+                        "menu": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
+                        "mute": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
                         "onDemandSource": "93A20B92-6A22-4DEC-802A-D735A1EBA583",
                         "tuckPanel": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
-                        "mute": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
-                        "tVAudioInput": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337",
-                        "leftOverlayPanel": "7521F420-F677-44C9-97BA-4AF836779C21",
-                        "exit": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
-                        "dVRAudioInput": "447B0C03-6390-47B3-8F66-FA58E79AAE81"
+                        "tVAudioInput": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337"
                     },
                     "format": [
-                        "mute.right = leftOverlayPanel.right - 4",
+                        "dVRAudioInput.height = onDemandSource.height",
+                        "dVRAudioInput.left = leftOverlayPanel.left + 4",
+                        "dVRAudioInput.right = leftOverlayPanel.right - 4",
+                        "dVRAudioInput.top = exit.bottom + 4",
+                        "exit.height = onDemandSource.height",
+                        "exit.left = leftOverlayPanel.left + 4",
+                        "exit.right = leftOverlayPanel.right - 4",
+                        "exit.top = lastReturn.bottom + 4",
+                        "lastReturn.height = onDemandSource.height",
+                        "lastReturn.left = leftOverlayPanel.left + 4",
+                        "lastReturn.right = leftOverlayPanel.right - 4",
+                        "lastReturn.top = menu.bottom + 4",
+                        "leftOverlayPanel.width = 150",
+                        "menu.height = onDemandSource.height",
+                        "menu.left = leftOverlayPanel.left + 4",
+                        "menu.right = leftOverlayPanel.right - 4",
+                        "menu.top = onDemandSource.bottom + 4",
                         "mute.height = onDemandSource.height",
                         "mute.left = leftOverlayPanel.left + 4",
-                        "tVAudioInput.height = onDemandSource.height",
-                        "tVAudioInput.top = dVRAudioInput.bottom + 4",
-                        "exit.top = lastReturn.bottom + 4",
-                        "tuckPanel.height = onDemandSource.height",
-                        "dVRAudioInput.left = leftOverlayPanel.left + 4",
-                        "tVAudioInput.left = leftOverlayPanel.left + 4",
-                        "onDemandSource.top = leftOverlayPanel.top + 4",
-                        "exit.height = onDemandSource.height",
+                        "mute.right = leftOverlayPanel.right - 4",
+                        "mute.top = tVAudioInput.bottom + 4",
+                        "onDemandSource.left = leftOverlayPanel.left + 4",
                         "onDemandSource.right = leftOverlayPanel.right - 4",
-                        "lastReturn.top = menu.bottom + 4",
-                        "dVRAudioInput.top = exit.bottom + 4",
-                        "menu.top = onDemandSource.bottom + 4",
-                        "leftOverlayPanel.width = 150",
-                        "dVRAudioInput.height = onDemandSource.height",
-                        "tVAudioInput.right = leftOverlayPanel.right - 4",
-                        "menu.left = leftOverlayPanel.left + 4",
-                        "menu.height = onDemandSource.height",
-                        "exit.left = leftOverlayPanel.left + 4",
+                        "onDemandSource.top = leftOverlayPanel.top + 4",
+                        "tuckPanel.bottom = leftOverlayPanel.bottom - 4",
+                        "tuckPanel.height = onDemandSource.height",
+                        "tuckPanel.left = leftOverlayPanel.left + 4",
                         "tuckPanel.right = leftOverlayPanel.right - 4",
                         "tuckPanel.top = mute.bottom + 4",
-                        "lastReturn.right = leftOverlayPanel.right - 4",
-                        "exit.right = leftOverlayPanel.right - 4",
-                        "menu.right = leftOverlayPanel.right - 4",
-                        "lastReturn.left = leftOverlayPanel.left + 4",
-                        "onDemandSource.left = leftOverlayPanel.left + 4",
-                        "lastReturn.height = onDemandSource.height",
-                        "mute.top = tVAudioInput.bottom + 4",
-                        "dVRAudioInput.right = leftOverlayPanel.right - 4",
-                        "tuckPanel.bottom = leftOverlayPanel.bottom - 4",
-                        "tuckPanel.left = leftOverlayPanel.left + 4"
+                        "tVAudioInput.height = onDemandSource.height",
+                        "tVAudioInput.left = leftOverlayPanel.left + 4",
+                        "tVAudioInput.right = leftOverlayPanel.right - 4",
+                        "tVAudioInput.top = dVRAudioInput.bottom + 4"
                     ]
                 },
                 "backgroundColor": "white@75%",
@@ -1567,29 +1578,33 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "B665AE8E-B376-476E-AED5-471294F06ABB"
+                                "code.uuid": "B665AE8E-B376-476E-AED5-471294F06ABB" // On Demand
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "F39821FE-3AA2-44B9-84C5-BBC275C4623F"
+                                "code.uuid": "F39821FE-3AA2-44B9-84C5-BBC275C4623F" // Source
                             }
                         },
                         "titles": {
-                            "default.normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "On Demand"
+                            "default": {
+                                "normal": {
+                                    "font": "HelveticaNeue@20",
+                                    "foreground-color": "white",
+                                    "stroke-color": "white@50%",
+                                    "stroke-width": -2,
+                                    "paragraph-style.alignment": "center",
+                                    "text": "On Demand"
+                                }
                             },
-                            "tv.normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "Source"
+                            "tv": {
+                                "normal": {
+                                    "font": "HelveticaNeue@20",
+                                    "foreground-color": "white",
+                                    "stroke-color": "white@50%",
+                                    "stroke-width": -2,
+                                    "paragraph-style.alignment": "center",
+                                    "text": "Source"
+                                }
                             }
                         },
                         "backgroundColors.default.normal": "#060606FF",
@@ -1604,11 +1619,11 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
+                                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191" // Menu
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
+                                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191" // Menu
                             }
                         },
                         "titles.default.normal": {
@@ -1631,29 +1646,33 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
+                                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565" // Return
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
+                                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565" // Return
                             }
                         },
                         "titles": {
-                            "default.normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "Last"
+                            "default": {
+                                "normal": {
+                                    "font": "HelveticaNeue@20",
+                                    "foreground-color": "white",
+                                    "stroke-color": "white@50%",
+                                    "stroke-width": -2,
+                                    "paragraph-style.alignment": "center",
+                                    "text": "Last"
+                                }
                             },
-                            "tv.normal": {
-                                "font": "HelveticaNeue@20",
-                                "foreground-color": "white",
-                                "stroke-color": "white@50%",
-                                "stroke-width": -2,
-                                "paragraph-style.alignment": "center",
-                                "text": "Return"
+                            "tv": {
+                                "normal": {
+                                    "font": "HelveticaNeue@20",
+                                    "foreground-color": "white",
+                                    "stroke-color": "white@50%",
+                                    "stroke-width": -2,
+                                    "paragraph-style.alignment": "center",
+                                    "text": "Return"
+                                }
                             }
                         },
                         "backgroundColors.default.normal": "#060606FF",
@@ -1668,11 +1687,11 @@
                         "commands": {
                             "default": {
                                 "class": "sendir",
-                                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
+                                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648" // Exit
                             },
                             "tv": {
                                 "class": "sendir",
-                                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
+                                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648" // Exit
                             }
                         },
                         "titles.default.normal": {
@@ -1694,7 +1713,7 @@
                         "style": "gloss2",
                         "commands.default": {
                             "class": "sendir",
-                            "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
+                            "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883" // TV\/SAT
                         },
                         "titles.default.normal": {
                             "font": "HelveticaNeue@20",
@@ -1715,7 +1734,7 @@
                         "style": "gloss2",
                         "commands.default": {
                             "class": "sendir",
-                            "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9"
+                            "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9" // Video 3
                         },
                         "titles.default.normal": {
                             "font": "HelveticaNeue@20",
@@ -1736,7 +1755,7 @@
                         "style": "gloss2",
                         "commands.default": {
                             "class": "sendir",
-                            "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
+                            "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619" // Mute
                         },
                         "titles.default.normal": {
                             "font": "HelveticaNeue@20",
@@ -1767,17 +1786,249 @@
                         "backgroundColors.default.normal": "#060606FF",
                         "titleEdgeInsets": "{20, 20, 20, 20}"
                     }
-                ]
+                ],
+                "labelAttributes": {}
             }
         ],
         "panels": {
-            "bottom1": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69",
-            "right1": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F",
-            "left1": "7521F420-F677-44C9-97BA-4AF836779C21",
-            "top1": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7"
+            "left1": "7521F420-F677-44C9-97BA-4AF836779C21", // Left Overlay Panel
+            "right1": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F", // Selection Panel
+            "bottom1": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69", // DVR Activity Transport
+            "top1": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7" // DVR Activity Number Pad
+        }
+    },
+    {
+        "uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
+        "name": "Home Screen",
+        "elementType": "remote",
+        "constraints": {
+            "index": {
+                "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
+                "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+                "homeScreen": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
+            },
+            "format": [
+                "activityButtons.centerX = homeScreen.centerX",
+                "activityButtons.centerY = homeScreen.centerY - 22",
+                "bottomToolbar.bottom = homeScreen.bottom",
+                "bottomToolbar.left = homeScreen.left",
+                "bottomToolbar.right = homeScreen.right"
+            ]
         },
-        "modes": [
-            "tv"
+        "backgroundColor": "black",
+        "backgroundImage.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388", // Pro Dots.png
+        "subelements": [
+            {
+                "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
+                "name": "Activity Buttons",
+                "elementType": "button-group",
+                "constraints": {
+                    "index": {
+                        "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
+                        "appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
+                        "dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+                        "playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+                        "sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993"
+                    },
+                    "format": [
+                        "activityButtons.height = activityButtons.width",
+                        "activityButtons.width = 300",
+                        "appleTV.centerX = activityButtons.centerX * 0.5",
+                        "appleTV.centerY = activityButtons.centerY * 1.5",
+                        "appleTV.width = dish.width",
+                        "dish.centerX = activityButtons.centerX * 0.5",
+                        "dish.centerY = activityButtons.centerY * 0.5",
+                        "dish.width = activityButtons.width * 0.5",
+                        "playstation.centerX = activityButtons.centerX * 1.5",
+                        "playstation.centerY = activityButtons.centerY * 0.5",
+                        "playstation.width = dish.width",
+                        "sonos.centerX = activityButtons.centerX * 1.5",
+                        "sonos.centerY = activityButtons.centerY * 1.5",
+                        "sonos.width = dish.width"
+                    ]
+                },
+                "subelements": [
+                    {
+                        "uuid": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+                        "name": "Dish",
+                        "elementType": "button",
+                        "shape": "rounded-rectangle",
+                        "style": "gloss2",
+                        "constraints": {
+                            "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+                            "format": "dish.height = dish.width"
+                        },
+                        "commands.default": {
+                            "class": "activity",
+                            "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5" // Dish Hopper Activity
+                        },
+                        "titles.default": {
+                            "normal": {
+                                "font": "HelveticaNeue@20",
+                                "foreground-color": "white",
+                                "stroke-color": "white@50%",
+                                "stroke-width": -2,
+                                "paragraph-style.alignment": "center",
+                                "text": "Dish"
+                            },
+                            "highlighted.foreground-color": "#00AFFFFF"
+                        },
+                        "backgroundColors.default.normal": "#060606FF",
+                        "titleEdgeInsets": "{20, 20, 20, 20}"
+                    },
+                    {
+                        "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+                        "name": "Playstation",
+                        "elementType": "button",
+                        "shape": "rounded-rectangle",
+                        "style": "gloss2",
+                        "constraints": {
+                            "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+                            "format": "playstation.height = playstation.width"
+                        },
+                        "commands.default": {
+                            "class": "activity",
+                            "activity.uuid": "863844ED-4BCD-4B75-AD67-DEE8A23233D1" // Playstation Activity
+                        },
+                        "titles.default": {
+                            "normal": {
+                                "font": "HelveticaNeue@20",
+                                "foreground-color": "white",
+                                "stroke-color": "white@50%",
+                                "stroke-width": -2,
+                                "paragraph-style.alignment": "center",
+                                "text": "Playstation"
+                            },
+                            "highlighted.foreground-color": "#00AFFFFF"
+                        },
+                        "backgroundColors.default.normal": "#060606FF",
+                        "titleEdgeInsets": "{20, 20, 20, 20}"
+                    },
+                    {
+                        "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
+                        "name": "Apple TV",
+                        "elementType": "button",
+                        "shape": "rounded-rectangle",
+                        "style": "gloss2",
+                        "constraints": {
+                            "index.appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
+                            "format": "appleTV.height = appleTV.width"
+                        },
+                        "commands.default": {
+                            "class": "activity",
+                            "activity.uuid": "DEB5EAC1-7040-4CA1-A309-423BACB533A4" //  TV Activity
+                        },
+                        "titles.default": {
+                            "normal": {
+                                "font": "HelveticaNeue@20",
+                                "foreground-color": "white",
+                                "stroke-color": "white@50%",
+                                "stroke-width": -2,
+                                "paragraph-style.alignment": "center",
+                                "text": " TV"
+                            },
+                            "highlighted.foreground-color": "#00AFFFFF"
+                        },
+                        "backgroundColors.default.normal": "#060606FF",
+                        "titleEdgeInsets": "{20, 20, 20, 20}"
+                    },
+                    {
+                        "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
+                        "name": "Sonos",
+                        "elementType": "button",
+                        "shape": "rounded-rectangle",
+                        "style": "gloss2",
+                        "constraints": {
+                            "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
+                            "format": "sonos.height = sonos.width"
+                        },
+                        "commands.default": {
+                            "class": "activity",
+                            "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290" // Sonos Activity
+                        },
+                        "titles.default": {
+                            "normal": {
+                                "font": "HelveticaNeue@20",
+                                "foreground-color": "white",
+                                "stroke-color": "white@50%",
+                                "stroke-width": -2,
+                                "paragraph-style.alignment": "center",
+                                "text": "Sonos"
+                            },
+                            "highlighted.foreground-color": "#00AFFFFF"
+                        },
+                        "backgroundColors.default.normal": "#060606FF",
+                        "titleEdgeInsets": "{20, 20, 20, 20}"
+                    }
+                ],
+                "labelAttributes": {}
+            },
+            {
+                "uuid": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+                "name": "Bottom Toolbar",
+                "elementType": "button-group",
+                "role": "toolbar",
+                "shape": "rectangle",
+                "constraints": {
+                    "index": {
+                        "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+                        "lightsOff": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
+                        "lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4"
+                    },
+                    "format": [
+                        "bottomToolbar.height = 44",
+                        "lightsOff.bottom = bottomToolbar.bottom",
+                        "lightsOff.left = lightsOn.right + 40",
+                        "lightsOff.top = bottomToolbar.top",
+                        "lightsOff.width = lightsOn.width",
+                        "lightsOn.bottom = bottomToolbar.bottom",
+                        "lightsOn.left = bottomToolbar.left + 20",
+                        "lightsOn.top = bottomToolbar.top"
+                    ]
+                },
+                "backgroundColor": "flipside",
+                "subelements": [
+                    {
+                        "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",
+                        "name": "Lights On",
+                        "elementType": "button",
+                        "role": "toolbar",
+                        "constraints": {
+                            "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
+                            "format": "lightsOn.width = 44"
+                        },
+                        "commands.default": {
+                            "class": "http",
+                            "url": "http://10.0.1.27/0?1201=I=0"
+                        },
+                        "icons.default": {
+                            "colors": {
+                                "normal": "white",
+                                "highlighted": "#00AFFFFF"
+                            },
+                            "normal.uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A" // 306-gray-light-switch.png
+                        }
+                    },
+                    {
+                        "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
+                        "name": "Lights Off",
+                        "elementType": "button",
+                        "role": "toolbar",
+                        "commands.default": {
+                            "class": "http",
+                            "url": "http://10.0.1.27/0?1401=I=0"
+                        },
+                        "icons.default": {
+                            "colors": {
+                                "normal": "#7F7F7FFF",
+                                "highlighted": "#00AFFFFF"
+                            },
+                            "normal.uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A" // 306-gray-light-switch.png
+                        }
+                    }
+                ],
+                "labelAttributes": {}
+            }
         ]
     }
 ]

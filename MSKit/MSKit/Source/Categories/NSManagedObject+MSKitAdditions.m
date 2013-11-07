@@ -9,8 +9,11 @@
 #import "MSKitMacros.h"
 #import "NSSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
+#import "NSDictionary+MSKitAdditions.h"
+#import "NSManagedObjectContext+MSKitAdditions.h"
 
 MSKEY_DEFINITION(MSDefaultValueForContainingClass);
+MSKEY_DEFINITION(MSDefaultValueForSubentity);
 
 @implementation NSManagedObject (MSKitAdditions)
 
@@ -33,6 +36,13 @@ MSKEY_DEFINITION(MSDefaultValueForContainingClass);
     return [self.objectID URIRepresentation];
 }
 
++ (instancetype)objectForURI:(NSURL *)uri context:(NSManagedObjectContext *)moc
+{
+    if (!moc) ThrowInvalidNilArgument(moc);
+    else if (!uri) ThrowInvalidNilArgument(uri);
+    else return [moc objectForURI:uri];
+}
+
 - (instancetype)faultedObject
 {
     return [self.managedObjectContext existingObjectWithID:self.objectID error:nil];
@@ -53,30 +63,20 @@ MSKEY_DEFINITION(MSDefaultValueForContainingClass);
     NSAttributeDescription * description = [self attributeDescriptionForAttribute:attributeName];
     if (!description) return nil;
 
-    id defaultValue = description.defaultValue;
+    id defaultValue = description.defaultValue; // official default value
 
-    if (className)
-    {
-        NSDictionary * userInfo = description.userInfo;
-        NSSet * userInfoKeys = [[userInfo allKeys] set];
+    NSDictionary * userInfo = description.userInfo;
+    NSSet * userInfoKeys = [[userInfo allKeys] set];
 
-        NSSet * keys = [userInfoKeys filteredSetUsingPredicate:
-                        [NSPredicate predicateWithFormat:@"SELF CONTAINS %@",
-                                                         MSDefaultValueForContainingClassKey]];
+    if (!className) className = self.entity.name;
 
-        if ([keys count])
-        {
-            NSString * key =
-                [keys objectPassingTest:
-                 ^BOOL(NSString * k)
-                 {
-                     return [[k stringByReplacingOccurrencesOfString:MSDefaultValueForContainingClassKey
-                                                          withString:@""]
-                             isEqualToString:className];
-                 }];
-            if (key) defaultValue = userInfo[key];
-        }
-    }
+    /*
+     look for key in user info of attribute description for a default value to be used
+     when the attribute is a member of the specified class
+     */
+
+    NSString * key = [@"." join:@[MSDefaultValueForContainingClassKey, className]];
+    if ([userInfo hasKey:key]) defaultValue = NilSafe(userInfo[key]);
 
     return defaultValue;
 }

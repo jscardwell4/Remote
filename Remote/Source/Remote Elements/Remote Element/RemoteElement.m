@@ -214,6 +214,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 //    MSLogDebugTag(@"data import complete");
 }
 
+
 /** attributes **/
 
 /// role, elementType, subtype, options, state, shape, style, backgroundColor
@@ -350,9 +351,11 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     if (![@(self.style) isEqual:defaultForKey(@"style")])
         dictionary[@"style"] = (styleJSONValueForRemoteElement(self) ?: @(self.style));
 
+/*
     if (![@(self.themeFlags) isEqual:defaultForKey(@"themeFlags")])
         dictionary[@"themeFlags"] = (themeFlagsJSONValueForRemoteElement(self)
                                      ?: @(self.themeFlags));
+*/
 
     if ([self.constraints count])
     {
@@ -400,13 +403,18 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
         dictionary[@"backgroundColor"] =
             CollectionSafe(normalizedColorJSONValueForColor(self.backgroundColor));
 
+    dictionary[@"backgroundImage.uuid"] = CollectionSafe(self.backgroundImage.commentedUUID);
+
     if (![@(self.backgroundImageAlpha) isEqual:defaultForKey(@"backgroundImageAlpha")])
         dictionary[@"backgroundImageAlpha"]  = @(self.backgroundImageAlpha);
 
     if ([self.subelements count])
         dictionary[@"subelements"] = [self valueForKeyPath:@"subelements.JSONDictionary"];
 
+
+/*
     dictionary[@"theme"] = CollectionSafe(self.theme.name);
+*/
 
     [dictionary compact];
     [dictionary compress];
@@ -538,6 +546,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     return (themeFlags ? [themeFlags intValue] : REThemeNone);
 }
 
+/*
 - (NSString *)name
 {
     static dispatch_once_t onceToken;
@@ -562,6 +571,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     }
     return name;
 }
+*/
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -621,7 +631,6 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     NSString * keyString           = element.key;
     NSString * nameString          = element.name;
     NSString * tagString           = [@(element.tag) stringValue];
-    NSString * controllerString    = unnamedModelObjectDescription(element.controller);
     NSString * configurationString = $(@"%@-configurations:'%@'",
                                        unnamedModelObjectDescription(element.configurationDelegate),
                                        [element.configurationDelegate.modeKeys
@@ -634,7 +643,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
                                               return namedModelObjectDescription(subelement);
                                           }] componentsJoinedByString:@"\n"]
                                       : @"nil");
-    NSString * layoutString        = namedModelObjectDescription(element.layoutConfiguration);
+    NSString * layoutString        = unnamedModelObjectDescription(element.layoutConfiguration);
     NSString * proportionString    = BOOLString(element.proportionLock);
     NSString * constraintsString   = [[element constraintsDescription]
                                                       stringByTrimmingLeadingWhitespace];
@@ -655,7 +664,6 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     dd[@"key"]                   = (keyString ?: @"nil");
     dd[@"name"]                  = (nameString ?: @"nil");
     dd[@"tag"]                   = (tagString ?: @"nil");
-    dd[@"controller"]            = (controllerString ?: @"nil");
     dd[@"configurationDelegate"] = (configurationString ?: @"nil");
     dd[@"parentElement"]         = (parentString ?: @"nil");
     dd[@"subelements"]           = (subelementsString ?: @"nil");

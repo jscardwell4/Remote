@@ -14,33 +14,12 @@
 #import "PKAssembly+MSKitAdditions.h"
 #import "MSJSONParser.h"
 #import <objc/runtime.h>
+#import "NSObject+MSKitAdditions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-
-@interface NSObject (MSJSONAssembler)
-
-@property (nonatomic, copy) NSString * comment;
-
-@end
-
-@implementation NSObject (MSJSONAssembler)
-
-static const char * kMSJSONAsemblerCommentKey = "kMSJSONAsemblerCommentKey";
-
-- (NSString *)comment { return objc_getAssociatedObject(self, (void *)kMSJSONAsemblerCommentKey); }
-
-- (void)setComment:(NSString *)comment
-{
-    objc_setAssociatedObject(self,
-                             (void *)kMSJSONAsemblerCommentKey,
-                             comment,
-                             OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-@end
 
 typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 {
@@ -131,9 +110,12 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
             else if (!_pendingValue) self.pendingValue = value;
             else
             {
-                assert(isMSDictionary(_pendingValue) && _pendingKey);
-                _pendingValue[_pendingKey] = value;
-                [self popKey];
+                id activeObject = [_activeObjects peek];
+                if (isDictionaryKind(activeObject) && _pendingKey)
+                {
+                    activeObject[_pendingKey] = value;
+                    [self popKey];
+                }
             }
             
             [_activeObjects push:value];
@@ -267,7 +249,11 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 - (void)parser:(PKSParser *)parser didMatchComment:(PKSTokenAssembly *)assembly
 {
     NSString * comment = ((PKToken *)[assembly pop]).stringValue;
-    if (_commentTarget) ((NSObject *)_commentTarget).comment = comment;
+
+    if (![comment hasPrefix:@" // "])
+        comment = MSSingleLineComment(comment);
+
+    if (_commentTarget) [_commentTarget setComment:comment];
 }
 
 

@@ -127,16 +127,8 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
     dictionary[@"uuid"] = NullObject;
 
-    IRCode * code = self.code;
-
-    if (code)
-    {
-        dictionary[@"code.uuid"] = code.uuid;
-        dictionary.userInfo[MSJSONCommentKey] = [MSDictionary dictionaryWithObject:code.name
-                                                                            forKey:@"code.uuid"];
-    }
-
-    if (self.portOverride) dictionary[@"portOverride"] = @(self.portOverride);
+    dictionary[@"code.uuid"] = CollectionSafe(self.code.commentedUUID);
+    dictionary[@"portOverride"] = (self.portOverride ? @(self.portOverride) : NullObject);
 
     [dictionary compact];
     [dictionary compress];

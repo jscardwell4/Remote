@@ -85,7 +85,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return dictionary;
 }
 
-+ (NSDictionary *)dictionaryFromDictionary:(NSDictionary *)dictionary replacements:(NSDictionary *)replacements {
++ (instancetype)dictionaryFromDictionary:(NSDictionary *)dictionary
+                            replacements:(NSDictionary *)replacements
+{
     NSMutableDictionary * d = [dictionary mutableCopy];
     for (id key in replacements) {
         NSArray * objectKeys = [dictionary allKeysForObject:key];
@@ -94,39 +96,45 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
         }
 
     }
-    return d;
+    return [self dictionaryWithDictionary:d];
 }
 
-- (NSDictionary *)dictionaryByRemovingEntriesForKeys:(NSArray *)keys
++ (instancetype)dictionaryWithSharedKeys:(NSArray *)keys
+{
+    id sharedKeySet = [NSDictionary sharedKeySetForKeys:keys];
+    return (sharedKeySet ? [[self class] dictionaryWithSharedKeySet:sharedKeySet] : nil);
+}
+
+- (instancetype)dictionaryByRemovingEntriesForKeys:(NSArray *)keys
 {
     NSMutableDictionary * dictionary = [self mutableCopy];
     [dictionary removeObjectsForKeys:keys];
-    return [NSDictionary dictionaryWithDictionary:dictionary];
+    return [[self class] dictionaryWithDictionary:dictionary];
 }
 
-- (NSDictionary *)dictionaryByRemovingEntryForKey:(id<NSCopying>)key
+- (instancetype)dictionaryByRemovingEntryForKey:(id<NSCopying>)key
 {
     return ([self hasKey:key] ? [self dictionaryByRemovingEntriesForKeys:@[key]] : self);
 }
 
-- (NSDictionary *)dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary {
+- (instancetype)dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary {
     NSMutableDictionary * d = [self mutableCopy];
     [d addEntriesFromDictionary:dictionary];
-    return d;
+    return [[self class] dictionaryWithDictionary:d];
 }
 
-- (NSDictionary *)dictionaryByMappingObjectsToBlock:(id (^)(id key, id obj))block
+- (instancetype)dictionaryByMappingObjectsToBlock:(id (^)(id key, id obj))block
 {
     NSMutableDictionary * d = [self mutableCopy];
     [d mapObjectsToBlock:block];
-    return [NSDictionary dictionaryWithDictionary:d];
+    return [[self class] dictionaryWithDictionary:d];
 }
 
-- (NSDictionary *)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block
+- (instancetype)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block
 {
     NSMutableDictionary * d = [self mutableCopy];
     [d mapKeysToBlock:block];
-    return [NSDictionary dictionaryWithDictionary:d];
+    return [[self class] dictionaryWithDictionary:d];
 }
 
 - (BOOL)hasKey:(id)key {

@@ -20,23 +20,11 @@
 + (instancetype)buttonGroupWithRole:(RERole)role;
 + (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
 
+- (void)setCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode;
+- (void)setLabel:(id)label mode:(RERemoteMode)mode;
 
-/**
-* Retrieve a Button object contained by the `ButtonGroup` by its key.
-* @param key The key for the Button object.
-* @return The Button specified or nil if it does not exist.
-*/
-- (Button *)objectForKeyedSubscript:(NSString *)subscript;
-- (Button *)objectAtIndexedSubscript:(NSUInteger)subscript;
-
-- (void)addCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode;
-
-/**
- * Add a new `CommandSet` for the specified label text.
- * @param commandSet The `CommandSet` object to add the `PickerLabelButtonGroup`'s collection.
- * @param label The display name for selecting the `CommandSet`.
- */
-- (void)addCommandSet:(CommandSet *)commandSet withLabel:(id)label;
+- (void)selectCommandSetAtIndex:(NSUInteger)index;
+- (NSAttributedString *)labelForCommandSetAtIndex:(NSUInteger)index;
 
 /**
 * Label text for the optional `UILabelView`.
@@ -44,25 +32,42 @@
 @property (nonatomic, copy) NSAttributedString * label;
 
 /**
+ * CommandSet or CommandSet Collection used to assign commands to button subelements
+ */
+@property (nonatomic, strong) CommandContainer * commandContainer;
+
+/**
 * String used to generate auto layout  constraint for the label.
 */
 @property (nonatomic, copy) NSString * labelConstraints;
+
+@property (nonatomic, strong) MSDictionary * labelAttributes;
 
 /**
 * REPanelLocation referring to which side the `ButtonGroup` appears when attached to a
 * Remote as a panel.
 */
-@property (nonatomic, assign) REPanelLocation panelLocation;
-@property (nonatomic, assign) REPanelTrigger panelTrigger;
-@property (nonatomic, assign) REPanelAssignment panelAssignment;
+@property (nonatomic, assign) REPanelLocation     panelLocation;
+@property (nonatomic, assign) REPanelTrigger      panelTrigger;
+@property (nonatomic, assign) REPanelAssignment   panelAssignment;
 
 @property (nonatomic, strong, readonly) Remote * parentElement;
 @property (nonatomic, weak, readonly) ButtonGroupConfigurationDelegate * groupConfigurationDelegate;
 
 - (BOOL)isPanel;
-- (void)setCommandContainer:(CommandContainer *)container;
 
-@property (nonatomic, readonly) CommandSetCollection * commandSetCollection;
+@end
+
+@interface ButtonGroup (TypeOverrides)
+
+/**
+ * Retrieve a Button object contained by the `ButtonGroup` by its key.
+ * @param key The key for the Button object.
+ * @return The Button specified or nil if it does not exist.
+ */
+- (Button *)objectForKeyedSubscript:(NSString *)subscript;
+- (Button *)objectAtIndexedSubscript:(NSUInteger)subscript;
+
 
 @end
 

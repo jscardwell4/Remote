@@ -198,13 +198,16 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
                                 filePath:[@"/" join:@[DocumentsFilePath, @"RemoteController.json"]]];
 
-    [MSJSONSerialization writeJSONObject:[[Remote MR_findAll] valueForKeyPath:@"JSONDictionary"]
+    [MSJSONSerialization writeJSONObject:[[Remote MR_findAllSortedBy:@"name" ascending:YES]
+                                          valueForKeyPath:@"JSONDictionary"]
                                 filePath:[@"/" join:@[DocumentsFilePath, @"Remote.json"]]];
 
-    [MSJSONSerialization writeJSONObject:[[ComponentDevice MR_findAll] valueForKeyPath:@"JSONDictionary"]
+    [MSJSONSerialization writeJSONObject:[[ComponentDevice MR_findAllSortedBy:@"info.name" ascending:YES]
+                                          valueForKeyPath:@"JSONDictionary"]
                                 filePath:[@"/" join:@[DocumentsFilePath, @"ComponentDevice.json"]]];
 
-    [MSJSONSerialization writeJSONObject:[[Manufacturer MR_findAll] valueForKeyPath:@"JSONDictionary"]
+    [MSJSONSerialization writeJSONObject:[[Manufacturer MR_findAllSortedBy:@"info.name" ascending:YES]
+                                          valueForKeyPath:@"JSONDictionary"]
                                 filePath:[@"/" join:@[DocumentsFilePath, @"Manufacturer.json"]]];
     
     [MSJSONSerialization writeJSONObject:[[Image MR_findAll] valueForKeyPath:@"JSONDictionary"]

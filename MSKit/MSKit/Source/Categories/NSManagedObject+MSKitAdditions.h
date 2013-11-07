@@ -9,6 +9,7 @@
 #import "MSKitDefines.h"
 
 MSEXTERN_KEY(MSDefaultValueForContainingClass);
+MSEXTERN_KEY(MSDefaultValueForSubentity);
 
 @interface NSManagedObject (MSKitAdditions)
 
@@ -16,6 +17,8 @@ MSEXTERN_KEY(MSDefaultValueForContainingClass);
 - (BOOL)hasChangesForKey:(NSString *)key;
 
 - (NSURL *)permanentURI;
+
++ (instancetype)objectForURI:(NSURL *)uri context:(NSManagedObjectContext *)moc;
 
 - (NSAttributeDescription *)attributeDescriptionForAttribute:(NSString *)attributeName;
 

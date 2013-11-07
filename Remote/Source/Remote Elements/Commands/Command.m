@@ -7,6 +7,9 @@
 //
 #import "Command_Private.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "JSONObjectKeys.h"
+#import <objc/runtime.h>
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -50,6 +53,50 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
+
+
++ (instancetype)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+{
+    Command * command = nil;
+
+    if (!context) ThrowInvalidNilArgument(context);
+    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some form of dictionary");
+    else
+    {
+        Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
+        if (commandClass)
+        {
+            BOOL subclassImplementsMethod = NO;
+            unsigned int outCount;
+            Method * classMethods = class_copyMethodList(commandClass, &outCount);
+            for (unsigned int i = 0; i < outCount; i++)
+            {
+                if (sel_isEqual(_cmd, method_getName(classMethods[i])))
+                {
+                    subclassImplementsMethod = YES;
+                    break;
+                }
+            }
+
+            if (subclassImplementsMethod || commandClass != self)
+                command = [commandClass MR_importFromObject:data inContext:context];
+
+            else
+                command = [super MR_importFromObject:data inContext:context];
+        }
+    }
+
+    assert(![command isMemberOfClass:[Command class]]);
+
+    return command;
+}
+
+/*
+- (void)importIndicator:(id)data
+{
+
+}
+*/
 
 - (BOOL)shouldImportButton:(id)data {return NO;}
 - (BOOL)shouldImportButtonDelegates:(id)data {return NO;}

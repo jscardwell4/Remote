@@ -135,66 +135,52 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 {
     assert(_labelContainer.subviews.count == 0);
 
-    CommandSetCollection * collection = self.model.commandSetCollection;
+    CommandContainer * container = self.model.commandContainer;
+    if (!isKind(container, CommandSetCollection)) return;
 
-    NSMutableArray * labels = [@[] mutableCopy];
-    for (CommandSet * commandSet in collection.commandSets)
-        [labels addObject:collection[commandSet]];
+    CommandSetCollection * collection = (CommandSetCollection *)container;
 
-    _pickerFlags.labelCount = [labels count];
+    NSUInteger labelCount = collection.count;
+    if (!labelCount) return;
 
-    if (!_pickerFlags.labelCount) return;
+    _pickerFlags.labelCount = labelCount;
 
-    NSMutableString     * s     = [NSMutableString stringWithString:@"H:|"];
-    NSMutableDictionary * views = [NSMutableDictionary dictionaryWithCapacity:labels.count];
+    NSMutableString * positionalConstraints = [@"H:|" mutableCopy];
+    NSMutableDictionary * labels = [NSMutableDictionary dictionaryWithCapacity:labelCount];
 
-    // TODO: move constraint building to `updateConstraints`
-
-    for (NSAttributedString * label in labels)
+    for (NSUInteger i = 0; i < labelCount; i++)
     {
-        assert([label isKindOfClass:[NSAttributedString class]]);
+        NSAttributedString * label = [self.model labelForCommandSetAtIndex:i];
 
-        UILabel * newLabel = [UILabel new];
-
-        newLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        newLabel.attributedText                            = label;
-        newLabel.backgroundColor                           = [UIColor clearColor];
+        UILabel * newLabel = [UILabel newForAutolayout];
+        newLabel.attributedText = label;
+        newLabel.backgroundColor = [UIColor clearColor];
         [_labelContainer addSubview:newLabel];
-        views[label.string] = newLabel;
 
-        NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:newLabel
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1
-                                                                        constant:0];
+        labels[label.string] = newLabel;
 
-        constraint.nametag = REPickerLabelButtonGroupViewInternalNametag;
+        NSString * labelName = $(@"label%u", i);
+        NSString * constraints = $(@"%1$@.width = self.width '%2$@'\n"
+                                    "%1$@.centerY = container.centerY '%2$@'",
+                                   labelName, REPickerLabelButtonGroupViewInternalNametag);
 
-        [self addConstraint:constraint];
+        [self addConstraints:[NSLayoutConstraint
+                              constraintsByParsingString:constraints
+                                                   views:@{ labelName    : newLabel,
+                                                            @"self"      : self,
+                                                            @"container" : _labelContainer }]];
 
-        constraint = [NSLayoutConstraint constraintWithItem:newLabel
-                                                  attribute:NSLayoutAttributeCenterY
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:_labelContainer
-                                                  attribute:NSLayoutAttributeCenterY
-                                                 multiplier:1
-                                                   constant:0];
-        constraint.nametag = REPickerLabelButtonGroupViewInternalNametag;
-
-        [_labelContainer addConstraint:constraint];
-        [s appendFormat:@"[%@]", label.string];
+        [positionalConstraints appendFormat:@"[%@]", label.string];
     }
 
-    [s appendString:@"|"];
+    [positionalConstraints appendString:@"|"];
 
-    NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:s
+    NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:positionalConstraints
                                                                     options:0
                                                                     metrics:nil
-                                                                      views:views];
-
+                                                                      views:labels];
     [constraints setValue:REPickerLabelButtonGroupViewInternalNametag forKeyPath:@"nametag"];
+    
     [_labelContainer addConstraints:constraints];
 }
 
@@ -316,15 +302,7 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
  */
 - (void)updateCommandSet
 {
-    if (!_pickerFlags.labelCount) return;
-
-    CommandSetCollection * collection = ((ButtonGroup *)self.model).commandSetCollection;
-    NSOrderedSet           * commandSets = collection.commandSets;
-    assert(commandSets.count >= _pickerFlags.labelCount);
-    CommandSet * commandSet = commandSets[_pickerFlags.labelIndex];
-    assert(commandSet);
-
-    for (Button * button in self.subelements) button.command = commandSet[@(button.elementType)];
+    if (_pickerFlags.labelCount) [self.model selectCommandSetAtIndex:_pickerFlags.labelIndex];
 }
 
 @end

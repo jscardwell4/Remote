@@ -5,7 +5,7 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
-#import "ModelObject.h"
+#import "NamedModelObject.h"
 #import "RETypedefs.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@
  * that customize behavior for particular tasks: <PowerCommand>, <MacroCommand>, <DelayCommand>,
  * <SystemCommand>, <SendIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
  */
-@interface Command : ModelObject <NamedModelObject>
+@interface Command : NamedModelObject
 
 /**
  * Create a new `Command` object in the current thread's managed object context.
@@ -43,9 +43,6 @@
 
 /// Show activity indicator while executing command.
 @property (nonatomic, assign) BOOL indicator;
-
-/// Display name for the command when being represented in the user interface.
-@property (nonatomic, copy, readwrite) NSString * name;
 
 @end
 

@@ -11,6 +11,7 @@
 #import "ControlStateImageSet.h"
 #import "ControlStateTitleSet.h"
 #import "ControlStateColorSet.h"
+#import "RemoteElementKeys.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Types

@@ -9,6 +9,7 @@
 
 @implementation MacroBuilder @end
 
+/*
 @implementation MacroBuilder (Developer)
 
 + (MacroCommand *)activityMacroForActivity:(NSUInteger)activity
@@ -188,3 +189,5 @@
 }
 
 @end
+*/
+

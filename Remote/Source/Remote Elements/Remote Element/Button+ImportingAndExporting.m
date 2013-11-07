@@ -67,12 +67,14 @@
 
 - (void)importTitles:(NSDictionary *)data
 {
-    // iterate over modes
     for (NSString * mode in data)
-        [self.buttonConfigurationDelegate
-         setTitles:[ControlStateTitleSet MR_importFromObject:data[mode]
-                                                   inContext:self.managedObjectContext]
-         mode:mode];
+    {
+        ControlStateTitleSet * titleSet = [ControlStateTitleSet
+                                           MR_importFromObject:data[mode]
+                                                     inContext:self.managedObjectContext];
+
+        if (titleSet) [self.buttonConfigurationDelegate setTitles:titleSet mode:mode];
+    }
 }
 
 - (void)importIcons:(NSDictionary *)data
@@ -80,54 +82,11 @@
     // iterate over modes
     for (NSString * mode in data)
     {
-        assert(isStringKind(mode));
+        ControlStateImageSet * imageSet = [ControlStateImageSet
+                                           MR_importFromObject:data[mode]
+                                                     inContext:self.managedObjectContext];
 
-        // get the data for this mode
-        MSDictionary * icons = [MSDictionary dictionaryWithDictionary:data[mode]];
-        if (!icons) continue;
-
-        // grab the colors and replace values with actual color objects
-        ControlStateColorSet * colorSet = nil;
-        MSDictionary * colors = [MSDictionary dictionaryWithDictionary:icons[@"colors"]];
-        if (colors)
-        {
-            // remove colors from icons dictionary
-            [icons removeObjectForKey:@"colors"];
-
-            [colors enumerateKeysAndObjectsUsingBlock:
-             ^(id key, id obj, BOOL *stop)
-             {
-                 if ([ControlStateSet stateForProperty:key] == NSUIntegerMax)
-                     colors[key] = NullObject;
-                 else
-                     colors[key] = CollectionSafe(colorFromImportValue(colors[key]));
-             }];
-
-            [colors compact];
-
-            colorSet = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext
-                                                          withObjects:colors];
-        }
-
-        // grab icon objects
-        for (NSString * key in icons)
-        {
-            // replace icon data with icon object
-            NSDictionary * iconData = icons[key];
-            NSString * uuid = iconData[@"uuid"];
-
-            icons[key] = CollectionSafe([Image objectWithUUID:uuid
-                                                      context:self.managedObjectContext]);
-        }
-
-        [icons compact];
-
-        ControlStateImageSet * iconSet = [ControlStateImageSet
-                                          imageSetWithColors:colorSet
-                                          images:icons
-                                          context:self.managedObjectContext];
-        if (iconSet)
-            [self.buttonConfigurationDelegate setIcons:iconSet mode:mode];
+        if (imageSet) [self.buttonConfigurationDelegate setIcons:imageSet mode:mode];
     }
 }
 
@@ -135,43 +94,11 @@
 {
     for (NSString * mode in data)
     {
-        MSDictionary * images = data[mode];
-        if (!images) continue;
-
-        ControlStateColorSet * colorSet = nil;
-        NSDictionary * colors = images[@"colors"];
-        if (colors)
-        {
-            [images removeObjectForKey:@"colors"];
-
-            MSDictionary * filteredColors = [MSDictionary dictionary];
-            [colors enumerateKeysAndObjectsUsingBlock:
-             ^(id key, id obj, BOOL *stop)
-             {
-                 UIColor * color = colorFromImportValue(colors[key]);
-                 if (color) filteredColors[key] = color;
-             }];
-
-            colorSet = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext
-                                                          withObjects:filteredColors];
-        }
-
-        for (NSString * key in images)
-        {
-            NSString * uuid = images[key][@"uuid"];
-            if (!uuid)
-                [images removeObjectForKey:key];
-
-            else
-                images[key] = uuid;
-        }
-
         ControlStateImageSet * imageSet = [ControlStateImageSet
-                                           imageSetWithColors:colorSet
-                                           images:images
-                                           context:self.managedObjectContext];
-        if (imageSet)
-            [self.buttonConfigurationDelegate setImages:imageSet mode:mode];
+                                           MR_importFromObject:data[mode]
+                                                     inContext:self.managedObjectContext];
+
+        if (imageSet) [self.buttonConfigurationDelegate setImages:imageSet mode:mode];
     }
 }
 
@@ -179,23 +106,9 @@
 {
     for (NSString * mode in data)
     {
-        NSDictionary * commandData = data[mode];
-        if (!commandData) continue;
-
-        NSString * classKey = commandData[@"class"];
-        Class commandClass = commandClassForImportKey(classKey);
-        if (!commandClass) continue;
-
-        Command * command = [commandClass MR_importFromObject:commandData
-                                                    inContext:self.managedObjectContext];
-        if (command)
-        {
-            if ([mode isEqualToString:REDefaultMode])
-                self.command = command;
-
-            else
-                [self.buttonConfigurationDelegate setCommand:command mode:mode];
-        }
+        Command * command = [Command MR_importFromObject:data[mode]
+                                               inContext:self.managedObjectContext];
+        if (command) [self.buttonConfigurationDelegate setCommand:command mode:mode];
     }
 }
 
@@ -203,26 +116,10 @@
 {
     for (NSString * mode in data)
     {
-        NSDictionary * colors = data[mode];
-        if (!colors) continue;
-
-        MSDictionary * filteredColors = [MSDictionary dictionary];
-        [colors enumerateKeysAndObjectsUsingBlock:
-         ^(id key, id obj, BOOL *stop)
-         {
-             UIColor * color = colorFromImportValue(colors[key]);
-             if (color)
-             {
-                 filteredColors[key] = color;
-
-                 if ([mode isEqualToString:REDefaultMode] && [key isEqualToString:@"normal"])
-                     self.backgroundColor = color;
-             }
-         }];
-
         ControlStateColorSet * colorSet = [ControlStateColorSet
-                                           controlStateSetInContext:self.managedObjectContext
-                                           withObjects:filteredColors];
+                                           MR_importFromObject:data[mode]
+                                                     inContext:self.managedObjectContext];
+
         if (colorSet) [self.buttonConfigurationDelegate setBackgroundColors:colorSet mode:mode];
     }
 }
@@ -238,7 +135,7 @@
     MSDictionary * dictionary = [super JSONDictionary];
     dictionary[@"backgroundColor"] = NullObject;
 
-    ButtonConfigurationDelegate * delegate = (ButtonConfigurationDelegate *)self.configurationDelegate;
+    ButtonConfigurationDelegate * delegate = self.buttonConfigurationDelegate;
     NSArray * configurations = delegate.modeKeys;
 
     MSDictionary * titles           = [MSDictionary dictionary];

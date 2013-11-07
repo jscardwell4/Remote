@@ -27,7 +27,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
         for (NSEntityDescription * entity in entities)
         {
             NSAttributeDescription * description = [entity attributesByName][attribute];
-            [description setAttributeValueClassName:className];
+            if (className) [description setAttributeValueClassName:className];
             if (defaultValue) [description setDefaultValue:defaultValue];
             if (info) description.userInfo = [description.userInfo
                                                   dictionaryByAddingEntriesFromDictionary:info];
@@ -49,29 +49,61 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
         }
     };
 
-    void(^modifyUserInfoOfAttributeForRelationshipOfEntity)(NSDictionary*,
-                                                            NSString*,
-                                                            NSString*,
-                                                            NSEntityDescription*) =
-    ^(NSDictionary *info,
-      NSString *attributeName,
-      NSString *relationshipName,
-      NSEntityDescription *entity)
+    void (^overrideDefaultValueOfAttributeForSubentity)(NSEntityDescription*, NSString*, id) =
+    ^(NSEntityDescription * entity, NSString * attribute, id defaultValue)
     {
-        assert(info && attributeName && relationshipName && entity);
+        NSEntityDescription * superEntity = entity;
+        while (superEntity.superentity) superEntity = superEntity.superentity;
 
-        NSRelationshipDescription * relationship = [entity relationshipsByName][relationshipName];
-        assert(relationship);
+        NSAttributeDescription * description = [superEntity attributesByName][attribute];
+        assert(description);
 
-        NSEntityDescription * relatedEntity = relationship.destinationEntity;
+        NSString     * key   = [@"." join : @[MSDefaultValueForContainingClassKey, entity.name]];
+        NSDictionary * entry = @{ key : CollectionSafe(defaultValue) };
+        NSDictionary * userInfo = [description.userInfo dictionaryByAddingEntriesFromDictionary:entry];
 
-        NSAttributeDescription * attribute = [relatedEntity attributesByName][attributeName];
-        assert(attribute);
+        description.userInfo = userInfo;
 
-        NSDictionary * userInfo = attribute.userInfo;
-        assert(userInfo);
+        NSString * keypath = $(@"attributesByName.%@.userInfo", attribute);
+        NSArray * subentities = superEntity.subentities;
 
-        attribute.userInfo = [userInfo dictionaryByAddingEntriesFromDictionary:info];
+        while ([subentities count])
+        {
+            [subentities setValue:userInfo forKeyPath:keypath];
+            subentities = [[subentities valueForKeyPath:@"@distinctUnionOfObjects.subentities"]
+                           filteredArrayUsingPredicateWithBlock:
+                           ^BOOL(NSArray * evaluatedObject, NSDictionary *bindings)
+                           {
+                               return [evaluatedObject count] > 0;
+                           }];
+        }
+
+        [superEntity setValue:userInfo forKeyPath:keypath];
+
+        NSArray * subentitiesOfSubentities = [[superEntity valueForKeyPath:@"subentities.subentities"]
+                                              filteredArrayUsingPredicateWithBlock:
+                                              ^BOOL(NSArray * evaluatedObject, NSDictionary *bindings)
+                                              {
+                                                  return [evaluatedObject count] > 0;
+                                              }];
+
+        printf("what");
+    };
+    
+    void(^overrideDefaultValueOfRelatedEntityAttribute)(NSEntityDescription*,NSString*,NSString*,id) =
+    ^(NSEntityDescription * entity, NSString *relationship, NSString *attribute, id defaultValue)
+    {
+        
+        NSAttributeDescription * description =
+            [entity valueForKeyPath:$(@"relationshipsByName.%@.destinationEntity.attributesByName.%@",
+                                      relationship, attribute)];
+
+        assert(description);
+
+        NSString     * key   = [@"." join : @[MSDefaultValueForContainingClassKey, entity.name]];
+        NSDictionary * entry = @{ key : CollectionSafe(defaultValue) };
+
+        description.userInfo = [description.userInfo dictionaryByAddingEntriesFromDictionary:entry];
     };
 
     // helper block for adding 'related by' key to entity user info dictionaries
@@ -104,11 +136,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
     // add class specific attribute defaults
-    modifyUserInfoOfAttributeForRelationshipOfEntity(@{[MSDefaultValueForContainingClassKey
-                                                        stringByAppendingString:@"ComponentDevice"]: @YES},
-                                                     @"user",
-                                                     @"info",
-                                                     entities[@"ComponentDevice"]);
+    overrideDefaultValueOfRelatedEntityAttribute(entities[@"ComponentDevice"], @"info", @"user", @YES);
+
+    // indicator attribute on activity commands
+    overrideDefaultValueOfAttributeForSubentity(entities[@"ActivityCommand"], @"indicator", @YES);
 
     // size attributes on images
     modifyAttributeForEntities([entities objectsForKeys:@[@"Image"]
@@ -222,14 +253,21 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                nil,
                                nil);
 
+    modifyAttributeForEntities([entities objectsForKeys:@[@"ButtonGroup"]
+                                         notFoundMarker:NullObject],
+                               @"labelAttributes",
+                               @"MSDictionary",
+                               nil,
+                               nil);
+
     // index attribute on command containers
     modifyAttributeForEntities([entities objectsForKeys:@[@"CommandContainer",
                                                           @"CommandSet",
                                                           @"CommandSetCollection"]
                                          notFoundMarker:NullObject],
                                @"index",
-                               @"NSDictionary",
-                               @{},
+                               @"MSDictionary",
+                               nil,
                                nil);
 
     // url attribute on http command

@@ -79,7 +79,6 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     return imageSet;
 }
 
-
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
@@ -161,10 +160,63 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     return dictionary;
 }
 
+- (void)copyObjectsFromSet:(ControlStateImageSet *)set
+{
+    for (int i = 0; i < 8; i++) self[i] = set[i];
+    [self.colors copyObjectsFromSet:set.colors];
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Import/Export
+////////////////////////////////////////////////////////////////////////////////
+
+
++ (instancetype)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+{
+    ControlStateImageSet * imageSet = nil;
+
+    if (!context) ThrowInvalidNilArgument(context);
+    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
+
+    else
+    {
+        imageSet = [self MR_createInContext:context];
+        [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:
+         ^(id key, id obj, BOOL *stop)
+         {
+             if ([key isEqualToString:@"colors"])
+             {
+                 ControlStateColorSet * colorSet = [ControlStateColorSet MR_importFromObject:obj
+                                                                                   inContext:context];
+                 if (colorSet) imageSet.colors = colorSet;
+             }
+
+             else if ([ControlStateSet validState:key] && isDictionaryKind(obj))
+             {
+                 NSString * uuid = ((NSDictionary *)obj)[@"uuid"];
+                 if (isStringKind(uuid))
+                 {
+                     Image * image = [Image objectWithUUID:uuid context:context];
+                     if (image) imageSet[key] = [image permanentURI];
+                 }
+             }
+         }];
+    }
+
+    return imageSet;
+}
 
 - (MSDictionary *)JSONDictionary
 {
     MSDictionary * dictionary = [super JSONDictionary];
+
+    // remove entries for state dictionaries
+    for (NSString * key in [dictionary copy])
+        if ([ControlStateSet validState:[key keyPathComponents][0]])
+            [dictionary removeObjectForKey:key];
+
     dictionary.userInfo[MSJSONCommentKey] = [MSDictionary dictionary];
 
     NSArray * keys = [[self dictionaryFromSetObjects] allKeys];
@@ -176,27 +228,14 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
             continue;
         }
 
-        else if (![ControlStateSet validState:key]) continue;
-
-        Image * i = self[key];
-        assert(i);
-        [dictionary removeObjectForKey:key];
-
-        NSString * keypath = [@"." join:@[key, @"uuid"]];
-        dictionary[keypath] = i.uuid;
-        dictionary.userInfo[MSJSONCommentKey][keypath] = i.fileName;
+        else if ([ControlStateSet validState:key])
+            dictionary[[@"." join:@[key, @"uuid"]]] = CollectionSafe([self[key] commentedUUID]);
     }
 
     [dictionary compact];
     [dictionary compress];
 
     return dictionary;
-}
-
-- (void)copyObjectsFromSet:(ControlStateImageSet *)set
-{
-    for (int i = 0; i < 8; i++) self[i] = set[i];
-    [self.colors copyObjectsFromSet:set.colors];
 }
 
 

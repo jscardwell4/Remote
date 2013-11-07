@@ -1,0 +1,224 @@
+{
+    "uuid": "F823B227-7DEF-4185-87F0-457FC42065C2",
+    "name": "Sonos Activity",
+    "elementType": "remote",
+    "key": "activity4",
+    "constraints": {
+        "index": {
+            "buttonGroup": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
+            "homeAndPowerButtons": "D393B9CC-1FCD-4534-BDFB-500785C54951",
+            "sonosActivity": "F823B227-7DEF-4185-87F0-457FC42065C2",
+            "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
+        },
+        "format": [
+            "buttonGroup.centerX = sonosActivity.centerX - 60",
+            "buttonGroup.centerY = sonosActivity.centerY - 25",
+            "buttonGroup.height = sonosActivityRocker.height * 0.33",
+            "homeAndPowerButtons.bottom = sonosActivity.bottom - 20",
+            "homeAndPowerButtons.left = sonosActivity.left + 10",
+            "homeAndPowerButtons.right = sonosActivity.right - 10",
+            "sonosActivityRocker.centerX = sonosActivity.centerX + 65",
+            "sonosActivityRocker.centerY = buttonGroup.centerY"
+        ]
+    },
+    "backgroundColor": "black",
+    "subelements": [
+        {
+            "uuid": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
+            "name": "Mute Button Group",
+            "elementType": "button-group",
+            "constraints": {
+                "index": {
+                    "muteButtonGroup": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
+                    "muteButton": "5E6FC0B8-0F7A-4453-80F5-EC41B364F235"
+                },
+                "format": [
+                    "muteButtonGroup.width ≥ 132",
+                    "muteButton.centerX = muteButtonGroup.centerX",
+                    "muteButton.centerY = muteButtonGroup.centerY",
+                    "muteButton.height = muteButtonGroup.height",
+                    "muteButton.width = muteButtonGroup.width"
+                ]
+            },
+            "subelements": [
+                {
+                    "uuid": "5E6FC0B8-0F7A-4453-80F5-EC41B364F235",
+                    "name": "Mute Button",
+                    "elementType": "button",
+                    "shape": "rounded-rectangle",
+                    "style": "gloss2",
+                    "commands.default": {
+                        "class": "sendir",
+                        "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
+                    },
+                    "titles.default": {
+                        "normal": {
+                        "font": "HelveticaNeue@20",
+                        "foreground-color": "white",
+                        "stroke-color": "white@50%",
+                        "stroke-width": -2,
+                        "paragraph-style.alignment": "center",
+                        "text": "Mute"
+                        },
+                        "highlighted.foreground-color": "#00AFFFFF"
+                    },
+                    "backgroundColors.default.normal": "#060606FF",
+                    "titleEdgeInsets": "{20, 20, 20, 20}"
+                }
+            ]
+        },
+        {
+            "uuid": "3D15E6CA-A182-476D-87D1-8E2CE774346E",
+            "name": "Sonos Activity Rocker",
+            "elementType": "button-group",
+            "role": "picker",
+            "shape": "rounded-rectangle",
+            "style": "border",
+            "constraints": {
+                "index": {
+                    "buttonTop": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
+                    "buttonBottom": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
+                    "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
+                },
+                "format": [
+                        "buttonBottom.height = buttonTop.height",
+                        "buttonBottom.left = sonosActivityRocker.left",
+                        "buttonBottom.right = sonosActivityRocker.right",
+                        "buttonBottom.top = buttonTop.bottom",
+                        "buttonTop.height = sonosActivityRocker.height * 0.5",
+                        "buttonTop.left = sonosActivityRocker.left",
+                        "buttonTop.right = sonosActivityRocker.right",
+                        "buttonTop.top = sonosActivityRocker.top",
+                        "sonosActivityRocker.height ≥ 150",
+                        "sonosActivityRocker.width = 70"
+                ]
+            },
+            "subelements": [
+                {
+                        "uuid": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
+                        "name": "Button Top",
+                        "elementType": "button",
+                        "role": "top",
+                        "icons.default": {
+                            "colors": {
+                                "normal": "white",
+                                "highlighted": "#00AFFFFF",
+                                "disabled": "#7F7F7FFF"
+                            },
+                            "normal.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D" // 436-gray-plus.png
+                        }
+                    },
+                    {
+                        "uuid": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
+                        "name": "Button Bottom",
+                        "elementType": "button",
+                        "role": "bottom",
+                        "icons.default": {
+                            "colors": {
+                                "normal": "white",
+                                "highlighted": "#00AFFFFF",
+                                "disabled": "#7F7F7FFF"
+                            },
+                            "normal.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836" // 437-gray-minus.png
+                        }
+                    }
+            ],
+            "command-set.default": {
+                "type": "rocker",
+                "top": {
+                    "class": "sendir",
+                    "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C" // Volume Up
+                },
+                "bottom": {
+                    "class": "sendir",
+                    "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0" // Volume Down
+                }
+            },
+            "labelAttributes": {
+                "font": "HelveticaNeue@20",
+                "foreground-color": "white",
+                "stroke-color": "white@50%",
+                "stroke-width": -2,
+                "paragraph-style.alignment": "center"
+            }
+        },
+        {
+            "uuid": "D393B9CC-1FCD-4534-BDFB-500785C54951",
+            "name": "Home and Power Buttons",
+            "elementType": "button-group",
+            "constraints": {
+                "index": {
+                    "homeAndPowerButtons": "D393B9CC-1FCD-4534-BDFB-500785C54951",
+                    "homeButton": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
+                    "powerOffAndExitActivity": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF"
+                },
+                "format": [
+                    "homeAndPowerButtons.height = 50",
+                    "homeAndPowerButtons.width = 300",
+                    "homeButton.centerY = homeAndPowerButtons.centerY",
+                    "homeButton.left = homeAndPowerButtons.left",
+                    "powerOffAndExitActivity.centerY = homeAndPowerButtons.centerY",
+                    "powerOffAndExitActivity.right = homeAndPowerButtons.right"
+                ]
+            },
+            "subelements": [
+                {
+                    "uuid": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
+                    "name": "Home Button",
+                    "elementType": "button",
+                    "shape": "oval",
+                    "style": "gloss1",
+                    "constraints": {
+                        "index.homeButton": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
+                        "format": [
+                            "homeButton.height = homeButton.width",
+                            "homeButton.width = 50"
+                        ]
+                    },
+                    "commands.default": {
+                        "class": "switch",
+                        "type": "remote",
+                        "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
+                    },
+                    "icons.default": {
+                        "colors": {
+                            "normal": "white",
+                            "highlighted": "#00AFFFFF",
+                            "disabled": "#7F7F7FFF"
+                        },
+                        "normal.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147" // 750-gray-home.png
+                    },
+                    "backgroundColors.default.normal": "#060606FF"
+                },
+                {
+                    "uuid": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF",
+                    "name": "Power Off and Exit Activity",
+                    "elementType": "button",
+                    "key": "activity4",
+                    "shape": "oval",
+                    "style": "gloss1",
+                    "constraints": {
+                        "index.powerOffAndExitActivity": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF",
+                        "format": [
+                            "powerOffAndExitActivity.height = powerOffAndExitActivity.width",
+                            "powerOffAndExitActivity.width = 50"
+                        ]
+                    },
+                    "commands.default": {
+                        "class": "activity",
+                        "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290" // Sonos Activity
+                    },
+                    "icons.default": {
+                        "colors": {
+                            "normal": "white",
+                            "highlighted": "#00AFFFFF",
+                            "disabled": "#7F7F7FFF"
+                        },
+                        "normal.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F" // 51-gray-power.png
+                    },
+                    "backgroundColors.default.normal": "#060606FF"
+                }
+            ]
+        }
+    ]
+}

@@ -28,84 +28,82 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 
 @implementation NSLayoutConstraint (MSKitAdditions)
 
-+ (NSLayoutAttribute)attributeForPseudoName:(NSString *) pseudoName {
++ (NSLayoutAttribute)attributeForPseudoName:(NSString *) pseudoName
+{
 
 	static const NSDictionary * pseudoAttributes = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        pseudoAttributes = @{
-            @"nil" 		: @(NSLayoutAttributeNotAnAttribute),
-            @"left"    	: @(NSLayoutAttributeLeft),
-            @"right" 	: @(NSLayoutAttributeRight),
-            @"top" 		: @(NSLayoutAttributeTop),
-            @"bottom" 	: @(NSLayoutAttributeBottom),
-            @"leading" 	: @(NSLayoutAttributeLeading),
-            @"trailing" : @(NSLayoutAttributeTrailing),
-            @"width" 	: @(NSLayoutAttributeWidth),
-            @"height" 	: @(NSLayoutAttributeHeight),
-            @"centerX" 	: @(NSLayoutAttributeCenterX),
-            @"centerY" 	: @(NSLayoutAttributeCenterY),
-            @"baseline" : @(NSLayoutAttributeBaseline)
-		};
-    });
+    dispatch_once(&onceToken,
+                  ^{
+                      pseudoAttributes = @{ @"nil" 		: @(NSLayoutAttributeNotAnAttribute),
+                                            @"left"    	: @(NSLayoutAttributeLeft),
+                                            @"right" 	: @(NSLayoutAttributeRight),
+                                            @"top" 		: @(NSLayoutAttributeTop),
+                                            @"bottom" 	: @(NSLayoutAttributeBottom),
+                                            @"leading" 	: @(NSLayoutAttributeLeading),
+                                            @"trailing" : @(NSLayoutAttributeTrailing),
+                                            @"width" 	: @(NSLayoutAttributeWidth),
+                                            @"height" 	: @(NSLayoutAttributeHeight),
+                                            @"centerX" 	: @(NSLayoutAttributeCenterX),
+                                            @"centerY" 	: @(NSLayoutAttributeCenterY),
+                                            @"baseline" : @(NSLayoutAttributeBaseline) };
+                  });
 
     if (![[pseudoAttributes allKeys] containsObject:pseudoName]) pseudoName = @"nil";
 
     return [pseudoAttributes[pseudoName] integerValue];
 }
 
-+ (NSString *)pseudoNameForAttribute:(NSLayoutAttribute) attribute {
++ (NSString *)pseudoNameForAttribute:(NSLayoutAttribute) attribute
+{
 	static const NSDictionary * pseudoNames = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        pseudoNames = @{
-            @(NSLayoutAttributeNotAnAttribute) 	: @"nil",
-            @(NSLayoutAttributeLeft) 			: @"left",
-            @(NSLayoutAttributeRight) 			: @"right",
-            @(NSLayoutAttributeTop) 			: @"top",
-            @(NSLayoutAttributeBottom) 			: @"bottom",
-            @(NSLayoutAttributeLeading) 		: @"leading",
-            @(NSLayoutAttributeTrailing) 		: @"trailing",
-            @(NSLayoutAttributeWidth) 			: @"width",
-            @(NSLayoutAttributeHeight) 			: @"height",
-            @(NSLayoutAttributeCenterX) 		: @"centerX",
-            @(NSLayoutAttributeCenterY) 		: @"centerY",
-            @(NSLayoutAttributeBaseline) 		: @"baseline"
-		};
-    });
+    dispatch_once(&onceToken,
+                  ^{
+                      pseudoNames = @{ @(NSLayoutAttributeNotAnAttribute) : @"nil",
+                                       @(NSLayoutAttributeLeft)           : @"left",
+                                       @(NSLayoutAttributeRight)          : @"right",
+                                       @(NSLayoutAttributeTop)            : @"top",
+                                       @(NSLayoutAttributeBottom)         : @"bottom",
+                                       @(NSLayoutAttributeLeading)        : @"leading",
+                                       @(NSLayoutAttributeTrailing)       : @"trailing",
+                                       @(NSLayoutAttributeWidth)          : @"width",
+                                       @(NSLayoutAttributeHeight)         : @"height",
+                                       @(NSLayoutAttributeCenterX)        : @"centerX",
+                                       @(NSLayoutAttributeCenterY)        : @"centerY",
+                                       @(NSLayoutAttributeBaseline)       : @"baseline" };
+                  });
 
     return pseudoNames[@(attribute)];
 }
 
-+ (NSLayoutRelation)relationForPseudoName:(NSString *) pseudoName {
++ (NSLayoutRelation)relationForPseudoName:(NSString *) pseudoName
+{
 
 	static const NSDictionary * pseudoRelations = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        pseudoRelations = @{
-            @"=" : @(NSLayoutRelationEqual),
-            @"≥" : @(NSLayoutRelationGreaterThanOrEqual),
-            @"≤" : @(NSLayoutRelationLessThanOrEqual)
-		};
+    dispatch_once(&onceToken,
+                  ^{
+                      pseudoRelations = @{ @"=" : @(NSLayoutRelationEqual),
+                                           @"≥" : @(NSLayoutRelationGreaterThanOrEqual),
+                                           @"≤" : @(NSLayoutRelationLessThanOrEqual) };
     });
 
     if (![[pseudoRelations allKeys] containsObject:pseudoName])
-        ThrowInvalidArgument(pseudoName, is not a valid pseudo name);
-//        @throw [NSException exceptionWithName:NSInvalidArgumentException
-//                                       reason:[NSString stringWithFormat:@"%@ is not a valid pseudo name",pseudoName]
-//                                     userInfo:nil];
+        ThrowInvalidArgument(pseudoName, "is not a valid pseudo name");
+
     return [pseudoRelations[pseudoName] integerValue];
 }
 
-+ (NSString *)pseudoNameForRelation:(NSLayoutRelation)relation {
++ (NSString *)pseudoNameForRelation:(NSLayoutRelation)relation
+{
 	static const NSDictionary * pseudoNames = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        pseudoNames = @{
-            @(NSLayoutRelationEqual) 				: @"=",
-            @(NSLayoutRelationGreaterThanOrEqual) 	: @"≥",
-            @(NSLayoutRelationLessThanOrEqual) 		: @"≤"
-		};
+    dispatch_once(&onceToken,
+                  ^{
+                      pseudoNames = @{ @(NSLayoutRelationEqual) 			  : @"=",
+                                       @(NSLayoutRelationGreaterThanOrEqual)  : @"≥",
+                                       @(NSLayoutRelationLessThanOrEqual) 	  : @"≤" };
     });
 
     return pseudoNames[@(relation)];
@@ -124,10 +122,7 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
                                 metrics:(NSDictionary *)metrics
                                   views:(NSDictionary *)views
 {
-    if (StringIsEmpty(string))
-        ThrowInvalidNilArgument(string);
-//        @throw [NSException exceptionWithName:NSInvalidArgumentException
-//                                       reason:@"string cannot be empty or nil" userInfo:nil];
+    if (StringIsEmpty(string)) ThrowInvalidNilArgument(string);
 
 	NSMutableArray * constraintObjects = [@[] mutableCopy];
 
@@ -139,9 +134,6 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
                                                                          views:views]
          ];
     }];
-
-//	for (NSString * format in [self componentsBySeparatingConstraintsInString:string])
-//            [constraintObjects addObjectsFromArray:[self constraintsFromFormat:format options:options metrics:metrics views:views]];
 
 	return constraintObjects;
 
@@ -160,11 +152,13 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 /**
  Convenience method that calls `constraintsByParsingString:options:metrics:views:` with no options or metrics
  */
-+ (NSArray *)constraintsByParsingString:(NSString *)string views:(NSDictionary *)views {
++ (NSArray *)constraintsByParsingString:(NSString *)string views:(NSDictionary *)views
+{
 	return [self constraintsByParsingString:string options:0 metrics:nil views:views];
 }
 
-+ (NSDictionary *)dictionaryFromExtendedVisualFormat:(NSString *)format {
++ (NSDictionary *)dictionaryFromExtendedVisualFormat:(NSString *)format
+{
 	// regex for detecting extended format
 	static const NSRegularExpression * regex = nil;
     static dispatch_once_t onceToken;
@@ -181,7 +175,7 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
          item1.attribute1 = item2.attribute2
          item1.attribute1 = constant @priority
          item1.attribute1 = constant
-         
+
          optional tag name at beginning of line: 'tag name'
          */
         NSError * error = nil;
@@ -258,7 +252,7 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 	 NSLayoutAttributeBottom 	⇒	bottom
 	 NSLayoutAttributeLeading 	⇒	leading
 	 NSLayoutAttributeTrailing 	⇒	trailing
-	 NSLayoutAttributeWidth 	⇒	width
+	 NSLayoutAttributeWidth   	⇒	width
 	 NSLayoutAttributeHeight 	⇒	height
 	 NSLayoutAttributeCenterX 	⇒	centerX
 	 NSLayoutAttributeCenterY 	⇒	centerY
@@ -296,8 +290,6 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 
 	if (!dictionary)
         ThrowInvalidNilArgument(dictionary);
-//        @throw [NSException exceptionWithName:NSInvalidArgumentException
-//                                       reason:@"dictionary cannot be nil" userInfo:nil];
 
 	// replace item names with views
 	NSMutableDictionary * newDictionary = [@{} mutableCopy];
@@ -386,16 +378,15 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 + (NSLayoutConstraint *)constraintFromDictionary:(NSDictionary *)dictionary
 {
 	if (!dictionary) ThrowInvalidNilArgument(dictionary);
-//        @throw [NSException exceptionWithName:NSInvalidArgumentException
-//                                       reason:@"dictionary cannot be nil" userInfo:nil];
 
     NSString * nametag              = dictionary[MSExtendedVisualFormatNametagName];
     UIView * item1 					= dictionary[MSExtendedVisualFormatItem1Name];
-    NSLayoutAttribute attribute1	= [dictionary[MSExtendedVisualFormatAttribute1Name] integerValue];
-    NSLayoutRelation relatedBy 	= [dictionary[MSExtendedVisualFormatRelationName] integerValue];
+    NSLayoutAttribute attribute1	    = [dictionary[MSExtendedVisualFormatAttribute1Name] integerValue];
+    NSLayoutRelation relatedBy    	= [dictionary[MSExtendedVisualFormatRelationName] integerValue];
     UIView * item2 					= dictionary[MSExtendedVisualFormatItem2Name];
     NSLayoutAttribute attribute2 	= (dictionary[MSExtendedVisualFormatAttribute2Name]
-                                       ? [dictionary[MSExtendedVisualFormatAttribute2Name] integerValue]
+                                       ? [dictionary[MSExtendedVisualFormatAttribute2Name]
+                                          integerValue]
                                        : NSLayoutAttributeNotAnAttribute);
     CGFloat multiplier 				= (dictionary[MSExtendedVisualFormatMultiplierName]
                                        ? [dictionary[MSExtendedVisualFormatMultiplierName] floatValue]
@@ -423,26 +414,26 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 /**
  Creates a dictionary containing the objects from the specified constraint
  */
-+ (NSDictionary *)dictionaryFromConstraint:(NSLayoutConstraint *)constraint {
++ (NSDictionary *)dictionaryFromConstraint:(NSLayoutConstraint *)constraint
+{
 	if (!constraint) ThrowInvalidNilArgument(constraint);
-//        @throw [NSException exceptionWithName:NSInvalidArgumentException
-//                                       reason:@"constraint cannot be nil" userInfo:nil];
 
     NSMutableDictionary * dictionary = [NSMutableDictionary dictionaryWithCapacity:8];
-    dictionary[MSExtendedVisualFormatItem1Name] = constraint.firstItem;
+    dictionary[MSExtendedVisualFormatItem1Name]      = constraint.firstItem;
     dictionary[MSExtendedVisualFormatAttribute1Name] = @(constraint.firstAttribute);
-    dictionary[MSExtendedVisualFormatRelationName] = @(constraint.relation);
-    dictionary[MSExtendedVisualFormatItem2Name] = NilSafe(constraint.secondItem);
+    dictionary[MSExtendedVisualFormatRelationName]   = @(constraint.relation);
+    dictionary[MSExtendedVisualFormatItem2Name]      = NilSafe(constraint.secondItem);
     dictionary[MSExtendedVisualFormatAttribute2Name] = @(constraint.secondAttribute);
     dictionary[MSExtendedVisualFormatMultiplierName] = @(constraint.multiplier);
-    dictionary[MSExtendedVisualFormatConstantName] = @(constraint.constant);
-    dictionary[MSExtendedVisualFormatPriorityName] = @(constraint.priority);
-    dictionary[MSExtendedVisualFormatNametagName] = NilSafe(constraint.nametag);
+    dictionary[MSExtendedVisualFormatConstantName]   = @(constraint.constant);
+    dictionary[MSExtendedVisualFormatPriorityName]   = @(constraint.priority);
+    dictionary[MSExtendedVisualFormatNametagName]    = NilSafe(constraint.nametag);
 
 	return dictionary;
 }
 
-- (NSString *)stringRepresentationWithSubstitutions:(NSDictionary *)substitutions {
+- (NSString *)stringRepresentationWithSubstitutions:(NSDictionary *)substitutions
+{
     NSString * firstItem = (substitutions[MSExtendedVisualFormatItem1Name]
                             ? substitutions[MSExtendedVisualFormatItem1Name]
                             : @"firstItem");
@@ -487,17 +478,16 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
     if (constant)
         [stringRep appendString:constant];
 
-    if (priority) {
+    if (priority)
         [stringRep appendFormat:@" %@", priority];
-    }
 
-    if (self.nametag) {
-        [stringRep appendFormat:@" '%@'", self.nametag];
-    }
+    if (self.nametag) [stringRep appendFormat:@" '%@'", self.nametag];
+
     return stringRep;
 }
 
-+ (id)valueForAttribute:(NSLayoutAttribute)attribute item:(UIView *)item {
++ (id)valueForAttribute:(NSLayoutAttribute)attribute item:(UIView *)item
+{
     assert(item);
     CGRect alignmentRect = [item alignmentRectForFrame:item.frame];
     switch (attribute) {
@@ -523,7 +513,8 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
     }
 }
 
-+ (id)valueForAttribute:(NSLayoutAttribute)attribute alignmentRect:(CGRect)rect {
++ (id)valueForAttribute:(NSLayoutAttribute)attribute alignmentRect:(CGRect)rect
+{
     switch (attribute) {
         case NSLayoutAttributeBaseline:
         case NSLayoutAttributeBottom:
@@ -559,9 +550,10 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
 }
 
 static const char *MSNSLayoutConstraintNametagKey = "MSNSLayoutConstraintNametagKey";
-static const char *MSNSLayoutConstraintTagKey = "MSNSLayoutConstraintTagKey";
+static const char *MSNSLayoutConstraintTagKey     = "MSNSLayoutConstraintTagKey";
 
-- (NSUInteger)tag {
+- (NSUInteger)tag
+{
     NSNumber * tagObj = objc_getAssociatedObject(self, (void *)MSNSLayoutConstraintTagKey);
     return (tagObj ? tagObj.integerValue : 0);
 }
@@ -573,18 +565,21 @@ static const char *MSNSLayoutConstraintTagKey = "MSNSLayoutConstraintTagKey";
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id)nametag {
+- (id)nametag
+{
     return objc_getAssociatedObject(self, (void *)MSNSLayoutConstraintNametagKey);
 }
 
-- (void)setNametag:(NSString *)nametag {
+- (void)setNametag:(NSString *)nametag
+{
     objc_setAssociatedObject(self,
                              (void *)MSNSLayoutConstraintNametagKey,
                              nametag,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSLayoutConstraint *)copyWithMultiplier:(CGFloat)multiplier {
+- (NSLayoutConstraint *)copyWithMultiplier:(CGFloat)multiplier
+{
     NSLayoutConstraint * c = [NSLayoutConstraint constraintWithItem:self.firstItem
                                                           attribute:self.firstAttribute
                                                           relatedBy:self.relation
@@ -599,7 +594,8 @@ static const char *MSNSLayoutConstraintTagKey = "MSNSLayoutConstraintTagKey";
     return c;
 }
 
-- (NSLayoutConstraint *)copyWithZone:(NSZone *)zone {
+- (NSLayoutConstraint *)copyWithZone:(NSZone *)zone
+{
     return [self copyWithMultiplier:self.multiplier];
 }
 

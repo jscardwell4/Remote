@@ -39,7 +39,11 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     dictionary[@"uuid"] = NullObject;
 
     dictionary[@"type"]   = switchCommandTypeJSONValueForSwitchCommand(self);
-    dictionary[@"target"] = CollectionSafe(self.target);
+    dictionary[@"target"] = CollectionSafe((self.type
+                                            ? self.target
+                                            : [[Remote objectWithUUID:self.target
+                                                             context:self.managedObjectContext]
+                                               commentedUUID]));
 
     [dictionary compact];
     [dictionary compress];

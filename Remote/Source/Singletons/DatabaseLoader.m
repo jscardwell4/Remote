@@ -16,8 +16,8 @@
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
 
-//#define SHOULD_LOG_REMOTECONTROLLER
-#define SHOULD_LOG_REMOTE
+#define SHOULD_LOG_REMOTECONTROLLER
+//#define SHOULD_LOG_REMOTE
 //#define SHOULD_LOG_IMAGES
 //#define SHOULD_LOG_POWERCOMMANDS
 //#define SHOULD_LOG_MANUFACTURERS
@@ -132,6 +132,10 @@ void logImportedObject(id importedObject)
 #endif
     NSArray * remotes = [Remote MR_importFromArray:importObjects inContext:context];
     MSLogDebug(@"%i remotes imported", [remotes count]);
+
+    error = nil;
+    [context save:&error];
+    if (error) MSHandleErrors(error);
 
 #ifdef SHOULD_LOG_REMOTE
     logImportedObject(remotes);
@@ -300,7 +304,7 @@ void logImportedObject(id importedObject)
 {
     MSLogDebug(@"loading images...");
 
-    NSString * fileName = @"Image";
+    NSString * fileName = @"Glyphish";
     NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
     NSError * error = nil;

@@ -15,6 +15,7 @@
 #import "MSJSONParser.h"
 #import "MSJSONAssembler.h"
 #import "NSString+MSKitAdditions.h"
+#import "NSObject+MSKitAdditions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -24,22 +25,11 @@ MSKEY_DEFINITION(MSJSONComment);
 MSKEY_DEFINITION(MSJSONLeadingComment);
 MSKEY_DEFINITION(MSJSONTrailingComment);
 
-@interface NSObject (MSJSONAssembler)
-
-@property (nonatomic, copy) NSString * comment;
-
-@end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - MSJSONSerialization
-////////////////////////////////////////////////////////////////////////////////
-
 
 @implementation MSJSONSerialization
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Utilities
+#pragma mark Utilities
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -77,8 +67,8 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
                 valueString = [valueString stringByTrimmingTrailingWhitespace];
                 [string appendFormat:@"\n%@", valueString];
                 if (i + 1 < objectCount) [string appendString:@","];
-                comment = ((NSObject *)array[i]).comment;
-                if (comment) [string appendFormat:@" %@", comment];
+                comment = [array[i] comment];
+                if (comment) [string appendString:comment];
             }
             if (objectCount) [string appendFormat:@"\n%@", indent];
             [string appendString:@"]"];
@@ -95,8 +85,8 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
             if ([comments hasKey:MSJSONLeadingCommentKey])
                 [string appendFormat:@" /* %@ */", comments[MSJSONLeadingCommentKey]];
 
-            else if (((NSObject *)object).comment)
-                [string appendFormat:@" %@", ((NSObject *)object).comment];
+            else if ([object comment])
+                [string appendString:[object comment]];
 
             NSDictionary * dictionary = (NSDictionary *)object;
             NSArray * keys = [dictionary allKeys];
@@ -113,8 +103,8 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
                 if (i + 1 < keyCount) [string appendString:@","];
                 
                 if ([comments hasKey:key]) [string appendFormat:@" /* %@ */", comments[key]];
-                else if (((NSObject *)dictionary[key]).comment)
-                    [string appendFormat:@" %@", ((NSObject *)dictionary[key]).comment];
+                else if ([dictionary[key] comment])
+                    [string appendString:[dictionary[key] comment]];
             }
 
             if (keyCount) [string appendFormat:@"\n%@", indent];

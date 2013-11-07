@@ -31,13 +31,22 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
     MSDictionary * dictionary = [super JSONDictionary];
     dictionary[@"uuid"] = NullObject;
 
-    dictionary[@"activity.uuid"] = CollectionSafe(self.activity.uuid);
+    dictionary[@"activity.uuid"] = CollectionSafe(self.activity.commentedUUID);
 
     [dictionary compact];
     [dictionary compress];
 
     return dictionary;
 }
+
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+
+    if (ModelObjectShouldInitialize)
+        self.indicator = YES;
+}
+
 
 - (BOOL)shouldImportActivity:(id)data {return YES;}
 
