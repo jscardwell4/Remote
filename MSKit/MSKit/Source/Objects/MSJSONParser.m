@@ -171,7 +171,10 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 
     }];
 
-    [self fireAssemblerSelector:@selector(parser:willStart:)];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+  [self fireAssemblerSelector:@selector(parser:willStart:)];
+#pragma clang diagnostic pop
     [self tryAndRecover:TOKEN_KIND_BUILTIN_EOF
                   block:^{
                               if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0])
@@ -239,7 +242,10 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
                   }
              completion:^{ [self closeCurly]; }];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchObject:)];
+#pragma clang diagnostic pop
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -253,7 +259,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__keyPath
 {
     [self match:TOKEN_KIND_BUILTIN_QUOTEDSTRING discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchKeyPath:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -295,7 +305,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
              completion:^{ [self closeBracket]; }
      ];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchArray:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -334,7 +348,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 {
 
     [self matchComment:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchComment:)];
+#pragma clang diagnostic pop
+
 }
 
 
@@ -346,7 +364,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__string
 {
     [self matchQuotedString:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchString:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -355,7 +377,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__number
 {
     [self matchNumber:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchNumber:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -364,7 +390,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__nullLiteral
 {
     [self match:MSJSONPARSER_TOKEN_KIND_NULLLITERAL discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchNullLiteral:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -373,7 +403,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__trueLiteral
 {
     [self match:MSJSONPARSER_TOKEN_KIND_TRUELITERAL discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchTrueLiteral:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -382,7 +416,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__falseLiteral
 {
     [self match:MSJSONPARSER_TOKEN_KIND_FALSELITERAL discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchFalseLiteral:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -395,7 +433,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__openCurly
 {
     [self match:MSJSONPARSER_TOKEN_KIND_OPENCURLY discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchOpenCurly:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -404,7 +446,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__closeCurly
 {
     [self match:MSJSONPARSER_TOKEN_KIND_CLOSECURLY discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchCloseCurly:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -413,7 +459,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__openBracket
 {
     [self match:MSJSONPARSER_TOKEN_KIND_OPENBRACKET discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchOpenBracket:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }
@@ -422,7 +472,11 @@ static int   msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)__closeBracket
 {
     [self match:MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET discard:NO];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     [self fireAssemblerSelector:@selector(parser:didMatchCloseBracket:)];
+#pragma clang diagnostic pop
+
 
     if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
 }

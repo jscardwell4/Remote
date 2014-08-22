@@ -159,7 +159,7 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 
         labels[label.string] = newLabel;
 
-        NSString * labelName = $(@"label%u", i);
+        NSString * labelName = $(@"label%lu", (unsigned long)i);
         NSString * constraints = $(@"%1$@.width = self.width '%2$@'\n"
                                     "%1$@.centerY = container.centerY '%2$@'",
                                    labelName, REPickerLabelButtonGroupViewInternalNametag);

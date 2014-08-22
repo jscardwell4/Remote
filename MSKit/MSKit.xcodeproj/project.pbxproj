@@ -7,459 +7,344 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C264338318159578005E0105 /* PKAssembly+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338118159578005E0105 /* PKAssembly+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C264338418159578005E0105 /* PKAssembly+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */; };
-		C264338F18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C264339018162E8A005E0105 /* NSPointerArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */; };
-		C26433E51816D501005E0105 /* libMagicalRecord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C264339B1816D238005E0105 /* libMagicalRecord.a */; };
-		C26829A018257EDC0026A520 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2989AA1182550F600E8DCBF /* Cocoa.framework */; };
-		C26829C9182580CA0026A520 /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C268295C182567D60026A520 /* Lumberjack.framework */; };
-		C26829CA182580CA0026A520 /* MagicalRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C264339F1816D238005E0105 /* MagicalRecord.framework */; };
-		C26829CB182580CA0026A520 /* ParseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AFF18142E4A00555D63 /* ParseKit.framework */; };
-		C26829CE182580FD0026A520 /* NSValue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A618138CF700555D63 /* NSValue+MSKitAdditions.m */; };
-		C26829D1182580FD0026A520 /* MSContextChangeReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F418138CF700555D63 /* MSContextChangeReceptionist.m */; };
-		C26829D2182580FD0026A520 /* NSSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889E18138CF700555D63 /* NSSet+MSKitAdditions.m */; };
-		C26829D4182580FD0026A520 /* MSKitMiscellaneousFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D818138CF700555D63 /* MSKitMiscellaneousFunctions.m */; };
-		C26829D5182580FD0026A520 /* NSAttributedString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888018138CF700555D63 /* NSAttributedString+MSKitAdditions.m */; };
-		C26829D8182580FD0026A520 /* MagicalRecord+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */; };
-		C26829DB182580FD0026A520 /* MSNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890318138CF700555D63 /* MSNetworkReachability.m */; };
-		C26829DC182580FD0026A520 /* NSURL+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A218138CF700555D63 /* NSURL+MSKitAdditions.m */; };
-		C26829DE182580FD0026A520 /* MSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890118138CF700555D63 /* MSLog.m */; };
-		C26829DF182580FD0026A520 /* NSAssertionHandler+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */; };
-		C26829E2182580FD0026A520 /* NSManagedObjectContext+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888E18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m */; };
-		C26829E3182580FD0026A520 /* NSDictionary+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888218138CF700555D63 /* NSDictionary+MSKitAdditions.m */; };
-		C26829E7182580FD0026A520 /* MSError.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FA18138CF700555D63 /* MSError.m */; };
-		C26829E9182580FD0026A520 /* MSBitVector.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F018138CF700555D63 /* MSBitVector.m */; };
-		C26829EB182580FD0026A520 /* MSCompletionBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F218138CF700555D63 /* MSCompletionBlockOperation.m */; };
-		C26829ED182580FD0026A520 /* NSPointerArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */; };
-		C26829EE182580FD0026A520 /* NSManagedObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888C18138CF700555D63 /* NSManagedObject+MSKitAdditions.m */; };
-		C26829F0182580FD0026A520 /* MSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890718138CF700555D63 /* MSQueue.m */; };
-		C26829F2182580FD0026A520 /* NSNull+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889218138CF700555D63 /* NSNull+MSKitAdditions.m */; };
-		C26829F4182580FD0026A520 /* MSDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F618138CF700555D63 /* MSDictionary.m */; };
-		C26829F6182580FD0026A520 /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
-		C26829F7182580FD0026A520 /* MSJSONAssembler.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828461814880E00FC8D54 /* MSJSONAssembler.m */; };
-		C26829F8182580FD0026A520 /* MSKitLoggingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D618138CF700555D63 /* MSKitLoggingFunctions.m */; };
-		C26829F9182580FD0026A520 /* MSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828421814629700FC8D54 /* MSJSONSerialization.m */; };
-		C26829FC182580FD0026A520 /* MSDictionaryIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */; };
-		C26829FD182580FD0026A520 /* NSOrderedSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889A18138CF700555D63 /* NSOrderedSet+MSKitAdditions.m */; };
-		C26829FE182580FD0026A520 /* NSNumber+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889418138CF700555D63 /* NSNumber+MSKitAdditions.m */; };
-		C26829FF182580FD0026A520 /* PKAssembly+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */; };
-		C2682A05182580FD0026A520 /* NSUserDefaults+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A418138CF700555D63 /* NSUserDefaults+MSKitAdditions.m */; };
-		C2682A07182580FD0026A520 /* MSJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FD18138CF700555D63 /* MSJSONParser.m */; };
-		C2682A0E182580FE0026A520 /* NSHashTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888818138CF700555D63 /* NSHashTable+MSKitAdditions.m */; };
-		C2682A0F182580FE0026A520 /* NSObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889618138CF700555D63 /* NSObject+MSKitAdditions.m */; };
-		C2682A12182580FE0026A520 /* MSStack.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890D18138CF700555D63 /* MSStack.m */; };
-		C2682A14182580FE0026A520 /* NSRegularExpression+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889C18138CF700555D63 /* NSRegularExpression+MSKitAdditions.m */; };
-		C2682A15182580FE0026A520 /* NSFetchRequest+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888618138CF700555D63 /* NSFetchRequest+MSKitAdditions.m */; };
-		C2682A18182580FE0026A520 /* MSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88EE18138CF700555D63 /* MSAssertionHandler.m */; };
-		C2682A19182580FE0026A520 /* NSMapTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889018138CF700555D63 /* NSMapTable+MSKitAdditions.m */; };
-		C2682A1C182580FE0026A520 /* NSString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A018138CF700555D63 /* NSString+MSKitAdditions.m */; };
-		C2682A1D182580FE0026A520 /* NSOperationQueue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889818138CF700555D63 /* NSOperationQueue+MSKitAdditions.m */; };
-		C2682A211825810E0026A520 /* CALayer+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A221825810E0026A520 /* MagicalRecord+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A231825810E0026A520 /* NSArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A241825810E0026A520 /* NSAttributedString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A251825810E0026A520 /* NSDictionary+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888118138CF700555D63 /* NSDictionary+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A271825810E0026A520 /* NSFetchRequest+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888518138CF700555D63 /* NSFetchRequest+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A281825810E0026A520 /* NSHashTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888718138CF700555D63 /* NSHashTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A2A1825810E0026A520 /* NSManagedObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888B18138CF700555D63 /* NSManagedObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A2B1825810E0026A520 /* NSManagedObjectContext+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888D18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A2C1825810E0026A520 /* NSMapTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888F18138CF700555D63 /* NSMapTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A2D1825810E0026A520 /* NSNull+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889118138CF700555D63 /* NSNull+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A2E1825810E0026A520 /* NSNumber+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889318138CF700555D63 /* NSNumber+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A2F1825810E0026A520 /* NSObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889518138CF700555D63 /* NSObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A301825810E0026A520 /* NSOperationQueue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889718138CF700555D63 /* NSOperationQueue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A311825810E0026A520 /* NSOrderedSet+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889918138CF700555D63 /* NSOrderedSet+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A321825810E0026A520 /* NSRegularExpression+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889B18138CF700555D63 /* NSRegularExpression+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A331825810E0026A520 /* NSSet+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889D18138CF700555D63 /* NSSet+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A341825810E0026A520 /* NSString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889F18138CF700555D63 /* NSString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A351825810E0026A520 /* NSURL+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A118138CF700555D63 /* NSURL+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A361825810E0026A520 /* NSUserDefaults+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A318138CF700555D63 /* NSUserDefaults+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A371825810E0026A520 /* NSValue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A518138CF700555D63 /* NSValue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A3C1825810E0026A520 /* NSAssertionHandler+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A481825810E0026A520 /* NSPointerArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A4E1825810E0026A520 /* MSKitGeometryFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D418138CF700555D63 /* MSKitGeometryFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A4F1825810E0026A520 /* MSKitLoggingFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D518138CF700555D63 /* MSKitLoggingFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A501825810E0026A520 /* PKAssembly+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C264338118159578005E0105 /* PKAssembly+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A511825810E0026A520 /* MSKitMiscellaneousFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D718138CF700555D63 /* MSKitMiscellaneousFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A541825810E0026A520 /* MSMultiselectGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88DE18138CF700555D63 /* MSMultiselectGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A581825810E0026A520 /* MSKitDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88E918138CF700555D63 /* MSKitDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A591825810E0026A520 /* MSKitMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88EA18138CF700555D63 /* MSKitMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A5A1825810E0026A520 /* MSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88ED18138CF700555D63 /* MSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A5B1825810E0026A520 /* MSBitVector.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88EF18138CF700555D63 /* MSBitVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A5C1825810E0026A520 /* MSCompletionBlockOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F118138CF700555D63 /* MSCompletionBlockOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A5D1825810E0026A520 /* MSContextChangeReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F318138CF700555D63 /* MSContextChangeReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A5E1825810E0026A520 /* MSDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F518138CF700555D63 /* MSDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A5F1825810E0026A520 /* MSDictionaryIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F718138CF700555D63 /* MSDictionaryIndex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A601825810E0026A520 /* MSLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E3777F181C2F900066ACDB /* MSLogMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A611825810E0026A520 /* MSError.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F918138CF700555D63 /* MSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A621825810E0026A520 /* MSKVOReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A631825810E0026A520 /* MSLog.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890018138CF700555D63 /* MSLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A641825810E0026A520 /* MSNetworkReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890218138CF700555D63 /* MSNetworkReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A661825810E0026A520 /* MSQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890618138CF700555D63 /* MSQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A691825810E0026A520 /* MSStack.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890C18138CF700555D63 /* MSStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A6B1825810E0026A520 /* MSKitProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891118138CF700555D63 /* MSKitProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A741825810E0026A520 /* MSJSONSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828411814629700FC8D54 /* MSJSONSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A76182581220026A520 /* MSJSONParser.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88FC18138CF700555D63 /* MSJSONParser.h */; };
-		C2682A77182581220026A520 /* MSJSONAssembler.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828451814880E00FC8D54 /* MSJSONAssembler.h */; };
-		C2682A7A182581410026A520 /* MSKit-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = C2989AAE182550F600E8DCBF /* MSKit-OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2682A7C1825820A0026A520 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2682A7B1825820A0026A520 /* CoreData.framework */; };
-		C2682A7E1825851B0026A520 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C2682A7D1825851B0026A520 /* InfoPlist.strings */; };
-		C27828431814629700FC8D54 /* MSJSONSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828411814629700FC8D54 /* MSJSONSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C27828441814629700FC8D54 /* MSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828421814629700FC8D54 /* MSJSONSerialization.m */; };
-		C27828471814880E00FC8D54 /* MSJSONAssembler.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828451814880E00FC8D54 /* MSJSONAssembler.h */; };
-		C27828481814880E00FC8D54 /* MSJSONAssembler.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828461814880E00FC8D54 /* MSJSONAssembler.m */; };
-		C278284918148A4400FC8D54 /* MSJSONParser.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88FC18138CF700555D63 /* MSJSONParser.h */; };
-		C278284A18148A4900FC8D54 /* MSJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FD18138CF700555D63 /* MSJSONParser.m */; };
-		C2CE885218138C4900555D63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE885118138C4900555D63 /* Foundation.framework */; };
-		C2CE892B18138CF700555D63 /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
-		C2CE892C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */; };
-		C2CE892D18138CF700555D63 /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
-		C2CE892E18138CF700555D63 /* NSAttributedString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888018138CF700555D63 /* NSAttributedString+MSKitAdditions.m */; };
-		C2CE892F18138CF700555D63 /* NSDictionary+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888218138CF700555D63 /* NSDictionary+MSKitAdditions.m */; };
-		C2CE893018138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888418138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.m */; };
-		C2CE893118138CF700555D63 /* NSFetchRequest+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888618138CF700555D63 /* NSFetchRequest+MSKitAdditions.m */; };
-		C2CE893218138CF700555D63 /* NSHashTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888818138CF700555D63 /* NSHashTable+MSKitAdditions.m */; };
-		C2CE893318138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888A18138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.m */; };
-		C2CE893418138CF700555D63 /* NSManagedObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888C18138CF700555D63 /* NSManagedObject+MSKitAdditions.m */; };
-		C2CE893518138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888E18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m */; };
-		C2CE893618138CF700555D63 /* NSMapTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889018138CF700555D63 /* NSMapTable+MSKitAdditions.m */; };
-		C2CE893718138CF700555D63 /* NSNull+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889218138CF700555D63 /* NSNull+MSKitAdditions.m */; };
-		C2CE893818138CF700555D63 /* NSNumber+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889418138CF700555D63 /* NSNumber+MSKitAdditions.m */; };
-		C2CE893918138CF700555D63 /* NSObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889618138CF700555D63 /* NSObject+MSKitAdditions.m */; };
-		C2CE893A18138CF700555D63 /* NSOperationQueue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889818138CF700555D63 /* NSOperationQueue+MSKitAdditions.m */; };
-		C2CE893B18138CF700555D63 /* NSOrderedSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889A18138CF700555D63 /* NSOrderedSet+MSKitAdditions.m */; };
-		C2CE893C18138CF700555D63 /* NSRegularExpression+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889C18138CF700555D63 /* NSRegularExpression+MSKitAdditions.m */; };
-		C2CE893D18138CF700555D63 /* NSSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889E18138CF700555D63 /* NSSet+MSKitAdditions.m */; };
-		C2CE893E18138CF700555D63 /* NSString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A018138CF700555D63 /* NSString+MSKitAdditions.m */; };
-		C2CE893F18138CF700555D63 /* NSURL+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A218138CF700555D63 /* NSURL+MSKitAdditions.m */; };
-		C2CE894018138CF700555D63 /* NSUserDefaults+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A418138CF700555D63 /* NSUserDefaults+MSKitAdditions.m */; };
-		C2CE894118138CF700555D63 /* NSValue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A618138CF700555D63 /* NSValue+MSKitAdditions.m */; };
-		C2CE894218138CF700555D63 /* UIAlertView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A818138CF700555D63 /* UIAlertView+MSKitAdditions.m */; };
-		C2CE894318138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AA18138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.m */; };
-		C2CE894418138CF700555D63 /* UIColor+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AC18138CF700555D63 /* UIColor+MSKitAdditions.m */; };
-		C2CE894518138CF700555D63 /* UIControl+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AE18138CF700555D63 /* UIControl+MSKitAdditions.m */; };
-		C2CE894618138CF700555D63 /* UIFont+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B018138CF700555D63 /* UIFont+MSKitAdditions.m */; };
-		C2CE894718138CF700555D63 /* UIGestureRecognizer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B218138CF700555D63 /* UIGestureRecognizer+MSKitAdditions.m */; };
-		C2CE894818138CF700555D63 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B418138CF700555D63 /* UIImage+ImageEffects.m */; };
-		C2CE894918138CF700555D63 /* UIImage+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B618138CF700555D63 /* UIImage+MSKitAdditions.m */; };
-		C2CE894A18138CF700555D63 /* UIStoryboard+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B818138CF700555D63 /* UIStoryboard+MSKitAdditions.m */; };
-		C2CE894B18138CF700555D63 /* UITableView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88BA18138CF700555D63 /* UITableView+MSKitAdditions.m */; };
-		C2CE894C18138CF700555D63 /* UIView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88BC18138CF700555D63 /* UIView+MSKitAdditions.m */; };
-		C2CE894D18138CF700555D63 /* UIViewController+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88BE18138CF700555D63 /* UIViewController+MSKitAdditions.m */; };
-		C2CE894E18138CF700555D63 /* MSColorInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88C218138CF700555D63 /* MSColorInputViewController.m */; };
-		C2CE894F18138CF700555D63 /* MSPickerInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88C418138CF700555D63 /* MSPickerInputViewController.m */; };
-		C2CE895018138CF700555D63 /* MSBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88C718138CF700555D63 /* MSBarButtonItem.m */; };
-		C2CE895118138CF700555D63 /* MSColorInputButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88CA18138CF700555D63 /* MSColorInputButton.m */; };
-		C2CE895218138CF700555D63 /* MSPickerInputButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88CC18138CF700555D63 /* MSPickerInputButton.m */; };
-		C2CE895318138CF700555D63 /* MSPopupBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88CE18138CF700555D63 /* MSPopupBarButton.m */; };
-		C2CE895418138CF700555D63 /* MSPopupBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D018138CF700555D63 /* MSPopupBarButtonItem.m */; };
-		C2CE895518138CF700555D63 /* MSScrollWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D218138CF700555D63 /* MSScrollWheel.m */; };
-		C2CE895618138CF700555D63 /* MSKitLoggingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D618138CF700555D63 /* MSKitLoggingFunctions.m */; };
-		C2CE895718138CF700555D63 /* MSKitMiscellaneousFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D818138CF700555D63 /* MSKitMiscellaneousFunctions.m */; };
-		C2CE895818138CF700555D63 /* MSGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88DB18138CF700555D63 /* MSGestureManager.m */; };
-		C2CE895918138CF700555D63 /* MSLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88DD18138CF700555D63 /* MSLongPressGestureRecognizer.m */; };
-		C2CE895A18138CF700555D63 /* MSMultiselectGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88DF18138CF700555D63 /* MSMultiselectGestureRecognizer.m */; };
-		C2CE895B18138CF700555D63 /* MSPinchGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E118138CF700555D63 /* MSPinchGestureRecognizer.m */; };
-		C2CE895C18138CF700555D63 /* MSSwipeGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E318138CF700555D63 /* MSSwipeGestureRecognizer.m */; };
-		C2CE895D18138CF700555D63 /* MSGLossLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E518138CF700555D63 /* MSGLossLayer.m */; };
-		C2CE895E18138CF700555D63 /* MSResizingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E718138CF700555D63 /* MSResizingLayer.m */; };
-		C2CE895F18138CF700555D63 /* MSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88EE18138CF700555D63 /* MSAssertionHandler.m */; };
-		C2CE896018138CF700555D63 /* MSBitVector.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F018138CF700555D63 /* MSBitVector.m */; };
-		C2CE896118138CF700555D63 /* MSCompletionBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F218138CF700555D63 /* MSCompletionBlockOperation.m */; };
-		C2CE896218138CF700555D63 /* MSContextChangeReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F418138CF700555D63 /* MSContextChangeReceptionist.m */; };
-		C2CE896318138CF700555D63 /* MSDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F618138CF700555D63 /* MSDictionary.m */; };
-		C2CE896418138CF700555D63 /* MSDictionaryIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */; };
-		C2CE896518138CF700555D63 /* MSError.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FA18138CF700555D63 /* MSError.m */; };
-		C2CE896818138CF700555D63 /* MSKVOReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FF18138CF700555D63 /* MSKVOReceptionist.m */; };
-		C2CE896918138CF700555D63 /* MSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890118138CF700555D63 /* MSLog.m */; };
-		C2CE896A18138CF700555D63 /* MSNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890318138CF700555D63 /* MSNetworkReachability.m */; };
-		C2CE896B18138CF700555D63 /* MSPainter.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890518138CF700555D63 /* MSPainter.m */; };
-		C2CE896C18138CF700555D63 /* MSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890718138CF700555D63 /* MSQueue.m */; };
-		C2CE896D18138CF700555D63 /* MSSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890918138CF700555D63 /* MSSingleton.m */; };
-		C2CE896E18138CF700555D63 /* MSSingletonController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890B18138CF700555D63 /* MSSingletonController.m */; };
-		C2CE896F18138CF700555D63 /* MSStack.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890D18138CF700555D63 /* MSStack.m */; };
-		C2CE897018138CF700555D63 /* MSValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890F18138CF700555D63 /* MSValueTransformers.m */; };
-		C2CE897118138CF700555D63 /* MSCheckboxView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891918138CF700555D63 /* MSCheckboxView.m */; };
-		C2CE897218138CF700555D63 /* MSColorInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891B18138CF700555D63 /* MSColorInputView.m */; };
-		C2CE897318138CF700555D63 /* MSMultiselectView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891D18138CF700555D63 /* MSMultiselectView.m */; };
-		C2CE897418138CF700555D63 /* MSNumberPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891F18138CF700555D63 /* MSNumberPadView.m */; };
-		C2CE897518138CF700555D63 /* MSPickerInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892118138CF700555D63 /* MSPickerInputView.m */; };
-		C2CE897618138CF700555D63 /* MSPopupBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892218138CF700555D63 /* MSPopupBarButtonView.m */; };
-		C2CE897718138CF700555D63 /* MSReflectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892418138CF700555D63 /* MSReflectingView.m */; };
-		C2CE897818138CF700555D63 /* MSReplicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892618138CF700555D63 /* MSReplicatorView.m */; };
-		C2CE897918138CF700555D63 /* MSTouchReporterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892818138CF700555D63 /* MSTouchReporterView.m */; };
-		C2CE897A18138CF700555D63 /* MSView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892A18138CF700555D63 /* MSView.m */; };
-		C2CE897E18138DEB00555D63 /* MSKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE897B18138D6C00555D63 /* MSKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE897F18138DEB00555D63 /* CALayer+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898018138DEB00555D63 /* MagicalRecord+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898118138DEB00555D63 /* NSArray+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898218138DEB00555D63 /* NSAttributedString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898318138DEB00555D63 /* NSDictionary+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888118138CF700555D63 /* NSDictionary+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898418138DEB00555D63 /* NSFetchedResultsController+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888318138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898518138DEB00555D63 /* NSFetchRequest+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888518138CF700555D63 /* NSFetchRequest+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898618138DEB00555D63 /* NSHashTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888718138CF700555D63 /* NSHashTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898718138DEB00555D63 /* NSLayoutConstraint+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888918138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898818138DEB00555D63 /* NSManagedObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888B18138CF700555D63 /* NSManagedObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898918138DEB00555D63 /* NSManagedObjectContext+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888D18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898A18138DEB00555D63 /* NSMapTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888F18138CF700555D63 /* NSMapTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898B18138DEB00555D63 /* NSNull+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889118138CF700555D63 /* NSNull+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898C18138DEB00555D63 /* NSNumber+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889318138CF700555D63 /* NSNumber+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898D18138DEB00555D63 /* NSObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889518138CF700555D63 /* NSObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898E18138DEB00555D63 /* NSOperationQueue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889718138CF700555D63 /* NSOperationQueue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE898F18138DEB00555D63 /* NSOrderedSet+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889918138CF700555D63 /* NSOrderedSet+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899018138DEB00555D63 /* NSRegularExpression+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889B18138CF700555D63 /* NSRegularExpression+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899118138DEB00555D63 /* NSSet+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889D18138CF700555D63 /* NSSet+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899218138DEB00555D63 /* NSString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE889F18138CF700555D63 /* NSString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899318138DEB00555D63 /* NSURL+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A118138CF700555D63 /* NSURL+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899418138DEB00555D63 /* NSUserDefaults+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A318138CF700555D63 /* NSUserDefaults+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899518138DEB00555D63 /* NSValue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A518138CF700555D63 /* NSValue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899618138DEB00555D63 /* UIAlertView+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A718138CF700555D63 /* UIAlertView+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899718138DEB00555D63 /* UICollectionViewFlowLayout+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A918138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899818138DEB00555D63 /* UIColor+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88AB18138CF700555D63 /* UIColor+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899918138DEB00555D63 /* UIControl+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88AD18138CF700555D63 /* UIControl+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899A18138DEB00555D63 /* UIFont+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88AF18138CF700555D63 /* UIFont+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899B18138DEB00555D63 /* UIGestureRecognizer+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88B118138CF700555D63 /* UIGestureRecognizer+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899C18138DEB00555D63 /* UIImage+ImageEffects.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88B318138CF700555D63 /* UIImage+ImageEffects.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899D18138DEB00555D63 /* UIImage+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88B518138CF700555D63 /* UIImage+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899E18138DEB00555D63 /* UIStoryboard+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88B718138CF700555D63 /* UIStoryboard+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE899F18138DEB00555D63 /* UITableView+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88B918138CF700555D63 /* UITableView+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A018138DEB00555D63 /* UIView+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88BB18138CF700555D63 /* UIView+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A118138DEB00555D63 /* UIViewController+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88BD18138CF700555D63 /* UIViewController+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A218138DEB00555D63 /* UIWindow+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88BF18138CF700555D63 /* UIWindow+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A318138DEB00555D63 /* MSColorInputViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88C118138CF700555D63 /* MSColorInputViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A418138DEB00555D63 /* MSPickerInputViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88C318138CF700555D63 /* MSPickerInputViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A518138DEB00555D63 /* MSBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88C618138CF700555D63 /* MSBarButtonItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A618138DEB00555D63 /* MSColorInputButton.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88C918138CF700555D63 /* MSColorInputButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A718138DEB00555D63 /* MSPickerInputButton.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88CB18138CF700555D63 /* MSPickerInputButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A818138DEB00555D63 /* MSPopupBarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88CD18138CF700555D63 /* MSPopupBarButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89A918138DEB00555D63 /* MSScrollWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D118138CF700555D63 /* MSScrollWheel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89AA18138DEB00555D63 /* MSKitGeometryFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D418138CF700555D63 /* MSKitGeometryFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89AB18138DEB00555D63 /* MSKitLoggingFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D518138CF700555D63 /* MSKitLoggingFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89AC18138DEB00555D63 /* MSKitMiscellaneousFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88D718138CF700555D63 /* MSKitMiscellaneousFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89AD18138DEB00555D63 /* MSGestureManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88DA18138CF700555D63 /* MSGestureManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89AE18138DEB00555D63 /* MSLongPressGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88DC18138CF700555D63 /* MSLongPressGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89AF18138DEB00555D63 /* MSMultiselectGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88DE18138CF700555D63 /* MSMultiselectGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B018138DEB00555D63 /* MSPinchGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88E018138CF700555D63 /* MSPinchGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B118138DEB00555D63 /* MSSwipeGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88E218138CF700555D63 /* MSSwipeGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B218138DEB00555D63 /* MSResizingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88E618138CF700555D63 /* MSResizingLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B318138DEB00555D63 /* MSKitDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88E918138CF700555D63 /* MSKitDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B418138DEB00555D63 /* MSKitMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88EA18138CF700555D63 /* MSKitMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B518138DEB00555D63 /* MSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88ED18138CF700555D63 /* MSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B618138DEB00555D63 /* MSBitVector.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88EF18138CF700555D63 /* MSBitVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B718138DEB00555D63 /* MSCompletionBlockOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F118138CF700555D63 /* MSCompletionBlockOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B818138DEB00555D63 /* MSContextChangeReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F318138CF700555D63 /* MSContextChangeReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89B918138DEB00555D63 /* MSDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F518138CF700555D63 /* MSDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89BA18138DEB00555D63 /* MSDictionaryIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F718138CF700555D63 /* MSDictionaryIndex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89BB18138DEB00555D63 /* MSError.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88F918138CF700555D63 /* MSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89BD18138DEB00555D63 /* MSKVOReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89BE18138DEB00555D63 /* MSLog.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890018138CF700555D63 /* MSLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89BF18138DEB00555D63 /* MSNetworkReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890218138CF700555D63 /* MSNetworkReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C018138DEB00555D63 /* MSPainter.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890418138CF700555D63 /* MSPainter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C118138DEB00555D63 /* MSQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890618138CF700555D63 /* MSQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C218138DEB00555D63 /* MSSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890818138CF700555D63 /* MSSingleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C318138DEB00555D63 /* MSSingletonController.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890A18138CF700555D63 /* MSSingletonController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C418138DEB00555D63 /* MSStack.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890C18138CF700555D63 /* MSStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C518138DEB00555D63 /* MSValueTransformers.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890E18138CF700555D63 /* MSValueTransformers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C618138DEB00555D63 /* MSKitProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891118138CF700555D63 /* MSKitProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C718138DEB00555D63 /* MSCheckboxView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891818138CF700555D63 /* MSCheckboxView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C818138DEB00555D63 /* MSColorInputView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891A18138CF700555D63 /* MSColorInputView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89C918138DEB00555D63 /* MSMultiselectView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891C18138CF700555D63 /* MSMultiselectView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89CA18138DEB00555D63 /* MSNumberPadView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE891E18138CF700555D63 /* MSNumberPadView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89CB18138DEB00555D63 /* MSPickerInputView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE892018138CF700555D63 /* MSPickerInputView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89CC18138DEB00555D63 /* MSReflectingView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE892318138CF700555D63 /* MSReflectingView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89CD18138DEB00555D63 /* MSReplicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE892518138CF700555D63 /* MSReplicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89CE18138DEB00555D63 /* MSTouchReporterView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE892718138CF700555D63 /* MSTouchReporterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89CF18138DEB00555D63 /* MSView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE892918138CF700555D63 /* MSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2CE89D018138E0100555D63 /* MSBarButtonItem_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88C818138CF700555D63 /* MSBarButtonItem_Private.h */; };
-		C2CE89D118138E0100555D63 /* MSPopupBarButton_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88CF18138CF700555D63 /* MSPopupBarButton_Private.h */; };
-		C2CE8B151814301100555D63 /* libLumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AC2181426D600555D63 /* libLumberjack.a */; };
-		C2CE8B171814301100555D63 /* libParseKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8B0318142E4A00555D63 /* libParseKit.a */; };
-		C2E37780181C2F900066ACDB /* MSLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E3777F181C2F900066ACDB /* MSLogMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2E37784181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2E37785181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */; };
+		C230F8A219A7CAC400900F0C /* Lumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.a */; };
+		C230F8A319A7CAC400900F0C /* MagicalRecord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F89419A7C9FE00900F0C /* MagicalRecord.a */; };
+		C230F8A419A7CAC400900F0C /* ParseKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F89A19A7CA0300900F0C /* ParseKit.a */; };
+		C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE897B18138D6C00555D63 /* MSKit.h */; };
+		C23A0D7A19A7A5D9002BF2B6 /* CALayer+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */; };
+		C23A0D7B19A7A5D9002BF2B6 /* MagicalRecord+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */; };
+		C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */; };
+		C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */; };
+		C23A0D7E19A7A5D9002BF2B6 /* NSDictionary+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888118138CF700555D63 /* NSDictionary+MSKitAdditions.h */; };
+		C23A0D7F19A7A5D9002BF2B6 /* NSFetchedResultsController+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888318138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.h */; };
+		C23A0D8019A7A5D9002BF2B6 /* NSFetchRequest+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888518138CF700555D63 /* NSFetchRequest+MSKitAdditions.h */; };
+		C23A0D8119A7A5D9002BF2B6 /* NSHashTable+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888718138CF700555D63 /* NSHashTable+MSKitAdditions.h */; };
+		C23A0D8219A7A5D9002BF2B6 /* NSLayoutConstraint+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888918138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.h */; };
+		C23A0D8319A7A5D9002BF2B6 /* NSManagedObject+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888B18138CF700555D63 /* NSManagedObject+MSKitAdditions.h */; };
+		C23A0D8419A7A5D9002BF2B6 /* NSManagedObjectContext+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888D18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.h */; };
+		C23A0D8519A7A5D9002BF2B6 /* NSMapTable+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888F18138CF700555D63 /* NSMapTable+MSKitAdditions.h */; };
+		C23A0D8619A7A5D9002BF2B6 /* NSNull+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889118138CF700555D63 /* NSNull+MSKitAdditions.h */; };
+		C23A0D8719A7A5D9002BF2B6 /* NSNumber+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889318138CF700555D63 /* NSNumber+MSKitAdditions.h */; };
+		C23A0D8819A7A5D9002BF2B6 /* NSObject+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889518138CF700555D63 /* NSObject+MSKitAdditions.h */; };
+		C23A0D8919A7A5D9002BF2B6 /* NSOperationQueue+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889718138CF700555D63 /* NSOperationQueue+MSKitAdditions.h */; };
+		C23A0D8A19A7A5D9002BF2B6 /* NSOrderedSet+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889918138CF700555D63 /* NSOrderedSet+MSKitAdditions.h */; };
+		C23A0D8B19A7A5D9002BF2B6 /* NSRegularExpression+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889B18138CF700555D63 /* NSRegularExpression+MSKitAdditions.h */; };
+		C23A0D8C19A7A5D9002BF2B6 /* NSSet+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889D18138CF700555D63 /* NSSet+MSKitAdditions.h */; };
+		C23A0D8D19A7A5D9002BF2B6 /* NSString+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE889F18138CF700555D63 /* NSString+MSKitAdditions.h */; };
+		C23A0D8E19A7A5D9002BF2B6 /* NSURL+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88A118138CF700555D63 /* NSURL+MSKitAdditions.h */; };
+		C23A0D8F19A7A5D9002BF2B6 /* NSUserDefaults+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88A318138CF700555D63 /* NSUserDefaults+MSKitAdditions.h */; };
+		C23A0D9019A7A5D9002BF2B6 /* NSValue+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88A518138CF700555D63 /* NSValue+MSKitAdditions.h */; };
+		C23A0D9119A7A5D9002BF2B6 /* UIAlertView+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88A718138CF700555D63 /* UIAlertView+MSKitAdditions.h */; };
+		C23A0D9219A7A5D9002BF2B6 /* UICollectionViewFlowLayout+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88A918138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.h */; };
+		C23A0D9319A7A5D9002BF2B6 /* UIColor+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88AB18138CF700555D63 /* UIColor+MSKitAdditions.h */; };
+		C23A0D9419A7A5D9002BF2B6 /* UIControl+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88AD18138CF700555D63 /* UIControl+MSKitAdditions.h */; };
+		C23A0D9519A7A5D9002BF2B6 /* UIFont+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88AF18138CF700555D63 /* UIFont+MSKitAdditions.h */; };
+		C23A0D9619A7A5D9002BF2B6 /* UIGestureRecognizer+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88B118138CF700555D63 /* UIGestureRecognizer+MSKitAdditions.h */; };
+		C23A0D9719A7A5D9002BF2B6 /* UIImage+ImageEffects.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88B318138CF700555D63 /* UIImage+ImageEffects.h */; };
+		C23A0D9819A7A5D9002BF2B6 /* UIImage+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88B518138CF700555D63 /* UIImage+MSKitAdditions.h */; };
+		C23A0D9919A7A5D9002BF2B6 /* UIStoryboard+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88B718138CF700555D63 /* UIStoryboard+MSKitAdditions.h */; };
+		C23A0D9A19A7A5D9002BF2B6 /* UITableView+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88B918138CF700555D63 /* UITableView+MSKitAdditions.h */; };
+		C23A0D9B19A7A5D9002BF2B6 /* UIView+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88BB18138CF700555D63 /* UIView+MSKitAdditions.h */; };
+		C23A0D9C19A7A5D9002BF2B6 /* UIViewController+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88BD18138CF700555D63 /* UIViewController+MSKitAdditions.h */; };
+		C23A0D9D19A7A5D9002BF2B6 /* UIWindow+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88BF18138CF700555D63 /* UIWindow+MSKitAdditions.h */; };
+		C23A0D9E19A7A5D9002BF2B6 /* PKAssembly+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C264338118159578005E0105 /* PKAssembly+MSKitAdditions.h */; };
+		C23A0D9F19A7A5D9002BF2B6 /* NSPointerArray+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */; };
+		C23A0DA019A7A5D9002BF2B6 /* NSAssertionHandler+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */; };
+		C23A0DA119A7A5D9002BF2B6 /* MSColorInputViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88C118138CF700555D63 /* MSColorInputViewController.h */; };
+		C23A0DA219A7A5D9002BF2B6 /* MSPickerInputViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88C318138CF700555D63 /* MSPickerInputViewController.h */; };
+		C23A0DA319A7A5D9002BF2B6 /* MSBarButtonItem.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88C618138CF700555D63 /* MSBarButtonItem.h */; };
+		C23A0DA419A7A5D9002BF2B6 /* MSBarButtonItem_Private.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88C818138CF700555D63 /* MSBarButtonItem_Private.h */; };
+		C23A0DA519A7A5D9002BF2B6 /* MSColorInputButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88C918138CF700555D63 /* MSColorInputButton.h */; };
+		C23A0DA619A7A5D9002BF2B6 /* MSPickerInputButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88CB18138CF700555D63 /* MSPickerInputButton.h */; };
+		C23A0DA719A7A5D9002BF2B6 /* MSPopupBarButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88CD18138CF700555D63 /* MSPopupBarButton.h */; };
+		C23A0DA819A7A5D9002BF2B6 /* MSPopupBarButton_Private.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88CF18138CF700555D63 /* MSPopupBarButton_Private.h */; };
+		C23A0DA919A7A5D9002BF2B6 /* MSScrollWheel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88D118138CF700555D63 /* MSScrollWheel.h */; };
+		C23A0DAA19A7A5D9002BF2B6 /* MSKitGeometryFunctions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88D418138CF700555D63 /* MSKitGeometryFunctions.h */; };
+		C23A0DAB19A7A5D9002BF2B6 /* MSKitLoggingFunctions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88D518138CF700555D63 /* MSKitLoggingFunctions.h */; };
+		C23A0DAC19A7A5D9002BF2B6 /* MSKitMiscellaneousFunctions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88D718138CF700555D63 /* MSKitMiscellaneousFunctions.h */; };
+		C23A0DAD19A7A5D9002BF2B6 /* MSGestureManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88DA18138CF700555D63 /* MSGestureManager.h */; };
+		C23A0DAE19A7A5D9002BF2B6 /* MSLongPressGestureRecognizer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88DC18138CF700555D63 /* MSLongPressGestureRecognizer.h */; };
+		C23A0DAF19A7A5D9002BF2B6 /* MSMultiselectGestureRecognizer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88DE18138CF700555D63 /* MSMultiselectGestureRecognizer.h */; };
+		C23A0DB019A7A5D9002BF2B6 /* MSPinchGestureRecognizer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88E018138CF700555D63 /* MSPinchGestureRecognizer.h */; };
+		C23A0DB119A7A5D9002BF2B6 /* MSSwipeGestureRecognizer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88E218138CF700555D63 /* MSSwipeGestureRecognizer.h */; };
+		C23A0DB219A7A5D9002BF2B6 /* MSResizingLayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88E618138CF700555D63 /* MSResizingLayer.h */; };
+		C23A0DB319A7A5D9002BF2B6 /* MSKitDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88E918138CF700555D63 /* MSKitDefines.h */; };
+		C23A0DB419A7A5D9002BF2B6 /* MSKitMacros.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88EA18138CF700555D63 /* MSKitMacros.h */; };
+		C23A0DB519A7A5D9002BF2B6 /* MSAssertionHandler.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88ED18138CF700555D63 /* MSAssertionHandler.h */; };
+		C23A0DB619A7A5D9002BF2B6 /* MSBitVector.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88EF18138CF700555D63 /* MSBitVector.h */; };
+		C23A0DB719A7A5D9002BF2B6 /* MSCompletionBlockOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88F118138CF700555D63 /* MSCompletionBlockOperation.h */; };
+		C23A0DB819A7A5D9002BF2B6 /* MSContextChangeReceptionist.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88F318138CF700555D63 /* MSContextChangeReceptionist.h */; };
+		C23A0DB919A7A5D9002BF2B6 /* MSDictionary.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88F518138CF700555D63 /* MSDictionary.h */; };
+		C23A0DBA19A7A5D9002BF2B6 /* MSDictionaryIndex.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88F718138CF700555D63 /* MSDictionaryIndex.h */; };
+		C23A0DBB19A7A5D9002BF2B6 /* MSError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88F918138CF700555D63 /* MSError.h */; };
+		C23A0DBC19A7A5D9002BF2B6 /* MSKVOReceptionist.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */; };
+		C23A0DBD19A7A5D9002BF2B6 /* MSLog.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890018138CF700555D63 /* MSLog.h */; };
+		C23A0DBE19A7A5D9002BF2B6 /* MSLogMacros.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2E3777F181C2F900066ACDB /* MSLogMacros.h */; };
+		C23A0DBF19A7A5D9002BF2B6 /* MSNetworkReachability.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890218138CF700555D63 /* MSNetworkReachability.h */; };
+		C23A0DC019A7A5D9002BF2B6 /* MSPainter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890418138CF700555D63 /* MSPainter.h */; };
+		C23A0DC119A7A5D9002BF2B6 /* MSQueue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890618138CF700555D63 /* MSQueue.h */; };
+		C23A0DC219A7A5D9002BF2B6 /* MSSingleton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890818138CF700555D63 /* MSSingleton.h */; };
+		C23A0DC319A7A5D9002BF2B6 /* MSSingletonController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890A18138CF700555D63 /* MSSingletonController.h */; };
+		C23A0DC419A7A5D9002BF2B6 /* MSStack.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890C18138CF700555D63 /* MSStack.h */; };
+		C23A0DC519A7A5D9002BF2B6 /* MSValueTransformers.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE890E18138CF700555D63 /* MSValueTransformers.h */; };
+		C23A0DC619A7A5D9002BF2B6 /* MSJSONSerialization.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C27828411814629700FC8D54 /* MSJSONSerialization.h */; };
+		C23A0DC719A7A5D9002BF2B6 /* MSJSONParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE88FC18138CF700555D63 /* MSJSONParser.h */; };
+		C23A0DC819A7A5D9002BF2B6 /* MSJSONAssembler.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C27828451814880E00FC8D54 /* MSJSONAssembler.h */; };
+		C23A0DC919A7A5D9002BF2B6 /* MSKitProtocols.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE891118138CF700555D63 /* MSKitProtocols.h */; };
+		C23A0DCA19A7A5D9002BF2B6 /* MSCheckboxView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE891818138CF700555D63 /* MSCheckboxView.h */; };
+		C23A0DCB19A7A5D9002BF2B6 /* MSColorInputView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE891A18138CF700555D63 /* MSColorInputView.h */; };
+		C23A0DCC19A7A5D9002BF2B6 /* MSMultiselectView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE891C18138CF700555D63 /* MSMultiselectView.h */; };
+		C23A0DCD19A7A5D9002BF2B6 /* MSNumberPadView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE891E18138CF700555D63 /* MSNumberPadView.h */; };
+		C23A0DCE19A7A5D9002BF2B6 /* MSPickerInputView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892018138CF700555D63 /* MSPickerInputView.h */; };
+		C23A0DCF19A7A5D9002BF2B6 /* MSReflectingView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892318138CF700555D63 /* MSReflectingView.h */; };
+		C23A0DD019A7A5D9002BF2B6 /* MSReplicatorView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892518138CF700555D63 /* MSReplicatorView.h */; };
+		C23A0DD119A7A5D9002BF2B6 /* MSTouchReporterView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892718138CF700555D63 /* MSTouchReporterView.h */; };
+		C23A0DD219A7A5D9002BF2B6 /* MSView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892918138CF700555D63 /* MSView.h */; };
+		C23A0EB719A7A77A002BF2B6 /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
+		C23A0EB819A7A77A002BF2B6 /* MagicalRecord+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */; };
+		C23A0EB919A7A77A002BF2B6 /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
+		C23A0EBA19A7A77A002BF2B6 /* NSAttributedString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888018138CF700555D63 /* NSAttributedString+MSKitAdditions.m */; };
+		C23A0EBB19A7A77A002BF2B6 /* NSDictionary+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888218138CF700555D63 /* NSDictionary+MSKitAdditions.m */; };
+		C23A0EBC19A7A77A002BF2B6 /* NSFetchedResultsController+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888418138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.m */; };
+		C23A0EBD19A7A77A002BF2B6 /* NSFetchRequest+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888618138CF700555D63 /* NSFetchRequest+MSKitAdditions.m */; };
+		C23A0EBE19A7A77A002BF2B6 /* NSHashTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888818138CF700555D63 /* NSHashTable+MSKitAdditions.m */; };
+		C23A0EBF19A7A77A002BF2B6 /* NSLayoutConstraint+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888A18138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.m */; };
+		C23A0EC019A7A77A002BF2B6 /* NSManagedObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888C18138CF700555D63 /* NSManagedObject+MSKitAdditions.m */; };
+		C23A0EC119A7A77A002BF2B6 /* NSManagedObjectContext+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888E18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m */; };
+		C23A0EC219A7A77A002BF2B6 /* NSMapTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889018138CF700555D63 /* NSMapTable+MSKitAdditions.m */; };
+		C23A0EC319A7A77A002BF2B6 /* NSNull+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889218138CF700555D63 /* NSNull+MSKitAdditions.m */; };
+		C23A0EC419A7A77A002BF2B6 /* NSNumber+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889418138CF700555D63 /* NSNumber+MSKitAdditions.m */; };
+		C23A0EC519A7A77A002BF2B6 /* NSObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889618138CF700555D63 /* NSObject+MSKitAdditions.m */; };
+		C23A0EC619A7A77A002BF2B6 /* NSOperationQueue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889818138CF700555D63 /* NSOperationQueue+MSKitAdditions.m */; };
+		C23A0EC719A7A77A002BF2B6 /* NSOrderedSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889A18138CF700555D63 /* NSOrderedSet+MSKitAdditions.m */; };
+		C23A0EC819A7A77A002BF2B6 /* NSRegularExpression+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889C18138CF700555D63 /* NSRegularExpression+MSKitAdditions.m */; };
+		C23A0EC919A7A77A002BF2B6 /* NSSet+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889E18138CF700555D63 /* NSSet+MSKitAdditions.m */; };
+		C23A0ECA19A7A77A002BF2B6 /* NSString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A018138CF700555D63 /* NSString+MSKitAdditions.m */; };
+		C23A0ECB19A7A77A002BF2B6 /* NSURL+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A218138CF700555D63 /* NSURL+MSKitAdditions.m */; };
+		C23A0ECC19A7A77A002BF2B6 /* NSUserDefaults+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A418138CF700555D63 /* NSUserDefaults+MSKitAdditions.m */; };
+		C23A0ECD19A7A77A002BF2B6 /* NSValue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A618138CF700555D63 /* NSValue+MSKitAdditions.m */; };
+		C23A0ECE19A7A77A002BF2B6 /* UIAlertView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A818138CF700555D63 /* UIAlertView+MSKitAdditions.m */; };
+		C23A0ECF19A7A77A002BF2B6 /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AA18138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.m */; };
+		C23A0ED019A7A77A002BF2B6 /* UIColor+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AC18138CF700555D63 /* UIColor+MSKitAdditions.m */; };
+		C23A0ED119A7A77A002BF2B6 /* UIControl+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AE18138CF700555D63 /* UIControl+MSKitAdditions.m */; };
+		C23A0ED219A7A77A002BF2B6 /* UIFont+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B018138CF700555D63 /* UIFont+MSKitAdditions.m */; };
+		C23A0ED319A7A77A002BF2B6 /* UIGestureRecognizer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B218138CF700555D63 /* UIGestureRecognizer+MSKitAdditions.m */; };
+		C23A0ED419A7A77A002BF2B6 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B418138CF700555D63 /* UIImage+ImageEffects.m */; };
+		C23A0ED519A7A77A002BF2B6 /* UIImage+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B618138CF700555D63 /* UIImage+MSKitAdditions.m */; };
+		C23A0ED619A7A77A002BF2B6 /* UIStoryboard+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88B818138CF700555D63 /* UIStoryboard+MSKitAdditions.m */; };
+		C23A0ED719A7A77A002BF2B6 /* UITableView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88BA18138CF700555D63 /* UITableView+MSKitAdditions.m */; };
+		C23A0ED819A7A77A002BF2B6 /* UIView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88BC18138CF700555D63 /* UIView+MSKitAdditions.m */; };
+		C23A0ED919A7A77A002BF2B6 /* UIViewController+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88BE18138CF700555D63 /* UIViewController+MSKitAdditions.m */; };
+		C23A0EDA19A7A77A002BF2B6 /* PKAssembly+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */; };
+		C23A0EDB19A7A77A002BF2B6 /* NSPointerArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */; };
+		C23A0EDC19A7A77A002BF2B6 /* NSAssertionHandler+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */; };
+		C23A0EDD19A7A77A002BF2B6 /* MSColorInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88C218138CF700555D63 /* MSColorInputViewController.m */; };
+		C23A0EDE19A7A77A002BF2B6 /* MSPickerInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88C418138CF700555D63 /* MSPickerInputViewController.m */; };
+		C23A0EDF19A7A77A002BF2B6 /* MSBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88C718138CF700555D63 /* MSBarButtonItem.m */; };
+		C23A0EE019A7A77A002BF2B6 /* MSColorInputButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88CA18138CF700555D63 /* MSColorInputButton.m */; };
+		C23A0EE119A7A77A002BF2B6 /* MSPickerInputButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88CC18138CF700555D63 /* MSPickerInputButton.m */; };
+		C23A0EE219A7A77A002BF2B6 /* MSPopupBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88CE18138CF700555D63 /* MSPopupBarButton.m */; };
+		C23A0EE319A7A77A002BF2B6 /* MSPopupBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D018138CF700555D63 /* MSPopupBarButtonItem.m */; };
+		C23A0EE419A7A77A002BF2B6 /* MSScrollWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D218138CF700555D63 /* MSScrollWheel.m */; };
+		C23A0EE519A7A77A002BF2B6 /* MSKitLoggingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D618138CF700555D63 /* MSKitLoggingFunctions.m */; };
+		C23A0EE619A7A77A002BF2B6 /* MSKitMiscellaneousFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88D818138CF700555D63 /* MSKitMiscellaneousFunctions.m */; };
+		C23A0EE719A7A77A002BF2B6 /* MSGestureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88DB18138CF700555D63 /* MSGestureManager.m */; };
+		C23A0EE819A7A77A002BF2B6 /* MSLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88DD18138CF700555D63 /* MSLongPressGestureRecognizer.m */; };
+		C23A0EE919A7A77A002BF2B6 /* MSMultiselectGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88DF18138CF700555D63 /* MSMultiselectGestureRecognizer.m */; };
+		C23A0EEA19A7A77A002BF2B6 /* MSPinchGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E118138CF700555D63 /* MSPinchGestureRecognizer.m */; };
+		C23A0EEB19A7A77A002BF2B6 /* MSSwipeGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E318138CF700555D63 /* MSSwipeGestureRecognizer.m */; };
+		C23A0EEC19A7A77A002BF2B6 /* MSResizingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88E718138CF700555D63 /* MSResizingLayer.m */; };
+		C23A0EED19A7A77A002BF2B6 /* MSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88EE18138CF700555D63 /* MSAssertionHandler.m */; };
+		C23A0EEE19A7A77A002BF2B6 /* MSBitVector.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F018138CF700555D63 /* MSBitVector.m */; };
+		C23A0EEF19A7A77A002BF2B6 /* MSCompletionBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F218138CF700555D63 /* MSCompletionBlockOperation.m */; };
+		C23A0EF019A7A77A002BF2B6 /* MSContextChangeReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F418138CF700555D63 /* MSContextChangeReceptionist.m */; };
+		C23A0EF119A7A77A002BF2B6 /* MSDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F618138CF700555D63 /* MSDictionary.m */; };
+		C23A0EF219A7A77A002BF2B6 /* MSDictionaryIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */; };
+		C23A0EF319A7A77A002BF2B6 /* MSError.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FA18138CF700555D63 /* MSError.m */; };
+		C23A0EF419A7A77A002BF2B6 /* MSKVOReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FF18138CF700555D63 /* MSKVOReceptionist.m */; };
+		C23A0EF519A7A77A002BF2B6 /* MSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890118138CF700555D63 /* MSLog.m */; };
+		C23A0EF619A7A77A002BF2B6 /* MSNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890318138CF700555D63 /* MSNetworkReachability.m */; };
+		C23A0EF719A7A77A002BF2B6 /* MSPainter.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890518138CF700555D63 /* MSPainter.m */; };
+		C23A0EF819A7A77A002BF2B6 /* MSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890718138CF700555D63 /* MSQueue.m */; };
+		C23A0EF919A7A77A002BF2B6 /* MSSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890918138CF700555D63 /* MSSingleton.m */; };
+		C23A0EFA19A7A77A002BF2B6 /* MSSingletonController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890B18138CF700555D63 /* MSSingletonController.m */; };
+		C23A0EFB19A7A77A002BF2B6 /* MSStack.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890D18138CF700555D63 /* MSStack.m */; };
+		C23A0EFC19A7A77A002BF2B6 /* MSValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE890F18138CF700555D63 /* MSValueTransformers.m */; };
+		C23A0EFD19A7A77A002BF2B6 /* MSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828421814629700FC8D54 /* MSJSONSerialization.m */; };
+		C23A0EFE19A7A77A002BF2B6 /* MSJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88FD18138CF700555D63 /* MSJSONParser.m */; };
+		C23A0EFF19A7A77A002BF2B6 /* MSJSONAssembler.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828461814880E00FC8D54 /* MSJSONAssembler.m */; };
+		C23A0F0019A7A77A002BF2B6 /* MSCheckboxView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891918138CF700555D63 /* MSCheckboxView.m */; };
+		C23A0F0119A7A77A002BF2B6 /* MSColorInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891B18138CF700555D63 /* MSColorInputView.m */; };
+		C23A0F0219A7A77A002BF2B6 /* MSMultiselectView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891D18138CF700555D63 /* MSMultiselectView.m */; };
+		C23A0F0319A7A77A002BF2B6 /* MSNumberPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE891F18138CF700555D63 /* MSNumberPadView.m */; };
+		C23A0F0419A7A77A002BF2B6 /* MSPickerInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892118138CF700555D63 /* MSPickerInputView.m */; };
+		C23A0F0519A7A77A002BF2B6 /* MSPopupBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892218138CF700555D63 /* MSPopupBarButtonView.m */; };
+		C23A0F0619A7A77A002BF2B6 /* MSReflectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892418138CF700555D63 /* MSReflectingView.m */; };
+		C23A0F0719A7A77A002BF2B6 /* MSReplicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892618138CF700555D63 /* MSReplicatorView.m */; };
+		C23A0F0819A7A77A002BF2B6 /* MSTouchReporterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892818138CF700555D63 /* MSTouchReporterView.m */; };
+		C23A0F0919A7A77A002BF2B6 /* MSView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892A18138CF700555D63 /* MSView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C264339A1816D238005E0105 /* PBXContainerItemProxy */ = {
+		C230F88D19A7C9F900900F0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			containerPortal = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C7CF97AB17498414008D9D13;
-			remoteInfo = "libMagicalRecord-iOS";
+			remoteGlobalIDString = C23A0F2F19A7B46F002BF2B6;
+			remoteInfo = Lumberjack;
 		};
-		C264339C1816D238005E0105 /* PBXContainerItemProxy */ = {
+		C230F89319A7C9FE00900F0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
+			containerPortal = C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C7CF97FF174984CA008D9D13;
-			remoteInfo = "libMagicalRecordTests-iOS";
-		};
-		C264339E1816D238005E0105 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C779107F17E63C8900D20ACF;
+			remoteGlobalIDString = C23A0F7119A7B72C002BF2B6;
 			remoteInfo = MagicalRecord;
 		};
-		C26433A01816D238005E0105 /* PBXContainerItemProxy */ = {
+		C230F89919A7CA0300900F0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C779109317E63C8900D20ACF;
-			remoteInfo = MagicalRecordTests;
-		};
-		C26433E21816D4EB005E0105 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C7CF97AA17498414008D9D13;
-			remoteInfo = "libMagicalRecord-iOS";
-		};
-		C268295B182567D60026A520 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DCB3185114EB418E001CFBEE;
-			remoteInfo = Lumberjack;
-		};
-		C268295D182567D60026A520 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DCB318CA14ED6C3B001CFBEE;
-			remoteInfo = FmwkTest;
-		};
-		C26829C3182580C20026A520 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
-			remoteInfo = Lumberjack;
-		};
-		C26829C5182580C20026A520 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C779107E17E63C8900D20ACF;
-			remoteInfo = MagicalRecord;
-		};
-		C26829C7182580C20026A520 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = ParseKit;
-		};
-		C2CE8AC1181426D600555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2CE86F51813817F00555D63;
-			remoteInfo = Lumberjack;
-		};
-		C2CE8AE7181426FA00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2CE86F41813817F00555D63;
-			remoteInfo = Lumberjack;
-		};
-		C2CE8AFE18142E4A00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = ParseKit;
-		};
-		C2CE8B0018142E4A00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D3D9753216E7F36700D55EAB;
-			remoteInfo = libParseKit;
-		};
-		C2CE8B0218142E4A00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
+			containerPortal = C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D3FDC5830FFC4BFC00F1F797;
-			remoteInfo = libParseKitMobile;
+			remoteInfo = ParseKit;
 		};
-		C2CE8B0418142E4A00555D63 /* PBXContainerItemProxy */ = {
+		C230F89B19A7CA4200900F0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D37D8DC61571A4F700CDB822;
-			remoteInfo = ParseKitTests;
-		};
-		C2CE8B0618142E4A00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D33494100E2963FD00406085;
-			remoteInfo = DemoApp;
-		};
-		C2CE8B0818142E4A00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D34185040E520D3F0081B0DC;
-			remoteInfo = DebugApp;
-		};
-		C2CE8B0A18142E4A00555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D338302F171C923700CCE513;
-			remoteInfo = ParserGenApp;
-		};
-		C2CE8B1118142F7900555D63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
+			containerPortal = C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = D3FDC5820FFC4BFC00F1F797;
-			remoteInfo = libParseKitMobile;
+			remoteInfo = ParseKit;
+		};
+		C230F89D19A7CA4200900F0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C23A0F7019A7B72C002BF2B6;
+			remoteInfo = MagicalRecord;
+		};
+		C230F89F19A7CA4200900F0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C23A0F2E19A7B46F002BF2B6;
+			remoteInfo = Lumberjack;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C2CE884C18138C4900555D63 /* CopyFiles */ = {
+		C23A0D5119A7A459002BF2B6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */,
+				C23A0D7A19A7A5D9002BF2B6 /* CALayer+MSKitAdditions.h in CopyFiles */,
+				C23A0D7B19A7A5D9002BF2B6 /* MagicalRecord+MSKitAdditions.h in CopyFiles */,
+				C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */,
+				C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */,
+				C23A0D7E19A7A5D9002BF2B6 /* NSDictionary+MSKitAdditions.h in CopyFiles */,
+				C23A0D7F19A7A5D9002BF2B6 /* NSFetchedResultsController+MSKitAdditions.h in CopyFiles */,
+				C23A0D8019A7A5D9002BF2B6 /* NSFetchRequest+MSKitAdditions.h in CopyFiles */,
+				C23A0D8119A7A5D9002BF2B6 /* NSHashTable+MSKitAdditions.h in CopyFiles */,
+				C23A0D8219A7A5D9002BF2B6 /* NSLayoutConstraint+MSKitAdditions.h in CopyFiles */,
+				C23A0D8319A7A5D9002BF2B6 /* NSManagedObject+MSKitAdditions.h in CopyFiles */,
+				C23A0D8419A7A5D9002BF2B6 /* NSManagedObjectContext+MSKitAdditions.h in CopyFiles */,
+				C23A0D8519A7A5D9002BF2B6 /* NSMapTable+MSKitAdditions.h in CopyFiles */,
+				C23A0D8619A7A5D9002BF2B6 /* NSNull+MSKitAdditions.h in CopyFiles */,
+				C23A0D8719A7A5D9002BF2B6 /* NSNumber+MSKitAdditions.h in CopyFiles */,
+				C23A0D8819A7A5D9002BF2B6 /* NSObject+MSKitAdditions.h in CopyFiles */,
+				C23A0D8919A7A5D9002BF2B6 /* NSOperationQueue+MSKitAdditions.h in CopyFiles */,
+				C23A0D8A19A7A5D9002BF2B6 /* NSOrderedSet+MSKitAdditions.h in CopyFiles */,
+				C23A0D8B19A7A5D9002BF2B6 /* NSRegularExpression+MSKitAdditions.h in CopyFiles */,
+				C23A0D8C19A7A5D9002BF2B6 /* NSSet+MSKitAdditions.h in CopyFiles */,
+				C23A0D8D19A7A5D9002BF2B6 /* NSString+MSKitAdditions.h in CopyFiles */,
+				C23A0D8E19A7A5D9002BF2B6 /* NSURL+MSKitAdditions.h in CopyFiles */,
+				C23A0D8F19A7A5D9002BF2B6 /* NSUserDefaults+MSKitAdditions.h in CopyFiles */,
+				C23A0D9019A7A5D9002BF2B6 /* NSValue+MSKitAdditions.h in CopyFiles */,
+				C23A0D9119A7A5D9002BF2B6 /* UIAlertView+MSKitAdditions.h in CopyFiles */,
+				C23A0D9219A7A5D9002BF2B6 /* UICollectionViewFlowLayout+MSKitAdditions.h in CopyFiles */,
+				C23A0D9319A7A5D9002BF2B6 /* UIColor+MSKitAdditions.h in CopyFiles */,
+				C23A0D9419A7A5D9002BF2B6 /* UIControl+MSKitAdditions.h in CopyFiles */,
+				C23A0D9519A7A5D9002BF2B6 /* UIFont+MSKitAdditions.h in CopyFiles */,
+				C23A0D9619A7A5D9002BF2B6 /* UIGestureRecognizer+MSKitAdditions.h in CopyFiles */,
+				C23A0D9719A7A5D9002BF2B6 /* UIImage+ImageEffects.h in CopyFiles */,
+				C23A0D9819A7A5D9002BF2B6 /* UIImage+MSKitAdditions.h in CopyFiles */,
+				C23A0D9919A7A5D9002BF2B6 /* UIStoryboard+MSKitAdditions.h in CopyFiles */,
+				C23A0D9A19A7A5D9002BF2B6 /* UITableView+MSKitAdditions.h in CopyFiles */,
+				C23A0D9B19A7A5D9002BF2B6 /* UIView+MSKitAdditions.h in CopyFiles */,
+				C23A0D9C19A7A5D9002BF2B6 /* UIViewController+MSKitAdditions.h in CopyFiles */,
+				C23A0D9D19A7A5D9002BF2B6 /* UIWindow+MSKitAdditions.h in CopyFiles */,
+				C23A0D9E19A7A5D9002BF2B6 /* PKAssembly+MSKitAdditions.h in CopyFiles */,
+				C23A0D9F19A7A5D9002BF2B6 /* NSPointerArray+MSKitAdditions.h in CopyFiles */,
+				C23A0DA019A7A5D9002BF2B6 /* NSAssertionHandler+MSKitAdditions.h in CopyFiles */,
+				C23A0DA119A7A5D9002BF2B6 /* MSColorInputViewController.h in CopyFiles */,
+				C23A0DA219A7A5D9002BF2B6 /* MSPickerInputViewController.h in CopyFiles */,
+				C23A0DA319A7A5D9002BF2B6 /* MSBarButtonItem.h in CopyFiles */,
+				C23A0DA419A7A5D9002BF2B6 /* MSBarButtonItem_Private.h in CopyFiles */,
+				C23A0DA519A7A5D9002BF2B6 /* MSColorInputButton.h in CopyFiles */,
+				C23A0DA619A7A5D9002BF2B6 /* MSPickerInputButton.h in CopyFiles */,
+				C23A0DA719A7A5D9002BF2B6 /* MSPopupBarButton.h in CopyFiles */,
+				C23A0DA819A7A5D9002BF2B6 /* MSPopupBarButton_Private.h in CopyFiles */,
+				C23A0DA919A7A5D9002BF2B6 /* MSScrollWheel.h in CopyFiles */,
+				C23A0DAA19A7A5D9002BF2B6 /* MSKitGeometryFunctions.h in CopyFiles */,
+				C23A0DAB19A7A5D9002BF2B6 /* MSKitLoggingFunctions.h in CopyFiles */,
+				C23A0DAC19A7A5D9002BF2B6 /* MSKitMiscellaneousFunctions.h in CopyFiles */,
+				C23A0DAD19A7A5D9002BF2B6 /* MSGestureManager.h in CopyFiles */,
+				C23A0DAE19A7A5D9002BF2B6 /* MSLongPressGestureRecognizer.h in CopyFiles */,
+				C23A0DAF19A7A5D9002BF2B6 /* MSMultiselectGestureRecognizer.h in CopyFiles */,
+				C23A0DB019A7A5D9002BF2B6 /* MSPinchGestureRecognizer.h in CopyFiles */,
+				C23A0DB119A7A5D9002BF2B6 /* MSSwipeGestureRecognizer.h in CopyFiles */,
+				C23A0DB219A7A5D9002BF2B6 /* MSResizingLayer.h in CopyFiles */,
+				C23A0DB319A7A5D9002BF2B6 /* MSKitDefines.h in CopyFiles */,
+				C23A0DB419A7A5D9002BF2B6 /* MSKitMacros.h in CopyFiles */,
+				C23A0DB519A7A5D9002BF2B6 /* MSAssertionHandler.h in CopyFiles */,
+				C23A0DB619A7A5D9002BF2B6 /* MSBitVector.h in CopyFiles */,
+				C23A0DB719A7A5D9002BF2B6 /* MSCompletionBlockOperation.h in CopyFiles */,
+				C23A0DB819A7A5D9002BF2B6 /* MSContextChangeReceptionist.h in CopyFiles */,
+				C23A0DB919A7A5D9002BF2B6 /* MSDictionary.h in CopyFiles */,
+				C23A0DBA19A7A5D9002BF2B6 /* MSDictionaryIndex.h in CopyFiles */,
+				C23A0DBB19A7A5D9002BF2B6 /* MSError.h in CopyFiles */,
+				C23A0DBC19A7A5D9002BF2B6 /* MSKVOReceptionist.h in CopyFiles */,
+				C23A0DBD19A7A5D9002BF2B6 /* MSLog.h in CopyFiles */,
+				C23A0DBE19A7A5D9002BF2B6 /* MSLogMacros.h in CopyFiles */,
+				C23A0DBF19A7A5D9002BF2B6 /* MSNetworkReachability.h in CopyFiles */,
+				C23A0DC019A7A5D9002BF2B6 /* MSPainter.h in CopyFiles */,
+				C23A0DC119A7A5D9002BF2B6 /* MSQueue.h in CopyFiles */,
+				C23A0DC219A7A5D9002BF2B6 /* MSSingleton.h in CopyFiles */,
+				C23A0DC319A7A5D9002BF2B6 /* MSSingletonController.h in CopyFiles */,
+				C23A0DC419A7A5D9002BF2B6 /* MSStack.h in CopyFiles */,
+				C23A0DC519A7A5D9002BF2B6 /* MSValueTransformers.h in CopyFiles */,
+				C23A0DC619A7A5D9002BF2B6 /* MSJSONSerialization.h in CopyFiles */,
+				C23A0DC719A7A5D9002BF2B6 /* MSJSONParser.h in CopyFiles */,
+				C23A0DC819A7A5D9002BF2B6 /* MSJSONAssembler.h in CopyFiles */,
+				C23A0DC919A7A5D9002BF2B6 /* MSKitProtocols.h in CopyFiles */,
+				C23A0DCA19A7A5D9002BF2B6 /* MSCheckboxView.h in CopyFiles */,
+				C23A0DCB19A7A5D9002BF2B6 /* MSColorInputView.h in CopyFiles */,
+				C23A0DCC19A7A5D9002BF2B6 /* MSMultiselectView.h in CopyFiles */,
+				C23A0DCD19A7A5D9002BF2B6 /* MSNumberPadView.h in CopyFiles */,
+				C23A0DCE19A7A5D9002BF2B6 /* MSPickerInputView.h in CopyFiles */,
+				C23A0DCF19A7A5D9002BF2B6 /* MSReflectingView.h in CopyFiles */,
+				C23A0DD019A7A5D9002BF2B6 /* MSReplicatorView.h in CopyFiles */,
+				C23A0DD119A7A5D9002BF2B6 /* MSTouchReporterView.h in CopyFiles */,
+				C23A0DD219A7A5D9002BF2B6 /* MSView.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C264335518157B46005E0105 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		C264335818157B46005E0105 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
+		C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MagicalRecord.xcodeproj; path = MagicalRecord/MagicalRecord.xcodeproj; sourceTree = "<group>"; };
+		C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
+		C23A0D5319A7A459002BF2B6 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C264338118159578005E0105 /* PKAssembly+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PKAssembly+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338218159578005E0105 /* PKAssembly+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PKAssembly+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
-		C26433911816D238005E0105 /* MagicalRecord.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MagicalRecord.xcodeproj; path = ../../../../GitHub/MagicalRecord/MagicalRecord.xcodeproj; sourceTree = "<group>"; };
-		C2682956182567D60026A520 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = ../../../../GitHub/CocoaLumberjack/Xcode/LumberjackFramework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
-		C268299F18257EDC0026A520 /* MSKit-OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "MSKit-OSX.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2682A7B1825820A0026A520 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		C2682A7D1825851B0026A520 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C27828451814880E00FC8D54 /* MSJSONAssembler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONAssembler.h; sourceTree = "<group>"; };
 		C27828461814880E00FC8D54 /* MSJSONAssembler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONAssembler.m; sourceTree = "<group>"; };
-		C2989AA1182550F600E8DCBF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		C2989AA4182550F600E8DCBF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C2989AA5182550F600E8DCBF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		C2989AA6182550F600E8DCBF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		C2989AA9182550F600E8DCBF /* MSKit-OSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MSKit-OSX-Info.plist"; sourceTree = "<group>"; };
-		C2989AAD182550F600E8DCBF /* MSKit-OSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-OSX-Prefix.pch"; sourceTree = "<group>"; };
-		C2989AAE182550F600E8DCBF /* MSKit-OSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-OSX.h"; sourceTree = "<group>"; };
-		C2CE884E18138C4900555D63 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2CE885118138C4900555D63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C2CE885518138C4900555D63 /* MSKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-Prefix.pch"; sourceTree = "<group>"; };
 		C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MSKitAdditions.m"; sourceTree = "<group>"; };
@@ -564,7 +449,6 @@
 		C2CE88E118138CF700555D63 /* MSPinchGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPinchGestureRecognizer.m; sourceTree = "<group>"; };
 		C2CE88E218138CF700555D63 /* MSSwipeGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSwipeGestureRecognizer.h; sourceTree = "<group>"; };
 		C2CE88E318138CF700555D63 /* MSSwipeGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSSwipeGestureRecognizer.m; sourceTree = "<group>"; };
-		C2CE88E518138CF700555D63 /* MSGLossLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGLossLayer.m; sourceTree = "<group>"; };
 		C2CE88E618138CF700555D63 /* MSResizingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSResizingLayer.h; sourceTree = "<group>"; };
 		C2CE88E718138CF700555D63 /* MSResizingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSResizingLayer.m; sourceTree = "<group>"; };
 		C2CE88E918138CF700555D63 /* MSKitDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKitDefines.h; sourceTree = "<group>"; };
@@ -605,10 +489,6 @@
 		C2CE890E18138CF700555D63 /* MSValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSValueTransformers.h; sourceTree = "<group>"; };
 		C2CE890F18138CF700555D63 /* MSValueTransformers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSValueTransformers.m; sourceTree = "<group>"; };
 		C2CE891118138CF700555D63 /* MSKitProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKitProtocols.h; sourceTree = "<group>"; };
-		C2CE891318138CF700555D63 /* MSColorInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MSColorInputView.xib; sourceTree = "<group>"; };
-		C2CE891418138CF700555D63 /* MSPickerInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MSPickerInputViewController.xib; sourceTree = "<group>"; };
-		C2CE891518138CF700555D63 /* ScrollWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScrollWheel.png; sourceTree = "<group>"; };
-		C2CE891618138CF700555D63 /* ScrollWheel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ScrollWheel@2x.png"; sourceTree = "<group>"; };
 		C2CE891818138CF700555D63 /* MSCheckboxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCheckboxView.h; sourceTree = "<group>"; };
 		C2CE891918138CF700555D63 /* MSCheckboxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCheckboxView.m; sourceTree = "<group>"; };
 		C2CE891A18138CF700555D63 /* MSColorInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSColorInputView.h; sourceTree = "<group>"; };
@@ -629,94 +509,61 @@
 		C2CE892918138CF700555D63 /* MSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSView.h; sourceTree = "<group>"; };
 		C2CE892A18138CF700555D63 /* MSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSView.m; sourceTree = "<group>"; };
 		C2CE897B18138D6C00555D63 /* MSKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKit.h; sourceTree = "<group>"; };
-		C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Frameworks/Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
-		C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = Frameworks/ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
 		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C268299B18257EDC0026A520 /* Frameworks */ = {
+		C23A0D5019A7A459002BF2B6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2682A7C1825820A0026A520 /* CoreData.framework in Frameworks */,
-				C26829C9182580CA0026A520 /* Lumberjack.framework in Frameworks */,
-				C26829CA182580CA0026A520 /* MagicalRecord.framework in Frameworks */,
-				C26829CB182580CA0026A520 /* ParseKit.framework in Frameworks */,
-				C26829A018257EDC0026A520 /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2CE884B18138C4900555D63 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C26433E51816D501005E0105 /* libMagicalRecord.a in Frameworks */,
-				C2CE8B151814301100555D63 /* libLumberjack.a in Frameworks */,
-				C2CE8B171814301100555D63 /* libParseKit.a in Frameworks */,
-				C2CE885218138C4900555D63 /* Foundation.framework in Frameworks */,
+				C230F8A219A7CAC400900F0C /* Lumberjack.a in Frameworks */,
+				C230F8A319A7CAC400900F0C /* MagicalRecord.a in Frameworks */,
+				C230F8A419A7CAC400900F0C /* ParseKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C26433921816D238005E0105 /* Products */ = {
+		C230F88A19A7C9F800900F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C264339B1816D238005E0105 /* libMagicalRecord.a */,
-				C264339D1816D238005E0105 /* libMagicalRecordTests-iOS.octest */,
-				C264339F1816D238005E0105 /* MagicalRecord.framework */,
-				C26433A11816D238005E0105 /* MagicalRecordTests.xctest */,
+				C230F88E19A7C9F900900F0C /* Lumberjack.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C2682957182567D60026A520 /* Products */ = {
+		C230F89019A7C9FE00900F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C268295C182567D60026A520 /* Lumberjack.framework */,
-				C268295E182567D60026A520 /* FmwkTest.app */,
+				C230F89419A7C9FE00900F0C /* MagicalRecord.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C2989AA3182550F600E8DCBF /* Other Frameworks */ = {
+		C230F89619A7CA0300900F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C2989AA4182550F600E8DCBF /* Foundation.framework */,
-				C2989AA5182550F600E8DCBF /* CoreData.framework */,
-				C2989AA6182550F600E8DCBF /* AppKit.framework */,
+				C230F89A19A7CA0300900F0C /* ParseKit.a */,
 			);
-			name = "Other Frameworks";
+			name = Products;
 			sourceTree = "<group>";
 		};
-		C2989AA7182550F600E8DCBF /* MSKit-OSX */ = {
+		C23A0C1019A792BB002BF2B6 /* Disabled */ = {
 			isa = PBXGroup;
 			children = (
-				C2989AAE182550F600E8DCBF /* MSKit-OSX.h */,
-				C2989AA8182550F600E8DCBF /* Supporting Files */,
+				C2CE88FB18138CF700555D63 /* MSJSONParser+Rules.m */,
 			);
-			path = "MSKit-OSX";
-			sourceTree = "<group>";
-		};
-		C2989AA8182550F600E8DCBF /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C2682A7D1825851B0026A520 /* InfoPlist.strings */,
-				C2989AA9182550F600E8DCBF /* MSKit-OSX-Info.plist */,
-				C2989AAD182550F600E8DCBF /* MSKit-OSX-Prefix.pch */,
-			);
-			name = "Supporting Files";
+			name = Disabled;
 			sourceTree = "<group>";
 		};
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
 				C2CE885318138C4900555D63 /* MSKit */,
-				C2989AA7182550F600E8DCBF /* MSKit-OSX */,
 				C2CE885018138C4900555D63 /* Frameworks */,
 				C2CE884F18138C4900555D63 /* Products */,
 			);
@@ -725,8 +572,7 @@
 		C2CE884F18138C4900555D63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C2CE884E18138C4900555D63 /* libMSKit.a */,
-				C268299F18257EDC0026A520 /* MSKit-OSX.framework */,
+				C23A0D5319A7A459002BF2B6 /* libMSKit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -734,16 +580,9 @@
 		C2CE885018138C4900555D63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C2682A7B1825820A0026A520 /* CoreData.framework */,
-				C2682956182567D60026A520 /* Lumberjack.xcodeproj */,
-				C26433911816D238005E0105 /* MagicalRecord.xcodeproj */,
-				C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */,
-				C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */,
-				C2CE885118138C4900555D63 /* Foundation.framework */,
-				C264335518157B46005E0105 /* XCTest.framework */,
-				C264335818157B46005E0105 /* UIKit.framework */,
-				C2989AA1182550F600E8DCBF /* Cocoa.framework */,
-				C2989AA3182550F600E8DCBF /* Other Frameworks */,
+				C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */,
+				C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */,
+				C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -778,7 +617,6 @@
 				C2CE88E818138CF700555D63 /* Macros, Defines */,
 				C2CE88EB18138CF700555D63 /* Objects */,
 				C2CE891018138CF700555D63 /* Protocols */,
-				C2CE891218138CF700555D63 /* Resources */,
 				C2CE891718138CF700555D63 /* Views */,
 			);
 			path = Source;
@@ -931,7 +769,6 @@
 		C2CE88E418138CF700555D63 /* Layers */ = {
 			isa = PBXGroup;
 			children = (
-				C2CE88E518138CF700555D63 /* MSGLossLayer.m */,
 				C2CE88E618138CF700555D63 /* MSResizingLayer.h */,
 				C2CE88E718138CF700555D63 /* MSResizingLayer.m */,
 			);
@@ -964,7 +801,7 @@
 				C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */,
 				C2CE88F918138CF700555D63 /* MSError.h */,
 				C2CE88FA18138CF700555D63 /* MSError.m */,
-				C2CE88FB18138CF700555D63 /* MSJSONParser+Rules.m */,
+				C23A0C1019A792BB002BF2B6 /* Disabled */,
 				C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */,
 				C2CE88FF18138CF700555D63 /* MSKVOReceptionist.m */,
 				C2CE890018138CF700555D63 /* MSLog.h */,
@@ -1002,17 +839,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		C2CE891218138CF700555D63 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C2CE891318138CF700555D63 /* MSColorInputView.xib */,
-				C2CE891418138CF700555D63 /* MSPickerInputViewController.xib */,
-				C2CE891518138CF700555D63 /* ScrollWheel.png */,
-				C2CE891618138CF700555D63 /* ScrollWheel@2x.png */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		C2CE891718138CF700555D63 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,227 +865,27 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C2CE8ABD181426D600555D63 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C2CE8AC2181426D600555D63 /* libLumberjack.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C2CE8AF518142E4900555D63 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C2CE8AFF18142E4A00555D63 /* ParseKit.framework */,
-				C2CE8B0118142E4A00555D63 /* libParseKit.a */,
-				C2CE8B0318142E4A00555D63 /* libParseKit.a */,
-				C2CE8B0518142E4A00555D63 /* ParseKitTests.octest */,
-				C2CE8B0718142E4A00555D63 /* DemoApp.app */,
-				C2CE8B0918142E4A00555D63 /* DebugApp.app */,
-				C2CE8B0B18142E4A00555D63 /* ParserGenApp.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		C268299C18257EDC0026A520 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2682A5C1825810E0026A520 /* MSCompletionBlockOperation.h in Headers */,
-				C2682A581825810E0026A520 /* MSKitDefines.h in Headers */,
-				C2682A351825810E0026A520 /* NSURL+MSKitAdditions.h in Headers */,
-				C2682A231825810E0026A520 /* NSArray+MSKitAdditions.h in Headers */,
-				C2682A601825810E0026A520 /* MSLogMacros.h in Headers */,
-				C2682A5B1825810E0026A520 /* MSBitVector.h in Headers */,
-				C2682A661825810E0026A520 /* MSQueue.h in Headers */,
-				C2682A5E1825810E0026A520 /* MSDictionary.h in Headers */,
-				C2682A301825810E0026A520 /* NSOperationQueue+MSKitAdditions.h in Headers */,
-				C2682A2C1825810E0026A520 /* NSMapTable+MSKitAdditions.h in Headers */,
-				C2682A4E1825810E0026A520 /* MSKitGeometryFunctions.h in Headers */,
-				C2682A331825810E0026A520 /* NSSet+MSKitAdditions.h in Headers */,
-				C2682A2B1825810E0026A520 /* NSManagedObjectContext+MSKitAdditions.h in Headers */,
-				C2682A2A1825810E0026A520 /* NSManagedObject+MSKitAdditions.h in Headers */,
-				C2682A511825810E0026A520 /* MSKitMiscellaneousFunctions.h in Headers */,
-				C2682A641825810E0026A520 /* MSNetworkReachability.h in Headers */,
-				C2682A5F1825810E0026A520 /* MSDictionaryIndex.h in Headers */,
-				C2682A611825810E0026A520 /* MSError.h in Headers */,
-				C2682A631825810E0026A520 /* MSLog.h in Headers */,
-				C2682A6B1825810E0026A520 /* MSKitProtocols.h in Headers */,
-				C2682A481825810E0026A520 /* NSPointerArray+MSKitAdditions.h in Headers */,
-				C2682A221825810E0026A520 /* MagicalRecord+MSKitAdditions.h in Headers */,
-				C2682A77182581220026A520 /* MSJSONAssembler.h in Headers */,
-				C2682A341825810E0026A520 /* NSString+MSKitAdditions.h in Headers */,
-				C2682A4F1825810E0026A520 /* MSKitLoggingFunctions.h in Headers */,
-				C2682A591825810E0026A520 /* MSKitMacros.h in Headers */,
-				C2682A691825810E0026A520 /* MSStack.h in Headers */,
-				C2682A321825810E0026A520 /* NSRegularExpression+MSKitAdditions.h in Headers */,
-				C2682A3C1825810E0026A520 /* NSAssertionHandler+MSKitAdditions.h in Headers */,
-				C2682A5D1825810E0026A520 /* MSContextChangeReceptionist.h in Headers */,
-				C2682A2D1825810E0026A520 /* NSNull+MSKitAdditions.h in Headers */,
-				C2682A5A1825810E0026A520 /* MSAssertionHandler.h in Headers */,
-				C2682A501825810E0026A520 /* PKAssembly+MSKitAdditions.h in Headers */,
-				C2682A311825810E0026A520 /* NSOrderedSet+MSKitAdditions.h in Headers */,
-				C2682A271825810E0026A520 /* NSFetchRequest+MSKitAdditions.h in Headers */,
-				C2682A2F1825810E0026A520 /* NSObject+MSKitAdditions.h in Headers */,
-				C2682A251825810E0026A520 /* NSDictionary+MSKitAdditions.h in Headers */,
-				C2682A241825810E0026A520 /* NSAttributedString+MSKitAdditions.h in Headers */,
-				C2682A361825810E0026A520 /* NSUserDefaults+MSKitAdditions.h in Headers */,
-				C2682A281825810E0026A520 /* NSHashTable+MSKitAdditions.h in Headers */,
-				C2682A621825810E0026A520 /* MSKVOReceptionist.h in Headers */,
-				C2682A2E1825810E0026A520 /* NSNumber+MSKitAdditions.h in Headers */,
-				C2682A541825810E0026A520 /* MSMultiselectGestureRecognizer.h in Headers */,
-				C2682A76182581220026A520 /* MSJSONParser.h in Headers */,
-				C2682A741825810E0026A520 /* MSJSONSerialization.h in Headers */,
-				C2682A371825810E0026A520 /* NSValue+MSKitAdditions.h in Headers */,
-				C2682A211825810E0026A520 /* CALayer+MSKitAdditions.h in Headers */,
-				C2682A7A182581410026A520 /* MSKit-OSX.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2CE897D18138DBE00555D63 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2CE897E18138DEB00555D63 /* MSKit.h in Headers */,
-				C2CE897F18138DEB00555D63 /* CALayer+MSKitAdditions.h in Headers */,
-				C2CE898018138DEB00555D63 /* MagicalRecord+MSKitAdditions.h in Headers */,
-				C2CE898118138DEB00555D63 /* NSArray+MSKitAdditions.h in Headers */,
-				C2CE898218138DEB00555D63 /* NSAttributedString+MSKitAdditions.h in Headers */,
-				C2CE898318138DEB00555D63 /* NSDictionary+MSKitAdditions.h in Headers */,
-				C2CE898418138DEB00555D63 /* NSFetchedResultsController+MSKitAdditions.h in Headers */,
-				C2CE898518138DEB00555D63 /* NSFetchRequest+MSKitAdditions.h in Headers */,
-				C2CE898618138DEB00555D63 /* NSHashTable+MSKitAdditions.h in Headers */,
-				C2CE898718138DEB00555D63 /* NSLayoutConstraint+MSKitAdditions.h in Headers */,
-				C2CE898818138DEB00555D63 /* NSManagedObject+MSKitAdditions.h in Headers */,
-				C2CE898918138DEB00555D63 /* NSManagedObjectContext+MSKitAdditions.h in Headers */,
-				C2CE898A18138DEB00555D63 /* NSMapTable+MSKitAdditions.h in Headers */,
-				C2CE898B18138DEB00555D63 /* NSNull+MSKitAdditions.h in Headers */,
-				C2CE898C18138DEB00555D63 /* NSNumber+MSKitAdditions.h in Headers */,
-				C2CE898D18138DEB00555D63 /* NSObject+MSKitAdditions.h in Headers */,
-				C2CE898E18138DEB00555D63 /* NSOperationQueue+MSKitAdditions.h in Headers */,
-				C2CE898F18138DEB00555D63 /* NSOrderedSet+MSKitAdditions.h in Headers */,
-				C2CE899018138DEB00555D63 /* NSRegularExpression+MSKitAdditions.h in Headers */,
-				C2CE899118138DEB00555D63 /* NSSet+MSKitAdditions.h in Headers */,
-				C2CE899218138DEB00555D63 /* NSString+MSKitAdditions.h in Headers */,
-				C2CE899318138DEB00555D63 /* NSURL+MSKitAdditions.h in Headers */,
-				C2CE899418138DEB00555D63 /* NSUserDefaults+MSKitAdditions.h in Headers */,
-				C2CE899518138DEB00555D63 /* NSValue+MSKitAdditions.h in Headers */,
-				C2CE899618138DEB00555D63 /* UIAlertView+MSKitAdditions.h in Headers */,
-				C2CE899718138DEB00555D63 /* UICollectionViewFlowLayout+MSKitAdditions.h in Headers */,
-				C2CE899818138DEB00555D63 /* UIColor+MSKitAdditions.h in Headers */,
-				C2CE899918138DEB00555D63 /* UIControl+MSKitAdditions.h in Headers */,
-				C2E37784181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h in Headers */,
-				C2CE899A18138DEB00555D63 /* UIFont+MSKitAdditions.h in Headers */,
-				C2CE899B18138DEB00555D63 /* UIGestureRecognizer+MSKitAdditions.h in Headers */,
-				C2CE899C18138DEB00555D63 /* UIImage+ImageEffects.h in Headers */,
-				C2CE899D18138DEB00555D63 /* UIImage+MSKitAdditions.h in Headers */,
-				C2CE899E18138DEB00555D63 /* UIStoryboard+MSKitAdditions.h in Headers */,
-				C2CE899F18138DEB00555D63 /* UITableView+MSKitAdditions.h in Headers */,
-				C2CE89A018138DEB00555D63 /* UIView+MSKitAdditions.h in Headers */,
-				C2CE89A118138DEB00555D63 /* UIViewController+MSKitAdditions.h in Headers */,
-				C2CE89A218138DEB00555D63 /* UIWindow+MSKitAdditions.h in Headers */,
-				C2CE89A318138DEB00555D63 /* MSColorInputViewController.h in Headers */,
-				C2CE89A418138DEB00555D63 /* MSPickerInputViewController.h in Headers */,
-				C278284918148A4400FC8D54 /* MSJSONParser.h in Headers */,
-				C264338F18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h in Headers */,
-				C2CE89A518138DEB00555D63 /* MSBarButtonItem.h in Headers */,
-				C2CE89A618138DEB00555D63 /* MSColorInputButton.h in Headers */,
-				C2CE89A718138DEB00555D63 /* MSPickerInputButton.h in Headers */,
-				C2CE89A818138DEB00555D63 /* MSPopupBarButton.h in Headers */,
-				C2CE89A918138DEB00555D63 /* MSScrollWheel.h in Headers */,
-				C2CE89AA18138DEB00555D63 /* MSKitGeometryFunctions.h in Headers */,
-				C2CE89AB18138DEB00555D63 /* MSKitLoggingFunctions.h in Headers */,
-				C264338318159578005E0105 /* PKAssembly+MSKitAdditions.h in Headers */,
-				C2CE89AC18138DEB00555D63 /* MSKitMiscellaneousFunctions.h in Headers */,
-				C2CE89AD18138DEB00555D63 /* MSGestureManager.h in Headers */,
-				C2CE89AE18138DEB00555D63 /* MSLongPressGestureRecognizer.h in Headers */,
-				C2CE89AF18138DEB00555D63 /* MSMultiselectGestureRecognizer.h in Headers */,
-				C2CE89B018138DEB00555D63 /* MSPinchGestureRecognizer.h in Headers */,
-				C2CE89B118138DEB00555D63 /* MSSwipeGestureRecognizer.h in Headers */,
-				C2CE89B218138DEB00555D63 /* MSResizingLayer.h in Headers */,
-				C2CE89B318138DEB00555D63 /* MSKitDefines.h in Headers */,
-				C2CE89B418138DEB00555D63 /* MSKitMacros.h in Headers */,
-				C27828471814880E00FC8D54 /* MSJSONAssembler.h in Headers */,
-				C2CE89B518138DEB00555D63 /* MSAssertionHandler.h in Headers */,
-				C2CE89B618138DEB00555D63 /* MSBitVector.h in Headers */,
-				C2CE89B718138DEB00555D63 /* MSCompletionBlockOperation.h in Headers */,
-				C2CE89B818138DEB00555D63 /* MSContextChangeReceptionist.h in Headers */,
-				C2CE89B918138DEB00555D63 /* MSDictionary.h in Headers */,
-				C2CE89BA18138DEB00555D63 /* MSDictionaryIndex.h in Headers */,
-				C2E37780181C2F900066ACDB /* MSLogMacros.h in Headers */,
-				C2CE89BB18138DEB00555D63 /* MSError.h in Headers */,
-				C2CE89BD18138DEB00555D63 /* MSKVOReceptionist.h in Headers */,
-				C2CE89BE18138DEB00555D63 /* MSLog.h in Headers */,
-				C2CE89BF18138DEB00555D63 /* MSNetworkReachability.h in Headers */,
-				C2CE89C018138DEB00555D63 /* MSPainter.h in Headers */,
-				C2CE89C118138DEB00555D63 /* MSQueue.h in Headers */,
-				C2CE89C218138DEB00555D63 /* MSSingleton.h in Headers */,
-				C2CE89C318138DEB00555D63 /* MSSingletonController.h in Headers */,
-				C2CE89C418138DEB00555D63 /* MSStack.h in Headers */,
-				C2CE89C518138DEB00555D63 /* MSValueTransformers.h in Headers */,
-				C2CE89C618138DEB00555D63 /* MSKitProtocols.h in Headers */,
-				C2CE89C718138DEB00555D63 /* MSCheckboxView.h in Headers */,
-				C2CE89C818138DEB00555D63 /* MSColorInputView.h in Headers */,
-				C2CE89C918138DEB00555D63 /* MSMultiselectView.h in Headers */,
-				C2CE89CA18138DEB00555D63 /* MSNumberPadView.h in Headers */,
-				C2CE89CB18138DEB00555D63 /* MSPickerInputView.h in Headers */,
-				C2CE89CC18138DEB00555D63 /* MSReflectingView.h in Headers */,
-				C2CE89CD18138DEB00555D63 /* MSReplicatorView.h in Headers */,
-				C2CE89CE18138DEB00555D63 /* MSTouchReporterView.h in Headers */,
-				C27828431814629700FC8D54 /* MSJSONSerialization.h in Headers */,
-				C2CE89CF18138DEB00555D63 /* MSView.h in Headers */,
-				C2CE89D018138E0100555D63 /* MSBarButtonItem_Private.h in Headers */,
-				C2CE89D118138E0100555D63 /* MSPopupBarButton_Private.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		C268299E18257EDC0026A520 /* MSKit-OSX */ = {
+		C23A0D5219A7A459002BF2B6 /* MSKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C26829BD18257EDD0026A520 /* Build configuration list for PBXNativeTarget "MSKit-OSX" */;
+			buildConfigurationList = C23A0D7019A7A459002BF2B6 /* Build configuration list for PBXNativeTarget "MSKit" */;
 			buildPhases = (
-				C268299A18257EDC0026A520 /* Sources */,
-				C268299B18257EDC0026A520 /* Frameworks */,
-				C268299C18257EDC0026A520 /* Headers */,
-				C268299D18257EDC0026A520 /* Resources */,
+				C23A0D4F19A7A459002BF2B6 /* Sources */,
+				C23A0D5019A7A459002BF2B6 /* Frameworks */,
+				C23A0D5119A7A459002BF2B6 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C26829C4182580C20026A520 /* PBXTargetDependency */,
-				C26829C6182580C20026A520 /* PBXTargetDependency */,
-				C26829C8182580C20026A520 /* PBXTargetDependency */,
-			);
-			name = "MSKit-OSX";
-			productName = "MSKit-OSX";
-			productReference = C268299F18257EDC0026A520 /* MSKit-OSX.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		C2CE884D18138C4900555D63 /* MSKit */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C2CE887118138C4900555D63 /* Build configuration list for PBXNativeTarget "MSKit" */;
-			buildPhases = (
-				C2CE884A18138C4900555D63 /* Sources */,
-				C2CE884B18138C4900555D63 /* Frameworks */,
-				C2CE884C18138C4900555D63 /* CopyFiles */,
-				C2CE897D18138DBE00555D63 /* Headers */,
-				C2CE897C18138D8800555D63 /* Prepare Framework */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C26433E31816D4EB005E0105 /* PBXTargetDependency */,
-				C2CE8B1218142F7900555D63 /* PBXTargetDependency */,
-				C2CE8AE8181426FA00555D63 /* PBXTargetDependency */,
+				C230F89C19A7CA4200900F0C /* PBXTargetDependency */,
+				C230F89E19A7CA4200900F0C /* PBXTargetDependency */,
+				C230F8A019A7CA4200900F0C /* PBXTargetDependency */,
 			);
 			name = MSKit;
 			productName = MSKit;
-			productReference = C2CE884E18138C4900555D63 /* libMSKit.a */;
+			productReference = C23A0D5319A7A459002BF2B6 /* libMSKit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -1268,7 +894,7 @@
 		C2CE884618138C4900555D63 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Jason Cardwell";
 			};
 			buildConfigurationList = C2CE884918138C4900555D63 /* Build configuration list for PBXProject "MSKit" */;
@@ -1283,398 +909,252 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = C2682957182567D60026A520 /* Products */;
-					ProjectRef = C2682956182567D60026A520 /* Lumberjack.xcodeproj */;
+					ProductGroup = C230F88A19A7C9F800900F0C /* Products */;
+					ProjectRef = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
 				},
 				{
-					ProductGroup = C2CE8ABD181426D600555D63 /* Products */;
-					ProjectRef = C2CE8ABC181426D600555D63 /* Lumberjack.xcodeproj */;
+					ProductGroup = C230F89019A7C9FE00900F0C /* Products */;
+					ProjectRef = C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */;
 				},
 				{
-					ProductGroup = C26433921816D238005E0105 /* Products */;
-					ProjectRef = C26433911816D238005E0105 /* MagicalRecord.xcodeproj */;
-				},
-				{
-					ProductGroup = C2CE8AF518142E4900555D63 /* Products */;
-					ProjectRef = C2CE8AF418142E4900555D63 /* ParseKit.xcodeproj */;
+					ProductGroup = C230F89619A7CA0300900F0C /* Products */;
+					ProjectRef = C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				C2CE884D18138C4900555D63 /* MSKit */,
-				C268299E18257EDC0026A520 /* MSKit-OSX */,
+				C23A0D5219A7A459002BF2B6 /* MSKit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		C264339B1816D238005E0105 /* libMagicalRecord.a */ = {
+		C230F88E19A7C9F900900F0C /* Lumberjack.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libMagicalRecord.a;
-			remoteRef = C264339A1816D238005E0105 /* PBXContainerItemProxy */;
+			path = Lumberjack.a;
+			remoteRef = C230F88D19A7C9F900900F0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C264339D1816D238005E0105 /* libMagicalRecordTests-iOS.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "libMagicalRecordTests-iOS.octest";
-			remoteRef = C264339C1816D238005E0105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C264339F1816D238005E0105 /* MagicalRecord.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MagicalRecord.framework;
-			remoteRef = C264339E1816D238005E0105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C26433A11816D238005E0105 /* MagicalRecordTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MagicalRecordTests.xctest;
-			remoteRef = C26433A01816D238005E0105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C268295C182567D60026A520 /* Lumberjack.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Lumberjack.framework;
-			remoteRef = C268295B182567D60026A520 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C268295E182567D60026A520 /* FmwkTest.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FmwkTest.app;
-			remoteRef = C268295D182567D60026A520 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8AC2181426D600555D63 /* libLumberjack.a */ = {
+		C230F89419A7C9FE00900F0C /* MagicalRecord.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libLumberjack.a;
-			remoteRef = C2CE8AC1181426D600555D63 /* PBXContainerItemProxy */;
+			path = MagicalRecord.a;
+			remoteRef = C230F89319A7C9FE00900F0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C2CE8AFF18142E4A00555D63 /* ParseKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ParseKit.framework;
-			remoteRef = C2CE8AFE18142E4A00555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8B0118142E4A00555D63 /* libParseKit.a */ = {
+		C230F89A19A7CA0300900F0C /* ParseKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libParseKit.a;
-			remoteRef = C2CE8B0018142E4A00555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8B0318142E4A00555D63 /* libParseKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libParseKit.a;
-			remoteRef = C2CE8B0218142E4A00555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8B0518142E4A00555D63 /* ParseKitTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ParseKitTests.octest;
-			remoteRef = C2CE8B0418142E4A00555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8B0718142E4A00555D63 /* DemoApp.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = DemoApp.app;
-			remoteRef = C2CE8B0618142E4A00555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8B0918142E4A00555D63 /* DebugApp.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = DebugApp.app;
-			remoteRef = C2CE8B0818142E4A00555D63 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C2CE8B0B18142E4A00555D63 /* ParserGenApp.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = ParserGenApp.app;
-			remoteRef = C2CE8B0A18142E4A00555D63 /* PBXContainerItemProxy */;
+			path = ParseKit.a;
+			remoteRef = C230F89919A7CA0300900F0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
 
-/* Begin PBXResourcesBuildPhase section */
-		C268299D18257EDC0026A520 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2682A7E1825851B0026A520 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C2CE897C18138D8800555D63 /* Prepare Framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Prepare Framework";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		C268299A18257EDC0026A520 /* Sources */ = {
+		C23A0D4F19A7A459002BF2B6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26829D2182580FD0026A520 /* NSSet+MSKitAdditions.m in Sources */,
-				C26829E3182580FD0026A520 /* NSDictionary+MSKitAdditions.m in Sources */,
-				C26829F7182580FD0026A520 /* MSJSONAssembler.m in Sources */,
-				C26829FC182580FD0026A520 /* MSDictionaryIndex.m in Sources */,
-				C2682A14182580FE0026A520 /* NSRegularExpression+MSKitAdditions.m in Sources */,
-				C26829E9182580FD0026A520 /* MSBitVector.m in Sources */,
-				C26829F6182580FD0026A520 /* NSArray+MSKitAdditions.m in Sources */,
-				C26829F0182580FD0026A520 /* MSQueue.m in Sources */,
-				C26829F8182580FD0026A520 /* MSKitLoggingFunctions.m in Sources */,
-				C26829D4182580FD0026A520 /* MSKitMiscellaneousFunctions.m in Sources */,
-				C26829F4182580FD0026A520 /* MSDictionary.m in Sources */,
-				C2682A0F182580FE0026A520 /* NSObject+MSKitAdditions.m in Sources */,
-				C2682A07182580FD0026A520 /* MSJSONParser.m in Sources */,
-				C26829FE182580FD0026A520 /* NSNumber+MSKitAdditions.m in Sources */,
-				C26829EB182580FD0026A520 /* MSCompletionBlockOperation.m in Sources */,
-				C26829EE182580FD0026A520 /* NSManagedObject+MSKitAdditions.m in Sources */,
-				C26829DE182580FD0026A520 /* MSLog.m in Sources */,
-				C2682A12182580FE0026A520 /* MSStack.m in Sources */,
-				C2682A1D182580FE0026A520 /* NSOperationQueue+MSKitAdditions.m in Sources */,
-				C2682A15182580FE0026A520 /* NSFetchRequest+MSKitAdditions.m in Sources */,
-				C2682A0E182580FE0026A520 /* NSHashTable+MSKitAdditions.m in Sources */,
-				C26829DB182580FD0026A520 /* MSNetworkReachability.m in Sources */,
-				C26829DC182580FD0026A520 /* NSURL+MSKitAdditions.m in Sources */,
-				C26829D5182580FD0026A520 /* NSAttributedString+MSKitAdditions.m in Sources */,
-				C2682A1C182580FE0026A520 /* NSString+MSKitAdditions.m in Sources */,
-				C26829F2182580FD0026A520 /* NSNull+MSKitAdditions.m in Sources */,
-				C2682A19182580FE0026A520 /* NSMapTable+MSKitAdditions.m in Sources */,
-				C26829ED182580FD0026A520 /* NSPointerArray+MSKitAdditions.m in Sources */,
-				C26829D8182580FD0026A520 /* MagicalRecord+MSKitAdditions.m in Sources */,
-				C26829F9182580FD0026A520 /* MSJSONSerialization.m in Sources */,
-				C26829FF182580FD0026A520 /* PKAssembly+MSKitAdditions.m in Sources */,
-				C26829FD182580FD0026A520 /* NSOrderedSet+MSKitAdditions.m in Sources */,
-				C26829D1182580FD0026A520 /* MSContextChangeReceptionist.m in Sources */,
-				C26829CE182580FD0026A520 /* NSValue+MSKitAdditions.m in Sources */,
-				C26829DF182580FD0026A520 /* NSAssertionHandler+MSKitAdditions.m in Sources */,
-				C26829E2182580FD0026A520 /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
-				C2682A05182580FD0026A520 /* NSUserDefaults+MSKitAdditions.m in Sources */,
-				C2682A18182580FE0026A520 /* MSAssertionHandler.m in Sources */,
-				C26829E7182580FD0026A520 /* MSError.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2CE884A18138C4900555D63 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2CE895018138CF700555D63 /* MSBarButtonItem.m in Sources */,
-				C2CE894418138CF700555D63 /* UIColor+MSKitAdditions.m in Sources */,
-				C2CE894118138CF700555D63 /* NSValue+MSKitAdditions.m in Sources */,
-				C2CE894518138CF700555D63 /* UIControl+MSKitAdditions.m in Sources */,
-				C2CE897718138CF700555D63 /* MSReflectingView.m in Sources */,
-				C2CE896218138CF700555D63 /* MSContextChangeReceptionist.m in Sources */,
-				C2CE893D18138CF700555D63 /* NSSet+MSKitAdditions.m in Sources */,
-				C2CE895518138CF700555D63 /* MSScrollWheel.m in Sources */,
-				C2CE895718138CF700555D63 /* MSKitMiscellaneousFunctions.m in Sources */,
-				C2CE892E18138CF700555D63 /* NSAttributedString+MSKitAdditions.m in Sources */,
-				C2CE895E18138CF700555D63 /* MSResizingLayer.m in Sources */,
-				C2CE894B18138CF700555D63 /* UITableView+MSKitAdditions.m in Sources */,
-				C2CE892C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m in Sources */,
-				C2CE893018138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.m in Sources */,
-				C2CE897A18138CF700555D63 /* MSView.m in Sources */,
-				C2CE896A18138CF700555D63 /* MSNetworkReachability.m in Sources */,
-				C2CE893F18138CF700555D63 /* NSURL+MSKitAdditions.m in Sources */,
-				C2CE895D18138CF700555D63 /* MSGLossLayer.m in Sources */,
-				C2CE896918138CF700555D63 /* MSLog.m in Sources */,
-				C2E37785181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m in Sources */,
-				C2CE895218138CF700555D63 /* MSPickerInputButton.m in Sources */,
-				C2CE895818138CF700555D63 /* MSGestureManager.m in Sources */,
-				C2CE893518138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
-				C2CE892F18138CF700555D63 /* NSDictionary+MSKitAdditions.m in Sources */,
-				C2CE895C18138CF700555D63 /* MSSwipeGestureRecognizer.m in Sources */,
-				C2CE897218138CF700555D63 /* MSColorInputView.m in Sources */,
-				C2CE894718138CF700555D63 /* UIGestureRecognizer+MSKitAdditions.m in Sources */,
-				C2CE896518138CF700555D63 /* MSError.m in Sources */,
-				C2CE896B18138CF700555D63 /* MSPainter.m in Sources */,
-				C2CE896018138CF700555D63 /* MSBitVector.m in Sources */,
-				C2CE897918138CF700555D63 /* MSTouchReporterView.m in Sources */,
-				C2CE896118138CF700555D63 /* MSCompletionBlockOperation.m in Sources */,
-				C2CE894D18138CF700555D63 /* UIViewController+MSKitAdditions.m in Sources */,
-				C264339018162E8A005E0105 /* NSPointerArray+MSKitAdditions.m in Sources */,
-				C2CE893418138CF700555D63 /* NSManagedObject+MSKitAdditions.m in Sources */,
-				C2CE894F18138CF700555D63 /* MSPickerInputViewController.m in Sources */,
-				C2CE896C18138CF700555D63 /* MSQueue.m in Sources */,
-				C2CE894C18138CF700555D63 /* UIView+MSKitAdditions.m in Sources */,
-				C2CE893718138CF700555D63 /* NSNull+MSKitAdditions.m in Sources */,
-				C2CE894218138CF700555D63 /* UIAlertView+MSKitAdditions.m in Sources */,
-				C2CE896318138CF700555D63 /* MSDictionary.m in Sources */,
-				C2CE897118138CF700555D63 /* MSCheckboxView.m in Sources */,
-				C2CE892D18138CF700555D63 /* NSArray+MSKitAdditions.m in Sources */,
-				C27828481814880E00FC8D54 /* MSJSONAssembler.m in Sources */,
-				C2CE895618138CF700555D63 /* MSKitLoggingFunctions.m in Sources */,
-				C27828441814629700FC8D54 /* MSJSONSerialization.m in Sources */,
-				C2CE895418138CF700555D63 /* MSPopupBarButtonItem.m in Sources */,
-				C2CE895A18138CF700555D63 /* MSMultiselectGestureRecognizer.m in Sources */,
-				C2CE896418138CF700555D63 /* MSDictionaryIndex.m in Sources */,
-				C2CE893B18138CF700555D63 /* NSOrderedSet+MSKitAdditions.m in Sources */,
-				C2CE893818138CF700555D63 /* NSNumber+MSKitAdditions.m in Sources */,
-				C264338418159578005E0105 /* PKAssembly+MSKitAdditions.m in Sources */,
-				C2CE895918138CF700555D63 /* MSLongPressGestureRecognizer.m in Sources */,
-				C2CE894A18138CF700555D63 /* UIStoryboard+MSKitAdditions.m in Sources */,
-				C2CE897318138CF700555D63 /* MSMultiselectView.m in Sources */,
-				C2CE895118138CF700555D63 /* MSColorInputButton.m in Sources */,
-				C2CE894E18138CF700555D63 /* MSColorInputViewController.m in Sources */,
-				C2CE894018138CF700555D63 /* NSUserDefaults+MSKitAdditions.m in Sources */,
-				C2CE895318138CF700555D63 /* MSPopupBarButton.m in Sources */,
-				C278284A18148A4900FC8D54 /* MSJSONParser.m in Sources */,
-				C2CE896E18138CF700555D63 /* MSSingletonController.m in Sources */,
-				C2CE894318138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */,
-				C2CE892B18138CF700555D63 /* CALayer+MSKitAdditions.m in Sources */,
-				C2CE895B18138CF700555D63 /* MSPinchGestureRecognizer.m in Sources */,
-				C2CE897618138CF700555D63 /* MSPopupBarButtonView.m in Sources */,
-				C2CE894918138CF700555D63 /* UIImage+MSKitAdditions.m in Sources */,
-				C2CE893218138CF700555D63 /* NSHashTable+MSKitAdditions.m in Sources */,
-				C2CE893918138CF700555D63 /* NSObject+MSKitAdditions.m in Sources */,
-				C2CE893318138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.m in Sources */,
-				C2CE897418138CF700555D63 /* MSNumberPadView.m in Sources */,
-				C2CE896F18138CF700555D63 /* MSStack.m in Sources */,
-				C2CE897818138CF700555D63 /* MSReplicatorView.m in Sources */,
-				C2CE893C18138CF700555D63 /* NSRegularExpression+MSKitAdditions.m in Sources */,
-				C2CE893118138CF700555D63 /* NSFetchRequest+MSKitAdditions.m in Sources */,
-				C2CE897518138CF700555D63 /* MSPickerInputView.m in Sources */,
-				C2CE897018138CF700555D63 /* MSValueTransformers.m in Sources */,
-				C2CE895F18138CF700555D63 /* MSAssertionHandler.m in Sources */,
-				C2CE893618138CF700555D63 /* NSMapTable+MSKitAdditions.m in Sources */,
-				C2CE894818138CF700555D63 /* UIImage+ImageEffects.m in Sources */,
-				C2CE894618138CF700555D63 /* UIFont+MSKitAdditions.m in Sources */,
-				C2CE893E18138CF700555D63 /* NSString+MSKitAdditions.m in Sources */,
-				C2CE893A18138CF700555D63 /* NSOperationQueue+MSKitAdditions.m in Sources */,
-				C2CE896D18138CF700555D63 /* MSSingleton.m in Sources */,
-				C2CE896818138CF700555D63 /* MSKVOReceptionist.m in Sources */,
+				C23A0EB719A7A77A002BF2B6 /* CALayer+MSKitAdditions.m in Sources */,
+				C23A0EB819A7A77A002BF2B6 /* MagicalRecord+MSKitAdditions.m in Sources */,
+				C23A0EB919A7A77A002BF2B6 /* NSArray+MSKitAdditions.m in Sources */,
+				C23A0EBA19A7A77A002BF2B6 /* NSAttributedString+MSKitAdditions.m in Sources */,
+				C23A0EBB19A7A77A002BF2B6 /* NSDictionary+MSKitAdditions.m in Sources */,
+				C23A0EBC19A7A77A002BF2B6 /* NSFetchedResultsController+MSKitAdditions.m in Sources */,
+				C23A0EBD19A7A77A002BF2B6 /* NSFetchRequest+MSKitAdditions.m in Sources */,
+				C23A0EBE19A7A77A002BF2B6 /* NSHashTable+MSKitAdditions.m in Sources */,
+				C23A0EBF19A7A77A002BF2B6 /* NSLayoutConstraint+MSKitAdditions.m in Sources */,
+				C23A0EC019A7A77A002BF2B6 /* NSManagedObject+MSKitAdditions.m in Sources */,
+				C23A0EC119A7A77A002BF2B6 /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
+				C23A0EC219A7A77A002BF2B6 /* NSMapTable+MSKitAdditions.m in Sources */,
+				C23A0EC319A7A77A002BF2B6 /* NSNull+MSKitAdditions.m in Sources */,
+				C23A0EC419A7A77A002BF2B6 /* NSNumber+MSKitAdditions.m in Sources */,
+				C23A0EC519A7A77A002BF2B6 /* NSObject+MSKitAdditions.m in Sources */,
+				C23A0EC619A7A77A002BF2B6 /* NSOperationQueue+MSKitAdditions.m in Sources */,
+				C23A0EC719A7A77A002BF2B6 /* NSOrderedSet+MSKitAdditions.m in Sources */,
+				C23A0EC819A7A77A002BF2B6 /* NSRegularExpression+MSKitAdditions.m in Sources */,
+				C23A0EC919A7A77A002BF2B6 /* NSSet+MSKitAdditions.m in Sources */,
+				C23A0ECA19A7A77A002BF2B6 /* NSString+MSKitAdditions.m in Sources */,
+				C23A0ECB19A7A77A002BF2B6 /* NSURL+MSKitAdditions.m in Sources */,
+				C23A0ECC19A7A77A002BF2B6 /* NSUserDefaults+MSKitAdditions.m in Sources */,
+				C23A0ECD19A7A77A002BF2B6 /* NSValue+MSKitAdditions.m in Sources */,
+				C23A0ECE19A7A77A002BF2B6 /* UIAlertView+MSKitAdditions.m in Sources */,
+				C23A0ECF19A7A77A002BF2B6 /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */,
+				C23A0ED019A7A77A002BF2B6 /* UIColor+MSKitAdditions.m in Sources */,
+				C23A0ED119A7A77A002BF2B6 /* UIControl+MSKitAdditions.m in Sources */,
+				C23A0ED219A7A77A002BF2B6 /* UIFont+MSKitAdditions.m in Sources */,
+				C23A0ED319A7A77A002BF2B6 /* UIGestureRecognizer+MSKitAdditions.m in Sources */,
+				C23A0ED419A7A77A002BF2B6 /* UIImage+ImageEffects.m in Sources */,
+				C23A0ED519A7A77A002BF2B6 /* UIImage+MSKitAdditions.m in Sources */,
+				C23A0ED619A7A77A002BF2B6 /* UIStoryboard+MSKitAdditions.m in Sources */,
+				C23A0ED719A7A77A002BF2B6 /* UITableView+MSKitAdditions.m in Sources */,
+				C23A0ED819A7A77A002BF2B6 /* UIView+MSKitAdditions.m in Sources */,
+				C23A0ED919A7A77A002BF2B6 /* UIViewController+MSKitAdditions.m in Sources */,
+				C23A0EDA19A7A77A002BF2B6 /* PKAssembly+MSKitAdditions.m in Sources */,
+				C23A0EDB19A7A77A002BF2B6 /* NSPointerArray+MSKitAdditions.m in Sources */,
+				C23A0EDC19A7A77A002BF2B6 /* NSAssertionHandler+MSKitAdditions.m in Sources */,
+				C23A0EDD19A7A77A002BF2B6 /* MSColorInputViewController.m in Sources */,
+				C23A0EDE19A7A77A002BF2B6 /* MSPickerInputViewController.m in Sources */,
+				C23A0EDF19A7A77A002BF2B6 /* MSBarButtonItem.m in Sources */,
+				C23A0EE019A7A77A002BF2B6 /* MSColorInputButton.m in Sources */,
+				C23A0EE119A7A77A002BF2B6 /* MSPickerInputButton.m in Sources */,
+				C23A0EE219A7A77A002BF2B6 /* MSPopupBarButton.m in Sources */,
+				C23A0EE319A7A77A002BF2B6 /* MSPopupBarButtonItem.m in Sources */,
+				C23A0EE419A7A77A002BF2B6 /* MSScrollWheel.m in Sources */,
+				C23A0EE519A7A77A002BF2B6 /* MSKitLoggingFunctions.m in Sources */,
+				C23A0EE619A7A77A002BF2B6 /* MSKitMiscellaneousFunctions.m in Sources */,
+				C23A0EE719A7A77A002BF2B6 /* MSGestureManager.m in Sources */,
+				C23A0EE819A7A77A002BF2B6 /* MSLongPressGestureRecognizer.m in Sources */,
+				C23A0EE919A7A77A002BF2B6 /* MSMultiselectGestureRecognizer.m in Sources */,
+				C23A0EEA19A7A77A002BF2B6 /* MSPinchGestureRecognizer.m in Sources */,
+				C23A0EEB19A7A77A002BF2B6 /* MSSwipeGestureRecognizer.m in Sources */,
+				C23A0EEC19A7A77A002BF2B6 /* MSResizingLayer.m in Sources */,
+				C23A0EED19A7A77A002BF2B6 /* MSAssertionHandler.m in Sources */,
+				C23A0EEE19A7A77A002BF2B6 /* MSBitVector.m in Sources */,
+				C23A0EEF19A7A77A002BF2B6 /* MSCompletionBlockOperation.m in Sources */,
+				C23A0EF019A7A77A002BF2B6 /* MSContextChangeReceptionist.m in Sources */,
+				C23A0EF119A7A77A002BF2B6 /* MSDictionary.m in Sources */,
+				C23A0EF219A7A77A002BF2B6 /* MSDictionaryIndex.m in Sources */,
+				C23A0EF319A7A77A002BF2B6 /* MSError.m in Sources */,
+				C23A0EF419A7A77A002BF2B6 /* MSKVOReceptionist.m in Sources */,
+				C23A0EF519A7A77A002BF2B6 /* MSLog.m in Sources */,
+				C23A0EF619A7A77A002BF2B6 /* MSNetworkReachability.m in Sources */,
+				C23A0EF719A7A77A002BF2B6 /* MSPainter.m in Sources */,
+				C23A0EF819A7A77A002BF2B6 /* MSQueue.m in Sources */,
+				C23A0EF919A7A77A002BF2B6 /* MSSingleton.m in Sources */,
+				C23A0EFA19A7A77A002BF2B6 /* MSSingletonController.m in Sources */,
+				C23A0EFB19A7A77A002BF2B6 /* MSStack.m in Sources */,
+				C23A0EFC19A7A77A002BF2B6 /* MSValueTransformers.m in Sources */,
+				C23A0EFD19A7A77A002BF2B6 /* MSJSONSerialization.m in Sources */,
+				C23A0EFE19A7A77A002BF2B6 /* MSJSONParser.m in Sources */,
+				C23A0EFF19A7A77A002BF2B6 /* MSJSONAssembler.m in Sources */,
+				C23A0F0019A7A77A002BF2B6 /* MSCheckboxView.m in Sources */,
+				C23A0F0119A7A77A002BF2B6 /* MSColorInputView.m in Sources */,
+				C23A0F0219A7A77A002BF2B6 /* MSMultiselectView.m in Sources */,
+				C23A0F0319A7A77A002BF2B6 /* MSNumberPadView.m in Sources */,
+				C23A0F0419A7A77A002BF2B6 /* MSPickerInputView.m in Sources */,
+				C23A0F0519A7A77A002BF2B6 /* MSPopupBarButtonView.m in Sources */,
+				C23A0F0619A7A77A002BF2B6 /* MSReflectingView.m in Sources */,
+				C23A0F0719A7A77A002BF2B6 /* MSReplicatorView.m in Sources */,
+				C23A0F0819A7A77A002BF2B6 /* MSTouchReporterView.m in Sources */,
+				C23A0F0919A7A77A002BF2B6 /* MSView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C26433E31816D4EB005E0105 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "libMagicalRecord-iOS";
-			targetProxy = C26433E21816D4EB005E0105 /* PBXContainerItemProxy */;
-		};
-		C26829C4182580C20026A520 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Lumberjack;
-			targetProxy = C26829C3182580C20026A520 /* PBXContainerItemProxy */;
-		};
-		C26829C6182580C20026A520 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MagicalRecord;
-			targetProxy = C26829C5182580C20026A520 /* PBXContainerItemProxy */;
-		};
-		C26829C8182580C20026A520 /* PBXTargetDependency */ = {
+		C230F89C19A7CA4200900F0C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ParseKit;
-			targetProxy = C26829C7182580C20026A520 /* PBXContainerItemProxy */;
+			targetProxy = C230F89B19A7CA4200900F0C /* PBXContainerItemProxy */;
 		};
-		C2CE8AE8181426FA00555D63 /* PBXTargetDependency */ = {
+		C230F89E19A7CA4200900F0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MagicalRecord;
+			targetProxy = C230F89D19A7CA4200900F0C /* PBXContainerItemProxy */;
+		};
+		C230F8A019A7CA4200900F0C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Lumberjack;
-			targetProxy = C2CE8AE7181426FA00555D63 /* PBXContainerItemProxy */;
-		};
-		C2CE8B1218142F7900555D63 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libParseKitMobile;
-			targetProxy = C2CE8B1118142F7900555D63 /* PBXContainerItemProxy */;
+			targetProxy = C230F89F19A7CA4200900F0C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C26829BE18257EDD0026A520 /* Debug */ = {
+		C23A0D7119A7A459002BF2B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/MSKit.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MSKit-OSX/MSKit-OSX-Prefix.pch";
+				GCC_PREFIX_HEADER = "MSKit/MSKit-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "MSKit-OSX/MSKit-OSX-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = framework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		C26829BF18257EDD0026A520 /* Release */ = {
+		C23A0D7219A7A459002BF2B6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				DSTROOT = /tmp/MSKit.dst;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MSKit-OSX/MSKit-OSX-Prefix.pch";
-				INFOPLIST_FILE = "MSKit-OSX/MSKit-OSX-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				GCC_PREFIX_HEADER = "MSKit/MSKit-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = framework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		C2CE886F18138C4900555D63 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -1682,62 +1162,17 @@
 		C2CE887018138C4900555D63 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-			};
-			name = Release;
-		};
-		C2CE887218138C4900555D63 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MSKit/MSKit-Prefix.pch";
-				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "DEBUG=1";
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)Headers";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				STRIP_STYLE = "non-global";
-			};
-			name = Debug;
-		};
-		C2CE887318138C4900555D63 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MSKit/MSKit-Prefix.pch";
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)Headers";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				STRIP_STYLE = "non-global";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C26829BD18257EDD0026A520 /* Build configuration list for PBXNativeTarget "MSKit-OSX" */ = {
+		C23A0D7019A7A459002BF2B6 /* Build configuration list for PBXNativeTarget "MSKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C26829BE18257EDD0026A520 /* Debug */,
-				C26829BF18257EDD0026A520 /* Release */,
+				C23A0D7119A7A459002BF2B6 /* Debug */,
+				C23A0D7219A7A459002BF2B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1747,15 +1182,6 @@
 			buildConfigurations = (
 				C2CE886F18138C4900555D63 /* Debug */,
 				C2CE887018138C4900555D63 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C2CE887118138C4900555D63 /* Build configuration list for PBXNativeTarget "MSKit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C2CE887218138C4900555D63 /* Debug */,
-				C2CE887318138C4900555D63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

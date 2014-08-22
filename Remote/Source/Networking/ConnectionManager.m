@@ -114,6 +114,7 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
                                          typeEncodings);
         } break;
 
+        case 'B':
         case 'v':
         {
             if (numberOfArgs == 2)
@@ -143,7 +144,7 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
                                              typeEncodings);
             }
         } break;
-            
+
         default:
             assert(NO);
             break;
@@ -156,6 +157,10 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 #pragma mark - Sending commands
 ////////////////////////////////////////////////////////////////////////////////
 
+
++ (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion {
+    [connectionManager sendCommand:commandID completion:completion];
+}
 - (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion
 {
     if (!_flags.wifiAvailable) { MSLogWarnTag(@"wifi not available"); return; }
@@ -223,12 +228,14 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 #pragma mark - Reachability
 ////////////////////////////////////////////////////////////////////////////////
 
++ (BOOL)isWifiAvailable { return [connectionManager isWifiAvailable]; }
 - (BOOL)isWifiAvailable { return _flags.wifiAvailable; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #pragma mark - Logging
 ////////////////////////////////////////////////////////////////////////////////
 
++ (void)logStatus { [connectionManager logStatus]; }
 - (void)logStatus { MSLogInfoTag(@"%@", [GlobalCacheConnectionManager statusDescription]); }
 
 + (int)ddLogLevel { return ddLogLevel; }

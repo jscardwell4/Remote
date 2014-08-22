@@ -28,7 +28,7 @@
 {
     NSArray * components = [string fontComponents];
     NSString * fontName  = (StringIsEmpty(components[0]) ? nil : components[0]);
-    NSNumber * pointSize = (StringIsEmpty(components[1]) ? nil : @([components[1] floatValue]));
+    NSNumber * pointSize = (StringIsEmpty(components[1]) ? nil : @([(NSString *)components[1] floatValue]));
     return [self fontWithName:fontName size:pointSize];
 }
 

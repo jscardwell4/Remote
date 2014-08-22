@@ -185,8 +185,8 @@ editorState;
             case UISwipeGestureRecognizerDirectionLeft :
                     MSLogDebug(@"%@\n\tleft swipe received...", ClassTagString);
                 if (_pageControl.currentPage < _pageControl.numberOfPages - 1) {
-                    MSLogDebug(@"%@\n\tcurrent page = %u, transitioning to next page...",
-                               ClassTagString, currentPage);
+                    MSLogDebug(@"%@\n\tcurrent page = %lu, transitioning to next page...",
+                               ClassTagString, (unsigned long)currentPage);
                     [_pageControl setCurrentPage:_pageControl.currentPage + 1];
                     [self pageChangeAction:_pageControl];
                 }
@@ -196,8 +196,8 @@ editorState;
             case UISwipeGestureRecognizerDirectionRight :
                     MSLogDebug(@"%@\n\tright swipe received...", ClassTagString);
                 if (_pageControl.currentPage > 0) {
-                    MSLogDebug(@"%@\n\tcurrent page = %u, transitioning to previous page...",
-                               ClassTagString, currentPage);
+                    MSLogDebug(@"%@\n\tcurrent page = %lu, transitioning to previous page...",
+                               ClassTagString, (unsigned long)currentPage);
                     [_pageControl setCurrentPage:_pageControl.currentPage - 1];
                     [self pageChangeAction:_pageControl];
                 }
@@ -214,7 +214,7 @@ editorState;
     UIViewController * childController = nil;
     Class              controllerClass;
 
-                    MSLogDebug(@"%@\n\tlocating child controller for page number:%u", ClassTagString, pageNumber);
+                    MSLogDebug(@"%@\n\tlocating child controller for page number:%lu", ClassTagString, (unsigned long)pageNumber);
     switch (pageNumber) {
         case LabelEditingChildController :
             controllerClass = [LabelEditingViewController class];
@@ -254,7 +254,7 @@ editorState;
         ];
 
     if (controllerIndex != NSNotFound) {
-        MSLogDebug(@"%@\n\tcontroller located at index:%u", ClassTagString, controllerIndex);
+        MSLogDebug(@"%@\n\tcontroller located at index:%lu", ClassTagString, (unsigned long)controllerIndex);
 
         return self.childViewControllers[controllerIndex];
     }
@@ -319,8 +319,8 @@ editorState;
 - (void)transitionToAuxControllerForPage:(NSUInteger)pageNumber {
     UIViewController * childController = [self childControllerForPage:pageNumber];
 
-        MSLogDebug(@"%@\n\tcontroller returned for page %u:%@",
-               ClassTagString, pageNumber, childController);
+        MSLogDebug(@"%@\n\tcontroller returned for page %lu:%@",
+               ClassTagString, (unsigned long)pageNumber, childController);
 
     if (ValueIsNil(childController) || [self.childViewControllers count] < 1) return;
 

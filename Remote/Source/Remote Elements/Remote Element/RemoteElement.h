@@ -39,7 +39,7 @@
 @property (nonatomic, strong, readwrite) NSSet                 * constraints;
 @property (nonatomic, strong, readonly ) NSSet                 * firstItemConstraints;
 @property (nonatomic, strong, readonly ) NSSet                 * secondItemConstraints;
-@property (nonatomic, assign, readwrite) CGFloat                 backgroundImageAlpha;
+@property (nonatomic, assign, readwrite) NSNumber              * backgroundImageAlpha;
 @property (nonatomic, strong, readwrite) UIColor               * backgroundColor;
 @property (nonatomic, strong, readwrite) Image                 * backgroundImage;
 @property (nonatomic, strong, readwrite) NSOrderedSet          * subelements;

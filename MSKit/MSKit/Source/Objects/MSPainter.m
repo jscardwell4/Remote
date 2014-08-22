@@ -16,7 +16,7 @@
 #import "NSValue+MSKitAdditions.h"
 #import "UIColor+MSKitAdditions.h"
 
-@implementation MSPainter
+
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_MSKIT|LOG_CONTEXT_FILE);
 
@@ -84,6 +84,8 @@ static const int16_t kEdgeDetectionKernel[] = {
     0,  0,  0,
     1,  1,  1
 };
+
+#pragma unused(kEmbossKernel, kBoxKernel, kTentKernel, kEdgeDetectionKernel)
 
 #pragma mark - Function declarations
 
@@ -402,6 +404,8 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
 
     return scaledImageData;
 }
+
+@implementation MSPainter
 
 + (id)sharedSharedPainter
 {

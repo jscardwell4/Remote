@@ -66,7 +66,6 @@ MSKEY_DEFINITION(MSDefaultValueForSubentity);
     id defaultValue = description.defaultValue; // official default value
 
     NSDictionary * userInfo = description.userInfo;
-    NSSet * userInfoKeys = [[userInfo allKeys] set];
 
     if (!className) className = self.entity.name;
 

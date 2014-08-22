@@ -232,7 +232,7 @@
                            :StripTrailingZeros($(@"%f", [(NSNumber *)attributes[@"constant"] floatValue])));
     NSString * priority = ([(NSNumber *)attributes[@"priority"] integerValue] == UILayoutPriorityRequired
                            ? nil
-                           :$(@"%i", [attributes[@"priority"] integerValue]));
+                           :$(@"%li", (long)[attributes[@"priority"] integerValue]));
     NSMutableString * stringRep = [NSMutableString stringWithFormat:@"%@.%@ %@ ",
                                    firstItem, firstAttribute, relation];
 
@@ -311,7 +311,7 @@
                            :StripTrailingZeros($(@"%f", [(NSNumber *)attributes[@"constant"] floatValue])));
     NSString * priority = ([(NSNumber *)attributes[@"priority"] integerValue] == UILayoutPriorityRequired
                            ? nil
-                           :$(@"@%i", [attributes[@"priority"] integerValue]));
+                           :$(@"@%li", (long)[attributes[@"priority"] integerValue]));
     NSMutableString * stringRep = [NSMutableString stringWithFormat:@"%@.%@ %@ ",
                                    firstItem, firstAttribute, relation];
 

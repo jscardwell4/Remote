@@ -5,7 +5,7 @@
 //
 
 #ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-    #import <UIKit/UIKit.h>
-    #import "MSLog.h"
+#import <Foundation/Foundation.h>
+@import UIKit;
+#import "MSLog.h"
 #endif

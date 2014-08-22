@@ -59,14 +59,16 @@ BOOL pointInsideRadius(CGPoint p1, float r, CGPoint c1) {
 		self.center = CGRectGetCenter(frame);
 		
 		// Add the touchwheel art
+/*
 		UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ScrollWheel.png"]];
 		[self addSubview:iv];
-        self.label = [[UILabel alloc] initWithFrame:CGRectMake(80, 80, 40, 40)];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize:20];
-        [self addSubview:label];
+    self.label = [[UILabel alloc] initWithFrame:CGRectMake(80, 80, 40, 40)];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    [self addSubview:label];
+*/
 	}
 	
 	return self;

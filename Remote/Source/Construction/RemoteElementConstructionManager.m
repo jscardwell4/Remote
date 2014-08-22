@@ -193,6 +193,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      }];
 */
 
+/*
     [CoreDataManager resetDefaultContext];
 
     [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
@@ -212,43 +213,43 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     
     [MSJSONSerialization writeJSONObject:[[Image MR_findAll] valueForKeyPath:@"JSONDictionary"]
                                 filePath:[@"/" join:@[DocumentsFilePath, @"Image.json"]]];
+*/
 
 
 //#define LOG_CONSTRUCTED_ELEMENTS
-/*
-#ifdef LOG_CONSTRUCTED_ELEMENTS
 
-    RERemoteController * controller = [RERemoteController MR_findFirst];
-    assert(controller);
-
-    controller.managedObjectContext.nametag = @"default";
-
-    NSSet * remotes = controller.remotes;
-    assert(remotes);
-
-    NSMutableArray * constructedElementDescriptions = [@[] mutableCopy];
-
-    for (RERemote * remote in remotes) {
-        NSMutableString * remoteDescription = [NSMutableString stringWithFormat:@"%@\n", [remote deepDescription]];
-        for (REButtonGroup * buttonGroup in remote.subelements) {
-            [remoteDescription appendFormat:@"%@\n", [buttonGroup deepDescription]];
-            for (REButton * button in buttonGroup.subelements) {
-                [remoteDescription appendFormat:@"%@\n", [button deepDescription]];
-            }
-        }
-        [constructedElementDescriptions addObject:remoteDescription];
-    }
-    NSString * constructedElementsDescription = [constructedElementDescriptions
-                                                 componentsJoinedByString:[NSString stringWithFormat:@"%@\n",
-                                                                                                     [NSString stringWithCharacter:'#' count:80]]];
-
-    MSLogDebugInContext(LOG_CONTEXT_CONSOLE,
-                        @"%@\n%@\n",
-                        [@"Constructed Remote Elements" singleBarMessageBox],
-                        constructedElementsDescription);
-
-#endif
-*/
+//#ifdef LOG_CONSTRUCTED_ELEMENTS
+//
+//    RERemoteController * controller = [RERemoteController MR_findFirst];
+//    assert(controller);
+//
+//    controller.managedObjectContext.nametag = @"default";
+//
+//    NSSet * remotes = controller.remotes;
+//    assert(remotes);
+//
+//    NSMutableArray * constructedElementDescriptions = [@[] mutableCopy];
+//
+//    for (RERemote * remote in remotes) {
+//        NSMutableString * remoteDescription = [NSMutableString stringWithFormat:@"%@\n", [remote deepDescription]];
+//        for (REButtonGroup * buttonGroup in remote.subelements) {
+//            [remoteDescription appendFormat:@"%@\n", [buttonGroup deepDescription]];
+//            for (REButton * button in buttonGroup.subelements) {
+//                [remoteDescription appendFormat:@"%@\n", [button deepDescription]];
+//            }
+//        }
+//        [constructedElementDescriptions addObject:remoteDescription];
+//    }
+//    NSString * constructedElementsDescription = [constructedElementDescriptions
+//                                                 componentsJoinedByString:[NSString stringWithFormat:@"%@\n",
+//                                                                                                     [NSString stringWithCharacter:'#' count:80]]];
+//
+//    MSLogDebugInContext(LOG_CONTEXT_CONSOLE,
+//                        @"%@\n%@\n",
+//                        [@"Constructed Remote Elements" singleBarMessageBox],
+//                        constructedElementsDescription);
+//
+//#endif
 
     MSLogDebugTag(@"remote construction complete");
 }

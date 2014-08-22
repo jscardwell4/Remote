@@ -131,7 +131,7 @@ void logImportedObject(id importedObject)
     logParsedImportFile(importObjects);
 #endif
     NSArray * remotes = [Remote MR_importFromArray:importObjects inContext:context];
-    MSLogDebug(@"%i remotes imported", [remotes count]);
+    MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
 
     error = nil;
     [context save:&error];
@@ -199,7 +199,7 @@ void logImportedObject(id importedObject)
 #endif
 
     NSArray * manufacturers = [Manufacturer MR_importFromArray:importObjects inContext:context];
-    MSLogDebug(@"%i manufacturers imported", [manufacturers count]);
+    MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
 
 #ifdef SHOULD_LOG_MANUFACTURERS
     logImportedObject(manufacturers);
@@ -231,7 +231,7 @@ void logImportedObject(id importedObject)
     logParsedImportFile(importObjects);
 #endif    
     NSArray * componentDevices = [ComponentDevice MR_importFromArray:importObjects inContext:context];
-    MSLogDebug(@"%i component devices imported", [componentDevices count]);
+    MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
 
 #ifdef SHOULD_LOG_COMPONENTDEVICES
     logImportedObject(componentDevices);
@@ -263,7 +263,7 @@ void logImportedObject(id importedObject)
     logParsedImportFile(importObjects);
 #endif
     NSArray * ircodes = [IRCode MR_importFromArray:importObjects inContext:context];
-    MSLogDebug(@"%i ir codes imported", [ircodes count]);
+    MSLogDebug(@"%lu ir codes imported", (unsigned long)[ircodes count]);
 
 #ifdef SHOULD_LOG_IRCODES
     logImportedObject(ircodes);
@@ -293,7 +293,7 @@ void logImportedObject(id importedObject)
     logParsedImportFile(importObjects);
 #endif
     NSArray * commands = [SendIRCommand MR_importFromArray:importObjects inContext:context];
-    MSLogDebug(@"%i power commands imported", [commands count]);
+    MSLogDebug(@"%lu power commands imported", (unsigned long)[commands count]);
 
 #ifdef SHOULD_LOG_POWERCOMMANDS
     logImportedObject(commands);
@@ -325,7 +325,7 @@ void logImportedObject(id importedObject)
     logParsedImportFile(importObjects);
 #endif
     NSArray * images = [Image MR_importFromArray:importObjects inContext:context];
-    MSLogDebug(@"%i images imported", [images count]);
+    MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
 
 #ifdef SHOULD_LOG_IMAGES
     logImportedObject(images);

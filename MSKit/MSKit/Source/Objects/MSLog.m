@@ -176,7 +176,7 @@
     DDFileLogger * fileLogger = [[DDFileLogger alloc] initWithLogFileManager:fileManager];
     fileLogger.rollingFrequency = 60 * 60 * 24; // * 7;
     fileLogger.maximumFileSize  = 0;
-    fileLogger.logFormatter = [MSLogFormatter taggingLogFormatterForContext:context];
+    fileLogger.logFormatter = [MSLogFormatter taggingLogFormatterForContext:(int)context];
     return fileLogger;
 }
 

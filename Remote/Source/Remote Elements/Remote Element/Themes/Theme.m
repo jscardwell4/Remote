@@ -49,7 +49,7 @@
                                       themeSettingsWithRole:RERoleUndefined
                                                     context:moc],
                             [ThemeButtonSettings
-                                      themeSettingsWithRole:RETypeButton
+                                      themeSettingsWithRole:(RERole)RETypeButton
                                                     context:moc],
 //                            [ThemeButtonGroupSettings
 //                                      themeSettingsWithRole:REButtonGroupRolePanel
@@ -148,7 +148,7 @@
 
     NSString * themeString = ([theme.theme stringValue] ?: @"nil");
     NSString * nameString = ([theme.name description] ?: @"nil");
-    NSString * elementsString = $(@"%u", [theme.elements count]);
+    NSString * elementsString = $(@"%lu", (unsigned long)[theme.elements count]);
     NSString * settingsString = [[self.settings valueForKeyPath:@"deepDescription"]
                                  componentsJoinedByString:@"\n\n"];
 

@@ -41,7 +41,7 @@ static NSOperationQueue const * kTestQueue;
                                                message:@"Enter code for test to run:"
                                      cancelButtonTitle:@"Cancel"
                                      otherButtonTitles:@[@"Run Test"]
-                                             onDismiss:^(int buttonIndex, UIAlertView * alertView) {
+                                             onDismiss:^(NSInteger buttonIndex, UIAlertView * alertView) {
                                                  [UITestRunner runTests:@[@([[alertView textFieldAtIndex:0].text longLongValue])]];
                    }
 
@@ -80,7 +80,7 @@ static NSOperationQueue const * kTestQueue;
                                     message:@"Run another test?"
                           cancelButtonTitle:@"No"
                           otherButtonTitles:@[@"Yes", @"Dismiss", @"Exit"]
-                                  onDismiss:^(int buttonIndex, UIAlertView * alertView) {
+                                  onDismiss:^(NSInteger buttonIndex, UIAlertView * alertView) {
                                       if (buttonIndex == 0) [UITestRunner showDialog];
                                       else if (buttonIndex == 2) exit(EXIT_SUCCESS);
                                   }

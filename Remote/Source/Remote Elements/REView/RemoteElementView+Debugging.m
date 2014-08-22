@@ -16,7 +16,7 @@
 
     // backgroundColor, backgroundImage, backgroundImageAlpha, shape, style
     NSString * backgroundString    = namedModelObjectDescription(element.backgroundImage);
-    NSString * bgAlphaString       = [@(element.backgroundImageAlpha) stringValue];
+    NSString * bgAlphaString       = [element.backgroundImageAlpha stringValue];
     NSString * bgColorString       = NSStringFromUIColor(element.backgroundColor);
     NSString * shapeString         = NSStringFromREShape(element.shape);
     NSString * styleString         = NSStringFromREStyle(element.style);

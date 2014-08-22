@@ -194,7 +194,7 @@
              remote.backgroundImage = backgroundImage;
 
          if (!(flags & REThemeNoBackgroundImageAlpha) && backgroundImageAlpha)
-             remote.backgroundImageAlpha = [backgroundImageAlpha floatValue];
+             remote.backgroundImageAlpha = backgroundImageAlpha;
      }];
 }
 
@@ -245,7 +245,7 @@
 
          // background image alpha
          if (!(flags & REThemeNoBackgroundImageAlpha) && backgroundImageAlpha)
-             buttonGroup.backgroundImageAlpha = [backgroundImageAlpha floatValue];
+             buttonGroup.backgroundImageAlpha = backgroundImageAlpha;
 
          // background color
          if (!(flags & REThemeNoBackgroundColorAttribute) && backgroundColor) buttonGroup.backgroundColor = backgroundColor;

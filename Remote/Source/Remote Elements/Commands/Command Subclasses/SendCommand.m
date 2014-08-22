@@ -45,7 +45,7 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
 
     @catch (NSException *exception)
     {
-        MSLogDebugTag(@"wtf");
+        MSLogDebugTag(@"wtf, %@", [exception description]);
     }
 
 }

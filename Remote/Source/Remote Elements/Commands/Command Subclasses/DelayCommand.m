@@ -23,7 +23,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     [context performBlockAndWait:
      ^{
          delayCommand = [self commandInContext:context];
-         delayCommand.duration = duration;
+         delayCommand.duration = @(duration);
      }];
 
     return delayCommand;
@@ -34,7 +34,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     MSDictionary * dictionary = [super JSONDictionary];
     dictionary[@"uuid"] = NullObject;
 
-    dictionary[@"duration"] = @(self.duration);
+    dictionary[@"duration"] = self.duration;
 
     [dictionary compact];
     [dictionary compress];
@@ -55,7 +55,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 {
     @try
     {
-        CGFloat duration = ((DelayCommand *)_command).duration;
+        CGFloat duration = ((DelayCommand *)_command).duration.floatValue;
         //TODO: Only sleep for small chunks and check for cancellation
         MSLogDebugTag(@"sleeping for %f seconds", duration);
         sleep(duration);

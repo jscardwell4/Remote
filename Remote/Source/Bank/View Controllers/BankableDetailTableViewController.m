@@ -180,7 +180,7 @@ NSString * textForSelection(id selection)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)setItemClass:(Class<Bankable> *)itemClass {}
+- (void)setItemClass:(Class<Bankable>)itemClass {}
 
 - (Class<Bankable>)itemClass { return [NSManagedObject class]; }
 

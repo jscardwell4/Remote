@@ -8,9 +8,10 @@
 #import <CoreData/CoreData.h>
 #import "MSKitDefines.h"
 
-MSEXTERN_KEY(MSDefaultValueForContainingClass);
-MSEXTERN_KEY(MSDefaultValueForSubentity);
-
+//MSEXTERN_KEY(MSDefaultValueForContainingClass);
+//MSEXTERN_KEY(MSDefaultValueForSubentity);
+MSEXTERN_STRING MSDefaultValueForContainingClassKey;
+MSEXTERN_STRING MSDefaultValueForSubentityKey;
 @interface NSManagedObject (MSKitAdditions)
 
 - (id)committedValueForKey:(NSString *)key;

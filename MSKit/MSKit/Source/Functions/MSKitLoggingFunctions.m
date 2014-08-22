@@ -211,7 +211,10 @@ NSString * NSStringFromImageInfo(ImageInfo info)
 
 NSString * AutolayoutTraceDescription()
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     return [[[UIApplication sharedApplication] keyWindow] performSelector:@selector(_autolayoutTrace)];
+#pragma clang diagnostic pop
 }
 
 NSString * AvailableFontsDescription()

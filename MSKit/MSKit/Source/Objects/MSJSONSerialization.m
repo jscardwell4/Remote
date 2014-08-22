@@ -7,7 +7,9 @@
 //
 
 #import "MSJSONSerialization.h"
-#import <ParseKit/ParseKit.h>
+#import "ParseKit/ParseKit.h"
+#import "MSLogMacros.h"
+#import "Lumberjack/Lumberjack.h"
 #import "MSStack.h"
 #import "MSDictionary.h"
 #import "NSArray+MSKitAdditions.h"

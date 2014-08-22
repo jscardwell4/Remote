@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C2CE884D18138C4900555D63"
+               BlueprintIdentifier = "C23A0D5219A7A459002BF2B6"
                BuildableName = "libMSKit.a"
                BlueprintName = "MSKit"
                ReferencedContainer = "container:MSKit.xcodeproj">
@@ -28,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C264335318157B45005E0105"
-               BuildableName = "MSKit Tests.xctest"
-               BlueprintName = "MSKit Tests"
-               ReferencedContainer = "container:MSKit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

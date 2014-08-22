@@ -161,7 +161,7 @@
 + (DelayCommand *)commandInContext:(NSManagedObjectContext *)context duration:(CGFloat)duration;
 
 /// Length of the delay.
-@property (nonatomic, assign) CGFloat duration;
+@property (nonatomic, strong) NSNumber * duration;
 
 @end
 

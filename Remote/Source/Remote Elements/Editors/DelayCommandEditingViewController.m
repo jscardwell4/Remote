@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.durationTextField.text = [NSString stringWithFormat:@"%.2f", self.command.duration];
+    self.durationTextField.text = [NSString stringWithFormat:@"%@", self.command.duration];
 
     CGRect     rightOverlayFrame = CGRectMake(0, 0, 24, 24);
     NSString * overlayText       = @"=";
@@ -49,8 +49,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     textField.rightViewMode = UITextFieldViewModeNever;
-    self.command.duration   = [textField.text floatValue];
-    textField.text          = [NSString stringWithFormat:@"%.2f", self.command.duration];
+    self.command.duration   = @([textField.text floatValue]);
+    textField.text          = [NSString stringWithFormat:@"%@", self.command.duration];
 }
 
 @end

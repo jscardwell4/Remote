@@ -28,7 +28,7 @@
 - (void)MS_handleFailureInMethod:(SEL)selector
                           object:(id)object
                             file:(NSString *)fileName
-                      lineNumber:(NSInteger)line
+                      lineNumber:(int)line
                      description:(NSString *)format, ...
 {
     va_list args;
@@ -48,7 +48,7 @@
 
 - (void)MS_handleFailureInFunction:(NSString *)functionName
                               file:(NSString *)fileName
-                        lineNumber:(NSInteger)line
+                        lineNumber:(int)line
                        description:(NSString *)format, ...
 {
     va_list args;

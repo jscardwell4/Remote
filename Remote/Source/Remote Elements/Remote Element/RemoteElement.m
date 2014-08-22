@@ -405,8 +405,8 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 
     dictionary[@"backgroundImage.uuid"] = CollectionSafe(self.backgroundImage.commentedUUID);
 
-    if (![@(self.backgroundImageAlpha) isEqual:defaultForKey(@"backgroundImageAlpha")])
-        dictionary[@"backgroundImageAlpha"]  = @(self.backgroundImageAlpha);
+    if (![self.backgroundImageAlpha isEqual:defaultForKey(@"backgroundImageAlpha")])
+        dictionary[@"backgroundImageAlpha"]  = self.backgroundImageAlpha;
 
     if ([self.subelements count])
         dictionary[@"subelements"] = [self valueForKeyPath:@"subelements.JSONDictionary"];
@@ -654,7 +654,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     NSString * optionsString       = NSStringFromREOptions(element.options, element.elementType);
     NSString * stateString         = NSStringFromREState(element.state);
     NSString * backgroundString    = namedModelObjectDescription(element.backgroundImage);
-    NSString * bgAlphaString       = [@(element.backgroundImageAlpha) stringValue];
+    NSString * bgAlphaString       = [element.backgroundImageAlpha stringValue];
     NSString * bgColorString       = NSStringFromUIColor(element.backgroundColor);
 
     MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];

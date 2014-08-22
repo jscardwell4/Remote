@@ -97,7 +97,7 @@ static const int msLogContext = 0;
 
     if (increment) {
         currentTaskIndex++;
-        taskCountLabel.text = [NSString stringWithFormat:@"%u/%u", currentTaskIndex, taskCount];
+        taskCountLabel.text = [NSString stringWithFormat:@"%lu/%lu", (unsigned long)currentTaskIndex, (unsigned long)taskCount];
     }
 
     [self.view setNeedsDisplay];

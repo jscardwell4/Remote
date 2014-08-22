@@ -18,6 +18,12 @@
 #import "Editor.h"
 #import "UITestRunner.h"
 #import "StoryboardProxy.h"
+#import "RemoteController.h"
+#import "Remote.h"
+#import "ComponentDevice.h"
+#import "Manufacturer.h"
+#import "Image.h"
+
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int   msLogContext = 0;
@@ -274,6 +280,35 @@ static const int   msLogContext = 0;
                                            ^{
                                                [mainMenuVC toggleSpinner];
                                                mainMenuVC.view. userInteractionEnabled = YES;
+
+                                               NSString * filePath = [@"/" join:@[DocumentsFilePath, @"RemoteController.json"]];
+                                               [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
+                                                                           filePath:filePath];
+                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+
+                                               filePath = [@"/" join:@[DocumentsFilePath, @"Remote.json"]];
+                                               [MSJSONSerialization writeJSONObject:[[Remote MR_findAllSortedBy:@"name" ascending:YES]
+                                                                                     valueForKeyPath:@"JSONDictionary"]
+                                                                           filePath:filePath];
+                                                nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+
+                                               filePath = [@"/" join:@[DocumentsFilePath, @"ComponentDevice.json"]];
+                                               [MSJSONSerialization writeJSONObject:[[ComponentDevice MR_findAllSortedBy:@"info.name" ascending:YES]
+                                                                                     valueForKeyPath:@"JSONDictionary"]
+                                                                           filePath:filePath];
+                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+
+                                               filePath = [@"/" join:@[DocumentsFilePath, @"Manufacturer.json"]];
+                                               [MSJSONSerialization writeJSONObject:[[Manufacturer MR_findAllSortedBy:@"info.name" ascending:YES]
+                                                                                     valueForKeyPath:@"JSONDictionary"]
+                                                                           filePath:filePath];
+                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+
+                                               filePath = [@"/" join:@[DocumentsFilePath, @"Image.json"]];
+                                               [MSJSONSerialization writeJSONObject:[[Image MR_findAll] valueForKeyPath:@"JSONDictionary"]
+                                                                           filePath:filePath];
+                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+
                                            }];
                                       }];
 

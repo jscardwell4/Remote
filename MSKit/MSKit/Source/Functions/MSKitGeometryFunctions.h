@@ -19,7 +19,7 @@ MSSTATIC_INLINE NSString *NSStringFromCATransform3D(CATransform3D transform)
 
     for (NSUInteger i = 0; i < 16; i++)
     {
-        CGFloat   n;
+        CGFloat   n = 0;
 
         switch (i)
         {
@@ -137,7 +137,7 @@ MSSTATIC_INLINE NSString *NSStringFromCATransform3DT(CATransform3D transform)
 
     for (NSUInteger i = 0; i < 16; i++)
     {
-        CGFloat   n;
+        CGFloat   n = 0;
 
         switch (i)
         {

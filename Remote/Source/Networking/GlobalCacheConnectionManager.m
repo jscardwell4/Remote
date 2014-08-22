@@ -542,8 +542,8 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 {
 
     if (!uuid) uuid = self.defaultDeviceUUID;
-    MSLogDebugTag(@"tag:%u, device:%@, command:'%@'",
-                  tag,
+    MSLogDebugTag(@"tag:%lu, device:%@, command:'%@'",
+                  (unsigned long)tag,
                   uuid,
                   [command stringByReplacingReturnsWithSymbol]);
 
@@ -575,8 +575,8 @@ typedef NS_ENUM (uint8_t, ConnectionState){
          ^{
              // insert tag if appropriate
              NSString * taggedCommand = [[command stringByReplacingOccurrencesOfString:@"<tag>"
-                                                                           withString:$(@"%u",tag)]
-                                         stringByAppendingFormat:@"<tag>%u", tag];
+                                                                           withString:$(@"%lu",(unsigned long)tag)]
+                                         stringByAppendingFormat:@"<tag>%lu", (unsigned long)tag];
 
              // send command
              MSLogDebugTag(@"queueing command \"%@\"",
@@ -1032,7 +1032,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
     dispatch_source_set_cancel_handler(_multicastSource, ^{
 //        MSLogDebug(@"(multicastSource cancel handler)\tclosing multicast socket...");
-        close(dispatch_source_get_handle(_multicastSource));
+        close((int)dispatch_source_get_handle(_multicastSource));
         _multicastSource = nil;
     });
 
