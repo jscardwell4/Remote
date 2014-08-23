@@ -47,7 +47,7 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
     __block LayoutConfiguration * config = nil;
     [element.managedObjectContext performBlockAndWait:
      ^{
-         config = [self MR_createInContext:element.managedObjectContext];
+         config = [self createInContext:element.managedObjectContext];
          config.element = element;
      }];
 

@@ -152,9 +152,9 @@ static const CGFloat kInputsTableRowHeight = 120;
     if (!_manufacturers)
     {
         self.manufacturers = [@[@"No Manufacturer",
-                                [Manufacturer MR_findAllSortedBy:@"info.name"
-                                                       ascending:YES
-                                                       inContext:self.item.managedObjectContext]] flattenedArray];
+                                [Manufacturer findAllSortedBy:@"info.name"
+                                                    ascending:YES
+                                                    inContext:self.item.managedObjectContext]] flattenedArray];
     }
 
     return _manufacturers;
@@ -487,16 +487,14 @@ static const CGFloat kInputsTableRowHeight = 120;
     BankCollectionViewController * vc = UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
     vc.navigationItem.title = $(@"%@ Codes", self.componentDevice.name);
     NSPredicate * fetchPredicate = [NSPredicate predicateWithFormat:@"device = %@", self.componentDevice];
-    NSFetchedResultsController * controller = [IRCode MR_fetchAllGroupedBy:nil
-                                                             withPredicate:fetchPredicate
-                                                                  sortedBy:@"info.name"
-                                                                 ascending:YES
-                                                                 inContext:self.componentDevice.managedObjectContext];
+    NSFetchedResultsController * controller = [IRCode fetchAllGroupedBy:nil
+                                                          withPredicate:fetchPredicate
+                                                               sortedBy:@"info.name"
+                                                              ascending:YES
+                                                              inContext:self.componentDevice.managedObjectContext];
     NSError * error = nil;
     [controller performFetch:&error];
-    if (error) [CoreDataManager handleErrors:error];
-    else
-    {
+    if (!MSHandleErrors(error)) {
         vc.bankableItems = controller;
         vc.itemClass = [IRCode class];
         BankFlags bf = vc.bankFlags;

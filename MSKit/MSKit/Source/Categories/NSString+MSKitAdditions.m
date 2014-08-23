@@ -424,7 +424,7 @@ MSSTATIC_STRING_CONST   kBoxMiddle = @"\u2502                                   
 {
     NSError * error;
     [self writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     return (!error);
 }
 

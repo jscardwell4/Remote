@@ -41,7 +41,8 @@
     return (MSDictionary *)dd;
 }
 
-+ (instancetype)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+/*
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
 {
     ControlStateColorSet * colorSet = nil;
 
@@ -50,7 +51,7 @@
 
     else
     {
-        colorSet = [self MR_createInContext:context];
+        colorSet = [self createInContext:context];
         [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:
          ^(id key, id obj, BOOL *stop)
          {
@@ -64,6 +65,7 @@
 
     return colorSet;
 }
+*/
 
 - (MSDictionary *)JSONDictionary
 {

@@ -61,25 +61,39 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (BOOL)shouldImportDevice:(id)data {return YES;}
-- (BOOL)importState:(id)data
-{
-    if ([data isKindOfClass:[NSString class]])
-    {
-        self.state = [@"on" isEqualToString:(NSString *)data];
-        return YES;
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     {
+         "class": "power",
+         "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
+         "state": "off"
+     }
+     */
+
+    PowerCommand * powerCommand = [super importObjectFromData:data inContext:moc];
+
+    if (!powerCommand) {
+
+        powerCommand = [PowerCommand objectWithUUID:data[@"uuid"] context:moc];
+
+        NSString * state      = data[@"state"];
+        NSDictionary * device = data[@"device"];
+
+        if ([@"on" isEqualToString:state]) powerCommand.state = YES;
+        if (device) {
+            NSString * deviceUUID = device[@"uuid"];
+            if (UUIDIsValid(deviceUUID)) {
+                ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
+                if (!d) d = [ComponentDevice importObjectFromData:device inContext:moc];
+                powerCommand.device = d;
+            }
+        }
+
     }
 
-    else if ([data isKindOfClass:[NSNumber class]])
-    {
-        self.state = BOOLValue(data);
-        return YES;
-    }
+    return powerCommand;
 
-    else
-        return NO;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting

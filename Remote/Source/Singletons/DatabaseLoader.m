@@ -16,7 +16,7 @@
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
 
-#define SHOULD_LOG_REMOTECONTROLLER
+//#define SHOULD_LOG_REMOTECONTROLLER
 //#define SHOULD_LOG_REMOTE
 //#define SHOULD_LOG_IMAGES
 //#define SHOULD_LOG_POWERCOMMANDS
@@ -74,6 +74,10 @@ void logImportedObject(id importedObject)
      }];
 
 /*
+
+ I think these are now loaded via manufacturers
+
+
      [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
@@ -82,7 +86,10 @@ void logImportedObject(id importedObject)
 */
 
 /*
-    [CoreDataManager saveWithBlockAndWait:
+
+ I think these are now loaded via component devices
+
+     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
          @autoreleasepool { [self loadPowerCommands:context]; }
@@ -130,12 +137,12 @@ void logImportedObject(id importedObject)
 #ifdef SHOULD_LOG_REMOTE
     logParsedImportFile(importObjects);
 #endif
-    NSArray * remotes = [Remote MR_importFromArray:importObjects inContext:context];
+    NSArray * remotes = [Remote importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
 
     error = nil;
     [context save:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
 
 #ifdef SHOULD_LOG_REMOTE
     logImportedObject(remotes);
@@ -165,7 +172,7 @@ void logImportedObject(id importedObject)
 #ifdef SHOULD_LOG_REMOTECONTROLLER
     logParsedImportFile(importObject);
 #endif
-    RemoteController * remoteController = [RemoteController MR_importFromObject:importObject
+    RemoteController * remoteController = [RemoteController importObjectFromData:importObject
                                                                       inContext:context];
     MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
 
@@ -198,7 +205,7 @@ void logImportedObject(id importedObject)
     logParsedImportFile(importObjects);
 #endif
 
-    NSArray * manufacturers = [Manufacturer MR_importFromArray:importObjects inContext:context];
+    NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
 
 #ifdef SHOULD_LOG_MANUFACTURERS
@@ -229,8 +236,8 @@ void logImportedObject(id importedObject)
 
 #ifdef SHOULD_LOG_COMPONENTDEVICES
     logParsedImportFile(importObjects);
-#endif    
-    NSArray * componentDevices = [ComponentDevice MR_importFromArray:importObjects inContext:context];
+#endif
+    NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
 
 #ifdef SHOULD_LOG_COMPONENTDEVICES
@@ -262,7 +269,7 @@ void logImportedObject(id importedObject)
 #ifdef SHOULD_LOG_IRCODES
     logParsedImportFile(importObjects);
 #endif
-    NSArray * ircodes = [IRCode MR_importFromArray:importObjects inContext:context];
+    NSArray * ircodes = [IRCode importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu ir codes imported", (unsigned long)[ircodes count]);
 
 #ifdef SHOULD_LOG_IRCODES
@@ -292,7 +299,7 @@ void logImportedObject(id importedObject)
 #ifdef SHOULD_LOG_POWERCOMMANDS
     logParsedImportFile(importObjects);
 #endif
-    NSArray * commands = [SendIRCommand MR_importFromArray:importObjects inContext:context];
+    NSArray * commands = [SendIRCommand importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu power commands imported", (unsigned long)[commands count]);
 
 #ifdef SHOULD_LOG_POWERCOMMANDS
@@ -324,7 +331,7 @@ void logImportedObject(id importedObject)
 #ifdef SHOULD_LOG_IMAGES
     logParsedImportFile(importObjects);
 #endif
-    NSArray * images = [Image MR_importFromArray:importObjects inContext:context];
+    NSArray * images = [Image importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
 
 #ifdef SHOULD_LOG_IMAGES

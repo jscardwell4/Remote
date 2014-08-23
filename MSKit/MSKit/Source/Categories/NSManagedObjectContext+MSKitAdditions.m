@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "NSManagedObjectContext+MSKitAdditions.h"
-#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import <objc/runtime.h>
 #import "MSKitMiscellaneousFunctions.h"
 
@@ -91,9 +90,9 @@ static const char * kNSMOCChildContextsKey = "kNSMMOCChildContextsKey";
     return [childContexts setRepresentation];
 }
 
-- (NSString *)nametag { return [self MR_workingName]; }
+- (NSString *)nametag { return self.userInfo[@"nametag"]; }
 
-- (void)setNametag:(NSString *)nametag { [self MR_setWorkingName:nametag]; }
+- (void)setNametag:(NSString *)nametag { self.userInfo[@"nametag"] = nametag; }
 
 - (void)deleteObjects:(NSSet *)objects
 {

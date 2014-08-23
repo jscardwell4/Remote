@@ -42,7 +42,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     if (!label) ThrowInvalidNilArgument(label);
 
-    return [CommandSet objectWithUUID:_index[label] context:self.managedObjectContext];
+    return [CommandSet existingObjectWithUUID:_index[label] context:self.managedObjectContext];
 }
 
 - (void)insertCommandSet:(CommandSet *)commandSet forLabel:(NSString *)label atIndex:(NSUInteger)index
@@ -85,7 +85,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark Import and export
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (id)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+/*
++ (id)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
 {
     if (!context) ThrowInvalidNilArgument(context);
     else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
@@ -97,13 +98,14 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     {
         if (!isStringKind(label)) continue;
 
-        CommandSet * commandSet = [CommandSet MR_importFromObject:data[label] inContext:context];
+        CommandSet * commandSet = [CommandSet importObjectFromData:data[label] inContext:context];
 
         if (commandSet) collection[label] = commandSet;
     }
 
     return collection;
 }
+*/
 
 - (MSDictionary *)JSONDictionary
 {

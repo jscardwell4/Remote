@@ -106,33 +106,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
         description.userInfo = [description.userInfo dictionaryByAddingEntriesFromDictionary:entry];
     };
 
-    // helper block for adding 'related by' key to entity user info dictionaries
-    void (^addMagicalRecordKeyToUserInfoForEntity)(NSEntityDescription * entity) =
-    ^(NSEntityDescription * entity)
-    {
-        static NSDictionary * userInfo;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            userInfo = @{kMagicalRecordImportRelationshipLinkedByKey: @"uuid"};
-        });
-
-        entity.userInfo = [entity.userInfo dictionaryByAddingEntriesFromDictionary:userInfo];
-
-        [[entity relationshipsByName] enumerateKeysAndObjectsUsingBlock:
-        ^(NSString * name, NSRelationshipDescription * relationship, BOOL *stop)
-         {
-             NSEntityDescription * destinationEntity = relationship.destinationEntity;
-             if ([destinationEntity attributesByName][@"uuid"])
-                 relationship.userInfo = [relationship.userInfo
-                                          dictionaryByAddingEntriesFromDictionary:userInfo];
-         }];
-    };
-
 
     NSDictionary * entities = [augmentedModel entitiesByName];
-
-    // add related by keys for entities
-    [[entities allValues] makeObjectsPerformSelectorBlock:addMagicalRecordKeyToUserInfoForEntity];
 
 
     // add class specific attribute defaults
@@ -388,7 +363,7 @@ NSString * (^descriptionForModel)(NSManagedObjectModel *) = ^NSString *(NSManage
 
 + (NSString *)objectModelDescription:(NSManagedObjectModel *)model
 {
-    if (!model) model = [NSManagedObjectModel MR_mergedObjectModelFromMainBundle];
+    if (!model) model = [NSManagedObjectModel mergedModelFromBundles:@[MainBundle]];
     return descriptionForModel(model);
 }
 
@@ -396,7 +371,7 @@ NSString * (^descriptionForModel)(NSManagedObjectModel *) = ^NSString *(NSManage
 {
     NSOperationQueue * queue = [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.model"];
 
-    if (!model) model = [NSManagedObjectModel MR_mergedObjectModelFromMainBundle];
+    if (!model) model = [NSManagedObjectModel mergedModelFromBundles:@[MainBundle]];
 
     [queue addOperationWithBlock:
      ^{

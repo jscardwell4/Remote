@@ -49,6 +49,7 @@ static const int   msLogContext = 0;
         #endif
 
         NSMutableString * s = [@"" mutableCopy];
+        if ([UserDefaults boolForKey:@"loadData"])  [s appendString:@"-loadData"];
         if ([UserDefaults boolForKey:@"rebuild"])  [s appendString:@"-rebuild"];
         if ([UserDefaults boolForKey:@"replace"])  [s appendString:@"-replace"];
         if ([UserDefaults boolForKey:@"remote"])   [s appendString:@"-remote"];
@@ -105,7 +106,7 @@ static const int   msLogContext = 0;
 #pragma unused(bgTranslationTests, bgFocusTests, bgAlignmentTests, bgInfoTests, bgScaleTests, \
                bgDialogTests, rInfoTests, rScaleTests)
 
-    
+
     NSMutableIndexSet * indices = [NSMutableIndexSet indexSet];
 //    [indices addIndex:1];
     [indices addIndexes:bgScaleTests];
@@ -219,9 +220,6 @@ static const int   msLogContext = 0;
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
-    // log available fonts
-    NSLog(@"available font families:\n%@", [UIFont familyNames]);
-
     // set a reference to our launch screen view controller
     MainMenuViewController * mainMenuVC = (MainMenuViewController*)[self.window rootViewController];
     mainMenuVC.view.userInteractionEnabled = NO;
@@ -247,13 +245,22 @@ static const int   msLogContext = 0;
 
     // create block operations for our work queue
     __block BOOL errorOccurred = NO; // if set to YES, remaining operations should cancel
-    
+
     NSOperation * rebuildDatabase = [NSBlockOperation blockOperationWithBlock:
                                      ^{
-                                         if (!errorOccurred && [UserDefaults boolForKey:@"loadData"])
+                                         if (!errorOccurred && [UserDefaults boolForKey:@"loadData"]) {
                                              errorOccurred = (![DatabaseLoader loadData]);
+                                             if (!errorOccurred) {
+                                                 NSManagedObjectContext * defaultContext = [CoreDataManager defaultContext];
+                                                 __block NSError *error = nil;
+                                                 [defaultContext performBlock:^{
+                                                     [defaultContext save:&error];
+                                                 }];
+                                                 MSHandleErrors(error);
+                                             }
+                                         }
                                      }];
-    
+
     NSOperation * rebuildRemote = [NSBlockOperation blockOperationWithBlock:
                                    ^{
                                        if (   !errorOccurred
@@ -263,7 +270,7 @@ static const int   msLogContext = 0;
                                            [RemoteElementConstructionManager buildController];
                                        }
                                    }];
-    
+
     [rebuildRemote addDependency:rebuildDatabase];
 
     NSOperation * runUITests = [NSBlockOperation blockOperationWithBlock:
@@ -274,6 +281,51 @@ static const int   msLogContext = 0;
 
     [runUITests addDependency:rebuildRemote];
 
+//#define OUTPUT_JSON_FILES
+//#define LOG_JSON_FILES
+
+#ifdef OUTPUT_JSON_FILES
+    NSOperation * dumpJSON = [NSBlockOperation blockOperationWithBlock:^{
+        NSString * filePath = [@"/" join:@[DocumentsFilePath, @"RemoteController.json"]];
+        [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
+                                    filePath:filePath];
+#ifdef LOG_JSON_FILES
+        nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+#endif
+
+        filePath = [@"/" join:@[DocumentsFilePath, @"Remote.json"]];
+        [MSJSONSerialization writeJSONObject:[[Remote findAllSortedBy:@"name" ascending:YES]
+                                              valueForKeyPath:@"JSONDictionary"]
+                                    filePath:filePath];
+#ifdef LOG_JSON_FILES
+        nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+#endif
+
+        filePath = [@"/" join:@[DocumentsFilePath, @"ComponentDevice.json"]];
+        [MSJSONSerialization writeJSONObject:[[ComponentDevice findAllSortedBy:@"info.name" ascending:YES]
+                                              valueForKeyPath:@"JSONDictionary"]
+                                    filePath:filePath];
+#ifdef LOG_JSON_FILES
+        nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+#endif
+
+        filePath = [@"/" join:@[DocumentsFilePath, @"Manufacturer.json"]];
+        [MSJSONSerialization writeJSONObject:[[Manufacturer findAllSortedBy:@"info.name" ascending:YES]
+                                              valueForKeyPath:@"JSONDictionary"]
+                                    filePath:filePath];
+#ifdef LOG_JSON_FILES
+        nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+#endif
+
+        filePath = [@"/" join:@[DocumentsFilePath, @"Image.json"]];
+        [MSJSONSerialization writeJSONObject:[[Image findAll] valueForKeyPath:@"JSONDictionary"]
+                                    filePath:filePath];
+#ifdef LOG_JSON_FILES
+        nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
+#endif
+    }];
+#endif
+
     NSOperation * readyApplication = [NSBlockOperation blockOperationWithBlock:
                                       ^{
                                           [MainQueue addOperationWithBlock:
@@ -281,43 +333,21 @@ static const int   msLogContext = 0;
                                                [mainMenuVC toggleSpinner];
                                                mainMenuVC.view. userInteractionEnabled = YES;
 
-                                               NSString * filePath = [@"/" join:@[DocumentsFilePath, @"RemoteController.json"]];
-                                               [MSJSONSerialization writeJSONObject:[RemoteController remoteController]
-                                                                           filePath:filePath];
-                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-
-                                               filePath = [@"/" join:@[DocumentsFilePath, @"Remote.json"]];
-                                               [MSJSONSerialization writeJSONObject:[[Remote MR_findAllSortedBy:@"name" ascending:YES]
-                                                                                     valueForKeyPath:@"JSONDictionary"]
-                                                                           filePath:filePath];
-                                                nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-
-                                               filePath = [@"/" join:@[DocumentsFilePath, @"ComponentDevice.json"]];
-                                               [MSJSONSerialization writeJSONObject:[[ComponentDevice MR_findAllSortedBy:@"info.name" ascending:YES]
-                                                                                     valueForKeyPath:@"JSONDictionary"]
-                                                                           filePath:filePath];
-                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-
-                                               filePath = [@"/" join:@[DocumentsFilePath, @"Manufacturer.json"]];
-                                               [MSJSONSerialization writeJSONObject:[[Manufacturer MR_findAllSortedBy:@"info.name" ascending:YES]
-                                                                                     valueForKeyPath:@"JSONDictionary"]
-                                                                           filePath:filePath];
-                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-
-                                               filePath = [@"/" join:@[DocumentsFilePath, @"Image.json"]];
-                                               [MSJSONSerialization writeJSONObject:[[Image MR_findAll] valueForKeyPath:@"JSONDictionary"]
-                                                                           filePath:filePath];
-                                               nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-
                                            }];
                                       }];
 
     [readyApplication addDependency:runUITests];
 
-    [_workQueue addOperations:@[rebuildDatabase,
+    [_workQueue addOperations:@[
+                                rebuildDatabase,
                                 rebuildRemote,
                                 runUITests,
-                                readyApplication]
+                                readyApplication
+#ifdef OUTPUT_JSON_FILES
+                                ,
+                                dumpJSON
+#endif
+                                ]
             waitUntilFinished:NO];
 
     return YES;

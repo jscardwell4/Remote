@@ -37,12 +37,9 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
                          category:(NSString *)category
                           context:(NSManagedObjectContext *)context
 {
-    Image * image = [self MR_createInContext:context];
-    if (image) [image.managedObjectContext performBlockAndWait:
-                ^{
-                    image.fileName = name;
-                    image.info.category = category;
-                }];
+    Image * image = [self createInContext:context];
+    image.fileName = name;
+    image.info.category = category;
     return image;
 }
 
@@ -61,6 +58,38 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
         ThrowInvalidArgument(fileName, "could not produce image for file");
 }
 
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     example json:
+     
+     {
+         "uuid": "4BC42EF3-8799-453D-BA50-9C2486B4B511",
+         "info": {
+             "name": "Speedometer",
+             "category": "Icons/Glyphish 7/White Selected"
+         },
+         "fileName": "917-white-speedometer-selected.png"
+         }
+     */
+
+    Image * image = [super importObjectFromData:data inContext:moc];
+
+    if (!image) {
+
+        image = [self objectWithUUID:data[@"uuid"] context:moc];
+
+        NSString * fileName = data[@"fileName"];
+        NSString * category = data[@"info"][@"category"];
+        NSString * name     = data[@"info"][@"name"];
+
+        if (fileName) image.fileName = fileName;
+        if (name) image.info.name = name;
+        if (category) image.info.category = category;
+
+    }
+    
+    return image;
+}
 
 - (UIImage *)image
 {

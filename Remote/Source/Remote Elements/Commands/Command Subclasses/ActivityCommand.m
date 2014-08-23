@@ -48,7 +48,29 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
 }
 
 
-- (BOOL)shouldImportActivity:(id)data {return YES;}
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     {
+     "class": "activity",
+     "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290" // Sonos Activity
+     }
+     */
+    
+    ActivityCommand * activityCommand = [super importObjectFromData:data inContext:moc];
+
+    if (!activityCommand) {
+
+        activityCommand = [ActivityCommand objectWithUUID:data[@"uuid"] context:moc];
+
+        NSDictionary * activity = data[@"activity"];
+        if (activity) activityCommand.activity = [Activity importObjectFromData:activity inContext:moc];
+    }
+
+    return activityCommand;
+
+}
+
+//- (BOOL)shouldImportActivity:(id)data {return YES;}
 
 - (CommandOperation *)operation { return [ActivityCommandOperation operationForCommand:self]; }
 

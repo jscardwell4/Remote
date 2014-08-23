@@ -179,7 +179,7 @@ static const int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE|LOG_CONTE
     ^{
         NSError * error = nil;
         savedOk = [_context save:&error];
-        if (error) [CoreDataManager handleErrors:error];
+        MSHandleErrors(error);
     }];
 
     if (savedOk)

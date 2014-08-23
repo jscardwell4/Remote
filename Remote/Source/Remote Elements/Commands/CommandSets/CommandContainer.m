@@ -18,7 +18,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 + (instancetype)commandContainerInContext:(NSManagedObjectContext *)context
 {
-    return [self MR_createInContext:context];
+    return [self createInContext:context];
 }
 
 - (void)awakeFromInsert

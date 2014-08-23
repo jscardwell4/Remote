@@ -90,7 +90,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
         NSError * error = nil;
         [controller performFetch:&error];
 
-        if (error) [CoreDataManager handleErrors:error];
+        MSHandleErrors(error);
         else
         {
             self.bankableItems = controller;

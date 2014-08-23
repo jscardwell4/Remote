@@ -8,6 +8,8 @@
 
 #import "Manufacturer.h"
 #import "BankGroup.h"
+#import "IRCode.h"
+#import "ComponentDevice.h"
 
 @implementation Manufacturer
 
@@ -22,12 +24,12 @@
 
     [context performBlockAndWait:
      ^{
-         manufacturer = [self MR_findFirstByAttribute:@"info.name"
+         manufacturer = [self findFirstByAttribute:@"info.name"
                                             withValue:name
                                             inContext:context];
          if (!manufacturer)
          {
-             manufacturer = [self MR_createInContext:context];
+             manufacturer = [self createInContext:context];
              manufacturer.info.name = name;
          }
      }];
@@ -41,9 +43,68 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (BOOL)shouldImportCodes:(id)data { return YES; }
-- (BOOL)shouldImportDevices:(id)data { return YES; }
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     {
+         "uuid": "D3D49520-818A-4E4A-9AD4-FDBC99BE99AC",
+         "info.name": "LG",
+         "codes": [
+             {
+                 "uuid": "5AE3E47B-3743-4DF7-82C4-2E377529E13C",
+                 "info": {
+                     "name": "1",
+                     "category": "(LG) 0768"
+                 },
+                 "codeset": "0768",
+                 "frequency": 39105,
+                 "onOffPattern": "344,176,22,3691,"
+             },
+         "devices": [
+             "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F" // Samsung TV
+             ]
+     }
+     */
 
+    Manufacturer * manufacturer = [super importObjectFromData:data inContext:moc];
+
+    if (!manufacturer) {
+
+        manufacturer = [self objectWithUUID:data[@"uuid"] context:moc];
+
+        NSString * name     = data[@"info"][@"name"];
+        NSString * category = data[@"info"][@"category"];
+        NSArray  * codes    = data[@"codes"];
+        NSArray  * devices  = data[@"devices"];
+
+        if (name) manufacturer.info.name = name;
+        if (category) manufacturer.info.category = category;
+        if (codes) {
+            NSMutableSet * manufacturerCodes = [NSMutableSet set];
+            for (NSDictionary * code in codes) {
+                IRCode * manufacturerCode = [IRCode importObjectFromData:code inContext:moc];
+                if (manufacturerCode) [manufacturerCodes addObject:manufacturerCode];
+            }
+            manufacturer.codes = manufacturerCodes;
+        }
+        if (devices) {
+            NSMutableSet * manufacturerDevices = [NSMutableSet set];
+            for (id device in devices) {
+                if ([device isKindOfClass:[NSString class]] && UUIDIsValid(device)) {
+                    ComponentDevice * d = [ComponentDevice existingObjectWithUUID:device context:moc];
+                    if (!d) d = [ComponentDevice objectWithUUID:device context:moc];
+                    [manufacturerDevices addObject:d];
+                } else if ([device isKindOfClass:[NSDictionary class]]) {
+                    ComponentDevice * d = [ComponentDevice importObjectFromData:device inContext:moc];
+                    if (d) [manufacturerDevices addObject:d];
+                }
+            }
+            if ([manufacturerDevices count] > 0) manufacturer.devices = manufacturerDevices;
+        }
+
+    }
+
+    return manufacturer;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting

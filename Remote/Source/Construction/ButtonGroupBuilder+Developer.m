@@ -94,28 +94,28 @@ static const int msLogContext = LOG_CONTEXT_BUILDING;
     buttonGroup.themeFlags = REThemeNoBackground;
 
     Button * activity1 = [Button buttonWithTitle:@"Comcast\nDVR" context:moc];
-    Activity * activity = [Activity MR_findFirstByAttribute:@"name"
+    Activity * activity = [Activity findFirstByAttribute:@"name"
                                                       withValue:@"Dish Hopper Activity"
                                                       inContext:moc];
     ActivityCommand * command = [ActivityCommand commandWithActivity:activity];
     activity1.command = command;
 
     Button * activity2 = [Button buttonWithTitle:@"Playstation" context:moc];
-    activity = [Activity MR_findFirstByAttribute:@"name"
+    activity = [Activity findFirstByAttribute:@"name"
                                          withValue:@"Playstation Activity"
                                          inContext:moc];
     command = [ActivityCommand commandWithActivity:activity];
     activity2.command = command;
 
     Button * activity3 = [Button buttonWithTitle:@" TV" context:moc];
-    activity = [Activity MR_findFirstByAttribute:@"name"
+    activity = [Activity findFirstByAttribute:@"name"
                                          withValue:@" TV Activity"
                                          inContext:moc];
     command = [ActivityCommand commandWithActivity:activity];
     activity3.command = command;
 
     Button * activity4 = [Button buttonWithTitle:@"Sonos" context:moc];
-    activity = [Activity MR_findFirstByAttribute:@"name"
+    activity = [Activity findFirstByAttribute:@"name"
                                          withValue:@"Sonos Activity"
                                          inContext:moc];
     command = [ActivityCommand commandWithActivity:activity];

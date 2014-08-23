@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import <CoreData/CoreData.h>
-#import <MagicalRecord/CoreData+MagicalRecord.h>
 
 @interface NSManagedObjectContext (MSKitAdditions)
 

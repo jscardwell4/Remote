@@ -193,8 +193,7 @@
  * @param context Context from which the command will be retrieved.
  * @return The existing or newly created `SystemCommand` for the specified key.
  */
-+ (SystemCommand *)commandWithType:(SystemCommandType)key
-                           inContext:(NSManagedObjectContext *)context;
++ (SystemCommand *)commandWithType:(SystemCommandType)key inContext:(NSManagedObjectContext *)moc;
 
 + (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController;
 

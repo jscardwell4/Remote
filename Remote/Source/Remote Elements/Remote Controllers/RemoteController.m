@@ -49,8 +49,8 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 
 + (RemoteController *)remoteControllerInContext:(NSManagedObjectContext *)context
 {
-    RemoteController * controller = [self MR_findFirstInContext:context];
-    if (!controller) controller = [self MR_createInContext:context];
+    RemoteController * controller = [self findFirstInContext:context];
+    if (!controller) controller = [self createInContext:context];
     return controller;
 }
 
@@ -73,7 +73,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 {
     Remote * remote = nil;
     NSString * uuid = self.homeRemoteUUID;
-    if (uuid) remote = [Remote objectWithUUID:uuid context:self.managedObjectContext];
+    if (uuid) remote = [Remote existingObjectWithUUID:uuid context:self.managedObjectContext];
     return remote;
 }
 
@@ -81,7 +81,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 {
     Remote * remote = nil;
     NSString * uuid = self.currentRemoteUUID;
-    if (uuid) remote = [Remote objectWithUUID:uuid context:self.managedObjectContext];
+    if (uuid) remote = [Remote existingObjectWithUUID:uuid context:self.managedObjectContext];
     return remote;
 }
 
@@ -101,6 +101,88 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
     else return NO;
 }
 
+- (ButtonGroup *)topToolbar {
+    ButtonGroup * buttonGroup = nil;
+    [self willAccessValueForKey:@"topToolbar"];
+    buttonGroup = (ButtonGroup *)[self primitiveValueForKey:@"topToolbar"];
+    [self didAccessValueForKey:@"topToolbar"];
+    if (!buttonGroup) {
+        NSManagedObjectContext * moc = self.managedObjectContext;
+
+        buttonGroup = [ButtonGroup buttonGroupWithRole:REButtonGroupRoleToolbar context:moc];
+        buttonGroup.name = @"Top Toolbar";
+
+        Button * home = [Button buttonWithRole:REButtonRoleToolbar context:moc];
+        home.name = @"Home Button";
+        Command * command = [SystemCommand commandWithType:SystemCommandLaunchScreen
+                                                 inContext:moc];
+        home.command = command;
+
+        ControlStateImageSet * icons = [ControlStateImageSet
+                                        imageSetWithImages:@{@"normal":
+                                                                 @"7C7C50AF-6DD5-467C-A558-DCEB4B6A05A6"}
+                                        context:moc];
+        [home setIcons:icons mode:REDefaultMode];
+
+
+        Button * settings = [Button buttonWithRole:REButtonRoleToolbar context:moc];
+        settings.name = @"Settings Button";
+        command = [SystemCommand commandWithType:SystemCommandOpenSettings inContext:moc];
+        settings.command = command;
+        icons = [ControlStateImageSet imageSetWithImages:@{@"normal":
+                                                               @"2A778160-8A33-49B0-AE53-D9B45786FFA7"}
+                                                 context:moc];
+        [settings setIcons:icons mode:REDefaultMode];
+
+        Button * editRemote = [Button buttonWithRole:REButtonRoleToolbar context:moc];
+        editRemote.name = @"Edit Remote Button";
+        command = [SystemCommand commandWithType:SystemCommandOpenEditor inContext:moc];
+        editRemote.command = command;
+        icons = [ControlStateImageSet imageSetWithImages:@{@"normal":
+                                                               @"1132E160-C278-406A-A6AD-3EF817DCAA4E"}
+                                                 context:moc];
+        [editRemote setIcons:icons mode:REDefaultMode];
+
+        Button * battery = [Button buttonWithRole:REButtonRoleBatteryStatus context:moc];
+
+        Button * connection = [Button buttonWithRole:REButtonRoleConnectionStatus context:moc];
+
+        [buttonGroup addSubelements:[@[home, settings, editRemote, battery, connection] orderedSet]];
+
+        [buttonGroup
+         setConstraintsFromString:[@"home.left = buttonGroup.left + 4\n"
+                                   "settings.left = home.right + 20\n"
+                                   "editRemote.left = settings.right + 20\n"
+                                   "battery.left = editRemote.right + 20\n"
+                                   "connection.left = battery.right + 20\n"
+                                   "settings.width = home.width\n"
+                                   "editRemote.width = home.width\n"
+                                   "battery.width = home.width\n"
+                                   "connection.width = home.width\n"
+                                   "home.height = buttonGroup.height\n"
+                                   "settings.height = buttonGroup.height\n"
+                                   "editRemote.height = buttonGroup.height\n"
+                                   "battery.height = buttonGroup.height\n"
+                                   "connection.height = buttonGroup.height\n"
+                                   "home.centerY = buttonGroup.centerY\n"
+                                   "settings.centerY = buttonGroup.centerY\n"
+                                   "editRemote.centerY = buttonGroup.centerY\n"
+                                   "battery.centerY = buttonGroup.centerY\n"
+                                   "connection.centerY = buttonGroup.centerY" stringByReplacingOccurrencesWithDictionary:
+                                   NSDictionaryOfVariableBindingsToIdentifiers(buttonGroup,
+                                                                               home,
+                                                                               settings,
+                                                                               editRemote,
+                                                                               battery,
+                                                                               connection)]];
+        [home setConstraintsFromString:[@"home.width ≥ 44"
+                                        stringByReplacingOccurrencesWithDictionary:
+                                        NSDictionaryOfVariableBindingsToIdentifiers(home)]];
+
+    }
+
+    return buttonGroup;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Activities
@@ -173,7 +255,56 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
+     "homeRemoteUUID": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
+     "topToolbar": { **ButtonGroup** },
+     "activities": [ **Activity** ]
+     */
+
+    RemoteController * remoteController = [super importObjectFromData:data inContext:moc];
+
+    if (!remoteController) {
+
+        remoteController = [RemoteController objectWithUUID:data[@"uuid"] context:moc];
+
+        NSString * homeRemoteUUID = data[@"homeRemoteUUID"];
+        id         topToolbar     = data[@"topToolbar"];
+        NSArray  * activities     = data[@"activities"];
+
+        if (UUIDIsValid(homeRemoteUUID)) remoteController.homeRemoteUUID = homeRemoteUUID;
+        if (topToolbar) {
+            if ([topToolbar isKindOfClass:[NSString class]] && UUIDIsValid(topToolbar)) {
+                ButtonGroup * t = [ButtonGroup existingObjectWithUUID:topToolbar context:moc];
+                if (!t) t = [ButtonGroup objectWithUUID:topToolbar context:moc];
+                remoteController.topToolbar = t;
+            } else if ([topToolbar isKindOfClass:[NSDictionary class]]) {
+                remoteController.topToolbar = [ButtonGroup importObjectFromData:topToolbar inContext:moc];
+            }
+        }
+        if (activities) {
+            NSMutableSet * controllerActivities = [NSMutableSet set];
+            for (id activity in activities) {
+                if ([activity isKindOfClass:[NSString class]] && UUIDIsValid(activity)) {
+                    Activity * a = [Activity existingObjectWithUUID:activity context:moc];
+                    if (!a) a = [Activity objectWithUUID:activity context:moc];
+                    [controllerActivities addObject:a];
+                } else if ([activity isKindOfClass:[NSDictionary class]]) {
+                    Activity * a = [Activity importObjectFromData:activity inContext:moc];
+                    if (a) [controllerActivities addObject:a];
+                }
+            }
+            if ([controllerActivities count] > 0) remoteController.activities = controllerActivities;
+        }
+    }
+
+    return remoteController;
+}
+
+/*
 - (BOOL)shouldImportTopToolbar:(id)data {return YES;}
 - (BOOL)shouldImportActivities:(id)data {return YES;}
+*/
 
 @end

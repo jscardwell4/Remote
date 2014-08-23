@@ -494,7 +494,7 @@ static NSString const * storedValuesFileName  = @"MSCoreDataTestCase_StoredValue
                                               appropriateForURL:nil
                                                          create:NO
                                                           error:&error];
-        if (error) MSHandleErrors(error);
+        MSHandleErrors(error);
         
         valueStorageURL = [supportDirectory URLByAppendingPathComponent:(NSString *)storedValuesFileName];
     });

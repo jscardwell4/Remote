@@ -60,7 +60,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
      {
          if ([obj isKindOfClass:[NSString class]])
          {
-             filteredImages[key] = CollectionSafe([Image objectWithUUID:obj context:moc]);
+             filteredImages[key] = CollectionSafe([Image existingObjectWithUUID:obj context:moc]);
          }
      }];
     [filteredImages compact];
@@ -173,7 +173,8 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+/*
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
 {
     ControlStateImageSet * imageSet = nil;
 
@@ -182,13 +183,13 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
     else
     {
-        imageSet = [self MR_createInContext:context];
+        imageSet = [self createInContext:context];
         [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:
          ^(id key, id obj, BOOL *stop)
          {
              if ([key isEqualToString:@"colors"])
              {
-                 ControlStateColorSet * colorSet = [ControlStateColorSet MR_importFromObject:obj
+                 ControlStateColorSet * colorSet = [ControlStateColorSet importObjectFromData:obj
                                                                                    inContext:context];
                  if (colorSet) imageSet.colors = colorSet;
              }
@@ -198,7 +199,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
                  NSString * uuid = ((NSDictionary *)obj)[@"uuid"];
                  if (isStringKind(uuid))
                  {
-                     Image * image = [Image objectWithUUID:uuid context:context];
+                     Image * image = [Image existingObjectWithUUID:uuid context:context];
                      if (image) imageSet[key] = [image permanentURI];
                  }
              }
@@ -207,6 +208,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
     return imageSet;
 }
+*/
 
 - (MSDictionary *)JSONDictionary
 {

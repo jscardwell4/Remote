@@ -75,7 +75,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         globalCacheConnectionManager->_connectedDevices = [@{} mutableCopy];
 
 
-        NSArray * devices = [NDiTachDevice MR_findAll];
+        NSArray * devices = [NDiTachDevice findAll];
         if (devices.count)
             globalCacheConnectionManager->_networkDevices =
                 [NSMutableDictionary
@@ -385,7 +385,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
              if (queue)
                  [queue addOperationWithBlock:
                   ^{
-                      _networkDevices[uuid] = [NDiTachDevice MR_findFirstByAttribute:@"uuid"
+                      _networkDevices[uuid] = [NDiTachDevice findFirstByAttribute:@"uuid"
                                                                            withValue:uuid];
                       MSLogDebugTag(@"added device with uuid %@ to known devices", uuid);
                       [NotificationCenter postNotificationName:NDiTachDeviceDiscoveryNotification
@@ -395,7 +395,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                   }];
              else
              {
-                 _networkDevices[uuid] = [NDiTachDevice MR_findFirstByAttribute:@"uuid"
+                 _networkDevices[uuid] = [NDiTachDevice findFirstByAttribute:@"uuid"
                                                                       withValue:uuid];
                  MSLogDebugTag(@"added device with uuid %@ to known devices", uuid);
                  [NotificationCenter postNotificationName:NDiTachDeviceDiscoveryNotification
@@ -406,7 +406,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
          }
 
-         else if (error) MSHandleErrors(error); //[MagicalRecord handleErrors:error];
+         else MSHandleErrors(error); //[MagicalRecord handleErrors:error];
      }];
 }
 
@@ -432,34 +432,25 @@ typedef NS_ENUM (uint8_t, ConnectionState){
         NSString * uuid = UserDefaults[NDDefaultiTachDeviceKey];
         if (StringIsNotEmpty(uuid))
         {
-            NSFetchRequest * request = [NDiTachDevice MR_requestAllWhere:@"uuid" isEqualTo:uuid];
-            NSError * error = nil;
-            NSUInteger count = [[CoreDataManager defaultContext]
-                                countForFetchRequest:request error:&error];
-            if (error) MSHandleErrors(error);
-
-            else if (count == 1)
-            {
+            NSUInteger count = [NDiTachDevice countOfObjectsWithPredicate:NSPredicateMake(@"uuid == %k", uuid)];
+            if (count == 1) {
                 // uuid seems valid
                 self.defaultDeviceUUID = uuid;
-            }
 
-            else
-            {
+            } else {
+
                 if (count)
                 { // remove devices since uuid is not unique
                     [CoreDataManager
                      saveWithBlock:^(NSManagedObjectContext *localContext)
                      {
                          MSLogDebugTag(@"removing devices from store with non-unique uuid '%@'", uuid);
-                         [NDiTachDevice
-                          MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:
-                                                         @"self.uuid EQUALS %k", uuid]
+                         [NDiTachDevice deleteAllMatchingPredicate:NSPredicateMake(@"self.uuid EQUALS %k", uuid)
                                               inContext:localContext];
                      }
                      completion:^(BOOL success, NSError *error)
                      {
-                         if (error) MSHandleErrors(error);
+                         MSHandleErrors(error);
                          if (success)
                              MSLogDebugTag(@"devices with uuid '%@' removed successfully", uuid);
                          else
@@ -706,7 +697,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 + (GlobalCacheDeviceConnection *)connectionForDevice:(NSString *)uuid
 {
     
-    NDiTachDevice * device = [NDiTachDevice objectWithUUID:uuid];
+    NDiTachDevice * device = [NDiTachDevice existingObjectWithUUID:uuid];
 
     if (device)
     {

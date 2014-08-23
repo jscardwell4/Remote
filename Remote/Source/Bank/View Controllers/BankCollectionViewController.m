@@ -197,7 +197,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     NSManagedObject<Bankable> * item = [self itemForCell:cell];
     assert([item isEditable]);
-    [item MR_deleteInContext:item.managedObjectContext];
+    [item.managedObjectContext deleteObject:item];
 }
 
 - (void)editItemForCell:(BankCollectionViewCell *)cell

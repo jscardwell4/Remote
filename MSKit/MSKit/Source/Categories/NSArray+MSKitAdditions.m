@@ -155,6 +155,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:block]];
 }
 
+- (NSArray *)filter:(BOOL (^)(id evaluatedObject))block {
+
+    NSMutableArray * result = [@[] mutableCopy];
+    for (id obj in self) { if (block(obj)) [result addObject:obj]; }
+    return result;
+}
+
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate
 {
     __block NSUInteger index = NSNotFound;
@@ -174,7 +181,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSArray *)arrayByMappingToBlock:(id (^)(id obj, NSUInteger idx))block
 {
     NSMutableArray * array = [self mutableCopy];
-    [array mapToBlock:block];
+    [array map:block];
     return array;
 }
 
@@ -210,6 +217,16 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return array;
 }
 
+- (void)filter:(BOOL (^)(id evaluatedObject))block {
+
+    NSMutableIndexSet * indexes = [NSMutableIndexSet indexSet];
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (!block(obj)) [indexes addIndex:idx];
+    }];
+    [self removeObjectsAtIndexes:indexes];
+
+}
+
 - (void)flatten
 {
     BOOL flat = NO;
@@ -233,11 +250,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     }
 }
 
-- (void)mapToBlock:(id (^)(id, NSUInteger))block
-{
-    for (int i = 0; i < self.count; i++)
-        self[i] = block(self[i],i);
-}
+- (void)map:(id (^)(id, NSUInteger))block { for (int i = 0; i < self.count; i++) self[i] = block(self[i],i); }
 
 - (void)replaceAllObjectsWithNull
 {

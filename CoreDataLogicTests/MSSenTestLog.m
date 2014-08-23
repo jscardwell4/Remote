@@ -154,7 +154,7 @@ static NSString         * testName_           = nil;
                                               appropriateForURL:nil
                                                          create:NO
                                                           error:&error];
-        if (error) MSHandleErrors(error);
+        MSHandleErrors(error);
 
         baseLogDirectory = [[libraryDirectory path]
                             stringByAppendingPathComponent:@"Logs/com.moondeerstudios"];

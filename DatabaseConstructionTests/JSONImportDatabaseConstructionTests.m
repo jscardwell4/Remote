@@ -45,7 +45,7 @@ static MSJSONParser const * parser_ = nil;
     NSError * error = nil;
     NSArray * importObjects = [parser_ arrayByParsingContentsOfFile:JSONFilePath(@"BOComponentDevice")
                                                          error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObjects, notNilValue());
 
     __block NSArray * deviceUUIDs = nil;
@@ -69,7 +69,7 @@ static MSJSONParser const * parser_ = nil;
                                                                             valueForKeyPath:@"name"]];
          for (NSString * uuid in deviceUUIDs)
          {
-             ComponentDevice * device = [ComponentDevice objectWithUUID:uuid
+             ComponentDevice * device = [ComponentDevice existingObjectWithUUID:uuid
                                                                   context:self.rootSavingContext];
              assertThat(device, notNilValue());
 
@@ -110,7 +110,7 @@ static MSJSONParser const * parser_ = nil;
     NSError * error = nil;
     NSDictionary * importObject = [parser_ dictionaryByParsingContentsOfFile:JSONFilePath(@"BOBackgroundImage")
                                                                    error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObject, notNilValue());
 
     __block NSString * imageGroupUUID = nil;
@@ -118,7 +118,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         ImageGroup * imageGroup = [ImageGroup MR_importFromObject:importObject inContext:context];
+         ImageGroup * imageGroup = [ImageGroup importFromData:importObject inContext:context];
          assertThat(imageGroup.images, hasCountOf([importObject[@"images"] count]));
 
          imageGroupUUID = imageGroup.uuid;
@@ -158,7 +158,7 @@ static MSJSONParser const * parser_ = nil;
     NSError * error = nil;
     NSDictionary * importObject = [parser_ dictionaryByParsingContentsOfFile:JSONFilePath(@"BOIconImage")
                                                                   error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObject, notNilValue());
 
     __block NSString * imageGroupUUID = nil;
@@ -166,7 +166,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         ImageGroup * imageGroup = [ImageGroup MR_importFromObject:importObject inContext:context];
+         ImageGroup * imageGroup = [ImageGroup importFromData:importObject inContext:context];
          assertThat(imageGroup.images, hasCountOf([importObject[@"images"] count]));
 
          imageGroupUUID = imageGroup.uuid;
@@ -207,7 +207,7 @@ static MSJSONParser const * parser_ = nil;
     NSDictionary * importObject = [parser_
                                    dictionaryByParsingContentsOfFile:JSONFilePath(@"RERemoteController")
                                                           error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObject, notNilValue());
 
     __block NSString * controllerUUID = nil;
@@ -215,7 +215,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         RemoteController * controller = [RemoteController MR_importFromObject:importObject
+         RemoteController * controller = [RemoteController importObjectFromData:importObject
                                                                          inContext:context];
          assertThat(controller, notNilValue());
 
@@ -224,7 +224,7 @@ static MSJSONParser const * parser_ = nil;
 
     [self.rootSavingContext performBlockAndWait:
      ^{
-         RemoteController * controller = [RemoteController objectWithUUID:controllerUUID
+         RemoteController * controller = [RemoteController existingObjectWithUUID:controllerUUID
                                                                     context:self.rootSavingContext];
          assertThat(controller, notNilValue());
 
@@ -275,7 +275,7 @@ static MSJSONParser const * parser_ = nil;
 {
     NSError * error = nil;
     NSArray * importObject = [parser_ arrayByParsingContentsOfFile:JSONFilePath(@"REActivity") error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObject, notNilValue());
 
     __block NSArray * activityUUIDs = nil;
@@ -300,7 +300,7 @@ static MSJSONParser const * parser_ = nil;
                                           }];
              assertThat(importData, notNilValue());
 
-             Activity * activity = [Activity objectWithUUID:uuid context:self.rootSavingContext];
+             Activity * activity = [Activity existingObjectWithUUID:uuid context:self.rootSavingContext];
              assertThat(activity, notNilValue());
              assertThat(activity.name, is(importData[@"name"]));
 
@@ -334,7 +334,7 @@ static MSJSONParser const * parser_ = nil;
                          IRCode * code = ((RESendIRCommand *)command).code;
                          assertThat(code, notNilValue());
 
-                         IRCode * fetchedCode = [IRCode objectWithUUID:commandData[@"code"][@"uuid"]
+                         IRCode * fetchedCode = [IRCode existingObjectWithUUID:commandData[@"code"][@"uuid"]
                                                                  context:self.rootSavingContext];
                          assertThat(fetchedCode, notNilValue());
                          assertThat(code, is(fetchedCode));
@@ -347,7 +347,7 @@ static MSJSONParser const * parser_ = nil;
                          assertThat(device, notNilValue());
 
                          ComponentDevice * fetchedDevice = [ComponentDevice
-                                                              objectWithUUID:commandData[@"device"][@"uuid"]
+                                                              existingObjectWithUUID:commandData[@"device"][@"uuid"]
                                                                    context:self.rootSavingContext];
                          assertThat(fetchedDevice, notNilValue());
                          assertThat(device, is(fetchedDevice));
@@ -391,7 +391,7 @@ static MSJSONParser const * parser_ = nil;
                          IRCode * code = ((RESendIRCommand *)command).code;
                          assertThat(code, notNilValue());
 
-                         IRCode * fetchedCode = [IRCode objectWithUUID:commandData[@"code"][@"uuid"]
+                         IRCode * fetchedCode = [IRCode existingObjectWithUUID:commandData[@"code"][@"uuid"]
                                                                  context:self.rootSavingContext];
                          assertThat(fetchedCode, notNilValue());
                          assertThat(code, is(fetchedCode));
@@ -404,7 +404,7 @@ static MSJSONParser const * parser_ = nil;
                          assertThat(device, notNilValue());
 
                          ComponentDevice * fetchedDevice = [ComponentDevice
-                                                              objectWithUUID:commandData[@"device"][@"uuid"]
+                                                              existingObjectWithUUID:commandData[@"device"][@"uuid"]
                                                                    context:self.rootSavingContext];
                          assertThat(fetchedDevice, notNilValue());
                          assertThat(device, is(fetchedDevice));
@@ -431,7 +431,7 @@ static MSJSONParser const * parser_ = nil;
 {
     NSError * error = nil;
     id importObject = [parser_ objectByParsingContentsOfFile:JSONFilePath(@"ExtendedJSONTest") error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObject, notNilValue());
     MSLogCreatedObjectsInContext(LOG_CONTEXT_FILE, @"parsed import object:\n%@", importObject);
 }
@@ -441,7 +441,7 @@ static MSJSONParser const * parser_ = nil;
     NSError * error = nil;
     NSDictionary * importObject = [parser_ dictionaryByParsingContentsOfFile:JSONFilePath(@"HomeRERemote")
                                                                   error:&error];
-    if (error) MSHandleErrors(error);
+    MSHandleErrors(error);
     assertThat(importObject, notNilValue());
 
     __block NSString * homeRemoteUUID = nil;
@@ -449,7 +449,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         Remote * homeRemote = [Remote MR_importFromObject:importObject inContext:context];
+         Remote * homeRemote = [Remote importObjectFromData:importObject inContext:context];
          assertThat(homeRemote, notNilValue());
 
          homeRemoteUUID = homeRemote.uuid;
@@ -457,7 +457,7 @@ static MSJSONParser const * parser_ = nil;
 
     [self.rootSavingContext performBlockAndWait:
      ^{
-         Remote * homeRemote = [Remote objectWithUUID:homeRemoteUUID
+         Remote * homeRemote = [Remote existingObjectWithUUID:homeRemoteUUID
                                                 context:self.rootSavingContext];
          assertThat(homeRemote, notNilValue());
          assertThat(homeRemote.name, is(importObject[@"name"]));

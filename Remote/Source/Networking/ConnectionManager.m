@@ -163,7 +163,7 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 }
 - (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion
 {
-    if (!_flags.wifiAvailable) { MSLogWarnTag(@"wifi not available"); return; }
+    if (!(_flags.wifiAvailable || _flags.simulateCommandSuccess )) { MSLogWarnTag(@"wifi not available"); return; }
 
 
     BOOL   success = NO, finished = NO;

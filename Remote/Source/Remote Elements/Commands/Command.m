@@ -25,7 +25,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 + (instancetype)commandInContext:(NSManagedObjectContext *)context
 {
-    return [self MR_createInContext:context];
+    return [self createInContext:context];
 }
 
 - (void)execute:(CommandCompletionHandler)completion
@@ -55,34 +55,32 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc
 {
-    Command * command = nil;
 
-    if (!context) ThrowInvalidNilArgument(context);
-    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some form of dictionary");
-    else
-    {
+    Command * command = [super importObjectFromData:data inContext:moc];
+
+    if (!command) {
+
         Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
-        if (commandClass)
-        {
+
+        if (commandClass) {
+
             BOOL subclassImplementsMethod = NO;
             unsigned int outCount;
+
             Method * classMethods = class_copyMethodList(commandClass, &outCount);
-            for (unsigned int i = 0; i < outCount; i++)
-            {
-                if (sel_isEqual(_cmd, method_getName(classMethods[i])))
-                {
+
+            for (unsigned int i = 0; i < outCount; i++) {
+                if (sel_isEqual(_cmd, method_getName(classMethods[i]))) {
                     subclassImplementsMethod = YES;
                     break;
                 }
             }
 
             if (subclassImplementsMethod || commandClass != self)
-                command = [commandClass MR_importFromObject:data inContext:context];
+                command = [commandClass importObjectFromData:data inContext:moc];
 
-            else
-                command = [super MR_importFromObject:data inContext:context];
         }
     }
 
@@ -98,13 +96,13 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 }
 */
 
-- (BOOL)shouldImportButton:(id)data {return NO;}
-- (BOOL)shouldImportButtonDelegates:(id)data {return NO;}
-- (BOOL)shouldImportCommandSets:(id)data {return NO;}
-- (BOOL)shouldImportLongPressButton:(id)data {return NO;}
-- (BOOL)shouldImportMacroCommands:(id)data {return NO;}
-- (BOOL)shouldImportOffDevice:(id)data {return NO;}
-- (BOOL)shouldImportOnDevice:(id)data {return NO;}
+//- (BOOL)shouldImportButton:(id)data {return NO;}
+//- (BOOL)shouldImportButtonDelegates:(id)data {return NO;}
+//- (BOOL)shouldImportCommandSets:(id)data {return NO;}
+//- (BOOL)shouldImportLongPressButton:(id)data {return NO;}
+//- (BOOL)shouldImportMacroCommands:(id)data {return NO;}
+//- (BOOL)shouldImportOffDevice:(id)data {return NO;}
+//- (BOOL)shouldImportOnDevice:(id)data {return NO;}
 
 @end
 

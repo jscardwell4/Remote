@@ -27,10 +27,10 @@
 
 + (instancetype)themeWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    Theme * theme = [self MR_findFirstByAttribute:@"name" withValue:name inContext:context];
+    Theme * theme = [self findFirstByAttribute:@"name" withValue:name inContext:context];
     if (!theme && [self isValidThemeName:name])
     {
-        theme = [self MR_createInContext:context];
+        theme = [self createInContext:context];
         theme.name = [name copy];
         [theme initializeSettings];
     }

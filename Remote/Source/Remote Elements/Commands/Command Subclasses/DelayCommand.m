@@ -29,6 +29,29 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return delayCommand;
 }
 
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     {
+     "class": "delay",
+     "duration": 6
+     }
+     */
+
+    DelayCommand * delayCommand = [super importObjectFromData:data inContext:moc];
+
+    if (!delayCommand) {
+
+        delayCommand = [DelayCommand objectWithUUID:data[@"uuid"] context:moc];
+
+        NSNumber * duration = data[@"duration"];
+        if (duration) delayCommand.duration = duration;
+
+    }
+
+    return delayCommand;
+
+}
+
 - (MSDictionary *)JSONDictionary
 {
     MSDictionary * dictionary = [super JSONDictionary];

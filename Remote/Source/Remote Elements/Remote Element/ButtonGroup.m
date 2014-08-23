@@ -244,6 +244,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/*
 - (void)didImport:(id)data
 {
     [super didImport:data];
@@ -268,6 +269,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
         for (NSString * mode in data) if (isStringKind(mode)) [self setLabel:data[mode] mode:mode];
 }
 
+*/
 /*
 - (void)importLabelConstraints:(id)data {}
 */

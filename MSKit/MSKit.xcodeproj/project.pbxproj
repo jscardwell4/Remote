@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		C230F8A219A7CAC400900F0C /* Lumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.a */; };
-		C230F8A319A7CAC400900F0C /* MagicalRecord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F89419A7C9FE00900F0C /* MagicalRecord.a */; };
 		C230F8A419A7CAC400900F0C /* ParseKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F89A19A7CA0300900F0C /* ParseKit.a */; };
 		C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE897B18138D6C00555D63 /* MSKit.h */; };
 		C23A0D7A19A7A5D9002BF2B6 /* CALayer+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */; };
-		C23A0D7B19A7A5D9002BF2B6 /* MagicalRecord+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */; };
 		C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */; };
 		C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */; };
 		C23A0D7E19A7A5D9002BF2B6 /* NSDictionary+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE888118138CF700555D63 /* NSDictionary+MSKitAdditions.h */; };
@@ -101,7 +99,6 @@
 		C23A0DD119A7A5D9002BF2B6 /* MSTouchReporterView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892718138CF700555D63 /* MSTouchReporterView.h */; };
 		C23A0DD219A7A5D9002BF2B6 /* MSView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE892918138CF700555D63 /* MSView.h */; };
 		C23A0EB719A7A77A002BF2B6 /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
-		C23A0EB819A7A77A002BF2B6 /* MagicalRecord+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */; };
 		C23A0EB919A7A77A002BF2B6 /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
 		C23A0EBA19A7A77A002BF2B6 /* NSAttributedString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888018138CF700555D63 /* NSAttributedString+MSKitAdditions.m */; };
 		C23A0EBB19A7A77A002BF2B6 /* NSDictionary+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888218138CF700555D63 /* NSDictionary+MSKitAdditions.m */; };
@@ -193,13 +190,6 @@
 			remoteGlobalIDString = C23A0F2F19A7B46F002BF2B6;
 			remoteInfo = Lumberjack;
 		};
-		C230F89319A7C9FE00900F0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C23A0F7119A7B72C002BF2B6;
-			remoteInfo = MagicalRecord;
-		};
 		C230F89919A7CA0300900F0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */;
@@ -214,18 +204,11 @@
 			remoteGlobalIDString = D3FDC5820FFC4BFC00F1F797;
 			remoteInfo = ParseKit;
 		};
-		C230F89D19A7CA4200900F0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C23A0F7019A7B72C002BF2B6;
-			remoteInfo = MagicalRecord;
-		};
 		C230F89F19A7CA4200900F0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C23A0F2E19A7B46F002BF2B6;
+			remoteGlobalIDString = C230F8AE19A7CBD400900F0C;
 			remoteInfo = Lumberjack;
 		};
 /* End PBXContainerItemProxy section */
@@ -239,7 +222,6 @@
 			files = (
 				C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */,
 				C23A0D7A19A7A5D9002BF2B6 /* CALayer+MSKitAdditions.h in CopyFiles */,
-				C23A0D7B19A7A5D9002BF2B6 /* MagicalRecord+MSKitAdditions.h in CopyFiles */,
 				C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */,
 				C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */,
 				C23A0D7E19A7A5D9002BF2B6 /* NSDictionary+MSKitAdditions.h in CopyFiles */,
@@ -334,7 +316,6 @@
 
 /* Begin PBXFileReference section */
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
-		C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MagicalRecord.xcodeproj; path = MagicalRecord/MagicalRecord.xcodeproj; sourceTree = "<group>"; };
 		C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
 		C23A0D5319A7A459002BF2B6 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C264338118159578005E0105 /* PKAssembly+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PKAssembly+MSKitAdditions.h"; sourceTree = "<group>"; };
@@ -348,8 +329,6 @@
 		C2CE885518138C4900555D63 /* MSKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKit-Prefix.pch"; sourceTree = "<group>"; };
 		C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MSKitAdditions.m"; sourceTree = "<group>"; };
-		C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MagicalRecord+MSKitAdditions.h"; sourceTree = "<group>"; };
-		C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MagicalRecord+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+MSKitAdditions.h"; sourceTree = "<group>"; };
@@ -467,7 +446,6 @@
 		C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSDictionaryIndex.m; sourceTree = "<group>"; };
 		C2CE88F918138CF700555D63 /* MSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSError.h; sourceTree = "<group>"; };
 		C2CE88FA18138CF700555D63 /* MSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSError.m; sourceTree = "<group>"; };
-		C2CE88FB18138CF700555D63 /* MSJSONParser+Rules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MSJSONParser+Rules.m"; sourceTree = "<group>"; };
 		C2CE88FC18138CF700555D63 /* MSJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONParser.h; sourceTree = "<group>"; };
 		C2CE88FD18138CF700555D63 /* MSJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONParser.m; sourceTree = "<group>"; };
 		C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKVOReceptionist.h; sourceTree = "<group>"; };
@@ -520,7 +498,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C230F8A219A7CAC400900F0C /* Lumberjack.a in Frameworks */,
-				C230F8A319A7CAC400900F0C /* MagicalRecord.a in Frameworks */,
 				C230F8A419A7CAC400900F0C /* ParseKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,28 +513,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C230F89019A7C9FE00900F0C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C230F89419A7C9FE00900F0C /* MagicalRecord.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C230F89619A7CA0300900F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				C230F89A19A7CA0300900F0C /* ParseKit.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C23A0C1019A792BB002BF2B6 /* Disabled */ = {
-			isa = PBXGroup;
-			children = (
-				C2CE88FB18138CF700555D63 /* MSJSONParser+Rules.m */,
-			);
-			name = Disabled;
 			sourceTree = "<group>";
 		};
 		C2CE884518138C4900555D63 = {
@@ -581,7 +542,6 @@
 			isa = PBXGroup;
 			children = (
 				C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */,
-				C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */,
 				C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */,
 			);
 			name = Frameworks;
@@ -627,8 +587,6 @@
 			children = (
 				C2CE887918138CF700555D63 /* CALayer+MSKitAdditions.h */,
 				C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */,
-				C2CE887B18138CF700555D63 /* MagicalRecord+MSKitAdditions.h */,
-				C2CE887C18138CF700555D63 /* MagicalRecord+MSKitAdditions.m */,
 				C2CE887D18138CF700555D63 /* NSArray+MSKitAdditions.h */,
 				C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */,
 				C2CE887F18138CF700555D63 /* NSAttributedString+MSKitAdditions.h */,
@@ -801,7 +759,6 @@
 				C2CE88F818138CF700555D63 /* MSDictionaryIndex.m */,
 				C2CE88F918138CF700555D63 /* MSError.h */,
 				C2CE88FA18138CF700555D63 /* MSError.m */,
-				C23A0C1019A792BB002BF2B6 /* Disabled */,
 				C2CE88FE18138CF700555D63 /* MSKVOReceptionist.h */,
 				C2CE88FF18138CF700555D63 /* MSKVOReceptionist.m */,
 				C2CE890018138CF700555D63 /* MSLog.h */,
@@ -880,7 +837,6 @@
 			);
 			dependencies = (
 				C230F89C19A7CA4200900F0C /* PBXTargetDependency */,
-				C230F89E19A7CA4200900F0C /* PBXTargetDependency */,
 				C230F8A019A7CA4200900F0C /* PBXTargetDependency */,
 			);
 			name = MSKit;
@@ -913,10 +869,6 @@
 					ProjectRef = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
 				},
 				{
-					ProductGroup = C230F89019A7C9FE00900F0C /* Products */;
-					ProjectRef = C230F88F19A7C9FE00900F0C /* MagicalRecord.xcodeproj */;
-				},
-				{
 					ProductGroup = C230F89619A7CA0300900F0C /* Products */;
 					ProjectRef = C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */;
 				},
@@ -936,13 +888,6 @@
 			remoteRef = C230F88D19A7C9F900900F0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C230F89419A7C9FE00900F0C /* MagicalRecord.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = MagicalRecord.a;
-			remoteRef = C230F89319A7C9FE00900F0C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		C230F89A19A7CA0300900F0C /* ParseKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -958,7 +903,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C23A0EB719A7A77A002BF2B6 /* CALayer+MSKitAdditions.m in Sources */,
-				C23A0EB819A7A77A002BF2B6 /* MagicalRecord+MSKitAdditions.m in Sources */,
 				C23A0EB919A7A77A002BF2B6 /* NSArray+MSKitAdditions.m in Sources */,
 				C23A0EBA19A7A77A002BF2B6 /* NSAttributedString+MSKitAdditions.m in Sources */,
 				C23A0EBB19A7A77A002BF2B6 /* NSDictionary+MSKitAdditions.m in Sources */,
@@ -1050,11 +994,6 @@
 			isa = PBXTargetDependency;
 			name = ParseKit;
 			targetProxy = C230F89B19A7CA4200900F0C /* PBXContainerItemProxy */;
-		};
-		C230F89E19A7CA4200900F0C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MagicalRecord;
-			targetProxy = C230F89D19A7CA4200900F0C /* PBXContainerItemProxy */;
 		};
 		C230F8A019A7CA4200900F0C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

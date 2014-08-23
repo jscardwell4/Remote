@@ -179,8 +179,7 @@ static NSIndexPath * kPreviewCellIndexPath;
         [categories sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self"
                                                                          ascending:YES]]];
 
-        if (error) [CoreDataManager handleErrors:error];
-        else
+        if (!MSHandleErrors(error))
             self.categories = [@[@"Uncategorized"] arrayByAddingObjectsFromArray:categories];
 
         assert(!self.preset.category || [_categories containsObject:self.preset.category]);

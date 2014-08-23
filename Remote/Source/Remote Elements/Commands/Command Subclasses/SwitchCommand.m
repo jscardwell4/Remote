@@ -41,7 +41,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     dictionary[@"type"]   = switchCommandTypeJSONValueForSwitchCommand(self);
     dictionary[@"target"] = CollectionSafe((self.type
                                             ? self.target
-                                            : [[Remote objectWithUUID:self.target
+                                            : [[Remote existingObjectWithUUID:self.target
                                                              context:self.managedObjectContext]
                                                commentedUUID]));
 
@@ -84,7 +84,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
         else if (((SwitchCommand *)_command).type == SwitchRemoteCommand)
         {
-            Remote * remote = [Remote objectWithUUID:((SwitchCommand *)_command).target context:moc];
+            Remote * remote = [Remote existingObjectWithUUID:((SwitchCommand *)_command).target context:moc];
             if (remote) _success = [controller switchToRemote:remote];
             else _success = NO;
         }

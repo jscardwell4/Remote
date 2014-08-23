@@ -121,7 +121,7 @@
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc
 {
-    return [self MR_createInContext:moc];
+    return [self createInContext:moc];
 }
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc

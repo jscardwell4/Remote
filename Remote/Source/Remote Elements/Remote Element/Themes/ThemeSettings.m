@@ -22,7 +22,7 @@
 
 + (instancetype)themeSettingsInContext:(NSManagedObjectContext *)moc
 {
-    return [self MR_createInContext:moc];
+    return [self createInContext:moc];
 }
 
 + (instancetype)themeSettingsWithRole:(RERole)role

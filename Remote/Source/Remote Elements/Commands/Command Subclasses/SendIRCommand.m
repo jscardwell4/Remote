@@ -111,10 +111,28 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)importPortOverride:(id)data {}
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+         {
+             "class": "sendir",
+             "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5" // Tools
+         }
+     */
 
-- (BOOL)shouldImportCode:(id)data {return YES;}
+    SendIRCommand * sendIRCommand = [super importObjectFromData:data inContext:moc];
 
+    if (!sendIRCommand) {
+
+        sendIRCommand = [SendIRCommand objectWithUUID:data[@"uuid"] context:moc];
+
+        NSDictionary * code = data[@"code"];
+        if (code) sendIRCommand.code = [IRCode importObjectFromData:code inContext:moc];
+
+    }
+
+    return sendIRCommand;
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting

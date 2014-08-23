@@ -13,7 +13,9 @@
 #import "BankGroup.h"
 #import "IRCode.h"
 #import "CoreDataManager.h"
-
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
 MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 
 @interface ManufacturerDetailViewController ()
@@ -128,18 +130,15 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 
         NSManagedObjectContext * moc = self.manufacturer.managedObjectContext;
 
-        NSFetchedResultsController * controller = [IRCode MR_fetchAllGroupedBy:groupBy
-                                                                 withPredicate:predicate
-                                                                      sortedBy:sortedBy
-                                                                     ascending:YES
-                                                                     inContext:moc];
+        NSFetchedResultsController * controller = [IRCode fetchAllGroupedBy:groupBy
+                                                              withPredicate:predicate
+                                                                   sortedBy:sortedBy
+                                                                  ascending:YES
+                                                                  inContext:moc];
         NSError * error = nil;
         [controller performFetch:&error];
 
-        if (error) [CoreDataManager handleErrors:error];
-
-        else
-        {
+        if (!MSHandleErrors(error)) {
             vc.bankableItems = controller;
             vc.itemClass = [IRCode class];
 

@@ -37,7 +37,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
       ^(NSManagedObjectContext * localContext)
       {
          // create builtin themes
-          BuiltinTheme * nightshadeTheme = [BuiltinTheme MR_findFirstByAttribute:@"name"
+          BuiltinTheme * nightshadeTheme = [BuiltinTheme findFirstByAttribute:@"name"
                                                                        withValue:REThemeNightshadeName
                                                                        inContext:localContext];
           if (nightshadeTheme)

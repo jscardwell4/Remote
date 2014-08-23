@@ -45,7 +45,7 @@
            && attr1 && (  !element2
                         || ValueIsNotNil(element2)));
 
-    Constraint * constraint = [self MR_createInContext:element1.managedObjectContext];
+    Constraint * constraint = [self createInContext:element1.managedObjectContext];
     if (constraint)
     {
         constraint.firstAttribute = attr1;
@@ -115,8 +115,10 @@
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (id)MR_importFromObject:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
++ (NSArray *)importObjectsFromData:(id)data inContext:(NSManagedObjectContext *)context
 {
+    if (![data isKindOfClass:[NSDictionary class]]) { return nil; }
+
     NSDictionary * index  = data[@"index"];
     id formatData = data[@"format"];
     NSArray      * formatArray = (isStringKind(formatData) ? @[formatData] : formatData);
@@ -164,7 +166,7 @@
         assert(element1Name);
         NSString * element1UUID = index[element1Name];
         assert(element1UUID);
-        element1 = [RemoteElement MR_findFirstByAttribute:@"uuid"
+        element1 = [RemoteElement findFirstByAttribute:@"uuid"
                                                 withValue:element1UUID
                                                 inContext:context];
         assert(element1);
@@ -174,7 +176,7 @@
         {
             NSString * element2UUID = index[element2Name];
             assert(element2UUID);
-            element2 = [RemoteElement MR_findFirstByAttribute:@"uuid"
+            element2 = [RemoteElement findFirstByAttribute:@"uuid"
                                                     withValue:element2UUID
                                                     inContext:context];
             assert(element2);

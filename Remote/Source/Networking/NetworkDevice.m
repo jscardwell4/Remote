@@ -37,11 +37,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @dynamic deviceUUID, make, model, status, configURL, revision, name, componentDevices;
 
-+ (instancetype)device { return [self MR_createEntity]; }
++ (instancetype)device { return [self createInContext:[CoreDataManager defaultContext]]; }
 
 + (instancetype)deviceInContext:(NSManagedObjectContext *)context
 {
-    return [self MR_createInContext:context];
+    return [self createInContext:context];
 }
 
 + (instancetype)deviceWithAttributes:(NSDictionary *)attributes
@@ -56,7 +56,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     NSString * deviceUUID = attributes[NDDeviceUUIDKey];
 
     if ([self deviceExistsWithDeviceUUID:deviceUUID])
-        return [self MR_findFirstByAttribute:@"deviceUUID" withValue:deviceUUID inContext:context];
+        return [self findFirstByAttribute:@"deviceUUID" withValue:deviceUUID inContext:context];
 
     else
     {
@@ -68,9 +68,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 + (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID
 {
+
     return (   StringIsNotEmpty(deviceUUID)
-            && [self
-                MR_countOfEntitiesWithPredicate:NSPredicateMake(@"deviceUUID == %@", deviceUUID)] == 1);
+            && [self countOfObjectsWithPredicate:NSPredicateMake(@"deviceUUID == %@", deviceUUID)] == 1);
 }
 
 @end

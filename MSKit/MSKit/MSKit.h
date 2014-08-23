@@ -9,7 +9,6 @@
 
 #import "MSKit/CALayer+MSKitAdditions.h"
 #import "MSKit/MSPopupBarButton.h"
-#import "MSKit/MagicalRecord+MSKitAdditions.h"
 #import "MSKit/NSArray+MSKitAdditions.h"
 #import "MSKit/MSScrollWheel.h"
 #import "MSKit/NSAssertionHandler+MSKitAdditions.h"

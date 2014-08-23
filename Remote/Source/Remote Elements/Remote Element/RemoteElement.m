@@ -86,7 +86,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
 {
-    return [self MR_createInContext:moc];
+    return [self createInContext:moc];
 }
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
@@ -196,7 +196,8 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/** general flow **/
+/*
+* general flow *
 
 - (BOOL)shouldImport:(id)data { return isDictionaryKind(data); }
 
@@ -215,7 +216,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 }
 
 
-/** attributes **/
+* attributes *
 
 /// role, elementType, subtype, options, state, shape, style, backgroundColor
 - (void)importRole:(id)data            {self.role = remoteElementRoleFromImportKey(data);}
@@ -227,7 +228,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 - (void)importStyle:(id)data           {self.style = remoteElementStyleFromImportKey(data);}
 - (void)importBackgroundColor:(id)data {self.backgroundColor = colorFromImportValue(data);}
 
-/** relationships **/
+* relationships *
 
 /// subelements
 - (void)importSubelements:(NSDictionary *)data
@@ -248,7 +249,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
         Class elementClass = classForREType(elementType);
         if (!elementClass) continue;
 
-        typeof(elementClass) element = [elementClass MR_importFromObject:subelementData
+        typeof(elementClass) element = [elementClass importFromData:subelementData
                                                                inContext:self.managedObjectContext];
         if (element) [self addSubelementsObject:(RemoteElement *)element];
     }
@@ -262,7 +263,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     if(_importStatus.pendingSubelements || !_importStatus.pendingConstraints) return;
 
     NSDictionary * constraintsData = data[@"constraints"];
-    NSArray * constraints = [Constraint MR_importFromObject:constraintsData
+    NSArray * constraints = [Constraint importObjectFromData:constraintsData
                                                   inContext:self.managedObjectContext];
     if ([constraints count]) [self addConstraints:[constraints set]];
     _importStatus.pendingConstraints = NO;
@@ -279,6 +280,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 - (BOOL)shouldImportFirstItemConstraints:(id)data {return NO;}
 - (BOOL)shouldImportSecondItemConstraints:(id)data {return NO;}
 
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting

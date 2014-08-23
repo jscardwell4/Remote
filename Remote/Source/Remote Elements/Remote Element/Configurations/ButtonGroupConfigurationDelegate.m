@@ -139,7 +139,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 
     for (NSString * mode  in data)
     {
-        CommandSet * commandSet = [CommandSet MR_importFromObject:data[mode]
+        CommandSet * commandSet = [CommandSet importObjectFromData:data[mode]
                                                         inContext:self.managedObjectContext];
 
         if (commandSet) [self setCommandContainer:commandSet mode:mode];
@@ -153,7 +153,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
     for (NSString * mode in data)
     {
         CommandSetCollection * collection =
-            [CommandSetCollection MR_importFromObject:data[mode] inContext:self.managedObjectContext];
+            [CommandSetCollection importObjectFromData:data[mode] inContext:self.managedObjectContext];
 
         if (collection)
             [self setCommandContainer:collection mode:mode];

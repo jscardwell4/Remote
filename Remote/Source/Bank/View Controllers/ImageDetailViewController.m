@@ -10,6 +10,7 @@
 #import "ImageDetailViewController.h"
 #import "Image.h"
 #import "CoreDataManager.h"
+#import "MSKit/MSKit.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -178,8 +179,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 
         NSError *error = nil;
         NSArray *objects = [context executeFetchRequest:request error:&error];
-        if (error) [CoreDataManager handleErrors:error];
-        else
+        if (!MSHandleErrors(error))
             self.categories = [@[@"Uncategorized"]
                                arrayByAddingObjectsFromArray:[objects valueForKeyPath:@"category"]];
     }

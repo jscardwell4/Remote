@@ -6,6 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
+#import "Remote.h"
 
 #define SOURCEVIEW_DEBUG_COLOR RedColor
 // #define COLOR_SOURCEVIEW_BACKGROUND
@@ -463,9 +464,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 - (void)setRemoteElement:(RemoteElement *)remoteElement
 {
     assert(remoteElement);
-    self.context = [NSManagedObjectContext MR_privateQueueContext];
-    _context.parentContext = remoteElement.managedObjectContext;
-    [_context MR_setWorkingName:ClassString([self class])];
+    self.context = [CoreDataManager childContextOfType:NSPrivateQueueConcurrencyType forContext:remoteElement.managedObjectContext];
+    _context.nametag = ClassString([self class]);
     [_context performBlockAndWait:
      ^{
          self.changedModelValues = [remoteElement changedValues];

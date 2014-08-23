@@ -46,7 +46,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
          // background image
          remoteSettings.backgroundImage = [Image
-                                           objectWithUUID:@"32734604-9B4D-4511-BC47-7367A2C3A710"
+                                           existingObjectWithUUID:@"32734604-9B4D-4511-BC47-7367A2C3A710"
                                                   context:moc];
 
          // background image alpha

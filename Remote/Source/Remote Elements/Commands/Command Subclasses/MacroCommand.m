@@ -202,21 +202,59 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
+/*
 - (BOOL)shouldImportActivityLaunch:(id)data {return NO;}
 - (BOOL)shouldImportActivityHalt:(id)data {return NO;}
+*/
 
-- (void)importCommands:(NSDictionary *)data
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc
 {
-    assert([data isKindOfClass:[NSDictionary class]]);
-    for (NSDictionary * commandData in data[@"commands"])
-    {
-        NSString * classKey = commandData[@"class"];
-        Class commandClass = commandClassForImportKey(classKey);
-        if (!commandClass) continue;
-        Command * command = [commandClass MR_importFromObject:commandData
-                                                    inContext:self.managedObjectContext];
-        if (command) [self addCommandsObject:command];
+    /*
+     {
+         "class": "macro",
+         "commands": [
+             {
+                 "class": "power",
+                 "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
+                 "state": "off"
+             },
+             {
+                 "class": "power",
+                 "device.uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5", // AV Receiver
+                 "state": "off"
+             }
+         ]
+     }
+     */
+
+
+    MacroCommand * macroCommand = [super importObjectFromData:data inContext:moc];
+
+    if (!macroCommand) {
+
+        macroCommand = [MacroCommand objectWithUUID:data[@"uuid"] context:moc];
+
+        NSArray * commands = data[@"commands"];
+
+        if (commands && isArrayKind(commands)) {
+
+            NSMutableArray * macroCommands = [(NSArray *)commands mutableCopy];
+            [macroCommands filter:^BOOL(id obj){
+                return isDictionaryKind(obj) && commandClassForImportKey([obj valueForKey:@"class"]) != NULL;
+            }];
+            [macroCommands map:^id(NSDictionary * obj, NSUInteger idx) {
+                Class commandClass = commandClassForImportKey(obj[@"class"]);
+                Command * command = [commandClass importObjectFromData:obj inContext:moc];
+                return command ?: NullObject;
+            }];
+            [macroCommands removeNullObjects];
+            macroCommand.commands = [macroCommands orderedSet];
+            
+        }
+
     }
+
+    return macroCommand;
 }
 
 @end

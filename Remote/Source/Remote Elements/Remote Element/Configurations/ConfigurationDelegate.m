@@ -51,7 +51,7 @@ autoPopulateFromDefaultMode;
     __block ConfigurationDelegate * configurationDelegate = nil;
     [element.managedObjectContext performBlockAndWait:
      ^{
-         configurationDelegate = [self MR_createInContext:element.managedObjectContext];
+         configurationDelegate = [self createInContext:element.managedObjectContext];
          configurationDelegate.element = element;
      }];
 

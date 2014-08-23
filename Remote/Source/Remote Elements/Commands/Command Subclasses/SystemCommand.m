@@ -33,20 +33,13 @@ static __weak RemoteViewController * _remoteViewController;
     return [self commandWithType:type inContext:[CoreDataManager defaultContext]];
 }
 
-+ (SystemCommand *)commandWithType:(SystemCommandType)type
-                           inContext:(NSManagedObjectContext *)context
++ (SystemCommand *)commandWithType:(SystemCommandType)type inContext:(NSManagedObjectContext *)moc
 {
-    BOOL isValidType = isValidSystemType(type);
-    if (!isValidType) return nil;
+    if (!moc) ThrowInvalidNilArgument("context cannot be nil");
+    if (!isValidSystemType(type)) ThrowInvalidArgument(type, "invalid type value");
 
-    SystemCommand * cmd = [self MR_findFirstByAttribute:@"type"
-                                                withValue:@(type)
-                                                inContext:context];
-    if (!cmd)
-    {
-        cmd = [self commandInContext:context];
-        cmd.type = type;
-    }
+    SystemCommand * cmd = [self commandInContext:moc];
+    cmd.type = type;
 
     return cmd;
 }
@@ -79,10 +72,33 @@ static __weak RemoteViewController * _remoteViewController;
     return dictionary;
 }
 
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+         {
+             "class": "system",
+             "type": "open-settings"
+         }
+     */
+
+    SystemCommand * systemCommand = [super importObjectFromData:data inContext:moc];
+
+    if (!systemCommand) {
+
+        systemCommand = [SystemCommand objectWithUUID:data[@"uuid"] context:moc];
+        systemCommand.type = systemCommandTypeFromImportKey(data[@"type"]);
+
+    }
+
+    return systemCommand;
+
+}
+
+/*
 - (void)importType:(NSString *)data
 {
     self.type = systemCommandTypeFromImportKey(data);
 }
+*/
 
 + (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController
 {

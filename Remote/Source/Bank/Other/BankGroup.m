@@ -24,10 +24,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
     [context performBlockAndWait:
      ^{
-         group = [self MR_findFirstByAttribute:@"name" withValue:name inContext:context];
+         group = [self findFirstByAttribute:@"name" withValue:name inContext:context];
          if (!group)
          {
-             group = [self MR_createInContext:context];
+             group = [self createInContext:context];
              group.name = name;
          }
      }];
@@ -37,7 +37,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 + (instancetype)fetchGroupWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    return [self MR_findFirstByAttribute:@"name" withValue:name inContext:context];
+    return [self findFirstByAttribute:@"name" withValue:name inContext:context];
 }
 
 @end

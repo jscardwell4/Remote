@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/*
 - (void)didImport:(id)data
 {
     [super didImport:data];
@@ -52,6 +53,7 @@
     else if ([data hasKey:@"backgroundColor"])
         [self importBackgroundColors:@{@"default":@{@"normal":data[@"backgroundColor"]}}];
 }
+*/
 
 /** called by MagicalRecord **/
 
@@ -70,7 +72,7 @@
     for (NSString * mode in data)
     {
         ControlStateTitleSet * titleSet = [ControlStateTitleSet
-                                           MR_importFromObject:data[mode]
+                                           importObjectFromData:data[mode]
                                                      inContext:self.managedObjectContext];
 
         if (titleSet) [self.buttonConfigurationDelegate setTitles:titleSet mode:mode];
@@ -83,7 +85,7 @@
     for (NSString * mode in data)
     {
         ControlStateImageSet * imageSet = [ControlStateImageSet
-                                           MR_importFromObject:data[mode]
+                                           importObjectFromData:data[mode]
                                                      inContext:self.managedObjectContext];
 
         if (imageSet) [self.buttonConfigurationDelegate setIcons:imageSet mode:mode];
@@ -95,7 +97,7 @@
     for (NSString * mode in data)
     {
         ControlStateImageSet * imageSet = [ControlStateImageSet
-                                           MR_importFromObject:data[mode]
+                                           importObjectFromData:data[mode]
                                                      inContext:self.managedObjectContext];
 
         if (imageSet) [self.buttonConfigurationDelegate setImages:imageSet mode:mode];
@@ -106,7 +108,7 @@
 {
     for (NSString * mode in data)
     {
-        Command * command = [Command MR_importFromObject:data[mode]
+        Command * command = [Command importObjectFromData:data[mode]
                                                inContext:self.managedObjectContext];
         if (command) [self.buttonConfigurationDelegate setCommand:command mode:mode];
     }
@@ -117,7 +119,7 @@
     for (NSString * mode in data)
     {
         ControlStateColorSet * colorSet = [ControlStateColorSet
-                                           MR_importFromObject:data[mode]
+                                           importObjectFromData:data[mode]
                                                      inContext:self.managedObjectContext];
 
         if (colorSet) [self.buttonConfigurationDelegate setBackgroundColors:colorSet mode:mode];

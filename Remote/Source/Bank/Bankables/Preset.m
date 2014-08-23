@@ -25,7 +25,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     __block Preset * preset = nil;
     [element.managedObjectContext performBlockAndWait:
      ^{
-         preset = [self MR_createInContext:element.managedObjectContext];
+         preset = [self createInContext:element.managedObjectContext];
          preset.element = element;
          NSString * category = nil;
          switch (element.elementType)

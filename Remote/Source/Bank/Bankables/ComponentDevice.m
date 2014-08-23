@@ -9,6 +9,7 @@
 #import "IRCode.h"
 #import "NetworkDevice.h"
 #import "Manufacturer.h"
+#import "MSKit/NSManagedObject+MSKitAdditions.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 
@@ -21,7 +22,7 @@
 /*
 + (ComponentDevice *)importDeviceWithData:(NSDictionary *)data context:(NSManagedObjectContext *)moc
 {
-    ComponentDevice * device = [self MR_createInContext:moc];
+    ComponentDevice * device = [self createInContext:moc];
 
     NSString     * name          = data[@"name"];
     NSNumber     * port          = data[@"port"];
@@ -42,7 +43,7 @@
 
 */
 /*
-+ (ComponentDevice *)MR_importFromObject:(id)objectData inContext:(NSManagedObjectContext *)context;
++ (ComponentDevice *)importFromData:(NSDictionary *)objectData inContext:(NSManagedObjectContext *)context;
 {
 
     NSAttributeDescription * primaryAttribute = [[self MR_entityDescription]
@@ -50,12 +51,12 @@
 
     id value = [objectData MR_valueForAttribute:primaryAttribute];
 
-    ComponentDevice * managedObject = [self MR_findFirstByAttribute:[primaryAttribute name]
+    ComponentDevice * managedObject = [self findFirstByAttribute:[primaryAttribute name]
                                                           withValue:value
                                                           inContext:context];
     if (managedObject == nil)
     {
-        managedObject = [self MR_createInContext:context];
+        managedObject = [self createInContext:context];
     }
 
     [managedObject MR_importValuesForKeysWithObject:objectData];
@@ -73,12 +74,12 @@
 
 + (instancetype)fetchDeviceWithName:(NSString *)name
 {
-    return [self MR_findFirstByAttribute:@"info.name" withValue:name];
+    return [self findFirstByAttribute:@"info.name" withValue:name];
 }
 
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context
 {
-    return [self MR_findFirstByAttribute:@"info.name" withValue:name inContext:context];
+    return [self findFirstByAttribute:@"info.name" withValue:name inContext:context];
 }
 
 - (BOOL)ignorePowerCommand:(CommandCompletionHandler)handler
@@ -194,6 +195,81 @@
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
+
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+    /*
+     
+     {
+         "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
+         "info.name": "PS3",
+         "port": 3,
+         "onCommand": {
+             "class": "sendir",
+             "code.uuid": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3" // Discrete On
+         },
+         "offCommand": {
+             "class": "sendir",
+             "code.uuid": "9326516F-1923-4461-AD31-E726B4AAAFB1" // Discrete Off
+         },
+         "manufacturer": "C4149194-D03B-43A7-84CB-DA80EE20FC70", // Sony
+         "codes": []
+     }
+
+     */
+
+    ComponentDevice * componentDevice = [super importObjectFromData:data inContext:moc];
+
+    if (!componentDevice) {
+
+        componentDevice = [ComponentDevice objectWithUUID:data[@"uuid"] context:moc];
+
+        NSString * name          = data[@"info"][@"name"];
+        NSNumber * port          = data[@"port"];
+        id         onCommand     = data[@"onCommand"];
+        id         offCommand    = data[@"offCommand"];
+        id         manufacturer  = data[@"manufacturer"];
+        NSArray  * codes         = data[@"codes"];
+
+
+        if (name) componentDevice.info.name = name;
+        if (port) componentDevice.port = port.shortValue;
+        if (onCommand) {
+            if ([onCommand isKindOfClass:[NSString class]] && UUIDIsValid(onCommand)) {
+                //TODO: Fill out stub
+            } else if ([onCommand isKindOfClass:[NSDictionary class]]) {
+                componentDevice.onCommand = [Command importObjectFromData:onCommand inContext:moc];
+            }
+        }
+        if (offCommand) {
+            if ([offCommand isKindOfClass:[NSString class]] && UUIDIsValid(offCommand)) {
+                //TODO: Fill out stub
+            } else if ([offCommand isKindOfClass:[NSDictionary class]]) {
+                componentDevice.onCommand = [Command importObjectFromData:offCommand inContext:moc];
+            }
+        }
+        if (manufacturer) {
+            if ([manufacturer isKindOfClass:[NSString class]] && UUIDIsValid(manufacturer)) {
+                Manufacturer * m = [Manufacturer existingObjectWithUUID:manufacturer context:moc];
+                if (!m) m = [Manufacturer objectWithUUID:manufacturer context:moc];
+                componentDevice.manufacturer = m;
+            } else if ([manufacturer isKindOfClass:[NSDictionary class]]) {
+                componentDevice.manufacturer = [Manufacturer importObjectFromData:manufacturer inContext:moc];
+            }
+        }
+        if (codes) {
+            NSMutableSet * componentDeviceCodes = [NSMutableSet set];
+            for (NSDictionary * code in codes) {
+                IRCode * componentDeviceCode = [IRCode importObjectFromData:code inContext:moc];
+                if (componentDeviceCode) [componentDeviceCodes addObject:componentDeviceCode];
+            }
+            componentDevice.codes = componentDeviceCodes;
+        }
+    }
+
+    return componentDevice;
+
+}
+
 /*
 - (BOOL)shouldImportCodes:(id)data { return YES; }
 - (BOOL)shouldImportConfigurations:(id)data { return YES; }
@@ -208,6 +284,7 @@
 MSSTATIC_STRING_CONST kOnCommandKey = @"onCommand";
 MSSTATIC_STRING_CONST kOffCommandKey = @"offCommand";
 
+/*
 - (void)importCommandForKey:(NSString *)key data:(NSDictionary *)data
 {
     if (![@[kOnCommandKey, kOffCommandKey] containsObject:key]) return;
@@ -217,7 +294,7 @@ MSSTATIC_STRING_CONST kOffCommandKey = @"offCommand";
 
     if (!commandClass) return;
 
-    Command * command = [commandClass MR_importFromObject:data
+    Command * command = [commandClass importFromData:data
                                                 inContext:self.managedObjectContext];
 
     if (command) [self setValue:command forKey:key];
@@ -240,6 +317,7 @@ MSSTATIC_STRING_CONST kOffCommandKey = @"offCommand";
         if (isDictionaryKind(commandData)) [self importCommandForKey:kOffCommandKey data:commandData];
     }
 }
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Bankable

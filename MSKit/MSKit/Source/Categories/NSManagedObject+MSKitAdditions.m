@@ -7,6 +7,7 @@
 //
 #import "NSManagedObject+MSKitAdditions.h"
 #import "MSKitMacros.h"
+#import "Lumberjack/Lumberjack.h"
 #import "NSSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
 #import "NSDictionary+MSKitAdditions.h"
@@ -14,8 +15,31 @@
 
 MSKEY_DEFINITION(MSDefaultValueForContainingClass);
 MSKEY_DEFINITION(MSDefaultValueForSubentity);
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
 
 @implementation NSManagedObject (MSKitAdditions)
+
++ (instancetype)createInContext:(NSManagedObjectContext *)moc {
+    if (!moc) { return nil; }
+    NSEntityDescription * entity = [NSEntityDescription entityForName:NSStringFromClass(self) inManagedObjectContext:moc];
+    if (entity)
+        return [[self alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
+    else
+        return nil;
+}
+
++ (instancetype)findFirstInContext:(NSManagedObjectContext *)moc {
+    if (!moc) return nil;
+    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
+    request.fetchLimit = 1;
+    NSError * error = nil;
+    NSArray * results = [moc executeFetchRequest:request error:&error];
+    if (error) { MSHandleErrors(error); }
+    if ([results count] > 0) { return results[0]; }
+    else { return nil; }
+}
 
 - (id)committedValueForKey:(NSString *)key {
     return NilSafe([self committedValuesForKeys:@[key]][key]);
@@ -26,6 +50,22 @@ MSKEY_DEFINITION(MSDefaultValueForSubentity);
         return YES;
     else
         return NO;
+}
+
++ (id)findFirstByAttribute:(NSString *)attribute withValue:(id)value inContext:(NSManagedObjectContext *)moc {
+    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
+    request.fetchLimit = 1;
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", attribute, value];
+    NSError *error = nil;
+    NSArray * results = [moc executeFetchRequest:request error:&error];
+    if ([results count] > 0) {
+        return results[0];
+    } else {
+        if (error) {
+            MSHandleErrors(error);
+        }
+        return nil;
+    }
 }
 
 - (NSURL *)permanentURI

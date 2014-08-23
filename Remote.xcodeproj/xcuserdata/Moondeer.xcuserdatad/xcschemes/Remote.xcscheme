@@ -73,6 +73,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "-loadData YES"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-replace YES"
             isEnabled = "NO">
          </CommandLineArgument>
@@ -82,7 +86,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-simulate YES"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-uitest YES"
@@ -93,7 +97,7 @@
          <EnvironmentVariable
             key = "XcodeColors"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>

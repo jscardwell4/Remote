@@ -14,10 +14,10 @@
  */
 + (BOOL)initializeDatabase;
 
-
-+ (void)handleErrors:(NSError *)error;
-
 + (NSManagedObjectContext *)defaultContext;
+
++ (NSManagedObjectContext *)childContextOfType:(NSManagedObjectContextConcurrencyType)type;
++ (NSManagedObjectContext *)childContextOfType:(NSManagedObjectContextConcurrencyType)type forContext:(NSManagedObjectContext *)moc;
 
 + (void)resetDefaultContext;
 
@@ -32,12 +32,7 @@
 
 + (void)saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
 + (void)saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block
-           completion:(MRSaveCompletionHandler)completion;
-+ (void)saveWithBlock:(void (^)(NSManagedObjectContext *))block
-           identifier:(NSString *)contextWorkingName
-           completion:(MRSaveCompletionHandler)completion;
-
-+ (void)saveWithIdentifier:(NSString *)identifier block:(void(^)(NSManagedObjectContext *))block;
+           completion:(void(^)(BOOL success, NSError *error))completion;
 + (void)saveWithBlockAndWait:(void(^)(NSManagedObjectContext *localContext))block;
 
 

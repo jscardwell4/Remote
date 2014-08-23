@@ -20,7 +20,7 @@
 
 + (instancetype)previewInContext:(NSManagedObjectContext *)context
 {
-    return [self MR_createInContext:context];
+    return [self createInContext:context];
 }
 
 + (instancetype)previewWithName:(NSString *)name context:(NSManagedObjectContext *)context

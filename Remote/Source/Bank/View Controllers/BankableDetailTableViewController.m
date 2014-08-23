@@ -484,7 +484,7 @@ NSString * textForSelection(id selection)
      ^{
          NSError * error = nil;
          [moc save:&error];
-         if (error) [CoreDataManager handleErrors:error];
+         MSHandleErrors(error);
      }];
 }
 

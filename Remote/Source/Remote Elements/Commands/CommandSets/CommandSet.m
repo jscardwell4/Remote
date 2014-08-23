@@ -142,7 +142,8 @@ NSArray * sharedKeysForType(CommandSetType type)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (id)MR_importFromObject:(id)data inContext:(NSManagedObjectContext *)context
+/*
++ (id)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
 {
     if (!context) ThrowInvalidNilArgument(context);
     else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
@@ -167,13 +168,14 @@ NSArray * sharedKeysForType(CommandSetType type)
         Class commandClass = commandClassForImportKey(commandData[@"class"]);
         if (!commandClass) continue;
 
-        Command * command = [commandClass MR_importFromObject:commandData inContext:context];
+        Command * command = [commandClass importFromData:commandData inContext:context];
 
         if (command) commandSet[@(buttonRole)] = command;
     }
 
     return commandSet;
 }
+*/
 
 - (MSDictionary *)JSONDictionary
 {

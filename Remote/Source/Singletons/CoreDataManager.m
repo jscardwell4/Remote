@@ -28,7 +28,10 @@ typedef NS_OPTIONS (NSUInteger, CoreDataObjectRemovalOptions) {
     CoreDataManagerRemoveControlStateSets       = 1 << 8
 };
 
-static MagicalRecordStack * kDefaultStack;
+static NSManagedObjectModel * kManagedObjectModel;
+static NSManagedObjectContext * kDefaultContext;
+static NSPersistentStoreCoordinator * kPersistentStoreCoordinator;
+static NSPersistentStore * kPersistentStore;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_COREDATA|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -118,12 +121,10 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 
-        [MagicalRecord setLogContext:magicalRecordContext];
-        [MagicalRecord setLogLevel:ddLogLevel];
+        NSURL * modelURL = [MainBundle URLForResource:@"Remote" withExtension:@"momd"];
 
-        NSManagedObjectModel * model = [self augmentModel:[NSManagedObjectModel
-                                                           MR_mergedObjectModelFromMainBundle]];
-        assert(model);
+        kManagedObjectModel = [self augmentModel:[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL]];
+        assert(kManagedObjectModel);
 
 #ifdef LOG_OBJECT_MODEL
         [self logObjectModel:model];
@@ -148,15 +149,21 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
         MSLogDebugTag(@"file operations complete, database %@ flagged for rebuilding",
                       kFlags.rebuildDatabase ? @"is" : @"is not");
 
-        // Use Magical Record to create the coordinator with calculated store path
-        // and intialize the default managed object context
-        kDefaultStack =
-            [MagicalRecord
-                     setupAutoMigratingCoreDataStackWithSqliteStoreNamed:kCoreDataManagerSQLiteName
-                                                                   model:model];
 
-//        NSManagedObjectContext * moc = kDefaultStack.context;
-//        if (moc.parentContext) [moc registerAsChildOfContext:moc.parentContext];
+        kPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
+                                       initWithManagedObjectModel:kManagedObjectModel];
+        NSError * error = nil;
+        kPersistentStore = [kPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                                     configuration:nil
+                                                                               URL:[self databaseStoreURL]
+                                                                           options:nil
+                                                                             error:&error];
+        if (error) { MSHandleErrors(error); }
+
+        kDefaultContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        kDefaultContext.persistentStoreCoordinator = kPersistentStoreCoordinator;
+        kDefaultContext.nametag = @"default";
+
         if (databaseStoreExists && kFlags.rebuildRemote)
         {
             success = [self removeExistingRemote];
@@ -185,13 +192,24 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
 + (NSManagedObjectContext *)defaultContext
 {
-    return kDefaultStack.context;
+    return kDefaultContext;
+}
+
++ (NSManagedObjectContext *)childContextOfType:(NSManagedObjectContextConcurrencyType)type forContext:(NSManagedObjectContext *)moc {
+    if (moc == nil) return nil;
+
+    NSManagedObjectContext * childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:type];
+    childContext.parentContext = moc;
+    return childContext;
+}
+
++ (NSManagedObjectContext *)childContextOfType:(NSManagedObjectContextConcurrencyType)type {
+    return [self childContextOfType:type forContext:kDefaultContext];
 }
 
 + (void)resetDefaultContext
 {
-    NSManagedObjectContext * moc = [self defaultContext];
-    [moc performBlockAndWait:^{ [moc reset]; }];
+    [kDefaultContext performBlockAndWait:^{ [kDefaultContext reset]; }];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -280,10 +298,10 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 + (BOOL)removeExistingRemote
 {
     __block BOOL success = YES;
-    NSManagedObjectContext * moc = kDefaultStack.context;
+    NSManagedObjectContext * moc = kDefaultContext;
     [moc performBlockAndWait:
      ^{
-         RemoteController * controller = [RemoteController MR_findFirstInContext:moc];
+         RemoteController * controller = [RemoteController findFirstInContext:moc];
          MSLogDebugTag(@"existing remote? %@", NSStringFromBOOL((controller != nil)));
          if (controller)
          {
@@ -291,18 +309,14 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
              MSLogDebugTag(@"existing remote has been deleted");
          }
          NSError * error = nil;
-         [moc save:&error];
-         if (error)
-         {
-             [CoreDataManager handleErrors:error];
-             success = NO;
-         }
+         success = [moc save:&error];
+         MSHandleErrors(error);
      }];
 
     if (success)
         [moc performBlockAndWait:
          ^{
-             RemoteController * controller = [RemoteController MR_findFirstInContext:moc];
+             RemoteController * controller = [RemoteController findFirstInContext:moc];
              success = (controller == nil ? YES : NO);
          }];
     
@@ -311,72 +325,42 @@ MSSTATIC_STRING_CONST   kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Error Handling
-////////////////////////////////////////////////////////////////////////////////
-
-+ (void)handleErrors:(NSError *)error
-{
-    NSMutableString * errorMessage = [@"" mutableCopy];
-    if ([error isKindOfClass:[MSError class]])
-    {
-        NSString * message = ((MSError *)error).message;
-        if (message) [errorMessage appendFormat:@"!!! %@ !!!", message];
-        error = ((MSError *)error).error;
-    }
-
-    NSDictionary *userInfo = [error userInfo];
-    for (NSArray *detailedError in [userInfo allValues])
-    {
-        if ([detailedError isKindOfClass:[NSArray class]])
-        {
-            for (NSError *e in detailedError)
-            {
-                if ([e respondsToSelector:@selector(userInfo)])
-                    [errorMessage appendFormat:@"Error Details: %@\n", [e userInfo]];
-
-                else
-                    [errorMessage appendFormat:@"Error Details: %@\n", e];
-            }
-        }
-
-        else
-            [errorMessage appendFormat:@"Error: %@", detailedError];
-    }
-    [errorMessage appendFormat:@"Error Message: %@\n", [error localizedDescription]];
-    [errorMessage appendFormat:@"Error Domain: %@\n", [error domain]];
-    MSLogErrorTag(@"%@\nRecovery Suggestion: %@", errorMessage, [error localizedRecoverySuggestion]);
-}
-
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark MagicalRecord wrappers
 ////////////////////////////////////////////////////////////////////////////////
 
 + (void)saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block
 {
-    [kDefaultStack saveWithBlock:block];
+    [kDefaultContext performBlock:^{
+        block(kDefaultContext);
+        NSError *error = nil;
+        [kDefaultContext save:&error];
+        MSHandleErrors(error);
+    }];
 }
 
 + (void)saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block
-           completion:(MRSaveCompletionHandler)completion
+           completion:(void(^)(BOOL success, NSError *error))completion
 {
-    [kDefaultStack saveWithBlock:block completion:completion];
-}
+    if (!completion)
+        ThrowInvalidNilArgument("completion block is nil, perhaps you should be using +[saveWithBlock:]?");
 
-+ (void)saveWithBlock:(void (^)(NSManagedObjectContext *))block
-           identifier:(NSString *)contextWorkingName
-           completion:(MRSaveCompletionHandler)completion
-{
-    [kDefaultStack saveWithBlock:block identifier:contextWorkingName completion:completion];
-}
-
-+ (void)saveWithIdentifier:(NSString *)identifier block:(void(^)(NSManagedObjectContext *))block
-{
-    [kDefaultStack saveWithIdentifier:identifier block:block];
+    __block BOOL success = false;
+    __block NSError * error = nil;
+    [kDefaultContext performBlock:^{
+        block(kDefaultContext);
+        success = [kDefaultContext save:&error];
+        completion(success, error);
+    }];
 }
 
 + (void)saveWithBlockAndWait:(void(^)(NSManagedObjectContext *localContext))block
 {
-    [kDefaultStack saveWithBlockAndWait:block];
+    [kDefaultContext performBlockAndWait:^{
+        block(kDefaultContext);
+        NSError *error = nil;
+        [kDefaultContext save:&error];
+        MSHandleErrors(error);
+    }];
 }
 
 

@@ -9,6 +9,10 @@
 #import "BankableModelObject.h"
 #import "CoreDataManager.h"
 
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
+
 @interface BankableModelObject ()
 
 @property (nonatomic, strong, readwrite) BankInfo * info;
@@ -48,7 +52,7 @@
         [context performBlockAndWait:
          ^{
              assert(!self.info);
-             self.info = [BankInfo MR_createInContext:context];
+             self.info = [BankInfo createInContext:context];
          }];
     }
 }
@@ -69,8 +73,7 @@
          ^{
              NSError * error = nil;
              [moc save:&error];
-             if (error) [CoreDataManager handleErrors:error];
-             else [moc processPendingChanges];
+             if (!MSHandleErrors(error)) [moc processPendingChanges];
          }];
     }
 }
@@ -115,14 +118,14 @@
 
 + (NSFetchedResultsController *)bankableItems
 {
-    NSFetchedResultsController * controller = [self MR_fetchAllGroupedBy:@"info.category"
-                                                           withPredicate:nil
-                                                                sortedBy:@"info.category,info.name"
-                                                               ascending:YES];
+    NSFetchedResultsController * controller = [self fetchAllGroupedBy:@"info.category"
+                                                        withPredicate:nil
+                                                             sortedBy:@"info.category,info.name"
+                                                            ascending:YES];
     NSError * error = nil;
     [controller performFetch:&error];
 
-    if (error) [CoreDataManager handleErrors:error];
+    MSHandleErrors(error);
 
     return controller;
 }

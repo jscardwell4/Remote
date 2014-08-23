@@ -332,7 +332,7 @@ SystemCommandType systemCommandTypeFromImportKey(NSString * importKey)
                              SystemCommandOpenEditorJSONKey      : @(SystemCommandOpenEditor) };
                   });
 
-    NSNumber * typeValue = index[importKey];
+    NSNumber * typeValue = (importKey ? index[importKey] : nil);
 
     return (typeValue ? [typeValue unsignedShortValue] : SystemCommandTypeUndefined);
 }
@@ -386,7 +386,7 @@ Class commandClassForImportKey(NSString * importKey)
                                  ActivityCommandTypeJSONKey : NSClassFromString(@"ActivityCommand") };
                   });
 
-    return index[importKey];
+    return (importKey ? index[importKey] : NULL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

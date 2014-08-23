@@ -40,9 +40,9 @@ MSEXTERN_KEY(MSLogContext);
 
 @end
 
-@interface MSLogMessage : DDLogMessage @end
+@interface MSLogMessage  : DDLogMessage @end
 
-@interface MSFileLogger : DDFileLogger
+@interface MSFileLogger  : DDFileLogger
 
 @property (nonatomic, assign, readwrite) BOOL reopenLastFile;
 

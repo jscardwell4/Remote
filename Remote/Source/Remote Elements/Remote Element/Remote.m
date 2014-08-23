@@ -111,7 +111,7 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 - (ButtonGroup *)buttonGroupForAssignment:(REPanelAssignment)assignment
 {
     NSString * uuid = NilSafe(self.panels[@(assignment)]);
-    return (uuid ? [ButtonGroup objectWithUUID:uuid context:self.managedObjectContext] : nil);
+    return (uuid ? [ButtonGroup existingObjectWithUUID:uuid context:self.managedObjectContext] : nil);
 }
 
 
@@ -119,6 +119,7 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
+/*
 - (void)willImport:(id)data
 {
     [super willImport:data];
@@ -149,6 +150,7 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
         _pendingPanels = NO;
     }
 }
+*/
 
 
 ////////////////////////////////////////////////////////////////////////////////

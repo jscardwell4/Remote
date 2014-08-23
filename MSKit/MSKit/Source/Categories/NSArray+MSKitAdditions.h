@@ -33,6 +33,7 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 - (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format,...;
 - (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject,
                                                             NSDictionary * bindings))block;
+- (NSArray *)filter:(BOOL (^)(id evaluatedObject))block;
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;
 - (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate;
 - (NSArray *)arrayByMappingToBlock:(id (^)(id obj, NSUInteger idx))block;
@@ -45,7 +46,8 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
 @interface NSMutableArray (MSKitAdditions)
 + (id)arrayWithNullCapacity:(NSUInteger)capacity;
-- (void)mapToBlock:(id (^)(id obj, NSUInteger idx))block;
+- (void)filter:(BOOL (^)(id evaluatedObject))block;
+- (void)map:(id (^)(id obj, NSUInteger idx))block;
 - (void)replaceAllObjectsWithNull;
 - (void)removeNullObjects;
 - (void)flatten;
