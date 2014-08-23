@@ -389,5 +389,5 @@ WRAP(if(lvl&flg){[[MSLog loggingQueue] addOperationWithBlock:block];})
         errorMessage;                                                                               \
     })
 
-#define MSHandleErrors(error)  MSLogErrorTag(@"%@",MSAggrogateErrorMessage(error))
-#define MSHandleCErrors(error) MSLogCErrorTag(@"%@",MSAggrogateErrorMessage(error))
+#define MSHandleErrors(error)  ({ BOOL result = NO; if (error) { MSLogErrorTag(@"%@",MSAggrogateErrorMessage(error)); result = YES; } result; })
+#define MSHandleCErrors(error) ({ BOOL result = NO; if (error) { MSLogCErrorTag(@"%@",MSAggrogateErrorMessage(error)); result = YES; } result; })
