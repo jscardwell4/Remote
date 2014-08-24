@@ -31,6 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark ControlStateKeyPath
 ////////////////////////////////////////////////////////////////////////////////
+/*
 @interface ControlStateKeyPath : NSObject
 
 + (ControlStateKeyPath *)keyPathFromString:(NSString *)keypath;
@@ -64,4 +65,5 @@ MSSTATIC_INLINE ControlStateKeyPath * makeKeyPath(NSString *s,...)
     return keypath;
 }
 
+*/
 #import "RemoteElement_Private.h"

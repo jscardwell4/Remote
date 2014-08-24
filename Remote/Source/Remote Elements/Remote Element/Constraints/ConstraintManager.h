@@ -10,15 +10,15 @@
 
 
 RELayoutConstraintAffiliation
-remoteElementAffiliationWithConstraint(RemoteElement                 * element,
-                                       Constraint * constraint);
+remoteElementAffiliationWithConstraint(RemoteElement * element,
+                                       Constraint    * constraint);
 
 NSString *NSStringFromRELayoutConstraintAffiliation(RELayoutConstraintAffiliation affiliation);
 #define RELayoutConstraintAffiliationString(v) NSStringFromRELayoutConstraintAffiliation(v)
 
 RERelationshipType
-remoteElementRelationshipTypeForConstraint(RemoteElement                 * element,
-                                           Constraint * constraint);
+remoteElementRelationshipTypeForConstraint(RemoteElement * element,
+                                           Constraint    * constraint);
 
 NSString *NSStringFromRERelationshipType(RERelationshipType relationship);
 #define RERelationshipTypeString(v) NSStringFromRERelationshipType(v)
@@ -30,12 +30,17 @@ MSEXTERN_STRING   REConstraintsDidChangeNotification;
 
 @class   RemoteElement, Constraint;
 
-/*
- * RemoteElementConstraintManager
- */
 @interface ConstraintManager : NSObject
 
 @property (nonatomic, weak,   readonly) RemoteElement * remoteElement;
+@property (nonatomic, assign, readonly) BOOL            proportionLock;
+@property (nonatomic, strong, readonly) NSSet         * subelementConstraints;
+@property (nonatomic, strong, readonly) NSSet         * dependentConstraints;
+@property (nonatomic, strong, readonly) NSSet         * dependentChildConstraints;
+@property (nonatomic, strong, readonly) NSSet         * dependentSiblingConstraints;
+@property (nonatomic, strong, readonly) NSSet         * intrinsicConstraints;
+
+- (NSString *)layoutDescription;
 
 @property (nonatomic, assign, getter = shouldShrinkWrap) BOOL shrinkWrap;
 

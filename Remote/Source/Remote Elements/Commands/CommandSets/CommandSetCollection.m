@@ -85,27 +85,26 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark Import and export
 ////////////////////////////////////////////////////////////////////////////////
 
-/*
-+ (id)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
+
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
 {
-    if (!context) ThrowInvalidNilArgument(context);
-    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
 
-    CommandSetCollection * collection = [self commandContainerInContext:context];
-    assert(collection.count == 0);
+    CommandSetCollection * commandSetCollection = [super importObjectFromData:data inContext:context];
 
-    for (NSString * label in data)
-    {
-        if (!isStringKind(label)) continue;
+    if (!commandSetCollection) {
 
-        CommandSet * commandSet = [CommandSet importObjectFromData:data[label] inContext:context];
+        commandSetCollection = [self commandContainerInContext:context];
 
-        if (commandSet) collection[label] = commandSet;
+        for (NSString * label in data)
+        {
+            if (!isStringKind(label)) continue;
+            CommandSet * commandSet = [CommandSet importObjectFromData:data[label] inContext:context];
+            if (commandSet) commandSetCollection[label] = commandSet;
+        }
     }
 
-    return collection;
+    return commandSetCollection;
 }
-*/
 
 - (MSDictionary *)JSONDictionary
 {

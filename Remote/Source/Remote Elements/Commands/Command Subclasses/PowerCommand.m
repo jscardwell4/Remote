@@ -61,7 +61,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
      {
          "class": "power",
@@ -70,28 +70,21 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
      }
      */
 
-    PowerCommand * powerCommand = [super importObjectFromData:data inContext:moc];
+    [super updateWithData:data];
 
-    if (!powerCommand) {
+    NSString * state      = data[@"state"];
+    NSDictionary * device = data[@"device"];
+    NSManagedObjectContext * moc = self.managedObjectContext;
 
-        powerCommand = [PowerCommand objectWithUUID:data[@"uuid"] context:moc];
-
-        NSString * state      = data[@"state"];
-        NSDictionary * device = data[@"device"];
-
-        if ([@"on" isEqualToString:state]) powerCommand.state = YES;
-        if (device) {
-            NSString * deviceUUID = device[@"uuid"];
-            if (UUIDIsValid(deviceUUID)) {
-                ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
-                if (!d) d = [ComponentDevice importObjectFromData:device inContext:moc];
-                powerCommand.device = d;
-            }
+    if ([@"on" isEqualToString:state]) self.state = YES;
+    if (device) {
+        NSString * deviceUUID = device[@"uuid"];
+        if (UUIDIsValid(deviceUUID)) {
+            ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
+            if (!d) d = [ComponentDevice importObjectFromData:device inContext:moc];
+            self.device = d;
         }
-
     }
-
-    return powerCommand;
 
 }
 

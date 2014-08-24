@@ -142,40 +142,42 @@ NSArray * sharedKeysForType(CommandSetType type)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/*
-+ (id)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
+
++ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
 {
-    if (!context) ThrowInvalidNilArgument(context);
-    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
+    CommandSet * commandSet = [super importObjectFromData:data inContext:context];
 
-    NSString * typeString = data[CommandSetTypeJSONKey];
-    CommandSetType type = commandSetTypeFromImportKey(typeString);
-    if (!type) return nil;
+    if (!commandSet) {
 
-    CommandSet * commandSet = [CommandSet commandSetInContext:context type:type];
-    if (!commandSet) return nil;
+        CommandSetType type = commandSetTypeFromImportKey(data[CommandSetTypeJSONKey]);
 
-    for (NSString * key in data)
-    {
-        if ([key isEqualToString:CommandSetTypeJSONKey]) continue;
+        if (type != CommandSetTypeUnspecified) {
 
-        RERole buttonRole = remoteElementRoleFromImportKey(key);
-        if (!(type & buttonRole)) continue;
+            commandSet = [CommandSet commandSetInContext:context type:type];
+            assert(commandSet);
 
-        NSDictionary * commandData = data[key];
-        if (!isDictionaryKind(commandData)) continue;
+            for (NSString * key in [data dictionaryByRemovingEntriesForKeys:@[CommandSetTypeJSONKey]]) {
 
-        Class commandClass = commandClassForImportKey(commandData[@"class"]);
-        if (!commandClass) continue;
+                RERole buttonRole = remoteElementRoleFromImportKey(key);
+                if (!(type & buttonRole)) continue;
 
-        Command * command = [commandClass importFromData:commandData inContext:context];
+                NSDictionary * commandData = data[key];
+                if (!isDictionaryKind(commandData)) continue;
 
-        if (command) commandSet[@(buttonRole)] = command;
+                Class commandClass = commandClassForImportKey(commandData[@"class"]);
+                if (!commandClass) continue;
+
+                Command * command = [commandClass importObjectFromData:commandData inContext:context];
+
+                if (command) commandSet[@(buttonRole)] = command;
+            }
+
+        }
+
     }
-
+    
     return commandSet;
 }
-*/
 
 - (MSDictionary *)JSONDictionary
 {

@@ -58,10 +58,10 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
         ThrowInvalidArgument(fileName, "could not produce image for file");
 }
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
      example json:
-     
+
      {
          "uuid": "4BC42EF3-8799-453D-BA50-9C2486B4B511",
          "info": {
@@ -72,23 +72,13 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
          }
      */
 
-    Image * image = [super importObjectFromData:data inContext:moc];
 
-    if (!image) {
+    [super updateWithData:data];
 
-        image = [self objectWithUUID:data[@"uuid"] context:moc];
+    self.fileName      = data[@"fileName"]          ?: self.fileName;
+    self.info.name     = data[@"info"][@"category"] ?: self.info.name;
+    self.info.category = data[@"info"][@"name"]     ?: self.info.category;
 
-        NSString * fileName = data[@"fileName"];
-        NSString * category = data[@"info"][@"category"];
-        NSString * name     = data[@"info"][@"name"];
-
-        if (fileName) image.fileName = fileName;
-        if (name) image.info.name = name;
-        if (category) image.info.category = category;
-
-    }
-    
-    return image;
 }
 
 - (UIImage *)image
@@ -99,10 +89,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 - (UIImage *)imageWithColor:(UIColor *)color
 {
-    if ([color isPatternBased]) ThrowInvalidArgument(color, may not be pattern-based);
-//        @throw [NSException exceptionWithName:NSInvalidArgumentException
-//                                       reason:@"color cannot be pattern-based"
-//                                     userInfo:nil];
+    if ([color isPatternBased]) ThrowInvalidArgument(color, "may not be pattern-based");
 
     return [self.image recoloredImageWithColor:color];
 }

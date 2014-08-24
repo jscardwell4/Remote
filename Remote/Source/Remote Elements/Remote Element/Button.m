@@ -14,22 +14,23 @@ static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-static const NSSet * kConfigurationDelegateSelectors;
-static const NSSet * kConfigurationDelegateKeys;
 
 @interface Button ()
 
-@property (nonatomic, strong, readwrite) ButtonGroup      * parentElement;
-@property (nonatomic, weak,   readonly)  RemoteController * controller;
+@property (nonatomic, strong, readwrite) ButtonGroup          * parentElement;
+@property (nonatomic, weak,   readonly)  RemoteController     * controller;
 
 @end
 
 @interface Button (CoreDataGeneratedAccessors)
 
-@property (nonatomic) Command   * primitiveCommand;
-@property (nonatomic) NSValue   * primitiveTitleEdgeInsets;
-@property (nonatomic) NSValue   * primitiveImageEdgeInsets;
-@property (nonatomic) NSValue   * primitiveContentEdgeInsets;
+@property (nonatomic) Command            * primitiveCommand;
+@property (nonatomic) NSValue            * primitiveTitleEdgeInsets;
+@property (nonatomic) NSValue            * primitiveImageEdgeInsets;
+@property (nonatomic) NSValue            * primitiveContentEdgeInsets;
+@property (nonatomic) NSAttributedString * primitiveTitle;
+@property (nonatomic) Image              * primitiveIcon;
+@property (nonatomic) Image              * primitiveImage;
 
 @end
 
@@ -38,39 +39,16 @@ static const NSSet * kConfigurationDelegateKeys;
 // modeled properties
 @dynamic titleEdgeInsets, contentEdgeInsets, imageEdgeInsets;
 @dynamic parentElement, controller;
-@dynamic command, longPressCommand;
-
-@synthesize title = _title, icon = _icon, image = _image;
+@dynamic command, longPressCommand, title, icon, image;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Object Lifecycle
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (void)initialize
-{
-    if (self == [Button class])
-    {
-        kConfigurationDelegateSelectors =
-            [@[NSValueWithPointer(@selector(commands)),
-               NSValueWithPointer(@selector(titles)),
-               NSValueWithPointer(@selector(backgroundColors)),
-               NSValueWithPointer(@selector(images)),
-               NSValueWithPointer(@selector(icons)),
-               NSValueWithPointer(@selector(setTitle:mode:)),
-               NSValueWithPointer(@selector(setTitles:mode:)),
-               NSValueWithPointer(@selector(setIcons:mode:)),
-               NSValueWithPointer(@selector(setImages:mode:)),
-               NSValueWithPointer(@selector(setBackgroundColors:mode:)),
-               NSValueWithPointer(@selector(setCommand:mode:))] set];
-        
-        kConfigurationDelegateKeys = [@[@"titles",
-                                        @"icons",
-                                        @"images",
-                                        @"backgroundColors",
-                                        @"commands"] set];
-    }
-}
+
++ (REType)elementType { return RETypeButton; }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Creation
@@ -157,62 +135,6 @@ static const NSSet * kConfigurationDelegateKeys;
     return element;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Forwarding
-////////////////////////////////////////////////////////////////////////////////
-
-- (id)forwardingTargetForSelector:(SEL)selector
-{
-    if ([kConfigurationDelegateSelectors containsObject:NSValueWithPointer(selector)])
-        return self.configurationDelegate;
-    else
-        return [super forwardingTargetForSelector:selector];
-}
-
-- (void)forwardInvocation:(NSInvocation *)invocation
-{
-    NSValue * selector = NSValueWithPointer(invocation.selector);
-    if ([kConfigurationDelegateSelectors containsObject:selector])
-        [invocation invokeWithTarget:self.configurationDelegate];
-
-    else
-        [super forwardInvocation:invocation];
-}
-
-- (id)valueForUndefinedKey:(NSString *)key
-{
-    if ([kConfigurationDelegateKeys containsObject:key])
-        return [self.configurationDelegate valueForKey:key];
-
-    else
-        return [super valueForUndefinedKey:key];
-}
-
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
-
-    if (ModelObjectShouldInitialize)
-        [self.managedObjectContext performBlockAndWait:
-        ^{
-            self.elementType           = RETypeButton;
-            self.configurationDelegate = [ButtonConfigurationDelegate configurationDelegateForElement:self];
-        }];
-}
-
-/*
-- (void)awakeFromFetch
-{
-    [super awakeFromFetch];
-    REState                         state    = self.state;
-    REButtonConfigurationDelegate * delegate = self.buttonConfigurationDelegate;
-    
-    self.primitiveBackgroundColor = delegate.backgroundColors[state];
-    _icon                         = [delegate.icons UIImageForState:state];
-    _image                        = [delegate.images UIImageForState:state];
-    _title                        = delegate.titles[state];
-}
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Lazy Accessors
@@ -225,35 +147,38 @@ static const NSSet * kConfigurationDelegateKeys;
     [self didAccessValueForKey:@"backgroundColor"];
     if (!backgroundColor)
     {
-        backgroundColor = self.buttonConfigurationDelegate.backgroundColors[self.state];
+        backgroundColor = self.backgroundColors[self.state];
         if (backgroundColor) self.primitiveBackgroundColor = backgroundColor;
     }
     return backgroundColor;
 }
 
-- (UIImage *)icon
+- (Image *)icon
 {
     [self willAccessValueForKey:@"icon"];
-    UIImage * icon = _icon;
-    [self didAccessValueForKey:@"icon"];
+    Image * icon = self.primitiveIcon;
     if (!icon)
     {
-        icon = [self.buttonConfigurationDelegate.icons UIImageForState:self.state];
-        _icon = icon;
+        ControlStateImageSet * icons = [self iconsForMode:self.currentMode];
+        if (icons) self.primitiveIcon = icons[self.state];
+        icon = self.primitiveIcon;
     }
+    [self didAccessValueForKey:@"icon"];
     return icon;
 }
 
-- (UIImage *)image
+- (Image *)image
 {
     [self willAccessValueForKey:@"image"];
-    UIImage * image = _icon;
-    [self didAccessValueForKey:@"image"];
+    Image * image = self.primitiveImage;
     if (!image)
     {
-        image = [self.buttonConfigurationDelegate.images UIImageForState:self.state];
-        _icon = image;
+        ControlStateImageSet * images = [self imagesForMode:self.currentMode];
+        if (images) self.primitiveImage = images[self.state];
+        image = self.primitiveImage;
     }
+    [self didAccessValueForKey:@"image"];
+
     return image;
 }
 
@@ -264,7 +189,7 @@ static const NSSet * kConfigurationDelegateKeys;
     [self didAccessValueForKey:@"title"];
     if (!title)
     {
-        title = self.buttonConfigurationDelegate.titles[self.state];
+        title = self.titles[self.state];
         _title = title;
     }
     return title;
@@ -278,16 +203,125 @@ static const NSSet * kConfigurationDelegateKeys;
     [self didChangeValueForKey:@"title"];
 }
 
+- (void)updateButtonForState:(REState)state
+{
+    self.command         = self.command;
+    self.title           = self.titles[state];//[self titleForState:state];
+    self.icon            = [self.icons UIImageForState:state];
+    self.image           = [self.images UIImageForState:state];
+    self.backgroundColor = self.backgroundColors[state];
+
+}
+
+- (void)updateForMode:(RERemoteMode)mode
+{
+    if (![self hasMode:mode]) return;
+
+    self.command          = [self commandForMode:mode];
+    self.titles           = [self titlesForMode:mode];
+    self.icons            = [self iconsForMode:mode];
+    self.images           = [self imagesForMode:mode];
+    self.backgroundColors = [self backgroundColorsForMode:mode];
+
+    [self updateButtonForState:self.state];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Commands
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)setCommand:(Command *)command mode:(RERemoteMode)mode
+{
+    self[[@"." join:@[mode, @"command"]]] = [[command permanentURI] absoluteString];
+}
+
+- (Command *)commandForMode:(RERemoteMode)mode
+{
+    NSURL * uri = self[[@"." join:@[mode, @"command"]]];
+    return (uri ? [self.managedObjectContext objectForURI:uri] : nil);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Titles
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)setTitle:(id)title mode:(RERemoteMode)mode
+{
+    [self setTitles:[ControlStateTitleSet controlStateSetInContext:self.managedObjectContext
+                                                       withObjects:@{@"normal": title}]
+               mode:mode];
+}
+
+- (void)setTitles:(ControlStateTitleSet *)titles mode:(RERemoteMode)mode
+{
+    self[[@"." join:@[mode,@"titles"]]] = titles.permanentURI;
+}
+
+- (ControlStateTitleSet *)titlesForMode:(RERemoteMode)mode
+{
+    NSURL * uri = self[[@"." join:@[mode,@"titles"]]];
+    return (uri ? [self.managedObjectContext objectForURI:uri] : nil);
+}
+
+- (ControlStateTitleSet *)titles { return [self titlesForMode:self.currentMode]; }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Background colors
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)setBackgroundColors:(ControlStateColorSet *)colors mode:(RERemoteMode)mode
+{
+    self[[@"." join:@[mode,@"backgroundColors"]]] = colors.permanentURI;
+}
+
+- (ControlStateColorSet *)backgroundColorsForMode:(RERemoteMode)mode
+{
+    NSURL * uri = self[[@"." join:@[mode,@"backgroundColors"]]];
+    return (uri ? [self.managedObjectContext objectForURI:uri] : nil);
+}
+
+- (ControlStateColorSet *)backgroundColors { return [self backgroundColorsForMode:self.currentMode]; }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Icons
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)setIcons:(ControlStateImageSet *)icons mode:(RERemoteMode)mode
+{
+    self[[@"." join:@[mode,@"icons"]]] = icons.permanentURI;
+}
+
+- (ControlStateImageSet *)iconsForMode:(RERemoteMode)mode
+{
+    NSURL * uri = self[[@"." join:@[mode,@"icons"]]];
+    return (uri ? [self.managedObjectContext objectForURI:uri] : nil);
+}
+
+- (ControlStateImageSet *)icons { return [self iconsForMode:self.currentMode]; }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Images
+////////////////////////////////////////////////////////////////////////////////
+
+- (void)setImages:(ControlStateImageSet *)images mode:(RERemoteMode)mode
+{
+    self[[@"." join:@[mode,@"images"]]] = images.permanentURI;
+}
+
+- (ControlStateImageSet *)imagesForMode:(RERemoteMode)mode
+{
+    NSURL * uri = self[[@"." join:@[mode,@"images"]]];
+    return (uri ? [self.managedObjectContext objectForURI:uri] : nil);
+}
+
+- (ControlStateImageSet *)images { return [self imagesForMode:self.currentMode]; }
+
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Properties
 ////////////////////////////////////////////////////////////////////////////////
 
 - (Remote *)remote { return (Remote *)self.parentElement.parentElement; }
-
-- (ButtonConfigurationDelegate *)buttonConfigurationDelegate
-{
-    return (ButtonConfigurationDelegate *)self.configurationDelegate;
-}
 
 - (RemoteController *)controller
 {
@@ -330,8 +364,8 @@ static const NSSet * kConfigurationDelegateKeys;
     [self willChangeValueForKey:@"command"];
     self.primitiveCommand = command;
     [self didChangeValueForKey:@"command"];
-    
-    [self.buttonConfigurationDelegate setCommand:command mode:REDefaultMode];
+
+    [self setCommand:command mode:REDefaultMode];
 }
 
 - (UIEdgeInsets)titleEdgeInsets

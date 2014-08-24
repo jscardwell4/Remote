@@ -43,7 +43,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
      {
          "uuid": "D3D49520-818A-4E4A-9AD4-FDBC99BE99AC",
@@ -65,45 +65,39 @@
      }
      */
 
-    Manufacturer * manufacturer = [super importObjectFromData:data inContext:moc];
+    [super updateWithData:data];
 
-    if (!manufacturer) {
+    NSString               * name     = data[@"info"][@"name"];
+    NSString               * category = data[@"info"][@"category"];
+    NSArray                * codes    = data[@"codes"];
+    NSArray                * devices  = data[@"devices"];
+    NSManagedObjectContext * moc      = self.managedObjectContext;
 
-        manufacturer = [self objectWithUUID:data[@"uuid"] context:moc];
-
-        NSString * name     = data[@"info"][@"name"];
-        NSString * category = data[@"info"][@"category"];
-        NSArray  * codes    = data[@"codes"];
-        NSArray  * devices  = data[@"devices"];
-
-        if (name) manufacturer.info.name = name;
-        if (category) manufacturer.info.category = category;
-        if (codes) {
-            NSMutableSet * manufacturerCodes = [NSMutableSet set];
-            for (NSDictionary * code in codes) {
-                IRCode * manufacturerCode = [IRCode importObjectFromData:code inContext:moc];
-                if (manufacturerCode) [manufacturerCodes addObject:manufacturerCode];
-            }
-            manufacturer.codes = manufacturerCodes;
+    if (name) self.info.name = name;
+    if (category) self.info.category = category;
+    if (codes) {
+        NSMutableSet * manufacturerCodes = [NSMutableSet set];
+        for (NSDictionary * code in codes) {
+            IRCode * manufacturerCode = [IRCode importObjectFromData:code inContext:moc];
+            if (manufacturerCode) [manufacturerCodes addObject:manufacturerCode];
         }
-        if (devices) {
-            NSMutableSet * manufacturerDevices = [NSMutableSet set];
-            for (id device in devices) {
-                if ([device isKindOfClass:[NSString class]] && UUIDIsValid(device)) {
-                    ComponentDevice * d = [ComponentDevice existingObjectWithUUID:device context:moc];
-                    if (!d) d = [ComponentDevice objectWithUUID:device context:moc];
-                    [manufacturerDevices addObject:d];
-                } else if ([device isKindOfClass:[NSDictionary class]]) {
-                    ComponentDevice * d = [ComponentDevice importObjectFromData:device inContext:moc];
-                    if (d) [manufacturerDevices addObject:d];
-                }
+        self.codes = manufacturerCodes;
+    }
+    if (devices) {
+        NSMutableSet * manufacturerDevices = [NSMutableSet set];
+        for (id device in devices) {
+            if ([device isKindOfClass:[NSString class]] && UUIDIsValid(device)) {
+                ComponentDevice * d = [ComponentDevice existingObjectWithUUID:device context:moc];
+                if (!d) d = [ComponentDevice objectWithUUID:device context:moc];
+                [manufacturerDevices addObject:d];
+            } else if ([device isKindOfClass:[NSDictionary class]]) {
+                ComponentDevice * d = [ComponentDevice importObjectFromData:device inContext:moc];
+                if (d) [manufacturerDevices addObject:d];
             }
-            if ([manufacturerDevices count] > 0) manufacturer.devices = manufacturerDevices;
         }
-
+        if ([manufacturerDevices count] > 0) self.devices = manufacturerDevices;
     }
 
-    return manufacturer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

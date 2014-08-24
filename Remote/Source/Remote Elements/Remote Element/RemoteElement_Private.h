@@ -14,21 +14,17 @@
 #import "Constraint.h"
 
 @interface RemoteElement ()
-{
-    @protected
-    struct {BOOL pendingSubelements;BOOL pendingConstraints;} _importStatus;
-}
 
-@property (nonatomic, assign, readwrite) REType                  elementType;
 @property (nonatomic, strong, readwrite) ConstraintManager     * constraintManager;
-@property (nonatomic, strong, readwrite) LayoutConfiguration   * layoutConfiguration;
-@property (nonatomic, strong, readwrite) ConfigurationDelegate * configurationDelegate;
+@property (nonatomic, strong, readwrite) Theme                 * theme;
+@property (nonatomic, strong, readwrite) NSDictionary          * configurations;
+
+- (void)updateForMode:(RERemoteMode)mode;
 
 @end
 
 @interface RemoteElement (CoreDataGeneratedAccessors)
 
-@property (nonatomic) NSNumber                * primitiveElementType;
 @property (nonatomic) NSNumber                * primitiveRole;
 @property (nonatomic) NSNumber                * primitiveSubtype;
 @property (nonatomic) NSNumber                * primitiveOptions;
@@ -40,7 +36,7 @@
 @property (nonatomic) NSMutableSet            * primitiveFirstItemConstraints;
 @property (nonatomic) NSMutableSet            * primitiveSecondItemConstraints;
 @property (nonatomic) NSMutableOrderedSet     * primitiveSubelements;
-@property (nonatomic) ConfigurationDelegate   * primitiveConfigurationDelegate;
+@property (nonatomic) NSMutableDictionary     * primitiveConfigurations;
 @property (nonatomic) RemoteElement           * primitiveParentElement;
 @property (nonatomic) NSString                * primitiveName;
 @property (nonatomic) NSString                * primitiveKey;
@@ -48,14 +44,12 @@
 
 @end
 
-
 #import "RemoteController.h"
 #import "Bankables.h"
 #import "Command.h"
 #import "CommandContainer.h"
 #import "CommandSet.h"
 #import "CommandSetCollection.h"
-#import "ConfigurationDelegate.h"
 #import "ControlStateSet.h"
 #import "ControlStateImageSet.h"
 #import "ControlStateTitleSet.h"

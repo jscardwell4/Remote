@@ -20,7 +20,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>97E189012FFCAA1F9EDA04CE98DD6F44307FF8E7</key>
-		<string>../..MSKit/ParseKit/</string>
+		<string>../..MSKit/ParseKit</string>
 		<key>F6E31C773CB0250D1ABED18C2448F5DAA1102752</key>
 		<string>../..</string>
 	</dict>

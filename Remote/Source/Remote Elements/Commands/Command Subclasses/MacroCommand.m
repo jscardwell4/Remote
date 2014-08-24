@@ -21,8 +21,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize)
-        self.indicator = YES;
+    self.indicator = YES;
 }
 
 - (id)keySubscriptedCollection { return self.commands; }
@@ -202,10 +201,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-/*
-- (BOOL)shouldImportActivityLaunch:(id)data {return NO;}
-- (BOOL)shouldImportActivityHalt:(id)data {return NO;}
-*/
 
 + (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc
 {

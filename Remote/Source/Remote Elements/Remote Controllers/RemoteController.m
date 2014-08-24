@@ -106,6 +106,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
     [self willAccessValueForKey:@"topToolbar"];
     buttonGroup = (ButtonGroup *)[self primitiveValueForKey:@"topToolbar"];
     [self didAccessValueForKey:@"topToolbar"];
+/*
     if (!buttonGroup) {
         NSManagedObjectContext * moc = self.managedObjectContext;
 
@@ -180,6 +181,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
                                         NSDictionaryOfVariableBindingsToIdentifiers(home)]];
 
     }
+*/
 
     return buttonGroup;
 }
@@ -255,7 +257,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
      "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
      "homeRemoteUUID": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
@@ -263,48 +265,59 @@ static int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSO
      "activities": [ **Activity** ]
      */
 
-    RemoteController * remoteController = [super importObjectFromData:data inContext:moc];
+    [super updateWithData:data];
 
-    if (!remoteController) {
+    NSString               * homeRemoteUUID = data[@"homeRemoteUUID"];
+    id                       topToolbar     = data[@"topToolbar"];
+    NSArray                * activities     = data[@"activities"];
+    NSManagedObjectContext * moc            = self.managedObjectContext;
 
-        remoteController = [RemoteController objectWithUUID:data[@"uuid"] context:moc];
+    if (UUIDIsValid(homeRemoteUUID)) self.homeRemoteUUID = homeRemoteUUID;
 
-        NSString * homeRemoteUUID = data[@"homeRemoteUUID"];
-        id         topToolbar     = data[@"topToolbar"];
-        NSArray  * activities     = data[@"activities"];
+    if (topToolbar) {
 
-        if (UUIDIsValid(homeRemoteUUID)) remoteController.homeRemoteUUID = homeRemoteUUID;
-        if (topToolbar) {
-            if ([topToolbar isKindOfClass:[NSString class]] && UUIDIsValid(topToolbar)) {
-                ButtonGroup * t = [ButtonGroup existingObjectWithUUID:topToolbar context:moc];
-                if (!t) t = [ButtonGroup objectWithUUID:topToolbar context:moc];
-                remoteController.topToolbar = t;
-            } else if ([topToolbar isKindOfClass:[NSDictionary class]]) {
-                remoteController.topToolbar = [ButtonGroup importObjectFromData:topToolbar inContext:moc];
-            }
+        if ([topToolbar isKindOfClass:[NSString class]] && UUIDIsValid(topToolbar)) {
+
+            ButtonGroup * t = [ButtonGroup existingObjectWithUUID:topToolbar context:moc];
+            if (!t) t = [ButtonGroup objectWithUUID:topToolbar context:moc];
+            self.topToolbar = t;
+
+        } else if ([topToolbar isKindOfClass:[NSDictionary class]]) {
+
+            self.topToolbar = [ButtonGroup importObjectFromData:topToolbar inContext:moc];
+
         }
-        if (activities) {
-            NSMutableSet * controllerActivities = [NSMutableSet set];
-            for (id activity in activities) {
-                if ([activity isKindOfClass:[NSString class]] && UUIDIsValid(activity)) {
-                    Activity * a = [Activity existingObjectWithUUID:activity context:moc];
-                    if (!a) a = [Activity objectWithUUID:activity context:moc];
-                    [controllerActivities addObject:a];
-                } else if ([activity isKindOfClass:[NSDictionary class]]) {
-                    Activity * a = [Activity importObjectFromData:activity inContext:moc];
-                    if (a) [controllerActivities addObject:a];
-                }
-            }
-            if ([controllerActivities count] > 0) remoteController.activities = controllerActivities;
-        }
+
     }
 
-    return remoteController;
-}
+    if (activities) {
 
-/*
-- (BOOL)shouldImportTopToolbar:(id)data {return YES;}
-- (BOOL)shouldImportActivities:(id)data {return YES;}
-*/
+        NSMutableSet * controllerActivities = [NSMutableSet set];
+
+        for (id activity in activities) {
+
+            if ([activity isKindOfClass:[NSString class]] && UUIDIsValid(activity)) {
+
+                Activity * a = [Activity existingObjectWithUUID:activity context:moc];
+
+                if (!a) a = [Activity objectWithUUID:activity context:moc];
+
+                [controllerActivities addObject:a];
+
+            } else if ([activity isKindOfClass:[NSDictionary class]]) {
+
+                Activity * a = [Activity importObjectFromData:activity inContext:moc];
+
+                if (a) [controllerActivities addObject:a];
+
+            }
+
+        }
+
+        if ([controllerActivities count] > 0) self.activities = controllerActivities;
+        
+    }
+
+}
 
 @end

@@ -60,8 +60,7 @@ static int ddLogLevel = LOG_LEVEL_OFF;
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize)
-        self.iconColors = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext];
+    self.iconColors = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext];
 }
 
 - (UIImage *)UIImageForState:(NSUInteger)state

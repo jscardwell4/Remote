@@ -8,7 +8,7 @@
 
 #import "RemoteElement.h"
 
-@class ButtonGroup, ControlStateTitleSet, ControlStateImageSet, ControlStateColorSet, Command, Image;
+@class ButtonGroup, ControlStateTitleSet, ControlStateImageSet, ControlStateColorSet, Command, Remote, Image;
 
 /**
  * `Button` is an `NSManagedObject` subclass that models a button for a home theater remote
@@ -20,20 +20,18 @@
  */
 @interface Button : RemoteElement
 
-@property (nonatomic, strong, readonly ) ButtonGroup                 * parentElement;
-@property (nonatomic, weak,   readonly ) Remote                      * remote;
-@property (nonatomic, weak,   readonly ) ButtonConfigurationDelegate * buttonConfigurationDelegate;
+@property (nonatomic, weak,   readonly ) Remote                       * remote;
 
-@property (nonatomic, copy,   readwrite) id                              title;
-@property (nonatomic, strong, readwrite) UIImage                       * icon;
-@property (nonatomic, strong, readwrite) UIImage                       * image;
+@property (nonatomic, copy,   readwrite) NSAttributedString           * title;
+@property (nonatomic, strong, readwrite) Image                        * icon;
+@property (nonatomic, strong, readwrite) Image                        * image;
 
-@property (nonatomic, strong, readwrite) Command                     * command;
-@property (nonatomic, strong, readwrite) Command                     * longPressCommand;
+@property (nonatomic, strong, readwrite) Command                      * command;
+@property (nonatomic, strong, readwrite) Command                      * longPressCommand;
 
-@property (nonatomic, assign, readwrite) UIEdgeInsets                    titleEdgeInsets;
-@property (nonatomic, assign, readwrite) UIEdgeInsets                    imageEdgeInsets;
-@property (nonatomic, assign, readwrite) UIEdgeInsets                    contentEdgeInsets;
+@property (nonatomic, assign, readwrite) UIEdgeInsets                   titleEdgeInsets;
+@property (nonatomic, assign, readwrite) UIEdgeInsets                   imageEdgeInsets;
+@property (nonatomic, assign, readwrite) UIEdgeInsets                   contentEdgeInsets;
 
 @property (nonatomic, assign, readwrite, getter = isSelected)    BOOL   selected;
 @property (nonatomic, assign, readwrite, getter = isEnabled)     BOOL   enabled;
@@ -50,23 +48,12 @@
 - (void)executeCommandWithOptions:(CommandOptions)options
                        completion:(CommandCompletionHandler)completion;
 
-@end
-
-@interface Button (REButtonConfigurationDelegate)
-
-@property (nonatomic, strong, readonly ) NSSet                       * commands;
-@property (nonatomic, strong, readonly ) ControlStateTitleSet        * titles;
-@property (nonatomic, strong, readonly ) ControlStateImageSet        * icons;
-@property (nonatomic, strong, readonly ) ControlStateColorSet        * backgroundColors;
-@property (nonatomic, strong, readonly ) ControlStateImageSet        * images;
-
 - (void)setCommand:(Command *)command mode:(RERemoteMode)mode;
 
 - (void)setTitle:(id)title mode:(RERemoteMode)mode;
 - (void)setTitles:(ControlStateTitleSet *)titleSet mode:(RERemoteMode)mode;
 
-- (void)setBackgroundColors:(ControlStateColorSet *)colors
-              mode:(RERemoteMode)mode;
+- (void)setBackgroundColors:(ControlStateColorSet *)colors mode:(RERemoteMode)mode;
 
 - (void)setIcons:(ControlStateImageSet *)icons mode:(RERemoteMode)mode;
 

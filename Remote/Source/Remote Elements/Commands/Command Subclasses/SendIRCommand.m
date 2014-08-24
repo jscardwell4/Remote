@@ -111,7 +111,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
          {
              "class": "sendir",
@@ -119,18 +119,10 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
          }
      */
 
-    SendIRCommand * sendIRCommand = [super importObjectFromData:data inContext:moc];
+    [super updateWithData:data];
 
-    if (!sendIRCommand) {
-
-        sendIRCommand = [SendIRCommand objectWithUUID:data[@"uuid"] context:moc];
-
-        NSDictionary * code = data[@"code"];
-        if (code) sendIRCommand.code = [IRCode importObjectFromData:code inContext:moc];
-
-    }
-
-    return sendIRCommand;
+    NSDictionary * code = data[@"code"];
+    if (code) self.code = [IRCode importObjectFromData:code inContext:self.managedObjectContext];
 
 }
 

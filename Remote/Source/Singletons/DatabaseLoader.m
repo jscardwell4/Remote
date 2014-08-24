@@ -7,46 +7,52 @@
 //
 
 #import "DatabaseLoader.h"
-#import "Bankables.h"
-#import "CoreDataManager.h"
-#import <MSKit/MSLog.h>
+#import "RemoteElement.h"
 #import "RemoteController.h"
+#import "Bankables.h"
 #import "Remote.h"
 
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
 
-//#define SHOULD_LOG_REMOTECONTROLLER
-//#define SHOULD_LOG_REMOTE
-//#define SHOULD_LOG_IMAGES
-//#define SHOULD_LOG_POWERCOMMANDS
-//#define SHOULD_LOG_MANUFACTURERS
-//#define SHOULD_LOG_COMPONENTDEVICES
-//#define SHOULD_LOG_IRCODES
+#define LOG_IMPORT_FILE      1
+#define LOG_PARSED_FILE      2
+#define LOG_RESULTING_OBJECT 4
 
-static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int msLogContext = (LOG_CONTEXT_BUILDING|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
-static const int importLogContext = (LOG_CONTEXT_IMPORT|LOG_CONTEXT_FILE);
+#define REMOTECONTROLLER_LOG_FLAG 4
+#define REMOTE_LOG_FLAG           4
+#define IMAGES_LOG_FLAG           0
+#define POWERCOMMANDS_LOG_FLAG    0
+#define MANUFACTURERS_LOG_FLAG    0
+#define COMPONENTDEVICES_LOG_FLAG 0
+#define IRCODES_LOG_FLAG          0
+
+static int       ddLogLevel       = LOG_LEVEL_DEBUG;
+static const int msLogContext     = (LOG_CONTEXT_BUILDING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
+static const int importLogContext = (LOG_CONTEXT_IMPORT | LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
-void logImportFile(NSString * fileName, NSString * fileContent)
+void logImportFile(NSString * fileName, NSString * fileContent, int flag)
 {
-    MSLogCDebugInContext(importLogContext, @"%@.json:\n%@\n", fileName, fileContent);
+    if ((flag & LOG_IMPORT_FILE) == LOG_IMPORT_FILE)
+        MSLogCDebugInContext(importLogContext, @"%@.json:\n%@\n", fileName, fileContent);
 }
 
-void logParsedImportFile(id parsedObject)
+void logParsedImportFile(id parsedObject, int flag)
 {
+    if ((flag & LOG_PARSED_FILE) == LOG_PARSED_FILE)
     MSLogCDebugInContext(importLogContext,
-                         @"JSON from parsed object:\n%@\n",
+                         @"JSON from parsed file:\n%@\n",
                          [MSJSONSerialization JSONFromObject:parsedObject]);
 }
 
-void logImportedObject(id importedObject)
+void logImportedObject(id importedObject, int flag)
 {
-    MSLogCDebugInContextIf((importedObject != nil),
-                           importLogContext,
-                           @"JSON from imported object(s):\n%@\n",
-                           [MSJSONSerialization JSONFromObject:[importedObject JSONObject]]);
+    if ((flag & LOG_RESULTING_OBJECT) == LOG_RESULTING_OBJECT)
+        MSLogCDebugInContextIf((importedObject != nil),
+                               importLogContext,
+                               @"JSON from imported object(s):\n%@\n",
+                               [MSJSONSerialization JSONFromObject:[importedObject JSONObject]]);
 }
 
 @implementation DatabaseLoader
@@ -128,15 +134,11 @@ void logImportedObject(id importedObject)
                                                           error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_REMOTE
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
     NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_REMOTE
-    logParsedImportFile(importObjects);
-#endif
+    logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
     NSArray * remotes = [Remote importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
 
@@ -144,9 +146,7 @@ void logImportedObject(id importedObject)
     [context save:&error];
     MSHandleErrors(error);
 
-#ifdef SHOULD_LOG_REMOTE
-    logImportedObject(remotes);
-#endif
+    logImportedObject(remotes, REMOTE_LOG_FLAG);
 }
 
 + (void)loadRemoteController:(NSManagedObjectContext *)context
@@ -163,22 +163,16 @@ void logImportedObject(id importedObject)
                                                          error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_REMOTECONTROLLER
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, REMOTECONTROLLER_LOG_FLAG);
     MSDictionary * importObject = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_REMOTECONTROLLER
-    logParsedImportFile(importObject);
-#endif
+    logParsedImportFile(importObject, REMOTECONTROLLER_LOG_FLAG);
     RemoteController * remoteController = [RemoteController importObjectFromData:importObject
                                                                       inContext:context];
     MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
 
-#ifdef SHOULD_LOG_REMOTECONTROLLER
-    logImportedObject(remoteController);
-#endif
+    logImportedObject(remoteController, REMOTECONTROLLER_LOG_FLAG);
 }
 
 + (void)loadManufacturers:(NSManagedObjectContext *)context
@@ -195,22 +189,16 @@ void logImportedObject(id importedObject)
                                                           error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_MANUFACTURERS
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, MANUFACTURERS_LOG_FLAG);
     NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_MANUFACTURERS
-    logParsedImportFile(importObjects);
-#endif
+    logParsedImportFile(importObjects, MANUFACTURERS_LOG_FLAG);
 
     NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
 
-#ifdef SHOULD_LOG_MANUFACTURERS
-    logImportedObject(manufacturers);
-#endif
+    logImportedObject(manufacturers, MANUFACTURERS_LOG_FLAG);
 }
 
 
@@ -228,21 +216,15 @@ void logImportedObject(id importedObject)
                                                           error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_COMPONENTDEVICES
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, COMPONENTDEVICES_LOG_FLAG);
     NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_COMPONENTDEVICES
-    logParsedImportFile(importObjects);
-#endif
+    logParsedImportFile(importObjects, COMPONENTDEVICES_LOG_FLAG);
     NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
 
-#ifdef SHOULD_LOG_COMPONENTDEVICES
-    logImportedObject(componentDevices);
-#endif
+    logImportedObject(componentDevices, COMPONENTDEVICES_LOG_FLAG);
 }
 
 + (void)loadIRCodes:(NSManagedObjectContext *)context
@@ -259,22 +241,16 @@ void logImportedObject(id importedObject)
                                                           error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_IRCODES
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, IRCODES_LOG_FLAG);
 
     NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_IRCODES
-    logParsedImportFile(importObjects);
-#endif
+    logParsedImportFile(importObjects, IRCODES_LOG_FLAG);
     NSArray * ircodes = [IRCode importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu ir codes imported", (unsigned long)[ircodes count]);
 
-#ifdef SHOULD_LOG_IRCODES
-    logImportedObject(ircodes);
-#endif
+    logImportedObject(ircodes, IRCODES_LOG_FLAG);
 }
 
 + (void)loadPowerCommands:(NSManagedObjectContext *)context
@@ -290,21 +266,15 @@ void logImportedObject(id importedObject)
                                                    usedEncoding:&encoding
                                                           error:&error];
     if (error) { MSHandleErrors(error); return; }
-#ifdef SHOULD_LOG_POWERCOMMANDS
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, POWERCOMMANDS_LOG_FLAG);
     NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_POWERCOMMANDS
-    logParsedImportFile(importObjects);
-#endif
+    logParsedImportFile(importObjects, POWERCOMMANDS_LOG_FLAG);
     NSArray * commands = [SendIRCommand importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu power commands imported", (unsigned long)[commands count]);
 
-#ifdef SHOULD_LOG_POWERCOMMANDS
-    logImportedObject(commands);
-#endif
+    logImportedObject(commands, POWERCOMMANDS_LOG_FLAG);
 }
 
 + (void)loadImages:(NSManagedObjectContext *)context
@@ -321,22 +291,16 @@ void logImportedObject(id importedObject)
                                                           error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_IMAGES
-    logImportFile(fileName, fileContent);
-#endif
+    logImportFile(fileName, fileContent, IMAGES_LOG_FLAG);
 
     NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
     if (error) { MSHandleErrors(error); return; }
 
-#ifdef SHOULD_LOG_IMAGES
-    logParsedImportFile(importObjects);
-#endif
+    logParsedImportFile(importObjects, IMAGES_LOG_FLAG);
     NSArray * images = [Image importObjectsFromData:importObjects inContext:context];
     MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
 
-#ifdef SHOULD_LOG_IMAGES
-    logImportedObject(images);
-#endif
+    logImportedObject(images, IMAGES_LOG_FLAG);
 }
 
 

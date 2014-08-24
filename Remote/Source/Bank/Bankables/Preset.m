@@ -54,7 +54,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    if (ModelObjectShouldInitialize) self.user = YES;
+    self.user = YES;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

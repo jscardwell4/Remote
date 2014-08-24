@@ -69,9 +69,9 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
         case BankableDetailTextFieldData:
             return ([indexPath isEqual:kFrequencyIndexPath]
-                    ? [@(self.irCode.frequency) stringValue]
+                    ? [self.irCode.frequency stringValue]
                     : ([indexPath isEqual:kRepeatIndexPath]
-                       ? [@(self.irCode.repeatCount) stringValue]
+                       ? [self.irCode.repeatCount stringValue]
                        : ([indexPath isEqual:kManufacturerIndexPath]
                           ? ([self.irCode valueForKeyPath:@"manufacturer.name"]
                              ?: @"No Manufacturer")
@@ -279,12 +279,12 @@ static NSIndexPath * kOnOffPatternIndexPath;
             cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"Frequency";
-            cell.text = [@(_irCode.frequency) stringValue];
+            cell.text = [_irCode.frequency stringValue];
 
             cell.infoTextField.inputView = [self integerKeyboardViewForTextField:cell.infoTextField];
             BankableChangeHandler   changeHandler =
             ^{
-                _irCode.frequency = [cell.infoTextField.text longLongValue];
+                _irCode.frequency = @([cell.infoTextField.text longLongValue]);
             };
 
             [self registerTextField:cell.infoTextField
@@ -298,11 +298,11 @@ static NSIndexPath * kOnOffPatternIndexPath;
             cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"Repeat";
-            cell.text = [@(_irCode.repeatCount) stringValue];
+            cell.text = [_irCode.repeatCount stringValue];
             cell.infoTextField.inputView = [self integerKeyboardViewForTextField:cell.infoTextField];
             BankableChangeHandler   changeHandler =
             ^{
-                _irCode.repeatCount = [cell.infoTextField.text intValue];
+                _irCode.repeatCount = @([cell.infoTextField.text intValue]);
             };
             [self registerTextField:cell.infoTextField
                        forIndexPath:indexPath
@@ -318,12 +318,12 @@ static NSIndexPath * kOnOffPatternIndexPath;
             cell.infoStepper.minimumValue = 0;
             cell.infoStepper.maximumValue = 127;
             cell.infoStepper.wraps        = NO;
-            cell.infoStepper.value        = self.irCode.offset;
-            cell.infoLabel.text           = [@(self.irCode.offset)description];
+            cell.infoStepper.value        = self.irCode.offset.intValue;
+            cell.infoLabel.text           = [self.irCode.offset stringValue];
             [cell.infoStepper addActionBlock:
              ^{
-                 weakself.irCode.offset = (int16_t)cell.infoStepper.value;
-                 cell.infoLabel.text = [@(cell.infoStepper.value)description];
+                 weakself.irCode.offset = @(cell.infoStepper.value);
+                 cell.infoLabel.text = [@(cell.infoStepper.value) stringValue];
              }              forControlEvents:UIControlEventValueChanged];
 
             [self registerStepper:cell.infoStepper

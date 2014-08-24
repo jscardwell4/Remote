@@ -17,12 +17,14 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 @interface NSArray (MSKitAdditions) <MSJSONExport>
 
 + (NSArray *)arrayFromRange:(NSRange)range;
++ (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count;
 
 @property (nonatomic, readonly) id JSONObject;
 
 - (NSSet *)set;
 - (NSUInteger)lastIndex;
 - (NSOrderedSet *)orderedSet;
+
 
 - (NSArray *)arrayByAddingObjects:(id)objects;
 - (NSArray *)arrayByAddingKeysFromDictionary:(NSDictionary *)dictionary;
@@ -45,6 +47,7 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
 
 @interface NSMutableArray (MSKitAdditions)
++ (instancetype)arrayWithObject:(id)obj count:(NSUInteger)count;
 + (id)arrayWithNullCapacity:(NSUInteger)capacity;
 - (void)filter:(BOOL (^)(id evaluatedObject))block;
 - (void)map:(id (^)(id obj, NSUInteger idx))block;

@@ -36,8 +36,7 @@ BOOL UUIDIsValid(NSString * uuid)
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize)
-        self.primitiveUuid = MSNonce();
+    self.primitiveUuid = MSNonce();
 
 }
 
@@ -63,9 +62,13 @@ BOOL UUIDIsValid(NSString * uuid)
 
     if (UUIDIsValid(uuid)) {
         object = [self existingObjectWithUUID:uuid context:moc];
-        if (object) [object updateWithData:data];
+        if (!object) object = [self objectWithUUID:uuid context:moc];
     }
 
+    if (!object) object = [self createInContext:moc];
+
+    [object updateWithData:data];
+    
     return object;
 }
 
@@ -193,8 +196,8 @@ BOOL UUIDIsValid(NSString * uuid)
 + (instancetype)existingObjectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc
 {
     if (!moc) ThrowInvalidNilArgument(context);
-    else if (!UUIDIsValid(uuid)) ThrowInvalidArgument(+[objectWithUUID:] uuid, is not of proper form);
-    return [self findFirstByAttribute:@"uuid" withValue:uuid inContext:moc];
+    if (UUIDIsValid(uuid)) return [self findFirstByAttribute:@"uuid" withValue:uuid inContext:moc];
+    else return nil;
 }
 
 + (instancetype)objectWithUUID:(NSString *)uuid {

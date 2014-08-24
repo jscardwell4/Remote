@@ -29,12 +29,12 @@
 /**
 * Label text for the optional `UILabelView`.
 */
-@property (nonatomic, copy) NSAttributedString * label;
+@property (nonatomic, strong, readonly) NSAttributedString * label;
 
 /**
  * CommandSet or CommandSet Collection used to assign commands to button subelements
  */
-@property (nonatomic, strong) CommandContainer * commandContainer;
+@property (nonatomic, strong, readonly) CommandContainer * commandContainer;
 
 /**
 * String used to generate auto layout  constraint for the label.
@@ -51,23 +51,7 @@
 @property (nonatomic, assign) REPanelTrigger      panelTrigger;
 @property (nonatomic, assign) REPanelAssignment   panelAssignment;
 
-@property (nonatomic, strong, readonly) Remote * parentElement;
-@property (nonatomic, weak, readonly) ButtonGroupConfigurationDelegate * groupConfigurationDelegate;
-
 - (BOOL)isPanel;
-
-@end
-
-@interface ButtonGroup (TypeOverrides)
-
-/**
- * Retrieve a Button object contained by the `ButtonGroup` by its key.
- * @param key The key for the Button object.
- * @return The Button specified or nil if it does not exist.
- */
-- (Button *)objectForKeyedSubscript:(NSString *)subscript;
-- (Button *)objectAtIndexedSubscript:(NSUInteger)subscript;
-
 
 @end
 

@@ -11,22 +11,17 @@ static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
-static const NSDictionary * kEntityNameForType;
-static const NSSet        * kLayoutConfigurationSelectors;
-static const NSSet        * kLayoutConfigurationKeys;
-static const NSSet        * kConfigurationDelegateKeys;
-static const NSSet        * kConfigurationDelegateSelectors;
-static const NSSet        * kConstraintManagerSelectors;
+MSSTRING_CONST   REDefaultMode = @"default";
+
+
 static const REThemeOverrideFlags   kToolbarButtonDefaultThemeFlags          = 0b0011111111101111;
 static const REThemeOverrideFlags   kBatteryStatusButtonDefaultThemeFlags    = 0b0011111111111111;
 static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0b0011111111111111;
 
 
-@implementation RemoteElement {
-    NSString * __identifier;
-}
+@implementation RemoteElement
 
-@synthesize constraintManager = __constraintManager;
+@synthesize constraintManager = __constraintManager, currentMode = _currentMode;
 
 @dynamic constraints;
 @dynamic name;
@@ -38,44 +33,14 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 @dynamic backgroundImageAlpha;
 @dynamic firstItemConstraints;
 @dynamic secondItemConstraints;
-@dynamic layoutConfiguration;
 @dynamic theme;
-@dynamic configurationDelegate;
+@dynamic configurations;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initializers
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (void)initialize
-{
-    if (self == [RemoteElement class]) {
-        kEntityNameForType = @{@(RETypeRemote)      : @"Remote",
-                               @(RETypeButtonGroup) : @"ButtonGroup",
-                               @(RETypeButton)      : @"Button"};
-
-        kLayoutConfigurationSelectors = [@[NSValueWithPointer(@selector(proportionLock)),
-                                           NSValueWithPointer(@selector(subelementConstraints)),
-                                           NSValueWithPointer(@selector(dependentConstraints)),
-                                           NSValueWithPointer(@selector(dependentChildConstraints)),
-                                           NSValueWithPointer(@selector(dependentSiblingConstraints)),
-                                           NSValueWithPointer(@selector(intrinsicConstraints))] set];
-
-        kConstraintManagerSelectors = [@[NSValueWithPointer(@selector(setConstraintsFromString:))]
-                                       set];
-
-        kLayoutConfigurationKeys = [@[@"proportionLock",
-                                      @"subelementConstraints",
-                                      @"dependentConstraints",
-                                      @"dependentChildConstraints",
-                                      @"dependentSiblingConstraints",
-                                      @"intrinsicConstraints"] set];
-
-        kConfigurationDelegateSelectors = [@[NSValueWithPointer(@selector(currentMode)),
-                                             NSValueWithPointer(@selector(addMode:)),
-                                             NSValueWithPointer(@selector(hasMode:))] set];
-        kConfigurationDelegateKeys = [@[@"currentMode"] set];
-    }
-}
++ (REType)elementType { return RETypeUndefined; }
 
 + (instancetype)remoteElement {return [self remoteElementInContext:[CoreDataManager defaultContext]];}
 
@@ -84,10 +49,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     return [self remoteElementInContext:[CoreDataManager defaultContext] attributes:attributes];
 }
 
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
-{
-    return [self createInContext:moc];
-}
++ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc { return [self createInContext:moc]; }
 
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
                             attributes:(NSDictionary *)attributes
@@ -97,19 +59,11 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     return element;
 }
 
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
-
-    if (ModelObjectShouldInitialize)
-        [self.managedObjectContext performBlockAndWait:
-         ^{
-             self.layoutConfiguration = [LayoutConfiguration layoutConfigurationForElement:self];
-         }];
-}
 
 - (void)prepareForDeletion
 {
+  //TODO: Fill out stub
+/*
     if (self.configurationDelegate)
         [self.managedObjectContext performBlockAndWait:
          ^{
@@ -117,74 +71,14 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
              self.configurationDelegate = nil;
              [self.managedObjectContext processPendingChanges];
          }];
+*/
 }
 
-- (NSString *)identifier
-{
-    if (!__identifier) __identifier = $(@"_%@", [self.uuid stringByRemovingCharacter:'-']);
-    return __identifier;
-}
-
-- (void)setParentElement:(RemoteElement *)parentElement
-{
-    [self willChangeValueForKey:@"parentElement"];
-    self.primitiveParentElement = parentElement;
-    [self didChangeValueForKey:@"parentElement"];
-
-    if (parentElement)
-    {
-        self.configurationDelegate.delegate = parentElement.configurationDelegate.delegate;
-        [self.subelements setValue:self.configurationDelegate.delegate
-                        forKeyPath:@"configurationDelegate.delegate"];
-    }
-}
-
-- (id)forwardingTargetForSelector:(SEL)aSelector
-{
-    if ([kLayoutConfigurationSelectors containsObject:NSValueWithPointer(aSelector)])
-        return self.layoutConfiguration;
-
-    else if ([kConstraintManagerSelectors containsObject:NSValueWithPointer(aSelector)])
-        return self.constraintManager;
-
-    else if ([kConfigurationDelegateSelectors containsObject:NSValueWithPointer(aSelector)])
-        return self.configurationDelegate;
-    else
-        return [super forwardingTargetForSelector:aSelector];
-}
-
-- (void)forwardInvocation:(NSInvocation *)anInvocation
-{
-    NSValue * selector = NSValueWithPointer(anInvocation.selector);
-    if ([kLayoutConfigurationSelectors containsObject:selector])
-        [anInvocation invokeWithTarget:self.layoutConfiguration];
-
-    else if ([kConfigurationDelegateSelectors containsObject:selector])
-        [anInvocation invokeWithTarget:self.configurationDelegate];
-
-    else if ([kConstraintManagerSelectors containsObject:selector])
-        [anInvocation invokeWithTarget:self.constraintManager];
-
-    else
-        [super forwardInvocation:anInvocation];
-}
-
-- (id)valueForUndefinedKey:(NSString *)key
-{
-    if ([kLayoutConfigurationKeys containsObject:key])
-        return [self.layoutConfiguration valueForKey:key];
-
-    else if ([kConfigurationDelegateKeys containsObject:key])
-        return [self.configurationDelegate valueForKey:key];
-
-    else
-        return [super valueForUndefinedKey:key];
-}
+- (NSString *)identifier { return $(@"_%@", [self.uuid stringByRemovingCharacter:'-']); }
 
 - (ConstraintManager *)constraintManager
 {
-    if (!__constraintManager)
-        self.constraintManager = [ConstraintManager constraintManagerForRemoteElement:self];
+    if (!__constraintManager) self.constraintManager = [ConstraintManager constraintManagerForRemoteElement:self];
     return __constraintManager;
 }
 
@@ -196,91 +90,110 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/*
-* general flow *
+- (void)updateWithData:(NSDictionary *)data {
 
-- (BOOL)shouldImport:(id)data { return isDictionaryKind(data); }
+    /*
+     {
+                "uuid": "3D15E6CA-A182-476D-87D1-8E2CE774346E",
+                "name": "Sonos Activity Rocker",
+                "elementType": "button-group",
+                "role": "rocker",
+                "key": "someKey",
+                "backgroundImage": **Image**,
+                "backgroundImageAlpha": 0.5,
+                "theme": **Theme**,
+                "themeFlags": "not parsed yet",
+                "options": "autohide",
+                "tag": 23,
+                "shape": "rounded-rectangle",
+                "style": "border gloss1",
+                "constraints": {
+                    "index": {
+                        "buttonTop": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
+                        "buttonBottom": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
+                        "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
+                    },
+                    "format": [
+                            "buttonBottom.height = buttonTop.height",
+                            "buttonBottom.left = sonosActivityRocker.left",
+                            "buttonBottom.right = sonosActivityRocker.right",
+                            "buttonBottom.top = buttonTop.bottom",
+                            "buttonTop.height = sonosActivityRocker.height * 0.5",
+                            "buttonTop.left = sonosActivityRocker.left",
+                            "buttonTop.right = sonosActivityRocker.right",
+                            "buttonTop.top = sonosActivityRocker.top",
+                            "sonosActivityRocker.height ≥ 150",
+                            "sonosActivityRocker.width = 70"
+                    ]
+                },
+                "backgroundColor": "black",
+                "subelements": [ **RemoteElement** ]
+            }
+     */
 
-- (void)willImport:(id)data
-{
-//    MSLogDebugTag(@"beginning data import…");
-    _importStatus.pendingSubelements = [data hasKey:@"subelements"];
-    _importStatus.pendingConstraints = [data hasKey:@"constraints"];
-}
+    [super updateWithData:data];
 
-- (void)didImport:(id)data
-{
-    assert(!_importStatus.pendingSubelements);
-    if (_importStatus.pendingConstraints) [self importConstraints:data];
-//    MSLogDebugTag(@"data import complete");
-}
+    self.name       = data[@"name"]                                               ?: self.name;
+    self.role       = remoteElementRoleFromImportKey(data[@"role"])               ?: self.role;
+    self.key        = data[@"key"]                                                ?: self.key;
+    self.subtype    = remoteElementSubtypeFromImportKey(data[@"subtype"])         ?: self.subtype;
+    self.options    = remoteElementOptionsFromImportKey(data[@"options"])         ?: self.options;
+    self.state      = remoteElementStateFromImportKey(data[@"state"])             ?: self.state;
+    self.shape      = remoteElementShapeFromImportKey(data[@"shape"])             ?: self.shape;
+    self.style      = remoteElementStyleFromImportKey(data[@"style"])             ?: self.style;
+    self.tag        = data[@"tag"]                                                ?: @0;
+    self.themeFlags = remoteElementThemeFlagsFromImportKey(data[@"themeFlags"])   ?: self.themeFlags;
 
+    self.backgroundColor      = colorFromImportValue(data[@"backgroundColor"]) ?: self.backgroundColor;
+    self.backgroundImageAlpha = data[@"backgroundImageAlpha"]                  ?: @1.0;
 
-* attributes *
+    NSDictionary           * backgroundImage = data[@"backgroundImage"];
+    NSDictionary           * theme           = data[@"theme"];
+    NSArray                * subelements     = data[@"subelements"];
+    NSDictionary           * constraints     = data[@"constraints"];
+    NSManagedObjectContext * moc             = self.managedObjectContext;
 
-/// role, elementType, subtype, options, state, shape, style, backgroundColor
-- (void)importRole:(id)data            {self.role = remoteElementRoleFromImportKey(data);}
-- (void)importElementType:(id)data     {self.elementType = remoteElementTypeFromImportKey(data);}
-- (void)importSubtype:(id)data         {self.subtype = remoteElementSubtypeFromImportKey(data);}
-- (void)importOptions:(id)data         {self.options = remoteElementOptionsFromImportKey(data);}
-- (void)importState:(id)data           {self.state = remoteElementStateFromImportKey(data);}
-- (void)importShape:(id)data           {self.shape = remoteElementShapeFromImportKey(data);}
-- (void)importStyle:(id)data           {self.style = remoteElementStyleFromImportKey(data);}
-- (void)importBackgroundColor:(id)data {self.backgroundColor = colorFromImportValue(data);}
+    if (backgroundImage) self.backgroundImage = [Image importObjectFromData:backgroundImage inContext:moc];
 
-* relationships *
+    if (theme) self.theme = [Theme importObjectFromData:theme inContext:moc];
 
-/// subelements
-- (void)importSubelements:(NSDictionary *)data
-{
-    if (!_importStatus.pendingSubelements) return;
-
-    NSArray * subelements = data[@"subelements"];
-    if (![subelements count]) return;
-
-    for (MSDictionary * subelementData in subelements)
-    {
-        NSString * elementTypeString = subelementData[@"elementType"];
-        if (!elementTypeString) continue;
-
-        REType elementType = remoteElementTypeFromImportKey(elementTypeString);
-        if (!elementType) continue;
-
-        Class elementClass = classForREType(elementType);
-        if (!elementClass) continue;
-
-        typeof(elementClass) element = [elementClass importFromData:subelementData
-                                                               inContext:self.managedObjectContext];
-        if (element) [self addSubelementsObject:(RemoteElement *)element];
+    if (subelements) {
+        NSMutableArray * subelementObjects = [subelements mutableCopy];
+        [subelementObjects filter:^BOOL(id obj){return isDictionaryKind(obj);}];
+        [subelementObjects map:^id(NSDictionary *objData, NSUInteger idx) {
+            Class elementClass = classForREType(remoteElementTypeFromImportKey(objData[@"elementType"]));
+            if (!elementClass) return NullObject;
+            RemoteElement * element = [elementClass importObjectFromData:objData inContext:moc];
+            return (element ?: NullObject);
+        }];
+        [subelementObjects removeNullObjects];
+        self.subelements = [subelementObjects orderedSet];
     }
 
-    _importStatus.pendingSubelements = NO;
+    if (constraints)
+        self.constraints = [[Constraint importObjectsFromData:constraints inContext:moc] set];
+
+    NSMutableDictionary * filteredData = [data mutableCopy];
+    [filteredData removeObjectsForKeys:@[@"uuid",
+                                         @"name",
+                                         @"elementType",
+                                         @"role",
+                                         @"key",
+                                         @"subtype",
+                                         @"options",
+                                         @"state",
+                                         @"shape",
+                                         @"style",
+                                         @"backgroundColor",
+                                         @"backgroundImageAlpha",
+                                         @"tag",
+                                         @"themeFlags",
+                                         @"theme",
+                                         @"backgroundImage",
+                                         @"subelements",
+                                         @"constraints"]];
 }
 
-/// constraints
-- (void)importConstraints:(NSDictionary *)data
-{
-    if(_importStatus.pendingSubelements || !_importStatus.pendingConstraints) return;
-
-    NSDictionary * constraintsData = data[@"constraints"];
-    NSArray * constraints = [Constraint importObjectFromData:constraintsData
-                                                  inContext:self.managedObjectContext];
-    if ([constraints count]) [self addConstraints:[constraints set]];
-    _importStatus.pendingConstraints = NO;
-}
-
-/// backgroundImage
-- (BOOL)shouldImportBackgroundImage:(id)data {return YES;}
-
-/// don't import generated relationships
-- (BOOL)shouldImportConfigurationDelegate:(id)data {return NO;}
-- (BOOL)shouldImportLayoutConfiguration:(id)data {return NO;}
-- (BOOL)shouldImportParentElement:(id)data {return NO;}
-- (BOOL)shouldImportPreset:(id)data {return NO;}
-- (BOOL)shouldImportFirstItemConstraints:(id)data {return NO;}
-- (BOOL)shouldImportSecondItemConstraints:(id)data {return NO;}
-
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting
@@ -289,7 +202,6 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 
 - (MSDictionary *)JSONDictionary
 {
-
     id(^defaultForKey)(NSString *) = ^(NSString * key)
     {
         static const NSDictionary * index;
@@ -328,12 +240,12 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     MSDictionary * dictionary = [super JSONDictionary];
 
     dictionary[@"name"] = CollectionSafe(self.name);
-    dictionary[@"elementType"] = (typeJSONValueForRemoteElement(self) ?: @(self.elementType));
+    dictionary[@"elementType"] = typeJSONValueForRemoteElement(self);
 
     dictionary[@"key"]  = CollectionSafe(self.primitiveKey);
 
-    if (![@(self.tag) isEqual:defaultForKey(@"tag")])
-        dictionary[@"tag"] = @(self.tag);
+    if (![self.tag isEqual:defaultForKey(@"tag")])
+        dictionary[@"tag"] = self.tag;
 
     if (![@(self.role) isEqualToNumber:defaultForKey(@"role")])
         dictionary[@"role"] = (roleJSONValueForRemoteElement(self) ?: @(self.role));
@@ -424,171 +336,57 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     return dictionary;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Accessors for custom typedef properties
-////////////////////////////////////////////////////////////////////////////////
-
-- (void)setElementType:(REType)elementType
-{
-    [self willChangeValueForKey:@"elementType"];
-    self.primitiveElementType = @(elementType);
-    [self didChangeValueForKey:@"elementType"];
-}
-
-- (REType)elementType
-{
-    [self willAccessValueForKey:@"elementType"];
-    NSNumber * elementType = self.primitiveElementType;
-    [self didAccessValueForKey:@"elementType"];
-    return (elementType ? [elementType shortValue] : RETypeUndefined);
-}
-
-- (void)setSubtype:(RESubtype)subtype
-{
-    [self willChangeValueForKey:@"subtype"];
-    self.primitiveSubtype = @(subtype);
-    [self didChangeValueForKey:@"subtype"];
-}
-
-- (RESubtype)subtype
-{
-    [self willAccessValueForKey:@"subtype"];
-    NSNumber * subtype = self.primitiveSubtype;
-    [self didAccessValueForKey:@"subtype"];
-    return (subtype ? [subtype shortValue] : RESubtypeUndefined);
-}
-
-- (RERole)role
-{
-    [self willAccessValueForKey:@"role"];
-    NSNumber * role = self.primitiveRole;
-    [self didAccessValueForKey:@"role"];
-    return [role unsignedShortValue];
-}
-
-- (void)setRole:(RERole)role
-{
-    [self willChangeValueForKey:@"role"];
-    self.primitiveRole = @(role);
-    [self didChangeValueForKey:@"role"];
-}
-
-- (void)setOptions:(REOptions)options
-{
-    [self willChangeValueForKey:@"options"];
-    self.primitiveOptions = @(options);
-    [self didChangeValueForKey:@"options"];
-}
-
-- (REOptions)options
-{
-    [self willAccessValueForKey:@"options"];
-    NSNumber * options = self.primitiveOptions;
-    [self didAccessValueForKey:@"options"];
-    return (options ? [options shortValue] : REOptionsDefault);
-}
-
-- (void)setState:(REState)state
-{
-    [self willChangeValueForKey:@"state"];
-    self.primitiveState = @(state);
-    [self didChangeValueForKey:@"state"];
-}
-
-- (REState)state
-{
-    [self willAccessValueForKey:@"state"];
-    NSNumber * state = self.primitiveState;
-    [self didAccessValueForKey:@"state"];
-    return (state ? [state shortValue] : REStateDefault);
-}
-
-- (void)setShape:(REShape)shape
-{
-    [self willChangeValueForKey:@"shape"];
-    self.primitiveShape = @(shape);
-    [self didChangeValueForKey:@"shape"];
-}
-
-- (REShape)shape
-{
-    [self willAccessValueForKey:@"shape"];
-    NSNumber * shape = self.primitiveShape;
-    [self didAccessValueForKey:@"shape"];
-    return (shape ? [shape shortValue] : REShapeUndefined);
-}
-
-- (void)setStyle:(REStyle)style
-{
-    [self willChangeValueForKey:@"style"];
-    self.primitiveStyle = @(style);
-    [self didChangeValueForKey:@"style"];
-}
-
-- (REStyle)style
-{
-    [self willAccessValueForKey:@"style"];
-    NSNumber * style = self.primitiveStyle;
-    [self didAccessValueForKey:@"style"];
-    return (style ? [style shortValue] : REStyleUndefined);
-}
-
-- (void)setThemeFlags:(REThemeOverrideFlags)themeFlags
-{
-    [self willChangeValueForKey:@"themeFlags"];
-    self.primitiveThemeFlags = @(themeFlags);
-    [self didChangeValueForKey:@"themeFlags"];
-}
-
-- (REThemeOverrideFlags)themeFlags
-{
-    [self willAccessValueForKey:@"themeFlags"];
-    NSNumber * themeFlags = self.primitiveThemeFlags;
-    [self didAccessValueForKey:@"themeFlags"];
-    return (themeFlags ? [themeFlags intValue] : REThemeNone);
-}
-
-/*
-- (NSString *)name
-{
-    static dispatch_once_t onceToken;
-    static NSDictionary const * index;
-    dispatch_once(&onceToken, ^{
-        index = @{ @(RETypeRemote)                    : @"Remote",
-                   @(RETypeButtonGroup)               : @"ButtonGroup",
-                   @(RETypeButton)                    : @"Button" };
-    });
-
-    [self willAccessValueForKey:@"name"];
-    NSString * name = self.primitiveName;
-    [self didAccessValueForKey:@"name"];
-    if (!name)
-    {
-        name = (index[@(self.elementType)] ?: @"unnamed");
-        NSNumber * entityCount = [RemoteElement
-                                  MR_numberOfEntitiesWithContext:self.managedObjectContext];
-        assert(entityCount);
-        name = [name stringByAppendingString:[entityCount stringValue]];
-        self.primitiveName = name;
-    }
-    return name;
-}
-*/
 
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Derived Properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (RemoteElement *)objectForKeyedSubscript:(NSString *)key
+BOOL getModePropertyFromKey(NSString *key, NSString **mode, NSString **property)
 {
-    if (!self.subelements.count) return nil;
+    if (StringIsEmpty(key)) return NO;
 
-    return [self.subelements objectPassingTest:
-            ^BOOL (RemoteElement * obj, NSUInteger idx)
-            {
-                return REStringIdentifiesRemoteElement(key, obj);
-            }];
+    NSArray * components = [key componentsSeparatedByString:@"."];
+    if (![components count] == 2 || StringIsEmpty(components[0]) || StringIsEmpty(components[1])) return NO;
+
+    if (mode != NULL) *mode = components[0];
+    if (property != NULL) *property = components[1];
+    return YES;
+}
+
+- (id)objectForKeyedSubscript:(NSString *)key
+{
+
+    NSString * mode, *property;
+
+    if (getModePropertyFromKey(key, &mode, &property)) {
+        return NilSafe(([self hasMode:mode] ? self.configurations[mode][property] : nil));
+    } else {
+
+          if (!self.subelements.count) return nil;
+
+          return [self.subelements objectPassingTest:
+                  ^BOOL (RemoteElement * obj, NSUInteger idx)
+                  {
+                      return REStringIdentifiesRemoteElement(key, obj);
+                  }];
+    }
+}
+
+- (void)setObject:(id)object forKeyedSubscript:(id)key {
+
+    NSString * mode, *property;
+
+    if (getModePropertyFromKey(key, &mode, &property)) {
+        if (![self hasMode:mode]) [self addMode:mode];
+
+        NSMutableDictionary * configurations = [self.configurations mutableCopy];
+        NSMutableDictionary * registration = [configurations[mode] mutableCopy];
+        if (object) registration[property] = [object copy];
+        else [registration removeObjectForKey:property];
+        configurations[mode] = registration;
+        self.configurations = configurations;
+    }
 }
 
 - (void)setObject:(RemoteElement *)object atIndexedSubscript:(NSUInteger)idx
@@ -607,7 +405,77 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     return (subscript < self.subelements.count ? self.subelements[subscript] : nil);
 }
 
+- (NSArray *)modes { return [self.configurations allKeys]; }
+
+- (BOOL)proportionLock                 { return self.constraintManager.proportionLock;              }
+- (NSSet *)subelementConstraints       { return self.constraintManager.subelementConstraints;       }
+- (NSSet *)dependentConstraints        { return self.constraintManager.dependentConstraints;        }
+- (NSSet *)dependentChildConstraints   { return self.constraintManager.dependentChildConstraints;   }
+- (NSSet *)dependentSiblingConstraints { return self.constraintManager.dependentSiblingConstraints; }
+- (NSSet *)intrinsicConstraints        { return self.constraintManager.intrinsicConstraints;        }
+
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - Configurations
+////////////////////////////////////////////////////////////////////////////////
+
+- (RERemoteMode)currentMode
+{
+    [self willAccessValueForKey:@"currentMode"];
+    RERemoteMode currentMode = _currentMode;
+    [self didAccessValueForKey:@"currentMode"];
+    if (!currentMode)
+    {
+        _currentMode = REDefaultMode;
+        currentMode = _currentMode;
+        assert(currentMode);
+    }
+    return currentMode;
+}
+
+- (BOOL)addMode:(RERemoteMode)mode
+{
+    if (![self hasMode:mode])
+    {
+        NSMutableDictionary * configurations = [self.configurations mutableCopy];
+        configurations[mode] = @{};/*
+(  ![mode isEqualToString:REDefaultMode]
+                                && self.autoPopulateFromDefaultMode
+                                && configurations[REDefaultMode]
+                                ? [configurations[REDefaultMode] copy]
+                                : [MSDictionary dictionary]);
+*/
+
+        self.configurations = configurations;
+        return YES;
+    }
+
+    else
+        return YES;
+}
+
+- (void)setCurrentMode:(RERemoteMode)currentMode {
+
+    MSLogDebugTag(@"currentMode:%@ ⇒ %@\nmodeKeys:%@",
+                  _currentMode, currentMode, self.modes);
+
+    [self willChangeValueForKey:@"currentMode"];
+    _currentMode = currentMode;
+    if (![self hasMode:currentMode]) [self addMode:currentMode];
+    [self updateForMode:currentMode];
+    [self didChangeValueForKey:@"currentMode"];
+    [self.subelements setValue:_currentMode forKeyPath:@"currentMode"];
+}
+
+- (BOOL)hasMode:(RERemoteMode)key { return [self.configurations hasKey:key]; }
+
+- (void)updateForMode:(RERemoteMode)mode {}
+
+
+- (void)refresh { [self updateForMode:_currentMode]; }
+
+
 @end
+
 
 @implementation RemoteElement (Debugging)
 
@@ -627,16 +495,16 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     RemoteElement * element = [self faultedObject];
     assert(element);
 
-    NSString * typeString          = NSStringFromREType(element.elementType);
+    NSString * typeString          = NSStringFromREType([[self class] elementType]);
     NSString * subtypeString       = NSStringFromRESubtype(element.subtype);
     NSString * roleString          = NSStringFromRERole(element.role);
     NSString * keyString           = element.key;
     NSString * nameString          = element.name;
-    NSString * tagString           = [@(element.tag) stringValue];
-    NSString * configurationString = $(@"%@-configurations:'%@'",
-                                       unnamedModelObjectDescription(element.configurationDelegate),
-                                       [element.configurationDelegate.modeKeys
-                                            componentsJoinedByString:@", "]);
+    NSString * tagString           = [element.tag stringValue];
+//    NSString * configurationString = $(@"%@-configurations:'%@'",
+//                                       unnamedModelObjectDescription(element.configurationDelegate),
+//                                       [element.configurationDelegate.modeKeys
+//                                            componentsJoinedByString:@", "]);
     NSString * parentString        = namedModelObjectDescription(element.parentElement);
     NSString * subelementsString   = ([element.subelements count]
                                       ? [[element.subelements setByMappingToBlock:
@@ -645,7 +513,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
                                               return namedModelObjectDescription(subelement);
                                           }] componentsJoinedByString:@"\n"]
                                       : @"nil");
-    NSString * layoutString        = unnamedModelObjectDescription(element.layoutConfiguration);
+    NSString * layoutString        = [element.constraintManager layoutDescription];
     NSString * proportionString    = BOOLString(element.proportionLock);
     NSString * constraintsString   = [[element constraintsDescription]
                                                       stringByTrimmingLeadingWhitespace];
@@ -653,7 +521,7 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     NSString * shapeString         = NSStringFromREShape(element.shape);
     NSString * styleString         = NSStringFromREStyle(element.style);
     NSString * themeFlagString     = NSStringFromREThemeFlags(element.themeFlags);
-    NSString * optionsString       = NSStringFromREOptions(element.options, element.elementType);
+    NSString * optionsString       = NSStringFromREOptions(element.options, [[self class] elementType]);
     NSString * stateString         = NSStringFromREState(element.state);
     NSString * backgroundString    = namedModelObjectDescription(element.backgroundImage);
     NSString * bgAlphaString       = [element.backgroundImageAlpha stringValue];
@@ -666,10 +534,10 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
     dd[@"key"]                   = (keyString ?: @"nil");
     dd[@"name"]                  = (nameString ?: @"nil");
     dd[@"tag"]                   = (tagString ?: @"nil");
-    dd[@"configurationDelegate"] = (configurationString ?: @"nil");
+//    dd[@"configurationDelegate"] = (configurationString ?: @"nil");
     dd[@"parentElement"]         = (parentString ?: @"nil");
     dd[@"subelements"]           = (subelementsString ?: @"nil");
-    dd[@"layoutConfiguration"]   = (layoutString ?: @"nil");
+    dd[@"layout"]                = (layoutString ?: @"nil");
     dd[@"proportionLock"]        = (proportionString ?: @"nil");
     dd[@"constraints"]           = (constraintsString ?: @"nil");
     dd[@"theme"]                 = (themeString ?: @"nil");
@@ -731,9 +599,9 @@ static const REThemeOverrideFlags   kConnectionStatusButtonDefaultThemeFlags = 0
 
 - (NSString *)flagsAndAppearanceDescription {
     return $(@"type:%@\nsubtype:%@\noptions:%@\nstate:%@\nshape:%@\nstyle:%@\n",
-             NSStringFromREType(self.elementType),
+             NSStringFromREType([[self class] elementType]),
              NSStringFromRESubtype(self.subtype),
-             NSStringFromREOptions(self.options, self.elementType),
+             NSStringFromREOptions(self.options, [[self class] elementType]),
              NSStringFromREState(self.state),
              NSStringFromREShape(self.shape),
              NSStringFromREStyle(self.style));
@@ -811,28 +679,11 @@ Class classForREType(REType type)
 {
     switch (type)
     {
-        case RETypeRemote:                    return [Remote class];
-
-//        case REButtonGroupTypeToolbar:
-//        case REButtonGroupTypeSelectionPanel:
-//        case REButtonGroupTypePanel:
-        case RETypeButtonGroup:               return [ButtonGroup class];
-
-//        case REButtonGroupTypePickerLabel:    return [PickerLabelButtonGroup class];
-
-//        case REButtonTypeBatteryStatus:
-//        case REButtonTypeConnectionStatus:
-        case RETypeButton:                    return [Button class];
-
-        default:                              return [RemoteElement class];
+        case RETypeRemote:      return [Remote class];
+        case RETypeButtonGroup: return [ButtonGroup class];
+        case RETypeButton:      return [Button class];
+        default:                return [RemoteElement class];
     }
 }
-
-/*
-Class baseClassForREType(REType type)
-{
-    return classForREType((type & RETypeBaseMask));
-}
-*/
 
 

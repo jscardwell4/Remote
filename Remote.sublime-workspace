@@ -1,0 +1,2074 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"upda",
+				"updateWithData"
+			],
+			[
+				"UIEd",
+				"UIEdgeInsetsFromString"
+			],
+			[
+				"ima",
+				"imageEdgeInsets"
+			],
+			[
+				"Control",
+				"ControlStateTitleSet"
+			],
+			[
+				"for",
+				"forv	Vector For Loop"
+			],
+			[
+				"subel",
+				"subelement"
+			],
+			[
+				"remote",
+				"remoteElement"
+			],
+			[
+				"confi",
+				"configuration"
+			],
+			[
+				"sta",
+				"stateValues"
+			],
+			[
+				"state",
+				"stateValue"
+			],
+			[
+				"inse",
+				"insetsString"
+			],
+			[
+				"index",
+				"indexKeys"
+			],
+			[
+				"prope",
+				"property"
+			],
+			[
+				"configu",
+				"configuration"
+			],
+			[
+				"super",
+				"superDescription"
+			],
+			[
+				"prop",
+				"properties"
+			],
+			[
+				"upd",
+				"updateValue"
+			],
+			[
+				"config",
+				"configurations"
+			],
+			[
+				"background-image",
+				"background-image-alpha"
+			],
+			[
+				"maan",
+				"managedObjectContext"
+			],
+			[
+				"image",
+				"imageUUID"
+			],
+			[
+				"panel",
+				"panelAssignment"
+			],
+			[
+				"bool",
+				"boolValue"
+			],
+			[
+				"NSMa",
+				"NSManaged"
+			],
+			[
+				"first",
+				"firstOrderConstraints"
+			],
+			[
+				"constr",
+				"constraintObjects"
+			],
+			[
+				"Tran",
+				"TransportButton"
+			],
+			[
+				"Num",
+				"NumberpadButton"
+			],
+			[
+				"Dp",
+				"DpadButton"
+			],
+			[
+				"Pane",
+				"PanelButton"
+			],
+			[
+				"Rocker",
+				"RockerButton"
+			],
+			[
+				"Toolb",
+				"ToolbarButton"
+			],
+			[
+				"attr",
+				"attributeMap"
+			],
+			[
+				"title",
+				"titleEdgeInsets"
+			],
+			[
+				"backg",
+				"backgroundColor"
+			],
+			[
+				"options",
+				"Options"
+			],
+			[
+				"Comm",
+				"CommandSetContainer"
+			],
+			[
+				"Opton",
+				"Options"
+			],
+			[
+				"NSMan",
+				"NSManagedObjectContext"
+			],
+			[
+				"cons",
+				"constraintsData"
+			],
+			[
+				"sub",
+				"subelementData"
+			],
+			[
+				"par",
+				"parseSubelementFromData"
+			],
+			[
+				"backgroundImage",
+				"backgroundImageAlpha"
+			],
+			[
+				"Font",
+				"FontAwesomeIcon"
+			],
+			[
+				"font",
+				"fontAwesomeNameIndex"
+			],
+			[
+				"from",
+				"fromNSTextAlignment"
+			],
+			[
+				"Strin",
+				"StringAttributeMap"
+			],
+			[
+				"Str",
+				"StringAttributeMap"
+			],
+			[
+				"rgba",
+				"rgbaHex"
+			],
+			[
+				"rgb",
+				"rgbHex"
+			],
+			[
+				"color",
+				"colorIndex"
+			],
+			[
+				"comp",
+				"componentsFromRGBAHex"
+			],
+			[
+				"colo",
+				"colorIndex"
+			],
+			[
+				"rgh",
+				"rgbaHex"
+			],
+			[
+				"mana",
+				"managedObjectContext"
+			],
+			[
+				"enu",
+				"enumerate"
+			],
+			[
+				"depen",
+				"dependentSiblingConstraints"
+			],
+			[
+				"dependntchil",
+				"dependentChildConstraints"
+			],
+			[
+				"depent",
+				"dependentConstraints"
+			],
+			[
+				"second",
+				"secondItemConstraints"
+			],
+			[
+				"intrin",
+				"intrinsicConstraints"
+			],
+			[
+				"property",
+				"propertyIndex"
+			],
+			[
+				"proper",
+				"propertyIndex"
+			],
+			[
+				"pr",
+				"property"
+			],
+			[
+				"Confi",
+				"ConfigurationIndex"
+			],
+			[
+				"prp",
+				"propertyIndex"
+			],
+			[
+				"mode",
+				"modeIndex"
+			],
+			[
+				"propert",
+				"propertiesForMode"
+			],
+			[
+				"mod",
+				"modes"
+			],
+			[
+				"Config",
+				"Configuration"
+			],
+			[
+				"Configur",
+				"ConfigurationIndex"
+			],
+			[
+				"obje",
+				"objectsToDelete"
+			],
+			[
+				"configuration",
+				"configuration"
+			],
+			[
+				"configurations",
+				"Configurations"
+			],
+			[
+				"Key",
+				"KeyedDataSet"
+			],
+			[
+				"fro",
+				"fromRaw"
+			],
+			[
+				"UIC",
+				"UIColor"
+			],
+			[
+				"value",
+				"valueForMode"
+			],
+			[
+				"addBac",
+				"addBackgroundImage"
+			],
+			[
+				"default",
+				"defaultMode"
+			],
+			[
+				"will",
+				"willAccessValueForKey"
+			],
+			[
+				"pro",
+				"property"
+			],
+			[
+				"type",
+				"typealias	typealias ... = ..."
+			],
+			[
+				"objec",
+				"objectForMode"
+			],
+			[
+				"addIm",
+				"addImageSet"
+			],
+			[
+				"icon",
+				"iconSets"
+			],
+			[
+				"addC",
+				"addCommand"
+			],
+			[
+				"addBack",
+				"addBackgroundColorSet"
+			],
+			[
+				"back",
+				"backgroundColorSets"
+			],
+			[
+				"co",
+				"container"
+			],
+			[
+				"cur",
+				"currentLabel"
+			],
+			[
+				"curren",
+				"currentModeIsDefault"
+			],
+			[
+				"currentC",
+				"currentContainer"
+			],
+			[
+				"currentMode",
+				"currentModeIsDefault"
+			],
+			[
+				"add",
+				"addContainer"
+			],
+			[
+				"con",
+				"containers"
+			],
+			[
+				"Command",
+				"CommandContainer"
+			],
+			[
+				"comma",
+				"commandContainerForMode"
+			],
+			[
+				"Aut",
+				"AutoListen"
+			],
+			[
+				"In",
+				"InactivityTimeoutSettingDidChangeNotification"
+			],
+			[
+				"Inac",
+				"InactivityTimeoutKey"
+			],
+			[
+				"Float",
+				"FloatSetting"
+			],
+			[
+				"sha",
+				"sharedApplication"
+			],
+			[
+				"UI",
+				"UIApplication"
+			],
+			[
+				"v",
+				"version"
+			],
+			[
+				"diff",
+				"difficulties"
+			],
+			[
+				"share",
+				"sharedInstance"
+			],
+			[
+				"auth",
+				"authenticatePlayer"
+			],
+			[
+				"user",
+				"userDefaults"
+			],
+			[
+				"Help",
+				"HelpOverlayOptions"
+			],
+			[
+				"Hel",
+				"HelpOverlayOptions"
+			],
+			[
+				"local",
+				"localPlayer"
+			],
+			[
+				"Game",
+				"GameCenterDidAuthenticateNotification"
+			],
+			[
+				"def",
+				"defaultCenter"
+			],
+			[
+				"game",
+				"gameCenterVC"
+			],
+			[
+				"present",
+				"presentGameCenterAuthenticationController"
+			],
+			[
+				"view",
+				"viewController"
+			],
+			[
+				"post",
+				"postNotificationName"
+			],
+			[
+				"disp",
+				"displaySize"
+			],
+			[
+				"disableGa",
+				"disableGameCenter"
+			],
+			[
+				"reg",
+				"registerDefaults"
+			],
+			[
+				"SD",
+				"SDKROOT"
+			],
+			[
+				"ar",
+				"arrayContainsElement"
+			],
+			[
+				"me",
+				"MENTALRAY_LOCATION"
+			],
+			[
+				"list",
+				"listx"
+			],
+			[
+				"M",
+				"MENTALRAY_LOCATION"
+			],
+			[
+				"edit",
+				"edit_note_curses_move"
+			],
+			[
+				"k",
+				"k_in"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Remote/Source/Remote Elements/Remote Element/RemoteElement.m",
+			"settings":
+			{
+				"buffer_size": 33799,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pre",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"pret",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"PRett",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"prett",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"form",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"pretty",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"forma",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ssshe",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"sssw",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssswit",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssswi",
+				"Set Syntax: Swift"
+			],
+			[
+				"sssh",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ssswif",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssswift",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssshell",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ssshel",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"sstex",
+				"Set Syntax: TeX"
+			],
+			[
+				"sspy",
+				"Set Syntax: Python"
+			],
+			[
+				"sstext",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"sss",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"sspl",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"ssYam",
+				"Set Syntax: YAML"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"view",
+				"View In Browser"
+			],
+			[
+				"she",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"Snip",
+				"Snippet: XML Processing Instruction"
+			],
+			[
+				"ssxml",
+				"Set Syntax: XML"
+			],
+			[
+				"SSpy",
+				"Set Syntax: Python"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Snippet:",
+				"Snippet: New Class"
+			],
+			[
+				"Snippet: ",
+				"Snippet: __magic__"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"col",
+				"Color picker"
+			],
+			[
+				"co",
+				"Color picker"
+			],
+			[
+				"color",
+				"Color picker"
+			],
+			[
+				"c",
+				"Color picker"
+			],
+			[
+				"pep",
+				"PEP8: Format Code"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"oretty",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"ssgnu",
+				"Set Syntax: Gnuplot"
+			],
+			[
+				"ssre",
+				"Set Syntax: Reduce"
+			],
+			[
+				"ssr",
+				"Set Syntax: Ruby"
+			],
+			[
+				"ssred",
+				"Set Syntax: Reduce"
+			],
+			[
+				"sslis",
+				"Set Syntax: Lisp"
+			],
+			[
+				"ssl",
+				"Set Syntax: Lisp"
+			],
+			[
+				"ssli",
+				"Set Syntax: Lisp"
+			],
+			[
+				"ssb",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"sscof",
+				"Set Syntax: CoffeeScript"
+			],
+			[
+				"ssjava",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"ssc",
+				"Set Syntax: C"
+			],
+			[
+				"ssapa",
+				"Set Syntax: Apache Conf"
+			],
+			[
+				"sspu",
+				"Set Syntax: Puppet"
+			],
+			[
+				"ssru",
+				"Set Syntax: Ruby"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"ssphp",
+				"Set Syntax: PHP"
+			],
+			[
+				"sass",
+				"SassBeautify"
+			],
+			[
+				"sssass",
+				"Set Syntax: Sass"
+			],
+			[
+				"sssas",
+				"Set Syntax: Sass"
+			],
+			[
+				"sassb",
+				"SassBeautify"
+			],
+			[
+				"sas",
+				"SassBeautify"
+			],
+			[
+				"SAS",
+				"SassBeautify"
+			],
+			[
+				"ssjade",
+				"Set Syntax: Jade"
+			],
+			[
+				"ssjd",
+				"Set Syntax: Jade"
+			],
+			[
+				"ssj",
+				"Set Syntax: Jade (Python)"
+			],
+			[
+				"ssjad",
+				"Set Syntax: Jade"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"ssja",
+				"Set Syntax: Jade"
+			],
+			[
+				"read",
+				"ReadmePlease"
+			],
+			[
+				"find",
+				"FindKeyConflicts: All Conflicts"
+			],
+			[
+				"for",
+				"Format: Php"
+			],
+			[
+				"ssph",
+				"Set Syntax: PHP"
+			],
+			[
+				"ssh",
+				"Set Syntax: HTML"
+			],
+			[
+				"format",
+				"Format: Php"
+			],
+			[
+				"php",
+				"Format: Php"
+			],
+			[
+				"fo",
+				"Format: Javascript"
+			],
+			[
+				"sssa",
+				"Set Syntax: Sass"
+			],
+			[
+				"ss",
+				"Set Syntax: Sass"
+			],
+			[
+				"ind",
+				"Preferences: Alignment Key Bindings – User"
+			],
+			[
+				"pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"ssp",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"z",
+				"Set Syntax: ZenCoding"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			],
+			[
+				"Pa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 593.0
+	},
+	"console":
+	{
+		"height": 378.0,
+		"history":
+		[
+			"view.run_command(\"detect_embedded_syntax\")",
+			"view.run_command(\"repeat_selected\", {\"count\":2})",
+			"sublime.log_commands(True)",
+			"view.settings().set(\"command_mode\", True)",
+			"view.settings()[\"command_mode\"] = True",
+			"view.run_command(\"repeat_selected\", {\"count\":2})",
+			"view.run_command(\"repeat_selected\", args={count:2})",
+			"view.run_command(\"repeat_selected\", {count:2})",
+			"view.run_command(\"repeat_selected\", {rpt_cnt:2})",
+			"view.run_command(\"repeat_selected\", {count:2})",
+			"view.run_command(\"repeat_selected\", 2)",
+			"view.run_command(\"repeat_selected\", args:{count: 2})",
+			"view.run_command(\"repeat_selected\", args={count: 2})",
+			"view.run_command(\"repeat_selected\", \"{count: 2}\")",
+			"view.run_command(\"repeat_selected\", {count: 2})",
+			"view.run_command(\"repeat_selected\", 2)",
+			"view.run_command(\"repeat_selected\", args={count:2})",
+			"view.run_command(\"repeat_selected\", args={count=2})",
+			"view.run_command(\"repeat_selected\", count=2)",
+			"view.run_command(\"repeat_selected\")",
+			"sublime.status_message('wtf')",
+			"status_message('wtf')",
+			"what",
+			"print(window)",
+			"help()",
+			"clear()",
+			"window.set_layout({'cols':[0.0, 0.5, 1.0],'rows':[0.0, 1.0],'cells':[[0,0,1,1],[1,0,2,1]]})",
+			"window.run_command(set_layout,{'cols':[0.0, 0.5, 1.0],'rows':[0.0, 1.0],'cells':[[0,0,1,1],[1,0,2,1]]})",
+			"sublime.run_command(set_layout,{'cols':[0.0, 0.5, 1.0],'rows':[0.0, 1.0],'cells':[[0,0,1,1],[1,0,2,1]]})",
+			"view.run_command('detect_embedded_syntax')",
+			"settings.has('shell')",
+			"settings = sublime.load_settings('DetectEmbeddedSyntax.sublime-settings')",
+			"settings.has('shell')",
+			"settings = sublime.load_settings('DetectEmbeddedSyntax.sublime-settings')",
+			"view.run_command('detect_embedded_syntax')",
+			"sublime.find_resources('*.tmLanguage')",
+			"len(sublime.find_resources('DetectEmbeddedSyntax.sublime-settings'))",
+			"sublime.find_resources('DetectEmbeddedSyntax.sublime-settings')",
+			"sublime.find_resources('*.tmLanguage')",
+			"view.settings().get('syntax')",
+			"view.run_command(\"plist_to_json\")",
+			"sublime.run_command(plist_to_json_command)",
+			"sublime.run_command(PlistToJsonCommand)",
+			"sublime.run_command(plist_to_json)",
+			"sublime.run_command(\"plist_to_json\")",
+			"sublime.run_command(\"plist_to_json_command\")",
+			"sublime.run_command(\"plist_to_json\")",
+			"sublime.run_command(\"plist_to_json_command\")",
+			"sublime.run_command(\"plist_to_json\")",
+			"run_command(\"plist_to_json\")",
+			"import json",
+			"import plistlib",
+			"random.randint(750, 20000)",
+			"random.randint(750, 40000)",
+			"random.randint(40000)",
+			"import random",
+			"window.run_command('run_shell_command')",
+			"window.run_command('run_shell')",
+			"clear",
+			"window.run_command(\"format_json\")",
+			"window.run_command('repeat_character')",
+			"self.window.run_command('repeat_character')",
+			"pydoc(window)",
+			"pydoc window",
+			"help(window)",
+			"window.command('prompt_open')",
+			"window",
+			"help(sublime)",
+			"help sublime",
+			"help()",
+			"help"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote Elements/Remote Element/RemoteElement.m",
+		"/Users/Moondeer/Library/Application Support/iPhone Simulator/7.1-64/Applications/1A24F79F-7854-4F5B-9AC9-B15DAEC5ED71/Documents/RemoteController.json",
+		"/Users/Moondeer/Library/Application Support/iPhone Simulator/7.1-64/Applications/1A24F79F-7854-4F5B-9AC9-B15DAEC5ED71/Documents/Remote.json",
+		"/Users/Moondeer/Library/Application Support/iPhone Simulator/7.1-64/Applications/1A24F79F-7854-4F5B-9AC9-B15DAEC5ED71/Documents/Manufacturer.json",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Singletons/DatabaseLoader.m",
+		"/Users/Moondeer/Library/Application Support/iPhone Simulator/7.1-64/Applications/1A24F79F-7854-4F5B-9AC9-B15DAEC5ED71/Documents/Image.json",
+		"/Users/Moondeer/Library/Application Support/iPhone Simulator/7.1-64/Applications/1A24F79F-7854-4F5B-9AC9-B15DAEC5ED71/Documents/ComponentDevice.json",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote Elements/Remote Element/Button+ImportingAndExporting.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Bank/Bankables/Manufacturer.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Bank/Bankables/IRCode.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Bank/Bankables/Image.m",
+		"/Users/Moondeer/.uncrustify/uncrustify.cfg",
+		"/Users/Moondeer/Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/include/MSKit/MSLogMacros.h",
+		"/Users/Moondeer/Library/Developer/Xcode/UserData/FontAndColorThemes/Darcula (10pt) - Input - Print.dvtcolortheme",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ControlState.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ButtonGroup.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/MagicalRecord/MagicalRecord/Source/CoreData+MagicalRecord.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Button.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/MSKit/MSKit.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/ParseKit/ParseKit/ParseKit.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/ParseKit/include/ParseKit/ParseKit_Internal.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/ParseKit/include/ParseKit/ParseKit.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Singletons/MSRemoteAppController.m",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Singletons/DatabaseLoader.m",
+		"/Users/Moondeer/Library/Developer/Xcode/UserData/FontAndColorThemes/Quiet Light.dvtcolortheme",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks/ParseKit/include/ParseKit/ParseKit.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/MagicalRecord/MagicalRecord/Source/Support/MagicalRecord-iOS-Prefix.pch",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Control State Sets/ControlStateSet.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Control State Sets/ControlStateColorSet.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote.xcworkspace/contents.xcworkspacedata",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-own-target-headers.hmap",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Remote Element/Button.h",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Data Structures/BitArray.swift",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Extensions/Dictionary+MoonkitExtensions.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/RemoteElement.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StringAttributeMap.swift",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Data Structures/OrderedDictionary.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StringAttributeStateMap.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Remotes/Dish Hopper.remote.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DatabaseConstructionTests/DVR-RERemote.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks/ParseKit/lib/MGTemplateEngine/sample_template.txt",
+		"/Users/Moondeer/Projects/HomeRemote/Swift.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Commands/CommandSet.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Images/Glyphish Icons.image.json",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Extensions/UIColor+MoonKitAdditions.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Commands/CommandContainer.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StateMap.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ConstraintManager.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Remote.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Bank/Image.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Configuration.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataLogicTests/ImageTests.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Model/ImportSupport.swift",
+		"/Users/Moondeer/Projects/HomeRemote/ConfigurationTests/Info.plist",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Commands/CommandCollection.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataLogicTests/CommandTests.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Documentation/html/Classes/RemoteElement.html",
+		"/Users/Moondeer/Projects/HomeRemote/RemoteElementTests/RemoteElementTests.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/Remote -loadData.xcscheme",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Remote Element/RemoteElement_Private.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/CoreData/Remote.sqlite",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks/ParseKit/lib/OCMock.framework/Headers/OCMockRecorder.h",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Pretty JSON.sublime-settings",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Resources/Glyphish/Glyphish 4/Glyphish 4 Icons.ai",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Images/Glyphish Backgrounds.image.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/CoreData/Database JSON Lists/Backup 2/Glyphish.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Resources/Glyphish Images.txt",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Resources/Glyphish Icons.txt",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Resources/Glyphish Backgrounds.txt",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Resources/Glyphish.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Glyphish.json",
+		"/Users/Moondeer/Projects/swift_custom_operators/swift_custom_operators/main.swift",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Extensions/UnicodeScalar+MoonKitAdditions.swift",
+		"/Users/Moondeer/Projects/Resources/Fonts&Glyphs/UnicodeNamesList.swift",
+		"/Users/Moondeer/Projects/Resources/Fonts&Glyphs/UnicodeNamesList.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/CoreData/Database JSON Lists/Backup 2/Remote-Formatted.json",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Other/FontAwesomeIcon.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Import Data/Remotes/Dish Hopper.remote.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Remotes/Home Screen.remote.json",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Extensions/String+MoonKitAdditions.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphoneos/Remote.app/CommandDetailEditorsStoryboard.storyboardc/SwitchToRemoteCommand.nib",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/CoreData/Database JSON Lists/Import Data.sublime-project",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks/ParseKit/test/MiniMathParserTest.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Activities/Playstation.activity.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Commands/Command Subclasses/ActivityCommand.m",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Commands/ActivityCommand.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Remote Controllers/Activity.m",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Elements/Remote Controllers/Activity.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Controllers/Activity.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataLogicTests/ActivityTests.m",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataLogicTests/ActivityTests.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/Frameworks/ParseKit/lib/MGTemplateEngine/AppController.h",
+		"/Users/Moondeer/Projects/HomeRemote/MoonKit/Extensions/Array+MoonkitAdditions.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Activities/Sonos.activity.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DatabaseConstructionTests/REActivity.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemoteTests/HomeRemoteTests-Bridging-Header.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote.xcodeproj/xcuserdata/Moondeer.xcuserdatad/xcschemes/HomeRemote.xcscheme",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote.xcodeproj/project.xcworkspace/xcshareddata/HomeRemote.xccheckout",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/HomeRemote-Bridging-Header.h",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemoteTests/HomeRemoteTests.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DatabaseConstructionTests/HomeRERemote.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/HomeRemote.entitlements",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote.sublime-project",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Headers.epub",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Activities/Dish Hopper.activity.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Import Data/Manufacturers/Dish.manufacturer.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Documentation/docset-installed.txt",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/Pretty JSON/Pretty JSON.sublime-settings",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Import Data/Remotes/Dish Hopper.remote.wtf.json",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphoneos/Remote.app/CommandDetailEditorsStoryboard.storyboardc/HGH-pz-1sG-view-b7N-uI-Eij.nib",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DatabaseConstructionTests/UUIDs.json",
+		"/Users/Moondeer/Projects/HomeRemote/ImportTests/ImportTests.swift",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Construction/ButtonGroupBuilder.m",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Model/Model.swift",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Import Data/Remotes/Home Screen.remote.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Import Data/Activities/Dish Hopper.activity.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Import Data/Manufacturers/Dish.manufacturer.json",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Layout.swift",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/tmThemes/darcula.tmTheme",
+		"/Users/Moondeer/Projects/Resources/Fonts&Glyphs/Input-Font/README.txt",
+		"/Users/Moondeer/Projects/Resources/Fonts&Glyphs/Input-Font/hackLineSpace.zsh",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/CoreData/Model.plist",
+		"/Users/Moondeer/Projects/HomeRemote/HomeRemote/Fonts/modernpics.otf",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/.idea/modules.xml",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/MSKit/MSKit-OSX/MSKit-OSX.h",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/.idea/misc.xml",
+		"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataLogicTests/ConstraintTests.h"
+	],
+	"find":
+	{
+		"height": 22.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/Users/Moondeer/Projects/Gyre",
+			"/Users/Moondeer/Box Documents/Projects/Gyre",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/jade",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/coffee",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/sass",
+			"/Library/Ruby/Gems/2.0.0/gems/bootstrap-sass-3.0.2.1",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/sass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/sass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/sass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade",
+			"<project>",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/PeacefulPathwaysFramework-Alt/jade",
+			"<project>",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/PeacefulPathwaysFramework-Alt/jade",
+			"<open files>",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/PeacefulPathwaysFramework/less/bootstrap",
+			"/Applications/MAMP/htdocs/styles/less",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"=",
+			"manufacturer",
+			";",
+			"remoteElement",
+			"flag &",
+			"#i",
+			"#ifdef",
+			"SHOULD_",
+			"self.managedObjectContext",
+			"titleSet",
+			"Title",
+			"titles",
+			"title",
+			"Title",
+			"titles",
+			"Title",
+			"titleSet",
+			"titles",
+			"title",
+			" @{ @\"default\" : @{ @\"normal\" : ",
+			"self",
+			"data",
+			",",
+			"@",
+			"self",
+			"sp_",
+			"Menlo-Bold - 13.0",
+			"Menlo-Italic - 13.0",
+			"Menlo-Regular - 13.0",
+			"MR_importFromArray",
+			"nsprintf",
+			"<ParseKit",
+			"<ParseKit/",
+			"ParseKit/",
+			"<ParseKit",
+			"<MagicalRecord",
+			"Private",
+			"^\\./[^/]+",
+			"#import <([^>]+)>",
+			"value",
+			"String",
+			"font",
+			" ?? \"nil\"",
+			"\":",
+			".",
+			"container",
+			"image",
+			"configurations",
+			"p",
+			"buttonGroup",
+			"ButtonGroup",
+			"buttonGroup",
+			"ButtonGroup",
+			"Group",
+			"remote",
+			"Remote",
+			"//extension RemoteElement {\n",
+			"//}\n",
+			"options",
+			"//extension Remote {\n",
+			"//}\n",
+			"//extension ButtonGroup {\n",
+			"//}\n",
+			"options",
+			"var",
+			"{",
+			"first",
+			"Button",
+			"{\n              \"code\": ",
+			"command-set",
+			"{\n                \"code\":",
+			"command-set",
+			",",
+			", ",
+			"{",
+			"aquamarine",
+			"aqua",
+			"antique",
+			"alice",
+			"group",
+			"flipside",
+			"brown",
+			"light-text",
+			"dark-text",
+			"light-gray",
+			"system-orang",
+			"system-green",
+			"clear",
+			"//",
+			"\"info\": {",
+			"\"icon\": {\n                \"colors\": {",
+			"  print",
+			"print",
+			"^                ",
+			"                ",
+			"Scaler",
+			"\\t",
+			"                ",
+			"(\\(0x[0-9A-F]{4,}\\)):",
+			",$",
+			"0x",
+			"\"([0-9A-F]{4,})\"",
+			"UnicodeScalar",
+			"\\{\\n +\"name\": (.*)\\n *\\}",
+			"\\{\\n +\"name",
+			"^;.*\\n",
+			", \"=\":.*\\},",
+			"<control>\", \"=\": \"([^\"]+\"\\})",
+			", \"=\":",
+			"\\n\\n",
+			"^ +%.*\\n",
+			"\",\\n",
+			"^\\{\"start.*",
+			"^@.*",
+			"^\"(?:category|note).*\\n",
+			"\\}, .*",
+			"\\n +[#:x~*] +(.*)",
+			"\\n +([=]) +(.*)",
+			"\\n +(x=]) +(.*)",
+			"^(\"[0-9A-F]{4,}\".*),$",
+			"\\n +[#:] +(.*)",
+			"^(\"[0-9A-F]{4,}\".*),$",
+			"\\n +[~] +(.*)",
+			"\\n +([x=*]) +(.*)",
+			"\\n +[x=*] +(.*)",
+			"^([0-9A-F]{4,}) +(.*)",
+			"^@\\+ +(.*)",
+			"@+"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"MSKit",
+			"#import \"\\1\"",
+			"",
+			"Scalar",
+			"  ",
+			"case UnicodeScaler\\1: return",
+			"",
+			"0x\\1",
+			"\\1",
+			"",
+			"},",
+			"\\1",
+			"\\n",
+			"",
+			"\"},\\n",
+			"",
+			"},",
+			"",
+			" \"\\1\": \"\\2\"},",
+			"\\1}",
+			" \"\\1\": \"\\2\",",
+			"\\1}",
+			" \"\\1\": \"\\2\",",
+			"\"\\1\": { \"name\": \"\\2\",",
+			"\"note\": \"\\1\",",
+			"\"category\": \"\\1\",",
+			"\"category\": \\1",
+			"\\1",
+			"\\\\\\d",
+			"\\\\d",
+			"println()",
+			"\")",
+			"println(\"",
+			"",
+			"//println",
+			"",
+			"\\1 - \\x{\\2}",
+			"println(\\1)",
+			"\\t",
+			"\\1\\2,\\n",
+			"",
+			"\\1\\2,\\n",
+			"\\1\\2,",
+			"CGFloat",
+			"CGFloat(",
+			"Double(",
+			"\\n",
+			"'\\1' '\\2'",
+			"$'\\1' $'\\2'",
+			"\\n",
+			" ",
+			"\\1\\t\\t\\t\\t\\t\\t\\t",
+			"\\1\\t\\t\\t\\t\\t",
+			"\\1\\t\\t\\2\\t\\t\\3\\n",
+			"---\\n",
+			"--------------------------------------------------------------------------------\\n             ",
+			"--------------------------------------------------------------------------------\\n              ",
+			"--------------------------------------------------------------------------------\\n",
+			"\\t\\t",
+			"\\t",
+			"\\t\\t",
+			"\\1\\t\\t\\t\\2",
+			"\\1\\t\\2",
+			"\\1\\t",
+			"\\1 ",
+			" ",
+			"",
+			"\\n",
+			"\\\\\\\\n",
+			"\\1\\\\n\\2",
+			"",
+			"[[",
+			"\\1 = \\2 ",
+			"\\1 = \\2",
+			"",
+			" ",
+			"set grid y\\n",
+			"",
+			" ",
+			" \\1  2, 1, 3, 1, 2, 3, 2, 1, 2, 3, 1, 2, 3, 4, 3, 1\\n",
+			" ",
+			"",
+			"<!-- \\1 -->",
+			"\\n",
+			"'''",
+			"= '''",
+			",",
+			"\\n",
+			"\\t",
+			"",
+			"\\t",
+			"GyreScene",
+			"append tailScripts",
+			"color: $text-muted",
+			"{ trigger_error(\\1); die(); }",
+			"<?php \\1",
+			"<?php",
+			"send_creation_notice",
+			"fetch_memorials",
+			"connect_to_database",
+			"",
+			"\\1",
+			"+\\1'\\2'\\3",
+			"\\1'\\2'\\3",
+			"font-size-h1",
+			"font-size-h2",
+			"font-size-h3",
+			"headings-font-family",
+			"+",
+			"+semi-bold",
+			"+img-responsive",
+			"light-grayish-brown",
+			"grayish-brown",
+			"\\1-light-blue-background",
+			"  ",
+			"include _header.jade",
+			"/images/",
+			"context",
+			"REButtonBuilder",
+			"\\1NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];\\n\\1\\2context\\3",
+			"+",
+			"peacefulpathways.co",
+			"\".BASE_HOST.\"",
+			"<?php echo \"<img src=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" />\"; ?>",
+			"<?php echo \"<img src=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" width=\\\\\"\\3\\\\\" height=\\\\\"\\4\\\\\" />\"; ?>",
+			"<?php echo \"<img src=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" />\"; ?>",
+			"<?php echo \"<link rel='\\3' href=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" type='\\4' />\"; ?>",
+			"<?php echo \"<link rel='\\1' href=\\\\\"\\2{$_SERVER['HTTP_HOST']}\\3\\\\\" />\"; ?>"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Remote/Source/Remote Elements/Remote Element/RemoteElement.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 33799,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Objective-C/Objective-C.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 19.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Shell Command Output":
+	{
+		"height": 0.0
+	},
+	"output.autopep8":
+	{
+		"height": 106.0
+	},
+	"output.exec":
+	{
+		"height": 558.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.package_dev":
+	{
+		"height": 106.0
+	},
+	"output.run_shell_command":
+	{
+		"height": 222.0
+	},
+	"output.runshell":
+	{
+		"height": 0.0
+	},
+	"project": "Remote.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"controlstate.",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ControlState.swift"
+			],
+			[
+				"controlst",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ControlState.swift"
+			],
+			[
+				"buttongroup",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ButtonGroup.swift"
+			],
+			[
+				"button.swi",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Button.swift"
+			],
+			[
+				"ord",
+				"HomeRemote/MoonKit/Data Structures/OrderedDictionary.swift"
+			],
+			[
+				"dic",
+				"HomeRemote/MoonKit/Extensions/Dictionary+MoonkitExtensions.swift"
+			],
+			[
+				"stringattributest",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StringAttributeStateMap.swift"
+			],
+			[
+				"stringattr",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StringAttributeMap.swift"
+			],
+			[
+				"controlstate.s",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ControlState.swift"
+			],
+			[
+				"statem",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StateMap.swift"
+			],
+			[
+				"ordere",
+				"HomeRemote/MoonKit/Data Structures/OrderedDictionary.swift"
+			],
+			[
+				"stringat",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StringAttributeMap.swift"
+			],
+			[
+				"button.sw",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Button.swift"
+			],
+			[
+				"uic",
+				"HomeRemote/MoonKit/Extensions/UIColor+MoonKitAdditions.swift"
+			],
+			[
+				"configuration",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Configuration.swift"
+			],
+			[
+				"image.s",
+				"HomeRemote/HomeRemote/Source/Bank/Image.swift"
+			],
+			[
+				"commandcont",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Commands/CommandContainer.swift"
+			],
+			[
+				"remotelee",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/RemoteElement.swift"
+			],
+			[
+				"remote.s",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Remote.swift"
+			],
+			[
+				"order",
+				"HomeRemote/MoonKit/Data Structures/OrderedDictionary.swift"
+			],
+			[
+				"glyphish",
+				"HomeRemote/HomeRemote/Source/Import Data/Images/Glyphish Icons.image.json"
+			],
+			[
+				"swi",
+				"HomeRemote/Swift.swift"
+			],
+			[
+				"importsup",
+				"HomeRemote/HomeRemote/Source/Model/ImportSupport.swift"
+			],
+			[
+				"configuration.sw",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Configuration.swift"
+			],
+			[
+				"state",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/StateMap.swift"
+			],
+			[
+				"remoteelement.swift",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/RemoteElement.swift"
+			],
+			[
+				"home",
+				"HomeRemote/HomeRemote/Source/Import Data/Remotes/Home Screen.remote.json"
+			],
+			[
+				"dish",
+				"HomeRemote/HomeRemote/Source/Import Data/Remotes/Dish Hopper.remote.json"
+			],
+			[
+				"uicolor",
+				"HomeRemote/MoonKit/Extensions/UIColor+MoonKitAdditions.swift"
+			],
+			[
+				"import",
+				"HomeRemote/HomeRemote/Source/Model/ImportSupport.swift"
+			],
+			[
+				"remote.sw",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Remote.swift"
+			],
+			[
+				"swif",
+				"HomeRemote/Swift.swift"
+			],
+			[
+				"buttongroup.sw",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ButtonGroup.swift"
+			],
+			[
+				"model.sw",
+				"HomeRemote/HomeRemote/Source/Model/Model.swift"
+			],
+			[
+				"constraintman",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ConstraintManager.swift"
+			],
+			[
+				"remoteelement.swi",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/RemoteElement.swift"
+			],
+			[
+				"fontawesomei",
+				"HomeRemote/MoonKit/Other/FontAwesomeIcon.swift"
+			],
+			[
+				"array",
+				"HomeRemote/MoonKit/Extensions/Array+MoonkitAdditions.swift"
+			],
+			[
+				"jsonparser.s",
+				"HomeRemote/MoonKit/Parsing/JSONParser.swift"
+			],
+			[
+				"bitarr",
+				"HomeRemote/MoonKit/Data Structures/BitArray.swift"
+			],
+			[
+				"lay",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Layout.swift"
+			],
+			[
+				"bank.sw",
+				"HomeRemote/HomeRemote/Source/Bank/Bank.swift"
+			],
+			[
+				"laout.s",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Layout.swift"
+			],
+			[
+				"control",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ControlState.swift"
+			],
+			[
+				"bita",
+				"HomeRemote/MoonKit/Data Structures/BitArray.swift"
+			],
+			[
+				"keym",
+				"HomeRemote/HomeRemote/Source/Model/KeyMap.swift"
+			],
+			[
+				"bitarray",
+				"HomeRemote/MoonKit/Data Structures/BitArray.swift"
+			],
+			[
+				"controlstateset",
+				"Remote/Remote/Source/Remote Elements/Control State Sets/ControlStateSet.m"
+			],
+			[
+				"controlstateset.sw",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Control State Sets/ControlStateSet.swift"
+			],
+			[
+				"controlstate",
+				"Remote/Remote/Source/Remote Elements/Control State Sets/ControlStateSet.h"
+			],
+			[
+				"colors",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Control State Sets/ColorSet.swift"
+			],
+			[
+				"contr",
+				"Remote/Remote/Source/Remote Elements/Control State Sets/ControlStateColorSet.h"
+			],
+			[
+				"controlstateco",
+				"Remote/Remote/Source/Remote Elements/Control State Sets/ControlStateColorSet.m"
+			],
+			[
+				"configurationdelegate.si",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/ConfigurationDelegate.swift"
+			],
+			[
+				"remoteelement.swif",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/RemoteElement.swift"
+			],
+			[
+				"remoteelement_",
+				"Remote/Remote/Source/Remote Elements/Remote Element/RemoteElement_Private.h"
+			],
+			[
+				"button.h",
+				"Remote/Remote/Source/Remote Elements/Remote Element/Button.h"
+			],
+			[
+				"button.s",
+				"HomeRemote/HomeRemote/Source/Remote Elements/Remote Element/Button.swift"
+			],
+			[
+				"button.m",
+				"Remote/Remote/Source/Remote Elements/Remote Element/Button.m"
+			],
+			[
+				"nsma",
+				"HomeRemote/MoonKit/Extensions/NSManagedObject+MoonKitAdditions.swift"
+			],
+			[
+				"path",
+				"custom/paths.zsh"
+			],
+			[
+				"color",
+				"functions/color_index"
+			],
+			[
+				"noe",
+				"functions/notes-edit"
+			],
+			[
+				"note",
+				"functions/notes"
+			],
+			[
+				"memorial-res",
+				"Website/Codekit-Compass/jade/memorial-response.jade"
+			],
+			[
+				"mem",
+				"Website/Codekit-Compass/jade/memorials.jade"
+			],
+			[
+				"analy",
+				"Website/Codekit-Compass/coffee/analytics.coffee"
+			],
+			[
+				"_sc",
+				"Website/Codekit-Compass/jade/_scaffold.jade"
+			],
+			[
+				"res",
+				"Website/Codekit-Compass/sass/resources.sass"
+			],
+			[
+				"ser",
+				"Website/Codekit-Compass/sass/services.sass"
+			],
+			[
+				"contact-",
+				"Website/Codekit-Compass/jade/contact-us.jade"
+			],
+			[
+				"_home",
+				"Website/Codekit-Compass/sass/_home-page-tab-panes.sass"
+			],
+			[
+				"memro",
+				"Website/Codekit-Compass/sass/memorials.sass"
+			],
+			[
+				"_mix",
+				"Website/Codekit-Compass/sass/_mixins.sass"
+			],
+			[
+				"contact",
+				"Website/Codekit-Compass/coffee/contact-us.coffee"
+			],
+			[
+				"resources",
+				"Website/Codekit-Compass/jade/resources.jade"
+			],
+			[
+				"serv",
+				"Website/Codekit-Compass/coffee/services.coffee"
+			],
+			[
+				"conf",
+				"Website/Codekit-Compass/config.rb"
+			],
+			[
+				"config",
+				"Website/Codekit-Compass/config.rb"
+			],
+			[
+				"about",
+				"Website/Codekit-Compass/jade/about-us.jade"
+			],
+			[
+				"abou",
+				"Website/Codekit-Compass/sass/about-us.sass"
+			],
+			[
+				"scaffol",
+				"Website/Codekit-Compass/sass/scaffold.sass"
+			],
+			[
+				"pixel",
+				"Website/Codekit-Compass/coffee/pixel-ratio.coffee"
+			],
+			[
+				"class.m",
+				"Website/Codekit-Compass/php/class.memorial.php"
+			],
+			[
+				"defa",
+				"puppet/manifests/default.pp"
+			],
+			[
+				"_head",
+				"Codekit-Compass/sass/_header.sass"
+			],
+			[
+				"contact-u",
+				"Codekit-Compass/coffee/contact-us.coffee"
+			],
+			[
+				"memor",
+				"Website/Codekit-Compass/jade/memorials.jade"
+			],
+			[
+				"sty",
+				"Website/Codekit-Compass/sass/styles.sass"
+			],
+			[
+				"_mixin",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
+			],
+			[
+				"_create",
+				"Website/Codekit-Compass/sass/_create-memorial.sass"
+			],
+			[
+				"_sca",
+				"Website/Codekit-Compass/jade/_scaffold.jade"
+			],
+			[
+				"style",
+				"Website/Codekit-Compass/sass/styles.sass"
+			],
+			[
+				"style.c",
+				"Website/Codekit-Compass/stylesheets/styles.css"
+			],
+			[
+				"_resou",
+				"Website/Codekit-Compass/sass/_resources.sass"
+			],
+			[
+				"_var",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
+			],
+			[
+				"_mixins.scss",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
+			],
+			[
+				"_cont",
+				"Website/Codekit-Compass/sass/_contact-us.sass"
+			],
+			[
+				"_he",
+				"Website/Codekit-Compass/sass/_header.sass"
+			],
+			[
+				"_h",
+				"Website/Codekit-Compass/jade/_header.jade"
+			],
+			[
+				"_re",
+				"Website/Codekit-Compass/sass/_resources.sass"
+			],
+			[
+				"_ge",
+				"Website/Codekit-Compass/sass/_general.sass"
+			],
+			[
+				"_mem",
+				"Peaceful Pathways - Compass/sass/_memorials.sass"
+			],
+			[
+				"class",
+				"Peaceful Pathways - Compass/php/class.memorial.php"
+			],
+			[
+				"fun",
+				"Peaceful Pathways - Compass/php/functions.php"
+			],
+			[
+				"func",
+				"Peaceful Pathways - Compass/htdocs/functions.php"
+			],
+			[
+				"feline",
+				"Peaceful Pathways - Compass/jade/feline-grief.jade"
+			],
+			[
+				"_mixi",
+				"Peaceful Pathways - Compass/jade/_mixins.jade"
+			],
+			[
+				"_mi",
+				"Peaceful Pathways - Compass/sass/_mixins.sass"
+			],
+			[
+				"_",
+				"Peaceful Pathways - Compass/jade/_scaffold.jade"
+			],
+			[
+				"_lay",
+				"Peaceful Pathways - Compass/jade/_layout.jade"
+			],
+			[
+				"pack",
+				"Peaceful Pathways - Compass/package.json"
+			],
+			[
+				"index",
+				"Peaceful Pathways - Compass/jade/index.jade"
+			],
+			[
+				"_hom",
+				"Peaceful Pathways - Compass/sass/_home-page.sass"
+			],
+			[
+				"_mixins",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
+			],
+			[
+				"_ser",
+				"Peaceful Pathways - Compass/sass/_services.sass"
+			],
+			[
+				"memo",
+				"Peaceful Pathways - Compass/jade/memorials.jade"
+			],
+			[
+				"_me",
+				"Peaceful Pathways - Compass/sass/_memorials.sass"
+			],
+			[
+				"_varia",
+				"Peaceful Pathways - Compass/sass/_variables.sass"
+			],
+			[
+				"_gen",
+				"Peaceful Pathways - Compass/sass/_general.sass"
+			],
+			[
+				"_header",
+				"Peaceful Pathways - Compass/jade/_header.jade"
+			],
+			[
+				"_hea",
+				"Peaceful Pathways - Compass/sass/_header.sass"
+			],
+			[
+				"t",
+				"Peaceful Pathways - Compass/coffee/tab-pane.coffee"
+			],
+			[
+				"_res",
+				"Peaceful Pathways - Compass/sass/_resources.sass"
+			],
+			[
+				"_about",
+				"Peaceful Pathways - Compass/sass/_about-us.sass"
+			],
+			[
+				"_variables.sc",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
+			],
+			[
+				"_va",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
+			],
+			[
+				"ind",
+				"Peaceful Pathways - Compass/jade/index.jade"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 568.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 251.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

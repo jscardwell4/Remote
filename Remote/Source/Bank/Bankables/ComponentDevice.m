@@ -69,7 +69,7 @@
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    if (ModelObjectShouldInitialize) self.user = YES;
+    self.user = YES;
 }
 
 + (instancetype)fetchDeviceWithName:(NSString *)name
@@ -196,7 +196,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
      
      {
@@ -217,107 +217,53 @@
 
      */
 
-    ComponentDevice * componentDevice = [super importObjectFromData:data inContext:moc];
 
-    if (!componentDevice) {
+    [super updateWithData:data];
 
-        componentDevice = [ComponentDevice objectWithUUID:data[@"uuid"] context:moc];
-
-        NSString * name          = data[@"info"][@"name"];
-        NSNumber * port          = data[@"port"];
-        id         onCommand     = data[@"onCommand"];
-        id         offCommand    = data[@"offCommand"];
-        id         manufacturer  = data[@"manufacturer"];
-        NSArray  * codes         = data[@"codes"];
+    NSString               * name         = data[@"info"][@"name"];
+    NSNumber               * port         = data[@"port"];
+    id                       onCommand    = data[@"onCommand"];
+    id                       offCommand   = data[@"offCommand"];
+    id                       manufacturer = data[@"manufacturer"];
+    NSArray                * codes        = data[@"codes"];
+    NSManagedObjectContext * moc          = self.managedObjectContext;
 
 
-        if (name) componentDevice.info.name = name;
-        if (port) componentDevice.port = port.shortValue;
-        if (onCommand) {
-            if ([onCommand isKindOfClass:[NSString class]] && UUIDIsValid(onCommand)) {
-                //TODO: Fill out stub
-            } else if ([onCommand isKindOfClass:[NSDictionary class]]) {
-                componentDevice.onCommand = [Command importObjectFromData:onCommand inContext:moc];
-            }
-        }
-        if (offCommand) {
-            if ([offCommand isKindOfClass:[NSString class]] && UUIDIsValid(offCommand)) {
-                //TODO: Fill out stub
-            } else if ([offCommand isKindOfClass:[NSDictionary class]]) {
-                componentDevice.onCommand = [Command importObjectFromData:offCommand inContext:moc];
-            }
-        }
-        if (manufacturer) {
-            if ([manufacturer isKindOfClass:[NSString class]] && UUIDIsValid(manufacturer)) {
-                Manufacturer * m = [Manufacturer existingObjectWithUUID:manufacturer context:moc];
-                if (!m) m = [Manufacturer objectWithUUID:manufacturer context:moc];
-                componentDevice.manufacturer = m;
-            } else if ([manufacturer isKindOfClass:[NSDictionary class]]) {
-                componentDevice.manufacturer = [Manufacturer importObjectFromData:manufacturer inContext:moc];
-            }
-        }
-        if (codes) {
-            NSMutableSet * componentDeviceCodes = [NSMutableSet set];
-            for (NSDictionary * code in codes) {
-                IRCode * componentDeviceCode = [IRCode importObjectFromData:code inContext:moc];
-                if (componentDeviceCode) [componentDeviceCodes addObject:componentDeviceCode];
-            }
-            componentDevice.codes = componentDeviceCodes;
+    if (name) self.info.name = name;
+    if (port) self.port = port.shortValue;
+    if (onCommand) {
+        if ([onCommand isKindOfClass:[NSString class]] && UUIDIsValid(onCommand)) {
+            //TODO: Fill out stub
+        } else if ([onCommand isKindOfClass:[NSDictionary class]]) {
+            self.onCommand = [Command importObjectFromData:onCommand inContext:moc];
         }
     }
-
-    return componentDevice;
-
-}
-
-/*
-- (BOOL)shouldImportCodes:(id)data { return YES; }
-- (BOOL)shouldImportConfigurations:(id)data { return YES; }
-- (BOOL)shouldImportInfo:(id)data { return YES; }
-- (BOOL)shouldImportManufacturer:(id)data { return YES; }
-- (BOOL)shouldImportNetworkDevice:(id)data { return YES; }
-- (BOOL)shouldImportOffCommand:(id)data { return YES; }
-- (BOOL)shouldImportOnCommand:(id)data { return YES; }
-- (BOOL)shouldImportPowerCommands:(id)data { return YES; }
-*/
-
-MSSTATIC_STRING_CONST kOnCommandKey = @"onCommand";
-MSSTATIC_STRING_CONST kOffCommandKey = @"offCommand";
-
-/*
-- (void)importCommandForKey:(NSString *)key data:(NSDictionary *)data
-{
-    if (![@[kOnCommandKey, kOffCommandKey] containsObject:key]) return;
-
-    NSString * classKey = data[@"class"];
-    Class commandClass = commandClassForImportKey(classKey);
-
-    if (!commandClass) return;
-
-    Command * command = [commandClass importFromData:data
-                                                inContext:self.managedObjectContext];
-
-    if (command) [self setValue:command forKey:key];
-}
-
-- (void)importOnCommand:(id)data
-{
-    if (isDictionaryKind(data) && [data hasKey:kOnCommandKey])
-    {
-        NSDictionary * commandData = data[kOnCommandKey];
-        if (isDictionaryKind(commandData)) [self importCommandForKey:kOnCommandKey data:commandData];
+    if (offCommand) {
+        if ([offCommand isKindOfClass:[NSString class]] && UUIDIsValid(offCommand)) {
+            //TODO: Fill out stub
+        } else if ([offCommand isKindOfClass:[NSDictionary class]]) {
+            self.onCommand = [Command importObjectFromData:offCommand inContext:moc];
+        }
     }
-}
-
-- (void)importOffCommand:(id)data
-{
-    if (isDictionaryKind(data) && [data hasKey:kOffCommandKey])
-    {
-        NSDictionary * commandData = data[kOffCommandKey];
-        if (isDictionaryKind(commandData)) [self importCommandForKey:kOffCommandKey data:commandData];
+    if (manufacturer) {
+        if ([manufacturer isKindOfClass:[NSString class]] && UUIDIsValid(manufacturer)) {
+            Manufacturer * m = [Manufacturer existingObjectWithUUID:manufacturer context:moc];
+            if (!m) m = [Manufacturer objectWithUUID:manufacturer context:moc];
+            self.manufacturer = m;
+        } else if ([manufacturer isKindOfClass:[NSDictionary class]]) {
+            self.manufacturer = [Manufacturer importObjectFromData:manufacturer inContext:moc];
+        }
     }
+    if (codes) {
+        NSMutableSet * componentDeviceCodes = [NSMutableSet set];
+        for (NSDictionary * code in codes) {
+            IRCode * componentDeviceCode = [IRCode importObjectFromData:code inContext:moc];
+            if (componentDeviceCode) [componentDeviceCodes addObject:componentDeviceCode];
+        }
+        self.codes = componentDeviceCodes;
+    }
+
 }
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Bankable

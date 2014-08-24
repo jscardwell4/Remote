@@ -18,6 +18,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSArray (MSKitAdditions)
 
++ (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count {
+    return [NSMutableArray arrayWithObject:obj count:count];
+}
 
 - (NSString *)JSONString
 {
@@ -209,6 +212,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 @implementation NSMutableArray (MSKitAdditions)
+
++ (instancetype)arrayWithObject:(id)obj count:(NSUInteger)count {
+    if (!(obj && count)) return nil;
+
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
+    for (int i = 0; i < count; i++) { array[i] = obj; }
+
+    return array;
+}
 
 +(id)arrayWithNullCapacity:(NSUInteger)capacity
 {

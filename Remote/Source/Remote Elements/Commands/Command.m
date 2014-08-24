@@ -58,51 +58,34 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 + (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc
 {
 
-    Command * command = [super importObjectFromData:data inContext:moc];
+    Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
+    if (!commandClass) return nil;
 
-    if (!command) {
+    Command * command = nil;
 
-        Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
 
-        if (commandClass) {
+    BOOL commandClassImplementsMethod = NO;
+    unsigned int outCount;
 
-            BOOL subclassImplementsMethod = NO;
-            unsigned int outCount;
+    Method * classMethods = class_copyMethodList(commandClass, &outCount);
 
-            Method * classMethods = class_copyMethodList(commandClass, &outCount);
-
-            for (unsigned int i = 0; i < outCount; i++) {
-                if (sel_isEqual(_cmd, method_getName(classMethods[i]))) {
-                    subclassImplementsMethod = YES;
-                    break;
-                }
-            }
-
-            if (subclassImplementsMethod || commandClass != self)
-                command = [commandClass importObjectFromData:data inContext:moc];
-
+    for (unsigned int i = 0; i < outCount; i++) {
+        if (sel_isEqual(_cmd, method_getName(classMethods[i]))) {
+            commandClassImplementsMethod = YES;
+            break;
         }
     }
 
-    assert(![command isMemberOfClass:[Command class]]);
+    if (commandClassImplementsMethod || commandClass != self)
+        command = [commandClass importObjectFromData:data inContext:moc];
+
+    else if (self == commandClass)
+        command = method_getImplementation(class_getClassMethod([ModelObject class], _cmd))(self, _cmd, data, moc);
+
+    assert(command && ![command isMemberOfClass:[Command class]]);
 
     return command;
 }
-
-/*
-- (void)importIndicator:(id)data
-{
-
-}
-*/
-
-//- (BOOL)shouldImportButton:(id)data {return NO;}
-//- (BOOL)shouldImportButtonDelegates:(id)data {return NO;}
-//- (BOOL)shouldImportCommandSets:(id)data {return NO;}
-//- (BOOL)shouldImportLongPressButton:(id)data {return NO;}
-//- (BOOL)shouldImportMacroCommands:(id)data {return NO;}
-//- (BOOL)shouldImportOffDevice:(id)data {return NO;}
-//- (BOOL)shouldImportOnDevice:(id)data {return NO;}
 
 @end
 

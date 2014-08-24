@@ -41,7 +41,19 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return dictionary;
 }
 
-- (void)importUrl:(NSString *)data {self.url = [NSURL URLWithString:data];}
+- (void)updateWithData:(NSDictionary *)data {
+    /*
+         {
+             "class": "http",
+             "url": "http://10.0.1.27/0?1201=I=0"
+         }
+     */
+
+    [super updateWithData:data];
+    NSString * url = data[@"url"];
+    if (url) self.url = [NSURL URLWithString:url];
+
+}
 
 - (NSString *)shortDescription { return $(@"url:'%@'", self.primitiveUrl); }
 

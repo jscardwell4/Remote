@@ -25,8 +25,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize)
-        self.index = [MSDictionary dictionary];
+    self.index = [MSDictionary dictionary];
 }
 
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key { _index[key] = object; }

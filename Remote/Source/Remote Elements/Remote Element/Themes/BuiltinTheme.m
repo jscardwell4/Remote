@@ -39,7 +39,7 @@ MSSTRING_CONST REThemePowerBlueName  = @"Power Blue";
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize) _shouldInitializeColors = YES;
+    _shouldInitializeColors = YES;
 }
 
 - (void)initializeSettings

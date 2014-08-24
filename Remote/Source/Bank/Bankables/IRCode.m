@@ -113,7 +113,7 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     if (prontoHex)
     {
         NSDictionary * d = parseIRCodeFromProntoHex(prontoHex);
-        self.frequency = UnsignedIntegerValue(d[IRCodeFrequencyKey]);
+        self.frequency = d[IRCodeFrequencyKey];
         struct HexPair hexpair;
         [d[IRCodeLeadInKey] getValue:&hexpair];
         NSMutableString * pattern = [$(@"%u,%u", hexpair.num1, hexpair.num2) mutableCopy];
@@ -163,6 +163,30 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     [self didChangeValueForKey:@"manufacturer"];
 
     [self updateCategory];
+}
+
+- (void)updateWithData:(NSDictionary *)data {
+    /*
+         {
+            "uuid": "AE33A7C2-3C7A-4BAE-B87A-E29D060B6436",
+            "info": {
+                "name": "Subtitle",
+                "category": "(LG) 0828"
+            },
+            "codeset": "0828",
+            "frequency": 39105,
+            "onOffPattern": "344,176,22,3691,"
+        }
+     */
+
+    [super updateWithData:data];
+
+    self.info.name     = data[@"info"][@"name"]      ?: self.info.name    ;
+    self.info.category = data[@"info"][@"category"]  ?: self.info.category;
+    self.codeset       = data[@"codeset"]            ?: self.codeset      ;
+    self.frequency     = data[@"frequency"]          ?: self.frequency    ;
+    self.onOffPattern  = data[@"onOffPattern"]       ?: self.onOffPattern ;
+
 }
 
 - (MSDictionary *)JSONDictionary
@@ -220,9 +244,9 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     addIfCustom(self, dictionary, @"device",          self.device.uuid);
     addIfCustom(self, dictionary, @"codeset",         self.codeset);
     addIfCustom(self, dictionary, @"setsDeviceInput", @(self.setsDeviceInput));
-    addIfCustom(self, dictionary, @"offset",          @(self.offset));
-    addIfCustom(self, dictionary, @"repeatCount",     @(self.repeatCount));
-    addIfCustom(self, dictionary, @"frequency",       @(self.frequency));
+    addIfCustom(self, dictionary, @"offset",          self.offset);
+    addIfCustom(self, dictionary, @"repeatCount",     self.repeatCount);
+    addIfCustom(self, dictionary, @"frequency",       self.frequency);
     addIfCustom(self, dictionary, @"onOffPattern",    self.onOffPattern);
     addIfCustom(self, dictionary, @"prontoHex",       self.prontoHex);
 
@@ -242,9 +266,9 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
     dd[@"device"]          = $(@"'%@':%@", code.device.name, code.device.uuid);
     dd[@"codeset"]         = code.codeset;
     dd[@"setsDeviceInput"] = BOOLString(code.setsDeviceInput);
-    dd[@"offset"]          = $(@"%i",code.offset);
-    dd[@"repeatCount"]     = $(@"%i", code.repeatCount);
-    dd[@"frequency"]       = $(@"%llu", code.frequency);
+    dd[@"offset"]          = $(@"%@",code.offset);
+    dd[@"repeatCount"]     = $(@"%@", code.repeatCount);
+    dd[@"frequency"]       = $(@"%@", code.frequency);
     dd[@"onOffPattern"]    = code.onOffPattern;
     return (MSDictionary *)dd;
 }

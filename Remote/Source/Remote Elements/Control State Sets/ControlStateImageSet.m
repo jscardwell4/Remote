@@ -83,8 +83,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize)
-        self.colors = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext];
+    self.colors = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext];
 }
 
 - (UIImage *)UIImageForState:(NSUInteger)state

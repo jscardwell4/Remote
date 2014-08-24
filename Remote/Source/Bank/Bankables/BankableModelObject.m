@@ -46,15 +46,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
     [super awakeFromInsert];
 
-    if (ModelObjectShouldInitialize)
-    {
-        NSManagedObjectContext * context = self.managedObjectContext;
-        [context performBlockAndWait:
-         ^{
-             assert(!self.info);
-             self.info = [BankInfo createInContext:context];
-         }];
-    }
+    self.info = [BankInfo createInContext:self.managedObjectContext];
 }
 
 + (BankFlags)bankFlags { return BankDefault; }

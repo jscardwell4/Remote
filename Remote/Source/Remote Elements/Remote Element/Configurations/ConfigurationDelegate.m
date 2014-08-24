@@ -9,7 +9,6 @@
 #import "ConfigurationDelegate_Private.h"
 #import "RemoteElement.h"
 
-MSSTRING_CONST   REDefaultMode = @"default";
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE);

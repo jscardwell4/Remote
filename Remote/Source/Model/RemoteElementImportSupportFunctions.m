@@ -34,7 +34,7 @@ REType remoteElementTypeFromImportKey(NSString * importKey)
                                  RETypeUndefinedJSONKey   : @(RETypeUndefined)};
                   });
 
-    NSNumber * typeValue = index[importKey];
+    NSNumber * typeValue = (importKey ? index[importKey] : nil);
 
     return (typeValue ? [typeValue unsignedShortValue] : RETypeUndefined);
 }
@@ -105,7 +105,7 @@ RERole remoteElementRoleFromImportKey(NSString * importKey)
                   });
 
 
-    NSNumber * roleValue = index[importKey];
+    NSNumber * roleValue = (importKey ? index[importKey] : nil);
 
     return (roleValue ? [roleValue unsignedShortValue] : RERoleUndefined);
 }
@@ -170,7 +170,10 @@ REOptions remoteElementOptionsFromImportKey(NSString * importKey)
     return options;
 }
 
-REState remoteElementStateFromImportKey(NSString * importKey) { return REStateDefault; }
+REState remoteElementStateFromImportKey(NSString * importKey) {
+    //TODO: This should be updated to allow for state other than default
+    return REStateDefault;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style, & Theme
@@ -258,28 +261,31 @@ REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey)
 
     REThemeOverrideFlags flags = REThemeNone;
 
-    BOOL invert = NO;
+    if (importKey) {
 
-    if ([importKey[0] isEqualToNumber:@('-')])
-    {
-        invert = YES;
-        importKey = [importKey substringFromIndex:1];
-    }
+        BOOL invert = NO;
 
-    NSMutableSet * flagsToSet = [[[index allKeys] set] mutableCopy];
-    NSSet * parsedFlags = [[importKey componentsSeparatedByString:@" "] set];
+        if ([importKey[0] isEqualToNumber:@('-')])
+        {
+            invert = YES;
+            importKey = [importKey substringFromIndex:1];
+        }
 
-    if (invert) [flagsToSet minusSet:parsedFlags];
-    else [flagsToSet intersectSet:parsedFlags];
+        NSMutableSet * flagsToSet = [[[index allKeys] set] mutableCopy];
+        NSSet * parsedFlags = [[importKey componentsSeparatedByString:@" "] set];
+
+        if (invert) [flagsToSet minusSet:parsedFlags];
+        else [flagsToSet intersectSet:parsedFlags];
 
 
-    if ([parsedFlags count])
-    {
-        NSMutableArray * flagValues = [[index objectsForKeys:[flagsToSet allObjects]
-                                              notFoundMarker:NullObject] mutableCopy];
-        [flagValues removeNullObjects];
-        for (NSNumber * f  in flagValues)
-            flags |= [f unsignedShortValue];
+        if ([parsedFlags count])
+        {
+            NSMutableArray * flagValues = [[index objectsForKeys:[flagsToSet allObjects]
+                                                  notFoundMarker:NullObject] mutableCopy];
+            [flagValues removeNullObjects];
+            for (NSNumber * f  in flagValues)
+                flags |= [f unsignedShortValue];
+        }
     }
 
     return flags;
@@ -347,7 +353,9 @@ SwitchCommandType switchCommandTypeFromImportKey(NSString * importKey)
                                  SwitchModeCommandJSONKey   : @(SwitchModeCommand) };
                   });
 
-    return index[importKey];
+    NSNumber * result = (importKey ? index[importKey] : nil);
+
+    return (result ? result.unsignedShortValue : SwitchUndefinedCommand);
 }
 
 
@@ -365,7 +373,7 @@ CommandSetType commandSetTypeFromImportKey(NSString * importKey)
                                  CommandSetTypeRockerJSONKey      : @(CommandSetTypeRocker) };
                   });
 
-    NSNumber * typeValue = index[importKey];
+    NSNumber * typeValue = (importKey ? index[importKey] : nil);
 
     return (typeValue ? [typeValue unsignedShortValue] : CommandSetTypeUnspecified);
 }

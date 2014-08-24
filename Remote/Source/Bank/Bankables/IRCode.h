@@ -15,14 +15,14 @@
 
 @interface IRCode : BankableModelObject
 
-@property (nonatomic, assign) int64_t             frequency;
-@property (nonatomic, assign) int16_t             offset;
-@property (nonatomic, assign) int16_t             repeatCount;
-@property (nonatomic, strong) NSString          * onOffPattern;
-@property (nonatomic, strong) NSString          * prontoHex;
-@property (nonatomic, strong) ComponentDevice   * device;
-@property (nonatomic, assign) BOOL                setsDeviceInput;
-@property (nonatomic, copy)   NSString          * codeset;
-@property (nonatomic, strong) Manufacturer      * manufacturer;
+@property (nonatomic, assign) NSNumber        * frequency;
+@property (nonatomic, assign) NSNumber        * offset;
+@property (nonatomic, assign) NSNumber        * repeatCount;
+@property (nonatomic, strong) NSString        * onOffPattern;
+@property (nonatomic, strong) NSString        * prontoHex;
+@property (nonatomic, strong) ComponentDevice * device;
+@property (nonatomic, assign) BOOL              setsDeviceInput;
+@property (nonatomic, copy)   NSString        * codeset;
+@property (nonatomic, strong) Manufacturer    * manufacturer;
 
 @end

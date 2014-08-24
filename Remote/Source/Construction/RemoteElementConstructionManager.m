@@ -33,23 +33,23 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 */
 
 
-    [CoreDataManager saveWithBlockAndWait:
-      ^(NSManagedObjectContext * localContext)
-      {
-         // create builtin themes
-          BuiltinTheme * nightshadeTheme = [BuiltinTheme findFirstByAttribute:@"name"
-                                                                       withValue:REThemeNightshadeName
-                                                                       inContext:localContext];
-          if (nightshadeTheme)
-              [localContext deleteObject:nightshadeTheme];
-
-          nightshadeTheme =  [BuiltinTheme themeWithName:REThemeNightshadeName context:localContext];
-          assert(nightshadeTheme);
-
-          BuiltinTheme * powerBlueTheme = [BuiltinTheme themeWithName:REThemePowerBlueName
-                                                              context:localContext];
-          assert(powerBlueTheme);
-     }];
+//    [CoreDataManager saveWithBlockAndWait:
+//      ^(NSManagedObjectContext * localContext)
+//      {
+//         // create builtin themes
+//          BuiltinTheme * nightshadeTheme = [BuiltinTheme findFirstByAttribute:@"name"
+//                                                                       withValue:REThemeNightshadeName
+//                                                                       inContext:localContext];
+//          if (nightshadeTheme)
+//              [localContext deleteObject:nightshadeTheme];
+//
+//          nightshadeTheme =  [BuiltinTheme themeWithName:REThemeNightshadeName context:localContext];
+//          assert(nightshadeTheme);
+//
+//          BuiltinTheme * powerBlueTheme = [BuiltinTheme themeWithName:REThemePowerBlueName
+//                                                              context:localContext];
+//          assert(powerBlueTheme);
+//     }];
 
 /*
     [CoreDataManager saveWithBlockAndWait:

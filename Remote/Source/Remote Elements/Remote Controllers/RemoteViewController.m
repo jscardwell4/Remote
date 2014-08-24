@@ -294,6 +294,7 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
         remote = _remoteController.currentRemote;
     assert(remote);
 
+    remote.currentMode = REDefaultMode;
     [self insertRemoteView:[RemoteView viewWithModel:remote]];
 
     _flags.shouldHideTopToolbar = remote.topBarHidden;

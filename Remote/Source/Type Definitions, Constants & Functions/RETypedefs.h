@@ -525,17 +525,18 @@ static inline NSString * NSStringFromSystemCommandType(SystemCommandType type)
 
 typedef NS_ENUM(uint8_t, SwitchCommandType)
 {
-    SwitchRemoteCommand = 0,
-    SwitchModeCommand = 1
+    SwitchUndefinedCommand = 0,
+    SwitchRemoteCommand = 1,
+    SwitchModeCommand = 2
 };
 
 static inline NSString * NSStringFromSwitchCommandType(SwitchCommandType type)
 {
     switch (type)
     {
-        case SwitchModeCommand: return @"SwitchModeCommand";
+        case SwitchModeCommand:   return @"SwitchModeCommand";
         case SwitchRemoteCommand: return @"SwitchRemoteCommand";
-        default:  			      return nil;
+        default:  			      return @"Undefined";
     }
 }
 

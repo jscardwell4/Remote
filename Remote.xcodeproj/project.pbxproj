@@ -48,11 +48,6 @@
 		C203BC001726ED18002FD3EA /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* Theme.m */; };
 		C203BC011726ED18002FD3EA /* Theme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* Theme+ApplyingThemes.m */; };
 		C203BC021726ED1C002FD3EA /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* ConstraintManager.m */; };
-		C203BC031726ED1C002FD3EA /* LayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* LayoutConfiguration.m */; };
-		C203BC041726ED21002FD3EA /* ButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */; };
-		C203BC051726ED21002FD3EA /* ButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */; };
-		C203BC061726ED21002FD3EA /* ConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* ConfigurationDelegate.m */; };
-		C203BC071726ED21002FD3EA /* RemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */; };
 		C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */; };
 		C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
 		C203BC0B1726ED24002FD3EA /* Remote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* Remote.m */; };
@@ -479,11 +474,6 @@
 		C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* CommandContainer.m */; };
 		C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* CommandSet.m */; };
 		C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* ConstraintManager.m */; };
-		C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C616FF68900042B59E /* LayoutConfiguration.m */; };
-		C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B416FF68840042B59E /* ButtonConfigurationDelegate.m */; };
-		C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B516FF68840042B59E /* ButtonGroupConfigurationDelegate.m */; };
-		C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B716FF68840042B59E /* ConfigurationDelegate.m */; };
-		C25B477A16FF8D5E0042B59E /* RemoteConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46B916FF68840042B59E /* RemoteConfigurationDelegate.m */; };
 		C25B477B16FF8D5E0042B59E /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* Button.m */; };
 		C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* ButtonGroup.m */; };
 		C25B477D16FF8D5E0042B59E /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */; };
@@ -3801,11 +3791,6 @@
 				C203BC001726ED18002FD3EA /* Theme.m in Sources */,
 				C203BC011726ED18002FD3EA /* Theme+ApplyingThemes.m in Sources */,
 				C203BC021726ED1C002FD3EA /* ConstraintManager.m in Sources */,
-				C203BC031726ED1C002FD3EA /* LayoutConfiguration.m in Sources */,
-				C203BC041726ED21002FD3EA /* ButtonConfigurationDelegate.m in Sources */,
-				C203BC051726ED21002FD3EA /* ButtonGroupConfigurationDelegate.m in Sources */,
-				C203BC061726ED21002FD3EA /* ConfigurationDelegate.m in Sources */,
-				C203BC071726ED21002FD3EA /* RemoteConfigurationDelegate.m in Sources */,
 				C2D361D9182B265300775239 /* CommandSetBuilder.m in Sources */,
 				C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */,
 				C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */,
@@ -3913,13 +3898,8 @@
 				C2EF968717F7C4D4005AA639 /* BankCollectionViewFlowLayout.m in Sources */,
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
-				C25B477616FF8D5E0042B59E /* LayoutConfiguration.m in Sources */,
-				C25B477716FF8D5E0042B59E /* ButtonConfigurationDelegate.m in Sources */,
 				C279E08A182179E500C17FB1 /* REFont.m in Sources */,
-				C25B477816FF8D5E0042B59E /* ButtonGroupConfigurationDelegate.m in Sources */,
-				C25B477916FF8D5E0042B59E /* ConfigurationDelegate.m in Sources */,
 				C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */,
-				C25B477A16FF8D5E0042B59E /* RemoteConfigurationDelegate.m in Sources */,
 				C25B477B16FF8D5E0042B59E /* Button.m in Sources */,
 				C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */,
 				C25B477D16FF8D5E0042B59E /* RemoteElement+Accessors.m in Sources */,

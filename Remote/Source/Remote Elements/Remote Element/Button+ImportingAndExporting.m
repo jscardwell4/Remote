@@ -17,113 +17,68 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/*
-- (void)didImport:(id)data
-{
-    [super didImport:data];
-    if (![data isKindOfClass:[NSDictionary class]]) return;
+- (void)updateFromData:(NSDictionary *)data {
 
-    if ([data hasKey:@"titles"])
-        [self importTitles:data[@"titles"]];
+    [super updateWithData:data];
 
-    else if ([data hasKey:@"title"])
-        [self importTitles:@{@"default":@{@"normal":data[@"title"]}}];
+    NSDictionary * titles            = data[@"titles"];
+    NSDictionary * commands          = data[@"commands"];
+    NSDictionary * icons             = data[@"icons"];
+    NSDictionary * images            = data[@"images"];
+    NSDictionary * backgroundColors  = data[@"backgroundColors"];
+    NSString     * titleEdgeInsets   = data[@"titleEdgeInsets"];
+    NSString     * contentEdgeInsets = data[@"contentEdgeInsets"];
+    NSString     * imageEdgeInsets   = data[@"imageEdgeInsets"];
+    NSManagedObjectContext * moc = self.managedObjectContext;
 
-    if ([data hasKey:@"commands"])
-        [self importCommands:data[@"commands"]];
-
-    else if ([data hasKey:@"command"])
-        [self importCommands:@{@"default":data[@"command"]}];
-
-    if ([data hasKey:@"icons"])
-        [self importIcons:data[@"icons"]];
-
-    else if ([data hasKey:@"icon"])
-        [self importIcons:@{@"default":@{@"normal":data[@"icon"]}}];
-
-    if ([data hasKey:@"images"])
-        [self importImages:data[@"images"]];
-
-    else if ([data hasKey:@"image"])
-        [self importImages:@{@"default":@{@"normal":data[@"image"]}}];
-
-    if ([data hasKey:@"backgroundColors"])
-        [self importBackgroundColors:data[@"backgroundColors"]];
-
-    else if ([data hasKey:@"backgroundColor"])
-        [self importBackgroundColors:@{@"default":@{@"normal":data[@"backgroundColor"]}}];
-}
-*/
-
-/** called by MagicalRecord **/
-
-- (BOOL)shouldImportCommand:(id)data {return YES;}
-
-- (BOOL)shouldImportLongPressCommand:(id)data {return YES;}
-
-- (void)importContentEdgeInsets:(id)data {self.contentEdgeInsets = UIEdgeInsetsFromString(data);}
-- (void)importTitleEdgeInsets:(id)data {self.titleEdgeInsets = UIEdgeInsetsFromString(data);}
-- (void)importImageEdgeInsets:(id)data {self.imageEdgeInsets = UIEdgeInsetsFromString(data);}
-
-/** called from didImportData: **/
-
-- (void)importTitles:(NSDictionary *)data
-{
-    for (NSString * mode in data)
-    {
-        ControlStateTitleSet * titleSet = [ControlStateTitleSet
-                                           importObjectFromData:data[mode]
-                                                     inContext:self.managedObjectContext];
-
-        if (titleSet) [self.buttonConfigurationDelegate setTitles:titleSet mode:mode];
+    if (titles) {
+        for (NSString * mode in titles) {
+            ControlStateTitleSet * titleSet = [self.buttonConfigurationDelegate titlesForMode:mode];
+            if (titleSet) { [moc deleteObject:titleSet]; titleSet = nil; }
+            titleSet = [ControlStateTitleSet importObjectFromData:titles[mode] inContext:moc];
+            if (titleSet) [self.buttonConfigurationDelegate setTitles:titleSet mode:mode];
+        }
     }
-}
 
-- (void)importIcons:(NSDictionary *)data
-{
-    // iterate over modes
-    for (NSString * mode in data)
-    {
-        ControlStateImageSet * imageSet = [ControlStateImageSet
-                                           importObjectFromData:data[mode]
-                                                     inContext:self.managedObjectContext];
-
-        if (imageSet) [self.buttonConfigurationDelegate setIcons:imageSet mode:mode];
+    if (icons) {
+        for (NSString * mode in icons) {
+            ControlStateImageSet * iconSet = [self.buttonConfigurationDelegate iconsForMode:mode];
+            if (iconSet) { [moc deleteObject:iconSet]; iconSet = nil; }
+            iconSet = [ControlStateImageSet importObjectFromData:icons[mode] inContext:moc];
+            if (iconSet) [self.buttonConfigurationDelegate setIcons:iconSet mode:mode];
+        }
     }
-}
 
-- (void)importImages:(NSDictionary *)data
-{
-    for (NSString * mode in data)
-    {
-        ControlStateImageSet * imageSet = [ControlStateImageSet
-                                           importObjectFromData:data[mode]
-                                                     inContext:self.managedObjectContext];
-
-        if (imageSet) [self.buttonConfigurationDelegate setImages:imageSet mode:mode];
+    if (images) {
+        for (NSString * mode in images) {
+            ControlStateImageSet * imageSet = [self.buttonConfigurationDelegate imagesForMode:mode];
+            if (imageSet) { [moc deleteObject:imageSet]; imageSet = nil; }
+            imageSet = [ControlStateImageSet importObjectFromData:images[mode] inContext:moc];
+            if (imageSet) [self.buttonConfigurationDelegate setImages:imageSet mode:mode];
+        }
     }
-}
 
-- (void)importCommands:(NSDictionary *)data
-{
-    for (NSString * mode in data)
-    {
-        Command * command = [Command importObjectFromData:data[mode]
-                                               inContext:self.managedObjectContext];
-        if (command) [self.buttonConfigurationDelegate setCommand:command mode:mode];
+    if (backgroundColors) {
+        for (NSString * mode in backgroundColors) {
+            ControlStateColorSet * colorSet = [self.buttonConfigurationDelegate backgroundColorsForMode:mode];
+            if (colorSet) { [moc deleteObject:colorSet]; colorSet = nil; }
+            colorSet = [ControlStateColorSet importObjectFromData:backgroundColors[mode]
+                                                        inContext:moc];
+            if (colorSet) [self.buttonConfigurationDelegate setBackgroundColors:colorSet mode:mode];
+        }
     }
-}
 
-- (void)importBackgroundColors:(NSDictionary *)data
-{
-    for (NSString * mode in data)
-    {
-        ControlStateColorSet * colorSet = [ControlStateColorSet
-                                           importObjectFromData:data[mode]
-                                                     inContext:self.managedObjectContext];
-
-        if (colorSet) [self.buttonConfigurationDelegate setBackgroundColors:colorSet mode:mode];
+    if (commands) {
+        for (NSString * mode in commands) {
+            Command * command = [Command importObjectFromData:commands inContext:moc];
+            if (command) [self.buttonConfigurationDelegate setCommand:command mode:mode];
+        }
     }
+
+    if (titleEdgeInsets)   self.titleEdgeInsets   = UIEdgeInsetsFromString(titleEdgeInsets);
+    if (contentEdgeInsets) self.contentEdgeInsets = UIEdgeInsetsFromString(contentEdgeInsets);
+    if (imageEdgeInsets)   self.imageEdgeInsets   = UIEdgeInsetsFromString(imageEdgeInsets);
+
 }
 
 
@@ -182,7 +137,7 @@
 
     [dictionary compact];
     [dictionary compress];
-    
+
     return dictionary;
 }
 

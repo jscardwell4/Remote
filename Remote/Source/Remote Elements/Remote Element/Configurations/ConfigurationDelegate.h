@@ -8,7 +8,6 @@
 #import "ModelObject.h"
 #import "RETypedefs.h"
 
-MSEXTERN_STRING REDefaultMode;
 
 @class RemoteElement;
 

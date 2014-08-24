@@ -8,32 +8,20 @@
 #import "NamedModelObject.h"
 #import "RETypedefs.h"
 #import "REEditableBackground.h"
-#import "ConfigurationDelegate.h"
-#import "RemoteConfigurationDelegate.h"
-#import "ButtonGroupConfigurationDelegate.h"
-#import "ButtonConfigurationDelegate.h"
-#import "LayoutConfiguration.h"
 #import "Constraint.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element
 ////////////////////////////////////////////////////////////////////////////////
-@class RemoteController, LayoutConfiguration, ConstraintManager, Image, Theme;
+@class RemoteController, ConstraintManager, Image, Theme;
 
+MSEXTERN_STRING REDefaultMode;
 
 
 @interface RemoteElement : NamedModelObject <REEditableBackground>
 
 // model backed properties
-@property (nonatomic, assign, readwrite) int16_t                 tag;
-@property (nonatomic, assign, readonly ) REType                  elementType;
-@property (nonatomic, assign, readwrite) RESubtype               subtype;
-@property (nonatomic, assign, readwrite) RERole                  role;
-@property (nonatomic, assign, readwrite) REOptions               options;
-@property (nonatomic, assign, readwrite) REState                 state;
-@property (nonatomic, assign, readwrite) REShape                 shape;
-@property (nonatomic, assign, readwrite) REStyle                 style;
-@property (nonatomic, assign, readwrite) REThemeOverrideFlags    themeFlags;
+@property (nonatomic, assign, readwrite) NSNumber              * tag;
 @property (nonatomic, copy,   readwrite) NSString              * key;
 @property (nonatomic, copy,   readonly ) NSString              * identifier;
 @property (nonatomic, strong, readwrite) NSSet                 * constraints;
@@ -43,10 +31,11 @@
 @property (nonatomic, strong, readwrite) UIColor               * backgroundColor;
 @property (nonatomic, strong, readwrite) Image                 * backgroundImage;
 @property (nonatomic, strong, readwrite) NSOrderedSet          * subelements;
-@property (nonatomic, strong, readonly ) LayoutConfiguration   * layoutConfiguration;
 @property (nonatomic, strong, readonly ) ConstraintManager     * constraintManager;
 @property (nonatomic, strong, readonly ) Theme                 * theme;
-@property (nonatomic, strong, readonly ) ConfigurationDelegate * configurationDelegate;
+@property (nonatomic, strong, readonly ) NSArray               * modes;
+@property (nonatomic, copy,   readwrite) RERemoteMode            currentMode;
+
 
 + (instancetype)remoteElement;
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc;
@@ -54,11 +43,14 @@
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
                             attributes:(NSDictionary *)attributes;
 
-- (RemoteElement *)objectForKeyedSubscript:(NSString *)key;
+- (id)objectForKeyedSubscript:(NSString *)key;
 - (RemoteElement *)objectAtIndexedSubscript:(NSUInteger)subscript;
 - (void)setObject:(RemoteElement *)object atIndexedSubscript:(NSUInteger)idx;
+- (void)setObject:(id)object forKeyedSubscript:(NSString *)key;
 
 - (void)applyTheme:(Theme *)theme;
+
+- (BOOL)hasMode:(RERemoteMode)mode;
 
 @end
 
@@ -69,13 +61,21 @@
 
 @end
 
-@interface RemoteElement (REConstraintManager)
+@interface RemoteElement (CustomTypeAccessors)
 
-- (void)setConstraintsFromString:(NSString *)constraints;
+@property (nonatomic, assign, readwrite) RESubtype               subtype;
+@property (nonatomic, assign, readwrite) RERole                  role;
+@property (nonatomic, assign, readwrite) REOptions               options;
+@property (nonatomic, assign, readwrite) REState                 state;
+@property (nonatomic, assign, readwrite) REShape                 shape;
+@property (nonatomic, assign, readwrite) REStyle                 style;
+@property (nonatomic, assign, readwrite) REThemeOverrideFlags    themeFlags;
 
 @end
 
-@interface RemoteElement (RELayoutConfiguration)
+@interface RemoteElement (ConstraintManager)
+
+- (void)setConstraintsFromString:(NSString *)constraints;
 
 @property (nonatomic, assign, readonly) BOOL    proportionLock;
 @property (nonatomic, strong, readonly) NSSet * subelementConstraints;
@@ -86,7 +86,7 @@
 
 @end
 
-@class   Constraint;
+@class Constraint;
 
 @interface RemoteElement (SubelementsAccessors)
 
@@ -133,6 +133,7 @@
 
 @end
 
+MSEXTERN BOOL getModePropertyFromKey(NSString *key, NSString **mode, NSString **property);
 MSEXTERN BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re);
 
 #define NSDictionaryOfVariableBindingsToIdentifiers(...) \
@@ -140,4 +141,3 @@ MSEXTERN BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteEleme
 
 MSEXTERN NSDictionary * _NSDictionaryOfVariableBindingsToIdentifiers(NSString *, id , ...);
 MSEXTERN Class classForREType(REType type);
-//MSEXTERN Class baseClassForREType(REType type);

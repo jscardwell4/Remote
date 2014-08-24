@@ -29,6 +29,7 @@ REState   remoteElementStateFromImportKey(NSString * importKey);
 
 REShape remoteElementShapeFromImportKey(NSString * importKey);
 REStyle remoteElementStyleFromImportKey(NSString * importKey);
+REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote

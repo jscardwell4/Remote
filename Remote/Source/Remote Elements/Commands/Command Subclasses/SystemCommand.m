@@ -18,7 +18,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 #define kSystemKeyMax 4
 #define kSystemKeyMin 0
 
-BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 && (NSInteger)type < 5); }
+BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 && (NSInteger)type < 6); }
 
 static __weak RemoteViewController * _remoteViewController;
 
@@ -72,7 +72,7 @@ static __weak RemoteViewController * _remoteViewController;
     return dictionary;
 }
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
     /*
          {
              "class": "system",
@@ -80,16 +80,8 @@ static __weak RemoteViewController * _remoteViewController;
          }
      */
 
-    SystemCommand * systemCommand = [super importObjectFromData:data inContext:moc];
-
-    if (!systemCommand) {
-
-        systemCommand = [SystemCommand objectWithUUID:data[@"uuid"] context:moc];
-        systemCommand.type = systemCommandTypeFromImportKey(data[@"type"]);
-
-    }
-
-    return systemCommand;
+    [super updateWithData:data];
+    self.type = systemCommandTypeFromImportKey(data[@"type"]);
 
 }
 

@@ -41,167 +41,22 @@
     return activity;
 }
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
-    /*
-        {
-            "uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5",
-            "name": "Dish Hopper Activity",
-            "remote.uuid": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
-            "launchMacro": {
-                "class": "macro",
-                "commands": [
-                    {
-                        "class": "sendir",
-                        "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883" // TV\/SAT
-                    },
-                    {
-                        "class": "power",
-                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
-                        "state": "on"
-                    },
-                    {
-                        "class": "delay",
-                        "duration": 6
-                    },
-                    {
-                        "class": "sendir",
-                        "code.uuid": "FBB3BC24-1AFA-4AAF-B477-FC28855EE0E5" // HDMI 4
-                    }
-                ]
-            },
-            "haltMacro": {
-                "class": "macro",
-                "commands": [
-                    {
-                        "class": "power",
-                        "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
-                        "state": "off"
-                    },
-                    {
-                        "class": "power",
-                        "device.uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5", // AV Receiver
-                        "state": "off"
-                    }
-                ]
-            }
-        }
-     */
+- (void)updateWithData:(NSDictionary *)data {
 
-    Activity * activity = [super importObjectFromData:data inContext:moc];
-
-    if (!activity) {
-
-        activity = [Activity objectWithUUID:data[@"uuid"] context:moc];
-
-        NSString     * name        = data[@"name"];
-        NSDictionary * remote      = data[@"remote"];
-        NSDictionary * launchMacro = data[@"launchMacro"];
-        NSDictionary * haltMacro   = data[@"haltMacro"];
-
-        if (name)        activity.name = name;
-        if (remote)      activity.remote = [Remote importObjectFromData:remote inContext:moc];
-        if (launchMacro) activity.launchMacro = [MacroCommand importObjectFromData:launchMacro inContext:moc];
-        if (haltMacro)   activity.haltMacro = [MacroCommand importObjectFromData:haltMacro inContext:moc];
-
-    }
-
-    return activity;
-
-}
-
-/*
-- (MacroCommand *)importMacroWithData:(NSDictionary *)data
-{
-    NSString * uuid = data[@"uuid"];
-    assert(StringIsNotEmpty(uuid));
-
-    __block MacroCommand * macroCommand = nil;
-
-    [self.managedObjectContext performBlockAndWait:
-     ^{
-         macroCommand = [MacroCommand commandInContext:self.managedObjectContext];
-         [macroCommand setValue:uuid forKey:@"uuid"];
-
-         NSArray * commandsData = data[@"commands"];
-         if (commandsData)
-         {
-             for (NSDictionary * commandData in commandsData)
-             {
-                 NSString * type = commandData[@"class"];
-                 Class commandClass = commandClassForImportKey(type);
-                 if (commandClass)
-                 {                     
-                     Command * command = [commandClass importFromData:commandData
-                                                                 inContext:self.managedObjectContext];
-                     [macroCommand addCommandsObject:command];
-
-                 }
-             }
-         }
-     }];
-    return macroCommand;
-}
-*/
-
-/*
-- (BOOL)importController:(id)data
-{
-    assert([data isKindOfClass:[NSDictionary class]]);
-    NSDictionary * importData = (NSDictionary *)data;
+    [super updateWithData:data];
     
-    NSString * uuid = importData[@"controller"][@"uuid"];
-    
-    [self.managedObjectContext performBlockAndWait:
-     ^{
-         RemoteController * controller = [RemoteController objectWithUUID:uuid
-                                                                    context:self.managedObjectContext];
-         if (!controller)
-         {
-             controller = [RemoteController remoteControllerInContext:self.managedObjectContext];
-             [controller setValue:uuid forKey:@"uuid"];
-         }
+    NSString               * name        = data[@"name"];
+    NSDictionary           * remote      = data[@"remote"];
+    NSDictionary           * launchMacro = data[@"launchMacro"];
+    NSDictionary           * haltMacro   = data[@"haltMacro"];
+    NSManagedObjectContext * moc         = self.managedObjectContext;
 
-         [controller registerActivity:self];
-     }];
-    return YES;
+    if (name)        self.name        = name;
+    if (remote)      self.remote      = [Remote importObjectFromData:remote inContext:moc];
+    if (launchMacro) self.launchMacro = [MacroCommand importObjectFromData:launchMacro inContext:moc];
+    if (haltMacro)   self.haltMacro   = [MacroCommand importObjectFromData:haltMacro inContext:moc];
+
 }
-*/
-
-
-/*
-- (BOOL)importHaltMacro:(id)data
-{
-    assert([data isKindOfClass:[NSDictionary class]]);
-    NSDictionary * importData = (NSDictionary *)data;
-
-    if ([importData hasKey:@"haltMacro"])
-    {
-        NSDictionary * macroData = importData[@"haltMacro"];
-        self.haltMacro = [self importMacroWithData:macroData];
-    }
-
-    return YES;
-}
-*/
-
-//- (BOOL)shouldImportRemote:(id)data {return YES;}
-//- (BOOL)shouldImportLaunchMacro:(id)data {return YES;}
-//- (BOOL)shouldImportHaltMacro:(id)data {return YES;}
-
-/*
-- (BOOL)importLaunchMacro:(id)data
-{
-    assert([data isKindOfClass:[NSDictionary class]]);
-    NSDictionary * importData = (NSDictionary *)data;
-    if ([importData hasKey:@"launchMacro"])
-    {
-        NSDictionary * macroData = importData[@"launchMacro"];
-        self.launchMacro = [self importMacroWithData:macroData];
-    }
-
-    return YES;
-}
-*/
 
 - (void)setController:(RemoteController *)controller
 {

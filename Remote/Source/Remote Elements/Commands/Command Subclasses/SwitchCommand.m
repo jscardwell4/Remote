@@ -51,17 +51,22 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     return dictionary;
 }
 
-- (void)importTarget:(id)data
-{
-    if (!isStringKind(data) || StringIsEmpty(data) || (!self.type && !UUIDIsValid(data))) return;
+- (void)updateWithData:(NSDictionary *)data {
+    /*
+         {
+             "class": "switch",
+             "type": "remote",
+             "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
+         }
+     */
 
-    self.target = data;
-}
+    [super updateWithData:data];
+    
+    [self setPrimitiveValue:@(switchCommandTypeFromImportKey(data[@"type"])) forKey:@"type"];
 
-- (void)importType:(id)data
-{
-    SwitchCommandType type = switchCommandTypeFromImportKey(data);
-    [self setValue:@(type) forKey:@"type"];
+    NSString * target = data[@"target"];
+    if (UUIDIsValid(target)) self.target = target;
+
 }
 
 @end
