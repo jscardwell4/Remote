@@ -147,13 +147,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 - (void)applyThemeToElement:(RemoteElement *)element
 {
-    switch (element.elementType)
-    {
-        case RETypeRemote:      [self applyThemeToRemote:(Remote *)element];           break;
-        case RETypeButtonGroup: [self applyThemeToButtonGroup:(ButtonGroup *)element]; break;
-        case RETypeButton:      [self applyThemeToButton:(Button *)element];           break;
-        default:                assert(NO);                                            break;
-    }
+    if ([element isKindOfClass:[Remote class]])
+        [self applyThemeToRemote:(Remote *)element];
+    else if ([element isKindOfClass:[ButtonGroup class]])
+        [self applyThemeToButtonGroup:(ButtonGroup *)element];
+    else if ([element isKindOfClass:[Button class]])
+        [self applyThemeToButton:(Button *)element];
+    else
+        return;
 
     [self addElementsObject:element];
 
@@ -322,13 +323,13 @@
              button.imageEdgeInsets = [imageEdgeInsets UIEdgeInsetsValue];
 
 
-         NSArray * modeKeys = button.remote.configurationDelegate.modeKeys;
+         NSArray * modeKeys = button.modes;
 
          if (!modeKeys) modeKeys = @[REDefaultMode];
 
-         for (RERemoteMode mode in modeKeys)
+         for (NSString * mode in modeKeys)
          {
-             button.buttonConfigurationDelegate.currentMode = mode;
+             button.currentMode = mode;
 
              // background color
              if (!(flags & REThemeNoBackgroundColorAttribute) && backgroundColors)
@@ -396,9 +397,12 @@
                      }
                  }
 
+               //TODO: Update
+/*
                  ControlStateColorSet * colorSet = iconSet.colors;
                  if (!(flags & REThemeNoIconColorAttribute))
                      [colorSet copyObjectsFromSet:icons.colors];
+*/
 
                  [button setIcons:iconSet mode:mode];
              }

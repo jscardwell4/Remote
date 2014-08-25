@@ -13,8 +13,6 @@
 
 @interface CommandContainer : NamedModelObject
 
-+ (instancetype)commandContainerInContext:(NSManagedObjectContext *)context;
-
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key;
 
 - (id)objectForKeyedSubscript:(id<NSCopying>)key;

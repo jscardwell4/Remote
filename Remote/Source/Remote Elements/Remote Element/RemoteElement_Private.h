@@ -10,7 +10,6 @@
 #import "Remote.h"
 #import "ButtonGroup.h"
 #import "Button.h"
-#import "LayoutConfiguration.h"
 #import "Constraint.h"
 
 @interface RemoteElement ()
@@ -19,7 +18,7 @@
 @property (nonatomic, strong, readwrite) Theme                 * theme;
 @property (nonatomic, strong, readwrite) NSDictionary          * configurations;
 
-- (void)updateForMode:(RERemoteMode)mode;
+- (void)updateForMode:(NSString *)mode;
 
 @end
 

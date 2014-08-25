@@ -11,6 +11,8 @@
 
 @interface NSOrderedSet (MSKitAdditions) <MSJSONExport>
 
+@property (nonatomic, readonly) BOOL isEmpty;
+
 - (NSOrderedSet *)setByMappingToBlock:(id (^)(id obj))block;
 
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;

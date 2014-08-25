@@ -11,6 +11,8 @@
 
 @interface NSSet (MSKitAdditions) <MSJSONExport>
 
+@property (nonatomic, readonly) BOOL isEmpty;
+
 + (NSSet *)setWithArrays:(NSArray *)arrays;
 
 - (NSSet *)setByRemovingObjectsFromSet:(NSSet *)other;

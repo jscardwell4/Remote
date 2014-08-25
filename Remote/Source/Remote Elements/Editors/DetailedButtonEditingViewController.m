@@ -8,6 +8,7 @@
 //
 #import "RemoteElementEditingViewController_Private.h"
 #import "Button.h"
+#import "ImageView.h"
 
 #define kChildContainerFrame     CGRectMake(0, 129, 320, 332)
 #define USE_CURL_DOWN_TRANSITION NO
@@ -288,7 +289,7 @@ editorState;
 
         case IconEditingChildController : {
             Image * iconImage = (Image *)_buttonModel.icons[_editorState.presentedState];
-            UIColor * iconColor = _buttonModel.icons.colors[_editorState.presentedState];
+            UIColor * iconColor = _buttonModel.icons[_editorState.presentedState].color;
             NSValue                   * edgeInsets    = [NSValue valueWithUIEdgeInsets:_buttonModel.imageEdgeInsets];
             NSDictionary              * initialValues = @{kAttributeEditingImageKey : CollectionSafe(iconImage), kAttributeEditingColorKey : CollectionSafe(iconColor), kAttributeEditingEdgeInsetsKey : CollectionSafe(edgeInsets), kAttributeEditingButtonKey : _buttonModel, kAttributeEditingControlStateKey : @(_editorState.presentedState)};
             IconEditingViewController * iconEditor    = [StoryboardProxy iconEditingViewController];

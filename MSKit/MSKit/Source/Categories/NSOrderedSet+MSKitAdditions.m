@@ -14,6 +14,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation NSOrderedSet (MSKitAdditions)
+
+- (BOOL)isEmpty { return self.count == 0; }
+
 - (NSOrderedSet *)setByMappingToBlock:(id (^)(id obj))block {
     NSMutableOrderedSet * set = [NSMutableOrderedSet orderedSetWithCapacity:self.count];
     for (id obj in self)

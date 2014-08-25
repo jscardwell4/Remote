@@ -34,8 +34,10 @@ MSEXTERN_STRING REDefaultMode;
 @property (nonatomic, strong, readonly ) ConstraintManager     * constraintManager;
 @property (nonatomic, strong, readonly ) Theme                 * theme;
 @property (nonatomic, strong, readonly ) NSArray               * modes;
-@property (nonatomic, copy,   readwrite) RERemoteMode            currentMode;
+@property (nonatomic, copy,   readwrite) NSString              * currentMode;
+@property (nonatomic, strong, readonly ) RemoteElement         * parentElement;
 
++ (REType)elementType;
 
 + (instancetype)remoteElement;
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc;
@@ -45,19 +47,15 @@ MSEXTERN_STRING REDefaultMode;
 
 - (id)objectForKeyedSubscript:(NSString *)key;
 - (RemoteElement *)objectAtIndexedSubscript:(NSUInteger)subscript;
+
 - (void)setObject:(RemoteElement *)object atIndexedSubscript:(NSUInteger)idx;
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key;
 
 - (void)applyTheme:(Theme *)theme;
 
-- (BOOL)hasMode:(RERemoteMode)mode;
-
-@end
-
-@interface RemoteElement (AbstractProperties)
-
-@property (nonatomic, readonly) RemoteElement    * parentElement;
-@property (nonatomic, readonly) RemoteController * controller;
+- (BOOL)addMode:(NSString *)mode;
+- (BOOL)hasMode:(NSString *)mode;
+- (void)refresh;
 
 @end
 
@@ -133,6 +131,7 @@ MSEXTERN_STRING REDefaultMode;
 
 @end
 
+MSEXTERN NSString *modePropertyKey(NSString *m, NSString *p);
 MSEXTERN BOOL getModePropertyFromKey(NSString *key, NSString **mode, NSString **property);
 MSEXTERN BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re);
 

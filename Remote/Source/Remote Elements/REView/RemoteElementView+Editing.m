@@ -22,7 +22,7 @@
 
 - (void)setAppliedScale:(CGFloat)appliedScale { _editingFlags.appliedScale = appliedScale; }
 
-- (BOOL)isEditing { return (self.elementType & _editingFlags.editingMode); }
+- (BOOL)isEditing { return ([[self.model class] elementType] & _editingFlags.editingMode); }
 
 - (BOOL)shouldShrinkwrap { return _editingFlags.shrinkwrap; }
 

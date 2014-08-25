@@ -502,11 +502,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          ThemeButtonSettings * buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleRockerTop
                                                                                           context:moc];
          buttonSubSettings.style = @(REStyleGlossStyle3);
+//     TODO: Update
+/*
          buttonSubSettings.icons = [ControlStateImageSet
                                     imageSetWithColors:ButtonSettings(RETypeButton).icons.colors
                                                 images:@{@"normal":
                                                              @"439EF306-6036-47A8-B9A9-6CEE55ACD02A"}
                                                context:moc];
+*/
          [buttonSettings addSubSettingsObject:buttonSubSettings];
 
 
@@ -518,11 +521,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          buttonSubSettings = [ThemeButtonSettings themeSettingsWithRole:REButtonRoleRockerBottom
                                                                   context:moc];
          buttonSubSettings.style = @(REStyleGlossStyle4);
+//     TODO: Update
+/*
          buttonSubSettings.icons = [ControlStateImageSet
                                     imageSetWithColors:ButtonSettings(RETypeButton).icons.colors
                                                 images:@{@"normal":
                                                              @"3DA6EC67-B294-4A7E-8E2C-B4939693D214"}
                                                context:moc];
+*/
          [buttonSettings addSubSettingsObject:buttonSubSettings];
      }];
 }

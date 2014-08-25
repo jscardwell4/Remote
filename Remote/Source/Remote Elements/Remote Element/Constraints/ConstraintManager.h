@@ -131,4 +131,21 @@ MSEXTERN_STRING   REConstraintsDidChangeNotification;
 - (void)resolveConflictsForConstraint:(Constraint *)constraint
                               metrics:(NSDictionary *)metrics;
 
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Layout
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (void)setObject:(NSNumber *)object atIndexedSubscript:(NSLayoutAttribute)idx;
+- (void)setObject:(NSNumber *)object forKeyedSubscript:(NSString *)key;
+- (NSNumber *)objectAtIndexedSubscript:(NSLayoutAttribute)idx;
+- (RELayoutConfigurationDependencyType)dependencyTypeForAttribute:(NSLayoutAttribute)attribute;
+- (NSArray *)replacementCandidatesForAddingAttribute:(NSLayoutAttribute)attribute
+                                           additions:(NSArray **)additions;
+- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute;
+- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute order:(RELayoutConstraintOrder)order;
+- (Constraint *)constraintWithValues:(NSDictionary *)attributes;
+- (NSSet *)constraintsAffectingAxis:(UILayoutConstraintAxis)axis order:(RELayoutConstraintOrder)order;
+
 @end

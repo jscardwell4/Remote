@@ -15,6 +15,8 @@ typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
 
 @interface NSDictionary (MSKitAdditions) <MSJSONExport>
 
+@property (nonatomic, readonly) BOOL isEmpty;
+
 + (instancetype)dictionaryFromDictionary:(NSDictionary *)dictionary
                             replacements:(NSDictionary *)replacements;
 

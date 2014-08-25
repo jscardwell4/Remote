@@ -7,15 +7,17 @@
 //
 #import "ControlStateImageSet.h"
 #import "ControlStateColorSet.h"
+#import "ImageView.h"
 #import "Image.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
 
-static int ddLogLevel   = LOG_LEVEL_WARN;
-static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static int       ddLogLevel   = LOG_LEVEL_WARN;
+static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
+
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation ControlStateImageSet
-
-@dynamic  colors;
 
 /**
  * For some reason using `setValuesForKeysWithDictionary:`, as is done in the `ControlStateSet`
@@ -23,148 +25,97 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
  * NOTE: not sure if this is still true
  */
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc
-                             withObjects:(NSDictionary *)objects
-{
-    assert(moc);
-    __block ControlStateImageSet * imageSet = nil;
+                             withObjects:(NSDictionary *)objects {
+  assert(NO);
+  assert(moc);
+  __block ControlStateImageSet * imageSet = nil;
 
-    [moc performBlockAndWait:
-     ^{
-         imageSet = [self controlStateSetInContext:moc];
-         [objects enumerateKeysAndObjectsUsingBlock:
-          ^(id key, id obj, BOOL *stop)
-          {
-              imageSet[[ControlStateSet stateForProperty:key]] = obj;
-          }];
-     }];
-    return imageSet;
+  [moc performBlockAndWait:
+   ^{
+    imageSet = [self controlStateSetInContext:moc];
+    [objects enumerateKeysAndObjectsUsingBlock:
+     ^(id key, id obj, BOOL * stop)
+    {
+      imageSet[[ControlStateSet stateForProperty:key]] = obj;
+    }];
+  }];
+
+  return imageSet;
 }
 
 + (ControlStateImageSet *)imageSetWithImages:(NSDictionary *)images
-                                     context:(NSManagedObjectContext *)moc
-{
-    return [self imageSetWithColors:nil images:images context:moc];
+                                     context:(NSManagedObjectContext *)moc {
+  return [self imageSetWithColors:nil images:images context:moc];
 }
 
-+ (ControlStateImageSet *)imageSetWithColors:(id)colors
++ (ControlStateImageSet *)imageSetWithColors:(NSDictionary *)colors
                                       images:(NSDictionary *)images
-                                     context:(NSManagedObjectContext *)moc
-{
+                                     context:(NSManagedObjectContext *)moc {
 
-    if (!images) ThrowInvalidNilArgument(images);
+  if (!images) ThrowInvalidNilArgument(images);
+  assert(NO);
 
-    __block ControlStateImageSet * imageSet = nil;
-    MSDictionary * filteredImages = [MSDictionary dictionaryWithDictionary:images];
-    [images enumerateKeysAndObjectsUsingBlock:
-     ^(id key, id obj, BOOL *stop)
-     {
-         if ([obj isKindOfClass:[NSString class]])
-         {
-             filteredImages[key] = CollectionSafe([Image existingObjectWithUUID:obj context:moc]);
-         }
-     }];
-    [filteredImages compact];
+  __block ControlStateImageSet * imageSet       = nil;
 
-    [moc performBlockAndWait:
-     ^{
-         imageSet = [self controlStateSetInContext:moc withObjects:filteredImages];
+  //TODO: Update since themes currently use this method
 
-         if ([colors isKindOfClass:[ControlStateColorSet class]])
-             [imageSet.colors copyObjectsFromSet:colors];
-
-         else if ([colors isKindOfClass:[NSDictionary class]])
-             [imageSet.colors setValuesForKeysWithDictionary:colors];
-     }];
-    
-    return imageSet;
+  return imageSet;
 }
 
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
+- (UIImage *)UIImageForState:(NSUInteger)state { return self[state].colorImage; }
 
-    self.colors = [ControlStateColorSet controlStateSetInContext:self.managedObjectContext];
+- (ImageView *)objectAtIndexedSubscript:(NSUInteger)state {
+  id value = [super objectAtIndexedSubscript:state];
+  if ([value isKindOfClass:[ImageView class]]) return value;
+  else return [self.managedObjectContext objectForURI:value];
 }
 
-- (UIImage *)UIImageForState:(NSUInteger)state
-{
-    Image * image = self[state];
-    UIColor * color = self.colors[state];
-    return [image imageWithColor:color];
+- (ImageView *)objectForKeyedSubscript:(NSString *)key {
+  id value = [super objectForKeyedSubscript:key];
+  if ([value isKindOfClass:[ImageView class]]) return value;
+  else return [self.managedObjectContext objectForURI:value];
 }
 
-- (Image *)objectAtIndexedSubscript:(NSUInteger)state
-{
-    id object = ([ControlStateSet validState:@(state)] ? [super objectAtIndexedSubscript:state] : nil);
-
-    if ([object isKindOfClass:[Image class]]) return (Image *)object;
-
-    else if ([object isKindOfClass:[NSURL class]])
-        return (Image *)[self.managedObjectContext objectForURI:object];
-
-    else return nil;
+- (void)setObject:(ImageView *)imageView atIndexedSubscript:(NSUInteger)state {
+  assert(imageView);
+  [super setObject:imageView.permanentURI atIndexedSubscript:state];
 }
 
-- (Image *)objectForKeyedSubscript:(NSString *)key
-{
-    NSURL * uri = [super objectForKeyedSubscript:key];
-    return (uri ? [self.managedObjectContext objectForURI:uri] : nil);
+- (MSDictionary *)deepDescriptionDictionary {
+/*
+  ControlStateImageSet * stateSet = [self faultedObject];
+
+  assert(stateSet);
+
+  NSString *(^nameForValueForKey)(NSString *) = ^NSString *(NSString * key)
+  {
+    id      value = [stateSet valueForKey:key];
+    Image * image = nil;
+
+    if ([value isKindOfClass:[NSURL class]]) {
+      image = (Image *)[stateSet.managedObjectContext objectForURI:(NSURL *)value];
+    } else if ([value isKindOfClass:[Image class]])
+      image = (Image *)value;
+
+    return (image ? image.name : @"nil");
+  };
+*/
+
+  MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+
+/*
+  dd[@"normal"]                         = nameForValueForKey(@"normal");
+  dd[@"selected"]                       = nameForValueForKey(@"selected");
+  dd[@"highlighted"]                    = nameForValueForKey(@"highlighted");
+  dd[@"disabled"]                       = nameForValueForKey(@"disabled");
+  dd[@"highlightedAndSelected"]         = nameForValueForKey(@"highlightedAndSelected");
+  dd[@"highlightedAndDisabled"]         = nameForValueForKey(@"highlightedAndDisabled");
+  dd[@"disabledAndSelected"]            = nameForValueForKey(@"disabledAndSelected");
+  dd[@"selectedHighlightedAndDisabled"] = nameForValueForKey(@"selectedHighlightedAndDisabled");
+*/
+
+  return (MSDictionary *)dd;
 }
-
-- (void)setObject:(Image *)image atIndexedSubscript:(NSUInteger)state
-{
-    assert(image);
-    [super setObject:[image permanentURI] atIndexedSubscript:state];
-}
-
-- (MSDictionary *)deepDescriptionDictionary
-{
-    ControlStateImageSet * stateSet = [self faultedObject];
-    assert(stateSet);
-
-    NSString *(^nameForValueForKey)(NSString*) = ^NSString *(NSString *key)
-    {
-        id value = [stateSet valueForKey:key];
-        Image * image = nil;
-        if ([value isKindOfClass:[NSURL class]])
-        {
-            image = (Image *)[stateSet.managedObjectContext objectForURI:(NSURL *)value];
-        }
-
-        else if ([value isKindOfClass:[Image class]])
-            image = (Image *)value;
-
-        return (image ? image.name : @"nil");
-    };
-
-    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"normal"]                         = nameForValueForKey(@"normal");
-    dd[@"selected"]                       = nameForValueForKey(@"selected");
-    dd[@"highlighted"]                    = nameForValueForKey(@"highlighted");
-    dd[@"disabled"]                       = nameForValueForKey(@"disabled");
-    dd[@"highlightedAndSelected"]         = nameForValueForKey(@"highlightedAndSelected");
-    dd[@"highlightedAndDisabled"]         = nameForValueForKey(@"highlightedAndDisabled");
-    dd[@"disabledAndSelected"]            = nameForValueForKey(@"disabledAndSelected");
-    dd[@"selectedHighlightedAndDisabled"] = nameForValueForKey(@"selectedHighlightedAndDisabled");
-
-    return (MSDictionary *)dd;
-}
-
-- (NSDictionary *)dictionaryFromSetObjects
-{
-    NSMutableDictionary * dictionary = [[super dictionaryFromSetObjects] mutableCopy];
-    if (![self.colors isEmptySet])
-        dictionary[@"colors"] = [self.colors dictionaryFromSetObjects];
-
-    return dictionary;
-}
-
-- (void)copyObjectsFromSet:(ControlStateImageSet *)set
-{
-    for (int i = 0; i < 8; i++) self[i] = set[i];
-    [self.colors copyObjectsFromSet:set.colors];
-}
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,72 +123,61 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/*
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
-{
-    ControlStateImageSet * imageSet = nil;
+- (void)updateWithData:(NSDictionary *)data {
 
-    if (!context) ThrowInvalidNilArgument(context);
-    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some kind of dictionary");
+  NSManagedObjectContext * moc = self.managedObjectContext;
 
-    else
-    {
-        imageSet = [self createInContext:context];
-        [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:
-         ^(id key, id obj, BOOL *stop)
-         {
-             if ([key isEqualToString:@"colors"])
-             {
-                 ControlStateColorSet * colorSet = [ControlStateColorSet importObjectFromData:obj
-                                                                                   inContext:context];
-                 if (colorSet) imageSet.colors = colorSet;
-             }
+  [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
+    if ([ControlStateSet validState:key])   {
+      if (isDictionaryKind(obj)) {
+        NSDictionary * imageData = obj[@"image"];
 
-             else if ([ControlStateSet validState:key] && isDictionaryKind(obj))
-             {
-                 NSString * uuid = ((NSDictionary *)obj)[@"uuid"];
-                 if (isStringKind(uuid))
-                 {
-                     Image * image = [Image existingObjectWithUUID:uuid context:context];
-                     if (image) imageSet[key] = [image permanentURI];
-                 }
-             }
-         }];
-    }
+        if (isDictionaryKind(imageData)) {
+          Image * image = [Image importObjectFromData:imageData inContext:moc];
+          UIColor * color = colorFromImportValue(obj[@"color"]);
 
-    return imageSet;
-}
-*/
+          if (image) {
+            ImageView *imageView = [ImageView imageViewWithImage:image color:color];
 
-- (MSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [super JSONDictionary];
-
-    // remove entries for state dictionaries
-    for (NSString * key in [dictionary copy])
-        if ([ControlStateSet validState:[key keyPathComponents][0]])
-            [dictionary removeObjectForKey:key];
-
-    dictionary.userInfo[MSJSONCommentKey] = [MSDictionary dictionary];
-
-    NSArray * keys = [[self dictionaryFromSetObjects] allKeys];
-    for (NSString * key in keys)
-    {
-        if ([@"colors" isEqualToString:key])
-        {
-            dictionary[key] = [self.colors JSONDictionary];
-            continue;
+            if (imageView)
+              self[key] = imageView.permanentURI;
+          }
         }
-
-        else if ([ControlStateSet validState:key])
-            dictionary[[@"." join:@[key, @"uuid"]]] = CollectionSafe([self[key] commentedUUID]);
+      }
     }
-
-    [dictionary compact];
-    [dictionary compress];
-
-    return dictionary;
+  }];
 }
 
+- (MSDictionary *)JSONDictionary {
+  MSDictionary * dictionary = [super JSONDictionary];
+
+  // remove entries for state dictionaries
+  for (NSString * key in [dictionary copy])
+    if ([ControlStateSet validState:[key keyPathComponents][0]])
+      [dictionary removeObjectForKey:key];
+
+
+
+  dictionary.userInfo[MSJSONCommentKey] = [MSDictionary dictionary];
+
+  NSArray * keys = [[self dictionaryFromSetObjects] allKeys];
+
+  for (NSString * key in keys) {
+    if ([ControlStateSet validState:key]) {
+      ImageView * imageView = self[key];
+      MSDictionary * imageViewJSON = [MSDictionary dictionaryWithObject:imageView.image.commentedUUID
+                                                                 forKey:@"image"];
+      UIColor * color = imageView.color;
+      if (color) imageViewJSON[@"color"] = CollectionSafe(normalizedColorJSONValueForColor(color));
+      
+      dictionary[key] = imageViewJSON;
+    }
+  }
+
+  [dictionary compact];
+  [dictionary compress];
+
+  return dictionary;
+}
 
 @end

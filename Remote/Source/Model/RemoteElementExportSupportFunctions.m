@@ -40,7 +40,7 @@ NSString * typeJSONValueForRemoteElement(RemoteElement * element)
                                  @(RETypeButton)      : RETypeButtonJSONKey };
                   });
 
-    return (element ? index[@(element.elementType)] : nil);
+    return (element ? index[@([[element class] elementType])] : nil);
 }
 
 NSString * subtypeJSONValueForRemoteElement(RemoteElement * element)

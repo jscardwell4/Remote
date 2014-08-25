@@ -169,7 +169,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="jKI-dY-ndz">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="jKI-dY-ndz">
                                 <rect key="frame" x="-160" y="-284" width="640" height="1136"/>
                             </imageView>
                         </subviews>
@@ -1171,7 +1171,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="s8t-yT-hf7">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="s8t-yT-hf7">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="1136"/>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="c5P-DR-PaI">
@@ -1581,7 +1581,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="At3-wb-2X1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="At3-wb-2X1">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="1136"/>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="1q2-F2-4Qf">

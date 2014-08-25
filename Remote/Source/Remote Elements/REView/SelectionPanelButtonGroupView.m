@@ -8,22 +8,23 @@
 #import "RemoteElementView_Private.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
-static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
 @implementation SelectionPanelButtonGroupView
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - ButtonGroupView overrides
 ////////////////////////////////////////////////////////////////////////////////
-- (void)initializeIVARs
-{
-    [super initializeIVARs];
-    self.autohide = YES;
+- (void)initializeIVARs {
+  [super initializeIVARs];
+  self.autohide = YES;
 }
 
 - (void)didMoveToSuperview {
-    [super didMoveToSuperview];
-    if (self.superview) {
+  [super didMoveToSuperview];
+
+  if (self.superview) {
+/*
         for (ButtonView * view in self.subelementViews) {
             if (![self.parentElementView registerMode:view.key])
                 MSLogWarnTag(@"failed to register mode '%@' with remote controller..."
@@ -32,29 +33,32 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
                 MSLogDebugTag(@"mode '%@' registered successfully with remote controller",
                            view.key);
         }
-        if (!_selectedButton && self[REDefaultMode])
-            [self selectButton:self[REDefaultMode]];
-    }
+ */
+    if (!_selectedButton && self[REDefaultMode])
+      [self selectButton:self[REDefaultMode]];
+  }
 }
 
-- (void)addSubelementView:(ButtonView *)view
-{
-    [super addSubelementView:view];
+- (void)addSubelementView:(ButtonView *)view {
+  [super addSubelementView:view];
 
-    if (self.parentElementView) {
-        if (![self.parentElementView registerMode:view.key])
-            MSLogWarnTag(@"failed to register mode '%@' with remote controller..."
-                      "perhaps it was already registered?", view.key);
-        else
-            MSLogDebugTag(@"new mode '%@' registered successfully with remote controller",
-                       view.key);
-        if (!_selectedButton && [REDefaultMode isEqualToString:view.key])
-            [self selectButton:view];
-    }
-    __weak SelectionPanelButtonGroupView * weakself = self;
-    __weak ButtonView * weakview = view;
-    [view setActionHandler:^{ [weakself handleSelection:weakview]; }
-                 forAction:RESingleTapAction];
+  if (self.parentElementView) {
+    if (![self.parentElementView registerMode:view.key])
+      MSLogWarnTag(@"failed to register mode '%@' with remote controller..."
+                   "perhaps it was already registered?", view.key);
+    else
+      MSLogDebugTag(@"new mode '%@' registered successfully with remote controller",
+                    view.key);
+
+    if (!_selectedButton && [REDefaultMode isEqualToString:view.key])
+      [self selectButton:view];
+  }
+
+  __weak SelectionPanelButtonGroupView * weakself = self;
+  __weak ButtonView                    * weakview = view;
+
+  [view setActionHandler:^{ [weakself handleSelection:weakview]; }
+               forAction:RESingleTapAction];
 
 }
 
@@ -62,17 +66,16 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 #pragma mark - Selection Handling
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)selectButton:(ButtonView *)newSelection
-{
-    if (   _selectedButton != newSelection
-        && [self.parentElementView switchToMode:newSelection.key])
-    {
+- (void)selectButton:(ButtonView *)newSelection {
+  if (_selectedButton != newSelection) {
+    self.parentElementView.model.currentMode = newSelection.key;
 
-        if (_selectedButton) _selectedButton.model.selected = NO;
-        _selectedButton = newSelection;
-        _selectedButton.model.selected = YES;
-        MSLogDebugTag(@"selected button with key '%@'", _selectedButton.key);
-    }
+    if (_selectedButton) _selectedButton.model.selected = NO;
+
+    _selectedButton                = newSelection;
+    _selectedButton.model.selected = YES;
+    MSLogDebugTag(@"selected button with key '%@'", _selectedButton.key);
+  }
 }
 
 /**
@@ -80,23 +83,21 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
  * updates the value of `selectedButton` with the `ButtonView` that invoked the method.
  * @param sender The `ButtonView` that has been touched.
  */
-- (void)handleSelection:(ButtonView *)sender
-{
-    if (_selectedButton == sender)
-    {
-        MSLogDebugTag(@"sender(%@) is already selected", sender.key);
-        return;
-    }
+- (void)handleSelection:(ButtonView *)sender {
+  if (_selectedButton == sender) {
+    MSLogDebugTag(@"sender(%@) is already selected", sender.key);
 
-    assert(StringIsNotEmpty(sender.key));
-    [self selectButton:sender];
+    return;
+  }
 
-    if (self.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];
+  assert(StringIsNotEmpty(sender.key));
+  [self selectButton:sender];
+
+  if (self.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];
 }
 
 - (void)drawBackdropInContext:(CGContextRef)ctx inRect:(CGRect)rect {
-    [self drawRoundedPanelInContext:ctx inRect:rect];
+  [self drawRoundedPanelInContext:ctx inRect:rect];
 }
 
 @end
-

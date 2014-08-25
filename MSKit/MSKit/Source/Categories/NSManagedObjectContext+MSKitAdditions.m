@@ -16,8 +16,8 @@ static const char * kNSMOCChildContextsKey = "kNSMMOCChildContextsKey";
 + (void)load
 {
 
-    MSSwapInstanceMethodsForClass(self, @selector(performBlock:), @selector(MS_performBlock:));
-    MSSwapInstanceMethodsForClass(self, @selector(performBlockAndWait:), @selector(MS_performBlockAndWait:));
+//    MSSwapInstanceMethodsForClass(self, @selector(performBlock:), @selector(MS_performBlock:));
+//    MSSwapInstanceMethodsForClass(self, @selector(performBlockAndWait:), @selector(MS_performBlockAndWait:));
     MSSwapInstanceMethodsForClass(self, @selector(setParentContext:), @selector(MS_setParentContext:));
 }
 

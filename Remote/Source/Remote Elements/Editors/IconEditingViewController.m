@@ -17,6 +17,7 @@
 #import "RemoteElementView.h"
 #import "Button.h"
 #import "StoryboardProxy.h"
+#import "ImageView.h"
 
 static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
@@ -194,7 +195,7 @@ delegate             = _delegate;
 
     if (_currentColor) {
         _iconColorButton.backgroundColor = _currentColor;
-        _button.icons.colors[_controlState] = _currentColor;
+        _button.icons[_controlState].color = _currentColor;
     }
 }
 

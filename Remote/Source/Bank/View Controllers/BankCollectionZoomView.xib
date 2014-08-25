@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BankCollectionViewController">
@@ -60,7 +60,7 @@
                         <constraint firstAttribute="height" constant="44" id="n1W-Ip-L2l"/>
                     </constraints>
                     <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                    <state key="normal" image="832-pencil">
+                    <state key="normal" image="Pencil.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -145,6 +145,6 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="832-pencil" width="28" height="28"/>
+        <image name="Pencil.png" width="44" height="44"/>
     </resources>
 </document>

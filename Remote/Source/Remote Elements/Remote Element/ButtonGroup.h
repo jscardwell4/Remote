@@ -20,8 +20,9 @@
 + (instancetype)buttonGroupWithRole:(RERole)role;
 + (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
 
-- (void)setCommandContainer:(CommandContainer *)container mode:(RERemoteMode)mode;
-- (void)setLabel:(id)label mode:(RERemoteMode)mode;
+- (void)setCommandContainer:(CommandContainer *)container mode:(NSString *)mode;
+- (CommandContainer *)commandContainerForMode:(NSString *)mode;
+- (void)setLabel:(id)label mode:(NSString *)mode;
 
 - (void)selectCommandSetAtIndex:(NSUInteger)index;
 - (NSAttributedString *)labelForCommandSetAtIndex:(NSUInteger)index;

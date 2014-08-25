@@ -543,11 +543,24 @@ static inline NSString * NSStringFromSwitchCommandType(SwitchCommandType type)
 typedef NS_ENUM(uint8_t, CommandSetType)
 {
     CommandSetTypeUnspecified = RERoleUndefined,
-    CommandSetTypeDPad		  = REButtonGroupRoleDPad,
+    CommandSetTypeDPad		    = REButtonGroupRoleDPad,
     CommandSetTypeTransport	  = REButtonGroupRoleTransport,
     CommandSetTypeNumberpad	  = REButtonGroupRoleNumberpad,
-    CommandSetTypeRocker	      = REButtonGroupRoleRocker
+    CommandSetTypeRocker	    = REButtonGroupRoleRocker
 };
+
+static inline BOOL CommandSetTypeIsValid(CommandSetType type) {
+  switch (type) {
+    case CommandSetTypeDPad:
+    case CommandSetTypeTransport:
+    case CommandSetTypeNumberpad:
+    case CommandSetTypeRocker:
+      return YES;
+    case CommandSetTypeUnspecified:
+    default:
+      return NO;
+  }
+}
 
 typedef void (^ CommandCompletionHandler)(BOOL success, NSError *);
 
@@ -682,9 +695,3 @@ typedef NS_ENUM(uint8_t, RELayoutConfigurationDependencyType)
     RELayoutConfigurationIntrinsicDependency   = REIntrinsicRelationship
 };
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Mode
-////////////////////////////////////////////////////////////////////////////////
-
-typedef NSString * RERemoteMode;

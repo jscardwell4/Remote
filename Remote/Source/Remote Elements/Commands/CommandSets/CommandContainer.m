@@ -16,27 +16,21 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @dynamic index, name;
 
-+ (instancetype)commandContainerInContext:(NSManagedObjectContext *)context
-{
-    return [self createInContext:context];
+
+- (void)awakeFromInsert {
+  [super awakeFromInsert];
+  self.primitiveIndex = [MSDictionary dictionary];
 }
 
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key { self.index[key] = object; }
 
-    self.index = [MSDictionary dictionary];
-}
+- (id)objectForKeyedSubscript:(id<NSCopying>)key { return self.index[key]; }
 
-- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key { _index[key] = object; }
+- (NSUInteger)count { return [self.index count]; }
 
-- (id)objectForKeyedSubscript:(id<NSCopying>)key { return _index[key]; }
-
-- (NSUInteger)count { return [_index count]; }
-
-- (void)setPrimitiveIndex:(MSDictionary *)index { _index = index; }
-
-- (MSDictionary *)primitiveIndex { return _index; }
+//- (void)setPrimitiveIndex:(MSDictionary *)index { _index = index; }
+//
+//- (MSDictionary *)primitiveIndex { return _index; }
 
 
 @end

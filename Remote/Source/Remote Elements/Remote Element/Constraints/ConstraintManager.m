@@ -181,7 +181,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
 
              // remove any existing constraints for attribute
              for (Constraint * constraint
-                  in [element.layoutConfiguration constraintsForAttribute:attribute
+                  in [element.constraintManager constraintsForAttribute:attribute
                                                                     order:RELayoutConstraintFirstOrder])
                  [constraint.owner removeConstraint:constraint];
 
@@ -277,7 +277,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
 
              // remove any existing constraints for attribute
              for (Constraint * constraint
-                  in [element.layoutConfiguration constraintsForAttribute:attribute
+                  in [element.constraintManager constraintsForAttribute:attribute
                                                                     order:RELayoutConstraintFirstOrder])
                  [constraint.owner removeConstraint:constraint];
 
@@ -310,7 +310,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
 {
     [_context performBlockAndWait:
      ^{ // wrap method in managed object context block
-         if (  element.layoutConfiguration.proportionLock
+         if (  element.constraintManager.proportionLock
              && currentSize.width / currentSize.height
              != newSize.width / newSize.height)
          {
@@ -511,7 +511,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
 {
     [_context performBlockAndWait:
      ^{ // wrap method in managed object context block
-         if (element.layoutConfiguration.proportionLock)
+         if (element.constraintManager.proportionLock)
          {
              Constraint * c =
                  [element.intrinsicConstraints objectPassingTest:
@@ -719,13 +719,13 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
     NSLayoutAttribute firstAttribute;
 
     if (axis == UILayoutConstraintAxisHorizontal) {
-        if (subelement.layoutConfiguration[NSLayoutAttributeWidth]) return;
+        if (subelement.constraintManager[NSLayoutAttributeWidth]) return;
         constant = size.width;
         firstAttribute = NSLayoutAttributeWidth;
     }
 
     else {
-        if (subelement.layoutConfiguration[NSLayoutAttributeHeight]) return;
+        if (subelement.constraintManager[NSLayoutAttributeHeight]) return;
         constant = size.height;
         firstAttribute = NSLayoutAttributeHeight;
     }
@@ -740,16 +740,16 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
              case NSLayoutAttributeBaseline:
              case NSLayoutAttributeBottom:
                  // remove top
-                 if (subelement.layoutConfiguration[NSLayoutAttributeTop])
-                     constraintsToRemove = [subelement.layoutConfiguration
+                 if (subelement.constraintManager[NSLayoutAttributeTop])
+                     constraintsToRemove = [subelement.constraintManager
                                             constraintsForAttribute:NSLayoutAttributeTop
                                             order:RELayoutConstraintFirstOrder];
                  break;
 
              case NSLayoutAttributeTop:
                  // remove bottom
-                 if (subelement.layoutConfiguration[NSLayoutAttributeBottom])
-                     constraintsToRemove = [subelement.layoutConfiguration
+                 if (subelement.constraintManager[NSLayoutAttributeBottom])
+                     constraintsToRemove = [subelement.constraintManager
                                             constraintsForAttribute:NSLayoutAttributeBottom
                                             order:RELayoutConstraintFirstOrder];
                  break;
@@ -757,8 +757,8 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
              case NSLayoutAttributeLeft:
              case NSLayoutAttributeLeading:
                  // remove right
-                 if (subelement.layoutConfiguration[NSLayoutAttributeRight])
-                     constraintsToRemove = [subelement.layoutConfiguration
+                 if (subelement.constraintManager[NSLayoutAttributeRight])
+                     constraintsToRemove = [subelement.constraintManager
                                             constraintsForAttribute:NSLayoutAttributeRight
                                             order:RELayoutConstraintFirstOrder];
                  break;
@@ -766,34 +766,34 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
              case NSLayoutAttributeRight:
              case NSLayoutAttributeTrailing:
                  // remove left
-                 if (subelement.layoutConfiguration[NSLayoutAttributeLeft])
-                     constraintsToRemove = [subelement.layoutConfiguration
+                 if (subelement.constraintManager[NSLayoutAttributeLeft])
+                     constraintsToRemove = [subelement.constraintManager
                                             constraintsForAttribute:NSLayoutAttributeLeft
                                             order:RELayoutConstraintFirstOrder];
                  break;
 
              case NSLayoutAttributeCenterX:
                  // remove left and right
-                 if (  subelement.layoutConfiguration[NSLayoutAttributeRight]
-                     || subelement.layoutConfiguration[NSLayoutAttributeLeft])
+                 if (  subelement.constraintManager[NSLayoutAttributeRight]
+                     || subelement.constraintManager[NSLayoutAttributeLeft])
                      constraintsToRemove =
-                     [[subelement.layoutConfiguration
+                     [[subelement.constraintManager
                        constraintsForAttribute:NSLayoutAttributeRight
                        order:RELayoutConstraintFirstOrder]
-                      setByAddingObjectsFromSet:[subelement.layoutConfiguration
+                      setByAddingObjectsFromSet:[subelement.constraintManager
                                                  constraintsForAttribute:NSLayoutAttributeLeft
                                                  order:RELayoutConstraintFirstOrder]];
                  break;
 
              case NSLayoutAttributeCenterY:
                  // remove top and bottom
-                 if (  subelement.layoutConfiguration[NSLayoutAttributeTop]
-                     || subelement.layoutConfiguration[NSLayoutAttributeBottom])
+                 if (  subelement.constraintManager[NSLayoutAttributeTop]
+                     || subelement.constraintManager[NSLayoutAttributeBottom])
                      constraintsToRemove =
-                     [[subelement.layoutConfiguration
+                     [[subelement.constraintManager
                        constraintsForAttribute:NSLayoutAttributeTop
                        order:RELayoutConstraintFirstOrder]
-                      setByAddingObjectsFromSet:[subelement.layoutConfiguration
+                      setByAddingObjectsFromSet:[subelement.constraintManager
                                                  constraintsForAttribute:NSLayoutAttributeBottom
                                                  order:RELayoutConstraintFirstOrder]];
                  break;
@@ -828,7 +828,7 @@ MSSTATIC_STRING_CONST   REConstant        = @"constant";
      ^{ // wrap method in managed object context block
          NSArray * additions = nil;
 
-         NSArray * replacements = [constraint.configuration
+         NSArray * replacements = [constraint.manager
                                    replacementCandidatesForAddingAttribute:constraint.firstAttribute
                                    additions:&additions];
 
@@ -1107,8 +1107,7 @@ NSLayoutAttribute attributeForBitIndex(NSUInteger index);
     return [self constraintsForAttribute:attribute order:RELayoutConstraintUnspecifiedOrder];
 }
 
-- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute
-                             order:(RELayoutConstraintOrder)order
+- (NSSet *)constraintsForAttribute:(NSLayoutAttribute)attribute order:(RELayoutConstraintOrder)order
 {
     if (!self[attribute]) return nil;
 

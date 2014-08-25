@@ -249,7 +249,7 @@
 
     if (!_showAlignmentIndicators) return;
 
-    LayoutConfiguration * layoutConfiguration = _delegate.layoutConfiguration;
+    ConstraintManager * manager = _delegate.model.constraintManager;
 
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0);
 
@@ -320,7 +320,7 @@
                                                   2);
     CGFloat   centerYBarCornerRadius = 1;
 
-    if (layoutConfiguration[NSLayoutAttributeLeft])
+    if (manager[NSLayoutAttributeLeft])
     {
         //// Left Bar Drawing
         UIBezierPath * leftBarPath = [UIBezierPath bezierPathWithRoundedRect:leftBarRect
@@ -331,7 +331,7 @@
                                     outerHighlightOffset,
                                     outerHighlightBlurRadius,
                                     outerHighlight.CGColor);
-        [colors[[layoutConfiguration dependencyTypeForAttribute:NSLayoutAttributeLeft]] setFill];
+        [colors[[manager dependencyTypeForAttribute:NSLayoutAttributeLeft]] setFill];
         [leftBarPath fill];
 
         ////// Left Bar Inner Shadow
@@ -374,7 +374,7 @@
         CGContextRestoreGState(context);
     }
 
-    if (layoutConfiguration[NSLayoutAttributeRight])
+    if (manager[NSLayoutAttributeRight])
     {
         //// Right Bar Drawing
         UIBezierPath * rightBarPath = [UIBezierPath bezierPathWithRoundedRect:rightBarRect
@@ -385,7 +385,7 @@
                                     outerHighlightOffset,
                                     outerHighlightBlurRadius,
                                     outerHighlight.CGColor);
-        [colors[[layoutConfiguration dependencyTypeForAttribute:NSLayoutAttributeRight]] setFill];
+        [colors[[manager dependencyTypeForAttribute:NSLayoutAttributeRight]] setFill];
         [rightBarPath fill];
 
         ////// Right Bar Inner Shadow
@@ -428,7 +428,7 @@
         CGContextRestoreGState(context);
     }
 
-    if (layoutConfiguration[NSLayoutAttributeTop])
+    if (manager[NSLayoutAttributeTop])
     {
         //// Top Bar Drawing
         UIBezierPath * topBarPath = [UIBezierPath bezierPathWithRoundedRect:topBarRect
@@ -439,7 +439,7 @@
                                     outerHighlightOffset,
                                     outerHighlightBlurRadius,
                                     outerHighlight.CGColor);
-        [colors[[layoutConfiguration dependencyTypeForAttribute:NSLayoutAttributeTop]] setFill];
+        [colors[[manager dependencyTypeForAttribute:NSLayoutAttributeTop]] setFill];
         [topBarPath fill];
 
         ////// Top Bar Inner Shadow
@@ -482,7 +482,7 @@
         CGContextRestoreGState(context);
     }
 
-    if (layoutConfiguration[NSLayoutAttributeBottom])
+    if (manager[NSLayoutAttributeBottom])
     {
         //// Bottom Bar Drawing
         UIBezierPath * bottomBarPath = [UIBezierPath bezierPathWithRoundedRect:bottomBarRect
@@ -493,7 +493,7 @@
                                     outerHighlightOffset,
                                     outerHighlightBlurRadius,
                                     outerHighlight.CGColor);
-        [colors[[layoutConfiguration dependencyTypeForAttribute:NSLayoutAttributeBottom]] setFill];
+        [colors[[manager dependencyTypeForAttribute:NSLayoutAttributeBottom]] setFill];
         [bottomBarPath fill];
 
         ////// Bottom Bar Inner Shadow
@@ -537,7 +537,7 @@
         CGContextRestoreGState(context);
     }
 
-    if (layoutConfiguration[NSLayoutAttributeCenterX])
+    if (manager[NSLayoutAttributeCenterX])
     {
         //// Center X Bar Drawing
         UIBezierPath * centerXBarPath = [UIBezierPath bezierPathWithRoundedRect:centerXBarRect
@@ -548,7 +548,7 @@
                                     outerHighlightOffset,
                                     outerHighlightBlurRadius,
                                     outerHighlight.CGColor);
-        [colors[[layoutConfiguration dependencyTypeForAttribute:NSLayoutAttributeCenterX]] setFill];
+        [colors[[manager dependencyTypeForAttribute:NSLayoutAttributeCenterX]] setFill];
         [centerXBarPath fill];
 
         ////// Center X Bar Inner Shadow
@@ -593,7 +593,7 @@
         CGContextRestoreGState(context);
     }
 
-    if (layoutConfiguration[NSLayoutAttributeCenterY])
+    if (manager[NSLayoutAttributeCenterY])
     {
         //// Center Y Bar Drawing
         UIBezierPath * centerYBarPath = [UIBezierPath bezierPathWithRoundedRect:centerYBarRect
@@ -603,7 +603,7 @@
         CGContextSetShadowWithColor(context, outerHighlightOffset,
                                     outerHighlightBlurRadius,
                                     outerHighlight.CGColor);
-        [colors[[layoutConfiguration dependencyTypeForAttribute:NSLayoutAttributeCenterY]] setFill];
+        [colors[[manager dependencyTypeForAttribute:NSLayoutAttributeCenterY]] setFill];
         [centerYBarPath fill];
 
         ////// Center Y Bar Inner Shadow

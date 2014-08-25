@@ -377,7 +377,7 @@ WRAP(if(lvl&flg){[[MSLog loggingQueue] addOperationWithBlock:block];})
             }                                                                                       \
                                                                                                     \
             else                                                                                    \
-                [errorMessage appendFormat:@"Error: %@",detailedError];                             \
+                [errorMessage appendFormat:@"Error: %@\n",detailedError];                           \
         }                                                                                           \
         [errorMessage appendFormat:@"Error Message: %@\n",[error localizedDescription]];            \
         [errorMessage appendFormat:@"Error Domain: %@\n",[error domain]];                           \

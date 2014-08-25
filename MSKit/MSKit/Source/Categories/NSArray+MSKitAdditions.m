@@ -18,6 +18,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSArray (MSKitAdditions)
 
+- (BOOL)isEmpty { return self.count == 0; }
+
 + (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count {
     return [NSMutableArray arrayWithObject:obj count:count];
 }
@@ -186,6 +188,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     NSMutableArray * array = [self mutableCopy];
     [array map:block];
     return array;
+}
+
+- (NSArray *)map:(id (^)(id, NSUInteger))block {
+  return [self arrayByMappingToBlock:block];
 }
 
 - (NSArray *)flattenedArray

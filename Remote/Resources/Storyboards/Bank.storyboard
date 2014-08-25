@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="jlQ-tf-gws">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="jlQ-tf-gws">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -9,11 +9,11 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="jlQ-tf-gws" sceneMemberID="viewController">
                     <toolbarItems>
-                        <barButtonItem image="702-share" id="jIK-j5-tSb"/>
+                        <barButtonItem image="702-gray-share" id="jIK-j5-tSb"/>
                         <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="eGx-Gu-iZE"/>
-                        <barButtonItem image="703-download" id="m8P-4R-2rC"/>
+                        <barButtonItem image="703-gray-download" id="m8P-4R-2rC"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="0wo-NH-QRI"/>
-                        <barButtonItem image="708-search" id="N1E-vw-Zbb"/>
+                        <barButtonItem image="708-gray-search" id="N1E-vw-Zbb"/>
                     </toolbarItems>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
@@ -70,19 +70,19 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="702-share" style="plain" id="3Yd-W1-Bwb">
+                        <barButtonItem image="702-gray-share" style="plain" id="3Yd-W1-Bwb">
                             <connections>
                                 <action selector="exportBankObject:" destination="uc3-4E-b48" id="X5C-PY-U9x"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="3WP-bG-uxn"/>
-                        <barButtonItem image="703-download" style="plain" id="sRb-6g-E5w">
+                        <barButtonItem image="703-gray-download" style="plain" id="sRb-6g-E5w">
                             <connections>
                                 <action selector="importBankObject:" destination="uc3-4E-b48" id="bHi-XR-sWu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="s8f-3L-z2R"/>
-                        <barButtonItem image="708-search" style="plain" id="Xkw-TC-LQz">
+                        <barButtonItem image="708-gray-search" style="plain" id="Xkw-TC-LQz">
                             <connections>
                                 <action selector="searchBankObjects:" destination="uc3-4E-b48" id="cxy-aM-zIP"/>
                             </connections>
@@ -263,13 +263,13 @@
                         </connections>
                     </collectionView>
                     <toolbarItems>
-                        <barButtonItem image="702-share" style="plain" id="tHF-cG-Z1b">
+                        <barButtonItem image="702-gray-share" style="plain" id="tHF-cG-Z1b">
                             <connections>
                                 <action selector="exportBankObject:" destination="18g-7n-1lT" id="P1r-ON-fZp"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="R8A-TO-kt7"/>
-                        <barButtonItem image="703-download" style="plain" id="eqT-oL-RvU">
+                        <barButtonItem image="703-gray-download" style="plain" id="eqT-oL-RvU">
                             <connections>
                                 <action selector="importBankObject:" destination="18g-7n-1lT" id="f70-0v-RlA"/>
                             </connections>
@@ -280,8 +280,8 @@
                                 <rect key="frame" x="116" y="7" width="88" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
-                                    <segment title="" image="399-list1" width="44"/>
-                                    <segment title="" image="822-photo-2" width="44"/>
+                                    <segment title="" image="399-gray-list1" width="44"/>
+                                    <segment title="" image="822-gray-photo-2" width="44"/>
                                 </segments>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="SegmentedControlNametag"/>
@@ -292,7 +292,7 @@
                             </segmentedControl>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="RkF-PI-msA"/>
-                        <barButtonItem image="708-search" style="plain" id="hNt-Ga-7EN">
+                        <barButtonItem image="708-gray-search" style="plain" id="hNt-Ga-7EN">
                             <connections>
                                 <action selector="searchBankObjects:" destination="18g-7n-1lT" id="pmF-oT-K6u"/>
                             </connections>
@@ -408,19 +408,19 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="702-share" style="plain" id="3eJ-ff-57y">
+                        <barButtonItem image="702-gray-share" style="plain" id="3eJ-ff-57y">
                             <connections>
                                 <action selector="exportBankObject:" destination="KZq-0F-Ajg" id="O9x-kc-9Wy"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="3Tv-C9-7YT"/>
-                        <barButtonItem image="703-download" style="plain" id="xBk-ab-KnJ">
+                        <barButtonItem image="703-gray-download" style="plain" id="xBk-ab-KnJ">
                             <connections>
                                 <action selector="importBankObject:" destination="KZq-0F-Ajg" id="Kbr-Bu-nn5"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="x2R-Vr-ggq"/>
-                        <barButtonItem image="708-search" style="plain" id="w38-fj-UO6">
+                        <barButtonItem image="708-gray-search" style="plain" id="w38-fj-UO6">
                             <connections>
                                 <action selector="searchBankObjects:" destination="KZq-0F-Ajg" id="lSw-wd-VLX"/>
                             </connections>
@@ -626,11 +626,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="399-list1" width="19" height="15"/>
-        <image name="702-share" width="21" height="28"/>
-        <image name="703-download" width="21" height="28"/>
-        <image name="708-search" width="28" height="28"/>
-        <image name="822-photo-2" width="28" height="22"/>
+        <image name="399-gray-list1" width="19" height="15"/>
+        <image name="702-gray-share" width="21" height="28"/>
+        <image name="703-gray-download" width="21" height="28"/>
+        <image name="708-gray-search" width="28" height="28"/>
+        <image name="822-gray-photo-2" width="28" height="22"/>
         <image name="TableCellDetailArrow.png" width="17" height="22"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

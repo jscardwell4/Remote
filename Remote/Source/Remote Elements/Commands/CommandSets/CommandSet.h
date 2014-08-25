@@ -11,8 +11,7 @@
 
 @interface CommandSet : CommandContainer
 
-+ (instancetype)commandSetWithType:(CommandSetType)type;
-+ (instancetype)commandSetInContext:(NSManagedObjectContext *)context type:(CommandSetType)type;
++ (instancetype)commandSetWithType:(CommandSetType)type inContext:(NSManagedObjectContext *)moc;
 
 - (void)setObject:(Command *)command forKeyedSubscript:(id<NSCopying>)key;
 - (Command *)objectForKeyedSubscript:(id<NSCopying>)key;

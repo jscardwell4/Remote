@@ -67,7 +67,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 #pragma mark - Configurations
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)currentMode { return self.model.configurationDelegate.currentMode; }
+- (NSString *)currentMode { return self.model.currentMode; }
 
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx {
     return (ButtonGroupView *)[super objectAtIndexedSubscript:idx];

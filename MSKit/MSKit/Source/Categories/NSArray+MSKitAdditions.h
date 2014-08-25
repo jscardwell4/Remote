@@ -16,6 +16,8 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
 @interface NSArray (MSKitAdditions) <MSJSONExport>
 
+@property (nonatomic, readonly) BOOL isEmpty;
+
 + (NSArray *)arrayFromRange:(NSRange)range;
 + (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count;
 
@@ -40,6 +42,7 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 - (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate;
 - (NSArray *)arrayByMappingToBlock:(id (^)(id obj, NSUInteger idx))block;
 - (NSArray *)flattenedArray;
+- (NSArray *)map:(id (^)(id obj, NSUInteger idx))block;
 
 - (void)makeObjectsPerformSelectorBlock:(void (^)(id object))block;
 

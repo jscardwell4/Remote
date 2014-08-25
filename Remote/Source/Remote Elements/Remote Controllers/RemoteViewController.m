@@ -14,7 +14,7 @@
 #import "Command.h"
 
 // #define DUMP_ELEMENT_HIERARCHY
- #define DUMP_LAYOUT_DATA
+// #define DUMP_LAYOUT_DATA
 
 // #define INACTIVITY_TIMER
 
@@ -403,7 +403,7 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
 
 #endif
 
-#define LOG_ELEMENTS
+//#define LOG_ELEMENTS
 #ifdef LOG_ELEMENTS
 
     [[NSOperationQueue new] addOperationWithBlock:^{

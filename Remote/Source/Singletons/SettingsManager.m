@@ -35,7 +35,7 @@ int                                globalDDLogLevel = DefaultDDLogLevel;
         settingsCache = [@{
              MSSettingsAutoConnectKey       : ([UserDefaults valueForKey:@"autoconnect"] ? : @YES),
              MSSettingsAutoListenKey        : ([UserDefaults valueForKey:@"autolisten" ] ? : @YES),
-             MSSettingsStatusBarKey         : @NO,
+             MSSettingsStatusBarKey         : @YES,
              MSSettingsProximitySensorKey   : @YES,
              MSSettingsInactivityTimeoutKey : @0.0f
          } mutableCopy];

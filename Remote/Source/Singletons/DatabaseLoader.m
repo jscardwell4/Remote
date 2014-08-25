@@ -19,8 +19,8 @@
 #define LOG_PARSED_FILE      2
 #define LOG_RESULTING_OBJECT 4
 
-#define REMOTECONTROLLER_LOG_FLAG 4
-#define REMOTE_LOG_FLAG           4
+#define REMOTECONTROLLER_LOG_FLAG 0
+#define REMOTE_LOG_FLAG           0
 #define IMAGES_LOG_FLAG           0
 #define POWERCOMMANDS_LOG_FLAG    0
 #define MANUFACTURERS_LOG_FLAG    0
@@ -105,13 +105,10 @@ void logImportedObject(id importedObject, int flag)
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         @autoreleasepool { [self loadRemoteController:context]; }
-     }];
-
-    [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool { [self loadRemotes:context]; }
+         @autoreleasepool {
+           [self loadRemoteController:context];
+           [self loadRemotes:context];
+         }
      }];
 
 

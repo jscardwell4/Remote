@@ -146,14 +146,17 @@
         id defaultValue = defaultForKey(attribute);
         id setValue = [object valueForKey:attribute];
 
+        if ([setValue isKindOfClass:[NSSet class]] && ((NSSet *)setValue).isEmpty)
+            isCustom = NO;
+
         if (defaultValue && setValue)
         {
             if ([setValue isKindOfClass:[NSNumber class]])
                 isCustom = ![defaultValue isEqualToNumber:setValue];
-            
+
             else if ([setValue isKindOfClass:[NSString class]])
                 isCustom = ![defaultValue isEqualToString:setValue];
-            
+
             else
                 isCustom = ![defaultValue isEqual:setValue];
         }
@@ -198,7 +201,7 @@
 
 - (void)updateWithData:(NSDictionary *)data {
     /*
-     
+
      {
          "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
          "info.name": "PS3",

@@ -892,7 +892,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 
 - (BOOL)joinMulticastGroup
 {
-    assert(!IsMainQueue);
+//    assert(!IsMainQueue);
 
     if (_multicastSource && !dispatch_source_testcancel(_multicastSource))
     {

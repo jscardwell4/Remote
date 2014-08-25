@@ -10,22 +10,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - ControlStateImageSet
 ////////////////////////////////////////////////////////////////////////////////
-@class Image, ControlStateColorSet;
+@class ImageView;
 
 @interface ControlStateImageSet : ControlStateSet
 
 + (ControlStateImageSet *)imageSetWithImages:(NSDictionary *)images
                                        context:(NSManagedObjectContext *)moc;
 
-+ (ControlStateImageSet *)imageSetWithColors:(id)colors
++ (ControlStateImageSet *)imageSetWithColors:(NSDictionary *)colors
                                         images:(NSDictionary *)images
                                        context:(NSManagedObjectContext *)moc;
 
 - (UIImage *)UIImageForState:(NSUInteger)state;
 
-- (Image *)objectAtIndexedSubscript:(NSUInteger)state;
-
-@property (nonatomic, strong) ControlStateColorSet * colors;
+- (ImageView *)objectAtIndexedSubscript:(NSUInteger)state;
 
 @end
 

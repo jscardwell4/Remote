@@ -75,7 +75,10 @@
 #pragma mark Properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (LayoutConfiguration *)configuration { return self.firstItem.layoutConfiguration; }
+- (ConstraintManager *)manager {
+    //???: Shouldn't this return the owner's constraint manager?
+    return self.firstItem.constraintManager;
+}
 
 - (BOOL)isStaticConstraint { return !self.secondItem; }
 

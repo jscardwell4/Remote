@@ -9,7 +9,7 @@
 #import "AttributeEditingViewController.h"
 #import "RemoteElement.h"
 
-@class DetailedButtonEditingViewController;
+@class DetailedButtonEditingViewController, Button;
 
 @interface AttributeEditingViewController ()
 

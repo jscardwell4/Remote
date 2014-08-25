@@ -9,10 +9,10 @@
 #import "CommandContainer.h"
 
 @interface CommandContainer ()
-{
-@protected
-    MSDictionary * _index;
-}
+//{
+//@protected
+//    MSDictionary * _index;
+//}
 
 @property (nonatomic, strong) MSDictionary * index;
 

@@ -15,6 +15,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSSet (MSKitAdditions)
 
+- (BOOL)isEmpty { return self.count == 0; }
+
 - (NSString *)JSONString
 {
     id jsonObject = self.JSONObject;

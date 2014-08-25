@@ -41,31 +41,19 @@
     return (MSDictionary *)dd;
 }
 
-/*
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)context
+
+- (void)updateWithData:(NSDictionary *)data
 {
-    ControlStateColorSet * colorSet = nil;
+    NSManagedObjectContext * moc = self.managedObjectContext;
 
-    if (!context) ThrowInvalidNilArgument(context);
-    else if (!isDictionaryKind(data)) ThrowInvalidArgument(data, "must be some form of dictionary");
-
-    else
-    {
-        colorSet = [self createInContext:context];
-        [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:
-         ^(id key, id obj, BOOL *stop)
+    [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+         if ([ControlStateSet validState:key])
          {
-             if ([ControlStateSet validState:key])
-             {
-                 UIColor * color = colorFromImportValue(obj);
-                 if (color) colorSet[key] = color;
-             }
-         }];
-    }
-
-    return colorSet;
+             UIColor * color = colorFromImportValue(obj);
+             if (color) self[key] = color;
+         }
+     }];
 }
-*/
 
 - (MSDictionary *)JSONDictionary
 {

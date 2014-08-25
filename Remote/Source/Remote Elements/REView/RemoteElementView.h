@@ -27,7 +27,7 @@
 @interface RemoteElementView (AbstractProperties)
 
 @property (nonatomic, strong, readonly)  RemoteElement * model;
-@property (nonatomic, weak,   readonly)  RemoteElementView        * parentElementView;
+@property (nonatomic, weak,   readonly)  RemoteElementView * parentElementView;
 
 @end
 
@@ -104,25 +104,23 @@
 
 @interface RemoteElementView (RemoteElement)
 
-@property (nonatomic, copy)             NSString                * key;
-@property (nonatomic, copy)             NSString                * uuid;
-@property (nonatomic, copy)             NSString                * name;
-@property (nonatomic, assign)           CGFloat                   backgroundImageAlpha;
-@property (nonatomic, strong)           UIColor                 * backgroundColor;
-@property (nonatomic, strong)           Image                 * backgroundImage;
-@property (nonatomic, strong)           RemoteController      * controller;
-@property (nonatomic, strong)           RemoteElement           * parentElement;
-@property (nonatomic, strong)           NSOrderedSet            * subelements;
-@property (nonatomic, strong, readonly) LayoutConfiguration   * layoutConfiguration;
-@property (nonatomic, strong)           ConfigurationDelegate * configurationDelegate;
-@property (nonatomic, assign)           BOOL                      proportionLock;
-@property (nonatomic, assign)           REShape                   shape;
-@property (nonatomic, assign)           REStyle                   style;
-@property (nonatomic, readonly)         REType                    elementType;
-@property (nonatomic, readonly)         RERole                    role;
-@property (nonatomic, readonly)         RESubtype                 subtype;
-@property (nonatomic, assign)           REOptions                 options;
-@property (nonatomic, readonly)         REState                   state;
+@property (nonatomic, copy)             NSString         * key;
+@property (nonatomic, copy)             NSString         * uuid;
+@property (nonatomic, copy)             NSString         * name;
+@property (nonatomic, assign)           CGFloat            backgroundImageAlpha;
+@property (nonatomic, strong)           UIColor          * backgroundColor;
+@property (nonatomic, strong)           Image            * backgroundImage;
+@property (nonatomic, strong)           RemoteController * controller;
+@property (nonatomic, strong)           RemoteElement    * parentElement;
+@property (nonatomic, strong)           NSOrderedSet     * subelements;
+@property (nonatomic, assign)           BOOL               proportionLock;
+@property (nonatomic, assign)           REShape            shape;
+@property (nonatomic, assign)           REStyle            style;
+@property (nonatomic, readonly)         REType             elementType;
+@property (nonatomic, readonly)         RERole             role;
+@property (nonatomic, readonly)         RESubtype          subtype;
+@property (nonatomic, assign)           REOptions          options;
+@property (nonatomic, readonly)         REState            state;
 
 @end
 
@@ -171,14 +169,14 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 
 
 
-@class ButtonGroupView;
+@class ButtonGroupView, Remote;
 
 @interface RemoteView : RemoteElementView
 
-@property (nonatomic, strong, readonly)  Remote * model;
-@property (nonatomic, assign)   	 		 BOOL       locked;
-@property (nonatomic, readonly) 			 NSString * currentMode;
-@property (nonatomic, readonly) 			 NSArray  * registeredConfigurations;
+@property (nonatomic, strong, readonly) Remote * model;
+@property (nonatomic, assign)   	 	BOOL       locked;
+@property (nonatomic, readonly) 		NSString * currentMode;
+@property (nonatomic, readonly) 		NSArray  * registeredConfigurations;
 
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx;
 - (ButtonGroupView *)objectForKeyedSubscript:(NSString *)key;
@@ -220,7 +218,7 @@ MSEXTERN_NAMETAG(ButtonGroupViewLabel);
  * <PickerLabelButtonGroupView>, <RoundedPanelButtonGroupView>, and
  * <SelectionPanelButtonGroupView>.
  */
-@class   ButtonView, RemoteView;
+@class   ButtonView, ButtonGroup, RemoteView;
 
 @interface ButtonGroupView : RemoteElementView
 
@@ -276,6 +274,7 @@ MSEXTERN_NAMETAG(REButtonViewInternal);
 MSEXTERN_NAMETAG(REButtonViewLabel);
 MSEXTERN_NAMETAG(REButtonViewActivityIndicator);
 
+@class Button, Command;
 
 /**
  * The `ButtonView` class is a subclass of `UIControl` that is designed to display itself
@@ -295,19 +294,16 @@ MSEXTERN_NAMETAG(REButtonViewActivityIndicator);
 
 @end
 
-@class ButtonConfigurationDelegate;
-
 /// Properties forwared to model object.
 @interface ButtonView (REButton)
 
-@property (nonatomic, assign, getter = isHighlighted) BOOL     highlighted;
-@property (nonatomic, assign, getter = isSelected) BOOL        selected;
-@property (nonatomic, assign, getter = isEnabled) BOOL         enabled;
-@property (nonatomic, assign) UIEdgeInsets                     titleEdgeInsets;
-@property (nonatomic, assign) UIEdgeInsets                     imageEdgeInsets;
-@property (nonatomic, assign) UIEdgeInsets                     contentEdgeInsets;
-@property (nonatomic, strong) Command                      * command;
-@property (nonatomic, strong) ButtonConfigurationDelegate  * configurationDelegate;
+@property (nonatomic, assign, getter = isHighlighted) BOOL            highlighted;
+@property (nonatomic, assign, getter = isSelected)    BOOL            selected;
+@property (nonatomic, assign, getter = isEnabled)     BOOL            enabled;
+@property (nonatomic, assign)                         UIEdgeInsets    titleEdgeInsets;
+@property (nonatomic, assign)                         UIEdgeInsets    imageEdgeInsets;
+@property (nonatomic, assign)                         UIEdgeInsets    contentEdgeInsets;
+@property (nonatomic, strong)                         Command       * command;
 
 @end
 

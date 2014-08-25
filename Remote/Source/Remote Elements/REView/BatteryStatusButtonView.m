@@ -6,6 +6,7 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementView_Private.h"
+#import "ImageView.h"
 
 @implementation BatteryStatusButtonView
 
@@ -48,16 +49,16 @@
 {
     [super initializeViewFromModel];
 
-    _frameColor = self.model.icons.colors[UIControlStateNormal];
+    _frameColor = self.model.icons[UIControlStateNormal].color;
 //    if (!_frameColor) _frameColor =  WhiteColor;
 
-    _plugColor = self.model.icons.colors[UIControlStateSelected];
+    _plugColor = self.model.icons[UIControlStateSelected].color;
 //    if (!_plugColor) _plugColor = LightGrayColor;
 
-    _lightningColor = self.model.icons.colors[UIControlStateDisabled];
+    _lightningColor = self.model.icons[UIControlStateDisabled].color;
 //    if (!_lightningColor) _lightningColor = _plugColor;
 
-    _fillColor = self.model.icons.colors[UIControlStateHighlighted];
+    _fillColor = self.model.icons[UIControlStateHighlighted].color;
 //    if (!_fillColor) _fillColor = LightTextColor;
 
     _frameIcon = [self.model.icons UIImageForState:UIControlStateNormal];
@@ -80,7 +81,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    UIImage * iconImage = self.model.icon;
+    UIImage * iconImage = self.model.icon.colorImage;
     return (iconImage ? iconImage.size : REMinimumSize);
 }
 

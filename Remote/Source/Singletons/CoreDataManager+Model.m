@@ -7,6 +7,7 @@
 //
 
 #import "CoreDataManager.h"
+#import "MSKit/MSKit.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -201,10 +202,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     // configurations attribute on configuration delegates
 
     modifyAttributeForEntities([entities
-                                objectsForKeys:@[@"ConfigurationDelegate",
-                                                 @"RemoteConfigurationDelegate",
-                                                 @"ButtonGroupConfigurationDelegate",
-                                                 @"ButtonConfigurationDelegate"]
+                                objectsForKeys:@[@"RemoteElement",
+                                                 @"Remote",
+                                                 @"ButtonGroup",
+                                                 @"Button"]
                                 notFoundMarker:NullObject],
                                @"configurations",
                                @"NSDictionary",
@@ -252,12 +253,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                [NSURL URLWithString:@"http://about:blank"],
                                nil);
 
-    // bitVector attribute on layout configuration
-    modifyAttributeForEntities(@[entities[@"LayoutConfiguration"]],
-                               @"bitVector",
-                               @"MSBitVector",
-                               BitVector8,
-                               nil);
 
     // color attributes on control state color set
     modifyAttributesForEntity(entities[@"ControlStateColorSet"],

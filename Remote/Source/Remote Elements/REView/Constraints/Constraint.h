@@ -9,7 +9,7 @@
 #import "RETypedefs.h"
 @class   RemoteElement;
 @class   RemoteElementView;
-@class   LayoutConfiguration;
+@class   ConstraintManager;
 
 @interface Constraint : ModelObject
 
@@ -25,7 +25,7 @@
 @property (nonatomic, strong)           RemoteElement * owner;
 @property (nonatomic, assign)           float           priority;
 
-@property (nonatomic, weak, readonly)   LayoutConfiguration * configuration;
+@property (nonatomic, weak, readonly)   ConstraintManager * manager;
 @property (nonatomic, readonly, getter = isStaticConstraint) BOOL        staticConstraint;
 
 + (Constraint *)constraintWithItem:(RemoteElement *)element1
