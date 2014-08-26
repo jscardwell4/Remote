@@ -7,15 +7,4 @@
 //
 #import "ControlStateSet.h"
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - ControlStateColorSet
-////////////////////////////////////////////////////////////////////////////////
-@class Button, ControlStateImageSet;
-
-@interface ControlStateColorSet : ControlStateSet
-
-- (UIColor *)objectAtIndexedSubscript:(NSUInteger)state;
-@property (nonatomic, strong) Button * button;
-@property (nonatomic, strong) ControlStateImageSet * imageSet;
-
-@end
+@interface ControlStateColorSet : ControlStateSet @end

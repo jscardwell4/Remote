@@ -21,9 +21,8 @@
                                       images:(NSDictionary *)images
                                      context:(NSManagedObjectContext *)moc;
 
-- (UIImage *)UIImageForState:(NSUInteger)state;
-
 - (ImageView *)objectAtIndexedSubscript:(NSUInteger)state;
+- (ImageView *)objectForKeyedSubscript:(NSString *)key;
 
 @end
 

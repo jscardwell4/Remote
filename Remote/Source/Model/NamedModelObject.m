@@ -8,9 +8,25 @@
 
 #import "NamedModelObject.h"
 
+@interface NamedModelObject (CoreDataGenerated)
+@property (nonatomic) NSString * primitiveName;
+@end
+
 @implementation NamedModelObject
 
 @dynamic name;
+
+- (NSString *)name {
+  [self willAccessValueForKey:@"name"];
+  NSString * name = self.primitiveName;
+  if (!name) {
+    NSUInteger entityCount = [[self class] countOfObjectsWithPredicate:nil context:self.managedObjectContext];
+    self.primitiveName = $(@"%@%@", self.className, @(entityCount));
+    name = self.primitiveName;
+  }
+  [self didAccessValueForKey:@"name"];
+  return name;
+}
 
 - (NSString *)commentedUUID
 {

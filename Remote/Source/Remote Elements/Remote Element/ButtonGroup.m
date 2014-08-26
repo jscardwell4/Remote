@@ -34,12 +34,14 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 @dynamic labelConstraints, labelAttributes, commandContainer;
 
+/*
 + (instancetype)buttonGroupWithRole:(RERole)role { return [self remoteElementWithAttributes:@{ @"role" : @(role) }]; }
 
 + (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc {
   return [self remoteElementInContext:moc attributes:@{ @"role" : @(role) }];
 }
 
+*/
 + (REType)elementType { return RETypeButtonGroup; }
 
 - (void)setPanelLocation:(REPanelLocation)panelLocation {

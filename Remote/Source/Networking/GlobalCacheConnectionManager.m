@@ -446,7 +446,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                      {
                          MSLogDebugTag(@"removing devices from store with non-unique uuid '%@'", uuid);
                          [NDiTachDevice deleteAllMatchingPredicate:NSPredicateMake(@"self.uuid EQUALS %k", uuid)
-                                              inContext:localContext];
+                                              context:localContext];
                      }
                      completion:^(BOOL success, NSError *error)
                      {

@@ -154,7 +154,7 @@ static const CGFloat kInputsTableRowHeight = 120;
         self.manufacturers = [@[@"No Manufacturer",
                                 [Manufacturer findAllSortedBy:@"info.name"
                                                     ascending:YES
-                                                    inContext:self.item.managedObjectContext]] flattenedArray];
+                                                    context:self.item.managedObjectContext]] flattenedArray];
     }
 
     return _manufacturers;
@@ -491,7 +491,7 @@ static const CGFloat kInputsTableRowHeight = 120;
                                                           withPredicate:fetchPredicate
                                                                sortedBy:@"info.name"
                                                               ascending:YES
-                                                              inContext:self.componentDevice.managedObjectContext];
+                                                              context:self.componentDevice.managedObjectContext];
     NSError * error = nil;
     [controller performFetch:&error];
     if (!MSHandleErrors(error)) {

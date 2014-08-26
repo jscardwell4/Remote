@@ -29,7 +29,7 @@
 
     if (!manufacturer) {
       manufacturer = [self createInContext:context];
-      manufacturer.info.name = name;
+      manufacturer.name = name;
     }
   }];
 
@@ -65,15 +65,9 @@
 
   [super updateWithData:data];
 
-  NSString               * name     = data[@"name"];
-  NSString               * category = data[@"category"];
   NSArray                * codes    = data[@"codes"];
   NSArray                * devices  = data[@"devices"];
   NSManagedObjectContext * moc      = self.managedObjectContext;
-
-  if (name) self.info.name = name;
-
-  if (category) self.info.category = category;
 
   if (codes) {
     NSMutableSet * manufacturerCodes = [NSMutableSet set];

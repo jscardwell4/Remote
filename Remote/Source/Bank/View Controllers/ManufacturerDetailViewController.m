@@ -134,7 +134,7 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
                                                               withPredicate:predicate
                                                                    sortedBy:sortedBy
                                                                   ascending:YES
-                                                                  inContext:moc];
+                                                                  context:moc];
         NSError * error = nil;
         [controller performFetch:&error];
 

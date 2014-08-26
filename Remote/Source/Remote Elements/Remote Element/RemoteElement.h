@@ -39,11 +39,11 @@ MSEXTERN_STRING REDefaultMode;
 
 + (REType)elementType;
 
-+ (instancetype)remoteElement;
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc;
-+ (instancetype)remoteElementWithAttributes:(NSDictionary *)attributes;
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
-                            attributes:(NSDictionary *)attributes;
+//+ (instancetype)remoteElement;
+//+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc;
+//+ (instancetype)remoteElementWithAttributes:(NSDictionary *)attributes;
+//+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
+//                            attributes:(NSDictionary *)attributes;
 
 - (id)objectForKeyedSubscript:(NSString *)key;
 - (RemoteElement *)objectAtIndexedSubscript:(NSUInteger)subscript;

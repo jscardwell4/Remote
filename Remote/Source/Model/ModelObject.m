@@ -105,7 +105,7 @@ BOOL UUIDIsValid(NSString * uuid) {
   return nil;
 }
 
-+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc {
++ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class]) predicate:predicate];
   NSError        * error   = nil;
   NSArray        * result  = [moc executeFetchRequest:request error:&error];
@@ -116,7 +116,7 @@ BOOL UUIDIsValid(NSString * uuid) {
 }
 
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate {
-  return [self findAllMatchingPredicate:predicate inContext:[CoreDataManager defaultContext]];
+  return [self findAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
 + (NSArray *)findAllInContext:(NSManagedObjectContext *)moc {
@@ -131,7 +131,7 @@ BOOL UUIDIsValid(NSString * uuid) {
 
 + (NSArray *)findAll { return [self findAllInContext:[CoreDataManager defaultContext]]; }
 
-+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending inContext:(NSManagedObjectContext *)moc {
++ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])];
 
   request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:sortBy ascending:ascending]];
@@ -144,10 +144,10 @@ BOOL UUIDIsValid(NSString * uuid) {
 }
 
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending {
-  return [self findAllSortedBy:sortBy ascending:ascending inContext:[CoreDataManager defaultContext]];
+  return [self findAllSortedBy:sortBy ascending:ascending context:[CoreDataManager defaultContext]];
 }
 
-+ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc {
++ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
 
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])
                                                               predicate:predicate];
@@ -161,24 +161,24 @@ BOOL UUIDIsValid(NSString * uuid) {
 }
 
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate {
-  return [self countOfObjectsWithPredicate:predicate inContext:[CoreDataManager defaultContext]];
+  return [self countOfObjectsWithPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
-+ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc {
-  NSArray * matches = [self findAllMatchingPredicate:predicate inContext:moc];
++ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
+  NSArray * matches = [self findAllMatchingPredicate:predicate context:moc];
 
   if ([matches count] > 0) [moc deleteObjects:[matches set]];
 }
 
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
-  [self deleteAllMatchingPredicate:predicate inContext:[CoreDataManager defaultContext]];
+  [self deleteAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
                                          sortedBy:(NSString *)sortBy
                                         ascending:(BOOL)ascending
-                                        inContext:(NSManagedObjectContext *)moc {
+                                        context:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])
                                                               predicate:predicate];
 
@@ -187,10 +187,11 @@ BOOL UUIDIsValid(NSString * uuid) {
                                return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
                              }];
 
-  NSFetchedResultsController * resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                                       managedObjectContext:moc
-                                                                                         sectionNameKeyPath:groupBy
-                                                                                                  cacheName:nil];
+  NSFetchedResultsController * resultsController =
+    [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                        managedObjectContext:moc
+                                          sectionNameKeyPath:groupBy
+                                                   cacheName:nil];
 
   return resultsController;
 }
@@ -203,7 +204,7 @@ BOOL UUIDIsValid(NSString * uuid) {
                    withPredicate:predicate
                         sortedBy:sortBy
                        ascending:ascending
-                       inContext:[CoreDataManager defaultContext]];
+                       context:[CoreDataManager defaultContext]];
 }
 
 + (id)findFirstByAttribute:(NSString *)attribute withValue:(id)value {

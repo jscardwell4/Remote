@@ -86,8 +86,6 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   return imageSet;
 }
 
-- (UIImage *)UIImageForState:(NSUInteger)state { return self[state].colorImage; }
-
 - (ImageView *)objectAtIndexedSubscript:(NSUInteger)state {
   id value = [super objectAtIndexedSubscript:state];
   if ([value isKindOfClass:[ImageView class]]) return value;

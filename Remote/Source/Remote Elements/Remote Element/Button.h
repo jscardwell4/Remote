@@ -42,12 +42,12 @@
 @property (nonatomic, strong, readonly) ControlStateColorSet * backgroundColors;
 @property (nonatomic, strong, readonly) ControlStateImageSet * images;
 
-+ (instancetype)buttonWithRole:(RERole)role;
-+ (instancetype)buttonWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
-+ (instancetype)buttonWithTitle:(id)title;
-+ (instancetype)buttonWithTitle:(id)title context:(NSManagedObjectContext *)moc;
-+ (instancetype)buttonWithRole:(RERole)role title:(id)title;
-+ (instancetype)buttonWithRole:(RERole)role title:(id)title context:(NSManagedObjectContext *)moc;
+//+ (instancetype)buttonWithRole:(RERole)role;
+//+ (instancetype)buttonWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
+//+ (instancetype)buttonWithTitle:(id)title;
+//+ (instancetype)buttonWithTitle:(id)title context:(NSManagedObjectContext *)moc;
+//+ (instancetype)buttonWithRole:(RERole)role title:(id)title;
+//+ (instancetype)buttonWithRole:(RERole)role title:(id)title context:(NSManagedObjectContext *)moc;
 
 
 - (void)executeCommandWithOptions:(CommandOptions)options

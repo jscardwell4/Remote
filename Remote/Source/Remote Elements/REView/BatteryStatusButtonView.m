@@ -50,31 +50,12 @@
     [super initializeViewFromModel];
 
     _frameColor = self.model.icons[UIControlStateNormal].color;
-//    if (!_frameColor) _frameColor =  WhiteColor;
-
     _plugColor = self.model.icons[UIControlStateSelected].color;
-//    if (!_plugColor) _plugColor = LightGrayColor;
-
     _lightningColor = self.model.icons[UIControlStateDisabled].color;
-//    if (!_lightningColor) _lightningColor = _plugColor;
-
     _fillColor = self.model.icons[UIControlStateHighlighted].color;
-//    if (!_fillColor) _fillColor = LightTextColor;
-
-    _frameIcon = [self.model.icons UIImageForState:UIControlStateNormal];
-//    if (!_frameIcon)
-//        _frameIcon = [[BOIconImage fetchImageWithTag:5 context:self.model.managedObjectContext]
-//                      imageWithColor:_frameColor];
-
-    _plugIcon = [self.model.icons UIImageForState:UIControlStateSelected];
-//    if (!_plugIcon)
-//        _plugIcon = [[BOIconImage fetchImageWithTag:4 context:self.model.managedObjectContext]
-//                     imageWithColor:_plugColor];
-
-    _lightningIcon = [self.model.icons UIImageForState:UIControlStateDisabled];
-//    if (!_lightningIcon)
-//        _lightningIcon = [[BOIconImage fetchImageWithTag:6 context:self.model.managedObjectContext]
-//                          imageWithColor:_lightningColor];
+    _frameIcon = self.model.icons[UIControlStateNormal].colorImage;
+    _plugIcon = self.model.icons[UIControlStateSelected].colorImage;
+    _lightningIcon = self.model.icons[UIControlStateDisabled].colorImage;
 }
 
 - (void)dealloc { [NotificationCenter removeObserver:self]; }

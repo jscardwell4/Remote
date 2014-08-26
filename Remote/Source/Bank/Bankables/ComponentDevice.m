@@ -13,6 +13,7 @@
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 
+
 @implementation ComponentDevice {
   BOOL _ignoreNextPowerCommand;
 }
@@ -67,10 +68,10 @@
    }
  */
 
-- (void)awakeFromInsert {
-  [super awakeFromInsert];
-  self.user = YES;
-}
+//- (void)awakeFromInsert {
+//  [super awakeFromInsert];
+//  self.user = @YES;
+//}
 
 + (instancetype)fetchDeviceWithName:(NSString *)name {
   return [self findFirstByAttribute:@"info.name" withValue:name];
@@ -187,7 +188,6 @@
   NSManagedObjectContext * moc          = self.managedObjectContext;
 
 
-  if (name)         self.info.name    = name;
   if (port)         self.port         = port.shortValue;
   if (onCommand)    self.onCommand    = [Command importObjectFromData:onCommand context:moc];
   if (offCommand)   self.onCommand    = [Command importObjectFromData:offCommand context:moc];

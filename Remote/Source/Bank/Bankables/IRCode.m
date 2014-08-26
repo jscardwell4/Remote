@@ -134,7 +134,7 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
                                    : @"");
     NSString * codesetName = (self.codeset ?: @"-");
     NSString * deviceName = (self.device.name ? $(@" [%@]", self.device.name) : @"");
-    self.info.category = [@"" join:@[manufacturerName, codesetName, deviceName]];
+    self.category = [@"" join:@[manufacturerName, codesetName, deviceName]];
 }
 
 - (void)setDevice:(ComponentDevice *)device
@@ -179,8 +179,6 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
 
     [super updateWithData:data];
 
-    self.info.name     = data[@"name"]            ?: self.info.name    ;
-    self.info.category = data[@"category"]        ?: self.info.category;
     self.codeset       = data[@"codeset"]         ?: self.codeset      ;
     self.frequency     = data[@"frequency"]       ?: self.frequency    ;
     self.onOffPattern  = data[@"on-off-pattern"]  ?: self.onOffPattern ;

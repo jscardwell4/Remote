@@ -11,6 +11,6 @@
 @interface NamedModelObject : ModelObject <NamedModelObject>
 
 @property (nonatomic, readonly) NSString * commentedUUID;
-@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong, readwrite) NSString * name;
 
 @end

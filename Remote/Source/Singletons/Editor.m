@@ -23,19 +23,15 @@ static id _sharedInstance;
 
 @implementation Editor
 
-- (UIViewController *)viewController
-{
-    if (!_viewController)
-    {
-        RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
-        Remote * remote   = [Remote remoteElementInContext:[CoreDataManager defaultContext]];
+- (UIViewController *)viewController {
+  if (!_viewController) {
+    RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
+    editorVC.remoteElement = [Remote createInContext:[CoreDataManager defaultContext]];;
+    editorVC.delegate      = nil;
+    self.viewController    = editorVC;
+  }
 
-        editorVC.remoteElement = remote;
-        editorVC.delegate      = nil;
-        self.viewController = editorVC;
-    }
-
-    return _viewController;
+  return _viewController;
 }
 
 @end

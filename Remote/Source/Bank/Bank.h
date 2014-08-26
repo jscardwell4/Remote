@@ -37,7 +37,7 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 @property (nonatomic, copy)                          NSString     * category;
 @property (nonatomic, readonly)                      UIImage      * thumbnail;
 @property (nonatomic, readonly)                      UIImage      * preview;
-@property (nonatomic, assign)                        BOOL           user;
+@property (nonatomic, copy)                          NSNumber     * user;
 @property (nonatomic, readonly, getter = isEditable) BOOL           editable;
 @property (nonatomic, readonly)                      MSDictionary * subBankables;
 
@@ -53,14 +53,6 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 
 @property (nonatomic, strong) id<Bankable> item;
 - (void)editItem;
-
-@end
-
-@interface BankInfo : NSManagedObject <MSJSONExport>
-
-@property (nonatomic, copy)   NSString * name;
-@property (nonatomic, copy)   NSString * category;
-@property (nonatomic, assign) BOOL       user;
 
 @end
 

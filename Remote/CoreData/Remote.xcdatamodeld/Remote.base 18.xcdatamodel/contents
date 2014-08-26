@@ -16,16 +16,6 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
     </entity>
-    <entity name="BankInfo" representedClassName="BankInfo" syncable="YES">
-        <attribute name="category" attributeType="String" defaultValueString="Uncategorized" syncable="YES"/>
-        <attribute name="name" attributeType="String" defaultValueString="Unnamed" syncable="YES"/>
-        <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="code" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="info" inverseEntity="IRCode" syncable="YES"/>
-        <relationship name="componentDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="info" inverseEntity="ComponentDevice" syncable="YES"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="info" inverseEntity="Image" syncable="YES"/>
-        <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="info" inverseEntity="Manufacturer" syncable="YES"/>
-        <relationship name="preset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="info" inverseEntity="Preset" syncable="YES"/>
-    </entity>
     <entity name="BankObjectPreview" representedClassName="BankObjectPreview" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -85,15 +75,18 @@
         <attribute name="alwaysOn" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
+        <attribute name="category" attributeType="String" minValueString="1" defaultValueString="Uncategorized" syncable="YES"/>
         <attribute name="inputPowersOn" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
         <attribute name="port" attributeType="Integer 16" minValueString="1" maxValueString="3" defaultValueString="1">
             <userInfo/>
         </attribute>
         <attribute name="power" attributeType="Boolean" minValueString="0" maxValueString="1" defaultValueString="0">
             <userInfo/>
         </attribute>
+        <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="device" inverseEntity="IRCode" indexed="YES">
             <userInfo/>
@@ -101,7 +94,6 @@
         <relationship name="configurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDeviceConfiguration" inverseName="device" inverseEntity="ComponentDeviceConfiguration" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="componentDevice" inverseEntity="BankInfo" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="devices" inverseEntity="Manufacturer" syncable="YES"/>
         <relationship name="networkDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NetworkDevice" inverseName="componentDevices" inverseEntity="NetworkDevice" syncable="YES"/>
         <relationship name="offCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="offDevice" inverseEntity="Command" indexed="YES">
@@ -186,18 +178,20 @@
         <attribute name="url" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="Image" representedClassName="Image" syncable="YES">
+        <attribute name="category" attributeType="String" minValueString="1" defaultValueString="Uncategorized" syncable="YES"/>
         <attribute name="fileName" attributeType="String">
             <userInfo/>
         </attribute>
         <attribute name="leftCap" attributeType="Float" defaultValueString="0">
             <userInfo/>
         </attribute>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
         <attribute name="size" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="topCap" attributeType="Float" defaultValueString="0">
             <userInfo/>
         </attribute>
+        <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="image" inverseEntity="BankInfo" syncable="YES"/>
         <relationship name="remoteElement" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgroundImage" inverseEntity="RemoteElement" syncable="YES"/>
         <relationship name="themeSettings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ThemeSettings" inverseName="backgroundImage" inverseEntity="ThemeSettings" syncable="YES"/>
         <relationship name="views" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ImageView" inverseName="image" inverseEntity="ImageView" syncable="YES"/>
@@ -207,7 +201,7 @@
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="buttonIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="icon" inverseEntity="Button" syncable="YES"/>
         <relationship name="buttonImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="image" inverseEntity="Button" syncable="YES"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="views" inverseEntity="Image" syncable="YES"/>
+        <relationship name="image" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="views" inverseEntity="Image" syncable="YES"/>
         <relationship name="imageSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="disabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="imageSetDisabledSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="disabledSelected" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="imageSetHighlighted" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="highlighted" inverseEntity="ControlStateImageSet" syncable="YES"/>
@@ -218,10 +212,12 @@
         <relationship name="imageSetSelectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="selectedHighlightedDisabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
     </entity>
     <entity name="IRCode" representedClassName="IRCode" syncable="YES">
+        <attribute name="category" attributeType="String" minValueString="1" defaultValueString="Uncategorized" syncable="YES"/>
         <attribute name="codeset" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="frequency" attributeType="Integer 64" defaultValueString="40000">
             <userInfo/>
         </attribute>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
         <attribute name="offset" attributeType="Integer 16" minValueString="1" defaultValueString="1">
             <userInfo/>
         </attribute>
@@ -239,6 +235,7 @@
         <attribute name="setsDeviceInput" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
+        <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="device" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="codes" inverseEntity="ComponentDevice" indexed="YES" syncable="YES">
             <userInfo>
@@ -248,7 +245,6 @@
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDeviceConfiguration" inverseName="input" inverseEntity="ComponentDeviceConfiguration" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="code" inverseEntity="BankInfo" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="codes" inverseEntity="Manufacturer" syncable="YES"/>
         <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SendIRCommand" inverseName="code" inverseEntity="SendIRCommand" indexed="YES">
             <userInfo/>
@@ -260,10 +256,12 @@
         <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Command" inverseName="macroCommands" inverseEntity="Command" syncable="YES"/>
     </entity>
     <entity name="Manufacturer" representedClassName="Manufacturer" syncable="YES">
+        <attribute name="category" attributeType="String" minValueString="1" defaultValueString="Uncategorized" syncable="YES"/>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
+        <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="manufacturer" inverseEntity="IRCode" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="manufacturer" inverseEntity="ComponentDevice" syncable="YES"/>
-        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="manufacturer" inverseEntity="BankInfo" syncable="YES"/>
     </entity>
     <entity name="NDiTachDevice" representedClassName="NDiTachDevice" parentEntity="NetworkDevice" syncable="YES">
         <attribute name="pcb_pn" optional="YES" attributeType="String" syncable="YES"/>
@@ -286,9 +284,11 @@
         <relationship name="device" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="powerCommands" inverseEntity="ComponentDevice" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Preset" representedClassName="Preset" syncable="YES">
+        <attribute name="category" attributeType="String" minValueString="1" defaultValueString="Uncategorized" syncable="YES"/>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
+        <attribute name="user" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="element" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="preset" inverseEntity="RemoteElement" syncable="YES"/>
-        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankInfo" inverseName="preset" inverseEntity="BankInfo" syncable="YES"/>
         <relationship name="preview" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankObjectPreview" inverseName="preset" inverseEntity="BankObjectPreview" syncable="YES"/>
     </entity>
     <entity name="Remote" representedClassName="Remote" parentEntity="RemoteElement" syncable="YES">
@@ -314,7 +314,7 @@
         <attribute name="backgroundImageAlpha" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
         <attribute name="configurations" attributeType="Transformable" syncable="YES"/>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
         <attribute name="options" attributeType="Integer 16" defaultValueString="0" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="NSString"/>
@@ -464,7 +464,6 @@
         <element name="Activity" positionX="0" positionY="0" width="128" height="148"/>
         <element name="ActivityCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="BankGroup" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="BankInfo" positionX="0" positionY="0" width="128" height="165"/>
         <element name="BankObjectPreview" positionX="0" positionY="0" width="128" height="120"/>
         <element name="BuiltinTheme" positionX="0" positionY="0" width="128" height="45"/>
         <element name="Button" positionX="0" positionY="0" width="128" height="223"/>
@@ -473,7 +472,7 @@
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="105"/>
         <element name="CommandSet" positionX="0" positionY="0" width="128" height="90"/>
         <element name="CommandSetCollection" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="270"/>
         <element name="ComponentDeviceConfiguration" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Constraint" positionX="0" positionY="0" width="128" height="225"/>
         <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="225"/>
@@ -482,15 +481,15 @@
         <element name="CustomTheme" positionX="0" positionY="0" width="128" height="45"/>
         <element name="DelayCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Image" positionX="0" positionY="0" width="128" height="178"/>
-        <element name="ImageView" positionX="9" positionY="153" width="128" height="238"/>
-        <element name="IRCode" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="Image" positionX="0" positionY="0" width="128" height="208"/>
+        <element name="ImageView" positionX="9" positionY="153" width="128" height="240"/>
+        <element name="IRCode" positionX="0" positionY="0" width="128" height="268"/>
         <element name="MacroCommand" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="Manufacturer" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Manufacturer" positionX="0" positionY="0" width="128" height="135"/>
         <element name="NDiTachDevice" positionX="0" positionY="0" width="128" height="90"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Preset" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Preset" positionX="0" positionY="0" width="128" height="133"/>
         <element name="Remote" positionX="0" positionY="0" width="128" height="120"/>
         <element name="RemoteController" positionX="0" positionY="0" width="128" height="118"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="128" height="375"/>

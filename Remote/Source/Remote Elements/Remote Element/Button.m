@@ -57,6 +57,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark Creation
 ////////////////////////////////////////////////////////////////////////////////
 
+/*
 + (instancetype)buttonWithRole:(RERole)role {
   return [self remoteElementWithAttributes:@{ @"role" : @(role) }];
 }
@@ -80,7 +81,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 + (instancetype)buttonWithRole:(RERole)role title:(id)title context:(NSManagedObjectContext *)moc {
   return [self remoteElementInContext:moc attributes:@{ @"role" : @(role), @"title" : title }];
 }
+*/
 
+/*
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
                             attributes:(NSDictionary *)attributes {
   Button              * element            = [self remoteElementInContext:moc];
@@ -131,6 +134,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   return element;
 }
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Updating configuration
@@ -151,8 +155,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// calls `updateButtonForState:` to update the non-collection attributes.
 /// @param mode description
 - (void)updateForMode:(NSString *)mode {
-  // if (![self hasMode:mode]) return;
-
+  [super updateForMode:mode];
   self.command          = [self commandForMode:mode]           ?: [self commandForMode:REDefaultMode];
   self.longPressCommand = [self longPressCommandForMode:mode]  ?: [self longPressCommandForMode:REDefaultMode];
   self.titles           = [self titlesForMode:mode]            ?: [self titlesForMode:REDefaultMode];

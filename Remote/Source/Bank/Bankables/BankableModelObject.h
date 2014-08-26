@@ -11,7 +11,8 @@
 
 @interface BankableModelObject : NamedModelObject<Bankable>
 
-@property (nonatomic, strong, readonly) BankInfo * info;
+@property (nonatomic, copy, readwrite) NSString * category;
+@property (nonatomic, copy, readwrite) NSNumber * user;
 
 + (NSFetchedResultsController *)bankableItems;
 

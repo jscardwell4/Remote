@@ -9,95 +9,71 @@
 #import "ControlStateColorSet.h"
 #import "RemoteElementExportSupportFunctions.h"
 #import "RemoteElementImportSupportFunctions.h"
-#import "RemoteElementExportSupportFunctions.h"
-#import "JSONObjectKeys.h"
 
 @implementation ControlStateColorSet
 
-@dynamic button, imageSet;
+- (MSDictionary *)deepDescriptionDictionary {
+  ControlStateColorSet * stateSet = [self faultedObject];
+  assert(stateSet);
 
-- (UIColor *)objectAtIndexedSubscript:(NSUInteger)state
-{
-    return (UIColor *)[super objectAtIndexedSubscript:state];
+  MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+  dd[@"normal"]                      = NSStringFromUIColor([stateSet valueForKey:@"normal"]);
+  dd[@"selected"]                    = NSStringFromUIColor([stateSet valueForKey:@"selected"]);
+  dd[@"highlighted"]                 = NSStringFromUIColor([stateSet valueForKey:@"highlighted"]);
+  dd[@"disabled"]                    = NSStringFromUIColor([stateSet valueForKey:@"disabled"]);
+  dd[@"highlightedSelected"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedSelected"]);
+  dd[@"highlightedDisabled"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedDisabled"]);
+  dd[@"disabledSelected"]            = NSStringFromUIColor([stateSet valueForKey:@"disabledSelected"]);
+  dd[@"selectedHighlightedDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedDisabled"]);
+
+  return (MSDictionary *)dd;
 }
 
-#pragma mark - Debugging
+- (void)updateWithData:(NSDictionary *)data {
 
-- (MSDictionary *)deepDescriptionDictionary
-{
-    ControlStateColorSet * stateSet = [self faultedObject];
-    assert(stateSet);
+  [super updateWithData:data];
 
-    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"normal"]                         = NSStringFromUIColor([stateSet valueForKey:@"normal"]);
-    dd[@"selected"]                       = NSStringFromUIColor([stateSet valueForKey:@"selected"]);
-    dd[@"highlighted"]                    = NSStringFromUIColor([stateSet valueForKey:@"highlighted"]);
-    dd[@"disabled"]                       = NSStringFromUIColor([stateSet valueForKey:@"disabled"]);
-    dd[@"highlightedSelected"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedSelected"]);
-    dd[@"highlightedDisabled"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedDisabled"]);
-    dd[@"disabledSelected"]            = NSStringFromUIColor([stateSet valueForKey:@"disabledSelected"]);
-    dd[@"selectedHighlightedDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedDisabled"]);
-
-    return (MSDictionary *)dd;
+  [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock :^(id key, id obj, BOOL * stop) {
+    if ([ControlStateSet validState:key])
+      self[key] = colorFromImportValue(obj) ?: self[key];
+  }];
 }
 
+- (MSDictionary *)JSONDictionary {
+  MSDictionary * dictionary = [super JSONDictionary];
 
-- (void)updateWithData:(NSDictionary *)data
-{
-    NSManagedObjectContext * moc = self.managedObjectContext;
+  NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)]
+                    arrayByMappingToBlock:^id (id obj, NSUInteger idx) {
+                      return [ControlStateSet propertyForState:[obj unsignedIntegerValue]];
+                    }];
 
-    [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-         if ([ControlStateSet validState:key])
-         {
-             UIColor * color = colorFromImportValue(obj);
-             if (color) self[key] = color;
-         }
-     }];
+
+  for (NSString * key in keys)
+    dictionary[[key camelCaseToDashCase]] = CollectionSafe(normalizedColorJSONValueForColor([self valueForKey:key]));
+
+  [dictionary compact];
+  [dictionary compress];
+
+  return dictionary;
 }
 
-- (MSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [super JSONDictionary];
-
-    NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)] arrayByMappingToBlock:
-                      ^id(id obj, NSUInteger idx)
-                      {
-                          return [ControlStateSet propertyForState:[obj unsignedIntegerValue]];
-                      }];
-
-
-    for (NSString * key in keys)
-    {
-        UIColor * color = [self valueForKey:key];
-        if (color)
-            dictionary[key] = CollectionSafe(normalizedColorJSONValueForColor(color));
-    }
-
-    [dictionary compact];
-    [dictionary compress];
-
-    return dictionary;
-}
-
-
-- (NSString *)debugDescription
-{
-    return $(@"normal:%@\n"
-            "selected:%@\n"
-            "highlighted:%@\n"
-            "disabled:%@\n"
-            "highlightedSelected:%@\n"
-            "highlightedDisabled:%@\n"
-            "disabledSelected:%@\n"
-            "selectedHighlightedDisabled:%@",
-            NSStringFromUIColor(self[0]),
-            NSStringFromUIColor(self[4]),
-            NSStringFromUIColor(self[1]),
-            NSStringFromUIColor(self[2]),
-            NSStringFromUIColor(self[5]),
-            NSStringFromUIColor(self[3]),
-            NSStringFromUIColor(self[6]),
-            NSStringFromUIColor(self[7]));
+- (NSString *)debugDescription {
+  return $(@"normal:%@\n"
+           "selected:%@\n"
+           "highlighted:%@\n"
+           "disabled:%@\n"
+           "highlightedSelected:%@\n"
+           "highlightedDisabled:%@\n"
+           "disabledSelected:%@\n"
+           "selectedHighlightedDisabled:%@",
+           NSStringFromUIColor(self[0]),
+           NSStringFromUIColor(self[4]),
+           NSStringFromUIColor(self[1]),
+           NSStringFromUIColor(self[2]),
+           NSStringFromUIColor(self[5]),
+           NSStringFromUIColor(self[3]),
+           NSStringFromUIColor(self[6]),
+           NSStringFromUIColor(self[7]));
 }
 
 @end

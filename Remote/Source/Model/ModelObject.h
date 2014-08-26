@@ -25,13 +25,13 @@ BOOL UUIDIsValid(NSString * uuid);
 
 + (NSArray *)findAllInContext:(NSManagedObjectContext *)moc;
 + (NSArray *)findAll;
-+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc;
++ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate;
-+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending inContext:(NSManagedObjectContext *)moc;
++ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc;
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending;
 + (id)findFirstByAttribute:(NSString *)attribute withValue:(id)value;
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate;
-+ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc;
++ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
                                          sortedBy:(NSString *)sortBy
@@ -40,8 +40,8 @@ BOOL UUIDIsValid(NSString * uuid);
                                     withPredicate:(NSPredicate *)predicate
                                          sortedBy:(NSString *)sortBy
                                         ascending:(BOOL)ascending
-                                        inContext:(NSManagedObjectContext *)moc;
-+ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc;
+                                        context:(NSManagedObjectContext *)moc;
++ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate;
 
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc;

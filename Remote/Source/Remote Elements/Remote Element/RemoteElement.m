@@ -45,14 +45,15 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
 + (REType)elementType { return RETypeUndefined; }
 
-+ (instancetype)remoteElement { return [self remoteElementInContext:[CoreDataManager defaultContext]]; }
+//+ (instancetype)remoteElement { return [self remoteElementInContext:[CoreDataManager defaultContext]]; }
 
-+ (instancetype)remoteElementWithAttributes:(NSDictionary *)attributes {
-  return [self remoteElementInContext:[CoreDataManager defaultContext] attributes:attributes];
-}
+//+ (instancetype)remoteElementWithAttributes:(NSDictionary *)attributes {
+//  return [self remoteElementInContext:[CoreDataManager defaultContext] attributes:attributes];
+//}
 
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc { return [self createInContext:moc]; }
+//+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc { return [self createInContext:moc]; }
 
+/*
 + (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
                             attributes:(NSDictionary *)attributes {
   RemoteElement * element = [self remoteElementInContext:moc];
@@ -61,6 +62,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   return element;
 }
+*/
 
 - (void)prepareForDeletion {
   // TODO: Fill out stub
@@ -146,16 +148,36 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   self.tag        = data[@"tag"]                                                 ?: @0;
   self.themeFlags = remoteElementThemeFlagsFromImportKey(data[@"theme-flags"])   ?: self.themeFlags;
 
-  self.backgroundColor      = colorFromImportValue(data[@"background-color"]) ?: self.backgroundColor;
-  self.backgroundImageAlpha = data[@"background-image-alpha"]                  ?: @1.0;
 
-  NSDictionary           * backgroundImage = data[@"background-image"];
-  NSDictionary           * theme           = data[@"theme"];
-  NSArray                * subelements     = data[@"subelements"];
-  NSDictionary           * constraints     = data[@"constraints"];
-  NSManagedObjectContext * moc             = self.managedObjectContext;
+  NSDictionary           * backgroundColor      = data[@"background-color"];
+  NSDictionary           * backgroundImageAlpha = data[@"background-image-alpha"];
+  NSDictionary           * backgroundImage      = data[@"background-image"];
+  NSDictionary           * theme                = data[@"theme"];
+  NSArray                * subelements          = data[@"subelements"];
+  NSDictionary           * constraints          = data[@"constraints"];
+  NSManagedObjectContext * moc                  = self.managedObjectContext;
 
-  if (backgroundImage) self.backgroundImage = [Image importObjectFromData:backgroundImage context:moc];
+
+  if (backgroundColor)
+    for (NSString * mode in backgroundColor) {
+      UIColor * color = colorFromImportValue(backgroundColor[mode]);
+      if (color) self[modePropertyKey(mode, @"backgroundColor")] = color;
+    }
+
+  if (backgroundImage)
+    for (NSString * mode in backgroundImage) {
+      id value = backgroundImage[mode];
+      if (isDictionaryKind(value))
+        self[modePropertyKey(mode, @"backgroundImage")] = [Image importObjectFromData:value context:moc];
+    }
+
+  if (backgroundImageAlpha)
+    for (NSString * mode in backgroundImageAlpha) {
+      id value = backgroundImageAlpha[mode];
+      if (isNumberKind(value))
+        self[modePropertyKey(mode, @"backgroundImageAlpha")] = value;
+    }
+
 
   if (theme) self.theme = [Theme importObjectFromData:theme context:moc];
 
@@ -190,92 +212,36 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
 
 - (MSDictionary *)JSONDictionary {
-  id (^defaultForKey)(NSString *) = ^(NSString * key)
-  {
-    static const NSDictionary * index;
-    static dispatch_once_t      onceToken;
-
-    dispatch_once(&onceToken, ^{
-      NSDictionary * attributes           = [[self entity] attributesByName];
-      UIColor      * backgroundColor      = [attributes[@"backgroundColor"] defaultValue];
-      NSNumber     * state                = [attributes[@"state"] defaultValue];
-      NSNumber     * style                = [attributes[@"style"] defaultValue];
-      NSNumber     * options              = [attributes[@"options"] defaultValue];
-      NSNumber     * subtype              = [attributes[@"subtype"] defaultValue];
-      NSNumber     * themeFlags           = [attributes[@"themeFlags"] defaultValue];
-      NSNumber     * role                 = [attributes[@"role"] defaultValue];
-      NSNumber     * tag                  = [attributes[@"tag"] defaultValue];
-      NSNumber     * backgroundImageAlpha = [attributes[@"backgroundImageAlpha"]
-                                             defaultValue];
-      NSNumber     * shape                = [attributes[@"shape"] defaultValue];
-
-      index = @{ @"state"                  : state,
-                 @"style"                  : style,
-                 @"options"                : options,
-                 @"subtype"                : subtype,
-                 @"theme-flags"            : themeFlags,
-                 @"role"                   : role,
-                 @"tag"                    : tag,
-                 @"background-color"       : backgroundColor,
-                 @"background-image-alpha" : backgroundImageAlpha,
-                 @"shape"                  : shape };
-    });
-
-    id defaultValue = index[key];
-
-    return defaultValue;
-  };
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"name"] = CollectionSafe(self.name);
-  dictionary[@"key"]  = CollectionSafe(self.primitiveKey);
+  NSManagedObjectContext * moc = self.managedObjectContext;
 
-  if (![self.tag isEqual:defaultForKey(@"tag")])
-    dictionary[@"tag"] = self.tag;
-
-  if (![@(self.role)isEqualToNumber : defaultForKey(@"role")])
-    dictionary[@"role"] = (roleJSONValueForRemoteElement(self) ? : @(self.role));
-
-  if (![@(self.subtype)isEqual : defaultForKey(@"subtype")])
-    dictionary[@"subtype"] = (subtypeJSONValueForRemoteElement(self) ?: @(self.subtype));
-
-  if (![@(self.options)isEqual : defaultForKey(@"options")])
-    dictionary[@"options"] = (optionsJSONValueForRemoteElement(self) ? : @(self.options));
-
-  if (![@(self.state)isEqual : defaultForKey(@"state")])
-    dictionary[@"state"] = (stateJSONValueForRemoteElement(self) ?: @(self.state));
-
-  if (![@(self.shape)isEqual : defaultForKey(@"shape")])
-    dictionary[@"shape"] = (shapeJSONValueForRemoteElement(self) ? : @(self.shape));
-
-  if (![@(self.style)isEqual : defaultForKey(@"style")])
-    dictionary[@"style"] = (styleJSONValueForRemoteElement(self) ?: @(self.style));
-
-/*
-    if (![@(self.themeFlags) isEqual:defaultForKey(@"themeFlags")])
-        dictionary[@"themeFlags"] = (themeFlagsJSONValueForRemoteElement(self)
-                                     ?: @(self.themeFlags));
- */
+  dictionary[@"name"]    = CollectionSafe(self.name);
+  dictionary[@"key"]     = CollectionSafe(self.primitiveKey);
+  dictionary[@"tag"]     = CollectionSafe(self.tag);
+  dictionary[@"role"]    = CollectionSafe(roleJSONValueForRemoteElement(self));
+  dictionary[@"subtype"] = CollectionSafe(subtypeJSONValueForRemoteElement(self));
+  dictionary[@"options"] = CollectionSafe(optionsJSONValueForRemoteElement(self));
+  dictionary[@"state"]   = CollectionSafe(stateJSONValueForRemoteElement(self));
+  dictionary[@"shape"]   = CollectionSafe(shapeJSONValueForRemoteElement(self));
+  dictionary[@"style"]   = CollectionSafe(styleJSONValueForRemoteElement(self));
+  //TODO: Add theme flags when themes are live
 
   if ([self.constraints count]) {
-    NSArray * constraintDictionaries = [[self valueForKeyPath:@"constraints.JSONDictionary"]
-                                        allObjects];
-    NSArray * firstItemUUIDs = [constraintDictionaries
-                                valueForKeyPath:@"@distinctUnionOfObjects.firstItem"];
-    NSArray * secondItemUUIDs = [constraintDictionaries
-                                 valueForKeyPath:@"@distinctUnionOfObjects.secondItem"];
-    NSSet * uuids = [NSSet setWithArrays:@[firstItemUUIDs, secondItemUUIDs]];
 
-    uuids = [uuids setByRemovingObject:NullObject];
+    NSSet * constraintDictionaries = [self valueForKeyPath:@"constraints.JSONDictionary"];
+    NSSet * firstItemUUIDs = [constraintDictionaries valueForKeyPath:@"@distinctUnionOfObjects.firstItem"];
+    NSSet * secondItemUUIDs = [constraintDictionaries valueForKeyPath:@"@distinctUnionOfObjects.secondItem"];
+    NSSet * uuids = [[firstItemUUIDs setByAddingObjectsFromSet:secondItemUUIDs]
+                     setByRemovingObject:NullObject];
 
     MSDictionary * uuidIndex = [MSDictionary dictionary];
 
     for (NSString * uuid in uuids) {
       RemoteElement * element = ([uuid isEqualToString:self.uuid]
                                  ? self
-                                 : (RemoteElement *)memberOfCollectionWithUUID(self.subelements,
-                                                                               uuid));
+                                 : (RemoteElement *)memberOfCollectionWithUUID(self.subelements, uuid));
 
       assert(element && element.name);
       uuidIndex[[element.name camelCase]] = uuid;
@@ -299,22 +265,37 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
     dictionary[@"constraints"] = constraints;
   }
 
-  if (![self.backgroundColor isEqual:defaultForKey(@"backgroundColor")])
-    dictionary[@"background-color"] =
-      CollectionSafe(normalizedColorJSONValueForColor(self.backgroundColor));
+  dictionary[@"background-color"] = ({
+    MSDictionary * colors = [MSDictionary dictionary];
+    [self.configurations enumerateKeysAndObjectsUsingBlock:
+     ^(NSString * mode, NSDictionary * entry, BOOL *stop) {
+       colors[mode] = CollectionSafe(normalizedColorJSONValueForColor(entry[@"backgroundColor"]));
+     }];
+    colors;
+  });
 
-  dictionary[@"background-image.uuid"] = CollectionSafe(self.backgroundImage.commentedUUID);
+  dictionary[@"background-image"] = ({
+    MSDictionary * images = [MSDictionary dictionary];
+    [self.configurations enumerateKeysAndObjectsUsingBlock:
+     ^(NSString * mode, NSDictionary * entry, BOOL *stop) {
+      images[mode] = CollectionSafe(((Image *)[moc objectForURI:entry[@"backgroundImage"]]).commentedUUID);
+    }];
+    images;
+  });
 
-  if (![self.backgroundImageAlpha isEqual:defaultForKey(@"backgroundImageAlpha")])
-    dictionary[@"background-image-alpha"] = self.backgroundImageAlpha;
+  dictionary[@"background-image-alpha"] = ({
+    MSDictionary * alphas = [MSDictionary dictionary];
+    [self.configurations enumerateKeysAndObjectsUsingBlock:
+     ^(NSString * mode, NSDictionary * entry, BOOL *stop) {
+       alphas[mode] = CollectionSafe(entry[@"backgroundImageAlpha"]);
+     }];
+    alphas;
+  });
 
   if ([self.subelements count])
     dictionary[@"subelements"] = [self valueForKeyPath:@"subelements.JSONDictionary"];
 
-
-/*
-    dictionary[@"theme"] = CollectionSafe(self.theme.name);
- */
+  //TODO: Add theme export once ready
 
   [dictionary compact];
   [dictionary compress];
@@ -442,7 +423,15 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
 - (BOOL)hasMode:(NSString *)key { return [self.configurations hasKey:key]; }
 
-- (void)updateForMode:(NSString *)mode {}
+- (void)updateForMode:(NSString *)mode {
+  self.backgroundColor = (self[modePropertyKey(mode, @"backgroundColor")]
+                          ?: self[modePropertyKey(REDefaultMode, @"backgroundColor")]);
+  self.backgroundImage = [self.managedObjectContext
+                          objectForURI:(self[modePropertyKey(mode, @"backgroundImage")]
+                                        ?: self[modePropertyKey(REDefaultMode, @"backgroundImage")])];
+  self.backgroundImageAlpha = (self[modePropertyKey(mode, @"backgroundImageAlpha")]
+                               ?: self[modePropertyKey(REDefaultMode, @"backgroundImageAlpha")]);
+}
 
 
 - (void)refresh { [self updateForMode:_currentMode]; }

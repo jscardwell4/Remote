@@ -17,8 +17,8 @@
 */
 @interface ButtonGroup : RemoteElement
 
-+ (instancetype)buttonGroupWithRole:(RERole)role;
-+ (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
+//+ (instancetype)buttonGroupWithRole:(RERole)role;
+//+ (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
 
 - (void)setCommandContainer:(CommandContainer *)container mode:(NSString *)mode;
 - (CommandContainer *)commandContainerForMode:(NSString *)mode;

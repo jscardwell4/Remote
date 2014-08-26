@@ -96,7 +96,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
         self.manufacturers = [@[@"No Manufacturer",
                                 [Manufacturer findAllSortedBy:@"info.name"
                                                     ascending:YES
-                                                    inContext:self.item.managedObjectContext]]
+                                                    context:self.item.managedObjectContext]]
                               flattenedArray];
     }
 

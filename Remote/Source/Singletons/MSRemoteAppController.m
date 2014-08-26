@@ -319,7 +319,7 @@ static const int msLogContext = 0;
         }
 
         filePath = [@"/" join:@[DocumentsFilePath, @"ComponentDevice-export.json"]];
-        NSArray * componentDevices = [ComponentDevice findAllSortedBy:@"info.name" ascending:YES inContext:moc];
+        NSArray * componentDevices = [ComponentDevice findAllSortedBy:@"name" ascending:YES context:moc];
         assert(componentDevices.count);
         if (![componentDevices writeJSONToFile:filePath]) MSLogError(@"component device export failed");
         #ifdef LOG_JSON_FILES
@@ -328,7 +328,7 @@ static const int msLogContext = 0;
         #endif
 
         filePath = [@"/" join:@[DocumentsFilePath, @"Manufacturer-export.json"]];
-        NSArray * manufacturers = [Manufacturer findAllSortedBy:@"info.name" ascending:YES inContext:moc];
+        NSArray * manufacturers = [Manufacturer findAllSortedBy:@"name" ascending:YES context:moc];
         assert(manufacturers.count);
         if (![manufacturers writeJSONToFile:filePath]) MSLogError(@"manufacturer export failed");
         #ifdef LOG_JSON_FILES

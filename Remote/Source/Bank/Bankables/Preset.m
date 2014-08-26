@@ -17,7 +17,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation Preset
 
-@dynamic element, info;
+@dynamic element;
 
 + (instancetype)presetWithElement:(RemoteElement *)element
 {
@@ -54,7 +54,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    self.user = YES;
+    self.user = @YES;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
