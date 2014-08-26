@@ -111,10 +111,8 @@
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"codes"] = CollectionSafeSelfKeyPathValue(@"codes.JSONDictionary");
-
-  if ([self.devices count] > 0)
-    dictionary[@"devices"] = CollectionSafeSelfKeyPathValue(@"devices.commentedUUID");
+  SafeSetValueForKey([self valueForKeyPath:@"codes.JSONDictionary"], @"codes", dictionary);
+  SafeSetValueForKey([self valueForKeyPath:@"devices.commentedUUID"], @"devices", dictionary);
 
   [dictionary compact];
   [dictionary compress];

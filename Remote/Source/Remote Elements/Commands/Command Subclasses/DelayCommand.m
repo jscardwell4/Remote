@@ -47,7 +47,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 {
     MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"duration"] = self.duration;
+    SetValueForKeyIfNotDefault(self.duration, @"duration", dictionary);
 
     [dictionary compact];
     [dictionary compress];

@@ -16,7 +16,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 @implementation Command
 
-@dynamic button, indicator, onDevice, offDevice, name;
+@dynamic button, indicator, onDevice, offDevice;
 
 + (instancetype)command {
   return [self commandInContext:[CoreDataManager defaultContext]];

@@ -304,20 +304,20 @@ BOOL UUIDIsValid(NSString * uuid) {
 #pragma mark JSON export
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)JSONString { return self.JSONDictionary.JSONString; }
+- (NSString *)JSONString { return [self.JSONDictionary.JSONString stringByReplacingOccurrencesOfString:@"\\/" withString:@"\\"]; }
 
 
-- (MSDictionary *)JSONDictionary {
-  assert(self.uuid);
-
-  return [MSDictionary dictionaryWithObject:self.uuid forKey:@"uuid"];
-}
+- (MSDictionary *)JSONDictionary { return [MSDictionary dictionaryWithObject:self.uuid forKey:@"uuid"]; }
 
 - (id)JSONObject { return [self.JSONDictionary JSONObject]; }
 
 - (BOOL)writeJSONToFile:(NSString *)file {
   NSString * json = self.JSONString;
   return StringIsEmpty(json) ? NO : [json writeToFile:file];
+}
+
+- (BOOL)attributeValueIsDefault:(NSString *)attributeName {
+  return [[self valueForKey:attributeName] isEqual:[self defaultValueForAttribute:attributeName]];
 }
 
 @end

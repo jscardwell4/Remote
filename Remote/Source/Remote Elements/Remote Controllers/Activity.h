@@ -27,12 +27,7 @@
  */
 + (instancetype)activityWithName:(NSString *)name inContext:(NSManagedObjectContext *)context;
 
-/**
- * Changes the name of the activity, if the specified name does not conflict with an existing activity.
- * @param name The new name for the activity
- * @return Whether the name was changed successfully
- */
-- (BOOL)updateName:(NSString *)name;
++ (BOOL)isNameAvailable:(NSString *)name;
 
 /**
  * Launches the activity by invoking the launch macro and switching to the activity's remote.

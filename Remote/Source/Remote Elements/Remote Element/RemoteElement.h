@@ -131,7 +131,7 @@ MSEXTERN_STRING REDefaultMode;
 
 @end
 
-MSEXTERN NSString *modePropertyKey(NSString *m, NSString *p);
+MSEXTERN NSString *configurationKey(NSString *m, NSString *p);
 MSEXTERN BOOL getModePropertyFromKey(NSString *key, NSString **mode, NSString **property);
 MSEXTERN BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re);
 

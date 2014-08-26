@@ -21,7 +21,7 @@
 #import "RemoteElementKeys.h"
 #import "JSONObjectKeys.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
@@ -29,408 +29,390 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark - Remote Element Types, Subtypes and Roles
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * typeJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(RETypeRemote)      : RETypeRemoteJSONKey,
-                                 @(RETypeButtonGroup) : RETypeButtonGroupJSONKey,
-                                 @(RETypeButton)      : RETypeButtonJSONKey };
-                  });
+NSString *typeJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(RETypeRemote)      : RETypeRemoteJSONKey,
+               @(RETypeButtonGroup) : RETypeButtonGroupJSONKey,
+               @(RETypeButton)      : RETypeButtonJSONKey };
+  });
 
-    return (element ? index[@([[element class] elementType])] : nil);
+  return (element ? index[@([[element class] elementType])] : nil);
 }
 
-NSString * subtypeJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(RESubtypeUndefined)        : RESubtypeUndefinedJSONKey,
+NSString *subtypeJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(RESubtypeUndefined)        : RESubtypeUndefinedJSONKey,
 
-                                 @(REButtonGroupTopPanel1)    : REButtonGroupTopPanel1JSONKey,
-                                 @(REButtonGroupTopPanel2)    : REButtonGroupTopPanel2JSONKey,
-                                 @(REButtonGroupTopPanel3)    : REButtonGroupTopPanel3JSONKey,
+               @(REButtonGroupTopPanel1)    : REButtonGroupTopPanel1JSONKey,
+               @(REButtonGroupTopPanel2)    : REButtonGroupTopPanel2JSONKey,
+               @(REButtonGroupTopPanel3)    : REButtonGroupTopPanel3JSONKey,
 
-                                 @(REButtonGroupBottomPanel1) : REButtonGroupBottomPanel1JSONKey,
-                                 @(REButtonGroupBottomPanel2) : REButtonGroupBottomPanel2JSONKey,
-                                 @(REButtonGroupBottomPanel3) : REButtonGroupBottomPanel3JSONKey,
+               @(REButtonGroupBottomPanel1) : REButtonGroupBottomPanel1JSONKey,
+               @(REButtonGroupBottomPanel2) : REButtonGroupBottomPanel2JSONKey,
+               @(REButtonGroupBottomPanel3) : REButtonGroupBottomPanel3JSONKey,
 
-                                 @(REButtonGroupLeftPanel1)   : REButtonGroupLeftPanel1JSONKey,
-                                 @(REButtonGroupLeftPanel2)   : REButtonGroupLeftPanel2JSONKey,
-                                 @(REButtonGroupLeftPanel3)   : REButtonGroupLeftPanel3JSONKey,
+               @(REButtonGroupLeftPanel1)   : REButtonGroupLeftPanel1JSONKey,
+               @(REButtonGroupLeftPanel2)   : REButtonGroupLeftPanel2JSONKey,
+               @(REButtonGroupLeftPanel3)   : REButtonGroupLeftPanel3JSONKey,
 
-                                 @(REButtonGroupRightPanel1)  : REButtonGroupRightPanel1JSONKey,
-                                 @(REButtonGroupRightPanel2)  : REButtonGroupRightPanel2JSONKey,
-                                 @(REButtonGroupRightPanel3)  : REButtonGroupRightPanel3JSONKey };
-                  });
+               @(REButtonGroupRightPanel1)  : REButtonGroupRightPanel1JSONKey,
+               @(REButtonGroupRightPanel2)  : REButtonGroupRightPanel2JSONKey,
+               @(REButtonGroupRightPanel3)  : REButtonGroupRightPanel3JSONKey };
+  });
 
-    return (element ? index[@(element.subtype)] : nil);
+  return (element ? index[@(element.subtype)] : nil);
 }
 
-NSString * roleJSONValueForRemoteElement(RemoteElement * element)
-{
-    return (element ? roleJSONValueForRERole(element.role) : nil);
+NSString *roleJSONValueForRemoteElement(RemoteElement * element) {
+  return (element ? roleJSONValueForRERole(element.role) : nil);
 }
 
-NSString * roleJSONValueForRERole(RERole role)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index =
-                      @{ @(RERoleUndefined)                 : RERoleUndefinedJSONKey,
+NSString *roleJSONValueForRERole(RERole role) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index =
+      @{ @(RERoleUndefined)                 : RERoleUndefinedJSONKey,
 
-                         // button group roles
-                         @(REButtonGroupRoleSelectionPanel) : REButtonGroupRoleSelectionPanelJSONKey,
-                         @(REButtonGroupRoleToolbar)        : REButtonGroupRoleToolbarJSONKey,
-                         @(REButtonGroupRoleDPad)           : REButtonGroupRoleDPadJSONKey,
-                         @(REButtonGroupRoleNumberpad)      : REButtonGroupRoleNumberpadJSONKey,
-                         @(REButtonGroupRoleTransport)      : REButtonGroupRoleTransportJSONKey,
-                         @(REButtonGroupRoleRocker)         : REButtonGroupRoleRockerJSONKey,
+         // button group roles
+         @(REButtonGroupRoleSelectionPanel) : REButtonGroupRoleSelectionPanelJSONKey,
+         @(REButtonGroupRoleToolbar)        : REButtonGroupRoleToolbarJSONKey,
+         @(REButtonGroupRoleDPad)           : REButtonGroupRoleDPadJSONKey,
+         @(REButtonGroupRoleNumberpad)      : REButtonGroupRoleNumberpadJSONKey,
+         @(REButtonGroupRoleTransport)      : REButtonGroupRoleTransportJSONKey,
+         @(REButtonGroupRoleRocker)         : REButtonGroupRoleRockerJSONKey,
 
-                         // toolbar buttons
-                         @(REButtonRoleToolbar)             : REButtonRoleToolbarJSONKey,
-                         @(REButtonRoleConnectionStatus)    : REButtonRoleConnectionStatusJSONKey,
-                         @(REButtonRoleBatteryStatus)       : REButtonRoleBatteryStatusJSONKey,
+         // toolbar buttons
+         @(REButtonRoleToolbar)             : REButtonRoleToolbarJSONKey,
+         @(REButtonRoleConnectionStatus)    : REButtonRoleConnectionStatusJSONKey,
+         @(REButtonRoleBatteryStatus)       : REButtonRoleBatteryStatusJSONKey,
 
-                         // picker label buttons
-                         @(REButtonRoleRockerTop)           : REButtonRoleRockerTopJSONKey,
-                         @(REButtonRoleRockerBottom)        : REButtonRoleRockerBottomJSONKey,
+         // picker label buttons
+         @(REButtonRoleRockerTop)           : REButtonRoleRockerTopJSONKey,
+         @(REButtonRoleRockerBottom)        : REButtonRoleRockerBottomJSONKey,
 
-                         // panel buttons
-                         @(REButtonRolePanel)               : REButtonRolePanelJSONKey,
-                         @(REButtonRoleTuck)                : REButtonRoleTuckJSONKey,
-                         @(REButtonRoleSelectionPanel)      : REButtonRoleSelectionPanelJSONKey,
+         // panel buttons
+         @(REButtonRolePanel)               : REButtonRolePanelJSONKey,
+         @(REButtonRoleTuck)                : REButtonRoleTuckJSONKey,
+         @(REButtonRoleSelectionPanel)      : REButtonRoleSelectionPanelJSONKey,
 
-                         // dpad buttons
-                         @(REButtonRoleDPadUp)              : REButtonRoleDPadUpJSONKey,
-                         @(REButtonRoleDPadDown)            : REButtonRoleDPadDownJSONKey,
-                         @(REButtonRoleDPadLeft)            : REButtonRoleDPadLeftJSONKey,
-                         @(REButtonRoleDPadRight)           : REButtonRoleDPadRightJSONKey,
-                         @(REButtonRoleDPadCenter)          : REButtonRoleDPadCenterJSONKey,
+         // dpad buttons
+         @(REButtonRoleDPadUp)              : REButtonRoleDPadUpJSONKey,
+         @(REButtonRoleDPadDown)            : REButtonRoleDPadDownJSONKey,
+         @(REButtonRoleDPadLeft)            : REButtonRoleDPadLeftJSONKey,
+         @(REButtonRoleDPadRight)           : REButtonRoleDPadRightJSONKey,
+         @(REButtonRoleDPadCenter)          : REButtonRoleDPadCenterJSONKey,
 
 
-                         // numberpad buttons
-                         @(REButtonRoleNumberpad1)          : REButtonRoleNumberpad1JSONKey,
-                         @(REButtonRoleNumberpad2)          : REButtonRoleNumberpad2JSONKey,
-                         @(REButtonRoleNumberpad3)          : REButtonRoleNumberpad3JSONKey,
-                         @(REButtonRoleNumberpad4)          : REButtonRoleNumberpad4JSONKey,
-                         @(REButtonRoleNumberpad5)          : REButtonRoleNumberpad5JSONKey,
-                         @(REButtonRoleNumberpad6)          : REButtonRoleNumberpad6JSONKey,
-                         @(REButtonRoleNumberpad7)          : REButtonRoleNumberpad7JSONKey,
-                         @(REButtonRoleNumberpad8)          : REButtonRoleNumberpad8JSONKey,
-                         @(REButtonRoleNumberpad9)          : REButtonRoleNumberpad9JSONKey,
-                         @(REButtonRoleNumberpad0)          : REButtonRoleNumberpad0JSONKey,
-                         @(REButtonRoleNumberpadAux1)       : REButtonRoleNumberpadAux1JSONKey,
-                         @(REButtonRoleNumberpadAux2)       : REButtonRoleNumberpadAux2JSONKey,
+         // numberpad buttons
+         @(REButtonRoleNumberpad1)          : REButtonRoleNumberpad1JSONKey,
+         @(REButtonRoleNumberpad2)          : REButtonRoleNumberpad2JSONKey,
+         @(REButtonRoleNumberpad3)          : REButtonRoleNumberpad3JSONKey,
+         @(REButtonRoleNumberpad4)          : REButtonRoleNumberpad4JSONKey,
+         @(REButtonRoleNumberpad5)          : REButtonRoleNumberpad5JSONKey,
+         @(REButtonRoleNumberpad6)          : REButtonRoleNumberpad6JSONKey,
+         @(REButtonRoleNumberpad7)          : REButtonRoleNumberpad7JSONKey,
+         @(REButtonRoleNumberpad8)          : REButtonRoleNumberpad8JSONKey,
+         @(REButtonRoleNumberpad9)          : REButtonRoleNumberpad9JSONKey,
+         @(REButtonRoleNumberpad0)          : REButtonRoleNumberpad0JSONKey,
+         @(REButtonRoleNumberpadAux1)       : REButtonRoleNumberpadAux1JSONKey,
+         @(REButtonRoleNumberpadAux2)       : REButtonRoleNumberpadAux2JSONKey,
 
-                         // transport buttons
-                         @(REButtonRoleTransportPlay)       : REButtonRoleTransportPlayJSONKey,
-                         @(REButtonRoleTransportStop)       : REButtonRoleTransportStopJSONKey,
-                         @(REButtonRoleTransportPause)      : REButtonRoleTransportPauseJSONKey,
-                         @(REButtonRoleTransportSkip)       : REButtonRoleTransportSkipJSONKey,
-                         @(REButtonRoleTransportReplay)     : REButtonRoleTransportReplayJSONKey,
-                         @(REButtonRoleTransportFF)         : REButtonRoleTransportFFJSONKey,
-                         @(REButtonRoleTransportRewind)     : REButtonRoleTransportRewindJSONKey,
-                         @(REButtonRoleTransportRecord)     : REButtonRoleTransportRecordJSONKey };
-                  });
+         // transport buttons
+         @(REButtonRoleTransportPlay)       : REButtonRoleTransportPlayJSONKey,
+         @(REButtonRoleTransportStop)       : REButtonRoleTransportStopJSONKey,
+         @(REButtonRoleTransportPause)      : REButtonRoleTransportPauseJSONKey,
+         @(REButtonRoleTransportSkip)       : REButtonRoleTransportSkipJSONKey,
+         @(REButtonRoleTransportReplay)     : REButtonRoleTransportReplayJSONKey,
+         @(REButtonRoleTransportFF)         : REButtonRoleTransportFFJSONKey,
+         @(REButtonRoleTransportRewind)     : REButtonRoleTransportRewindJSONKey,
+         @(REButtonRoleTransportRecord)     : REButtonRoleTransportRecordJSONKey };
+  });
 
-    return index[@(role)];
+  return index[@(role)];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element State & Options
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * stateJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(REStateNormal)      : REStateNormalJSONKey,
-                                 @(REStateDisabled)    : REStateDisabledJSONKey,
-                                 @(REStateHighlighted) : REStateHighlightedJSONKey,
-                                 @(REStateSelected)    : REStateSelectedJSONKey };
-                  });
+NSString *stateJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(REStateNormal)      : REStateNormalJSONKey,
+               @(REStateDisabled)    : REStateDisabledJSONKey,
+               @(REStateHighlighted) : REStateHighlightedJSONKey,
+               @(REStateSelected)    : REStateSelectedJSONKey };
+  });
 
-    NSMutableArray * stateArray = [@[] mutableCopy];
+  NSMutableArray * stateArray = [@[] mutableCopy];
 
-    REState state = element.state;
+  REState state = element.state;
 
-    if (state & REStateDisabled)    [stateArray addObject:index[@(REStateDisabled)]];
-    if (state & REStateHighlighted) [stateArray addObject:index[@(REStateHighlighted)]];
-    if (state & REStateSelected)    [stateArray addObject:index[@(REStateSelected)]];
+  if (state & REStateDisabled) [stateArray addObject:index[@(REStateDisabled)]];
 
-    return ([stateArray count] ? [stateArray componentsJoinedByString:@" "] : nil);
+  if (state & REStateHighlighted) [stateArray addObject:index[@(REStateHighlighted)]];
+
+  if (state & REStateSelected) [stateArray addObject:index[@(REStateSelected)]];
+
+  return ([stateArray count] ? [stateArray componentsJoinedByString:@" "] : nil);
 }
 
-NSString * optionsJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * remoteIndex, * buttonGroupIndex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        remoteIndex = @{ @(RERemoteOptionTopBarHidden) : RERemoteOptionTopBarHiddenJSONKey };
+NSString *optionsJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * remoteIndex, * buttonGroupIndex;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    remoteIndex = @{ @(RERemoteOptionTopBarHidden) : RERemoteOptionTopBarHiddenJSONKey };
 
-        buttonGroupIndex =
-        @{
-          @(REButtonGroupOptionAutohide) :
-               REButtonGroupOptionAutohideJSONKey,
-           @(REButtonGroupOptionCommandSetContainer) :
-               REButtonGroupOptionCommandSetContainerJSONKey,
-           @(REButtonGroupOptionAutohide|REButtonGroupOptionCommandSetContainer):
-               [@[REButtonGroupOptionAutohideJSONKey, REButtonGroupOptionCommandSetContainerJSONKey]
-                componentsJoinedByString:@" "]
-          };
-    });
+    buttonGroupIndex =
+      @{
+      @(REButtonGroupOptionAutohide) :
+      REButtonGroupOptionAutohideJSONKey,
+      @(REButtonGroupOptionCommandSetContainer) :
+      REButtonGroupOptionCommandSetContainerJSONKey,
+      @(REButtonGroupOptionAutohide | REButtonGroupOptionCommandSetContainer) :
+      [@[REButtonGroupOptionAutohideJSONKey, REButtonGroupOptionCommandSetContainerJSONKey]
+       componentsJoinedByString : @" "]
+    };
+  });
 
-    if ([element isKindOfClass:[Remote class]])
-        return remoteIndex[@(element.options)];
+  if ([element isKindOfClass:[Remote class]])
+    return remoteIndex[@(element.options)];
 
-    else if ([element isKindOfClass:[ButtonGroup class]])
-        return buttonGroupIndex[@(element.options)];
+  else if ([element isKindOfClass:[ButtonGroup class]])
+    return buttonGroupIndex[@(element.options)];
 
-    else
-        return nil;
+  else
+    return nil;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style, & Theme
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * shapeJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(REShapeUndefined)        : REShapeUndefinedJSONKey,
-                                 @(REShapeRoundedRectangle) : REShapeRoundedRectangleJSONKey,
-                                 @(REShapeRectangle)        : REShapeRectangleJSONKey,
-                                 @(REShapeDiamond)          : REShapeDiamondJSONKey,
-                                 @(REShapeTriangle)         : REShapeTriangleJSONKey,
-                                 @(REShapeOval)             : REShapeOvalJSONKey };
-                  });
+NSString *shapeJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(REShapeUndefined)        : REShapeUndefinedJSONKey,
+               @(REShapeRoundedRectangle) : REShapeRoundedRectangleJSONKey,
+               @(REShapeRectangle)        : REShapeRectangleJSONKey,
+               @(REShapeDiamond)          : REShapeDiamondJSONKey,
+               @(REShapeTriangle)         : REShapeTriangleJSONKey,
+               @(REShapeOval)             : REShapeOvalJSONKey };
+  });
 
-    return (element ? index[@(element.shape)] : nil);
+  return (element ? index[@(element.shape)] : nil);
 }
 
-NSString * styleJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(REStyleUndefined)   : REStyleUndefinedJSONKey,
-                                 @(REStyleDrawBorder)  : REStyleDrawBorderJSONKey,
-                                 @(REStyleStretchable) : REStyleStretchableJSONKey,
-                                 @(REStyleApplyGloss)  : REStyleGlossStyle1JSONKey,
-                                 @(REStyleGlossStyle2) : REStyleGlossStyle2JSONKey,
-                                 @(REStyleGlossStyle3) : REStyleGlossStyle3JSONKey,
-                                 @(REStyleGlossStyle4) : REStyleGlossStyle4JSONKey };
-                  });
+NSString *styleJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(REStyleUndefined)   : REStyleUndefinedJSONKey,
+               @(REStyleDrawBorder)  : REStyleDrawBorderJSONKey,
+               @(REStyleStretchable) : REStyleStretchableJSONKey,
+               @(REStyleApplyGloss)  : REStyleGlossStyle1JSONKey,
+               @(REStyleGlossStyle2) : REStyleGlossStyle2JSONKey,
+               @(REStyleGlossStyle3) : REStyleGlossStyle3JSONKey,
+               @(REStyleGlossStyle4) : REStyleGlossStyle4JSONKey };
+  });
 
-    if (!element) return nil;
+  if (!element) return nil;
 
-    REStyle style = element.style;
+  REStyle style = element.style;
 
-    NSMutableArray * stringsArray = [@[] mutableCopy];
+  NSMutableArray * stringsArray = [@[] mutableCopy];
 
-    if (style & REStyleDrawBorder) [stringsArray addObject:index[@(REStyleDrawBorder)]];
-    if (style & REStyleStretchable) [stringsArray addObject:index[@(REStyleStretchable)]];
+  if (style & REStyleDrawBorder) [stringsArray addObject:index[@(REStyleDrawBorder)]];
 
-    REStyle glossStyle = (style & REGlossStyleMask);
+  if (style & REStyleStretchable) [stringsArray addObject:index[@(REStyleStretchable)]];
 
-    if (glossStyle) [stringsArray addObject:index[@(glossStyle)]];
+  REStyle glossStyle = (style & REGlossStyleMask);
 
-    return ([stringsArray count] ? [stringsArray componentsJoinedByString:@" "] : nil);
+  if (glossStyle) [stringsArray addObject:index[@(glossStyle)]];
+
+  return ([stringsArray count] ? [stringsArray componentsJoinedByString:@" "] : nil);
 }
 
-NSString * themeFlagsJSONValueForRemoteElement(RemoteElement * element)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index =
-        @{ @(REThemeNoBackgroundImage)               : REThemeNoBackgroundImageJSONKey,
-           @(REThemeNoBackgroundImageAlpha)          : REThemeNoBackgroundImageAlphaJSONKey,
-           @(REThemeNoBackgroundColorAttribute)      : REThemeNoBackgroundColorAttributeJSONKey,
-           @(REThemeNoBorder)                        : REThemeNoBorderJSONKey,
-           @(REThemeNoGloss)                         : REThemeNoGlossJSONKey,
-           @(REThemeNoStretchable)                   : REThemeNoStretchableJSONKey,
-           @(REThemeNoIconImage)                     : REThemeNoIconImageJSONKey,
-           @(REThemeNoIconColorAttribute)            : REThemeNoIconColorAttributeJSONKey,
-           @(REThemeNoIconInsets)                    : REThemeNoIconInsetsJSONKey,
-           @(REThemeNoTitleForegroundColorAttribute) : REThemeNoTitleForegroundColorAttributeJSONKey,
-           @(REThemeNoTitleBackgroundColorAttribute) : REThemeNoTitleBackgroundColorAttributeJSONKey,
-           @(REThemeNoTitleShadowColorAttribute)     : REThemeNoTitleShadowColorAttributeJSONKey,
-           @(REThemeNoTitleStrokeColorAttribute)     : REThemeNoTitleStrokeColorAttributeJSONKey,
-           @(REThemeNoFontName)                      : REThemeNoFontNameJSONKey,
-           @(REThemeNoFontSize)                      : REThemeNoFontSizeJSONKey,
-           @(REThemeNoStrokeWidth)                   : REThemeNoStrokeWidthJSONKey,
-           @(REThemeNoStrikethrough)                 : REThemeNoStrikethroughJSONKey,
-           @(REThemeNoUnderline)                     : REThemeNoUnderlineJSONKey,
-           @(REThemeNoLigature)                      : REThemeNoLigatureJSONKey,
-           @(REThemeNoKern)                          : REThemeNoKernJSONKey,
-           @(REThemeNoParagraphStyle)                : REThemeNoParagraphStyleJSONKey,
-           @(REThemeNoTitleInsets)                   : REThemeNoTitleInsetsJSONKey,
-           @(REThemeNoTitleText)                     : REThemeNoTitleTextJSONKey,
-           @(REThemeNoContentInsets)                 : REThemeNoContentInsetsJSONKey,
-           @(REThemeNoShape)                         : REThemeNoShapeJSONKey };
-    });
+NSString *themeFlagsJSONValueForRemoteElement(RemoteElement * element) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    index =
+      @{ @(REThemeNoBackgroundImage)               : REThemeNoBackgroundImageJSONKey,
+         @(REThemeNoBackgroundImageAlpha)          : REThemeNoBackgroundImageAlphaJSONKey,
+         @(REThemeNoBackgroundColorAttribute)      : REThemeNoBackgroundColorAttributeJSONKey,
+         @(REThemeNoBorder)                        : REThemeNoBorderJSONKey,
+         @(REThemeNoGloss)                         : REThemeNoGlossJSONKey,
+         @(REThemeNoStretchable)                   : REThemeNoStretchableJSONKey,
+         @(REThemeNoIconImage)                     : REThemeNoIconImageJSONKey,
+         @(REThemeNoIconColorAttribute)            : REThemeNoIconColorAttributeJSONKey,
+         @(REThemeNoIconInsets)                    : REThemeNoIconInsetsJSONKey,
+         @(REThemeNoTitleForegroundColorAttribute) : REThemeNoTitleForegroundColorAttributeJSONKey,
+         @(REThemeNoTitleBackgroundColorAttribute) : REThemeNoTitleBackgroundColorAttributeJSONKey,
+         @(REThemeNoTitleShadowColorAttribute)     : REThemeNoTitleShadowColorAttributeJSONKey,
+         @(REThemeNoTitleStrokeColorAttribute)     : REThemeNoTitleStrokeColorAttributeJSONKey,
+         @(REThemeNoFontName)                      : REThemeNoFontNameJSONKey,
+         @(REThemeNoFontSize)                      : REThemeNoFontSizeJSONKey,
+         @(REThemeNoStrokeWidth)                   : REThemeNoStrokeWidthJSONKey,
+         @(REThemeNoStrikethrough)                 : REThemeNoStrikethroughJSONKey,
+         @(REThemeNoUnderline)                     : REThemeNoUnderlineJSONKey,
+         @(REThemeNoLigature)                      : REThemeNoLigatureJSONKey,
+         @(REThemeNoKern)                          : REThemeNoKernJSONKey,
+         @(REThemeNoParagraphStyle)                : REThemeNoParagraphStyleJSONKey,
+         @(REThemeNoTitleInsets)                   : REThemeNoTitleInsetsJSONKey,
+         @(REThemeNoTitleText)                     : REThemeNoTitleTextJSONKey,
+         @(REThemeNoContentInsets)                 : REThemeNoContentInsetsJSONKey,
+         @(REThemeNoShape)                         : REThemeNoShapeJSONKey };
+  });
 
 
-    if (!element) return nil;
+  if (!element) return nil;
 
-    REThemeOverrideFlags elementFlags = element.themeFlags;
+  REThemeOverrideFlags elementFlags = element.themeFlags;
 
-    if (elementFlags == REThemeAll)
-        return REThemeAllJSONKey;
+  if (elementFlags == REThemeAll)
+    return REThemeAllJSONKey;
 
-    else if (elementFlags == REThemeNone)
-        return REThemeNoneJSONKey;
+  else if (elementFlags == REThemeNone)
+    return REThemeNoneJSONKey;
 
-    else
+  else {
+    NSArray * possibleFlags = [index allKeys];
+    NSArray * flagsSet      = [possibleFlags objectsPassingTest:
+                               ^BOOL (NSNumber * obj, NSUInteger idx, BOOL * stop)
     {
-        NSArray * possibleFlags = [index allKeys];
-        NSArray * flagsSet = [possibleFlags objectsPassingTest:
-                              ^BOOL(NSNumber *obj, NSUInteger idx, BOOL *stop)
-                              {
-                                  uint8_t flag = [obj unsignedShortValue];
-                                  return ((elementFlags & flag) == flag);
-                              }];
+      uint8_t flag = [obj unsignedShortValue];
+      return ((elementFlags & flag) == flag);
+    }];
 
-        if (![flagsSet count])
-            return nil;
+    if (![flagsSet count])
+      return nil;
 
-        else if ([flagsSet count] > [possibleFlags count]/2)
-        {
-            NSMutableSet * flagsNotSet = [[possibleFlags set] mutableCopy];
-            [flagsNotSet minusSet:[flagsSet set]];
-            NSMutableArray * jsonValues = [[index objectsForKeys:[flagsNotSet allObjects]
-                                                  notFoundMarker:NullObject] mutableCopy];
-            [jsonValues removeNullObjects];
-            return [@"-" stringByAppendingString:[jsonValues componentsJoinedByString:@" "]];
-        }
-
-        else
-        {
-            NSMutableArray * jsonValues = [[index objectsForKeys:flagsSet
-                                                  notFoundMarker:NullObject] mutableCopy];
-            [jsonValues removeNullObjects];
-            return [jsonValues componentsJoinedByString:@" "];
-        }
+    else if ([flagsSet count] > [possibleFlags count] / 2) {
+      NSMutableSet * flagsNotSet = [[possibleFlags set] mutableCopy];
+      [flagsNotSet minusSet:[flagsSet set]];
+      NSMutableArray * jsonValues = [[index objectsForKeys:[flagsNotSet allObjects]
+                                            notFoundMarker:NullObject] mutableCopy];
+      [jsonValues removeNullObjects];
+      return [@"-" stringByAppendingString:[jsonValues componentsJoinedByString:@" "]];
+    } else   {
+      NSMutableArray * jsonValues = [[index objectsForKeys:flagsSet
+                                            notFoundMarker:NullObject] mutableCopy];
+      [jsonValues removeNullObjects];
+      return [jsonValues componentsJoinedByString:@" "];
     }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * systemCommandTypeJSONValueForSystemCommand(SystemCommand * command)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(SystemCommandTypeUndefined)   : SystemCommandTypeUndefinedJSONKey,
-                                 @(SystemCommandProximitySensor) : SystemCommandProximitySensorJSONKey,
-                                 @(SystemCommandURLRequest)      : SystemCommandURLRequestJSONKey,
-                                 @(SystemCommandLaunchScreen)    : SystemCommandLaunchScreenJSONKey,
-                                 @(SystemCommandOpenSettings)    : SystemCommandOpenSettingsJSONKey,
-                                 @(SystemCommandOpenEditor)      : SystemCommandOpenEditorJSONKey };
-                  });
+NSString *systemCommandTypeJSONValueForSystemCommand(SystemCommand * command) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(SystemCommandTypeUndefined)   : SystemCommandTypeUndefinedJSONKey,
+               @(SystemCommandProximitySensor) : SystemCommandProximitySensorJSONKey,
+               @(SystemCommandURLRequest)      : SystemCommandURLRequestJSONKey,
+               @(SystemCommandLaunchScreen)    : SystemCommandLaunchScreenJSONKey,
+               @(SystemCommandOpenSettings)    : SystemCommandOpenSettingsJSONKey,
+               @(SystemCommandOpenEditor)      : SystemCommandOpenEditorJSONKey };
+  });
 
-    return (command ? index[@(command.type)] : nil);
+  return (command ? index[@(command.type)] : nil);
 }
 
-NSString * switchCommandTypeJSONValueForSwitchCommand(SwitchCommand * command)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(SwitchRemoteCommand) : SwitchRemoteCommandJSONKey,
-                                 @(SwitchModeCommand)   : SwitchModeCommandJSONKey };
-                  });
+NSString *switchCommandTypeJSONValueForSwitchCommand(SwitchCommand * command) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(SwitchRemoteCommand) : SwitchRemoteCommandJSONKey,
+               @(SwitchModeCommand)   : SwitchModeCommandJSONKey };
+  });
 
-    return (command ? index[@(command.type)] : nil);
+  return (command ? index[@(command.type)] : nil);
 }
 
-NSString * commandSetTypeJSONValueForCommandSet(CommandSet * commandSet)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      index = @{ @(CommandSetTypeUnspecified) : CommandSetTypeUnspecifiedJSONKey,
-                                 @(CommandSetTypeDPad)        : CommandSetTypeDPadJSONKey,
-                                 @(CommandSetTypeTransport)   : CommandSetTypeTransportJSONKey,
-                                 @(CommandSetTypeNumberpad)   : CommandSetTypeNumberpadJSONKey,
-                                 @(CommandSetTypeRocker)      : CommandSetTypeRockerJSONKey };
-                  });
+NSString *commandSetTypeJSONValueForCommandSet(CommandSet * commandSet) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    index = @{ @(CommandSetTypeUnspecified) : CommandSetTypeUnspecifiedJSONKey,
+               @(CommandSetTypeDPad)        : CommandSetTypeDPadJSONKey,
+               @(CommandSetTypeTransport)   : CommandSetTypeTransportJSONKey,
+               @(CommandSetTypeNumberpad)   : CommandSetTypeNumberpadJSONKey,
+               @(CommandSetTypeRocker)      : CommandSetTypeRockerJSONKey };
+  });
 
-    return (commandSet ? index[@(commandSet.type)] : nil);
+  return (commandSet ? index[@(commandSet.type)] : nil);
 }
 
-NSString * classJSONValueForCommand(Command * command)
-{
-    static NSDictionary const * index;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index = @{ @"PowerCommand"    : PowerCommandTypeJSONKey,
-                   @"SendIRCommand"   : SendIRCommandTypeJSONKey,
-                   @"HTTPCommand"     : HTTPCommandTypeJSONKey,
-                   @"DelayCommand"    : DelayCommandTypeJSONKey,
-                   @"MacroCommand"    : MacroCommandTypeJSONKey,
-                   @"SystemCommand"   : SystemCommandTypeJSONKey,
-                   @"SwitchCommand"   : SwitchCommandTypeJSONKey,
-                   @"ActivityCommand" : ActivityCommandTypeJSONKey };
-    });
-    return index[ClassString([command class])];
+NSString *classJSONValueForCommand(Command * command) {
+  static NSDictionary const * index;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    index = @{ @"PowerCommand"    : PowerCommandTypeJSONKey,
+               @"SendIRCommand"   : SendIRCommandTypeJSONKey,
+               @"HTTPCommand"     : HTTPCommandTypeJSONKey,
+               @"DelayCommand"    : DelayCommandTypeJSONKey,
+               @"MacroCommand"    : MacroCommandTypeJSONKey,
+               @"SystemCommand"   : SystemCommandTypeJSONKey,
+               @"SwitchCommand"   : SwitchCommandTypeJSONKey,
+               @"ActivityCommand" : ActivityCommandTypeJSONKey };
+  });
+  return index[ClassString([command class])];
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * panelKeyForPanelAssignment(REPanelAssignment assignment)
-{
-    static NSDictionary const * locationIndex, * triggerIndex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      locationIndex = @{ @(REPanelLocationTop)    : REPanelLocationTopJSONKey,
-                                         @(REPanelLocationBottom) : REPanelLocationBottomJSONKey,
-                                         @(REPanelLocationLeft)   : REPanelLocationLeftJSONKey,
-                                         @(REPanelLocationRight)  : REPanelLocationRightJSONKey };
+NSString *panelKeyForPanelAssignment(REPanelAssignment assignment) {
+  static NSDictionary const * locationIndex, * triggerIndex;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    locationIndex = @{ @(REPanelLocationTop)    : REPanelLocationTopJSONKey,
+                       @(REPanelLocationBottom) : REPanelLocationBottomJSONKey,
+                       @(REPanelLocationLeft)   : REPanelLocationLeftJSONKey,
+                       @(REPanelLocationRight)  : REPanelLocationRightJSONKey };
 
-                      triggerIndex = @{ @(REPanelTrigger1) : REPanelTrigger1JSONKey,
-                                        @(REPanelTrigger2) : REPanelTrigger2JSONKey,
-                                        @(REPanelTrigger3) : REPanelTrigger3JSONKey };
-                  });
+    triggerIndex = @{ @(REPanelTrigger1) : REPanelTrigger1JSONKey,
+                      @(REPanelTrigger2) : REPanelTrigger2JSONKey,
+                      @(REPanelTrigger3) : REPanelTrigger3JSONKey };
+  });
 
-    REPanelLocation location = (assignment & REPanelAssignmentLocationMask);
-    REPanelTrigger  trigger  = (assignment & REPanelAssignmentTriggerMask);
+  REPanelLocation location = (assignment & REPanelAssignmentLocationMask);
+  REPanelTrigger  trigger  = (assignment & REPanelAssignmentTriggerMask);
 
-    NSString * key = nil;
+  NSString * key = nil;
 
-    if (location && trigger)
-    {
-        NSString * locationString = locationIndex[@(location)];
-        NSString * triggerString  = triggerIndex[@(trigger)];
+  if (location && trigger) {
+    NSString * locationString = locationIndex[@(location)];
+    NSString * triggerString  = triggerIndex[@(trigger)];
 
-        if (locationString && triggerString)
-            key = [locationString stringByAppendingString:triggerString];
-    }
+    if (locationString && triggerString)
+      key = [locationString stringByAppendingString:triggerString];
+  }
 
-    return key;
+  return key;
 
 }
 
@@ -438,49 +420,48 @@ NSString * panelKeyForPanelAssignment(REPanelAssignment assignment)
 #pragma mark Control state sets
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * titleSetAttributeJSONKeyForKey(NSString * key)
-{
-    static NSDictionary const * index = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index = @{ REFontAttributeKey                   : REFontAttributeJSONKey,
-                   REParagraphStyleAttributeKey         : REParagraphStyleAttributeJSONKey,
-                   REForegroundColorAttributeKey        : REForegroundColorAttributeJSONKey,
-                   REBackgroundColorAttributeKey        : REBackgroundColorAttributeJSONKey,
-                   RELigatureAttributeKey               : RELigatureAttributeJSONKey,
-                   REKernAttributeKey                   : REKernAttributeJSONKey,
-                   REStrikethroughStyleAttributeKey     : REStrikethroughStyleAttributeJSONKey,
-                   REUnderlineStyleAttributeKey         : REUnderlineStyleAttributeJSONKey,
-                   REStrokeColorAttributeKey            : REStrokeColorAttributeJSONKey,
-                   REStrokeWidthAttributeKey            : REStrokeWidthAttributeJSONKey,
-                   RETextEffectAttributeKey             : RETextEffectAttributeJSONKey,
-                   REBaselineOffsetAttributeKey         : REBaselineOffsetAttributeJSONKey,
-                   REUnderlineColorAttributeKey         : REUnderlineColorAttributeJSONKey,
-                   REStrikethroughColorAttributeKey     : REStrikethroughColorAttributeJSONKey,
-                   REObliquenessAttributeKey            : REObliquenessAttributeJSONKey,
-                   REExpansionAttributeKey              : REExpansionAttributeJSONKey,
-                   REShadowAttributeKey                 : REShadowAttributeJSONKey,
-                   RETitleTextAttributeKey              : RETitleTextAttributeJSONKey,
+NSString *titleSetAttributeJSONKeyForKey(NSString * key) {
+  static NSDictionary const * index = nil;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    index = @{ REFontAttributeKey                   : REFontAttributeJSONKey,
+               REParagraphStyleAttributeKey         : REParagraphStyleAttributeJSONKey,
+               REForegroundColorAttributeKey        : REForegroundColorAttributeJSONKey,
+               REBackgroundColorAttributeKey        : REBackgroundColorAttributeJSONKey,
+               RELigatureAttributeKey               : RELigatureAttributeJSONKey,
+               REKernAttributeKey                   : REKernAttributeJSONKey,
+               REStrikethroughStyleAttributeKey     : REStrikethroughStyleAttributeJSONKey,
+               REUnderlineStyleAttributeKey         : REUnderlineStyleAttributeJSONKey,
+               REStrokeColorAttributeKey            : REStrokeColorAttributeJSONKey,
+               REStrokeWidthAttributeKey            : REStrokeWidthAttributeJSONKey,
+               RETextEffectAttributeKey             : RETextEffectAttributeJSONKey,
+               REBaselineOffsetAttributeKey         : REBaselineOffsetAttributeJSONKey,
+               REUnderlineColorAttributeKey         : REUnderlineColorAttributeJSONKey,
+               REStrikethroughColorAttributeKey     : REStrikethroughColorAttributeJSONKey,
+               REObliquenessAttributeKey            : REObliquenessAttributeJSONKey,
+               REExpansionAttributeKey              : REExpansionAttributeJSONKey,
+               REShadowAttributeKey                 : REShadowAttributeJSONKey,
+               RETitleTextAttributeKey              : RETitleTextAttributeJSONKey,
 
-                   RELineSpacingAttributeKey            : RELineSpacingAttributeJSONKey,
-                   REParagraphSpacingAttributeKey       : REParagraphSpacingAttributeJSONKey,
-                   RETextAlignmentAttributeKey          : RETextAlignmentAttributeJSONKey,
-                   REFirstLineHeadIndentAttributeKey    : REFirstLineHeadIndentAttributeJSONKey,
-                   REHeadIndentAttributeKey             : REHeadIndentAttributeJSONKey,
-                   RETailIndentAttributeKey             : RETailIndentAttributeJSONKey,
-                   RELineBreakModeAttributeKey          : RELineBreakModeAttributeJSONKey,
-                   REMinimumLineHeightAttributeKey      : REMinimumLineHeightAttributeJSONKey,
-                   REMaximumLineHeightAttributeKey      : REMaximumLineHeightAttributeJSONKey,
-                   RELineHeightMultipleAttributeKey     : RELineHeightMultipleAttributeJSONKey,
-                   REParagraphSpacingBeforeAttributeKey : REParagraphSpacingBeforeAttributeJSONKey,
-                   REHyphenationFactorAttributeKey      : REHyphenationFactorAttributeJSONKey,
-                   RETabStopsAttributeKey               : RETabStopsAttributeJSONKey,
-                   REDefaultTabIntervalAttributeKey     : REDefaultTabIntervalAttributeJSONKey };
-    });
-    return index[key];
+               RELineSpacingAttributeKey            : RELineSpacingAttributeJSONKey,
+               REParagraphSpacingAttributeKey       : REParagraphSpacingAttributeJSONKey,
+               RETextAlignmentAttributeKey          : RETextAlignmentAttributeJSONKey,
+               REFirstLineHeadIndentAttributeKey    : REFirstLineHeadIndentAttributeJSONKey,
+               REHeadIndentAttributeKey             : REHeadIndentAttributeJSONKey,
+               RETailIndentAttributeKey             : RETailIndentAttributeJSONKey,
+               RELineBreakModeAttributeKey          : RELineBreakModeAttributeJSONKey,
+               REMinimumLineHeightAttributeKey      : REMinimumLineHeightAttributeJSONKey,
+               REMaximumLineHeightAttributeKey      : REMaximumLineHeightAttributeJSONKey,
+               RELineHeightMultipleAttributeKey     : RELineHeightMultipleAttributeJSONKey,
+               REParagraphSpacingBeforeAttributeKey : REParagraphSpacingBeforeAttributeJSONKey,
+               REHyphenationFactorAttributeKey      : REHyphenationFactorAttributeJSONKey,
+               RETabStopsAttributeKey               : RETabStopsAttributeJSONKey,
+               REDefaultTabIntervalAttributeKey     : REDefaultTabIntervalAttributeJSONKey };
+  });
+  return index[key];
 }
 
-NSString * titleAttributesJSONKeyForProperty(NSString * property) {
+NSString *titleAttributesJSONKeyForProperty(NSString * property) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -521,124 +502,119 @@ NSString * titleAttributesJSONKeyForProperty(NSString * property) {
 
   return (property ? index[property] : nil);
 }
-NSString * titleSetAttributeJSONKeyForName(NSString * key)
-{
-    static NSDictionary const * index = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index = @{ NSFontAttributeName                   : REFontAttributeJSONKey,
-                   NSParagraphStyleAttributeName         : REParagraphStyleAttributeJSONKey,
-                   NSForegroundColorAttributeName        : REForegroundColorAttributeJSONKey,
-                   NSBackgroundColorAttributeName        : REBackgroundColorAttributeJSONKey,
-                   NSLigatureAttributeName               : RELigatureAttributeJSONKey,
-                   NSKernAttributeName                   : REKernAttributeJSONKey,
-                   NSStrikethroughStyleAttributeName     : REStrikethroughStyleAttributeJSONKey,
-                   NSUnderlineStyleAttributeName         : REUnderlineStyleAttributeJSONKey,
-                   NSStrokeColorAttributeName            : REStrokeColorAttributeJSONKey,
-                   NSStrokeWidthAttributeName            : REStrokeWidthAttributeJSONKey,
-                   NSTextEffectAttributeName             : RETextEffectAttributeJSONKey,
-                   NSBaselineOffsetAttributeName         : REBaselineOffsetAttributeJSONKey,
-                   NSUnderlineColorAttributeName         : REUnderlineColorAttributeJSONKey,
-                   NSStrikethroughColorAttributeName     : REStrikethroughColorAttributeJSONKey,
-                   NSObliquenessAttributeName            : REObliquenessAttributeJSONKey,
-                   NSExpansionAttributeName              : REExpansionAttributeJSONKey,
-                   NSShadowAttributeName                 : REShadowAttributeJSONKey,
 
-                   RELineSpacingAttributeName            : RELineSpacingAttributeJSONKey,
-                   REParagraphSpacingAttributeName       : REParagraphSpacingAttributeJSONKey,
-                   RETextAlignmentAttributeName          : RETextAlignmentAttributeJSONKey,
-                   REFirstLineHeadIndentAttributeName    : REFirstLineHeadIndentAttributeJSONKey,
-                   REHeadIndentAttributeName             : REHeadIndentAttributeJSONKey,
-                   RETailIndentAttributeName             : RETailIndentAttributeJSONKey,
-                   RELineBreakModeAttributeName          : RELineBreakModeAttributeJSONKey,
-                   REMinimumLineHeightAttributeName      : REMinimumLineHeightAttributeJSONKey,
-                   REMaximumLineHeightAttributeName      : REMaximumLineHeightAttributeJSONKey,
-                   RELineHeightMultipleAttributeName     : RELineHeightMultipleAttributeJSONKey,
-                   REParagraphSpacingBeforeAttributeName : REParagraphSpacingBeforeAttributeJSONKey,
-                   REHyphenationFactorAttributeName      : REHyphenationFactorAttributeJSONKey,
-                   RETabStopsAttributeName               : RETabStopsAttributeJSONKey,
-                   REDefaultTabIntervalAttributeName     : REDefaultTabIntervalAttributeJSONKey };
-    });
-    return index[key];
+NSString *titleSetAttributeJSONKeyForName(NSString * key) {
+  static NSDictionary const * index = nil;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    index = @{ NSFontAttributeName                   : REFontAttributeJSONKey,
+               NSParagraphStyleAttributeName         : REParagraphStyleAttributeJSONKey,
+               NSForegroundColorAttributeName        : REForegroundColorAttributeJSONKey,
+               NSBackgroundColorAttributeName        : REBackgroundColorAttributeJSONKey,
+               NSLigatureAttributeName               : RELigatureAttributeJSONKey,
+               NSKernAttributeName                   : REKernAttributeJSONKey,
+               NSStrikethroughStyleAttributeName     : REStrikethroughStyleAttributeJSONKey,
+               NSUnderlineStyleAttributeName         : REUnderlineStyleAttributeJSONKey,
+               NSStrokeColorAttributeName            : REStrokeColorAttributeJSONKey,
+               NSStrokeWidthAttributeName            : REStrokeWidthAttributeJSONKey,
+               NSTextEffectAttributeName             : RETextEffectAttributeJSONKey,
+               NSBaselineOffsetAttributeName         : REBaselineOffsetAttributeJSONKey,
+               NSUnderlineColorAttributeName         : REUnderlineColorAttributeJSONKey,
+               NSStrikethroughColorAttributeName     : REStrikethroughColorAttributeJSONKey,
+               NSObliquenessAttributeName            : REObliquenessAttributeJSONKey,
+               NSExpansionAttributeName              : REExpansionAttributeJSONKey,
+               NSShadowAttributeName                 : REShadowAttributeJSONKey,
+
+               RELineSpacingAttributeName            : RELineSpacingAttributeJSONKey,
+               REParagraphSpacingAttributeName       : REParagraphSpacingAttributeJSONKey,
+               RETextAlignmentAttributeName          : RETextAlignmentAttributeJSONKey,
+               REFirstLineHeadIndentAttributeName    : REFirstLineHeadIndentAttributeJSONKey,
+               REHeadIndentAttributeName             : REHeadIndentAttributeJSONKey,
+               RETailIndentAttributeName             : RETailIndentAttributeJSONKey,
+               RELineBreakModeAttributeName          : RELineBreakModeAttributeJSONKey,
+               REMinimumLineHeightAttributeName      : REMinimumLineHeightAttributeJSONKey,
+               REMaximumLineHeightAttributeName      : REMaximumLineHeightAttributeJSONKey,
+               RELineHeightMultipleAttributeName     : RELineHeightMultipleAttributeJSONKey,
+               REParagraphSpacingBeforeAttributeName : REParagraphSpacingBeforeAttributeJSONKey,
+               REHyphenationFactorAttributeName      : REHyphenationFactorAttributeJSONKey,
+               RETabStopsAttributeName               : RETabStopsAttributeJSONKey,
+               REDefaultTabIntervalAttributeName     : REDefaultTabIntervalAttributeJSONKey };
+  });
+  return index[key];
 }
 
-NSString * textAlignmentJSONValueForAlignment(NSTextAlignment alignment)
-{
-    static NSDictionary const * index = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index = @{ @0 : RETextAlignmentLeftJSONKey,
-                   @1 : RETextAlignmentCenterJSONKey,
-                   @2 : RETextAlignmentRightJSONKey,
-                   @3 : RETextAlignmentJustifiedJSONKey,
-                   @4 : RETextAlignmentNaturalJSONKey };
-    });
+NSString *textAlignmentJSONValueForAlignment(NSTextAlignment alignment) {
+  static NSDictionary const * index = nil;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    index = @{ @0 : RETextAlignmentLeftJSONKey,
+               @1 : RETextAlignmentCenterJSONKey,
+               @2 : RETextAlignmentRightJSONKey,
+               @3 : RETextAlignmentJustifiedJSONKey,
+               @4 : RETextAlignmentNaturalJSONKey };
+  });
 
-    return index[@(alignment)];
+  return index[@(alignment)];
 }
 
-NSString * lineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode)
-{
-    static NSDictionary const * index = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        index = @{ @0 : RELineBreakByWordWrappingJSONKey,
-                   @1 : RELineBreakByCharWrappingJSONKey,
-                   @2 : RELineBreakByClippingJSONKey,
-                   @3 : RELineBreakByTruncatingHeadJSONKey,
-                   @4 : RELineBreakByTruncatingTailJSONKey,
-                   @5 : RELineBreakByTruncatingMiddleJSONKey };
-    });
+NSString *lineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode) {
+  static NSDictionary const * index = nil;
+  static dispatch_once_t      onceToken;
+  dispatch_once(&onceToken, ^{
+    index = @{ @0 : RELineBreakByWordWrappingJSONKey,
+               @1 : RELineBreakByCharWrappingJSONKey,
+               @2 : RELineBreakByClippingJSONKey,
+               @3 : RELineBreakByTruncatingHeadJSONKey,
+               @4 : RELineBreakByTruncatingTailJSONKey,
+               @5 : RELineBreakByTruncatingMiddleJSONKey };
+  });
 
-    return index[@(lineBreakMode)];
+  return index[@(lineBreakMode)];
 }
 
-NSString * underlineStrikethroughStyleJSONValueForStyle(NSUnderlineStyle style)
-{
-    if (!style) return REUnderlineStyleNoneJSONKey;
+NSString *underlineStrikethroughStyleJSONValueForStyle(NSUnderlineStyle style) {
+  if (!style) return REUnderlineStyleNoneJSONKey;
 
-    NSMutableArray * components = [@[] mutableCopy];
+  NSMutableArray * components = [@[] mutableCopy];
 
-    MSBitVector * bits = BitVector32;
-    [bits setBits:@(style)];
+  MSBitVector * bits = BitVector32;
+  [bits setBits:@(style)];
 
-    if (bits[3] && bits[0]) [components addObject:REUnderlineStyleDoubleJSONKey];
-    else if (bits[0]) [components addObject:REUnderlineStyleSingleJSONKey];
+  if (bits[3] && bits[0]) [components addObject:REUnderlineStyleDoubleJSONKey];
+  else if (bits[0]) [components addObject:REUnderlineStyleSingleJSONKey];
 
-    if (bits[1]) [components addObject:REUnderlineStyleThickJSONKey];
+  if (bits[1]) [components addObject:REUnderlineStyleThickJSONKey];
 
-    if (bits[8] && bits[9]) [components addObject:REUnderlinePatternDashDotJSONKey];
-    else if (bits[8]) [components addObject:REUnderlinePatternDotJSONKey];
-    else if (bits[9]) [components addObject:REUnderlinePatternDashJSONKey];
-    else if (bits[10]) [components addObject:REUnderlinePatternDashDotDotJSONKey];
-    else [components addObject:REUnderlinePatternSolidJSONKey];
+  if (bits[8] && bits[9]) [components addObject:REUnderlinePatternDashDotJSONKey];
+  else if (bits[8]) [components addObject:REUnderlinePatternDotJSONKey];
+  else if (bits[9]) [components addObject:REUnderlinePatternDashJSONKey];
+  else if (bits[10]) [components addObject:REUnderlinePatternDashDotDotJSONKey];
+  else [components addObject:REUnderlinePatternSolidJSONKey];
 
-    if (bits[15]) [components addObject:REUnderlineByWordJSONKey];
+  if (bits[15]) [components addObject:REUnderlineByWordJSONKey];
 
-    return [components componentsJoinedByString:@"-"];
+  return [components componentsJoinedByString:@"-"];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Utility functions
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * normalizedColorJSONValueForColor(UIColor * color)
-{
-    NSString * value = [UIColor nameForColor:color ignoreAlpha:NO];
+NSString *normalizedColorJSONValueForColor(UIColor * color) {
+  NSString * value = [UIColor nameForColor:color ignoreAlpha:NO];
 
-    if (!value)
-    {
-        NSString * base = [UIColor nameForColor:color ignoreAlpha:YES];
-        if (base)
-            value = [base stringByAppendingFormat:@"@%@%%", [@(color.alpha * 100.0f) stringValue]];
-    }
+  if (!value) {
+    NSString * base = [UIColor nameForColor:color ignoreAlpha:YES];
+    if ([base isEqualToString:@"dark-text"]) base = @"black";
+    if (base)
+      value = [base stringByAppendingFormat:@"@%@%%", [@(color.alpha * 100.0f)stringValue]];
+  }
 
-    if (!value && color.isRGBCompatible) value = [color RGBAHexStringRepresentation];
+  if (!value && color.isRGBCompatible) value = [color RGBAHexStringRepresentation];
 
-    return value;
+  return value;
 }
 
-BOOL exportModelDataForClassToFile(Class modelClass, NSString *fileName)
-{
-    return NO;
+BOOL exportModelDataForClassToFile(Class modelClass, NSString * fileName) {
+  return NO;
 }

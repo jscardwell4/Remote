@@ -130,29 +130,27 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state {
 
   NSAttributedString * string = nil;
+  MSDictionary * attributes = nil;
 
   if ([ControlStateSet validState:@(state)]) {
 
     NSString * key = [ControlStateSet propertyForState:state];
-    TitleAttributes * attributes = [self valueForKey:key];
-    MSDictionary * values = [MSDictionary dictionaryWithDictionary:
-                             [attributes dictionaryWithValuesForKeys:[TitleAttributes propertyKeys]]];
-    [values compact];
+    attributes = ((TitleAttributes *)[self valueForKey:key]).attributes;
 
     if (!(_suppressNormalStateAttributes || [@"normal" isEqualToString:key])) {
-      TitleAttributes * defaults = [self valueForKey:@"normal"];
+      MSDictionary * defaultAttributes = ((TitleAttributes *)[self valueForKey:@"normal"]).attributes;
 
-      if (attributes && defaults) {
-
-        NSArray * keys = [[[[TitleAttributes propertyKeys] set]
-                           setByRemovingObjectsFromArray:[values allKeys]] allObjects];
-
-        [values setValuesForKeysWithDictionary:[defaults dictionaryWithValuesForKeys:keys]];
-
-      }
+      if (attributes && defaultAttributes)
+        [attributes setValuesForKeysWithDictionary:defaultAttributes];
     }
 
-    string = [[StringAttributesValueTransformer new] transformedValue:values];
+    if (attributes) {
+      NSString * text = attributes[RETitleTextAttributeKey];
+      if (text) {
+        [attributes removeObjectForKey:RETitleTextAttributeKey];
+        string = [NSAttributedString attributedStringWithString:text attributes:attributes];
+      }
+    }
 
   }
 
@@ -190,7 +188,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
   for (NSString * key in [ControlStateSet validProperties])
-    dictionary[key] = CollectionSafe(((TitleAttributes *)[self valueForKey:key]).JSONDictionary);
+    SafeSetValueForKey(((TitleAttributes *)[self valueForKey:key]).JSONDictionary, key, dictionary);
 
   [dictionary compact];
   [dictionary compress];

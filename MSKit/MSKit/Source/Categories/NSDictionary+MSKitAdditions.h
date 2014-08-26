@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MSKitProtocols.h"
+@class MSDictionary;
 
 typedef void(^NSDictionaryEnumerationBlock)(id obj, id key, BOOL *stop);
 typedef BOOL(^NSDictionaryPredicateBlock)  (id obj, id key, BOOL *stop);
@@ -33,6 +34,8 @@ typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
 - (instancetype)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block;
 
 - (BOOL)hasKey:(id)key;
+
+- (MSDictionary *)MSDictionaryValue;
 
 @end
 

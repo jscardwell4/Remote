@@ -8,8 +8,8 @@
 #import "Command_Private.h"
 #import "ComponentDevice.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
 @interface PowerCommandOperation : CommandOperation @end
 
@@ -17,44 +17,38 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 @dynamic state, device;
 
-+ (PowerCommand *)onCommandForDevice:(ComponentDevice *)device
-{
-    PowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
-    powerCommand.state  = YES;
-    powerCommand.device = device;
-    return powerCommand;
++ (PowerCommand *)onCommandForDevice:(ComponentDevice *)device {
+  PowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
+  powerCommand.state  = YES;
+  powerCommand.device = device;
+  return powerCommand;
 }
 
-+ (PowerCommand *)offCommandForDevice:(ComponentDevice *)device
-{
-    PowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
-    powerCommand.state  = NO;
-    powerCommand.device = device;
-    return powerCommand;
++ (PowerCommand *)offCommandForDevice:(ComponentDevice *)device {
+  PowerCommand * powerCommand = [self commandInContext:device.managedObjectContext];
+  powerCommand.state  = NO;
+  powerCommand.device = device;
+  return powerCommand;
 }
 
-- (void)setState:(BOOL)state
-{
-    [self willChangeValueForKey:@"state"];
-    self.primitiveState = @(state);
-    [self didChangeValueForKey:@"state"];
+- (void)setState:(BOOL)state {
+  [self willChangeValueForKey:@"state"];
+  self.primitiveState = @(state);
+  [self didChangeValueForKey:@"state"];
 }
 
-- (BOOL)state
-{
-    [self willAccessValueForKey:@"state"];
-    NSNumber * state = self.primitiveState;
-    [self didAccessValueForKey:@"state"];
-    return [state boolValue];
+- (BOOL)state {
+  [self willAccessValueForKey:@"state"];
+  NSNumber * state = self.primitiveState;
+  [self didAccessValueForKey:@"state"];
+  return [state boolValue];
 }
 
 - (CommandOperation *)operation { return [PowerCommandOperation operationForCommand:self]; }
 
-- (NSString *)shortDescription
-{
-    return $(@"device:'%@', state:%@", self.primitiveDevice.name, (self.state ?@"On": @"Off"));
+- (NSString *)shortDescription {
+  return $(@"device:'%@', state:%@", self.primitiveDevice.name, (self.state ? @"On" : @"Off"));
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Importing
@@ -62,29 +56,33 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 
 - (void)updateWithData:(NSDictionary *)data {
-    /*
+  /*
      {
-         "class": "power",
-         "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
-         "state": "off"
+       "class": "power",
+       "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
+       "state": "off"
      }
-     */
+   */
 
-    [super updateWithData:data];
+  [super updateWithData:data];
 
-    NSString * state      = data[@"state"];
-    NSDictionary * device = data[@"device"];
-    NSManagedObjectContext * moc = self.managedObjectContext;
+  NSString               * state  = data[@"state"];
+  NSDictionary           * device = data[@"device"];
+  NSManagedObjectContext * moc    = self.managedObjectContext;
 
-    if ([@"on" isEqualToString:state]) self.state = YES;
-    if (device) {
-        NSString * deviceUUID = device[@"uuid"];
-        if (UUIDIsValid(deviceUUID)) {
-            ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
-            if (!d) d = [ComponentDevice importObjectFromData:device context:moc];
-            self.device = d;
-        }
+  if ([@"on" isEqualToString:state]) self.state = YES;
+
+  if (device) {
+    NSString * deviceUUID = device[@"uuid"];
+
+    if (UUIDIsValid(deviceUUID)) {
+      ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
+
+      if (!d) d = [ComponentDevice importObjectFromData:device context:moc];
+
+      self.device = d;
     }
+  }
 
 }
 
@@ -93,49 +91,41 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (MSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [super JSONDictionary];
+- (MSDictionary *)JSONDictionary {
+  MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"device.uuid"] = CollectionSafe(self.device.commentedUUID);
-    dictionary[@"state"] = (self.state ? @"on" : @"off");
+  SafeSetValueForKey(self.device.commentedUUID, @"device.uuid", dictionary);
 
-    [dictionary compact];
-    [dictionary compress];
+  [dictionary compact];
+  [dictionary compress];
 
-    return dictionary;
+  return dictionary;
 }
-
 
 @end
 
 @implementation PowerCommandOperation {
-    BOOL _statusReceived;
+  BOOL _statusReceived;
 }
 
-- (void)main
-{
-    @try
+- (void)main {
+  @try {
+    PowerCommand           * powerCommand = (PowerCommand *)_command;
+    CommandCompletionHandler handler      = ^(BOOL success, NSError * error)
     {
-        PowerCommand * powerCommand = (PowerCommand *)_command;
-        CommandCompletionHandler handler = ^(BOOL success, NSError * error)
-                                             {
-                                                 _success = success;
-                                                 _error   = error;
-                                                 [super main];
-                                             };
+      _success = success;
+      _error   = error;
+      [super main];
+    };
 
-        if (powerCommand.state == YES)
-            [powerCommand.device powerOn:handler];
+    if (powerCommand.state == YES)
+      [powerCommand.device powerOn:handler];
 
-        else
-            [powerCommand.device powerOff:handler];
-    }
-
-    @catch (NSException * exception)
-    {
-        MSLogErrorTag(@"wtf?");
-    }
+    else
+      [powerCommand.device powerOff:handler];
+  } @catch(NSException * exception)   {
+    MSLogErrorTag(@"wtf?");
+  }
 }
 
 @end

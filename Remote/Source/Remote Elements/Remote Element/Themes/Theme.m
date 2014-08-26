@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 @implementation Theme
 
-@dynamic theme, name, elements, settings;
+@dynamic theme, elements, settings;
 
 + (BOOL)isValidThemeName:(NSString *)name
 {

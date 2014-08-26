@@ -122,14 +122,15 @@
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"port"]               = @(self.port);
-  dictionary[@"always-on"]          = @(self.alwaysOn);
-  dictionary[@"input-powers-on"]    = @(self.inputPowersOn);
-  dictionary[@"on-command"]         = CollectionSafe(SelfKeyPathValue(@"onCommand.JSONDictionary"));
-  dictionary[@"off-command"]        = CollectionSafe(SelfKeyPathValue(@"offCommand.JSONDictionary"));
-  dictionary[@"manufacturer.uuid"]  = CollectionSafe(SelfKeyPathValue(@"manufacturer.commentedUUID"));
-  dictionary[@"networkDevice.uuid"] = CollectionSafe(SelfKeyPathValue(@"networkDevice.commentedUUID"));
-  dictionary[@"codes"]              = CollectionSafe(SelfKeyPathValue(@"codes.JSONDictionary"));
+  SetValueForKeyIfNotDefault(@(self.port),          @"port",          dictionary);
+  SetValueForKeyIfNotDefault(@(self.alwaysOn),      @"alwaysOn",      dictionary);
+  SetValueForKeyIfNotDefault(@(self.inputPowersOn), @"inputPowersOn", dictionary);
+
+  SafeSetValueForKey(SelfKeyPathValue(@"onCommand.JSONDictionary"),    @"on-command",         dictionary);
+  SafeSetValueForKey(SelfKeyPathValue(@"offCommand.JSONDictionary"),   @"off-command",        dictionary);
+  SafeSetValueForKey(SelfKeyPathValue(@"manufacturer.commentedUUID"),  @"manufacturer.uuid",  dictionary);
+  SafeSetValueForKey(SelfKeyPathValue(@"networkDevice.commentedUUID"), @"networkDevice.uuid", dictionary);
+  SafeSetValueForKey(SelfKeyPathValue(@"codes.JSONDictionary"),        @"codes",              dictionary);
 
   [dictionary compact];
   [dictionary compress];

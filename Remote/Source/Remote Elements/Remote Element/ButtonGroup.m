@@ -91,7 +91,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 - (NSAttributedString *)label {
   [self willAccessValueForKey:@"label"];
-  NSAttributedString * label = self[modePropertyKey(self.currentMode, @"label")];
+  NSAttributedString * label = self[configurationKey(self.currentMode, @"label")];
 
   [self didAccessValueForKey:@"label"];
 
@@ -100,7 +100,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 - (CommandContainer *)commandContainer {
   [self willAccessValueForKey:@"commandContainer"];
-  NSURL * containerURI = self[modePropertyKey(self.currentMode, @"commandContainer")];
+  NSURL * containerURI = self[configurationKey(self.currentMode, @"commandContainer")];
 
   [self didAccessValueForKey:@"commandContainer"];
 
@@ -108,12 +108,12 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 }
 
 - (void)setCommandContainer:(CommandContainer *)container mode:(NSString *)mode {
-  self[modePropertyKey(self.currentMode, @"commandContainer")] = container.permanentURI;
+  self[configurationKey(self.currentMode, @"commandContainer")] = container.permanentURI;
 }
 
 - (CommandContainer *)commandContainerForMode:(NSString *)mode {
   CommandContainer * container = nil;
-  NSURL            * uri       = self[modePropertyKey(self.currentMode, @"commandContainer")];
+  NSURL            * uri       = self[configurationKey(self.currentMode, @"commandContainer")];
 
   if (uri) container = [self.managedObjectContext objectForURI:uri];
 
@@ -251,31 +251,18 @@ commandSetAtIndex: _commandSetCollectionIndex]);
 
   if (commandSetData && isDictionaryKind(commandSetData)) {
     for (NSString * mode  in commandSetData) {
-      CommandContainer * container = [self commandContainerForMode:mode];
-
-      if (container) {
-        [self.managedObjectContext deleteObject:container];
-        container = nil;
-      }
-
+      CommandContainer * container = [moc objectForURI:self[configurationKey(mode, @"container")]];
+      if (container) { [moc deleteObject:container]; container = nil; }
       CommandSet * commandSet = [CommandSet importObjectFromData:commandSetData[mode] context:moc];
-
       if (commandSet) [self setCommandContainer:commandSet mode:mode];
     }
   } else if (commandSetCollectionData && isDictionaryKind(commandSetCollectionData))   {
     for (NSString * mode in commandSetCollectionData) {
-      CommandContainer * container = [self commandContainerForMode:mode];
-
-      if (container) {
-        [self.managedObjectContext deleteObject:container];
-        container = nil;
-      }
-
+      CommandContainer * container = [moc objectForURI:self[configurationKey(mode, @"container")]];
+      if (container) { [moc deleteObject:container]; container = nil; }
       CommandSetCollection * collection =
         [CommandSetCollection importObjectFromData:commandSetCollectionData[mode] context:moc];
-
-      if (collection)
-        [self setCommandContainer:collection mode:mode];
+      if (collection) [self setCommandContainer:collection mode:mode];
     }
   }
 
@@ -304,11 +291,11 @@ commandSetAtIndex: _commandSetCollectionIndex]);
       commandSets[mode] = container.JSONDictionary;
   }
 
-  dictionary[@"command-set-collection"] = ([commandSetCollections count] ? commandSetCollections : NullObject);
-  dictionary[@"command-set"]            = ([commandSets count] ? commandSets : NullObject);
-  dictionary[@"label-constraints"]      = CollectionSafe(self.labelConstraints);
-  dictionary[@"label"]                  = CollectionSafe(self.label);
-  dictionary[@"label-attributes"]       = CollectionSafe(self.labelAttributes.JSONDictionary);
+  dictionary[@"command-set-collection"] = commandSetCollections;
+  dictionary[@"command-set"]            = commandSets;
+  SafeSetValueForKey(self.labelConstraints,               @"label-constraints", dictionary);
+  SafeSetValueForKey(self.label,                          @"label",             dictionary);
+  SafeSetValueForKey(self.labelAttributes.JSONDictionary, @"label-attributes", dictionary);
 
   [dictionary compact];
   [dictionary compress];

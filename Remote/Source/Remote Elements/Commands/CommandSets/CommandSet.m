@@ -38,7 +38,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE);
 @end
 
 
-NSArray*sharedKeysForType(CommandSetType type) {
+NSArray *sharedKeysForType(CommandSetType type) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -124,13 +124,13 @@ NSArray*sharedKeysForType(CommandSetType type) {
     [self willChangeValueForKey:@"type"];
     self.primitiveType = @(type);
     [self didChangeValueForKey:@"type"];
+
     if (CommandSetTypeIsValid(type)) {
-      //???: Should any existing index have its contents destroyed first?
+      // ???: Should any existing index have its contents destroyed first?
       self.index = [MSDictionary dictionaryWithSharedKeys:sharedKeysForType(type)];
     }
   }
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Import and export
@@ -148,12 +148,15 @@ NSArray*sharedKeysForType(CommandSetType type) {
     for (NSString * key in [data dictionaryByRemovingEntriesForKeys:@[CommandSetTypeJSONKey]]) {
 
       RERole role = remoteElementRoleFromImportKey(key);
-      if (!(type & role)) continue;  // Continue if type not composed into role
+
+      if (!(type & role)) continue; // Continue if type not composed into role
 
       NSDictionary * commandData = data[key];
-      if (!isDictionaryKind(commandData)) continue;  // Continue if commandData is not a valid dictionary object
+
+      if (!isDictionaryKind(commandData)) continue; // Continue if commandData is not a valid dictionary object
 
       Command * command = [Command importObjectFromData:commandData context:self.managedObjectContext];
+
       if (command) self[@(role)] = command;
 
     }
@@ -169,17 +172,11 @@ NSArray*sharedKeysForType(CommandSetType type) {
 
   dictionary[CommandSetTypeJSONKey] = CollectionSafe(commandSetTypeJSONValueForCommandSet(self));
 
-  for (NSNumber * key in self.index) {
-    NSString * jsonKey = roleJSONValueForRERole(UnsignedShortValue(key));
-
-    assert(jsonKey);
-
-    Command * command = [Command objectForURI:self.index[key] context:self.managedObjectContext];
-
-    assert(command);
-
-    dictionary[jsonKey] = CollectionSafe(command.JSONDictionary);
-  }
+  [self.index enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSURL * uri, BOOL *stop) {
+    SafeSetValueForKey([Command objectForURI:uri context:self.managedObjectContext].JSONDictionary,
+                       roleJSONValueForRERole(UnsignedShortValue(key)),
+                       dictionary);
+  }];
 
   [dictionary compact];
   [dictionary compress];

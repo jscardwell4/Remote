@@ -54,15 +54,14 @@ BOOL UUIDIsValid(NSString * uuid);
 - (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level;
 - (NSString *)modelObjectDescription;
 
+- (BOOL)attributeValueIsDefault:(NSString *)attributeName;
+
 @end
 
-#define ModelObjectShouldInitialize                                                \
-    ({ BOOL isOriginal = NO;                                                       \
-       if (!self.uuid) isOriginal = YES;                                           \
-       else if (!self.managedObjectContext.childContexts.count) isOriginal = YES;  \
-       isOriginal; })
-
-
+#define SafeSetValueForKey(VALUE, KEY, DICT) ({ DICT[KEY] = CollectionSafe(VALUE); })
+#define SuppressDefaultValue(ATTRIBUTE, BLOCK) ({ if (![self attributeValueIsDefault:ATTRIBUTE]) { BLOCK;} })
+#define SetValueForKeyIfNotDefault(VALUE, KEY, DICT) \
+  SuppressDefaultValue(KEY, SafeSetValueForKey(VALUE, [KEY camelCaseToDashCase], DICT))
 ModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid);
 ModelObject * memberOfCollectionAtIndex(id collection, NSUInteger idx);
 

@@ -41,7 +41,6 @@
 
 @property (nonatomic, strong) NSSet    * settings;
 @property (nonatomic, strong) NSNumber * theme;
-@property (nonatomic, copy  ) NSString * name;
 
 @end
 

@@ -151,9 +151,9 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"file-name"] = CollectionSafe(self.fileName);
-  dictionary[@"left-cap"]  = CollectionSafe(self.leftCap);
-  dictionary[@"top-cap"]   = CollectionSafe(self.topCap);
+  SafeSetValueForKey(self.fileName,        @"file-name", dictionary);
+  SetValueForKeyIfNotDefault(self.leftCap, @"leftCap",   dictionary);
+  SetValueForKeyIfNotDefault(self.topCap,  @"topCap",    dictionary);
 
   [dictionary compact];
   [dictionary compress];

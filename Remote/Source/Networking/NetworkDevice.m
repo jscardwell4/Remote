@@ -35,7 +35,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NetworkDevice
 
-@dynamic deviceUUID, make, model, status, configURL, revision, name, componentDevices;
+@dynamic deviceUUID, make, model, status, configURL, revision, componentDevices;
 
 + (instancetype)device { return [self createInContext:[CoreDataManager defaultContext]]; }
 

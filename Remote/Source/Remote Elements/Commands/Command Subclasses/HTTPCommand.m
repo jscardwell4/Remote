@@ -32,7 +32,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 {
     MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"url"] = CollectionSafe([self.url absoluteString]);
+    SafeSetValueForKey([self.url absoluteString], @"url", dictionary);
 
     [dictionary compact];
     [dictionary compress];

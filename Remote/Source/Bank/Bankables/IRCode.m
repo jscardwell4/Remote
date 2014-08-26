@@ -190,14 +190,15 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
 
     MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"device"]             = CollectionSafe(self.device.commentedUUID);
-    dictionary[@"codeset"]            = CollectionSafe(self.codeset);
-    dictionary[@"sets-device-input"]  = CollectionSafe(@(self.setsDeviceInput));
-    dictionary[@"offset"]             = CollectionSafe(self.offset);
-    dictionary[@"repeat-count"]       = CollectionSafe(self.repeatCount);
-    dictionary[@"frequency"]          = CollectionSafe(self.frequency);
-    dictionary[@"on-off-pattern"]     = CollectionSafe(self.onOffPattern);
-    dictionary[@"pronto-hex"]         = CollectionSafe(self.prontoHex);
+    SafeSetValueForKey(self.device.commentedUUID,        @"device",          dictionary);
+    SafeSetValueForKey(self.codeset,                     @"codeset",         dictionary);
+    SetValueForKeyIfNotDefault(@(self.setsDeviceInput),  @"setsDeviceInput", dictionary);
+    SetValueForKeyIfNotDefault(self.offset,              @"offset",          dictionary);
+    SetValueForKeyIfNotDefault(self.repeatCount,         @"repeatCount",     dictionary);
+    SetValueForKeyIfNotDefault(self.frequency,           @"frequency",       dictionary);
+
+    SafeSetValueForKey(self.onOffPattern, @"on-off-pattern",  dictionary);
+    SafeSetValueForKey(self.prontoHex,    @"pronto-hex",      dictionary);
 
     [dictionary compact];
     [dictionary compress];

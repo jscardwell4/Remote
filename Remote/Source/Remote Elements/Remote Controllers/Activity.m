@@ -26,7 +26,7 @@
 
 @implementation Activity
 
-@dynamic launchMacro, haltMacro, remote, name;
+@dynamic launchMacro, haltMacro, remote;
 @synthesize controller = _controller;
 
 + (instancetype)activityWithName:(NSString *)name {
@@ -47,21 +47,15 @@
 
   NSManagedObjectContext * moc = self.managedObjectContext;
 
-  self.name        = data[@"name"]                                                        ?: self.name;
-  self.remote      = [Remote importObjectFromData:data[@"remote"] context:moc]            ?: self.remote;
-  self.launchMacro = [MacroCommand importObjectFromData:data[@"launchMacro"] context:moc] ?: self.launchMacro;
-  self.haltMacro   = [MacroCommand importObjectFromData:data[@"haltMacro"] context:moc]   ?: self.haltMacro;
+  self.name        = data[@"name"]                                                         ?: self.name;
+  self.remote      = [Remote importObjectFromData:data[@"remote"] context:moc]             ?: self.remote;
+  self.launchMacro = [MacroCommand importObjectFromData:data[@"launch-macro"] context:moc] ?: self.launchMacro;
+  self.haltMacro   = [MacroCommand importObjectFromData:data[@"halt-macro"] context:moc]   ?: self.haltMacro;
 
 }
 
-- (BOOL)updateName:(NSString *)name {
-
-  if ([Activity countOfObjectsWithPredicate:NSPredicateMake(@"name EQUALS %@", name)])
-    return NO;
-
-  self.name = name;
-  return YES;
-
++ (BOOL)isNameAvailable:(NSString *)name {
+  return ([Activity countOfObjectsWithPredicate:NSPredicateMake(@"name EQUALS %@", name)] == 0);
 }
 
 - (void)awakeFromFetch {
@@ -206,20 +200,9 @@
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"name"]             = CollectionSafe(self.name);
-  dictionary[@"remote.uuid"]      = CollectionSafe(self.remote.commentedUUID);
-
-  MSDictionary * launch = self.launchMacro.JSONDictionary;
-  if (launch) {
-    [launch removeObjectForKey:@"class"];
-    dictionary[@"launchMacro"] = launch;
-  }
-
-  MSDictionary * halt = self.haltMacro.JSONDictionary;
-  if (halt) {
-    [halt removeObjectForKey:@"class"];
-    dictionary[@"haltMacro"] = halt;
-  }
+  SafeSetValueForKey(self.remote.commentedUUID,       @"remote.uuid",  dictionary);
+  SafeSetValueForKey(self.launchMacro.JSONDictionary, @"launch-macro", dictionary);
+  SafeSetValueForKey(self.haltMacro.JSONDictionary,   @"halt-macro",   dictionary);
 
   [dictionary compact];
   [dictionary compress];

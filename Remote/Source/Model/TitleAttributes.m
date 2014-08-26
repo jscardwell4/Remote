@@ -11,6 +11,7 @@
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 #import "REFont.h"
+#import "RemoteElementKeys.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -183,26 +184,51 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
+- (MSDictionary *)attributes {
+  MSDictionary * attributes          = [MSDictionary dictionary];
+  MSDictionary * paragraphAttributes = [MSDictionary dictionary];
+  NSString * stringText = nil;
+
+  for (NSString * attribute in [TitleAttributes propertyKeys]) {
+    if ([[TitleAttributes paragraphKeys] containsObject:attribute])
+      paragraphAttributes[attribute] = CollectionSafe(self[attribute]);
+    else if ([@"font" isEqualToString:attribute])
+      attributes[NSFontAttributeName] = CollectionSafe(self.font.UIFontValue);
+    else if ([@"iconName" isEqualToString:attribute])
+      stringText = [UIFont fontAwesomeIconForName:self.iconName];
+    else if ([@"text" isEqualToString:attribute])
+      stringText = self.text;
+    else {
+      NSString * attributeName = [TitleAttributes attributeNameForProperty:attribute];
+      attributes[attributeName] = CollectionSafe(self[attribute]);
+    }
+  }
+
+  attributes[RETitleTextAttributeKey] = CollectionSafe(stringText);
+
+  [paragraphAttributes compact];
+  if (![paragraphAttributes isEmpty]) {
+    NSMutableParagraphStyle * paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [paragraphStyle setValuesForKeysWithDictionary:paragraphAttributes];
+    attributes[NSParagraphStyleAttributeName] = paragraphStyle;
+  }
+
+  [attributes compact];
+
+  return attributes;
+}
+
 - (NSAttributedString *)string {
 
-  NSAttributedString * string = nil;
+  NSAttributedString * string     = nil;
+  MSDictionary       * attributes = self.attributes;
 
-  if (self.text || self.iconName) {
-    NSString * stringText = self.text;
-    NSMutableDictionary * attributes = [@{} mutableCopy];
-    NSMutableParagraphStyle * paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    for (NSString * attribute in [TitleAttributes propertyKeys]) {
-      if ([[TitleAttributes paragraphKeys] containsObject:attribute])
-        [paragraphStyle setValue:self[attribute] forKey:attribute];
-      else if ([@"font" isEqualToString:attribute] && self.font)
-        attributes[NSFontAttributeName] = self.font.UIFontValue;
-      else if ([@"iconName" isEqualToString:attribute] && self.iconName)
-        stringText = [UIFont fontAwesomeIconForName:self.iconName];
-      else
-        attributes[[TitleAttributes attributeNameForProperty:attribute]] = self[attribute];
+  if (attributes) {
+    NSString * text = attributes[RETitleTextAttributeKey];
+    if (text) {
+      [attributes removeObjectForKey:RETitleTextAttributeKey];
+      string = [NSAttributedString attributedStringWithString:text attributes:attributes];
     }
-    attributes[NSParagraphStyleAttributeName] = paragraphStyle;
-    string = [NSAttributedString attributedStringWithString:stringText attributes:attributes];
   }
 
   return string;
@@ -328,7 +354,7 @@ NS_ENUM(int, Property) {
 
         case ALIGNMENT: {
           if (isStringKind(obj))
-            self.alignment = @(underlineStrikethroughStyleForJSONKey(obj));
+            self.alignment = @(textAlignmentForJSONKey(obj));
           else if (isNumberKind(obj))
             self.alignment = obj;
         } break;
@@ -369,66 +395,70 @@ NS_ENUM(int, Property) {
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  for (NSString * property in [TitleAttributes propertyKeys]) {
-    switch ([[TitleAttributes propertyKeys] indexOfObject:property]) {
+  MSDictionary * values = [[self dictionaryWithValuesForKeys:[TitleAttributes propertyKeys]] MSDictionaryValue];
+  [values compact];
 
-			case FOREGROUNDCOLOR:
-			case BACKGROUNDCOLOR:
-			case STRIKETHROUGHCOLOR:
-			case UNDERLINECOLOR:
-			case STROKECOLOR: {
-        dictionary[[property camelCaseToDashCase]] =
-          CollectionSafe(normalizedColorJSONValueForColor(self[property]));
-      } break;
+  [values enumerateKeysAndObjectsUsingBlock:^(NSString * property, id obj, BOOL *stop) {
 
-			case FONT:{
-        dictionary[@"font"] = CollectionSafe(self.font.stringValue);
-      } break;
+    if (![self attributeValueIsDefault:property])
 
-			case TEXTEFFECT: {
-        if ([self.textEffect isEqualToString:NSTextEffectLetterpressStyle])
-          dictionary[@"text-effect"] = @"letterpress";
-      } break;
+      switch ([[TitleAttributes propertyKeys] indexOfObject:property]) {
+
+        case FOREGROUNDCOLOR:
+        case BACKGROUNDCOLOR:
+        case STRIKETHROUGHCOLOR:
+        case UNDERLINECOLOR:
+        case STROKECOLOR: {
+          SetValueForKeyIfNotDefault(normalizedColorJSONValueForColor(obj), property, dictionary);
+        } break;
+
+        case FONT: {
+          SafeSetValueForKey(((REFont *)obj).stringValue, @"font", dictionary);
+        } break;
+
+        case TEXTEFFECT: {
+          if ([(NSString *)obj isEqualToString:NSTextEffectLetterpressStyle])
+            dictionary[@"text-effect"] = @"letterpress";
+        } break;
 
 
-      case STRIKETHROUGHSTYLE:
-			case UNDERLINESTYLE: {
-        dictionary[[property camelCaseToDashCase]] =
-          CollectionSafe(underlineStrikethroughStyleJSONValueForStyle(self[property]));
-      } break;
+        case STRIKETHROUGHSTYLE:
+        case UNDERLINESTYLE: {
+          SetValueForKeyIfNotDefault(underlineStrikethroughStyleJSONValueForStyle(obj), property, dictionary);
+        } break;
 
-			case ICONNAME:
-			case TEXT:
-			case LIGATURE:
-			case STROKEWIDTH:
-      case EXPANSION:
-			case OBLIQUENESS:
-			case BASELINEOFFSET:
-			case KERN:
-			case HYPHENATIONFACTOR:
-			case PARAGRAPHSPACINGBEFORE:
-			case LINEHEIGHTMULTIPLE:
-			case MAXIMUMLINEHEIGHT:
-			case MINIMUMLINEHEIGHT:
-      case PARAGRAPHSPACING:
-			case LINESPACING:
-			case TAILINDENT:
-			case HEADINDENT:
-			case FIRSTLINEHEADINDENT: {
-				dictionary[[property camelCaseToDashCase]] = CollectionSafe(self[property]);
-			} break;
+        case ICONNAME:
+        case TEXT:
+        case LIGATURE:
+        case STROKEWIDTH:
+        case EXPANSION:
+        case OBLIQUENESS:
+        case BASELINEOFFSET:
+        case KERN:
+        case HYPHENATIONFACTOR:
+        case PARAGRAPHSPACINGBEFORE:
+        case LINEHEIGHTMULTIPLE:
+        case MAXIMUMLINEHEIGHT:
+        case MINIMUMLINEHEIGHT:
+        case PARAGRAPHSPACING:
+        case LINESPACING:
+        case TAILINDENT:
+        case HEADINDENT:
+        case FIRSTLINEHEADINDENT: {
+          SetValueForKeyIfNotDefault(obj, property, dictionary);
+        } break;
 
-			case LINEBREAKMODE: {
-        dictionary[@"line-break-mode"] =
-          CollectionSafe(lineBreakModeJSONValueForMode(UnsignedIntegerValue(self.lineBreakMode)));
-      } break;
+        case LINEBREAKMODE: {
+          SetValueForKeyIfNotDefault(lineBreakModeJSONValueForMode(UnsignedIntegerValue(obj)), @"lineBreakMode", dictionary);
+        } break;
 
-			case ALIGNMENT: {
-        dictionary[@"alignment"] = CollectionSafe(textAlignmentJSONValueForAlignment(IntegerValue(self.alignment)));
-      } break;
+        case ALIGNMENT: {
+          SetValueForKeyIfNotDefault(textAlignmentJSONValueForAlignment(IntegerValue((NSNumber *)obj)), @"alignment", dictionary);
+        } break;
 
-    }
-  }
+      }
+
+  }];
 
   [dictionary compact];
   [dictionary compress];

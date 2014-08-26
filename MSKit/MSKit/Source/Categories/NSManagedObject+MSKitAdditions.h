@@ -28,8 +28,6 @@ MSEXTERN_STRING MSDefaultValueForSubentityKey;
 
 - (id)defaultValueForAttribute:(NSString *)attributeName;
 
-- (id)defaultValueForAttribute:(NSString *)attributeName forContainingClass:(NSString *)className;
-
 - (instancetype)faultedObject;
 
 @end

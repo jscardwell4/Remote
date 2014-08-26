@@ -158,16 +158,16 @@ MSSTRING_CONST   REButtonRoleDPadLeftJSONKey   = @"left";
 MSSTRING_CONST   REButtonRoleDPadRightJSONKey  = @"right";
 MSSTRING_CONST   REButtonRoleDPadCenterJSONKey = @"center";
 
-MSSTRING_CONST   REButtonRoleNumberpad1JSONKey    = @"1";
-MSSTRING_CONST   REButtonRoleNumberpad2JSONKey    = @"2";
-MSSTRING_CONST   REButtonRoleNumberpad3JSONKey    = @"3";
-MSSTRING_CONST   REButtonRoleNumberpad4JSONKey    = @"4";
-MSSTRING_CONST   REButtonRoleNumberpad5JSONKey    = @"5";
-MSSTRING_CONST   REButtonRoleNumberpad6JSONKey    = @"6";
-MSSTRING_CONST   REButtonRoleNumberpad7JSONKey    = @"7";
-MSSTRING_CONST   REButtonRoleNumberpad8JSONKey    = @"8";
-MSSTRING_CONST   REButtonRoleNumberpad9JSONKey    = @"9";
-MSSTRING_CONST   REButtonRoleNumberpad0JSONKey    = @"0";
+MSSTRING_CONST   REButtonRoleNumberpad1JSONKey    = @"one";
+MSSTRING_CONST   REButtonRoleNumberpad2JSONKey    = @"two";
+MSSTRING_CONST   REButtonRoleNumberpad3JSONKey    = @"three";
+MSSTRING_CONST   REButtonRoleNumberpad4JSONKey    = @"four";
+MSSTRING_CONST   REButtonRoleNumberpad5JSONKey    = @"five";
+MSSTRING_CONST   REButtonRoleNumberpad6JSONKey    = @"six";
+MSSTRING_CONST   REButtonRoleNumberpad7JSONKey    = @"seven";
+MSSTRING_CONST   REButtonRoleNumberpad8JSONKey    = @"eight";
+MSSTRING_CONST   REButtonRoleNumberpad9JSONKey    = @"nine";
+MSSTRING_CONST   REButtonRoleNumberpad0JSONKey    = @"zero";
 MSSTRING_CONST   REButtonRoleNumberpadAux1JSONKey = @"aux1";
 MSSTRING_CONST   REButtonRoleNumberpadAux2JSONKey = @"aux2";
 

@@ -36,13 +36,13 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-
-  dictionary[@"type"]   = switchCommandTypeJSONValueForSwitchCommand(self);
-  dictionary[@"target"] = CollectionSafe((self.type
-                                          ? self.target
-                                          : [[Remote existingObjectWithUUID:self.target
-                                                                    context:self.managedObjectContext]
-                                             commentedUUID]));
+  SetValueForKeyIfNotDefault(switchCommandTypeJSONValueForSwitchCommand(self), @"type", dictionary);
+  SetValueForKeyIfNotDefault((self.type ?
+                             self.target :
+                             [[Remote existingObjectWithUUID:self.target
+                                                     context:self.managedObjectContext] commentedUUID]),
+                             @"target",
+                             dictionary);
 
   [dictionary compact];
   [dictionary compress];

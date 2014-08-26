@@ -294,57 +294,45 @@ static const int msLogContext = 0;
     NSOperation * dumpJSON = [NSBlockOperation blockOperationWithBlock:^{
       #ifdef OUTPUT_JSON_FILES
       NSManagedObjectContext * moc = [CoreDataManager defaultContext];
+      NSMutableDictionary * jsonStrings = [@{} mutableCopy];
       [moc performBlockAndWait:^{
 
         NSString * filePath = [@"/" join:@[DocumentsFilePath, @"RemoteController-export.json"]];
         RemoteController * controller = [RemoteController remoteController:moc];
         assert(controller);
-        if (![controller writeJSONToFile:filePath]) MSLogError(@"controller export failed");
-
-        #ifdef LOG_JSON_FILES
-        else
-          nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-        #endif
+        jsonStrings[filePath] = controller.JSONString;
 
         NSArray * remotes = [Remote findAllInContext:moc];
         assert(remotes.count);
         for (Remote * remote in remotes) {
           filePath = [@"/" join:@[DocumentsFilePath, $(@"Remote-%@-export.json", remote.name)]];
-          if (![remote writeJSONToFile:filePath])
-            MSLogError(@"export of remote `%@` failed", remote.name);
-          #ifdef LOG_JSON_FILES
-          else
-            nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-          #endif
+          jsonStrings[filePath] = remote.JSONString;
         }
 
         filePath = [@"/" join:@[DocumentsFilePath, @"ComponentDevice-export.json"]];
         NSArray * componentDevices = [ComponentDevice findAllSortedBy:@"name" ascending:YES context:moc];
         assert(componentDevices.count);
-        if (![componentDevices writeJSONToFile:filePath]) MSLogError(@"component device export failed");
-        #ifdef LOG_JSON_FILES
-        else
-          nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-        #endif
+        jsonStrings[filePath] = componentDevices.JSONString;
 
         filePath = [@"/" join:@[DocumentsFilePath, @"Manufacturer-export.json"]];
         NSArray * manufacturers = [Manufacturer findAllSortedBy:@"name" ascending:YES context:moc];
         assert(manufacturers.count);
-        if (![manufacturers writeJSONToFile:filePath]) MSLogError(@"manufacturer export failed");
-        #ifdef LOG_JSON_FILES
-        else
-          nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-        #endif
+        jsonStrings[filePath] = manufacturers.JSONString;
 
         filePath = [@"/" join:@[DocumentsFilePath, @"Image-export.json"]];
         NSArray * images = [Image findAllInContext:moc];
         assert(images.count);
-        if (![images writeJSONToFile:filePath]) MSLogError(@"image export failed");
-        #ifdef LOG_JSON_FILES
-        else
-          nsprintf(@"%@", [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil]);
-        #endif
-    }];
+        jsonStrings[filePath] = images.JSONString;
+      }];
+
+      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [jsonStrings enumerateKeysAndObjectsUsingBlock:^(NSString * filePath, NSString *jsonString, BOOL *stop) {
+          NSError * error = nil;
+          [jsonString writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+          MSHandleErrors(error);
+        }];
+      });
+
     #endif
   }];
 

@@ -56,11 +56,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Mute"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -150,11 +150,11 @@
           }
         },
         "label-attributes": {
-          "font": "HelveticaNeue@20",
+          "font": "Helvetica Neue@20",
           "foreground-color": "white",
           "stroke-color": "white@50%",
           "stroke-width": -2,
-          "paragraph-style.alignment": "center"
+          "alignment": "center"
         }
       },
       {
@@ -337,22 +337,22 @@
             "titles": {
               "default": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "Guide"
                 },
                 "highlighted.foreground-color": "#00AFFFFF"
               },
               "tv": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "Tools"
                 },
                 "highlighted.foreground-color": "#00AFFFFF"
@@ -379,22 +379,22 @@
             "titles": {
               "default": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "DVR"
                 },
                 "highlighted.foreground-color": "#00AFFFFF"
               },
               "tv": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "Internet@TV"
                 },
                 "highlighted.foreground-color": "#00AFFFFF"
@@ -420,11 +420,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Info"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -536,11 +536,11 @@
           }
         },
         "label-attributes": {
-          "font": "HelveticaNeue@20",
+          "font": "Helvetica Neue@20",
           "foreground-color": "white",
           "stroke-color": "white@50%",
           "stroke-width": -2,
-          "paragraph-style.alignment": "center"
+          "alignment": "center"
         }
       },
       {
@@ -594,11 +594,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@28",
+                "font": "Helvetica Neue@28",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "OK"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -879,11 +879,11 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": 1
             },
             "background-colors.default.normal": "#060606FF",
@@ -897,11 +897,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 2
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -917,11 +917,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 3
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -937,11 +937,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 4
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -957,11 +957,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 5
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -977,11 +977,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 6
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -997,11 +997,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 7
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1017,11 +1017,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 8
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1037,11 +1037,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 9
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1057,11 +1057,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": 0
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1077,11 +1077,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Exit"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1097,11 +1097,11 @@
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Enter"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1251,7 +1251,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "play"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1272,7 +1272,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "pause"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1293,7 +1293,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "backward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1314,7 +1314,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "fast-forward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1335,7 +1335,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "stop"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1356,7 +1356,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "step-backward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1394,7 +1394,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "step-forward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1415,7 +1415,7 @@
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "icon-name": "circle"
               },
               "disabled.foreground-color": "#7F7F7FFF",
@@ -1496,11 +1496,11 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "STB"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1514,11 +1514,11 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "TV"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1599,21 +1599,21 @@
             "titles": {
               "default": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "On Demand"
                 }
               },
               "tv": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "Source"
                 }
               }
@@ -1637,11 +1637,11 @@
               }
             },
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "Menu"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1665,21 +1665,21 @@
             "titles": {
               "default": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "Last"
                 }
               },
               "tv": {
                 "normal": {
-                  "font": "HelveticaNeue@20",
+                  "font": "Helvetica Neue@20",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
-                  "paragraph-style.alignment": "center",
+                  "alignment": "center",
                   "text": "Return"
                 }
               }
@@ -1703,11 +1703,11 @@
               }
             },
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "Exit"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1723,11 +1723,11 @@
               "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
             },
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "DVR Audio"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1743,11 +1743,11 @@
               "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9"
             },
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "TV Audio"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1763,11 +1763,11 @@
               "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
             },
             "titles.default.normal": {
-              "font": "HelveticaNeue@20",
+              "font": "Helvetica Neue@20",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
-              "paragraph-style.alignment": "center",
+              "alignment": "center",
               "text": "Mute"
             },
             "background-colors.default.normal": "#060606FF",
@@ -1864,11 +1864,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Dish"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1891,11 +1891,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Playstation"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1918,11 +1918,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": " TV"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1945,11 +1945,11 @@
             },
             "titles.default": {
               "normal": {
-                "font": "HelveticaNeue@20",
+                "font": "Helvetica Neue@20",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
-                "paragraph-style.alignment": "center",
+                "alignment": "center",
                 "text": "Sonos"
               },
               "highlighted.foreground-color": "#00AFFFFF"
@@ -1981,7 +1981,7 @@
             "lightsOn.top = bottomToolbar.top"
           ]
         },
-        "background-color.default": "flipside",
+        "background-color.default": "gray@50%",
         "subelements": [
           {
             "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",

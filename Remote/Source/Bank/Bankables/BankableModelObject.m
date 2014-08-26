@@ -65,9 +65,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"name"]     = CollectionSafe(self.name);
-  dictionary[@"category"] = CollectionSafe(self.category);
-  dictionary[@"user"]     = CollectionSafe(self.user);
+  SetValueForKeyIfNotDefault(self.name, @"name", dictionary);
+  SetValueForKeyIfNotDefault(self.category, @"category", dictionary);
+  SetValueForKeyIfNotDefault(@(self.user.boolValue), @"user", dictionary);
 
   [dictionary compact];
   [dictionary compress];

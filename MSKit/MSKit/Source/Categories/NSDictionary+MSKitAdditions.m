@@ -10,6 +10,7 @@
 #import "MSJSONSerialization.h"
 #import "MSKitMacros.h"
 #import "NSObject+MSKitAdditions.h"
+#import "MSDictionary.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -142,6 +143,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (BOOL)hasKey:(id)key {
     return (CFDictionaryContainsKey((__bridge CFDictionaryRef)(self), (__bridge const void *)(key)));
 }
+
+- (MSDictionary *)MSDictionaryValue { return [MSDictionary dictionaryWithDictionary:self]; }
 
 @end
 

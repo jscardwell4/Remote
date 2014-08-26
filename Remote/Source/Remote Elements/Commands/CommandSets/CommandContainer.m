@@ -14,7 +14,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation CommandContainer
 
-@dynamic index, name;
+@dynamic index;
 
 
 - (void)awakeFromInsert {

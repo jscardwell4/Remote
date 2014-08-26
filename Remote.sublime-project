@@ -4,6 +4,10 @@
 		{
 			"follow_symlinks": true,
 			"path": "."
+		},
+		{
+			"follow_symlinks": true,
+			"path": "Remote/CoreData/Remote.xcdatamodeld/Remote.base 18.xcdatamodel"
 		}
 	]
 }

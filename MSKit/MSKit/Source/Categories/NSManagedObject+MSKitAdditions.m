@@ -104,30 +104,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 - (id)defaultValueForAttribute:(NSString *)attributeName {
-  return [self defaultValueForAttribute:attributeName forContainingClass:nil];
-}
-
-- (id)defaultValueForAttribute:(NSString *)attributeName forContainingClass:(NSString *)className {
-  NSAttributeDescription * description = [self attributeDescriptionForAttribute:attributeName];
-
-  if (!description) return nil;
-
-  id defaultValue = description.defaultValue;   // official default value
-
-  NSDictionary * userInfo = description.userInfo;
-
-  if (!className) className = self.entity.name;
-
-  /*
-     look for key in user info of attribute description for a default value to be used
-     when the attribute is a member of the specified class
-   */
-
-  NSString * key = [@"." join:@[MSDefaultValueForContainingClassKey, className]];
-
-  if ([userInfo hasKey:key]) defaultValue = NilSafe(userInfo[key]);
-
-  return defaultValue;
+  return [self attributeDescriptionForAttribute:attributeName].defaultValue;
 }
 
 @end

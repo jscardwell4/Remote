@@ -17,7 +17,6 @@
 @property (nonatomic, strong, readwrite) ConstraintManager     * constraintManager;
 @property (nonatomic, strong, readwrite) Theme                 * theme;
 @property (nonatomic, strong, readwrite) NSDictionary          * configurations;
-
 - (void)updateForMode:(NSString *)mode;
 
 @end

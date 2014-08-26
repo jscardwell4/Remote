@@ -89,19 +89,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
     if (commandSet) self[label] = commandSet;
   }
-  
+
 }
 
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  [dictionary removeObjectForKey:@"uuid"];
-
-  for (NSString * label in self.index) {
-    CommandSet * commandSet = self[label];
-
-    if (commandSet) dictionary[label] = CollectionSafe(commandSet.JSONDictionary);
-  }
+  [self.index.allKeys enumerateObjectsUsingBlock:^(NSString * label, NSUInteger idx, BOOL *stop) {
+    SafeSetValueForKey(self[label].JSONDictionary, label, dictionary);
+  }];
 
   [dictionary compact];
   [dictionary compress];

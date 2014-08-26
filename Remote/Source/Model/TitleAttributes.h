@@ -47,6 +47,7 @@
 @property (nonatomic, strong) NSNumber * lineSpacing;
 
 @property (nonatomic, readonly) NSAttributedString * string;
+@property (nonatomic, readonly) MSDictionary       * attributes;
 
 + (NSArray *)propertyKeys;
 + (Class)validClassForProperty:(NSString *)property;

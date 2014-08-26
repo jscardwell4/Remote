@@ -85,19 +85,20 @@ static NSURL * sharedRemoteControllerURI = nil;
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"homeRemote.uuid"]      = CollectionSafe(self.homeRemote.commentedUUID);
-  dictionary[@"currentRemote.uuid"]   = CollectionSafe(self.currentRemote.commentedUUID);
-  dictionary[@"currentActivity.uuid"] = CollectionSafe(self.currentActivity.commentedUUID);
-  dictionary[@"topToolbar"]           = CollectionSafe(self.topToolbar.JSONDictionary);
-  id activities = CollectionSafeSelfKeyPathValue(@"activities.JSONDictionary");
-
-  if (isSetKind(activities)) {
-    NSMutableArray * activitiesArray = [[(NSSet *)activities allObjects] mutableCopy];
-
-    [activitiesArray sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name"
-                                                                          ascending:YES]]];
-    dictionary[@"activities"] = activitiesArray;
-  }
+  SafeSetValueForKey(self.homeRemote.commentedUUID, @"homeRemote.uuid", dictionary);
+  SafeSetValueForKey(self.currentRemote.commentedUUID, @"currentRemote.uuid", dictionary);
+  SafeSetValueForKey(self.currentActivity.commentedUUID, @"currentActivity.uuid", dictionary);
+  SafeSetValueForKey(self.topToolbar.JSONDictionary, @"top-toolbar", dictionary);
+  SafeSetValueForKey(({
+    NSMutableArray * sortedActivities = nil;
+    NSSet * activities = [self valueForKeyPath:@"activities.JSONDictionary"];
+    if (activities) {
+      sortedActivities = [[activities allObjects] mutableCopy];
+      [sortedActivities sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                             ascending:YES]]];
+    }
+    sortedActivities;
+  }), @"activities", dictionary);
 
   [dictionary compact];
   [dictionary compress];

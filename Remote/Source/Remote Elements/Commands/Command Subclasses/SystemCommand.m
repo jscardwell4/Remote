@@ -63,7 +63,7 @@ static __weak RemoteViewController * _remoteViewController;
 {
     MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"type"] = CollectionSafe(systemCommandTypeJSONValueForSystemCommand(self));
+    SetValueForKeyIfNotDefault(systemCommandTypeJSONValueForSystemCommand(self), @"type", dictionary);
 
     [dictionary compact];
     [dictionary compress];
