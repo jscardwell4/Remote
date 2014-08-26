@@ -445,6 +445,7 @@ NSString *NSStringFromUIColor(UIColor * color)
 + (void)load
 {
     kColorIndex = @{ @"clear"                   : @0x00000000,
+                     @"black"                   : @0x000000FF,
                      @"system-green"            : @0x00FF00FF,
                      @"system-orange"           : @0xFF8000FF,
                      @"light-gray"              : @0xAAAAAAFF,
@@ -460,7 +461,6 @@ NSString *NSStringFromUIColor(UIColor * color)
                      @"azure"                   : @0xF0FFFFFF,
                      @"beige"                   : @0xF5F5DCFF,
                      @"bisque"                  : @0xFFE4C4FF,
-                     @"black"                   : @0x000000FF,
                      @"blanched-almond"         : @0xFFEBCDFF,
                      @"blue"                    : @0x0000FFFF,
                      @"blue-violet"             : @0x8A2BE2FF,

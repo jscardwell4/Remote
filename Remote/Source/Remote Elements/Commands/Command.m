@@ -52,7 +52,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
++ (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
   if (!isDictionaryKind(data)) return nil;
 
   Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
@@ -75,7 +75,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   }
 
   if (commandClassImplementsMethod || commandClass != self)
-    command = [commandClass importObjectFromData:data inContext:moc];
+    command = [commandClass importObjectFromData:data context:moc];
 
   else if (self == commandClass)
     command = method_getImplementation(class_getClassMethod([ModelObject class], _cmd))(self, _cmd, data, moc);

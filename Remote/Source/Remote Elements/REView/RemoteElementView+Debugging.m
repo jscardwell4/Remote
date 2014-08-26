@@ -59,7 +59,7 @@
     NSArray * frames = [[@[self] arrayByAddingObjectsFromArray : self.subelementViews]
                         arrayByMappingToBlock:^id (RemoteElementView * obj, NSUInteger idx)
                         {
-                            NSString * nameString = [obj.name camelCaseString];
+                            NSString * nameString = [obj.name camelCase];
 
                             NSString * originString = $(@"(%6s,%6s)",
                                                         UTF8(StripTrailingZeros($(@"%f", obj.frame.origin.x))),
@@ -121,7 +121,7 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint)
     static NSString * (^ itemNameForView)(UIView *) = ^(UIView * view){
         return (view
                 ? ([view isKindOfClass:[RemoteElementView class]]
-                   ?[((RemoteElementView*)view).name camelCaseString]
+                   ?[((RemoteElementView*)view).name camelCase]
                    : (view.accessibilityIdentifier
                        ? : $(@"<%@:%p>", ClassString([view class]), view)
                       )

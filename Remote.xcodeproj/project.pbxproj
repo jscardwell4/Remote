@@ -385,6 +385,8 @@
 		C25B47B216FF8D5E0042B59E /* MSRemoteUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00616DC18530093D5B4 /* MSRemoteUITest.m */; };
 		C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00816DC18530093D5B4 /* RemoteEditingTest.m */; };
 		C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00A16DC18530093D5B4 /* UITestRunner.m */; };
+		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
+		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
 		C25EE4D417FCA358000DA457 /* BankableDetailTableViewCell-Table.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */; };
 		C25EE4D617FCF649000DA457 /* BankableDetailTableViewCell-List.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */; };
 		C2625B7B16DD41E90000F676 /* CodeDatabase-Pruned.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09A16DC187D0093D5B4 /* CodeDatabase-Pruned.plist */; };
@@ -967,6 +969,9 @@
 		C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Editing.m"; sourceTree = "<group>"; };
 		C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+SubelementViews.m"; sourceTree = "<group>"; };
 		C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+InternalSubviews.m"; sourceTree = "<group>"; };
+		C25C44DB19ABB3E2005594ED /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Activity.json; path = "Import Data/Activities/Activity.json"; sourceTree = "<group>"; };
+		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
+		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
 		C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Table.xib"; sourceTree = "<group>"; };
 		C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-List.xib"; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
@@ -1374,6 +1379,8 @@
 				C2014FB9180E004E00C31780 /* JSONObjectKeys.m */,
 				C2D361DA182BE21D00775239 /* StringAttributesValueTransformer.h */,
 				C2D361DB182BE21D00775239 /* StringAttributesValueTransformer.m */,
+				C25C44DD19ABCA2A005594ED /* TitleAttributes.h */,
+				C25C44DE19ABCA2A005594ED /* TitleAttributes.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2461,6 +2468,7 @@
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
+				C25C44DB19ABB3E2005594ED /* Activity.json */,
 				C2C6A172182AFFFF0036261E /* Glyphish.json */,
 				C26296811811F9AE00760056 /* Remote.json */,
 				C2D635B81805D9B400960B10 /* Manufacturer.json */,
@@ -2995,6 +3003,7 @@
 				C2381FA019A7EE3B00135DAB /* WoodPlanks-640x960-iPhone@2x.jpg in Resources */,
 				C26BBAEB16DC1B5C0093D5B4 /* AlignBarButtonIcon@2x.png in Resources */,
 				C2381EF519A7EE3B00135DAB /* GraphPaper-320x640-iPhone.jpg in Resources */,
+				C25C44DC19ABB3E2005594ED /* Activity.json in Resources */,
 				C2381F0519A7EE3B00135DAB /* Midnight-640x960.jpg in Resources */,
 				C27BCCA51801C16A0002464C /* IntegerKeyboard_8.png in Resources */,
 				C2381EF919A7EE3B00135DAB /* GraphPaper-2048x1536-iPad@2x.jpg in Resources */,
@@ -3303,6 +3312,7 @@
 				C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */,
 				C265936317FBA1B00017949C /* BankableDetailTableViewCell.m in Sources */,
 				C25B473216FF8D0A0042B59E /* ComponentDeviceConfiguration.m in Sources */,
+				C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */,
 				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */,

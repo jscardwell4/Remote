@@ -51,11 +51,11 @@ BOOL UUIDIsValid(NSString * uuid) {
 /// @param moc NSManagedObjectContext * The context within which to retrieve/create the object.
 /// @return instancetype The updated or newly created model object
 /// @throws NSInvalidArgumentException if either parameter is nil
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc {
++ (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
 
   if (!moc) ThrowInvalidNilArgument("managed object context cannot be nil");
 
-  if (!data) ThrowInvalidNilArgument("data cannot be nil");
+  if (!data) return nil;
 
 
   NSString    * uuid   = data[@"uuid"];
@@ -81,11 +81,11 @@ BOOL UUIDIsValid(NSString * uuid) {
 /// @param data description
 /// @param moc description
 /// @return NSArray *
-+ (NSArray *)importObjectsFromData:(id)data inContext:(NSManagedObjectContext *)moc {
++ (NSArray *)importObjectsFromData:(id)data context:(NSManagedObjectContext *)moc {
 
   if (!moc) ThrowInvalidNilArgument("managed object context cannot be nil");
 
-  if (!data) ThrowInvalidNilArgument("data cannot be nil");
+  if (!data) return nil;
 
   if ([data isKindOfClass:[NSArray class]]) {
     // call `importObjectFromData:inContext` on each dictionary in the array
@@ -94,7 +94,7 @@ BOOL UUIDIsValid(NSString * uuid) {
 
     [objects filter:^BOOL (id evaluatedObject) { return isDictionaryKind(evaluatedObject); }];
     [objects map:^id (id objData, NSUInteger idx) {
-      return CollectionSafe([self importObjectFromData:objData inContext:moc]);
+      return CollectionSafe([self importObjectFromData:objData context:moc]);
     }];
     [objects removeNullObjects];
 
@@ -303,7 +303,7 @@ BOOL UUIDIsValid(NSString * uuid) {
 #pragma mark JSON export
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSString *)JSONString { return [self.JSONDictionary JSONString]; }
+- (NSString *)JSONString { return self.JSONDictionary.JSONString; }
 
 
 - (MSDictionary *)JSONDictionary {
@@ -314,6 +314,11 @@ BOOL UUIDIsValid(NSString * uuid) {
 
 - (id)JSONObject { return [self.JSONDictionary JSONObject]; }
 
+- (BOOL)writeJSONToFile:(NSString *)file {
+  NSString * json = self.JSONString;
+  return StringIsEmpty(json) ? NO : [json writeToFile:file];
+}
+
 @end
 
 
@@ -322,7 +327,7 @@ BOOL UUIDIsValid(NSString * uuid) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-ModelObject*memberOfCollectionWithUUID(id collection, NSString * uuid) {
+ModelObject *memberOfCollectionWithUUID(id collection, NSString * uuid) {
   NSSet * set = nil;
 
   if ([collection isKindOfClass:[NSSet class]])

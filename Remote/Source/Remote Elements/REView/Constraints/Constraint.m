@@ -118,7 +118,7 @@
 #pragma mark Importing
 ////////////////////////////////////////////////////////////////////////////////
 
-+ (NSArray *)importObjectsFromData:(id)data inContext:(NSManagedObjectContext *)context
++ (NSArray *)importObjectsFromData:(id)data context:(NSManagedObjectContext *)context
 {
     if (![data isKindOfClass:[NSDictionary class]]) { return nil; }
 
@@ -218,13 +218,13 @@
     NSDictionary * attributes = [self committedValuesForKeys:attributeKeys];
 
     NSString * firstItem      = [((RemoteElement *)attributes[@"firstItem"]).name
-                                 camelCaseString];
+                                 camelCase];
     NSString * firstAttribute = [NSLayoutConstraint pseudoNameForAttribute:
                                  [attributes[@"firstAttribute"] integerValue]];
     NSString * relation       = [NSLayoutConstraint pseudoNameForRelation:
                                  [attributes[@"relation"] integerValue]];
     NSString * secondItem     = [((RemoteElement *)NilSafe(attributes[@"secondItem"])).name
-                                 camelCaseString];
+                                 camelCase];
     NSString * secondAttribute = (IntegerValue(attributes[@"secondAttribute"])
                                   ? [NSLayoutConstraint pseudoNameForAttribute:
                                      [attributes[@"secondAttribute"] integerValue]]
@@ -297,13 +297,13 @@
     NSDictionary * attributes = [self dictionaryWithValuesForKeys:attributeKeys];
 
     NSString * firstItem       = [((RemoteElement *)attributes[@"firstItem"]).name
-                                  camelCaseString];
+                                  camelCase];
     NSString * firstAttribute  = [NSLayoutConstraint pseudoNameForAttribute:
                                   [attributes[@"firstAttribute"] integerValue]];
     NSString * relation        = [NSLayoutConstraint pseudoNameForRelation:
                                   [attributes[@"relation"] integerValue]];
     NSString * secondItem      = [((RemoteElement *)NilSafe(attributes[@"secondItem"])).name
-                                  camelCaseString];
+                                  camelCase];
     NSString * secondAttribute = ([attributes[@"secondAttribute"] integerValue]
                                   ? [NSLayoutConstraint pseudoNameForAttribute:
                                      [attributes[@"secondAttribute"] integerValue]]

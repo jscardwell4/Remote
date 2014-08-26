@@ -14,244 +14,233 @@
 
 @interface Activity ()
 
-@property (nonatomic, strong, readonly) RemoteController  * controller;
+@property (nonatomic, strong) RemoteController * controller;
 
 @end
 
 @interface Activity (CoreDataGenerateAccessors)
 
-@property (nonatomic, strong) RemoteController * primitiveController;
-@property (nonatomic, strong) Remote           * primitiveRemote;
+@property (nonatomic, strong) Remote * primitiveRemote;
 
 @end
 
 @implementation Activity
 
-@dynamic controller, launchMacro, haltMacro, remote, name;
+@dynamic launchMacro, haltMacro, remote, name;
+@synthesize controller = _controller;
 
-+ (instancetype)activityWithName:(NSString *)name
-{
-    return [self activityWithName:name inContext:[CoreDataManager defaultContext]];
++ (instancetype)activityWithName:(NSString *)name {
+  return [self activityWithName:name inContext:[CoreDataManager defaultContext]];
 }
 
-+ (instancetype)activityWithName:(NSString *)name inContext:(NSManagedObjectContext *)context
-{
-    Activity * activity = [self createInContext:context];
-    activity.name = name;
-    return activity;
++ (instancetype)activityWithName:(NSString *)name inContext:(NSManagedObjectContext *)context {
+  Activity * activity = [self createInContext:context];
+
+  activity.name = name;
+
+  return activity;
 }
 
 - (void)updateWithData:(NSDictionary *)data {
 
-    [super updateWithData:data];
-    
-    NSString               * name        = data[@"name"];
-    NSDictionary           * remote      = data[@"remote"];
-    NSDictionary           * launchMacro = data[@"launchMacro"];
-    NSDictionary           * haltMacro   = data[@"haltMacro"];
-    NSManagedObjectContext * moc         = self.managedObjectContext;
+  [super updateWithData:data];
 
-    if (name)        self.name        = name;
-    if (remote)      self.remote      = [Remote importObjectFromData:remote inContext:moc];
-    if (launchMacro) self.launchMacro = [MacroCommand importObjectFromData:launchMacro inContext:moc];
-    if (haltMacro)   self.haltMacro   = [MacroCommand importObjectFromData:haltMacro inContext:moc];
+  NSManagedObjectContext * moc = self.managedObjectContext;
+
+  self.name        = data[@"name"]                                                        ?: self.name;
+  self.remote      = [Remote importObjectFromData:data[@"remote"] context:moc]            ?: self.remote;
+  self.launchMacro = [MacroCommand importObjectFromData:data[@"launchMacro"] context:moc] ?: self.launchMacro;
+  self.haltMacro   = [MacroCommand importObjectFromData:data[@"haltMacro"] context:moc]   ?: self.haltMacro;
 
 }
 
-- (void)setController:(RemoteController *)controller
-{
-    [self willChangeValueForKey:@"controller"];
-    self.primitiveController = controller;
-    [self didChangeValueForKey:@"controller"];
+- (BOOL)updateName:(NSString *)name {
+
+  if ([Activity countOfObjectsWithPredicate:NSPredicateMake(@"name EQUALS %@", name)])
+    return NO;
+
+  self.name = name;
+  return YES;
+
 }
 
-- (void)setRemote:(Remote *)remote
-{
-    [self willChangeValueForKey:@"remote"];
-    self.primitiveRemote = remote;
-    [self didChangeValueForKey:@"remote"];
+- (void)awakeFromFetch {
+  [super awakeFromFetch];
+  self.controller = [RemoteController remoteController:self.managedObjectContext];
 }
 
-- (BOOL)updateName:(NSString *)name
-{
-    if ([Activity countOfObjectsWithPredicate:NSPredicateMake(@"name EQUALS %@", name)])
-        return NO;
-    else
-    {
-        self.name = name;
-        return YES;
-    }
+- (void)awakeFromInsert {
+  [super awakeFromInsert];
+  self.controller = [RemoteController remoteController:self.managedObjectContext];
 }
 
-- (BOOL)launchActivity
-{
-    if (!self.controller)
-        return NO;
+- (BOOL)launchActivity {
 
-    __block BOOL launchReturned = NO;
-    __block BOOL launchSucceeded = NO;
+  if (!self.controller) return NO;
+
+  __block BOOL launchReturned  = NO;
+  __block BOOL launchSucceeded = NO;
+
+  if (self.launchMacro)
+    [self.launchMacro execute:^(BOOL success, NSError * error) {
+      if (!error && success) {
+        self.controller.currentRemote = self.remote;
+        launchSucceeded = self.controller.currentRemote == self.remote;
+      }
+      launchReturned = YES;
+    }];
+
+  else {
+    self.controller.currentRemote = self.remote;
+    launchSucceeded               = self.controller.currentRemote == self.remote;
+    launchReturned                = YES;
+  }
+
+  while (!launchReturned) ;
+
+  return launchSucceeded;
+
+}
+
+- (void)launchActivity:(void (^)(BOOL, NSError *))completion {
+
+  if (self.controller) {
 
     if (self.launchMacro)
-        [self.launchMacro execute:^(BOOL success, NSError * error)
-         {
-             if (!error && success)
-                 launchSucceeded = [self.controller switchToRemote:self.remote];
 
-             launchReturned = YES;
-         }];
+      [self.launchMacro execute:^(BOOL success, NSError * error) {
+        if (!error && success) {
+          self.controller.currentRemote = self.remote;
+          success = self.controller.currentRemote == self.remote;
 
-    else
-    {
-        launchSucceeded = [self.controller switchToRemote:self.remote];
-        launchReturned = YES;
-    }
-    
-    while (!launchReturned);
-
-    return launchSucceeded;
-}
-
-- (void)launchActivity:(void (^)(BOOL, NSError *))completion
-{
-    if (self.controller)
-    {
-        if (self.launchMacro)
-            [self.launchMacro execute:^(BOOL success, NSError * error)
-             {
-                 if (!error && success)
-                 {
-                     success = [self.controller switchToRemote:self.remote];
-                     if (completion)
-                         completion(success, nil);
-                 }
-                 else if (completion)
-                     completion(NO, nil);
-             }];
-
-        else
-        {
-            BOOL success = [self.controller switchToRemote:self.remote];
-            if (completion)
-                completion(success, nil);
+          if (completion) completion(success, nil);
         }
+
+        else if (completion) completion(NO, nil);
+      }];
+
+    else {
+
+      self.controller.currentRemote = self.remote;
+      BOOL success = self.controller.currentRemote == self.remote;
+
+      if (completion) completion(success, nil);
     }
 
-    else
-        completion(NO, nil);
+  } else completion(NO, nil);
+
 }
 
-- (BOOL)haltActivity
-{
+- (BOOL)haltActivity {
 
-    __block BOOL haltReturned = NO;
-    __block BOOL haltSucceeded = NO;
+  __block BOOL haltReturned  = NO;
+  __block BOOL haltSucceeded = NO;
 
-    if (!self.controller)
-        return NO;
+  if (!self.controller) return NO;
 
-    else if (self.haltMacro)
-    {
-        [self.haltMacro execute:^(BOOL success, NSError * error)
-         {
-             if (!error && success)
-                 haltSucceeded = [self.controller switchToRemote:self.controller.homeRemote];
+  if (self.haltMacro) {
 
-             haltReturned = YES;
-         }];
+    [self.haltMacro execute:^(BOOL success, NSError * error) {
+      if (!error && success)
+        self.controller.currentRemote = self.controller.homeRemote;
+        haltSucceeded = self.controller.currentRemote == self.controller.homeRemote;
+
+      haltReturned = YES;
+    }];
+
+  } else {
+
+    self.controller.currentRemote = self.controller.homeRemote;
+    haltSucceeded = self.controller.currentRemote == self.controller.homeRemote;
+    haltReturned  = YES;
+
+  }
+
+  while (!haltReturned) ;
+
+  return haltSucceeded;
+}
+
+- (void)haltActivity:(void (^)(BOOL, NSError *))completion {
+
+  if (self.controller) {
+
+    if (self.haltMacro)
+      [self.haltMacro execute:^(BOOL success, NSError * error) {
+        if (!error && success) {
+          self.controller.currentRemote = self.controller.homeRemote;
+          success = self.controller.currentRemote == self.controller.homeRemote;
+
+          if (completion) completion(success, nil);
+
+        } else if (completion) completion(NO, nil);
+      }];
+
+    else {
+      self.controller.currentRemote = self.controller.homeRemote;
+      BOOL success = self.controller.currentRemote == self.controller.homeRemote;
+
+      if (completion) completion(success, nil);
     }
 
-    else
-    {
-        haltSucceeded = [self.controller switchToRemote:self.controller.homeRemote];
-        haltReturned = YES;
-    }
+  } else completion(NO, nil);
 
-    while (!haltReturned);
-
-    return haltSucceeded;
 }
 
-- (void)haltActivity:(void (^)(BOOL, NSError *))completion
-{
-    if (self.controller)
-    {
-        if (self.haltMacro)
-            [self.haltMacro execute:^(BOOL success, NSError * error)
-             {
-                 if (!error && success)
-                 {
-                     success = [self.controller switchToRemote:self.controller.homeRemote];
-                     if (completion)
-                         completion(success, nil);
-                 }
-                 else if (completion)
-                     completion(NO, nil);
-             }];
-
-        else
-        {
-            BOOL success = [self.controller switchToRemote:self.controller.homeRemote];
-            if (completion)
-                completion(success, nil);
-        }
-    }
-
-    else
-        completion(NO, nil);
+- (BOOL)launchOrHault {
+  if (!self.controller) return NO;
+  else return (self.controller.currentActivity == self ? [self haltActivity] : [self launchActivity]);
 }
 
-- (BOOL)launchOrHault
-{
-    if (!self.controller)
-        return NO;
+- (void)launchOrHault:(void (^)(BOOL success, NSError * error))completion {
+  if (self.controller.currentActivity == self)
+    [self haltActivity:completion];
 
-    else if (self.controller.currentActivity == self)
-        return [self haltActivity];
-    else
-        return [self launchActivity];
+  else if (self.controller)
+    [self launchActivity:completion];
+
+  else if (completion)
+    completion(NO, nil);
 }
 
-- (void)launchOrHault:(void (^)(BOOL success, NSError * error))completion
-{
-    if (self.controller.currentActivity == self)
-        [self haltActivity:completion];
+- (MSDictionary *)JSONDictionary {
+  MSDictionary * dictionary = [super JSONDictionary];
 
-    else if (self.controller)
-        [self launchActivity:completion];
+  dictionary[@"name"]             = CollectionSafe(self.name);
+  dictionary[@"remote.uuid"]      = CollectionSafe(self.remote.commentedUUID);
 
-    else if (completion)
-        completion(NO, nil);
+  MSDictionary * launch = self.launchMacro.JSONDictionary;
+  if (launch) {
+    [launch removeObjectForKey:@"class"];
+    dictionary[@"launchMacro"] = launch;
+  }
+
+  MSDictionary * halt = self.haltMacro.JSONDictionary;
+  if (halt) {
+    [halt removeObjectForKey:@"class"];
+    dictionary[@"haltMacro"] = halt;
+  }
+
+  [dictionary compact];
+  [dictionary compress];
+
+  return dictionary;
 }
 
-- (MSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [super JSONDictionary];
+- (NSDictionary *)deepDescriptionDictionary {
+  Activity * activity = [self faultedObject];
 
-    dictionary[@"name"]        = CollectionSafe(self.name);
-    dictionary[@"remote.uuid"] = CollectionSafe(self.remote.uuid);
-    dictionary[@"launchMacro"] = CollectionSafe(self.launchMacro.JSONDictionary);
-    dictionary[@"haltMacro"]   = CollectionSafe(self.haltMacro.JSONDictionary);
+  assert(activity);
 
-    [dictionary compact];
-    [dictionary compress];
+  NSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
-    return dictionary;
-}
+  dd[@"name"]        = (activity.name ?: @"nil");
+  dd[@"controller"]  = (activity.controller.uuid ?: @"nil");
+  dd[@"remote"]      = namedModelObjectDescription(activity.remote);
+  dd[@"launchMacro"] = namedModelObjectDescription(activity.launchMacro);
+  dd[@"haltMacro"]   = namedModelObjectDescription(activity.haltMacro);
 
-
-- (NSDictionary *)deepDescriptionDictionary
-{
-    Activity * activity = [self faultedObject];
-    assert(activity);
-    
-    NSMutableDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"name"]        = (activity.name ? : @"nil");
-    dd[@"controller"]  = (activity.controller.uuid ?: @"nil");
-    dd[@"remote"]      = namedModelObjectDescription(activity.remote);
-    dd[@"launchMacro"] = namedModelObjectDescription(activity.launchMacro);
-    dd[@"haltMacro"]   = namedModelObjectDescription(activity.haltMacro);
-
-    return dd;
+  return dd;
 }
 
 @end

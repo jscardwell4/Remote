@@ -23,9 +23,10 @@
 + (NSString *)propertyForState:(NSUInteger)state;
 + (NSUInteger)stateForProperty:(NSString *)property;
 + (NSSet *)validProperties;
++ (NSString *)attributeKeyFromKey:(id)key;
 
 - (BOOL)isEmptySet;
-- (NSDictionary *)dictionaryFromSetObjects;
+- (NSDictionary *)dictionaryFromSetObjects:(BOOL)useJSONKeys;
 
 // objectAtIndex: and objectForKey: do not use fall through logic
 // where as objectAtIndexedSubscript: and objectForKeyedSubscript: do use fall through logic

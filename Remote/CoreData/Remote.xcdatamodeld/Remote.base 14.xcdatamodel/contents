@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Xcode 4.5" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ActivityButton" representedClassName="ActivityButton" parentEntity="Button" syncable="YES">
         <relationship name="deviceConfigurations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceConfiguration" inverseName="activityButtons" inverseEntity="DeviceConfiguration" indexed="YES" syncable="YES"/>
     </entity>
@@ -152,9 +152,9 @@
         <attribute name="colorSetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="disabledAndSelectedPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="disabledPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
-        <attribute name="highlightedAndDisabledPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
-        <attribute name="highlightedAndSelectedPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
+        <attribute name="highlightedDisabledPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="highlightedPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
+        <attribute name="highlightedSelectedPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="normalPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="patternColorStates" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="selectedHighlightedAndDisabledPatternImage" optional="YES" attributeType="Transformable" valueTransformerName="UIImageValueTransformer" syncable="YES"/>
@@ -172,8 +172,8 @@
         <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>

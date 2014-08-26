@@ -202,7 +202,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc
++ (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc
 {
     /*
      {
@@ -223,7 +223,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
      */
 
 
-    MacroCommand * macroCommand = [super importObjectFromData:data inContext:moc];
+    MacroCommand * macroCommand = [super importObjectFromData:data context:moc];
 
     if (!macroCommand) {
 
@@ -239,7 +239,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
             }];
             [macroCommands map:^id(NSDictionary * obj, NSUInteger idx) {
                 Class commandClass = commandClassForImportKey(obj[@"class"]);
-                Command * command = [commandClass importObjectFromData:obj inContext:moc];
+                Command * command = [commandClass importObjectFromData:obj context:moc];
                 return command ?: NullObject;
             }];
             [macroCommands removeNullObjects];

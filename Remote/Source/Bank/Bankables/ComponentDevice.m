@@ -14,14 +14,14 @@
 #import "RemoteElementExportSupportFunctions.h"
 
 @implementation ComponentDevice {
-    BOOL _ignoreNextPowerCommand;
+  BOOL _ignoreNextPowerCommand;
 }
 
 @dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer, networkDevice;
 
 /*
-+ (ComponentDevice *)importDeviceWithData:(NSDictionary *)data context:(NSManagedObjectContext *)moc
-{
+ + (ComponentDevice *)importDeviceWithData:(NSDictionary *)data context:(NSManagedObjectContext *)moc
+   {
     ComponentDevice * device = [self createInContext:moc];
 
     NSString     * name          = data[@"name"];
@@ -39,12 +39,13 @@
 
 
     return device;
-}
+   }
 
-*/
+ */
+
 /*
-+ (ComponentDevice *)importFromData:(NSDictionary *)objectData inContext:(NSManagedObjectContext *)context;
-{
+ + (ComponentDevice *)importFromData:(NSDictionary *)objectData inContext:(NSManagedObjectContext *)context;
+   {
 
     NSAttributeDescription * primaryAttribute = [[self MR_entityDescription]
                                                  MR_primaryAttributeToRelateBy];
@@ -63,136 +64,90 @@
 
 
     return managedObject;
-}
-*/
+   }
+ */
 
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
-    self.user = YES;
-}
-
-+ (instancetype)fetchDeviceWithName:(NSString *)name
-{
-    return [self findFirstByAttribute:@"info.name" withValue:name];
+- (void)awakeFromInsert {
+  [super awakeFromInsert];
+  self.user = YES;
 }
 
-+ (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context
-{
-    return [self findFirstByAttribute:@"info.name" withValue:name inContext:context];
++ (instancetype)fetchDeviceWithName:(NSString *)name {
+  return [self findFirstByAttribute:@"info.name" withValue:name];
 }
 
-- (BOOL)ignorePowerCommand:(CommandCompletionHandler)handler
-{
-    if (_ignoreNextPowerCommand)
-    {
-        _ignoreNextPowerCommand = NO;
-        if (handler) handler(YES, nil);
-        return YES;
-    }
-
-    else return NO;
++ (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context {
+  return [self findFirstByAttribute:@"info.name" withValue:name inContext:context];
 }
 
-- (void)powerOn:(CommandCompletionHandler)completion
-{
-    __weak ComponentDevice * weakself = self;
-    if (![self ignorePowerCommand:completion])
-        [self.onCommand execute:^(BOOL success, NSError * error) {
-            weakself.power = (!error && success ? YES : NO);
-            if (completion) completion(success, error);
-        }];
+- (BOOL)ignorePowerCommand:(CommandCompletionHandler)handler {
+  if (_ignoreNextPowerCommand) {
+    _ignoreNextPowerCommand = NO;
+
+    if (handler) handler(YES, nil);
+
+    return YES;
+  } else return NO;
 }
 
-- (void)powerOff:(CommandCompletionHandler)completion
-{
-    __weak ComponentDevice * weakself = self;
-    if (![self ignorePowerCommand:completion])
-        [self.offCommand execute:^(BOOL success, NSError * error) {
-            weakself.power = (!error && success ? NO : YES);
-            if (completion) completion(success, error);
-        }];
+- (void)powerOn:(CommandCompletionHandler)completion {
+  __weak ComponentDevice * weakself = self;
+
+  if (![self ignorePowerCommand:completion])
+    [self.onCommand execute:^(BOOL success, NSError * error) {
+      weakself.power = (!error && success ? YES : NO);
+
+      if (completion) completion(success, error);
+    }];
 }
 
-- (IRCode *)objectForKeyedSubscript:(NSString *)name
-{
-    return [self.codes objectPassingTest:
-            ^BOOL(IRCode * obj){ return [name isEqualToString:obj.name]; }];
+- (void)powerOff:(CommandCompletionHandler)completion {
+  __weak ComponentDevice * weakself = self;
+
+  if (![self ignorePowerCommand:completion])
+    [self.offCommand execute:^(BOOL success, NSError * error) {
+      weakself.power = (!error && success ? NO : YES);
+
+      if (completion) completion(success, error);
+    }];
 }
 
-- (MSDictionary *)JSONDictionary
-{
-    id(^defaultForKey)(NSString *) = ^(NSString * key)
-    {
-        static const NSDictionary * index;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken,
-                      ^{
-                          MSDictionary * dictionary = [MSDictionary dictionary];
-                          for (NSString * attribute in @[@"port", @"alwaysOn", @"inputPowersOn"])
-                              dictionary[attribute] = CollectionSafe([self defaultValueForAttribute:attribute]);
-                          [dictionary compact];
-                          index = dictionary;
-                      });
-
-        return index[key];
-    };
-
-    void(^addIfCustom)(id, MSDictionary*, NSString*, id) =
-    ^(id object, MSDictionary *dictionary, NSString *attribute, id addition )
-    {
-        BOOL isCustom = YES;
-
-        id defaultValue = defaultForKey(attribute);
-        id setValue = [object valueForKey:attribute];
-
-        if ([setValue isKindOfClass:[NSSet class]] && ((NSSet *)setValue).isEmpty)
-            isCustom = NO;
-
-        if (defaultValue && setValue)
-        {
-            if ([setValue isKindOfClass:[NSNumber class]])
-                isCustom = ![defaultValue isEqualToNumber:setValue];
-
-            else if ([setValue isKindOfClass:[NSString class]])
-                isCustom = ![defaultValue isEqualToString:setValue];
-
-            else
-                isCustom = ![defaultValue isEqual:setValue];
-        }
-
-        if (isCustom)
-            dictionary[attribute] = CollectionSafe(addition);
-    };
-
-    MSDictionary * dictionary = [super JSONDictionary];
-
-    addIfCustom(self, dictionary, @"port",          @(self.port));
-    addIfCustom(self, dictionary, @"alwaysOn",      @(self.alwaysOn));
-    addIfCustom(self, dictionary, @"inputPowersOn", @(self.inputPowersOn));
-    addIfCustom(self, dictionary, @"onCommand",     SelfKeyPathValue(@"onCommand.JSONDictionary"));
-    addIfCustom(self, dictionary, @"offCommand",    SelfKeyPathValue(@"offCommand.JSONDictionary"));
-    addIfCustom(self, dictionary, @"manufacturer",  SelfKeyPathValue(@"manufacturer.commentedUUID"));
-    addIfCustom(self, dictionary, @"networkDevice", SelfKeyPathValue(@"networkDevice.commentedUUID"));
-    addIfCustom(self, dictionary, @"codes",         SelfKeyPathValue(@"codes.JSONDictionary"));
-
-    [dictionary compact];
-    [dictionary compress];
-
-    return dictionary;
+- (IRCode *)objectForKeyedSubscript:(NSString *)name {
+  return [self.codes objectPassingTest:
+          ^BOOL (IRCode * obj) { return [name isEqualToString:obj.name]; }];
 }
 
-- (MSDictionary *)deepDescriptionDictionary
-{
-    ComponentDevice * device = [self faultedObject];
-    assert(device);
+- (MSDictionary *)JSONDictionary {
 
-    MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-    dd[@"name"] = device.name;
-    dd[@"port"] = $(@"%i",device.port);
-    return (MSDictionary *)dd;
+  MSDictionary * dictionary = [super JSONDictionary];
+
+  dictionary[@"port"]               = @(self.port);
+  dictionary[@"always-on"]          = @(self.alwaysOn);
+  dictionary[@"input-powers-on"]    = @(self.inputPowersOn);
+  dictionary[@"on-command"]         = CollectionSafe(SelfKeyPathValue(@"onCommand.JSONDictionary"));
+  dictionary[@"off-command"]        = CollectionSafe(SelfKeyPathValue(@"offCommand.JSONDictionary"));
+  dictionary[@"manufacturer.uuid"]  = CollectionSafe(SelfKeyPathValue(@"manufacturer.commentedUUID"));
+  dictionary[@"networkDevice.uuid"] = CollectionSafe(SelfKeyPathValue(@"networkDevice.commentedUUID"));
+  dictionary[@"codes"]              = CollectionSafe(SelfKeyPathValue(@"codes.JSONDictionary"));
+
+  [dictionary compact];
+  [dictionary compress];
+
+  return dictionary;
 }
 
+- (MSDictionary *)deepDescriptionDictionary {
+  ComponentDevice * device = [self faultedObject];
+
+  assert(device);
+
+  MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
+
+  dd[@"name"] = device.name;
+  dd[@"port"] = $(@"%i", device.port);
+
+  return (MSDictionary *)dd;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Importing
@@ -200,17 +155,17 @@
 
 
 - (void)updateWithData:(NSDictionary *)data {
-    /*
+  /*
 
      {
          "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
          "info.name": "PS3",
          "port": 3,
-         "onCommand": {
+         "on-command": {
              "class": "sendir",
              "code.uuid": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3" // Discrete On
          },
-         "offCommand": {
+         "off-command": {
              "class": "sendir",
              "code.uuid": "9326516F-1923-4461-AD31-E726B4AAAFB1" // Discrete Off
          },
@@ -218,53 +173,26 @@
          "codes": []
      }
 
-     */
+   */
 
 
-    [super updateWithData:data];
+  [super updateWithData:data];
 
-    NSString               * name         = data[@"info"][@"name"];
-    NSNumber               * port         = data[@"port"];
-    id                       onCommand    = data[@"onCommand"];
-    id                       offCommand   = data[@"offCommand"];
-    id                       manufacturer = data[@"manufacturer"];
-    NSArray                * codes        = data[@"codes"];
-    NSManagedObjectContext * moc          = self.managedObjectContext;
+  NSString               * name         = data[@"name"];
+  NSNumber               * port         = data[@"port"];
+  NSDictionary           * onCommand    = data[@"on-command"];
+  NSDictionary           * offCommand   = data[@"off-command"];
+  NSDictionary           * manufacturer = data[@"manufacturer"];
+  NSArray                * codes        = data[@"codes"];
+  NSManagedObjectContext * moc          = self.managedObjectContext;
 
 
-    if (name) self.info.name = name;
-    if (port) self.port = port.shortValue;
-    if (onCommand) {
-        if ([onCommand isKindOfClass:[NSString class]] && UUIDIsValid(onCommand)) {
-            //TODO: Fill out stub
-        } else if ([onCommand isKindOfClass:[NSDictionary class]]) {
-            self.onCommand = [Command importObjectFromData:onCommand inContext:moc];
-        }
-    }
-    if (offCommand) {
-        if ([offCommand isKindOfClass:[NSString class]] && UUIDIsValid(offCommand)) {
-            //TODO: Fill out stub
-        } else if ([offCommand isKindOfClass:[NSDictionary class]]) {
-            self.onCommand = [Command importObjectFromData:offCommand inContext:moc];
-        }
-    }
-    if (manufacturer) {
-        if ([manufacturer isKindOfClass:[NSString class]] && UUIDIsValid(manufacturer)) {
-            Manufacturer * m = [Manufacturer existingObjectWithUUID:manufacturer context:moc];
-            if (!m) m = [Manufacturer objectWithUUID:manufacturer context:moc];
-            self.manufacturer = m;
-        } else if ([manufacturer isKindOfClass:[NSDictionary class]]) {
-            self.manufacturer = [Manufacturer importObjectFromData:manufacturer inContext:moc];
-        }
-    }
-    if (codes) {
-        NSMutableSet * componentDeviceCodes = [NSMutableSet set];
-        for (NSDictionary * code in codes) {
-            IRCode * componentDeviceCode = [IRCode importObjectFromData:code inContext:moc];
-            if (componentDeviceCode) [componentDeviceCodes addObject:componentDeviceCode];
-        }
-        self.codes = componentDeviceCodes;
-    }
+  if (name)         self.info.name    = name;
+  if (port)         self.port         = port.shortValue;
+  if (onCommand)    self.onCommand    = [Command importObjectFromData:onCommand context:moc];
+  if (offCommand)   self.onCommand    = [Command importObjectFromData:offCommand context:moc];
+  if (manufacturer) self.manufacturer = [Manufacturer importObjectFromData:manufacturer context:moc];
+  if (codes)        self.codes        = [[IRCode importObjectsFromData:codes context:moc] set];
 
 }
 
@@ -274,7 +202,7 @@
 
 + (NSString *)directoryLabel { return @"Component Devices"; }
 
-+ (BankFlags)bankFlags { return (BankDetail|BankNoSections|BankEditable); }
++ (BankFlags)bankFlags { return (BankDetail | BankNoSections | BankEditable); }
 
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 

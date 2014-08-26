@@ -135,49 +135,52 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   [super updateWithData:data];
 
-  self.name       = data[@"name"]                                               ?: self.name;
-  self.role       = remoteElementRoleFromImportKey(data[@"role"])               ?: self.role;
-  self.key        = data[@"key"]                                                ?: self.key;
-  self.subtype    = remoteElementSubtypeFromImportKey(data[@"subtype"])         ?: self.subtype;
-  self.options    = remoteElementOptionsFromImportKey(data[@"options"])         ?: self.options;
-  self.state      = remoteElementStateFromImportKey(data[@"state"])             ?: self.state;
-  self.shape      = remoteElementShapeFromImportKey(data[@"shape"])             ?: self.shape;
-  self.style      = remoteElementStyleFromImportKey(data[@"style"])             ?: self.style;
-  self.tag        = data[@"tag"]                                                ?: @0;
-  self.themeFlags = remoteElementThemeFlagsFromImportKey(data[@"themeFlags"])   ?: self.themeFlags;
+  self.name       = data[@"name"]                                                ?: self.name;
+  self.role       = remoteElementRoleFromImportKey(data[@"role"])                ?: self.role;
+  self.key        = data[@"key"]                                                 ?: self.key;
+  self.subtype    = remoteElementSubtypeFromImportKey(data[@"subtype"])          ?: self.subtype;
+  self.options    = remoteElementOptionsFromImportKey(data[@"options"])          ?: self.options;
+  self.state      = remoteElementStateFromImportKey(data[@"state"])              ?: self.state;
+  self.shape      = remoteElementShapeFromImportKey(data[@"shape"])              ?: self.shape;
+  self.style      = remoteElementStyleFromImportKey(data[@"style"])              ?: self.style;
+  self.tag        = data[@"tag"]                                                 ?: @0;
+  self.themeFlags = remoteElementThemeFlagsFromImportKey(data[@"theme-flags"])   ?: self.themeFlags;
 
-  self.backgroundColor      = colorFromImportValue(data[@"backgroundColor"]) ?: self.backgroundColor;
-  self.backgroundImageAlpha = data[@"backgroundImageAlpha"]                  ?: @1.0;
+  self.backgroundColor      = colorFromImportValue(data[@"background-color"]) ?: self.backgroundColor;
+  self.backgroundImageAlpha = data[@"background-image-alpha"]                  ?: @1.0;
 
-  NSDictionary           * backgroundImage = data[@"backgroundImage"];
+  NSDictionary           * backgroundImage = data[@"background-image"];
   NSDictionary           * theme           = data[@"theme"];
   NSArray                * subelements     = data[@"subelements"];
   NSDictionary           * constraints     = data[@"constraints"];
   NSManagedObjectContext * moc             = self.managedObjectContext;
 
-  if (backgroundImage) self.backgroundImage = [Image importObjectFromData:backgroundImage inContext:moc];
+  if (backgroundImage) self.backgroundImage = [Image importObjectFromData:backgroundImage context:moc];
 
-  if (theme) self.theme = [Theme importObjectFromData:theme inContext:moc];
+  if (theme) self.theme = [Theme importObjectFromData:theme context:moc];
 
   if (subelements) {
     NSMutableArray * subelementObjects = [subelements mutableCopy];
 
     [subelementObjects filter:^BOOL (id obj) { return isDictionaryKind(obj); }];
     [subelementObjects map:^id (NSDictionary * objData, NSUInteger idx) {
-      Class elementClass = classForREType(remoteElementTypeFromImportKey(objData[@"elementType"]));
+      switch ([[self class] elementType]) {
+        case RETypeRemote:
+          return [ButtonGroup importObjectFromData:objData context:moc];
 
-      if (!elementClass) return NullObject;
+        case RETypeButtonGroup:
+          return [Button importObjectFromData:objData context:moc];
 
-      RemoteElement * element = [elementClass importObjectFromData:objData inContext:moc];
-
-      return (element ?: NullObject);
+        default:
+          return NullObject;
+      }
     }];
     [subelementObjects removeNullObjects];
     self.subelements = [subelementObjects orderedSet];
   }
 
   if (constraints)
-    self.constraints = [[Constraint importObjectsFromData:constraints inContext:moc] set];
+    self.constraints = [[Constraint importObjectsFromData:constraints context:moc] set];
 
 }
 
@@ -194,8 +197,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
     dispatch_once(&onceToken, ^{
       NSDictionary * attributes           = [[self entity] attributesByName];
-      UIColor      * backgroundColor      = [attributes[@"backgroundColor"]
-                                             defaultValue];
+      UIColor      * backgroundColor      = [attributes[@"backgroundColor"] defaultValue];
       NSNumber     * state                = [attributes[@"state"] defaultValue];
       NSNumber     * style                = [attributes[@"style"] defaultValue];
       NSNumber     * options              = [attributes[@"options"] defaultValue];
@@ -207,16 +209,16 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
                                              defaultValue];
       NSNumber     * shape                = [attributes[@"shape"] defaultValue];
 
-      index = @{ @"state"                : state,
-                 @"style"                : style,
-                 @"options"              : options,
-                 @"subtype"              : subtype,
-                 @"themeFlags"           : themeFlags,
-                 @"role"                 : role,
-                 @"tag"                  : tag,
-                 @"backgroundColor"      : backgroundColor,
-                 @"backgroundImageAlpha" : backgroundImageAlpha,
-                 @"shape"                : shape };
+      index = @{ @"state"                  : state,
+                 @"style"                  : style,
+                 @"options"                : options,
+                 @"subtype"                : subtype,
+                 @"theme-flags"            : themeFlags,
+                 @"role"                   : role,
+                 @"tag"                    : tag,
+                 @"background-color"       : backgroundColor,
+                 @"background-image-alpha" : backgroundImageAlpha,
+                 @"shape"                  : shape };
     });
 
     id defaultValue = index[key];
@@ -226,10 +228,8 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  dictionary[@"name"]        = CollectionSafe(self.name);
-  dictionary[@"elementType"] = typeJSONValueForRemoteElement(self);
-
-  dictionary[@"key"] = CollectionSafe(self.primitiveKey);
+  dictionary[@"name"] = CollectionSafe(self.name);
+  dictionary[@"key"]  = CollectionSafe(self.primitiveKey);
 
   if (![self.tag isEqual:defaultForKey(@"tag")])
     dictionary[@"tag"] = self.tag;
@@ -278,7 +278,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
                                                                                uuid));
 
       assert(element && element.name);
-      uuidIndex[[element.name camelCaseString]] = uuid;
+      uuidIndex[[element.name camelCase]] = uuid;
     }
 
 
@@ -300,13 +300,13 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   }
 
   if (![self.backgroundColor isEqual:defaultForKey(@"backgroundColor")])
-    dictionary[@"backgroundColor"] =
+    dictionary[@"background-color"] =
       CollectionSafe(normalizedColorJSONValueForColor(self.backgroundColor));
 
-  dictionary[@"backgroundImage.uuid"] = CollectionSafe(self.backgroundImage.commentedUUID);
+  dictionary[@"background-image.uuid"] = CollectionSafe(self.backgroundImage.commentedUUID);
 
   if (![self.backgroundImageAlpha isEqual:defaultForKey(@"backgroundImageAlpha")])
-    dictionary[@"backgroundImageAlpha"] = self.backgroundImageAlpha;
+    dictionary[@"background-image-alpha"] = self.backgroundImageAlpha;
 
   if ([self.subelements count])
     dictionary[@"subelements"] = [self valueForKeyPath:@"subelements.JSONDictionary"];

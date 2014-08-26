@@ -45,6 +45,7 @@
 
 @optional
 @property (nonatomic, weak, readonly) MSDictionary * JSONDictionary;
+- (BOOL)writeJSONToFile:(NSString *)file;
 
 @end
 

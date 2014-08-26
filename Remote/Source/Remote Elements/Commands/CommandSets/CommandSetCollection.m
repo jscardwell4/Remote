@@ -85,7 +85,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   for (NSString * label in data) {
     if (!isStringKind(label)) continue;
-    CommandSet * commandSet = [CommandSet importObjectFromData:data[label] inContext:self.managedObjectContext];
+    CommandSet * commandSet = [CommandSet importObjectFromData:data[label] context:self.managedObjectContext];
 
     if (commandSet) self[label] = commandSet;
   }

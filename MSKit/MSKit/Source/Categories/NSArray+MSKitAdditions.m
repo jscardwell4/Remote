@@ -45,6 +45,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     }
 }
 
+- (BOOL)writeJSONToFile:(NSString *)file {
+  NSString * json = self.JSONString;
+  return StringIsEmpty(json) ? NO : [json writeToFile:file];
+}
+
 - (id)JSONObject
 {
     if ([NSJSONSerialization isValidJSONObject:self])

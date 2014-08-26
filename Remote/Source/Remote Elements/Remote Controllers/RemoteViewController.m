@@ -18,27 +18,27 @@
 
 // #define INACTIVITY_TIMER
 
-static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 MSSTATIC_NAMETAG(kRemoteView);
 MSSTATIC_NAMETAG(kTopToolbarConstraint);
 
 @implementation RemoteViewController {
-    struct {
-        BOOL             monitorProximitySensor;
-        NSTimeInterval   inactivityTimeout;
-        BOOL             autohideTopBar;
-        BOOL             remoteInactive;
-        BOOL             loadHomeScreen;
-        BOOL             monitoringInactivity;
-        BOOL             shouldHideTopToolbar;
-    } _flags;
+  struct {
+    BOOL           monitorProximitySensor;
+    NSTimeInterval inactivityTimeout;
+    BOOL           autohideTopBar;
+    BOOL           remoteInactive;
+    BOOL           loadHomeScreen;
+    BOOL           monitoringInactivity;
+    BOOL           shouldHideTopToolbar;
+  } _flags;
 
-    ButtonGroupView  * _topToolbar;
-    NSLayoutConstraint * _topToolbarConstraint;
-    RemoteController * _remoteController;
-    dispatch_source_t    _inactivityTimer;
+  ButtonGroupView    * _topToolbar;
+  NSLayoutConstraint * _topToolbarConstraint;
+  RemoteController   * _remoteController;
+  dispatch_source_t    _inactivityTimer;
 }
 
 #pragma mark - Managing notificaitons
@@ -53,74 +53,72 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
-                       context:(void *)context
-{
-    assert(object == _remoteController);
-    assert([@"currentRemote" isEqualToString: keyPath]);
-    if([change[NSKeyValueChangeNewKey] isMemberOfClass:[Remote class]])
-        MSRunSyncOnMain (^{
-            Remote * r = (Remote*)change[NSKeyValueChangeNewKey];
-            assert(r && [r isKindOfClass:[Remote class]]);
-            RemoteView * rv = (RemoteView*)[RemoteElementView viewWithModel:r];
-            assert(rv && [rv isKindOfClass:[RemoteView class]]);
-            [self insertRemoteView:rv];
-        });
+                       context:(void *)context {
+  assert(object == _remoteController);
+  assert([@"currentRemote" isEqualToString:keyPath]);
+
+  if ([change[NSKeyValueChangeNewKey] isMemberOfClass:[Remote class]])
+    MSRunSyncOnMain(^{
+      Remote * r = (Remote *)change[NSKeyValueChangeNewKey];
+      assert(r && [r isKindOfClass:[Remote class]]);
+      RemoteView * rv = (RemoteView *)[RemoteElementView viewWithModel:r];
+      assert(rv && [rv isKindOfClass:[RemoteView class]]);
+      [self insertRemoteView:rv];
+    });
 }
 
 /**
  * Register for changes to various values of the model as well as any changes to its
  * `NSManagedObjectContext`.
  */
-- (void)registerForKVONotifications
-{
-    [_remoteController addObserver:self
-                        forKeyPath:@"currentRemote"
-                           options:NSKeyValueObservingOptionNew
-                           context:NULL];
+- (void)registerForKVONotifications {
+  [_remoteController addObserver:self
+                      forKeyPath:@"currentRemote"
+                         options:NSKeyValueObservingOptionNew
+                         context:NULL];
 }
 
 /**
  * Removes the `RemoteViewController` as an observer for the notifications registered for in
  * `registerForChangeNotification`.
  */
-- (void)unregisterForKVONotifications
-{
-    [_remoteController removeObserver:self forKeyPath:@"currentRemote"];
+- (void)unregisterForKVONotifications {
+  [_remoteController removeObserver:self forKeyPath:@"currentRemote"];
 }
 
-- (void)registerForNotificationCenterNotifications
-{
-    [NotificationCenter addObserverForName:MSSettingsManagerProximitySensorSettingDidChangeNotification
-                                    object:[SettingsManager class]
-                                     queue:nil
-                                usingBlock:^(NSNotification * note){
-         _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
-         CurrentDevice.proximityMonitoringEnabled = _flags.monitorProximitySensor;
-     }
+- (void)registerForNotificationCenterNotifications {
+  [NotificationCenter addObserverForName:MSSettingsManagerProximitySensorSettingDidChangeNotification
+                                  object:[SettingsManager class]
+                                   queue:nil
+                              usingBlock:^(NSNotification * note) {
+                                _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+                                CurrentDevice.proximityMonitoringEnabled = _flags.monitorProximitySensor;
+                              }
 
-    ];
-#ifdef INACTIVITY_TIMER
+  ];
+  #ifdef INACTIVITY_TIMER
     [NotificationCenter addObserverForName:MSSettingsManagerInactivityTimeoutSettingDidChangeNotification
                                     object:[SettingsManager sharedSettingsManager]
                                      queue:nil
-                                usingBlock:^(NSNotification * note){
-         _flags.inactivityTimeout = [SettingsManager floatForSetting:MSSettingsInactivityTimeoutKey];
-         if (_flags.monitoringInactivity && !_flags.inactivityTimeout) [self stopInactivityTimer:NO];
-     }
+                                usingBlock:^(NSNotification * note) {
+                                  _flags.inactivityTimeout = [SettingsManager floatForSetting:MSSettingsInactivityTimeoutKey];
+
+                                  if (_flags.monitoringInactivity && !_flags.inactivityTimeout) [self stopInactivityTimer:NO];
+                                }
 
     ];
-#endif  /* ifdef INACTIVITY_TIMER */
+  #endif /* ifdef INACTIVITY_TIMER */
 }
 
-- (void)unregisterForNotificationCenterNotifications
-{
-    [NotificationCenter removeObserver:self name:nil object:[SettingsManager class]];
+- (void)unregisterForNotificationCenterNotifications {
+  [NotificationCenter removeObserver:self name:nil object:[SettingsManager class]];
 }
 
 #pragma mark - NSObject overrides
+
 /*
-- (void)awakeFromNib
-{
+   - (void)awakeFromNib
+   {
     _remoteController = [RERemoteController remoteController];
     assert(_remoteController);
     _remoteController.managedObjectContext.nametag = @"remote";
@@ -131,14 +129,13 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
     [self registerForKVONotifications];
     [self registerForNotificationCenterNotifications];
                          assert([SystemCommand registerRemoteViewController:self]);
-}
-*/
+   }
+ */
 
-- (void)dealloc
-{
-    [self unregisterForKVONotifications];
-    [self unregisterForNotificationCenterNotifications];
-    [SystemCommand registerRemoteViewController:nil];
+- (void)dealloc {
+  [self unregisterForKVONotifications];
+  [self unregisterForNotificationCenterNotifications];
+  [SystemCommand registerRemoteViewController:nil];
 }
 
 #pragma mark - UIViewController overrides
@@ -146,28 +143,27 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
 /**
  * Releases the cached remote view and any other retained properties relating to the view.
  */
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    MSLogWarn(@"%@ is view loaded? %@  is toolbar allocated? %@",
-              ClassTagSelectorString,
-              BOOLString([self isViewLoaded]),
-              BOOLString(_topToolbar == nil));
+- (void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+  MSLogWarn(@"%@ is view loaded? %@  is toolbar allocated? %@",
+            ClassTagSelectorString,
+            BOOLString([self isViewLoaded]),
+            BOOLString(_topToolbar == nil));
 }
 
 /*
-#ifdef INACTIVITY_TIMER
-- (void)resumeInactivityTimer
-{
+   #ifdef INACTIVITY_TIMER
+   - (void)resumeInactivityTimer
+   {
     assert(_inactivityTimer && !dispatch_source_testcancel(_inactivityTimer) && _flags.remoteInactive);
     dispatch_resume(_inactivityTimer);
     MSLogDebug(@"%@ inactivity timer resumed", ClassTagSelectorString);
     _flags.remoteInactive       = NO;
     _flags.monitoringInactivity = YES;
-}
+   }
 
-- (void)startInactivityTimer
-{
+   - (void)startInactivityTimer
+   {
     if (_inactivityTimer)
     {
         [self resumeInactivityTimer];
@@ -233,10 +229,10 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
 
     );
     dispatch_resume(_inactivityTimer);
-}
+   }
 
-- (void)stopInactivityTimer:(BOOL)timeout
-{
+   - (void)stopInactivityTimer:(BOOL)timeout
+   {
     if (_inactivityTimer)
     {
         dispatch_suspend(_inactivityTimer);
@@ -265,173 +261,165 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
         else
             _flags.monitoringInactivity = NO;
     }
-}
-#endif
-*/
+   }
+   #endif
+ */
 
-- (void)viewDidLoad
-{
-    [self.view addGestureRecognizer:[UIPinchGestureRecognizer gestureWithTarget:self
-                                                                         action:@selector(toggleTopToolbarAction:)]];
-    _remoteController = [RemoteController remoteController];
-    assert(_remoteController);
-    _remoteController.managedObjectContext.nametag = @"remote";
+- (void)viewDidLoad {
+  [self.view addGestureRecognizer:[UIPinchGestureRecognizer gestureWithTarget:self
+                                                                       action:@selector(toggleTopToolbarAction:)]];
+  _remoteController = [RemoteController remoteController:[CoreDataManager defaultContext]];
+  assert(_remoteController);
+  _remoteController.managedObjectContext.nametag = @"remote";
 
-    _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
-    _flags.inactivityTimeout      = [SettingsManager floatForSetting:MSSettingsInactivityTimeoutKey];
-    _flags.loadHomeScreen         = YES;
-    [self registerForKVONotifications];
-    [self registerForNotificationCenterNotifications];
-    assert([SystemCommand registerRemoteViewController:self]);
+  _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+  _flags.inactivityTimeout      = [SettingsManager floatForSetting:MSSettingsInactivityTimeoutKey];
+  _flags.loadHomeScreen         = YES;
+  [self registerForKVONotifications];
+  [self registerForNotificationCenterNotifications];
+  assert([SystemCommand registerRemoteViewController:self]);
 
-    assert(!_topToolbar);
-    [self initializeTopToolbar];
-    
-    assert(![self.view viewWithNametag:kRemoteViewNametag]);
+  assert(!_topToolbar);
+  [self initializeTopToolbar];
 
-    Remote * remote = _remoteController.currentRemote;
-    if (!remote && [_remoteController switchToRemote:_remoteController.homeRemote])
-        remote = _remoteController.currentRemote;
-    assert(remote);
+  assert(![self.view viewWithNametag:kRemoteViewNametag]);
 
-    remote.currentMode = REDefaultMode;
-    [self insertRemoteView:[RemoteView viewWithModel:remote]];
+  Remote * remote = _remoteController.currentRemote;
 
-    _flags.shouldHideTopToolbar = remote.topBarHidden;
+  assert(remote);
 
-    [self.view.gestureRecognizers enumerateObjectsUsingBlock:
-     ^(id obj, NSUInteger idx, BOOL * stop)
-     {
-         if ([obj isMemberOfClass:[MSPinchGestureRecognizer class]])
-         {
-             ((MSPinchGestureRecognizer*)obj).threshold = (MSBoundary) {
-                 .lower = -44.0f,
-                 .upper = 44.0f
-             };
-             *stop = YES;
-         }
-     }];
+  remote.currentMode = REDefaultMode;
+  [self insertRemoteView:[RemoteView viewWithModel:remote]];
+
+  _flags.shouldHideTopToolbar = remote.topBarHidden;
+
+  [self.view.gestureRecognizers enumerateObjectsUsingBlock:
+   ^(id obj, NSUInteger idx, BOOL * stop)
+  {
+    if ([obj isMemberOfClass:[MSPinchGestureRecognizer class]]) {
+      ((MSPinchGestureRecognizer *)obj).threshold = (MSBoundary) {
+        .lower = -44.0f,
+        .upper = 44.0f
+      };
+      *stop = YES;
+    }
+  }];
 }
 
-- (void)updateViewConstraints
-{
-    [super updateViewConstraints];
+- (void)updateViewConstraints {
+  [super updateViewConstraints];
 
-    RemoteView * remoteView = (RemoteView*)[self.view viewWithNametag:kRemoteViewNametag];
+  RemoteView * remoteView = (RemoteView *)[self.view viewWithNametag:kRemoteViewNametag];
 
-    if (remoteView && ![self.view constraintsWithNametag:kRemoteViewNametag])
-    {
-        UIView  * parentView  = self.view;
-        NSArray * constraints =
-            [NSLayoutConstraint
+  if (remoteView && ![self.view constraintsWithNametag:kRemoteViewNametag]) {
+    UIView  * parentView  = self.view;
+    NSArray * constraints =
+      [NSLayoutConstraint
              constraintsByParsingString:@"remoteView.centerX = parentView.centerX\n"
-                                         "remoteView.bottom = parentView.bottom\n"
-                                         "remoteView.top = parentView.top"
-             views:NSDictionaryOfVariableBindings(remoteView, parentView, _topToolbar)];
+                                        "remoteView.bottom = parentView.bottom\n"
+                                        "remoteView.top = parentView.top"
+                                  views:NSDictionaryOfVariableBindings(remoteView, parentView, _topToolbar)];
 
-        for (NSLayoutConstraint * lc in constraints) lc.nametag = kRemoteViewNametag;
+    for (NSLayoutConstraint * lc in constraints) lc.nametag = kRemoteViewNametag;
 
-        [parentView addConstraints:constraints];
-    }
+    [parentView addConstraints:constraints];
+  }
 }
 
-- (void)insertRemoteView:(RemoteView *)remoteView
-{
-    assert(OnMainThread && remoteView);
+- (void)insertRemoteView:(RemoteView *)remoteView {
+  assert(OnMainThread && remoteView);
 
-    RemoteView * currentRV = (RemoteView*)[self.view viewWithNametag:kRemoteViewNametag];
+  RemoteView * currentRV = (RemoteView *)[self.view viewWithNametag:kRemoteViewNametag];
 
-    assert([currentRV isKindOfClass:[RemoteView class]] || currentRV == nil);
+  assert([currentRV isKindOfClass:[RemoteView class]] || currentRV == nil);
 
-    BOOL shouldToggleToolbar = ([self isTopToolbarVisible] == remoteView.topBarHidden);
+  BOOL shouldToggleToolbar = ([self isTopToolbarVisible] == remoteView.topBarHidden);
 
-    remoteView.nametag = kRemoteViewNametag;
+  remoteView.nametag = kRemoteViewNametag;
 
-    if (currentRV)
-    {
-        [UIView animateWithDuration:0.25
-                         animations:^{
-                                         assert(IsMainQueue);
-                                         [currentRV removeFromSuperview];
-                                         [self.view insertSubview:remoteView belowSubview:_topToolbar];
-                                         if (shouldToggleToolbar) [self toggleTopToolbar:YES];
-                                         [self.view setNeedsUpdateConstraints];
-                                     }];
-    }
-    
-    else
-    {
-        [self.view insertSubview:remoteView belowSubview:_topToolbar];
+  if (currentRV) {
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                       assert(IsMainQueue);
+                       [currentRV removeFromSuperview];
+                       [self.view insertSubview:remoteView belowSubview:_topToolbar];
 
-        if (shouldToggleToolbar) [self toggleTopToolbar:YES];
+                       if (shouldToggleToolbar) [self toggleTopToolbar:YES];
 
-        [self.view setNeedsUpdateConstraints];
-    }
+                       [self.view setNeedsUpdateConstraints];
+                     }];
+  } else   {
+    [self.view insertSubview:remoteView belowSubview:_topToolbar];
 
-#ifdef DUMP_LAYOUT_DATA
+    if (shouldToggleToolbar) [self toggleTopToolbar:YES];
+
+    [self.view setNeedsUpdateConstraints];
+  }
+
+  #ifdef DUMP_LAYOUT_DATA
 
     [[NSOperationQueue new] addOperationWithBlock:^{
-         int64_t delayInSeconds = 2.0;
-         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-             MSLogDebugInContextTag((LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE),
-                                    @"%@ dumping constraints...\n\n%@\n\n",
-                                    ClassTagSelectorString,
-                                    [[UIWindow keyWindow]
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+      MSLogDebugInContextTag((LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE),
+                             @"%@ dumping constraints...\n\n%@\n\n",
+                             ClassTagSelectorString,
+                             [[UIWindow keyWindow]
                                      viewTreeDescriptionWithProperties:@[@"frame",
                                                                          @"hasAmbiguousLayout?",
                                                                          @"key",
                                                                          @"nametag",
                                                                          @"name",
                                                                          @"constraints"]]);
-         });
-    }];
-#endif
+    });
+  }];
+  #endif
 
-#ifdef DUMP_ELEMENT_HIERARCHY
-
-    [[NSOperationQueue new] addOperationWithBlock:^{
-         int64_t delayInSeconds = 2.0;
-         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-             MSLogDebug(@"%@ dumping elements...\n\n%@\n\n",
-                        ClassTagSelectorString,
-                        [[(RemoteView*)[self.view viewWithNametag:kRemoteViewNametag] model]
-                         dumpElementHierarchy]);
-         });
-     }];
-
-#endif
-
-//#define LOG_ELEMENTS
-#ifdef LOG_ELEMENTS
+  #ifdef DUMP_ELEMENT_HIERARCHY
 
     [[NSOperationQueue new] addOperationWithBlock:^{
-        int64_t delayInSeconds = 2.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+      MSLogDebug(@"%@ dumping elements...\n\n%@\n\n",
+                 ClassTagSelectorString,
+                 [[(RemoteView *)[self.view viewWithNametag:kRemoteViewNametag] model]
+                  dumpElementHierarchy]);
+    });
+  }];
 
-            MSLogDebugInContextTag((LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE),
-                                   @"%@\n%@\n%@\n\n%@\n%@\n%@\n",
-                                   [@"Displayed Remote Element Descriptions" singleBarMessageBox],
-                                   [_topToolbar.model recursiveDeepDescription],
-                                   [remoteView.model recursiveDeepDescription],
-                                   [@"Displayed Remote Element JSON" singleBarMessageBox],
-                                   [_topToolbar.model JSONString],
-                                   [remoteView.model JSONString]);
-            
-        });
-    }];
+  #endif
 
-#endif
+// #define LOG_ELEMENTS
+  #ifdef LOG_ELEMENTS
+
+    [[NSOperationQueue new] addOperationWithBlock:^{
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+
+      MSLogDebugInContextTag((LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE),
+                             @"%@\n%@\n%@\n\n%@\n%@\n%@\n",
+                             [@"Displayed Remote Element Descriptions" singleBarMessageBox],
+                             [_topToolbar.model recursiveDeepDescription],
+                             [remoteView.model recursiveDeepDescription],
+                             [@"Displayed Remote Element JSON" singleBarMessageBox],
+                             [_topToolbar.model JSONString],
+                             [remoteView.model JSONString]);
+
+    });
+  }];
+
+  #endif
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-    if (_flags.shouldHideTopToolbar == [self isTopToolbarVisible])
-        [self toggleTopToolbar:YES];
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+
+  if (_flags.shouldHideTopToolbar == [self isTopToolbarVisible])
+    [self toggleTopToolbar:YES];
 
 }
 
@@ -439,15 +427,14 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
  * Re-enables proximity monitoring and determines whether toolbar should be visible.
  * @param animated Whether the view is appearing via animation.
  */
-- (void)viewWillAppear:(BOOL)animated
-{
-    if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = YES;
+- (void)viewWillAppear:(BOOL)animated {
+  if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = YES;
 
 /*
-#ifdef INACTIVITY_TIMER
+   #ifdef INACTIVITY_TIMER
     if (_flags.inactivityTimeout) [self startInactivityTimer];
-#endif
-*/
+   #endif
+ */
 
 }
 
@@ -455,131 +442,123 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
  * Ceases proximity monitoring if it had been enabled.
  * @param animated Whether the view is disappearing via animation.
  */
-- (void)viewWillDisappear:(BOOL)animated
-{
-    if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = NO;
+- (void)viewWillDisappear:(BOOL)animated {
+  if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = NO;
 
 /*
-#ifdef INACTIVITY_TIMER
+   #ifdef INACTIVITY_TIMER
     if (_flags.monitoringInactivity) [self stopInactivityTimer:NO];
-#endif
-*/
+   #endif
+ */
 }
 
 #pragma mark - Managing the top toolbar
 
-- (void)showTopToolbar:(BOOL)animated
-{
-    if (animated)
-        [UIView animateWithDuration:0.25
-                              delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                                       _topToolbarConstraint.constant = 0;
-                                       [self.view layoutIfNeeded];
-                                     }
-                         completion:nil];
+- (void)showTopToolbar:(BOOL)animated {
+  if (animated)
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                       _topToolbarConstraint.constant = 0;
+                       [self.view layoutIfNeeded];
+                     }
 
-    else
-        _topToolbarConstraint.constant = 0;
+                     completion:nil];
+
+  else
+    _topToolbarConstraint.constant = 0;
 }
 
-- (void)hideTopToolbar:(BOOL)animated
-{
-    if (animated)
-        [UIView animateWithDuration:0.25
-                              delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                                         _topToolbarConstraint.constant = -_topToolbar.bounds.size.height;
-                                         [self.view layoutIfNeeded];
-                                     }
-                         completion:nil];
+- (void)hideTopToolbar:(BOOL)animated {
+  if (animated)
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                       _topToolbarConstraint.constant = -_topToolbar.bounds.size.height;
+                       [self.view layoutIfNeeded];
+                     }
 
-    else
-        _topToolbarConstraint.constant = -_topToolbar.bounds.size.height;
+                     completion:nil];
+
+  else
+    _topToolbarConstraint.constant = -_topToolbar.bounds.size.height;
 }
 
-- (void)toggleTopToolbar:(BOOL)animated
-{
-    CGFloat   newValue = (_topToolbarConstraint.constant ? 0 : -_topToolbar.bounds.size.height);
+- (void)toggleTopToolbar:(BOOL)animated {
+  CGFloat newValue = (_topToolbarConstraint.constant ? 0 : -_topToolbar.bounds.size.height);
 
-    if (animated)
-        [UIView animateWithDuration:0.25
-                              delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                                        _topToolbarConstraint.constant = newValue;
-                                        [self.view layoutIfNeeded];
-                                     }
-                         completion:nil];
+  if (animated)
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                       _topToolbarConstraint.constant = newValue;
+                       [self.view layoutIfNeeded];
+                     }
 
-    else
-        _topToolbarConstraint.constant = newValue;
+                     completion:nil];
+
+  else
+    _topToolbarConstraint.constant = newValue;
 }
 
-- (IBAction)toggleTopToolbarAction:(id)sender
-{
-    static const MSBoundary   threshold = { .lower = -44.0f, .upper = 44.0f };
+- (IBAction)toggleTopToolbarAction:(id)sender {
+  static const MSBoundary threshold = { .lower = -44.0f, .upper = 44.0f };
+
 //    assert(_topToolbar.bounds.size.height == threshold.upper);
 
-    if ([sender isKindOfClass:[MSPinchGestureRecognizer class]])
-    {
-        MSPinchGestureRecognizer * pinch = (MSPinchGestureRecognizer*)sender;
+  if ([sender isKindOfClass:[MSPinchGestureRecognizer class]]) {
+    MSPinchGestureRecognizer * pinch = (MSPinchGestureRecognizer *)sender;
 
-        switch (pinch.state)
-        {
-            case UIGestureRecognizerStateBegan:
-            {
-                assert(pinch.threshold.lower == -44.0f && pinch.threshold.upper == 44.0f);
-            }
-            break;
+    switch (pinch.state) {
+      case UIGestureRecognizerStateBegan: {
+        assert(pinch.threshold.lower == -44.0f && pinch.threshold.upper == 44.0f);
+        break;
+      }
 
-            case UIGestureRecognizerStateChanged:
-            {
-                CGFloat   delta       = llroundl(pinch.distance);
-                CGFloat   newConstant = _topToolbarConstraint.constant - delta;
+      case UIGestureRecognizerStateChanged: {
+        CGFloat delta       = llroundl(pinch.distance);
+        CGFloat newConstant = _topToolbarConstraint.constant - delta;
 
-                if (newConstant < threshold.lower) newConstant = threshold.lower;
-                else if (newConstant > 0)
-                    newConstant = 0;
+        if (newConstant < threshold.lower) newConstant = threshold.lower;
+        else if (newConstant > 0)
+          newConstant = 0;
 
-                if (newConstant != _topToolbarConstraint.constant)
-                {
-                    [UIView animateWithDuration:0.25
-                                          delay:0.0
-                                        options:UIViewAnimationOptionBeginFromCurrentState
-                                     animations:^{
-                                                     _topToolbarConstraint.constant = newConstant;
-                                                     [self.view layoutIfNeeded];
-                                                 }
+        if (newConstant != _topToolbarConstraint.constant) {
+          [UIView animateWithDuration:0.25
+                                delay:0.0
+                              options:UIViewAnimationOptionBeginFromCurrentState
+                           animations:^{
+                             _topToolbarConstraint.constant = newConstant;
+                             [self.view layoutIfNeeded];
+                           }
 
-                                     completion:nil];
-                }
-            }
-            break;
-
-            case UIGestureRecognizerStateEnded:
-            {
-                if (_topToolbarConstraint.constant < threshold.lower / 2.0f) [self hideTopToolbar:YES];
-                else [self showTopToolbar:YES];
-            }
-            break;
-
-            default:
-                break;
+                           completion:nil];
         }
+
+        break;
+      }
+
+      case UIGestureRecognizerStateEnded: {
+        if (_topToolbarConstraint.constant < threshold.lower / 2.0f) [self hideTopToolbar:YES];
+        else [self showTopToolbar:YES];
+
+        break;
+      }
+
+      default:
+        break;
     }
-    
-    else
-        [self toggleTopToolbar:YES];
+  } else
+    [self toggleTopToolbar:YES];
 }
 
-- (IBAction)openSettings:(id)sender
-{
-    [self presentViewController:[StoryboardProxy settingsViewController]
-                       animated:YES
-                     completion:nil];
+- (IBAction)openSettings:(id)sender {
+  [self presentViewController:[StoryboardProxy settingsViewController]
+                     animated:YES
+                   completion:nil];
 }
 
 - (BOOL)isTopToolbarVisible { return (_topToolbarConstraint.constant == 0); }
@@ -588,25 +567,24 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
  * Creates and attaches the default toolbar items to the items created by the storyboard. Currently
  * this includes a connection status button and a battery status button.
  */
-- (void)initializeTopToolbar
-{
-    _topToolbar = [ButtonGroupView viewWithModel:
-                   (ButtonGroup *)[_remoteController.topToolbar faultedObject]];
-    assert(_topToolbar);
-    _topToolbar.nametag = @"remote controller top toolbar";
-    [self.view addSubview:_topToolbar];
-    _topToolbarConstraint = [NSLayoutConstraint constraintWithItem:_topToolbar
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.view
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1
-                                                          constant:0];
-    _topToolbarConstraint.nametag = kTopToolbarConstraintNametag;
-    [self.view addConstraint:_topToolbarConstraint];
-    [self.view addConstraints:
-     [NSLayoutConstraint constraintsByParsingString:@"H:|[_topToolbar]|"
-                                              views:@{ @"_topToolbar": _topToolbar }]];
+- (void)initializeTopToolbar {
+  _topToolbar = [ButtonGroupView viewWithModel:
+                 (ButtonGroup *)[_remoteController.topToolbar faultedObject]];
+  assert(_topToolbar);
+  _topToolbar.nametag = @"remote controller top toolbar";
+  [self.view addSubview:_topToolbar];
+  _topToolbarConstraint = [NSLayoutConstraint constraintWithItem:_topToolbar
+                                                       attribute:NSLayoutAttributeTop
+                                                       relatedBy:NSLayoutRelationEqual
+                                                          toItem:self.view
+                                                       attribute:NSLayoutAttributeTop
+                                                      multiplier:1
+                                                        constant:0];
+  _topToolbarConstraint.nametag = kTopToolbarConstraintNametag;
+  [self.view addConstraint:_topToolbarConstraint];
+  [self.view addConstraints:
+   [NSLayoutConstraint   constraintsByParsingString:@"H:|[_topToolbar]|"
+                                              views:@{ @"_topToolbar" : _topToolbar }]];
 }
 
 #pragma mark - Editing remotes
@@ -616,31 +594,27 @@ MSSTATIC_NAMETAG(kTopToolbarConstraint);
  * displayed by the view controller.
  * @param sender Object responsible for invoking the method.
  */
-- (IBAction)editCurrentRemote:(id)sender
-{
-    RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
+- (IBAction)editCurrentRemote:(id)sender {
+  RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
 
-    editorVC.remoteElement = _remoteController.currentRemote;
-    editorVC.delegate      = self;
+  editorVC.remoteElement = _remoteController.currentRemote;
+  editorVC.delegate      = self;
 
-    [self presentViewController:editorVC animated:YES completion:nil];
+  [self presentViewController:editorVC animated:YES completion:nil];
 }
 
-- (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)remoteElementEditor
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)remoteElementEditor {
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)remoteElementEditor
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)remoteElementEditor {
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Debugging
 
-- (IBAction)debugAmbiguity:(id)sender
-{
-    [self.view exerciseAmbiguityInLayout];
+- (IBAction)debugAmbiguity:(id)sender {
+  [self.view exerciseAmbiguityInLayout];
 }
 
 @end

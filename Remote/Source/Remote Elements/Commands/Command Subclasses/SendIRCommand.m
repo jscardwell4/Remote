@@ -122,7 +122,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
     [super updateWithData:data];
 
     NSDictionary * code = data[@"code"];
-    if (code) self.code = [IRCode importObjectFromData:code inContext:self.managedObjectContext];
+    if (code) self.code = [IRCode importObjectFromData:code context:self.managedObjectContext];
 
 }
 
@@ -135,7 +135,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 {
     MSDictionary * dictionary = [super JSONDictionary];
 
-    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"code.uuid"] = CollectionSafe(self.code.commentedUUID);
     dictionary[@"portOverride"] = (self.portOverride ? @(self.portOverride) : NullObject);

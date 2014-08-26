@@ -4,7 +4,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="commands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ActivityCommand" inverseName="activity" inverseEntity="ActivityCommand" syncable="YES"/>
-        <relationship name="controller" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="activities" inverseEntity="RemoteController" syncable="YES"/>
+        <relationship name="controllerCurrent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="currentActivity" inverseEntity="RemoteController" syncable="YES"/>
         <relationship name="haltMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MacroCommand" inverseName="activityHalt" inverseEntity="MacroCommand" syncable="YES"/>
         <relationship name="launchMacro" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MacroCommand" inverseName="activityLaunch" inverseEntity="MacroCommand" syncable="YES"/>
         <relationship name="remote" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="activity" inverseEntity="Remote" syncable="YES"/>
@@ -49,9 +49,9 @@
         <relationship name="titles" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ControlStateTitleSet" inverseName="button" inverseEntity="ControlStateTitleSet" syncable="YES"/>
     </entity>
     <entity name="ButtonGroup" representedClassName="ButtonGroup" parentEntity="RemoteElement" syncable="YES">
-        <attribute name="labelAttributes" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
         <relationship name="commandContainer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CommandContainer" inverseName="buttonGroup" inverseEntity="CommandContainer" syncable="YES"/>
+        <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="buttonGroupLabel" inverseEntity="TitleAttributes" syncable="YES"/>
         <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="topToolbar" inverseEntity="RemoteController" syncable="YES"/>
     </entity>
     <entity name="Command" representedClassName="Command" isAbstract="YES" syncable="YES">
@@ -137,45 +137,43 @@
     <entity name="ControlStateColorSet" representedClassName="ControlStateColorSet" syncable="YES">
         <attribute name="colorSetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="disabledSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="highlightedSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="selectedHighlightedDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundColors" inverseEntity="Button" syncable="YES"/>
-        <relationship name="imageSet" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="colors" inverseEntity="ControlStateImageSet" indexed="YES" syncable="YES"/>
         <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="backgroundColors" inverseEntity="ThemeButtonSettings" syncable="YES"/>
     </entity>
     <entity name="ControlStateImageSet" representedClassName="ControlStateImageSet" syncable="YES">
-        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="buttonIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="icons" inverseEntity="Button" syncable="YES"/>
         <relationship name="buttonImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="images" inverseEntity="Button" syncable="YES"/>
-        <relationship name="colors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateColorSet" inverseName="imageSet" inverseEntity="ControlStateColorSet" syncable="YES"/>
+        <relationship name="disabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetDisabled" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="disabledSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetDisabledSelected" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="highlighted" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetHighlighted" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="highlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetHighlightedDisabled" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="highlightedSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetHighlightedSelected" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="normal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetNormal" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="selected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetSelected" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="selectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetSelectedHighlightedDisabled" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="themeIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="icons" inverseEntity="ThemeButtonSettings" syncable="YES"/>
         <relationship name="themeImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="images" inverseEntity="ThemeButtonSettings" syncable="YES"/>
     </entity>
     <entity name="ControlStateTitleSet" representedClassName="ControlStateTitleSet" syncable="YES">
-        <attribute name="disabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="disabledAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlighted" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="highlightedAndSelected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="normal" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selected" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="selectedHighlightedAndDisabled" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="titles" inverseEntity="Button" syncable="YES"/>
+        <relationship name="disabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetDisabled" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="disabledSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetDisabledSelected" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="highlighted" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetHighlighted" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="highlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetHighlightedDisabled" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="highlightedSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetHighlightedSelected" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="normal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetNormal" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="selected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetSelected" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="selectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetSelectedHighlightedDisabled" inverseEntity="TitleAttributes" syncable="YES"/>
         <relationship name="theme" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ThemeButtonSettings" inverseName="titles" inverseEntity="ThemeButtonSettings" syncable="YES"/>
     </entity>
     <entity name="CustomTheme" representedClassName="CustomTheme" parentEntity="Theme" syncable="YES"/>
@@ -210,6 +208,14 @@
         <relationship name="buttonIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="icon" inverseEntity="Button" syncable="YES"/>
         <relationship name="buttonImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="image" inverseEntity="Button" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="views" inverseEntity="Image" syncable="YES"/>
+        <relationship name="imageSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="disabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetDisabledSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="disabledSelected" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetHighlighted" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="highlighted" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="highlightedDisabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetHighlightedSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="highlightedSelected" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetNormal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="normal" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="selected" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="imageSetSelectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="selectedHighlightedDisabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
     </entity>
     <entity name="IRCode" representedClassName="IRCode" syncable="YES">
         <attribute name="codeset" optional="YES" attributeType="String" syncable="YES"/>
@@ -289,13 +295,14 @@
         <attribute name="panels" attributeType="Transformable" syncable="YES"/>
         <attribute name="topBarHidden" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="remote" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="controllerCurrent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="currentRemote" inverseEntity="RemoteController" syncable="YES"/>
+        <relationship name="controllerHome" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="homeRemote" inverseEntity="RemoteController" syncable="YES"/>
     </entity>
     <entity name="RemoteController" representedClassName="RemoteController" syncable="YES">
-        <attribute name="currentActivityUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="currentRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="homeRemoteUUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Activity" inverseName="controller" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="currentActivity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="controllerCurrent" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="currentRemote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="controllerCurrent" inverseEntity="Remote" syncable="YES"/>
+        <relationship name="homeRemote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="controllerHome" inverseEntity="Remote" syncable="YES"/>
         <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="RemoteElement" representedClassName="RemoteElement" isAbstract="YES" syncable="YES">
@@ -409,8 +416,52 @@
         <relationship name="backgroundImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="themeSettings" inverseEntity="Image" syncable="YES"/>
         <relationship name="theme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Theme" inverseName="settings" inverseEntity="Theme" syncable="YES"/>
     </entity>
+    <entity name="TitleAttributes" representedClassName="TitleAttributes" syncable="YES">
+        <attribute name="alignment" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="baselineOffset" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="defaultTabInterval" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="expansion" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="firstLineHeadIndent" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="font" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="foregroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="headIndent" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="hyphenationFactor" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="iconName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="kern" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="ligature" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lineBreakMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lineHeightMultiple" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lineSpacing" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="maximumLineHeight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="minimumLineHeight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="obliqueness" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="paragraphSpacing" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="paragraphSpacingBefore" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="shadow" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="strikethroughColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="strikethroughStyle" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="strokeColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="strokeWidth" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tabStops" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="tailIndent" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="textEffect" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="underlineColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="underlineStyle" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+        <relationship name="buttonGroupLabel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
+        <relationship name="titleSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="disabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetDisabledSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="disabledSelected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetHighlighted" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlighted" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetHighlightedSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedSelected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetNormal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="normal" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="selected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSetSelectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="selectedHighlightedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Activity" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Activity" positionX="0" positionY="0" width="128" height="148"/>
         <element name="ActivityCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="BankGroup" positionX="0" positionY="0" width="128" height="75"/>
         <element name="BankInfo" positionX="0" positionY="0" width="128" height="165"/>
@@ -425,13 +476,14 @@
         <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="240"/>
         <element name="ComponentDeviceConfiguration" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Constraint" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="238"/>
-        <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="253"/>
+        <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="238"/>
         <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="208"/>
         <element name="CustomTheme" positionX="0" positionY="0" width="128" height="45"/>
         <element name="DelayCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Image" positionX="0" positionY="0" width="128" height="178"/>
+        <element name="ImageView" positionX="9" positionY="153" width="128" height="238"/>
         <element name="IRCode" positionX="0" positionY="0" width="128" height="240"/>
         <element name="MacroCommand" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="128" height="105"/>
@@ -439,8 +491,8 @@
         <element name="NetworkDevice" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Preset" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Remote" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="RemoteController" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Remote" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="RemoteController" positionX="0" positionY="0" width="128" height="118"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="128" height="375"/>
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
@@ -450,6 +502,6 @@
         <element name="ThemeButtonSettings" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ThemeRemoteSettings" positionX="0" positionY="0" width="128" height="75"/>
         <element name="ThemeSettings" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="ImageView" positionX="9" positionY="153" width="128" height="118"/>
+        <element name="TitleAttributes" positionX="9" positionY="153" width="128" height="675"/>
     </elements>
 </model>

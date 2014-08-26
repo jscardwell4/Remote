@@ -81,7 +81,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
         NSString * deviceUUID = device[@"uuid"];
         if (UUIDIsValid(deviceUUID)) {
             ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
-            if (!d) d = [ComponentDevice importObjectFromData:device inContext:moc];
+            if (!d) d = [ComponentDevice importObjectFromData:device context:moc];
             self.device = d;
         }
     }
@@ -96,7 +96,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 - (MSDictionary *)JSONDictionary
 {
     MSDictionary * dictionary = [super JSONDictionary];
-    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"device.uuid"] = CollectionSafe(self.device.commentedUUID);
     dictionary[@"state"] = (self.state ? @"on" : @"off");

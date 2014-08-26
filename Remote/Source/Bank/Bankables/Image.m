@@ -76,8 +76,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     [super updateWithData:data];
 
     self.fileName      = data[@"fileName"]          ?: self.fileName;
-    self.info.name     = data[@"info"][@"category"] ?: self.info.name;
-    self.info.category = data[@"info"][@"name"]     ?: self.info.category;
+    self.info.name     = data[@"category"] ?: self.info.name;
+    self.info.category = data[@"name"]     ?: self.info.category;
 
 }
 

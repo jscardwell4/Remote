@@ -47,6 +47,9 @@
 /// Returns the character at the specified index wrapped by boxed expression
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
 
+- (NSString *)dashCaseToCamelCase;
+- (NSString *)camelCaseToDashCase;
+
 - (NSString *)join:(NSArray *)array;
 
 - (NSString *)quotedString;
@@ -99,7 +102,7 @@
 - (NSString *)stringByRemovingCharactersFromSet:(NSCharacterSet *)characterSet;
 
 /// Turn the string into a camelCase string
-- (NSString *)camelCaseString;
+- (NSString *)camelCase;
 
 /// Remove line break characters
 - (NSString *)stringByRemovingLineBreaks;
@@ -181,9 +184,9 @@
                               match:(NSUInteger)match
                             capture:(NSUInteger)capture;
 
-- (NSString *)sub:(NSString *)regex
-         template:(NSString *)temp
-          options:(NSRegularExpressionOptions)opts;
+//- (NSString *)sub:(NSString *)regex
+//         template:(NSString *)temp
+//          options:(NSRegularExpressionOptions)opts;
 
 - (NSString *)stringByReplacingRegEx:(NSString *)regex withString:(NSString *)string;
 

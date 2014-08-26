@@ -52,11 +52,12 @@ NSString * panelKeyForPanelAssignment(REPanelAssignment assignment);
 #pragma mark Control state sets
 ////////////////////////////////////////////////////////////////////////////////
 
+NSString * titleAttributesJSONKeyForProperty(NSString * property);
 NSString * titleSetAttributeJSONKeyForKey(NSString * key);
 NSString * titleSetAttributeJSONKeyForName(NSString * key);
-NSString * titleSetAlignmentJSONValueForAlignment(NSTextAlignment alignment);
-NSString * titleSetLineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode);
-NSString * titleSetUnderlineStyleJSONValueForStyle(NSUnderlineStyle style);
+NSString * textAlignmentJSONValueForAlignment(NSTextAlignment alignment);
+NSString * lineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode);
+NSString * underlineStrikethroughStyleJSONValueForStyle(NSUnderlineStyle style);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Utility functions

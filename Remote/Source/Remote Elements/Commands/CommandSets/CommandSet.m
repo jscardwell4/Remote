@@ -153,7 +153,7 @@ NSArray*sharedKeysForType(CommandSetType type) {
       NSDictionary * commandData = data[key];
       if (!isDictionaryKind(commandData)) continue;  // Continue if commandData is not a valid dictionary object
 
-      Command * command = [Command importObjectFromData:commandData inContext:self.managedObjectContext];
+      Command * command = [Command importObjectFromData:commandData context:self.managedObjectContext];
       if (command) self[@(role)] = command;
 
     }

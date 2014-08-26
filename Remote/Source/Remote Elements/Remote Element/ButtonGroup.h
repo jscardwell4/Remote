@@ -7,7 +7,7 @@
 //
 #import "RemoteElement.h"
 
-@class CommandContainer, CommandSetCollection, CommandSet, Button;
+@class CommandContainer, CommandSetCollection, CommandSet, Button, TitleAttributes;
 
 /**
 * `ButtonGroup` is an `NSManagedObject` subclass that models a group of buttons for a home
@@ -42,7 +42,7 @@
 */
 @property (nonatomic, copy) NSString * labelConstraints;
 
-@property (nonatomic, strong) MSDictionary * labelAttributes;
+@property (nonatomic, strong) TitleAttributes * labelAttributes;
 
 /**
 * REPanelLocation referring to which side the `ButtonGroup` appears when attached to a

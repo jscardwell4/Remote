@@ -10,7 +10,7 @@
 
 @class ButtonGroup, Remote;
 @class ControlStateTitleSet, ControlStateImageSet, ControlStateColorSet;
-@class Command, ImageView;
+@class Command, ImageView, TitleAttributes;
 
 /**
  * `Button` is an `NSManagedObject` subclass that models a button for a home theater remote
@@ -22,7 +22,7 @@
  */
 @interface Button : RemoteElement
 
-@property (nonatomic, copy,   readonly) NSAttributedString * title;
+@property (nonatomic, strong, readonly) NSAttributedString * title;
 @property (nonatomic, strong, readonly) ImageView          * icon;
 @property (nonatomic, strong, readonly) ImageView          * image;
 

@@ -11,6 +11,7 @@
 #import "RemoteController.h"
 #import "Bankables.h"
 #import "Remote.h"
+#import "Activity.h"
 
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
@@ -107,6 +108,7 @@ void logImportedObject(id importedObject, int flag)
      {
          @autoreleasepool {
            [self loadRemoteController:context];
+           [self loadActivities:context];
            [self loadRemotes:context];
          }
      }];
@@ -136,7 +138,7 @@ void logImportedObject(id importedObject, int flag)
     if (error) { MSHandleErrors(error); return; }
 
     logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
-    NSArray * remotes = [Remote importObjectsFromData:importObjects inContext:context];
+    NSArray * remotes = [Remote importObjectsFromData:importObjects context:context];
     MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
 
     error = nil;
@@ -166,10 +168,39 @@ void logImportedObject(id importedObject, int flag)
 
     logParsedImportFile(importObject, REMOTECONTROLLER_LOG_FLAG);
     RemoteController * remoteController = [RemoteController importObjectFromData:importObject
-                                                                      inContext:context];
+                                                                      context:context];
     MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
 
     logImportedObject(remoteController, REMOTECONTROLLER_LOG_FLAG);
+}
+
++ (void)loadActivities:(NSManagedObjectContext *)context
+{
+    MSLogDebug(@"loading activities...");
+
+    NSString * fileName = @"Activity";
+    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+
+    NSError * error = nil;
+    NSStringEncoding encoding;
+    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                   usedEncoding:&encoding
+                                                          error:&error];
+    if (error) { MSHandleErrors(error); return; }
+
+    logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
+    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
+    if (error) { MSHandleErrors(error); return; }
+
+    logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
+    NSArray * activities = [Activity importObjectsFromData:importObjects context:context];
+    MSLogDebug(@"%lu activities imported", (unsigned long)[activities count]);
+
+    error = nil;
+    [context save:&error];
+    MSHandleErrors(error);
+
+    logImportedObject(activities, REMOTE_LOG_FLAG);
 }
 
 + (void)loadManufacturers:(NSManagedObjectContext *)context
@@ -192,7 +223,7 @@ void logImportedObject(id importedObject, int flag)
 
     logParsedImportFile(importObjects, MANUFACTURERS_LOG_FLAG);
 
-    NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects inContext:context];
+    NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects context:context];
     MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
 
     logImportedObject(manufacturers, MANUFACTURERS_LOG_FLAG);
@@ -218,7 +249,7 @@ void logImportedObject(id importedObject, int flag)
     if (error) { MSHandleErrors(error); return; }
 
     logParsedImportFile(importObjects, COMPONENTDEVICES_LOG_FLAG);
-    NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects inContext:context];
+    NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects context:context];
     MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
 
     logImportedObject(componentDevices, COMPONENTDEVICES_LOG_FLAG);
@@ -244,7 +275,7 @@ void logImportedObject(id importedObject, int flag)
     if (error) { MSHandleErrors(error); return; }
 
     logParsedImportFile(importObjects, IRCODES_LOG_FLAG);
-    NSArray * ircodes = [IRCode importObjectsFromData:importObjects inContext:context];
+    NSArray * ircodes = [IRCode importObjectsFromData:importObjects context:context];
     MSLogDebug(@"%lu ir codes imported", (unsigned long)[ircodes count]);
 
     logImportedObject(ircodes, IRCODES_LOG_FLAG);
@@ -268,7 +299,7 @@ void logImportedObject(id importedObject, int flag)
     if (error) { MSHandleErrors(error); return; }
 
     logParsedImportFile(importObjects, POWERCOMMANDS_LOG_FLAG);
-    NSArray * commands = [SendIRCommand importObjectsFromData:importObjects inContext:context];
+    NSArray * commands = [SendIRCommand importObjectsFromData:importObjects context:context];
     MSLogDebug(@"%lu power commands imported", (unsigned long)[commands count]);
 
     logImportedObject(commands, POWERCOMMANDS_LOG_FLAG);
@@ -294,7 +325,7 @@ void logImportedObject(id importedObject, int flag)
     if (error) { MSHandleErrors(error); return; }
 
     logParsedImportFile(importObjects, IMAGES_LOG_FLAG);
-    NSArray * images = [Image importObjectsFromData:importObjects inContext:context];
+    NSArray * images = [Image importObjectsFromData:importObjects context:context];
     MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
 
     logImportedObject(images, IMAGES_LOG_FLAG);

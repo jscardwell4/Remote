@@ -50,10 +50,11 @@ Class commandClassForImportKey(NSString * importKey);
 #pragma mark Control state sets
 ////////////////////////////////////////////////////////////////////////////////
 
+NSString * titleAttributesPropertyForJSONKey(NSString * key);
 NSString * titleSetAttributeKeyForJSONKey(NSString * key);
-NSTextAlignment titleSetAlignmentForJSONKey(NSString * key);
-NSLineBreakMode titleSetLineBreakModeForJSONKey(NSString * key);
-NSUnderlineStyle titleSetUnderlineStyleForJSONKey(NSString * key);
+NSTextAlignment textAlignmentForJSONKey(NSString * key);
+NSLineBreakMode lineBreakModeForJSONKey(NSString * key);
+NSUnderlineStyle underlineStrikethroughStyleForJSONKey(NSString * key);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Utility functions

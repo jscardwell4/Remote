@@ -50,19 +50,19 @@ NSString * subtypeJSONValueForRemoteElement(RemoteElement * element)
     dispatch_once(&onceToken,
                   ^{
                       index = @{ @(RESubtypeUndefined)        : RESubtypeUndefinedJSONKey,
-                                 
+
                                  @(REButtonGroupTopPanel1)    : REButtonGroupTopPanel1JSONKey,
                                  @(REButtonGroupTopPanel2)    : REButtonGroupTopPanel2JSONKey,
                                  @(REButtonGroupTopPanel3)    : REButtonGroupTopPanel3JSONKey,
-                                 
+
                                  @(REButtonGroupBottomPanel1) : REButtonGroupBottomPanel1JSONKey,
                                  @(REButtonGroupBottomPanel2) : REButtonGroupBottomPanel2JSONKey,
                                  @(REButtonGroupBottomPanel3) : REButtonGroupBottomPanel3JSONKey,
-                                 
+
                                  @(REButtonGroupLeftPanel1)   : REButtonGroupLeftPanel1JSONKey,
                                  @(REButtonGroupLeftPanel2)   : REButtonGroupLeftPanel2JSONKey,
                                  @(REButtonGroupLeftPanel3)   : REButtonGroupLeftPanel3JSONKey,
-                                 
+
                                  @(REButtonGroupRightPanel1)  : REButtonGroupRightPanel1JSONKey,
                                  @(REButtonGroupRightPanel2)  : REButtonGroupRightPanel2JSONKey,
                                  @(REButtonGroupRightPanel3)  : REButtonGroupRightPanel3JSONKey };
@@ -461,7 +461,7 @@ NSString * titleSetAttributeJSONKeyForKey(NSString * key)
                    REExpansionAttributeKey              : REExpansionAttributeJSONKey,
                    REShadowAttributeKey                 : REShadowAttributeJSONKey,
                    RETitleTextAttributeKey              : RETitleTextAttributeJSONKey,
- 
+
                    RELineSpacingAttributeKey            : RELineSpacingAttributeJSONKey,
                    REParagraphSpacingAttributeKey       : REParagraphSpacingAttributeJSONKey,
                    RETextAlignmentAttributeKey          : RETextAlignmentAttributeJSONKey,
@@ -480,6 +480,47 @@ NSString * titleSetAttributeJSONKeyForKey(NSString * key)
     return index[key];
 }
 
+NSString * titleAttributesJSONKeyForProperty(NSString * property) {
+  static NSDictionary const * index = nil;
+  static dispatch_once_t      onceToken;
+
+  dispatch_once(&onceToken, ^{
+    index = @{ @"font"                   : REFontAttributeJSONKey,
+               @"foregroundColor"        : REForegroundColorAttributeJSONKey,
+               @"backgroundColor"        : REBackgroundColorAttributeJSONKey,
+               @"ligature"               : RELigatureAttributeJSONKey,
+               @"kern"                   : REKernAttributeJSONKey,
+               @"strikethroughStyle"     : REStrikethroughStyleAttributeJSONKey,
+               @"underlineStyle"         : REUnderlineStyleAttributeJSONKey,
+               @"strokeColor"            : REStrokeColorAttributeJSONKey,
+               @"strokeWidth"            : REStrokeWidthAttributeJSONKey,
+               @"textEffect"             : RETextEffectAttributeJSONKey,
+               @"baselineOffset"         : REBaselineOffsetAttributeJSONKey,
+               @"underlineColor"         : REUnderlineColorAttributeJSONKey,
+               @"strikethroughColor"     : REStrikethroughColorAttributeJSONKey,
+               @"obliqueness"            : REObliquenessAttributeJSONKey,
+               @"expansion"              : REExpansionAttributeJSONKey,
+               @"shadow"                 : REShadowAttributeJSONKey,
+               @"titleText"              : RETitleTextAttributeJSONKey,
+               @"iconName"               : REFontAwesomeIconJSONKey,
+               @"lineSpacing"            : RELineSpacingAttributeJSONKey,
+               @"paragraphSpacing"       : REParagraphSpacingAttributeJSONKey,
+               @"textAlignment"          : RETextAlignmentAttributeJSONKey,
+               @"firstLineHeadIndent"    : REFirstLineHeadIndentAttributeJSONKey,
+               @"headIndent"             : REHeadIndentAttributeJSONKey,
+               @"tailIndent"             : RETailIndentAttributeJSONKey,
+               @"lineBreakMode"          : RELineBreakModeAttributeJSONKey,
+               @"minimumLineHeight"      : REMinimumLineHeightAttributeJSONKey,
+               @"maximumLineHeight"      : REMaximumLineHeightAttributeJSONKey,
+               @"lineHeightMultiple"     : RELineHeightMultipleAttributeJSONKey,
+               @"paragraphSpacingBefore" : REParagraphSpacingBeforeAttributeJSONKey,
+               @"hyphenationFactor"      : REHyphenationFactorAttributeJSONKey,
+               @"tabStops"               : RETabStopsAttributeJSONKey,
+               @"defaultTabInterval"     : REDefaultTabIntervalAttributeJSONKey };
+  });
+
+  return (property ? index[property] : nil);
+}
 NSString * titleSetAttributeJSONKeyForName(NSString * key)
 {
     static NSDictionary const * index = nil;
@@ -502,7 +543,6 @@ NSString * titleSetAttributeJSONKeyForName(NSString * key)
                    NSObliquenessAttributeName            : REObliquenessAttributeJSONKey,
                    NSExpansionAttributeName              : REExpansionAttributeJSONKey,
                    NSShadowAttributeName                 : REShadowAttributeJSONKey,
-//                   NSTitleTextAttributeName              : RETitleTextAttributeJSONKey,
 
                    RELineSpacingAttributeName            : RELineSpacingAttributeJSONKey,
                    REParagraphSpacingAttributeName       : REParagraphSpacingAttributeJSONKey,
@@ -522,7 +562,7 @@ NSString * titleSetAttributeJSONKeyForName(NSString * key)
     return index[key];
 }
 
-NSString * titleSetAlignmentJSONValueForAlignment(NSTextAlignment alignment)
+NSString * textAlignmentJSONValueForAlignment(NSTextAlignment alignment)
 {
     static NSDictionary const * index = nil;
     static dispatch_once_t onceToken;
@@ -537,7 +577,7 @@ NSString * titleSetAlignmentJSONValueForAlignment(NSTextAlignment alignment)
     return index[@(alignment)];
 }
 
-NSString * titleSetLineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode)
+NSString * lineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode)
 {
     static NSDictionary const * index = nil;
     static dispatch_once_t onceToken;
@@ -553,7 +593,7 @@ NSString * titleSetLineBreakModeJSONValueForMode(NSLineBreakMode lineBreakMode)
     return index[@(lineBreakMode)];
 }
 
-NSString * titleSetUnderlineStyleJSONValueForStyle(NSUnderlineStyle style)
+NSString * underlineStrikethroughStyleJSONValueForStyle(NSUnderlineStyle style)
 {
     if (!style) return REUnderlineStyleNoneJSONKey;
 

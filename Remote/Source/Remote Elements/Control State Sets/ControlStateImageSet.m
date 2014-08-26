@@ -17,7 +17,23 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
 #pragma unused(ddLogLevel, msLogContext)
 
+@interface ControlStateImageSet ()
+@property (nonatomic) ImageView * normal;
+@property (nonatomic) ImageView * disabled;
+@property (nonatomic) ImageView * selected;
+@property (nonatomic) ImageView * highlighted;
+@property (nonatomic) ImageView * highlightedDisabled;
+@property (nonatomic) ImageView * highlightedSelected;
+@property (nonatomic) ImageView * selectedHighlightedDisabled;
+@property (nonatomic) ImageView * disabledSelected;
+@end
+
 @implementation ControlStateImageSet
+
+@dynamic normal;
+@dynamic disabled, selected, disabledSelected;
+@dynamic highlighted, highlightedDisabled, highlightedSelected;
+@dynamic selectedHighlightedDisabled;
 
 /**
  * For some reason using `setValuesForKeysWithDictionary:`, as is done in the `ControlStateSet`
@@ -52,12 +68,20 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
                                       images:(NSDictionary *)images
                                      context:(NSManagedObjectContext *)moc {
 
-  if (!images) ThrowInvalidNilArgument(images);
-  assert(NO);
+  ControlStateImageSet * imageSet = [self createInContext:moc];
+  [images enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    if ([self validState:key] && isKind(obj, Image)) {
+      UIColor * color = nil;
+      id rawColor = colors[key];
+      if (rawColor) {
+        if ([rawColor isKindOfClass:[UIColor class]]) color = rawColor;
+        else if (isStringKind(rawColor)) color = colorFromImportValue(rawColor);
+      }
+      ImageView * imageView = [ImageView imageViewWithImage:obj color:color];
+      if (imageView) imageSet[key] = imageView;
+    }
 
-  __block ControlStateImageSet * imageSet       = nil;
-
-  //TODO: Update since themes currently use this method
+  }];
 
   return imageSet;
 }
@@ -108,10 +132,10 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   dd[@"selected"]                       = nameForValueForKey(@"selected");
   dd[@"highlighted"]                    = nameForValueForKey(@"highlighted");
   dd[@"disabled"]                       = nameForValueForKey(@"disabled");
-  dd[@"highlightedAndSelected"]         = nameForValueForKey(@"highlightedAndSelected");
-  dd[@"highlightedAndDisabled"]         = nameForValueForKey(@"highlightedAndDisabled");
-  dd[@"disabledAndSelected"]            = nameForValueForKey(@"disabledAndSelected");
-  dd[@"selectedHighlightedAndDisabled"] = nameForValueForKey(@"selectedHighlightedAndDisabled");
+  dd[@"highlightedSelected"]         = nameForValueForKey(@"highlightedSelected");
+  dd[@"highlightedDisabled"]         = nameForValueForKey(@"highlightedDisabled");
+  dd[@"disabledSelected"]            = nameForValueForKey(@"disabledSelected");
+  dd[@"selectedHighlightedDisabled"] = nameForValueForKey(@"selectedHighlightedDisabled");
 */
 
   return (MSDictionary *)dd;
@@ -127,20 +151,23 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
   NSManagedObjectContext * moc = self.managedObjectContext;
 
-  [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
+  [data enumerateKeysAndObjectsUsingBlock:^(id JSONkey, id obj, BOOL * stop) {
+
+    NSString * key = [JSONkey dashCaseToCamelCase];
+    
     if ([ControlStateSet validState:key])   {
       if (isDictionaryKind(obj)) {
         NSDictionary * imageData = obj[@"image"];
 
         if (isDictionaryKind(imageData)) {
-          Image * image = [Image importObjectFromData:imageData inContext:moc];
+          Image * image = [Image importObjectFromData:imageData context:moc];
           UIColor * color = colorFromImportValue(obj[@"color"]);
 
           if (image) {
             ImageView *imageView = [ImageView imageViewWithImage:image color:color];
 
             if (imageView)
-              self[key] = imageView.permanentURI;
+              self[key] = imageView;
           }
         }
       }
@@ -160,7 +187,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
   dictionary.userInfo[MSJSONCommentKey] = [MSDictionary dictionary];
 
-  NSArray * keys = [[self dictionaryFromSetObjects] allKeys];
+  NSArray * keys = [[self dictionaryFromSetObjects:YES] allKeys];
 
   for (NSString * key in keys) {
     if ([ControlStateSet validState:key]) {
@@ -169,7 +196,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
                                                                  forKey:@"image"];
       UIColor * color = imageView.color;
       if (color) imageViewJSON[@"color"] = CollectionSafe(normalizedColorJSONValueForColor(color));
-      
+
       dictionary[key] = imageViewJSON;
     }
   }

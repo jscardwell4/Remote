@@ -216,7 +216,7 @@ static MSJSONParser const * parser_ = nil;
      ^(NSManagedObjectContext * context)
      {
          RemoteController * controller = [RemoteController importObjectFromData:importObject
-                                                                         inContext:context];
+                                                                         context:context];
          assertThat(controller, notNilValue());
 
          controllerUUID = controller.uuid;
@@ -449,7 +449,7 @@ static MSJSONParser const * parser_ = nil;
     [NSManagedObjectContext saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         Remote * homeRemote = [Remote importObjectFromData:importObject inContext:context];
+         Remote * homeRemote = [Remote importObjectFromData:importObject context:context];
          assertThat(homeRemote, notNilValue());
 
          homeRemoteUUID = homeRemote.uuid;

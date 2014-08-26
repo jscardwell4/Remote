@@ -132,15 +132,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
              NSString * jsonKey = titleSetAttributeJSONKeyForName(key);
 
              if ([key isEqualToString:RETextAlignmentAttributeName] && ![obj isEqualToNumber:@4])
-                 styleDictionary[jsonKey] = titleSetAlignmentJSONValueForAlignment(IntegerValue(obj));
+                 styleDictionary[jsonKey] = textAlignmentJSONValueForAlignment(IntegerValue(obj));
 
              else if ([key isEqualToString:RELineBreakModeAttributeName] && ![obj isEqualToNumber:@0])
-                 styleDictionary[jsonKey] = titleSetLineBreakModeJSONValueForMode(IntegerValue(obj));
+                 styleDictionary[jsonKey] = lineBreakModeJSONValueForMode(IntegerValue(obj));
 
              else if (   (   [key isEqualToString:REUnderlineStyleAttributeKey]
                           || [key isEqualToString:REStrikethroughStyleAttributeKey])
                       && ![obj isEqualToNumber:@0])
-                 styleDictionary[jsonKey] = titleSetUnderlineStyleJSONValueForStyle(IntegerValue(obj));
+                 styleDictionary[jsonKey] = underlineStrikethroughStyleJSONValueForStyle(IntegerValue(obj));
 
              else if (![obj isEqualToNumber:@0])
                  styleDictionary[jsonKey] = obj;
@@ -200,7 +200,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                                  REStrikethroughStyleAttributeKey] set];
 
                  if ([underlineStyleKeys containsObject:key])
-                     dictionary[jsonKey] = titleSetUnderlineStyleJSONValueForStyle(IntegerValue(obj));
+                     dictionary[jsonKey] = underlineStrikethroughStyleJSONValueForStyle(IntegerValue(obj));
 
                  else
                      dictionary[jsonKey] = obj;
@@ -236,7 +236,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                     isSubsetOfSet:remoteElementJSONUnderlineStyleKeys()]
                 )
             )
-            return @(titleSetUnderlineStyleForJSONKey(string));
+            return @(underlineStrikethroughStyleForJSONKey(string));
 
         // Use regular expression matching to determine transformation
         NSUInteger length = [string length];
@@ -305,10 +305,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                 NSString * mappedKey = titleSetAttributeKeyForJSONKey(key);
 
                 if ([mappedKey isEqualToString:RETextAlignmentAttributeKey])
-                    v = @(titleSetAlignmentForJSONKey(v));
+                    v = @(textAlignmentForJSONKey(v));
 
                 else if ([mappedKey isEqualToString:RELineBreakModeAttributeKey])
-                    v = @(titleSetLineBreakModeForJSONKey(v));
+                    v = @(lineBreakModeForJSONKey(v));
                 
                 if (v && mappedKey)
                     [paragraphStyle setValue:v forKey:remoteElementParagraphAttributeNameForKey(mappedKey)];

@@ -10,7 +10,7 @@
 #import "RemoteElement_Private.h"
 #import "CommandSetCollection.h"
 #import "JSONObjectKeys.h"
-#import "StringAttributesValueTransformer.h"
+#import "TitleAttributes.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
@@ -167,13 +167,11 @@ commandSetAtIndex: _commandSetCollectionIndex]);
 
   if (!labelText) return nil;
 
-  MSDictionary * labelAttributes = self.labelAttributes;
+  TitleAttributes * labelAttributes = self.labelAttributes;
 
-  if (!labelAttributes) labelAttributes = [MSDictionary dictionary];
+  if (labelAttributes) labelAttributes.text = labelText;
 
-  labelAttributes[RETitleTextAttributeKey] = labelText;
-
-  return [[StringAttributesValueTransformer new] transformedValue:labelAttributes];
+  return labelAttributes ? labelAttributes.string : [NSAttributedString attributedStringWithString:labelText];
 }
 
 - (void)selectCommandSetAtIndex:(NSUInteger)index {
@@ -258,7 +256,7 @@ commandSetAtIndex: _commandSetCollectionIndex]);
         container = nil;
       }
 
-      CommandSet * commandSet = [CommandSet importObjectFromData:commandSetData[mode] inContext:moc];
+      CommandSet * commandSet = [CommandSet importObjectFromData:commandSetData[mode] context:moc];
 
       if (commandSet) [self setCommandContainer:commandSet mode:mode];
     }
@@ -272,18 +270,15 @@ commandSetAtIndex: _commandSetCollectionIndex]);
       }
 
       CommandSetCollection * collection =
-        [CommandSetCollection importObjectFromData:commandSetCollectionData[mode] inContext:moc];
+        [CommandSetCollection importObjectFromData:commandSetCollectionData[mode] context:moc];
 
       if (collection)
         [self setCommandContainer:collection mode:mode];
     }
   }
 
-  NSDictionary * labelAttributes = data[@"labelAttributes"];
-
-  if (labelAttributes)
-    self.labelAttributes =
-      [[StringAttributesJSONValueTransformer new] reverseTransformedValue:labelAttributes];
+  self.labelConstraints = data[@"label-constraints"];
+  self.labelAttributes  = [TitleAttributes importObjectFromData:data[@"label-attribute"] context:moc];
 
 }
 
@@ -292,6 +287,7 @@ commandSetAtIndex: _commandSetCollectionIndex]);
 ////////////////////////////////////////////////////////////////////////////////
 
 - (MSDictionary *)JSONDictionary {
+
   MSDictionary * dictionary = [super JSONDictionary];
 
   MSDictionary * commandSets           = [MSDictionary dictionary];
@@ -307,17 +303,10 @@ commandSetAtIndex: _commandSetCollectionIndex]);
   }
 
   dictionary[@"command-set-collection"] = ([commandSetCollections count] ? commandSetCollections : NullObject);
-
-  dictionary[@"command-set"] = ([commandSets count] ? commandSets : NullObject);
-
-/*
-    if (self.labelConstraints)
-        dictionary[@"labelConstraints"] = self.labelConstraints;
- */
-
-  dictionary[@"label"]           = CollectionSafe(self.label);
-  dictionary[@"labelAttributes"] = CollectionSafe([[StringAttributesJSONValueTransformer new]
-                                                   transformedValue:self.labelAttributes]);
+  dictionary[@"command-set"]            = ([commandSets count] ? commandSets : NullObject);
+  dictionary[@"label-constraints"]      = CollectionSafe(self.labelConstraints);
+  dictionary[@"label"]                  = CollectionSafe(self.label);
+  dictionary[@"label-attributes"]       = CollectionSafe(self.labelAttributes.JSONDictionary);
 
   [dictionary compact];
   [dictionary compress];

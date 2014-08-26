@@ -11,13 +11,12 @@
 #pragma mark - ControlStateTitleSet
 ////////////////////////////////////////////////////////////////////////////////
 
+@class TitleAttributes;
+
 @interface ControlStateTitleSet : ControlStateSet
 
 @property (nonatomic) BOOL suppressNormalStateAttributes;
 
-+ (Class)validClassForAttributeKey:(NSString *)key;
-+ (Class)validClassForParagraphAttributeKey:(NSString *)key;
-+ (Class)validClassForAttributeName:(NSString *)name;
-+ (Class)validClassForParagraphAttributeName:(NSString *)name;
+- (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state;
 
 @end

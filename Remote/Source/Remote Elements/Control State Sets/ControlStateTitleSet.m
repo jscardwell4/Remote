@@ -13,179 +13,17 @@
 #import "RemoteElementKeys.h"
 #import "REFont.h"
 #import "StringAttributesValueTransformer.h"
+#import "TitleAttributes.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 #pragma unused(ddLogLevel,msLogContext)
 
-
 @implementation ControlStateTitleSet
 
 @synthesize suppressNormalStateAttributes = _suppressNormalStateAttributes;
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Helpers
-////////////////////////////////////////////////////////////////////////////////
-
-
-NSDictionary*storageDictionaryFromObject(id object) {
-  if (isStringKind(object))
-    return [MSDictionary dictionaryWithObject:object forKey:RETitleTextAttributeKey];
-
-  else if (isDictionaryKind(object))
-    return [MSDictionary dictionaryWithValuesForKeys:(NSArray *)remoteElementAttributeKeys()
-                                      fromDictionary:object];
-  else if (isAttributedStringKind(object))
-    return [[StringAttributesValueTransformer new] transformedValue:object];
-
-  else return nil;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Validating attribute classes
-////////////////////////////////////////////////////////////////////////////////
-
-
-/*******************************************************************************
-   Returns the appropriate class for an attribute key's value
-*******************************************************************************/
-+ (Class)validClassForAttributeKey:(NSString *)key {
-  static dispatch_once_t    onceToken;
-  static NSMapTable const * index;
-
-  dispatch_once(&onceToken,
-                ^{
-    Class number    = [NSNumber class];
-    Class string    = [NSString class];
-    Class color     = [UIColor class];
-    Class paragraph = [NSParagraphStyle class];
-    Class shadow    = [NSShadow class];
-    Class font      = [REFont class];
-    index = [NSMapTable weakToWeakObjectsMapTableFromDictionary:
-             @{ REFontAttributeKey               : font,
-                REParagraphStyleAttributeKey     : paragraph,
-                REForegroundColorAttributeKey    : color,
-                REBackgroundColorAttributeKey    : color,
-                RELigatureAttributeKey           : number,
-                REKernAttributeKey               : number,
-                REStrikethroughStyleAttributeKey : number,
-                REUnderlineStyleAttributeKey     : number,
-                REStrokeColorAttributeKey        : color,
-                REStrokeWidthAttributeKey        : number,
-                REShadowAttributeKey             : shadow,
-                RETextEffectAttributeKey         : string,
-                REBaselineOffsetAttributeKey     : number,
-                REUnderlineColorAttributeKey     : color,
-                REStrikethroughColorAttributeKey : color,
-                REObliquenessAttributeKey        : number,
-                REExpansionAttributeKey          : number,
-                RETitleTextAttributeKey          : string }];
-  });
-
-  return index[key];
-}
-
-/*******************************************************************************
-   Returns the appropriate class for a paragraph attribute key's value
-*******************************************************************************/
-+ (Class)validClassForParagraphAttributeKey:(NSString *)key {
-  static dispatch_once_t    onceToken;
-  static NSMapTable const * index;
-
-  dispatch_once(&onceToken,
-                ^{
-    Class number = [NSNumber class];
-    Class array  = [NSArray class];
-    index = [NSMapTable weakToWeakObjectsMapTableFromDictionary:
-             @{ RELineSpacingAttributeKey            : number,
-                REParagraphSpacingAttributeKey       : number,
-                RETextAlignmentAttributeKey          : number,
-                REFirstLineHeadIndentAttributeKey    : number,
-                REHeadIndentAttributeKey             : number,
-                RETailIndentAttributeKey             : number,
-                RELineBreakModeAttributeKey          : number,
-                REMinimumLineHeightAttributeKey      : number,
-                REMaximumLineHeightAttributeKey      : number,
-                RELineHeightMultipleAttributeKey     : number,
-                REParagraphSpacingBeforeAttributeKey : number,
-                REHyphenationFactorAttributeKey      : number,
-                RETabStopsAttributeKey               : array,
-                REDefaultTabIntervalAttributeKey     : number }];
-  });
-
-  return index[key];
-}
-
-/*******************************************************************************
-   Returns the appropriate class for an attribute name's value
-*******************************************************************************/
-+ (Class)validClassForAttributeName:(NSString *)name {
-  static dispatch_once_t    onceToken;
-  static NSMapTable const * index;
-
-  dispatch_once(&onceToken,
-                ^{
-    Class font      = [UIFont class];
-    Class number    = [NSNumber class];
-    Class string    = [NSString class];
-    Class color     = [UIColor class];
-    Class paragraph = [NSParagraphStyle class];
-    Class shadow    = [NSShadow class];
-    index = [NSMapTable weakToWeakObjectsMapTableFromDictionary:
-             @{ NSFontAttributeName               : font,
-                NSParagraphStyleAttributeName     : paragraph,
-                NSForegroundColorAttributeName    : color,
-                NSBackgroundColorAttributeName    : color,
-                NSLigatureAttributeName           : number,
-                NSKernAttributeName               : number,
-                NSStrikethroughStyleAttributeName : number,
-                NSUnderlineStyleAttributeName     : number,
-                NSStrokeColorAttributeName        : color,
-                NSStrokeWidthAttributeName        : number,
-                NSShadowAttributeName             : shadow,
-                NSTextEffectAttributeName         : string,
-                NSBaselineOffsetAttributeName     : number,
-                NSUnderlineColorAttributeName     : color,
-                NSStrikethroughColorAttributeName : color,
-                NSObliquenessAttributeName        : number,
-                NSExpansionAttributeName          : number }];
-  });
-
-  return index[name];
-}
-
-/*******************************************************************************
-   Returns the appropriate class for a paragraph attribute name's value
-*******************************************************************************/
-+ (Class)validClassForParagraphAttributeName:(NSString *)name {
-  static dispatch_once_t    onceToken;
-  static NSMapTable const * index;
-
-  dispatch_once(&onceToken,
-                ^{
-    Class number = [NSNumber class];
-    Class array  = [NSArray class];
-    index = [NSMapTable weakToWeakObjectsMapTableFromDictionary:
-             @{ RELineSpacingAttributeName            : number,
-                REParagraphSpacingAttributeName       : number,
-                RETextAlignmentAttributeName          : number,
-                REFirstLineHeadIndentAttributeName    : number,
-                REHeadIndentAttributeName             : number,
-                RETailIndentAttributeName             : number,
-                RELineBreakModeAttributeName          : number,
-                REMinimumLineHeightAttributeName      : number,
-                REMaximumLineHeightAttributeName      : number,
-                RELineHeightMultipleAttributeName     : number,
-                REParagraphSpacingBeforeAttributeName : number,
-                REHyphenationFactorAttributeName      : number,
-                RETabStopsAttributeName               : array,
-                REDefaultTabIntervalAttributeName     : number }];
-  });
-
-  return index[name];
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Creation
@@ -194,10 +32,13 @@ NSDictionary*storageDictionaryFromObject(id object) {
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context
                              withObjects:(NSDictionary *)objects {
+  if (!context) return nil;
+
   ControlStateTitleSet * stateSet = [self controlStateSetInContext:context];
 
-  [objects enumerateKeysAndObjectsUsingBlock:
-   ^(NSString * key, id obj, BOOL * stop) { stateSet[key] = obj; }];
+  [objects enumerateKeysAndObjectsUsingBlock:^(NSString * key, id obj, BOOL * stop) {
+     stateSet[key] = [TitleAttributes importObjectFromData:obj context:context];
+   }];
 
   return stateSet;
 }
@@ -206,28 +47,6 @@ NSDictionary*storageDictionaryFromObject(id object) {
 #pragma mark Accessors
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSAttributedString *)_attributedStringForState:(id)state {
-  if (![ControlStateSet validState:state]) return nil;
-
-  NSString * key = (isNumberKind(state)
-                    ? [ControlStateSet propertyForState:UnsignedIntegerValue(state)]
-                    : state);
-  MSDictionary * attributes = [self valueForKey:key];
-
-  if (!(_suppressNormalStateAttributes || [@"normal" isEqualToString:key])) {
-    MSDictionary * defaults = [self valueForKey:@"normal"];
-
-    if (attributes && defaults) {
-      NSSet * keys = [[[defaults allKeys] set]
-                      setByRemovingObjectsFromSet:[[attributes allKeys] set]];
-
-      [attributes
-             setValuesForKeysWithDictionary:[defaults dictionaryWithValuesForKeys:[keys allObjects]]];
-    }
-  }
-
-  return [[StringAttributesValueTransformer new] transformedValue:attributes];
-}
 
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key {
   NSArray * keys = [key keyPathComponents];
@@ -238,17 +57,17 @@ NSDictionary*storageDictionaryFromObject(id object) {
       NSString * stateKey = keys[0];
 
       if ([ControlStateSet validState:stateKey]) {
-        NSMutableDictionary * dictionary = [[self valueForKey:stateKey] mutableCopy];
 
-        if (!dictionary) dictionary = [@{} mutableCopy];
+        TitleAttributes * titleAttributes = self[stateKey];
+
+        if (!titleAttributes) titleAttributes = [TitleAttributes createInContext:self.managedObjectContext];
 
         NSString * attributeKey = keys[1];
 
-        if (  [remoteElementAttributeKeys() containsObject:attributeKey]
-           && isKind(object, [ControlStateTitleSet validClassForAttributeKey:attributeKey]))
+        if (  [[TitleAttributes propertyKeys] containsObject:attributeKey]
+           && isKind(object, [TitleAttributes validClassForProperty:attributeKey]))
         {
-          dictionary[attributeKey] = object;
-          [self setValue:dictionary forKey:stateKey];
+          [titleAttributes setValue:object forKey:attributeKey];
         }
       }
 
@@ -257,10 +76,8 @@ NSDictionary*storageDictionaryFromObject(id object) {
 
     case 1:     // create attribute dictionary using object and set via super
     {
-      if ([ControlStateSet validState:key]) {
-        NSDictionary * dictionary = storageDictionaryFromObject(object);
-
-        [self setValue:dictionary forKey:key];
+      if ([ControlStateSet validState:key] && [object isKindOfClass:[TitleAttributes class]]) {
+        [self setValue:object forKey:[ControlStateSet attributeKeyFromKey:key]];
       }
 
       break;
@@ -268,8 +85,7 @@ NSDictionary*storageDictionaryFromObject(id object) {
 
     default:     // invalid key path
     {
-      ThrowInvalidArgument(key, contains illegal key path);
-      break;
+      ThrowInvalidArgument(key, "contains illegal key path");
     }
   }
 }
@@ -283,51 +99,65 @@ NSDictionary*storageDictionaryFromObject(id object) {
       NSString * stateKey = keys[0];
 
       if ([ControlStateSet validState:stateKey]) {
-        NSDictionary * dictionary = [self valueForKey:stateKey];
+        TitleAttributes * titleAttributes = [self valueForKey:stateKey];
 
-        if (dictionary) {
-          NSString * attributeKey = keys[1];
+        NSString * attributeKey = keys[1];
+        if ([[TitleAttributes propertyKeys] containsObject:attributeKey])
+          return [titleAttributes valueForKey:attributeKey];
 
-          if ([remoteElementAttributeKeys() containsObject:attributeKey])
-            return dictionary[attributeKey];
-        }
       }
 
-      break;
-    }
+    }  break;
 
     case 1:     // return an attributed string with attributes for specified state
     {
-      return [self _attributedStringForState:key];
-    }
+      if ([ControlStateSet validState:key])
+        return [self valueForKey:key];
+    }  break;
 
     default:     // invalid key path
-    {
       ThrowInvalidArgument(key, contains illegal key path);
-      break;
-    }
   }
 
   return nil;
 }
 
 - (void)setObject:(id)object atIndexedSubscript:(NSUInteger)state {
-  if ([ControlStateSet validState:@(state)]) {
-    // Make sure we have a dictionary from whatever we are passed
-    NSDictionary * dictionary = storageDictionaryFromObject(object);
-
-    [self setValue:dictionary forKey:[ControlStateSet propertyForState:state]];
-  } else
-    ThrowInvalidArgument(state, is not a valid state);
+  if ([ControlStateSet validState:@(state)])
+    [self setObject:object forKeyedSubscript:[ControlStateSet attributeKeyFromKey:@(state)]];
 }
 
-- (id)objectAtIndexedSubscript:(NSUInteger)state {
-  if (![ControlStateTitleSet validState:@(state)]) {
-    ThrowInvalidArgument(state, is not a valid state);
+- (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state {
 
-    return nil;
-  } else
-    return [self _attributedStringForState:@(state)];
+  NSAttributedString * string = nil;
+
+  if ([ControlStateSet validState:@(state)]) {
+
+    NSString * key = [ControlStateSet propertyForState:state];
+    TitleAttributes * attributes = [self valueForKey:key];
+    MSDictionary * values = [MSDictionary dictionaryWithDictionary:
+                             [attributes dictionaryWithValuesForKeys:[TitleAttributes propertyKeys]]];
+    [values compact];
+
+    if (!(_suppressNormalStateAttributes || [@"normal" isEqualToString:key])) {
+      TitleAttributes * defaults = [self valueForKey:@"normal"];
+
+      if (attributes && defaults) {
+
+        NSArray * keys = [[[[TitleAttributes propertyKeys] set]
+                           setByRemovingObjectsFromArray:[values allKeys]] allObjects];
+
+        [values setValuesForKeysWithDictionary:[defaults dictionaryWithValuesForKeys:keys]];
+
+      }
+    }
+
+    string = [[StringAttributesValueTransformer new] transformedValue:values];
+
+  }
+
+  return string;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -339,16 +169,11 @@ NSDictionary*storageDictionaryFromObject(id object) {
   NSManagedObjectContext * moc = self.managedObjectContext;
 
   [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
-    if ([ControlStateSet validState:key] && isDictionaryKind(obj)) {
-      [self importDictionary:obj forKey:key];
-    }
+    if ([ControlStateSet validState:key] && isDictionaryKind(obj))
+      self[key] = [TitleAttributes importObjectFromData:obj context:moc];
   }];
 }
 
-- (void)importDictionary:(NSDictionary *)dictionary forKey:(NSString *)key {
-  [self setValue:[[StringAttributesJSONValueTransformer new] reverseTransformedValue:dictionary]
-          forKey:key];
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Exporting
@@ -364,10 +189,8 @@ NSDictionary*storageDictionaryFromObject(id object) {
       [dictionary removeObjectForKey:key];
 
 
-
   for (NSString * key in [ControlStateSet validProperties])
-    dictionary[key] = CollectionSafe([[StringAttributesJSONValueTransformer new]
-                                      transformedValue:[self valueForKey:key]]);
+    dictionary[key] = CollectionSafe(((TitleAttributes *)[self valueForKey:key]).JSONDictionary);
 
   [dictionary compact];
   [dictionary compress];
@@ -380,6 +203,7 @@ NSDictionary*storageDictionaryFromObject(id object) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/*
 - (MSDictionary *)deepDescriptionDictionary {
   ControlStateTitleSet * stateSet = [self faultedObject];
 
@@ -523,22 +347,23 @@ NSDictionary*storageDictionaryFromObject(id object) {
   NSString * selectedString                       = attributesDescription([stateSet valueForKey:@"selected"]);
   NSString * highlightedString                    = attributesDescription([stateSet valueForKey:@"highlighted"]);
   NSString * disabledString                       = attributesDescription([stateSet valueForKey:@"disabled"]);
-  NSString * highlightedAndSelectedString         = attributesDescription([stateSet valueForKey:@"highlightedAndSelected"]);
-  NSString * highlightedAndDisabledString         = attributesDescription([stateSet valueForKey:@"highlightedAndDisabled"]);
-  NSString * disabledAndSelectedString            = attributesDescription([stateSet valueForKey:@"disabledAndSelected"]);
-  NSString * selectedHighlightedAndDisabledString = attributesDescription([stateSet valueForKey:@"selectedHighlightedAndDisabled"]);
+  NSString * highlightedSelectedString         = attributesDescription([stateSet valueForKey:@"highlightedSelected"]);
+  NSString * highlightedDisabledString         = attributesDescription([stateSet valueForKey:@"highlightedDisabled"]);
+  NSString * disabledSelectedString            = attributesDescription([stateSet valueForKey:@"disabledSelected"]);
+  NSString * selectedHighlightedDisabledString = attributesDescription([stateSet valueForKey:@"selectedHighlightedDisabled"]);
 
   dd[@"normal"]                         = normalString;
   dd[@"selected"]                       = selectedString;
   dd[@"highlighted"]                    = highlightedString;
   dd[@"disabled"]                       = disabledString;
-  dd[@"highlightedAndSelected"]         = highlightedAndSelectedString;
-  dd[@"highlightedAndDisabled"]         = highlightedAndDisabledString;
-  dd[@"disabledAndSelected"]            = disabledAndSelectedString;
-  dd[@"selectedHighlightedAndDisabled"] = selectedHighlightedAndDisabledString;
+  dd[@"highlightedSelected"]         = highlightedSelectedString;
+  dd[@"highlightedDisabled"]         = highlightedDisabledString;
+  dd[@"disabledSelected"]            = disabledSelectedString;
+  dd[@"selectedHighlightedDisabled"] = selectedHighlightedDisabledString;
 
   return (MSDictionary *)dd;
 }
+*/
 
 /*
    - (NSString *)shortDescription

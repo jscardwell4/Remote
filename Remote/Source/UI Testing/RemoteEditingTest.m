@@ -41,7 +41,8 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 
                     assert(rEditor);
 
-                    Remote * r = [[RemoteController remoteController] currentRemote];
+                    Remote * r = [[RemoteController remoteController:[CoreDataManager defaultContext]]
+                                  currentRemote];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;
@@ -121,7 +122,8 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 
                     assert(rEditor);
 
-                    Remote * r = [[RemoteController remoteController] currentRemote];
+                    Remote * r =
+                      [[RemoteController remoteController: [CoreDataManager defaultContext]] currentRemote];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;
@@ -155,7 +157,8 @@ static const int   msLogContext = (LOG_CONTEXT_UITESTING|LOG_CONTEXT_FILE);
 
                     assert(rEditor);
 
-                    Remote * r = [RemoteController remoteController][@"activity1"];
+                    Remote * r =
+                      [RemoteController remoteController:[CoreDataManager defaultContext]][@"activity1"];
 
                     assert(r);
                     rEditor.mockParentSize = MainScreen.bounds.size;

@@ -44,8 +44,8 @@ BOOL UUIDIsValid(NSString * uuid);
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)moc;
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate;
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data inContext:(NSManagedObjectContext *)moc;
-+ (NSArray *)importObjectsFromData:(id)data inContext:(NSManagedObjectContext *)moc;
++ (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc;
++ (NSArray *)importObjectsFromData:(id)data context:(NSManagedObjectContext *)moc;
 
 - (void)updateWithData:(NSDictionary *)data;
 

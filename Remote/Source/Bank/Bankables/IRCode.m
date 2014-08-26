@@ -167,88 +167,39 @@ NSDictionary * parseIRCodeFromProntoHex(NSString * prontoHex)
 
 - (void)updateWithData:(NSDictionary *)data {
     /*
-         {
+        {
             "uuid": "AE33A7C2-3C7A-4BAE-B87A-E29D060B6436",
-            "info": {
-                "name": "Subtitle",
-                "category": "(LG) 0828"
-            },
+            "name": "Subtitle",
+            "category": "(LG) 0828",
             "codeset": "0828",
             "frequency": 39105,
-            "onOffPattern": "344,176,22,3691,"
+            "on-off-pattern": "344,176,22,3691,"
         }
-     */
+    */
 
     [super updateWithData:data];
 
-    self.info.name     = data[@"info"][@"name"]      ?: self.info.name    ;
-    self.info.category = data[@"info"][@"category"]  ?: self.info.category;
-    self.codeset       = data[@"codeset"]            ?: self.codeset      ;
-    self.frequency     = data[@"frequency"]          ?: self.frequency    ;
-    self.onOffPattern  = data[@"onOffPattern"]       ?: self.onOffPattern ;
+    self.info.name     = data[@"name"]            ?: self.info.name    ;
+    self.info.category = data[@"category"]        ?: self.info.category;
+    self.codeset       = data[@"codeset"]         ?: self.codeset      ;
+    self.frequency     = data[@"frequency"]       ?: self.frequency    ;
+    self.onOffPattern  = data[@"on-off-pattern"]  ?: self.onOffPattern ;
 
 }
 
 - (MSDictionary *)JSONDictionary
 {
-    id(^defaultForKey)(NSString *) = ^(NSString * key)
-    {
-        static const NSDictionary * index;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken,
-                      ^{
-                          MSDictionary * dictionary = [MSDictionary dictionary];
-                          for (NSString * attribute in @[@"device",
-                                                         @"codeset",
-                                                         @"setsDeviceInput",
-                                                         @"offset",
-                                                         @"repeatCount",
-                                                         @"frequency",
-                                                         @"onOffPattern",
-                                                         @"prontoHex"])
-                              dictionary[attribute] =
-                                  CollectionSafe([self defaultValueForAttribute:attribute]);
-                          [dictionary compact];
-                          index = dictionary;
-                      });
-
-        return index[key];
-    };
-
-    void(^addIfCustom)(id, MSDictionary*, NSString*, id) =
-    ^(id object, MSDictionary *dictionary, NSString *attribute, id addition )
-    {
-        BOOL isCustom = YES;
-
-        id defaultValue = defaultForKey(attribute);
-        id setValue = [object valueForKey:attribute];
-
-        if (defaultValue && setValue)
-        {
-            if ([setValue isKindOfClass:[NSNumber class]])
-                isCustom = ![defaultValue isEqualToNumber:setValue];
-
-            else if ([setValue isKindOfClass:[NSString class]])
-                isCustom = ![defaultValue isEqualToString:setValue];
-
-            else
-                isCustom = ![defaultValue isEqual:setValue];
-        }
-
-        if (isCustom)
-            dictionary[attribute] = CollectionSafe(addition);
-    };
 
     MSDictionary * dictionary = [super JSONDictionary];
 
-    addIfCustom(self, dictionary, @"device",          self.device.uuid);
-    addIfCustom(self, dictionary, @"codeset",         self.codeset);
-    addIfCustom(self, dictionary, @"setsDeviceInput", @(self.setsDeviceInput));
-    addIfCustom(self, dictionary, @"offset",          self.offset);
-    addIfCustom(self, dictionary, @"repeatCount",     self.repeatCount);
-    addIfCustom(self, dictionary, @"frequency",       self.frequency);
-    addIfCustom(self, dictionary, @"onOffPattern",    self.onOffPattern);
-    addIfCustom(self, dictionary, @"prontoHex",       self.prontoHex);
+    dictionary[@"device"]             = CollectionSafe(self.device.commentedUUID);
+    dictionary[@"codeset"]            = CollectionSafe(self.codeset);
+    dictionary[@"sets-device-input"]  = CollectionSafe(@(self.setsDeviceInput));
+    dictionary[@"offset"]             = CollectionSafe(self.offset);
+    dictionary[@"repeat-count"]       = CollectionSafe(self.repeatCount);
+    dictionary[@"frequency"]          = CollectionSafe(self.frequency);
+    dictionary[@"on-off-pattern"]     = CollectionSafe(self.onOffPattern);
+    dictionary[@"pronto-hex"]         = CollectionSafe(self.prontoHex);
 
     [dictionary compact];
     [dictionary compress];

@@ -398,7 +398,49 @@ Class commandClassForImportKey(NSString * importKey) {
 #pragma mark Control state sets
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString*titleSetAttributeKeyForJSONKey(NSString * key) {
+NSString * titleAttributesPropertyForJSONKey(NSString * key) {
+  static NSDictionary const * index = nil;
+  static dispatch_once_t      onceToken;
+
+  dispatch_once(&onceToken, ^{
+    index = @{ REFontAttributeJSONKey                   : @"font",
+               REForegroundColorAttributeJSONKey        : @"foregroundColor",
+               REBackgroundColorAttributeJSONKey        : @"backgroundColor",
+               RELigatureAttributeJSONKey               : @"ligature",
+               REKernAttributeJSONKey                   : @"kern",
+               REStrikethroughStyleAttributeJSONKey     : @"strikethroughStyle",
+               REUnderlineStyleAttributeJSONKey         : @"underlineStyle",
+               REStrokeColorAttributeJSONKey            : @"strokeColor",
+               REStrokeWidthAttributeJSONKey            : @"strokeWidth",
+               RETextEffectAttributeJSONKey             : @"textEffect",
+               REBaselineOffsetAttributeJSONKey         : @"baselineOffset",
+               REUnderlineColorAttributeJSONKey         : @"underlineColor",
+               REStrikethroughColorAttributeJSONKey     : @"strikethroughColor",
+               REObliquenessAttributeJSONKey            : @"obliqueness",
+               REExpansionAttributeJSONKey              : @"expansion",
+               REShadowAttributeJSONKey                 : @"shadow",
+               RETitleTextAttributeJSONKey              : @"titleText",
+               REFontAwesomeIconJSONKey                 : @"iconName",
+               RELineSpacingAttributeJSONKey            : @"lineSpacing",
+               REParagraphSpacingAttributeJSONKey       : @"paragraphSpacing",
+               RETextAlignmentAttributeJSONKey          : @"textAlignment",
+               REFirstLineHeadIndentAttributeJSONKey    : @"firstLineHeadIndent",
+               REHeadIndentAttributeJSONKey             : @"headIndent",
+               RETailIndentAttributeJSONKey             : @"tailIndent",
+               RELineBreakModeAttributeJSONKey          : @"lineBreakMode",
+               REMinimumLineHeightAttributeJSONKey      : @"minimumLineHeight",
+               REMaximumLineHeightAttributeJSONKey      : @"maximumLineHeight",
+               RELineHeightMultipleAttributeJSONKey     : @"lineHeightMultiple",
+               REParagraphSpacingBeforeAttributeJSONKey : @"paragraphSpacingBefore",
+               REHyphenationFactorAttributeJSONKey      : @"hyphenationFactor",
+               RETabStopsAttributeJSONKey               : @"tabStops",
+               REDefaultTabIntervalAttributeJSONKey     : @"defaultTabInterval" };
+  });
+
+  return (key ? index[key] : nil);
+}
+
+NSString *titleSetAttributeKeyForJSONKey(NSString * key) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -442,7 +484,7 @@ NSString*titleSetAttributeKeyForJSONKey(NSString * key) {
   return index[key];
 }
 
-NSTextAlignment titleSetAlignmentForJSONKey(NSString * key) {
+NSTextAlignment textAlignmentForJSONKey(NSString * key) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -454,13 +496,13 @@ NSTextAlignment titleSetAlignmentForJSONKey(NSString * key) {
                RETextAlignmentNaturalJSONKey : @4 };
   });
 
-  id value = index[key];
+  id value = key ? index[key] : nil;
 
   return (value ? IntegerValue(value) : NSTextAlignmentNatural);
 
 }
 
-NSLineBreakMode titleSetLineBreakModeForJSONKey(NSString * key) {
+NSLineBreakMode lineBreakModeForJSONKey(NSString * key) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -478,7 +520,7 @@ NSLineBreakMode titleSetLineBreakModeForJSONKey(NSString * key) {
   return (value ? IntegerValue(value) : NSTextAlignmentNatural);
 }
 
-NSUnderlineStyle titleSetUnderlineStyleForJSONKey(NSString * key) {
+NSUnderlineStyle underlineStrikethroughStyleForJSONKey(NSString * key) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -509,8 +551,11 @@ NSUnderlineStyle titleSetUnderlineStyleForJSONKey(NSString * key) {
 #pragma mark - Utility functions
 ////////////////////////////////////////////////////////////////////////////////
 
-UIColor *colorFromImportValue(NSString * importValue) {
+UIColor *colorFromImportValue(id importValue) {
   if (!importValue) return nil;
+  else if ([importValue isKindOfClass:[UIColor class]]) return importValue;
+
+  if (!isStringKind(importValue)) return nil;
 
   UIColor * color = [UIColor colorWithName:importValue];
 

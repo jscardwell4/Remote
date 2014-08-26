@@ -46,7 +46,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 - (MSDictionary *)JSONDictionary
 {
     MSDictionary * dictionary = [super JSONDictionary];
-    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"duration"] = self.duration;
 

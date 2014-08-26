@@ -33,10 +33,10 @@
     dd[@"selected"]                       = NSStringFromUIColor([stateSet valueForKey:@"selected"]);
     dd[@"highlighted"]                    = NSStringFromUIColor([stateSet valueForKey:@"highlighted"]);
     dd[@"disabled"]                       = NSStringFromUIColor([stateSet valueForKey:@"disabled"]);
-    dd[@"highlightedAndSelected"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedAndSelected"]);
-    dd[@"highlightedAndDisabled"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedAndDisabled"]);
-    dd[@"disabledAndSelected"]            = NSStringFromUIColor([stateSet valueForKey:@"disabledAndSelected"]);
-    dd[@"selectedHighlightedAndDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedAndDisabled"]);
+    dd[@"highlightedSelected"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedSelected"]);
+    dd[@"highlightedDisabled"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedDisabled"]);
+    dd[@"disabledSelected"]            = NSStringFromUIColor([stateSet valueForKey:@"disabledSelected"]);
+    dd[@"selectedHighlightedDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedDisabled"]);
 
     return (MSDictionary *)dd;
 }
@@ -86,10 +86,10 @@
             "selected:%@\n"
             "highlighted:%@\n"
             "disabled:%@\n"
-            "highlightedAndSelected:%@\n"
-            "highlightedAndDisabled:%@\n"
-            "disabledAndSelected:%@\n"
-            "selectedHighlightedAndDisabled:%@",
+            "highlightedSelected:%@\n"
+            "highlightedDisabled:%@\n"
+            "disabledSelected:%@\n"
+            "selectedHighlightedDisabled:%@",
             NSStringFromUIColor(self[0]),
             NSStringFromUIColor(self[4]),
             NSStringFromUIColor(self[1]),

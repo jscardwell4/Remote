@@ -18,8 +18,8 @@
                                        context:(NSManagedObjectContext *)moc;
 
 + (ControlStateImageSet *)imageSetWithColors:(NSDictionary *)colors
-                                        images:(NSDictionary *)images
-                                       context:(NSManagedObjectContext *)moc;
+                                      images:(NSDictionary *)images
+                                     context:(NSManagedObjectContext *)moc;
 
 - (UIImage *)UIImageForState:(NSUInteger)state;
 

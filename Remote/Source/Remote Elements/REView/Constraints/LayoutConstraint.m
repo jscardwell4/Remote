@@ -112,7 +112,7 @@
     static NSString * (^ itemNameForView)(UIView *) = ^(UIView * view){
         return (view
                 ? ([view isKindOfClass:[RemoteElementView class]]
-                   ? [((RemoteElementView*)view).name camelCaseString]
+                   ? [((RemoteElementView*)view).name camelCase]
                    : (view.accessibilityIdentifier
                       ? : $(@"<%@:%p>", ClassString([view class]), view)
                       )

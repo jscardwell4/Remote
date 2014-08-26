@@ -62,7 +62,6 @@ static __weak RemoteViewController * _remoteViewController;
 - (MSDictionary *)JSONDictionary
 {
     MSDictionary * dictionary = [super JSONDictionary];
-    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"type"] = CollectionSafe(systemCommandTypeJSONValueForSystemCommand(self));
 

@@ -29,7 +29,6 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
 - (MSDictionary *)JSONDictionary
 {
     MSDictionary * dictionary = [super JSONDictionary];
-    dictionary[@"uuid"] = NullObject;
 
     dictionary[@"activity.uuid"] = CollectionSafe(self.activity.commentedUUID);
 
@@ -59,7 +58,7 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEX
 
     NSDictionary * activity = data[@"activity"];
     if (activity)
-        self.activity = [Activity importObjectFromData:activity inContext:self.managedObjectContext];
+        self.activity = [Activity importObjectFromData:activity context:self.managedObjectContext];
 
 }
 

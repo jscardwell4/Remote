@@ -18,7 +18,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @interface Button ()
 
-@property (nonatomic, copy,   readwrite) NSAttributedString   * title;
+@property (nonatomic, strong, readwrite) NSAttributedString   * title;
 @property (nonatomic, strong, readwrite) ImageView            * icon;
 @property (nonatomic, strong, readwrite) ImageView            * image;
 @property (nonatomic, strong, readwrite) ControlStateTitleSet * titles;
@@ -354,20 +354,20 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   NSDictionary * titles            = data[@"titles"];
   NSDictionary * commands          = data[@"commands"];
-  NSDictionary * longPressCommands = data[@"longPressCommands"];
+  NSDictionary * longPressCommands = data[@"long-press-commands"];
   NSDictionary * icons             = data[@"icons"];
   NSDictionary * images            = data[@"images"];
-  NSDictionary * backgroundColors  = data[@"backgroundColors"];
-  NSString     * titleEdgeInsets   = data[@"titleEdgeInsets"];
-  NSString     * contentEdgeInsets = data[@"contentEdgeInsets"];
-  NSString     * imageEdgeInsets   = data[@"imageEdgeInsets"];
+  NSDictionary * backgroundColors  = data[@"background-colors"];
+  NSString     * titleEdgeInsets   = data[@"title-edge-insets"];
+  NSString     * contentEdgeInsets = data[@"content-edge-insets"];
+  NSString     * imageEdgeInsets   = data[@"image-edge-insets"];
   NSManagedObjectContext * moc = self.managedObjectContext;
 
   if (titles) {
     for (NSString * mode in titles) {
       ControlStateTitleSet * titleSet = [self titlesForMode:mode];
       if (titleSet) { [moc deleteObject:titleSet]; titleSet = nil; }
-      titleSet = [ControlStateTitleSet importObjectFromData:titles[mode] inContext:moc];
+      titleSet = [ControlStateTitleSet importObjectFromData:titles[mode] context:moc];
       if (titleSet) [self setTitles:titleSet mode:mode];
     }
   }
@@ -376,7 +376,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     for (NSString * mode in icons) {
       ControlStateImageSet * iconSet = [self iconsForMode:mode];
       if (iconSet) { [moc deleteObject:iconSet]; iconSet = nil; }
-      iconSet = [ControlStateImageSet importObjectFromData:icons[mode] inContext:moc];
+      iconSet = [ControlStateImageSet importObjectFromData:icons[mode] context:moc];
       if (iconSet) [self setIcons:iconSet mode:mode];
     }
   }
@@ -385,7 +385,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     for (NSString * mode in images) {
       ControlStateImageSet * imageSet = [self imagesForMode:mode];
       if (imageSet) { [moc deleteObject:imageSet]; imageSet = nil; }
-      imageSet = [ControlStateImageSet importObjectFromData:images[mode] inContext:moc];
+      imageSet = [ControlStateImageSet importObjectFromData:images[mode] context:moc];
       if (imageSet) [self setImages:imageSet mode:mode];
     }
   }
@@ -395,21 +395,21 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
       ControlStateColorSet * colorSet = [self backgroundColorsForMode:mode];
       if (colorSet) { [moc deleteObject:colorSet]; colorSet = nil; }
       colorSet = [ControlStateColorSet importObjectFromData:backgroundColors[mode]
-                                                  inContext:moc];
+                                                  context:moc];
       if (colorSet) [self setBackgroundColors:colorSet mode:mode];
     }
   }
 
   if (commands) {
     for (NSString * mode in commands) {
-      Command * command = [Command importObjectFromData:commands[mode] inContext:moc];
+      Command * command = [Command importObjectFromData:commands[mode] context:moc];
       if (command) [self setCommand:command mode:mode];
     }
   }
 
   if (longPressCommands) {
     for (NSString * mode in longPressCommands) {
-      Command * longPressCommand = [Command importObjectFromData:longPressCommands[mode] inContext:moc];
+      Command * longPressCommand = [Command importObjectFromData:longPressCommands[mode] context:moc];
       if (longPressCommand) [self setCommand:longPressCommand mode:mode];
     }
   }
@@ -429,15 +429,16 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (MSDictionary *)JSONDictionary
 {
   MSDictionary * dictionary = [super JSONDictionary];
-  dictionary[@"backgroundColor"] = NullObject;
+  dictionary[@"background-color"] = NullObject;
 
   NSArray * configurations = self.modes;
 
-  MSDictionary * titles           = [MSDictionary dictionary];
-  MSDictionary * backgroundColors = [MSDictionary dictionary];
-  MSDictionary * icons            = [MSDictionary dictionary];
-  MSDictionary * images           = [MSDictionary dictionary];
-  MSDictionary * commands         = [MSDictionary dictionary];
+  MSDictionary * titles            = [MSDictionary dictionary];
+  MSDictionary * backgroundColors  = [MSDictionary dictionary];
+  MSDictionary * icons             = [MSDictionary dictionary];
+  MSDictionary * images            = [MSDictionary dictionary];
+  MSDictionary * commands          = [MSDictionary dictionary];
+  MSDictionary * longPressCommands = [MSDictionary dictionary];
 
   for (NSString * mode in configurations)
   {
@@ -456,22 +457,24 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     Command * command = [self commandForMode:mode];
     if (command) commands[mode] = [command JSONDictionary];
 
+    Command * longPressCommand = [self longPressCommandForMode:mode];
+    if (longPressCommand) longPressCommands[mode] = [longPressCommand JSONDictionary];
   }
 
-  dictionary[@"commands"]          = ([commands count] ? commands : NullObject);
-  dictionary[@"titles"]            = ([titles count] ? titles : NullObject) ;
-  dictionary[@"icons"]             = ([icons count] ? icons : NullObject);
-  dictionary[@"backgroundColors"]  = ([backgroundColors count] ? backgroundColors : NullObject);
-  dictionary[@"images"]            = ([images count] ? images : NullObject);
+  dictionary[@"commands"]           = ([commands count] ? commands : NullObject);
+  dictionary[@"titles"]             = ([titles count] ? titles : NullObject) ;
+  dictionary[@"icons"]              = ([icons count] ? icons : NullObject);
+  dictionary[@"background-colors"]  = ([backgroundColors count] ? backgroundColors : NullObject);
+  dictionary[@"images"]             = ([images count] ? images : NullObject);
 
   if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, self.titleEdgeInsets))
-    dictionary[@"titleEdgeInsets"] = NSStringFromUIEdgeInsets(self.titleEdgeInsets);
+    dictionary[@"title-edge-insets"] = NSStringFromUIEdgeInsets(self.titleEdgeInsets);
 
   if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, self.imageEdgeInsets))
-    dictionary[@"imageEdgeInsets"] = NSStringFromUIEdgeInsets(self.imageEdgeInsets);
+    dictionary[@"image-edge-insets"] = NSStringFromUIEdgeInsets(self.imageEdgeInsets);
 
   if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, self.contentEdgeInsets))
-    dictionary[@"contentEdgeInsets"] = NSStringFromUIEdgeInsets(self.contentEdgeInsets);
+    dictionary[@"content-edge-insets"] = NSStringFromUIEdgeInsets(self.contentEdgeInsets);
 
   [dictionary compact];
   [dictionary compress];
