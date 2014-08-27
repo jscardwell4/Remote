@@ -43,6 +43,7 @@
     </entity>
     <entity name="ButtonGroup" representedClassName="ButtonGroup" parentEntity="RemoteElement" syncable="YES">
         <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
+        <attribute name="panelAssignment" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="commandContainer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CommandContainer" inverseName="buttonGroup" inverseEntity="CommandContainer" syncable="YES"/>
         <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="buttonGroupLabel" inverseEntity="TitleAttributes" syncable="YES"/>
         <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="topToolbar" inverseEntity="RemoteController" syncable="YES"/>
@@ -279,7 +280,6 @@
         <attribute name="shape" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="state" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="style" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="subtype" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="themeFlags" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
@@ -391,7 +391,7 @@
         <element name="BankObjectPreview" positionX="0" positionY="0" width="128" height="135"/>
         <element name="BuiltinTheme" positionX="0" positionY="0" width="128" height="45"/>
         <element name="Button" positionX="0" positionY="0" width="128" height="223"/>
-        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="103"/>
+        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="118"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="195"/>
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandSet" positionX="0" positionY="0" width="128" height="90"/>
@@ -416,7 +416,7 @@
         <element name="Preset" positionX="0" positionY="0" width="128" height="133"/>
         <element name="Remote" positionX="0" positionY="0" width="128" height="120"/>
         <element name="RemoteController" positionX="0" positionY="0" width="128" height="118"/>
-        <element name="RemoteElement" positionX="0" positionY="0" width="128" height="388"/>
+        <element name="RemoteElement" positionX="0" positionY="0" width="128" height="373"/>
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>

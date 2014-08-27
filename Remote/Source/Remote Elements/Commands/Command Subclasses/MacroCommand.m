@@ -184,7 +184,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
+- (void)updateWithData:(NSDictionary *)data {
   /*
      {
        "class": "macro",
@@ -203,34 +203,25 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
      }
    */
 
+  [super updateWithData:data];
+  NSArray                * commands = data[@"commands"];
+  NSManagedObjectContext * moc      = self.managedObjectContext;
 
-  MacroCommand * macroCommand = [super importObjectFromData:data context:moc];
+  if (commands && isArrayKind(commands)) {
 
-  if (!macroCommand) {
-
-    macroCommand = [MacroCommand objectWithUUID:data[@"uuid"] context:moc];
-
-    NSArray * commands = data[@"commands"];
-
-    if (commands && isArrayKind(commands)) {
-
-      NSMutableArray * macroCommands = [(NSArray *)commands mutableCopy];
-      [macroCommands filter:^BOOL (id obj) {
-        return isDictionaryKind(obj) && commandClassForImportKey([obj valueForKey:@"class"]) != NULL;
-      }];
-      [macroCommands map:^id (NSDictionary * obj, NSUInteger idx) {
-        Class commandClass = commandClassForImportKey(obj[@"class"]);
-        Command * command = [commandClass importObjectFromData:obj context:moc];
-        return command ?: NullObject;
-      }];
-      [macroCommands removeNullObjects];
-      macroCommand.commands = [macroCommands orderedSet];
-
-    }
+    NSMutableArray * macroCommands = [(NSArray *)commands mutableCopy];
+    [macroCommands filter:^BOOL (id obj) {
+      return isDictionaryKind(obj) && commandClassForImportKey([obj valueForKey:@"class"]) != NULL;
+    }];
+    [macroCommands map:^id (NSDictionary * obj, NSUInteger idx) {
+      Class commandClass = commandClassForImportKey(obj[@"class"]);
+      Command * command = [commandClass importObjectFromData:obj context:moc];
+      return command ?: NullObject;
+    }];
+    [macroCommands removeNullObjects];
+    self.commands = [macroCommands orderedSet];
 
   }
-
-  return macroCommand;
 }
 
 @end
@@ -258,7 +249,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 
     [super main];
-  } @catch(NSException * exception)   {
+  } @catch(NSException * exception) {
     MSLogDebugTag(@"wtf?");
   }
 }

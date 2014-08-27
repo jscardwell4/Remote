@@ -25,6 +25,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 @interface ButtonGroup (CoreDataGeneratedAccessors)
 @property (nonatomic) CommandContainer * primitiveCommandContainer;
+@property (nonatomic) NSNumber         * primitivePanelAssignment;
 @end
 
 @implementation ButtonGroup
@@ -50,11 +51,11 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     case REPanelLocationBottom:
     case REPanelLocationLeft:
     case REPanelLocationRight: {
-      self.subtype = panelLocation | self.panelTrigger;
+      self.panelAssignment = panelLocation | self.panelTrigger;
     }   break;
 
     default: {
-      self.subtype = self.panelTrigger;
+      self.panelAssignment = (REPanelAssignment)self.panelTrigger;
     }   break;
   }
 }
@@ -64,30 +65,35 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
     case REPanelTrigger1:
     case REPanelTrigger2:
     case REPanelTrigger3: {
-      self.subtype = panelTrigger | self.panelLocation;
+      self.panelAssignment = panelTrigger | self.panelLocation;
     }   break;
 
     default: {
-      self.subtype = self.panelLocation;
+      self.panelAssignment = (REPanelAssignment)self.panelLocation;
     }   break;
   }
 }
 
 - (void)setPanelAssignment:(REPanelAssignment)panelAssignment {
+  [self willChangeValueForKey:@"panelAssignment"];
   REPanelLocation location = panelAssignment & REPanelAssignmentLocationMask;
   REPanelTrigger  trigger  = panelAssignment & REPanelAssignmentTriggerMask;
-
-  self.panelLocation = location;
-  self.panelTrigger  = trigger;
+  self.primitivePanelAssignment = @(location|trigger);
+  [self didChangeValueForKey:@"panelAssignment"];
 }
 
-- (REPanelAssignment)panelAssignment { return (REPanelAssignment)self.subtype; }
+- (REPanelAssignment)panelAssignment {
+  [self willAccessValueForKey:@"panelAssignment"];
+  REPanelAssignment assignment = UnsignedShortValue(self.primitivePanelAssignment);
+  [self didAccessValueForKey:@"panelAssignment"];
+  return assignment;
+}
 
 - (REPanelTrigger)panelTrigger { return self.panelAssignment & REPanelAssignmentTriggerMask; }
 
 - (REPanelLocation)panelLocation { return self.panelAssignment & REPanelAssignmentLocationMask; }
 
-- (BOOL)isPanel { return (self.subtype ? YES : NO); }
+- (BOOL)isPanel { return (self.panelAssignment ? YES : NO); }
 
 - (NSAttributedString *)label {
   [self willAccessValueForKey:@"label"];

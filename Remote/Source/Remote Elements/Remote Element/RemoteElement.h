@@ -61,7 +61,6 @@ MSEXTERN_STRING REDefaultMode;
 
 @interface RemoteElement (CustomTypeAccessors)
 
-@property (nonatomic, assign, readwrite) RESubtype               subtype;
 @property (nonatomic, assign, readwrite) RERole                  role;
 @property (nonatomic, assign, readwrite) REOptions               options;
 @property (nonatomic, assign, readwrite) REState                 state;

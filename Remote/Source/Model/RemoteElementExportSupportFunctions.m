@@ -42,6 +42,7 @@ NSString *typeJSONValueForRemoteElement(RemoteElement * element) {
   return (element ? index[@([[element class] elementType])] : nil);
 }
 
+/*
 NSString *subtypeJSONValueForRemoteElement(RemoteElement * element) {
   static NSDictionary const * index;
   static dispatch_once_t      onceToken;
@@ -68,6 +69,7 @@ NSString *subtypeJSONValueForRemoteElement(RemoteElement * element) {
 
   return (element ? index[@(element.subtype)] : nil);
 }
+*/
 
 NSString *roleJSONValueForRemoteElement(RemoteElement * element) {
   return (element ? roleJSONValueForRERole(element.role) : nil);

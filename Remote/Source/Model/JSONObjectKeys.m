@@ -24,24 +24,6 @@ MSSTRING_CONST   RETypeButtonJSONKey      = @"button";
 #pragma mark Remote element subtypes
 ////////////////////////////////////////////////////////////////////////////////
 
-MSSTRING_CONST   RESubtypeUndefinedJSONKey = @"undefined";
-
-MSSTRING_CONST   REButtonGroupTopPanel1JSONKey = @"top1";
-MSSTRING_CONST   REButtonGroupTopPanel2JSONKey = @"top2";
-MSSTRING_CONST   REButtonGroupTopPanel3JSONKey = @"top3";
-
-MSSTRING_CONST   REButtonGroupBottomPanel1JSONKey = @"bottom1";
-MSSTRING_CONST   REButtonGroupBottomPanel2JSONKey = @"bottom2";
-MSSTRING_CONST   REButtonGroupBottomPanel3JSONKey = @"bottom3";
-
-MSSTRING_CONST   REButtonGroupLeftPanel1JSONKey = @"left1";
-MSSTRING_CONST   REButtonGroupLeftPanel2JSONKey = @"left2";
-MSSTRING_CONST   REButtonGroupLeftPanel3JSONKey = @"left3";
-
-MSSTRING_CONST   REButtonGroupRightPanel1JSONKey = @"right1";
-MSSTRING_CONST   REButtonGroupRightPanel2JSONKey = @"right2";
-MSSTRING_CONST   REButtonGroupRightPanel3JSONKey = @"right3";
-
 MSSTRING_CONST   REPanelLocationUnassignedJSONKey = @"unassigned";
 MSSTRING_CONST   REPanelLocationTopJSONKey        = @"top";
 MSSTRING_CONST   REPanelLocationBottomJSONKey     = @"bottom";

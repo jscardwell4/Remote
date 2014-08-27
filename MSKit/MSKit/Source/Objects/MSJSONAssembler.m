@@ -11,7 +11,6 @@
 #import "MSStack.h"
 #import "MSDictionary.h"
 #import "NSArray+MSKitAdditions.h"
-#import "PKAssembly+MSKitAdditions.h"
 #import "MSJSONParser.h"
 #import <objc/runtime.h>
 #import "NSObject+MSKitAdditions.h"
@@ -19,6 +18,18 @@
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
+
+@interface PKAssembly (MSKitAdditions)
+
+- (id)MS_peek;
+
+@end
+
+@implementation PKAssembly (MSKitAdditions)
+
+- (id)MS_peek { return ([self isStackEmpty] ? nil : [self.stack lastObject]); }
+
+@end
 
 
 typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
@@ -30,6 +41,8 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
     MSJSONAssemblerArrayValueType,
     MSJSONAssemblerObjectValueType
 };
+
+
 
 @interface MSJSONAssembler ()
 

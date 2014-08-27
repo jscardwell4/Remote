@@ -70,7 +70,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
 - (void)applyTheme:(Theme *)theme { [theme applyThemeToElement:self]; }
 
-- (NSString *)autoGenerateName {
+- (void)autoGenerateName {
   NSString * base = (self.role != RERoleUndefined
                      ? $(@"%@%@",roleJSONValueForRemoteElement(self), self.className)
                      :self.className);
@@ -133,7 +133,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   self.name       = data[@"name"]                                                ?: self.name;
   self.role       = remoteElementRoleFromImportKey(data[@"role"])                ?: self.role;
   self.key        = data[@"key"]                                                 ?: self.key;
-  self.subtype    = remoteElementSubtypeFromImportKey(data[@"subtype"])          ?: self.subtype;
   self.options    = remoteElementOptionsFromImportKey(data[@"options"])          ?: self.options;
   self.state      = remoteElementStateFromImportKey(data[@"state"])              ?: self.state;
   self.shape      = remoteElementShapeFromImportKey(data[@"shape"])              ?: self.shape;
@@ -215,7 +214,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   SetValueForKeyIfNotDefault(self.tag,                               @"tag",     dictionary);
   SetValueForKeyIfNotDefault(roleJSONValueForRemoteElement(self),    @"role",    dictionary);
-  SetValueForKeyIfNotDefault(subtypeJSONValueForRemoteElement(self), @"subtype", dictionary);
   SetValueForKeyIfNotDefault(optionsJSONValueForRemoteElement(self), @"options", dictionary);
   SetValueForKeyIfNotDefault(stateJSONValueForRemoteElement(self),   @"state",   dictionary);
   SetValueForKeyIfNotDefault(shapeJSONValueForRemoteElement(self),   @"shape",   dictionary);
@@ -443,7 +441,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   assert(element);
 
   NSString * typeString        = NSStringFromREType([[self class] elementType]);
-  NSString * subtypeString     = NSStringFromRESubtype(element.subtype);
   NSString * roleString        = NSStringFromRERole(element.role);
   NSString * keyString         = element.key;
   NSString * nameString        = element.name;
@@ -473,7 +470,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
   dd[@"elementType"] = (typeString ?: @"nil");
-  dd[@"subtype"]     = (subtypeString ?: @"nil");
   dd[@"role"]        = (roleString ?: @"nil");
   dd[@"key"]         = (keyString ?: @"nil");
   dd[@"name"]        = (nameString ?: @"nil");
@@ -540,9 +536,8 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 }
 
 - (NSString *)flagsAndAppearanceDescription {
-  return $(@"type:%@\nsubtype:%@\noptions:%@\nstate:%@\nshape:%@\nstyle:%@\n",
+  return $(@"type:%@\noptions:%@\nstate:%@\nshape:%@\nstyle:%@\n",
            NSStringFromREType([[self class] elementType]),
-           NSStringFromRESubtype(self.subtype),
            NSStringFromREOptions(self.options, [[self class] elementType]),
            NSStringFromREState(self.state),
            NSStringFromREShape(self.shape),
@@ -646,19 +641,6 @@ Class classForREType(REType type) {
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Accessors for custom typedef properties
 ////////////////////////////////////////////////////////////////////////////////
-
-- (void)setSubtype:(RESubtype)subtype {
-  [self willChangeValueForKey:@"subtype"];
-  self.primitiveSubtype = @(subtype);
-  [self didChangeValueForKey:@"subtype"];
-}
-
-- (RESubtype)subtype {
-  [self willAccessValueForKey:@"subtype"];
-  NSNumber * subtype = self.primitiveSubtype;
-  [self didAccessValueForKey:@"subtype"];
-  return (subtype ? [subtype shortValue] : RESubtypeUndefined);
-}
 
 - (RERole)role {
   [self willAccessValueForKey:@"role"];

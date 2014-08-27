@@ -14,25 +14,6 @@ MSEXTERN_KEY(RETypeRemoteJSON);
 MSEXTERN_KEY(RETypeButtonGroupJSON);
 MSEXTERN_KEY(RETypeButtonJSON);
 
-// remote element subtypes
-MSEXTERN_KEY(RESubtypeUndefinedJSON);
-
-MSEXTERN_KEY(REButtonGroupTopPanel1JSON);
-MSEXTERN_KEY(REButtonGroupTopPanel2JSON);
-MSEXTERN_KEY(REButtonGroupTopPanel3JSON);
-
-MSEXTERN_KEY(REButtonGroupBottomPanel1JSON);
-MSEXTERN_KEY(REButtonGroupBottomPanel2JSON);
-MSEXTERN_KEY(REButtonGroupBottomPanel3JSON);
-
-MSEXTERN_KEY(REButtonGroupLeftPanel1JSON);
-MSEXTERN_KEY(REButtonGroupLeftPanel2JSON);
-MSEXTERN_KEY(REButtonGroupLeftPanel3JSON);
-
-MSEXTERN_KEY(REButtonGroupRightPanel1JSON);
-MSEXTERN_KEY(REButtonGroupRightPanel2JSON);
-MSEXTERN_KEY(REButtonGroupRightPanel3JSON);
-
 MSEXTERN_KEY(REPanelLocationUnassignedJSON);
 MSEXTERN_KEY(REPanelLocationTopJSON);
 MSEXTERN_KEY(REPanelLocationBottomJSON);

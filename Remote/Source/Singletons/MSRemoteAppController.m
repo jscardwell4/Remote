@@ -217,6 +217,13 @@ static const int msLogContext = 0;
 - (BOOL)            application:(UIApplication *)application
   didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+  // check if we should bypass setup because of testing
+  BOOL isUnderXCTest = [UserDefaults boolForKey:@"skipDataStack"];
+  if (isUnderXCTest) {
+    MSLogInfo(@"skipDataStack argument detected, skipping setup...");
+    return YES;
+  }
+
   // set a reference to our launch screen view controller
   MainMenuViewController * mainMenuVC = (MainMenuViewController *)[self.window rootViewController];
 

@@ -13,7 +13,6 @@
 
 Class remoteElementClassForImportKey(NSString * importKey);
 REType remoteElementTypeFromImportKey(NSString * importKey);
-RESubtype remoteElementSubtypeFromImportKey (NSString * importKey);
 RERole remoteElementRoleFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////

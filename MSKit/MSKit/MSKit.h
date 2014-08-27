@@ -54,7 +54,6 @@
 #import "MSKit/MSJSONSerialization.h"
 #import "MSKit/NSValue+MSKitAdditions.h"
 #import "MSKit/MSKVOReceptionist.h"
-#import "MSKit/PKAssembly+MSKitAdditions.h"
 #import "MSKit/MSLog.h"
 #import "MSKit/UIAlertView+MSKitAdditions.h"
 #import "MSKit/MSLogMacros.h"

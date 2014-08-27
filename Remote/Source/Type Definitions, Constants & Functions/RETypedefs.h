@@ -304,58 +304,6 @@ static inline NSString *NSStringFromRERole(RERole role) {
   return index[@(role)];
 }
 
-typedef NS_OPTIONS (uint8_t, RESubtype) {
-  RESubtypeUndefined               = 0b00000000,
-
-  REButtonGroupTopPanel            = 0b00000001,
-  REButtonGroupTopPanel1           = 0b00001001,
-  REButtonGroupTopPanel2           = 0b00010001,
-  REButtonGroupTopPanel3           = 0b00011001,
-
-  REButtonGroupBottomPanel         = 0b00000010,
-  REButtonGroupBottomPanel1        = 0b00001010,
-  REButtonGroupBottomPanel2        = 0b00010010,
-  REButtonGroupBottomPanel3        = 0b00011010,
-
-  REButtonGroupLeftPanel           = 0b00000011,
-  REButtonGroupLeftPanel1          = 0b00001011,
-  REButtonGroupLeftPanel2          = 0b00010011,
-  REButtonGroupLeftPanel3          = 0b00011011,
-
-  REButtonGroupRightPanel          = 0b00000100,
-  REButtonGroupRightPanel1         = 0b00001100,
-  REButtonGroupRightPanel2         = 0b00010100,
-  REButtonGroupRightPanel3         = 0b00011100,
-
-  REButtonGroupPanelLocationMask   = 0b00000111,
-  REButtonGroupPanelAssignmentMask = 0b00011000
-};
-
-static inline NSString *NSStringFromRESubtype(RESubtype subtype) {
-  static dispatch_once_t      onceToken;
-  static NSDictionary const * index;
-  dispatch_once(&onceToken, ^{
-    index = @{ @(REButtonGroupTopPanel)     : @"REButtonGroupTopPanel",
-               @(REButtonGroupTopPanel1)    : @"REButtonGroupTopPanel1",
-               @(REButtonGroupTopPanel2)    : @"REButtonGroupTopPanel2",
-               @(REButtonGroupTopPanel3)    : @"REButtonGroupTopPanel3",
-               @(REButtonGroupBottomPanel)  : @"REButtonGroupBottomPanel",
-               @(REButtonGroupBottomPanel1) : @"REButtonGroupBottomPanel1",
-               @(REButtonGroupBottomPanel2) : @"REButtonGroupBottomPanel2",
-               @(REButtonGroupBottomPanel3) : @"REButtonGroupBottomPanel3",
-               @(REButtonGroupLeftPanel)    : @"REButtonGroupLeftPanel",
-               @(REButtonGroupLeftPanel1)   : @"REButtonGroupLeftPanel1",
-               @(REButtonGroupLeftPanel2)   : @"REButtonGroupLeftPanel2",
-               @(REButtonGroupLeftPanel3)   : @"REButtonGroupLeftPanel3",
-               @(REButtonGroupRightPanel)   : @"REButtonGroupRightPanel",
-               @(REButtonGroupRightPanel1)  : @"REButtonGroupRightPanel1",
-               @(REButtonGroupRightPanel2)  : @"REButtonGroupRightPanel2",
-               @(REButtonGroupRightPanel3)  : @"REButtonGroupRightPanel3" };
-  });
-
-  return (index[@(subtype)] ?: @"RESubtypeUndefined");
-}
-
 typedef NS_ENUM (uint8_t, REPanelLocation) {
   REPanelLocationUnassigned = 0b00000000,
   REPanelLocationTop        = 0b00000001,

@@ -28,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C25B271E180B70BF0078C8D8"
-               BuildableName = "Remote Tests.xctest"
-               BlueprintName = "Remote Tests"
-               ReferencedContainer = "container:Remote.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -48,6 +38,12 @@
             ReferencedContainer = "container:Remote.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-XCTest YES"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -70,6 +66,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-rebuild YES"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-skipDataStack YES"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument

@@ -109,36 +109,6 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
   return (roleValue ? [roleValue unsignedShortValue] : RERoleUndefined);
 }
 
-RESubtype remoteElementSubtypeFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ RESubtypeUndefinedJSONKey        : @(RESubtypeUndefined),
-
-               REButtonGroupTopPanel1JSONKey    : @(REButtonGroupTopPanel1),
-               REButtonGroupTopPanel2JSONKey    : @(REButtonGroupTopPanel2),
-               REButtonGroupTopPanel3JSONKey    : @(REButtonGroupTopPanel3),
-
-               REButtonGroupBottomPanel1JSONKey : @(REButtonGroupBottomPanel1),
-               REButtonGroupBottomPanel2JSONKey : @(REButtonGroupBottomPanel2),
-               REButtonGroupBottomPanel3JSONKey : @(REButtonGroupBottomPanel3),
-
-               REButtonGroupLeftPanel1JSONKey   : @(REButtonGroupLeftPanel1),
-               REButtonGroupLeftPanel2JSONKey   : @(REButtonGroupLeftPanel2),
-               REButtonGroupLeftPanel3JSONKey   : @(REButtonGroupLeftPanel3),
-
-               REButtonGroupRightPanel1JSONKey  : @(REButtonGroupRightPanel1),
-               REButtonGroupRightPanel2JSONKey  : @(REButtonGroupRightPanel2),
-               REButtonGroupRightPanel3JSONKey  : @(REButtonGroupRightPanel3) };
-  });
-
-
-  NSNumber * typeValue = index[importKey];
-
-  return (typeValue ? [typeValue unsignedShortValue] : RESubtypeUndefined);
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Options & State
@@ -517,7 +487,7 @@ NSLineBreakMode lineBreakModeForJSONKey(NSString * key) {
 
   id value = index[key];
 
-  return (value ? IntegerValue(value) : NSTextAlignmentNatural);
+  return (value ? IntegerValue(value) : (NSLineBreakMode)NSTextAlignmentNatural);
 }
 
 NSUnderlineStyle underlineStrikethroughStyleForJSONKey(NSString * key) {

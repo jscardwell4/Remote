@@ -24,7 +24,6 @@
 @interface RemoteElement (CoreDataGeneratedAccessors)
 
 @property (nonatomic) NSNumber                * primitiveRole;
-@property (nonatomic) NSNumber                * primitiveSubtype;
 @property (nonatomic) NSNumber                * primitiveOptions;
 @property (nonatomic) NSNumber                * primitiveState;
 @property (nonatomic) NSNumber                * primitiveShape;

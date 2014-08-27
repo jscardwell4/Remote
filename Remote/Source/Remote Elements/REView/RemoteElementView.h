@@ -118,7 +118,6 @@
 @property (nonatomic, assign)           REStyle            style;
 @property (nonatomic, readonly)         REType             elementType;
 @property (nonatomic, readonly)         RERole             role;
-@property (nonatomic, readonly)         RESubtype          subtype;
 @property (nonatomic, assign)           REOptions          options;
 @property (nonatomic, readonly)         REState            state;
 

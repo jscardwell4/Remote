@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C2014FBB180E007900C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
-		C2014FBC180E007C00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C203BBC81726EBD7002FD3EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C203BBC61726EBD7002FD3EA /* InfoPlist.strings */; };
 		C203BBCB1726EBD7002FD3EA /* DatabaseConstructionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BBCA1726EBD7002FD3EA /* DatabaseConstructionTests.m */; };
 		C203BBD41726ECDE002FD3EA /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
@@ -155,6 +154,8 @@
 		C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */; };
 		C20C50E5179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
 		C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
+		C20FF1E219AE484E00D11F33 /* Remote_Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1E119AE484E00D11F33 /* Remote_Tests.json */; };
+		C20FF1EC19AE4FE400D11F33 /* Remote_Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1E119AE484E00D11F33 /* Remote_Tests.json */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
@@ -587,7 +588,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C25B272D180B70BF0078C8D8 /* PBXContainerItemProxy */ = {
+		C20FF1E419AE484E00D11F33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C20FF1BE19AE2C1700D11F33;
+			remoteInfo = "MSJSON Tests";
+		};
+		C20FF1E719AE4A3E00D11F33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
 			proxyType = 1;
@@ -635,6 +643,7 @@
 		C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionZoomView.m; sourceTree = "<group>"; };
 		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankCollectionZoomView.xib; path = "../../Source/Bank/View Controllers/BankCollectionZoomView.xib"; sourceTree = "<group>"; };
 		C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NightshadeThemeDecorator.m; sourceTree = "<group>"; };
+		C20FF1E119AE484E00D11F33 /* Remote_Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Tests.json; sourceTree = "<group>"; };
 		C21687A01722F17000064C95 /* ConfigurationDelegateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationDelegateTests.h; sourceTree = "<group>"; };
 		C21687A11722F17000064C95 /* ConfigurationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationDelegateTests.m; sourceTree = "<group>"; };
 		C21687A31722F18400064C95 /* ControlStateSetTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateSetTests.h; sourceTree = "<group>"; };
@@ -1615,6 +1624,7 @@
 		C25B2725180B70BF0078C8D8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C20FF1E119AE484E00D11F33 /* Remote_Tests.json */,
 				C25B2726180B70BF0078C8D8 /* Remote Tests-Info.plist */,
 				C25B2727180B70BF0078C8D8 /* InfoPlist.strings */,
 				C25B272C180B70BF0078C8D8 /* Remote Tests-Prefix.pch */,
@@ -2564,6 +2574,7 @@
 			isa = PBXGroup;
 			children = (
 				C2CE8AA31814231F00555D63 /* libMSKit.a */,
+				C20FF1E519AE484E00D11F33 /* MSJSON Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2727,7 +2738,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C25B272E180B70BF0078C8D8 /* PBXTargetDependency */,
+				C20FF1E819AE4A3E00D11F33 /* PBXTargetDependency */,
 			);
 			name = "Remote Tests";
 			productName = "Remote Tests";
@@ -2797,6 +2808,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C20FF1E519AE484E00D11F33 /* MSJSON Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "MSJSON Tests.xctest";
+			remoteRef = C20FF1E419AE484E00D11F33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C2CE8AA31814231F00555D63 /* libMSKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2921,6 +2939,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C20FF1E219AE484E00D11F33 /* Remote_Tests.json in Resources */,
 				C25B2729180B70BF0078C8D8 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2966,6 +2985,7 @@
 				C26B199417A05A2300C22BE6 /* Glyphish Backgrounds.txt in Resources */,
 				C26B199617A05A2300C22BE6 /* Glyphish Icons.txt in Resources */,
 				C2381EFB19A7EE3B00135DAB /* Ive-640x960.jpg in Resources */,
+				C20FF1EC19AE4FE400D11F33 /* Remote_Tests.json in Resources */,
 				C2381EEC19A7EE3B00135DAB /* Gingham-640x960-iPhone@2x.jpg in Resources */,
 				C2381EDC19A7EE3B00135DAB /* Concrete-640x960-iPhone@2x.jpg in Resources */,
 				C2381F0419A7EE3B00135DAB /* Midnight-320x480.jpg in Resources */,
@@ -3298,7 +3318,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2014FBC180E007C00C31780 /* JSONObjectKeys.m in Sources */,
 				C25B272B180B70BF0078C8D8 /* Remote_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3447,10 +3466,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C25B272E180B70BF0078C8D8 /* PBXTargetDependency */ = {
+		C20FF1E819AE4A3E00D11F33 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
-			targetProxy = C25B272D180B70BF0078C8D8 /* PBXContainerItemProxy */;
+			targetProxy = C20FF1E719AE4A3E00D11F33 /* PBXContainerItemProxy */;
 		};
 		C2CE8AB2181424B100555D63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
