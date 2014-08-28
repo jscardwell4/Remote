@@ -17,7 +17,7 @@
         },
         {
           "class": "delay",
-          "duration": 6
+          "duration": 1
         },
         {
           "class": "sendir",
@@ -59,7 +59,7 @@
         },
         {
           "class": "delay",
-          "duration": 6
+          "duration": 1
         },
         {
           "class": "sendir",
@@ -134,7 +134,7 @@
         },
         {
           "class": "delay",
-          "duration": 6
+          "duration": 1
         },
         {
           "class": "sendir",

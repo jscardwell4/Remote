@@ -16,6 +16,9 @@
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
 
+//#define DUMP_ELEMENT_HIERARCHY
+//#define DUMP_LAYOUT_DATA
+
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
@@ -29,7 +32,16 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 @property (nonatomic, strong) MSKVOReceptionist          * remoteReceptionist;
 @end
 
-@implementation RemoteViewController
+@implementation RemoteViewController {
+  struct {
+    BOOL           addRemoteViewConstraints;
+    BOOL           monitorProximitySensor;
+    BOOL           autohideTopBar;
+    BOOL           remoteInactive;
+    BOOL           loadHomeScreen;
+    BOOL           monitoringInactivity;
+  } _flags;
+}
 
 + (instancetype)viewControllerWithModel:(RemoteController *)model {
   RemoteViewController * controller = nil;
@@ -57,8 +69,11 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                                        notificationName:MSSettingsManagerProximitySensorSettingDidChangeNotification
                                                   queue:MainQueue
                                                 handler:^(MSNotificationReceptionist * rec, NSNotification * note) {
-                                                  CurrentDevice.proximityMonitoringEnabled =
+                                                  controller->_flags.monitorProximitySensor =
                                                     [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+
+                                                  CurrentDevice.proximityMonitoringEnabled =
+                                                    controller->_flags.monitorProximitySensor;
                                                 }];
   }
 
@@ -69,7 +84,9 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 #pragma mark - UIViewController overrides
 /////////////////////////////////////////////////////////////////////////////////
 
-/// Releases the cached remote view and any other retained properties relating to the view.
+/**
+ * Releases the cached remote view and any other retained properties relating to the view.
+ */
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
 }
@@ -81,6 +98,9 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
   [self.view addGestureRecognizer:[UIPinchGestureRecognizer gestureWithTarget:self
                                                                        action:@selector(handlePinch:)]];
+
+  _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+  _flags.loadHomeScreen         = YES;
 
   [self initializeTopToolbar];
 
@@ -150,6 +170,62 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
     [self.view setNeedsUpdateConstraints];
   }
 
+  #ifdef DUMP_LAYOUT_DATA
+
+    [[NSOperationQueue new] addOperationWithBlock:^{
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+      MSLogDebugInContextTag((LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE),
+                             @"%@ dumping constraints...\n\n%@\n\n",
+                             ClassTagSelectorString,
+                             [[UIWindow keyWindow]
+                              viewTreeDescriptionWithProperties:@[@"frame",
+                                                                  @"hasAmbiguousLayout?",
+                                                                  @"key",
+                                                                  @"nametag",
+                                                                  @"name",
+                                                                  @"constraints"]]);
+    });
+  }];
+  #endif
+
+  #ifdef DUMP_ELEMENT_HIERARCHY
+
+    [[NSOperationQueue new] addOperationWithBlock:^{
+    int64_t delayInSeconds = 4.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+      MSLogDebug(@"%@ dumping elements...\n\n%@\n\n",
+                 ClassTagSelectorString,
+                 [[(RemoteView *)[self.view viewWithNametag:kRemoteViewNametag] model]
+                  dumpElementHierarchy]);
+    });
+  }];
+
+  #endif
+
+// #define LOG_ELEMENTS
+  #ifdef LOG_ELEMENTS
+
+    [[NSOperationQueue new] addOperationWithBlock:^{
+    int64_t delayInSeconds = 6.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+
+      MSLogDebugInContextTag((LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE),
+                             @"%@\n%@\n%@\n\n%@\n%@\n%@\n",
+                             [@"Displayed Remote Element Descriptions" singleBarMessageBox],
+                             [_topToolbar.model recursiveDeepDescription],
+                             [remoteView.model recursiveDeepDescription],
+                             [@"Displayed Remote Element JSON" singleBarMessageBox],
+                             [_topToolbar.model JSONString],
+                             [remoteView.model JSONString]);
+
+    });
+  }];
+
+  #endif
 }
 
 - (void)updateTopToolbarLocation {
@@ -163,19 +239,21 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
   [self updateTopToolbarLocation];
 }
 
-/// Re-enables proximity monitoring and determines whether toolbar should be visible.
-/// @param animated Whether the view is appearing via animation.
+/**
+ * Re-enables proximity monitoring and determines whether toolbar should be visible.
+ * @param animated Whether the view is appearing via animation.
+ */
 - (void)viewWillAppear:(BOOL)animated {
-  if ([SettingsManager boolForSetting:MSSettingsProximitySensorKey])
-    CurrentDevice.proximityMonitoringEnabled = YES;
+  if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = YES;
 
 }
 
-/// Ceases proximity monitoring if it had been enabled.
-/// @param animated Whether the view is disappearing via animation.
+/**
+ * Ceases proximity monitoring if it had been enabled.
+ * @param animated Whether the view is disappearing via animation.
+ */
 - (void)viewWillDisappear:(BOOL)animated {
-  if ([SettingsManager boolForSetting:MSSettingsProximitySensorKey])
-    CurrentDevice.proximityMonitoringEnabled = NO;
+  if (_flags.monitorProximitySensor) CurrentDevice.proximityMonitoringEnabled = NO;
 }
 
 
@@ -211,8 +289,10 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
   else self.topToolbarConstraint.constant = constant;
 }
 
-/// Creates and attaches the default toolbar items to the items created by the storyboard. Currently
-/// this includes a connection status button and a battery status button.
+/**
+ * Creates and attaches the default toolbar items to the items created by the storyboard. Currently
+ * this includes a connection status button and a battery status button.
+ */
 - (void)initializeTopToolbar {
   assert(self.remoteController);
 

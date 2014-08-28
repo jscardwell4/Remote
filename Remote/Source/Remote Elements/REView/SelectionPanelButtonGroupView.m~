@@ -53,9 +53,11 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   }
 }
 
-/// Button action attached to the view's button's as they are added as subviews. This method
-/// updates the value of `selectedButton` with the `ButtonView` that invoked the method.
-/// @param sender The `ButtonView` that has been touched.
+/**
+ * Button action attached to the view's button's as they are added as subviews. This method
+ * updates the value of `selectedButton` with the `ButtonView` that invoked the method.
+ * @param sender The `ButtonView` that has been touched.
+ */
 - (void)handleSelection:(ButtonView *)sender {
   if (_selectedButton != sender) [self selectButton:sender];
   if (self.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];

@@ -132,18 +132,20 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 #pragma mark - ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////
 #define ButtonGroupTucksVertically(buttonGroup) \
-  (buttonGroup.panelLocation == REPanelLocationTop || buttonGroup.panelLocation == REPanelLocationBottom)
+  (  buttonGroup.panelLocation == REPanelLocationTop || buttonGroup.panelLocation == REPanelLocationBottom)
 
 #define ButtonGroupTucksHorizontally(buttonGroup) \
-  (buttonGroup.panelLocation == REPanelLocationLeft || buttonGroup.panelLocation == REPanelLocationRight)
+  (  buttonGroup.panelLocation == REPanelLocationLeft || buttonGroup.panelLocation == REPanelLocationRight)
 
 
-/// The `ButtonGroupView` class is a subclass of `UIView` designed to display itself
-/// according to the <ButtonGroup> model object it has been assigned. Multiple button group
-/// views are typically attached as subviews for a `RemoteView` to construct a fully
-/// realized interface to the user's home theater system. Subclasses include
-/// <PickerLabelButtonGroupView>, <RoundedPanelButtonGroupView>, and
-/// <SelectionPanelButtonGroupView>.
+/**
+ * The `ButtonGroupView` class is a subclass of `UIView` designed to display itself
+ * according to the <ButtonGroup> model object it has been assigned. Multiple button group
+ * views are typically attached as subviews for a `RemoteView` to construct a fully
+ * realized interface to the user's home theater system. Subclasses include
+ * <PickerLabelButtonGroupView>, <RoundedPanelButtonGroupView>, and
+ * <SelectionPanelButtonGroupView>.
+ */
 @class ButtonView, ButtonGroup, RemoteView;
 
 @interface ButtonGroupView : RemoteElementView
@@ -172,12 +174,14 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 #pragma mark - Subclasses of ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////
 
-/// `SelectionPanelButtonGroupView` subclasses <RoundedPanelButtonGroupView> to add
-/// mode management functionality. Configurations are specified by the `key`
-/// values of the view's buttons. Pressing one of the buttons causes the view to post a
-/// change notification to the default notification center. Instances of
-/// <ConfigurationDelegate> registered for the notification can swap out <Command> or
-/// <CommandSet> for the <Button> or <ButtonGroup> to which the delegate has been assigned.
+/**
+ * `SelectionPanelButtonGroupView` subclasses <RoundedPanelButtonGroupView> to add
+ * mode management functionality. Configurations are specified by the `key`
+ * values of the view's buttons. Pressing one of the buttons causes the view to post a
+ * change notification to the default notification center. Instances of
+ * <ConfigurationDelegate> registered for the notification can swap out <Command> or
+ * <CommandSet> for the <Button> or <ButtonGroup> to which the delegate has been assigned.
+ */
 @interface SelectionPanelButtonGroupView : ButtonGroupView @end
 
 @interface PickerLabelButtonGroupView : ButtonGroupView @end
@@ -189,11 +193,13 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 
 @class Button, Command;
 
-/// The `ButtonView` class is a subclass of `UIControl` that is designed to display itself
-/// according to the <Button> model object it has been assigned. These views can be grouped
-/// and contained by a `ButtonGroupView` to piece together a very versatile user interface
-/// for home theater remote control. Subclasses include <ConnectionStatusButtonView> and
-/// <BatteryStatusButtonView>
+/**
+ * The `ButtonView` class is a subclass of `UIControl` that is designed to display itself
+ * according to the <Button> model object it has been assigned. These views can be grouped
+ * and contained by a `ButtonGroupView` to piece together a very versatile user interface
+ * for home theater remote control. Subclasses include <ConnectionStatusButtonView> and
+ * <BatteryStatusButtonView>
+ */
 @interface ButtonView : RemoteElementView
 
 - (void)setActionHandler:(REActionHandler)handler
@@ -218,11 +224,15 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 
 @end
 
-/// <ButtonView> subclass that has been specialized to display network connection status
-/// information through notifications posted by <ConnectionManager>.
+/**
+ * <ButtonView> subclass that has been specialized to display network connection status
+ * information through notifications posted by <ConnectionManager>.
+ */
 @interface ConnectionStatusButtonView : ButtonView @end
 
-/// <ButtonView> subclass that has been specialized to display battery status information.
+/**
+ * <ButtonView> subclass that has been specialized to display battery status information.
+ */
 @interface BatteryStatusButtonView : ButtonView
 
 @property (nonatomic, strong) UIColor * frameColor;      /// Color to make the battery frame.

@@ -1457,6 +1457,7 @@
         "name": "Selection Panel",
         "role": "selection-panel",
         "shape": "rounded-rectangle",
+        "autohide": true,
         "constraints": {
           "index": {
             "buttonSTB": "60FBB7D9-D48A-42E5-A6FD-B47FC13EC23F",

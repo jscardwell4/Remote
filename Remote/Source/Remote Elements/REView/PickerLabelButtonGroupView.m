@@ -43,9 +43,9 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
     if (![self constraintsWithNametagPrefix:nametag]) {
 
       NSString * constraints =
-        $(@"labels.centerY = self.centerY '%1$@'\n"
-          "labels.height = self.height * 0.34 '%1$@'\n"
-          "labels.left = self.left '%1$@-left'", nametag);
+        $(@"'%1$@' labels.centerY = self.centerY\n"
+          "'%1$@' labels.height = self.height * 0.34\n"
+          "'%1$@-left' labels.left = self.left", nametag);
 
       [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraints
                                                                     views:@{@"self": self,
@@ -111,7 +111,8 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   };
 
   reg[@"commandSets"] = ^(MSKVOReceptionist * receptionist) {
-    [(__bridge PickerLabelButtonGroupView *)receptionist.context updateCommandSet];
+    PickerLabelButtonGroupView * picker = (__bridge PickerLabelButtonGroupView *)receptionist.context;
+    [picker.model selectCommandSetAtIndex:picker.labelIndex];
   };
 
   return reg;
@@ -127,12 +128,12 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
     self.labelContainer = labelContainer;
     labelContainer;
   })];
-  [self buildLabels];
 }
 
 - (void)initializeViewFromModel {
   [super initializeViewFromModel];
   [self buildLabels];
+  [self.model selectCommandSetAtIndex:self.labelIndex];
 }
 - (void)attachGestureRecognizers {
   [super attachGestureRecognizers];
@@ -141,6 +142,10 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
                                               initWithTarget:self action:@selector(handlePan:)];
   labelPanGesture.maximumNumberOfTouches = 1;
   [self addGestureRecognizer:labelPanGesture];
+  for (UIView * view in self.subelementViews)
+    [view.gestureRecognizers makeObjectsPerformSelector:@selector(requireGestureRecognizerToFail:)
+                                             withObject:self.labelPanGesture];
+
   self.labelPanGesture = labelPanGesture;
 }
 
@@ -240,8 +245,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
           _labelIndex = MAX(_labelIndex - 1, 0);
 
         else
-          _labelIndex = MIN(_labelIndex + 1,
-                                        self.labelCount - 1);
+          _labelIndex = MIN(_labelIndex + 1, _labelCount - 1);
 
         [self animateLabelContainerToIndex:_labelIndex withDuration:duration];
 
@@ -260,9 +264,9 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
       }
 
       // Check that pan leaves at least one full label within button group bounds
-      CGFloat currentOffset  = _labelContainerLeftConstraint.constant;
+      CGFloat currentOffset  = self.labelContainerLeftConstraint.constant;
       CGFloat newOffset      = currentOffset + panAmount;
-      CGFloat containerWidth = _labelContainer.bounds.size.width;
+      CGFloat containerWidth = self.labelContainer.bounds.size.width;
       CGFloat minOffset      = -containerWidth + labelWidth;
 
       if (newOffset < minOffset) {
@@ -293,15 +297,6 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
       break;
   }
 
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Commands
-////////////////////////////////////////////////////////////////////////////////
-
-/// Updates button commands with values from the currently selected command set.
-- (void)updateCommandSet {
-  if (self.labelCount) [self.model selectCommandSetAtIndex:_labelIndex];
 }
 
 @end

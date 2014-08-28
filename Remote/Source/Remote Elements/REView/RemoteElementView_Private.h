@@ -92,45 +92,14 @@ MSEXTERN CGSize const REMinimumSize;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - RESelectionPanelButtonGroupView Class Extension
-////////////////////////////////////////////////////////////////////////////////
-
-
-@interface SelectionPanelButtonGroupView ()
-{
-  @private
-  __weak ButtonView * _selectedButton;    /// Tracks currently selected mode
-}
-
-@end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REPickerLabelButtonGroupView Class Extension
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark - REButtonView Class Extension
 ////////////////////////////////////////////////////////////////////////////////
 
 
 @interface ButtonView ()
 {
-
-  @protected
-  NSMutableDictionary          * _actionHandlers;
-  UITapGestureRecognizer       * _tapGesture;
-  MSLongPressGestureRecognizer * _longPressGesture;
-  UILabel                      * _labelView;
-  UIImage                      * _icon;
-  UIActivityIndicatorView      * _activityIndicator;
-
   @private
   struct {
-    BOOL activityIndicator;
     BOOL longPressActive;
     BOOL commandsActive;
     BOOL highlightActionQueued;
@@ -144,6 +113,12 @@ MSEXTERN CGSize const REMinimumSize;
   } _options;
 
 }
+@property (nonatomic, strong, readwrite)  NSMutableDictionary          * actionHandlers;
+@property (nonatomic, weak,   readwrite)  UITapGestureRecognizer       * tapGesture;
+@property (nonatomic, weak,   readwrite)  MSLongPressGestureRecognizer * longPressGesture;
+@property (nonatomic, weak,   readwrite)  UILabel                      * labelView;
+@property (nonatomic, strong, readwrite)  UIImage                      * icon;
+@property (nonatomic, weak,   readwrite)  UIActivityIndicatorView      * activityIndicator;
 @end
 
 

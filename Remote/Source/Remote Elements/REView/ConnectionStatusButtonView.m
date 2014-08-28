@@ -9,24 +9,27 @@
 #import "Button.h"
 #import "ConnectionManager.h"
 
-@implementation ConnectionStatusButtonView {}
+@interface ConnectionStatusButtonView ()
+@property (nonatomic, strong) MSNotificationReceptionist * receptionist;
+@end
+
+@implementation ConnectionStatusButtonView
 
 - (void)initializeIVARs {
   [super initializeIVARs];
 
   self.selected = [ConnectionManager isWifiAvailable];
 
-  [NotificationCenter
-     addObserverForName:CMConnectionStatusNotification
-                 object:[ConnectionManager class]
-                  queue:MainQueue
-             usingBlock:^(NSNotification * note) {
-               if (self.model.selected != BOOLValue([note.userInfo
-                                             valueForKey:CMConnectionStatusWifiAvailable]))
-                 self.model.selected = !self.model.selected;
-             }];
+  __weak ConnectionStatusButtonView * weakself = self;
+  self.receptionist = [MSNotificationReceptionist
+                       receptionistForObject:[ConnectionManager class]
+                            notificationName:CMConnectionStatusNotification
+                                       queue:MainQueue
+                                     handler:^(MSNotificationReceptionist *rec, NSNotification *note) {
+                                       BOOL selected = weakself.model.selected;
+                                       BOOL wifiAvailable = BOOLValue(note.userInfo[CMConnectionStatusWifiAvailable]);
+                                       if (selected != wifiAvailable) weakself.model.selected = !selected;
+                                     }];
 }
-
-- (void)dealloc { [NotificationCenter removeObserver:self]; }
 
 @end

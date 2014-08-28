@@ -97,7 +97,9 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   self.tapGesture = tapGesture;
 }
 
-/// Single tap action executes the primary button command
+/**
+   Single tap action executes the primary button command
+ */
 - (void)handleTap:(UITapGestureRecognizer *)gestureRecognizer {
   if (gestureRecognizer.state == UIGestureRecognizerStateRecognized) {
     self.highlighted = YES;
@@ -123,7 +125,9 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   }
 }
 
-/// Long press action executes the secondary button command
+/**
+   Long press action executes the secondary button command
+ */
 - (void)handleLongPress:(MSLongPressGestureRecognizer *)gestureRecognizer {
   if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     REActionHandler handler = _actionHandlers[@(RELongPressAction)];
@@ -140,7 +144,9 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   }
 }
 
-/// Enables or disables tap and long press gestures
+/**
+   Enables or disables tap and long press gestures
+ */
 - (void)updateGesturesEnabled:(BOOL)enabled {
   self.tapGesture.enabled       = enabled;
   self.longPressGesture.enabled = enabled;

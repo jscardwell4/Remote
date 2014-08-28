@@ -99,7 +99,9 @@ CGSize const REMinimumSize = (CGSize) {
   return (className ? [[NSClassFromString(className) alloc] initWithModel:model] : nil);
 }
 
-/// Default initializer for subclasses.
+/**
+ * Default initializer for subclasses.
+ */
 - (instancetype)initWithModel:(RemoteElement *)model {
   if (model && (self = [super initForAutoLayout])) {
     self.model = model;
@@ -111,7 +113,9 @@ CGSize const REMinimumSize = (CGSize) {
   return self;
 }
 
-/// Called from `initWithRemoteElement:`, subclasses that override should include a call to `super`.
+/**
+ * Called from `initWithRemoteElement:`, subclasses that override should include a call to `super`.
+ */
 - (void)initializeIVARs {
   self.appliedScale  = 1.0;
   self.clipsToBounds = NO;
@@ -136,7 +140,9 @@ CGSize const REMinimumSize = (CGSize) {
 - (BOOL)proportionLock    { return self.model.proportionLock; }
 - (NSString *)currentMode { return self.model.currentMode;    }
 
-/// Forwards to `RemoteElement` model.
+/**
+ * Forwards to `RemoteElement` model.
+ */
 - (id)forwardingTargetForSelector:(SEL)aSelector {
   return (self.model  ?: [super forwardingTargetForSelector:aSelector]);
 }
@@ -214,8 +220,10 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   [super updateConstraints];
 }
 
-/// Override point for subclasses to return an array of KVO registration dictionaries for observing
-/// model keypaths.
+/**
+ * Override point for subclasses to return an array of KVO registration dictionaries for observing
+ * model keypaths.
+ */
 - (MSDictionary *)kvoRegistration {
 
   MSDictionary * reg = [MSDictionary dictionary];
@@ -251,11 +259,15 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   return reg;
 }
 
-/// Override point for subclasses to attach gestures. Called from `initWithRemoteElement`.
+/**
+ * Override point for subclasses to attach gestures. Called from `initWithRemoteElement`.
+ */
 - (void)attachGestureRecognizers {}
 
-/// Registers as observer for keypaths of model that appear in the array retained by subclass for
-/// `kvoKeypaths`.
+/**
+ * Registers as observer for keypaths of model that appear in the array retained by subclass for
+ * `kvoKeypaths`.
+ */
 - (void)registerForChangeNotification {
   if (self.model) {
     _kvoReceptionists = [[self kvoRegistration]
@@ -273,7 +285,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   }
 }
 
-/// Override point for subclasses to update themselves with data from the model.
+/**
+ * Override point for subclasses to update themselves with data from the model.
+ */
 - (void)initializeViewFromModel {
   [super setBackgroundColor:[self.model backgroundColor]];
   _backgroundImageView.image = (self.model.backgroundImage
@@ -436,7 +450,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 - (UIColor *)backgroundColor { return ([super backgroundColor] ?: self.model.backgroundColor); }
 
-/// Overridden to also call `setNeedsDisplay` on backdrop, content, and overlay subviews.
+/**
+ * Overridden to also call `setNeedsDisplay` on backdrop, content, and overlay subviews.
+ */
 - (void)setNeedsDisplay {
   [super setNeedsDisplay];
 
@@ -463,7 +479,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 @implementation RemoteElementView (InternalSubviews)
 
-/// Adds the backdrop, content, and overlay views. Subclasses that override should call `super`.
+/**
+ * Adds the backdrop, content, and overlay views. Subclasses that override should call `super`.
+ */
 - (void)addInternalSubviews {
 
   _backdropView = [REViewBackdrop newForAutolayout];
@@ -544,10 +562,14 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 }
 
-/// Override point for subclasses to draw into the content subview.
+/**
+ * Override point for subclasses to draw into the content subview.
+ */
 - (void)drawContentInContext:(CGContextRef)ctx inRect:(CGRect)rect {}
 
-/// Override point for subclasses to draw into the backdrop subview.
+/**
+ * Override point for subclasses to draw into the backdrop subview.
+ */
 - (void)drawBackdropInContext:(CGContextRef)ctx inRect:(CGRect)rect {
   if (self.model.shape == REShapeRoundedRectangle) {
     UIGraphicsPushContext(ctx);
@@ -565,7 +587,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   }
 }
 
-/// Override point for subclasses to draw into the overlay subview.
+/**
+ * Override point for subclasses to draw into the overlay subview.
+ */
 - (void)drawOverlayInContext:(CGContextRef)ctx inRect:(CGRect)rect {
   UIBezierPath * path = (_borderPath
                          ? [UIBezierPath bezierPathWithCGPath:_borderPath.CGPath]
@@ -622,7 +646,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 @implementation RemoteElementView (SubelementViews)
 
-/// Searches content view for subviews of the appropriate type and returns them as an array.
+/**
+ * Searches content view for subviews of the appropriate type and returns them as an array.
+ */
 - (NSArray *)subelementViews { return [_subelementsView subviews]; }
 
 - (void)addSubelementView:(RemoteElementView *)view { [_subelementsView addSubview:view]; }
@@ -696,7 +722,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 @implementation REViewContent
 
-/// Calls `drawContentInContext:inRect:`.
+/**
+ * Calls `drawContentInContext:inRect:`.
+ */
 - (void)drawRect:(CGRect)rect {
   [_delegate drawContentInContext:UIGraphicsGetCurrentContext() inRect:rect];
 }
@@ -705,7 +733,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 @implementation REViewBackdrop
 
-/// Calls `drawBackdropInContext:inRect:`.
+/**
+ * Calls `drawBackdropInContext:inRect:`.
+ */
 - (void)drawRect:(CGRect)rect {
   [_delegate drawBackdropInContext:UIGraphicsGetCurrentContext() inRect:rect];
 }
@@ -1231,7 +1261,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 }
 
-/// Calls `drawOverlayInContext:inRect:`.
+/**
+ * Calls `drawOverlayInContext:inRect:`.
+ */
 - (void)drawRect:(CGRect)rect {
   [_delegate drawOverlayInContext:UIGraphicsGetCurrentContext() inRect:rect];
 }
@@ -1275,7 +1307,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   [self setNeedsUpdateConstraints];
 }
 
-/// Sets border color according to current editing style.
+/**
+ * Sets border color according to current editing style.
+ */
 - (void)setEditingState:(REEditingState)editingState {
   _editingFlags.editingState = editingState;
 
