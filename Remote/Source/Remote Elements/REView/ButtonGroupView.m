@@ -31,8 +31,8 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
     [self addConstraints:
      [NSLayoutConstraint
-          constraintsByParsingString:constraints
-                               views:NSDictionaryOfVariableBindings(self, _label)]];
+      constraintsByParsingString:constraints
+                           views:NSDictionaryOfVariableBindings(self, _label)]];
   }
 
 
@@ -115,7 +115,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
     if (self.window) {
       [self.window addGestureRecognizer:_tuckGesture];
       [self.window addGestureRecognizer:_untuckGesture];
-    } else   {
+    } else {
       [_tuckGesture.view removeGestureRecognizer:_tuckGesture];
       [_untuckGesture.view removeGestureRecognizer:_untuckGesture];
     }
@@ -127,18 +127,18 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   NSDictionary * kvoRegistration =
     @{
 
-      @"label" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        id newValue = change[NSKeyValueChangeNewKey];
-        _label.attributedText = (ValueIsNotNil(newValue) ? (NSAttributedString *)newValue : nil);
-      }
+    @"label" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      id newValue = change[NSKeyValueChangeNewKey];
+      _label.attributedText = (ValueIsNotNil(newValue) ? (NSAttributedString *)newValue : nil);
+    }
 
-    };
+  };
 
   return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }

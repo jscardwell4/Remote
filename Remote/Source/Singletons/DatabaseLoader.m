@@ -80,29 +80,6 @@ void logImportedObject(id importedObject, int flag)
          @autoreleasepool { [self loadComponentDevices:context]; }
      }];
 
-/*
-
- I think these are now loaded via manufacturers
-
-
-     [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool { [self loadIRCodes:context]; }
-     }];
-*/
-
-/*
-
- I think these are now loaded via component devices
-
-     [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool { [self loadPowerCommands:context]; }
-     }];
-*/
-
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
@@ -207,7 +184,12 @@ void logImportedObject(id importedObject, int flag)
 {
     MSLogDebug(@"loading manufacturers...");
 
-    NSString * fileName = @"Manufacturer";
+#define MANUFACTURER_TEST_CODES
+#ifdef MANUFACTURER_TEST_CODES
+  NSString * fileName = @"Manufacturer_Test";
+#else
+  NSString * fileName = @"Manufacturer";
+#endif
     NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
     NSError * error = nil;
@@ -255,61 +237,15 @@ void logImportedObject(id importedObject, int flag)
     logImportedObject(componentDevices, COMPONENTDEVICES_LOG_FLAG);
 }
 
-+ (void)loadIRCodes:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading ir codes...");
-
-    NSString * fileName = @"IRCode";
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
-
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
-
-    logImportFile(fileName, fileContent, IRCODES_LOG_FLAG);
-
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
-
-    logParsedImportFile(importObjects, IRCODES_LOG_FLAG);
-    NSArray * ircodes = [IRCode importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu ir codes imported", (unsigned long)[ircodes count]);
-
-    logImportedObject(ircodes, IRCODES_LOG_FLAG);
-}
-
-+ (void)loadPowerCommands:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading power commands...");
-
-    NSString * fileName = @"PowerCommand";
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
-
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
-    logImportFile(fileName, fileContent, POWERCOMMANDS_LOG_FLAG);
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
-
-    logParsedImportFile(importObjects, POWERCOMMANDS_LOG_FLAG);
-    NSArray * commands = [SendIRCommand importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu power commands imported", (unsigned long)[commands count]);
-
-    logImportedObject(commands, POWERCOMMANDS_LOG_FLAG);
-}
-
 + (void)loadImages:(NSManagedObjectContext *)context
 {
     MSLogDebug(@"loading images...");
-
+#define GLYPHISH_TEST_IMAGES
+#ifdef GLYPHISH_TEST_IMAGES
+  NSString * fileName = @"Glyphish_Test";
+#else
     NSString * fileName = @"Glyphish";
+#endif
     NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
     NSError * error = nil;

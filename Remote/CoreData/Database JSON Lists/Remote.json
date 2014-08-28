@@ -26,7 +26,7 @@
       ]
     },
     "background-color.default": "black",
-    "background-image.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
+    "background-image.default.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
     "subelements": [
       {
         "uuid": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
@@ -289,7 +289,7 @@
       ]
     },
     "background-color.default": "black",
-    "background-image.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
+    "background-image.default.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
     "subelements": [
       {
         "uuid": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
@@ -797,7 +797,6 @@
         "uuid": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7",
         "name": "DVR Activity Number Pad",
         "role": "numberpad",
-        "subtype": "top1",
         "constraints": {
           "index": {
             "button0": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
@@ -875,16 +874,19 @@
           {
             "uuid": "4A9A5126-CCDD-4282-9D6E-581EB1A7768D",
             "name": "Button 1",
-            "role": "1",
+            "role": "one",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "titles.default.normal": {
-              "font": "Helvetica Neue@20",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
-              "alignment": "center",
-              "text": 1
+            "titles.default": {
+              "normal": {
+                "font": "Helvetica Neue@32",
+                "foreground-color": "white",
+                "stroke-color": "white@50%",
+                "stroke-width": -2,
+                "alignment": "center",
+                "text": 1
+              },
+              "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
             "title-edge-insets": "{20, 20, 20, 20}"
@@ -892,12 +894,12 @@
           {
             "uuid": "FD25B8D7-B6A3-46F5-A14D-BA66EC9B6624",
             "name": "Button 2",
-            "role": "2",
+            "role": "two",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -912,12 +914,12 @@
           {
             "uuid": "26D4A4EA-AD0A-4A4F-8F19-AD2EBDF2B4DD",
             "name": "Button 3",
-            "role": "3",
+            "role": "three",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -932,12 +934,12 @@
           {
             "uuid": "F7E72BB6-7C56-4D71-8B09-4FE29EF76EB6",
             "name": "Button 4",
-            "role": "4",
+            "role": "four",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -952,12 +954,12 @@
           {
             "uuid": "FD56CF91-26C4-47A2-9052-7D3504C85F59",
             "name": "Button 5",
-            "role": "5",
+            "role": "five",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -972,12 +974,12 @@
           {
             "uuid": "A9A11EB5-341F-42BB-A482-D81EED4D6436",
             "name": "Button 6",
-            "role": "6",
+            "role": "six",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -992,12 +994,12 @@
           {
             "uuid": "8C750F21-4D8D-4F5A-8E1B-0B9294AF2A7C",
             "name": "Button 7",
-            "role": "7",
+            "role": "seven",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -1012,12 +1014,12 @@
           {
             "uuid": "789737C2-D0D7-401B-B079-D305C65DA5F9",
             "name": "Button 8",
-            "role": "8",
+            "role": "eight",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -1032,12 +1034,12 @@
           {
             "uuid": "2F310C3B-37A8-4AE0-B652-21160A3DBB00",
             "name": "Button 9",
-            "role": "9",
+            "role": "nine",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -1052,12 +1054,12 @@
           {
             "uuid": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
             "name": "Button 0",
-            "role": "0",
+            "role": "zero",
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
               "normal": {
-                "font": "Helvetica Neue@20",
+                "font": "Helvetica Neue@32",
                 "foreground-color": "white",
                 "stroke-color": "white@50%",
                 "stroke-width": -2,
@@ -1113,59 +1115,54 @@
             "uuid": "E9D65885-43D4-4DFA-A3A6-C4ADCF70D94A",
             "name": "Tuck",
             "role": "tuck",
-            "shape": "rounded-rectangle",
-            "style": "gloss2",
             "titles.default.normal": {
-              "font": "FontAwesome@34",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "font": "FontAwesome@24",
+              "foreground-color": "gray@75%",
               "text-effect": "letter-press",
               "icon-name": "chevron-up"
             },
-            "background-colors.default.normal": "#060606FF",
             "title-edge-insets": "{20, 20, 20, 20}"
           }
         ],
         "command-set.default": {
           "type": "numberpad",
-          "1": {
+          "one": {
             "class": "sendir",
             "code.uuid": "0313E4A0-996F-4968-8DAB-0C799BD4D2A6"
           },
-          "2": {
+          "two": {
             "class": "sendir",
             "code.uuid": "1B86BE5A-F8D6-4798-895A-B881E6E623D1"
           },
-          "3": {
+          "three": {
             "class": "sendir",
             "code.uuid": "266FC2EF-2EDB-4A41-A42D-2BC1129DFECA"
           },
-          "4": {
+          "four": {
             "class": "sendir",
             "code.uuid": "4D24C204-E3FC-4473-A438-38E5B6EE3FE6"
           },
-          "5": {
+          "five": {
             "class": "sendir",
             "code.uuid": "40BCAC68-BC65-4AD4-A5F9-39A541AEF71E"
           },
-          "6": {
+          "six": {
             "class": "sendir",
             "code.uuid": "E57C7D62-3597-45B0-9B80-45F5559F7C18"
           },
-          "7": {
+          "seven": {
             "class": "sendir",
             "code.uuid": "B9007475-33AA-4CD7-87E7-3EEF413486FD"
           },
-          "8": {
+          "eight": {
             "class": "sendir",
             "code.uuid": "E6195194-F7FE-42C2-962A-13A6AA6858E0"
           },
-          "9": {
+          "nine": {
             "class": "sendir",
             "code.uuid": "019887BD-C57E-4CBD-A8C0-62C1167601D9"
           },
-          "0": {
+          "zero": {
             "class": "sendir",
             "code.uuid": "4D359D0D-BBE0-4BF5-85D3-9BF2CD338563"
           },
@@ -1183,7 +1180,6 @@
         "uuid": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69",
         "name": "DVR Activity Transport",
         "role": "transport",
-        "subtype": "bottom1",
         "constraints": {
           "index": {
             "buttonFastForward": "804894ED-2BA4-467D-A7E2-43E45ECC946B",
@@ -1369,17 +1365,12 @@
             "uuid": "051E7613-FE45-47CE-AE8A-F50B776348AC",
             "name": "Tuck",
             "role": "tuck",
-            "shape": "rounded-rectangle",
-            "style": "gloss2",
             "titles.default.normal": {
-              "font": "FontAwesome@34",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "font": "FontAwesome@24",
+              "foreground-color": "gray@75%",
               "text-effect": "letter-press",
-              "icon-name": "chervron-down"
+              "icon-name": "chevron-down"
             },
-            "background-colors.default.normal": "#060606FF",
             "title-edge-insets": "{20, 20, 20, 20}"
           },
           {
@@ -1465,7 +1456,6 @@
         "uuid": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F",
         "name": "Selection Panel",
         "role": "selection-panel",
-        "subtype": "right1",
         "shape": "rounded-rectangle",
         "constraints": {
           "index": {
@@ -1493,17 +1483,14 @@
             "name": "Button STB",
             "key": "default",
             "role": "selection-panel",
-            "shape": "rounded-rectangle",
-            "style": "gloss2",
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@32",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
               "alignment": "center",
               "text": "STB"
             },
-            "background-colors.default.normal": "#060606FF",
             "title-edge-insets": "{20, 20, 20, 20}"
           },
           {
@@ -1511,17 +1498,14 @@
             "name": "Button TV",
             "key": "tv",
             "role": "selection-panel",
-            "shape": "rounded-rectangle",
-            "style": "gloss2",
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@32",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
               "alignment": "center",
               "text": "TV"
             },
-            "background-colors.default.normal": "#060606FF",
             "title-edge-insets": "{20, 20, 20, 20}"
           }
         ]
@@ -1530,7 +1514,6 @@
         "uuid": "7521F420-F677-44C9-97BA-4AF836779C21",
         "name": "Left Overlay Panel",
         "role": "panel",
-        "subtype": "left1",
         "constraints": {
           "index": {
             "dVRAudioInput": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
@@ -1599,7 +1582,7 @@
             "titles": {
               "default": {
                 "normal": {
-                  "font": "Helvetica Neue@20",
+                  "font": "Helvetica Neue@18",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
@@ -1609,7 +1592,7 @@
               },
               "tv": {
                 "normal": {
-                  "font": "Helvetica Neue@20",
+                  "font": "Helvetica Neue@18",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
@@ -1637,7 +1620,7 @@
               }
             },
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@18",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
@@ -1665,7 +1648,7 @@
             "titles": {
               "default": {
                 "normal": {
-                  "font": "Helvetica Neue@20",
+                  "font": "Helvetica Neue@18",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
@@ -1675,7 +1658,7 @@
               },
               "tv": {
                 "normal": {
-                  "font": "Helvetica Neue@20",
+                  "font": "Helvetica Neue@18",
                   "foreground-color": "white",
                   "stroke-color": "white@50%",
                   "stroke-width": -2,
@@ -1703,7 +1686,7 @@
               }
             },
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@18",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
@@ -1723,7 +1706,7 @@
               "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
             },
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@18",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
@@ -1743,7 +1726,7 @@
               "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9"
             },
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@18",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
@@ -1763,7 +1746,7 @@
               "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
             },
             "titles.default.normal": {
-              "font": "Helvetica Neue@20",
+              "font": "Helvetica Neue@18",
               "foreground-color": "white",
               "stroke-color": "white@50%",
               "stroke-width": -2,
@@ -1777,17 +1760,12 @@
             "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
             "name": "Tuck Panel",
             "role": "tuck",
-            "shape": "rounded-rectangle",
-            "style": "gloss2",
             "titles.default.normal": {
-              "font": "FontAwesome@34",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "font": "FontAwesome@24",
+              "foreground-color": "gray@75%",
               "text-effect": "letter-press",
               "icon-name": "chevron-left"
             },
-            "background-colors.default.normal": "#060606FF",
             "title-edge-insets": "{20, 20, 20, 20}"
           }
         ]
@@ -1818,7 +1796,7 @@
       ]
     },
     "background-color.default": "black",
-    "background-image.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
+    "background-image.default.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
     "subelements": [
       {
         "uuid": "F358CB82-496C-446D-8833-D4373777D23E",

@@ -10,25 +10,23 @@
 #define NUM_PANELS 13
 
 static int ddLogLevel   = DefaultDDLogLevel;
-static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation RemoteView
 
-- (void)setLocked:(BOOL)locked
-{
-    _locked = locked;
-    [self.subelementViews setValuesForKeysWithDictionary:@{@"resizable": @(!_locked),
-                                                           @"moveable" : @(!_locked)}];
+- (void)setLocked:(BOOL)locked {
+  _locked = locked;
+  [self.subelementViews setValuesForKeysWithDictionary:@{ @"resizable" : @(!_locked),
+                                                          @"moveable" : @(!_locked) }];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - UIView Overrides
 ////////////////////////////////////////////////////////////////////////////////
 
-- (CGSize)intrinsicContentSize
-{
-    return [MainScreen bounds].size;
+- (CGSize)intrinsicContentSize {
+  return [MainScreen bounds].size;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,24 +41,22 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 - (BOOL)isMoveable { return NO; }
 
-- (void)setEditingMode:(REEditingMode)mode
-{
-    [super setEditingMode:mode];
+- (void)setEditingMode:(REEditingMode)mode {
+  [super setEditingMode:mode];
 
-    [self.subelementViews setValue:@(mode) forKeyPath:@"editingMode"];
+  [self.subelementViews setValue:@(mode) forKeyPath:@"editingMode"];
 }
 
-- (void)initializeIVARs
-{
-    [self setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                          forAxis:UILayoutConstraintAxisHorizontal];
-    [self setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                          forAxis:UILayoutConstraintAxisVertical];
-    [self setContentHuggingPriority:UILayoutPriorityRequired
-                            forAxis:UILayoutConstraintAxisHorizontal];
-    [self setContentHuggingPriority:UILayoutPriorityRequired
-                            forAxis:UILayoutConstraintAxisVertical];
-    [super initializeIVARs];
+- (void)initializeIVARs {
+  [self setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                        forAxis:UILayoutConstraintAxisHorizontal];
+  [self setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                        forAxis:UILayoutConstraintAxisVertical];
+  [self setContentHuggingPriority:UILayoutPriorityRequired
+                          forAxis:UILayoutConstraintAxisHorizontal];
+  [self setContentHuggingPriority:UILayoutPriorityRequired
+                          forAxis:UILayoutConstraintAxisVertical];
+  [super initializeIVARs];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,10 +66,11 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 - (NSString *)currentMode { return self.model.currentMode; }
 
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx {
-    return (ButtonGroupView *)[super objectAtIndexedSubscript:idx];
+  return (ButtonGroupView *)[super objectAtIndexedSubscript:idx];
 }
 
 - (ButtonGroupView *)objectForKeyedSubscript:(NSString *)key {
-    return (ButtonGroupView *)[super objectForKeyedSubscript:key];
+  return (ButtonGroupView *)[super objectForKeyedSubscript:key];
 }
+
 @end

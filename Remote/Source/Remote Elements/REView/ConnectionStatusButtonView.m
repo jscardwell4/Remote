@@ -9,19 +9,18 @@
 
 @implementation ConnectionStatusButtonView {}
 
-- (void)initializeIVARs
-{
-    [super initializeIVARs];
+- (void)initializeIVARs {
+  [super initializeIVARs];
 
-    self.selected = [ConnectionManager isWifiAvailable];
+  self.selected = [ConnectionManager isWifiAvailable];
 
-    [NotificationCenter
+  [NotificationCenter
      addObserverForName:CMConnectionStatusNotification
                  object:[ConnectionManager class]
                   queue:MainQueue
-             usingBlock:^(NSNotification * note){
-                 if (self.model.selected != BOOLValue([note.userInfo
-                                                        valueForKey:CMConnectionStatusWifiAvailable]))
+             usingBlock:^(NSNotification * note) {
+               if (self.model.selected != BOOLValue([note.userInfo
+                                             valueForKey:CMConnectionStatusWifiAvailable]))
                  self.model.selected = !self.model.selected;
              }];
 }

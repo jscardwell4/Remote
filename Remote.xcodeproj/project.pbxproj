@@ -156,6 +156,8 @@
 		C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
 		C20FF1E219AE484E00D11F33 /* Remote_Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1E119AE484E00D11F33 /* Remote_Tests.json */; };
 		C20FF1EC19AE4FE400D11F33 /* Remote_Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1E119AE484E00D11F33 /* Remote_Tests.json */; };
+		C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
+		C20FF1F019AE6DED00D11F33 /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423D170B3ED600FAE00E /* REBackgroundEditingViewController.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
@@ -164,9 +166,7 @@
 		C225FC0B1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
 		C225FC0C1794A6A5008B8FF6 /* CustomTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C225FC0A1794A6A5008B8FF6 /* CustomTheme.m */; };
 		C23004C516DD3AA100D30A19 /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C23004C416DD3AA100D30A19 /* Remote.sqlite */; };
-		C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1917E3D40000CF58D9 /* RemoteControl.m */; };
 		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
-		C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B2217E4C80E00CF58D9 /* Editor.m */; };
 		C23423C71795101D00703F86 /* ThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* ThemeSettings.m */; };
 		C23423C81795101D00703F86 /* ThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C23423C61795101D00703F86 /* ThemeSettings.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
@@ -644,6 +644,8 @@
 		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankCollectionZoomView.xib; path = "../../Source/Bank/View Controllers/BankCollectionZoomView.xib"; sourceTree = "<group>"; };
 		C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NightshadeThemeDecorator.m; sourceTree = "<group>"; };
 		C20FF1E119AE484E00D11F33 /* Remote_Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Tests.json; sourceTree = "<group>"; };
+		C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish_Test.json; sourceTree = "<group>"; };
+		C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Test.json; sourceTree = "<group>"; };
 		C21687A01722F17000064C95 /* ConfigurationDelegateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationDelegateTests.h; sourceTree = "<group>"; };
 		C21687A11722F17000064C95 /* ConfigurationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationDelegateTests.m; sourceTree = "<group>"; };
 		C21687A31722F18400064C95 /* ControlStateSetTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateSetTests.h; sourceTree = "<group>"; };
@@ -722,12 +724,8 @@
 		C22E267917E6A52000299DD5 /* BankTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankTableViewController.h; sourceTree = "<group>"; };
 		C22E267A17E6A52000299DD5 /* BankTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankTableViewController.m; sourceTree = "<group>"; };
 		C23004C416DD3AA100D30A19 /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
-		C2318B1817E3D40000CF58D9 /* RemoteControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteControl.h; path = "../Remote Elements/Remote Controllers/RemoteControl.h"; sourceTree = "<group>"; };
-		C2318B1917E3D40000CF58D9 /* RemoteControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteControl.m; path = "../Remote Elements/Remote Controllers/RemoteControl.m"; sourceTree = "<group>"; };
 		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
 		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
-		C2318B2117E4C80E00CF58D9 /* Editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
-		C2318B2217E4C80E00CF58D9 /* Editor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Editor.m; sourceTree = "<group>"; };
 		C2318B2417E50DAE00CF58D9 /* BankIndex.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankIndex.xib; sourceTree = "<group>"; };
 		C23423C61795101D00703F86 /* ThemeSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThemeSettings.m; path = "Remote/Source/Remote Elements/Remote Element/Themes/ThemeSettings.m"; sourceTree = SOURCE_ROOT; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
@@ -2111,8 +2109,6 @@
 		C26BAFE716DC18530093D5B4 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				C2318B1817E3D40000CF58D9 /* RemoteControl.h */,
-				C2318B1917E3D40000CF58D9 /* RemoteControl.m */,
 				C26BAFE816DC18530093D5B4 /* CoreDataManager.h */,
 				C26BAFE916DC18530093D5B4 /* CoreDataManager.m */,
 				C262967F1810619900760056 /* CoreDataManager+Model.m */,
@@ -2128,8 +2124,6 @@
 				C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */,
 				C26BAFFA16DC18530093D5B4 /* ViewDecorator.h */,
 				C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */,
-				C2318B2117E4C80E00CF58D9 /* Editor.h */,
-				C2318B2217E4C80E00CF58D9 /* Editor.m */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -2478,6 +2472,8 @@
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
+				C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */,
+				C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */,
 				C25C44DB19ABB3E2005594ED /* Activity.json */,
 				C2C6A172182AFFFF0036261E /* Glyphish.json */,
 				C26296811811F9AE00760056 /* Remote.json */,
@@ -2995,6 +2991,7 @@
 				C2381F0B19A7EE3B00135DAB /* Mint-640x1136.jpg in Resources */,
 				C2381EBE19A7EE3B00135DAB /* Blue-640x960.jpg in Resources */,
 				C2381ECE19A7EE3B00135DAB /* Chalkboard-640x1136-iPhone5.jpg in Resources */,
+				C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */,
 				C265936C17FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib in Resources */,
 				C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */,
 				C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */,
@@ -3219,6 +3216,7 @@
 				C2381EC719A7EE3B00135DAB /* Cardboard-320x640-iPhone.jpg in Resources */,
 				C27BCC921801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png in Resources */,
 				C2381ECA19A7EE3B00135DAB /* Cardboard-1024x768-iPad.jpg in Resources */,
+				C20FF1F019AE6DED00D11F33 /* Manufacturer_Test.json in Resources */,
 				C2381EE919A7EE3B00135DAB /* Dawn-1024x768.jpg in Resources */,
 				C29B27F2172E1CD7006046A5 /* JSON-Grammar.parsekit in Resources */,
 				C2381ED619A7EE3B00135DAB /* Cloth-320x640-iPhone.jpg in Resources */,
@@ -3334,7 +3332,6 @@
 				C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */,
 				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
-				C2318B2317E4C80E00CF58D9 /* Editor.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */,
 				C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */,
@@ -3384,7 +3381,6 @@
 				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
 				C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */,
-				C2318B1A17E3D40000CF58D9 /* RemoteControl.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
 				C2F2A47217EF564100DE2F41 /* IRCodeDetailViewController.m in Sources */,
 				C2EF968717F7C4D4005AA639 /* BankCollectionViewFlowLayout.m in Sources */,

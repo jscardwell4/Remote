@@ -17,6 +17,11 @@ static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
+static NSArray      const * kPropertyKeys;
+static NSArray      const * kParagraphKeys;
+static NSDictionary const * kPropertyClasses;
+static NSDictionary const * kPropertyToAttribute;
+
 @interface TitleAttributes (CoreDataGenerated)
 
 @property (nonatomic) NSString * primitiveIconName;
@@ -36,14 +41,52 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic lineBreakMode, alignment;
 @dynamic tailIndent, headIndent, firstLineHeadIndent;
 
-/// This method provides the proper class for the value of the specified `TitleAttribute` property
-/// @param property description
-/// @return Class
-+ (Class)validClassForProperty:(NSString *)property {
-  static dispatch_once_t    onceToken;
-  static NSMapTable const * index;
++ (void)initialize {
+  if (self == [TitleAttributes class]) {
 
-  dispatch_once(&onceToken, ^{
+    kParagraphKeys = @[@"hyphenationFactor",
+                       @"paragraphSpacingBefore",
+                       @"lineHeightMultiple",
+                       @"maximumLineHeight",
+                       @"minimumLineHeight",
+                       @"lineBreakMode",
+                       @"tailIndent",
+                       @"headIndent",
+                       @"firstLineHeadIndent",
+                       @"alignment",
+                       @"paragraphSpacing",
+                       @"lineSpacing"];
+
+		kPropertyKeys = @[@"font",
+                      @"foregroundColor",
+                      @"backgroundColor",
+                      @"ligature",
+                      @"iconName",
+                      @"text",
+                      @"shadow",
+                      @"expansion",
+                      @"obliqueness",
+                      @"strikethroughColor",
+                      @"underlineColor",
+                      @"baselineOffset",
+                      @"textEffect",
+                      @"strokeWidth",
+                      @"strokeColor",
+                      @"underlineStyle",
+                      @"strikethroughStyle",
+                      @"kern",
+                      @"hyphenationFactor",
+                      @"paragraphSpacingBefore",
+                      @"lineHeightMultiple",
+                      @"maximumLineHeight",
+                      @"minimumLineHeight",
+                      @"lineBreakMode",
+                      @"tailIndent",
+                      @"headIndent",
+                      @"firstLineHeadIndent",
+                      @"alignment",
+                      @"paragraphSpacing",
+                      @"lineSpacing"];
 
     Class number    = [NSNumber class];
     Class string    = [NSString class];
@@ -51,157 +94,89 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     Class shadow    = [NSShadow class];
     Class font      = [REFont   class];
 
-    index = [NSMapTable weakToWeakObjectsMapTableFromDictionary:@{ @"font"                    : font,
-                                                                   @"foregroundColor"         : color,
-                                                                   @"backgroundColor"         : color,
-                                                                   @"ligature"                : number,
-                                                                   @"iconName"                : string,
-                                                                   @"text"                    : string,
-                                                                   @"shadow"                  : shadow,
-                                                                   @"expansion"               : number,
-                                                                   @"obliqueness"             : number,
-                                                                   @"strikethroughColor"      : color,
-                                                                   @"underlineColor"          : color,
-                                                                   @"baselineOffset"          : number,
-                                                                   @"textEffect"              : string,
-                                                                   @"strokeWidth"             : number,
-                                                                   @"strokeColor"             : color,
-                                                                   @"underlineStyle"          : number,
-                                                                   @"strikethroughStyle"      : number,
-                                                                   @"kern"                    : number,
-                                                                   @"hyphenationFactor"       : number,
-                                                                   @"paragraphSpacingBefore"  : number,
-                                                                   @"lineHeightMultiple"      : number,
-                                                                   @"maximumLineHeight"       : number,
-                                                                   @"minimumLineHeight"       : number,
-                                                                   @"lineBreakMode"           : number,
-                                                                   @"tailIndent"              : number,
-                                                                   @"headIndent"              : number,
-                                                                   @"firstLineHeadIndent"     : number,
-                                                                   @"alignment"               : number,
-                                                                   @"paragraphSpacing"        : number,
-                                                                   @"lineSpacing"             : number }];
+    kPropertyClasses = @{ @"font"                    : font,
+                          @"foregroundColor"         : color,
+                          @"backgroundColor"         : color,
+                          @"ligature"                : number,
+                          @"iconName"                : string,
+                          @"text"                    : string,
+                          @"shadow"                  : shadow,
+                          @"expansion"               : number,
+                          @"obliqueness"             : number,
+                          @"strikethroughColor"      : color,
+                          @"underlineColor"          : color,
+                          @"baselineOffset"          : number,
+                          @"textEffect"              : string,
+                          @"strokeWidth"             : number,
+                          @"strokeColor"             : color,
+                          @"underlineStyle"          : number,
+                          @"strikethroughStyle"      : number,
+                          @"kern"                    : number,
+                          @"hyphenationFactor"       : number,
+                          @"paragraphSpacingBefore"  : number,
+                          @"lineHeightMultiple"      : number,
+                          @"maximumLineHeight"       : number,
+                          @"minimumLineHeight"       : number,
+                          @"lineBreakMode"           : number,
+                          @"tailIndent"              : number,
+                          @"headIndent"              : number,
+                          @"firstLineHeadIndent"     : number,
+                          @"alignment"               : number,
+                          @"paragraphSpacing"        : number,
+                          @"lineSpacing"             : number };
 
-  });
+    kPropertyToAttribute = @{ @"font"                    : NSFontAttributeName,
+                              @"foregroundColor"         : NSForegroundColorAttributeName,
+                              @"backgroundColor"         : NSBackgroundColorAttributeName,
+                              @"ligature"                : NSLigatureAttributeName,
+                              @"shadow"                  : NSShadowAttributeName,
+                              @"expansion"               : NSExpansionAttributeName,
+                              @"obliqueness"             : NSObliquenessAttributeName,
+                              @"strikethroughColor"      : NSStrikethroughColorAttributeName,
+                              @"underlineColor"          : NSUnderlineColorAttributeName,
+                              @"baselineOffset"          : NSBaselineOffsetAttributeName,
+                              @"textEffect"              : NSTextEffectAttributeName,
+                              @"strokeWidth"             : NSStrokeWidthAttributeName,
+                              @"strokeColor"             : NSStrokeColorAttributeName,
+                              @"underlineStyle"          : NSUnderlineStyleAttributeName,
+                              @"strikethroughStyle"      : NSStrikethroughStyleAttributeName,
+                              @"kern"                    : NSKernAttributeName };
 
-  return property ? index[property] : nil;
+  }
 }
 
 /// This method provides the proper class for the value of the specified `TitleAttribute` property
 /// @param property description
+/// @return Class
++ (Class)validClassForProperty:(NSString *)property { return property ? kPropertyClasses[property] : nil; }
+
+/// This method provides the proper class for the value of the specified `TitleAttribute` property
+/// @param property description
 /// @return NSString *
-+ (NSString *)attributeNameForProperty:(NSString *)property {
-  static dispatch_once_t    onceToken;
-  static NSMapTable const * index;
++ (NSString *)attributeNameForProperty:(NSString *)property { return property ? kPropertyToAttribute[property] : nil; }
 
-  dispatch_once(&onceToken, ^{
++ (NSArray *)propertyKeys  { return [kPropertyKeys  copy]; }
++ (NSArray *)paragraphKeys { return [kParagraphKeys copy]; }
 
-    index = [NSMapTable weakToWeakObjectsMapTableFromDictionary:
-             @{ @"font"                    : NSFontAttributeName,
-                @"foregroundColor"         : NSForegroundColorAttributeName,
-                @"backgroundColor"         : NSBackgroundColorAttributeName,
-                @"ligature"                : NSLigatureAttributeName,
-                @"shadow"                  : NSShadowAttributeName,
-                @"expansion"               : NSExpansionAttributeName,
-                @"obliqueness"             : NSObliquenessAttributeName,
-                @"strikethroughColor"      : NSStrikethroughColorAttributeName,
-                @"underlineColor"          : NSUnderlineColorAttributeName,
-                @"baselineOffset"          : NSBaselineOffsetAttributeName,
-                @"textEffect"              : NSTextEffectAttributeName,
-                @"strokeWidth"             : NSStrokeWidthAttributeName,
-                @"strokeColor"             : NSStrokeColorAttributeName,
-                @"underlineStyle"          : NSUnderlineStyleAttributeName,
-                @"strikethroughStyle"      : NSStrikethroughStyleAttributeName,
-                @"kern"                    : NSKernAttributeName }];
-
-  });
-
-  return property ? index[property] : nil;
-}
-
-+ (NSArray *)propertyKeys {
-	static dispatch_once_t onceToken;
-	static NSArray * keys;
-	dispatch_once(&onceToken, ^{
-
-		keys = @[@"font",
-						 @"foregroundColor",
-						 @"backgroundColor",
-						 @"ligature",
-						 @"iconName",
-						 @"text",
-						 @"shadow",
-						 @"expansion",
-						 @"obliqueness",
-						 @"strikethroughColor",
-						 @"underlineColor",
-						 @"baselineOffset",
-						 @"textEffect",
-						 @"strokeWidth",
-						 @"strokeColor",
-						 @"underlineStyle",
-						 @"strikethroughStyle",
-						 @"kern",
-						 @"hyphenationFactor",
-						 @"paragraphSpacingBefore",
-						 @"lineHeightMultiple",
-						 @"maximumLineHeight",
-						 @"minimumLineHeight",
-						 @"lineBreakMode",
-						 @"tailIndent",
-						 @"headIndent",
-						 @"firstLineHeadIndent",
-						 @"alignment",
-						 @"paragraphSpacing",
-						 @"lineSpacing"];
-
-	});
-
-	return keys;
-}
-
-+ (NSArray *)paragraphKeys {
-	static dispatch_once_t onceToken;
-	static NSArray * keys;
-	dispatch_once(&onceToken, ^{
-
-		keys = @[@"hyphenationFactor",
-						 @"paragraphSpacingBefore",
-						 @"lineHeightMultiple",
-						 @"maximumLineHeight",
-						 @"minimumLineHeight",
-						 @"lineBreakMode",
-						 @"tailIndent",
-						 @"headIndent",
-						 @"firstLineHeadIndent",
-						 @"alignment",
-						 @"paragraphSpacing",
-						 @"lineSpacing"];
-
-	});
-
-	return keys;
-
-}
-
+/// Method for creating a dictionary of attribute-value entries suitable for use with an `NSAttributedString`
+/// @return MSDictionary * The dictionary of attribute-value entries
 - (MSDictionary *)attributes {
+
   MSDictionary * attributes          = [MSDictionary dictionary];
   MSDictionary * paragraphAttributes = [MSDictionary dictionary];
   NSString * stringText = nil;
 
-  for (NSString * attribute in [TitleAttributes propertyKeys]) {
-    if ([[TitleAttributes paragraphKeys] containsObject:attribute])
+  for (NSString * attribute in kPropertyKeys) {
+    if ([kParagraphKeys containsObject:attribute])
       paragraphAttributes[attribute] = CollectionSafe(self[attribute]);
     else if ([@"font" isEqualToString:attribute])
       attributes[NSFontAttributeName] = CollectionSafe(self.font.UIFontValue);
-    else if ([@"iconName" isEqualToString:attribute])
+    else if ([@"iconName" isEqualToString:attribute] && !stringText)
       stringText = [UIFont fontAwesomeIconForName:self.iconName];
-    else if ([@"text" isEqualToString:attribute])
+    else if ([@"text" isEqualToString:attribute] && !stringText)
       stringText = self.text;
-    else {
-      NSString * attributeName = [TitleAttributes attributeNameForProperty:attribute];
-      attributes[attributeName] = CollectionSafe(self[attribute]);
-    }
+    else if (![@[@"text", @"iconName"] containsObject:attribute])
+      attributes[kPropertyToAttribute[attribute]] = CollectionSafe(self[attribute]);
   }
 
   attributes[RETitleTextAttributeKey] = CollectionSafe(stringText);
@@ -218,6 +193,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return attributes;
 }
 
+/// Returns an attributed string created using the current attribute values of the object.
+/// @return NSAttributedString * The attributed string generated from the object's attributes
 - (NSAttributedString *)string {
 
   NSAttributedString * string     = nil;
@@ -275,9 +252,9 @@ NS_ENUM(int, Property) {
   [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 
     NSString * property = [key dashCaseToCamelCase];
-    if (property && [[TitleAttributes propertyKeys] containsObject:property]) {
+    if (property && [kPropertyKeys containsObject:property]) {
 
-      switch ([[TitleAttributes propertyKeys] indexOfObject:property]) {
+      switch ([kPropertyKeys indexOfObject:property]) {
 
         case FOREGROUNDCOLOR:
         case BACKGROUNDCOLOR:
@@ -308,6 +285,7 @@ NS_ENUM(int, Property) {
 
         case TEXT: {
           if (isStringKind(obj)) self.text = obj;
+          else if ([obj respondsToSelector:@selector(stringValue)]) self.text = [obj stringValue];
         } break;
 
         case SHADOW: {
@@ -366,11 +344,11 @@ NS_ENUM(int, Property) {
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key {
-  return ([[TitleAttributes propertyKeys] containsObject:key] ? [self valueForKey:key] : nil);
+  return ([kPropertyKeys containsObject:key] ? [self valueForKey:key] : nil);
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key {
-  if (   [[TitleAttributes propertyKeys] containsObject:key]
+  if (   [kPropertyKeys containsObject:key]
       && (!obj || [obj isKindOfClass:[TitleAttributes validClassForProperty:key]]))
     [self setValue:obj forKeyPath:key];
 }
@@ -395,14 +373,14 @@ NS_ENUM(int, Property) {
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  MSDictionary * values = [[self dictionaryWithValuesForKeys:[TitleAttributes propertyKeys]] MSDictionaryValue];
+  MSDictionary * values = [[self dictionaryWithValuesForKeys:[kPropertyKeys copy]] MSDictionaryValue];
   [values compact];
 
   [values enumerateKeysAndObjectsUsingBlock:^(NSString * property, id obj, BOOL *stop) {
 
     if (![self attributeValueIsDefault:property])
 
-      switch ([[TitleAttributes propertyKeys] indexOfObject:property]) {
+      switch ([kPropertyKeys indexOfObject:property]) {
 
         case FOREGROUNDCOLOR:
         case BACKGROUNDCOLOR:

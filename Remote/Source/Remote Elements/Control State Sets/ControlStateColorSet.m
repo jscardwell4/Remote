@@ -44,7 +44,7 @@
 
   NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)]
                     arrayByMappingToBlock:^id (id obj, NSUInteger idx) {
-                      return [ControlStateSet propertyForState:[obj unsignedIntegerValue]];
+                      return [ControlStateSet propertyForState:obj];
                     }];
 
 

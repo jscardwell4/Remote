@@ -273,7 +273,7 @@ commandSetAtIndex: _commandSetCollectionIndex]);
   }
 
   self.labelConstraints = data[@"label-constraints"];
-  self.labelAttributes  = [TitleAttributes importObjectFromData:data[@"label-attribute"] context:moc];
+  self.labelAttributes  = [TitleAttributes importObjectFromData:data[@"label-attributes"] context:moc];
 
 }
 

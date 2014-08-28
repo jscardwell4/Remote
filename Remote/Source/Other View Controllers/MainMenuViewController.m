@@ -11,7 +11,6 @@
 #import "RemoteElement.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
-#import "RemoteControl.h"
 
 static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;

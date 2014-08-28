@@ -134,7 +134,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   if ([ControlStateSet validState:@(state)]) {
 
-    NSString * key = [ControlStateSet propertyForState:state];
+    NSString * key = [ControlStateSet propertyForState:@(state)];
     attributes = ((TitleAttributes *)[self valueForKey:key]).attributes;
 
     if (!(_suppressNormalStateAttributes || [@"normal" isEqualToString:key])) {

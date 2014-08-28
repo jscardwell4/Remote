@@ -55,8 +55,8 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 - (void)addSubelementView:(ButtonView *)view {
   [super addSubelementView:view];
   [view.gestureRecognizers
-     makeObjectsPerformSelector:@selector(requireGestureRecognizerToFail:)
-                     withObject:_labelPanGesture];
+   makeObjectsPerformSelector:@selector(requireGestureRecognizerToFail:)
+                   withObject:_labelPanGesture];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,28 +64,28 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 ////////////////////////////////////////////////////////////////////////////////
 
 - (NSDictionary *)kvoRegistration {
-  
+
   NSDictionary * kvoRegistration =
 
-  @{
+    @{
 
     @"labels" :
-      ^(MSKVOReceptionist * receptionist,
-        NSString          * keyPath,
-        id object,
-        NSDictionary      * change,
-        void              * context)
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
     {
       [(__bridge PickerLabelButtonGroupView *)context
        buildLabels];
     },
 
     @"commandSets" :
-      ^(MSKVOReceptionist * receptionist,
-        NSString          * keyPath,
-        id                  object,
-        NSDictionary      * change,
-        void              * context)
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
     {
       [(__bridge PickerLabelButtonGroupView *)context updateCommandSet];
     }
@@ -93,7 +93,7 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
   };
 
   return [[super kvoRegistration]
-          dictionaryByAddingEntriesFromDictionary: kvoRegistration];
+          dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }
 
 - (void)initializeIVARs {
@@ -278,11 +278,11 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
         _pickerFlags.blockPan   = YES;
         _pickerFlags.labelIndex = _pickerFlags.labelCount - 1;
         [self animateLabelContainerToIndex:_pickerFlags.labelIndex withDuration:duration];
-      } else if (newOffset > 0)   {
+      } else if (newOffset > 0) {
         _pickerFlags.blockPan   = YES;
         _pickerFlags.labelIndex = 0;
         [self animateLabelContainerToIndex:_pickerFlags.labelIndex withDuration:duration];
-      } else   {
+      } else {
         _pickerFlags.prevPanAmount = panAmount;
         [UIView animateWithDuration:0
                          animations:^{ _labelContainerLeftConstraint.constant = newOffset;

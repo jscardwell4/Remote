@@ -53,7 +53,7 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
          REButtonGroupRoleDPadJSONKey           : @(REButtonGroupRoleDPad),
          REButtonGroupRoleNumberpadJSONKey      : @(REButtonGroupRoleNumberpad),
          REButtonGroupRoleTransportJSONKey      : @(REButtonGroupRoleTransport),
-         REButtonGroupRoleRockerJSONKey    : @(REButtonGroupRoleRocker),
+         REButtonGroupRoleRockerJSONKey         : @(REButtonGroupRoleRocker),
 
          // toolbar buttons
          REButtonRoleToolbarJSONKey             : @(REButtonRoleToolbar),
@@ -108,7 +108,6 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
 
   return (roleValue ? [roleValue unsignedShortValue] : RERoleUndefined);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Options & State
@@ -368,7 +367,7 @@ Class commandClassForImportKey(NSString * importKey) {
 #pragma mark Control state sets
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * titleAttributesPropertyForJSONKey(NSString * key) {
+NSString *titleAttributesPropertyForJSONKey(NSString * key) {
   static NSDictionary const * index = nil;
   static dispatch_once_t      onceToken;
 
@@ -542,9 +541,9 @@ UIColor *colorFromImportValue(id importValue) {
     if (!baseColor) return nil;
 
     color = [baseColor colorWithAlphaComponent:[percent floatValue] / 100.0f];
-  } else if (!color && [importValue hasPrefix:@"#"])   {
+  } else if (!color && [importValue hasPrefix:@"#"]) {
     color = [UIColor colorWithRGBAHexString:importValue];
-  } else if (!color)   {
+  } else if (!color) {
     NSArray * components = [importValue componentsSeparatedByString:@" "];
 
     if (![components count] == 4) return nil;

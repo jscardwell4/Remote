@@ -55,7 +55,7 @@
   else return nil;
 }
 
-+ (NSString *)propertyForState:(NSUInteger)state {
++ (NSString *)propertyForState:(NSNumber *)state {
   static const NSDictionary * states;
   static dispatch_once_t      onceToken;
 
@@ -71,7 +71,7 @@
                 @7 : @"selectedHighlightedDisabled" };
   });
 
-  return states[@(state)];
+  return states[state];
 }
 
 + (NSUInteger)stateForProperty:(NSString *)property {
@@ -144,7 +144,7 @@
   MSDictionary * dictionary = [MSDictionary dictionary];
 
   for (NSUInteger i = 0; i < 8; i++) {
-    NSString * property = [ControlStateSet propertyForState:i];
+    NSString * property = [ControlStateSet propertyForState:@(i)];
 
     NSString * key = useJSONKeys ? [property camelCaseToDashCase] : property;
     dictionary[key] = CollectionSafe([self valueForKey:property]);
@@ -163,7 +163,7 @@
 
 - (id)objectAtIndex:(NSUInteger)state {
   return ([ControlStateSet validState:@(state)]
-          ? [self valueForKey:[ControlStateSet propertyForState:state]]
+          ? [self valueForKey:[ControlStateSet propertyForState:@(state)]]
           : nil);
 }
 
@@ -175,7 +175,7 @@
   if (![ControlStateSet validState:@(state)])
     return nil;
 
-  id object = [self valueForKey:[ControlStateSet propertyForState:state]];
+  id object = [self valueForKey:[ControlStateSet propertyForState:@(state)]];
 
   if (!object && (state & UIControlStateSelected))
     object = self[state & ~UIControlStateSelected];
@@ -207,7 +207,7 @@
 
 - (void)setObject:(id)object atIndexedSubscript:(NSUInteger)state {
   if (![ControlStateSet validState:@(state)]) ThrowInvalidIndexArgument(state);
-  else [self setValue:object forKey:[ControlStateSet propertyForState:state]];
+  else [self setValue:object forKey:[ControlStateSet propertyForState:@(state)]];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {

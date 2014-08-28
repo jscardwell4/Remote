@@ -54,6 +54,10 @@ NSString * NSStringFromUIColor(UIColor * color);
 @property (nonatomic, readonly) UIColor         * rgbColor;
 @property (nonatomic, readonly) UIColor         * invertedColor;
 @property (nonatomic, readonly) UIColor         * luminanceMappedColor;
+@property (nonatomic, readonly) NSString        * colorName;
+@property (nonatomic, readonly) NSString        * rgbHexString;
+@property (nonatomic, readonly) NSString        * rgbaHexString;
+@property (nonatomic, readonly) NSString        * string;
 
 - (BOOL)isPatternBased;
 
@@ -85,8 +89,5 @@ NSString * NSStringFromUIColor(UIColor * color);
 
 + (UIColor *)randomColor;
 
-- (NSString *)stringRepresentation;
-- (NSString *)RGBHexStringRepresentation;
-- (NSString *)RGBAHexStringRepresentation;
 
 @end

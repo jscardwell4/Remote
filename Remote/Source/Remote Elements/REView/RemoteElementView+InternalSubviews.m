@@ -13,50 +13,46 @@
 /**
  * Adds the backdrop, content, and overlay views. Subclasses that override should call `super`.
  */
-- (void)addInternalSubviews
-{
-    _backdropView = [REViewBackdrop newForAutolayout];
-    [self addSubview:_backdropView];
+- (void)addInternalSubviews {
+  _backdropView = [REViewBackdrop newForAutolayout];
+  [self addSubview:_backdropView];
 
-    _backgroundImageView                 = [UIImageView newForAutolayout];
-    _backgroundImageView.contentMode     = UIViewContentModeScaleToFill;
-    _backgroundImageView.opaque          = NO;
-    _backgroundImageView.backgroundColor = ClearColor;
-    [_backdropView addSubview:_backgroundImageView];
+  _backgroundImageView                 = [UIImageView newForAutolayout];
+  _backgroundImageView.contentMode     = UIViewContentModeScaleToFill;
+  _backgroundImageView.opaque          = NO;
+  _backgroundImageView.backgroundColor = ClearColor;
+  [_backdropView addSubview:_backgroundImageView];
 
-    _contentView = [REViewContent newForAutolayout];
-    [self addSubview:_contentView];
+  _contentView = [REViewContent newForAutolayout];
+  [self addSubview:_contentView];
 
-    _subelementsView = [REViewSubelements newForAutolayout];
-    [self addSubview:_subelementsView];
+  _subelementsView = [REViewSubelements newForAutolayout];
+  [self addSubview:_subelementsView];
 
-    _overlayView = [REViewOverlay newForAutolayout];
-    [self addSubview:_overlayView];
+  _overlayView = [REViewOverlay newForAutolayout];
+  [self addSubview:_overlayView];
 }
 
-- (void)setContentInteractionEnabled:(BOOL)contentInteractionEnabled
-{
-    _contentView.userInteractionEnabled = contentInteractionEnabled;
+- (void)setContentInteractionEnabled:(BOOL)contentInteractionEnabled {
+  _contentView.userInteractionEnabled = contentInteractionEnabled;
 }
 
 - (BOOL)contentInteractionEnabled { return _contentView.userInteractionEnabled; }
 
-- (void)setSubelementInteractionEnabled:(BOOL)subelementInteractionEnabled
-{
-    _subelementsView.userInteractionEnabled = subelementInteractionEnabled;
+- (void)setSubelementInteractionEnabled:(BOOL)subelementInteractionEnabled {
+  _subelementsView.userInteractionEnabled = subelementInteractionEnabled;
 }
 
 - (BOOL)subelementInteractionEnabled { return _subelementsView.userInteractionEnabled; }
 
-- (void)setContentClipsToBounds:(BOOL)contentClipsToBounds
-{
-    _contentView.clipsToBounds = contentClipsToBounds;
+- (void)setContentClipsToBounds:(BOOL)contentClipsToBounds {
+  _contentView.clipsToBounds = contentClipsToBounds;
 }
 
 - (BOOL)contentClipsToBounds { return _contentView.clipsToBounds; }
 
 - (void)setOverlayClipsToBounds:(BOOL)overlayClipsToBounds {
-    _overlayView.clipsToBounds = overlayClipsToBounds;
+  _overlayView.clipsToBounds = overlayClipsToBounds;
 }
 
 - (BOOL)overlayClipsToBounds { return _overlayView.clipsToBounds; }

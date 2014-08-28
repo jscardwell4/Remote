@@ -315,98 +315,98 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   NSDictionary * kvoRegistration =
     @{
 
-      @"selected" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView * buttonView = (__bridge ButtonView *)context;
-        [(__bridge ButtonView *)context updateState];
-      },
+    @"selected" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView * buttonView = (__bridge ButtonView *)context;
+      [(__bridge ButtonView *)context updateState];
+    },
 
-      @"enabled" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView * buttonView = (__bridge ButtonView *)context;
-        BOOL         enabled    = [change[NSKeyValueChangeNewKey] boolValue];
-        buttonView.enabled = enabled;
-      },
+    @"enabled" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView * buttonView = (__bridge ButtonView *)context;
+      BOOL         enabled    = [change[NSKeyValueChangeNewKey] boolValue];
+      buttonView.enabled = enabled;
+    },
 
-      @"highlighted" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView * buttonView = (__bridge ButtonView *)context;
-        [(__bridge ButtonView *)context updateState];
-      },
+    @"highlighted" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView * buttonView = (__bridge ButtonView *)context;
+      [(__bridge ButtonView *)context updateState];
+    },
 
-      @"command" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView * buttonView = (__bridge ButtonView *)context;
-        buttonView->_flags.activityIndicator = buttonView.model.command.indicator;
-      },
+    @"command" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView * buttonView = (__bridge ButtonView *)context;
+      buttonView->_flags.activityIndicator = buttonView.model.command.indicator;
+    },
 
-      @"style" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView * buttonView = (__bridge ButtonView *)context;
-        [buttonView setNeedsDisplay];
-      },
+    @"style" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView * buttonView = (__bridge ButtonView *)context;
+      [buttonView setNeedsDisplay];
+    },
 
-      @"title" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView         * buttonView = (__bridge ButtonView *)context;
-        NSAttributedString * title      = NilSafe(change[NSKeyValueChangeNewKey]);
-        buttonView->_labelView.attributedText = title;
-      },
+    @"title" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView         * buttonView = (__bridge ButtonView *)context;
+      NSAttributedString * title      = NilSafe(change[NSKeyValueChangeNewKey]);
+      buttonView->_labelView.attributedText = title;
+    },
 
-      @"image" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        [(__bridge ButtonView *)context updateState];
-      },
+    @"image" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      [(__bridge ButtonView *)context updateState];
+    },
 
-      @"icon" :
-        ^(MSKVOReceptionist * receptionist,
-          NSString          * keyPath,
-          id                  object,
-          NSDictionary      * change,
-          void              * context)
-      {
-        ButtonView * buttonView = (__bridge ButtonView *)context;
-        ImageView  * icon       = NilSafe(change[NSKeyValueChangeNewKey]);
-        buttonView->_icon = icon.colorImage;
-        [buttonView setNeedsDisplay];
-      }
-      
-    };
+    @"icon" :
+    ^(MSKVOReceptionist * receptionist,
+      NSString          * keyPath,
+      id object,
+      NSDictionary      * change,
+      void              * context)
+    {
+      ButtonView * buttonView = (__bridge ButtonView *)context;
+      ImageView  * icon       = NilSafe(change[NSKeyValueChangeNewKey]);
+      buttonView->_icon = icon.colorImage;
+      [buttonView setNeedsDisplay];
+    }
+
+  };
 
   return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }

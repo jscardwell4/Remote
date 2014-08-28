@@ -6,6 +6,8 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 
+#import "RemoteElementEditingViewController.h"
+
 /**
  * The application delegate and primary controller.
  *
@@ -18,7 +20,7 @@
  * -uitest [YES|NO]		If YES, UI testing will begin after launch completes.
  *
  */
-@interface MSRemoteAppController : NSObject <UIApplicationDelegate>
+@interface MSRemoteAppController : NSObject <UIApplicationDelegate, RemoteElementEditingDelegate>
 
 /**
  * @return The shared instance of MSRemoteAppController

@@ -101,7 +101,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 
   [self.view addGestureRecognizer:[UIPinchGestureRecognizer gestureWithTarget:self
-                                                                       action:@selector(handlePinch:)]];
+                                                                       action:@selector(toggleTopToolbarAction:)]];
 
   _flags.monitorProximitySensor = [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
   _flags.loadHomeScreen         = YES;
@@ -130,16 +130,10 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 }
 
-- (void)handlePinch:(UIPinchGestureRecognizer *)pinch {
-  if (pinch.state == UIGestureRecognizerStateRecognized)
-    [self toggleTopToolbar:YES];
-}
-
 - (void)insertRemoteView:(RemoteView *)remoteView {
   assert(OnMainThread && remoteView);
 
   _flags.addRemoteViewConstraints = YES;
-  [remoteView.model refresh];
 
   if (self.remoteView) {
     [UIView animateWithDuration:0.25
@@ -291,7 +285,6 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
   [self.view addSubview:topToolbarView];
   self.topToolbarView = topToolbarView;
-  [self.topToolbarView.model refresh];
   NSLayoutConstraint * topToolbarConstraint = [NSLayoutConstraint constraintWithItem:topToolbarView
                                                                            attribute:NSLayoutAttributeTop
                                                                            relatedBy:NSLayoutRelationEqual
@@ -303,8 +296,8 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
   [self.view addConstraint:topToolbarConstraint];
   self.topToolbarConstraint = topToolbarConstraint;
 
-  [self.view addConstraints:[NSLayoutConstraint constraintsByParsingString:@"toolbar.width = view.width\ntoolbar.height = 44\ntoolbar.centerX = view.centerX"
-                                                                     views:@{ @"toolbar" : self.topToolbarView, @"view": self.view }]];
+  [self.view addConstraints:[NSLayoutConstraint constraintsByParsingString:@"H:|[view]|"
+                                                                     views:@{ @"view" : self.topToolbarView }]];
 }
 
 @end

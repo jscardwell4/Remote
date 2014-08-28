@@ -91,4 +91,5 @@
 #import "MSKit/MSColorInputButton.h"
 #import "MSKit/MSView.h"
 #import "MSKit/MSPickerInputButton.h"
+#import "MSKit/MSNotificationReceptionist.h"
 

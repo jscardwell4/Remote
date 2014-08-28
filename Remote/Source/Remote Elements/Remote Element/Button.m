@@ -156,12 +156,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @param mode description
 - (void)updateForMode:(NSString *)mode {
   [super updateForMode:mode];
-  self.command          = [self commandForMode:mode]           ?: [self commandForMode:REDefaultMode];
-  self.longPressCommand = [self longPressCommandForMode:mode]  ?: [self longPressCommandForMode:REDefaultMode];
-  self.titles           = [self titlesForMode:mode]            ?: [self titlesForMode:REDefaultMode];
-  self.icons            = [self iconsForMode:mode]             ?: [self iconsForMode:REDefaultMode];
-  self.images           = [self imagesForMode:mode]            ?: [self imagesForMode:REDefaultMode];
-  self.backgroundColors = [self backgroundColorsForMode:mode]  ?: [self backgroundColorsForMode:REDefaultMode];
+  self.command          = ([self commandForMode:mode]           ?: [self commandForMode:REDefaultMode]);
+  self.longPressCommand = ([self longPressCommandForMode:mode]  ?: [self longPressCommandForMode:REDefaultMode]);
+  self.titles           = ([self titlesForMode:mode]            ?: [self titlesForMode:REDefaultMode]);
+  self.icons            = ([self iconsForMode:mode]             ?: [self iconsForMode:REDefaultMode]);
+  self.images           = ([self imagesForMode:mode]            ?: [self imagesForMode:REDefaultMode]);
+  self.backgroundColors = ([self backgroundColorsForMode:mode]  ?: [self backgroundColorsForMode:REDefaultMode]);
 
   [self updateButtonForState:self.state];
 }
@@ -201,8 +201,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return [[self.managedObjectContext objectForURI:self[configurationKey(mode, @"titles")]] faultedObject];
 }
 
-- (ControlStateTitleSet *)titles { return [self titlesForMode:self.currentMode]; }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Background colors
@@ -216,8 +214,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (ControlStateColorSet *)backgroundColorsForMode:(NSString *)mode {
   return [[self.managedObjectContext objectForURI:self[configurationKey(mode, @"backgroundColors")]] faultedObject];
 }
-
-- (ControlStateColorSet *)backgroundColors { return [self backgroundColorsForMode:self.currentMode]; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -233,8 +229,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return [[self.managedObjectContext objectForURI:self[configurationKey(mode, @"icons")]] faultedObject];
 }
 
-- (ControlStateImageSet *)icons { return [self iconsForMode:self.currentMode]; }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Images
@@ -248,8 +242,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (ControlStateImageSet *)imagesForMode:(NSString *)mode {
   return [[self.managedObjectContext objectForURI:self[configurationKey(mode, @"images")]] faultedObject];
 }
-
-- (ControlStateImageSet *)images { return [self imagesForMode:self.currentMode]; }
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,7 @@
                              withObjects:(NSDictionary *)objects;
 
 + (BOOL)validState:(id)state;
-+ (NSString *)propertyForState:(NSUInteger)state;
++ (NSString *)propertyForState:(NSNumber *)state;
 + (NSUInteger)stateForProperty:(NSString *)property;
 + (NSSet *)validProperties;
 + (NSString *)attributeKeyFromKey:(id)key;

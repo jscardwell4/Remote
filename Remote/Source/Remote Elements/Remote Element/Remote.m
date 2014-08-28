@@ -130,7 +130,7 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
   MSDictionary * panels = [MSDictionary dictionary];
   [self.panels enumerateKeysAndObjectsUsingBlock:^(NSNumber * key, NSString * uuid, BOOL *stop){
     NSString * k = panelKeyForPanelAssignment(IntValue(key));
-    SafeSetValueForKey([self buttonGroupForAssignment:k].commentedUUID, k, panels);
+    SafeSetValueForKey([self buttonGroupForAssignment:IntValue(key)].commentedUUID, k, panels);
   }];
 
   SafeSetValueForKey(panels, @"panels", dictionary);

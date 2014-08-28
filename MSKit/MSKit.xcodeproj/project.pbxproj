@@ -16,6 +16,8 @@
 		C20FF1DB19AE35D100D11F33 /* MSTestLog.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C20FF1D619AE310300D11F33 /* MSTestLog.h */; };
 		C20FF1DC19AE384F00D11F33 /* libMSKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23A0D5319A7A459002BF2B6 /* libMSKit.a */; };
 		C20FF1E019AE3D7900D11F33 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C20FF1DF19AE3D7900D11F33 /* libicucore.dylib */; };
+		C20FF1F319AEB67100D11F33 /* MSNotificationReceptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */; };
+		C20FF1F419AEBB4200D11F33 /* MSNotificationReceptionist.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */; };
 		C230F8A219A7CAC400900F0C /* Lumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.a */; };
 		C230F8A419A7CAC400900F0C /* ParseKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F89A19A7CA0300900F0C /* ParseKit.a */; };
 		C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE897B18138D6C00555D63 /* MSKit.h */; };
@@ -314,6 +316,7 @@
 				C23A0DC719A7A5D9002BF2B6 /* MSJSONParser.h in CopyFiles */,
 				C23A0DC819A7A5D9002BF2B6 /* MSJSONAssembler.h in CopyFiles */,
 				C23A0DC919A7A5D9002BF2B6 /* MSKitProtocols.h in CopyFiles */,
+				C20FF1F419AEBB4200D11F33 /* MSNotificationReceptionist.h in CopyFiles */,
 				C23A0DCA19A7A5D9002BF2B6 /* MSCheckboxView.h in CopyFiles */,
 				C23A0DCB19A7A5D9002BF2B6 /* MSColorInputView.h in CopyFiles */,
 				C23A0DCC19A7A5D9002BF2B6 /* MSMultiselectView.h in CopyFiles */,
@@ -342,6 +345,8 @@
 		C20FF1D719AE310300D11F33 /* MSTestLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSTestLog.m; sourceTree = "<group>"; };
 		C20FF1D919AE31CD00D11F33 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C20FF1DF19AE3D7900D11F33 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libicucore.dylib; sourceTree = DEVELOPER_DIR; };
+		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
+		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
 		C23A0D5319A7A459002BF2B6 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -856,6 +861,8 @@
 				C2CE88FD18138CF700555D63 /* MSJSONParser.m */,
 				C27828451814880E00FC8D54 /* MSJSONAssembler.h */,
 				C27828461814880E00FC8D54 /* MSJSONAssembler.m */,
+				C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */,
+				C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1075,6 +1082,7 @@
 				C23A0EEF19A7A77A002BF2B6 /* MSCompletionBlockOperation.m in Sources */,
 				C23A0EF019A7A77A002BF2B6 /* MSContextChangeReceptionist.m in Sources */,
 				C23A0EF119A7A77A002BF2B6 /* MSDictionary.m in Sources */,
+				C20FF1F319AEB67100D11F33 /* MSNotificationReceptionist.m in Sources */,
 				C23A0EF219A7A77A002BF2B6 /* MSDictionaryIndex.m in Sources */,
 				C23A0EF319A7A77A002BF2B6 /* MSError.m in Sources */,
 				C23A0EF419A7A77A002BF2B6 /* MSKVOReceptionist.m in Sources */,

@@ -195,8 +195,6 @@
  */
 + (SystemCommand *)commandWithType:(SystemCommandType)key inContext:(NSManagedObjectContext *)moc;
 
-+ (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController;
-
 @property (nonatomic, assign, readonly) SystemCommandType type;
 
 @end

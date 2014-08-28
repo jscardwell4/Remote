@@ -5,7 +5,7 @@
 // Created by Jason Cardwell on 5/3/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
-#import "RemoteElementConstructionManager.h"
+//#import "RemoteElementConstructionManager.h"
 #import "RemoteViewController.h"
 #import "MainMenuViewController.h"
 #import "CoreDataManager.h"
@@ -13,9 +13,7 @@
 #import "SettingsManager.h"
 #import "ConnectionManager.h"
 #import "MSRemoteAppController.h"
-#import "RemoteControl.h"
 #import "Bank.h"
-#import "Editor.h"
 #import "UITestRunner.h"
 #import "StoryboardProxy.h"
 #import "RemoteController.h"
@@ -30,7 +28,7 @@ static const int msLogContext = 0;
 
 #pragma unused(ddLogLevel, msLogContext)
 
-@implementation MSRemoteAppController
+@implementation MSRemoteAppController 
 {
   NSOperationQueue * _workQueue;
 }
@@ -131,7 +129,7 @@ static const int msLogContext = 0;
   static dispatch_once_t                  pred          = 0;
   __strong static MSRemoteAppController * _sharedObject = nil;
 
-  dispatch_once(&pred, ^{ _sharedObject = UIApp.delegate; });
+  dispatch_once(&pred, ^{ _sharedObject = (MSRemoteAppController *)UIApp.delegate; });
 
   return _sharedObject;
 }
@@ -391,22 +389,56 @@ static const int msLogContext = 0;
 #pragma mark - Setting Root View Controller
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)showRemote { [self.window setRootViewController:[RemoteControl viewController]]; }
+- (void)showViewController:(UIViewController *)viewController {
+  if (!viewController) ThrowInvalidNilArgument(viewController);
 
-- (void)showEditor { [self.window setRootViewController:[Editor viewController]]; }
+  if ([self.window.rootViewController isKindOfClass:[MainMenuViewController class]])
+    self.window.rootViewController = viewController;
 
-- (void)showMainMenu { [self.window setRootViewController:[StoryboardProxy mainMenuViewController]]; }
+  else
+    [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+}
 
-- (void)showBank { [self.window setRootViewController:[Bank viewController]]; }
+- (void)showRemote {
+  RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
+  self.window.rootViewController = controller.viewController;
+}
 
-- (void)showSettings { [self.window setRootViewController:[SettingsManager viewController]]; }
+- (void)showEditor {
+  RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
+  editorVC.delegate  = self;
+
+  if ([self.window.rootViewController isKindOfClass:[RemoteViewController class]]) {
+    editorVC.remoteElement = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
+    [self.window.rootViewController presentViewController:editorVC animated:YES completion:nil];
+  } else {
+    editorVC.remoteElement = [Remote createInContext:[CoreDataManager defaultContext]];
+    self.window.rootViewController = editorVC;
+  }
+}
+
+- (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)editor {
+  [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)editor {
+  [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)showMainMenu {
+  if (![self.window.rootViewController isKindOfClass:[MainMenuViewController class]])
+    self.window.rootViewController = [StoryboardProxy mainMenuViewController];
+}
+
+- (void)showBank { [self showViewController:[Bank viewController]]; }
+
+- (void)showSettings { [self showViewController:[SettingsManager viewController]]; }
 
 - (void)dismissViewController:(UIViewController *)viewController completion:(void (^)(void))completion {
   if (self.window.rootViewController == viewController) [self showMainMenu];
   else [viewController dismissViewControllerAnimated:YES completion:completion];
 }
 
-- (void)showHelp
-{}
+- (void)showHelp { MSLogWarn(@"help has not been implemented yet"); }
 
 @end

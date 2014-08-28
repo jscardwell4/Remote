@@ -32,7 +32,7 @@
         "settingsButton.width = homeButton.width"
       ]
     },
-    "background-color.default": "gray@50%",
+    "background-color.default": "red",
     "subelements": [
       {
         "uuid": "FA623A4E-AA5D-4796-B606-359A8909ABF9",

@@ -49,7 +49,7 @@ typedef NS_OPTIONS (uint8_t, REStyle) {
 static inline NSString *NSStringFromREStyle(REStyle style) {
   NSMutableArray * stringArray = [@[] mutableCopy];
 
-       if (style & REStyleGlossStyle1) [stringArray addObject:@"REStyleGlossStyle1"];
+  if (style & REStyleGlossStyle1) [stringArray addObject:@"REStyleGlossStyle1"];
   else if (style & REStyleGlossStyle2) [stringArray addObject:@"REStyleGlossStyle2"];
   else if (style & REStyleGlossStyle3) [stringArray addObject:@"REStyleGlossStyle3"];
   else if (style & REStyleGlossStyle4) [stringArray addObject:@"REStyleGlossStyle4"];
@@ -142,10 +142,10 @@ static inline NSString *NSStringFromREThemeFlags(REThemeOverrideFlags themeFlags
 
   NSArray * flagKeys = [[index allKeys] objectsPassingTest:
                         ^BOOL (NSNumber * obj, NSUInteger idx, BOOL * stop) {
-                          uint32_t flag = [obj unsignedIntValue];
-                          BOOL hasFlag = ((themeFlags & flag) == flag ? YES : NO);
-                          return hasFlag;
-                        }];
+    uint32_t flag = [obj unsignedIntValue];
+    BOOL hasFlag = ((themeFlags & flag) == flag ? YES : NO);
+    return hasFlag;
+  }];
 
   if (![flagKeys count]) {
     assert(themeFlags == 0);
@@ -265,9 +265,9 @@ static inline NSString *NSStringFromRERole(RERole role) {
                @(REButtonRoleToolbar)             : @"REButtonRoleToolbar",
                @(REButtonRoleConnectionStatus)    : @"REButtonRoleConnectionStatus",
                @(REButtonRoleBatteryStatus)       : @"REButtonRoleBatteryStatus",
-               @(REButtonRoleRocker)         : @"REButtonRoleRocker",
-               @(REButtonRoleRockerTop)      : @"REButtonRoleRockerTop",
-               @(REButtonRoleRockerBottom)   : @"REButtonRoleRockerBottom",
+               @(REButtonRoleRocker)              : @"REButtonRoleRocker",
+               @(REButtonRoleRockerTop)           : @"REButtonRoleRockerTop",
+               @(REButtonRoleRockerBottom)        : @"REButtonRoleRockerBottom",
                @(REButtonRolePanel)               : @"REButtonRolePanel",
                @(REButtonRoleTuck)                : @"REButtonRoleTuck",
                @(REButtonRoleSelectionPanel)      : @"REButtonRoleSelectionPanel",
@@ -408,8 +408,10 @@ static inline NSString *NSStringFromREState(REState state) {
 
   NSMutableArray * stateStrings = [@[] mutableCopy];
 
-  if ((state & REStateDisabled))    [stateStrings addObject:@"REStateDisabled"];
-  if ((state & REStateSelected))    [stateStrings addObject:@"REStateSelected"];
+  if ((state & REStateDisabled)) [stateStrings addObject:@"REStateDisabled"];
+
+  if ((state & REStateSelected)) [stateStrings addObject:@"REStateSelected"];
+
   if ((state & REStateHighlighted)) [stateStrings addObject:@"REStateHighlighted"];
 
   return (stateStrings.count

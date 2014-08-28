@@ -7,6 +7,7 @@
 //
 
 #import "RemoteElementEditingViewController.h"
+@class RemoteController;
 
 /**
  * `RemoteViewController` is the `UIViewController` subclass responsible for controlling the overall
@@ -16,26 +17,12 @@
  * actions as launching its <RemoteEditingViewController> for editing the current remote and basics
  * like returning to the launch screen.
  */
-@interface RemoteViewController : UIViewController <RemoteElementEditingDelegate, UIGestureRecognizerDelegate>
+@interface RemoteViewController : UIViewController<UIGestureRecognizerDelegate>
 
 /// @name ￼Getting the RemoteViewController
 
-/**
- * Making the `RemoteViewController` a singleton class gives more flexibility when it comes to
- * maintaining view caches, etc. for speeding up transitions to and from an active remote.
- * @return The shared instance of `RemoteViewController`.
- */
-// + (RemoteViewController *)sharedRemoteViewController;
++ (instancetype)viewControllerWithModel:(RemoteController *)model;
 
-/**
- * `IBAction` for toggling the view controller's top toolbar in and out of view.
- * @param sender Object responsible for invoking the method.
- */
-
-- (IBAction)toggleTopToolbarAction:(id)sender;
-- (IBAction)openSettings:(id)sender;
-- (IBAction)editCurrentRemote:(id)sender;
-
-@property (nonatomic, readonly, getter = isTopToolbarVisible) BOOL   topToolbarVisible;
+@property (nonatomic, weak, readonly) RemoteController * remoteController;
 
 @end

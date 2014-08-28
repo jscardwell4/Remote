@@ -37,7 +37,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   } else   {
     NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
     [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
-//    [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
+    [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
     return jsonString;
   }
 }

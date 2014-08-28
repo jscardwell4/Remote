@@ -8,7 +8,7 @@
 #import "ModelObject.h"
 @protocol CommandDelegate;
 
-@class Remote, ButtonGroup, Activity;
+@class Remote, ButtonGroup, Activity, RemoteViewController;
 
 /**
  * `RemoteController` is a subclass of `NSManagedObject` that coordinates multiple <Remote>
@@ -22,11 +22,11 @@
 
 + (RemoteController *)remoteController:(NSManagedObjectContext *)moc;
 
-
-@property (nonatomic, strong, readwrite) Remote      * currentRemote;
-@property (nonatomic, strong, readwrite) Remote      * homeRemote;
-@property (nonatomic, strong, readwrite) Activity    * currentActivity;
-@property (nonatomic, strong, readonly ) NSArray     * activities;
-@property (nonatomic, strong, readwrite) ButtonGroup * topToolbar;
+@property (nonatomic, strong, readonly)  RemoteViewController * viewController;
+@property (nonatomic, strong, readwrite) Remote               * currentRemote;
+@property (nonatomic, strong, readwrite) Remote               * homeRemote;
+@property (nonatomic, strong, readwrite) Activity             * currentActivity;
+@property (nonatomic, strong, readonly)  NSArray              * activities;
+@property (nonatomic, strong, readwrite) ButtonGroup          * topToolbar;
 
 @end

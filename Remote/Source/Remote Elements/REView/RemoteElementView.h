@@ -26,7 +26,7 @@
 
 @interface RemoteElementView (AbstractProperties)
 
-@property (nonatomic, strong, readonly)  RemoteElement * model;
+@property (nonatomic, strong, readonly)  RemoteElement     * model;
 @property (nonatomic, weak,   readonly)  RemoteElementView * parentElementView;
 
 @end
@@ -61,13 +61,13 @@
 
 @interface RemoteElementView (Editing)
 
-@property (nonatomic, assign)                            REEditingMode    editingMode;
-@property (nonatomic, readonly, getter = isEditing)      BOOL             editing;
-@property (nonatomic, assign)                            REEditingState   editingState;
-@property (nonatomic, getter = isResizable)              BOOL             resizable;
-@property (nonatomic, getter = isMoveable)               BOOL             moveable;
-@property (nonatomic, assign, getter = shouldShrinkwrap) BOOL             shrinkwrap;
-@property (nonatomic, assign)                            CGFloat          appliedScale;
+@property (nonatomic, assign)                            REEditingMode  editingMode;
+@property (nonatomic, readonly, getter = isEditing)      BOOL           editing;
+@property (nonatomic, assign)                            REEditingState editingState;
+@property (nonatomic, getter = isResizable)              BOOL           resizable;
+@property (nonatomic, getter = isMoveable)               BOOL           moveable;
+@property (nonatomic, assign, getter = shouldShrinkwrap) BOOL           shrinkwrap;
+@property (nonatomic, assign)                            CGFloat        appliedScale;
 
 - (void)updateSubelementOrderFromView;
 
@@ -136,30 +136,29 @@
 - (NSString *)viewConstraintsDescription;
 - (NSString *)modelConstraintsDescription;
 
-NSString * prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
+NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 
 @end
 
 
-MSSTATIC_INLINE NSDictionary *viewFramesByIdentifier(RemoteElementView * remoteElementView)
-{
-    NSMutableDictionary * viewFrames =
-        [NSMutableDictionary dictionaryWithObjects:[remoteElementView.subelementViews
-                                                    valueForKeyPath:@"frame"]
-                                           forKeys:[remoteElementView.subelementViews
+MSSTATIC_INLINE NSDictionary *viewFramesByIdentifier(RemoteElementView * remoteElementView) {
+  NSMutableDictionary * viewFrames =
+    [NSMutableDictionary dictionaryWithObjects:[remoteElementView.subelementViews
+                                                valueForKeyPath:@"frame"]
+                                       forKeys:[remoteElementView.subelementViews
                   valueForKeyPath:@"uuid"]];
 
-    viewFrames[remoteElementView.uuid] = NSValueWithCGRect(remoteElementView.frame);
+  viewFrames[remoteElementView.uuid] = NSValueWithCGRect(remoteElementView.frame);
 
-    if (remoteElementView.parentElementView)
-        viewFrames[remoteElementView.parentElementView.uuid] =
-            NSValueWithCGRect(remoteElementView.parentElementView.frame);
+  if (remoteElementView.parentElementView)
+    viewFrames[remoteElementView.parentElementView.uuid] =
+      NSValueWithCGRect(remoteElementView.parentElementView.frame);
 
-    return viewFrames;
+  return viewFrames;
 }
 
 MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteElementView * view) {
-    return REStringIdentifiesRemoteElement(identifier, view.model);
+  return REStringIdentifiesRemoteElement(identifier, view.model);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -167,15 +166,14 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
 @class ButtonGroupView, Remote;
 
 @interface RemoteView : RemoteElementView
 
-@property (nonatomic, strong, readonly) Remote * model;
-@property (nonatomic, assign)   	 	BOOL       locked;
-@property (nonatomic, readonly) 		NSString * currentMode;
-@property (nonatomic, readonly) 		NSArray  * registeredConfigurations;
+@property (nonatomic, strong, readonly) Remote   * model;
+@property (nonatomic, assign)           BOOL       locked;
+@property (nonatomic, readonly)         NSString * currentMode;
+@property (nonatomic, readonly)         NSArray  * registeredConfigurations;
 
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx;
 - (ButtonGroupView *)objectForKeyedSubscript:(NSString *)key;
@@ -184,7 +182,7 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 
 @interface RemoteView (RERemote)
 
-@property (nonatomic, assign, getter = isTopBarHidden) BOOL   topBarHidden;
+@property (nonatomic, assign, getter = isTopBarHidden) BOOL topBarHidden;
 
 - (BOOL)registerMode:(NSString *)mode;
 - (BOOL)switchToMode:(NSString *)mode;
@@ -195,16 +193,16 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 #pragma mark - ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////
 #define ButtonGroupTucksVertically(buttonGroup) \
-(  buttonGroup.panelLocation                \
-== REPanelLocationTop         \
-|| buttonGroup.panelLocation                \
-== REPanelLocationBottom)
+  (  buttonGroup.panelLocation                  \
+   == REPanelLocationTop                        \
+  || buttonGroup.panelLocation                  \
+   == REPanelLocationBottom)
 
 #define ButtonGroupTucksHorizontally(buttonGroup) \
-(  buttonGroup.panelLocation                  \
-== REPanelLocationLeft          \
-|| buttonGroup.panelLocation                  \
-== REPanelLocationRight)
+  (  buttonGroup.panelLocation                    \
+   == REPanelLocationLeft                         \
+  || buttonGroup.panelLocation                    \
+   == REPanelLocationRight)
 
 MSEXTERN_NAMETAG(ButtonGroupViewInternal);
 MSEXTERN_NAMETAG(ButtonGroupViewLabel);
@@ -217,14 +215,14 @@ MSEXTERN_NAMETAG(ButtonGroupViewLabel);
  * <PickerLabelButtonGroupView>, <RoundedPanelButtonGroupView>, and
  * <SelectionPanelButtonGroupView>.
  */
-@class   ButtonView, ButtonGroup, RemoteView;
+@class ButtonView, ButtonGroup, RemoteView;
 
 @interface ButtonGroupView : RemoteElementView
 
 @property (nonatomic, strong, readonly)  ButtonGroup * model;
 @property (nonatomic, weak,   readonly)  RemoteView  * parentElementView;
-@property (nonatomic, assign)            BOOL            autohide;
-@property (nonatomic, assign)            BOOL            locked;
+@property (nonatomic, assign)            BOOL          autohide;
+@property (nonatomic, assign)            BOOL          locked;
 
 - (ButtonView *)objectAtIndexedSubscript:(NSUInteger)idx;
 - (ButtonView *)objectForKeyedSubscript:(NSString *)key;
@@ -237,7 +235,7 @@ MSEXTERN_NAMETAG(ButtonGroupViewLabel);
 
 @interface ButtonGroupView (REButtonGroup)
 
-@property (nonatomic, assign) REPanelLocation   panelLocation;
+@property (nonatomic, assign) REPanelLocation panelLocation;
 
 @end
 
@@ -249,6 +247,7 @@ MSEXTERN_NAMETAG(ButtonGroupViewLabel);
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Subclasses of ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////
+
 /**
  * `SelectionPanelButtonGroupView` subclasses <RoundedPanelButtonGroupView> to add
  * mode management functionality. Configurations are specified by the `key`
@@ -287,22 +286,22 @@ MSEXTERN_NAMETAG(REButtonViewActivityIndicator);
 - (void)setActionHandler:(REActionHandler)handler
                forAction:(REAction)action;
 
-@property (nonatomic, strong, readonly)  Button           * model;
-@property (nonatomic, weak,   readonly)  ButtonGroupView  * parentElementView;
-@property (nonatomic, assign, readonly)  UIControlState       state;
+@property (nonatomic, strong, readonly)  Button          * model;
+@property (nonatomic, weak,   readonly)  ButtonGroupView * parentElementView;
+@property (nonatomic, assign, readonly)  UIControlState    state;
 
 @end
 
 /// Properties forwared to model object.
 @interface ButtonView (REButton)
 
-@property (nonatomic, assign, getter = isHighlighted) BOOL            highlighted;
-@property (nonatomic, assign, getter = isSelected)    BOOL            selected;
-@property (nonatomic, assign, getter = isEnabled)     BOOL            enabled;
-@property (nonatomic, assign)                         UIEdgeInsets    titleEdgeInsets;
-@property (nonatomic, assign)                         UIEdgeInsets    imageEdgeInsets;
-@property (nonatomic, assign)                         UIEdgeInsets    contentEdgeInsets;
-@property (nonatomic, strong)                         Command       * command;
+@property (nonatomic, assign, getter = isHighlighted) BOOL         highlighted;
+@property (nonatomic, assign, getter = isSelected)    BOOL         selected;
+@property (nonatomic, assign, getter = isEnabled)     BOOL         enabled;
+@property (nonatomic, assign)                         UIEdgeInsets titleEdgeInsets;
+@property (nonatomic, assign)                         UIEdgeInsets imageEdgeInsets;
+@property (nonatomic, assign)                         UIEdgeInsets contentEdgeInsets;
+@property (nonatomic, strong)                         Command    * command;
 
 @end
 

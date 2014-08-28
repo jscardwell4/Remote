@@ -7,6 +7,7 @@
 //
 
 #import "RemoteController.h"
+#import "RemoteViewController.h"
 #import "Activity.h"
 #import "RemoteElement_Private.h"
 #import "Constraint.h"
@@ -21,6 +22,9 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
 static NSURL * sharedRemoteControllerURI = nil;
 
+@interface RemoteController ()
+@property (nonatomic, strong, readwrite) RemoteViewController * viewController;
+@end
 
 @interface RemoteController (CoreDataGeneratedAccessors)
 
@@ -35,6 +39,7 @@ static NSURL * sharedRemoteControllerURI = nil;
 @implementation RemoteController
 
 @dynamic currentRemote, currentActivity, homeRemote, topToolbar;
+@synthesize viewController = _viewController;
 
 
 + (RemoteController *)remoteController:(NSManagedObjectContext *)context {
@@ -45,6 +50,11 @@ static NSURL * sharedRemoteControllerURI = nil;
     sharedRemoteControllerURI = controller.permanentURI;
     return controller;
   }
+}
+
+- (RemoteViewController *)viewController {
+  if (!_viewController) self.viewController = [RemoteViewController viewControllerWithModel:self];
+  return _viewController;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

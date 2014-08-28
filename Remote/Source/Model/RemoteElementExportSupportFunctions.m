@@ -603,16 +603,11 @@ NSString *underlineStrikethroughStyleJSONValueForStyle(NSUnderlineStyle style) {
 ////////////////////////////////////////////////////////////////////////////////
 
 NSString *normalizedColorJSONValueForColor(UIColor * color) {
-  NSString * value = [UIColor nameForColor:color ignoreAlpha:NO];
+  NSString * value = color.colorName;
+  if (value && color.alpha != 1.0)
+      value = [value stringByAppendingFormat:@"@%@%%", [@(color.alpha * 100.0f) stringValue]];
 
-  if (!value) {
-    NSString * base = [UIColor nameForColor:color ignoreAlpha:YES];
-    if ([base isEqualToString:@"dark-text"]) base = @"black";
-    if (base)
-      value = [base stringByAppendingFormat:@"@%@%%", [@(color.alpha * 100.0f)stringValue]];
-  }
-
-  if (!value && color.isRGBCompatible) value = [color RGBAHexStringRepresentation];
+  if (!value && color.isRGBCompatible) value = color.rgbaHexString;
 
   return value;
 }

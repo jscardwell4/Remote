@@ -130,15 +130,15 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   [super updateWithData:data];
 
-  self.name       = data[@"name"]                                                ?: self.name;
-  self.role       = remoteElementRoleFromImportKey(data[@"role"])                ?: self.role;
-  self.key        = data[@"key"]                                                 ?: self.key;
-  self.options    = remoteElementOptionsFromImportKey(data[@"options"])          ?: self.options;
-  self.state      = remoteElementStateFromImportKey(data[@"state"])              ?: self.state;
-  self.shape      = remoteElementShapeFromImportKey(data[@"shape"])              ?: self.shape;
-  self.style      = remoteElementStyleFromImportKey(data[@"style"])              ?: self.style;
-  self.tag        = data[@"tag"]                                                 ?: @0;
-  self.themeFlags = remoteElementThemeFlagsFromImportKey(data[@"theme-flags"])   ?: self.themeFlags;
+  self.name       = data[@"name"];
+  self.role       = remoteElementRoleFromImportKey(data[@"role"]);
+  self.key        = data[@"key"];
+  self.options    = remoteElementOptionsFromImportKey(data[@"options"]);
+  self.state      = remoteElementStateFromImportKey(data[@"state"]);
+  self.shape      = remoteElementShapeFromImportKey(data[@"shape"]);
+  self.style      = remoteElementStyleFromImportKey(data[@"style"]);
+  self.tag        = data[@"tag"];
+  self.themeFlags = remoteElementThemeFlagsFromImportKey(data[@"theme-flags"]);
 
 
   NSDictionary           * backgroundColor      = data[@"background-color"];
@@ -160,7 +160,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
     for (NSString * mode in backgroundImage) {
       id value = backgroundImage[mode];
       if (isDictionaryKind(value))
-        self[configurationKey(mode, @"backgroundImage")] = [Image importObjectFromData:value context:moc];
+        self[configurationKey(mode, @"backgroundImage")] = [Image importObjectFromData:value context:moc].permanentURI;
     }
 
   if (backgroundImageAlpha)
@@ -261,7 +261,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
     MSDictionary * colors = [MSDictionary dictionary];
     [self.configurations enumerateKeysAndObjectsUsingBlock:
      ^(NSString * mode, NSDictionary * entry, BOOL *stop) {
-       SafeSetValueForKey(normalizedColorJSONValueForColor(entry[@"backgroundColor"]), @"mode", colors);
+       SafeSetValueForKey(normalizedColorJSONValueForColor(entry[@"backgroundColor"]), mode, colors);
      }];
     colors;
   });
@@ -412,10 +412,13 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
                                         ?: self[configurationKey(REDefaultMode, @"backgroundImage")])];
   self.backgroundImageAlpha = (self[configurationKey(mode, @"backgroundImageAlpha")]
                                ?: self[configurationKey(REDefaultMode, @"backgroundImageAlpha")]);
+  [self.subelements enumerateObjectsUsingBlock:^(RemoteElement * subelement, NSUInteger idx, BOOL *stop) {
+    [subelement updateForMode:mode];
+  }];
 }
 
 
-- (void)refresh { [self updateForMode:_currentMode]; }
+- (void)refresh { [self updateForMode:self.currentMode]; }
 
 @end
 

@@ -12,15 +12,14 @@
 #import "MSRemoteAppController.h"
 #import "RemoteElementExportSupportFunctions.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
-static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
-#define kSystemKeyMax 4
-#define kSystemKeyMin 0
+// #define kSystemKeyMax 5
+// #define kSystemKeyMin 0
 
 BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 && (NSInteger)type < 6); }
 
-static __weak RemoteViewController * _remoteViewController;
 
 @interface SystemCommandOperation : CommandOperation @end
 
@@ -28,143 +27,113 @@ static __weak RemoteViewController * _remoteViewController;
 
 @dynamic type;
 
-+ (SystemCommand *)commandWithType:(SystemCommandType)type
-{
-    return [self commandWithType:type inContext:[CoreDataManager defaultContext]];
++ (SystemCommand *)commandWithType:(SystemCommandType)type {
+  return [self commandWithType:type inContext:[CoreDataManager defaultContext]];
 }
 
-+ (SystemCommand *)commandWithType:(SystemCommandType)type inContext:(NSManagedObjectContext *)moc
-{
-    if (!moc) ThrowInvalidNilArgument("context cannot be nil");
-    if (!isValidSystemType(type)) ThrowInvalidArgument(type, "invalid type value");
++ (SystemCommand *)commandWithType:(SystemCommandType)type inContext:(NSManagedObjectContext *)moc {
+  if (!moc) ThrowInvalidNilArgument("context cannot be nil");
 
-    SystemCommand * cmd = [self commandInContext:moc];
-    cmd.type = type;
+  if (!isValidSystemType(type)) ThrowInvalidArgument(type, "invalid type value");
 
-    return cmd;
+  SystemCommand * cmd = [self commandInContext:moc];
+  cmd.type = type;
+
+  return cmd;
 }
 
-- (void)setType:(SystemCommandType)type
-{
-    [self willChangeValueForKey:@"type"];
-    self.primitiveType = @(type);
-    [self didAccessValueForKey:@"type"];
+- (void)setType:(SystemCommandType)type {
+  [self willChangeValueForKey:@"type"];
+  self.primitiveType = @(type);
+  [self didAccessValueForKey:@"type"];
 }
 
-- (SystemCommandType)type
-{
-    [self willAccessValueForKey:@"type"];
-    NSNumber * type = self.primitiveType;
-    [self didAccessValueForKey:@"type"];
-    return (type ? [type unsignedShortValue] : SystemCommandTypeUndefined);
+- (SystemCommandType)type {
+  [self willAccessValueForKey:@"type"];
+  NSNumber * type = self.primitiveType;
+  [self didAccessValueForKey:@"type"];
+  return (type ? [type unsignedShortValue] : SystemCommandTypeUndefined);
 }
 
-- (MSDictionary *)JSONDictionary
-{
-    MSDictionary * dictionary = [super JSONDictionary];
+- (MSDictionary *)JSONDictionary {
+  MSDictionary * dictionary = [super JSONDictionary];
 
-    SetValueForKeyIfNotDefault(systemCommandTypeJSONValueForSystemCommand(self), @"type", dictionary);
+  SetValueForKeyIfNotDefault(systemCommandTypeJSONValueForSystemCommand(self), @"type", dictionary);
 
-    [dictionary compact];
-    [dictionary compress];
+  [dictionary compact];
+  [dictionary compress];
 
-    return dictionary;
+  return dictionary;
 }
 
 - (void)updateWithData:(NSDictionary *)data {
-    /*
-         {
-             "class": "system",
-             "type": "open-settings"
-         }
-     */
+  /*
+       {
+           "class": "system",
+           "type": "open-settings"
+       }
+   */
 
-    [super updateWithData:data];
-    self.type = systemCommandTypeFromImportKey(data[@"type"]);
+  [super updateWithData:data];
+  self.type = systemCommandTypeFromImportKey(data[@"type"]);
 
 }
 
-/*
-- (void)importType:(NSString *)data
-{
-    self.type = systemCommandTypeFromImportKey(data);
-}
-*/
+- (CommandOperation *)operation { return [SystemCommandOperation operationForCommand:self]; }
 
-+ (BOOL)registerRemoteViewController:(RemoteViewController *)remoteViewController
-{
-    _remoteViewController = remoteViewController;
-    return YES;
-}
-
-- (CommandOperation *)operation {return [SystemCommandOperation operationForCommand:self];}
-
-- (NSString *)shortDescription {return $(@"type:%@", NSStringFromSystemCommandType(self.type));}
+- (NSString *)shortDescription { return $(@"type:%@", NSStringFromSystemCommandType(self.type)); }
 
 @end
 
 @implementation SystemCommandOperation
 
-- (void)main
-{
-    @try
-    {
-        __block BOOL      taskComplete  = NO;
-        SystemCommand * systemCommand = (SystemCommand*)_command;
+- (void)main {
+  @try {
+    __block BOOL    taskComplete  = NO;
+    SystemCommand * systemCommand = (SystemCommand *)_command;
 
-        switch (systemCommand.type)
-        {
-            case SystemCommandProximitySensor:
-            {
-                CurrentDevice.proximityMonitoringEnabled = !CurrentDevice.proximityMonitoringEnabled;
-                _success                                 = YES;
-                taskComplete                             = YES;
-            }   break;
+    switch (systemCommand.type) {
+      case SystemCommandProximitySensor: {
+        CurrentDevice.proximityMonitoringEnabled = !CurrentDevice.proximityMonitoringEnabled;
+        _success                                 = YES;
+        taskComplete                             = YES;
+      }   break;
 
-            case SystemCommandURLRequest:
-            {
-                MSLogWarn(@"currently 'SystemCommandURLRequest' does nothing");
-                _success     = YES;
-                taskComplete = YES;
-            }   break;
+      case SystemCommandURLRequest: {
+        MSLogWarn(@"currently 'SystemCommandURLRequest' does nothing");
+        _success     = YES;
+        taskComplete = YES;
+      }   break;
 
-            case SystemCommandLaunchScreen:
-            {
-                MSRunAsyncOnMain (^{ [AppController dismissViewController:_remoteViewController
-                                                               completion:^{
-                                                                   taskComplete = YES;
-                                                               }];
-                });
-            }   break;
+      case SystemCommandLaunchScreen: {
+        MSRunAsyncOnMain(^{ [AppController dismissViewController:AppController.window.rootViewController
+                                                      completion:^{ taskComplete = YES; }]; });
+      }   break;
 
-            case SystemCommandOpenSettings:
-            {
-                MSRunAsyncOnMain (^{ [_remoteViewController openSettings:_command]; });
-                _success     = YES;
-                taskComplete = YES;
-            }  break;
+      case SystemCommandOpenSettings: {
+        MSRunAsyncOnMain(^{ [AppController showSettings]; });
+        _success     = YES;
+        taskComplete = YES;
+      }  break;
 
-            case SystemCommandOpenEditor:
-            {
-                MSRunAsyncOnMain (^{ [_remoteViewController editCurrentRemote:_command]; });
-                _success     = YES;
-                taskComplete = YES;
-            }    break;
+      case SystemCommandOpenEditor: {
+        MSRunAsyncOnMain(^{ [AppController showEditor]; });
+        _success     = YES;
+        taskComplete = YES;
+      }    break;
 
-            default:
-                taskComplete = YES;
-                _success     = NO;
-                break;
-        }
-
-        while (!taskComplete);
-        [super main];
+      default:
+        taskComplete = YES;
+        _success     = NO;
+        break;
     }
-    @catch(NSException * exception)
-    {
-        MSLogDebugTag(@"wtf?");
-    }
+
+    while (!taskComplete) ;
+
+    [super main];
+  } @catch(NSException * exception)   {
+    MSLogDebugTag(@"wtf?");
+  }
 }
-
 
 @end
