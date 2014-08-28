@@ -94,8 +94,8 @@
                         options:NSKeyValueObservingOptionNew
                         context:NULL
                         queue:MainQueue
-                        handler:^(MSKVOReceptionist *r, NSString *kp, id o, NSDictionary *c, void *ctx) {
-                            weakself.constant = ((Constraint *)o).constant;
+                        handler:^(MSKVOReceptionist * receptionist) {
+                            weakself.constant = ((Constraint *)receptionist.object).constant;
                         }];
 }
 

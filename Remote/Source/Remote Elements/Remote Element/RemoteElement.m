@@ -352,7 +352,11 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   return (subscript < self.subelements.count ? self.subelements[subscript] : nil);
 }
 
-- (NSArray *)modes { return [self.configurations allKeys]; }
+- (NSArray *)modes {
+  NSArray * modes = [self.configurations allKeys];
+
+  return ([modes containsObject:REDefaultMode] ? modes : [modes arrayByAddingObject:REDefaultMode]);
+}
 
 - (BOOL)proportionLock                 { return self.constraintManager.proportionLock;              }
 - (NSSet *)subelementConstraints       { return self.constraintManager.subelementConstraints;       }

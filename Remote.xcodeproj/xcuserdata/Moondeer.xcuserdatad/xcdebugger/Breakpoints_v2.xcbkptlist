@@ -50,11 +50,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/ButtonView.m"
-            timestampString = "430899316.347693"
+            timestampString = "430942225.476147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
             landmarkName = "-updateState"
             landmarkType = "5">
          </BreakpointContent>
@@ -82,11 +82,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/ButtonView.m"
-            timestampString = "430899316.347693"
+            timestampString = "430942225.476147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "-handleTap:"
             landmarkType = "5">
          </BreakpointContent>
@@ -98,11 +98,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/ButtonView.m"
-            timestampString = "430899316.347693"
+            timestampString = "430942225.476147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "-handleLongPress:"
             landmarkType = "5">
          </BreakpointContent>
@@ -114,11 +114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/ButtonView.m"
-            timestampString = "430899316.347693"
+            timestampString = "430942225.476147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "-handleTap:"
             landmarkType = "5">
          </BreakpointContent>
@@ -130,11 +130,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/ButtonView.m"
-            timestampString = "430899316.347693"
+            timestampString = "430942225.476147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "@implementation ButtonView"
             landmarkType = "3">
          </BreakpointContent>
@@ -194,11 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Control State Sets/ControlStateImageSet.m"
-            timestampString = "430768440.506893"
+            timestampString = "430942020.356779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "-updateWithData:"
             landmarkType = "5">
          </BreakpointContent>
@@ -210,11 +210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Control State Sets/ControlStateImageSet.m"
-            timestampString = "430768440.506893"
+            timestampString = "430942020.356779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "-objectAtIndexedSubscript:"
             landmarkType = "5">
          </BreakpointContent>
@@ -258,11 +258,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Control State Sets/ControlStateTitleSet.m"
-            timestampString = "430781628.693434"
+            timestampString = "430942020.356779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "-objectAtIndexedSubscript:"
             landmarkType = "5">
          </BreakpointContent>
@@ -497,7 +497,7 @@
                   symbolName = "+[UIFont(MSKitAdditions) fontAwesomeNameForIcon:]"
                   moduleName = "Remote"
                   urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/MSKit/Source/Categories/UIFont+MSKitAdditions.m"
-                  timestampString = "430906171.629732"
+                  timestampString = "430942225.788602"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "321"
@@ -511,7 +511,7 @@
                   symbolName = "__Block_byref_object_copy_"
                   moduleName = "Remote"
                   urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/MSKit/Source/Categories/UIFont+MSKitAdditions.m"
-                  timestampString = "430906171.629897"
+                  timestampString = "430942225.788767"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "321"
@@ -525,7 +525,7 @@
                   symbolName = "__Block_byref_object_dispose_"
                   moduleName = "Remote"
                   urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/MSKit/Source/Categories/UIFont+MSKitAdditions.m"
-                  timestampString = "430906171.630039"
+                  timestampString = "430942225.788926"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "321"
@@ -575,11 +575,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "430906085.037074"
+            timestampString = "430937257.26576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "@implementation RemoteViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -591,11 +591,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "430906085.037074"
+            timestampString = "430937257.26576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "-insertRemoteView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -607,11 +607,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "430883899.786504"
+            timestampString = "430937257.26576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "@implementation RemoteViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -623,11 +623,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "430906085.037074"
+            timestampString = "430937257.26576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "-insertRemoteView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -639,13 +639,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/PickerLabelButtonGroupView.m"
-            timestampString = "430905884.138011"
+            timestampString = "430938881.904582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "-buildLabels"
-            landmarkType = "5">
+            startingLineNumber = "203"
+            endingLineNumber = "203"
+            landmarkName = "@implementation PickerLabelButtonGroupView"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -655,11 +655,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/PickerLabelButtonGroupView.m"
-            timestampString = "430905632.264389"
+            timestampString = "430928642.596177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "-updateConstraints"
             landmarkType = "5">
          </BreakpointContent>
@@ -671,12 +671,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/REView/PickerLabelButtonGroupView.m"
-            timestampString = "430905884.138011"
+            timestampString = "430938881.904582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
-            landmarkName = "-buildLabels"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "-handlePan:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -687,11 +687,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "430906085.037074"
+            timestampString = "430937257.26576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "-updateTopToolbarLocation"
             landmarkType = "5">
          </BreakpointContent>
@@ -703,12 +703,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Remote Controllers/RemoteViewController.m"
-            timestampString = "430906085.037074"
+            timestampString = "430937257.26576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-insertRemoteView:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/REView/PickerLabelButtonGroupView.m"
+            timestampString = "430938881.904582"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "-updateConstraints"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/REView/ButtonView.m"
+            timestampString = "430942225.476147"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
+            landmarkName = "-minimumSize"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

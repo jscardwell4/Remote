@@ -17,6 +17,10 @@
 
 @property (nonatomic) BOOL suppressNormalStateAttributes;
 
+- (NSAttributedString *)objectAtIndex:(NSUInteger)state;
+- (id)objectForKey:(NSString *)key;
+
+- (id)objectForKeyedSubscript:(NSString *)key;
 - (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state;
 
 @end

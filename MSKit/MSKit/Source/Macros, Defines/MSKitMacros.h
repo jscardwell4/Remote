@@ -180,6 +180,7 @@ MSSTATIC_INLINE NSIndexSet * _NSIndexSetMake(NSUInteger location,...)
 #define NSWhitespaceCharacters           [NSCharacterSet whitespaceCharacterSet]
 
 #define NSPredicateMake(FORMAT,...)  [NSPredicate predicateWithFormat:FORMAT,__VA_ARGS__]
+#define NSPredicateBlock(BLOCK)      [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings){return BLOCK;}]
 
 
 ////////////////////////////////////////////////////////////////////////////////

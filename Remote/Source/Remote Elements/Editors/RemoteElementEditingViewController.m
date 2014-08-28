@@ -497,8 +497,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
               context:NULL
               queue:MainQueue
-              handler:MSMakeKVOHandler({MSLogVerboseTag(@"parent element '%@' constraints changed",
-                                                        _remoteElement.parentElement.name);})];
+              handler:^(MSKVOReceptionist * receptionist){MSLogVerboseTag(@"parent element '%@' constraints changed",
+                                                        _remoteElement.parentElement.name);}];
          }
 
     }];
@@ -546,9 +546,9 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
                                                options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
                                                context:NULL
                                                  queue:MainQueue
-                                               handler:MSMakeKVOHandler({
+                                               handler:^(MSKVOReceptionist * receptionist){
                                                    [weakSelf updateBoundaryLayer];
-                                               })];
+                                               }];
 
     [_mockParentView addSubview:_sourceView];
 

@@ -10,6 +10,7 @@
 #import "TitleAttributes.h"
 #import "Button.h"
 #import "Command.h"
+#import "ControlStateTitleSet.h"
 
 // #define DEBUG_BV_COLOR_BG
 
@@ -22,7 +23,6 @@ MSNAMETAG_DEFINITION(REButtonViewActivityIndicator);
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
-
 #pragma unused(ddLogLevel, msLogContext)
 
 
@@ -52,19 +52,19 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 - (void)updateConstraints {
   [super updateConstraints];
 
-  if (![self constraintsWithNametagPrefix:REButtonViewInternalNametag]) {
+  NSString * labelNametag    = ClassNametagWithSuffix(@"InternalLabel");
+  NSString * activityNametag = ClassNametagWithSuffix(@"InternalActivity");
+
+  if (![self constraintsWithNametagPrefix:labelNametag]) {
     UIEdgeInsets titleInsets = self.model.titleEdgeInsets;
     NSString   * constraints =
-      $(@"'%1$@' _labelView.left = self.left + %3$f @900\n"
-        "'%1$@' _labelView.top = self.top + %4$f @900\n"
-        "'%1$@' _labelView.bottom = self.bottom - %5$f @900\n"
-        "'%1$@' _labelView.right = self.right - %6$f @900\n"
-        "'%2$@' _activityIndicator.centerX = self.centerX\n"
-        "'%2$@' _activityIndicator.centerY = self.centerY",
-        $(@"%@-%@", REButtonViewInternalNametag, REButtonViewLabelNametag),
-        $(@"%@-%@", REButtonViewInternalNametag, REButtonViewActivityIndicatorNametag),
-        titleInsets.left, titleInsets.top,
-        titleInsets.bottom, titleInsets.right);
+      $(@"'%1$@-Label$@' _labelView.left = self.left + %3$f @900\n"
+        "'%1$@-Label$@' _labelView.top = self.top + %4$f @900\n"
+        "'%1$@-Label$@' _labelView.bottom = self.bottom - %5$f @900\n"
+        "'%1$@-Label$@' _labelView.right = self.right - %6$f @900\n"
+        "'%2$@-Activity$@' _activityIndicator.centerX = self.centerX\n"
+        "'%2$@-Activity$@' _activityIndicator.centerY = self.centerY",
+        labelNametag, activityNametag, titleInsets.left, titleInsets.top, titleInsets.bottom, titleInsets.right);
 
     NSDictionary * views = NSDictionaryOfVariableBindings(self, _labelView, _activityIndicator);
 
@@ -229,7 +229,38 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   CGRect frame = (CGRect) {
     .size = REMinimumSize
   };
-  NSAttributedString * title = self.model.title;
+
+  NSMutableSet * titles = [NSMutableSet set];
+
+  for (NSString *mode in self.model.modes) {
+    ControlStateTitleSet * titleSet = [self.model titlesForMode:mode];
+    if (titleSet) [titles addObjectsFromArray:[titleSet allValues]];
+  }
+
+  if ([titles count]) {
+
+    CGFloat maxWidth = 0.0, maxHeight = 0.0;
+
+    for (NSAttributedString * title in titles) {
+
+      CGSize titleSize = [title size];
+      UIEdgeInsets titleInsets = self.titleEdgeInsets;
+
+      titleSize.width  += titleInsets.left + titleInsets.right;
+      titleSize.height += titleInsets.top + titleInsets.bottom;
+
+      maxWidth = MAX(titleSize.width, maxWidth);
+      maxHeight = MAX(titleSize.height, maxHeight);
+
+    }
+
+    frame.size.width = MAX(maxWidth, frame.size.width);
+    frame.size.height = MAX(maxHeight, frame.size.height);
+  }
+
+
+/*
+   NSAttributedString * title = self.model.title;
 
   if (title) {
     CGSize       titleSize   = [title size];
@@ -254,7 +285,10 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   frame.size.width  += contentInsets.left + contentInsets.right;
   frame.size.height += contentInsets.top + contentInsets.bottom;
 
-  if (self.proportionLock && !CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
+*/
+
+  if (self.model.proportionLock && !CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
+
     CGSize currentSize = self.bounds.size;
 
     if (currentSize.width > currentSize.height)
@@ -302,6 +336,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
   _longPressGesture.enabled = (self.model.longPressCommand != nil);
   _flags.activityIndicator  = self.model.command.indicator;
+
   [self updateState];
   [self invalidateIntrinsicContentSize];
   [self setNeedsDisplay];
@@ -312,105 +347,54 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (NSDictionary *)kvoRegistration {
+- (MSDictionary *)kvoRegistration {
 
-  NSDictionary * kvoRegistration =
-    @{
+  MSDictionary * reg = [super kvoRegistration];
 
-    @"selected" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView * buttonView = (__bridge ButtonView *)context;
-      [(__bridge ButtonView *)context updateState];
-    },
+    reg[@"selected"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
+      [(__bridge ButtonView *)receptionist.context updateState];
+    };
 
-    @"enabled" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView * buttonView = (__bridge ButtonView *)context;
-      BOOL         enabled    = [change[NSKeyValueChangeNewKey] boolValue];
+    reg[@"enabled"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
+      BOOL         enabled    = [receptionist.change[NSKeyValueChangeNewKey] boolValue];
       buttonView.enabled = enabled;
-    },
+    };
 
-    @"highlighted" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView * buttonView = (__bridge ButtonView *)context;
-      [(__bridge ButtonView *)context updateState];
-    },
+    reg[@"highlighted"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
+      [(__bridge ButtonView *)receptionist.context updateState];
+    };
 
-    @"command" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView * buttonView = (__bridge ButtonView *)context;
+    reg[@"command"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
       buttonView->_flags.activityIndicator = buttonView.model.command.indicator;
-    },
+    };
 
-    @"style" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView * buttonView = (__bridge ButtonView *)context;
+    reg[@"style"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
       [buttonView setNeedsDisplay];
-    },
+    };
 
-    @"title" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView         * buttonView = (__bridge ButtonView *)context;
-      NSAttributedString * title      = NilSafe(change[NSKeyValueChangeNewKey]);
+    reg[@"title"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView         * buttonView = (__bridge ButtonView *)receptionist.context;
+      NSAttributedString * title      = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
       buttonView->_labelView.attributedText = title;
-    },
+    };
 
-    @"image" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      [(__bridge ButtonView *)context updateState];
-    },
+    reg[@"image"] = ^(MSKVOReceptionist * receptionist) {
+      [(__bridge ButtonView *)receptionist.context updateState];
+    };
 
-    @"icon" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      ButtonView * buttonView = (__bridge ButtonView *)context;
-      ImageView  * icon       = NilSafe(change[NSKeyValueChangeNewKey]);
+    reg[@"icon"] = ^(MSKVOReceptionist * receptionist) {
+      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
+      ImageView  * icon       = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
       buttonView->_icon = icon.colorImage;
       [buttonView setNeedsDisplay];
-    }
+    };
 
-  };
-
-  return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
+  return reg;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

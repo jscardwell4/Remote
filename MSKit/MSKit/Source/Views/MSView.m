@@ -48,8 +48,9 @@
                                       options:NSKeyValueObservingOptionNew
                                       context:(void*)self
                                         queue:MainQueue
-                                      handler:MSKVOHandlerMake([(__bridge MSView*)context
-                                                                setNeedsDisplay];)];
+                                      handler:^(MSKVOReceptionist * receptionist){
+                                        [(__bridge MSView*)receptionist.context setNeedsDisplay];
+                                      }];
 }
 
 - (void)drawRect:(CGRect)rect

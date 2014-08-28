@@ -28,8 +28,11 @@
 - (BOOL)isEmptySet;
 - (NSDictionary *)dictionaryFromSetObjects:(BOOL)useJSONKeys;
 
+- (NSArray *)allValues;
+
 // objectAtIndex: and objectForKey: do not use fall through logic
 // where as objectAtIndexedSubscript: and objectForKeyedSubscript: do use fall through logic
+// ???: Double check if the above comment still holds true
 
 - (id)objectAtIndex:(NSUInteger)state;
 - (id)objectForKey:(NSString *)key;

@@ -24,7 +24,7 @@ MSEXTERN CGSize const REMinimumSize;
 - (void)registerForChangeNotification;
 - (void)initializeIVARs;
 - (void)initializeViewFromModel;
-- (NSDictionary *)kvoRegistration;
+- (MSDictionary *)kvoRegistration;
 
 @property (nonatomic, strong)            UIImageView       * backgroundImageView;
 @property (nonatomic, weak, readwrite)   RemoteElementView * parentElementView;

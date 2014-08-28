@@ -129,25 +129,16 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
 - (void)didMoveToWindow { if (self.model.isPanel && !self.isEditing && self.window) [self attachTuckGestures]; }
 
-- (NSDictionary *)kvoRegistration {
+- (MSDictionary *)kvoRegistration {
   // TODO: observe panel location
-  NSDictionary * kvoRegistration =
-    @{
 
-    @"label" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
-    {
-      id newValue = change[NSKeyValueChangeNewKey];
+  MSDictionary * reg = [super kvoRegistration];
+  reg[@"label"] = ^(MSKVOReceptionist * receptionist) {
+      id newValue = receptionist.change[NSKeyValueChangeNewKey];
       _label.attributedText = (ValueIsNotNil(newValue) ? (NSAttributedString *)newValue : nil);
-    }
+    };
 
-  };
-
-  return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
+  return reg;
 }
 
 - (void)initializeIVARs {

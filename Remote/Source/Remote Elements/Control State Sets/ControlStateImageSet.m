@@ -86,6 +86,18 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   return imageSet;
 }
 
+- (ImageView *)objectAtIndex:(NSUInteger)state {
+  id value = [super objectAtIndex:state];
+  if ([value isKindOfClass:[ImageView class]]) return value;
+  else return [self.managedObjectContext objectForURI:value];
+}
+
+- (ImageView *)objectForKey:(NSString *)key {
+  id value = [super objectForKey:key];
+  if ([value isKindOfClass:[ImageView class]]) return value;
+  else return [self.managedObjectContext objectForURI:value];
+}
+
 - (ImageView *)objectAtIndexedSubscript:(NSUInteger)state {
   id value = [super objectAtIndexedSubscript:state];
   if ([value isKindOfClass:[ImageView class]]) return value;

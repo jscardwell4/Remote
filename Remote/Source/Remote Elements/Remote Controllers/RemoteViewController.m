@@ -45,42 +45,38 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 + (instancetype)viewControllerWithModel:(RemoteController *)model {
   RemoteViewController * controller = nil;
+
   if (model) {
 
-    controller = [self new];
+    controller                  = [self new];
     controller.remoteController = model;
 
     controller.remoteReceptionist =
-    [MSKVOReceptionist receptionistForObject:model
-                                     keyPath:@"currentRemote"
-                                     options:NSKeyValueObservingOptionNew
-                                     context:NULL
-                                       queue:MainQueue
-                                     handler:^(MSKVOReceptionist *receptionist,
-                                               NSString *keyPath,
-                                               id object,
-                                               NSDictionary *change,
-                                               void *context)
-     {
-       Remote * remote = (Remote *)change[NSKeyValueChangeNewKey];
-       assert(remote && [remote isKindOfClass:[Remote class]]);
-       RemoteView * remoteView = [RemoteView viewWithModel:remote];
-       [controller insertRemoteView:remoteView];
-     }];
+      [MSKVOReceptionist receptionistForObject:model
+                                       keyPath:@"currentRemote"
+                                       options:NSKeyValueObservingOptionNew
+                                       context:NULL
+                                         queue:MainQueue
+                                       handler:^(MSKVOReceptionist * receptionist) {
+                                         Remote * remote = (Remote *)receptionist.change[NSKeyValueChangeNewKey];
+                                         assert(remote && [remote isKindOfClass:[Remote class]]);
+                                         RemoteView * remoteView = [RemoteView viewWithModel:remote];
+                                         [controller insertRemoteView:remoteView];
+                                       }];
 
     controller.settingsReceptionist =
-    [MSNotificationReceptionist receptionistForObject:[SettingsManager class]
-                                     notificationName:MSSettingsManagerProximitySensorSettingDidChangeNotification
-                                                queue:MainQueue
-                                              handler:^(MSNotificationReceptionist *rec,
-                                                        NSNotification *note)
-    {
-      controller->_flags.monitorProximitySensor =
-        [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+      [MSNotificationReceptionist receptionistForObject:[SettingsManager class]
+                                       notificationName:MSSettingsManagerProximitySensorSettingDidChangeNotification
+                                                  queue:MainQueue
+                                                handler:^(MSNotificationReceptionist * rec, NSNotification * note) {
+                                                  controller->_flags.monitorProximitySensor =
+                                                    [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
 
-      CurrentDevice.proximityMonitoringEnabled = controller->_flags.monitorProximitySensor;
-    }];
+                                                  CurrentDevice.proximityMonitoringEnabled =
+                                                    controller->_flags.monitorProximitySensor;
+                                                }];
   }
+
   return controller;
 }
 

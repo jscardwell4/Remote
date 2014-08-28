@@ -155,6 +155,15 @@
   return dictionary;
 }
 
+- (NSArray *)allValues {
+  NSMutableSet * values = [NSMutableSet set];
+  for (NSUInteger state = 0; state < 8; state++) {
+    id value = [self objectAtIndex:state];
+    if (value) [values addObject:value];
+  }
+  return values.allObjects;
+}
+
 - (BOOL)isEmptySet { return ([[self dictionaryFromSetObjects:NO] count] == 0); }
 
 - (void)copyObjectsFromSet:(ControlStateSet *)set {

@@ -111,8 +111,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
     case 1:     // return an attributed string with attributes for specified state
     {
-      if ([ControlStateSet validState:key])
-        return [self valueForKey:key];
+      return self[[ControlStateSet stateForProperty:key]];
     }  break;
 
     default:     // invalid key path
@@ -156,6 +155,30 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   return string;
 
+}
+
+- (NSAttributedString *)objectAtIndex:(NSUInteger)state {
+
+  NSAttributedString * string = nil;
+
+  if ([ControlStateSet validState:@(state)]) {
+    NSString * key = [ControlStateSet propertyForState:@(state)];
+    TitleAttributes * titleAttributes = [self valueForKey:key];
+    MSDictionary * attributes = titleAttributes.attributes;
+    if (attributes) {
+      NSString * text = attributes[RETitleTextAttributeKey];
+      if (text) {
+        [attributes removeObjectForKey:RETitleTextAttributeKey];
+        string = [NSAttributedString attributedStringWithString:text attributes:attributes];
+      }
+    }
+  }
+
+  return string;
+}
+
+- (id)objectForKey:(NSString *)key {
+  return [[key keyPathComponents] count] > 1 ? self[key] : [super objectForKey:key];
 }
 
 ////////////////////////////////////////////////////////////////////////////////

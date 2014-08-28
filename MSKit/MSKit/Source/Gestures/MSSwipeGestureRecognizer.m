@@ -41,7 +41,7 @@
                                       options:NSKeyValueObservingOptionNew
                                       context:NULL
                                         queue:[NSOperationQueue mainQueue]
-                                      handler:MSMakeKVOHandler({ [weakself updateQuads]; })];
+                                      handler:^(MSKVOReceptionist * receptionist){ [weakself updateQuads]; }];
 }
 
 - (void)updateQuads {

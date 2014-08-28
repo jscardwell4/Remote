@@ -224,43 +224,39 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
  * Override point for subclasses to return an array of KVO registration dictionaries for observing
  * model keypaths.
  */
-- (NSDictionary *)kvoRegistration {
+- (MSDictionary *)kvoRegistration {
 
-  NSDictionary * kvoRegistration =
-    @{ @"constraints" :
-         ^(MSKVOReceptionist * rec, NSString * kp, id obj, NSDictionary * change, void * ctx) {
-           [(__bridge RemoteElementView *)ctx setNeedsUpdateConstraints];
-         },
+  MSDictionary * reg = [MSDictionary dictionary];
 
-       @"backgroundColor" :
-         ^(MSKVOReceptionist * rec, NSString * kp, id obj, NSDictionary * change, void * ctx) {
-           if ([change[NSKeyValueChangeNewKey] isKindOfClass:[UIColor class]])
-             ((__bridge RemoteElementView *)ctx).backgroundColor = change[NSKeyValueChangeNewKey];
-           else
-             ((__bridge RemoteElementView *)ctx).backgroundColor = nil;
-         },
+  reg[@"constraints"] = ^(MSKVOReceptionist * receptionist) {
+    [(__bridge RemoteElementView *)receptionist.context setNeedsUpdateConstraints];
+  };
 
-       @"backgroundImage" :
-         ^(MSKVOReceptionist * rec, NSString * kp, id obj, NSDictionary * change, void * ctx) {
-           if ([change[NSKeyValueChangeNewKey] isKindOfClass:[Image class]])
-             ((__bridge RemoteElementView *)ctx).backgroundImageView.image =
-             [(Image *)change[NSKeyValueChangeNewKey] stretchableImage];
-           else
-             ((__bridge RemoteElementView *)ctx).backgroundImageView.image = nil;
-         },
+  reg[@"backgroundColor"] = ^(MSKVOReceptionist * receptionist) {
+    if ([receptionist.change[NSKeyValueChangeNewKey] isKindOfClass:[UIColor class]])
+      ((__bridge RemoteElementView *)receptionist.context).backgroundColor = receptionist.change[NSKeyValueChangeNewKey];
+    else
+      ((__bridge RemoteElementView *)receptionist.context).backgroundColor = nil;
+  };
 
-       @"backgroundImageAlpha" :
-         ^(MSKVOReceptionist * rec, NSString * kp, id obj, NSDictionary * change, void * ctx) {
-           if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNumber class]])
-             _backgroundImageView.alpha = [(NSNumber *)change[NSKeyValueChangeNewKey] floatValue];
-         },
+  reg[@"backgroundImage"] = ^(MSKVOReceptionist * receptionist) {
+    if ([receptionist.change[NSKeyValueChangeNewKey] isKindOfClass:[Image class]])
+      ((__bridge RemoteElementView *)receptionist.context).backgroundImageView.image =
+      [(Image *)receptionist.change[NSKeyValueChangeNewKey] stretchableImage];
+    else
+      ((__bridge RemoteElementView *)receptionist.context).backgroundImageView.image = nil;
+  };
 
-       @"shape" :
-         ^(MSKVOReceptionist * rec, NSString * kp, id obj, NSDictionary * change, void * ctx) {
-           [(__bridge RemoteElementView *)ctx refreshBorderPath];
-         } };
+  reg[@"backgroundImageAlpha"] = ^(MSKVOReceptionist * receptionist) {
+    if ([receptionist.change[NSKeyValueChangeNewKey] isKindOfClass:[NSNumber class]])
+      _backgroundImageView.alpha = [(NSNumber *)receptionist.change[NSKeyValueChangeNewKey] floatValue];
+  };
 
-  return kvoRegistration;
+  reg[@"shape"] = ^(MSKVOReceptionist * receptionist) {
+    [(__bridge RemoteElementView *)receptionist.context refreshBorderPath];
+  };
+
+  return reg;
 }
 
 /**
@@ -276,7 +272,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   if (self.model) {
     _kvoReceptionists = [[self kvoRegistration]
                          dictionaryByMappingObjectsToBlock:
-                         ^MSKVOReceptionist *(NSString * keypath, MSKVOHandler handler)
+                         ^MSKVOReceptionist *(NSString * keypath, void (^handler)(MSKVOReceptionist * receptionist))
     {
       return [MSKVOReceptionist
               receptionistForObject:self.model
