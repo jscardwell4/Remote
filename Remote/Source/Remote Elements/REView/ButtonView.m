@@ -8,6 +8,8 @@
 #import "RemoteElementView_Private.h"
 #import "ImageView.h"
 #import "TitleAttributes.h"
+#import "Button.h"
+#import "Command.h"
 
 // #define DEBUG_BV_COLOR_BG
 

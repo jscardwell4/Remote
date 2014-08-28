@@ -6,6 +6,8 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementView_Private.h"
+#import "Button.h"
+#import "ConnectionManager.h"
 
 @implementation ConnectionStatusButtonView {}
 

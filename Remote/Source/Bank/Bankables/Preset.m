@@ -28,7 +28,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
          preset = [self createInContext:element.managedObjectContext];
          preset.element = element;
          NSString * category = nil;
-         switch ([[element class] elementType])
+         switch (element.elementType)
          {
              case RETypeRemote:
                  category = @"Remote";

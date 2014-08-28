@@ -15,3 +15,6 @@ void MSSwapInstanceMethods(Class c1, SEL m1, Class c2, SEL m2);
 void MSDelayedRunOnMain(int64_t seconds, dispatch_block_t block);
 
 BOOL MSSelectorInProtocol(SEL selector, Protocol * protocol, BOOL isRequired, BOOL isInstance);
+
+NSString * classNametagWithSuffix(NSString *suffix, id obj);
+#define ClassNametagWithSuffix(SUFFIX) classNametagWithSuffix(SUFFIX, self)

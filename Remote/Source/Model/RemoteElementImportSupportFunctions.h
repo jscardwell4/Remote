@@ -16,10 +16,9 @@ REType remoteElementTypeFromImportKey(NSString * importKey);
 RERole remoteElementRoleFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Remote Element Options & State
+#pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-REOptions remoteElementOptionsFromImportKey(NSString * importKey);
 REState   remoteElementStateFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////

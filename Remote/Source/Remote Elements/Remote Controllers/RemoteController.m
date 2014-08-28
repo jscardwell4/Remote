@@ -13,6 +13,8 @@
 #import "Constraint.h"
 #import "ComponentDeviceConfiguration.h"
 #import "Command.h"
+#import "ButtonGroup.h"
+#import "Remote.h"
 #import "CoreDataManager.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;

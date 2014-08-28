@@ -6,6 +6,9 @@
 // Copyright 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementView_Private.h"
+#import "ButtonGroup.h"
+#import "CommandSetCollection.h"
+#import "CommandContainer.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
@@ -14,6 +17,24 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
 MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewInternal);
 MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
+
+@interface PickerLabelButtonGroupView () {
+
+@private
+  struct {
+    BOOL       blockPan;
+    CGFloat    panLength;
+    NSUInteger labelIndex;
+    NSUInteger labelCount;
+    CGFloat    prevPanAmount;
+  } _pickerFlags;
+
+}
+
+@property (nonatomic, weak) NSLayoutConstraint     * labelContainerLeftConstraint;
+@property (nonatomic, weak) UIView                 * labelContainer;
+@property (nonatomic, weak) UIPanGestureRecognizer * labelPanGesture;
+@end
 
 @implementation PickerLabelButtonGroupView
 
@@ -26,37 +47,64 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 
   [super updateConstraints];
 
-  if (![self constraintsWithNametagPrefix:REPickerLabelButtonGroupViewInternalNametag]) {
+  NSString * nametag = ClassNametagWithSuffix(@"Internal");
 
-    NSString * constraints =
-      $(@"'%1$@' _labelContainer.centerY = self.centerY\n"
-        "'%1$@' _labelContainer.height = self.height * 0.34\n"
-        "'%1$@-left' _labelContainer.left = self.left",
-        $(@"%@-%@",
-          REPickerLabelButtonGroupViewInternalNametag,
-          REPickerLabelButtonGroupViewLabelContainerNametag));
+  if (self.labelContainer) {
+    if (![self constraintsWithNametagPrefix:nametag]) {
 
-    [self addConstraints:[NSLayoutConstraint
-                          constraintsByParsingString:constraints
-                                               views:NSDictionaryOfVariableBindings(_labelContainer,
-                                                                                    self)]];
+      NSString * constraints =
+        $(@"labels.centerY = self.centerY '%1$@'\n"
+          "labels.height = self.height * 0.34 '%1$@'\n"
+          "labels.left = self.left '%1$@-left'", nametag);
 
-    _labelContainerLeftConstraint =
-      [self constraintWithNametag:$(@"%@-%@-left",
-                                    REPickerLabelButtonGroupViewInternalNametag,
-                                    REPickerLabelButtonGroupViewLabelContainerNametag)];
+      [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraints
+                                                                    views:@{@"self": self,
+                                                                            @"labels": self.labelContainer}]];
 
-    if (![_labelContainer constraintsWithNametagPrefix:REPickerLabelButtonGroupViewInternalNametag])
-      [self buildLabels];
+      self.labelContainerLeftConstraint = [self constraintWithNametag:$(@"%@-left", nametag)];
+    }
+
+    if (![self.labelContainer constraintsWithNametagPrefix:nametag]) {
+
+      NSMutableString * positionalConstraints = [@"H:|" mutableCopy];
+
+      for (NSUInteger i = 0; i < _pickerFlags.labelCount; i++) {
+        NSString * labelName   = $(@"label%lu", (unsigned long)i);
+        NSString * constraints = $(@"%1$@.width = self.width '%2$@'\n"
+                                   "%1$@.centerY = container.centerY '%2$@'", labelName, nametag);
+        UILabel * label = self.labelContainer.subviews[i];
+
+        [self addConstraints:[NSLayoutConstraint
+                              constraintsByParsingString:constraints
+                              views:@{ labelName    : label,
+                                       @"self"      : self,
+                                       @"container" : self.labelContainer }]];
+
+        [positionalConstraints appendFormat:@"[%@]", label.text];
+      }
+
+      [positionalConstraints appendString:@"|"];
+
+      NSDictionary * labels =
+      [NSDictionary dictionaryWithObjects:self.labelContainer.subviews
+                                  forKeys:[self.labelContainer valueForKeyPath:@"subviews.text"]];
+      
+      NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:positionalConstraints
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:labels];
+
+      [constraints setValue:nametag forKeyPath:@"nametag"];
+      
+      [self.labelContainer addConstraints:constraints];
+    }
   }
-
 }
 
 - (void)addSubelementView:(ButtonView *)view {
   [super addSubelementView:view];
-  [view.gestureRecognizers
-   makeObjectsPerformSelector:@selector(requireGestureRecognizerToFail:)
-                   withObject:_labelPanGesture];
+  [view.gestureRecognizers makeObjectsPerformSelector:@selector(requireGestureRecognizerToFail:)
+                                           withObject:self.labelPanGesture];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,33 +115,32 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 
   NSDictionary * kvoRegistration =
 
-    @{
+  @{
 
     @"labels" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
+      ^(MSKVOReceptionist * receptionist,
+        NSString * keyPath,
+        id object,
+        NSDictionary * change,
+        void * context)
     {
       [(__bridge PickerLabelButtonGroupView *)context
        buildLabels];
     },
 
     @"commandSets" :
-    ^(MSKVOReceptionist * receptionist,
-      NSString          * keyPath,
-      id object,
-      NSDictionary      * change,
-      void              * context)
+      ^(MSKVOReceptionist * receptionist,
+        NSString * keyPath,
+        id object,
+        NSDictionary * change,
+        void * context)
     {
       [(__bridge PickerLabelButtonGroupView *)context updateCommandSet];
     }
 
-  };
+    };
 
-  return [[super kvoRegistration]
-          dictionaryByAddingEntriesFromDictionary:kvoRegistration];
+  return [[super kvoRegistration] dictionaryByAddingEntriesFromDictionary:kvoRegistration];
 }
 
 - (void)initializeIVARs {
@@ -103,22 +150,27 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
 
 - (void)addInternalSubviews {
   [super addInternalSubviews];
+  self.overlayClipsToBounds = YES;
 
-  _labelContainer                 = [UIView newForAutolayout];
-  _labelContainer.backgroundColor = ClearColor;
-  self.overlayClipsToBounds       = YES;
-  [self addViewToOverlay:_labelContainer];
-
+  UIView * labelContainer = [UIView newForAutolayout];
+  labelContainer.backgroundColor = ClearColor;
+  [self addViewToOverlay:labelContainer];
+  self.labelContainer = labelContainer;
+  [self buildLabels];
 }
 
+- (void)initializeViewFromModel {
+  [super initializeViewFromModel];
+
+}
 - (void)attachGestureRecognizers {
   [super attachGestureRecognizers];
 
-  _labelPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                             action:@selector(handlePan:)];
-  _labelPanGesture.maximumNumberOfTouches = 1;
-
-  [self addGestureRecognizer:_labelPanGesture];
+  UIPanGestureRecognizer * labelPanGesture = [[UIPanGestureRecognizer alloc]
+                                              initWithTarget:self action:@selector(handlePan:)];
+  labelPanGesture.maximumNumberOfTouches = 1;
+  [self addGestureRecognizer:labelPanGesture];
+  self.labelPanGesture = labelPanGesture;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +191,7 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
                       options:(UIViewAnimationOptionBeginFromCurrentState
                                | UIViewAnimationOptionOverrideInheritedDuration
                                | UIViewAnimationOptionCurveEaseOut)
-                   animations:^{ _labelContainerLeftConstraint.constant = 0 - labelWidth * index;
+                   animations:^{ self.labelContainerLeftConstraint.constant = 0 - labelWidth * index;
                                  [self setNeedsLayout]; }
 
                    completion:^(BOOL finished) { [self updateCommandSet]; }];
@@ -150,58 +202,33 @@ MSNAMETAG_DEFINITION(REPickerLabelButtonGroupViewLabelContainer);
  * labels attached already to the `scrollingLabels` are removed first.
  */
 - (void)buildLabels {
-  assert(_labelContainer.subviews.count == 0);
+
+  for (UIView * subview in self.labelContainer.subviews) [subview removeFromSuperview];
 
   CommandContainer * container = self.model.commandContainer;
 
-  if (!isKind(container, CommandSetCollection)) return;
+  if ([container isKindOfClass:[CommandSetCollection class]]) {
 
-  CommandSetCollection * collection = (CommandSetCollection *)container;
+    _pickerFlags.labelCount = container.count;
 
-  NSUInteger labelCount = collection.count;
+    if (_pickerFlags.labelCount) {
+      NSString * nametag = ClassNametagWithSuffix(@"Internal");
 
-  if (!labelCount) return;
+      for (NSUInteger i = 0; i < _pickerFlags.labelCount; i++) {
 
-  _pickerFlags.labelCount = labelCount;
+        NSAttributedString * label = [self.model labelForCommandSetAtIndex:i];
 
-  NSMutableString     * positionalConstraints = [@"H:|" mutableCopy];
-  NSMutableDictionary * labels                = [NSMutableDictionary dictionaryWithCapacity:labelCount];
+        UILabel * newLabel = [UILabel newForAutolayout];
+        newLabel.attributedText  = label;
+        newLabel.backgroundColor = [UIColor clearColor];
+        [self.labelContainer addSubview:newLabel];
 
-  for (NSUInteger i = 0; i < labelCount; i++) {
-    NSAttributedString * label = [self.model labelForCommandSetAtIndex:i];
+      }
 
-    UILabel * newLabel = [UILabel newForAutolayout];
+    }
 
-    newLabel.attributedText  = label;
-    newLabel.backgroundColor = [UIColor clearColor];
-    [_labelContainer addSubview:newLabel];
-
-    labels[label.string] = newLabel;
-
-    NSString * labelName   = $(@"label%lu", (unsigned long)i);
-    NSString * constraints = $(@"%1$@.width = self.width '%2$@'\n"
-                               "%1$@.centerY = container.centerY '%2$@'",
-                               labelName, REPickerLabelButtonGroupViewInternalNametag);
-
-    [self addConstraints:[NSLayoutConstraint
-                          constraintsByParsingString:constraints
-                                               views:@{ labelName    : newLabel,
-                                                        @"self"      : self,
-                                                        @"container" : _labelContainer }]];
-
-    [positionalConstraints appendFormat:@"[%@]", label.string];
   }
 
-  [positionalConstraints appendString:@"|"];
-
-  NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:positionalConstraints
-                                                                  options:0
-                                                                  metrics:nil
-                                                                    views:labels];
-
-  [constraints setValue:REPickerLabelButtonGroupViewInternalNametag forKeyPath:@"nametag"];
-
-  [_labelContainer addConstraints:constraints];
 }
 
 ////////////////////////////////////////////////////////////////////////////////

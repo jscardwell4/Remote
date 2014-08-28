@@ -7,10 +7,6 @@
 //
 
 #import "RemoteElement.h"
-#import "Remote.h"
-#import "ButtonGroup.h"
-#import "Button.h"
-#import "Constraint.h"
 
 @interface RemoteElement ()
 
@@ -24,7 +20,6 @@
 @interface RemoteElement (CoreDataGeneratedAccessors)
 
 @property (nonatomic) NSNumber                * primitiveRole;
-@property (nonatomic) NSNumber                * primitiveOptions;
 @property (nonatomic) NSNumber                * primitiveState;
 @property (nonatomic) NSNumber                * primitiveShape;
 @property (nonatomic) NSNumber                * primitiveStyle;
@@ -41,19 +36,3 @@
 
 @end
 
-#import "RemoteController.h"
-#import "Bankables.h"
-#import "Command.h"
-#import "CommandContainer.h"
-#import "CommandSet.h"
-#import "CommandSetCollection.h"
-#import "ControlStateSet.h"
-#import "ControlStateImageSet.h"
-#import "ControlStateTitleSet.h"
-#import "ControlStateColorSet.h"
-#import "CoreDataManager.h"
-#import "Theme.h"
-#import "RemoteElementImportSupportFunctions.h"
-#import "RemoteElementExportSupportFunctions.h"
-#import "RemoteElementKeys.h"
-#import "JSONObjectKeys.h"

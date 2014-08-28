@@ -7,6 +7,13 @@
 //
 #import "RemoteElement_Private.h"
 #import "ConstraintManager.h"
+#import "Theme.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
+#import "ButtonGroup.h"
+#import "Button.h"
+#import "Remote.h"
+#import "Image.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSOLE);
@@ -37,7 +44,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (REType)elementType { return RETypeUndefined; }
+- (REType)elementType { return RETypeUndefined; }
 
 - (void)prepareForDeletion {
   NSManagedObjectContext * moc = self.managedObjectContext;
@@ -100,7 +107,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
               "backgroundImageAlpha": 0.5,
               "theme": **Theme**,
               "themeFlags": "not parsed yet",
-              "options": "autohide",
               "tag": 23,
               "shape": "rounded-rectangle",
               "style": "border gloss1",
@@ -133,7 +139,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   self.name       = data[@"name"];
   self.role       = remoteElementRoleFromImportKey(data[@"role"]);
   self.key        = data[@"key"];
-  self.options    = remoteElementOptionsFromImportKey(data[@"options"]);
   self.state      = remoteElementStateFromImportKey(data[@"state"]);
   self.shape      = remoteElementShapeFromImportKey(data[@"shape"]);
   self.style      = remoteElementStyleFromImportKey(data[@"style"]);
@@ -178,7 +183,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
     [subelementObjects filter:^BOOL (id obj) { return isDictionaryKind(obj); }];
     [subelementObjects map:^id (NSDictionary * objData, NSUInteger idx) {
-      switch ([[self class] elementType]) {
+      switch (self.elementType) {
         case RETypeRemote:
           return [ButtonGroup importObjectFromData:objData context:moc];
 
@@ -214,7 +219,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   SetValueForKeyIfNotDefault(self.tag,                               @"tag",     dictionary);
   SetValueForKeyIfNotDefault(roleJSONValueForRemoteElement(self),    @"role",    dictionary);
-  SetValueForKeyIfNotDefault(optionsJSONValueForRemoteElement(self), @"options", dictionary);
   SetValueForKeyIfNotDefault(stateJSONValueForRemoteElement(self),   @"state",   dictionary);
   SetValueForKeyIfNotDefault(shapeJSONValueForRemoteElement(self),   @"shape",   dictionary);
   SetValueForKeyIfNotDefault(styleJSONValueForRemoteElement(self),   @"style",   dictionary);
@@ -310,10 +314,8 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
     if (!self.subelements.count) return nil;
 
-    return [self.subelements objectPassingTest:
-            ^BOOL (RemoteElement * obj, NSUInteger idx)
-    {
-      return REStringIdentifiesRemoteElement(key, obj);
+    return [self.subelements objectPassingTest:^BOOL (RemoteElement * obj, NSUInteger idx) {
+      return [obj isIdentifiedByString:key];
     }];
   }
 }
@@ -420,6 +422,13 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
 - (void)refresh { [self updateForMode:self.currentMode]; }
 
+- (BOOL)isIdentifiedByString:(NSString *)string {
+  return (  StringIsNotEmpty(string)
+          && (  [string isEqualToString:self.uuid]
+              || [string isEqualToString:self.key]
+              || [string isEqualToString:self.identifier]));
+}
+
 @end
 
 
@@ -443,7 +452,7 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 
   assert(element);
 
-  NSString * typeString        = NSStringFromREType([[self class] elementType]);
+  NSString * typeString        = NSStringFromREType(self.elementType);
   NSString * roleString        = NSStringFromRERole(element.role);
   NSString * keyString         = element.key;
   NSString * nameString        = element.name;
@@ -464,7 +473,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   NSString * shapeString      = NSStringFromREShape(element.shape);
   NSString * styleString      = NSStringFromREStyle(element.style);
   NSString * themeFlagString  = NSStringFromREThemeFlags(element.themeFlags);
-  NSString * optionsString    = NSStringFromREOptions(element.options, [[self class] elementType]);
   NSString * stateString      = NSStringFromREState(element.state);
   NSString * backgroundString = namedModelObjectDescription(element.backgroundImage);
   NSString * bgAlphaString    = [element.backgroundImageAlpha stringValue];
@@ -486,7 +494,6 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
   dd[@"shape"]                = (shapeString ?: @"nil");
   dd[@"style"]                = (styleString ?: @"nil");
   dd[@"themeFlags"]           = (themeFlagString ?: @"nil");
-  dd[@"options"]              = (optionsString ?: @"nil");
   dd[@"state"]                = (stateString ?: @"nil");
   dd[@"backgroundImage"]      = (backgroundString ?: @"nil");
   dd[@"backgroundImageAlpha"] = (bgAlphaString ?: @"nil");
@@ -539,9 +546,8 @@ static const REThemeOverrideFlags kConnectionStatusButtonDefaultThemeFlags = 0b0
 }
 
 - (NSString *)flagsAndAppearanceDescription {
-  return $(@"type:%@\noptions:%@\nstate:%@\nshape:%@\nstyle:%@\n",
-           NSStringFromREType([[self class] elementType]),
-           NSStringFromREOptions(self.options, [[self class] elementType]),
+  return $(@"type:%@\nstate:%@\nshape:%@\nstyle:%@\n",
+           NSStringFromREType(self.elementType),
            NSStringFromREState(self.state),
            NSStringFromREShape(self.shape),
            NSStringFromREStyle(self.style));
@@ -623,13 +629,6 @@ NSDictionary*_NSDictionaryOfVariableBindingsToIdentifiers(NSString * commaSepara
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
-BOOL REStringIdentifiesRemoteElement(NSString * identifier, RemoteElement * re) {
-  return (  StringIsNotEmpty(identifier)
-         && (  [identifier isEqualToString:re.uuid]
-            || [identifier isEqualToString:re.key]
-            || [identifier isEqualToString:re.identifier]));
-}
-
 Class classForREType(REType type) {
   switch (type) {
     case RETypeRemote:      return [Remote class];
@@ -657,19 +656,6 @@ Class classForREType(REType type) {
   self.primitiveRole = @(role);
   [self didChangeValueForKey:@"role"];
   if (self.isNameAutoGenerated) [self autoGenerateName];
-}
-
-- (void)setOptions:(REOptions)options {
-  [self willChangeValueForKey:@"options"];
-  self.primitiveOptions = @(options);
-  [self didChangeValueForKey:@"options"];
-}
-
-- (REOptions)options {
-  [self willAccessValueForKey:@"options"];
-  NSNumber * options = self.primitiveOptions;
-  [self didAccessValueForKey:@"options"];
-  return (options ? [options shortValue] : REOptionsDefault);
 }
 
 - (void)setState:(REState)state {

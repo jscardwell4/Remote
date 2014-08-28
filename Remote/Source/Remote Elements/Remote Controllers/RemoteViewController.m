@@ -116,17 +116,38 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
   [super updateViewConstraints];
 
-  if (self.remoteView && _flags.addRemoteViewConstraints) {
-    NSString * rawConstraints = (@"remote.centerX = view.centerX\n"
-                                 "remote.bottom = view.bottom\n"
-                                 "remote.top = view.top");
+  NSString * nametag = ClassNametagWithSuffix(@"Remote");
+
+  if (self.remoteView && ![self.view constraintsWithNametagPrefix:nametag]) {
+    NSString * rawConstraints = $(@"'%1$@' remote.centerX = view.centerX\n"
+                                  "'%1$@' remote.bottom = view.bottom\n"
+                                  "'%1$@' remote.top = view.top", nametag);
     NSDictionary * bindings = @{@"view": self.view,
                                 @"remote": self.remoteView,
                                 @"toolbar": self.topToolbarView};
     NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:rawConstraints views:bindings];
     [self.view addConstraints:constraints];
-    _flags.addRemoteViewConstraints = NO;
+
   }
+
+  if (!self.topToolbarConstraint) {
+    NSLayoutConstraint * topToolbarConstraint = [NSLayoutConstraint constraintWithItem:self.topToolbarView
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0
+                                                                              constant:0.0];
+
+    [self.view addConstraint:topToolbarConstraint];
+    self.topToolbarConstraint = topToolbarConstraint;
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsByParsingString:@"toolbar.centerX = view.centerX"
+                                                                       views:@{ @"toolbar" : self.topToolbarView,
+                                                                                @"view": self.view }]];
+  }
+
+  [self updateTopToolbarLocation];
 
 }
 
@@ -138,9 +159,6 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 - (void)insertRemoteView:(RemoteView *)remoteView {
   assert(OnMainThread && remoteView);
 
-  _flags.addRemoteViewConstraints = YES;
-  [remoteView.model refresh];
-
   if (self.remoteView) {
     [UIView animateWithDuration:0.25
                      animations:^{
@@ -148,13 +166,11 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                        [self.remoteView removeFromSuperview];
                        [self.view insertSubview:remoteView belowSubview:self.topToolbarView];
                        self.remoteView = remoteView;
-                       [self.remoteView setNeedsDisplay];
                        [self.view setNeedsUpdateConstraints];
                      }];
   } else {
     [self.view insertSubview:remoteView belowSubview:self.topToolbarView];
     self.remoteView = remoteView;
-    [self.remoteView setNeedsDisplay];
     [self.view setNeedsUpdateConstraints];
   }
 
@@ -216,12 +232,15 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
   #endif
 }
 
+- (void)updateTopToolbarLocation {
+  if (self.remoteController.currentRemote.topBarHidden == (self.topToolbarConstraint.constant == 0))
+    [self toggleTopToolbar:YES];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
 
-  if (self.remoteController.currentRemote.topBarHidden == (_topToolbarConstraint.constant == 0))
-    [self toggleTopToolbar:YES];
-
+  [self updateTopToolbarLocation];
 }
 
 /**
@@ -251,29 +270,27 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                         delay:0.0
                       options:UIViewAnimationOptionBeginFromCurrentState
                    animations:^{
-                     _topToolbarConstraint.constant = constraintConstant;
+                     self.topToolbarConstraint.constant = constraintConstant;
                      [self.view layoutIfNeeded];
-                   }
-
-                   completion:nil];
+                   } completion:nil];
 }
 
 - (void)showTopToolbar:(BOOL)animated {
   CGFloat constant = 0;
   if (animated) [self animateToolbar:constant];
-  else _topToolbarConstraint.constant = constant;
+  else self.topToolbarConstraint.constant = constant;
 }
 
 - (void)hideTopToolbar:(BOOL)animated {
   CGFloat constant = -self.topToolbarView.bounds.size.height;
   if (animated) [self animateToolbar:constant];
-  else _topToolbarConstraint.constant = constant;
+  else self.topToolbarConstraint.constant = constant;
 }
 
 - (void)toggleTopToolbar:(BOOL)animated {
-  CGFloat constant = (_topToolbarConstraint.constant ? 0 : -self.topToolbarView.bounds.size.height);
+  CGFloat constant = (self.topToolbarConstraint.constant ? 0 : -self.topToolbarView.bounds.size.height);
   if (animated) [self animateToolbar:constant];
-  else _topToolbarConstraint.constant = constant;
+  else self.topToolbarConstraint.constant = constant;
 }
 
 /**
@@ -291,20 +308,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
   [self.view addSubview:topToolbarView];
   self.topToolbarView = topToolbarView;
-  [self.topToolbarView.model refresh];
-  NSLayoutConstraint * topToolbarConstraint = [NSLayoutConstraint constraintWithItem:topToolbarView
-                                                                           attribute:NSLayoutAttributeTop
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.view
-                                                                           attribute:NSLayoutAttributeTop
-                                                                          multiplier:1.0
-                                                                            constant:0.0];
-
-  [self.view addConstraint:topToolbarConstraint];
-  self.topToolbarConstraint = topToolbarConstraint;
-
-  [self.view addConstraints:[NSLayoutConstraint constraintsByParsingString:@"toolbar.width = view.width\ntoolbar.height = 44\ntoolbar.centerX = view.centerX"
-                                                                     views:@{ @"toolbar" : self.topToolbarView, @"view": self.view }]];
+  [self.view setNeedsUpdateConstraints];
 }
 
 @end

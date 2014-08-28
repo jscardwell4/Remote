@@ -36,8 +36,9 @@ MSEXTERN_STRING REDefaultMode;
 @property (nonatomic, strong, readonly ) NSArray               * modes;
 @property (nonatomic, copy,   readwrite) NSString              * currentMode;
 @property (nonatomic, strong, readonly ) RemoteElement         * parentElement;
+@property (nonatomic, assign, readonly ) REType                  elementType;
 
-+ (REType)elementType;
+- (BOOL)isIdentifiedByString:(NSString *)string;
 
 //+ (instancetype)remoteElement;
 //+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc;
@@ -62,7 +63,6 @@ MSEXTERN_STRING REDefaultMode;
 @interface RemoteElement (CustomTypeAccessors)
 
 @property (nonatomic, assign, readwrite) RERole                  role;
-@property (nonatomic, assign, readwrite) REOptions               options;
 @property (nonatomic, assign, readwrite) REState                 state;
 @property (nonatomic, assign, readwrite) REShape                 shape;
 @property (nonatomic, assign, readwrite) REStyle                 style;

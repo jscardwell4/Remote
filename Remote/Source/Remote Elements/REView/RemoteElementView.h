@@ -14,17 +14,22 @@
 @interface RemoteElementView : UIView
 
 + (instancetype)viewWithModel:(RemoteElement *)model;
-- (instancetype)initWithModel:(RemoteElement *)model;
 
-- (RemoteElementView *)objectAtIndexedSubscript:(NSUInteger)idx;
-- (RemoteElementView *)objectForKeyedSubscript:(NSString *)key;
-
-@property (nonatomic, readonly) CGSize minimumSize;
-@property (nonatomic, readonly) CGSize maximumSize;
+@property (nonatomic, readonly) NSDictionary * viewFrames;
+@property (nonatomic, readonly) CGSize         minimumSize;
+@property (nonatomic, readonly) CGSize         maximumSize;
+@property (nonatomic, readonly) NSString     * uuid;
+@property (nonatomic, readonly) NSString     * key;
+@property (nonatomic, readonly) NSString     * name;
+@property (nonatomic, readonly) BOOL           proportionLock;
+@property (nonatomic, readonly) NSString     * currentMode;
 
 @end
 
 @interface RemoteElementView (AbstractProperties)
+
+- (RemoteElementView *)objectAtIndexedSubscript:(NSUInteger)idx;
+- (RemoteElementView *)objectForKeyedSubscript:(NSString *)key;
 
 @property (nonatomic, strong, readonly)  RemoteElement     * model;
 @property (nonatomic, weak,   readonly)  RemoteElementView * parentElementView;
@@ -61,6 +66,7 @@
 
 @interface RemoteElementView (Editing)
 
+@property (nonatomic, assign, getter = isLocked)         BOOL           locked;
 @property (nonatomic, assign)                            REEditingMode  editingMode;
 @property (nonatomic, readonly, getter = isEditing)      BOOL           editing;
 @property (nonatomic, assign)                            REEditingState editingState;
@@ -83,43 +89,7 @@
                 toSibling:(RemoteElementView *)siblingView
                 attribute:(NSLayoutAttribute)attribute;
 
-- (void)willResizeViews:(NSSet *)views;
-- (void)didResizeViews:(NSSet *)views;
-
-- (void)willScaleViews:(NSSet *)views;
 - (void)scale:(CGFloat)scale;
-- (void)didScaleViews:(NSSet *)views;
-
-- (void)willAlignViews:(NSSet *)views;
-- (void)didAlignViews:(NSSet *)views;
-
-- (void)willTranslateViews:(NSSet *)views;
-- (void)didTranslateViews:(NSSet *)views;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Surrogate
-////////////////////////////////////////////////////////////////////////////////
-
-@interface RemoteElementView (RemoteElement)
-
-@property (nonatomic, copy)             NSString         * key;
-@property (nonatomic, copy)             NSString         * uuid;
-@property (nonatomic, copy)             NSString         * name;
-@property (nonatomic, assign)           CGFloat            backgroundImageAlpha;
-@property (nonatomic, strong)           UIColor          * backgroundColor;
-@property (nonatomic, strong)           Image            * backgroundImage;
-@property (nonatomic, strong)           RemoteController * controller;
-@property (nonatomic, strong)           RemoteElement    * parentElement;
-@property (nonatomic, strong)           NSOrderedSet     * subelements;
-@property (nonatomic, assign)           BOOL               proportionLock;
-@property (nonatomic, assign)           REShape            shape;
-@property (nonatomic, assign)           REStyle            style;
-@property (nonatomic, readonly)         REType             elementType;
-@property (nonatomic, readonly)         RERole             role;
-@property (nonatomic, assign)           REOptions          options;
-@property (nonatomic, readonly)         REState            state;
 
 @end
 
@@ -140,27 +110,6 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 
 @end
 
-
-MSSTATIC_INLINE NSDictionary *viewFramesByIdentifier(RemoteElementView * remoteElementView) {
-  NSMutableDictionary * viewFrames =
-    [NSMutableDictionary dictionaryWithObjects:[remoteElementView.subelementViews
-                                                valueForKeyPath:@"frame"]
-                                       forKeys:[remoteElementView.subelementViews
-                  valueForKeyPath:@"uuid"]];
-
-  viewFrames[remoteElementView.uuid] = NSValueWithCGRect(remoteElementView.frame);
-
-  if (remoteElementView.parentElementView)
-    viewFrames[remoteElementView.parentElementView.uuid] =
-      NSValueWithCGRect(remoteElementView.parentElementView.frame);
-
-  return viewFrames;
-}
-
-MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteElementView * view) {
-  return REStringIdentifiesRemoteElement(identifier, view.model);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - RemoteView
 ////////////////////////////////////////////////////////////////////////////////
@@ -168,13 +117,11 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 
 @class ButtonGroupView, Remote;
 
-@interface RemoteView : RemoteElementView
+@interface RemoteView : RemoteElementView @end
+
+@interface RemoteView (ButtonGroupViews)
 
 @property (nonatomic, strong, readonly) Remote   * model;
-@property (nonatomic, assign)           BOOL       locked;
-@property (nonatomic, readonly)         NSString * currentMode;
-@property (nonatomic, readonly)         NSArray  * registeredConfigurations;
-
 - (ButtonGroupView *)objectAtIndexedSubscript:(NSUInteger)idx;
 - (ButtonGroupView *)objectForKeyedSubscript:(NSString *)key;
 
@@ -193,19 +140,11 @@ MSSTATIC_INLINE BOOL REStringIdentifiesREView(NSString * identifier, RemoteEleme
 #pragma mark - ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////
 #define ButtonGroupTucksVertically(buttonGroup) \
-  (  buttonGroup.panelLocation                  \
-   == REPanelLocationTop                        \
-  || buttonGroup.panelLocation                  \
-   == REPanelLocationBottom)
+  (  buttonGroup.panelLocation == REPanelLocationTop || buttonGroup.panelLocation == REPanelLocationBottom)
 
 #define ButtonGroupTucksHorizontally(buttonGroup) \
-  (  buttonGroup.panelLocation                    \
-   == REPanelLocationLeft                         \
-  || buttonGroup.panelLocation                    \
-   == REPanelLocationRight)
+  (  buttonGroup.panelLocation == REPanelLocationLeft || buttonGroup.panelLocation == REPanelLocationRight)
 
-MSEXTERN_NAMETAG(ButtonGroupViewInternal);
-MSEXTERN_NAMETAG(ButtonGroupViewLabel);
 
 /**
  * The `ButtonGroupView` class is a subclass of `UIView` designed to display itself
@@ -219,31 +158,26 @@ MSEXTERN_NAMETAG(ButtonGroupViewLabel);
 
 @interface ButtonGroupView : RemoteElementView
 
-@property (nonatomic, strong, readonly)  ButtonGroup * model;
-@property (nonatomic, weak,   readonly)  RemoteView  * parentElementView;
-@property (nonatomic, assign)            BOOL          autohide;
-@property (nonatomic, assign)            BOOL          locked;
+@property (nonatomic, assign) REPanelLocation   panelLocation;
+@property (nonatomic, assign) BOOL              autohide;
+@property (nonatomic, weak)   UILabel         * label;
 
-- (ButtonView *)objectAtIndexedSubscript:(NSUInteger)idx;
-- (ButtonView *)objectForKeyedSubscript:(NSString *)key;
 - (void)tuck;
 - (void)untuck;
 
 @end
 
-#pragma mark - Properties forwarded to the model object
+@interface ButtonGroupView (SubclassSpecific)
 
-@interface ButtonGroupView (REButtonGroup)
+@property (nonatomic, strong, readonly)  ButtonGroup * model;
+@property (nonatomic, weak,   readonly)  RemoteView  * parentElementView;
 
-@property (nonatomic, assign) REPanelLocation panelLocation;
-
-@end
-
-@interface ButtonGroupView (Drawing)
-
-- (void)drawRoundedPanelInContext:(CGContextRef)ctx inRect:(CGRect)rect;
+- (ButtonView *)objectAtIndexedSubscript:(NSUInteger)idx;
+- (ButtonView *)objectForKeyedSubscript:(NSString *)key;
 
 @end
+
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Subclasses of ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////

@@ -361,39 +361,6 @@ NSString *NSStringFromREPanelAssignment(REPanelAssignment assignment) {
               NSStringFromREPanelTrigger(assignment & REPanelAssignmentTriggerMask)));
 }
 
-typedef NS_OPTIONS (uint8_t, REOptions) {
-  REOptionsDefault                       = 0b00000000,
-  RERemoteOptionTopBarHidden             = 0b00000001,
-  REButtonGroupOptionAutohide            = 0b00000001,
-  REButtonGroupOptionCommandSetContainer = 0b00000010
-};
-
-static inline NSString *NSStringFromREOptions(REOptions options, REType type) {
-
-  switch (type) {
-    case RETypeRemote:
-      return (options ? @"RERemoteOptionTopBarHidden" : @"REOptionsDefault");
-
-    case RETypeButtonGroup: {
-      NSMutableArray * components = [@[] mutableCopy];
-
-      if ((options & REButtonGroupOptionAutohide) == REButtonGroupOptionAutohide)
-        [components addObject:@"REButtonGroupOptionAutohide"];
-
-      if ((options & REButtonGroupOptionCommandSetContainer)
-          == REButtonGroupOptionCommandSetContainer)
-        [components addObject:@"REButtonGroupOptionCommandSetContainer"];
-
-      return ([components count]
-              ? [components componentsJoinedByString:@"|"]
-              : @"REOptionsDefault");
-    }
-
-    case RETypeButton:
-    default:
-      return @"REOptionsDefault";
-  }
-}
 
 typedef NS_OPTIONS (uint8_t, REState) {
   REStateDefault     = 0b00000000,

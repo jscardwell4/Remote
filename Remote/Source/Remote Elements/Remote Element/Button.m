@@ -9,6 +9,10 @@
 #import "Button.h"
 #import "RemoteElement_Private.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ControlStateColorSet.h"
+#import "ControlStateTitleSet.h"
+#import "ControlStateImageSet.h"
+#import "Command.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -50,7 +54,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic titles, icons, images, backgroundColors;
 
 
-+ (REType)elementType { return RETypeButton; }
+- (REType)elementType { return RETypeButton; }
 
 
 ////////////////////////////////////////////////////////////////////////////////

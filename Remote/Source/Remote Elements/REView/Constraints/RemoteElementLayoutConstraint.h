@@ -1,5 +1,5 @@
 //
-//  LayoutConstraint.h
+//  RemoteElementLayoutConstraint.h
 //  Remote
 //
 //  Created by Jason Cardwell on 4/23/13.
@@ -11,7 +11,7 @@
 /*
  * RELayoutConstraint
  */
-@interface LayoutConstraint:NSLayoutConstraint
+@interface RemoteElementLayoutConstraint:NSLayoutConstraint
 
 @property (nonatomic, strong) Constraint                       * modelConstraint;
 @property (readonly, weak)    RemoteElementView                * firstItem;
@@ -29,8 +29,8 @@
  *
  * @return Newly created constraint for the specified view
  */
-+ (LayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
-                                    forView:(RemoteElementView *)view;
++ (RemoteElementLayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
+                                               forView:(RemoteElementView *)view;
 
 @end
 

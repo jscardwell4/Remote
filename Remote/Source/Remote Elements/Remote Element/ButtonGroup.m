@@ -9,7 +9,10 @@
 #import "ButtonGroup.h"
 #import "RemoteElement_Private.h"
 #import "CommandSetCollection.h"
+#import "CommandSet.h"
 #import "JSONObjectKeys.h"
+#import "Button.h"
+#import "Command.h"
 #import "TitleAttributes.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -33,7 +36,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
   NSUInteger _commandSetCollectionIndex;   /// index of command set in collection currently in use
 }
 
-@dynamic labelConstraints, labelAttributes, commandContainer;
+@dynamic labelConstraints, labelAttributes, commandContainer, autohide;
 
 /*
 + (instancetype)buttonGroupWithRole:(RERole)role { return [self remoteElementWithAttributes:@{ @"role" : @(role) }]; }
@@ -43,7 +46,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 }
 
 */
-+ (REType)elementType { return RETypeButtonGroup; }
+- (REType)elementType { return RETypeButtonGroup; }
 
 - (void)setPanelLocation:(REPanelLocation)panelLocation {
   switch (panelLocation) {

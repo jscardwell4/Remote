@@ -19,11 +19,10 @@ NSString * roleJSONValueForRemoteElement(RemoteElement * element);
 NSString * roleJSONValueForRERole(RERole role);
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Remote Element State & Options
+#pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
 NSString * stateJSONValueForRemoteElement(RemoteElement * element);
-NSString * optionsJSONValueForRemoteElement(RemoteElement * element);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style & Theme

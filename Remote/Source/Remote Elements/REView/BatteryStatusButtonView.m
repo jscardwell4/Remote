@@ -7,6 +7,10 @@
 //
 #import "RemoteElementView_Private.h"
 #import "ImageView.h"
+#import "Button.h"
+#import "Image.h"
+#import "ControlStateImageSet.h"
+#import "ImageView.h"
 
 @implementation BatteryStatusButtonView
 

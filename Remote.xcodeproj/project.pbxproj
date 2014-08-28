@@ -61,7 +61,7 @@
 		C203BC1B1726EEF8002FD3EA /* RECoreDataTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C22BA108172193CB00850174 /* RECoreDataTestCase.m */; };
 		C203BC1C1726EEFB002FD3EA /* MSCoreDataTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C23A18421720CD9300B46520 /* MSCoreDataTestCase.m */; };
 		C203BC1F1726EF2C002FD3EA /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
-		C203BC221726F30D002FD3EA /* LayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* LayoutConstraint.m */; };
+		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
 		C203BC2717271CFE002FD3EA /* 10-arrows-in.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9B16DC1B5B0093D5B4 /* 10-arrows-in.png */; };
 		C203BC2817271CFE002FD3EA /* 10-arrows-in@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9C16DC1B5B0093D5B4 /* 10-arrows-in@2x.png */; };
 		C203BC2917271CFE002FD3EA /* AlignBarButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9D16DC1B5B0093D5B4 /* AlignBarButtonIcon.png */; };
@@ -293,8 +293,6 @@
 		C2381FA119A7EE3B00135DAB /* WoodPlanks-640x1136-iPhone5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB019A7EE3B00135DAB /* WoodPlanks-640x1136-iPhone5.jpg */; };
 		C2381FA219A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */; };
 		C2381FA319A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */; };
-		C23B946C170C8FEA0028CC06 /* RemoteElementView+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */; };
-		C23B946F170C94BE0028CC06 /* RemoteElementView+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */; };
 		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2436DB417EA99C600482186 /* BankCollectionViewController.m */; };
@@ -353,9 +351,6 @@
 		C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
 		C25B478016FF8D5E0042B59E /* Remote.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457F16FF62A00042B59E /* Remote.m */; };
 		C25B478116FF8D5E0042B59E /* RemoteElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */; };
-		C25B478216FF8D5E0042B59E /* RemoteElementView+Editing.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */; };
-		C25B478316FF8D5E0042B59E /* RemoteElementView+SubelementViews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */; };
-		C25B478416FF8D5E0042B59E /* RemoteElementView+InternalSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */; };
 		C25B478616FF8D5E0042B59E /* Constraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* Constraint.m */; };
 		C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE316DC18530093D5B4 /* RemoteView.m */; };
 		C25B478816FF8D5E0042B59E /* PickerLabelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */; };
@@ -630,8 +625,8 @@
 		C203BBC91726EBD7002FD3EA /* DatabaseConstructionTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatabaseConstructionTests.h; sourceTree = "<group>"; };
 		C203BBCA1726EBD7002FD3EA /* DatabaseConstructionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatabaseConstructionTests.m; sourceTree = "<group>"; };
 		C203BBCC1726EBD7002FD3EA /* DatabaseConstructionTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DatabaseConstructionTests-Prefix.pch"; sourceTree = "<group>"; };
-		C203BC201726F30D002FD3EA /* LayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutConstraint.h; sourceTree = "<group>"; };
-		C203BC211726F30D002FD3EA /* LayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutConstraint.m; sourceTree = "<group>"; };
+		C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
+		C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConstraint.m; sourceTree = "<group>"; };
 		C208DDFD16DDC5DF00084C49 /* Config-Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Project.xcconfig"; sourceTree = "<group>"; };
 		C208DDFE16DDC5F600084C49 /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
 		C208DDFF16DDC5FD00084C49 /* Config-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Release.xcconfig"; sourceTree = "<group>"; };
@@ -855,8 +850,6 @@
 		C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-2048x1536-iPad@2x.jpg"; sourceTree = "<group>"; };
 		C23A18411720CD9300B46520 /* MSCoreDataTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCoreDataTestCase.h; sourceTree = "<group>"; };
 		C23A18421720CD9300B46520 /* MSCoreDataTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCoreDataTestCase.m; sourceTree = "<group>"; };
-		C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Drawing.m"; sourceTree = "<group>"; };
-		C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Debugging.m"; sourceTree = "<group>"; };
 		C23F1E5C1705064E0084718A /* SendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendCommand.m; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
@@ -973,9 +966,6 @@
 		C25B46F016FF69110042B59E /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview.h; sourceTree = "<group>"; };
 		C25B46F116FF69110042B59E /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectPreview.m; sourceTree = "<group>"; };
 		C25B46F516FF69110042B59E /* Preset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preset.m; sourceTree = "<group>"; };
-		C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+Editing.m"; sourceTree = "<group>"; };
-		C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+SubelementViews.m"; sourceTree = "<group>"; };
-		C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementView+InternalSubviews.m"; sourceTree = "<group>"; };
 		C25C44DB19ABB3E2005594ED /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Activity.json; path = "Import Data/Activities/Activity.json"; sourceTree = "<group>"; };
 		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
 		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
@@ -1647,17 +1637,12 @@
 				C26BAFDC16DC18530093D5B4 /* RemoteElementView.h */,
 				C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */,
 				C26BAFDE16DC18530093D5B4 /* RemoteElementView_Private.h */,
-				C25B472716FF695B0042B59E /* RemoteElementView+Editing.m */,
-				C25B472B16FF6E500042B59E /* RemoteElementView+SubelementViews.m */,
-				C25B472E16FF77AB0042B59E /* RemoteElementView+InternalSubviews.m */,
-				C23B946E170C94BE0028CC06 /* RemoteElementView+Debugging.m */,
 				C2318B3117E5555600CF58D9 /* disabled */,
 				C26BAFE316DC18530093D5B4 /* RemoteView.m */,
 				C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */,
 				C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */,
 				C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */,
 				C25B456616FF61C90042B59E /* BatteryStatusButtonView.m */,
-				C23B946B170C8FEA0028CC06 /* RemoteElementView+Drawing.m */,
 				C25B456816FF61C90042B59E /* ButtonView.m */,
 				C25B456916FF61C90042B59E /* ConnectionStatusButtonView.m */,
 				C25B46CB16FF68A90042B59E /* Constraints */,
@@ -1813,8 +1798,8 @@
 			children = (
 				C25B46CC16FF68A90042B59E /* Constraint.h */,
 				C25B46CD16FF68A90042B59E /* Constraint.m */,
-				C203BC201726F30D002FD3EA /* LayoutConstraint.h */,
-				C203BC211726F30D002FD3EA /* LayoutConstraint.m */,
+				C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */,
+				C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */,
 			);
 			path = Constraints;
 			sourceTree = "<group>";
@@ -3396,9 +3381,6 @@
 				C25B478116FF8D5E0042B59E /* RemoteElementView.m in Sources */,
 				C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */,
 				C2D1022D19AAFCA300DE5346 /* ImageView.m in Sources */,
-				C25B478216FF8D5E0042B59E /* RemoteElementView+Editing.m in Sources */,
-				C25B478316FF8D5E0042B59E /* RemoteElementView+SubelementViews.m in Sources */,
-				C25B478416FF8D5E0042B59E /* RemoteElementView+InternalSubviews.m in Sources */,
 				C25B478616FF8D5E0042B59E /* Constraint.m in Sources */,
 				C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */,
 				C25B478816FF8D5E0042B59E /* PickerLabelButtonGroupView.m in Sources */,
@@ -3444,16 +3426,14 @@
 				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,
 				C21B423E170B3ED600FAE00E /* REBackgroundEditingViewController.m in Sources */,
 				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
-				C23B946C170C8FEA0028CC06 /* RemoteElementView+Drawing.m in Sources */,
 				C29ABAE017F87ADB007D185F /* BankCollectionHeaderReusableView.m in Sources */,
-				C23B946F170C94BE0028CC06 /* RemoteElementView+Debugging.m in Sources */,
 				C26329481713AFF30080330D /* Theme.m in Sources */,
 				C23423C71795101D00703F86 /* ThemeSettings.m in Sources */,
 				C263294C1714862A0080330D /* Theme+ApplyingThemes.m in Sources */,
 				C2F2254A1715CB8500D22B5F /* Activity.m in Sources */,
 				C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */,
 				C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */,
-				C203BC221726F30D002FD3EA /* LayoutConstraint.m in Sources */,
+				C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */,
 				C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */,
 				C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */,
 			);

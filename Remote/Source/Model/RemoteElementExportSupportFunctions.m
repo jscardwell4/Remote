@@ -39,7 +39,7 @@ NSString *typeJSONValueForRemoteElement(RemoteElement * element) {
                @(RETypeButton)      : RETypeButtonJSONKey };
   });
 
-  return (element ? index[@([[element class] elementType])] : nil);
+  return (element ? index[@(element.elementType)] : nil);
 }
 
 /*
@@ -142,7 +142,7 @@ NSString *roleJSONValueForRERole(RERole role) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Remote Element State & Options
+#pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
 NSString *stateJSONValueForRemoteElement(RemoteElement * element) {
@@ -169,33 +169,6 @@ NSString *stateJSONValueForRemoteElement(RemoteElement * element) {
   return ([stateArray count] ? [stateArray componentsJoinedByString:@" "] : nil);
 }
 
-NSString *optionsJSONValueForRemoteElement(RemoteElement * element) {
-  static NSDictionary const * remoteIndex, * buttonGroupIndex;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken, ^{
-    remoteIndex = @{ @(RERemoteOptionTopBarHidden) : RERemoteOptionTopBarHiddenJSONKey };
-
-    buttonGroupIndex =
-      @{
-      @(REButtonGroupOptionAutohide) :
-      REButtonGroupOptionAutohideJSONKey,
-      @(REButtonGroupOptionCommandSetContainer) :
-      REButtonGroupOptionCommandSetContainerJSONKey,
-      @(REButtonGroupOptionAutohide | REButtonGroupOptionCommandSetContainer) :
-      [@[REButtonGroupOptionAutohideJSONKey, REButtonGroupOptionCommandSetContainerJSONKey]
-       componentsJoinedByString : @" "]
-    };
-  });
-
-  if ([element isKindOfClass:[Remote class]])
-    return remoteIndex[@(element.options)];
-
-  else if ([element isKindOfClass:[ButtonGroup class]])
-    return buttonGroupIndex[@(element.options)];
-
-  else
-    return nil;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style, & Theme

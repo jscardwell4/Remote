@@ -235,7 +235,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
 - (void)willTranslateSelectedViews
 {
-    [_sourceView willTranslateViews:_selectedViews];
+  //???: Doesn't look like there is a reason to call willTranslateViews: on source view
+//    [_sourceView willTranslateViews:_selectedViews];
     _flags.originalFrame = [self selectedViewsUnionFrameInView:self.view];
     _flags.currentFrame  = _flags.originalFrame;
 }
@@ -243,7 +244,9 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 - (void)didTranslateSelectedViews
 {
     [self clearCacheForViews:_selectedViews];
-    [_sourceView didTranslateViews:_selectedViews];
+
+  //???: Doesn't look like there is a reason to call didTranslateViews: on source view
+//    [_sourceView didTranslateViews:_selectedViews];
 
     // inform source view of translation
     CGPoint   translation = CGPointGetDelta(_flags.currentFrame.origin, _flags.originalFrame.origin);
@@ -400,11 +403,16 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
 - (void)willScaleSelectedViews
 {
-    [_sourceView willScaleViews:_selectedViews];
+  //???: Doesn't look like there is a reason to call willScaleViews: on source view
+  //  [_sourceView willScaleViews:_selectedViews];
     _flags.appliedScale = 1.0;
 }
 
-- (void)didScaleSelectedViews { [_sourceView didScaleViews:_selectedViews]; }
+- (void)didScaleSelectedViews {
+
+  //???: Doesn't look like there is a reason to call didScaleViews: on source view
+  //[_sourceView didScaleViews:_selectedViews];
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Aligning the selected views
@@ -422,7 +430,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
 - (void)willAlignSelectedViews
 {
-    [_sourceView willAlignViews:_selectedViews];
+  //???: Doesn't look like there is a reason to call willAlignViews: on source view
+  //  [_sourceView willAlignViews:_selectedViews];
 #ifdef DEBUG_ALIGNMENT
     [self logSourceViewAfter:0 message:@"before alignment"];
 #endif
@@ -431,7 +440,8 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 - (void)didAlignSelectedViews
 {
     [self clearCacheForViews:_selectedViews];
-    [_sourceView didAlignViews:_selectedViews];
+  //???: Doesn't look like there is a reason to call didAlignViews: on source view
+  //  [_sourceView didAlignViews:_selectedViews];
 #ifdef DEBUG_ALIGNMENT
     [self logSourceViewAfter:5.0 message:@"after alignment"];
 #endif
@@ -448,9 +458,15 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
                          toSibling:_focusView attribute:axis];
 }
 
-- (void)willResizeSelectedViews { [_sourceView willResizeViews:_selectedViews]; }
+- (void)willResizeSelectedViews {
+  //???: Doesn't look like there is a reason to call willResizeViews: on source view
+  //[_sourceView willResizeViews:_selectedViews];
+}
 
-- (void)didResizeSelectedViews { [_sourceView didResizeViews:_selectedViews]; }
+- (void)didResizeSelectedViews {
+  //???: Doesn't look like there is a reason to call didResizeViews: on source view
+  //[_sourceView didResizeViews:_selectedViews];
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Custom accessors

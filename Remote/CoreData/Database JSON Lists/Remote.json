@@ -250,7 +250,7 @@
     "uuid": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
     "name": "Dish Hopper Activity",
     "key": "activity1",
-    "options": "top-bar-hidden",
+    "top-bar-hidden": true,
     "constraints": {
       "index": {
         "dishHopperActivity": "F668F0D5-80E4-46A4-A703-EF5A1601C645",

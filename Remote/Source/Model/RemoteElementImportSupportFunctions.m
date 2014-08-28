@@ -110,32 +110,8 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Remote Element Options & State
+#pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
-
-REOptions remoteElementOptionsFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken, ^{
-    index =
-      @{ REOptionsDefaultJSONKey                       : @(REOptionsDefault),
-         RERemoteOptionTopBarHiddenJSONKey             : @(RERemoteOptionTopBarHidden),
-         REButtonGroupOptionAutohideJSONKey            : @(REButtonGroupOptionAutohide),
-         REButtonGroupOptionCommandSetContainerJSONKey : @(REButtonGroupOptionCommandSetContainer) };
-  });
-
-  NSArray * components = [importKey componentsSeparatedByString:@" "];
-  REOptions options    = REOptionsDefault;
-
-  for (NSString * option in components) {
-    NSNumber * typeValue = index[option];
-
-    if (typeValue) options |= UnsignedShortValue(typeValue);
-  }
-
-  return options;
-}
 
 REState remoteElementStateFromImportKey(NSString * importKey) {
 

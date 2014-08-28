@@ -18,36 +18,10 @@ MSEXTERN CGSize const REMinimumSize;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-@interface RemoteElementView ()<UIGestureRecognizerDelegate>
-{
-  @private
-  struct {
-    REEditingMode  editingMode;
-    BOOL           editing;
-    BOOL           resizable;
-    BOOL           moveable;
-    BOOL           shrinkwrap;
-    REEditingState editingState;
-    CGFloat        appliedScale;
-  } _editingFlags;
-
-  struct {
-    CGSize cornerRadii;
-  } _drawingFlags;
-
-  __weak RemoteElementView * _weakself;
-  NSDictionary             * _kvoReceptionists;
-  REViewSubelements        * _subelementsView;
-  REViewContent            * _contentView;
-  REViewBackdrop           * _backdropView;
-  REViewOverlay            * _overlayView;
-  UIImageView              * _backgroundImageView;
-  UIBezierPath             * _borderPath;
-}
+@interface RemoteElementView () <UIGestureRecognizerDelegate>
 
 - (void)attachGestureRecognizers;
 - (void)registerForChangeNotification;
-- (void)unregisterForChangeNotification;
 - (void)initializeIVARs;
 - (void)initializeViewFromModel;
 - (NSDictionary *)kvoRegistration;
@@ -57,11 +31,6 @@ MSEXTERN CGSize const REMinimumSize;
 @property (nonatomic, strong, readwrite) RemoteElement     * model;
 
 @end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REView (Drawing)
-////////////////////////////////////////////////////////////////////////////////
 
 
 @interface RemoteElementView (Drawing)
@@ -75,12 +44,6 @@ MSEXTERN CGSize const REMinimumSize;
 @property (nonatomic, assign) CGSize         cornerRadii;
 
 @end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REView (InternalSubviews)
-////////////////////////////////////////////////////////////////////////////////
-
 
 @interface RemoteElementView (InternalSubviews)
 
@@ -100,34 +63,30 @@ MSEXTERN CGSize const REMinimumSize;
 
 @end
 
+@interface RemoteElementView (EditingHandles)
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - RemoteView Class Extension
-////////////////////////////////////////////////////////////////////////////////
+- (void)willResizeViews:(NSSet *)views;
+- (void)didResizeViews:(NSSet *)views;
 
+- (void)willScaleViews:(NSSet *)views;
+- (void)didScaleViews:(NSSet *)views;
 
-@interface RemoteView ()
-{}
+- (void)willAlignViews:(NSSet *)views;
+- (void)didAlignViews:(NSSet *)views;
+
+- (void)willTranslateViews:(NSSet *)views;
+- (void)didTranslateViews:(NSSet *)views;
+
 @end
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - ButtonGroupView Class Extension
 ////////////////////////////////////////////////////////////////////////////////
 
 
-@interface ButtonGroupView ()
-{
-  @protected
-  UILabel * _label;
+@interface ButtonGroupView (Drawing)
 
-  @private
-  BOOL                       _isPanel;
-  NSLayoutConstraint       * _tuckedConstraint;
-  NSLayoutConstraint       * _untuckedConstraint;
-  MSSwipeGestureRecognizer * _tuckGesture;
-  MSSwipeGestureRecognizer * _untuckGesture;
-}
+- (void)drawRoundedPanelInContext:(CGContextRef)ctx inRect:(CGRect)rect;
 
 @end
 
@@ -151,24 +110,6 @@ MSEXTERN CGSize const REMinimumSize;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-@interface PickerLabelButtonGroupView ()
-{
-
-  @private
-  struct {
-    BOOL       blockPan;
-    CGFloat    panLength;
-    NSUInteger labelIndex;
-    NSUInteger labelCount;
-    CGFloat    prevPanAmount;
-  } _pickerFlags;
-
-  NSLayoutConstraint     * _labelContainerLeftConstraint;
-  UIView                 * _labelContainer;
-  UIPanGestureRecognizer * _labelPanGesture;
-}
-
-@end
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -247,12 +188,3 @@ MSEXTERN CGSize const REMinimumSize;
 @property (nonatomic, strong) UIColor * boundaryColor;
 
 @end
-
-
-#import "RemoteViewController.h"
-#import "ConstraintManager.h"
-#import "CommandSet.h"
-#import "CommandSetCollection.h"
-#import "ConnectionManager.h"
-#import "RELabelView.h"
-#import "LayoutConstraint.h"

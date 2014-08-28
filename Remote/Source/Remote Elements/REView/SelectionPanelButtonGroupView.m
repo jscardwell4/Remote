@@ -6,6 +6,9 @@
 // Copyright 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementView_Private.h"
+#import "ButtonGroup.h"
+#import "Button.h"
+#import "Remote.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);

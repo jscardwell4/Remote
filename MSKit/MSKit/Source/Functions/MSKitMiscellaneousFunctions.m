@@ -8,6 +8,11 @@
 
 #import "MSKitMiscellaneousFunctions.h"
 #import <objc/runtime.h>
+#import "NSObject+MSKitAdditions.h"
+
+NSString * classNametagWithSuffix(NSString *suffix, id obj) {
+  return $(@"%@%@", [obj className], (suffix ?: @""));
+}
 
 NSString * MSNonce() {
     return [[NSUUID UUID] UUIDString];

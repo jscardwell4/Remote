@@ -1,11 +1,11 @@
 //
-//  LayoutConstraint.m
+//  RemoteElementLayoutConstraint.m
 //  Remote
 //
 //  Created by Jason Cardwell on 4/23/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import "LayoutConstraint.h"
+#import "RemoteElementLayoutConstraint.h"
 #import "Constraint.h"
 #import "RemoteElementView.h"
 
@@ -13,7 +13,7 @@
 #pragma mark - RELayoutConstraint Implementation
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface LayoutConstraint ()
+@interface RemoteElementLayoutConstraint ()
 
 @property (nonatomic, assign, readwrite, getter = isValid) BOOL   valid;
 @property (nonatomic, strong) MSContextChangeReceptionist       * contextReceptionist;
@@ -21,9 +21,9 @@
 
 @end
 
-@implementation LayoutConstraint
+@implementation RemoteElementLayoutConstraint
 
-+ (LayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
++ (RemoteElementLayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
                                   forView:(RemoteElementView *)view
 {
     if (!modelConstraint || modelConstraint.owner != view.model) return nil;
@@ -33,7 +33,7 @@
                            ? nil
                            : view[modelConstraint.secondItem.uuid]);
 
-    LayoutConstraint * constraint = [LayoutConstraint
+    RemoteElementLayoutConstraint * constraint = [RemoteElementLayoutConstraint
                                        constraintWithItem:firstItem
                                        attribute:modelConstraint.firstAttribute
                                        relatedBy:modelConstraint.relation
@@ -60,7 +60,7 @@
 
     _modelConstraint = modelConstraint;
 
-    __weak LayoutConstraint * weakself = self;
+    __weak RemoteElementLayoutConstraint * weakself = self;
 
     _contextReceptionist = [MSContextChangeReceptionist
                             receptionistForObject:_modelConstraint

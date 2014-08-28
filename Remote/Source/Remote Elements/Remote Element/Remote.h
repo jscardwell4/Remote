@@ -11,7 +11,7 @@
 
 @interface Remote : RemoteElement
 
-@property (nonatomic, assign, getter = isTopBarHidden) BOOL topBarHidden;
+@property (nonatomic, assign) BOOL topBarHidden;
 @property (nonatomic, strong, readonly) NSDictionary * panels;
 
 - (void)assignButtonGroup:(ButtonGroup *)buttonGroup assignment:(REPanelAssignment)assignment;

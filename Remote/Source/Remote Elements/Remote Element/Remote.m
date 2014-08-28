@@ -8,6 +8,9 @@
 
 #import "Remote.h"
 #import "RemoteElement_Private.h"
+#import "ButtonGroup.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
 
 static int       ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_REMOTE;
@@ -25,30 +28,13 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 
 @implementation Remote
 
-@dynamic panels;
+@dynamic panels, topBarHidden;
 
-+ (REType)elementType { return RETypeRemote; }
+- (REType)elementType { return RETypeRemote; }
 
 - (void)setParentElement:(RemoteElement *)parentElement {}
 
 - (RemoteElement *)parentElement { return nil; }
-
-- (void)setTopBarHidden:(BOOL)topBarHidden {
-  REOptions options = self.options;
-  self.options = (topBarHidden
-                  ? options | RERemoteOptionTopBarHidden
-                  : options & ~RERemoteOptionTopBarHidden);
-}
-
-- (BOOL)isTopBarHidden {
-  BOOL topBarHidden       = (self.options == RERemoteOptionTopBarHidden) ? YES : NO;
-  BOOL faultyTopBarHidden = (self.options & RERemoteOptionTopBarHidden) ? YES : NO;
-  assert(topBarHidden == faultyTopBarHidden);
-
-  if (topBarHidden) assert(self.options == 1);
-
-  return topBarHidden;
-}
 
 - (void)assignButtonGroup:(ButtonGroup *)buttonGroup assignment:(REPanelAssignment)assignment {
   NSMutableDictionary * panels = [self.panels mutableCopy];
@@ -105,6 +91,8 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 
   NSDictionary * panels = data[@"panels"];
 
+  self.topBarHidden = [data[@"top-bar-hidden"] boolValue];
+
   if (panels && isDictionaryKind(panels)) {
     [panels enumerateKeysAndObjectsUsingBlock:
      ^(NSString * assignmentKey, NSString * uuid, BOOL * stop)
@@ -134,6 +122,7 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
   }];
 
   SafeSetValueForKey(panels, @"panels", dictionary);
+  SetValueForKeyIfNotDefault(@(self.topBarHidden), @"topBarHidden", dictionary);
 
   [dictionary compact];
   [dictionary compress];
@@ -143,16 +132,3 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 
 @end
 
-@implementation Remote (Debugging)
-
-- (MSDictionary *)deepDescriptionDictionary {
-  Remote * element = [self faultedObject];
-  assert(element);
-
-  MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-  dd[@"topBarHidden"] = BOOLString(element.topBarHidden);
-
-  return (MSDictionary *)dd;
-}
-
-@end

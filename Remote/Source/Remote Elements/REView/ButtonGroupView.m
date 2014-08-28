@@ -7,65 +7,67 @@
 //
 
 #import "RemoteElementView_Private.h"
-
-MSNAMETAG_DEFINITION(ButtonGroupViewInternal);
-MSNAMETAG_DEFINITION(ButtonGroupViewLabel);
+#import "ButtonGroup.h"
+#import "Button.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
-
 #pragma unused(ddLogLevel,msLogContext)
+
+
+@interface ButtonGroupView ()
+
+@property (nonatomic, weak) NSLayoutConstraint       * tuckedConstraint;
+@property (nonatomic, weak) NSLayoutConstraint       * untuckedConstraint;
+@property (nonatomic, weak) MSSwipeGestureRecognizer * tuckGesture;
+@property (nonatomic, weak) MSSwipeGestureRecognizer * untuckGesture;
+
+@property (nonatomic, assign)  UISwipeGestureRecognizerDirection tuckDirection;
+@property (nonatomic, assign)  UISwipeGestureRecognizerDirection untuckDirection;
+@property (nonatomic, assign)  MSSwipeGestureRecognizerQuadrant  quadrant;
+
+@end
 
 @implementation ButtonGroupView
 
+
 - (void)updateConstraints {
+
   [super updateConstraints];
 
-  if (![self constraintsWithNametagPrefix:ButtonGroupViewInternalNametag]) {
-    NSString * constraints =
-      $(@"'%1$@' _label.width = self.width\n"
-        "'%1$@' _label.height = self.height\n"
-        "'%1$@' _label.centerX = self.centerX\n"
-        "'%1$@' _label.centerY = self.centerY",
-        $(@"%@-%@", ButtonGroupViewInternalNametag, ButtonGroupViewLabelNametag));
+  NSString * nametag = ClassNametagWithSuffix(@"Label");
 
-    [self addConstraints:
-     [NSLayoutConstraint
-      constraintsByParsingString:constraints
-                           views:NSDictionaryOfVariableBindings(self, _label)]];
+  if (self.label && ![self constraintsWithNametagPrefix:nametag]) {
+    NSString * constraints =
+      $(@"'%1$@' label.width = self.width\n"
+        "'%1$@' label.height = self.height\n"
+        "'%1$@' label.centerX = self.centerX\n"
+        "'%1$@' label.centerY = self.centerY", nametag);
+
+    [self addConstraints: [NSLayoutConstraint constraintsByParsingString:constraints
+                                                                   views:@{@"self": self, @"label": self.label}]];
   }
 
 
 }
 
 - (CGSize)intrinsicContentSize {
-  switch ((uint8_t)self.role) {
-    case REButtonGroupRoleToolbar:
-
-      return CGSizeMake(MainScreen.bounds.size.width, 44.0);
-
-    default:
-
-      return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);
+  switch ((uint8_t)self.model.role) {
+    case REButtonGroupRoleToolbar: return CGSizeMake(MainScreen.bounds.size.width, 44.0);
+    default:                       return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);
   }
 }
 
-- (void)setLocked:(BOOL)locked {
-  _locked = locked;
-  [self.subelementViews setValuesForKeysWithDictionary:@{ @"resizable" : @(!_locked),
-                                                          @"moveable" : @(!_locked) }];
-}
-
 - (void)buttonViewDidExecute:(ButtonView *)buttonView {
-  if (self.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];
+  if (self.model.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];
 }
 
 - (void)tuck {
-  if (_isPanel && _tuckedConstraint && _untuckedConstraint) {
+  if (self.model.isPanel && self.tuckedConstraint && self.untuckedConstraint) {
     [UIView animateWithDuration:0.25
                      animations:^{
-                       _untuckedConstraint.priority = 1;
-                       _tuckedConstraint.priority = 999;
+                       self.untuckedConstraint.priority = 1;
+                       self.tuckedConstraint.priority = 999;
                        [self.window setNeedsUpdateConstraints];
                        [self setNeedsLayout];
                        [self layoutIfNeeded];
@@ -79,11 +81,11 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 }
 
 - (void)untuck {
-  if (_isPanel && _tuckedConstraint && _untuckedConstraint) {
+  if (self.model.isPanel && self.tuckedConstraint && self.untuckedConstraint) {
     [UIView animateWithDuration:0.25
                      animations:^{
-                       _tuckedConstraint.priority = 1;
-                       _untuckedConstraint.priority = 999;
+                       self.tuckedConstraint.priority = 1;
+                       self.untuckedConstraint.priority = 999;
                        [self.window setNeedsUpdateConstraints];
                        [self setNeedsLayout];
                        [self layoutIfNeeded];
@@ -97,10 +99,6 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   }
 }
 
-- (void)tuckAction:(id)sender {
-  [self tuck];
-}
-
 - (void)handleSwipe:(UISwipeGestureRecognizer *)gesture {
   if (gesture.state == UIGestureRecognizerStateRecognized) {
     if (gesture == _tuckGesture)
@@ -110,17 +108,26 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   }
 }
 
-- (void)didMoveToWindow {
-  if (_isPanel && !self.isEditing) {
-    if (self.window) {
-      [self.window addGestureRecognizer:_tuckGesture];
-      [self.window addGestureRecognizer:_untuckGesture];
-    } else {
-      [_tuckGesture.view removeGestureRecognizer:_tuckGesture];
-      [_untuckGesture.view removeGestureRecognizer:_untuckGesture];
-    }
-  }
+- (void)attachTuckGestures {
+  MSSwipeGestureRecognizer * tuck = [[MSSwipeGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(handleSwipe:)];
+  tuck.nametag   = $(@"'%@'-tuck", self.name);
+  tuck.enabled   = NO;
+  tuck.direction = self.tuckDirection;
+  tuck.quadrant  = self.quadrant;
+  [self.window addGestureRecognizer:tuck];
+  self.tuckGesture = tuck;
+
+  MSSwipeGestureRecognizer * untuck = [[MSSwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(handleSwipe:)];
+  untuck.nametag   = $(@"'%@'-untuck", self.name);
+  untuck.direction = self.untuckDirection;
+  untuck.quadrant  = self.quadrant;
+  [self.window addGestureRecognizer:untuck];
+  self.untuckGesture = untuck;
 }
+
+- (void)didMoveToWindow { if (self.model.isPanel && !self.isEditing && self.window) [self attachTuckGestures]; }
 
 - (NSDictionary *)kvoRegistration {
   // TODO: observe panel location
@@ -151,7 +158,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   self.moveable    = YES;
   self.cornerRadii = CGSizeMake(5.0f, 5.0f);
 
-  if ((self.role & REButtonGroupRoleToolbar) == REButtonGroupRoleToolbar) {
+  if ((self.model.role & REButtonGroupRoleToolbar) == REButtonGroupRoleToolbar) {
     [self setContentCompressionResistancePriority:UILayoutPriorityRequired
                                           forAxis:UILayoutConstraintAxisHorizontal];
     [self setContentCompressionResistancePriority:UILayoutPriorityRequired
@@ -159,56 +166,44 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   }
 }
 
-- (void)initializeViewFromModel {
-  [super initializeViewFromModel];
-  _isPanel = [self.model isPanel];
-}
-
 - (void)didMoveToSuperview {
   [super didMoveToSuperview];
 
   if (self.superview && [self.model isPanel] && !self.isEditing) {
-    _tuckGesture = [[MSSwipeGestureRecognizer alloc] initWithTarget:self
-                                                             action:@selector(handleSwipe:)];
-    _tuckGesture.nametag = $(@"'%@'-tuck", self.name);
-    _tuckGesture.enabled = NO;
-    _untuckGesture       = [[MSSwipeGestureRecognizer alloc] initWithTarget:self
-                                                                     action:@selector(handleSwipe:)];
-    _untuckGesture.nametag = $(@"'%@'-untuck", self.name);
 
     NSLayoutAttribute attribute1, attribute2;
 
     switch (self.model.panelLocation) {
       case REPanelLocationTop:
-        attribute1               = NSLayoutAttributeBottom;
-        attribute2               = NSLayoutAttributeTop;
-        _tuckGesture.direction   = UISwipeGestureRecognizerDirectionUp;
-        _untuckGesture.direction = UISwipeGestureRecognizerDirectionDown;
-        _tuckGesture.quadrant    = _untuckGesture.quadrant = MSSwipeGestureRecognizerQuadrantUp;
+        attribute1           = NSLayoutAttributeBottom;
+        attribute2           = NSLayoutAttributeTop;
+        self.tuckDirection   = UISwipeGestureRecognizerDirectionUp;
+        self.untuckDirection = UISwipeGestureRecognizerDirectionDown;
+        self.quadrant        = MSSwipeGestureRecognizerQuadrantUp;
         break;
 
       case REPanelLocationBottom:
-        attribute1               = NSLayoutAttributeTop;
-        attribute2               = NSLayoutAttributeBottom;
-        _tuckGesture.direction   = UISwipeGestureRecognizerDirectionDown;
-        _untuckGesture.direction = UISwipeGestureRecognizerDirectionUp;
-        _tuckGesture.quadrant    = _untuckGesture.quadrant = MSSwipeGestureRecognizerQuadrantDown;
+        attribute1           = NSLayoutAttributeTop;
+        attribute2           = NSLayoutAttributeBottom;
+        self.tuckDirection   = UISwipeGestureRecognizerDirectionDown;
+        self.untuckDirection = UISwipeGestureRecognizerDirectionUp;
+        self.quadrant        = MSSwipeGestureRecognizerQuadrantDown;
         break;
 
       case REPanelLocationLeft:
-        attribute1               = NSLayoutAttributeRight;
-        attribute2               = NSLayoutAttributeLeft;
-        _tuckGesture.direction   = UISwipeGestureRecognizerDirectionLeft;
-        _untuckGesture.direction = UISwipeGestureRecognizerDirectionRight;
-        _tuckGesture.quadrant    = _untuckGesture.quadrant = MSSwipeGestureRecognizerQuadrantLeft;
+        attribute1           = NSLayoutAttributeRight;
+        attribute2           = NSLayoutAttributeLeft;
+        self.tuckDirection   = UISwipeGestureRecognizerDirectionLeft;
+        self.untuckDirection = UISwipeGestureRecognizerDirectionRight;
+        self.quadrant        = MSSwipeGestureRecognizerQuadrantLeft;
         break;
 
       case REPanelLocationRight:
-        attribute1               = NSLayoutAttributeLeft;
-        attribute2               = NSLayoutAttributeRight;
-        _tuckGesture.direction   = UISwipeGestureRecognizerDirectionRight;
-        _untuckGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-        _tuckGesture.quadrant    = _untuckGesture.quadrant = MSSwipeGestureRecognizerQuadrantRight;
+        attribute1           = NSLayoutAttributeLeft;
+        attribute2           = NSLayoutAttributeRight;
+        self.tuckDirection   = UISwipeGestureRecognizerDirectionRight;
+        self.untuckDirection = UISwipeGestureRecognizerDirectionLeft;
+        self.quadrant        = MSSwipeGestureRecognizerQuadrantRight;
         break;
 
       default:
@@ -216,38 +211,37 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
         break;
     }
 
-    _tuckedConstraint = [NSLayoutConstraint constraintWithItem:self
+    self.tuckedConstraint = [NSLayoutConstraint constraintWithItem:self
                                                      attribute:attribute1
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self.superview
                                                      attribute:attribute2
                                                     multiplier:1.0f
                                                       constant:0.0f];
-    _tuckedConstraint.priority = 999;
-    _tuckedConstraint.nametag  = REButtonGroupPanelNametag;
-    _untuckedConstraint        = [NSLayoutConstraint constraintWithItem:self
+    self.tuckedConstraint.priority = 999;
+    self.tuckedConstraint.nametag  = REButtonGroupPanelNametag;
+    self.untuckedConstraint        = [NSLayoutConstraint constraintWithItem:self
                                                               attribute:attribute2
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:self.superview
                                                               attribute:attribute2
                                                              multiplier:1.0f
                                                                constant:0.0f];
-    _untuckedConstraint.priority = 1;
-    _untuckedConstraint.nametag  = REButtonGroupPanelNametag;
-    [self.superview addConstraints:@[_tuckedConstraint, _untuckedConstraint]];
+    self.untuckedConstraint.priority = 1;
+    self.untuckedConstraint.nametag  = REButtonGroupPanelNametag;
+    [self.superview addConstraints:@[self.tuckedConstraint, self.untuckedConstraint]];
   }
 }
 
 - (void)addSubelementView:(ButtonView *)view {
-  if (_locked) [view setValuesForKeysWithDictionary:@{ @"resizable" : @NO,
-                                                       @"moveable"  : @NO }];
+  if (self.locked) [view setValuesForKeysWithDictionary:@{ @"resizable" : @NO,
+                                                           @"moveable"  : @NO }];
 
-  if (view.role == REButtonRoleTuck) {
+  if (view.model.role == REButtonRoleTuck) {
     __weak ButtonGroupView * weakself = self;
     __weak ButtonView      * weakview = view;
 
-    [view setActionHandler:^{ [weakself tuckAction:weakview]; }
-                 forAction:RESingleTapAction];
+    [view setActionHandler:^{ [weakself tuck]; } forAction:RESingleTapAction];
   }
 
   [super addSubelementView:view];
@@ -256,10 +250,10 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 - (void)addInternalSubviews {
   [super addInternalSubviews];
 
-  _label                 = [UILabel newForAutolayout];
-  _label.backgroundColor = ClearColor;
-
+  UILabel * label = [UILabel newForAutolayout];
+  label.backgroundColor = ClearColor;
   [self addViewToContent:_label];
+  self.label = label;
 }
 
 - (void)setEditingMode:(REEditingMode)mode {
@@ -274,19 +268,6 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   else if (self.editingMode == REButtonGroupEditingMode)
     self.subelementInteractionEnabled = YES;
 
-  [self.subelementViews setValue:@(mode) forKeyPath:@"editingMode"];
-}
-
-- (void)setMoveable:(BOOL)moveable {
-  [super setMoveable:moveable];
-}
-
-- (ButtonView *)objectAtIndexedSubscript:(NSUInteger)idx {
-  return (ButtonView *)[super objectAtIndexedSubscript:idx];
-}
-
-- (ButtonView *)objectForKeyedSubscript:(NSString *)key {
-  return (ButtonView *)[super objectForKeyedSubscript:key];
 }
 
 @end
@@ -327,3 +308,4 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 }
 
 @end
+

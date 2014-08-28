@@ -54,6 +54,8 @@
 
 - (BOOL)isPanel;
 
+@property (nonatomic, assign) BOOL autohide;
+
 @end
 
 MSEXTERN_NAMETAG(REButtonGroupPanel);
