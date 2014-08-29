@@ -134,8 +134,9 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
   MSDictionary * reg = [super kvoRegistration];
   reg[@"label"] = ^(MSKVOReceptionist * receptionist) {
-      id newValue = receptionist.change[NSKeyValueChangeNewKey];
-      _label.attributedText = (ValueIsNotNil(newValue) ? (NSAttributedString *)newValue : nil);
+    id newValue = receptionist.change[NSKeyValueChangeNewKey];
+    ButtonGroupView * view = (ButtonGroupView *)receptionist.observer;
+      view.label.attributedText = (ValueIsNotNil(newValue) ? (NSAttributedString *)newValue : nil);
     };
 
   return reg;

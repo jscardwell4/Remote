@@ -14,11 +14,6 @@
 
 @interface ControlStateSet : ModelObject <NSCopying>
 
-+ (instancetype)controlStateSet;
-+ (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc;
-+ (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc
-                             withObjects:(NSDictionary *)objects;
-
 + (BOOL)validState:(id)state;
 + (NSString *)propertyForState:(NSNumber *)state;
 + (NSUInteger)stateForProperty:(NSString *)property;
@@ -30,19 +25,23 @@
 
 - (NSArray *)allValues;
 
-// objectAtIndex: and objectForKey: do not use fall through logic
-// where as objectAtIndexedSubscript: and objectForKeyedSubscript: do use fall through logic
-// ???: Double check if the above comment still holds true
-
-- (id)objectAtIndex:(NSUInteger)state;
-- (id)objectForKey:(NSString *)key;
 - (id)objectAtIndexedSubscript:(NSUInteger)state;
 - (id)objectForKeyedSubscript:(NSString *)key;
 
 - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)state;
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
-- (void)setObject:(id)obj forStates:(NSArray *)states;
 
-- (void)copyObjectsFromSet:(ControlStateSet *)set;
+//- (void)copyObjectsFromSet:(ControlStateSet *)set;
 
+@end
+
+@interface ControlStateSet (Abstract)
+@property (nonatomic) id normal;
+@property (nonatomic) id disabled;
+@property (nonatomic) id selected;
+@property (nonatomic) id highlighted;
+@property (nonatomic) id highlightedDisabled;
+@property (nonatomic) id highlightedSelected;
+@property (nonatomic) id selectedHighlightedDisabled;
+@property (nonatomic) id disabledSelected;
 @end

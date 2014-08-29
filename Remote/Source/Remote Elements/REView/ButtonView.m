@@ -170,7 +170,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
     CGFloat maxWidth = 0.0, maxHeight = 0.0;
 
-    for (NSAttributedString * title in titles) {
+    for (NSAttributedString * title in [titles valueForKeyPath:@"string"]) {
 
       CGSize titleSize = [title size];
       UIEdgeInsets titleInsets = self.model.titleEdgeInsets;
@@ -252,12 +252,8 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 //      [(__bridge ButtonView *)receptionist.context setNeedsDisplay];
 //    };
 
-    reg[@"style"] = ^(MSKVOReceptionist * receptionist) {
-      [(__bridge ButtonView *)receptionist.context setNeedsDisplay];
-    };
-
     reg[@"title"] = ^(MSKVOReceptionist * receptionist) {
-      ButtonView         * buttonView = (__bridge ButtonView *)receptionist.context;
+      ButtonView         * buttonView = (ButtonView *)receptionist.observer;
       NSAttributedString * title      = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
       buttonView.labelView.attributedText = title;
       [buttonView invalidateIntrinsicContentSize];
@@ -269,7 +265,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 //    };
 
     reg[@"icon"] = ^(MSKVOReceptionist * receptionist) {
-      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
+      ButtonView * buttonView = (ButtonView *)receptionist.observer;
       [buttonView invalidateIntrinsicContentSize];
       [buttonView setNeedsDisplay];
     };

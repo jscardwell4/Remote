@@ -10,45 +10,23 @@
 #import <CoreData/CoreData.h>
 #import "MSKitDefines.h"
 
-@class MSContextChangeReceptionist;
-typedef void (^ MSContextChangeHandler)(MSContextChangeReceptionist * receptionist,
-                                        NSManagedObject             * object,
-                                        NSNotification              * note);
-
-typedef void (^ MSContextChangeObjectUpdateHandler)(MSContextChangeReceptionist * receptionist,
-                                                     NSManagedObject             * object);
-
-typedef void (^ MSContextChangeObjectDeleteHandler)(MSContextChangeReceptionist * receptionist,
-                                                     NSManagedObject             * object);
-
-
 @interface MSContextChangeReceptionist : NSObject
 
-+ (MSContextChangeReceptionist *)receptionistForObject:(NSManagedObject *)object
-                                      notificationName:(NSString *)name
-                                                 queue:(NSOperationQueue *)queue
-                                               handler:(MSContextChangeHandler)handler;
++ (instancetype)receptionistWithObserver:(id)observer
+															 forObject:(NSManagedObject *)object
+		                    notificationName:(NSString *)name
+		                             handler:(void(^)(MSContextChangeReceptionist * receptionist))handler;
 
-+ (MSContextChangeReceptionist *)receptionistForObject:(NSManagedObject *)object
-                                      notificationName:(NSString *)name
-                                                 queue:(NSOperationQueue *)queue
-                                         updateHandler:(MSContextChangeObjectUpdateHandler)updateHandler
-                                         deleteHandler:(MSContextChangeObjectDeleteHandler)deleteHandler;
++ (instancetype)receptionistWithObserver:(id)observer
+															 forObject:(NSManagedObject *)object
+                        notificationName:(NSString *)name
+                           updateHandler:(void(^)(MSContextChangeReceptionist * receptionist))update
+                           deleteHandler:(void(^)(MSContextChangeReceptionist * receptionist))delete;
 
 
-@property (nonatomic, assign, getter = shouldIgnore) BOOL ignore;
+@property (nonatomic, weak,   readonly) id                  observer;
+@property (nonatomic, weak,   readonly) NSManagedObject   * object;
+@property (nonatomic, strong, readonly) NSNotification    * notification;
+@property (nonatomic, copy,   readonly) NSString          * name;
 
 @end
-
-#define MSMakeContextChangeHandler(block)         \
-    ^(MSContextChangeReceptionist * receptionist, \
-      NSManagedObject             * object,       \
-      NSNotification              * note)         \
-    block
-
-#define MSMakeContextChangeObjectUpdateHandler(block)   \
-    ^(MSContextChangeReceptionist * receptionist, \
-      NSManagedObject             * object)       \
-    block
-
-#define MSMakeContextChangeObjectDeleteHandler(block)   MSMakeContextChangeObjectUpdateHandler(block)

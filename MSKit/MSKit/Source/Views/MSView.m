@@ -13,134 +13,125 @@
 
 @implementation MSView
 {
-    MSKVOReceptionist * _kvoReceptionist;
+  MSKVOReceptionist * _kvoReceptionist;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-	if (self = [super initWithFrame:frame])
-    {
-        _borderThickness = 1.0;
-        _borderRadii = CGSizeMake(5, 5);
-        _glossColor = UIColorMake(1, 1, 1, 0.02);
-        self.opaque = NO;
-        [self initializeKVOReceptionist];
-	}
-
-	return self;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
+- (id)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    _borderThickness = 1.0;
+    _borderRadii     = CGSizeMake(5, 5);
+    _glossColor      = UIColorMake(1, 1, 1, 0.02);
+    self.opaque      = NO;
     [self initializeKVOReceptionist];
+  }
+
+  return self;
 }
 
-- (void)initializeKVOReceptionist
-{
-    _kvoReceptionist = [MSKVOReceptionist
-                        receptionistForObject:self
-                                     keyPaths:@[@"style",
-                                                @"borderColor",
-                                                @"glossColor",
-                                                @"borderThickness",
-                                                @"borderRadii"]
-                                      options:NSKeyValueObservingOptionNew
-                                      context:(void*)self
-                                        queue:MainQueue
-                                      handler:^(MSKVOReceptionist * receptionist){
-                                        [(__bridge MSView*)receptionist.context setNeedsDisplay];
-                                      }];
+- (void)awakeFromNib {
+  [super awakeFromNib];
+  [self initializeKVOReceptionist];
 }
 
-- (void)drawRect:(CGRect)rect
-{
+- (void)initializeKVOReceptionist {
+  _kvoReceptionist = [MSKVOReceptionist
+                      receptionistWithObserver:self
+                                     forObject:self
+                                      keyPaths:@[@"style",
+                                                 @"borderColor",
+                                                 @"glossColor",
+                                                 @"borderThickness",
+                                                 @"borderRadii"]
+                                       options:NSKeyValueObservingOptionNew
+                                         queue:MainQueue
+                                       handler:^(MSKVOReceptionist * receptionist) {
+                                         [(MSView *)receptionist.observer setNeedsDisplay];
+                                       }];
+}
 
-	CGContextRef context = UIGraphicsGetCurrentContext();
+- (void)drawRect:(CGRect)rect {
 
-    if (self.clearsContextBeforeDrawing) CGContextClearRect(context, self.bounds);
+  CGContextRef context = UIGraphicsGetCurrentContext();
 
-    uint8_t preset = (_style & MSViewStylePresetMask);
+  if (self.clearsContextBeforeDrawing) CGContextClearRect(context, self.bounds);
 
-    if (preset)
-    {
-        [self drawPreset:preset context:context];
-        return;
-    }
+  uint8_t preset = (_style & MSViewStylePresetMask);
 
-
-    uint8_t border = (_style & MSViewStyleBorderMask);
-    MSPainterShape shape = (border == MSViewStyleBorderRoundedRect
-                            ? MSPainterShapeRoundedRectangle
-                            : MSPainterShapeRectangle);
-
-    [MSPainter drawBackdropForShape:shape
-                             inRect:rect
-                      backdropColor:self.backgroundColor
-                        cornerRadii:self.borderRadii
-                          inContext:context];
-    if (border)
-        [MSPainter drawBorderForShape:shape
-                                color:self.borderColor
-                                width:self.borderThickness
-                                 join:kCGLineJoinMiter
-                                 rect:rect
-                          cornerRadii:self.borderRadii
-                              context:context];
+  if (preset) {
+    [self drawPreset:preset context:context];
+    return;
+  }
 
 
-    if (_style & MSViewStyleDrawGloss)
-        [MSPainter drawGlossGradientWithColor:self.glossColor
-                                         rect:rect
-                                      context:context
-                                       offset:0];
+  uint8_t        border = (_style & MSViewStyleBorderMask);
+  MSPainterShape shape  = (border == MSViewStyleBorderRoundedRect
+                           ? MSPainterShapeRoundedRectangle
+                           : MSPainterShapeRectangle);
+
+  [MSPainter drawBackdropForShape:shape
+                           inRect:rect
+                    backdropColor:self.backgroundColor
+                      cornerRadii:self.borderRadii
+                        inContext:context];
+
+  if (border)
+    [MSPainter drawBorderForShape:shape
+                            color:self.borderColor
+                            width:self.borderThickness
+                             join:kCGLineJoinMiter
+                             rect:rect
+                      cornerRadii:self.borderRadii
+                          context:context];
+
+
+  if (_style & MSViewStyleDrawGloss)
+    [MSPainter drawGlossGradientWithColor:self.glossColor
+                                     rect:rect
+                                  context:context
+                                   offset:0];
 
 }
 
-- (void)drawPreset:(uint32_t)preset context:(CGContextRef)context
-{
+- (void)drawPreset:(uint32_t)preset context:(CGContextRef)context {
 
-    NSAssert(preset != 0, @"Draw preset request with custom flag");
-    
-    switch (preset)
-    {
-        case 1: [self drawPresetStyle1InContext:context]; break;
-        default:                                          break;
-    }
+  NSAssert(preset != 0, @"Draw preset request with custom flag");
+
+  switch (preset) {
+    case 1:[self drawPresetStyle1InContext:context]; break;
+    default:                                          break;
+  }
 }
 
-- (void)drawPresetStyle1InContext:(CGContextRef)context
-{
-    CGContextSaveGState(context);
+- (void)drawPresetStyle1InContext:(CGContextRef)context {
+  CGContextSaveGState(context);
 
-    [self.backgroundColor setFill];
-    UIRectFillUsingBlendMode(self.bounds, kCGBlendModeSoftLight);
-    
-    CGRect lightFrame = self.bounds;
-    CGRect darkFrame = CGRectInset(lightFrame, 1.0f, 1.0f);
-    darkFrame.size.width -= 1.0f;
+  [self.backgroundColor setFill];
+  UIRectFillUsingBlendMode(self.bounds, kCGBlendModeSoftLight);
 
-    
-    [[WhiteColor colorWithAlphaComponent:1.0f] setStroke];
-    CGContextSetShadowWithColor(context, 
-                                (CGSize){0.0f, 0.0f}, 1.0f,
-                                [WhiteColor CGColor]);
-    UIRectFrame(lightFrame);
-    
-    [[BlackColor colorWithAlphaComponent:0.25f] setStroke];
-    UIRectClip(darkFrame);
-    CGContextSetShadow(context, (CGSize){.width = 1.0f, .height = 1.0f}, 1.0f);
-    UIRectFrame(darkFrame);
+  CGRect lightFrame = self.bounds;
+  CGRect darkFrame  = CGRectInset(lightFrame, 1.0f, 1.0f);
+  darkFrame.size.width -= 1.0f;
 
-    [[WhiteColor colorWithAlphaComponent:0.5f] setStroke];
-    CGContextSetShadowWithColor(context, 
-                                (CGSize){0.0f, 0.0f}, 1.0f,
-                                [WhiteColor CGColor]);
-    UIRectFrame(lightFrame);
-    
-    CGContextRestoreGState(context);
-    
+
+  [[WhiteColor colorWithAlphaComponent:1.0f] setStroke];
+  CGContextSetShadowWithColor(context,
+                              (CGSize) {0.0f, 0.0f }, 1.0f,
+                              [WhiteColor CGColor]);
+  UIRectFrame(lightFrame);
+
+  [[BlackColor colorWithAlphaComponent:0.25f] setStroke];
+  UIRectClip(darkFrame);
+  CGContextSetShadow(context, (CGSize) {.width = 1.0f, .height = 1.0f }, 1.0f);
+  UIRectFrame(darkFrame);
+
+  [[WhiteColor colorWithAlphaComponent:0.5f] setStroke];
+  CGContextSetShadowWithColor(context,
+                              (CGSize) {0.0f, 0.0f }, 1.0f,
+                              [WhiteColor CGColor]);
+  UIRectFrame(lightFrame);
+
+  CGContextRestoreGState(context);
+
 }
 
 @end
-

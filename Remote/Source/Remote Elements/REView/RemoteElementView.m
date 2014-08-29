@@ -141,6 +141,10 @@ CGSize const REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
   return self;
 }
 
+- (void)dealloc {
+  self.kvoReceptionists = nil;
+}
+
 /// Called from `initWithRemoteElement:`, subclasses that override should include a call to `super`.
 - (void)initializeIVARs {
   self.appliedScale  = 1.0;
@@ -251,20 +255,26 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   MSDictionary * reg = [MSDictionary dictionary];
 
   reg[@"constraints"] = ^(MSKVOReceptionist * receptionist) {
-    [(__bridge RemoteElementView *)receptionist.context setNeedsUpdateConstraints];
+    [(RemoteElementView *)receptionist.observer setNeedsUpdateConstraints];
   };
 
   reg[@"backgroundColor"] = ^(MSKVOReceptionist * receptionist) {
-    RemoteElementView * view = (__bridge RemoteElementView *)receptionist.context;
+    RemoteElementView * view = (RemoteElementView *)receptionist.observer;
     view.backgroundColor = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
     [view setNeedsDisplay];
   };
 
   reg[@"backgroundImage"] = ^(MSKVOReceptionist * receptionist) {
-    RemoteElementView * view = (__bridge RemoteElementView *)receptionist.context;
-    view.backgroundImageView.image = [(Image *)NilSafe(receptionist.change[NSKeyValueChangeNewKey]) stretchableImage];
+    RemoteElementView * view = (RemoteElementView *)receptionist.observer;
+    view.backgroundImageView.image =
+      [(Image *)NilSafe(receptionist.change[NSKeyValueChangeNewKey]) stretchableImage];
     [view setNeedsDisplay];
   };
+
+  reg[@"style"] = ^(MSKVOReceptionist * receptionist) {
+    [(RemoteElementView *)receptionist.observer setNeedsDisplay];
+  };
+
 
 /*
   reg[@"backgroundImageAlpha"] = ^(MSKVOReceptionist * receptionist) {
@@ -275,7 +285,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 */
 
   reg[@"shape"] = ^(MSKVOReceptionist * receptionist) {
-    [(__bridge RemoteElementView *)receptionist.context refreshBorderPath];
+    [(RemoteElementView *)receptionist.observer refreshBorderPath];
   };
 
   return reg;
@@ -288,17 +298,16 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 /// `kvoKeypaths`.
 - (void)registerForChangeNotification {
   if (self.model) {
-    _kvoReceptionists = [[self kvoRegistration]
-                         dictionaryByMappingObjectsToBlock:
-                         ^MSKVOReceptionist *(NSString * keypath, void (^handler)(MSKVOReceptionist * receptionist))
-    {
-      return [MSKVOReceptionist
-              receptionistForObject:self.model
-                            keyPath:keypath
-                            options:NSKeyValueObservingOptionNew
-                            context:(__bridge void *)self
-                              queue:MainQueue
-                            handler:handler];
+    __weak RemoteElementView * weakself = self;
+    _kvoReceptionists =
+    [[self kvoRegistration] dictionaryByMappingObjectsToBlock:
+     ^MSKVOReceptionist *(NSString * keypath, void (^handler)(MSKVOReceptionist * receptionist)) {
+       return [MSKVOReceptionist receptionistWithObserver:weakself
+                                                forObject:weakself.model
+                                                  keyPath:keypath
+                                                  options:NSKeyValueObservingOptionNew
+                                                    queue:MainQueue
+                                                  handler:handler];
     }];
   }
 }

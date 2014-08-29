@@ -41,7 +41,6 @@
 		C203BBFE1726ED13002FD3EA /* CommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* CommandSet.m */; };
 		C203BBFF1726ED13002FD3EA /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
 		C203BC001726ED18002FD3EA /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* Theme.m */; };
-		C203BC011726ED18002FD3EA /* Theme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* Theme+ApplyingThemes.m */; };
 		C203BC021726ED1C002FD3EA /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* ConstraintManager.m */; };
 		C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457816FF62A00042B59E /* RemoteElement+Accessors.m */; };
 		C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
@@ -152,8 +151,6 @@
 		C203C16517271D50002FD3EA /* UserCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = C26BB09F16DC187D0093D5B4 /* UserCodes.plist */; };
 		C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */; };
 		C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */; };
-		C20C50E5179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
-		C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C20C50E4179E1EFE007704C7 /* NightshadeThemeDecorator.m */; };
 		C20FF1E219AE484E00D11F33 /* Remote_Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1E119AE484E00D11F33 /* Remote_Tests.json */; };
 		C20FF1EC19AE4FE400D11F33 /* Remote_Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1E119AE484E00D11F33 /* Remote_Tests.json */; };
 		C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
@@ -391,7 +388,6 @@
 		C26296821811F9AE00760056 /* Remote.json in Resources */ = {isa = PBXBuildFile; fileRef = C26296811811F9AE00760056 /* Remote.json */; };
 		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
 		C26329481713AFF30080330D /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C26329471713AFF30080330D /* Theme.m */; };
-		C263294C1714862A0080330D /* Theme+ApplyingThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = C263294B1714862A0080330D /* Theme+ApplyingThemes.m */; };
 		C265936017FBA1180017949C /* BankableDetailTableViewCell-TextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265935F17FBA1180017949C /* BankableDetailTableViewCell-TextField.xib */; };
 		C265936317FBA1B00017949C /* BankableDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C265936217FBA1B00017949C /* BankableDetailTableViewCell.m */; };
 		C265936717FBA5890017949C /* BankableDetailTableViewCell-Label.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */; };
@@ -3240,7 +3236,6 @@
 				C203BBD61726ECE3002FD3EA /* IRCode.m in Sources */,
 				C203BBD91726ECE3002FD3EA /* ComponentDevice.m in Sources */,
 				C203BBDD1726ECE3002FD3EA /* Image.m in Sources */,
-				C20C50E6179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
 				C203BBDE1726ECE3002FD3EA /* Manufacturer.m in Sources */,
 				C203BBE01726ECE7002FD3EA /* BankGroup.m in Sources */,
 				C203BBE11726ECE7002FD3EA /* BankObjectPreview.m in Sources */,
@@ -3271,7 +3266,6 @@
 				C203BBFF1726ED13002FD3EA /* CommandSetCollection.m in Sources */,
 				C23423C81795101D00703F86 /* ThemeSettings.m in Sources */,
 				C203BC001726ED18002FD3EA /* Theme.m in Sources */,
-				C203BC011726ED18002FD3EA /* Theme+ApplyingThemes.m in Sources */,
 				C203BC021726ED1C002FD3EA /* ConstraintManager.m in Sources */,
 				C203BC081726ED24002FD3EA /* RemoteElement+Accessors.m in Sources */,
 				C203BC0A1726ED24002FD3EA /* RemoteElement.m in Sources */,
@@ -3412,7 +3406,6 @@
 				C25B47B016FF8D5E0042B59E /* MSRemoteConstants.m in Sources */,
 				C25B47B116FF8D5E0042B59E /* ButtonGroupEditingTest.m in Sources */,
 				C25B47B216FF8D5E0042B59E /* MSRemoteUITest.m in Sources */,
-				C20C50E5179E1EFE007704C7 /* NightshadeThemeDecorator.m in Sources */,
 				C25B47B316FF8D5E0042B59E /* RemoteEditingTest.m in Sources */,
 				C25B47B416FF8D5E0042B59E /* UITestRunner.m in Sources */,
 				C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */,
@@ -3429,7 +3422,6 @@
 				C29ABAE017F87ADB007D185F /* BankCollectionHeaderReusableView.m in Sources */,
 				C26329481713AFF30080330D /* Theme.m in Sources */,
 				C23423C71795101D00703F86 /* ThemeSettings.m in Sources */,
-				C263294C1714862A0080330D /* Theme+ApplyingThemes.m in Sources */,
 				C2F2254A1715CB8500D22B5F /* Activity.m in Sources */,
 				C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */,
 				C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */,

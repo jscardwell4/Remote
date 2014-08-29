@@ -33,15 +33,16 @@
 }
 
 - (void)initializeIVARs {
-    __weak MSSwipeGestureRecognizer * weakself = self;
     _quads.right = _quads.left = _quads.up = _quads.down = CGRectZero;
     _kvoReceptionist = [MSKVOReceptionist
-                        receptionistForObject:self
-                                      keyPath:@"view"
-                                      options:NSKeyValueObservingOptionNew
-                                      context:NULL
-                                        queue:[NSOperationQueue mainQueue]
-                                      handler:^(MSKVOReceptionist * receptionist){ [weakself updateQuads]; }];
+                        receptionistWithObserver:self
+                        forObject:self
+                        keyPath:@"view"
+                        options:NSKeyValueObservingOptionNew
+                        queue:[NSOperationQueue mainQueue]
+                        handler:^(MSKVOReceptionist * receptionist){
+                          [(MSSwipeGestureRecognizer *)receptionist.observer updateQuads];
+                        }];
 }
 
 - (void)updateQuads {

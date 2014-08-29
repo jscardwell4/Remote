@@ -40,26 +40,31 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
     controller.remoteController = model;
 
     controller.remoteReceptionist =
-      [MSKVOReceptionist receptionistForObject:model
-                                       keyPath:@"currentRemote"
-                                       options:NSKeyValueObservingOptionNew
-                                       context:NULL
-                                         queue:MainQueue
-                                       handler:^(MSKVOReceptionist * receptionist) {
-                                         Remote * remote = (Remote *)receptionist.change[NSKeyValueChangeNewKey];
-                                         assert(remote && [remote isKindOfClass:[Remote class]]);
-                                         RemoteView * remoteView = [RemoteView viewWithModel:remote];
-                                         [controller insertRemoteView:remoteView];
-                                       }];
+    [MSKVOReceptionist receptionistWithObserver:controller
+                                      forObject:model
+                                        keyPath:@"currentRemote"
+                                        options:NSKeyValueObservingOptionNew
+                                          queue:MainQueue
+                                        handler:^(MSKVOReceptionist * receptionist) {
+                                          Remote * remote = (Remote *)receptionist.change[NSKeyValueChangeNewKey];
+                                          assert(remote && [remote isKindOfClass:[Remote class]]);
+                                          RemoteView * remoteView = [RemoteView viewWithModel:remote];
+                                          RemoteViewController * viewController =
+                                            (RemoteViewController *)receptionist.observer;
+                                          [viewController insertRemoteView:remoteView];
+                                        }];
+
+    NSString * name = MSSettingsManagerProximitySensorSettingDidChangeNotification;
 
     controller.settingsReceptionist =
-      [MSNotificationReceptionist receptionistForObject:[SettingsManager class]
-                                       notificationName:MSSettingsManagerProximitySensorSettingDidChangeNotification
-                                                  queue:MainQueue
-                                                handler:^(MSNotificationReceptionist * rec, NSNotification * note) {
-                                                  CurrentDevice.proximityMonitoringEnabled =
-                                                    [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
-                                                }];
+      [MSNotificationReceptionist receptionistWithObserver:controller
+                                                 forObject:[SettingsManager class]
+                                          notificationName:name
+                                                     queue:MainQueue
+                                                   handler:^(MSNotificationReceptionist * receptionist) {
+                                                     CurrentDevice.proximityMonitoringEnabled =
+                                                       [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+                                                   }];
   }
 
   return controller;
@@ -76,6 +81,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+
   if (!self.remoteController) return;
 
 
@@ -98,9 +104,11 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
     NSString * rawConstraints = $(@"'%1$@' remote.centerX = view.centerX\n"
                                   "'%1$@' remote.bottom = view.bottom\n"
                                   "'%1$@' remote.top = view.top", nametag);
-    NSDictionary * bindings = @{@"view": self.view,
-                                @"remote": self.remoteView,
-                                @"toolbar": self.topToolbarView};
+    NSDictionary * bindings = @{
+      @"view" : self.view,
+      @"remote" : self.remoteView,
+      @"toolbar" : self.topToolbarView
+    };
     NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:rawConstraints views:bindings];
     [self.view addConstraints:constraints];
 
@@ -120,7 +128,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
     [self.view addConstraints:[NSLayoutConstraint constraintsByParsingString:@"toolbar.centerX = view.centerX"
                                                                        views:@{ @"toolbar" : self.topToolbarView,
-                                                                                @"view": self.view }]];
+                                                                                @"view" : self.view }]];
   }
 
   [self updateTopToolbarLocation];
@@ -178,7 +186,6 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
     CurrentDevice.proximityMonitoringEnabled = NO;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Managing the top toolbar
 /////////////////////////////////////////////////////////////////////////////////
@@ -195,18 +202,21 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 - (void)showTopToolbar:(BOOL)animated {
   CGFloat constant = 0;
+
   if (animated) [self animateToolbar:constant];
   else self.topToolbarConstraint.constant = constant;
 }
 
 - (void)hideTopToolbar:(BOOL)animated {
   CGFloat constant = -self.topToolbarView.bounds.size.height;
+
   if (animated) [self animateToolbar:constant];
   else self.topToolbarConstraint.constant = constant;
 }
 
 - (void)toggleTopToolbar:(BOOL)animated {
   CGFloat constant = (self.topToolbarConstraint.constant ? 0 : -self.topToolbarView.bounds.size.height);
+
   if (animated) [self animateToolbar:constant];
   else self.topToolbarConstraint.constant = constant;
 }

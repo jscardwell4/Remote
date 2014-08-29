@@ -10,6 +10,7 @@
 
 @implementation ControlStateSet
 
+
 /**
  *
  * valid UIControlState bit combinations:
@@ -110,32 +111,18 @@
   return (NSSet *)validProperties;
 }
 
-/*
-   @dynamic disabled;
-   @dynamic disabledSelected;
-   @dynamic highlighted;
-   @dynamic highlightedDisabled;
-   @dynamic highlightedSelected;
-   @dynamic normal;
-   @dynamic selected;
-   @dynamic selectedHighlightedDisabled;
- */
-+ (instancetype)controlStateSet {
-  return [self controlStateSetInContext:[CoreDataManager defaultContext]];
-}
-
-+ (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc {
-  return [self createInContext:moc];
-}
-
-+ (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc
-                             withObjects:(NSDictionary *)objects
-{
-  ControlStateSet * stateSet = [self controlStateSetInContext:moc];
-
-  [stateSet setValuesForKeysWithDictionary:objects];
-
-  return stateSet;
+- (id)valueForUndefinedKey:(NSString *)key {
+  switch ([key characterAtIndex:0]) {
+    case '0': return self.normal;
+    case '1': return self.highlighted;
+    case '2': return self.disabled;
+    case '3': return self.highlightedDisabled;
+    case '4': return self.selected;
+    case '5': return self.highlightedSelected;
+    case '6': return self.disabledSelected;
+    case '7': return self.selectedHighlightedDisabled;
+    default: return [super valueForUndefinedKey:key];
+  }
 }
 
 - (NSDictionary *)dictionaryFromSetObjects:(BOOL)useJSONKeys {
@@ -156,32 +143,17 @@
 
 - (NSArray *)allValues {
 
-  NSMutableSet * values = [NSMutableSet set];
+  NSMutableArray * values = [@[] mutableCopy];
 
-  for (NSUInteger state = 0; state < 8; state++) {
-    id value = [self objectAtIndex:state];
-
+  for (NSString * property in [ControlStateSet validProperties]) {
+    id value = [self valueForKey:property];
     if (value) [values addObject:value];
   }
 
-  return values.allObjects;
+  return values;
 }
 
 - (BOOL)isEmptySet { return ([[self dictionaryFromSetObjects:NO] count] == 0); }
-
-- (void)copyObjectsFromSet:(ControlStateSet *)set {
-  for (int i = 0; i < 8; i++) self[i] = [[set objectAtIndex:i] copy];
-}
-
-- (id)objectAtIndex:(NSUInteger)state {
-  return ([ControlStateSet validState:@(state)]
-          ? [self valueForKey:[ControlStateSet propertyForState:@(state)]]
-          : nil);
-}
-
-- (id)objectForKey:(NSString *)key {
-  return ([ControlStateSet validState:key] ? [self valueForKey:key] : nil);
-}
 
 - (id)objectAtIndexedSubscript:(NSUInteger)state {
 
@@ -191,10 +163,10 @@
   id object = [self valueForKey:[ControlStateSet propertyForState:@(state)]];
 
   if (!object && (state & UIControlStateSelected))
-    object = self[state & ~UIControlStateSelected];
+    object = [self valueForKey:[ControlStateSet propertyForState:@(state & ~UIControlStateSelected)]];
 
   if (!object && (state & UIControlStateHighlighted))
-    object = self[state & ~UIControlStateHighlighted];
+    object = [self valueForKey:[ControlStateSet propertyForState:@(state & ~UIControlStateHighlighted)]];
 
   if (!object)
     object = [self valueForKey:@"normal"];
@@ -223,7 +195,7 @@
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key {
 
   if (![ControlStateSet validState:key])
-    ThrowInvalidArgument(key, is not a valid state key);
+    ThrowInvalidArgument(key, "is not a valid state key");
 
   else
     [self setValue:object forKey:key];
@@ -247,8 +219,9 @@
   NSManagedObjectContext  * moc                  = self.managedObjectContext;
 
   [moc performBlockAndWait:^{
-    controlStateSet = [controlStateSetClass controlStateSetInContext:moc];
-    [controlStateSet copyObjectsFromSet:sourceSet];
+    controlStateSet = [controlStateSetClass createInContext:moc];
+    [controlStateSet setValuesForKeysWithDictionary
+     :[sourceSet dictionaryWithValuesForKeys:[[ControlStateSet validProperties] allObjects]]];
   }];
 
   return controlStateSet;

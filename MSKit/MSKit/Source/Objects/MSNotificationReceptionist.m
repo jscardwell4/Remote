@@ -11,45 +11,43 @@
 
 @interface MSNotificationReceptionist ()
 
-@property (nonatomic, copy)   void (^handler) (MSNotificationReceptionist *, NSNotification *);
-@property (nonatomic, copy)   void (^updateHandler) (MSNotificationReceptionist *);
-@property (nonatomic, copy)   void (^deleteHandler) (MSNotificationReceptionist *);
-
-@property (nonatomic, copy)   NSString          * notificationName;
-@property (nonatomic, strong) NSOperationQueue  * queue;
-@property (nonatomic, strong) id                  object;
+@property (nonatomic, weak,   readwrite) id                 observer;
+@property (nonatomic, strong, readwrite) id                 object;
+@property (nonatomic, copy,   readwrite) NSString         * name;
+@property (nonatomic, strong, readwrite) NSOperationQueue * queue;
+@property (nonatomic, strong, readwrite) NSNotification   * notification;
 
 @end
 
 @implementation MSNotificationReceptionist
 
-+ (MSNotificationReceptionist *)
-receptionistForObject:(id)object
-     notificationName:(NSString *)name
-                queue:(NSOperationQueue *)queue
-              handler:(void (^) (MSNotificationReceptionist *rec, NSNotification *note))handler
++ (instancetype)receptionistWithObserver:(id)observer
+                               forObject:(id)object
+                        notificationName:(NSString *)name
+                                   queue:(NSOperationQueue *)queue
+                                 handler:(void (^)(MSNotificationReceptionist * receptionist))handler
 {
-  if (!handler) ThrowInvalidNilArgument(handler);
-  MSNotificationReceptionist * receptionist = [MSNotificationReceptionist new];
-  receptionist.handler = handler;
-  receptionist.updateHandler = nil;
-  receptionist.deleteHandler = nil;
-  receptionist.notificationName = name;
-  receptionist.queue = queue;
-  receptionist.object = object;
+  if (!object) ThrowInvalidNilArgument(object);
 
-  __weak MSNotificationReceptionist * weakReceptionist = receptionist;
+  if (!handler) ThrowInvalidNilArgument(handler);
+
+  MSNotificationReceptionist * receptionist = [MSNotificationReceptionist new];
+  receptionist.observer = observer;
+  receptionist.object   = object;
+  receptionist.name     = name;
+  receptionist.queue    = queue;
 
   [NotificationCenter addObserverForName:name
                                   object:object
                                    queue:queue
-                              usingBlock:^(NSNotification *note) {
-                                if (!weakReceptionist.ignore)
-                                    weakReceptionist.handler(receptionist, note);
+                              usingBlock:^(NSNotification * note) {
+                                receptionist.notification = note;
+                                handler(receptionist);
+                                receptionist.notification = nil;
                               }];
   return receptionist;
 }
 
-- (void)dealloc { [NotificationCenter removeObserver:self name:self.notificationName object:self.object]; }
+- (void)dealloc { [NotificationCenter removeObserver:self name:_name object:_object]; }
 
 @end

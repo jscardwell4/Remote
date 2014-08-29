@@ -22,14 +22,21 @@
 
   __weak ConnectionStatusButtonView * weakself = self;
   self.receptionist = [MSNotificationReceptionist
-                       receptionistForObject:[ConnectionManager class]
-                            notificationName:CMConnectionStatusNotification
-                                       queue:MainQueue
-                                     handler:^(MSNotificationReceptionist *rec, NSNotification *note) {
-                                       BOOL selected = weakself.model.selected;
-                                       BOOL wifiAvailable = BOOLValue(note.userInfo[CMConnectionStatusWifiAvailable]);
-                                       if (selected != wifiAvailable) weakself.model.selected = !selected;
-                                     }];
+                       receptionistWithObserver:self
+                                      forObject:[ConnectionManager class]
+                               notificationName:CMConnectionStatusNotification
+                                          queue:MainQueue
+                                        handler:^(MSNotificationReceptionist * receptionist) {
+                                          
+                                          ConnectionStatusButtonView * view =
+                                            (ConnectionStatusButtonView *)receptionist.observer;
+                                          BOOL selected = view.model.selected;
+                                          NSDictionary * userInfo = receptionist.notification.userInfo;
+                                          NSNumber * value = userInfo[CMConnectionStatusWifiAvailable];
+                                          BOOL wifiAvailable = BOOLValue(value);
+
+                                          if (selected != wifiAvailable) view.model.selected = !selected;
+                                        }];
 }
 
 @end

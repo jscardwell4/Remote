@@ -36,7 +36,7 @@
   if (TARGET_IPHONE_SIMULATOR) {
     self.batteryLevel = 0.75;
     self.batteryState = UIDeviceBatteryStateCharging;
-  } else   {
+  } else {
     self.batteryLevel = CurrentDevice.batteryLevel;
     self.batteryState = CurrentDevice.batteryState;
   }
@@ -47,23 +47,28 @@
 - (void)registerForChangeNotification {
   [super registerForChangeNotification];
 
-  __weak BatteryStatusButtonView * weakself = self;
   self.batteryLevelReceptionist =
-    [MSNotificationReceptionist receptionistForObject:CurrentDevice
-                                     notificationName:UIDeviceBatteryLevelDidChangeNotification
-                                                queue:MainQueue
-                                              handler:^(MSNotificationReceptionist *rec, NSNotification *note) {
-                                                weakself.batteryLevel = [CurrentDevice batteryLevel];
-                                                [weakself setNeedsDisplay];
-                                              }];
+    [MSNotificationReceptionist receptionistWithObserver:self
+                                               forObject:CurrentDevice
+                                        notificationName:UIDeviceBatteryLevelDidChangeNotification
+                                                   queue:MainQueue
+                                                 handler:^(MSNotificationReceptionist * receptionist) {
+                                                   BatteryStatusButtonView * view =
+                                                     (BatteryStatusButtonView *)receptionist.observer;
+                                                   view.batteryLevel = [CurrentDevice batteryLevel];
+                                                   [view setNeedsDisplay];
+                                                 }];
   self.batteryStateReceptionist =
-  [MSNotificationReceptionist receptionistForObject:CurrentDevice
-                                   notificationName:UIDeviceBatteryStateDidChangeNotification
-                                              queue:MainQueue
-                                            handler:^(MSNotificationReceptionist *rec, NSNotification *note) {
-                                              weakself.batteryState = [CurrentDevice batteryState];
-                                              [weakself setNeedsDisplay];
-                                            }];
+    [MSNotificationReceptionist receptionistWithObserver:self
+                                               forObject:CurrentDevice
+                                        notificationName:UIDeviceBatteryStateDidChangeNotification
+                                                   queue:MainQueue
+                                                 handler:^(MSNotificationReceptionist * receptionist) {
+                                                   BatteryStatusButtonView * view =
+                                                     (BatteryStatusButtonView *)receptionist.observer;
+                                                   view.batteryState = [CurrentDevice batteryState];
+                                                   [view setNeedsDisplay];
+                                                 }];
 }
 
 - (void)initializeViewFromModel {
@@ -75,13 +80,12 @@
   self.batteryFill      = self.model.icons[UIControlStateHighlighted];
 }
 
-
-- (CGSize)intrinsicContentSize { return self.model.icon ? self.model.icon.image.size: REMinimumSize; }
+- (CGSize)intrinsicContentSize { return self.model.icon ? self.model.icon.image.size : REMinimumSize; }
 
 /// Overrides the `ButtonView` implementation to perform custom drawing of the 'battery' frame,
 /// the fill color that indicates battery level, and the icon that indicates battery state.
 - (void)drawContentInContext:(CGContextRef)ctx inRect:(CGRect)rect {
-  
+
   if (_batteryLevel == -1) {
     _batteryLevel = CurrentDevice.batteryLevel;
     _batteryState = CurrentDevice.batteryState;
@@ -117,7 +121,7 @@
   if (self.batteryState == UIDeviceBatteryStateFull) {
     [self.batteryPlug.colorImage drawInRect:CGRectInset(frameRect, padding, padding)];
 
-  } else if (self.batteryState == UIDeviceBatteryStateCharging)   {
+  } else if (self.batteryState == UIDeviceBatteryStateCharging) {
     CGSize lightningIconSize = self.batteryLightning.image.size;
     CGSize lightningSize     = (CGSizeContainsSize(paintSize, lightningIconSize)
                                 ? lightningIconSize

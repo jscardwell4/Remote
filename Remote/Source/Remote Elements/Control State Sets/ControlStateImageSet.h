@@ -14,16 +14,7 @@
 
 @interface ControlStateImageSet : ControlStateSet
 
-+ (ControlStateImageSet *)imageSetWithImages:(NSDictionary *)images
-                                       context:(NSManagedObjectContext *)moc;
-
-+ (ControlStateImageSet *)imageSetWithColors:(NSDictionary *)colors
-                                      images:(NSDictionary *)images
-                                     context:(NSManagedObjectContext *)moc;
-
-- (ImageView *)objectAtIndex:(NSUInteger)state;
 - (ImageView *)objectAtIndexedSubscript:(NSUInteger)state;
-- (ImageView *)objectForKey:(NSString *)key;
 - (ImageView *)objectForKeyedSubscript:(NSString *)key;
 
 @end

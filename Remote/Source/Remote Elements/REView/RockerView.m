@@ -81,14 +81,15 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
       [NSDictionary dictionaryWithObjects:self.labelContainer.subviews
                                   forKeys:[self.labelContainer valueForKeyPath:@"subviews.text"]];
 
-      NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:positionalConstraints
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:labels];
+      if ([labels count]) {
+        NSArray * constraints = [NSLayoutConstraint constraintsWithVisualFormat:positionalConstraints
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:labels];
 
-      [constraints setValue:nametag forKeyPath:@"nametag"];
-
-      [self.labelContainer addConstraints:constraints];
+        [constraints setValue:nametag forKeyPath:@"nametag"];
+        [self.labelContainer addConstraints:constraints];
+      }
     }
   }
 }
@@ -106,14 +107,19 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 - (MSDictionary *)kvoRegistration {
 
   MSDictionary * reg = [super kvoRegistration];
-  reg[@"labels"] =  ^(MSKVOReceptionist * receptionist) {
-    [(__bridge RockerView *)receptionist.context buildLabels];
+  reg[@"commandContainer"] =  ^(MSKVOReceptionist * receptionist) {
+    RockerView * view = (RockerView *)receptionist.observer;
+    if ([view.model.commandContainer isKindOfClass:[CommandSetCollection class]]) {
+      view.labelIndex = 0;
+      [view.model selectCommandSetAtIndex:view.labelIndex];
+      [view buildLabels];
+    }
   };
 
-  reg[@"commandSets"] = ^(MSKVOReceptionist * receptionist) {
-    RockerView * picker = (__bridge RockerView *)receptionist.context;
-    [picker.model selectCommandSetAtIndex:picker.labelIndex];
-  };
+//  reg[@"commandSets"] = ^(MSKVOReceptionist * receptionist) {
+//    RockerView * rocker = (RockerView *)receptionist.observer;
+//    [rocker.model selectCommandSetAtIndex:rocker.labelIndex];
+//  };
 
   return reg;
 }
@@ -159,6 +165,8 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 /// @param duration The time in seconds it should take the animation to complete.
 - (void)animateLabelContainerToIndex:(NSUInteger)index withDuration:(CGFloat)duration {
   CGFloat labelWidth = self.bounds.size.width;
+  ButtonGroup * model = self.model;
+  NSUInteger labelIndex = self.labelIndex;
 
   [UIView animateWithDuration:duration
                         delay:0.0
@@ -167,8 +175,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
                                | UIViewAnimationOptionCurveEaseOut)
                    animations:^{ self.labelContainerLeftConstraint.constant = 0 - labelWidth * index;
                                  [self setNeedsLayout]; }
-                   completion:^(BOOL finished) { if (finished)
-                                                   [self.model selectCommandSetAtIndex:_labelIndex]; }];
+                   completion:^(BOOL finished) { if (finished) [model selectCommandSetAtIndex:labelIndex]; }];
 }
 
 /// Generate `UILabels` for each label in the model's set and attach to `scrollingLabels`. Any
@@ -196,6 +203,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
       }
 
+      [self setNeedsUpdateConstraints];
     }
 
   }

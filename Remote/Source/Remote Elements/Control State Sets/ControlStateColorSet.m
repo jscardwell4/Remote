@@ -10,46 +10,45 @@
 #import "RemoteElementExportSupportFunctions.h"
 #import "RemoteElementImportSupportFunctions.h"
 
+@interface ControlStateColorSet ()
+@property (nonatomic) UIColor * normal;
+@property (nonatomic) UIColor * disabled;
+@property (nonatomic) UIColor * selected;
+@property (nonatomic) UIColor * highlighted;
+@property (nonatomic) UIColor * highlightedDisabled;
+@property (nonatomic) UIColor * highlightedSelected;
+@property (nonatomic) UIColor * selectedHighlightedDisabled;
+@property (nonatomic) UIColor * disabledSelected;
+@end
+
 @implementation ControlStateColorSet
 
-- (MSDictionary *)deepDescriptionDictionary {
-  ControlStateColorSet * stateSet = [self faultedObject];
-  assert(stateSet);
-
-  MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-  dd[@"normal"]                      = NSStringFromUIColor([stateSet valueForKey:@"normal"]);
-  dd[@"selected"]                    = NSStringFromUIColor([stateSet valueForKey:@"selected"]);
-  dd[@"highlighted"]                 = NSStringFromUIColor([stateSet valueForKey:@"highlighted"]);
-  dd[@"disabled"]                    = NSStringFromUIColor([stateSet valueForKey:@"disabled"]);
-  dd[@"highlightedSelected"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedSelected"]);
-  dd[@"highlightedDisabled"]         = NSStringFromUIColor([stateSet valueForKey:@"highlightedDisabled"]);
-  dd[@"disabledSelected"]            = NSStringFromUIColor([stateSet valueForKey:@"disabledSelected"]);
-  dd[@"selectedHighlightedDisabled"] = NSStringFromUIColor([stateSet valueForKey:@"selectedHighlightedDisabled"]);
-
-  return (MSDictionary *)dd;
-}
+@dynamic normal;
+@dynamic disabled, selected, disabledSelected;
+@dynamic highlighted, highlightedDisabled, highlightedSelected;
+@dynamic selectedHighlightedDisabled;
 
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
 
+
   [(NSDictionary *)data enumerateKeysAndObjectsUsingBlock :^(id key, id obj, BOOL * stop) {
-    if ([ControlStateSet validState:key])
-      self[key] = colorFromImportValue(obj) ?: self[key];
+    NSString * property = [key dashCaseToCamelCase];
+    if ([ControlStateSet validState:property]) {
+      UIColor * color = colorFromImportValue(obj);
+      if (color) self[property] = color;
+    }
   }];
 }
 
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  NSArray * keys = [[NSArray arrayFromRange:NSMakeRange(0, 8)]
-                    arrayByMappingToBlock:^id (id obj, NSUInteger idx) {
-                      return [ControlStateSet propertyForState:obj];
-                    }];
 
-
-  for (NSString * key in keys)
-    dictionary[[key camelCaseToDashCase]] = CollectionSafe(normalizedColorJSONValueForColor([self valueForKey:key]));
+  for (NSString * key in [ControlStateSet validProperties])
+    dictionary[[key camelCaseToDashCase]] =
+      CollectionSafe(normalizedColorJSONValueForColor([self valueForKey:key]));
 
   [dictionary compact];
   [dictionary compress];

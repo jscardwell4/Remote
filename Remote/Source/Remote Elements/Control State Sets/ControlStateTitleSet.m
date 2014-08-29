@@ -19,73 +19,34 @@ static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
+@interface ControlStateTitleSet ()
+@property (nonatomic) TitleAttributes * normal;
+@property (nonatomic) TitleAttributes * disabled;
+@property (nonatomic) TitleAttributes * selected;
+@property (nonatomic) TitleAttributes * highlighted;
+@property (nonatomic) TitleAttributes * highlightedDisabled;
+@property (nonatomic) TitleAttributes * highlightedSelected;
+@property (nonatomic) TitleAttributes * selectedHighlightedDisabled;
+@property (nonatomic) TitleAttributes * disabledSelected;
+@end
+
 @implementation ControlStateTitleSet
+
+@dynamic normal;
+@dynamic disabled, selected, disabledSelected;
+@dynamic highlighted, highlightedDisabled, highlightedSelected;
+@dynamic selectedHighlightedDisabled;
 
 // @synthesize suppressNormalStateAttributes = _suppressNormalStateAttributes;
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Creation
-////////////////////////////////////////////////////////////////////////////////
-
-
-+ (instancetype)controlStateSetInContext:(NSManagedObjectContext *)context
-                             withObjects:(NSDictionary *)objects {
-  if (!context) return nil;
-
-  ControlStateTitleSet * stateSet = [self controlStateSetInContext:context];
-
-  [objects enumerateKeysAndObjectsUsingBlock:^(NSString * key, id obj, BOOL * stop) {
-    stateSet[key] = [TitleAttributes importObjectFromData:obj context:context];
-  }];
-
-  return stateSet;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Accessors
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)setObject:(id)object forKeyedSubscript:(NSString *)key {
-
-  NSArray * keys = [key keyPathComponents];
-
-  switch ([keys count]) {
-
-    case 2:     // set a specific attribute value for the specified state
-    {
-      NSString * stateKey = keys[0];
-
-      if ([ControlStateSet validState:stateKey]) {
-
-        TitleAttributes * titleAttributes = self[stateKey];
-
-        if (!titleAttributes)
-          titleAttributes = [TitleAttributes createInContext:self.managedObjectContext];
-
-        NSString * attributeKey = keys[1];
-
-        if (  [[TitleAttributes propertyKeys] containsObject:attributeKey]
-           && isKind(object, [TitleAttributes validClassForProperty:attributeKey]))
-
-          [titleAttributes setValue:object forKey:attributeKey];
-
-      }
-
-      break;
-    }
-
-    case 1:     // create attribute dictionary using object and set via super
-      if ([ControlStateSet validState:key] && [object isKindOfClass:[TitleAttributes class]])
-        [self setValue:object forKey:[ControlStateSet attributeKeyFromKey:key]];
-      break;
-
-    default:     // invalid key path
-      ThrowInvalidArgument(key, "contains illegal key path");
-
-  }
-
+- (void)setObject:(TitleAttributes *)object forKeyedSubscript:(NSString *)key {
+  [super setObject:object forKeyedSubscript:key];
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key {
@@ -119,41 +80,29 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return nil;
 }
 
-- (void)setObject:(id)object atIndexedSubscript:(NSUInteger)state {
-
-  if ([ControlStateSet validState:@(state)])
-    [self setObject:object forKeyedSubscript:[ControlStateSet attributeKeyFromKey:@(state)]];
-
+- (void)setObject:(TitleAttributes *)object atIndexedSubscript:(NSUInteger)state {
+  [super setObject:object atIndexedSubscript:state];
 }
 
 - (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state {
 
   NSAttributedString * string     = nil;
-  MSDictionary       * attributes = nil;
+  MSDictionary       * attributes = self.normal.attributes;
 
-  if ([ControlStateSet validState:@(state)]) {
+  if (state) {
+    TitleAttributes * overrides = [super objectAtIndexedSubscript:state];
+    if (attributes && overrides)
+      [attributes setValuesForKeysWithDictionary:overrides.attributes];
+  }
 
-    NSString * key = [ControlStateSet propertyForState:@(state)];
-    attributes = ((TitleAttributes *)[self valueForKey:key]).attributes;
+  if (attributes) {
 
-    if (![@"normal" isEqualToString:key]) {
+    NSString * text = attributes[RETitleTextAttributeKey];
 
-      MSDictionary * defaultAttributes = ((TitleAttributes *)[self valueForKey:@"normal"]).attributes;
+    if (text) {
 
-      if (attributes && defaultAttributes)
-        [attributes setValuesForKeysWithDictionary:defaultAttributes];
-    }
-
-    if (attributes) {
-
-      NSString * text = attributes[RETitleTextAttributeKey];
-
-      if (text) {
-
-        [attributes removeObjectForKey:RETitleTextAttributeKey];
-        string = [NSAttributedString attributedStringWithString:text attributes:attributes];
-
-      }
+      [attributes removeObjectForKey:RETitleTextAttributeKey];
+      string = [NSAttributedString attributedStringWithString:text attributes:attributes];
 
     }
 
@@ -162,36 +111,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return string;
 }
 
-- (NSAttributedString *)objectAtIndex:(NSUInteger)state {
-
-  NSAttributedString * string = nil;
-
-  if ([ControlStateSet validState:@(state)]) {
-
-    NSString        * key             = [ControlStateSet propertyForState:@(state)];
-    TitleAttributes * titleAttributes = [self valueForKey:key];
-    MSDictionary    * attributes      = titleAttributes.attributes;
-
-    if (attributes) {
-      NSString * text = attributes[RETitleTextAttributeKey];
-
-      if (text) {
-
-        [attributes removeObjectForKey:RETitleTextAttributeKey];
-        string = [NSAttributedString attributedStringWithString:text attributes:attributes];
-
-      }
-
-    }
-
-  }
-
-  return string;
-}
-
-- (id)objectForKey:(NSString *)key {
-  return [[key keyPathComponents] count] > 1 ? self[key] : [super objectForKey:key];
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Importing

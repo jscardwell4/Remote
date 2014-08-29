@@ -10,96 +10,90 @@
 #import "MSKitMacros.h"
 
 @interface MSContextChangeReceptionist ()
-@property (nonatomic, copy)   MSContextChangeHandler               handler;
-@property (nonatomic, copy)   MSContextChangeObjectUpdateHandler   updateHandler;
-@property (nonatomic, copy)   MSContextChangeObjectDeleteHandler   deleteHandler;
-@property (nonatomic, copy)   NSString                           * notificationName;
-@property (nonatomic, strong) NSOperationQueue                   * queue;
-@property (nonatomic, strong) NSManagedObject                    * object;
 
+@property (nonatomic, weak,   readwrite) id                observer;
+@property (nonatomic, weak,   readwrite) NSManagedObject * object;
+@property (nonatomic, strong, readwrite) NSNotification  * notification;
+@property (nonatomic, copy,   readwrite) NSString        * name;
 @end
 
 @implementation MSContextChangeReceptionist
 
-+ (MSContextChangeReceptionist *)receptionistForObject:(NSManagedObject *)object
-                                      notificationName:(NSString *)name
-                                                 queue:(NSOperationQueue *)queue
-                                               handler:(MSContextChangeHandler)handler
++ (instancetype)receptionistWithObserver:(id)observer
+                               forObject:(NSManagedObject *)object
+                        notificationName:(NSString *)name
+                                 handler:(void (^)(MSContextChangeReceptionist * receptionist))handler
 {
-    if (!object || !object.managedObjectContext || !handler) return nil;
-    MSContextChangeReceptionist * receptionist = [MSContextChangeReceptionist new];
-    receptionist.handler = handler;
-    receptionist.updateHandler = nil;
-    receptionist.deleteHandler = nil;
-    receptionist.notificationName = name;
-    receptionist.queue = queue;
-    receptionist.object = object;
+  if (!object) ThrowInvalidNilArgument(object);
 
-    __weak MSContextChangeReceptionist * weakReceptionist = receptionist;
+  if (!handler) ThrowInvalidNilArgument(handler);
 
-    [NotificationCenter addObserverForName:name
-                                    object:object.managedObjectContext
-                                     queue:queue
-                                usingBlock:^(NSNotification *note) {
-                                    if (!weakReceptionist.ignore)
-                                        [weakReceptionist.object.managedObjectContext performBlockAndWait:^{
-                                            weakReceptionist.handler(receptionist,
-                                                                   weakReceptionist.object, note);
-                                        }];
-                                }];
-    return receptionist;
+  MSContextChangeReceptionist * receptionist = [MSContextChangeReceptionist new];
+  receptionist.observer = observer;
+  receptionist.object   = object;
+  receptionist.name     = name;
+
+  NSManagedObjectContext * moc = object.managedObjectContext;
+
+  [NotificationCenter addObserverForName:name
+                                  object:moc
+                                   queue:nil
+                              usingBlock:^(NSNotification * note) {
+
+                                receptionist.notification = note;
+
+                                [moc performBlockAndWait:^{ handler(receptionist); }];
+
+                                receptionist.notification = nil;
+                              }];
+  return receptionist;
 }
 
-+ (MSContextChangeReceptionist *)receptionistForObject:(NSManagedObject *)object
-                                      notificationName:(NSString *)name
-                                                 queue:(NSOperationQueue *)queue
-                                         updateHandler:(MSContextChangeObjectUpdateHandler)updateHandler
-                                         deleteHandler:(MSContextChangeObjectDeleteHandler)deleteHandler
-{
-    if (!object || !object.managedObjectContext || !(updateHandler || deleteHandler)) return nil;
-    MSContextChangeReceptionist * receptionist = [MSContextChangeReceptionist new];
-    receptionist.handler = nil;
-    receptionist.updateHandler = updateHandler;
-    receptionist.deleteHandler = deleteHandler;
-    receptionist.notificationName = name;
-    receptionist.queue = queue;
-    receptionist.object = object;
++ (instancetype)receptionistWithObserver:(id)observer
+                               forObject:(NSManagedObject *)object
+                        notificationName:(NSString *)name
+                           updateHandler:(void (^)(MSContextChangeReceptionist * receptionist))update
+                           deleteHandler:(void (^)(MSContextChangeReceptionist * receptionist))delete {
+  if (!object) ThrowInvalidNilArgument(object);
 
-    __weak MSContextChangeReceptionist * weakReceptionist = receptionist;
+  if (!(update || delete)) ThrowInvalidArgument(handler, "at least one handler must be non-nil");
 
-    [NotificationCenter addObserverForName:name
-                                    object:object.managedObjectContext
-                                     queue:queue
-                                usingBlock:^(NSNotification *note) {
-                                    if (!weakReceptionist.ignore)
-                                    {
-                                        if (   weakReceptionist.updateHandler
-                                            && [note.userInfo[NSUpdatedObjectsKey]
-                                                containsObject:weakReceptionist.object]
-                                            && [[weakReceptionist.object changedValues] count])
-                                            [weakReceptionist.object.managedObjectContext performBlockAndWait:^{
-                                                weakReceptionist.updateHandler(receptionist,
-                                                                             weakReceptionist.object);
-                                            }];
+  MSContextChangeReceptionist * receptionist = [MSContextChangeReceptionist new];
+  receptionist.observer = observer;
+  receptionist.object   = object;
+  receptionist.name     = name;
 
-                                        if (   weakReceptionist.deleteHandler
-                                            && [note.userInfo[NSDeletedObjectsKey]
-                                                containsObject:weakReceptionist.object])
-                                            [weakReceptionist.object.managedObjectContext performBlockAndWait:^{
-                                                weakReceptionist.deleteHandler(receptionist,
-                                                                             weakReceptionist.object);
-                                            }];
-                                    }
+  NSManagedObjectContext * moc = object.managedObjectContext;
 
-                                }];
+  [NotificationCenter addObserverForName:name
+                                  object:moc
+                                   queue:nil
+                              usingBlock:^(NSNotification * note) {
 
-    return receptionist;
+                                receptionist.notification = note;
+
+                                if (  update
+                                   && [note.userInfo[NSUpdatedObjectsKey] containsObject:object]
+                                   && [[object changedValues] count])
+
+                                  [moc performBlockAndWait:^{ update(receptionist); }];
+
+
+                                if (  delete
+                                   && [note.userInfo[NSDeletedObjectsKey] containsObject:object])
+
+                                  [moc performBlockAndWait:^{ delete(receptionist); }];
+
+
+                                receptionist.notification = nil;
+
+                              }];
+
+  return receptionist;
 }
 
 - (void)dealloc {
-    [NotificationCenter removeObserver:self
-                                  name:_notificationName
-                                object:_object.managedObjectContext];
+  [NotificationCenter removeObserver:self name:_name object:_object.managedObjectContext];
 }
 
 @end

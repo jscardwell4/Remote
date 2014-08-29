@@ -14,20 +14,20 @@
 #define CONTAINER_DEBUG_COLOR OrangeColor
 // #define COLOR_CONTAINER_BACKGROUND
 
-static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static const int    msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE);
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
+static const int msLogContext = (LOG_CONTEXT_EDITOR | LOG_CONTEXT_FILE);
 // static int ddLogLevel = DefaultDDLogLevel;
 
-MSSTATIC_STRING_CONST   kCenterXConstraintNametag = @"kCenterXConstraintNametag";
-MSSTATIC_STRING_CONST   kCenterYConstraintNametag = @"kCenterYConstraintNametag";
-MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
+MSSTATIC_STRING_CONST kCenterXConstraintNametag = @"kCenterXConstraintNametag";
+MSSTATIC_STRING_CONST kCenterYConstraintNametag = @"kCenterYConstraintNametag";
+MSSTATIC_STRING_CONST kParentConstraintNametag  = @"kParentConstraintNametag";
 
 @implementation RemoteElementEditingViewController {
-    UIView              * _referenceView;
-    MSKVOReceptionist   * _parentConstraintsObserver;
-    MSKVOReceptionist   * _sourceViewBoundsObserver;
-    NSMutableDictionary * _maxSizeCache;
-    NSMutableDictionary * _minSizeCache;
+  UIView * _referenceView;
+//    MSKVOReceptionist   * _parentConstraintsObserver;
+  MSKVOReceptionist   * _sourceViewBoundsObserver;
+  NSMutableDictionary * _maxSizeCache;
+  NSMutableDictionary * _minSizeCache;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,137 +43,126 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 
 - (void)awakeFromNib { [self initializeIVARs]; }
 
-- (void)initializeIVARs
-{
-    _flags.showSourceBoundary  = YES;
-    self.selectedViews         = [NSMutableSet set];
-    self.selectionInProgress   = [NSMutableSet set];
-    self.deselectionInProgress = [NSMutableSet set];
-    _maxSizeCache              = [NSMutableDictionary dictionaryWithCapacity:10];
-    _minSizeCache              = [NSMutableDictionary dictionaryWithCapacity:10];
+- (void)initializeIVARs {
+  _flags.showSourceBoundary  = YES;
+  self.selectedViews         = [NSMutableSet set];
+  self.selectionInProgress   = [NSMutableSet set];
+  self.deselectionInProgress = [NSMutableSet set];
+  _maxSizeCache              = [NSMutableDictionary dictionaryWithCapacity:10];
+  _minSizeCache              = [NSMutableDictionary dictionaryWithCapacity:10];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
 
-    [self initializeToolbars];
-    [self attachGestureRecognizers];
+  [self initializeToolbars];
+  [self attachGestureRecognizers];
 
-    self.sourceViewBoundsLayer             = [CAShapeLayer layer];
-    _sourceViewBoundsLayer.fillColor       = ClearColor.CGColor;
-    _sourceViewBoundsLayer.lineCap         = kCALineCapRound;
-    _sourceViewBoundsLayer.lineDashPattern = @[@1, @1];
-    _sourceViewBoundsLayer.lineJoin        = kCALineJoinRound;
-    _sourceViewBoundsLayer.lineWidth       = 1.0;
-    _sourceViewBoundsLayer.strokeColor     = WhiteColor.CGColor;
-    _sourceViewBoundsLayer.hidden          = YES;
+  self.sourceViewBoundsLayer             = [CAShapeLayer layer];
+  _sourceViewBoundsLayer.fillColor       = ClearColor.CGColor;
+  _sourceViewBoundsLayer.lineCap         = kCALineCapRound;
+  _sourceViewBoundsLayer.lineDashPattern = @[@1, @1];
+  _sourceViewBoundsLayer.lineJoin        = kCALineJoinRound;
+  _sourceViewBoundsLayer.lineWidth       = 1.0;
+  _sourceViewBoundsLayer.strokeColor     = WhiteColor.CGColor;
+  _sourceViewBoundsLayer.hidden          = YES;
 
-    if (CGRectIsEmpty(_flags.contentRect))
-    {
-        _referenceView     = self.view;
-        _flags.contentRect =
-        CGRectMake(_referenceView.frame.origin.x,
-                   _topToolbar.bounds.size.height,
-                   _referenceView.frame.size.width,
-                   _referenceView.frame.size.height - (  _topToolbar.bounds.size.height
-                                                       + _currentToolbar.bounds.size.height));
-    }
+  if (CGRectIsEmpty(_flags.contentRect)) {
+    _referenceView     = self.view;
+    _flags.contentRect =
+      CGRectMake(_referenceView.frame.origin.x,
+                 _topToolbar.bounds.size.height,
+                 _referenceView.frame.size.width,
+                 _referenceView.frame.size.height - (_topToolbar.bounds.size.height
+                                                     + _currentToolbar.bounds.size.height));
+  }
 
-    if (self.remoteElement)
-    {
-        self.sourceView = [[[self class] elementClass] viewWithModel:self.remoteElement];
-    }
+  if (self.remoteElement) {
+    self.sourceView = [[[self class] elementClass] viewWithModel:self.remoteElement];
+  }
 }
 
 - (void)viewDidLayoutSubviews { [self updateBoundaryLayer]; }
 
 - (BOOL)canBecomeFirstResponder { return YES; }
 
-- (void)registerForNotifications
-{
-    [NotificationCenter addObserverForName:UIMenuControllerDidHideMenuNotification
-                                    object:MenuController
-                                     queue:MainQueue
-                                usingBlock:^(NSNotification *note) {
-                                    _flags.menuState = REEditingMenuStateDefault;
-                                }];
+- (void)registerForNotifications {
+  [NotificationCenter addObserverForName:UIMenuControllerDidHideMenuNotification
+                                  object:MenuController
+                                   queue:MainQueue
+                              usingBlock:^(NSNotification * note) {
+                                _flags.menuState = REEditingMenuStateDefault;
+                              }];
 }
 
 - (void)dealloc { [NotificationCenter removeObserver:self]; }
 
-- (id)forwardingTargetForSelector:(SEL)selector
-{
-    if (MSSelectorInProtocol(selector, @protocol(UIGestureRecognizerDelegate), NO, YES))
-        return self.gestureManager;
-    else
-        return [super forwardingTargetForSelector:selector];
+- (id)forwardingTargetForSelector:(SEL)selector {
+  if (MSSelectorInProtocol(selector, @protocol(UIGestureRecognizerDelegate), NO, YES))
+    return self.gestureManager;
+  else
+    return [super forwardingTargetForSelector:selector];
 }
 
-- (NSMethodSignature*)methodSignatureForSelector:(SEL)selector
-{
-    if ([SelectorString(selector) hasPrefix:@"menuAction_"])
-        return [self methodSignatureForSelector:@selector(menuAction:)];
-    else
-        return [super methodSignatureForSelector:selector];
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+  if ([SelectorString(selector) hasPrefix:@"menuAction_"])
+    return [self methodSignatureForSelector:@selector(menuAction:)];
+  else
+    return [super methodSignatureForSelector:selector];
 }
 
-- (BOOL)respondsToSelector:(SEL)selector
-{
-    if (   [SelectorString(selector) hasPrefix:@"menuAction_"]
-        || MSSelectorInProtocol(selector, @protocol(UIGestureRecognizerDelegate), NO, YES))
-        return YES;
-    else
-        return [super respondsToSelector:selector];
+- (BOOL)respondsToSelector:(SEL)selector {
+  if (  [SelectorString(selector) hasPrefix:@"menuAction_"]
+     || MSSelectorInProtocol(selector, @protocol(UIGestureRecognizerDelegate), NO, YES))
+    return YES;
+  else
+    return [super respondsToSelector:selector];
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation
-{
-    SEL selector = [invocation selector];
-    NSString * action = SelectorString(selector);
-    if ([action hasPrefix:@"menuAction_"]) {
-        [invocation setSelector:@selector(menuAction:)];
-        NSString * identifier = [action stringByReplacingRegEx:@"(?:menuAction)|(?::)"
-                                                                withString:@""];
-        RemoteElementView * view = _sourceView[identifier];
-        assert(view);
-        [invocation setSelector:@selector(menuAction:)];
-        [invocation setTarget:self];
-        [invocation setArgument:&view atIndex:2];
-        [invocation invoke];
-    } else
-        [super forwardInvocation:invocation];
+- (void)forwardInvocation:(NSInvocation *)invocation {
+  SEL        selector = [invocation selector];
+  NSString * action   = SelectorString(selector);
+
+  if ([action hasPrefix:@"menuAction_"]) {
+    [invocation setSelector:@selector(menuAction:)];
+    NSString * identifier = [action stringByReplacingRegEx:@"(?:menuAction)|(?::)"
+                                                withString:@""];
+    RemoteElementView * view = _sourceView[identifier];
+    assert(view);
+    [invocation setSelector:@selector(menuAction:)];
+    [invocation setTarget:self];
+    [invocation setArgument:&view atIndex:2];
+    [invocation invoke];
+  } else
+    [super forwardInvocation:invocation];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    assert(_sourceView);
-    [super viewDidAppear:animated];
-    [self becomeFirstResponder];
-    [self registerForNotifications];
+- (void)viewDidAppear:(BOOL)animated {
+  assert(_sourceView);
+  [super viewDidAppear:animated];
+  [self becomeFirstResponder];
+  [self registerForNotifications];
 
-    CGFloat   sourceHeight   = _sourceView.bounds.size.height;
-    CGFloat   viewHeight     = self.view.bounds.size.height;
-    CGFloat   boundarySize   = MSBoundarySizeOfBoundary(_flags.allowableSourceViewYOffset);
-    BOOL      gestureEnabled = (sourceHeight < viewHeight - boundarySize ? NO : YES);
+  CGFloat sourceHeight   = _sourceView.bounds.size.height;
+  CGFloat viewHeight     = self.view.bounds.size.height;
+  CGFloat boundarySize   = MSBoundarySizeOfBoundary(_flags.allowableSourceViewYOffset);
+  BOOL    gestureEnabled = (sourceHeight < viewHeight - boundarySize ? NO : YES);
 
-    _twoTouchPanGesture.enabled = gestureEnabled;
+  _twoTouchPanGesture.enabled = gestureEnabled;
 
-    [self updateState];
+  [self updateState];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self resignFirstResponder];
-    [NotificationCenter removeObserver:self
-                                  name:UIMenuControllerDidHideMenuNotification
-                                object:MenuController];
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  [self resignFirstResponder];
+  [NotificationCenter removeObserver:self
+                                name:UIMenuControllerDidHideMenuNotification
+                              object:MenuController];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    MSLogWarnTag(@"Is view loaded? %@", BOOLString([self isViewLoaded]));
+- (void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+  MSLogWarnTag(@"Is view loaded? %@", BOOLString([self isViewLoaded]));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -181,26 +170,23 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 ///@name Updating UI State
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)updateBoundaryLayer
-{
+- (void)updateBoundaryLayer {
 //    CGRect frame = (CGRectIsEmpty(_sourceView.frame) ? self.view.frame : _sourceView.frame);
-    _sourceViewBoundsLayer.path   = [UIBezierPath bezierPathWithRect:_sourceView.frame].CGPath;
-    _sourceViewBoundsLayer.hidden = !_flags.showSourceBoundary;
+  _sourceViewBoundsLayer.path   = [UIBezierPath bezierPathWithRect:_sourceView.frame].CGPath;
+  _sourceViewBoundsLayer.hidden = !_flags.showSourceBoundary;
 }
 
-- (void)updateState
-{
-    [self updateBarButtonItems];
-    [self updateToolbarDisplayed];
-    [self updateBoundaryLayer];
-    [self updateGesturesEnabled];
+- (void)updateState {
+  [self updateBarButtonItems];
+  [self updateToolbarDisplayed];
+  [self updateBoundaryLayer];
+  [self updateGesturesEnabled];
 }
 
-- (void)clearCacheForViews:(NSSet *)views
-{
-    NSArray * identifiers = [[views valueForKeyPath:@"uuid"] allObjects];
-    [_maxSizeCache removeObjectsForKeys:identifiers];
-    [_minSizeCache removeObjectsForKeys:identifiers];
+- (void)clearCacheForViews:(NSSet *)views {
+  NSArray * identifiers = [[views valueForKeyPath:@"uuid"] allObjects];
+  [_maxSizeCache removeObjectsForKeys:identifiers];
+  [_minSizeCache removeObjectsForKeys:identifiers];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -208,57 +194,52 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 ///@name Moving the selected views
 ////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)shouldTranslateSelectionFrom:(CGRect)fromUnion to:(CGRect)toUnion
-{
-    return CGRectContainsRect(_flags.contentRect, toUnion);
+- (BOOL)shouldTranslateSelectionFrom:(CGRect)fromUnion to:(CGRect)toUnion {
+  return CGRectContainsRect(_flags.contentRect, toUnion);
 }
 
-- (void)translateSelectedViews:(CGPoint)translation
-{
-    if (CGPointEqualToPoint(translation, CGPointZero)) return;
+- (void)translateSelectedViews:(CGPoint)translation {
+  if (CGPointEqualToPoint(translation, CGPointZero)) return;
 
-    CGRect translatedFrame =
-        CGRectApplyAffineTransform(_flags.currentFrame,
-                                   CGAffineTransformMakeTranslation(translation.x, translation.y));
+  CGRect translatedFrame =
+    CGRectApplyAffineTransform(_flags.currentFrame,
+                               CGAffineTransformMakeTranslation(translation.x, translation.y));
 
-    if ([self shouldTranslateSelectionFrom:_flags.currentFrame to:translatedFrame])
-    {
-        _flags.currentFrame = translatedFrame;
+  if ([self shouldTranslateSelectionFrom:_flags.currentFrame to:translatedFrame]) {
+    _flags.currentFrame = translatedFrame;
 
-        for (RemoteElementView * view in _selectedViews)
-            view.frame =
-                CGRectApplyAffineTransform(view.frame,
-                                           CGAffineTransformMakeTranslation(translation.x,
-                                                                            translation.y));
-    }
+    for (RemoteElementView * view in _selectedViews)
+      view.frame =
+        CGRectApplyAffineTransform(view.frame,
+                                   CGAffineTransformMakeTranslation(translation.x,
+                                                                    translation.y));
+  }
 }
 
-- (void)willTranslateSelectedViews
-{
-  //???: Doesn't look like there is a reason to call willTranslateViews: on source view
+- (void)willTranslateSelectedViews {
+  // ???: Doesn't look like there is a reason to call willTranslateViews: on source view
 //    [_sourceView willTranslateViews:_selectedViews];
-    _flags.originalFrame = [self selectedViewsUnionFrameInView:self.view];
-    _flags.currentFrame  = _flags.originalFrame;
+  _flags.originalFrame = [self selectedViewsUnionFrameInView:self.view];
+  _flags.currentFrame  = _flags.originalFrame;
 }
 
-- (void)didTranslateSelectedViews
-{
-    [self clearCacheForViews:_selectedViews];
+- (void)didTranslateSelectedViews {
+  [self clearCacheForViews:_selectedViews];
 
-  //???: Doesn't look like there is a reason to call didTranslateViews: on source view
+  // ???: Doesn't look like there is a reason to call didTranslateViews: on source view
 //    [_sourceView didTranslateViews:_selectedViews];
 
-    // inform source view of translation
-    CGPoint   translation = CGPointGetDelta(_flags.currentFrame.origin, _flags.originalFrame.origin);
+  // inform source view of translation
+  CGPoint translation = CGPointGetDelta(_flags.currentFrame.origin, _flags.originalFrame.origin);
 
-    [_sourceView translateSubelements:_selectedViews translation:translation];
+  [_sourceView translateSubelements:_selectedViews translation:translation];
 
-    // update editing style for selected views
-    [_selectedViews setValue:@(REEditingStateSelected) forKeyPath:@"editingState"];
+  // update editing style for selected views
+  [_selectedViews setValue:@(REEditingStateSelected) forKeyPath:@"editingState"];
 
-    // udpate state
-    _flags.movingSelectedViews = NO;
-    [self updateState];
+  // udpate state
+  _flags.movingSelectedViews = NO;
+  [self updateState];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -267,151 +248,140 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 ////////////////////////////////////////////////////////////////////////////////
 
 - (CGFloat)scaleSelectedViews:(CGFloat)scale
-                   validation:(BOOL (^)(RemoteElementView *, CGSize, CGSize *, CGSize *))isValidSize
-{
-     MSLogDebugTag(@"scale: %.2f", scale);
+                   validation:(BOOL (^)(RemoteElementView *, CGSize, CGSize *, CGSize *))isValidSize {
+  MSLogDebugTag(@"scale: %.2f", scale);
 
-    if (!isValidSize) {
-        // create default block for testing scale validity
-        isValidSize = ^BOOL (RemoteElementView * view, CGSize size, CGSize * max, CGSize * min)
-                     {
-                         CGRect frame = [view convertRect:view.frame toView:nil];
-
-
-                         if (_maxSizeCache[view.uuid] && _minSizeCache[view.uuid])
-                         {
-                             *max = CGSizeValue(_maxSizeCache[view.uuid]);
-                             *min = CGSizeValue(_minSizeCache[view.uuid]);
-                         }
-
-                         else
-                         {
-                             CGSize deltaMax = CGSizeGetDelta(frame.size, view.maximumSize);
-                             CGRect maxFrame = (CGRect){
-                                 .origin = (CGPoint){
-                                     .x = frame.origin.x + deltaMax.width/2.0f,
-                                     .y = frame.origin.y + deltaMax.height/2.0f
-                                 },
-                                 .size = view.maximumSize
-                             };
-
-                             if (!CGRectContainsRect(_flags.contentRect, maxFrame))
-                             {
-                                 CGRect intersection = CGRectIntersection(_flags.contentRect,
-                                                                          maxFrame);
-                                 CGPoint deltaMin =
-                                     CGPointDeltaPointABS(CGPointMake(CGRectGetMinX(frame),
-                                                                      CGRectGetMinY(frame)),
-                                                          CGPointMake(CGRectGetMinX(intersection),
-                                                                      CGRectGetMinY(intersection)));
-
-                                 CGPoint deltaMax =
-                                     CGPointDeltaPointABS(CGPointMake(CGRectGetMaxX(frame),
-                                                                      CGRectGetMaxY(frame)),
-                                                          CGPointMake(CGRectGetMaxX(intersection),
-                                                                      CGRectGetMaxY(intersection)));
-
-                                 *max = (CGSize){
-                                     .width  = frame.size.width  + MIN(deltaMin.x, deltaMax.x) * 2.0f,
-                                     .height = frame.size.height + MIN(deltaMin.y, deltaMax.y) * 2.0f
-                                 };
-
-                                 if (view.proportionLock)
-                                 {
-                                     if (max->width < max->height)
-                                         max->height = frame.size.height/frame.size.width*max->width;
-                                     else
-                                         max->width  = frame.size.width/frame.size.height*max->height;
-                                 }
-                             }
-
-                             else
-                                 *max = view.maximumSize;
-
-                             *min = view.minimumSize;
-
-                             _maxSizeCache[view.uuid] = NSValueWithCGSize(*max);
-                             _minSizeCache[view.uuid] = NSValueWithCGSize(*min);
-                         }
-
-                         BOOL     valid   = (   size.width  <= max->width
-                                             && size.height <= max->height
-                                             && size.width  >= min->width
-                                             && size.height >= min->height);
-                         if(!valid)
-                              MSLogDebugTag(@"invalid size, %.2f x %.2f, for subelement view '%@'; "
-                                            "min:%.2f x %.2f; max:%.2f x %.2f current:%.2f x %.2f",
-                                            size.width,
-                                            size.height,
-                                            view.name,
-                                            min->width,
-                                            min->height,
-                                            max->width,
-                                            max->height,
-                                            view.bounds.size.width,
-                                            view.bounds.size.height);
-
-                         return valid;
-                     };
-    }
-
-    NSMutableArray * scaleRejections = [@[] mutableCopy];
-
-    for (RemoteElementView * view in _selectedViews)
+  if (!isValidSize) {
+    // create default block for testing scale validity
+    isValidSize = ^BOOL (RemoteElementView * view, CGSize size, CGSize * max, CGSize * min)
     {
-        CGSize   scaledSize = CGSizeApplyAffineTransform(view.bounds.size,
-                                                         CGAffineTransformMakeScale(scale, scale));
+      CGRect frame = [view convertRect:view.frame toView:nil];
 
-        CGSize maxSize, minSize;
-        BOOL valid = isValidSize(view, scaledSize, &maxSize, &minSize);
 
-        if (!_maxSizeCache[view.uuid] || !_minSizeCache[view.uuid])
-        {
-            _maxSizeCache[view.uuid] = NSValueWithCGSize(maxSize);
-            _minSizeCache[view.uuid] = NSValueWithCGSize(minSize);
-        }
+      if (_maxSizeCache[view.uuid] && _minSizeCache[view.uuid]) {
+        *max = CGSizeValue(_maxSizeCache[view.uuid]);
+        *min = CGSizeValue(_minSizeCache[view.uuid]);
+      } else   {
+        CGSize deltaMax = CGSizeGetDelta(frame.size, view.maximumSize);
+        CGRect maxFrame = (CGRect) {
+          .origin = (CGPoint) {
+            .x = frame.origin.x + deltaMax.width / 2.0f,
+            .y = frame.origin.y + deltaMax.height / 2.0f
+          },
+          .size = view.maximumSize
+        };
 
-        if (!valid)
-        {
-            CGSize boundedSize = (scale > 1.0f
-                        ? CGSizeMakeSquare(CGSizeMinAxis(maxSize))
-                        : CGSizeMakeSquare(CGSizeMaxAxis(minSize)));
-            CGFloat validScale = boundedSize.width / view.bounds.size.width;
-            if (view.proportionLock) assert(boundedSize.height/view.bounds.size.height == validScale);
+        if (!CGRectContainsRect(_flags.contentRect, maxFrame)) {
+          CGRect intersection = CGRectIntersection(_flags.contentRect,
+                                                   maxFrame);
+          CGPoint deltaMin =
+            CGPointDeltaPointABS(CGPointMake(CGRectGetMinX(frame),
+                                             CGRectGetMinY(frame)),
+                                 CGPointMake(CGRectGetMinX(intersection),
+                                             CGRectGetMinY(intersection)));
 
-            [scaleRejections addObject:@(validScale)];
-        }
+          CGPoint deltaMax =
+            CGPointDeltaPointABS(CGPointMake(CGRectGetMaxX(frame),
+                                             CGRectGetMaxY(frame)),
+                                 CGPointMake(CGRectGetMaxX(intersection),
+                                             CGRectGetMaxY(intersection)));
+
+          *max = (CGSize) {
+            .width  = frame.size.width  + MIN(deltaMin.x, deltaMax.x) * 2.0f,
+            .height = frame.size.height + MIN(deltaMin.y, deltaMax.y) * 2.0f
+          };
+
+          if (view.proportionLock) {
+            if (max->width < max->height)
+              max->height = frame.size.height / frame.size.width * max->width;
+            else
+              max->width = frame.size.width / frame.size.height * max->height;
+          }
+        } else
+          *max = view.maximumSize;
+
+        *min = view.minimumSize;
+
+        _maxSizeCache[view.uuid] = NSValueWithCGSize(*max);
+        _minSizeCache[view.uuid] = NSValueWithCGSize(*min);
+      }
+
+      BOOL valid = (  size.width  <= max->width
+                   && size.height <= max->height
+                   && size.width  >= min->width
+                   && size.height >= min->height);
+
+      if (!valid)
+        MSLogDebugTag(@"invalid size, %.2f x %.2f, for subelement view '%@'; "
+                      "min:%.2f x %.2f; max:%.2f x %.2f current:%.2f x %.2f",
+                      size.width,
+                      size.height,
+                      view.name,
+                      min->width,
+                      min->height,
+                      max->width,
+                      max->height,
+                      view.bounds.size.width,
+                      view.bounds.size.height);
+
+      return valid;
+    };
+  }
+
+  NSMutableArray * scaleRejections = [@[] mutableCopy];
+
+  for (RemoteElementView * view in _selectedViews) {
+    CGSize scaledSize = CGSizeApplyAffineTransform(view.bounds.size,
+                                                   CGAffineTransformMakeScale(scale, scale));
+
+    CGSize maxSize, minSize;
+    BOOL   valid = isValidSize(view, scaledSize, &maxSize, &minSize);
+
+    if (!_maxSizeCache[view.uuid] || !_minSizeCache[view.uuid]) {
+      _maxSizeCache[view.uuid] = NSValueWithCGSize(maxSize);
+      _minSizeCache[view.uuid] = NSValueWithCGSize(minSize);
     }
 
-    CGFloat appliedScale = (scaleRejections.count
-                            ? (scale > 1.0f
-                               ? FloatValue([scaleRejections valueForKeyPath:@"@min.self"])
-                               : FloatValue([scaleRejections valueForKeyPath:@"@max.self"]))
-                            : scale);
+    if (!valid) {
+      CGSize boundedSize = (scale > 1.0f
+                            ? CGSizeMakeSquare(CGSizeMinAxis(maxSize))
+                            : CGSizeMakeSquare(CGSizeMaxAxis(minSize)));
+      CGFloat validScale = boundedSize.width / view.bounds.size.width;
 
-     MSLogDebugTagIf((scale != appliedScale),
-                     @"scale adjusted to remain valid: %@ \u27F9 %@",
-                     PrettyFloat(scale),
-                     PrettyFloat(appliedScale));
+      if (view.proportionLock) assert(boundedSize.height / view.bounds.size.height == validScale);
 
-    for (RemoteElementView * view in _selectedViews) [view scale:appliedScale];
+      [scaleRejections addObject:@(validScale)];
+    }
+  }
 
-    _flags.appliedScale = appliedScale;
+  CGFloat appliedScale = (scaleRejections.count
+                          ? (scale > 1.0f
+                             ? FloatValue([scaleRejections valueForKeyPath:@"@min.self"])
+                             : FloatValue([scaleRejections valueForKeyPath:@"@max.self"]))
+                          : scale);
 
-    return appliedScale;
+  MSLogDebugTagIf((scale != appliedScale),
+                  @"scale adjusted to remain valid: %@ \u27F9 %@",
+                  PrettyFloat(scale),
+                  PrettyFloat(appliedScale));
+
+  for (RemoteElementView * view in _selectedViews) [view scale:appliedScale];
+
+  _flags.appliedScale = appliedScale;
+
+  return appliedScale;
 }
 
-- (void)willScaleSelectedViews
-{
-  //???: Doesn't look like there is a reason to call willScaleViews: on source view
+- (void)willScaleSelectedViews {
+  // ???: Doesn't look like there is a reason to call willScaleViews: on source view
   //  [_sourceView willScaleViews:_selectedViews];
-    _flags.appliedScale = 1.0;
+  _flags.appliedScale = 1.0;
 }
 
 - (void)didScaleSelectedViews {
 
-  //???: Doesn't look like there is a reason to call didScaleViews: on source view
-  //[_sourceView didScaleViews:_selectedViews];
+  // ???: Doesn't look like there is a reason to call didScaleViews: on source view
+  // [_sourceView didScaleViews:_selectedViews];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -419,53 +389,49 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 ///@name Aligning the selected views
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)alignSelectedViews:(NSLayoutAttribute)alignment
-{
-    assert(_focusView);
-    [self willAlignSelectedViews];
-    [_sourceView alignSubelements:[_selectedViews setByRemovingObject:_focusView]
-                        toSibling:_focusView attribute:alignment];
-    [self didAlignSelectedViews];
+- (void)alignSelectedViews:(NSLayoutAttribute)alignment {
+  assert(_focusView);
+  [self willAlignSelectedViews];
+  [_sourceView alignSubelements:[_selectedViews setByRemovingObject:_focusView]
+                      toSibling:_focusView attribute:alignment];
+  [self didAlignSelectedViews];
 }
 
-- (void)willAlignSelectedViews
-{
-  //???: Doesn't look like there is a reason to call willAlignViews: on source view
+- (void)willAlignSelectedViews {
+  // ???: Doesn't look like there is a reason to call willAlignViews: on source view
   //  [_sourceView willAlignViews:_selectedViews];
-#ifdef DEBUG_ALIGNMENT
+  #ifdef DEBUG_ALIGNMENT
     [self logSourceViewAfter:0 message:@"before alignment"];
-#endif
+  #endif
 }
 
-- (void)didAlignSelectedViews
-{
-    [self clearCacheForViews:_selectedViews];
-  //???: Doesn't look like there is a reason to call didAlignViews: on source view
+- (void)didAlignSelectedViews {
+  [self clearCacheForViews:_selectedViews];
+  // ???: Doesn't look like there is a reason to call didAlignViews: on source view
   //  [_sourceView didAlignViews:_selectedViews];
-#ifdef DEBUG_ALIGNMENT
+  #ifdef DEBUG_ALIGNMENT
     [self logSourceViewAfter:5.0 message:@"after alignment"];
-#endif
+  #endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Resizing the selected views to match focus view
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)resizeSelectedViews:(NSLayoutAttribute)axis
-{
-    assert(_focusView);
-    [_sourceView resizeSubelements:[_selectedViews setByRemovingObject:_focusView]
-                         toSibling:_focusView attribute:axis];
+- (void)resizeSelectedViews:(NSLayoutAttribute)axis {
+  assert(_focusView);
+  [_sourceView resizeSubelements:[_selectedViews setByRemovingObject:_focusView]
+                       toSibling:_focusView attribute:axis];
 }
 
 - (void)willResizeSelectedViews {
-  //???: Doesn't look like there is a reason to call willResizeViews: on source view
-  //[_sourceView willResizeViews:_selectedViews];
+  // ???: Doesn't look like there is a reason to call willResizeViews: on source view
+  // [_sourceView willResizeViews:_selectedViews];
 }
 
 - (void)didResizeSelectedViews {
-  //???: Doesn't look like there is a reason to call didResizeViews: on source view
-  //[_sourceView didResizeViews:_selectedViews];
+  // ???: Doesn't look like there is a reason to call didResizeViews: on source view
+  // [_sourceView didResizeViews:_selectedViews];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -477,31 +443,30 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
  * the context and observes `constraints` property of the element's parent element
  * @param remoteElement `RemoteElement` to edit
  */
-- (void)setRemoteElement:(RemoteElement *)remoteElement
-{
-    assert(remoteElement);
-    self.context = [CoreDataManager childContextOfType:NSPrivateQueueConcurrencyType forContext:remoteElement.managedObjectContext];
-    _context.nametag = ClassString([self class]);
-    [_context performBlockAndWait:
-     ^{
-         self.changedModelValues = [remoteElement changedValues];
-         _remoteElement = (RemoteElement *)[_context existingObjectWithID:remoteElement.objectID
-                                                                    error:nil];
+- (void)setRemoteElement:(RemoteElement *)remoteElement {
+  assert(remoteElement);
+  self.context     = [CoreDataManager childContextOfType:NSPrivateQueueConcurrencyType forContext:remoteElement.managedObjectContext];
+  _context.nametag = ClassString([self class]);
+  [_context performBlockAndWait:
+   ^{
+    self.changedModelValues = [remoteElement changedValues];
+    _remoteElement = (RemoteElement *)[_context existingObjectWithID:remoteElement.objectID
+                                                               error:nil];
 
-         if (_remoteElement.parentElement)
-         {
-             _parentConstraintsObserver =
-             [MSKVOReceptionist
-              receptionistForObject:_remoteElement.parentElement
-              keyPath:@"constraints"
-              options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-              context:NULL
-              queue:MainQueue
-              handler:^(MSKVOReceptionist * receptionist){MSLogVerboseTag(@"parent element '%@' constraints changed",
-                                                        _remoteElement.parentElement.name);}];
-         }
+//         if (_remoteElement.parentElement)
+//         {
+//             _parentConstraintsObserver =
+//             [MSKVOReceptionist
+//              receptionistForObject:_remoteElement.parentElement
+//              keyPath:@"constraints"
+//              options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+//              context:NULL
+//              queue:MainQueue
+//              handler:^(MSKVOReceptionist * receptionist){MSLogVerboseTag(@"parent element '%@' constraints changed",
+//                                                        _remoteElement.parentElement.name);}];
+//         }
 
-    }];
+  }];
 }
 
 /*
@@ -509,103 +474,96 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
  * to root view, creating a new `mockParentView` for its `superview` if appropriate
  * @param sourceView `REView` for `remoteElement` to set as the `sourceView`
  */
-- (void)setSourceView:(RemoteElementView *)sourceView
-{
-    if (_sourceView == sourceView) return;
+- (void)setSourceView:(RemoteElementView *)sourceView {
+  if (_sourceView == sourceView) return;
 
-    if (_sourceView)
-    {
-        [_sourceView removeFromSuperview];
-        [_mockParentView removeFromSuperview];
-        self.mockParentView = nil;
-    }
+  if (_sourceView) {
+    [_sourceView removeFromSuperview];
+    [_mockParentView removeFromSuperview];
+    self.mockParentView = nil;
+  }
 
-    _sourceView = sourceView;
-    assert(_sourceView);
+  _sourceView = sourceView;
+  assert(_sourceView);
 
-    _sourceView.editingMode = [[self class] editingModeForElement];
+  _sourceView.editingMode = [[self class] editingModeForElement];
 
-#ifdef COLOR_SOURCEVIEW_BACKGROUND
+  #ifdef COLOR_SOURCEVIEW_BACKGROUND
     _sourceView.backgroundColor = SOURCEVIEW_DEBUG_COLOR;
-#endif
+  #endif
 
-    CGFloat   barHeight = self.topToolbar.intrinsicContentSize.height;
+  CGFloat barHeight = self.topToolbar.intrinsicContentSize.height;
 
-    _flags.allowableSourceViewYOffset = MSBoundaryMake(-barHeight, barHeight);
+  _flags.allowableSourceViewYOffset = MSBoundaryMake(-barHeight, barHeight);
 
-    self.mockParentView = [[UIView alloc]
-                           initForAutoLayoutWithFrame:(CGRect) {.size = self.mockParentSize}];
-#ifdef COLOR_CONTAINER_BACKGROUND
+  self.mockParentView = [[UIView alloc]
+                         initForAutoLayoutWithFrame:(CGRect) {.size = self.mockParentSize }];
+  #ifdef COLOR_CONTAINER_BACKGROUND
     _mockParentView.backgroundColor = CONTAINER_DEBUG_COLOR;
-#endif
-    _mockParentView.nametag = @"mockParentView";
-    __weak RemoteElementEditingViewController * weakSelf = self;
-    _sourceViewBoundsObserver = [MSKVOReceptionist
-                                 receptionistForObject:_sourceView.layer
-                                               keyPath:@"bounds"
-                                               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-                                               context:NULL
-                                                 queue:MainQueue
-                                               handler:^(MSKVOReceptionist * receptionist){
-                                                   [weakSelf updateBoundaryLayer];
-                                               }];
+  #endif
+  _mockParentView.nametag = @"mockParentView";
+  __weak RemoteElementEditingViewController * weakSelf = self;
+  _sourceViewBoundsObserver = [MSKVOReceptionist
+                               receptionistWithObserver:self
+                                              forObject:_sourceView.layer
+                                                keyPath:@"bounds"
+                                                options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                                                  queue:MainQueue
+                                                handler:^(MSKVOReceptionist * receptionist) {
+                                                  [(RemoteElementEditingViewController *)receptionist.observer updateBoundaryLayer];
+                                                }];
 
-    [_mockParentView addSubview:_sourceView];
+  [_mockParentView addSubview:_sourceView];
 
-    if (_remoteElement.parentElement)
+  if (_remoteElement.parentElement) {
+    NSSet * parentConstraints = [_remoteElement.firstItemConstraints objectsPassingTest:
+                                 ^BOOL (Constraint * obj, BOOL * stop)
     {
-        NSSet * parentConstraints = [_remoteElement.firstItemConstraints objectsPassingTest:
-                                     ^BOOL (Constraint * obj, BOOL * stop)
-                                     {
-                                         return (obj.secondItem == _remoteElement.parentElement);
-                                     }];
+      return (obj.secondItem == _remoteElement.parentElement);
+    }];
 
-        for (Constraint * constraint in parentConstraints)
-        {
-            NSLayoutConstraint * c = [NSLayoutConstraint constraintWithItem:_sourceView
-                                                                  attribute:constraint.firstAttribute
-                                                                  relatedBy:constraint.relation
-                                                                     toItem:_mockParentView
-                                                                  attribute:constraint.secondAttribute
-                                                                 multiplier:constraint.multiplier
-                                                                   constant:constraint.constant];
+    for (Constraint * constraint in parentConstraints) {
+      NSLayoutConstraint * c = [NSLayoutConstraint constraintWithItem:_sourceView
+                                                            attribute:constraint.firstAttribute
+                                                            relatedBy:constraint.relation
+                                                               toItem:_mockParentView
+                                                            attribute:constraint.secondAttribute
+                                                           multiplier:constraint.multiplier
+                                                             constant:constraint.constant];
 
-            c.priority = constraint.priority;
-            c.nametag  = kParentConstraintNametag;
-            [_mockParentView addConstraint:c];
-        }
+      c.priority = constraint.priority;
+      c.nametag  = kParentConstraintNametag;
+      [_mockParentView addConstraint:c];
     }
-
-    else
-    {
-        [_mockParentView addConstraints:
-         [NSLayoutConstraint
+  } else   {
+    [_mockParentView addConstraints:
+     [NSLayoutConstraint
           constraintsByParsingString:$(@"'%@' sourceView.centerX = mockParentView.centerX\n"
                                        "'%@' sourceView.centerY = mockParentView.centerY + %f",
                                        kCenterXConstraintNametag,
                                        kCenterYConstraintNametag,
                                        _flags.allowableSourceViewYOffset.upper)
-                               views:(@{@"mockParentView" : _mockParentView,
-                                      @"sourceView" : _sourceView})]];
-        
-        self.sourceViewCenterYConstraint = [_mockParentView
-                                            constraintWithNametag:kCenterYConstraintNametag];
-    }
+                               views:(@{ @"mockParentView" : _mockParentView,
+                                         @"sourceView" : _sourceView })]];
+
+    self.sourceViewCenterYConstraint = [_mockParentView
+                                        constraintWithNametag:kCenterYConstraintNametag];
+  }
 
 //    [_sourceView setNeedsUpdateConstraints];
 //    [_sourceView updateConstraintsIfNeeded];
-    [self.view insertSubview:_mockParentView belowSubview:_topToolbar];
-    [self.view addConstraints:
-     [NSLayoutConstraint constraintsByParsingString:$(@"mockParentView.centerX = view.centerX\n"
-                                                      "mockParentView.centerY = view.centerY\n"
-                                                      "mockParentView.width = %f\n"
-                                                      "mockParentView.height = %f",
-                                                      self.mockParentSize.width, self.mockParentSize.height)
-                                              views:@{@"mockParentView" : _mockParentView,
-      @"view"           : self.view}]];
+  [self.view insertSubview:_mockParentView belowSubview:_topToolbar];
+  [self.view addConstraints:
+   [NSLayoutConstraint   constraintsByParsingString:$(@"mockParentView.centerX = view.centerX\n"
+                                                    "mockParentView.centerY = view.centerY\n"
+                                                    "mockParentView.width = %f\n"
+                                                    "mockParentView.height = %f",
+                                                    self.mockParentSize.width, self.mockParentSize.height)
+                                              views:@{ @"mockParentView" : _mockParentView,
+                                                       @"view"           : self.view }]];
 //    [self.view setNeedsLayout];
 
-    [self.view.layer addSublayer:_sourceViewBoundsLayer];
+  [self.view.layer addSublayer:_sourceViewBoundsLayer];
 
 //    [self.view layoutSubviews];
 }
@@ -615,39 +573,39 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
  * of views.
  * @param focusView `REView` to set as the focus
  */
-- (void)setFocusView:(RemoteElementView *)focusView
-{
-    if (focusView != _focusView)
-    {
-        if (_focusView) _focusView.editingState = REEditingStateSelected;
-        _focusView = focusView;
-        if (_focusView) _focusView.editingState = REEditingStateFocus;
-        [self updateState];
-    }
+- (void)setFocusView:(RemoteElementView *)focusView {
+  if (focusView != _focusView) {
+    if (_focusView) _focusView.editingState = REEditingStateSelected;
+
+    _focusView = focusView;
+
+    if (_focusView) _focusView.editingState = REEditingStateFocus;
+
+    [self updateState];
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Dialogs
 ////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    static NSSet const * menuDefaults = nil;
-    static dispatch_once_t   onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      menuDefaults = [NSSet setWithObjects:SelectorString(@selector(cut:)),
-                                                           SelectorString(@selector(copy:)),
-                                                           SelectorString(@selector(select:)),
-                                                           SelectorString(@selector(selectAll:)),
-                                                           SelectorString(@selector(paste:)),
-                                                           SelectorString(@selector(delete:)), nil];
-                  });
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+  static NSSet const   * menuDefaults = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken,
+                ^{
+    menuDefaults = [NSSet setWithObjects:SelectorString(@selector(cut:)),
+                    SelectorString(@selector(copy:)),
+                    SelectorString(@selector(select:)),
+                    SelectorString(@selector(selectAll:)),
+                    SelectorString(@selector(paste:)),
+                    SelectorString(@selector(delete:)), nil];
+  });
 
-    if (_flags.menuState == REEditingMenuStateStackedViews)
-        return ([SelectorString(action) hasPrefix:@"menuAction_"]);
-    else
-        return [super canPerformAction:action withSender:sender];
+  if (_flags.menuState == REEditingMenuStateStackedViews)
+    return ([SelectorString(action) hasPrefix:@"menuAction_"]);
+  else
+    return [super canPerformAction:action withSender:sender];
 }
 
 - (void)openSubelementInEditor:(RemoteElement *)subelement {}
@@ -656,16 +614,13 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 #pragma mark REEditingDelegate
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)remoteElementEditor
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)remoteElementEditor {
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)remoteElementEditor
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)remoteElementEditor {
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 @end
 
@@ -674,23 +629,22 @@ MSSTATIC_STRING_CONST   kParentConstraintNametag  = @"kParentConstraintNametag";
 ////////////////////////////////////////////////////////////////////////////////
 @implementation RemoteElementEditingViewController (Debugging)
 
-- (void)logSourceViewAfter:(dispatch_time_t)delay message:(NSString *)message
-{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
-                   dispatch_get_main_queue(),
-                   ^{
-                       MSLogDebugTag(@"%@\n%@\n\n%@\n\n%@\n\n%@\n\n%@\n",
-                                     ClassTagSelectorString,
-                                     [message dividerWithCharacterString:@"#"],
-                                     [_sourceView constraintsDescription],
-                                     [_sourceView framesDescription],
-                                     [@"subelements" dividerWithCharacterString: @"#"],
-                                     [[_sourceView.subelementViews
-                                       valueForKeyPath:@"constraintsDescription"]
+- (void)logSourceViewAfter:(dispatch_time_t)delay message:(NSString *)message {
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
+                 dispatch_get_main_queue(),
+                 ^{
+    MSLogDebugTag(@"%@\n%@\n\n%@\n\n%@\n\n%@\n\n%@\n",
+                  ClassTagSelectorString,
+                  [message dividerWithCharacterString:@"#"],
+                  [_sourceView constraintsDescription],
+                  [_sourceView framesDescription],
+                  [@"subelements" dividerWithCharacterString:@"#"],
+                  [[_sourceView.subelementViews
+                    valueForKeyPath:@"constraintsDescription"]
                                       componentsJoinedByString:@"\n\n"]);
-                   });
+  });
 }
 
-- (NSString *)shortDescription { return (_sourceView?_sourceView.name:[self description]); }
+- (NSString *)shortDescription { return (_sourceView ? _sourceView.name : [self description]); }
 
 @end
