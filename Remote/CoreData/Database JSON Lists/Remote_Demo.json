@@ -1,252 +1,5 @@
 [
   {
-    "uuid": "EDF6C7E5-677B-4936-8BB5-623A07AAB61E",
-    "name": "Playstation Activity"
-  },
-  {
-    "uuid": "F823B227-7DEF-4185-87F0-457FC42065C2",
-    "name": "Sonos Activity",
-    "key": "activity4",
-    "constraints": {
-      "index": {
-        "buttonGroup": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
-        "homeAndPowerButtons": "D393B9CC-1FCD-4534-BDFB-500785C54951",
-        "sonosActivity": "F823B227-7DEF-4185-87F0-457FC42065C2",
-        "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
-      },
-      "format": [
-        "buttonGroup.centerX = sonosActivity.centerX - 60",
-        "buttonGroup.centerY = sonosActivity.centerY - 25",
-        "buttonGroup.height = sonosActivityRocker.height * 0.33",
-        "homeAndPowerButtons.bottom = sonosActivity.bottom - 20",
-        "homeAndPowerButtons.left = sonosActivity.left + 10",
-        "homeAndPowerButtons.right = sonosActivity.right - 10",
-        "sonosActivityRocker.centerX = sonosActivity.centerX + 65",
-        "sonosActivityRocker.centerY = buttonGroup.centerY"
-      ]
-    },
-    "background-color.default": "black",
-    "background-image.default.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
-    "subelements": [
-      {
-        "uuid": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
-        "name": "Mute Button Group",
-        "constraints": {
-          "index": {
-            "muteButtonGroup": "2D4EB57A-9BCA-49B5-86E0-EA3F82AD57F6",
-            "muteButton": "5E6FC0B8-0F7A-4453-80F5-EC41B364F235"
-          },
-          "format": [
-            "muteButtonGroup.width ≥ 132",
-            "muteButton.centerX = muteButtonGroup.centerX",
-            "muteButton.centerY = muteButtonGroup.centerY",
-            "muteButton.height = muteButtonGroup.height",
-            "muteButton.width = muteButtonGroup.width"
-          ]
-        },
-        "subelements": [
-          {
-            "uuid": "5E6FC0B8-0F7A-4453-80F5-EC41B364F235",
-            "name": "Mute Button",
-            "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
-            },
-            "titles.default": {
-              "normal": {
-                "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
-                "alignment": "center",
-                "text": "Mute"
-              },
-              "highlighted.foreground-color": "#00AFFFFF"
-            },
-            "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
-          }
-        ]
-      },
-      {
-        "uuid": "3D15E6CA-A182-476D-87D1-8E2CE774346E",
-        "name": "Sonos Activity Rocker",
-        "role": "rocker",
-        "shape": "rounded-rectangle",
-        "style": "border gloss1",
-        "constraints": {
-          "index": {
-            "buttonTop": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
-            "buttonBottom": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
-            "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
-          },
-          "format": [
-            "buttonBottom.height = buttonTop.height",
-            "buttonBottom.left = sonosActivityRocker.left",
-            "buttonBottom.right = sonosActivityRocker.right",
-            "buttonBottom.top = buttonTop.bottom",
-            "buttonTop.height = sonosActivityRocker.height * 0.5",
-            "buttonTop.left = sonosActivityRocker.left",
-            "buttonTop.right = sonosActivityRocker.right",
-            "buttonTop.top = sonosActivityRocker.top",
-            "sonosActivityRocker.height ≥ 150",
-            "sonosActivityRocker.width = 70"
-          ]
-        },
-        "background-color.default": "black",
-        "subelements": [
-          {
-            "uuid": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
-            "name": "Button Top",
-            "role": "top",
-            "icons.default": {
-              "normal": {
-                "image.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
-                "color": "white"
-              },
-              "highlighted": {
-                "image.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
-                "color": "#00AFFFFF"
-              },
-              "disabled": {
-                "image.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
-                "color": "#7F7F7FFF"
-              }
-            }
-          },
-          {
-            "uuid": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
-            "name": "Button Bottom",
-            "role": "bottom",
-            "icons.default": {
-              "normal": {
-                "image.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
-                "color": "white"
-              },
-              "highlighted": {
-                "image.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
-                "color": "#00AFFFFF"
-              },
-              "disabled": {
-                "image.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
-                "color": "#7F7F7FFF"
-              }
-            }
-          }
-        ],
-        "command-set-collection.default": {
-          "VOL": {
-            "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
-            },
-            "bottom": {
-              "class": "sendir",
-              "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
-            }
-          }
-        },
-        "label-attributes": {
-          "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
-          "alignment": "center"
-        }
-      },
-      {
-        "uuid": "D393B9CC-1FCD-4534-BDFB-500785C54951",
-        "name": "Home and Power Buttons",
-        "constraints": {
-          "index": {
-            "homeAndPowerButtons": "D393B9CC-1FCD-4534-BDFB-500785C54951",
-            "homeButton": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
-            "powerOffAndExitActivity": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF"
-          },
-          "format": [
-            "homeAndPowerButtons.height = 50",
-            "homeAndPowerButtons.width = 300",
-            "homeButton.centerY = homeAndPowerButtons.centerY",
-            "homeButton.left = homeAndPowerButtons.left",
-            "powerOffAndExitActivity.centerY = homeAndPowerButtons.centerY",
-            "powerOffAndExitActivity.right = homeAndPowerButtons.right"
-          ]
-        },
-        "subelements": [
-          {
-            "uuid": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
-            "name": "Home Button",
-            "shape": "oval",
-            "style": "gloss1",
-            "constraints": {
-              "index.homeButton": "B7E67B31-F34E-486B-A71C-01A010E1AA1E",
-              "format": [
-                "homeButton.height = homeButton.width",
-                "homeButton.width = 50"
-              ]
-            },
-            "commands.default": {
-              "class": "switch",
-              "type": "remote",
-              "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD"
-            },
-            "icons.default": {
-              "normal": {
-                "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
-                "color": "white"
-              },
-              "highlighted": {
-                "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
-                "color": "#00AFFFFF"
-              },
-              "disabled": {
-                "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
-                "color": "#7F7F7FFF"
-              }
-            },
-            "background-colors.default.normal": "#060606FF"
-          },
-          {
-            "uuid": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF",
-            "name": "Power Off and Exit Activity",
-            "key": "activity4",
-            "shape": "oval",
-            "style": "gloss1",
-            "constraints": {
-              "index.powerOffAndExitActivity": "C5DA280D-924A-4AEC-BCA9-B68EF31658DF",
-              "format": [
-                "powerOffAndExitActivity.height = powerOffAndExitActivity.width",
-                "powerOffAndExitActivity.width = 50"
-              ]
-            },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
-            },
-            "icons.default": {
-              "normal": {
-                "image.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
-                "color": "white"
-              },
-              "highlighted": {
-                "image.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
-                "color": "#00AFFFFF"
-              },
-              "disabled": {
-                "image.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
-                "color": "#7F7F7FFF"
-              }
-            },
-            "background-colors.default.normal": "#060606FF"
-          }
-        ]
-      }
-    ]
-  },
-  {
     "uuid": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
     "name": "Dish Hopper Activity",
     "key": "activity1",
@@ -770,10 +523,6 @@
                 "powerOffAndExitActivity.height = powerOffAndExitActivity.width",
                 "powerOffAndExitActivity.width = 50"
               ]
-            },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
             },
             "icons.default": {
               "normal": {
@@ -1846,8 +1595,9 @@
               "format": "dish.height = dish.width"
             },
             "commands.default": {
-              "class": "activity",
-              "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
+              "class": "switch",
+              "type": "remote",
+              "target": "F668F0D5-80E4-46A4-A703-EF5A1601C645"
             },
             "titles.default": {
               "normal": {
@@ -1872,10 +1622,6 @@
               "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
               "format": "playstation.height = playstation.width"
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "863844ED-4BCD-4B75-AD67-DEE8A23233D1"
-            },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
@@ -1899,10 +1645,6 @@
               "index.appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
               "format": "appleTV.height = appleTV.width"
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "DEB5EAC1-7040-4CA1-A309-423BACB533A4"
-            },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
@@ -1925,10 +1667,6 @@
             "constraints": {
               "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
               "format": "sonos.height = sonos.width"
-            },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
             },
             "titles.default": {
               "normal": {

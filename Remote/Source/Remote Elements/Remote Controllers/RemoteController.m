@@ -79,11 +79,11 @@ static NSURL * sharedRemoteControllerURI = nil;
 
 
 - (void)setCurrentActivity:(Activity *)currentActivity {
-  if ([self.activities containsObject:currentActivity] && self.primitiveCurrentActivity != currentActivity) {
+  if (self.primitiveCurrentActivity != currentActivity) {
     [self willChangeValueForKey:@"currentActivity"];
-    [self.currentActivity haltActivity];
     self.primitiveCurrentActivity = currentActivity;
     [self didChangeValueForKey:@"currentActivity"];
+    if (currentActivity) self.currentRemote = currentActivity.remote;
   }
 }
 

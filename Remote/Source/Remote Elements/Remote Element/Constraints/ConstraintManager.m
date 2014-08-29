@@ -1223,7 +1223,7 @@ RELayoutConstraintAffiliation remoteElementAffiliationWithConstraint(RemoteEleme
   return affiliation;
 }
 
-RERelationshipType remoteElementRelationshipTypeForConstraint(RemoteElement * element, Constraint * constraint)                    {
+RERelationshipType remoteElementRelationshipTypeForConstraint(RemoteElement * element, Constraint * constraint) {
   RemoteElement * firstItem, * secondItem;
 
   if ([constraint isDeleted]) {

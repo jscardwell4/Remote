@@ -261,7 +261,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
                                               NSString * command,
                                               NSUInteger tag,
                                               NSString * device,
-                                              CommandCompletionHandler completion)
+                                              void (^completion)(BOOL success, NSError *))
                                             {
                                                 return [[GlobalCacheConnectionManager
                                                          globalCacheConnectionManager]
@@ -529,7 +529,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 - (BOOL)sendCommand:(NSString *)command
                 tag:(NSUInteger)tag
              device:(NSString *)uuid
-         completion:(CommandCompletionHandler)completion
+         completion:(void (^)(BOOL success, NSError *))completion
 {
 
     if (!uuid) uuid = self.defaultDeviceUUID;
@@ -589,7 +589,7 @@ typedef NS_ENUM (uint8_t, ConnectionState){
 }
 - (void)dispatchCompletionHandlerForTag:(NSNumber *)tag success:(BOOL)success
 {
-    CommandCompletionHandler completion = _requestLog[tag];
+    void (^completion)(BOOL success, NSError *) = _requestLog[tag];
     if (completion) completion(success, nil);
 }
 

@@ -81,7 +81,7 @@
   return [self findFirstByAttribute:@"info.name" withValue:name inContext:context];
 }
 
-- (BOOL)ignorePowerCommand:(CommandCompletionHandler)handler {
+- (BOOL)ignorePowerCommand:(void (^)(BOOL success, NSError *))handler {
   if (_ignoreNextPowerCommand) {
     _ignoreNextPowerCommand = NO;
 
@@ -91,7 +91,7 @@
   } else return NO;
 }
 
-- (void)powerOn:(CommandCompletionHandler)completion {
+- (void)powerOn:(void (^)(BOOL success, NSError *))completion {
   __weak ComponentDevice * weakself = self;
 
   if (![self ignorePowerCommand:completion])
@@ -102,7 +102,7 @@
     }];
 }
 
-- (void)powerOff:(CommandCompletionHandler)completion {
+- (void)powerOff:(void (^)(BOOL success, NSError *))completion {
   __weak ComponentDevice * weakself = self;
 
   if (![self ignorePowerCommand:completion])

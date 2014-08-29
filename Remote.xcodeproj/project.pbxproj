@@ -558,6 +558,7 @@
 		C2D361DC182BE21D00775239 /* StringAttributesValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DB182BE21D00775239 /* StringAttributesValueTransformer.m */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
 		C2D635B91805D9B400960B10 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2D635B81805D9B400960B10 /* Manufacturer.json */; };
+		C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E75BF819B13798006CEA86 /* Remote_Demo.json */; };
 		C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
 		C2E953F117E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
@@ -1299,6 +1300,7 @@
 		C2D7663517246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentMagicalConstructDVRRemoteTests.h; sourceTree = "<group>"; };
 		C2D7663617246E3400BC2E43 /* PersistentMagicalConstructDVRRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentMagicalConstructDVRRemoteTests.m; sourceTree = "<group>"; };
 		C2DB0BDB179DA6EA0005ECA4 /* RemoteElementConstructionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementConstructionManager_Private.h; sourceTree = "<group>"; };
+		C2E75BF819B13798006CEA86 /* Remote_Demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Demo.json; sourceTree = "<group>"; };
 		C2E953EE17E8BAA70052518D /* BankableModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableModelObject.h; sourceTree = "<group>"; };
 		C2E953EF17E8BAA70052518D /* BankableModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankableModelObject.m; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
@@ -2453,6 +2455,7 @@
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
+				C2E75BF819B13798006CEA86 /* Remote_Demo.json */,
 				C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */,
 				C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */,
 				C25C44DB19ABB3E2005594ED /* Activity.json */,
@@ -2925,6 +2928,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */,
 				C2381EC219A7EE3B00135DAB /* Blueprint-320x640-iPhone.jpg in Resources */,
 				C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */,
 				C26BB5AF16DC18A90093D5B4 /* Apple Symbols.ttf in Resources */,

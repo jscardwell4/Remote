@@ -148,8 +148,6 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 
 @interface ButtonGroupView : RemoteElementView
 
-@property (nonatomic, assign) REPanelLocation   panelLocation;
-@property (nonatomic, assign) BOOL              autohide;
 @property (nonatomic, weak)   UILabel         * label;
 
 - (void)tuck;

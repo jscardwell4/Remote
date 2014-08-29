@@ -42,13 +42,13 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 - (void)selectButton:(ButtonView *)newSelection {
   if (_selectedButton != newSelection && StringIsNotEmpty(newSelection.key)) {
 
+    if (_selectedButton) _selectedButton.model.selected = NO;
+    newSelection.model.selected = YES;
+    _selectedButton = newSelection;
+
     RemoteController * controller = [RemoteController remoteController:self.model.managedObjectContext];
     controller.currentRemote.currentMode = newSelection.key;
 
-    if (_selectedButton) _selectedButton.model.selected = NO;
-
-    _selectedButton                = newSelection;
-    _selectedButton.model.selected = YES;
   }
 }
 
@@ -57,7 +57,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 /// @param sender The `ButtonView` that has been touched.
 - (void)handleSelection:(ButtonView *)sender {
   if (_selectedButton != sender) [self selectButton:sender];
-  if (self.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];
+  if (self.model.autohide) [self performSelector:@selector(tuck) withObject:nil afterDelay:1.0];
 }
 
 - (void)drawBackdropInContext:(CGContextRef)ctx inRect:(CGRect)rect {

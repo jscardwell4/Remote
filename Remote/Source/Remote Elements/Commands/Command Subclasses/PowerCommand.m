@@ -11,8 +11,6 @@
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
-@interface PowerCommandOperation : CommandOperation @end
-
 @implementation PowerCommand
 
 @dynamic state, device;
@@ -44,7 +42,11 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   return [state boolValue];
 }
 
-- (CommandOperation *)operation { return [PowerCommandOperation operationForCommand:self]; }
+- (CommandOperation *)operation {
+  CommandOperation * op = nil;
+  if (self.device) op = (self.state ? self.device.onCommand.operation : self.device.offCommand.operation);
+  return op;
+}
 
 - (NSString *)shortDescription {
   return $(@"device:'%@', state:%@", self.primitiveDevice.name, (self.state ? @"On" : @"Off"));
@@ -56,14 +58,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-     {
-       "class": "power",
-       "device.uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
-       "state": "off"
-     }
-   */
-
   [super updateWithData:data];
 
   NSString               * state  = data[@"state"];
@@ -100,32 +94,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   [dictionary compress];
 
   return dictionary;
-}
-
-@end
-
-@implementation PowerCommandOperation {
-  BOOL _statusReceived;
-}
-
-- (void)main {
-  @try {
-    PowerCommand           * powerCommand = (PowerCommand *)_command;
-    CommandCompletionHandler handler      = ^(BOOL success, NSError * error)
-    {
-      _success = success;
-      _error   = error;
-      [super main];
-    };
-
-    if (powerCommand.state == YES)
-      [powerCommand.device powerOn:handler];
-
-    else
-      [powerCommand.device powerOff:handler];
-  } @catch(NSException * exception)   {
-    MSLogErrorTag(@"wtf?");
-  }
 }
 
 @end

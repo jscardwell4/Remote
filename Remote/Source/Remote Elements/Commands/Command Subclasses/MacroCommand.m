@@ -32,7 +32,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   return __queue;
 }
 
-- (void)execute:(CommandCompletionHandler)completion {
+- (void)execute:(void (^)(BOOL success, NSError * error))completion {
   if (self.commands.count) {
     _operations = [[self.commands valueForKey:@"operation"] array];
 

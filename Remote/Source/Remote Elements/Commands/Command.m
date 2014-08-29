@@ -26,7 +26,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   return [self createInContext:context];
 }
 
-- (void)execute:(CommandCompletionHandler)completion {
+- (void)execute:(void (^)(BOOL success, NSError * error))completion {
   MSLogDebugTag(@"");
   __weak CommandOperation * operation = self.operation;
 

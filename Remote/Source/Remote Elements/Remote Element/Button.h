@@ -45,7 +45,7 @@
 
 
 - (void)executeCommandWithOptions:(CommandOptions)options
-                       completion:(CommandCompletionHandler)completion;
+                       completion:(void (^)(BOOL success, NSError *))completion;
 
 - (void)setCommand:(Command *)command mode:(NSString *)mode;
 - (void)setLongPressCommand:(Command *)longPressCommand mode:(NSString *)mode;

@@ -100,7 +100,7 @@ void logImportedObject(id importedObject, int flag)
 {
     MSLogDebug(@"loading remotes...");
 
-    NSString * fileName = @"Remote";
+    NSString * fileName = @"Remote_Demo";
     NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
     NSError * error = nil;

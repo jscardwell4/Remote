@@ -276,7 +276,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 - (void)executeCommandWithOptions:(CommandOptions)options
-                       completion:(CommandCompletionHandler)completion {
+                       completion:(void (^)(BOOL success, NSError *))completion {
 
   if (options == CommandOptionLongPress && self.longPressCommand) [self.longPressCommand execute:completion];
   else if (self.command) [self.command execute:completion];

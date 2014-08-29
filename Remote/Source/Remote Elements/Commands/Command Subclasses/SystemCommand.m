@@ -67,13 +67,6 @@ BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 &&
 }
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-       {
-           "class": "system",
-           "type": "open-settings"
-       }
-   */
-
   [super updateWithData:data];
   self.type = systemCommandTypeFromImportKey(data[@"type"]);
 

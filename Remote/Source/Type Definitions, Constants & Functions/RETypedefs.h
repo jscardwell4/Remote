@@ -450,7 +450,7 @@ static inline BOOL CommandSetTypeIsValid(CommandSetType type) {
   }
 }
 
-typedef void (^ CommandCompletionHandler)(BOOL success, NSError *);
+//typedef (void (^)(BOOL success, NSError *));
 
 
 ////////////////////////////////////////////////////////////////////////////////

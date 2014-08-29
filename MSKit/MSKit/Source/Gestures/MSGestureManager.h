@@ -13,7 +13,9 @@ typedef BOOL (^ MSGestureManagerBlock)(UIGestureRecognizer *, id);
 typedef NS_ENUM (NSUInteger, MSGestureManagerResponseType){
     MSGestureManagerResponseTypeBegin                   = 0,
     MSGestureManagerResponseTypeReceiveTouch            = 1,
-    MSGestureManagerResponseTypeRecognizeSimultaneously = 2
+    MSGestureManagerResponseTypeRecognizeSimultaneously = 2,
+    MSGestureManagerResponseTypeBeRequiredToFail        = 3,
+    MSGestureManagerResponseTypeRequireFailureOf        = 4
 };
 
 /**

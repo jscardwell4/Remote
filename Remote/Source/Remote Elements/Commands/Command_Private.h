@@ -33,7 +33,7 @@
 
 @interface Command () {
     @protected
-    CommandCompletionHandler _completion;
+    void (^_completion)(BOOL, NSError *);
 }
 /// `ComponentDevice` this command powers on.
 @property (nonatomic, strong) ComponentDevice * onDevice;

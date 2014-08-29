@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "NamedModelObject.h"
-@class REActivityButton, Remote, RemoteController, MacroCommand;
+@class Remote, MacroCommand;
 
 @interface Activity : NamedModelObject
 
@@ -29,30 +29,9 @@
 
 + (BOOL)isNameAvailable:(NSString *)name;
 
-/**
- * Launches the activity by invoking the launch macro and switching to the activity's remote.
- * @return Whether the activity launched successfully
- */
-- (BOOL)launchActivity;
 
-/// macro executed to commence activity
-@property (nonatomic, strong) MacroCommand * launchMacro;
-
-/**
- * Halts the activity by invoking the halt macro and switching to the home remote.
- * @return Whether the activity halted successfully
- */
-- (BOOL)haltActivity;
-
-
-/**
- * If activity is active, this method calls `haltActivity`, otherwise it calls `launchActvity`.
- * @return Whether the activity launched or halted successfully
- */
-- (BOOL)launchOrHault;
-
-/// macro executed to cease activity
-@property (nonatomic, strong) MacroCommand * haltMacro;
+@property (nonatomic, strong) MacroCommand * launchMacro; /// macro executed to commence activity
+@property (nonatomic, strong) MacroCommand * haltMacro;   /// macro executed to cease activity
 
 /**
  * Launches the activity by invoking the launch macro and switching to the activity's remote.

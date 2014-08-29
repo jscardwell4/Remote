@@ -158,10 +158,10 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 ////////////////////////////////////////////////////////////////////////////////
 
 
-+ (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion {
++ (void)sendCommand:(NSManagedObjectID *)commandID completion:(void (^)(BOOL success, NSError *))completion {
     [connectionManager sendCommand:commandID completion:completion];
 }
-- (void)sendCommand:(NSManagedObjectID *)commandID completion:(CommandCompletionHandler)completion
+- (void)sendCommand:(NSManagedObjectID *)commandID completion:(void (^)(BOOL success, NSError *))completion
 {
     if (!(_flags.wifiAvailable || _flags.simulateCommandSuccess )) { MSLogWarnTag(@"wifi not available"); return; }
 

@@ -39,7 +39,7 @@
  * Executes the task associated with the command with the specified options.
  * @param completion Block to execute after the command completes
  */
-- (void)execute:(CommandCompletionHandler)completion;
+- (void)execute:(void (^)(BOOL success, NSError *))completion;
 
 /// Show activity indicator while executing command.
 @property (nonatomic, assign) BOOL indicator;
