@@ -15,11 +15,6 @@
 
 @interface BatteryStatusButtonView ()
 
-@property (nonatomic, strong) ImageView * batteryFrame;
-@property (nonatomic, strong) ImageView * batteryPlug;
-@property (nonatomic, strong) ImageView * batteryLightning;
-@property (nonatomic, strong) ImageView * batteryFill;
-
 @property (nonatomic, assign) CGFloat              batteryLevel;   /// current charge level
 @property (nonatomic, assign) UIDeviceBatteryState batteryState;   /// i.e. charging, full
 
@@ -69,17 +64,26 @@
 - (void)initializeViewFromModel {
   [super initializeViewFromModel];
 
-  self.batteryFrame     = self.model.icons[UIControlStateNormal];
-  self.batteryPlug      = self.model.icons[UIControlStateSelected];
-  self.batteryLightning = self.model.icons[UIControlStateDisabled];
-  self.batteryFill      = self.model.icons[UIControlStateHighlighted];
+  ImageView * frame     = self.model.icons[UIControlStateNormal];
+  ImageView * plug      = self.model.icons[UIControlStateSelected];
+  ImageView * lightning = self.model.icons[UIControlStateDisabled];
+  ImageView * fill      = self.model.icons[UIControlStateHighlighted];
+  _frameColor     = self.model.icons[UIControlStateNormal].color;
+  _plugColor      = self.model.icons[UIControlStateSelected].color;
+  _lightningColor = self.model.icons[UIControlStateDisabled].color;
+  _fillColor      = self.model.icons[UIControlStateHighlighted].color;
+  _frameIcon      = self.model.icons[UIControlStateNormal].colorImage;
+  _plugIcon       = self.model.icons[UIControlStateSelected].colorImage;
+  _lightningIcon  = self.model.icons[UIControlStateDisabled].colorImage;
 }
 
 
 - (CGSize)intrinsicContentSize { return self.model.icon ? self.model.icon.image.size: REMinimumSize; }
 
-/// Overrides the `ButtonView` implementation to perform custom drawing of the 'battery' frame,
-/// the fill color that indicates battery level, and the icon that indicates battery state.
+/**
+ * Overrides the `ButtonView` implementation to perform custom drawing of the 'battery' frame,
+ * the fill color that indicates battery level, and the icon that indicates battery state.
+ */
 - (void)drawContentInContext:(CGContextRef)ctx inRect:(CGRect)rect {
   
   if (_batteryLevel == -1) {
@@ -88,7 +92,7 @@
   }
 
   CGRect insetRect     = CGRectInset(rect, 2.0f, 2.0f);
-  CGSize frameIconSize = self.batteryFrame.image.size;
+  CGSize frameIconSize = _frameIcon.size;
   CGSize frameSize     = (CGSizeContainsSize(insetRect.size, frameIconSize)
                           ? frameIconSize
                           : CGSizeAspectMappedToSize(frameIconSize, insetRect.size, YES));
@@ -97,7 +101,7 @@
                                 frameSize.width,
                                 frameSize.height);
 
-  [self.batteryFrame.colorImage drawInRect:frameRect];
+  [_frameIcon drawInRect:frameRect];
 
   CGFloat padding   = frameSize.width * 0.06;
   CGSize  paintSize = CGSizeMake(frameSize.width - 4 * padding,
@@ -111,14 +115,14 @@
 
   UIBezierPath * path = [UIBezierPath bezierPathWithRect:paintRect];
 
-  [self.batteryFill.color setFill];
+  [self.fillColor setFill];
   [path fill];
 
-  if (self.batteryState == UIDeviceBatteryStateFull) {
-    [self.batteryPlug.colorImage drawInRect:CGRectInset(frameRect, padding, padding)];
+  if (_batteryState == UIDeviceBatteryStateFull) {
+    [_plugIcon drawInRect:CGRectInset(frameRect, padding, padding)];
 
-  } else if (self.batteryState == UIDeviceBatteryStateCharging)   {
-    CGSize lightningIconSize = self.batteryLightning.image.size;
+  } else if (_batteryState == UIDeviceBatteryStateCharging)   {
+    CGSize lightningIconSize = _lightningIcon.size;
     CGSize lightningSize     = (CGSizeContainsSize(paintSize, lightningIconSize)
                                 ? lightningIconSize
                                 : CGSizeAspectMappedToSize(lightningIconSize, paintSize, YES));
@@ -128,7 +132,7 @@
 
     lightningRect.origin.x = CGRectGetMidX(frameRect) - lightningSize.width / 2.0;
     lightningRect.origin.y = CGRectGetMidY(frameRect) - lightningSize.height / 2.0;
-    [self.batteryLightning.colorImage drawInRect:lightningRect];
+    [_lightningIcon drawInRect:lightningRect];
   }
 }
 

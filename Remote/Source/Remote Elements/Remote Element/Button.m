@@ -13,6 +13,8 @@
 #import "ControlStateTitleSet.h"
 #import "ControlStateImageSet.h"
 #import "Command.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -35,6 +37,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @interface Button (CoreDataGeneratedAccessors)
 
+@property (nonatomic) NSNumber           * primitiveState;
 @property (nonatomic) Command            * primitiveCommand;
 @property (nonatomic) Command            * primitiveLongPressCommand;
 @property (nonatomic) NSValue            * primitiveTitleEdgeInsets;
@@ -52,93 +55,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic titleEdgeInsets, contentEdgeInsets, imageEdgeInsets;
 @dynamic command, longPressCommand, title, icon, image;
 @dynamic titles, icons, images, backgroundColors;
+@dynamic state;
 
 
 - (REType)elementType { return RETypeButton; }
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Creation
-////////////////////////////////////////////////////////////////////////////////
-
-/*
-+ (instancetype)buttonWithRole:(RERole)role {
-  return [self remoteElementWithAttributes:@{ @"role" : @(role) }];
-}
-
-+ (instancetype)buttonWithRole:(RERole)role context:(NSManagedObjectContext *)moc {
-  return [self remoteElementInContext:moc attributes:@{ @"role" : @(role) }];
-}
-
-+ (instancetype)buttonWithTitle:(id)title {
-  return [self remoteElementWithAttributes:@{ @"title" : title }];
-}
-
-+ (instancetype)buttonWithTitle:(id)title context:(NSManagedObjectContext *)moc {
-  return [self remoteElementInContext:moc attributes:@{ @"title" : title }];
-}
-
-+ (instancetype)buttonWithRole:(RERole)role title:(id)title {
-  return [self remoteElementWithAttributes:@{ @"role" : @(role), @"title" : title }];
-}
-
-+ (instancetype)buttonWithRole:(RERole)role title:(id)title context:(NSManagedObjectContext *)moc {
-  return [self remoteElementInContext:moc attributes:@{ @"role" : @(role), @"title" : title }];
-}
-*/
-
-/*
-+ (instancetype)remoteElementInContext:(NSManagedObjectContext *)moc
-                            attributes:(NSDictionary *)attributes {
-  Button              * element            = [self remoteElementInContext:moc];
-  NSMutableDictionary * filteredAttributes = [attributes mutableCopy];
-
-  if (attributes[@"title"]) {
-    [filteredAttributes removeObjectForKey:@"title"];
-    id title    = attributes[@"title"];
-    id titleObj = nil;
-
-    if ([title isKindOfClass:[NSAttributedString class]])
-      titleObj = [title copy];
-    else if ([title isKindOfClass:[NSString class]])
-      titleObj = @{
-                   RETitleTextAttributeKey : title
-                   };
-    else if ([title isKindOfClass:[NSDictionary class]])
-      titleObj = title;
-
-    if (titleObj)
-      [element setTitles:[ControlStateTitleSet controlStateSetInContext:moc
-                                                            withObjects:@{ @"normal" : titleObj }]
-                    mode:REDefaultMode];
-  }
-
-  if (attributes[@"icon"]) {
-    [filteredAttributes removeObjectForKey:@"icon"];
-    [element setIcons:[ControlStateImageSet
-                       controlStateSetInContext:moc
-                       withObjects:@{ @"normal" : attributes[@"icon"] }]
-                 mode:REDefaultMode];
-  }
-
-  if (attributes[@"image"]) {
-    [filteredAttributes removeObjectForKey:@"image"];
-    [element setImages:[ControlStateImageSet
-                        controlStateSetInContext:moc
-                        withObjects:@{ @"normal" : attributes[@"image"] }]
-                  mode:REDefaultMode];
-  }
-
-  if (attributes[@"icons"]) {
-    [filteredAttributes removeObjectForKey:@"icons"];
-    [element setIcons:attributes[@"icons"] mode:REDefaultMode];
-  }
-
-  [element setValuesForKeysWithDictionary:attributes];
-
-  return element;
-}
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Updating configuration
@@ -205,6 +126,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return [[self.managedObjectContext objectForURI:self[configurationKey(mode, @"titles")]] faultedObject];
 }
 
+- (void)setTitle:(NSAttributedString *)title {
+  [self willChangeValueForKey:@"title"];
+  self.primitiveTitle = title;
+  [self didChangeValueForKey:@"title"];
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Background colors
@@ -251,6 +178,21 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Button state
 ////////////////////////////////////////////////////////////////////////////////
+
+
+- (void)setState:(REState)state {
+  [self willChangeValueForKey:@"state"];
+  self.primitiveState = @(state);
+  [self didChangeValueForKey:@"state"];
+  [self updateButtonForState:state];
+}
+
+- (REState)state {
+  [self willAccessValueForKey:@"state"];
+  NSNumber * state = self.primitiveState;
+  [self didAccessValueForKey:@"state"];
+  return (state ? [state shortValue] : REStateDefault);
+}
 
 
 - (BOOL)isEnabled { return !(self.state & REStateDisabled); }
@@ -351,6 +293,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   [super updateWithData:data];
 
+  self.state = buttonStateFromImportKey(data[@"state"]);
+
+
   NSDictionary * titles            = data[@"titles"];
   NSDictionary * commands          = data[@"commands"];
   NSDictionary * longPressCommands = data[@"long-press-commands"];
@@ -433,6 +378,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 {
   MSDictionary * dictionary = [super JSONDictionary];
   dictionary[@"background-color"] = NullObject;
+
+  SetValueForKeyIfNotDefault(stateJSONValueForButton(self),   @"state",   dictionary);
 
   MSDictionary * titles            = [MSDictionary dictionary];
   MSDictionary * backgroundColors  = [MSDictionary dictionary];

@@ -8,7 +8,6 @@
 
 #import "RemoteElement.h"
 
-@class ButtonGroup, Remote;
 @class ControlStateTitleSet, ControlStateImageSet, ControlStateColorSet;
 @class Command, ImageView, TitleAttributes;
 
@@ -21,6 +20,8 @@
  * exiting activities, which are coordinated by a <RemoteController>.
  */
 @interface Button : RemoteElement
+
+@property (nonatomic, assign, readwrite) REState state;
 
 @property (nonatomic, strong, readonly) NSAttributedString * title;
 @property (nonatomic, strong, readonly) ImageView          * icon;
@@ -41,13 +42,6 @@
 @property (nonatomic, strong, readonly) ControlStateImageSet * icons;
 @property (nonatomic, strong, readonly) ControlStateColorSet * backgroundColors;
 @property (nonatomic, strong, readonly) ControlStateImageSet * images;
-
-//+ (instancetype)buttonWithRole:(RERole)role;
-//+ (instancetype)buttonWithRole:(RERole)role context:(NSManagedObjectContext *)moc;
-//+ (instancetype)buttonWithTitle:(id)title;
-//+ (instancetype)buttonWithTitle:(id)title context:(NSManagedObjectContext *)moc;
-//+ (instancetype)buttonWithRole:(RERole)role title:(id)title;
-//+ (instancetype)buttonWithRole:(RERole)role title:(id)title context:(NSManagedObjectContext *)moc;
 
 
 - (void)executeCommandWithOptions:(CommandOptions)options

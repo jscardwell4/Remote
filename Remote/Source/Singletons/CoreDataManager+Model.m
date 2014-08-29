@@ -214,15 +214,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                                               @"Button"]
                                              notFoundMarker:NullObject]
                          attribute:@"configurations"
-                         className:@"NSDictionary"
-                      defaultValue:@{}
+                         className:@"NSMutableDictionary"
+                      defaultValue:[@{} mutableCopy]
                               info:nil];
 
   // panels for RERemote
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Remote"] notFoundMarker:NullObject]
                          attribute:@"panels"
-                         className:@"NSDictionary"
-                      defaultValue:@{}
+                         className:@"NSMutableDictionary"
+                      defaultValue:[@{} mutableCopy]
                               info:nil];
 
   // label attribute on button groups
@@ -236,6 +236,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                          attribute:@"labelAttributes"
                          className:@"MSDictionary"
                       defaultValue:[MSDictionary dictionary]
+                              info:nil];
+
+  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Button"] notFoundMarker:NullObject]
+                         attribute:@"Title"
+                         className:@"NSAttributedString"
+                      defaultValue:nil
                               info:nil];
 
   // index attribute on command containers

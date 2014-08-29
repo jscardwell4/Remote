@@ -27,8 +27,7 @@
   static const NSSet   * validNumbers, * validKeys;
   static dispatch_once_t onceToken;
 
-  dispatch_once(&onceToken,
-                ^{
+  dispatch_once(&onceToken, ^{
     validNumbers = [@[@0, @1, @2, @3, @4, @5, @6, @7] set];
     validKeys    = [@[@"normal",
                       @"highlighted",
@@ -50,17 +49,17 @@
 }
 
 + (NSString *)attributeKeyFromKey:(id)key {
-  if ([self validState:key])
-    return isStringKind(key) ? key : [self propertyForState:key];
-  else return nil;
+  return ([self validState:key]
+          ? (isStringKind(key) ? key : [self propertyForState:key])
+          : nil) ;
 }
 
 + (NSString *)propertyForState:(NSNumber *)state {
+
   static const NSDictionary * states;
   static dispatch_once_t      onceToken;
 
-  dispatch_once(&onceToken,
-                ^{
+  dispatch_once(&onceToken, ^{
     states = @{ @0 : @"normal",
                 @1 : @"highlighted",
                 @2 : @"disabled",
@@ -78,8 +77,7 @@
   static const NSDictionary * properties = nil;
   static dispatch_once_t      onceToken;
 
-  dispatch_once(&onceToken,
-                ^{
+  dispatch_once(&onceToken, ^{
     properties = @{ @"normal"                      : @0,
                     @"highlighted"                 : @1,
                     @"disabled"                    : @2,
@@ -98,8 +96,7 @@
   static dispatch_once_t onceToken;
   static NSSet const   * validProperties;
 
-  dispatch_once(&onceToken,
-                ^{
+  dispatch_once(&onceToken, ^{
     validProperties = [@[@"normal",
                          @"highlighted",
                          @"disabled",
@@ -132,7 +129,8 @@
 }
 
 + (instancetype)controlStateSetInContext:(NSManagedObjectContext *)moc
-                             withObjects:(NSDictionary *)objects {
+                             withObjects:(NSDictionary *)objects
+{
   ControlStateSet * stateSet = [self controlStateSetInContext:moc];
 
   [stateSet setValuesForKeysWithDictionary:objects];
@@ -141,6 +139,7 @@
 }
 
 - (NSDictionary *)dictionaryFromSetObjects:(BOOL)useJSONKeys {
+
   MSDictionary * dictionary = [MSDictionary dictionary];
 
   for (NSUInteger i = 0; i < 8; i++) {
@@ -156,11 +155,15 @@
 }
 
 - (NSArray *)allValues {
+
   NSMutableSet * values = [NSMutableSet set];
+
   for (NSUInteger state = 0; state < 8; state++) {
     id value = [self objectAtIndex:state];
+
     if (value) [values addObject:value];
   }
+
   return values.allObjects;
 }
 
@@ -181,6 +184,7 @@
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)state {
+
   if (![ControlStateSet validState:@(state)])
     return nil;
 
@@ -199,10 +203,17 @@
 }
 
 - (void)setObject:(id)object forStates:(NSArray *)states {
+
   for (id state in states) {
-    if (isNumberKind(state)) self[[state unsignedIntegerValue]] = object;
-    else if (isStringKind(state)) self[state] = object;
+
+    if (isNumberKind(state))
+      self[[state unsignedIntegerValue]] = object;
+
+    else if (isStringKind(state))
+      self[state] = object;
+
   }
+
 }
 
 - (id)objectForKeyedSubscript:(NSString *)key {
@@ -210,13 +221,23 @@
 }
 
 - (void)setObject:(id)object forKeyedSubscript:(NSString *)key {
-  if (![ControlStateSet validState:key]) ThrowInvalidArgument(key, is not a valid state key);
-  else [self setValue:object forKey:key];
+
+  if (![ControlStateSet validState:key])
+    ThrowInvalidArgument(key, is not a valid state key);
+
+  else
+    [self setValue:object forKey:key];
+
 }
 
 - (void)setObject:(id)object atIndexedSubscript:(NSUInteger)state {
-  if (![ControlStateSet validState:@(state)]) ThrowInvalidIndexArgument(state);
-  else [self setValue:object forKey:[ControlStateSet propertyForState:@(state)]];
+
+  if (![ControlStateSet validState:@(state)])
+    ThrowInvalidIndexArgument(state);
+
+  else
+    [self setValue:object forKey:[ControlStateSet propertyForState:@(state)]];
+
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
@@ -225,8 +246,7 @@
   __weak ControlStateSet  * sourceSet            = self;
   NSManagedObjectContext  * moc                  = self.managedObjectContext;
 
-  [moc performBlockAndWait:
-   ^{
+  [moc performBlockAndWait:^{
     controlStateSet = [controlStateSetClass controlStateSetInContext:moc];
     [controlStateSet copyObjectsFromSet:sourceSet];
   }];
@@ -235,9 +255,8 @@
 }
 
 - (MSDictionary *)JSONDictionary {
+
   MSDictionary * dictionary = [super JSONDictionary];
-
-
   [dictionary addEntriesFromDictionary:[self dictionaryFromSetObjects:YES]];
 
   [dictionary compact];

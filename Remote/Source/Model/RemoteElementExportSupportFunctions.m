@@ -145,7 +145,7 @@ NSString *roleJSONValueForRERole(RERole role) {
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString *stateJSONValueForRemoteElement(RemoteElement * element) {
+NSString *stateJSONValueForButton(Button * element) {
   static NSDictionary const * index;
   static dispatch_once_t      onceToken;
   dispatch_once(&onceToken,

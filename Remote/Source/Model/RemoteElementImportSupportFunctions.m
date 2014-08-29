@@ -113,7 +113,7 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-REState remoteElementStateFromImportKey(NSString * importKey) {
+REState buttonStateFromImportKey(NSString * importKey) {
 
   // TODO: This should be updated to allow for state other than default
   return REStateDefault;

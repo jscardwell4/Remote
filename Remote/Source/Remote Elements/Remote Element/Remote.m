@@ -54,38 +54,6 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
 
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-     {
-      "uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
-      "name": "Home Screen",
-      "elementType": "remote",
-      "key": "activity1",
-      "options": "top-bar-hidden",
-      "constraints": {
-          "index": {
-              "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
-              "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
-              "homeScreen": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
-          },
-          "format": [
-              "activityButtons.centerX = homeScreen.centerX",
-              "activityButtons.centerY = homeScreen.centerY - 22",
-              "bottomToolbar.bottom = homeScreen.bottom",
-              "bottomToolbar.left = homeScreen.left",
-              "bottomToolbar.right = homeScreen.right"
-          ]
-      },
-      "backgroundColor": "black",
-      "backgroundImage.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388", // Pro Dots.png
-      "subelements": [ **ButtonGroup** ],
-      "panels": {
-          "left1": "7521F420-F677-44C9-97BA-4AF836779C21", // Left Overlay Panel
-          "right1": "A6394F58-79C6-4B6C-962D-1DDD6BE1C36F", // Selection Panel
-          "bottom1": "D505193C-C9D5-4D89-9C9F-D0B24EAE6D69", // DVR Activity Transport
-          "top1": "A2EFC284-8F45-45B1-9A4B-DB448A2AEAE7" // DVR Activity Number Pad
-      }
-     }
-   */
 
   [super updateWithData:data];
 

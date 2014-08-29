@@ -75,9 +75,9 @@ editorState;
 }
 
 - (void)setButtonViewStateFromPresentedState {
-    _buttonView.highlighted = _editorState.presentedState & UIControlStateHighlighted;
-    _buttonView.selected    = _editorState.presentedState & UIControlStateSelected;
-    _buttonView.enabled     = !(_editorState.presentedState & UIControlStateDisabled);
+    _buttonView.model.highlighted = _editorState.presentedState & UIControlStateHighlighted;
+    _buttonView.model.selected    = _editorState.presentedState & UIControlStateSelected;
+    _buttonView.model.enabled     = !(_editorState.presentedState & UIControlStateDisabled);
 }
 
 - (IBAction)cancelAction:(id)sender {

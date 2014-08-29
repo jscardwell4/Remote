@@ -1,5 +1,5 @@
 //
-// PickerLabelButtonGroupView.m
+// RockerView.m
 // Remote
 //
 // Created by Jason Cardwell on 3/20/13.
@@ -15,7 +15,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 #pragma unused(ddLogLevel,msLogContext)
 
 
-@interface PickerLabelButtonGroupView ()
+@interface RockerView ()
 
 @property (nonatomic, assign) BOOL                   blockPan;
 @property (nonatomic, assign) CGFloat                panLength;
@@ -27,7 +27,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 @property (nonatomic, weak) UIPanGestureRecognizer * labelPanGesture;
 @end
 
-@implementation PickerLabelButtonGroupView
+@implementation RockerView
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - UIView Overrides
@@ -107,11 +107,11 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
   MSDictionary * reg = [super kvoRegistration];
   reg[@"labels"] =  ^(MSKVOReceptionist * receptionist) {
-    [(__bridge PickerLabelButtonGroupView *)receptionist.context buildLabels];
+    [(__bridge RockerView *)receptionist.context buildLabels];
   };
 
   reg[@"commandSets"] = ^(MSKVOReceptionist * receptionist) {
-    PickerLabelButtonGroupView * picker = (__bridge PickerLabelButtonGroupView *)receptionist.context;
+    RockerView * picker = (__bridge RockerView *)receptionist.context;
     [picker.model selectCommandSetAtIndex:picker.labelIndex];
   };
 

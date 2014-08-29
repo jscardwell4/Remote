@@ -353,7 +353,7 @@
 		C25B478116FF8D5E0042B59E /* RemoteElementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFDD16DC18530093D5B4 /* RemoteElementView.m */; };
 		C25B478616FF8D5E0042B59E /* Constraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46CD16FF68A90042B59E /* Constraint.m */; };
 		C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE316DC18530093D5B4 /* RemoteView.m */; };
-		C25B478816FF8D5E0042B59E /* PickerLabelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */; };
+		C25B478816FF8D5E0042B59E /* RockerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1E16FA06B400290737 /* RockerView.m */; };
 		C25B478916FF8D5E0042B59E /* SelectionPanelButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */; };
 		C25B478A16FF8D5E0042B59E /* ButtonGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */; };
 		C25B478B16FF8D5E0042B59E /* BatteryStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456616FF61C90042B59E /* BatteryStatusButtonView.m */; };
@@ -1231,7 +1231,7 @@
 		C28FD589171C65BB008560E3 /* CoreDataTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreDataTests-Prefix.pch"; sourceTree = "<group>"; };
 		C2912BC316F6311D004AB0DB /* RELabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RELabelView.m; sourceTree = "<group>"; };
 		C2912BC516F6312D004AB0DB /* RELabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RELabelView.h; sourceTree = "<group>"; };
-		C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerLabelButtonGroupView.m; sourceTree = "<group>"; };
+		C2997F1E16FA06B400290737 /* RockerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RockerView.m; sourceTree = "<group>"; };
 		C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionPanelButtonGroupView.m; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2997F2416FA5A6D00290737 /* REEditableBackground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = REEditableBackground.h; sourceTree = "<group>"; };
@@ -1639,7 +1639,7 @@
 				C26BAFDE16DC18530093D5B4 /* RemoteElementView_Private.h */,
 				C2318B3117E5555600CF58D9 /* disabled */,
 				C26BAFE316DC18530093D5B4 /* RemoteView.m */,
-				C2997F1E16FA06B400290737 /* PickerLabelButtonGroupView.m */,
+				C2997F1E16FA06B400290737 /* RockerView.m */,
 				C2997F1F16FA06B400290737 /* SelectionPanelButtonGroupView.m */,
 				C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */,
 				C25B456616FF61C90042B59E /* BatteryStatusButtonView.m */,
@@ -3383,7 +3383,7 @@
 				C2D1022D19AAFCA300DE5346 /* ImageView.m in Sources */,
 				C25B478616FF8D5E0042B59E /* Constraint.m in Sources */,
 				C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */,
-				C25B478816FF8D5E0042B59E /* PickerLabelButtonGroupView.m in Sources */,
+				C25B478816FF8D5E0042B59E /* RockerView.m in Sources */,
 				C25B478916FF8D5E0042B59E /* SelectionPanelButtonGroupView.m in Sources */,
 				C25B478A16FF8D5E0042B59E /* ButtonGroupView.m in Sources */,
 				C25B478B16FF8D5E0042B59E /* BatteryStatusButtonView.m in Sources */,

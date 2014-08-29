@@ -57,36 +57,36 @@ static NSDictionary const * kPropertyToAttribute;
                        @"paragraphSpacing",
                        @"lineSpacing"];
 
-		kPropertyKeys = @[@"font",
-                      @"foregroundColor",
-                      @"backgroundColor",
-                      @"ligature",
-                      @"iconName",
-                      @"text",
-                      @"shadow",
-                      @"expansion",
-                      @"obliqueness",
-                      @"strikethroughColor",
-                      @"underlineColor",
-                      @"baselineOffset",
-                      @"textEffect",
-                      @"strokeWidth",
-                      @"strokeColor",
-                      @"underlineStyle",
-                      @"strikethroughStyle",
-                      @"kern",
-                      @"hyphenationFactor",
-                      @"paragraphSpacingBefore",
-                      @"lineHeightMultiple",
-                      @"maximumLineHeight",
-                      @"minimumLineHeight",
-                      @"lineBreakMode",
-                      @"tailIndent",
-                      @"headIndent",
-                      @"firstLineHeadIndent",
-                      @"alignment",
-                      @"paragraphSpacing",
-                      @"lineSpacing"];
+		kPropertyKeys  = @[@"font",
+                       @"foregroundColor",
+                       @"backgroundColor",
+                       @"ligature",
+                       @"iconName",
+                       @"text",
+                       @"shadow",
+                       @"expansion",
+                       @"obliqueness",
+                       @"strikethroughColor",
+                       @"underlineColor",
+                       @"baselineOffset",
+                       @"textEffect",
+                       @"strokeWidth",
+                       @"strokeColor",
+                       @"underlineStyle",
+                       @"strikethroughStyle",
+                       @"kern",
+                       @"hyphenationFactor",
+                       @"paragraphSpacingBefore",
+                       @"lineHeightMultiple",
+                       @"maximumLineHeight",
+                       @"minimumLineHeight",
+                       @"lineBreakMode",
+                       @"tailIndent",
+                       @"headIndent",
+                       @"firstLineHeadIndent",
+                       @"alignment",
+                       @"paragraphSpacing",
+                       @"lineSpacing"];
 
     Class number    = [NSNumber class];
     Class string    = [NSString class];
@@ -94,36 +94,36 @@ static NSDictionary const * kPropertyToAttribute;
     Class shadow    = [NSShadow class];
     Class font      = [REFont   class];
 
-    kPropertyClasses = @{ @"font"                    : font,
-                          @"foregroundColor"         : color,
-                          @"backgroundColor"         : color,
-                          @"ligature"                : number,
-                          @"iconName"                : string,
-                          @"text"                    : string,
-                          @"shadow"                  : shadow,
-                          @"expansion"               : number,
-                          @"obliqueness"             : number,
-                          @"strikethroughColor"      : color,
-                          @"underlineColor"          : color,
-                          @"baselineOffset"          : number,
-                          @"textEffect"              : string,
-                          @"strokeWidth"             : number,
-                          @"strokeColor"             : color,
-                          @"underlineStyle"          : number,
-                          @"strikethroughStyle"      : number,
-                          @"kern"                    : number,
-                          @"hyphenationFactor"       : number,
-                          @"paragraphSpacingBefore"  : number,
-                          @"lineHeightMultiple"      : number,
-                          @"maximumLineHeight"       : number,
-                          @"minimumLineHeight"       : number,
-                          @"lineBreakMode"           : number,
-                          @"tailIndent"              : number,
-                          @"headIndent"              : number,
-                          @"firstLineHeadIndent"     : number,
-                          @"alignment"               : number,
-                          @"paragraphSpacing"        : number,
-                          @"lineSpacing"             : number };
+    kPropertyClasses     = @{ @"font"                    : font,
+                              @"foregroundColor"         : color,
+                              @"backgroundColor"         : color,
+                              @"ligature"                : number,
+                              @"iconName"                : string,
+                              @"text"                    : string,
+                              @"shadow"                  : shadow,
+                              @"expansion"               : number,
+                              @"obliqueness"             : number,
+                              @"strikethroughColor"      : color,
+                              @"underlineColor"          : color,
+                              @"baselineOffset"          : number,
+                              @"textEffect"              : string,
+                              @"strokeWidth"             : number,
+                              @"strokeColor"             : color,
+                              @"underlineStyle"          : number,
+                              @"strikethroughStyle"      : number,
+                              @"kern"                    : number,
+                              @"hyphenationFactor"       : number,
+                              @"paragraphSpacingBefore"  : number,
+                              @"lineHeightMultiple"      : number,
+                              @"maximumLineHeight"       : number,
+                              @"minimumLineHeight"       : number,
+                              @"lineBreakMode"           : number,
+                              @"tailIndent"              : number,
+                              @"headIndent"              : number,
+                              @"firstLineHeadIndent"     : number,
+                              @"alignment"               : number,
+                              @"paragraphSpacing"        : number,
+                              @"lineSpacing"             : number };
 
     kPropertyToAttribute = @{ @"font"                    : NSFontAttributeName,
                               @"foregroundColor"         : NSForegroundColorAttributeName,
@@ -402,7 +402,8 @@ NS_ENUM(int, Property) {
 
         case STRIKETHROUGHSTYLE:
         case UNDERLINESTYLE: {
-          SetValueForKeyIfNotDefault(underlineStrikethroughStyleJSONValueForStyle(obj), property, dictionary);
+          SetValueForKeyIfNotDefault(underlineStrikethroughStyleJSONValueForStyle(obj),
+                                     property, dictionary);
         } break;
 
         case ICONNAME:
@@ -427,11 +428,13 @@ NS_ENUM(int, Property) {
         } break;
 
         case LINEBREAKMODE: {
-          SetValueForKeyIfNotDefault(lineBreakModeJSONValueForMode(UnsignedIntegerValue(obj)), @"lineBreakMode", dictionary);
+          SetValueForKeyIfNotDefault(lineBreakModeJSONValueForMode(UnsignedIntegerValue(obj)),
+                                     @"lineBreakMode", dictionary);
         } break;
 
         case ALIGNMENT: {
-          SetValueForKeyIfNotDefault(textAlignmentJSONValueForAlignment(IntegerValue((NSNumber *)obj)), @"alignment", dictionary);
+          SetValueForKeyIfNotDefault(textAlignmentJSONValueForAlignment(IntegerValue((NSNumber *)obj)),
+                                     @"alignment", dictionary);
         } break;
 
       }

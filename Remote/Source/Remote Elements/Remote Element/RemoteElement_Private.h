@@ -20,7 +20,6 @@
 @interface RemoteElement (CoreDataGeneratedAccessors)
 
 @property (nonatomic) NSNumber                * primitiveRole;
-@property (nonatomic) NSNumber                * primitiveState;
 @property (nonatomic) NSNumber                * primitiveShape;
 @property (nonatomic) NSNumber                * primitiveStyle;
 @property (nonatomic) NSNumber                * primitiveThemeFlags;
@@ -33,6 +32,8 @@
 @property (nonatomic) NSString                * primitiveName;
 @property (nonatomic) NSString                * primitiveKey;
 @property (nonatomic) UIColor                 * primitiveBackgroundColor;
+@property (nonatomic) Image                   * primitiveBackgroundImage;
+@property (nonatomic) NSNumber                * primitiveBackgroundImageAlpha;
 
 @end
 

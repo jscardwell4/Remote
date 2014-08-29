@@ -18,7 +18,7 @@
 - (void)initializeIVARs {
   [super initializeIVARs];
 
-  self.selected = [ConnectionManager isWifiAvailable];
+  self.model.selected = [ConnectionManager isWifiAvailable];
 
   __weak ConnectionStatusButtonView * weakself = self;
   self.receptionist = [MSNotificationReceptionist

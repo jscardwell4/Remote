@@ -22,12 +22,42 @@
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE);
-
 #pragma unused(ddLogLevel,msLogContext)
 
-CGSize const REMinimumSize = (CGSize) {
-  .width = 44.0f, .height = 44.0f
-};
+CGSize const REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Internal Subview Class Interfaces
+////////////////////////////////////////////////////////////////////////////////
+
+/// Generic view that initializes some basic settings
+@interface REViewInternal : UIView {
+  __weak RemoteElementView * _delegate;
+} @end
+
+/// View that holds any subelement views
+@interface REViewSubelements : REViewInternal @end
+
+/// View that draws primary content
+@interface REViewContent : REViewInternal @end
+
+/// View that draws any background decoration
+@interface REViewBackdrop : REViewInternal @end
+
+/// View that draws top level style elements such as gloss and editing indicators
+@interface REViewOverlay : REViewInternal
+
+@property (nonatomic, assign) BOOL      showAlignmentIndicators;
+@property (nonatomic, assign) BOOL      showContentBoundary;
+@property (nonatomic, strong) UIColor * boundaryColor;
+
+@end
+
+
+
+
 
 @interface RemoteElementView () {
 @private
@@ -75,9 +105,9 @@ CGSize const REMinimumSize = (CGSize) {
                                 @(RERoleUndefined) :
                                   @"ButtonGroupView",
                                 @(REButtonGroupRoleRocker) :
-                                  @"PickerLabelButtonGroupView",
+                                  @"RockerView",
                                 @(REButtonGroupRoleSelectionPanel) :
-                                  @"SelectionPanelButtonGroupView"
+                                  @"ModeSelectionView"
                                 },
                             @(RETypeButton) :
                               @{                                   // button roles
@@ -225,24 +255,24 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   };
 
   reg[@"backgroundColor"] = ^(MSKVOReceptionist * receptionist) {
-    if ([receptionist.change[NSKeyValueChangeNewKey] isKindOfClass:[UIColor class]])
-      ((__bridge RemoteElementView *)receptionist.context).backgroundColor = receptionist.change[NSKeyValueChangeNewKey];
-    else
-      ((__bridge RemoteElementView *)receptionist.context).backgroundColor = nil;
+    RemoteElementView * view = (__bridge RemoteElementView *)receptionist.context;
+    view.backgroundColor = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
+    [view setNeedsDisplay];
   };
 
   reg[@"backgroundImage"] = ^(MSKVOReceptionist * receptionist) {
-    if ([receptionist.change[NSKeyValueChangeNewKey] isKindOfClass:[Image class]])
-      ((__bridge RemoteElementView *)receptionist.context).backgroundImageView.image =
-      [(Image *)receptionist.change[NSKeyValueChangeNewKey] stretchableImage];
-    else
-      ((__bridge RemoteElementView *)receptionist.context).backgroundImageView.image = nil;
+    RemoteElementView * view = (__bridge RemoteElementView *)receptionist.context;
+    view.backgroundImageView.image = [(Image *)NilSafe(receptionist.change[NSKeyValueChangeNewKey]) stretchableImage];
+    [view setNeedsDisplay];
   };
 
+/*
   reg[@"backgroundImageAlpha"] = ^(MSKVOReceptionist * receptionist) {
-    if ([receptionist.change[NSKeyValueChangeNewKey] isKindOfClass:[NSNumber class]])
-      _backgroundImageView.alpha = [(NSNumber *)receptionist.change[NSKeyValueChangeNewKey] floatValue];
+    RemoteElementView * view = (__bridge RemoteElementView *)receptionist.context;
+    view.backgroundImageView.alpha = [(NSNumber *)NilSafe(receptionist.change[NSKeyValueChangeNewKey]) floatValue];
+    [view setNeedsDisplay];
   };
+*/
 
   reg[@"shape"] = ^(MSKVOReceptionist * receptionist) {
     [(__bridge RemoteElementView *)receptionist.context refreshBorderPath];
@@ -276,9 +306,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 /// Override point for subclasses to update themselves with data from the model.
 - (void)initializeViewFromModel {
   [super setBackgroundColor:[self.model backgroundColor]];
-  _backgroundImageView.image = (self.model.backgroundImage
-                                ? [self.model.backgroundImage stretchableImage]
-                                : nil);
+  self.backgroundImageView.image = (self.model.backgroundImage
+                                    ? [self.model.backgroundImage stretchableImage]
+                                    : nil);
   [self refreshBorderPath];
 
   for (RemoteElement * element in self.model.subelements)

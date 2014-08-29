@@ -452,12 +452,6 @@ static inline BOOL CommandSetTypeIsValid(CommandSetType type) {
 
 typedef void (^ CommandCompletionHandler)(BOOL success, NSError *);
 
-typedef void (^ REActionHandler)(void);
-
-typedef NS_ENUM (uint8_t, REAction) {
-  RESingleTapAction = 0,
-  RELongPressAction = 1
-};
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Editing

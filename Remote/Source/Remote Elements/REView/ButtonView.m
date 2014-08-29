@@ -14,18 +14,21 @@
 
 // #define DEBUG_BV_COLOR_BG
 
-#define MIN_HIGHLIGHT_INTERVAL 1.0
-#define CORNER_RADII           CGSizeMake(5.0f, 5.0f)
-
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
 
+@interface ButtonView ()
+@property (nonatomic, weak,   readwrite)  UITapGestureRecognizer       * tapGesture;
+@property (nonatomic, weak,   readwrite)  MSLongPressGestureRecognizer * longPressGesture;
+@property (nonatomic, weak,   readwrite)  UILabel                      * labelView;
+@property (nonatomic, weak,   readwrite)  UIActivityIndicatorView      * activityIndicator;
+@end
+
 @implementation ButtonView
 
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Internal subviews and constraints
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +65,8 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
         "'%1$@' label.right = self.right - %6$f @900\n"
         "'%2$@' activity.centerX = self.centerX\n"
         "'%2$@' activity.centerY = self.centerY",
-        labelNametag, activityNametag, titleInsets.left, titleInsets.top, titleInsets.bottom, titleInsets.right);
+        labelNametag, activityNametag,
+        titleInsets.left, titleInsets.top, titleInsets.bottom, titleInsets.right);
 
     NSDictionary * views = @{@"self": self, @"label": self.labelView, @"activity": self.activityIndicator};
 
@@ -70,7 +74,6 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Gestures
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -99,123 +102,53 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
 /// Single tap action executes the primary button command
 - (void)handleTap:(UITapGestureRecognizer *)gestureRecognizer {
+
   if (gestureRecognizer.state == UIGestureRecognizerStateRecognized) {
-    self.highlighted = YES;
-    assert(self.model.highlighted);
 
-    MSDelayedRunOnMain(_options.minHighlightInterval,
-                       ^{
-      _flags.highlightActionQueued = NO;
-      self.highlighted = NO;
-      [self setNeedsDisplay];
-    });
+    self.model.highlighted = YES;
 
-    REActionHandler handler = _actionHandlers[@(RESingleTapAction)];
+    __weak ButtonView * weakself = self;
+    MSDelayedRunOnMain(1.0, ^{ weakself.model.highlighted = NO; });
 
-    if (handler)
-      handler();
-
-    else
-      [self buttonActionWithOptions:CommandOptionDefault];
-  } else if (gestureRecognizer.state == UIGestureRecognizerStateCancelled && !_flags.longPressActive) {
-//        self.highlighted = NO;
-//        [self setNeedsDisplay];
+    if (self.tapAction) self.tapAction();
+    else [self executeActionWithOptions:CommandOptionDefault];
   }
 }
 
 /// Long press action executes the secondary button command
 - (void)handleLongPress:(MSLongPressGestureRecognizer *)gestureRecognizer {
+
   if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-    REActionHandler handler = _actionHandlers[@(RELongPressAction)];
 
-    if (handler)
-      handler();
+    if (self.pressAction) self.pressAction();
+    else [self executeActionWithOptions:CommandOptionLongPress];
 
-    else
-      [self buttonActionWithOptions:CommandOptionLongPress];
   } else if (gestureRecognizer.state == UIGestureRecognizerStatePossible) {
-    _flags.longPressActive = YES;
-    self.highlighted       = YES;
+    self.model.highlighted = YES;
     [self setNeedsDisplay];
   }
 }
 
-/// Enables or disables tap and long press gestures
-- (void)updateGesturesEnabled:(BOOL)enabled {
-  self.tapGesture.enabled       = enabled;
-  self.longPressGesture.enabled = enabled;
-}
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark ￼Button state
-////////////////////////////////////////////////////////////////////////////////
-
-
-- (void)updateState {
-  UIControlState currentState = self.state;
-
-  self.userInteractionEnabled = ((currentState & UIControlStateDisabled) ? NO : YES);
-
-  BOOL invalidate = NO;
-
-  NSAttributedString * title = self.model.title;
-
-  if (![self.labelView.attributedText isEqualToAttributedString:title]) {
-    self.labelView.attributedText = title;
-    invalidate = YES;
-  }
-
-  UIImage * icon = self.model.icon.colorImage;
-
-  if (self.icon != icon) {
-    self.icon = icon;
-    invalidate = YES;
-  }
-
-  self.backgroundColor = self.model.backgroundColor;
-
-  if (invalidate) {
-    [self invalidateIntrinsicContentSize];
-    [self setNeedsDisplay];
-  }
-
-}
-
-- (UIControlState)state { return (UIControlState)self.model.state; }
-
-
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Button actions
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)setActionHandler:(REActionHandler)handler forAction:(REAction)action {
-  _actionHandlers[@(action)] = handler;
-}
+- (void)executeActionWithOptions:(CommandOptions)options {
 
-- (void)buttonActionWithOptions:(CommandOptions)options {
-  assert(self.model);
-
-  if (!self.editing && _flags.commandsActive) {
-    if (_flags.longPressActive) {
-      _flags.longPressActive = NO;
-      [self setNeedsDisplay];
-    }
+  if (!self.editing) {
 
     if (self.model.command.indicator) [_activityIndicator startAnimating];
 
-    CommandCompletionHandler completion =
-      ^(BOOL success, NSError * error)
-    {
-      if ([_activityIndicator isAnimating])
-        MSRunAsyncOnMain(^{ [_activityIndicator stopAnimating]; });
-    };
-
-    [self.model executeCommandWithOptions:options completion:completion];
+    [self.model executeCommandWithOptions:options
+                               completion:^(BOOL success, NSError * error) {
+                                 if ([self.activityIndicator isAnimating])
+                                   MSRunAsyncOnMain(^{ [self.activityIndicator stopAnimating]; });
+                               }];
   }
+
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Content size
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -223,9 +156,8 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 - (CGSize)intrinsicContentSize { return self.minimumSize; }
 
 - (CGSize)minimumSize {
-  CGRect frame = (CGRect) {
-    .size = REMinimumSize
-  };
+
+  CGRect frame = (CGRect) { .size = REMinimumSize };
 
   NSMutableSet * titles = [NSMutableSet set];
 
@@ -241,7 +173,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
     for (NSAttributedString * title in titles) {
 
       CGSize titleSize = [title size];
-      UIEdgeInsets titleInsets = self.titleEdgeInsets;
+      UIEdgeInsets titleInsets = self.model.titleEdgeInsets;
 
       titleSize.width  += titleInsets.left + titleInsets.right;
       titleSize.height += titleInsets.top + titleInsets.bottom;
@@ -254,35 +186,6 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
     frame.size.width = MAX(maxWidth, frame.size.width);
     frame.size.height = MAX(maxHeight, frame.size.height);
   }
-
-
-/*
-   NSAttributedString * title = self.model.title;
-
-  if (title) {
-    CGSize       titleSize   = [title size];
-    UIEdgeInsets titleInsets = self.titleEdgeInsets;
-
-    titleSize.width  += titleInsets.left + titleInsets.right;
-    titleSize.height += titleInsets.top + titleInsets.bottom;
-    frame             = CGRectUnion(frame, (CGRect) {.size = titleSize });
-  }
-
-  if (self.icon) {
-    CGSize       iconSize    = [self.icon size];
-    UIEdgeInsets imageInsets = self.imageEdgeInsets;
-
-    iconSize.width  += imageInsets.left + imageInsets.right;
-    iconSize.height += imageInsets.top + imageInsets.bottom;
-    frame            = CGRectUnion(frame, (CGRect) {.size = iconSize });
-  }
-
-  UIEdgeInsets contentInsets = self.contentEdgeInsets;
-
-  frame.size.width  += contentInsets.left + contentInsets.right;
-  frame.size.height += contentInsets.top + contentInsets.bottom;
-
-*/
 
   if (self.model.proportionLock && !CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
 
@@ -298,47 +201,36 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   return frame.size;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Subelement views
+#pragma mark Prevent adding subelement views
 ////////////////////////////////////////////////////////////////////////////////
 
 
 - (void)addSubelementView:(RemoteElementView *)view {}
-
 - (void)removeSubelementView:(RemoteElementView *)view {}
-
 - (void)addSubelementViews:(NSSet *)views {}
-
 - (void)removeSubelementViews:(NSSet *)views {}
-
 - (NSArray *)subelementViews { return nil; }
 
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Initialization
 ////////////////////////////////////////////////////////////////////////////////
 
 
 - (void)initializeIVARs {
-  _actionHandlers               = [@{} mutableCopy];
-  self.cornerRadii              = CORNER_RADII;
-  _options.minHighlightInterval = MIN_HIGHLIGHT_INTERVAL;
-  _flags.commandsActive         = YES;
-
+  self.cornerRadii    = (CGSize) { 5.0f, 5.0f };
   [super initializeIVARs];
 }
 
 - (void)initializeViewFromModel {
   [super initializeViewFromModel];
 
-  _longPressGesture.enabled = (self.model.longPressCommand != nil);
+  self.longPressGesture.enabled = (self.model.longPressCommand != nil);
+  self.labelView.attributedText = self.model.title;
 
-  [self updateState];
   [self invalidateIntrinsicContentSize];
   [self setNeedsDisplay];
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Key-value observing
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -347,18 +239,18 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
   MSDictionary * reg = [super kvoRegistration];
 
-    reg[@"selected"] = ^(MSKVOReceptionist * receptionist) {
-      [(__bridge ButtonView *)receptionist.context updateState];
-    };
+//    reg[@"selected"] = ^(MSKVOReceptionist * receptionist) {
+//      [(__bridge ButtonView *)receptionist.context updateState];
+//    };
 
-    reg[@"enabled"] = ^(MSKVOReceptionist * receptionist) {
-      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
-      buttonView.enabled = [receptionist.change[NSKeyValueChangeNewKey] boolValue];
-    };
+//    reg[@"enabled"] = ^(MSKVOReceptionist * receptionist) {
+//      ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
+//      buttonView.enabled = [receptionist.change[NSKeyValueChangeNewKey] boolValue];
+//    };
 
-    reg[@"highlighted"] = ^(MSKVOReceptionist * receptionist) {
-      [(__bridge ButtonView *)receptionist.context updateState];
-    };
+//    reg[@"highlighted"] = ^(MSKVOReceptionist * receptionist) {
+//      [(__bridge ButtonView *)receptionist.context setNeedsDisplay];
+//    };
 
     reg[@"style"] = ^(MSKVOReceptionist * receptionist) {
       [(__bridge ButtonView *)receptionist.context setNeedsDisplay];
@@ -368,56 +260,52 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
       ButtonView         * buttonView = (__bridge ButtonView *)receptionist.context;
       NSAttributedString * title      = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
       buttonView.labelView.attributedText = title;
+      [buttonView invalidateIntrinsicContentSize];
+      [buttonView setNeedsDisplay];
     };
 
-    reg[@"image"] = ^(MSKVOReceptionist * receptionist) {
-      [(__bridge ButtonView *)receptionist.context updateState];
-    };
+//    reg[@"image"] = ^(MSKVOReceptionist * receptionist) {
+//      assert(NO);
+//    };
 
     reg[@"icon"] = ^(MSKVOReceptionist * receptionist) {
       ButtonView * buttonView = (__bridge ButtonView *)receptionist.context;
-      ImageView  * icon       = NilSafe(receptionist.change[NSKeyValueChangeNewKey]);
-      buttonView.icon = icon.colorImage;
+      [buttonView invalidateIntrinsicContentSize];
       [buttonView setNeedsDisplay];
     };
 
   return reg;
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Editing
 ////////////////////////////////////////////////////////////////////////////////
 
 
 - (void)setEditingMode:(REEditingMode)editingMode {
   [super setEditingMode:editingMode];
-  _flags.commandsActive = (editingMode == REEditingModeNotEditing) ? YES : NO;
-  [self updateGesturesEnabled:_flags.commandsActive];
+  BOOL enabled = !self.isEditing;
+  self.tapGesture.enabled       = enabled;
+  self.longPressGesture.enabled = enabled;
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Drawing
 ////////////////////////////////////////////////////////////////////////////////
 
 
 - (void)drawContentInContext:(CGContextRef)ctx inRect:(CGRect)rect {
-  if (self.icon) {
+  UIImage * icon = self.model.icon.colorImage;
+  if (icon) {
     UIGraphicsPushContext(ctx);
-    CGRect insetRect = UIEdgeInsetsInsetRect(self.bounds, self.imageEdgeInsets);
-    CGSize imageSize = (CGSizeContainsSize(insetRect.size, self.icon.size)
-                        ? self.icon.size
-                        : CGSizeAspectMappedToSize(self.icon.size, insetRect.size, YES));
+    CGRect insetRect = UIEdgeInsetsInsetRect(self.bounds, self.model.imageEdgeInsets);
+    CGSize imageSize = (CGSizeContainsSize(insetRect.size, icon.size)
+                        ? icon.size
+                        : CGSizeAspectMappedToSize(icon.size, insetRect.size, YES));
     CGRect imageRect = CGRectMake(CGRectGetMidX(insetRect) - imageSize.width / 2.0,
                                   CGRectGetMidY(insetRect) - imageSize.height / 2.0,
                                   imageSize.width,
                                   imageSize.height);
 
-    if (_options.antialiasIcon) {
-      CGContextSetAllowsAntialiasing(ctx, YES);
-      CGContextSetShouldAntialias(ctx, YES);
-    }
-
-    [self.icon drawInRect:imageRect];
+    [icon drawInRect:imageRect];
     UIGraphicsPopContext();
   }
 }

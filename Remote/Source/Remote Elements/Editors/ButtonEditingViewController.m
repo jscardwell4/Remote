@@ -158,18 +158,18 @@ presentedControlState = _presentedControlState;
     UIControlState   toggledState;
 
     if (checkbox == self.selectedStateCheckbox) {
-        self.buttonView.selected = checked;
-        toggledState             = UIControlStateSelected;
+        self.buttonView.model.selected = checked;
+        toggledState = UIControlStateSelected;
         if (checked) _presentedControlState |= toggledState;
         else _presentedControlState &= ~toggledState;
     } else if (checkbox == self.highlightedStateCheckbox) {
-        self.buttonView.highlighted = checked;
-        toggledState                = UIControlStateHighlighted;
+        self.buttonView.model.highlighted = checked;
+        toggledState = UIControlStateHighlighted;
         if (checked) _presentedControlState |= toggledState;
         else _presentedControlState &= ~toggledState;
     } else if (checkbox == self.disabledStateCheckbox) {
-        self.buttonView.enabled = !checked;
-        toggledState            = UIControlStateDisabled;
+        self.buttonView.model.enabled = !checked;
+        toggledState = UIControlStateDisabled;
         if (checked) _presentedControlState |= toggledState;
         else _presentedControlState &= ~toggledState;
     } else if (checkbox == self.applyGlossCheckbox) {

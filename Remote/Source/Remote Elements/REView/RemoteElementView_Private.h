@@ -1,5 +1,5 @@
 //
-// REView_Private.h
+// RemoteElementView_Private.h
 // Remote
 //
 // Created by Jason Cardwell on 10/13/12.
@@ -13,12 +13,22 @@ MSEXTERN CGSize const REMinimumSize;
 @class REViewSubelements, REViewContent, REViewBackdrop, REViewOverlay, RELabelView;
 
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REView Class Extension
+#pragma mark Additional/modified properties
 ////////////////////////////////////////////////////////////////////////////////
 
 
 @interface RemoteElementView () <UIGestureRecognizerDelegate>
+@property (nonatomic, strong)            UIImageView       * backgroundImageView;
+@property (nonatomic, weak, readwrite)   RemoteElementView * parentElementView;
+@property (nonatomic, strong, readwrite) RemoteElement     * model;
+@end
+
+
+#pragma mark Initializing the view
+////////////////////////////////////////////////////////////////////////////////
+
+
+@interface RemoteElementView (Initialization)
 
 - (void)attachGestureRecognizers;
 - (void)registerForChangeNotification;
@@ -26,11 +36,11 @@ MSEXTERN CGSize const REMinimumSize;
 - (void)initializeViewFromModel;
 - (MSDictionary *)kvoRegistration;
 
-@property (nonatomic, strong)            UIImageView       * backgroundImageView;
-@property (nonatomic, weak, readwrite)   RemoteElementView * parentElementView;
-@property (nonatomic, strong, readwrite) RemoteElement     * model;
-
 @end
+
+
+#pragma mark Drawing directly into the view
+////////////////////////////////////////////////////////////////////////////////
 
 
 @interface RemoteElementView (Drawing)
@@ -44,6 +54,9 @@ MSEXTERN CGSize const REMinimumSize;
 @property (nonatomic, assign) CGSize         cornerRadii;
 
 @end
+
+#pragma mark Adding views and layers as content
+////////////////////////////////////////////////////////////////////////////////
 
 @interface RemoteElementView (InternalSubviews)
 
@@ -63,6 +76,10 @@ MSEXTERN CGSize const REMinimumSize;
 
 @end
 
+
+#pragma mark Editing callbacks
+////////////////////////////////////////////////////////////////////////////////
+
 @interface RemoteElementView (EditingHandles)
 
 - (void)willResizeViews:(NSSet *)views;
@@ -76,90 +93,5 @@ MSEXTERN CGSize const REMinimumSize;
 
 - (void)willTranslateViews:(NSSet *)views;
 - (void)didTranslateViews:(NSSet *)views;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - ButtonGroupView Class Extension
-////////////////////////////////////////////////////////////////////////////////
-
-
-@interface ButtonGroupView (Drawing)
-
-- (void)drawRoundedPanelInContext:(CGContextRef)ctx inRect:(CGRect)rect;
-
-@end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REButtonView Class Extension
-////////////////////////////////////////////////////////////////////////////////
-
-
-@interface ButtonView ()
-{
-  @private
-  struct {
-    BOOL longPressActive;
-    BOOL commandsActive;
-    BOOL highlightActionQueued;
-    BOOL initialized;
-  } _flags;
-
-  struct {
-    BOOL           antialiasIcon;
-    BOOL           antialiasText;
-    NSTimeInterval minHighlightInterval;
-  } _options;
-
-}
-@property (nonatomic, strong, readwrite)  NSMutableDictionary          * actionHandlers;
-@property (nonatomic, weak,   readwrite)  UITapGestureRecognizer       * tapGesture;
-@property (nonatomic, weak,   readwrite)  MSLongPressGestureRecognizer * longPressGesture;
-@property (nonatomic, weak,   readwrite)  UILabel                      * labelView;
-@property (nonatomic, strong, readwrite)  UIImage                      * icon;
-@property (nonatomic, weak,   readwrite)  UIActivityIndicatorView      * activityIndicator;
-@end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - REBatteryStatusButtonView Class Extension
-////////////////////////////////////////////////////////////////////////////////
-
-
-@interface BatteryStatusButtonView ()
-{
-  @private
-  CGFloat              _batteryLevel;                 /// current charge level
-  UIDeviceBatteryState _batteryState;                 /// i.e. charging, full
-}
-
-@end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Internal Subview Class Interfaces
-////////////////////////////////////////////////////////////////////////////////
-
-/// Generic view that initializes some basic settings
-@interface REViewInternal : UIView {
-  __weak RemoteElementView * _delegate;
-} @end
-
-/// View that holds any subelement views
-@interface REViewSubelements : REViewInternal @end
-
-/// View that draws primary content
-@interface REViewContent : REViewInternal @end
-
-/// View that draws any background decoration
-@interface REViewBackdrop : REViewInternal @end
-
-/// View that draws top level style elements such as gloss and editing indicators
-@interface REViewOverlay : REViewInternal
-
-@property (nonatomic, assign) BOOL      showAlignmentIndicators;
-@property (nonatomic, assign) BOOL      showContentBoundary;
-@property (nonatomic, strong) UIColor * boundaryColor;
 
 @end

@@ -19,7 +19,7 @@ RERole remoteElementRoleFromImportKey(NSString * importKey);
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-REState   remoteElementStateFromImportKey(NSString * importKey);
+REState   buttonStateFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape & Style

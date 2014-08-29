@@ -63,7 +63,6 @@ MSEXTERN_STRING REDefaultMode;
 @interface RemoteElement (CustomTypeAccessors)
 
 @property (nonatomic, assign, readwrite) RERole                  role;
-@property (nonatomic, assign, readwrite) REState                 state;
 @property (nonatomic, assign, readwrite) REShape                 shape;
 @property (nonatomic, assign, readwrite) REStyle                 style;
 @property (nonatomic, assign, readwrite) REThemeOverrideFlags    themeFlags;

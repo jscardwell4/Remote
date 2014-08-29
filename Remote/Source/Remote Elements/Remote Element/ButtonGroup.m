@@ -38,14 +38,6 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
 @dynamic labelConstraints, labelAttributes, commandContainer, autohide;
 
-/*
-+ (instancetype)buttonGroupWithRole:(RERole)role { return [self remoteElementWithAttributes:@{ @"role" : @(role) }]; }
-
-+ (instancetype)buttonGroupWithRole:(RERole)role context:(NSManagedObjectContext *)moc {
-  return [self remoteElementInContext:moc attributes:@{ @"role" : @(role) }];
-}
-
-*/
 - (REType)elementType { return RETypeButtonGroup; }
 
 - (void)setPanelLocation:(REPanelLocation)panelLocation {
@@ -142,7 +134,7 @@ MSNAMETAG_DEFINITION(REButtonGroupPanel);
 
   self.commandContainer = [self commandContainerForMode:mode];
 
-  [self updateButtons];
+    [self updateButtons];
 }
 
 - (void)updateButtons {
@@ -182,7 +174,9 @@ commandSetAtIndex: _commandSetCollectionIndex]);
 
   if (labelAttributes) labelAttributes.text = labelText;
 
-  return labelAttributes ? labelAttributes.string : [NSAttributedString attributedStringWithString:labelText];
+  return (labelAttributes
+          ? labelAttributes.string
+          : [NSAttributedString attributedStringWithString:labelText]);
 }
 
 - (void)selectCommandSetAtIndex:(NSUInteger)index {
@@ -199,60 +193,10 @@ commandSetAtIndex: _commandSetCollectionIndex]);
 ////////////////////////////////////////////////////////////////////////////////
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-          {
-              "uuid": "3D15E6CA-A182-476D-87D1-8E2CE774346E",
-              "name": "Sonos Activity Rocker",
-              "elementType": "button-group",
-              "role": "rocker",
-              "shape": "rounded-rectangle",
-              "style": "border gloss1",
-              "constraints": {
-                  "index": {
-                      "buttonTop": "B9C7296F-E1C1-4425-98AF-E67740F64CFE",
-                      "buttonBottom": "04A0CAB9-1EFF-46FC-864A-6C00759DD0BD",
-                      "sonosActivityRocker": "3D15E6CA-A182-476D-87D1-8E2CE774346E"
-                  },
-                  "format": [
-                          "buttonBottom.height = buttonTop.height",
-                          "buttonBottom.left = sonosActivityRocker.left",
-                          "buttonBottom.right = sonosActivityRocker.right",
-                          "buttonBottom.top = buttonTop.bottom",
-                          "buttonTop.height = sonosActivityRocker.height * 0.5",
-                          "buttonTop.left = sonosActivityRocker.left",
-                          "buttonTop.right = sonosActivityRocker.right",
-                          "buttonTop.top = sonosActivityRocker.top",
-                          "sonosActivityRocker.height ≥ 150",
-                          "sonosActivityRocker.width = 70"
-                  ]
-              },
-              "backgroundColor": "black",
-              "subelements": [ **Button**,
-              "command-set-collection.default": {
-                  "VOL": {
-                      "type": "rocker",
-                      "top": {
-                          "class": "sendir",
-                          "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C" // Volume Up
-                      },
-                      "bottom": {
-                          "class": "sendir",
-                          "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0" // Volume Down
-                      }
-                  }
-              },
-              "labelAttributes": {
-                  "font": "HelveticaNeue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
-                  "paragraph-style.alignment": "center"
-              }
-          }
-   */
 
   [super updateWithData:data];
 
+  self.autohide = BOOLValue(data[@"autohide"]);
   NSManagedObjectContext * moc = self.managedObjectContext;
 
   NSDictionary * commandSetData           = data[@"command-set"];
@@ -304,38 +248,12 @@ commandSetAtIndex: _commandSetCollectionIndex]);
   dictionary[@"command-set"]            = commandSets;
   SafeSetValueForKey(self.labelConstraints,               @"label-constraints", dictionary);
   SafeSetValueForKey(self.label,                          @"label",             dictionary);
-  SafeSetValueForKey(self.labelAttributes.JSONDictionary, @"label-attributes", dictionary);
+  SafeSetValueForKey(self.labelAttributes.JSONDictionary, @"label-attributes",  dictionary);
 
   [dictionary compact];
   [dictionary compress];
 
   return dictionary;
-}
-
-@end
-
-@implementation ButtonGroup (Debugging)
-
-- (MSDictionary *)deepDescriptionDictionary {
-  // TODO: Update
-
-  ButtonGroup * element = [self faultedObject];
-
-  assert(element);
-
-  MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
-
-/*
-  for (NSString * mode in self.modes) {
-    CommandContainer * container = [self commandContainerForMode:mode];
-  }
-*/
-
-//    dd[@"label"] = (element.label ? element.label.string : @"nil");
-//    dd[@"labelConstraints"] = (element.labelConstraints ? : @"nil");
-  dd[@"panelAssignment"] = NSStringFromREPanelAssignment(element.panelAssignment);
-
-  return (MSDictionary *)dd;
 }
 
 @end

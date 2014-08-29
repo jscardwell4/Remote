@@ -15,7 +15,7 @@
 
 @interface ControlStateTitleSet : ControlStateSet
 
-@property (nonatomic) BOOL suppressNormalStateAttributes;
+//@property (nonatomic) BOOL suppressNormalStateAttributes;
 
 - (NSAttributedString *)objectAtIndex:(NSUInteger)state;
 - (id)objectForKey:(NSString *)key;

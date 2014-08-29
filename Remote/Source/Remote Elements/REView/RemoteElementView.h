@@ -1,5 +1,5 @@
 //
-// REView.h
+// RemoteElementView.h
 //
 //
 // Created by Jason Cardwell on 10/13/12.
@@ -142,8 +142,8 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 /// according to the <ButtonGroup> model object it has been assigned. Multiple button group
 /// views are typically attached as subviews for a `RemoteView` to construct a fully
 /// realized interface to the user's home theater system. Subclasses include
-/// <PickerLabelButtonGroupView>, <RoundedPanelButtonGroupView>, and
-/// <SelectionPanelButtonGroupView>.
+/// <RockerView>, <RoundedPanelButtonGroupView>, and
+/// <ModeSelectionView>.
 @class ButtonView, ButtonGroup, RemoteView;
 
 @interface ButtonGroupView : RemoteElementView
@@ -172,15 +172,15 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 #pragma mark - Subclasses of ButtonGroupView
 ////////////////////////////////////////////////////////////////////////////////
 
-/// `SelectionPanelButtonGroupView` subclasses <RoundedPanelButtonGroupView> to add
+/// `ModeSelectionView` subclasses <RoundedPanelButtonGroupView> to add
 /// mode management functionality. Configurations are specified by the `key`
 /// values of the view's buttons. Pressing one of the buttons causes the view to post a
 /// change notification to the default notification center. Instances of
 /// <ConfigurationDelegate> registered for the notification can swap out <Command> or
 /// <CommandSet> for the <Button> or <ButtonGroup> to which the delegate has been assigned.
-@interface SelectionPanelButtonGroupView : ButtonGroupView @end
+@interface ModeSelectionView : ButtonGroupView @end
 
-@interface PickerLabelButtonGroupView : ButtonGroupView @end
+@interface RockerView : ButtonGroupView @end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - REButtonView
@@ -196,25 +196,15 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 /// <BatteryStatusButtonView>
 @interface ButtonView : RemoteElementView
 
-- (void)setActionHandler:(REActionHandler)handler
-               forAction:(REAction)action;
-
-@property (nonatomic, strong, readonly)  Button          * model;
-@property (nonatomic, weak,   readonly)  ButtonGroupView * parentElementView;
-@property (nonatomic, assign, readonly)  UIControlState    state;
+@property (nonatomic, copy) void (^tapAction)(void);
+@property (nonatomic, copy) void (^pressAction)(void);
 
 @end
 
-/// Properties forwared to model object.
-@interface ButtonView (REButton)
+@interface ButtonView (SubclassSpecific)
 
-@property (nonatomic, assign, getter = isHighlighted) BOOL         highlighted;
-@property (nonatomic, assign, getter = isSelected)    BOOL         selected;
-@property (nonatomic, assign, getter = isEnabled)     BOOL         enabled;
-@property (nonatomic, assign)                         UIEdgeInsets titleEdgeInsets;
-@property (nonatomic, assign)                         UIEdgeInsets imageEdgeInsets;
-@property (nonatomic, assign)                         UIEdgeInsets contentEdgeInsets;
-@property (nonatomic, strong)                         Command    * command;
+@property (nonatomic, strong, readonly)  Button          * model;
+@property (nonatomic, weak,   readonly)  ButtonGroupView * parentElementView;
 
 @end
 
@@ -223,14 +213,4 @@ NSString *prettyRemoteElementConstraint(NSLayoutConstraint * constraint);
 @interface ConnectionStatusButtonView : ButtonView @end
 
 /// <ButtonView> subclass that has been specialized to display battery status information.
-@interface BatteryStatusButtonView : ButtonView
-
-@property (nonatomic, strong) UIColor * frameColor;      /// Color to make the battery frame.
-@property (nonatomic, strong) UIColor * plugColor;       /// Color to make the 'plug'.
-@property (nonatomic, strong) UIColor * lightningColor;  /// Color to make the 'thunderbolt'.
-@property (nonatomic, strong) UIColor * fillColor;       /// Color to make the 'charged' fill.
-@property (nonatomic, strong) UIImage * frameIcon;       /// Image to draw for battery frame.
-@property (nonatomic, strong) UIImage * plugIcon;        /// Image to draw for 'plug'.
-@property (nonatomic, strong) UIImage * lightningIcon;   /// Image to draw when charging.
-
-@end
+@interface BatteryStatusButtonView : ButtonView @end

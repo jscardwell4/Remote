@@ -7,14 +7,13 @@
 //
 #import "RETypedefs.h"
 
-@class RemoteElement, SystemCommand, CommandSet, Command, SwitchCommand;
+@class RemoteElement, SystemCommand, CommandSet, Command, SwitchCommand, Button;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Types, Subtypes and Roles
 ////////////////////////////////////////////////////////////////////////////////
 
 NSString * typeJSONValueForRemoteElement(RemoteElement * element);
-//NSString * subtypeJSONValueForRemoteElement(RemoteElement * element);
 NSString * roleJSONValueForRemoteElement(RemoteElement * element);
 NSString * roleJSONValueForRERole(RERole role);
 
@@ -22,7 +21,7 @@ NSString * roleJSONValueForRERole(RERole role);
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * stateJSONValueForRemoteElement(RemoteElement * element);
+NSString * stateJSONValueForButton(Button * element);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style & Theme

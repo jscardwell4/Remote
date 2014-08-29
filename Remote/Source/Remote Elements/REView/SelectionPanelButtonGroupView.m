@@ -1,5 +1,5 @@
 //
-// SelectionPanelButtonGroupView.m
+// ModeSelectionView.m
 // Remote
 //
 // Created by Jason Cardwell on 3/20/13.
@@ -14,11 +14,11 @@
 static int ddLogLevel   = DefaultDDLogLevel;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
-@interface SelectionPanelButtonGroupView ()
+@interface ModeSelectionView ()
 @property (nonatomic, weak) ButtonView * selectedButton;
 @end
 
-@implementation SelectionPanelButtonGroupView
+@implementation ModeSelectionView
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - ButtonGroupView overrides
@@ -27,12 +27,11 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 - (void)addSubelementView:(ButtonView *)view {
   [super addSubelementView:view];
 
-    if (!_selectedButton) [self selectButton:view];
+  if (!_selectedButton) [self selectButton:view];
 
-  __weak SelectionPanelButtonGroupView * weakself = self;
-  __weak ButtonView                    * weakview = view;
-
-  [view setActionHandler:^{ [weakself handleSelection:weakview]; } forAction:RESingleTapAction];
+  __weak ModeSelectionView * weakself = self;
+  __weak ButtonView        * weakview = view;
+  view.tapAction = ^{ [weakself handleSelection:weakview]; };
 
 }
 
@@ -62,7 +61,36 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 }
 
 - (void)drawBackdropInContext:(CGContextRef)ctx inRect:(CGRect)rect {
-  [self drawRoundedPanelInContext:ctx inRect:rect];
+  REPanelLocation panelLocation = self.model.panelLocation;
+
+  CGContextClearRect(ctx, self.bounds);
+
+  NSUInteger roundedCorners = (panelLocation == REPanelLocationRight
+                               ? UIRectCornerTopLeft | UIRectCornerBottomLeft
+                               : (panelLocation == REPanelLocationLeft
+                                  ? UIRectCornerTopRight | UIRectCornerBottomRight
+                                  : 0));
+
+  UIBezierPath * bezierPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
+                                                    byRoundingCorners:roundedCorners
+                                                          cornerRadii:CGSizeMake(15, 15)];
+
+  self.borderPath = bezierPath;
+
+  [defaultBGColor() setFill];
+
+  [bezierPath fillWithBlendMode:kCGBlendModeNormal alpha:0.9];
+
+  CGRect  insetRect = CGRectInset(self.bounds, 0, 3);
+  CGFloat tx        = (panelLocation == REPanelLocationRight ? 3 : -3);
+
+  insetRect = CGRectApplyAffineTransform(insetRect, CGAffineTransformMakeTranslation(tx, 0));
+
+  bezierPath = [UIBezierPath bezierPathWithRoundedRect:insetRect
+                                     byRoundingCorners:roundedCorners
+                                           cornerRadii:CGSizeMake(12, 12)];
+  bezierPath.lineWidth = 2.0;
+  [bezierPath strokeWithBlendMode:kCGBlendModeClear alpha:1.0];
 }
 
 @end
