@@ -1,837 +1,0 @@
-TCoreDataTests
-v5
-r1
-cCheck dependencies
-cProcessInfoPlistFile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/Info.plist CoreDataTests/CoreDataTests-Info.plist
-cProcessPCH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.pth CoreDataTests/CoreDataTests-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests normal i386
-cGenerateDSYMFile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests
-cCopyStringsFile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/en.lproj/InfoPlist.strings CoreDataTests/en.lproj/InfoPlist.strings
-cPhaseScriptExecution "Run Script" /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Script-C28FD57A171C65BB008560E3.sh
-cTouch /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest
-
-N/Applications/Xcode.app/Contents/Developer/Library/Frameworks/SenTestingKit.framework/SenTestingKit
-c00000000516CA86100000000000310B0
-t1366075489
-s200880
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk
-c00000000516CA8940000000000000110
-t1366075540
-s272
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/NSException_SenTestFailure.h
-c000000005109B8F20000000000000E25
-t1359591666
-s3621
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenInterfaceTestCase.h
-c000000005109B8F20000000000000701
-t1359591666
-s1793
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTest.h
-c000000005109B8F2000000000000084C
-t1359591666
-s2124
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestCase.h
-c000000005109B8F200000000000019FB
-t1359591666
-s6651
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestCaseRun.h
-c000000005109B8F20000000000000875
-t1359591666
-s2165
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestCase_Macros.h
-c000000005109B8F20000000000007F41
-t1359591666
-s32577
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestDefines.h
-c000000005109B8F20000000000000947
-t1359591666
-s2375
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestDistributedNotifier.h
-c000000005109B8F20000000000000800
-t1359591666
-s2048
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestLog.h
-c000000005109B8F2000000000000079D
-t1359591666
-s1949
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestObserver.h
-c000000005109B8F20000000000000A6C
-t1359591666
-s2668
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestProbe.h
-c000000005109B8F20000000000000AD1
-t1359591666
-s2769
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestRun.h
-c000000005109B8F20000000000000A79
-t1359591666
-s2681
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestSuite.h
-c000000005109B8F20000000000000CCF
-t1359591666
-s3279
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestSuiteRun.h
-c000000005109B8F200000000000007E1
-t1359591666
-s2017
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestingKit.h
-c000000005109B8F200000000000008A5
-t1359591666
-s2213
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks/SenTestingKit.framework/Headers/SenTestingUtilities.h
-c000000005109B8F20000000000000C37
-t1359591666
-s3127
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/Frameworks/CoreData.framework/CoreData
-c000000005109B8F7000000000030F580
-t1359591671
-s3208576
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/Frameworks/Foundation.framework/Foundation
-c000000005109B8F700000000003DDFA0
-t1359591671
-s4054944
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
-c000000005109B8F700000000000015F7
-t1359591671
-s5623
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
-c000000005109B8F90000000000000E8D
-t1359591673
-s3725
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/Frameworks/UIKit.framework/UIKit
-c000000005109B8F90000000000AB6230
-t1359591673
-s11231792
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/ContextFilterLogFormatter.h
-c00000000516B0E5200000000000008BD
-t1365970514
-s2237
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/DDASLLogger.h
-c00000000516B0E52000000000000049A
-t1365970514
-s1178
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/DDAbstractDatabaseLogger.h
-c00000000516B0E520000000000000E7D
-t1365970514
-s3709
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/DDFileLogger.h
-c00000000516B0E520000000000002EBA
-t1365970514
-s11962
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/DDLog.h
-c00000000516B0E520000000000005892
-t1365970514
-s22674
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/DDTTYLogger.h
-c00000000516B0E52000000000000175D
-t1365970514
-s5981
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/DispatchQueueLogFormatter.h
-c00000000516B0E520000000000001137
-t1365970514
-s4407
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Headers/Lumberjack.h
-c00000000516B0E52000000000000011C
-t1365970514
-s284
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts/Lumberjack.framework/Lumberjack
-c00000000516B0E5100000000000BC024
-t1365970513
-s770084
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/CALayer+MSKitAdditions.h
-c00000000516D590D00000000000001D3
-t1366120717
-s467
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSAssertionHandler.h
-c00000000516D590E00000000000000F0
-t1366120718
-s240
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSBarButtonItem.h
-c00000000516D590E000000000000021C
-t1366120718
-s540
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSBitVector.h
-c00000000516D590E000000000000067E
-t1366120718
-s1662
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSCheckboxView.h
-c00000000516D590E000000000000047E
-t1366120718
-s1150
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSColorInputButton.h
-c00000000516D590E0000000000000110
-t1366120718
-s272
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSColorInputView.h
-c00000000516D590E00000000000001B7
-t1366120718
-s439
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSColorInputViewController.h
-c00000000516D590E00000000000002A2
-t1366120718
-s674
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSCompletionBlockOperation.h
-c00000000516D590E00000000000003E0
-t1366120718
-s992
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSContextChangeReceptionist.h
-c00000000516D590E00000000000008F2
-t1366120718
-s2290
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSError.h
-c00000000516D590E0000000000000171
-t1366120718
-s369
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSGestureManager.h
-c00000000516D590E0000000000000FA4
-t1366120718
-s4004
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKVOReceptionist.h
-c00000000516D590E0000000000000604
-t1366120718
-s1540
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKit.h
-c00000000516D590D0000000000000B65
-t1366120717
-s2917
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitDefines.h
-c00000000516D590E0000000000000240
-t1366120718
-s576
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitGeometryFunctions.h
-c00000000516D590E0000000000004EF0
-t1366120718
-s20208
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitLoggingFunctions.h
-c00000000516D590E0000000000000538
-t1366120718
-s1336
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitMacros.h
-c00000000516D590E0000000000001F9D
-t1366120718
-s8093
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitMiscellaneousFunctions.h
-c00000000516D590E00000000000001F9
-t1366120718
-s505
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSKitProtocols.h
-c00000000516D590E0000000000000240
-t1366120718
-s576
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSLog.h
-c00000000516D590E000000000000B37E
-t1366120718
-s45950
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSLongPressGestureRecognizer.h
-c00000000516D590E0000000000000127
-t1366120718
-s295
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSMultiselectGestureRecognizer.h
-c00000000516D590E0000000000000689
-t1366120718
-s1673
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSMultiselectView.h
-c00000000516D590E00000000000000D4
-t1366120718
-s212
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSNetworkReachability.h
-c00000000516D590E00000000000001BE
-t1366120718
-s446
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSNumberPadView.h
-c00000000516D590E000000000000026F
-t1366120718
-s623
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPickerInputButton.h
-c00000000516D590E0000000000000ED9
-t1366120718
-s3801
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPickerInputView.h
-c00000000516D590E00000000000009FB
-t1366120718
-s2555
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPickerInputViewController.h
-c00000000516D590E0000000000000447
-t1366120718
-s1095
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPinchGestureRecognizer.h
-c00000000516D590E000000000000016A
-t1366120718
-s362
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSPopupBarButton.h
-c00000000516D590E0000000000000999
-t1366120718
-s2457
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSQueue.h
-c00000000516D590E00000000000001A5
-t1366120718
-s421
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSReflectingView.h
-c00000000516D590E000000000000027A
-t1366120718
-s634
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSReplicatorView.h
-c00000000516D590E00000000000000D3
-t1366120718
-s211
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSResizingLayer.h
-c00000000516D590E0000000000000143
-t1366120718
-s323
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSSwipeGestureRecognizer.h
-c00000000516D590E0000000000000251
-t1366120718
-s593
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSTouchReporterView.h
-c00000000516D590E0000000000000439
-t1366120718
-s1081
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSValueTransformers.h
-c00000000516D590E00000000000000FD
-t1366120718
-s253
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/MSView.h
-c00000000516D590E000000000000042C
-t1366120718
-s1068
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSArray+MSKitAdditions.h
-c00000000516D590D000000000000047F
-t1366120717
-s1151
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSAttributedString+MSKitAdditions.h
-c00000000516D590D00000000000008AC
-t1366120717
-s2220
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSDictionary+MSKitAdditions.h
-c00000000516D590D000000000000033B
-t1366120717
-s827
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSFetchRequest+MSKitAdditions.h
-c00000000516D590D00000000000003C4
-t1366120717
-s964
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSHashTable+MSKitAdditions.h
-c00000000516D590D0000000000000189
-t1366120717
-s393
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSLayoutConstraint+MSKitAdditions.h
-c00000000516D590D0000000000002F64
-t1366120717
-s12132
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSManagedObject+MSKitAdditions.h
-c00000000516D590D00000000000002AA
-t1366120717
-s682
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSManagedObjectContext+MSKitAdditions.h
-c00000000516D590D000000000000018B
-t1366120717
-s395
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSMapTable+MSKitAdditions.h
-c00000000516D590D0000000000000190
-t1366120717
-s400
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSNull+MSKitAdditions.h
-c00000000516D590D0000000000000284
-t1366120717
-s644
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSObject+MSKitAdditions.h
-c00000000516D590D0000000000000341
-t1366120717
-s833
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSOperationQueue+MSKitAdditions.h
-c00000000516D590D000000000000014E
-t1366120717
-s334
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSOrderedSet+MSKitAdditions.h
-c00000000516D590D00000000000001AD
-t1366120717
-s429
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSRegularExpression+MSKitAdditions.h
-c00000000516D590D00000000000001D3
-t1366120717
-s467
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSSet+MSKitAdditions.h
-c00000000516D590D00000000000004DC
-t1366120717
-s1244
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSString+MSKitAdditions.h
-c00000000516D590E000000000000147B
-t1366120718
-s5243
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSURL+MSKitAdditions.h
-c00000000516D590E00000000000000F9
-t1366120718
-s249
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSUserDefaults+MSKitAdditions.h
-c00000000516D590E00000000000001C1
-t1366120718
-s449
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/NSValue+MSKitAdditions.h
-c00000000516D590E0000000000000590
-t1366120718
-s1424
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIAlertView+MSKitAdditions.h
-c00000000516D590E0000000000000342
-t1366120718
-s834
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UICollectionViewFlowLayout+MSKitAdditions.h
-c00000000516D590E0000000000000168
-t1366120718
-s360
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIColor+MSKitAdditions.h
-c00000000516D590E0000000000000F6A
-t1366120718
-s3946
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIFont+MSKitAdditions.h
-c00000000516D590E0000000000000145
-t1366120718
-s325
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIGestureRecognizer+MSKitAdditions.h
-c00000000516D590E0000000000000588
-t1366120718
-s1416
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIImage+MSKitAdditions.h
-c00000000516D590E0000000000000E11
-t1366120718
-s3601
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIView+MSKitAdditions.h
-c00000000516D590E00000000000008CF
-t1366120718
-s2255
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/Headers/UIWindow+MSKitAdditions.h
-c00000000516D590E00000000000000FD
-t1366120718
-s253
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework/MSKit.framework/MSKit
-c00000000516D591B0000000000221ECC
-t1366120731
-s2236108
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalImportFunctions.h
-c00000000516D59330000000000000296
-t1366120755
-s662
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord+Actions.h
-c00000000516D59330000000000000840
-t1366120755
-s2112
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord+ErrorHandling.h
-c00000000516D593300000000000001BA
-t1366120755
-s442
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord+Options.h
-c00000000516D59330000000000000486
-t1366120755
-s1158
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord+Setup.h
-c00000000516D593300000000000001F0
-t1366120755
-s496
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord+ShorthandSupport.h
-c00000000516D59330000000000000139
-t1366120755
-s313
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord+iCloud.h
-c00000000516D59330000000000000345
-t1366120755
-s837
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/MagicalRecord.h
-c00000000516D593300000000000010C4
-t1366120755
-s4292
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSAttributeDescription+MagicalDataImport.h
-c00000000516D59330000000000000182
-t1366120755
-s386
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSEntityDescription+MagicalDataImport.h
-c00000000516D59330000000000000182
-t1366120755
-s386
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObject+MagicalAggregation.h
-c00000000516D593300000000000005B7
-t1366120755
-s1463
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObject+MagicalDataImport.h
-c00000000516D5933000000000000041F
-t1366120755
-s1055
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObject+MagicalFinders.h
-c00000000516D593300000000000012CD
-t1366120755
-s4813
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObject+MagicalRecord.h
-c00000000516D593300000000000006DE
-t1366120755
-s1758
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObject+MagicalRequests.h
-c00000000516D59330000000000000752
-t1366120755
-s1874
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObjectContext+MagicalObserving.h
-c00000000516D593300000000000002A9
-t1366120755
-s681
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObjectContext+MagicalRecord.h
-c00000000516D59330000000000000411
-t1366120755
-s1041
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObjectContext+MagicalSaves.h
-c00000000516D59330000000000000C02
-t1366120755
-s3074
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObjectContext+MagicalThreading.h
-c00000000516D59330000000000000175
-t1366120755
-s373
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSManagedObjectModel+MagicalRecord.h
-c00000000516D593300000000000002F5
-t1366120755
-s757
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSNumber+MagicalDataImport.h
-c00000000516D593300000000000001A5
-t1366120755
-s421
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSObject+MagicalDataImport.h
-c00000000516D59330000000000000248
-t1366120755
-s584
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSPersistentStore+MagicalRecord.h
-c00000000516D59330000000000000288
-t1366120755
-s648
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSPersistentStoreCoordinator+MagicalRecord.h
-c00000000516D59330000000000000888
-t1366120755
-s2184
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSRelationshipDescription+MagicalDataImport.h
-c00000000516D5933000000000000013B
-t1366120755
-s315
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/Headers/NSString+MagicalDataImport.h
-c00000000516D59330000000000000146
-t1366120755
-s326
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts/MagicalRecord.framework/MagicalRecord
-c00000000516D59360000000000097CBC
-t1366120758
-s621756
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests-Prefix.pch
-c00000000516C2E3B00000000000000C3
-t1366044219
-s195
-i<UIKit/UIKit.h>
-i<Foundation/Foundation.h>
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.h
-c00000000516C2E3B00000000000000EE
-t1366044219
-s238
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m
-c00000000516CBAFA000000000000105E
-t1366080250
-s4190
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/en.lproj/InfoPlist.strings
-c00000000516C2E3B000000000000002D
-t1366044219
-s45
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.pth
-t1366120697
-s4679804
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.LinkFileList
-c00000000516D58F900000000000000B4
-t1366120697
-s180
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.o
-t1366120697
-s63992
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Script-C28FD57A171C65BB008560E3.sh
-c00000000516D58F90000000000000062
-t1366120697
-s98
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest
-t1366120697
-s136
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM
-t2
-s0
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests
-t2
-s0
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/Info.plist
-t1366120697
-s515
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/en.lproj/InfoPlist.strings
-t1366120697
-s42
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/CoreData/MSModelObject.h
-c00000000516844560000000000000280
-t1365787734
-s640
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Protocols/REEditableBackground.h
-c00000000515B562E0000000000000162
-t1364940334
-s354
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Element/Configurations/REConfigurationDelegate.h
-c000000005169CB210000000000000DCD
-t1365887777
-s3533
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Remote Element/RemoteElement.h
-c00000000516CB543000000000000345F
-t1366078787
-s13407
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Singletons/CoreDataManager.h
-c00000000516C430200000000000003F9
-t1366049538
-s1017
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Type Definitions, Constants & Functions/MSRemoteMacros.h
-c00000000516C4F900000000000000414
-t1366052752
-s1044
-
-N/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote/Source/Type Definitions, Constants & Functions/RETypedefs.h
-c00000000516839B60000000000002F66
-t1365785014
-s12134
-
-NCoreDataTests/CoreDataTests-Info.plist
-c00000000516C2E3B00000000000002BB
-t1366044219
-s699
-
-CBuild AST from /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies6b6211ed921db741^ec8a11ed921db741^---0#1#0#--18"Check dependencies36"5ADC70CD-F685-4A13-A58C-F21484D54D27-
-
-CCompileC DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s387814125.088430
-e387814125.259544
-r1
-xCompileC
-xDerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.o
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Compile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.mcbbb16ed921db741^477142ed921db741^---0#0#0#-19%DVTDocumentLocation2@95"file://localhost/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m0000000000000000^4921"CompileC DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.o CoreDataTests/CoreDataTests.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wenum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk -fexceptions -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch -mios-simulator-version-min=6.1 -iquote /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-generated-files.hmap -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-own-target-headers.hmap -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-all-target-headers.hmap -iquote /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-project-headers.hmap -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources/i386 -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator -F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks -F/Applications/Xcode.app/Contents/Developer/Library/Frameworks -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework -include /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch -MMD -MT dependencies -MF /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.d --serialize-diagnostics /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.dia -c /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests.m -o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.o36"91919315-AA3A-4285-9C92-4446718FFB68-
-
-CCopyStringsFile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/en.lproj/InfoPlist.strings CoreDataTests/en.lproj/InfoPlist.strings
-s387813497.708250
-e387813497.711034
-r1
-xCopyStringsFile
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/en.lproj/InfoPlist.strings
-xCoreDataTests/en.lproj/InfoPlist.strings
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection45"Copy CoreDataTests/en.lproj/InfoPlist.stringsae62b579901db741^5306b679901db741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/en.lproj/InfoPlist.strings0000000000000000^683"CopyStringsFile DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/en.lproj/InfoPlist.strings CoreDataTests/en.lproj/InfoPlist.strings    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copyStrings --validate --inputencoding utf-8 --outputencoding binary --outdir /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/en.lproj -- CoreDataTests/en.lproj/InfoPlist.strings36"162864D6-5E1F-44C8-9D22-60D9363588A7-
-
-CGenerateDSYMFile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests
-s387814125.281579
-e387814125.287238
-r0
-xGenerateDSYMFile
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests
-oerror: unable to open executable '/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests'
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection140"Generate /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM802848ed921db741^e4f34aed921db741^-175"error: unable to open executable '/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests'1(21%IDEActivityLogMessage2@175"error: unable to open executable '/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests'-387814125#18446744073709551615#0#-2#-23%DVTTextDocumentLocation3@-0000000000000000^18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#0#14"Dsymutil Error--0#0#0#-19%DVTDocumentLocation4@147"file://localhost/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM000000000080d041^818"GenerateDSYMFile DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests -o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest.dSYM36"064D4F48-BDAE-4F00-8CFE-2DE86BC20EA7-
-
-CLd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests normal i386
-s387814125.266471
-e387814125.275055
-r0
-xLd
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests
-xnormal
-xi386
-old: file not found: /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/Remote.app/Remote
-oclang: error: linker command failed with exit code 1 (use -v to see invocation)
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection145"Link /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTestsfd4d44ed921db741^fe8047ed921db741^-224"ld: file not found: /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/Remote.app/Remoteclang: error: linker command failed with exit code 1 (use -v to see invocation)2(21%IDEActivityLogMessage2@139"File not found: /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/Remote.app/Remote-387814125#0#144#-0#-23%DVTTextDocumentLocation3@-0000000000000000^18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#0#26"Apple Mach-O Linker Notice--2@65"Linker command failed with exit code 1 (use -v to see invocation)-387814125#144#80#-2#-3@-0000000000000000^18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#0#25"Apple Mach-O Linker Error--0#0#0#--2455"Ld DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests normal i386    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv IPHONEOS_DEPLOYMENT_TARGET 6.1    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch i386 -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk -L/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator -F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks -F/Applications/Xcode.app/Contents/Developer/Library/Frameworks -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework -filelist /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.LinkFileList -bundle_loader /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/Remote.app/Remote -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fobjc-link-runtime -Xlinker -no_implicit_dylibs -mios-simulator-version-min=6.1 -framework SenTestingKit -framework UIKit -framework Foundation -framework CoreData -framework MagicalRecord -framework Lumberjack -framework MSKit -o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/CoreDataTests36"92BDE435-46D3-47A0-9154-B680AF9F11A9-
-
-CPhaseScriptExecution "Run Script" /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Script-C28FD57A171C65BB008560E3.sh
-s387814125.302229
-e387814125.320837
-r1
-xPhaseScriptExecution
-xRun Script
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Script-C28FD57A171C65BB008560E3.sh
-o/Applications/Xcode.app/Contents/Developer/Tools/RunUnitTests:68: note: RunUnitTests exited without running tests because TEST_AFTER_BUILD was set to NO.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection36"Run custom shell script 'Run Script'eaeb4ded921db741^7d2352ed921db741^-154"/Applications/Xcode.app/Contents/Developer/Tools/RunUnitTests:68: note: RunUnitTests exited without running tests because TEST_AFTER_BUILD was set to NO.1(21%IDEActivityLogMessage2@81"RunUnitTests exited without running tests because TEST_AFTER_BUILD was set to NO.-387814125#0#154#-0#-23%DVTTextDocumentLocation3@77"file://localhost/Applications/Xcode.app/Contents/Developer/Tools/RunUnitTests0000000000000000^67#18446744073709551615#67#18446744073709551615#18446744073709551615#0#30"Shell Script Invocation Notice--0#0#0#--23411"PhaseScriptExecution "Run Script" DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Script-C28FD57A171C65BB008560E3.sh    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv ACTION build    setenv ALTERNATE_GROUP staff    setenv ALTERNATE_MODE u+w,go-w,a+rX    setenv ALTERNATE_OWNER Moondeer    setenv ALWAYS_SEARCH_USER_PATHS NO    setenv APPLE_INTERNAL_DEVELOPER_DIR /AppleInternal/Developer    setenv APPLE_INTERNAL_DIR /AppleInternal    setenv APPLE_INTERNAL_DOCUMENTATION_DIR /AppleInternal/Documentation    setenv APPLE_INTERNAL_LIBRARY_DIR /AppleInternal/Library    setenv APPLE_INTERNAL_TOOLS /AppleInternal/Developer/Tools    setenv APPLY_RULES_IN_COPY_FILES NO    setenv ARCHS i386    setenv ARCHS_STANDARD_32_BIT i386    setenv ARCHS_UNIVERSAL_IPHONE_OS i386    setenv AVAILABLE_PLATFORMS "iphonesimulator macosx iphoneos"    setenv BUILD_COMPONENTS "headers build"    setenv BUILD_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products    setenv BUILD_ROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products    setenv BUILD_STYLE     setenv BUILD_VARIANTS normal    setenv BUILT_PRODUCTS_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator    setenv BUNDLE_LOADER /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/Remote.app/Remote    setenv CACHE_ROOT /var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/C/com.apple.Xcode.501    setenv CCHROOT /var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/C/com.apple.Xcode.501    setenv CHMOD /bin/chmod    setenv CHOWN /usr/sbin/chown    setenv CLANG_CXX_LANGUAGE_STANDARD gnu++0x    setenv CLANG_CXX_LIBRARY libc++    setenv CLANG_ENABLE_OBJC_ARC YES    setenv CLANG_WARN_CONSTANT_CONVERSION YES    setenv CLANG_WARN_EMPTY_BODY YES    setenv CLANG_WARN_ENUM_CONVERSION YES    setenv CLANG_WARN_INT_CONVERSION YES    setenv CLANG_WARN__DUPLICATE_METHOD_MATCH YES    setenv CLASS_FILE_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/JavaClasses    setenv CLEAN_PRECOMPS YES    setenv CLONE_HEADERS NO    setenv CODESIGNING_FOLDER_PATH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest    setenv COMMAND_MODE legacy    setenv COMPOSITE_SDK_DIRS /var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/C/com.apple.Xcode.501/CompositeSDKs    setenv COMPRESS_PNG_FILES YES    setenv CONFIGURATION Debug    setenv CONFIGURATION_BUILD_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator    setenv CONFIGURATION_TEMP_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator    setenv CONTENTS_FOLDER_PATH CoreDataTests.octest    setenv COPYING_PRESERVES_HFS_DATA NO    setenv COPY_PHASE_STRIP NO    setenv COPY_RESOURCES_FROM_STATIC_FRAMEWORKS YES    setenv CP /bin/cp    setenv CURRENT_ARCH i386    setenv CURRENT_VARIANT normal    setenv DEAD_CODE_STRIPPING NO    setenv DEBUGGING_SYMBOLS YES    setenv DEBUG_INFORMATION_FORMAT dwarf-with-dsym    setenv DEFAULT_COMPILER com.apple.compilers.llvm.clang.1_0    setenv DEPLOYMENT_LOCATION NO    setenv DEPLOYMENT_POSTPROCESSING NO    setenv DERIVED_FILES_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources    setenv DERIVED_FILE_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources    setenv DERIVED_SOURCES_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources    setenv DEVELOPER_APPLICATIONS_DIR /Applications/Xcode.app/Contents/Developer/Applications    setenv DEVELOPER_BIN_DIR /Applications/Xcode.app/Contents/Developer/usr/bin    setenv DEVELOPER_DIR /Applications/Xcode.app/Contents/Developer    setenv DEVELOPER_FRAMEWORKS_DIR /Applications/Xcode.app/Contents/Developer/Library/Frameworks    setenv DEVELOPER_FRAMEWORKS_DIR_QUOTED "\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks\""    setenv DEVELOPER_LIBRARY_DIR /Applications/Xcode.app/Contents/Developer/Library    setenv DEVELOPER_SDK_DIR /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs    setenv DEVELOPER_TOOLS_DIR /Applications/Xcode.app/Contents/Developer/Tools    setenv DEVELOPER_USR_DIR /Applications/Xcode.app/Contents/Developer/usr    setenv DEVELOPMENT_LANGUAGE English    setenv DOCUMENTATION_FOLDER_PATH CoreDataTests.octest/English.lproj/Documentation    setenv DO_HEADER_SCANNING_IN_JAM NO    setenv DSTROOT /tmp/Remote.dst    setenv DT_TOOLCHAIN_DIR /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain    setenv DWARF_DSYM_FILE_NAME CoreDataTests.octest.dSYM    setenv DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT NO    setenv DWARF_DSYM_FOLDER_PATH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator    setenv EFFECTIVE_PLATFORM_NAME -iphonesimulator    setenv ENABLE_HEADER_DEPENDENCIES YES    setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS ".DS_Store .svn .git .hg CVS"    setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES "*.nib *.lproj *.framework *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj"    setenv EXECUTABLES_FOLDER_PATH CoreDataTests.octest/Executables    setenv EXECUTABLE_FOLDER_PATH CoreDataTests.octest    setenv EXECUTABLE_NAME CoreDataTests    setenv EXECUTABLE_PATH CoreDataTests.octest/CoreDataTests    setenv FILE_LIST /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects/LinkFileList    setenv FIXED_FILES_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/FixedFiles    setenv FRAMEWORKS_FOLDER_PATH CoreDataTests.octest/Frameworks    setenv FRAMEWORK_FLAG_PREFIX -framework    setenv FRAMEWORK_SEARCH_PATHS "\"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator\" \"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks\" \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks\" \"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts\" \"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts\" \"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework\""    setenv FRAMEWORK_VERSION A    setenv FULL_PRODUCT_NAME CoreDataTests.octest    setenv GCC3_VERSION 3.3    setenv GCC_C_LANGUAGE_STANDARD gnu99    setenv GCC_DYNAMIC_NO_PIC NO    setenv GCC_INLINES_ARE_PRIVATE_EXTERN YES    setenv GCC_OBJC_LEGACY_DISPATCH YES    setenv GCC_OPTIMIZATION_LEVEL 0    setenv GCC_PFE_FILE_C_DIALECTS "c objective-c c++ objective-c++"    setenv GCC_PRECOMPILE_PREFIX_HEADER YES    setenv GCC_PREFIX_HEADER CoreDataTests/CoreDataTests-Prefix.pch    setenv GCC_PREPROCESSOR_DEFINITIONS "DEBUG=1 "    setenv GCC_SYMBOLS_PRIVATE_EXTERN NO    setenv GCC_TREAT_WARNINGS_AS_ERRORS NO    setenv GCC_VERSION com.apple.compilers.llvm.clang.1_0    setenv GCC_WARN_ABOUT_RETURN_TYPE YES    setenv GCC_WARN_UNINITIALIZED_AUTOS YES    setenv GCC_WARN_UNUSED_VARIABLE YES    setenv GENERATE_MASTER_OBJECT_FILE NO    setenv GENERATE_PKGINFO_FILE NO    setenv GENERATE_PROFILING_CODE NO    setenv GID 20    setenv GROUP staff    setenv HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT YES    setenv HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES YES    setenv HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS YES    setenv HEADERMAP_INCLUDES_PROJECT_HEADERS YES    setenv HEADER_SEARCH_PATHS "\"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/include\"  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"    setenv ICONV /usr/bin/iconv    setenv INFOPLIST_EXPAND_BUILD_SETTINGS YES    setenv INFOPLIST_FILE CoreDataTests/CoreDataTests-Info.plist    setenv INFOPLIST_OUTPUT_FORMAT binary    setenv INFOPLIST_PATH CoreDataTests.octest/Info.plist    setenv INFOPLIST_PREPROCESS NO    setenv INFOSTRINGS_PATH CoreDataTests.octest/English.lproj/InfoPlist.strings    setenv INSTALL_DIR /tmp/Remote.dst    setenv INSTALL_GROUP staff    setenv INSTALL_MODE_FLAG u+w,go-w,a+rX    setenv INSTALL_OWNER Moondeer    setenv INSTALL_ROOT /tmp/Remote.dst    setenv IPHONEOS_DEPLOYMENT_TARGET 6.1    setenv JAVAC_DEFAULT_FLAGS "-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"    setenv JAVA_APP_STUB /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub    setenv JAVA_ARCHIVE_CLASSES YES    setenv JAVA_ARCHIVE_TYPE JAR    setenv JAVA_COMPILER /usr/bin/javac    setenv JAVA_FOLDER_PATH CoreDataTests.octest/Java    setenv JAVA_FRAMEWORK_RESOURCES_DIRS Resources    setenv JAVA_JAR_FLAGS cv    setenv JAVA_SOURCE_SUBDIR .    setenv JAVA_USE_DEPENDENCIES YES    setenv JAVA_ZIP_FLAGS -urg    setenv JIKES_DEFAULT_FLAGS "+E +OLDCSO"    setenv KEEP_PRIVATE_EXTERNS NO    setenv LD_GENERATE_MAP_FILE NO    setenv LD_MAP_FILE_PATH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-LinkMap-normal-i386.txt    setenv LD_NO_PIE NO    setenv LEGACY_DEVELOPER_DIR /Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer    setenv LEX lex    setenv LIBRARY_FLAG_NOSPACE YES    setenv LIBRARY_FLAG_PREFIX -l    setenv LIBRARY_SEARCH_PATHS "\"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator\" "    setenv LINKER_DISPLAYS_MANGLED_NAMES NO    setenv LINK_FILE_LIST_normal_i386 /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal/i386/CoreDataTests.LinkFileList    setenv LINK_WITH_STANDARD_LIBRARIES YES    setenv LOCALIZED_RESOURCES_FOLDER_PATH CoreDataTests.octest/English.lproj    setenv LOCAL_ADMIN_APPS_DIR /Applications/Utilities    setenv LOCAL_APPS_DIR /Applications    setenv LOCAL_DEVELOPER_DIR /Library/Developer    setenv LOCAL_LIBRARY_DIR /Library    setenv MACH_O_TYPE mh_bundle    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv MAC_OS_X_PRODUCT_BUILD_VERSION 12D78    setenv MAC_OS_X_VERSION_ACTUAL 1083    setenv MAC_OS_X_VERSION_MAJOR 1080    setenv MAC_OS_X_VERSION_MINOR 0803    setenv NATIVE_ARCH i386    setenv NATIVE_ARCH_32_BIT i386    setenv NATIVE_ARCH_64_BIT x86_64    setenv NATIVE_ARCH_ACTUAL x86_64    setenv NO_COMMON YES    setenv OBJC_ABI_VERSION 2    setenv OBJECT_FILE_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects    setenv OBJECT_FILE_DIR_normal /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Objects-normal    setenv OBJROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates    setenv ONLY_ACTIVE_ARCH YES    setenv OPTIMIZATION_LEVEL 0    setenv OS MACOS    setenv OSAC /usr/bin/osacompile    setenv PACKAGE_TYPE com.apple.package-type.wrapper    setenv PASCAL_STRINGS YES    setenv PATH "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Tools:/usr/bin:/bin:/usr/sbin:/sbin"    setenv PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES "/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks /Applications/Xcode.app/Contents/Developer/Headers /Applications/Xcode.app/Contents/Developer/SDKs /Applications/Xcode.app/Contents/Developer/Platforms"    setenv PBDEVELOPMENTPLIST_PATH CoreDataTests.octest/pbdevelopment.plist    setenv PFE_FILE_C_DIALECTS objective-c    setenv PKGINFO_FILE_PATH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/PkgInfo    setenv PKGINFO_PATH CoreDataTests.octest/PkgInfo    setenv PLATFORM_DEVELOPER_APPLICATIONS_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications    setenv PLATFORM_DEVELOPER_BIN_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin    setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library    setenv PLATFORM_DEVELOPER_SDK_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs    setenv PLATFORM_DEVELOPER_TOOLS_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Tools    setenv PLATFORM_DEVELOPER_USR_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr    setenv PLATFORM_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform    setenv PLATFORM_NAME iphonesimulator    setenv PLATFORM_PREFERRED_ARCH i386    setenv PLATFORM_PRODUCT_BUILD_VERSION 10B141    setenv PLATFORM_VERSION_AVAILABILITY_H_FORMAT 60100    setenv PLIST_FILE_OUTPUT_FORMAT binary    setenv PLUGINS_FOLDER_PATH CoreDataTests.octest/PlugIns    setenv PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR YES    setenv PRECOMP_DESTINATION_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/PrefixHeaders    setenv PRESERVE_DEAD_CODE_INITS_AND_TERMS NO    setenv PRIVATE_HEADERS_FOLDER_PATH CoreDataTests.octest/PrivateHeaders    setenv PRODUCT_NAME CoreDataTests    setenv PRODUCT_SETTINGS_PATH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests-Info.plist    setenv PRODUCT_TYPE com.apple.product-type.bundle    setenv PROFILING_CODE NO    setenv PROJECT Remote    setenv PROJECT_DERIVED_FILE_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/DerivedSources    setenv PROJECT_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv PROJECT_FILE_PATH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/Remote.xcodeproj    setenv PROJECT_NAME Remote    setenv PROJECT_TEMP_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build    setenv PROJECT_TEMP_ROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates    setenv PUBLIC_HEADERS_FOLDER_PATH CoreDataTests.octest/Headers    setenv RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS YES    setenv REMOVE_CVS_FROM_RESOURCES YES    setenv REMOVE_GIT_FROM_RESOURCES YES    setenv REMOVE_HG_FROM_RESOURCES YES    setenv REMOVE_SVN_FROM_RESOURCES YES    setenv REZ_COLLECTOR_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/ResourceManagerResources    setenv REZ_OBJECTS_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/ResourceManagerResources/Objects    setenv REZ_SEARCH_PATHS "\"/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator\" "    setenv RUN_CLANG_STATIC_ANALYZER NO    setenv SCAN_ALL_SOURCE_FILES_FOR_INCLUDES NO    setenv SCRIPTS_FOLDER_PATH CoreDataTests.octest/Scripts    setenv SCRIPT_INPUT_FILE_COUNT 0    setenv SCRIPT_OUTPUT_FILE_COUNT 0    setenv SDKROOT /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk    setenv SDK_DIR /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk    setenv SDK_NAME iphonesimulator6.1    setenv SDK_PRODUCT_BUILD_VERSION 10B141    setenv SED /usr/bin/sed    setenv SEPARATE_STRIP NO    setenv SEPARATE_SYMBOL_EDIT NO    setenv SET_DIR_MODE_OWNER_GROUP YES    setenv SET_FILE_MODE_OWNER_GROUP NO    setenv SHALLOW_BUNDLE YES    setenv SHARED_DERIVED_FILE_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/DerivedSources    setenv SHARED_FRAMEWORKS_FOLDER_PATH CoreDataTests.octest/SharedFrameworks    setenv SHARED_PRECOMPS_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders    setenv SHARED_SUPPORT_FOLDER_PATH CoreDataTests.octest/SharedSupport    setenv SKIP_INSTALL YES    setenv SOURCE_ROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv SRCROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv STRINGS_FILE_OUTPUT_ENCODING binary    setenv STRIP_INSTALLED_PRODUCT YES    setenv STRIP_STYLE non-global    setenv SUPPORTED_DEVICE_FAMILIES "1 2"    setenv SUPPORTED_PLATFORMS "iphonesimulator iphoneos"    setenv SYMROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products    setenv SYSTEM_ADMIN_APPS_DIR /Applications/Utilities    setenv SYSTEM_APPS_DIR /Applications    setenv SYSTEM_CORE_SERVICES_DIR /System/Library/CoreServices    setenv SYSTEM_DEMOS_DIR /Applications/Extras    setenv SYSTEM_DEVELOPER_APPS_DIR /Applications/Xcode.app/Contents/Developer/Applications    setenv SYSTEM_DEVELOPER_BIN_DIR /Applications/Xcode.app/Contents/Developer/usr/bin    setenv SYSTEM_DEVELOPER_DEMOS_DIR "/Applications/Xcode.app/Contents/Developer/Applications/Utilities/Built Examples"    setenv SYSTEM_DEVELOPER_DIR /Applications/Xcode.app/Contents/Developer    setenv SYSTEM_DEVELOPER_DOC_DIR "/Applications/Xcode.app/Contents/Developer/ADC Reference Library"    setenv SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR "/Applications/Xcode.app/Contents/Developer/Applications/Graphics Tools"    setenv SYSTEM_DEVELOPER_JAVA_TOOLS_DIR "/Applications/Xcode.app/Contents/Developer/Applications/Java Tools"    setenv SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR "/Applications/Xcode.app/Contents/Developer/Applications/Performance Tools"    setenv SYSTEM_DEVELOPER_RELEASENOTES_DIR "/Applications/Xcode.app/Contents/Developer/ADC Reference Library/releasenotes"    setenv SYSTEM_DEVELOPER_TOOLS /Applications/Xcode.app/Contents/Developer/Tools    setenv SYSTEM_DEVELOPER_TOOLS_DOC_DIR "/Applications/Xcode.app/Contents/Developer/ADC Reference Library/documentation/DeveloperTools"    setenv SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR "/Applications/Xcode.app/Contents/Developer/ADC Reference Library/releasenotes/DeveloperTools"    setenv SYSTEM_DEVELOPER_USR_DIR /Applications/Xcode.app/Contents/Developer/usr    setenv SYSTEM_DEVELOPER_UTILITIES_DIR /Applications/Xcode.app/Contents/Developer/Applications/Utilities    setenv SYSTEM_DOCUMENTATION_DIR /Library/Documentation    setenv SYSTEM_LIBRARY_DIR /System/Library    setenv TARGETED_DEVICE_FAMILY 1    setenv TARGETNAME CoreDataTests    setenv TARGET_BUILD_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator    setenv TARGET_NAME CoreDataTests    setenv TARGET_TEMP_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build    setenv TEMP_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build    setenv TEMP_FILES_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build    setenv TEMP_FILE_DIR /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build    setenv TEMP_ROOT /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates    setenv TEST_AFTER_BUILD NO    setenv TEST_HOST /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/Remote.app/Remote    setenv TOOLCHAINS com.apple.dt.toolchain.XcodeDefault    setenv UID 501    setenv UNLOCALIZED_RESOURCES_FOLDER_PATH CoreDataTests.octest    setenv UNSTRIPPED_PRODUCT NO    setenv USER Moondeer    setenv USER_APPS_DIR /Users/Moondeer/Applications    setenv USER_LIBRARY_DIR /Users/Moondeer/Library    setenv USE_DYNAMIC_NO_PIC YES    setenv USE_HEADERMAP YES    setenv USE_HEADER_SYMLINKS NO    setenv VALIDATE_PRODUCT NO    setenv VALID_ARCHS i386    setenv VERBOSE_PBXCP NO    setenv VERSIONPLIST_PATH CoreDataTests.octest/version.plist    setenv VERSION_INFO_BUILDER Moondeer    setenv VERSION_INFO_FILE CoreDataTests_vers.c    setenv VERSION_INFO_STRING "\"@(#)PROGRAM:CoreDataTests  PROJECT:Remote-\""    setenv WRAPPER_EXTENSION octest    setenv WRAPPER_NAME CoreDataTests.octest    setenv WRAPPER_SUFFIX .octest    setenv XCODE_APP_SUPPORT_DIR /Applications/Xcode.app/Contents/Developer/Library/Xcode    setenv XCODE_PRODUCT_BUILD_VERSION 4H1003    setenv XCODE_VERSION_ACTUAL 0462    setenv XCODE_VERSION_MAJOR 0400    setenv XCODE_VERSION_MINOR 0460    setenv YACC yacc    /bin/sh -c /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/Script-C28FD57A171C65BB008560E3.sh36"49779746-928A-4BDF-8D43-3E4EFDAB796D-
-
-CProcessInfoPlistFile /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/Info.plist CoreDataTests/CoreDataTests-Info.plist
-s387813497.300428
-e387813497.302754
-r1
-xProcessInfoPlistFile
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/Info.plist
-xCoreDataTests/CoreDataTests-Info.plist
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection46"Process CoreDataTests/CoreDataTests-Info.plista1f54c79901db741^bf814d79901db741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests-Info.plist0000000000000000^671"ProcessInfoPlistFile DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/Info.plist CoreDataTests/CoreDataTests-Info.plist    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility CoreDataTests/CoreDataTests-Info.plist -expandbuildsettings -format binary -platform iphonesimulator -o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest/Info.plist36"DDE01186-380E-4555-940E-AC44FC892707-
-
-CProcessPCH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.pth CoreDataTests/CoreDataTests-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s387813497.310460
-e387813497.497804
-r1
-xProcessPCH
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.pth
-xCoreDataTests/CoreDataTests-Prefix.pch
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection49"Precompile CoreDataTests/CoreDataTests-Prefix.pch21904f79901db741^c9717f79901db741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests-Prefix.pch0000000000000000^4780"ProcessPCH DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.pth CoreDataTests/CoreDataTests-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wenum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk -fexceptions -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch -mios-simulator-version-min=6.1 -iquote /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-generated-files.hmap -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-own-target-headers.hmap -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-all-target-headers.hmap -iquote /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/CoreDataTests-project-headers.hmap -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources/i386 -I/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/Remote.build/Debug-iphonesimulator/CoreDataTests.build/DerivedSources -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator -F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/Developer/Library/Frameworks -F/Applications/Xcode.app/Contents/Developer/Library/Frameworks -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MagicalRecord/DerivedData/MagicalRecord/Build/Intermediates/ArchiveIntermediates/MagicalRecord/IntermediateBuildFilesPath/UninstalledProducts -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/Lumberjack/DerivedData/Lumberjack/Build/Intermediates/ArchiveIntermediates/Lumberjack/IntermediateBuildFilesPath/UninstalledProducts -F/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/../../Frameworks/MSKit/DerivedData/MSKit/Build/Intermediates/ArchiveIntermediates/MSKit/IntermediateBuildFilesPath/UninstalledProducts/MSKit.embeddedframework --serialize-diagnostics /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.dia -c /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/CoreDataTests/CoreDataTests-Prefix.pch -o /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.pth -MMD -MT dependencies -MF /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Intermediates/PrecompiledHeaders/CoreDataTests-Prefix-famsexifhhrcgudqbuwktrjtxjdh/CoreDataTests-Prefix.pch.d36"CAC53B38-FB7E-4B20-9AC6-6EDE0A2D0EA6-
-
-CProcessPCH /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Index/PrecompiledHeaders/CoreDataTests-Prefix-cqrsawcnokrrtcgdorlsfeifhenb_ast/CoreDataTests-Prefix.pch.pth CoreDataTests/CoreDataTests-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
-r0
-
-CTouch /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest
-s387814125.329073
-e387814125.334073
-r1
-xTouch
-x/Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection132"Touch /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest445154ed921db741^e08555ed921db741^---0#0#0#--484"Touch DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest    cd /Users/Moondeer/Projects/MSRemoteWorkspace/Remote    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/Moondeer/Projects/MSRemoteWorkspace/Remote/DerivedData/Remote/Build/Products/Debug-iphonesimulator/CoreDataTests.octest36"AE55BC31-1642-440C-B00C-C0852798D5BA-
-

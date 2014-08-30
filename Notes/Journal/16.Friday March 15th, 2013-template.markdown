@@ -1,7 +1,0 @@
-Friday March 15th, 2013
-=======================
-
-####Up next:
-
-* Matching horizontal size of digit 4 to the tuck button makes label disappear
-* Button group does not shrink wrap after scaling buttons

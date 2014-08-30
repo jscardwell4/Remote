@@ -1,5 +1,0 @@
-Tuesday March 26th, 2013
-========================
-
-Today I want to focus on the Command objects: the delegate system, callbacks, mechanics etc. Also
-re-examine how the commands are utilized by various views and model objects. 

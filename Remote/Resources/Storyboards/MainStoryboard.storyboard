@@ -40,7 +40,7 @@
                                                     <action selector="showRemote" destination="ESI-NQ-T4b" eventType="touchUpInside" id="GgP-wu-QNt"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUl-Yu-ecf">
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUl-Yu-ecf">
                                                 <rect key="frame" x="0.0" y="110" width="320" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="36" id="BGi-nc-si6"/>
@@ -58,7 +58,7 @@
                                                     <action selector="showEditor" destination="ESI-NQ-T4b" eventType="touchUpInside" id="EQY-hU-vIz"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NrK-FQ-aUe">
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NrK-FQ-aUe">
                                                 <rect key="frame" x="-1" y="196" width="321" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="36" id="dbS-wV-Cy8"/>
@@ -76,7 +76,7 @@
                                                     <action selector="showBank" destination="ESI-NQ-T4b" eventType="touchUpInside" id="ebY-C1-o0A"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xGa-7o-kcu">
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xGa-7o-kcu">
                                                 <rect key="frame" x="-1" y="283" width="321" height="37"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="37" id="7F4-Gq-dcG"/>
@@ -94,7 +94,7 @@
                                                     <action selector="showSettings" destination="ESI-NQ-T4b" eventType="touchUpInside" id="1lB-Bb-UwR"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zy0-RP-gBt">
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zy0-RP-gBt">
                                                 <rect key="frame" x="-1" y="370" width="321" height="51"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                                 <size key="titleShadowOffset" width="0.0" height="-2"/>

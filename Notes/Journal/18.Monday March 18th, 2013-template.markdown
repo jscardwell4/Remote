@@ -1,5 +1,0 @@
-Monday March 18th, 2013
-=======================
-
-Today I reworked a lot of what is now `REView`, mostly house cleaning, and also fixed
-what is now `RELabelView` so that single axis scaling doesn't mess up the text.

@@ -258,22 +258,3 @@ extern NSString const   * kTranslationAnimationKey;
 
 @end
 
-#import "RemoteElementView.h"
-#import "CoreDataManager.h"
-#import "StoryboardProxy.h"
-#import "Constraint.h"
-#import <QuartzCore/QuartzCore.h>
-#
-#import "Command.h"
-#import "Bankables.h"
-#import "ControlStateSet.h"
-#import "ControlStateImageSet.h"
-#import "ControlStateTitleSet.h"
-#import "ControlStateColorSet.h"
-#import "ColorSelectionViewController.h"
-#import "LabelEditingViewController.h"
-#import "IconEditingViewController.h"
-#import "CommandEditingViewController.h"
-#import "RemoteController.h"
-#import "UserCodesViewController.h"
-#import "REBackgroundEditingViewController.h"

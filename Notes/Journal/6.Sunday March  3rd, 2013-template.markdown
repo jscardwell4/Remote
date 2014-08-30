@@ -1,9 +1,0 @@
-Sunday March  3th, 2013
-=======================
-
-I have been reworking the flow of `RemoteElement` - `REConstraint` insertion, deletion, and update notifications.
-I need to finish getting this aspect settled and then get resizing to sibling element working. After which, I need to run the
-`MSRemoteUITests` to make sure everything is functioning as expected. Known issues to fix include:
-
-* Resizing and scaling operations should not allow for any portion to appear offscreen.
-* Probably other things that I have forgotten.

@@ -7,6 +7,9 @@
 //
 #import "RemoteElementEditingViewController_Private.h"
 #import "Button.h"
+#import "RemoteElementView.h"
+#import "ComponentDevice.h"
+#import "StoryboardProxy.h"
 
 #define AUTO_LAUNCH_DETAIL_EDITOR NO
 #define REPLACE_BUTTON_COMMAND    NO

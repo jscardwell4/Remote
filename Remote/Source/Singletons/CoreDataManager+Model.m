@@ -154,21 +154,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                       defaultValue:ClearColor
                               info:nil];
 
-  // background color attributes on theme
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Theme", @"BuiltinTheme", @"CustomTheme"]
-                                             notFoundMarker:NullObject]
-                         attribute:@"remoteBackgroundColor"
-                         className:@"UIColor"
-                      defaultValue:ClearColor
-                              info:nil];
-
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Theme", @"BuiltinTheme", @"CustomTheme"]
-                                             notFoundMarker:NullObject]
-                         attribute:@"buttonGroupBackgroundColor"
-                         className:@"UIColor"
-                      defaultValue:ClearColor
-                              info:nil];
-
   // edge insets attributes on buttons
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Button"] notFoundMarker:NullObject]
                          attribute:@"titleEdgeInsets"
@@ -186,25 +171,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                          attribute:@"imageEdgeInsets"
                          className:@"NSValue"
                       defaultValue:NSValueWithUIEdgeInsets(UIEdgeInsetsZero)
-                              info:nil];
-
-  // edge insets attributes on themes
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"ThemeButtonSettings"] notFoundMarker:NullObject]
-                         attribute:@"titleInsets"
-                         className:@"NSValue"
-                      defaultValue:nil
-                              info:nil];
-
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"ThemeButtonSettings"] notFoundMarker:NullObject]
-                         attribute:@"contentInsets"
-                         className:@"NSValue"
-                      defaultValue:nil
-                              info:nil];
-
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"ThemeButtonSettings"] notFoundMarker:NullObject]
-                         attribute:@"imageInsets"
-                         className:@"NSValue"
-                      defaultValue:nil
                               info:nil];
 
   // configurations attribute on remote elements

@@ -1,6 +1,0 @@
-Thursday March 14th, 2013
-=========================
-
-Signing off for the day, here's what's up with the shrinkwrap issues with button group translation
-test #0 for translation (32.5, 72): The button views are getting set to 159 x 159 because the button
-group view is not getting its width set properly to 300 (instead of 309).

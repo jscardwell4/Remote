@@ -1,4 +1,0 @@
-Friday March  8th, 2013
-=======================
-
-Get scaling UI test working and go from there.

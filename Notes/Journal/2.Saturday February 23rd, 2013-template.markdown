@@ -1,5 +1,0 @@
-Saturday February 23nd, 2013
-============================
-
-I need to check that gestures are working correctly and then begin implementing the additional
-menu commands.

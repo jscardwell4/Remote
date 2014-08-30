@@ -12,7 +12,6 @@
 #import "JSONObjectKeys.h"
 #import "RemoteElementKeys.h"
 #import "REFont.h"
-#import "StringAttributesValueTransformer.h"
 #import "TitleAttributes.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;

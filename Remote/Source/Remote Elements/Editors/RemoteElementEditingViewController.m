@@ -10,6 +10,9 @@
 #import "MSRemoteAppController.h"
 #import "REPresetCollectionViewController.h"
 #import "ViewDecorator.h"
+#import "RemoteElementView.h"
+#import "StoryboardProxy.h"
+#import "REBackgroundEditingViewController.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_EDITOR | LOG_CONTEXT_FILE);

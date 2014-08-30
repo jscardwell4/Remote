@@ -11,7 +11,6 @@
 #import "Activity.h"
 #import "RemoteElement_Private.h"
 #import "Constraint.h"
-#import "ComponentDeviceConfiguration.h"
 #import "Command.h"
 #import "ButtonGroup.h"
 #import "Remote.h"
@@ -123,12 +122,6 @@ static NSURL * sharedRemoteControllerURI = nil;
 ////////////////////////////////////////////////////////////////////////////////
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-     "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
-     "homeRemoteUUID": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
-     "topToolbar": { **ButtonGroup** },
-     "activities": [ **Activity** ]
-   */
 
   [super updateWithData:data];
 

@@ -14,7 +14,6 @@
 #import "ConnectionManager.h"
 #import "MSRemoteAppController.h"
 #import "Bank.h"
-#import "UITestRunner.h"
 #import "StoryboardProxy.h"
 #import "RemoteController.h"
 #import "Remote.h"
@@ -67,60 +66,6 @@ static const int msLogContext = 0;
 
   return kVersionInfo;
 
-}
-
-- (void)runUITests {
-  #define ButtonGroupEditingTest(focus, number, options) \
-    @(UITestTypeButtonGroupEditing | focus | (uint64_t)((uint64_t)number << UITestNumberOffset) | (uint64_t)((uint64_t)options << UITestOptionsOffset))
-  #define RemoteEditingTest(focus, number, options) \
-    @(UITestTypeRemoteEditing | focus | (uint64_t)((uint64_t)number << UITestNumberOffset) | (uint64_t)((uint64_t)options << UITestOptionsOffset))
-
-  NSArray * tests = @[ButtonGroupEditingTest(UITestFocusTranslation, 0, 2),   // 0
-                      ButtonGroupEditingTest(UITestFocusTranslation, 1, 2),   // 1
-                      ButtonGroupEditingTest(UITestFocusTranslation, 2, 2),   // 2
-                      ButtonGroupEditingTest(UITestFocusFocus,       0, 2),   // 3
-                      ButtonGroupEditingTest(UITestFocusAlignment,   0, 2),   // 4
-                      ButtonGroupEditingTest(UITestFocusAlignment,   1, 2),   // 5
-                      ButtonGroupEditingTest(UITestFocusAlignment,   2, 2),   // 6
-                      ButtonGroupEditingTest(UITestFocusAlignment,   3, 2),   // 7
-                      ButtonGroupEditingTest(UITestFocusAlignment,   5, 2),   // 8
-                      ButtonGroupEditingTest(UITestFocusAlignment,   6, 2),   // 9
-                      ButtonGroupEditingTest(UITestFocusAlignment,   7, 2),   // 10
-                      ButtonGroupEditingTest(UITestFocusAlignment,   4, 2),   // 11
-                      ButtonGroupEditingTest(UITestFocusAlignment,   8, 2),   // 12
-                      ButtonGroupEditingTest(UITestFocusInfo,        0, 2),   // 13
-                      ButtonGroupEditingTest(UITestFocusInfo,        1, 2),   // 14
-                      ButtonGroupEditingTest(UITestFocusScale,       0, 2),   // 15
-                      ButtonGroupEditingTest(UITestFocusDialog,      0, 3),   // 16
-                      RemoteEditingTest(UITestFocusScale,       0, 2),        // 17
-                      RemoteEditingTest(UITestFocusInfo,        0, 2),        // 18
-                      RemoteEditingTest(UITestFocusInfo,        1, 2)         // 19
-  ];
-
-  NSIndexSet * bgTranslationTests = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
-  NSIndexSet * bgFocusTests       = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(3, 1)];
-  NSIndexSet * bgAlignmentTests   = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(4, 9)];
-  NSIndexSet * bgInfoTests        = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(13, 2)];
-  NSIndexSet * bgScaleTests       = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(15, 1)];
-  NSIndexSet * bgDialogTests      = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(16, 1)];
-
-  NSIndexSet * rInfoTests  = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(18, 2)];
-  NSIndexSet * rScaleTests = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(17, 1)];
-
-  #pragma unused(bgTranslationTests, bgFocusTests, bgAlignmentTests, bgInfoTests, bgScaleTests, \
-  bgDialogTests, rInfoTests, rScaleTests)
-
-
-  NSMutableIndexSet * indices = [NSMutableIndexSet indexSet];
-
-//    [indices addIndex:1];
-  [indices addIndexes:bgScaleTests];
-//    [indices addIndexes:bgTranslationTests];
-//    [indices addIndexes:bgAlignmentTests];
-
-  NSArray * selectedTests = [tests objectsAtIndexes:indices];
-
-  [UITestRunner runTests:selectedTests];
 }
 
 #pragma mark - Shared controller and Storyboard controllers
@@ -269,30 +214,6 @@ static const int msLogContext = 0;
     }
   }];
 
-/*
-    NSOperation * rebuildRemote = [NSBlockOperation blockOperationWithBlock:
-                                   ^{
-                                       if (   !errorOccurred
-                                           && (   [UserDefaults boolForKey:@"rebuildRemote"]
- || [UserDefaults boolForKey:@"loadData"]))
-                                       {
-                                           [RemoteElementConstructionManager buildController];
-                                       }
-                                   }];
-
-    [rebuildRemote addDependency:rebuildDatabase];
- */
-
-/*
-    NSOperation * runUITests = [NSBlockOperation blockOperationWithBlock:
-                                ^{
-                                    if (!errorOccurred && [UserDefaults boolForKey:@"uitest"])
-                                        MSRunAsyncOnMain (^{ [self runUITests]; });
-                                }];
-
-    [runUITests addDependency:rebuildRemote];
- */
-
   #define OUTPUT_JSON_FILES
 // #define LOG_JSON_FILES
 
@@ -354,8 +275,6 @@ static const int msLogContext = 0;
 
   [_workQueue addOperations:@[
      rebuildDatabase,
-//                                rebuildRemote,
-//                                runUITests,
      readyApplication,
      dumpJSON
    ]

@@ -1,6 +1,0 @@
-Wednesday February 27th, 2013
-=============================
-
-Just created a script to generate this new journal entry. Now it is time to finish
-getting the build actions for the remote workflow wrapped up. Then attack the unimplemented
-actions left in the remote editor.

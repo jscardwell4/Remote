@@ -29,7 +29,6 @@ NSString * stateJSONValueForButton(Button * element);
 
 NSString * shapeJSONValueForRemoteElement(RemoteElement * element);
 NSString * styleJSONValueForRemoteElement(RemoteElement * element);
-NSString * themeFlagsJSONValueForRemoteElement(RemoteElement * element);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands
