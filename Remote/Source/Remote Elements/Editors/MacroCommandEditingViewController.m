@@ -146,7 +146,7 @@ command            = _command;
     UITableViewCell * cell    = [tableView dequeueReusableCellWithIdentifier:ClassString([command class])];
 
     cell.imageView.image =
-        [MSPainter circledText:[NSString stringWithFormat:@"%li", indexPath.row + 1]
+        [MSPainter circledText:[NSString stringWithFormat:@"%li", (long)(indexPath.row + 1)]
                         font:[UIFont boldSystemFontOfSize:24]
              backgroundColor:[UIColor whiteColor]
                    textColor:nil

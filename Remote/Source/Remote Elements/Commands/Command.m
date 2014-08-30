@@ -55,34 +55,12 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
   if (!isDictionaryKind(data)) return nil;
 
-  Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
-
-  if (!commandClass) return nil;
-
-  Command * command = nil;
-
-
-  BOOL         commandClassImplementsMethod = NO;
-  unsigned int outCount;
-
-  Method * classMethods = class_copyMethodList(commandClass, &outCount);
-
-  for (unsigned int i = 0; i < outCount; i++) {
-    if (sel_isEqual(_cmd, method_getName(classMethods[i]))) {
-      commandClassImplementsMethod = YES;
-      break;
-    }
+  if (self == [Command class]) {
+    Class commandClass = commandClassForImportKey(((NSDictionary *)data)[@"class"]);
+    return [commandClass importObjectFromData:data context:moc];
+  } else {
+    return [super importObjectFromData:data context:moc];
   }
-
-  if (commandClassImplementsMethod || commandClass != self)
-    command = [commandClass importObjectFromData:data context:moc];
-
-  else if (self == commandClass)
-    command = method_getImplementation(class_getClassMethod([ModelObject class], _cmd))(self, _cmd, data, moc);
-
-  assert(command && ![command isMemberOfClass:[Command class]]);
-
-  return command;
 }
 
 @end

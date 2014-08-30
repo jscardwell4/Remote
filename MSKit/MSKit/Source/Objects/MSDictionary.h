@@ -12,6 +12,7 @@
 @property (nonatomic, strong)   MSDictionary * userInfo;
 @property (nonatomic, readonly) NSSet        * validKeys;
 @property (nonatomic, assign)   BOOL           requiresStringKeys;
+@property (nonatomic, readonly) NSDictionary * NSDictionaryValue;
 
 - (MSDictionary *)dictionaryBySortingByKeys:(NSArray *)sortedKeys;
 - (MSDictionary *)compactedDictionary;

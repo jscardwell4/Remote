@@ -7,10 +7,6 @@
 //
 #import "RETypedefs.h"
 #import "RemoteElementEditingViewController.h"
-#import "RemoteElementEditingViewController+IBActions.h"
-#import "RemoteElementEditingViewController+Gestures.h"
-#import "RemoteElementEditingViewController+Selection.h"
-#import "RemoteElementEditingViewController+Toolbars.h"
 
 #define TOOLBAR_FRAME CGRectMake(0, 436, 320, 44)
 

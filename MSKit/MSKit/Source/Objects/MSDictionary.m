@@ -588,4 +588,6 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
   return self;
 }
 
+
+- (NSDictionary *)NSDictionaryValue { return self.dictionary; }
 @end

@@ -8,7 +8,7 @@
 #import "MSRemoteAppController.h"
 int main(int argc, char * argv[]) {
     @autoreleasepool {
-        int   retVal = UIApplicationMain(argc, argv, nil, ClassString([MSRemoteAppController class]));
+        int   retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([MSRemoteAppController class]));
 
         return retVal;
     }

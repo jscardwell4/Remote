@@ -71,6 +71,7 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
                        dispatch_get_main_queue(),
                        ^{
                            [connectionManager->_reachability refreshFlags];
+/*
                            if (connectionManager->_flags.autoConnect)
                            {
                                if (![GlobalCacheConnectionManager connectWithDevice:nil])
@@ -82,6 +83,7 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 
                                else MSLogDebugTag(@"(autoConnect) default device connected");
                            }
+*/
                        });
     });
     return connectionManager;
@@ -193,10 +195,10 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
                                ^(void){ completion(YES, nil); });
             }
             
-            else [GlobalCacheConnectionManager sendCommand:cmd
-                                                       tag:tag
-                                                    device:nil
-                                                completion:completion];
+            else [[GlobalCacheConnectionManager sharedManager] sendCommand:cmd
+                                                                       tag:tag
+                                                                    device:nil
+                                                                completion:completion];
         }
     }
 
@@ -236,7 +238,7 @@ MSSTRING_CONST   CMCommandDidCompleteNotification = @"CMCommandDidCompleteNotifi
 ////////////////////////////////////////////////////////////////////////////////
 
 + (void)logStatus { [connectionManager logStatus]; }
-- (void)logStatus { MSLogInfoTag(@"%@", [GlobalCacheConnectionManager statusDescription]); }
+- (void)logStatus { MSLogInfoTag(@"%@", [[GlobalCacheConnectionManager sharedManager] statusDescription]); }
 
 + (int)ddLogLevel { return ddLogLevel; }
 

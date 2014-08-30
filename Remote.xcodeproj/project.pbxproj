@@ -324,10 +324,6 @@
 		C25B475B16FF8D5E0042B59E /* ButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464216FF679B0042B59E /* ButtonEditingViewController.m */; };
 		C25B475C16FF8D5E0042B59E /* ButtonGroupEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */; };
 		C25B475D16FF8D5E0042B59E /* DetailedButtonEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464616FF679B0042B59E /* DetailedButtonEditingViewController.m */; };
-		C25B475E16FF8D5E0042B59E /* RemoteElementEditingViewController+Gestures.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464816FF679B0042B59E /* RemoteElementEditingViewController+Gestures.m */; };
-		C25B475F16FF8D5E0042B59E /* RemoteElementEditingViewController+IBActions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464A16FF679B0042B59E /* RemoteElementEditingViewController+IBActions.m */; };
-		C25B476016FF8D5E0042B59E /* RemoteElementEditingViewController+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464C16FF679B0042B59E /* RemoteElementEditingViewController+Selection.m */; };
-		C25B476116FF8D5E0042B59E /* RemoteElementEditingViewController+Toolbars.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B464E16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.m */; };
 		C25B476216FF8D5E0042B59E /* RemoteElementEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465016FF679B0042B59E /* RemoteElementEditingViewController.m */; };
 		C25B476316FF8D5E0042B59E /* RemoteEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465316FF679B0042B59E /* RemoteEditingViewController.m */; };
 		C25B476416FF8D5E0042B59E /* SendIRCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465516FF679B0042B59E /* SendIRCommandEditingViewController.m */; };
@@ -914,14 +910,6 @@
 		C25B464216FF679B0042B59E /* ButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupEditingViewController.m; sourceTree = "<group>"; };
 		C25B464616FF679B0042B59E /* DetailedButtonEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DetailedButtonEditingViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C25B464716FF679B0042B59E /* RemoteElementEditingViewController+Gestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+Gestures.h"; sourceTree = "<group>"; };
-		C25B464816FF679B0042B59E /* RemoteElementEditingViewController+Gestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+Gestures.m"; sourceTree = "<group>"; };
-		C25B464916FF679B0042B59E /* RemoteElementEditingViewController+IBActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+IBActions.h"; sourceTree = "<group>"; };
-		C25B464A16FF679B0042B59E /* RemoteElementEditingViewController+IBActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+IBActions.m"; sourceTree = "<group>"; };
-		C25B464B16FF679B0042B59E /* RemoteElementEditingViewController+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+Selection.h"; sourceTree = "<group>"; };
-		C25B464C16FF679B0042B59E /* RemoteElementEditingViewController+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+Selection.m"; sourceTree = "<group>"; };
-		C25B464D16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteElementEditingViewController+Toolbars.h"; sourceTree = "<group>"; };
-		C25B464E16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteElementEditingViewController+Toolbars.m"; sourceTree = "<group>"; };
 		C25B464F16FF679B0042B59E /* RemoteElementEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RemoteElementEditingViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C25B465016FF679B0042B59E /* RemoteElementEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementEditingViewController.m; sourceTree = "<group>"; };
 		C25B465116FF679B0042B59E /* RemoteElementEditingViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementEditingViewController_Private.h; sourceTree = "<group>"; };
@@ -1720,14 +1708,6 @@
 				C25B464216FF679B0042B59E /* ButtonEditingViewController.m */,
 				C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */,
 				C25B464616FF679B0042B59E /* DetailedButtonEditingViewController.m */,
-				C25B464716FF679B0042B59E /* RemoteElementEditingViewController+Gestures.h */,
-				C25B464816FF679B0042B59E /* RemoteElementEditingViewController+Gestures.m */,
-				C25B464916FF679B0042B59E /* RemoteElementEditingViewController+IBActions.h */,
-				C25B464A16FF679B0042B59E /* RemoteElementEditingViewController+IBActions.m */,
-				C25B464B16FF679B0042B59E /* RemoteElementEditingViewController+Selection.h */,
-				C25B464C16FF679B0042B59E /* RemoteElementEditingViewController+Selection.m */,
-				C25B464D16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.h */,
-				C25B464E16FF679B0042B59E /* RemoteElementEditingViewController+Toolbars.m */,
 				C25B464F16FF679B0042B59E /* RemoteElementEditingViewController.h */,
 				C25B465016FF679B0042B59E /* RemoteElementEditingViewController.m */,
 				C25B465116FF679B0042B59E /* RemoteElementEditingViewController_Private.h */,
@@ -3345,10 +3325,6 @@
 				C25B475B16FF8D5E0042B59E /* ButtonEditingViewController.m in Sources */,
 				C25B475C16FF8D5E0042B59E /* ButtonGroupEditingViewController.m in Sources */,
 				C25B475D16FF8D5E0042B59E /* DetailedButtonEditingViewController.m in Sources */,
-				C25B475E16FF8D5E0042B59E /* RemoteElementEditingViewController+Gestures.m in Sources */,
-				C25B475F16FF8D5E0042B59E /* RemoteElementEditingViewController+IBActions.m in Sources */,
-				C25B476016FF8D5E0042B59E /* RemoteElementEditingViewController+Selection.m in Sources */,
-				C25B476116FF8D5E0042B59E /* RemoteElementEditingViewController+Toolbars.m in Sources */,
 				C25B476216FF8D5E0042B59E /* RemoteElementEditingViewController.m in Sources */,
 				C25B476316FF8D5E0042B59E /* RemoteEditingViewController.m in Sources */,
 				C25B476416FF8D5E0042B59E /* SendIRCommandEditingViewController.m in Sources */,
@@ -3676,7 +3652,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -3685,6 +3662,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -3699,7 +3677,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-licucore",

@@ -128,24 +128,24 @@
  * `deviceDiscoveredOfType:uuid:attributes:`.
  * @param The contents of the received beacon to be parsed by the manager
  */
-+ (void)receivedMulticastGroupMessage:(NSString *)message;
+- (void)receivedMulticastGroupMessage:(NSString *)message;
 
 /**
  * Creates a new `NDiTachDevice` model object with the specified attributes.
  * @param uuid Unique identifier for the device
  * @param attributes Dictionary of key/value pairs to set for created device model object.
  */
-+ (void)deviceDiscoveredWithAttributes:(NSDictionary *)attributes;
+- (void)deviceDiscoveredWithAttributes:(NSDictionary *)attributes;
 
 /**
  * Processes messages received through `GlobalCachedDeviceConnection` objects.
  * @param message Contents of the message received by the device connection
  */
-+ (void)parseiTachReturnMessage:(NSString *)message;
+- (void)parseiTachReturnMessage:(NSString *)message;
 
-+ (void)deviceDisconnected:(NSString *)uri;
+- (void)deviceDisconnected:(NSString *)uri;
 
-+ (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection;
+- (void)connectionEstablished:(GlobalCacheDeviceConnection *)deviceConnection;
 
 @end
 

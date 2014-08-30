@@ -39,10 +39,10 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 {
     switch (location)
     {
-        case 0:  return $(@"RERemoteTopPanel%liKey",   (numberOfTouches + 1));
-        case 1:  return $(@"RERemoteLeftPanel%liKey",  (numberOfTouches + 1));
-        case 2:  return $(@"RERemoteBottomPanel%liKey",(numberOfTouches + 1));
-        case 3:  return $(@"RERemoteRightPanel%liKey", (numberOfTouches + 1));
+        case 0:  return $(@"RERemoteTopPanel%liKey",   (long)(numberOfTouches + 1));
+        case 1:  return $(@"RERemoteLeftPanel%liKey",  (long)(numberOfTouches + 1));
+        case 2:  return $(@"RERemoteBottomPanel%liKey",(long)(numberOfTouches + 1));
+        case 3:  return $(@"RERemoteRightPanel%liKey", (long)(numberOfTouches + 1));
         default: MSLogErrorTag(@"invalid row index for panel location");  return nil;
     }
 }
@@ -112,7 +112,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
         }
         
         else
-            title = $(@"%li", row + 1);
+            title = $(@"%li", (long)(row + 1));
     }
 
     return title;
