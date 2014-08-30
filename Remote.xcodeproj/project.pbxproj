@@ -412,6 +412,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		C2014FB8180DFC1200C31780 /* JSONObjectKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONObjectKeys.h; sourceTree = "<group>"; };
 		C2014FB9180E004E00C31780 /* JSONObjectKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONObjectKeys.m; sourceTree = "<group>"; };
 		C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
@@ -1248,6 +1249,7 @@
 		C26BAEB416DC10FE0093D5B4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C2011DCB19B238F900B982CD /* README.md */,
 				C26BAEB516DC10FE0093D5B4 /* Remote-Info.plist */,
 				C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */,
 				C26BAEB916DC10FE0093D5B4 /* main.m */,
