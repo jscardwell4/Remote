@@ -8,6 +8,7 @@
 #import "Command_Private.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
+#import "NetworkDevice.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
@@ -69,6 +70,8 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 - (ComponentDevice *)device { return self.primitiveCode.device; }
 
+- (NetworkDevice *)networkDevice { return self.primitiveCode.device.networkDevice; }
+
 - (int16_t)port { return __port; }
 
 - (int16_t)offset { return __offset; }
@@ -105,13 +108,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-       {
-           "class": "sendir",
-           "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5" // Tools
-       }
-   */
-
   [super updateWithData:data];
 
   NSDictionary * code = data[@"code"];

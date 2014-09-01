@@ -5,36 +5,73 @@
 // Created by Jason Cardwell on 7/15/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
-#import "RETypedefs.h"
 
-MSEXTERN_STRING   CMConnectionStatusNotification;
-MSEXTERN_STRING   CMConnectionStatusWifiAvailable;
-MSEXTERN_STRING   CMNetworkDeviceKey;
-MSEXTERN_STRING   CMDevicesUserDefaultsKey;
-MSEXTERN_STRING   CMCommandDidCompleteNotification;
+MSEXTERN_NOTIFICATION(CMConnectionStatus);
+MSEXTERN_NOTIFICATION(CMCommandDidComplete);
+MSEXTERN_NOTIFICATION(CMNetworkDeviceDiscovery);
+
+MSEXTERN_KEY(CMConnectionStatusWifiAvailable);
+MSEXTERN_KEY(CMNetworkDevice);
+MSEXTERN_KEY(CMAutoConnectDevice);
+MSEXTERN_KEY(CMDevicesUserDefaults);
+
+MSEXTERN_STRING ConnectionManagerErrorDomain;
+
+NS_ENUM(uint8_t, ConnectionManagerErrorCode) {
+  ConnectionManagerErrorNoWifi,
+  ConnectionManagerErrorInvalidID,
+  ConnectionManagerErrorCommandEmpty,
+  ConnectionManagerErrorConnectionExists,
+  ConnectionManagerErrorInvalidNetworkDevice,
+  ConnectionManagerErrorConnectionInProgress
+};
 
 /**
- * The `ConnectionManager` class utilizes a singleton instance to oversee all device-related network
- * activity.
- */
-@interface ConnectionManager : NSObject @end
 
-@interface ConnectionManager (Public)
+ The `ConnectionManager` class utilizes a singleton instance to oversee all device-related network
+ activity.
+
+ */
+@interface ConnectionManager : NSObject
 
 /**
- * Dumps various details about the current state.
- */
-+ (void)logStatus;
 
-/**
- * Obtains the necessary data from the specified `SendCommand` model object, executes the
- * send operation, and, optionally, calls the completion handler with the result.
-  @param command The command containing the details from which the send message will be constructed.
-  @param completion Block which to be executed upon completion of the send operation
- */
-+ (void)sendCommand:(NSManagedObjectID *)commandID completion:(void (^)(BOOL success, NSError *))completion;
+ Obtains the necessary data from the specified `SendCommand` model object, executes the
+ send operation, and, optionally, calls the completion handler with the result.
+ 
+ @param command The command containing the details from which the send message will be constructed.
+ 
+ @param completion Block to be executed upon completion of the send operation
 
-/// Indicates status of wifi connectivity.
+ */
++ (void)sendCommandWithID:(NSManagedObjectID *)commandID
+               completion:(void (^)(BOOL success, NSError *))completion;
+
+/** 
+ 
+ Method for retrieving current status of wifi availability
+ 
+ @return `YES` if available and `NO` otherwise.
+
+ */
 + (BOOL)isWifiAvailable;
+
+/**
+
+ Join multicast group and listen for beacons broadcast by iTach devices.
+
+ @param completion Block to be executed upon completion of the task.
+
+ */
++ (void)detectNetworkDevices:(void(^)(BOOL success, NSError * error))completion;
+
+/**
+
+ Leave multicast group.
+
+ @param completion Block to be executed upon completion of the task.
+
+ */
++ (void)stopDetectingNetworkDevices:(void(^)(BOOL success, NSError * error))completion;
 
 @end

@@ -364,6 +364,8 @@
 		C29ABAE017F87ADB007D185F /* BankCollectionHeaderReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
+		C2A4102619B4BFB90089AACA /* GlobalCacheDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102319B4BFB90089AACA /* GlobalCacheDeviceConnection.m */; };
+		C2A4102719B4BFB90089AACA /* GlobalCacheMulticastConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102519B4BFB90089AACA /* GlobalCacheMulticastConnection.m */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */; };
@@ -553,7 +555,6 @@
 		C23F1E5C1705064E0084718A /* SendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendCommand.m; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
-		C240DD6017049106005CC390 /* GlobalCacheConnectionManager_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalCacheConnectionManager_Private.h; sourceTree = "<group>"; };
 		C2436DB317EA99C600482186 /* BankCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionViewController.h; sourceTree = "<group>"; };
 		C2436DB417EA99C600482186 /* BankCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionViewController.m; sourceTree = "<group>"; };
 		C25B2713180A167B0078C8D8 /* RemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RemoteController.json; sourceTree = "<group>"; };
@@ -662,7 +663,6 @@
 		C26BAF0116DC18530093D5B4 /* ButtonGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonGroupView.m; sourceTree = "<group>"; };
 		C26BAF7616DC18530093D5B4 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
 		C26BAF7716DC18530093D5B4 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
-		C26BAF7816DC18530093D5B4 /* ConnectionManager_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager_Private.h; sourceTree = "<group>"; };
 		C26BAF7B16DC18530093D5B4 /* GlobalCacheConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalCacheConnectionManager.h; sourceTree = "<group>"; };
 		C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GlobalCacheConnectionManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAF8116DC18530093D5B4 /* NetworkDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDevice.h; sourceTree = "<group>"; };
@@ -869,6 +869,10 @@
 		C29F23EB178505AA00CD782B /* Remote.base.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Remote.base.xcdatamodel; sourceTree = "<group>"; };
 		C29F8F8B18269E150073EF09 /* NamedModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamedModelObject.h; sourceTree = "<group>"; };
 		C29F8F8C18269E150073EF09 /* NamedModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NamedModelObject.m; sourceTree = "<group>"; };
+		C2A4102219B4BFB90089AACA /* GlobalCacheDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalCacheDeviceConnection.h; sourceTree = "<group>"; };
+		C2A4102319B4BFB90089AACA /* GlobalCacheDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalCacheDeviceConnection.m; sourceTree = "<group>"; };
+		C2A4102419B4BFB90089AACA /* GlobalCacheMulticastConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalCacheMulticastConnection.h; sourceTree = "<group>"; };
+		C2A4102519B4BFB90089AACA /* GlobalCacheMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalCacheMulticastConnection.m; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
 		C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableDetailTableViewController.h; sourceTree = "<group>"; };
@@ -1284,18 +1288,20 @@
 		C26BAF7516DC18530093D5B4 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				C2A4102219B4BFB90089AACA /* GlobalCacheDeviceConnection.h */,
+				C2A4102319B4BFB90089AACA /* GlobalCacheDeviceConnection.m */,
+				C2A4102419B4BFB90089AACA /* GlobalCacheMulticastConnection.h */,
+				C2A4102519B4BFB90089AACA /* GlobalCacheMulticastConnection.m */,
 				C26BAF9B16DC18530093D5B4 /* IRLearnerViewController.h */,
 				C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */,
 				C26BAF7616DC18530093D5B4 /* ConnectionManager.h */,
 				C26BAF7716DC18530093D5B4 /* ConnectionManager.m */,
-				C26BAF7816DC18530093D5B4 /* ConnectionManager_Private.h */,
 				C26BAF7B16DC18530093D5B4 /* GlobalCacheConnectionManager.h */,
 				C26BAF7C16DC18530093D5B4 /* GlobalCacheConnectionManager.m */,
 				C26BAF8116DC18530093D5B4 /* NetworkDevice.h */,
 				C26BAF8216DC18530093D5B4 /* NetworkDevice.m */,
 				C240DD5D170485F2005CC390 /* IRLearner.h */,
 				C240DD5E170485F2005CC390 /* IRLearner.m */,
-				C240DD6017049106005CC390 /* GlobalCacheConnectionManager_Private.h */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -2077,6 +2083,7 @@
 				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
+				C2A4102719B4BFB90089AACA /* GlobalCacheMulticastConnection.m in Sources */,
 				C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */,
 				C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */,
 				C29ABAD917F87472007D185F /* BankPreviewViewController.m in Sources */,
@@ -2157,6 +2164,7 @@
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
 				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
+				C2A4102619B4BFB90089AACA /* GlobalCacheDeviceConnection.m in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,

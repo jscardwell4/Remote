@@ -32,7 +32,7 @@
                                             (ConnectionStatusButtonView *)receptionist.observer;
                                           BOOL selected = view.model.selected;
                                           NSDictionary * userInfo = receptionist.notification.userInfo;
-                                          NSNumber * value = userInfo[CMConnectionStatusWifiAvailable];
+                                          NSNumber * value = userInfo[CMConnectionStatusWifiAvailableKey];
                                           BOOL wifiAvailable = BOOLValue(value);
 
                                           if (selected != wifiAvailable) view.model.selected = !selected;

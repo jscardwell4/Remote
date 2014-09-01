@@ -8,9 +8,6 @@
 
 #import "IRLearner.h"
 
-MSSTRING_CONST   kLearnerStatusDidChangeNotification = @"kLearnerStatusDidChangedNotification";
-MSSTRING_CONST   kCommandCapturedNotification        = @"kCommandCapturedNotification";
-
 @implementation IRLearner
 
 @end

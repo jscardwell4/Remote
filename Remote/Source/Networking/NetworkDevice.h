@@ -25,20 +25,20 @@ MSEXTERN_KEY(NDDeviceURL);
 
 + (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID;
 
-@property (nonatomic, strong) NSSet * componentDevices;
-@property (nonatomic, copy, readonly ) NSString * deviceUUID;
-@property (nonatomic, copy, readonly ) NSString * make;
-@property (nonatomic, copy, readonly ) NSString * model;
-@property (nonatomic, copy, readonly ) NSString * status;
-@property (nonatomic, copy, readonly ) NSString * configURL;
-@property (nonatomic, copy, readonly ) NSString * revision;
+@property (nonatomic, strong) NSSet            * componentDevices;
+@property (nonatomic, copy, readonly) NSString * deviceUUID;
+@property (nonatomic, copy, readonly) NSString * make;
+@property (nonatomic, copy, readonly) NSString * model;
+@property (nonatomic, copy, readonly) NSString * status;
+@property (nonatomic, copy, readonly) NSString * configURL;
+@property (nonatomic, copy, readonly) NSString * revision;
 
 @end
 
 // constants
-MSEXTERN_STRING   NDiTachDeviceMulticastGroupAddress;
-MSEXTERN_STRING   NDiTachDeviceMulticastGroupPort;
-MSEXTERN_STRING   NDiTachDeviceTCPPort;
+MSEXTERN_STRING NDiTachDeviceMulticastGroupAddress;
+MSEXTERN_STRING NDiTachDeviceMulticastGroupPort;
+MSEXTERN_STRING NDiTachDeviceTCPPort;
 
 // keys
 MSEXTERN_KEY(NDiTachDevicePCB);

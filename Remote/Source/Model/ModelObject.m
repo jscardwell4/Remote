@@ -211,6 +211,18 @@ BOOL UUIDIsValid(NSString * uuid) {
   return [self findFirstByAttribute:attribute withValue:value inContext:[CoreDataManager defaultContext]];
 }
 
++ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
+  return [self existingObjectWithID:objectID context:[CoreDataManager defaultContext] error:error];
+}
+
++ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
+                             context:(NSManagedObjectContext *)moc
+                               error:(NSError **)error
+{
+  NSManagedObject * object = [moc existingObjectWithID:objectID error:error];
+  return [object isKindOfClass:[self class]] ? (ModelObject *)object : nil;
+}
+
 + (instancetype)existingObjectWithUUID:(NSString *)uuid {
   return [self existingObjectWithUUID:uuid context:[CoreDataManager defaultContext]];
 }

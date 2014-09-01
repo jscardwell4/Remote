@@ -198,12 +198,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                       defaultValue:nil
                               info:nil];
 
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"ButtonGroup"] notFoundMarker:NullObject]
-                         attribute:@"labelAttributes"
-                         className:@"MSDictionary"
-                      defaultValue:[MSDictionary dictionary]
-                              info:nil];
-
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Button"] notFoundMarker:NullObject]
                          attribute:@"Title"
                          className:@"NSAttributedString"
@@ -211,7 +205,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                               info:nil];
 
   // index attribute on command containers
-  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"CommandContainer", @"CommandSet", @"CommandSetCollection"] notFoundMarker:NullObject]
+  [self modifyAttributeForEntities:[entities objectsForKeys:@[@"CommandContainer", @"CommandSet", @"CommandSetCollection"]
+                                             notFoundMarker:NullObject]
                          attribute:@"index"
                          className:@"MSDictionary"
                       defaultValue:[MSDictionary dictionary]

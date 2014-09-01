@@ -15,6 +15,10 @@ BOOL UUIDIsValid(NSString * uuid);
 
 @property (nonatomic, copy, readonly) NSString * uuid;
 
++ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID error:(NSError **)error;
++ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
+                             context:(NSManagedObjectContext *)moc
+                               error:(NSError **)error;
 + (instancetype)existingObjectWithUUID:(NSString *)uuid;
 + (instancetype)existingObjectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc;
 + (instancetype)objectWithUUID:(NSString *)uuid;

@@ -10,15 +10,15 @@
 #import "CoreDataManager.h"
 
 // property keys
-MSSTRING_CONST   NDDeviceMakeKey     = @"make";
-MSSTRING_CONST   NDDeviceModelKey    = @"model";
-MSSTRING_CONST   NDDeviceRevisionKey = @"revision";
-MSSTRING_CONST   NDDeviceStatusKey   = @"status";
-MSSTRING_CONST   NDDeviceUUIDKey     = @"deviceUUID";
-MSSTRING_CONST   NDDeviceURLKey      = @"configURL";
+MSSTRING_CONST NDDeviceMakeKey     = @"make";
+MSSTRING_CONST NDDeviceModelKey    = @"model";
+MSSTRING_CONST NDDeviceRevisionKey = @"revision";
+MSSTRING_CONST NDDeviceStatusKey   = @"status";
+MSSTRING_CONST NDDeviceUUIDKey     = @"deviceUUID";
+MSSTRING_CONST NDDeviceURLKey      = @"configURL";
 
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
@@ -39,51 +39,46 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 + (instancetype)device { return [self createInContext:[CoreDataManager defaultContext]]; }
 
-+ (instancetype)deviceInContext:(NSManagedObjectContext *)context
-{
-    return [self createInContext:context];
++ (instancetype)deviceInContext:(NSManagedObjectContext *)context {
+  return [self createInContext:context];
+}
+
++ (instancetype)deviceWithAttributes:(NSDictionary *)attributes {
+  return [self deviceWithAttributes:attributes
+                            context:[CoreDataManager defaultContext]];
 }
 
 + (instancetype)deviceWithAttributes:(NSDictionary *)attributes
-{
-    return [self deviceWithAttributes:attributes
-                              context:[CoreDataManager defaultContext]];
+                             context:(NSManagedObjectContext *)context {
+  NSString * deviceUUID = attributes[NDDeviceUUIDKey];
+
+  if ([self deviceExistsWithDeviceUUID:deviceUUID])
+    return [self findFirstByAttribute:@"deviceUUID" withValue:deviceUUID inContext:context];
+
+  else {
+    NetworkDevice * device = [self deviceInContext:context];
+    [device setValuesForKeysWithDictionary:attributes];
+    return device;
+  }
 }
 
-+ (instancetype)deviceWithAttributes:(NSDictionary *)attributes
-                             context:(NSManagedObjectContext *)context
-{   
-    NSString * deviceUUID = attributes[NDDeviceUUIDKey];
++ (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID {
 
-    if ([self deviceExistsWithDeviceUUID:deviceUUID])
-        return [self findFirstByAttribute:@"deviceUUID" withValue:deviceUUID inContext:context];
-
-    else
-    {
-        NetworkDevice * device = [self deviceInContext:context];
-        [device setValuesForKeysWithDictionary:attributes];
-        return device;
-    }
-}
-
-+ (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID
-{
-
-    return (   StringIsNotEmpty(deviceUUID)
-            && [self countOfObjectsWithPredicate:NSPredicateMake(@"deviceUUID == %@", deviceUUID)] == 1);
+  return (  StringIsNotEmpty(deviceUUID)
+         && [self countOfObjectsWithPredicate:NSPredicateMake(@"deviceUUID == %@", deviceUUID)] == 1);
 }
 
 @end
 
 // constants
-MSSTRING_CONST   NDiTachDeviceMulticastGroupAddress = @"239.255.250.250";
-MSSTRING_CONST   NDiTachDeviceMulticastGroupPort    = @"9131";
-MSSTRING_CONST   NDiTachDeviceTCPPort               = @"4998";
+MSSTRING_CONST NDiTachDeviceMulticastGroupAddress = @"239.255.250.250";
+MSSTRING_CONST NDiTachDeviceMulticastGroupPort    = @"9131";
+MSSTRING_CONST NDiTachDeviceTCPPort               = @"4998";
 
 // keys
-MSSTRING_CONST   NDiTachDevicePCBKey = @"pcb_pn";
-MSSTRING_CONST   NDiTachDevicePkgKey = @"pkg_level";
-MSSTRING_CONST   NDiTachDeviceSDKKey = @"sdkClass";
+MSSTRING_CONST NDiTachDevicePCBKey = @"pcb_pn";
+MSSTRING_CONST NDiTachDevicePkgKey = @"pkg_level";
+MSSTRING_CONST NDiTachDeviceSDKKey = @"sdkClass";
 
 @implementation NDiTachDevice
 

@@ -89,20 +89,6 @@
 @interface MacroCommand : Command
 
 /**
- * Returns the `Command` object with the specified uuid.
- * @param uuid The `uuid` of the command to retrieve
- * @return The `Command` object at the specified index
- */
-//- (Command *)objectAtKeyedSubscript:(NSString *)uuid;
-
-/**
- * Returns the `Command` object at the specified index sorted by order of execution.
- * @param idx The index of the command to retrieve
- * @return The `Command` object at the specified index
- */
-//- (Command *)objectAtIndexedSubscript:(NSUInteger)idx;
-
-/**
  * Sets the `Command` object at the specified index sorted by order of execution.
  * @param obj The command to insert at the specified index
  * @param idx The index in order of execution at which the object should be placed
@@ -209,7 +195,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Sending IR Commands
 ////////////////////////////////////////////////////////////////////////////////
-@class IRCode;
+@class IRCode, NetworkDevice;
 
 /**
  * `SendIRCommand` subclasses `Command` to send IR commands via <ConnectionManager> to networked
@@ -253,8 +239,11 @@
 /// from the various attributes of the command's `IRCode`.
 @property (nonatomic, strong, readonly) NSString * commandString;
 
-/// Wrapper for the `IRCode` object's `device` property.
+/// Wrapper for the `code.device`
 @property (nonatomic, readonly) ComponentDevice * device;
+
+/// Wrapper for `code.device.networkDevice`
+@property (nonatomic, readonly) NetworkDevice * networkDevice;
 
 @end
 

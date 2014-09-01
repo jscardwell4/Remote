@@ -209,6 +209,9 @@
 #define _TAG (@{ MSLogObjectNameKey : CollectionSafe([[self shortDescription] copy]), \
                  MSLogClassNameKey  : CollectionSafe(ClassString([self class])) })
 
+#define _WEAKTAG (@{ MSLogObjectNameKey : CollectionSafe([[weakself shortDescription] copy]), \
+                 MSLogClassNameKey  : CollectionSafe(ClassString([weakself class])) })
+
 #define MSLogErrorInContextTag(ctx,frmt,...) \
     MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_ERROR,_LVL,LOG_FLAG_ERROR,ctx,_TAG,frmt,##__VA_ARGS__)
 
@@ -223,6 +226,21 @@
 
 #define MSLogDebugInContextTag(ctx,frmt,...) \
     MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_DEBUG,_LVL,LOG_FLAG_DEBUG,ctx,_TAG,frmt,##__VA_ARGS__)
+
+#define MSLogErrorInContextWeakTag(ctx,frmt,...) \
+    MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_ERROR,_LVL,LOG_FLAG_ERROR,ctx,_WEAKTAG,frmt,##__VA_ARGS__)
+
+#define MSLogWarnInContextWeakTag(ctx,frmt,...) \
+    MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_WARN,_LVL,LOG_FLAG_WARN,ctx,_WEAKTAG,frmt,##__VA_ARGS__)
+
+#define MSLogInfoInContextWeakTag(ctx,frmt,...) \
+    MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_INFO,_LVL,LOG_FLAG_INFO,ctx,_WEAKTAG,frmt,##__VA_ARGS__)
+
+#define MSLogVerboseInContextWeakTag(ctx,frmt,...) \
+    MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_VERBOSE,_LVL,LOG_FLAG_VERBOSE,ctx,_WEAKTAG,frmt,##__VA_ARGS__)
+
+#define MSLogDebugInContextWeakTag(ctx,frmt,...) \
+    MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_DEBUG,_LVL,LOG_FLAG_DEBUG,ctx,_WEAKTAG,frmt,##__VA_ARGS__)
 
 #define MSLogCErrorInContextTag(ctx,frmt,...) \
     MSLOG_C_TAG_MAYBE(LOG_ASYNC_ERROR,_LVL,LOG_FLAG_ERROR,ctx,@{},frmt,##__VA_ARGS__)
@@ -268,6 +286,21 @@ WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_VERBOSE,_LVL,LOG_FLAG_VERBOSE,ctx,
 
 #define MSLogDebugInContextTagIf(expr,ctx,frmt,...) \
 WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_DEBUG,_LVL,LOG_FLAG_DEBUG,ctx,_TAG,frmt,##__VA_ARGS__);)
+
+#define MSLogErrorInContextWeakTagIf(expr,ctx,frmt,...) \
+WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_ERROR,_LVL,LOG_FLAG_ERROR,ctx,_WEAKTAG,frmt,##__VA_ARGS__);)
+
+#define MSLogWarnInContextWeakTagIf(expr,ctx,frmt,...) \
+WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_WARN,_LVL,LOG_FLAG_WARN,ctx,_WEAKTAG,frmt,##__VA_ARGS__);)
+
+#define MSLogInfoInContextWeakTagIf(expr,ctx,frmt,...) \
+WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_INFO,_LVL,LOG_FLAG_INFO,ctx,_WEAKTAG,frmt,##__VA_ARGS__);)
+
+#define MSLogVerboseInContextWeakTagIf(expr,ctx,frmt,...) \
+WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_VERBOSE,_LVL,LOG_FLAG_VERBOSE,ctx,_WEAKTAG,frmt,##__VA_ARGS__);)
+
+#define MSLogDebugInContextWeakTagIf(expr,ctx,frmt,...) \
+WRAP(if((expr))MSLOG_OBJC_TAG_MAYBE(LOG_ASYNC_DEBUG,_LVL,LOG_FLAG_DEBUG,ctx,_WEAKTAG,frmt,##__VA_ARGS__);)
 
 #define MSLogCErrorInContextIf(expr,ctx,frmt,...) \
 WRAP(if((expr))MSLOG_C_MAYBE(LOG_ASYNC_ERROR,_LVL,LOG_FLAG_ERROR,ctx,frmt,##__VA_ARGS__);)
@@ -317,6 +350,12 @@ WRAP(if((expr))MSLOG_C_TAG_MAYBE(LOG_ASYNC_DEBUG,_LVL,LOG_FLAG_DEBUG,ctx,nil,frm
 #define MSLogVerboseTag(frmt,...) MSLogVerboseInContextTag(_CTX,frmt,##__VA_ARGS__)
 #define MSLogDebugTag(frmt,...)   MSLogDebugInContextTag(_CTX,frmt,##__VA_ARGS__)
 
+#define MSLogErrorWeakTag(frmt,...)   MSLogErrorInContextWeakTag(_CTX,frmt,##__VA_ARGS__)
+#define MSLogWarnWeakTag(frmt,...)    MSLogWarnInContextWeakTag(_CTX,frmt,##__VA_ARGS__)
+#define MSLogInfoWeakTag(frmt,...)    MSLogInfoInContextWeakTag(_CTX,frmt,##__VA_ARGS__)
+#define MSLogVerboseWeakTag(frmt,...) MSLogVerboseInContextWeakTag(_CTX,frmt,##__VA_ARGS__)
+#define MSLogDebugWeakTag(frmt,...)   MSLogDebugInContextWeakTag(_CTX,frmt,##__VA_ARGS__)
+
 #define MSLogCErrorTag(frmt,...)   MSLogCErrorInContextTag(_CTX,frmt,##__VA_ARGS__)
 #define MSLogCWarnTag(frmt,...)    MSLogCWarnInContextTag(_CTX,frmt,##__VA_ARGS__)
 #define MSLogCInfoTag(frmt,...)    MSLogCInfoInContextTag(_CTX,frmt,##__VA_ARGS__)
@@ -334,6 +373,12 @@ WRAP(if((expr))MSLOG_C_TAG_MAYBE(LOG_ASYNC_DEBUG,_LVL,LOG_FLAG_DEBUG,ctx,nil,frm
 #define MSLogInfoTagIf(expr,frmt,...)    MSLogInfoInContextTagIf(expr,_CTX,frmt,##__VA_ARGS__)
 #define MSLogVerboseTagIf(expr,frmt,...) MSLogVerboseInContextTagIf(expr,_CTX,frmt,##__VA_ARGS__)
 #define MSLogDebugTagIf(expr,frmt,...)   MSLogDebugInContextTagIf(expr,_CTX,frmt,##__VA_ARGS__)
+
+#define MSLogErrorWeakTagIf(expr,frmt,...)   MSLogErrorInContextWeakTagIf(expr,_CTX,frmt,##__VA_ARGS__)
+#define MSLogWarnWeakTagIf(expr,frmt,...)    MSLogWarnInContextWeakTagIf(expr,_CTX,frmt,##__VA_ARGS__)
+#define MSLogInfoWeakTagIf(expr,frmt,...)    MSLogInfoInContextWeakTagIf(expr,_CTX,frmt,##__VA_ARGS__)
+#define MSLogVerboseWeakTagIf(expr,frmt,...) MSLogVerboseInContextWeakTagIf(expr,_CTX,frmt,##__VA_ARGS__)
+#define MSLogDebugWeakTagIf(expr,frmt,...)   MSLogDebugInContextWeakTagIf(expr,_CTX,frmt,##__VA_ARGS__)
 
 #define MSLogCErrorIf(expr,frmt,...)   MSLogCErrorInContextIf(expr,_CTX,frmt,##__VA_ARGS__)
 #define MSLogCWarnIf(expr,frmt,...)    MSLogCWarnInContextIf(expr,_CTX,frmt,##__VA_ARGS__)
@@ -389,7 +434,19 @@ WRAP(if(lvl&flg){[[MSLog loggingQueue] addOperationWithBlock:block];})
         errorMessage;                                                                               \
     })
 
-#define MSHandleErrors(ERROR)  ({ BOOL result = NO; if (ERROR) { MSLogError(@"%@",MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
-#define MSHandleCErrors(ERROR) ({ BOOL result = NO; if (ERROR) { MSLogCError(@"%@",MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
-#define MSHandleErrorsTag(ERROR)  ({ BOOL result = NO; if (ERROR) { MSLogErrorTag(@"%@",MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
-#define MSHandleCErrorsTag(ERROR) ({ BOOL result = NO; if (ERROR) { MSLogCErrorTag(@"%@",MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
+#define MSHandleErrors(ERROR) \
+  ({ BOOL result = NO;        \
+     if (ERROR) { MSLogError(@"%@", MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
+#define MSHandleCErrors(ERROR) \
+  ({ BOOL result = NO;         \
+     if (ERROR) { MSLogCError(@"%@", MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
+#define MSHandleErrorsTag(ERROR) \
+  ({ BOOL result = NO;           \
+     if (ERROR) { MSLogErrorTag(@"%@", MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
+#define MSHandleErrorsWeakTag(ERROR)                                                      \
+  ({ BOOL result = NO;                                                                    \
+     if (ERROR) { MSLogErrorWeakTag(@"%@", MSAggrogateErrorMessage(ERROR)); result = YES; \
+     } result; })
+#define MSHandleCErrorsTag(ERROR) \
+  ({ BOOL result = NO;            \
+     if (ERROR) { MSLogCErrorTag(@"%@", MSAggrogateErrorMessage(ERROR)); result = YES; } result; })
