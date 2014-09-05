@@ -77,7 +77,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
   self.borderPath = bezierPath;
 
-  [defaultBGColor() setFill];
+  [[UIColor darkTextColor] setFill];
 
   [bezierPath fillWithBlendMode:kCGBlendModeNormal alpha:0.9];
 

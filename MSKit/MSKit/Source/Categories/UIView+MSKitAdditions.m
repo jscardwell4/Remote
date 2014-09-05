@@ -469,9 +469,8 @@ static const char * kUIViewNametagKey = "kUIViewNametagKey";
             : (NSString *)nil);
   };
 
-  NSArray * descriptions = [self.constraints arrayByMappingToBlock:
-                            ^id (NSLayoutConstraint * constraint, NSUInteger idx)
-  {
+  NSArray * descriptions = [self.constraints mapped:^id (NSLayoutConstraint * constraint, NSUInteger idx) {
+    
     NSString     * firstItem     = itemNameForView(constraint.firstItem);
     NSString     * secondItem    = itemNameForView(constraint.secondItem);
     NSDictionary * substitutions = nil;

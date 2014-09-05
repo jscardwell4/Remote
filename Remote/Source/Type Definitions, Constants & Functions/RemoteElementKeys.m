@@ -176,7 +176,7 @@ NSSet * remoteElementJSONAttributeKeys()
     dispatch_once(&onceToken,
                   ^{
                       keys = [[[remoteElementAttributeKeys()
-                                arrayByMappingToBlock:^id(id obj, NSUInteger idx)
+                                mapped:^id(id obj, NSUInteger idx)
                                 {
                                     return titleSetAttributeJSONKeyForKey(obj);
                                 }] arrayByAddingObject:REFontAwesomeIconJSONKey] set];
@@ -191,7 +191,7 @@ NSSet * remoteElementJSONParagraphAttributeKeys()
     dispatch_once(&onceToken,
                   ^{
                       keys = [[[remoteElementParagraphAttributeKeys()
-                                arrayByMappingToBlock:^id(id obj, NSUInteger idx)
+                                mapped:^id(id obj, NSUInteger idx)
                                 {
                                     return titleSetAttributeJSONKeyForKey(obj);
                                 }] arrayByAddingObject:REFontAwesomeIconJSONKey] set];

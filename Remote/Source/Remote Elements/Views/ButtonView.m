@@ -45,7 +45,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 
   UIActivityIndicatorView * activityIndicator = [UIActivityIndicatorView newForAutolayout];
   activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-  activityIndicator.color                      = defaultTitleHighlightColor();
+  activityIndicator.color                      = [UIColor whiteColor];
   [self addViewToOverlay:activityIndicator];
   self.activityIndicator = activityIndicator;
 }

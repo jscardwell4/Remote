@@ -168,12 +168,12 @@ static NSIndexPath * kPreviewCellIndexPath;
         [request setIncludesPendingChanges:YES];
         [request setResultType:NSDictionaryResultType];
         [request setReturnsDistinctResults:YES];
-        [request setPropertiesToFetch:@[@"info.category"]];
+        [request setPropertiesToFetch:@[@"category"]];
 
         NSError * error = nil;
         NSArray * objects = [self.preset.managedObjectContext executeFetchRequest:request
                                                                             error:&error];
-        NSMutableArray * categories = [[objects valueForKey:@"info.category"] mutableCopy];
+        NSMutableArray * categories = [[objects valueForKey:@"category"] mutableCopy];
         if (![categories containsObject:self.preset.category])
             [categories addObject:self.preset.category];
         [categories sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self"

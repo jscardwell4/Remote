@@ -319,7 +319,7 @@ MSSTATIC_STRING_CONST kCoreDataManagerSQLiteName = @"Remote.sqlite";
   __block NSError * error   = nil;
 
   [kDefaultContext performBlock:^{
-    block(kDefaultContext);
+    if (block) block(kDefaultContext);
     success = [kDefaultContext save:&error];
     completion(success, error);
   }];
@@ -327,7 +327,7 @@ MSSTATIC_STRING_CONST kCoreDataManagerSQLiteName = @"Remote.sqlite";
 
 + (void)saveWithBlockAndWait:(void (^)(NSManagedObjectContext * localContext))block {
   [kDefaultContext performBlockAndWait:^{
-    block(kDefaultContext);
+    if (block) block(kDefaultContext);
     NSError * error = nil;
     [kDefaultContext save:&error];
     MSHandleErrors(error);

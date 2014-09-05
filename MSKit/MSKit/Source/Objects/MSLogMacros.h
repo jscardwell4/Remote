@@ -396,43 +396,44 @@ WRAP(if(lvl&flg){[[MSLog loggingQueue] addOperationWithBlock:block];})
 #define MSLogBlockVerbose(block) LOG_BLOCK_MAYBE(ddLogLevel,LOG_FLAG_VERBOSE,_CTX,block)
 #define MSLogBlockError(block)   LOG_BLOCK_MAYBE(ddLogLevel,LOG_FLAG_ERROR,_CTX,block)
 
-#define MSAggrogateErrorMessage(ERROR)                                                              \
-    ({                                                                                              \
-        NSMutableString * errorMessage = [@"MSHandleErrors--\n" mutableCopy];                       \
-        if ([ERROR isKindOfClass:[MSError class]])                                                  \
-        {                                                                                           \
-            NSString * message = ((MSError*)ERROR).message;                                         \
-            if (message) [errorMessage appendFormat:@"!!! %@ !!!",message];                         \
-            ERROR = ((MSError*)ERROR).error;                                                        \
-        }                                                                                           \
-                                                                                                    \
-        NSDictionary  *userInfo = [ERROR userInfo];                                                 \
-        for (NSArray *detailedError in [userInfo allValues])                                        \
-        {                                                                                           \
-            if ([detailedError isKindOfClass:[NSArray class]])                                      \
-            {                                                                                       \
-                for (NSError *e in detailedError)                                                   \
-                {                                                                                   \
-                    if ([e respondsToSelector:@selector(userInfo)])                                 \
-                        [errorMessage appendFormat:@"Error Details: %@\n",[e userInfo]];            \
-                                                                                                    \
-                    else                                                                            \
-                        [errorMessage appendFormat:@"Error Details: %@\n",e];                       \
-                }                                                                                   \
-            }                                                                                       \
-                                                                                                    \
-            else                                                                                    \
-                [errorMessage appendFormat:@"Error: %@\n",detailedError];                           \
-        }                                                                                           \
-        [errorMessage appendFormat:@"Error Message: %@\n",[ERROR localizedDescription]];            \
-        [errorMessage appendFormat:@"Error Domain: %@\n",[ERROR domain]];                           \
-        [errorMessage appendFormat:@"Recovery Suggestion: %@",[ERROR localizedRecoverySuggestion]]; \
-        [errorMessage replaceOccurrencesOfString:@"\\\\"                                            \
-                                      withString:@"\\"                                              \
-                                         options:0                                                  \
-                                           range:NSMakeRange(0,errorMessage.length)];               \
-        errorMessage;                                                                               \
-    })
+#define MSAggrogateErrorMessage(ERROR)                                                                   \
+  ({                                                                                                     \
+     NSMutableString * errorMessage = [@"MSHandleErrors--\n" mutableCopy];                               \
+     NSError * handledError = ERROR;                                                                     \
+     if ([ERROR isKindOfClass:[MSError class]])                                                          \
+     {                                                                                                   \
+       NSString * message = ((MSError *)ERROR).message;                                                  \
+       if (message) [errorMessage appendFormat:@"!!! %@ !!!", message];                                  \
+       handledError = ((MSError *)ERROR).error;                                                          \
+     }                                                                                                   \
+                                                                                                         \
+     NSDictionary  * userInfo = [handledError userInfo];                                                 \
+     for (NSArray * detailedError in [userInfo allValues])                                               \
+     {                                                                                                   \
+       if ([detailedError isKindOfClass:[NSArray class]])                                                \
+       {                                                                                                 \
+         for (NSError * e in detailedError)                                                              \
+         {                                                                                               \
+           if ([e respondsToSelector:@selector(userInfo)])                                               \
+             [errorMessage appendFormat:@"Error Details: %@\n", [e userInfo]];                           \
+                                                                                                         \
+           else                                                                                          \
+             [errorMessage appendFormat:@"Error Details: %@\n", e];                                      \
+         }                                                                                               \
+       }                                                                                                 \
+                                                                                                         \
+       else                                                                                              \
+         [errorMessage appendFormat:@"Error: %@\n", detailedError];                                      \
+     }                                                                                                   \
+     [errorMessage appendFormat:@"Error Message: %@\n", [handledError localizedDescription]];            \
+     [errorMessage appendFormat:@"Error Domain: %@\n", [handledError domain]];                           \
+     [errorMessage appendFormat:@"Recovery Suggestion: %@", [handledError localizedRecoverySuggestion]]; \
+     [errorMessage   replaceOccurrencesOfString:@"\\\\"                                                  \
+                                     withString:@"\\"                                                    \
+                                        options:0                                                        \
+                                          range:NSMakeRange(0, errorMessage.length)];                    \
+     errorMessage;                                                                                       \
+   })
 
 #define MSHandleErrors(ERROR) \
   ({ BOOL result = NO;        \

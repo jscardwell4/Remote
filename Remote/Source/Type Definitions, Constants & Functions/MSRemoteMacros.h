@@ -5,11 +5,16 @@
 // Created by Jason Cardwell on 6/13/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
 
 #define DefaultDDLogLevel LOG_LEVEL_WARN
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Extending MSKit's Lumberjack Extensions 
+#pragma mark - Extending MSKit's Lumberjack Extensions
 ////////////////////////////////////////////////////////////////////////////////
 
 

@@ -139,8 +139,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return [self arrayByAddingObjectsFromArray:[orderedSet array]];
 }
 
-- (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format, ...
-  {
+- (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format, ... {
   va_list args;
   va_start(args, format);
   NSPredicate * predicate = [NSPredicate predicateWithFormat:format arguments:args];
@@ -157,15 +156,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:block]];
 }
 
-- (NSArray *)filter:(BOOL (^)(id evaluatedObject))block {
+- (NSArray *)filtered:(BOOL (^)(id evaluatedObject))block {
 
-  NSMutableArray * result = [@[] mutableCopy];
-
-  for (id obj in self) {
-    if (block(obj)) [result addObject:obj];
-  }
-
-  return result;
+  NSMutableArray * array = [self mutableCopy];
+  [array filter:block];
+  return array;
 }
 
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate {
@@ -183,17 +178,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return (idxs.count ? [self objectsAtIndexes:idxs] : nil);
 }
 
-- (NSArray *)arrayByMappingToBlock:(id (^)(id obj, NSUInteger idx))block {
+- (NSArray *)mapped:(id (^)(id, NSUInteger))block {
   NSMutableArray * array = [self mutableCopy];
   [array map:block];
   return array;
 }
 
-- (NSArray *)map:(id (^)(id, NSUInteger))block {
-  return [self arrayByMappingToBlock:block];
-}
-
-- (NSArray *)flattenedArray {
+- (NSArray *)flattened {
   NSMutableArray * array = [self mutableCopy];
   [array flatten];
   return array;
@@ -205,9 +196,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   }
 }
 
-- (NSArray *)arrayByRemovingNullObjects {
+- (NSArray *)compacted {
   NSMutableArray * array = [self mutableCopy];
-  [array removeNullObjects];
+  [array compact];
   return array;
 }
 
@@ -237,11 +228,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)filter:(BOOL (^)(id evaluatedObject))block {
 
   NSMutableIndexSet * indexes = [NSMutableIndexSet indexSet];
-  [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL * stop) {
-    if (!block(obj)) [indexes addIndex:idx];
-  }];
-  [self removeObjectsAtIndexes:indexes];
 
+  for (NSUInteger i = 0; i < [self count]; i++)
+    if (!block(self[i])) [indexes addIndex:i];
+
+  if ([indexes count])
+    [self removeObjectsAtIndexes:indexes];
+  
 }
 
 - (void)flatten {
@@ -265,8 +258,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   }
 }
 
-- (void)map:(id (^)(id, NSUInteger))block {
-  for (int i = 0; i < self.count; i++) self[i] = block(self[i], i);
+- (void)map:(id (^)(id, NSUInteger))block
+{
+    for (int i = 0; i < self.count; i++)
+        self[i] = block(self[i],i);
 }
 
 - (void)replaceAllObjectsWithNull {
@@ -274,7 +269,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     self[i] = [NSNull null];
 }
 
-- (void)removeNullObjects {
+- (void)compact {
   [self filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF == nil"]];
 }
 

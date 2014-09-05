@@ -5,6 +5,12 @@
 // Created by Jason Cardwell on 7/21/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
+#import "MSRemoteMacros.h"
 #import "ModelObject.h"
 @protocol CommandDelegate;
 

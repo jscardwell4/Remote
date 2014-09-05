@@ -5,34 +5,26 @@
 // Created by Jason Cardwell on 3/2/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
+#import "MSRemoteMacros.h"
 
-MSEXTERN_KEY(MSSettingsAutoListen       );
-MSEXTERN_KEY(MSSettingsAutoConnect      );
-MSEXTERN_KEY(MSSettingsProximitySensor  );
-MSEXTERN_KEY(MSSettingsStatusBar        );
-MSEXTERN_KEY(MSSettingsInactivityTimeout);
+MSEXTERN_NOTIFICATION(SMAutoListenSettingDidChange       );
+MSEXTERN_NOTIFICATION(SMProximitySensorSettingDidChange  );
+MSEXTERN_NOTIFICATION(SMStatusBarSettingDidChange        );
 
-MSEXTERN_NOTIFICATION(MSSettingsManagerAutoConnectSettingDidChange      );
-MSEXTERN_NOTIFICATION(MSSettingsManagerAutoListenSettingDidChange       );
-MSEXTERN_NOTIFICATION(MSSettingsManagerProximitySensorSettingDidChange  );
-MSEXTERN_NOTIFICATION(MSSettingsManagerStatusBarSettingDidChange        );
-MSEXTERN_NOTIFICATION(MSSettingsManagerInactivityTimeoutSettingDidChange);
+typedef NS_ENUM(uint8_t, SMSetting) {
+  SMAutoListenSetting,
+  SMProximitySensorSetting,
+  SMStatusBarSetting
+};
 
-extern int globalDDLogLevel;
+@interface SettingsManager : NSObject
 
-@interface SettingsManager : MSSingletonController
-
-+ (void)registerDefaults;
-
-+ (id)valueForSetting:(NSString *)setting;
-+ (void)setValue:(id)value forSetting:(NSString *)setting;
-
-+ (BOOL)boolForSetting:(NSString *)setting;
-+ (void)setBool:(BOOL)value forSetting:(NSString *)setting;
-
-+ (CGFloat)floatForSetting:(NSString *)setting;
-+ (void)setFloat:(CGFloat)value forSetting:(NSString *)setting;
-
-+ (void)applyUserSettings;
++ (void)setValue:(id)value forSetting:(SMSetting)setting;
++ (id)valueForSetting:(SMSetting)setting;
 
 @end

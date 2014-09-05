@@ -15,6 +15,7 @@
 		C20FF1F019AE6DED00D11F33 /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
+		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2381EB319A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */; };
@@ -211,7 +212,6 @@
 		C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF716DC18530093D5B4 /* SettingsViewController.m */; };
 		C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */; };
 		C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
-		C25B47B016FF8D5E0042B59E /* MSRemoteConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */; };
 		C25BF65F19B179BC0038C724 /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25BF65E19B179BC0038C724 /* REBackgroundEditingViewController.m */; };
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
@@ -318,6 +318,9 @@
 		C26BBB3216DC1B5C0093D5B4 /* Trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE516DC1B5C0093D5B4 /* Trash@2x.png */; };
 		C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */; };
 		C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */; };
+		C26C6E5E19B8DB3500B346AE /* NDiTachDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E5D19B8DB3500B346AE /* NDiTachDevice.m */; };
+		C26C6E6519B8DB9500B346AE /* ISYDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6419B8DB9500B346AE /* ISYDevice.m */; };
+		C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */; };
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchCommand.m */; };
 		C279E08A182179E500C17FB1 /* REFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C279E089182179E500C17FB1 /* REFont.m */; };
@@ -365,7 +368,7 @@
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
 		C2A4102619B4BFB90089AACA /* GlobalCacheDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102319B4BFB90089AACA /* GlobalCacheDeviceConnection.m */; };
-		C2A4102719B4BFB90089AACA /* GlobalCacheMulticastConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102519B4BFB90089AACA /* GlobalCacheMulticastConnection.m */; };
+		C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */; };
@@ -397,6 +400,13 @@
 			remoteGlobalIDString = C20FF1BE19AE2C1700D11F33;
 			remoteInfo = "MSJSON Tests";
 		};
+		C26C6E6119B8DB3600B346AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C222480E19B7DDE90093B07C;
+			remoteInfo = "MSKitXML Tests";
+		};
 		C2CE8AA21814231F00555D63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
@@ -427,6 +437,8 @@
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
 		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
+		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
+		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
 		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
@@ -701,8 +713,6 @@
 		C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewDecorator.m; sourceTree = "<group>"; };
 		C26BAFFD16DC18530093D5B4 /* IRCodeFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeFunctions.h; sourceTree = "<group>"; };
 		C26BAFFE16DC18530093D5B4 /* IRCodeFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeFunctions.m; sourceTree = "<group>"; };
-		C26BAFFF16DC18530093D5B4 /* MSRemoteConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteConstants.h; sourceTree = "<group>"; };
-		C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRemoteConstants.m; sourceTree = "<group>"; };
 		C26BB00116DC18530093D5B4 /* MSRemoteMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteMacros.h; sourceTree = "<group>"; };
 		C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteTypeDefinitions.h; sourceTree = "<group>"; };
 		C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Apple Symbols.ttf"; sourceTree = "<group>"; };
@@ -794,6 +804,13 @@
 		C26BBAE516DC1B5C0093D5B4 /* Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash@2x.png"; sourceTree = "<group>"; };
 		C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Windows-White.png"; sourceTree = "<group>"; };
 		C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Windows-White@2x.png"; sourceTree = "<group>"; };
+		C26C6E5C19B8DB3500B346AE /* NDiTachDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDiTachDevice.h; sourceTree = "<group>"; };
+		C26C6E5D19B8DB3500B346AE /* NDiTachDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDiTachDevice.m; sourceTree = "<group>"; };
+		C26C6E6319B8DB9500B346AE /* ISYDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDevice.h; sourceTree = "<group>"; };
+		C26C6E6419B8DB9500B346AE /* ISYDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDevice.m; sourceTree = "<group>"; };
+		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
+		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
+		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
 		C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateColorSet.h; sourceTree = "<group>"; };
 		C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateImageSet.h; sourceTree = "<group>"; };
 		C275A0DE181F4DF900C9D446 /* ControlStateTitleSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateTitleSet.h; sourceTree = "<group>"; };
@@ -871,8 +888,8 @@
 		C29F8F8C18269E150073EF09 /* NamedModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NamedModelObject.m; sourceTree = "<group>"; };
 		C2A4102219B4BFB90089AACA /* GlobalCacheDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalCacheDeviceConnection.h; sourceTree = "<group>"; };
 		C2A4102319B4BFB90089AACA /* GlobalCacheDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalCacheDeviceConnection.m; sourceTree = "<group>"; };
-		C2A4102419B4BFB90089AACA /* GlobalCacheMulticastConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalCacheMulticastConnection.h; sourceTree = "<group>"; };
-		C2A4102519B4BFB90089AACA /* GlobalCacheMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalCacheMulticastConnection.m; sourceTree = "<group>"; };
+		C2A4102419B4BFB90089AACA /* NetworkDeviceMulticastConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceMulticastConnection.h; sourceTree = "<group>"; };
+		C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceMulticastConnection.m; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
 		C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableDetailTableViewController.h; sourceTree = "<group>"; };
@@ -1290,8 +1307,8 @@
 			children = (
 				C2A4102219B4BFB90089AACA /* GlobalCacheDeviceConnection.h */,
 				C2A4102319B4BFB90089AACA /* GlobalCacheDeviceConnection.m */,
-				C2A4102419B4BFB90089AACA /* GlobalCacheMulticastConnection.h */,
-				C2A4102519B4BFB90089AACA /* GlobalCacheMulticastConnection.m */,
+				C2A4102419B4BFB90089AACA /* NetworkDeviceMulticastConnection.h */,
+				C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */,
 				C26BAF9B16DC18530093D5B4 /* IRLearnerViewController.h */,
 				C26BAF9C16DC18530093D5B4 /* IRLearnerViewController.m */,
 				C26BAF7616DC18530093D5B4 /* ConnectionManager.h */,
@@ -1302,6 +1319,15 @@
 				C26BAF8216DC18530093D5B4 /* NetworkDevice.m */,
 				C240DD5D170485F2005CC390 /* IRLearner.h */,
 				C240DD5E170485F2005CC390 /* IRLearner.m */,
+				C222480319B76E270093B07C /* ISYConnectionManager.h */,
+				C222480419B76E270093B07C /* ISYConnectionManager.m */,
+				C26C6E5C19B8DB3500B346AE /* NDiTachDevice.h */,
+				C26C6E5D19B8DB3500B346AE /* NDiTachDevice.m */,
+				C26C6E6319B8DB9500B346AE /* ISYDevice.h */,
+				C26C6E6419B8DB9500B346AE /* ISYDevice.m */,
+				C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */,
+				C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */,
+				C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1342,8 +1368,6 @@
 			children = (
 				C26BAFFD16DC18530093D5B4 /* IRCodeFunctions.h */,
 				C26BAFFE16DC18530093D5B4 /* IRCodeFunctions.m */,
-				C26BAFFF16DC18530093D5B4 /* MSRemoteConstants.h */,
-				C26BB00016DC18530093D5B4 /* MSRemoteConstants.m */,
 				C26BB00116DC18530093D5B4 /* MSRemoteMacros.h */,
 				C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */,
 				C2997F2316FA563900290737 /* RETypedefs.h */,
@@ -1659,6 +1683,7 @@
 			children = (
 				C2CE8AA31814231F00555D63 /* libMSKit.a */,
 				C20FF1E519AE484E00D11F33 /* MSJSON Tests.xctest */,
+				C26C6E6219B8DB3600B346AE /* MSKitXML Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1780,6 +1805,13 @@
 			fileType = wrapper.cfbundle;
 			path = "MSJSON Tests.xctest";
 			remoteRef = C20FF1E419AE484E00D11F33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C26C6E6219B8DB3600B346AE /* MSKitXML Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "MSKitXML Tests.xctest";
+			remoteRef = C26C6E6119B8DB3600B346AE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C2CE8AA31814231F00555D63 /* libMSKit.a */ = {
@@ -2079,11 +2111,13 @@
 				C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */,
 				C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */,
 				C265936317FBA1B00017949C /* BankableDetailTableViewCell.m in Sources */,
+				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,
+				C26C6E5E19B8DB3500B346AE /* NDiTachDevice.m in Sources */,
 				C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */,
 				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
-				C2A4102719B4BFB90089AACA /* GlobalCacheMulticastConnection.m in Sources */,
+				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
 				C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */,
 				C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */,
 				C29ABAD917F87472007D185F /* BankPreviewViewController.m in Sources */,
@@ -2154,6 +2188,7 @@
 				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
+				C26C6E6519B8DB9500B346AE /* ISYDevice.m in Sources */,
 				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
 				C2F2A47B17EF568E00DE2F41 /* PresetDetailViewController.m in Sources */,
 				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
@@ -2168,11 +2203,11 @@
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
-				C25B47B016FF8D5E0042B59E /* MSRemoteConstants.m in Sources */,
 				C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
+				C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */,
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
 				C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */,
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
@@ -2232,6 +2267,7 @@
 		C26BAEE116DC10FE0093D5B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2258,6 +2294,7 @@
 		C26BAEE216DC10FE0093D5B4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

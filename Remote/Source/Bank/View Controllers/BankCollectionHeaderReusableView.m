@@ -11,22 +11,19 @@
 
 @implementation BankCollectionHeaderReusableView
 
-- (IBAction)toggleItems:(id)sender
-{
-    [self.controller toggleItemsForSection:self.section];
+- (IBAction)toggleItems:(id)sender {
+  [self.controller toggleItemsForSection:self.section];
 }
 
-- (void)setTitle:(NSString *)title
-{
-    if (_button)
-        [self.button setTitle:title forState:UIControlStateNormal];
-    else if (_label)
-        self.label.text = title;
+- (void)setTitle:(NSString *)title {
+  if (_button)
+    [self.button setTitle:title forState:UIControlStateNormal];
+  else if (_label)
+    self.label.text = title;
 }
 
-- (NSString *)title
-{
-    return (_button ? [self.button titleForState:UIControlStateNormal] : self.label.text);
+- (NSString *)title {
+  return (_button ? [self.button titleForState:UIControlStateNormal] : self.label.text);
 }
 
 @end

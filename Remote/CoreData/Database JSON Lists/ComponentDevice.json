@@ -3,7 +3,21 @@
     "uuid": "F0419941-0226-4D06-A4F0-4F3B70BE23CF",
     "name": "Dish Hopper",
     "always-on": true,
-    "manufacturer.uuid": "34D0583C-BA66-4C1C-9FD0-F59612B38E18" // Dish
+    "manufacturer.uuid": "34D0583C-BA66-4C1C-9FD0-F59612B38E18", // Dish
+    "network-device": {
+      "uuid": "90C7585A-75B8-4CF9-A366-7A1B82564462",
+      "make": "GlobalCache",
+      "model": "iTachIP2IR",
+      "status": "Ready",
+      "config-url": "192.168.1.43",
+      "revision": "710-1005-05",
+      "name": "GlobalCache-iTachIP2IR",
+      "pcb_pn": "025-0028-03",
+      "pkg_level": "GCPK002",
+      "sdk-class": "Utility",
+      "device-uuid": "GlobalCache_000C1E022AED",
+      "type": "itach"
+    }
   },
   {
     "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
@@ -17,7 +31,8 @@
       "class": "sendir",
       "code.uuid": "9326516F-1923-4461-AD31-E726B4AAAFB1" // Discrete Off
     },
-    "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70" // Sony
+    "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70", // Sony
+    "network-device.uuid": "90C7585A-75B8-4CF9-A366-7A1B82564462"
   },
   {
     "uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5",
@@ -28,7 +43,8 @@
       "class": "sendir",
       "code.uuid": "12470A9F-CC42-4C31-B261-213DFDA79BEC" // Power
     },
-    "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70" // Sony
+    "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70", // Sony
+    "network-device.uuid": "90C7585A-75B8-4CF9-A366-7A1B82564462"
   },
   {
     "uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
@@ -42,6 +58,7 @@
       "class": "sendir",
       "code.uuid": "45693E54-0E98-4D15-89D5-97E89488EDCE" // Power Off
     },
-    "manufacturer.uuid": "CDA611FD-95C1-4981-ABE6-B07B8CB79A7E" // Samsung
+    "manufacturer.uuid": "CDA611FD-95C1-4981-ABE6-B07B8CB79A7E", // Samsung
+    "network-device.uuid": "90C7585A-75B8-4CF9-A366-7A1B82564462"
   }
 ]

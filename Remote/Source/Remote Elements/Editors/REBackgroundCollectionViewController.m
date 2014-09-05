@@ -30,7 +30,7 @@
     if (!cell.selectedBackgroundView)
     {
         UIView * view = [[UIView alloc] initWithFrame:cell.bounds];
-        view.backgroundColor = defaultTitleHighlightColor();
+        view.backgroundColor = [UIColor colorWithRed:0 green:175.0 / 255.0 blue:1.0 alpha:1.0];
         cell.selectedBackgroundView = view;
     }
 

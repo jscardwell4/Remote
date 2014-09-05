@@ -225,7 +225,7 @@ REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey) 
       NSMutableArray * flagValues = [[index objectsForKeys:[flagsToSet allObjects]
                                             notFoundMarker:NullObject] mutableCopy];
 
-      [flagValues removeNullObjects];
+      [flagValues compact];
 
       for (NSNumber * f  in flagValues)
         flags |= [f unsignedShortValue];

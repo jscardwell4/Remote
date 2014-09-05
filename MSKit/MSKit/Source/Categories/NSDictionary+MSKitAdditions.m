@@ -18,8 +18,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSDictionary (MSKitAdditions)
 
+/// isEmpty
+/// @return BOOL
 - (BOOL)isEmpty { return self.count == 0; }
 
+/// JSONString
+/// @return NSString *
 - (NSString *)JSONString
 {
     id jsonObject = self.JSONObject;
@@ -42,6 +46,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 
+/// JSONObject
+/// @return id
 - (id)JSONObject
 {
     if ([NSJSONSerialization isValidJSONObject:self])
@@ -88,6 +94,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return dictionary;
 }
 
+/// dictionaryFromDictionary:replacements:
+/// @param dictionary description
+/// @param replacements description
+/// @return instancetype
 + (instancetype)dictionaryFromDictionary:(NSDictionary *)dictionary
                             replacements:(NSDictionary *)replacements
 {
@@ -102,12 +112,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [self dictionaryWithDictionary:d];
 }
 
+/// dictionaryWithSharedKeys:
+/// @param keys description
+/// @return instancetype
 + (instancetype)dictionaryWithSharedKeys:(NSArray *)keys
 {
     id sharedKeySet = [NSDictionary sharedKeySetForKeys:keys];
     return (sharedKeySet ? [[self class] dictionaryWithSharedKeySet:sharedKeySet] : nil);
 }
 
+/// dictionaryByRemovingEntriesForKeys:
+/// @param keys description
+/// @return instancetype
 - (instancetype)dictionaryByRemovingEntriesForKeys:(NSArray *)keys
 {
     NSMutableDictionary * dictionary = [self mutableCopy];
@@ -115,17 +131,26 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [[self class] dictionaryWithDictionary:dictionary];
 }
 
+/// dictionaryByRemovingEntryForKey:
+/// @param key description
+/// @return instancetype
 - (instancetype)dictionaryByRemovingEntryForKey:(id<NSCopying>)key
 {
     return ([self hasKey:key] ? [self dictionaryByRemovingEntriesForKeys:@[key]] : self);
 }
 
+/// dictionaryByAddingEntriesFromDictionary:
+/// @param dictionary description
+/// @return instancetype
 - (instancetype)dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary {
     NSMutableDictionary * d = [self mutableCopy];
     [d addEntriesFromDictionary:dictionary];
     return [[self class] dictionaryWithDictionary:d];
 }
 
+/// dictionaryByMappingObjectsToBlock:
+/// @param block description
+/// @return instancetype
 - (instancetype)dictionaryByMappingObjectsToBlock:(id (^)(id key, id obj))block
 {
     NSMutableDictionary * d = [self mutableCopy];
@@ -133,6 +158,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [[self class] dictionaryWithDictionary:d];
 }
 
+/// dictionaryByMappingKeysToBlock:
+/// @param block description
+/// @return instancetype
 - (instancetype)dictionaryByMappingKeysToBlock:(id (^)(id key, id obj))block
 {
     NSMutableDictionary * d = [self mutableCopy];
@@ -140,16 +168,23 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [[self class] dictionaryWithDictionary:d];
 }
 
+/// hasKey:
+/// @param key description
+/// @return BOOL
 - (BOOL)hasKey:(id)key {
     return (CFDictionaryContainsKey((__bridge CFDictionaryRef)(self), (__bridge const void *)(key)));
 }
 
+/// MSDictionaryValue
+/// @return MSDictionary *
 - (MSDictionary *)MSDictionaryValue { return [MSDictionary dictionaryWithDictionary:self]; }
 
 @end
 
 @implementation NSMutableDictionary (MSKitAdditions)
 
+/// mapObjectsToBlock:
+/// @param block description
 - (void)mapObjectsToBlock:(id (^)(id key, id obj))block {
     for (id key in [self allKeys])
     {
@@ -157,6 +192,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     }
 }
 
+/// mapKeysToBlock:
+/// @param block description
 - (void)mapKeysToBlock:(id (^)(id key, id obj))block {
     for (id key in [self allKeys])
     {

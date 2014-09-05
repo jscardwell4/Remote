@@ -11,7 +11,7 @@
 #import "BankCollectionViewController.h"
 #import "Bank.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -19,7 +19,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark - BankRootTableViewController class extension
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface BankRootTableViewController () <NSFetchedResultsControllerDelegate>
+@interface BankRootTableViewController ()<NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) MSDictionary * rootItems;
 @end
@@ -32,53 +32,49 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation BankRootTableViewController
 
-- (MSDictionary *)rootItems
-{
-    if (!_rootItems)
-    {
-        self.rootItems = [MSDictionary dictionary];
-        for (NSString * className in [Bank registeredClasses])
-        {
-            id class = NSClassFromString(className);
-            assert(class);
-            assert([class conformsToProtocol:@protocol(Bankable)]);
-            NSString * directoryLabel = [class valueForKey:@"directoryLabel"];
-            assert(directoryLabel);
-            _rootItems[class] = directoryLabel;
-        }
+- (MSDictionary *)rootItems {
+  if (!_rootItems) {
+    self.rootItems = [MSDictionary dictionary];
+
+    for (NSString * className in [Bank registeredClasses]) {
+      id class = NSClassFromString(className);
+      assert(class);
+      assert([class conformsToProtocol:@protocol(Bankable)]);
+      NSString * directoryLabel = [class valueForKey:@"directoryLabel"];
+      assert(directoryLabel);
+      _rootItems[class] = directoryLabel;
     }
-    return _rootItems;
+  }
+
+  return _rootItems;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+  return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.rootItems count];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  return [self.rootItems count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    MSSTATIC_STRING_CONST kCellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier
-                                                            forIndexPath:indexPath];
-    
-    // Configure the cell...
-    cell.textLabel.text = self.rootItems[indexPath.row];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  MSSTATIC_STRING_CONST kCellIdentifier = @"Cell";
+  UITableViewCell     * cell            = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier
+                                                                          forIndexPath:indexPath];
 
-    return cell;
+  // Configure the cell...
+  cell.textLabel.text = self.rootItems[indexPath.row];
+
+  return cell;
 }
 
-- (void)     tableView:(UITableView *)tableView
-    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-     forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)   tableView:(UITableView *)tableView
+  commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+   forRowAtIndexPath:(NSIndexPath *)indexPath
 {}
 
 
@@ -87,18 +83,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 
 // In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([@"Push Bank Items" isEqualToString:segue.identifier])
-    {
-        BankCollectionViewController * viewController = segue.destinationViewController;
-        NSInteger idx = [self.tableView indexPathForSelectedRow].row;
-        viewController.navigationItem.title = _rootItems[idx];
-        viewController.itemClass = [_rootItems keyAtIndex:idx];
-    }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  if ([@"Push Bank Items" isEqualToString:segue.identifier]) {
+    BankCollectionViewController * viewController = segue.destinationViewController;
+    NSInteger                      idx            = [self.tableView indexPathForSelectedRow].row;
+    viewController.navigationItem.title = _rootItems[idx];
+    viewController.itemClass            = [_rootItems keyAtIndex:idx];
+  }
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
@@ -110,10 +102,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (IBAction)searchBankObjects:(UIBarButtonItem *)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
-- (IBAction)dismiss:(id)sender
-{
-    [AppController dismissViewController:[Bank viewController] completion:nil];
+- (IBAction)dismiss:(id)sender {
+  [AppController dismissViewController:[Bank viewController] completion:nil];
 }
-
 
 @end

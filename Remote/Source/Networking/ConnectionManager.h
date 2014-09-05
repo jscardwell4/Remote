@@ -5,9 +5,14 @@
 // Created by Jason Cardwell on 7/15/11.
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
+#import "MSRemoteMacros.h"
 
 MSEXTERN_NOTIFICATION(CMConnectionStatus);
-MSEXTERN_NOTIFICATION(CMCommandDidComplete);
 MSEXTERN_NOTIFICATION(CMNetworkDeviceDiscovery);
 
 MSEXTERN_KEY(CMConnectionStatusWifiAvailable);
@@ -36,21 +41,20 @@ NS_ENUM(uint8_t, ConnectionManagerErrorCode) {
 
 /**
 
- Obtains the necessary data from the specified `SendCommand` model object, executes the
- send operation, and, optionally, calls the completion handler with the result.
- 
+ Executes the send operation, and, optionally, calls the completion handler with the result.
+
  @param command The command containing the details from which the send message will be constructed.
- 
+
  @param completion Block to be executed upon completion of the send operation
 
  */
 + (void)sendCommandWithID:(NSManagedObjectID *)commandID
                completion:(void (^)(BOOL success, NSError *))completion;
 
-/** 
- 
+/**
+
  Method for retrieving current status of wifi availability
- 
+
  @return `YES` if available and `NO` otherwise.
 
  */
@@ -63,7 +67,7 @@ NS_ENUM(uint8_t, ConnectionManagerErrorCode) {
  @param completion Block to be executed upon completion of the task.
 
  */
-+ (void)detectNetworkDevices:(void(^)(BOOL success, NSError * error))completion;
++ (void)startDetectingDevices:(void(^)(BOOL success, NSError * error))completion;
 
 /**
 
@@ -72,6 +76,17 @@ NS_ENUM(uint8_t, ConnectionManagerErrorCode) {
  @param completion Block to be executed upon completion of the task.
 
  */
-+ (void)stopDetectingNetworkDevices:(void(^)(BOOL success, NSError * error))completion;
++ (void)stopDetectingDevices:(void(^)(BOOL success, NSError * error))completion;
+
+
+/**
+
+ Returns whether network devices are currently being detected
+
+ @return BOOL
+
+ */
++ (BOOL)isDetectingNetworkDevices;
+
 
 @end

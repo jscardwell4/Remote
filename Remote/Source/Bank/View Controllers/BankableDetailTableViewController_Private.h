@@ -5,6 +5,12 @@
 //  Created by Jason Cardwell on 9/24/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
+#import "MSRemoteMacros.h"
 
 #import "BankableDetailTableViewController.h"
 #import "BankableDetailTableViewCell.h"
@@ -34,24 +40,27 @@ typedef BOOL(^BankableValidationHandler)(void);
 - (void)updateDisplay; // refresh user interface info
 
 // may be overridden by subclasses to have interaction toggled along with editing property
-@property (nonatomic, readonly) NSArray * editableViews;
+@property (nonatomic, strong, readonly) NSHashTable * editableViews;
 - (void)registerEditableView:(UIView *)view;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
+
 - (IBAction)cancel:(id)sender;
 - (IBAction)save:(id)sender;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Animations
 ////////////////////////////////////////////////////////////////////////////////
+
 - (void)revealAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView;
 - (void)hideAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view management
 ////////////////////////////////////////////////////////////////////////////////
+
 - (UINib *)nibForIdentifier:(NSString *)identifier;
 - (BankableDetailTableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
                                                       forIndexPath:(NSIndexPath *)indexPath;
@@ -64,6 +73,7 @@ typedef BOOL(^BankableValidationHandler)(void);
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Stepper management
 ////////////////////////////////////////////////////////////////////////////////
+
 - (void)registerStepper:(UIStepper *)stepper
               withLabel:(UILabel *)label
            forIndexPath:(NSIndexPath *)indexPath;
@@ -73,6 +83,7 @@ typedef BOOL(^BankableValidationHandler)(void);
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Text field management
 ////////////////////////////////////////////////////////////////////////////////
+
 - (UITextField *)textFieldForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForTextField:(UITextField *)textField;
 - (void)registerTextField:(UITextField *)textField
@@ -83,6 +94,7 @@ typedef BOOL(^BankableValidationHandler)(void);
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Picker view management
 ////////////////////////////////////////////////////////////////////////////////
+
 - (void)registerPickerView:(UIPickerView *)pickerView forIndexPath:(NSIndexPath *)indexPath;
 - (UIPickerView *)pickerViewForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForPickerView:(UIPickerView *)pickerView;

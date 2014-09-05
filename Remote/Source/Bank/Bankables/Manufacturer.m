@@ -23,7 +23,7 @@
 
   [context performBlockAndWait:
    ^{
-    manufacturer = [self findFirstByAttribute:@"info.name"
+    manufacturer = [self findFirstByAttribute:@"name"
                                     withValue:name
                                     inContext:context];
 
@@ -45,7 +45,7 @@
   /*
      {
        "uuid": "D3D49520-818A-4E4A-9AD4-FDBC99BE99AC",
-       "info.name": "LG",
+       "name": "LG",
        "codes": [
            {
                "uuid": "5AE3E47B-3743-4DF7-82C4-2E377529E13C",

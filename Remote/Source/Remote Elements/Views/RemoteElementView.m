@@ -7,7 +7,6 @@
 //
 #import "RemoteElementView_Private.h"
 #import "RemoteElementView.h"
-#import "MSRemoteConstants.h"
 #import <MSKit/MSKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGL.h>
@@ -444,12 +443,12 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   } while (joinCount);
 
   // calculate min size and width by summing range lengths
-  CGFloat minWidth = FloatValue([[xAxisRanges arrayByMappingToBlock:
+  CGFloat minWidth = FloatValue([[xAxisRanges mapped:
                                   ^id (NSValue * obj, NSUInteger idx) {
     return @(RangeValue(obj).length);
   }] valueForKeyPath:@"@sum.self"]);
 
-  CGFloat minHeight = FloatValue([[yAxisRanges arrayByMappingToBlock:
+  CGFloat minHeight = FloatValue([[yAxisRanges mapped:
                                    ^id (NSValue * obj, NSUInteger idx) {
     return @(RangeValue(obj).length);
   }] valueForKeyPath:@"@sum.self"]);
@@ -615,7 +614,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   if (self.model.style & REStyleApplyGloss) {
     switch ((self.model.style & REGlossStyleMask)) {
       case REStyleGlossStyle1:
-        [MSPainter drawGlossGradientWithColor:defaultGlossColor()
+        [MSPainter drawGlossGradientWithColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.02]
                                          rect:self.bounds
                                       context:UIGraphicsGetCurrentContext()
                                        offset:0.0f];
@@ -626,14 +625,14 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
         break;
 
       case REStyleGlossStyle3:
-        [MSPainter drawGlossGradientWithColor:defaultGlossColor()
+        [MSPainter drawGlossGradientWithColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.02]
                                          rect:self.bounds
                                       context:UIGraphicsGetCurrentContext()
                                        offset:0.8f];
         break;
 
       case REStyleGlossStyle4:
-        [MSPainter drawGlossGradientWithColor:defaultGlossColor()
+        [MSPainter drawGlossGradientWithColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.02]
                                          rect:self.bounds
                                       context:UIGraphicsGetCurrentContext()
                                        offset:-0.8f];
@@ -1476,7 +1475,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 - (NSString *)framesDescription {
   NSArray * frames = [[@[self] arrayByAddingObjectsFromArray : self.subelementViews]
-                      arrayByMappingToBlock:^id (RemoteElementView * obj, NSUInteger idx)
+                      mapped:^id (RemoteElementView * obj, NSUInteger idx)
   {
     NSString * nameString = [obj.name camelCase];
 
@@ -1519,7 +1518,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
   if (unmodeledConstraints.count)
     [description appendFormat:@"\n\nview constraints (unmodeled):\n\t%@",
-     [[unmodeledConstraints arrayByMappingToBlock:
+     [[unmodeledConstraints mapped:
        ^id (id obj, NSUInteger idx) {
       return prettyRemoteElementConstraint(obj);
     }] componentsJoinedByString:@"\n\t"]];

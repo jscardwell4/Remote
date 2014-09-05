@@ -5,6 +5,12 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
+#import "MSRemoteMacros.h"
 #import "NamedModelObject.h"
 #import "RETypedefs.h"
 
@@ -165,7 +171,7 @@
 @interface SystemCommand : Command
 
 /**
- * Retrieves the `SystemCommand` object for the specified key using the current thread's managed 
+ * Retrieves the `SystemCommand` object for the specified key using the current thread's managed
  * object context, creating it if it does not already exist.
  * @param key `SystemCommandType` for the desired command.
  * @return The existing or newly created `SystemCommand` for the specified key.

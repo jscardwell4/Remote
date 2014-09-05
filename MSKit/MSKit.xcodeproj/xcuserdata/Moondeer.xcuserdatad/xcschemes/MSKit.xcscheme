@@ -29,7 +29,7 @@
       buildConfiguration = "Debug">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C20FF1BD19AE2C1700D11F33"
@@ -38,7 +38,26 @@
                ReferencedContainer = "container:MSKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C222480D19B7DDE90093B07C"
+               BuildableName = "MSKitXML Tests.xctest"
+               BlueprintName = "MSKitXML Tests"
+               ReferencedContainer = "container:MSKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C23A0D5219A7A459002BF2B6"
+            BuildableName = "libMSKit.a"
+            BlueprintName = "MSKit"
+            ReferencedContainer = "container:MSKit.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"

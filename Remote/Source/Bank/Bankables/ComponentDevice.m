@@ -33,7 +33,7 @@
     NSNumber     * alwaysOn      = data[@"alwaysOn"];
     NSArray      * codes         = data[@"codes"];
 
-    if (name) device.info.name = name;
+    if (name) device.name = name;
     if (port) device.port = [port intValue];
     if (inputPowersOn) device.inputPowersOn = [inputPowersOn boolValue];
     if (alwaysOn) device.alwaysOn = [alwaysOn boolValue];
@@ -74,11 +74,11 @@
 //}
 
 + (instancetype)fetchDeviceWithName:(NSString *)name {
-  return [self findFirstByAttribute:@"info.name" withValue:name];
+  return [self findFirstByAttribute:@"name" withValue:name];
 }
 
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context {
-  return [self findFirstByAttribute:@"info.name" withValue:name inContext:context];
+  return [self findFirstByAttribute:@"name" withValue:name inContext:context];
 }
 
 - (BOOL)ignorePowerCommand:(void (^)(BOOL success, NSError *))handler {
@@ -157,43 +157,26 @@
 
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-
-     {
-         "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
-         "info.name": "PS3",
-         "port": 3,
-         "on-command": {
-             "class": "sendir",
-             "code.uuid": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3" // Discrete On
-         },
-         "off-command": {
-             "class": "sendir",
-             "code.uuid": "9326516F-1923-4461-AD31-E726B4AAAFB1" // Discrete Off
-         },
-         "manufacturer": "C4149194-D03B-43A7-84CB-DA80EE20FC70", // Sony
-         "codes": []
-     }
-
-   */
 
 
   [super updateWithData:data];
 
-  NSString               * name         = data[@"name"];
-  NSNumber               * port         = data[@"port"];
-  NSDictionary           * onCommand    = data[@"on-command"];
-  NSDictionary           * offCommand   = data[@"off-command"];
-  NSDictionary           * manufacturer = data[@"manufacturer"];
-  NSArray                * codes        = data[@"codes"];
-  NSManagedObjectContext * moc          = self.managedObjectContext;
+  NSString               * name          = data[@"name"];
+  NSNumber               * port          = data[@"port"];
+  NSDictionary           * onCommand     = data[@"on-command"];
+  NSDictionary           * offCommand    = data[@"off-command"];
+  NSDictionary           * manufacturer  = data[@"manufacturer"];
+  NSDictionary           * networkDevice = data[@"network-device"];
+  NSArray                * codes         = data[@"codes"];
+  NSManagedObjectContext * moc           = self.managedObjectContext;
 
 
-  if (port)         self.port         = port.shortValue;
-  if (onCommand)    self.onCommand    = [Command importObjectFromData:onCommand context:moc];
-  if (offCommand)   self.onCommand    = [Command importObjectFromData:offCommand context:moc];
-  if (manufacturer) self.manufacturer = [Manufacturer importObjectFromData:manufacturer context:moc];
-  if (codes)        self.codes        = [[IRCode importObjectsFromData:codes context:moc] set];
+  if (port)          self.port          = port.shortValue;
+  if (onCommand)     self.onCommand     = [Command importObjectFromData:onCommand context:moc];
+  if (offCommand)    self.onCommand     = [Command importObjectFromData:offCommand context:moc];
+  if (manufacturer)  self.manufacturer  = [Manufacturer importObjectFromData:manufacturer context:moc];
+  if (codes)         self.codes         = [[IRCode importObjectsFromData:codes context:moc] set];
+  if (networkDevice) self.networkDevice = [NetworkDevice importObjectFromData:networkDevice context:moc];
 
 }
 

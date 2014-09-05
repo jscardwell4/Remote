@@ -179,6 +179,7 @@
 - (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex;
 - (NSArray *)rangesOfMatchesForRegEx:(NSString *)regex;
 
+- (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex;
 - (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture;
 - (NSString *)stringByMatchingRegEx:(NSString *)regex
                               match:(NSUInteger)match

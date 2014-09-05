@@ -6,13 +6,13 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "GlobalCacheConnectionManager.h"
-#import "GlobalCacheMulticastConnection.h"
+#import "NetworkDeviceMulticastConnection.h"
 #import "GlobalCacheDeviceConnection.h"
-#import "NetworkDevice.h"
+#import "NDiTachDevice.h"
 #import "Command.h"
 #import "ConnectionManager.h"
 
-static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_INFO;
 static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -20,20 +20,19 @@ static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTE
 MSNOTIFICATION_DEFINITION(LearnerStatusDidChange);
 MSNOTIFICATION_DEFINITION(CommandCaptured);
 
-@interface GlobalCacheConnectionManager () <GlobalCacheDeviceConnectionDelegate>
+@interface GlobalCacheConnectionManager () <NetworkDeviceConnectionDelegate>
 
-@property (strong) NSMutableDictionary            * requestLog;           // Holds completion handlers
-@property (strong) NSMutableArray                 * networkDevices;       // previously discovered devices.
-@property (strong) NSMutableArray                 * deviceConnections;    // currently connected devices.
-@property (strong) NSMutableSet                   * beaconsReceived;      // uuids  from processed beacons.
-@property (copy)   NSString                       * capturedCommand;      // needs to be moved to `IRLearner`
-@property (strong) GlobalCacheMulticastConnection * multicastConnection;  // multicast group connection
+@property (strong) NSMutableDictionary              * requestLog;           // Holds completion handlers
+@property (strong) NSMutableArray                   * networkDevices;       // previously discovered devices.
+@property (strong) NSMutableArray                   * deviceConnections;    // currently connected devices.
+@property (strong) NSMutableSet                     * beaconsReceived;      // uuids  from processed beacons.
+@property (copy)   NSString                         * capturedCommand;      // needs to be moved to `IRLearner`
+@property (strong) NetworkDeviceMulticastConnection * multicastConnection;  // multicast group connection
+@property (strong) NSHashTable                      * suspendedConnections; // active connections suspended
 
-@property (assign) BOOL multicastGroupActive; // tracks whether should be in group
+@property (assign) BOOL multicastGroupActive;                               // tracks whether should be in group
 
-@property (strong) MSNotificationReceptionist * backgroundReceptionist;   // handles backgrounded notification
-@property (strong) MSNotificationReceptionist * foregroundReceptionist;   // handles foregrounded notification
-@property (strong) NSMutableDictionary        * connectionCallbacks;      // device connection callbacks
+@property (strong) NSMutableDictionary * connectionCallbacks;               // device connection callbacks
 
 @end
 
@@ -60,120 +59,20 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
 
     manager = [self new];
     
-    manager.requestLog          = [@{} mutableCopy];
-    manager.deviceConnections   = [@{} mutableCopy];
-    manager.connectionCallbacks = [@{} mutableCopy];
-    manager.networkDevices      = [[NDiTachDevice findAll] mutableCopy] ?: [@[] mutableCopy];
-    manager.beaconsReceived     = [NSMutableSet setWithCapacity:5];
-
+    manager.requestLog           = [@{} mutableCopy];
+    manager.deviceConnections    = [@[] mutableCopy];
+    manager.connectionCallbacks  = [@{} mutableCopy];
+    manager.networkDevices       = [[NDiTachDevice findAll] mutableCopy] ?: [@[] mutableCopy];
+    manager.beaconsReceived      = [NSMutableSet setWithCapacity:5];
+    manager.suspendedConnections = [NSHashTable weakObjectsHashTable];
 
     /// Initialize the manager's multicast connection with a message handler
     ////////////////////////////////////////////////////////////////////////////////
 
     manager.multicastConnection =
-    [GlobalCacheMulticastConnection connectionWithHandler:
-     ^(NSString * message, GlobalCacheMulticastConnection * connection) {
-
-       if (StringIsEmpty(message)) return;
-
-       NSArray * stringSegments = [[message stringByReplacingOccurrencesOfString:@"http://" withString:@""]
-                                   matchingSubstringsForRegEx:@"(?<=<-)(.*?)(?=>)"];
-
-       NSMutableDictionary * attributes = [NSMutableDictionary dictionaryWithCapacity:stringSegments.count];
-
-       for (NSString * stringSegment in stringSegments) {
-         // Split string using '=' and enter key=value pair in dictionary
-         NSArray * keyValuePair = [stringSegment componentsSeparatedByString:@"="];
-         if ([keyValuePair count] == 2) attributes[keyValuePair[0]] = [keyValuePair lastObject];
-       }
-
-       NSString * deviceUUID = attributes[@"UUID"];
-
-       // Check if device has already been discovered
-       if (![manager.beaconsReceived containsObject:deviceUUID]) {
-
-         // Add to list of received beacons
-         [manager.beaconsReceived addObject:deviceUUID];
-
-         // Map parsed device attributes to model properties
-         static NSDictionary const * keyMap;
-         static dispatch_once_t onceToken;
-         dispatch_once(&onceToken, ^{
-           keyMap = @{ @"Make"       : @"make",
-                       @"Model"      : @"model",
-                       @"PCB_PN"     : @"pcb_pn",
-                       @"Pkg_Level"  : @"pkg_level",
-                       @"Revision"   : @"revision",
-                       @"SDKClass"   : @"sdkClass",
-                       @"Status"     : @"status",
-                       @"UUID"       : @"deviceUUID",
-                       @"Config-URL" : @"configURL" };
-         });
-
-         [attributes mapKeysToBlock:^id (id k, id o) { return ([keyMap hasKey:k] ? keyMap[k] : k); }];
-
-         __block NDiTachDevice * networkDevice = nil;
-
-
-         // Save block to create a new `NDiTachDevice` model object with the specified attributes.
-         void(^save)(NSManagedObjectContext *) = ^(NSManagedObjectContext * moc) {
-           networkDevice = [NDiTachDevice deviceWithAttributes:attributes context:moc];
-         };
-
-         // Completion block to handle errors and/or post discovery notification and stop device detection
-         void(^completion)(BOOL, NSError *) = ^(BOOL success, NSError * error) {
-
-           MSHandleErrors(error);
-
-           if (success)
-             [MainQueue addOperationWithBlock:^{
-
-               [manager.networkDevices addObject:networkDevice];
-               [NotificationCenter postNotificationName:CMNetworkDeviceDiscoveryNotification
-                                                 object:manager
-                                               userInfo:@{ CMNetworkDeviceKey : networkDevice.uuid }];
-               [[manager class] stopDetectingDevices:nil];
-
-             }];
-         };
-         
-         // Execute save and completion blocks
-         [CoreDataManager saveWithBlock:save completion:completion];
-         
-       }
-
-    }];
-
-
-    /// Initialize the manager's did enter background notification receptionist
-    ////////////////////////////////////////////////////////////////////////////////
-
-    void (^backgroundHandler)(MSNotificationReceptionist *) = ^(MSNotificationReceptionist * receptionist) {
-      if (manager.multicastGroupActive) [manager.multicastConnection leaveMulticastGroup:nil];
-      for (GlobalCacheDeviceConnection * connection in manager.deviceConnections) [connection disconnect:nil];
-    };
-
-    manager.backgroundReceptionist =
-      [MSNotificationReceptionist receptionistWithObserver:manager
-                                                 forObject:UIApp
-                                          notificationName:UIApplicationDidEnterBackgroundNotification
-                                                     queue:MainQueue
-                                                   handler:backgroundHandler];
-
-    /// Initialize the manager's will enter foreground notification receptionist
-    ////////////////////////////////////////////////////////////////////////////////
-
-    void (^foregroundHandler)(MSNotificationReceptionist *) = ^(MSNotificationReceptionist * receptionist) {
-      if (manager.multicastGroupActive) [manager.multicastConnection joinMulticastGroup:nil];
-      for (GlobalCacheDeviceConnection * connection in manager.deviceConnections) [connection connect:nil];
-    };
-
-    manager.foregroundReceptionist =
-      [MSNotificationReceptionist receptionistWithObserver:manager
-                                                 forObject:UIApp
-                                          notificationName:UIApplicationWillEnterForegroundNotification
-                                                     queue:MainQueue
-                                                   handler:foregroundHandler];
+    [NetworkDeviceMulticastConnection connectionWithAddress:NDiTachDeviceMulticastGroupAddress
+                                                       port:NDiTachDeviceMulticastGroupPort
+                                                   delegate:manager];
 
   });
 
@@ -192,7 +91,7 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
  @param completion Block to be executed upon completion of the task.
 
  */
-+ (void)detectNetworkDevices:(void(^)(BOOL success, NSError *error))completion {
++ (void)startDetectingDevices:(void(^)(BOOL success, NSError *error))completion {
 
   // Set group active flag
   [self sharedManager].multicastGroupActive = YES;
@@ -209,7 +108,7 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
   }
 
   // Just execute the completion block if we have already joined
-  else if ([self sharedManager].multicastConnection.isMemberOfMulticastGroup) {
+  else if ([self sharedManager].multicastConnection.isConnected) {
 
     MSLogWarnTag(@"multicast socket already exists");
 
@@ -217,9 +116,9 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
 
   }
 
-  // Otherwise store a copy of the completion block and join the multicast group
+  // Otherwise join the multicast group
   else
-    [[self sharedManager].multicastConnection joinMulticastGroup:completion];
+    [[self sharedManager].multicastConnection connect:completion];
 
 }
 
@@ -236,8 +135,8 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
   [self sharedManager].multicastGroupActive = NO;
 
   // Leave group if joined to one
-  if ([self sharedManager].multicastConnection.isMemberOfMulticastGroup)
-    [[self sharedManager].multicastConnection leaveMulticastGroup:completion];
+  if ([self sharedManager].multicastConnection.isConnected)
+    [[self sharedManager].multicastConnection disconnect:completion];
 
   // Otherwise just execute completion block
   else {
@@ -265,52 +164,6 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
 #pragma mark - Connecting/sending to a device
 ////////////////////////////////////////////////////////////////////////////////
 
-
-/**
-
- Attempts to connect with the device identified by the specified `uuid`.
-
- @param device The device with which to connect, or nil for the registered default device.
-
- @param completion Block to execute after attempt is made to connect with the device.
-
- */
-+ (void)connectWithDevice:(NDiTachDevice *)device
-               completion:(void (^)(BOOL success, NSError * error))completion {
-
-  // Check device id
-  if (!device) ThrowInvalidNilArgument(device);
-
-  // Check wifi connection
-  else if (![ConnectionManager isWifiAvailable]) {
-    MSLogErrorTag(@"wifi connection required");
-    if (completion) completion(NO, nil);
-  }
-
-  // Retrieve or create device connection
-  else {
-
-    // Check for existing connection
-    GlobalCacheDeviceConnection * connection =
-    [[self sharedManager].deviceConnections objectPassingTest:
-     ^BOOL(GlobalCacheDeviceConnection * obj, NSUInteger idx) {
-       return obj.device == device;
-     }];
-
-    // Check for existing connection
-    if (connection && connection.isConnected) {
-      MSLogWarnTag(@"device with uuid %@ is already connected", device.uuid);
-      if (completion) completion(YES, nil);
-    }
-
-    // Create connection if one does not exist for device
-    else if (!connection)
-      connection = [GlobalCacheDeviceConnection connectionForDevice:device delegate:[self sharedManager]];
-
-    [connection connect:completion];
-  }
-
-}
 
 /**
 
@@ -351,7 +204,7 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
 
     else {
 
-      // check for existing connection
+      // Check for existing connection
       GlobalCacheDeviceConnection * deviceConnection =
         [[self sharedManager].deviceConnections objectPassingTest:
          ^BOOL(GlobalCacheDeviceConnection * connection, NSUInteger idx) {
@@ -362,15 +215,31 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
         deviceConnection = [GlobalCacheDeviceConnection connectionForDevice:(NDiTachDevice *)device
                                                                    delegate:[self sharedManager]];
 
+      // Generate tag for command
       static NSUInteger nextTag = 0;
       NSUInteger tag = (++nextTag % 100) + 1;
-
+      
       NSString * taggedCommand = [[cmd stringByReplacingOccurrencesOfString:@"<tag>"
                                                                  withString:$(@"%lu", (unsigned long)tag)]
                                   stringByAppendingFormat:@"<tag>%lu", (unsigned long)tag];
 
-      // send command
-      [deviceConnection enqueueCommand:taggedCommand completion:completion];
+      // Make sure device is connected and queue command
+      if (deviceConnection.isConnected)
+        [deviceConnection enqueueCommand:taggedCommand completion:completion];
+
+      else {
+
+        [deviceConnection connect:^(BOOL success, NSError *error) {
+
+          if (success)
+            [deviceConnection enqueueCommand:taggedCommand completion:completion];
+
+          else if (completion)
+            completion(NO, error);
+
+        }];
+
+      }
 
     }
   }
@@ -390,8 +259,15 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
 
 /// Callback executed by a `GlobalCacheDeviceConnection` after connecting to its device
 /// @param connection The connection which has been established
-- (void)connectionEstablished:(GlobalCacheDeviceConnection *)connection {
+- (void)deviceConnected:(GlobalCacheDeviceConnection *)connection {
   [self.deviceConnections addObject:connection];
+}
+
+/// Callback executed by a `GlobalCacheDeviceConnection` after sending a message
+/// @param message The message that has been sent
+/// @param connection The connection over which the message has been sent
+- (void)messageSent:(NSString *)message overConnection:(NetworkDeviceConnection *)connection {
+  MSLogInfoTag(@"message: %@", message);
 }
 
 /**
@@ -399,62 +275,134 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
  @param message Contents of the message received by the device connection
  @param connection Device connection which received the message
  */
-- (void)messageReceived:(NSString *)message overConnection:(GlobalCacheDeviceConnection *)connection {
-  // iTach completeir command: completeir,<module address>:<connector address>,<ID>
-  // TODO: handle error messages
-  MSSTATIC_STRING_CONST kIREnabled  = @"IR Learner Enabled\r";
-  MSSTATIC_STRING_CONST kIRDisabled = @"IR Learner Disabled\r";
-  MSSTATIC_STRING_CONST kCompleteIR = @"completeir";
-  MSSTATIC_STRING_CONST kSendIR     = @"sendir";
-  MSSTATIC_STRING_CONST kError      = @"ERR";
-
-  MSLogDebugTag(@"Return message from device: \"%@\"",
-                [message stringByReplacingReturnsWithSymbol]);
+- (void)messageReceived:(NSString *)message overConnection:(NetworkDeviceConnection *)connection {
 
 
-  __weak GlobalCacheConnectionManager * weakself = self;
+  if (connection == self.multicastConnection) {
 
-  void(^requestLogHandler)(NSNumber *, BOOL) = ^(NSNumber * tag, BOOL success) {
-    void (^completion)(BOOL success, NSError *) = weakself.requestLog[tag];
-    if (completion) {
-      completion(success, nil);
-      [weakself.requestLog removeObjectForKey:tag];
+    MSLogInfoTag(@"message over multicast connection:\n%@\n", message);
+
+    NSString * uniqueIdentifier = [message stringByMatchingFirstOccurrenceOfRegEx:@"(?<=UUID=)[^<]+(?=>)"];
+
+    // Check if device has already been discovered
+    if (uniqueIdentifier && ![self.beaconsReceived containsObject:uniqueIdentifier]) {
+
+      // Add to list of received beacons
+      [self.beaconsReceived addObject:uniqueIdentifier];
+
+      __block NDiTachDevice * networkDevice = nil;
+      __weak GlobalCacheConnectionManager * weakself = self;
+      // Get/create the network device with the parsed unique identifier
+      [CoreDataManager saveWithBlock:^(NSManagedObjectContext * moc) {
+
+        networkDevice = [NDiTachDevice networkDeviceFromDiscoveryBeacon:message context:moc];
+
+      } completion:^(BOOL success, NSError * error) {
+
+        MSHandleErrors(error);
+
+        // Post notification of discovery if fetch/creation of network device was successful
+        if (success)
+          [MainQueue addOperationWithBlock:^{
+
+            MSLogInfoWeakTag(@"network device fetched/created:\n%@\n", networkDevice);
+            
+            [weakself.networkDevices addObject:networkDevice];
+            [NotificationCenter postNotificationName:CMNetworkDeviceDiscoveryNotification
+                                              object:[weakself class]
+                                            userInfo:@{ CMNetworkDeviceKey : networkDevice.uuid }];
+            [[weakself class] stopDetectingDevices:nil];
+
+
+          }];
+
+      }];
+      
     }
-  };
 
-  // command success
-  if ([message hasPrefix:kCompleteIR])
-    requestLogHandler(@(IntegerValue([message substringFromIndex:15])), YES);
+  } else {
 
-  // error
-  else if ([message hasPrefix:kError])
-    MSLogErrorTag(@"error message received over connection for device with uuid %@", connection.device.uuid);
+    // iTach completeir command: completeir,<module address>:<connector address>,<ID>
+    // TODO: handle error messages
+    MSSTATIC_STRING_CONST kIREnabled  = @"IR Learner Enabled\r";
+    MSSTATIC_STRING_CONST kIRDisabled = @"IR Learner Disabled\r";
+    MSSTATIC_STRING_CONST kCompleteIR = @"completeir";
+    MSSTATIC_STRING_CONST kSendIR     = @"sendir";
+    MSSTATIC_STRING_CONST kError      = @"ERR";
 
-  // learner enabled
-  else if ([kIREnabled isEqualToString:message]) {
-    MSLogInfoTag(@"IR Learner has been enabled on the iTach device");
-    [NotificationCenter postNotificationName:LearnerStatusDidChangeNotification
-                                      object:self
-                                    userInfo:@{ LearnerStatusDidChangeNotification : @YES }];
+    MSLogInfoTag(@"Return message from device: \"%@\"", [message stringByReplacingReturnsWithSymbol]);
+
+
+    __weak GlobalCacheConnectionManager * weakself = self;
+
+    void(^requestLogHandler)(NSNumber *, BOOL) = ^(NSNumber * tag, BOOL success) {
+      void (^completion)(BOOL success, NSError *) = weakself.requestLog[tag];
+      if (completion) {
+        completion(success, nil);
+        [weakself.requestLog removeObjectForKey:tag];
+      }
+    };
+
+    // command success
+    if ([message hasPrefix:kCompleteIR])
+      requestLogHandler(@(IntegerValue([message substringFromIndex:15])), YES);
+
+    // error
+    else if ([message hasPrefix:kError])
+      MSLogErrorTag(@"error message received over connection for device with uuid %@", connection.device.uuid);
+
+    // learner enabled
+    else if ([kIREnabled isEqualToString:message]) {
+      MSLogInfoTag(@"IR Learner has been enabled on the iTach device");
+      [NotificationCenter postNotificationName:LearnerStatusDidChangeNotification
+                                        object:self
+                                      userInfo:@{ LearnerStatusDidChangeNotification : @YES }];
+    }
+    // learner disabled
+    else if ([kIRDisabled isEqualToString:message]) {
+      MSLogInfoTag(@"IR Learner has been disabled on the iTach device");
+      [NotificationCenter postNotificationName:LearnerStatusDidChangeNotification
+                                        object:self
+                                      userInfo:@{ LearnerStatusDidChangeNotification : @NO }];
+    }
+    // begin captured command
+    else if ([message hasPrefix:kSendIR]) self.capturedCommand = message;
+
+    // extend captured command
+    else if (ValueIsNotNil(self.capturedCommand)) {
+      self.capturedCommand = [self.capturedCommand stringByAppendingString:message];
+      [NotificationCenter postNotificationName:CommandCapturedNotification
+                                        object:self
+                                      userInfo:@{ CommandCapturedNotification : _capturedCommand }];
+    }
+
   }
-  // learner disabled
-  else if ([kIRDisabled isEqualToString:message]) {
-    MSLogInfoTag(@"IR Learner has been disabled on the iTach device");
-    [NotificationCenter postNotificationName:LearnerStatusDidChangeNotification
-                                      object:self
-                                    userInfo:@{ LearnerStatusDidChangeNotification : @NO }];
-  }
-  // begin captured command
-  else if ([message hasPrefix:kSendIR]) self.capturedCommand = message;
 
-  // extend captured command
-  else if (ValueIsNotNil(self.capturedCommand)) {
-    self.capturedCommand = [self.capturedCommand stringByAppendingString:message];
-    [NotificationCenter postNotificationName:CommandCapturedNotification
-                                      object:self
-                                    userInfo:@{ CommandCapturedNotification : _capturedCommand }];
-  }
 }
 
+/// Suspend active connections
++ (void)suspend {
+
+  if ([self sharedManager].multicastGroupActive)
+    [[self sharedManager].multicastConnection disconnect:nil];
+
+  for (GlobalCacheDeviceConnection * connection in [self sharedManager].deviceConnections)
+    if ([connection isConnected]) {
+      [connection disconnect:^(BOOL success, NSError *error) {
+        if (success) [[GlobalCacheConnectionManager sharedManager].suspendedConnections addObject:connection];
+      }];
+    }
+}
+
+/// Resume previously active connections
++ (void)resume {
+
+  if ([self sharedManager].multicastGroupActive)
+    [[self sharedManager].multicastConnection disconnect:nil];
+
+  for (GlobalCacheDeviceConnection * connection in [self sharedManager].suspendedConnections) {
+    [connection connect:nil];
+  }
+}
 
 @end

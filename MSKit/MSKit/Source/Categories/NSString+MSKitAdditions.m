@@ -345,7 +345,7 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
                                    "                     \u2502";
 
 - (NSString *)singleBarMessage {
-  return [[[self componentsSplitWithMaxCharactersPerLine:76] arrayByMappingToBlock:^NSString *(NSString * obj, NSUInteger idx) {
+  return [[[self componentsSplitWithMaxCharactersPerLine:76] mapped:^NSString *(NSString * obj, NSUInteger idx) {
     return [NSString stringWithFormat:@"\u2502 %@\u2502", [obj stringByPaddingToLength:77 withString:@" " startingAtIndex:0]];
   }
 
@@ -361,7 +361,7 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
 - (NSString *)singleBarColumns:(NSUInteger)padLength {
   NSArray * titles = [self componentsSeparatedByString:@"\t"];
 
-  titles = [titles arrayByMappingToBlock:^NSString *(NSString * obj, NSUInteger idx) {
+  titles = [titles mapped:^NSString *(NSString * obj, NSUInteger idx) {
     if (idx == titles.count - 1) return obj;
     else return [obj stringByPaddingToLength:padLength withString:@" " startingAtIndex:0];
   }
@@ -374,11 +374,9 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
 - (NSString *)columnValues:(NSUInteger)padLength {
   NSArray * lines = [self componentsSeparatedByString:@"\n"];
 
-  lines = [lines arrayByMappingToBlock:^NSString *(NSString * obj, NSUInteger idx) {
+  lines = [lines mapped:^NSString *(NSString * obj, NSUInteger idx) {
     return [obj singleBarColumns:padLength];
-  }
-
-    ];
+  }];
 
   return [[lines componentsJoinedByString:@"\n"] singleBarMessage];
 }
@@ -386,7 +384,7 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
 - (NSString *)singleBarHeaderBox:(NSUInteger)padLength {
   NSArray * lines = [self componentsSeparatedByString:@"\n"];
 
-  lines = [lines arrayByMappingToBlock:^NSString *(NSString * obj, NSUInteger idx) {
+  lines = [lines mapped:^NSString *(NSString * obj, NSUInteger idx) {
     if (idx == 0)
       return [obj singleBarHeaders:padLength];
     else if (idx == lines.count - 1)
@@ -582,6 +580,10 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
   return [string componentsSeparatedByString:@"<match>"];
 }
 
+- (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex {
+  return [self stringByMatchingRegEx:regex match:0 capture:0];
+}
+
 - (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture {
   return [self stringByMatchingRegEx:regex match:0 capture:capture];
 }
@@ -595,11 +597,8 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
 }
 
 - (NSArray *)matchingSubstringsForRegEx:(NSString *)regex {
-  return [[self rangesOfMatchesForRegEx:regex]
-          arrayByMappingToBlock:^NSString *(NSValue * range, NSUInteger idx)
-  {
+  return [[self rangesOfMatchesForRegEx:regex] mapped:^NSString *(NSValue * range, NSUInteger idx) {
     NSRange r = RangeValue(range);
-
     return (r.location == NSNotFound ? @"" : [self substringWithRange:r]);
   }];
 }

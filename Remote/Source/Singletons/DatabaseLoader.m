@@ -28,7 +28,7 @@
 #define COMPONENTDEVICES_LOG_FLAG 0
 #define IRCODES_LOG_FLAG          0
 
-static int       ddLogLevel       = LOG_LEVEL_DEBUG;
+static int       ddLogLevel       = LOG_LEVEL_INFO;
 static const int msLogContext     = (LOG_CONTEXT_BUILDING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 static const int importLogContext = (LOG_CONTEXT_IMPORT | LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)

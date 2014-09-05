@@ -124,9 +124,9 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
         NSPredicate * predicate =
             NSPredicateMake(@"(manufacturer = %@) && (codeset = %@)", self.manufacturer, codeset);
 
-        NSString * groupBy = (isUserCodeset ? @"device.info.name" : nil);
+        NSString * groupBy = (isUserCodeset ? @"device.name" : nil);
 
-        NSString * sortedBy = (isUserCodeset ? @"device.info.name,info.name" : @"info.name");
+        NSString * sortedBy = (isUserCodeset ? @"device.name,name" : @"name");
 
         NSManagedObjectContext * moc = self.manufacturer.managedObjectContext;
 

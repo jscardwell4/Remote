@@ -44,13 +44,13 @@ MSSTRING_CONST REDefaultMode = @"default";
   NSManagedObjectContext * moc = self.managedObjectContext;
   NSSet * values = [[[[[[self.configurations
                          dictionaryWithValuesForKeyPaths:
-                         [self.modes map:^NSString *(NSString * mode, NSUInteger idx)
+                         [self.modes mapped:^NSString *(NSString * mode, NSUInteger idx)
                           { return [mode stringByAppendingString:@".allValues"]; }]] allValues]
-                       filter:^BOOL(id evaluatedObject) {
+                       filtered:^BOOL(id evaluatedObject) {
                          return [evaluatedObject isKindOfClass:[NSURL class]];
-                       }] map:^NSManagedObject *(NSURL * obj, NSUInteger idx) {
+                       }] mapped:^NSManagedObject *(NSURL * obj, NSUInteger idx) {
                          return [moc objectForURI:obj] ?: obj;
-                       }] filter:^BOOL(id evaluatedObject) {
+                       }] filtered:^BOOL(id evaluatedObject) {
                          return [evaluatedObject isKindOfClass:[NSManagedObject class]];
                        }] set];
 
@@ -149,7 +149,7 @@ MSSTRING_CONST REDefaultMode = @"default";
           return NullObject;
       }
     }];
-    [subelementObjects removeNullObjects];
+    [subelementObjects compact];
     self.subelements = [subelementObjects orderedSet];
   }
 

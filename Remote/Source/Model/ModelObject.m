@@ -96,7 +96,7 @@ BOOL UUIDIsValid(NSString * uuid) {
     [objects map:^id (id objData, NSUInteger idx) {
       return CollectionSafe([self importObjectFromData:objData context:moc]);
     }];
-    [objects removeNullObjects];
+    [objects compact];
 
 
     return objects;
@@ -134,7 +134,10 @@ BOOL UUIDIsValid(NSString * uuid) {
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])];
 
-  request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:sortBy ascending:ascending]];
+  request.sortDescriptors = [[sortBy componentsSeparatedByString:@","]
+                             mapped:^NSSortDescriptor *(NSString * obj, NSUInteger idx) {
+                               return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
+                             }];
   NSError * error  = nil;
   NSArray * result = [moc executeFetchRequest:request error:&error];
 
@@ -183,7 +186,7 @@ BOOL UUIDIsValid(NSString * uuid) {
                                                               predicate:predicate];
 
   request.sortDescriptors = [[sortBy componentsSeparatedByString:@","]
-                             map:^NSSortDescriptor *(NSString * obj, NSUInteger idx) {
+                             mapped:^NSSortDescriptor *(NSString * obj, NSUInteger idx) {
                                return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
                              }];
 

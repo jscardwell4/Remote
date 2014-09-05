@@ -20,6 +20,7 @@
 #import "ComponentDevice.h"
 #import "Manufacturer.h"
 #import "Image.h"
+#import "SettingsViewController.h"
 
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -149,8 +150,6 @@ static const int msLogContext = 0;
   // Create loggers
   [self attachLoggers];
 
-  // Register default settings
-  [SettingsManager registerDefaults];
 }
 
 /*
@@ -174,14 +173,14 @@ static const int msLogContext = 0;
   [mainMenuVC toggleSpinner];
 
   // Apply user defined settings and observe status bar setting changes
-  [SettingsManager applyUserSettings];
-  [NotificationCenter addObserverForName:MSSettingsManagerStatusBarSettingDidChangeNotification
+  UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMStatusBarSetting] boolValue];
+  [NotificationCenter addObserverForName:SMStatusBarSettingDidChangeNotification
                                   object:[SettingsManager class]
                                    queue:MainQueue
                               usingBlock:^(NSNotification * note)
   {
-    UIApp.statusBarHidden =
-      [SettingsManager boolForSetting:MSSettingsStatusBarKey];
+    
+    UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMStatusBarSetting] boolValue];
   }];
 
   // intialize core data statck
@@ -351,7 +350,7 @@ static const int msLogContext = 0;
 
 - (void)showBank { [self showViewController:[Bank viewController]]; }
 
-- (void)showSettings { [self showViewController:[SettingsManager viewController]]; }
+- (void)showSettings { [self showViewController:[StoryboardProxy settingsViewController]]; }
 
 - (void)dismissViewController:(UIViewController *)viewController completion:(void (^)(void))completion {
   if (self.window.rootViewController == viewController) [self showMainMenu];

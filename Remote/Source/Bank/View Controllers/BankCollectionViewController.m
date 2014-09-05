@@ -15,7 +15,7 @@
 #import "MSRemoteAppController.h"
 #import "CoreDataManager.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -24,18 +24,18 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark - BankCollectionViewController class extension
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface BankCollectionViewController () <MSTouchReporterViewDelegate>
+@interface BankCollectionViewController ()<MSTouchReporterViewDelegate>
 
-@property (nonatomic, strong) NSBlockOperation           * updatesBlockOperation;
-@property (nonatomic, strong) NSMutableSet               * hiddenSections;
-@property (nonatomic, strong) BankPreviewViewController  * previewController;
-@property (nonatomic, strong) BankCollectionZoomView     * zoomView;
+@property (nonatomic, strong) NSBlockOperation          * updatesBlockOperation;
+@property (nonatomic, strong) NSMutableSet              * hiddenSections;
+@property (nonatomic, strong) BankPreviewViewController * previewController;
+@property (nonatomic, strong) BankCollectionZoomView    * zoomView;
 
 @property (nonatomic, readonly, getter = shouldUseListView) BOOL useListView;
 
-@property (nonatomic, strong) IBOutlet UIBarButtonItem      * displayOptionsBarButtonItem;
-@property (nonatomic, weak)   IBOutlet UISegmentedControl   * displayOptionSegmentedControl;
-@property (nonatomic, strong) IBOutlet MSTouchReporterView  * touchReporterView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem     * displayOptionsBarButtonItem;
+@property (nonatomic, weak)   IBOutlet UISegmentedControl  * displayOptionSegmentedControl;
+@property (nonatomic, strong) IBOutlet MSTouchReporterView * touchReporterView;
 
 @end
 
@@ -47,183 +47,165 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation BankCollectionViewController
 {
-    NSManagedObject<Bankable> * _zoomedItem;
-    NSIndexPath               * _swipeToDeleteCellIndexPath;
+  NSManagedObject<Bankable> * _zoomedItem;
+  NSIndexPath               * _swipeToDeleteCellIndexPath;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewDidLoad {
+  [super viewDidLoad];
 
-    self.touchReporterView.translatesAutoresizingMaskIntoConstraints = NO;
-    if (   _itemClass
-        && !(_bankFlags & BankThumbnail)
-        && [self.toolbarItems containsObject:_displayOptionsBarButtonItem])
-    {
-        self.toolbarItems = [self.toolbarItems
-                             filteredArrayUsingPredicateWithFormat:@"self != %@",
-                                                                   _displayOptionsBarButtonItem];
-    }
+  self.touchReporterView.translatesAutoresizingMaskIntoConstraints = NO;
+
+  if (  _itemClass
+     && !(_bankFlags & BankThumbnail)
+     && [self.toolbarItems containsObject:_displayOptionsBarButtonItem])
+  {
+    self.toolbarItems = [self.toolbarItems
+                         filteredArrayUsingPredicateWithFormat:@"self != %@",
+                         _displayOptionsBarButtonItem];
+  }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.collectionView reloadData];
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self.collectionView reloadData];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    if (![self isViewLoaded])
-    {
-        self.touchReporterView = nil;
-        self.displayOptionsBarButtonItem = nil;
-        self.previewController = nil;
-        self.zoomView = nil;
-        self.hiddenSections = nil;
-        self.updatesBlockOperation = nil;
-        self.bankableItems = nil;
-    }
+- (void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+
+  if (![self isViewLoaded]) {
+    self.touchReporterView           = nil;
+    self.displayOptionsBarButtonItem = nil;
+    self.previewController           = nil;
+    self.zoomView                    = nil;
+    self.hiddenSections              = nil;
+    self.updatesBlockOperation       = nil;
+    self.bankableItems               = nil;
+  }
 }
 
-- (void)updateViewConstraints
-{
-    [super updateViewConstraints];
+- (void)updateViewConstraints {
+  [super updateViewConstraints];
 
-    if (_zoomView && _zoomView.superview)
-    {
-        NSArray * constraints = [NSLayoutConstraint
-                                 constraintsByParsingString:@"zoom.centerX = view.centerX\n"
-                                                             "zoom.centerY = view.centerY\n"
-                                                             "reporter.width = view.width\n"
-                                                             "reporter.height = view.height\n"
-                                                             "reporter.centerX = view.centerX\n"
-                                                             "reporter.centerY = view.centerY"
-                                                      views:@{ @"zoom"     : _zoomView,
-                                                               @"reporter" : _touchReporterView,
-                                                               @"view"     : self.view }];
-        [self.view addConstraints:constraints];
-    }
+  if (_zoomView && _zoomView.superview) {
+    NSArray * constraints = [NSLayoutConstraint
+                             constraintsByParsingString:@"zoom.centerX = view.centerX\n"
+                                                        "zoom.centerY = view.centerY\n"
+                                                        "reporter.width = view.width\n"
+                                                        "reporter.height = view.height\n"
+                                                        "reporter.centerX = view.centerX\n"
+                                                        "reporter.centerY = view.centerY"
+                                                  views:@{ @"zoom"     : _zoomView,
+                                                           @"reporter" : _touchReporterView,
+                                                           @"view"     : self.view }];
+    [self.view addConstraints:constraints];
+  }
 }
 
-- (NSFetchedResultsController *)bankableItems
-{
-    if (!_bankableItems && self.itemClass)
-    {
-        self.bankableItems = [self.itemClass bankableItems];
-        _bankableItems.delegate = self;
-        self.hiddenSections = [NSMutableSet set];
-    }
+- (NSFetchedResultsController *)bankableItems {
+  if (!_bankableItems && self.itemClass) {
+    self.bankableItems      = [self.itemClass bankableItems];
+    _bankableItems.delegate = self;
+    self.hiddenSections     = [NSMutableSet set];
+  }
 
-    return _bankableItems;
+  return _bankableItems;
 }
 
 - (BOOL)shouldUseListView { return (_displayOptionSegmentedControl.selectedSegmentIndex == 0); }
 
-- (BankPreviewViewController *)previewController
-{
-    if (!_previewController)
-        self.previewController = UIStoryboardInstantiateSceneByClassName(BankPreviewViewController);
+- (BankPreviewViewController *)previewController {
+  if (!_previewController)
+    self.previewController = UIStoryboardInstantiateSceneByClassName(BankPreviewViewController);
 
-    return _previewController;
+  return _previewController;
 }
 
-- (void)setItemClass:(Class<Bankable>)itemClass
-{
-    assert([(Class)itemClass conformsToProtocol:@protocol(Bankable)]);
+- (void)setItemClass:(Class<Bankable>)itemClass {
+  assert([(Class)itemClass conformsToProtocol: @protocol(Bankable)]);
 
-    _itemClass = itemClass;
-    _bankFlags = [itemClass bankFlags];
+  _itemClass = itemClass;
+  _bankFlags = [itemClass bankFlags];
 }
 
-- (NSMutableSet *)hiddenSections
-{
-    if (!_hiddenSections) self.hiddenSections = [NSMutableSet set];
-    return _hiddenSections;
+- (NSMutableSet *)hiddenSections {
+  if (!_hiddenSections) self.hiddenSections = [NSMutableSet set];
+
+  return _hiddenSections;
 }
 
-- (BankCollectionZoomView *)zoomView
-{
-    if (!_zoomView) [MainBundle loadNibNamed:@"BankCollectionZoomView" owner:self options:nil];
-    assert(_zoomView);
-    return _zoomView;
+- (BankCollectionZoomView *)zoomView {
+  if (!_zoomView) [MainBundle loadNibNamed:@"BankCollectionZoomView" owner:self options:nil];
+
+  assert(_zoomView);
+  return _zoomView;
 }
 
-- (NSManagedObject<Bankable> *)itemForCell:(BankCollectionViewCell *)cell
-{
-    return self.bankableItems[[self.collectionView indexPathForCell:cell]];
+- (NSManagedObject<Bankable> *)itemForCell:(BankCollectionViewCell *)cell {
+  return self.bankableItems[[self.collectionView indexPathForCell:cell]];
 }
 
-- (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject<Bankable>  * item = self.bankableItems[indexPath];
-    cell.bankFlags      = _bankFlags;
-    cell.thumbnailImage = item.thumbnail;
-    cell.name           = item.name;
+- (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+  NSManagedObject<Bankable> * item = self.bankableItems[indexPath];
+  cell.bankFlags      = _bankFlags;
+  cell.thumbnailImage = item.thumbnail;
+  cell.name           = item.name;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)zoomItemForCell:(BankCollectionViewCell *)cell
-{
-    _zoomedItem              = [self itemForCell:cell];
-    self.zoomView.image      = _zoomedItem.preview;
-    _zoomView.name           = _zoomedItem.name;
-    _zoomView.editDisabled   = !([_zoomedItem isEditable]);
-    _zoomView.detailDisabled = !(_bankFlags & BankDetail);
+- (void)zoomItemForCell:(BankCollectionViewCell *)cell {
+  _zoomedItem              = [self itemForCell:cell];
+  self.zoomView.image      = _zoomedItem.preview;
+  _zoomView.name           = _zoomedItem.name;
+  _zoomView.editDisabled   = !([_zoomedItem isEditable]);
+  _zoomView.detailDisabled = !(_bankFlags & BankDetail);
 
-    _zoomView.backgroundImageView.image = [[self.view snapshot]
-                                           applyBlurWithRadius:3.0
-                                                     tintColor:UIColorMake(1, 1, 1, 0.5)
-                                         saturationDeltaFactor:1.8
-                                                     maskImage:nil];
-    [self.view addSubview:_touchReporterView];
-    [self.view addSubview:_zoomView];
-    [self.view setNeedsUpdateConstraints];
+  _zoomView.backgroundImageView.image = [[self.view snapshot]
+                                          applyBlurWithRadius:3.0
+                                                    tintColor:UIColorMake(1, 1, 1, 0.5)
+                                        saturationDeltaFactor:1.8
+                                                    maskImage:nil];
+  [self.view addSubview:_touchReporterView];
+  [self.view addSubview:_zoomView];
+  [self.view setNeedsUpdateConstraints];
 }
 
-- (void)previewItemForCell:(BankCollectionViewCell *)cell
-{
-    NSManagedObject<Bankable> * item = [self itemForCell:cell];
-    self.previewController.image = item.preview;
-    [self presentViewController:_previewController animated:YES completion:nil];
+- (void)previewItemForCell:(BankCollectionViewCell *)cell {
+  NSManagedObject<Bankable> * item = [self itemForCell:cell];
+  self.previewController.image = item.preview;
+  [self presentViewController:_previewController animated:YES completion:nil];
 }
 
-- (void)deleteItemForCell:(BankCollectionViewCell *)cell
-{
-    NSManagedObject<Bankable> * item = [self itemForCell:cell];
-    assert([item isEditable]);
-    [item.managedObjectContext deleteObject:item];
+- (void)deleteItemForCell:(BankCollectionViewCell *)cell {
+  NSManagedObject<Bankable> * item = [self itemForCell:cell];
+  assert([item isEditable]);
+  [item.managedObjectContext deleteObject:item];
 }
 
-- (void)editItemForCell:(BankCollectionViewCell *)cell
-{
-    NSManagedObject<Bankable> * item = [self itemForCell:cell];
-    [self.navigationController pushViewController:[Bank editingControllerForItem:item]
-                                         animated:YES];
+- (void)editItemForCell:(BankCollectionViewCell *)cell {
+  NSManagedObject<Bankable> * item = [self itemForCell:cell];
+  [self.navigationController pushViewController:[Bank editingControllerForItem:item]
+                                       animated:YES];
 }
 
-- (void)detailItemForCell:(BankCollectionViewCell *)cell
-{
-    NSManagedObject<Bankable> * item = [self itemForCell:cell];
-    [self.navigationController pushViewController:[Bank detailControllerForItem:item]
-                                         animated:YES];
+- (void)detailItemForCell:(BankCollectionViewCell *)cell {
+  NSManagedObject<Bankable> * item = [self itemForCell:cell];
+  [self.navigationController pushViewController:[Bank detailControllerForItem:item]
+                                       animated:YES];
 }
 
-- (void)toggleItemsForSection:(NSInteger)section
-{
-    [self.hiddenSections addOrRemoveObject:@(section)];
-    [self.collectionView reloadSections:NSIndexSetMake(section)];
+- (void)toggleItemsForSection:(NSInteger)section {
+  [self.hiddenSections addOrRemoveObject:@(section)];
+  [self.collectionView reloadSections:NSIndexSetMake(section)];
 }
 
-- (IBAction)segmentedControlValueDidChange:(UISegmentedControl *)sender
-{
-    [self.collectionView.collectionViewLayout invalidateLayout];
-    [self.collectionView reloadData];
+- (IBAction)segmentedControlValueDidChange:(UISegmentedControl *)sender {
+  [self.collectionView.collectionViewLayout invalidateLayout];
+  [self.collectionView reloadData];
 }
 
 - (IBAction)importBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
@@ -232,30 +214,27 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (IBAction)searchBankObjects:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
-- (IBAction)dismiss:(id)sender
-{
-    [AppController dismissViewController:[Bank viewController] completion:nil];
+- (IBAction)dismiss:(id)sender {
+  [AppController dismissViewController:[Bank viewController] completion:nil];
 }
 
-- (IBAction)dismissZoom:(id)sender
-{
-    [self.zoomView removeFromSuperview];
-    [self.touchReporterView removeFromSuperview];
+- (IBAction)dismissZoom:(id)sender {
+  [self.zoomView removeFromSuperview];
+  [self.touchReporterView removeFromSuperview];
 
-    UIViewController * viewController = nil;
+  UIViewController * viewController = nil;
 
-    if (sender == _zoomView.editButton)
-        viewController = [Bank editingControllerForItem:_zoomedItem];
+  if (sender == _zoomView.editButton)
+    viewController = [Bank editingControllerForItem:_zoomedItem];
 
-    else if (sender == _zoomView.detailButton)
-        viewController = [Bank detailControllerForItem:_zoomedItem];
+  else if (sender == _zoomView.detailButton)
+    viewController = [Bank detailControllerForItem:_zoomedItem];
 
-    _zoomedItem = nil;
+  _zoomedItem = nil;
 
-    if (viewController)
-        [self.navigationController pushViewController:viewController animated:YES];
+  if (viewController)
+    [self.navigationController pushViewController:viewController animated:YES];
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Collection view data source
@@ -265,58 +244,52 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
 {
-    return ([_bankableItems.sections count] && ![self.hiddenSections containsObject:@(section)]
-            ? [self.bankableItems.sections[section] numberOfObjects]
-            : 0);
+  return ([_bankableItems.sections count] && ![self.hiddenSections containsObject:@(section)]
+          ? [self.bankableItems.sections[section] numberOfObjects]
+          : 0);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString * cellIdentifier = (self.useListView ? ListCellIdentifier : ThumbnailCellIdentifier);
-    BankCollectionViewCell * cell = [collectionView
-                                     dequeueReusableCellWithReuseIdentifier:cellIdentifier
-                                                               forIndexPath:indexPath];
-    [self configureCell:cell atIndexPath:indexPath];
-    return cell;
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+  NSString               * cellIdentifier = (self.useListView ? ListCellIdentifier : ThumbnailCellIdentifier);
+  BankCollectionViewCell * cell           = [collectionView
+                                   dequeueReusableCellWithReuseIdentifier:cellIdentifier
+                                                             forIndexPath:indexPath];
+  [self configureCell:cell atIndexPath:indexPath];
+  return cell;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return [self.bankableItems.sections count];
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+  return [self.bankableItems.sections count];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath
 {
-    MSSTATIC_IDENTIFIER(Header);
+  MSSTATIC_IDENTIFIER(Header);
 
-    if ([UICollectionElementKindSectionHeader isEqualToString:kind])
-    {
-        BankCollectionHeaderReusableView * view =
-            [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                    withReuseIdentifier:HeaderIdentifier
-                                                           forIndexPath:indexPath];
-        view.section = indexPath.section;
-        view.title = [self.bankableItems.sections[indexPath.section] name];
+  if ([UICollectionElementKindSectionHeader isEqualToString:kind]) {
+    BankCollectionHeaderReusableView * view =
+      [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                              withReuseIdentifier:HeaderIdentifier
+                                                     forIndexPath:indexPath];
+    view.section = indexPath.section;
+    view.title   = [self.bankableItems.sections[indexPath.section] name];
 
-        return view;
-    }
-
-    else return nil;
+    return view;
+  } else return nil;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Collection view delegate
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)   collectionView:(UICollectionView *)collectionView
- didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)    collectionView:(UICollectionView *)collectionView
+  didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.navigationController
+  [self.navigationController
      pushViewController:[Bank detailControllerForItem:_bankableItems[indexPath]]
                animated:YES];
 }
@@ -326,12 +299,13 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     forItemAtIndexPath:(NSIndexPath *)indexPath
             withSender:(id)sender
 {
-    BOOL answer = NO;
+  BOOL answer = NO;
 
-    NSManagedObject<Bankable> * item = self.bankableItems[indexPath];
-    if (action == @selector(deleteItemForCell:) && [item isEditable]) answer = YES;
+  NSManagedObject<Bankable> * item = self.bankableItems[indexPath];
 
-    return answer;
+  if (action == @selector(deleteItemForCell:) && [item isEditable]) answer = YES;
+
+  return answer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -340,57 +314,57 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
+                  layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static const CGSize kListViewCellSize = (CGSize){.width = 320, .height = 38};
-    static const CGSize kThumbnailViewCellSize = (CGSize){.width = 100, .height = 100};
-    return (self.useListView ? kListViewCellSize : kThumbnailViewCellSize);
+  static const CGSize kListViewCellSize      = (CGSize) {
+    .width = 320, .height = 38
+  };
+  static const CGSize kThumbnailViewCellSize = (CGSize) {
+    .width = 100, .height = 100
+  };
+  return (self.useListView ? kListViewCellSize : kThumbnailViewCellSize);
 }
 
-- (CGSize)        collectionView:(UICollectionView *)collectionView
-                          layout:(UICollectionViewLayout*)collectionViewLayout
- referenceSizeForHeaderInSection:(NSInteger)section
+- (CGSize)         collectionView:(UICollectionView *)collectionView
+                           layout:(UICollectionViewLayout *)collectionViewLayout
+  referenceSizeForHeaderInSection:(NSInteger)section
 {
-    static const CGSize kHeaderSize = (CGSize){.width = 320, .height = 38};
+  static const CGSize kHeaderSize = (CGSize) {
+    .width = 320, .height = 38
+  };
 
-    return (_bankFlags & BankNoSections ? CGSizeZero : kHeaderSize);
+  return (_bankFlags & BankNoSections ? CGSizeZero : kHeaderSize);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Fetched results controller delegate
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    self.updatesBlockOperation = [NSBlockOperation new];
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+  self.updatesBlockOperation = [NSBlockOperation new];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller
-  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+  didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
-{
-    __weak BankCollectionViewController * weakSelf = self;
+     forChangeType:(NSFetchedResultsChangeType)type {
+  __weak BankCollectionViewController * weakSelf = self;
 
-    [_updatesBlockOperation addExecutionBlock:
-     ^{
-         switch(type)
-         {
-             case NSFetchedResultsChangeInsert:
-                 [weakSelf.collectionView insertSections:NSIndexSetMake(sectionIndex)];
-                 break;
-                 
-             case NSFetchedResultsChangeDelete:
-                 [weakSelf.collectionView deleteSections:NSIndexSetMake(sectionIndex)];
-                 break;
-         }
-     }];
+  [_updatesBlockOperation addExecutionBlock:
+   ^{
+    switch (type) {
+      case NSFetchedResultsChangeInsert:
+        [weakSelf.collectionView insertSections:NSIndexSetMake(sectionIndex)];
+        break;
+
+      case NSFetchedResultsChangeDelete:
+        [weakSelf.collectionView deleteSections:NSIndexSetMake(sectionIndex)];
+        break;
+    }
+  }];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller
    didChangeObject:(id)anObject
@@ -398,40 +372,34 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    __weak BankCollectionViewController * weakSelf = self;
-    [_updatesBlockOperation addExecutionBlock:
-     ^{
-         switch(type)
-         {
-             case NSFetchedResultsChangeInsert:
-                 [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-                 break;
+  __weak BankCollectionViewController * weakSelf = self;
+  [_updatesBlockOperation addExecutionBlock:
+   ^{
+    switch (type) {
+      case NSFetchedResultsChangeInsert:
+        [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+        break;
 
-             case NSFetchedResultsChangeDelete:
-                 [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                 break;
+      case NSFetchedResultsChangeDelete:
+        [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+        break;
 
-             case NSFetchedResultsChangeUpdate:
-             {
-                 id cell = [weakSelf.collectionView cellForItemAtIndexPath:indexPath];
-                 [weakSelf configureCell:cell atIndexPath:indexPath];
-             }   break;
-                 
-             case NSFetchedResultsChangeMove:
-                 [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                 [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-                 break;
-         }
-     }];
+      case NSFetchedResultsChangeUpdate: {
+        id cell = [weakSelf.collectionView cellForItemAtIndexPath:indexPath];
+        [weakSelf configureCell:cell atIndexPath:indexPath];
+      }   break;
+
+      case NSFetchedResultsChangeMove:
+        [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+        [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+        break;
+    }
+  }];
 }
 
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.collectionView performBatchUpdates:^{ [_updatesBlockOperation start]; } completion:nil];
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+  [self.collectionView performBatchUpdates:^{ [_updatesBlockOperation start]; } completion:nil];
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Touch reporter delegate
@@ -439,11 +407,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 - (void)touchReporter:(MSTouchReporterView *)reporter
-		 touchesBegan:(NSSet *)touches
-			withEvent:(UIEvent *)event
+         touchesBegan:(NSSet *)touches
+            withEvent:(UIEvent *)event
 {
-    [self dismissZoom:nil];
+  [self dismissZoom:nil];
 }
-
 
 @end

@@ -10,111 +10,86 @@
 #import "StoryboardProxy.h"
 #import "ConnectionManager.h"
 
-MSKEY_DEFINITION(MSSettingsAutoConnect);
-MSKEY_DEFINITION(MSSettingsAutoListen);
-MSKEY_DEFINITION(MSSettingsProximitySensor);
-MSKEY_DEFINITION(MSSettingsStatusBar);
-MSKEY_DEFINITION(MSSettingsInactivityTimeout);
+MSSTATIC_KEY(SMAutoListen);
+MSSTATIC_KEY(SMProximitySensor);
+MSSTATIC_KEY(SMStatusBar);
 
-MSNOTIFICATION_DEFINITION(MSSettingsManagerAutoConnectSettingDidChange);
-MSNOTIFICATION_DEFINITION(MSSettingsManagerAutoListenSettingDidChange);
-MSNOTIFICATION_DEFINITION(MSSettingsManagerProximitySensorSettingDidChange);
-MSNOTIFICATION_DEFINITION(MSSettingsManagerStatusBarSettingDidChange);
-MSNOTIFICATION_DEFINITION(MSSettingsManagerInactivityTimeoutSettingDidChange);
+MSNOTIFICATION_DEFINITION(SMAutoListenSettingDidChange);
+MSNOTIFICATION_DEFINITION(SMProximitySensorSettingDidChange);
+MSNOTIFICATION_DEFINITION(SMStatusBarSettingDidChange);
 
-static NSMutableDictionary const * settingsCache;
-static NSSet const               * validSettings;
-static NSDictionary const        * notifications;
-static int                         ddLogLevel = DefaultDDLogLevel;
-int globalDDLogLevel = DefaultDDLogLevel;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
 
 @implementation SettingsManager
 
-+ (void)initialize {
-  if (self == [SettingsManager class]) {
-    settingsCache = [@{
-                       MSSettingsAutoConnectKey       : ([UserDefaults valueForKey:@"autoconnect"] ?: @YES),
-                       MSSettingsAutoListenKey        : ([UserDefaults valueForKey:@"autolisten"] ?: @YES),
-                       MSSettingsStatusBarKey         : @YES,
-                       MSSettingsProximitySensorKey   : @YES,
-                       MSSettingsInactivityTimeoutKey : @0.0f
-                     } mutableCopy];
++ (void)load {
 
-    validSettings = [NSSet setWithArray:[settingsCache allKeys]];
-    notifications = @{
-      MSSettingsAutoConnectKey       : MSSettingsManagerAutoConnectSettingDidChangeNotification,
-      MSSettingsStatusBarKey         : MSSettingsManagerStatusBarSettingDidChangeNotification,
-      MSSettingsProximitySensorKey   : MSSettingsManagerProximitySensorSettingDidChangeNotification,
-      MSSettingsInactivityTimeoutKey : MSSettingsManagerInactivityTimeoutSettingDidChangeNotification
-    };
-  }
+  [UserDefaults registerDefaults:@{ SMAutoListenKey      : @YES,
+                                    SMProximitySensorKey : @YES,
+                                    SMStatusBarKey       : @YES }];
+
+
+  void(^connectionStatusBlock)(NSNotification *) = ^(NSNotification * note) {
+    BOOL wifiAvailable = [ConnectionManager isWifiAvailable];
+    BOOL autoListen    = [[SettingsManager valueForSetting:SMAutoListenSetting] boolValue];
+    if (autoListen && wifiAvailable && ![ConnectionManager isDetectingNetworkDevices])
+      [ConnectionManager startDetectingDevices:nil];
+  };
+
+  [NotificationCenter addObserverForName:CMConnectionStatusNotification
+                                  object:[ConnectionManager class]
+                                   queue:MainQueue
+                              usingBlock:connectionStatusBlock];
+  connectionStatusBlock(nil);
 }
 
-+ (void)registerDefaults {
-  [UserDefaults registerDefaults:[settingsCache copy]];
-  DDLogVerbose(@"registered defaults:%@", settingsCache);
-}
++ (void)setValue:(id)value forSetting:(SMSetting)setting {
 
-+ (UIViewController *)viewController {
-  return (UIViewController *)[StoryboardProxy settingsViewController];
-}
+  NSString * key          = nil;
+  NSString * notification = nil;
 
-+ (void)applyUserSettings {
-  UIApp.statusBarHidden = [self boolForSetting:MSSettingsStatusBarKey];
-  if ([self boolForSetting:MSSettingsAutoListenKey])
-    [ConnectionManager detectNetworkDevices:nil];
-}
+  switch (setting) {
+    case SMAutoListenSetting:
+      if ([value isKindOfClass:[NSNumber class]]) {
+        key = SMAutoListenKey;
+        notification = SMAutoListenSettingDidChangeNotification;
+      }
+      break;
 
-+ (BOOL)validSetting:(NSString *)setting {
-  return ([validSettings member:setting] != nil);
-}
+    case SMStatusBarSetting:
+      if ([value isKindOfClass:[NSNumber class]]) {
+        key = SMStatusBarKey;
+        notification = SMStatusBarSettingDidChangeNotification;
+      }
+      break;
 
-+ (void)setValue:(id)value forSetting:(NSString *)setting {
+    case SMProximitySensorSetting:
+      if ([value isKindOfClass:[NSNumber class]]) {
+        key = SMProximitySensorKey;
+        notification = SMProximitySensorSettingDidChangeNotification;
+      }
+      break;
 
-  if ([self validSetting:setting]) {
-
-    settingsCache[setting] = (value  ?: NullObject);
-    UserDefaults[setting]  = settingsCache[setting];
-    [NotificationCenter postNotificationName:notifications[setting] object:self];
-
-  }
-
-}
-
-+ (id)valueForSetting:(NSString *)setting {
-  return settingsCache[setting];
-}
-
-+ (BOOL)boolForSetting:(NSString *)setting {
-
-  if ([self validSetting:setting]) {
-
-    id value = [self valueForSetting:setting];
-    if ([value isKindOfClass:[NSNumber class]]) return [value boolValue];
-
+    default:
+      break;
   }
 
-  return NO;
-}
-
-+ (void)setBool:(BOOL)value forSetting:(NSString *)setting {
-  [self setValue:@(value) forSetting:setting];
-}
-
-+ (CGFloat)floatForSetting:(NSString *)setting {
-
-  if ([self validSetting:setting]) {
-
-    id value = [self valueForSetting:setting];
-    if ([value isKindOfClass:[NSNumber class]]) return [(NSNumber *)value floatValue];
-
+  if (key && notification) {
+    UserDefaults[key] = value;
+    [NotificationCenter postNotificationName:notification object:self];
   }
 
-  return 0.0;
 }
 
-+ (void)setFloat:(CGFloat)value forSetting:(NSString *)setting {
-  [self setValue:@(value) forSetting:setting];
++ (id)valueForSetting:(SMSetting)setting {
+  switch (setting) {
+    case SMAutoListenSetting:      return UserDefaults[SMAutoListenKey];
+    case SMProximitySensorSetting: return UserDefaults[SMProximitySensorKey];
+    case SMStatusBarSetting:       return UserDefaults[SMStatusBarKey];
+    default:                       return nil;
+  }
 }
 
 @end

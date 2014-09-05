@@ -27,7 +27,6 @@
                                    queue:(NSOperationQueue *)queue
                                  handler:(void (^)(MSNotificationReceptionist * receptionist))handler
 {
-  if (!object) ThrowInvalidNilArgument(object);
 
   if (!handler) ThrowInvalidNilArgument(handler);
 

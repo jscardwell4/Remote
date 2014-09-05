@@ -797,7 +797,7 @@ MSSTATIC_STRING_CONST kParentConstraintNametag  = @"kParentConstraintNametag";
   _multiselectGesture.enabled         = !moving;
   _anchoredMultiselectGesture.enabled = !moving;
 
-  MSLogDebugTag(@"%@", [[[_gestures allObjects] arrayByMappingToBlock:
+  MSLogDebugTag(@"%@", [[[_gestures allObjects] mapped:
                          ^NSString *(UIGestureRecognizer * obj, NSUInteger idx)
   {
     return $(@"%@: %@",
@@ -973,7 +973,7 @@ MSSTATIC_STRING_CONST kParentConstraintNametag  = @"kParentConstraintNametag";
   _flags.menuState = REEditingMenuStateStackedViews;
 
   MenuController.menuItems = [[stackedViews allObjects]
-                              arrayByMappingToBlock:
+                              mapped:
                               ^UIMenuItem *(RemoteElementView * obj, NSUInteger idx) {
     SEL action = NSSelectorFromString($(@"menuAction%@:",
                                         obj.uuid));

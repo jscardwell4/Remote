@@ -7,8 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "MSLog.h"
-#import "MSJSONSerialization.h"
+#import "MSKit/MSKit.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

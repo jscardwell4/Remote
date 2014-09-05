@@ -16,26 +16,25 @@
 
 @implementation MSDictionaryIndex
 {
-    NSMutableDictionary * _keyMap;
+  NSMutableDictionary * _keyMap;
 }
 
 + (MSDictionaryIndex *)dictionaryIndexForDictionary:(MSDictionary *)dictionary
-                                            handler:(MSDictionaryIndexKeyMapHandler)handler
-{
-    MSDictionaryIndex * index = [self new];
-    index.dictionary = dictionary;
-    index.handler = handler;
-    return index;
+                                            handler:(MSDictionaryIndexKeyMapHandler)handler {
+  MSDictionaryIndex * index = [self new];
+  index.dictionary = dictionary;
+  index.handler    = handler;
+  return index;
 }
 
-- (void)setDictionary:(MSDictionary *)dictionary
-{
-    _dictionary = dictionary;
-    if (_dictionary)
-        [_dictionary addObserver:self
-                      forKeyPath:@"allKeys"
-                         options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
-                         context:NULL];
+- (void)setDictionary:(MSDictionary *)dictionary {
+  _dictionary = dictionary;
+
+  if (_dictionary)
+    [_dictionary addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(allKeys))
+                     options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                     context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -43,43 +42,71 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    assert(object == _dictionary);
 
-    if (_handler)
-    {
-        switch ([change[NSKeyValueChangeKindKey] unsignedIntegerValue])
-        {
-            case NSKeyValueChangeInsertion:
-            {
-                id key = change[NSKeyValueChangeNewKey][0];
-                NSArray * keyMap = _handler(_dictionary, key);
-                if ([keyMap count] == 2)
-                {
-                    self.keyMap[key] = keyMap[0];
-                    self[keyMap[0]] = keyMap[1];
-                }
+  if(object == _dictionary && [keyPath isEqualToString:NSStringFromSelector(@selector(allKeys))] && _handler) {
 
-            } break;
+    switch ([change[NSKeyValueChangeKindKey] unsignedIntegerValue]) {
 
-            case NSKeyValueChangeRemoval:
-            {
-                id key = change[NSKeyValueChangeOldKey][0];
-                assert(_keyMap[key]);
-                [self removeObjectForKey:_keyMap[key]];
-                [_keyMap removeObjectForKey:key];
-            } break;
+      case NSKeyValueChangeInsertion: {
 
-            default:
-                break;
+        id newValue = nil;
+
+        for (NSString * key in change) {
+          if (![key isEqualToString:@"kind"])
+            newValue = change[key];
         }
+
+        if (newValue) {
+
+          NSArray * keyMap = _handler(_dictionary, newValue);
+
+          if ([keyMap count] == 2) {
+
+            self.keyMap[newValue] = keyMap[0];
+            self[keyMap[0]]  = keyMap[1];
+
+          }
+
+        }
+
+      } break;
+
+      case NSKeyValueChangeRemoval: {
+
+        id newValue = change[NSKeyValueChangeOldKey];
+        id key = nil;
+        if ([newValue isKindOfClass:[NSArray class]])
+          key = ((NSArray *)newValue)[0];
+        else if (newValue != NullObject)
+          key = newValue;
+
+        if (key) {
+
+          assert(_keyMap[key]);
+
+          [self removeObjectForKey:_keyMap[key]];
+          [_keyMap removeObjectForKey:key];
+
+        }
+
+      } break;
+
+      default:
+        break;
     }
+
+  }
+
 }
 
-- (NSMutableDictionary *)keyMap { if (!_keyMap) _keyMap = [@{} mutableCopy]; return _keyMap; }
+- (NSMutableDictionary *)keyMap {
+  if (!_keyMap) _keyMap = [@{} mutableCopy];
 
-- (void)dealloc
-{
-    [_dictionary removeObserver:self forKeyPath:@"allKeys" context:NULL];
+  return _keyMap;
+}
+
+- (void)dealloc {
+  [_dictionary removeObserver:self forKeyPath:@"allKeys" context:NULL];
 }
 
 @end

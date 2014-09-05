@@ -94,10 +94,10 @@ static NSIndexPath * kOnOffPatternIndexPath;
     if (!_manufacturers)
     {
         self.manufacturers = [@[@"No Manufacturer",
-                                [Manufacturer findAllSortedBy:@"info.name"
+                                [Manufacturer findAllSortedBy:@"name"
                                                     ascending:YES
                                                     context:self.item.managedObjectContext]]
-                              flattenedArray];
+                              flattened];
     }
 
     return _manufacturers;
@@ -110,7 +110,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
         NSArray * sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:nil ascending:YES]];
         NSArray * codesets = [self.irCode.manufacturer.codesets
                               sortedArrayUsingDescriptors:sortDescriptors];
-        self.codesets = [@[@"No Codeset", (codesets?:@[])] flattenedArray];
+        self.codesets = [@[@"No Codeset", (codesets?:@[])] flattened];
     }
     return _codesets;
 }

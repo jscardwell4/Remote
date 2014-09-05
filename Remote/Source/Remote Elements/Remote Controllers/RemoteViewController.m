@@ -54,7 +54,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                                           [viewController insertRemoteView:remoteView];
                                         }];
 
-    NSString * name = MSSettingsManagerProximitySensorSettingDidChangeNotification;
+    NSString * name = SMProximitySensorSettingDidChangeNotification;
 
     controller.settingsReceptionist =
       [MSNotificationReceptionist receptionistWithObserver:controller
@@ -63,7 +63,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                                                      queue:MainQueue
                                                    handler:^(MSNotificationReceptionist * receptionist) {
                                                      CurrentDevice.proximityMonitoringEnabled =
-                                                       [SettingsManager boolForSetting:MSSettingsProximitySensorKey];
+                                                       [[SettingsManager valueForSetting:SMProximitySensorSetting] boolValue];
                                                    }];
   }
 
@@ -174,7 +174,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 /// Re-enables proximity monitoring and determines whether toolbar should be visible.
 /// @param animated Whether the view is appearing via animation.
 - (void)viewWillAppear:(BOOL)animated {
-  if ([SettingsManager boolForSetting:MSSettingsProximitySensorKey])
+  if ([[SettingsManager valueForSetting:SMProximitySensorSetting] boolValue])
     CurrentDevice.proximityMonitoringEnabled = YES;
 
 }
@@ -182,7 +182,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 /// Ceases proximity monitoring if it had been enabled.
 /// @param animated Whether the view is disappearing via animation.
 - (void)viewWillDisappear:(BOOL)animated {
-  if ([SettingsManager boolForSetting:MSSettingsProximitySensorKey])
+  if ([[SettingsManager valueForSetting:SMProximitySensorSetting] boolValue])
     CurrentDevice.proximityMonitoringEnabled = NO;
 }
 

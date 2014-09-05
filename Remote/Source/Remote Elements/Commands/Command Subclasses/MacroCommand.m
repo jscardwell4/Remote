@@ -218,7 +218,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
       Command * command = [commandClass importObjectFromData:obj context:moc];
       return command ?: NullObject;
     }];
-    [macroCommands removeNullObjects];
+    [macroCommands compact];
     self.commands = [macroCommands orderedSet];
 
   }

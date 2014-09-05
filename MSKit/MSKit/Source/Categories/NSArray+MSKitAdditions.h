@@ -9,9 +9,9 @@
 #import "MSKitDefines.h"
 #import "MSKitProtocols.h"
 
-typedef void(^NSArrayEnumerationBlock)(id obj, NSUInteger idx, BOOL *stop);
-typedef BOOL(^NSArrayPredicateBlock)  (id obj, NSUInteger idx, BOOL *stop);
-typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
+//typedef void(^NSArrayEnumerationBlock)(id obj, NSUInteger idx, BOOL *stop);
+//typedef BOOL(^NSArrayPredicateBlock)  (id obj, NSUInteger idx, BOOL *stop);
+//typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
 
 @interface NSArray (MSKitAdditions) <MSJSONExport>
@@ -32,17 +32,16 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 - (NSArray *)arrayByAddingKeysFromDictionary:(NSDictionary *)dictionary;
 - (NSArray *)arrayByAddingValuesFromDictionary:(NSDictionary *)dictionary;
 - (NSArray *)arrayByAddingObjectsFromSet:(NSSet *)set;
-- (NSArray *)arrayByRemovingNullObjects;
+- (NSArray *)compacted;
 - (NSArray *)arrayByAddingObjectsFromOrderedSet:(NSOrderedSet *)orderedSet;
 - (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format,...;
 - (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject,
                                                             NSDictionary * bindings))block;
-- (NSArray *)filter:(BOOL (^)(id evaluatedObject))block;
+- (NSArray *)filtered:(BOOL (^)(id evaluatedObject))block;
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;
 - (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate;
-- (NSArray *)arrayByMappingToBlock:(id (^)(id obj, NSUInteger idx))block;
-- (NSArray *)flattenedArray;
-- (NSArray *)map:(id (^)(id obj, NSUInteger idx))block;
+- (NSArray *)flattened;
+- (NSArray *)mapped:(id (^)(id obj, NSUInteger idx))block;
 
 - (void)makeObjectsPerformSelectorBlock:(void (^)(id object))block;
 
@@ -55,7 +54,7 @@ typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 - (void)filter:(BOOL (^)(id evaluatedObject))block;
 - (void)map:(id (^)(id obj, NSUInteger idx))block;
 - (void)replaceAllObjectsWithNull;
-- (void)removeNullObjects;
+- (void)compact;
 - (void)flatten;
 @end
 

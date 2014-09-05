@@ -63,6 +63,7 @@
 #import "MSKit/MSPainter.h"
 #import "MSKit/UIControl+MSKitAdditions.h"
 #import "MSKit/MSQueue.h"
+#import "MSKit/MSXMLParserDelegate.h"
 #import "MSKit/UIFont+MSKitAdditions.h"
 #import "MSKit/MSSingleton.h"
 #import "MSKit/UIGestureRecognizer+MSKitAdditions.h"

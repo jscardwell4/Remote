@@ -176,7 +176,7 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 
     if ([_pendingValue isKindOfClass:[NSMutableArray class]])
     {
-        [(NSMutableArray *)_pendingValue map:
+        [(NSMutableArray *)_pendingValue mapped:
          ^id(id obj, NSUInteger idx)
          {
              return [MSDictionary dictionaryWithObject:obj forKey:_pendingKey];

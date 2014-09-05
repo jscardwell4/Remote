@@ -9,20 +9,21 @@
 #import "NetworkDevice.h"
 #import "SettingsManager.h"
 #import "GlobalCacheConnectionManager.h"
+#import "ISYConnectionManager.h"
+#import "NDiTachDevice.h"
+#import "ISYDevice.h"
 #import "Command.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
 
-static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_INFO;
 static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
 static const int64_t simulatedCommandDelay = 0.5 * NSEC_PER_SEC;
 
 MSNOTIFICATION_DEFINITION(CMConnectionStatus);
-MSNOTIFICATION_DEFINITION(CMCommandDidComplete);
 MSNOTIFICATION_DEFINITION(CMNetworkDeviceDiscovery);
 
-MSKEY_DEFINITION(CMDevicesUserDefaults);
 MSKEY_DEFINITION(CMNetworkDevice);
 MSKEY_DEFINITION(CMConnectionStatusWifiAvailable);
 MSKEY_DEFINITION(CMAutoConnectDevice);
@@ -32,10 +33,11 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 @interface ConnectionManager ()
 
 @property (strong) MSNetworkReachability * reachability;           // Monitors changes in connectivity
-@property (assign) BOOL                    autoConnect;            // Automatically connect to known devices
-@property (assign) BOOL                    autoListen;             // Automatically listen for new devices
 @property (assign) BOOL                    wifiAvailable;          // Indicates wifi availability
 @property (assign) BOOL                    simulateCommandSuccess; // Whether to simulate send operations
+
+@property (strong) MSNotificationReceptionist * backgroundReceptionist;   // handles backgrounded notification
+@property (strong) MSNotificationReceptionist * foregroundReceptionist;   // handles foregrounded notification
 
 @end
 
@@ -51,38 +53,70 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 + (const ConnectionManager *)sharedManager {
 
   static dispatch_once_t pred = 0;
-  static ConnectionManager * connectionManager = nil;
+  static ConnectionManager * manager = nil;
 
   dispatch_once(&pred, ^{
 
-    connectionManager = [self new];
+    manager = [self new];
 
     // initialize settings
-    connectionManager.autoConnect = [SettingsManager boolForSetting:MSSettingsAutoConnectKey];
-    connectionManager.simulateCommandSuccess = [UserDefaults boolForKey:@"simulate"];
-    connectionManager.autoListen = [SettingsManager boolForSetting:MSSettingsAutoListenKey];
+    manager.simulateCommandSuccess = [UserDefaults boolForKey:@"simulate"];
 
     // initialize reachability
-    connectionManager.reachability =
+    manager.reachability =
     [MSNetworkReachability reachabilityWithCallback:^(SCNetworkReachabilityFlags flags) {
       BOOL wifi = (  (flags & kSCNetworkReachabilityFlagsIsDirect)
                   && (flags & kSCNetworkReachabilityFlagsReachable));
 
-      connectionManager.wifiAvailable = wifi;
+      if (wifi != manager.wifiAvailable) {
 
-      [NotificationCenter postNotificationName:CMConnectionStatusNotification
-                                        object:self
-                                      userInfo:@{ CMConnectionStatusWifiAvailableKey : @(wifi) }];
+        manager.wifiAvailable = wifi;
+
+        [NotificationCenter postNotificationName:CMConnectionStatusNotification
+                                          object:self
+                                        userInfo:@{ CMConnectionStatusWifiAvailableKey : @(wifi) }];
+
+      }
     }];
 
-    // get initial reachability status and try connecting to the default device
+    // get initial reachability status
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-      [connectionManager.reachability refreshFlags];
+      [manager.reachability refreshFlags];
     });
+
+    /// Initialize the manager's did enter background notification receptionist
+    ////////////////////////////////////////////////////////////////////////////////
+
+    void (^backgroundHandler)(MSNotificationReceptionist *) = ^(MSNotificationReceptionist * receptionist) {
+      [GlobalCacheConnectionManager suspend];
+      [ISYConnectionManager suspend];
+    };
+
+    manager.backgroundReceptionist =
+    [MSNotificationReceptionist receptionistWithObserver:manager
+                                               forObject:UIApp
+                                        notificationName:UIApplicationDidEnterBackgroundNotification
+                                                   queue:MainQueue
+                                                 handler:backgroundHandler];
+
+    /// Initialize the manager's will enter foreground notification receptionist
+    ////////////////////////////////////////////////////////////////////////////////
+
+    void (^foregroundHandler)(MSNotificationReceptionist *) = ^(MSNotificationReceptionist * receptionist) {
+      [GlobalCacheConnectionManager resume];
+      [ISYConnectionManager resume];
+    };
+
+    manager.foregroundReceptionist =
+    [MSNotificationReceptionist receptionistWithObserver:manager
+                                               forObject:UIApp
+                                        notificationName:UIApplicationWillEnterForegroundNotification
+                                                   queue:MainQueue
+                                                 handler:foregroundHandler];
 
   });
 
-  return connectionManager;
+  return manager;
 }
 
 /**
@@ -92,8 +126,11 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
  @param completion Block to be executed upon completion of the task.
 
  */
-+ (void)detectNetworkDevices:(void(^)(BOOL success, NSError *error))completion {
-  [GlobalCacheConnectionManager detectNetworkDevices:completion];
++ (void)startDetectingDevices:(void(^)(BOOL success, NSError *error))completion {
+  [GlobalCacheConnectionManager startDetectingDevices:^(BOOL success, NSError *error) {
+    [ISYConnectionManager startDetectingDevices:completion];
+  }];
+  MSLogInfoTag(@"listening for network devices…");
 }
 
 
@@ -104,8 +141,11 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
  @param completion Block to be executed upon completion of the task.
 
  */
-+ (void)stopDetectingNetworkDevices:(void (^)(BOOL, NSError *))completion {
-  [GlobalCacheConnectionManager stopDetectingDevices:completion];
++ (void)stopDetectingDevices:(void (^)(BOOL, NSError *))completion {
+  [GlobalCacheConnectionManager stopDetectingDevices:^(BOOL success, NSError *error) {
+    [ISYConnectionManager stopDetectingDevices:completion];
+  }];
+  MSLogInfoTag(@"no longer listenting for network devices…");
 }
 
 /**
@@ -121,6 +161,9 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 + (void)sendCommandWithID:(NSManagedObjectID *)commandID
                completion:(void (^)(BOOL success, NSError *))completion
 {
+
+  MSLogInfoTag(@"sending command…");
+
   const ConnectionManager * manager = [self sharedManager];
 
   // Check for wifi or a simulated environment flag
@@ -195,7 +238,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
         // Otherwise create a url request and send it
         else if (!manager.simulateCommandSuccess) {
-          
+
           void(^handler)(NSURLResponse *, NSData *, NSError *) =
           ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
 
@@ -228,6 +271,16 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
  */
 + (BOOL)isWifiAvailable { return [self sharedManager].wifiAvailable; }
+
+
+/**
+
+ Returns whether network devices are currently being detected
+
+ @return BOOL
+
+ */
++ (BOOL)isDetectingNetworkDevices { return [GlobalCacheConnectionManager isDetectingNetworkDevices]; }
 
 
 @end

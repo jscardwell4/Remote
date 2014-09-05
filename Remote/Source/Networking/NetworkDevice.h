@@ -5,50 +5,38 @@
 // Created by Jason Cardwell on 9/25/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
+@import UIKit;
+@import CoreData;
+@import Foundation;
+#import "Lumberjack/Lumberjack.h"
+#import "MSKit/MSKit.h"
+#import "MSRemoteMacros.h"
 #import "NamedModelObject.h"
 
-// keys
-MSEXTERN_KEY(NDDeviceMake);
-MSEXTERN_KEY(NDModel);
-MSEXTERN_KEY(NDDeviceRevision);
-MSEXTERN_KEY(NDDeviceStatus);
-MSEXTERN_KEY(NDDeviceUUID);
-MSEXTERN_KEY(NDDeviceURL);
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Abstract
+////////////////////////////////////////////////////////////////////////////////
+
 
 @interface NetworkDevice : NamedModelObject
 
-+ (instancetype)device;
-+ (instancetype)deviceInContext:(NSManagedObjectContext *)context;
-+ (instancetype)deviceWithAttributes:(NSDictionary *)attributes;
-+ (instancetype)deviceWithAttributes:(NSDictionary *)attributes
-                             context:(NSManagedObjectContext *)context;
+/// deviceExistsWithUniqueIdentifier:
+/// @param identifier description
+/// @return BOOL
++ (BOOL)deviceExistsWithUniqueIdentifier:(NSString *)identifier;
 
-+ (BOOL)deviceExistsWithDeviceUUID:(NSString *)deviceUUID;
+/// networkDeviceForBeaconData:context:
+/// @param message description
+/// @param moc description
+/// @return instancetype
++ (instancetype)networkDeviceFromDiscoveryBeacon:(NSString *)message context:(NSManagedObjectContext *)moc;
 
 @property (nonatomic, strong) NSSet            * componentDevices;
-@property (nonatomic, copy, readonly) NSString * deviceUUID;
-@property (nonatomic, copy, readonly) NSString * make;
-@property (nonatomic, copy, readonly) NSString * model;
-@property (nonatomic, copy, readonly) NSString * status;
-@property (nonatomic, copy, readonly) NSString * configURL;
-@property (nonatomic, copy, readonly) NSString * revision;
+@property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
+@property (nonatomic, readonly)       NSString * multicastGroupAddress;
+@property (nonatomic, readonly)       NSString * multicastGroupPort;
+
 
 @end
 
-// constants
-MSEXTERN_STRING NDiTachDeviceMulticastGroupAddress;
-MSEXTERN_STRING NDiTachDeviceMulticastGroupPort;
-MSEXTERN_STRING NDiTachDeviceTCPPort;
-
-// keys
-MSEXTERN_KEY(NDiTachDevicePCB);
-MSEXTERN_KEY(NDiTachDevicePkg);
-MSEXTERN_KEY(NDiTachDeviceSDK);
-
-@interface NDiTachDevice : NetworkDevice
-
-@property (nonatomic, strong) NSString * pcb_pn;
-@property (nonatomic, strong) NSString * pkg_level;
-@property (nonatomic, strong) NSString * sdkClass;
-
-@end
