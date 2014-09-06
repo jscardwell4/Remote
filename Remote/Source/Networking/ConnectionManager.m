@@ -127,10 +127,35 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
  */
 + (void)startDetectingDevices:(void(^)(BOOL success, NSError *error))completion {
-  [GlobalCacheConnectionManager startDetectingDevices:^(BOOL success, NSError *error) {
-    [ISYConnectionManager startDetectingDevices:completion];
-  }];
-  MSLogInfoTag(@"listening for network devices…");
+
+  __block int       completionCount = 0;
+  __block BOOL      completionSuccess         = YES;
+  __block NSError * completionError           = nil;
+
+  void(^completionWrapper)(BOOL, NSError *) = ^(BOOL success, NSError * error) {
+
+    completionSuccess = success && completionSuccess;
+
+    if (completionError && error) {
+
+      NSError * aggregateError = [NSError errorWithDomain:ConnectionManagerErrorDomain
+                                                     code:ConnectionManagerErrorAggregate
+                                                 userInfo:@{NSUnderlyingErrorKey: @[completionError, error]}];
+      completionError = aggregateError;
+
+    }
+    
+    else completionError = error;
+
+    if (++completionCount == 2 && completion)
+      completion(completionSuccess, completionError);
+
+  };
+
+  [GlobalCacheConnectionManager startDetectingDevices:completionWrapper];
+  [ISYConnectionManager startDetectingDevices:completionWrapper];
+
+  MSLogInfo(@"listening for network devices…");
 }
 
 
@@ -142,10 +167,36 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
  */
 + (void)stopDetectingDevices:(void (^)(BOOL, NSError *))completion {
-  [GlobalCacheConnectionManager stopDetectingDevices:^(BOOL success, NSError *error) {
-    [ISYConnectionManager stopDetectingDevices:completion];
-  }];
-  MSLogInfoTag(@"no longer listenting for network devices…");
+
+
+  __block int       completionCount = 0;
+  __block BOOL      completionSuccess         = YES;
+  __block NSError * completionError           = nil;
+
+  void(^completionWrapper)(BOOL, NSError *) = ^(BOOL success, NSError * error) {
+
+    completionSuccess = success && completionSuccess;
+
+    if (completionError && error) {
+
+      NSError * aggregateError = [NSError errorWithDomain:ConnectionManagerErrorDomain
+                                                     code:ConnectionManagerErrorAggregate
+                                                 userInfo:@{NSUnderlyingErrorKey: @[completionError, error]}];
+      completionError = aggregateError;
+
+    }
+
+    else completionError = error;
+
+    if (++completionCount == 2 && completion)
+      completion(completionSuccess, completionError);
+    
+  };
+
+  [GlobalCacheConnectionManager stopDetectingDevices:completionWrapper];
+  [ISYConnectionManager stopDetectingDevices:completionWrapper];
+  
+  MSLogInfo(@"no longer listenting for network devices…");
 }
 
 /**

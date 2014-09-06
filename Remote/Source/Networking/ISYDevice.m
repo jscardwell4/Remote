@@ -43,6 +43,13 @@ MSSTRING_CONST ISYDeviceMulticastGroupPort    = @"1900";
 
 @end
 
+/*
+ 
+ example of turning on a light: http://192.168.1.9/rest/nodes/1B%206E%20B2%201/cmd/DON
+ in a pinch you can use http://username:password@192.168.1.9/rest/nodes/1B%206E%20B2%201/cmd/DON
+
+ */
+
 @implementation ISYDevice
 
 @dynamic modelNumber, modelName, modelDescription;
@@ -82,16 +89,16 @@ MSSTRING_CONST ISYDeviceMulticastGroupPort    = @"1900";
          MSLogInfo(@"parsedXML:\n%@", [parsedXML formattedDescription]);
 
          // Convert parsed attributes into compatible key-value dictionary
-         NSDictionary * attributes = @{ @"modelNumber"      : parsedXML[@"device"][@"modelNumber"],
-                                        @"modelName"        : parsedXML[@"device"][@"modelName"],
-                                        @"modelDescription" : parsedXML[@"device"][@"modelDescription"],
-                                        @"manufacturerURL"  : parsedXML[@"device"][@"manufacturerURL"],
-                                        @"manufacturer"     : parsedXML[@"device"][@"manufacturer"],
-                                        @"friendlyName"     : parsedXML[@"device"][@"friendlyName"],
-                                        @"deviceType"       : parsedXML[@"device"][@"deviceType"],
-                                        @"presentationURL"  : parsedXML[@"device"][@"presentationURL"],
-                                        @"uniqueIdentifier" : parsedXML[@"device"][@"UDN"],
-                                        @"baseURL"          : parsedXML[@"URLBase"] };
+         NSDictionary * attributes = @{ @"modelNumber"      : CollectionSafe(parsedXML[@"device"][@"modelNumber"]),
+                                        @"modelName"        : CollectionSafe(parsedXML[@"device"][@"modelName"]),
+                                        @"modelDescription" : CollectionSafe(parsedXML[@"device"][@"modelDescription"]),
+                                        @"manufacturerURL"  : CollectionSafe(parsedXML[@"device"][@"manufacturerURL"]),
+                                        @"manufacturer"     : CollectionSafe(parsedXML[@"device"][@"manufacturer"]),
+                                        @"friendlyName"     : CollectionSafe(parsedXML[@"device"][@"friendlyName"]),
+                                        @"deviceType"       : CollectionSafe(parsedXML[@"device"][@"deviceType"]),
+                                        @"presentationURL"  : CollectionSafe(parsedXML[@"device"][@"presentationURL"]),
+                                        @"uniqueIdentifier" : CollectionSafe(parsedXML[@"device"][@"UDN"]),
+                                        @"baseURL"          : CollectionSafe(parsedXML[@"URLBase"]) };
 
          // First try fetching by the unique identifier
          NSString * value = attributes[@"uniqueIdentifier"];
@@ -104,6 +111,26 @@ MSSTRING_CONST ISYDeviceMulticastGroupPort    = @"1900";
 
          // Set the device's attributes from the data obtained
          [device setValuesForKeysWithDictionary:attributes];
+
+         //TODO: Here is where we need to prompt for the user name and password for the device
+         NSString * userName = @"moondeer";
+         NSString * password = @"1bluebear";
+         NSString * userNameAndPassword = [@":" join:@[userName, password]];
+         NSString * base64UserNameAndPassword = [[userNameAndPassword dataUsingEncoding:NSUTF8StringEncoding]
+                                                 base64EncodedStringWithOptions:0];
+
+         NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:$(@"%@/rest/config", device.baseURL)]];
+         //TODO: Need to use a delegate and see if that works, or try RestKit or AFNetworking
+         [request setValue:$(@"Basic %@", base64UserNameAndPassword) forHTTPHeaderField:@"Authorization"];
+         [NSURLConnection sendAsynchronousRequest:request queue:MainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+
+           nsprintf(@"response: %@\n", response);
+           if (data) {
+             NSString * dataString = [NSString stringWithData:data];
+             if (dataString) nsprintf(@"data:\n%@\n", dataString);
+           }
+
+         }];
 
          // Invoke completion block
          if (completion)

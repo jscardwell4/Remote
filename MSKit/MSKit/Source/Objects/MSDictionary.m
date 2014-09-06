@@ -78,7 +78,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     {
       NSString * key = elementName;
       if ([dictionary count]) {
-        id existing = [dictionary valueForKeyPath:$(@"%@.%@",[elements componentsJoinedByString:@"."], elementName)];
+        id existing = [dictionary valueForKeyPath:$(@"%@.%@",
+                                                    [elements componentsJoinedByString:@"."], elementName)];
         if (existing) {
           int i = 1;
           do {
@@ -90,6 +91,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
       [elements push:key];
       [dictionary setValue:[MSDictionary dictionary] forKeyPath:[elements componentsJoinedByString:@"."]];
     },
+    SelectorString(@selector(parser:foundAttributeDeclarationWithName:forElement:type:defaultValue:)):
+      ^(NSXMLParser * parser, NSString * name, NSString * element, NSString * type, NSString * defaultValue) {
+        nsprintf(@"parser found attribute '%@' for element '%@' of type '%@' and default '%@'",
+                 name, element, type, defaultValue);
+      },
     SelectorString(@selector(parser:foundCharacters:)):
       ^(NSXMLParser * parser, NSString * characters) {
 

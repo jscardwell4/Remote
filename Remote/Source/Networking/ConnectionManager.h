@@ -28,7 +28,8 @@ NS_ENUM(uint8_t, ConnectionManagerErrorCode) {
   ConnectionManagerErrorCommandEmpty,
   ConnectionManagerErrorConnectionExists,
   ConnectionManagerErrorInvalidNetworkDevice,
-  ConnectionManagerErrorConnectionInProgress
+  ConnectionManagerErrorConnectionInProgress,
+  ConnectionManagerErrorAggregate
 };
 
 /**

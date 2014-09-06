@@ -1,0 +1,9 @@
+<NetworkConfig>
+	<Interface isDHCP="true">
+		<ip>192.168.1.9</ip>
+	</Interface>
+	<WebServer>
+		<httpPort>80</httpPort>
+		<httpsPort>443</httpsPort>
+	</WebServer>
+</NetworkConfig>
