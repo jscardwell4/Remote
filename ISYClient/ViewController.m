@@ -16,22 +16,25 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 static NSString const * kBaseURL = @"http://192.168.1.9";
 
-@interface ViewController () <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UITextFieldDelegate>
+@interface ViewController () <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UITextViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel     * headerLabel;
-@property (weak, nonatomic) IBOutlet UILabel     * addressLabel;
-@property (weak, nonatomic) IBOutlet UILabel     * addressValue;
-@property (weak, nonatomic) IBOutlet UILabel     * portLabel;
-@property (weak, nonatomic) IBOutlet UILabel     * portValue;
-@property (weak, nonatomic) IBOutlet UILabel     * messagesLabel;
-@property (weak, nonatomic) IBOutlet UITextView  * messages;
-@property (weak, nonatomic) IBOutlet UILabel     * sendRequestLabel;
-@property (weak, nonatomic) IBOutlet UITextField * sendRequest;
+@property (weak, nonatomic) IBOutlet UILabel            * headerLabel;
+@property (weak, nonatomic) IBOutlet UILabel            * addressLabel;
+@property (weak, nonatomic) IBOutlet UILabel            * addressValue;
+@property (weak, nonatomic) IBOutlet UILabel            * portLabel;
+@property (weak, nonatomic) IBOutlet UILabel            * portValue;
+@property (weak, nonatomic) IBOutlet UITextView         * messages;
+@property (weak, nonatomic) IBOutlet UITextView         * commandLine;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint * commandLineHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIButton           * sendRequestButton;
 
 @property (strong, nonatomic) dispatch_source_t   groupSource;
 @property (strong, nonatomic) NSURLConnection   * deviceConnection;
 
-@property (strong, nonatomic) NSMutableData     * dataReceived;
+- (IBAction)toggleCommandLineHeight:(UIButton *)sender;
+- (IBAction)sendRequest:(UIButton *)sender;
+
+@property (strong, nonatomic) NSMutableData * dataReceived;
 
 @property (copy) NSString * location;
 @property (copy) NSURL * baseURL;
@@ -48,20 +51,19 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
   // Visual stuff
 
-  UIFont * headerFont = [UIFont fontWithName:@"User-BoldCameo"   size:24.0];
+  UIFont * headerFont = [UIFont fontWithName:@"User-BoldCameo" size:24.0];
   UIFont * labelFont  = [UIFont fontWithName:@"User-BoldCameo" size:15.0];
-  UIFont * valueFont  = [UIFont fontWithName:@"User-Medium"       size:15.0];
+  UIFont * valueFont  = [UIFont fontWithName:@"User-Medium"    size:15.0];
 
   self.headerLabel.font = headerFont;
 
-  self.addressLabel.font     = labelFont;
-  self.portLabel.font        = labelFont;
-  self.messagesLabel.font    = labelFont;
-  self.sendRequestLabel.font = labelFont;
-  self.addressValue.font     = valueFont;
-  self.portValue.font        = valueFont;
-  self.messages.font         = valueFont;
-  self.sendRequest.font      = valueFont;
+  self.addressLabel.font                 = labelFont;
+  self.portLabel.font                    = labelFont;
+  self.sendRequestButton.titleLabel.font = labelFont;
+  self.addressValue.font                 = valueFont;
+  self.portValue.font                    = valueFont;
+  self.messages.font                     = valueFont;
+  self.commandLine.font                  = valueFont;
 
 
   // Connection stuff
@@ -81,6 +83,21 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
   }
 
+/*
+  NSString * dumpFileName = @"family";
+  NSString * dumpFileExt  = @"xsd";
+
+  NSData * fileData = [NSData dataWithContentsOfFile:[MainBundle pathForResource:dumpFileName ofType:dumpFileExt]];
+  assert(fileData);
+
+  MSDictionary * fileDictionary = [MSDictionary dictionaryByParsingXML:fileData];
+  assert([fileDictionary count]);
+
+  NSString * fileDescription = [fileDictionary formattedDescription];
+  NSLog(@"family data:\n%@", fileDescription);
+  [self appendLogMessage:fileDescription];
+*/
+
 }
 
 /// sendRequestWithText:
@@ -91,6 +108,12 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
   NSURLRequest * request = [NSURLRequest requestWithURL:url];
   self.deviceConnection = [NSURLConnection connectionWithRequest:request delegate:self];
 
+}
+
+/// sendRequestWithRequest:
+/// @param request description
+- (void)sendRequestWithRequest:(NSURLRequest *)request {
+  self.deviceConnection = [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
 /// appendLogMessage:
@@ -175,6 +198,7 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
 
     NSMutableAttributedString * attrTxt = [self.messages.attributedText mutableCopy];
+    if (!attrTxt) attrTxt = [NSMutableAttributedString attributedStringWithString:@""];
     [attrTxt appendAttributedString:attrTime];
     [attrTxt appendAttributedString:attrMsg];
     self.messages.attributedText = attrTxt;
@@ -514,29 +538,142 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - UITextFieldDelegate
+#pragma mark - UITextViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
 
-/// textFieldShouldEndEditing:
-/// @param textField description
-/// @return BOOL
-/*
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 
-  NSString * text = [textField.text hasPrefix:@"/"] ? [textField.text substringFromIndex:1] : textField.text;
-  [self sendRequestWithText:text];
-
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
   return YES;
 }
-*/
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  NSString * text = ([textField.text hasPrefix:@"/"]
-                     ? [textField.text substringFromIndex:1]
-                     : textField.text);
-  [self sendRequestWithText:text];
-
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
   return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+  nsprintf(@"finished edting command line\n");
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - IBActions
+////////////////////////////////////////////////////////////////////////////////
+
+
+/// toggleCommandLineHeight:
+/// @param sender description
+- (IBAction)toggleCommandLineHeight:(UIButton *)sender {
+
+  self.commandLineHeightConstraint.constant = (sender.selected ? 20.0 : 200.0);
+  sender.selected = !sender.selected;
+
+}
+
+/// sendRequest:
+/// @param sender description
+- (IBAction)sendRequest:(UIButton *)sender {
+
+  NSString * text = self.commandLine.text;
+
+  [self appendLogMessage:$(@"send request:%@",
+                           ([text numberOfMatchesForRegEx:@"[\\n\\r]"] > 0
+                            ? $(@"\n%@", text)
+                            : text))];
+
+  if (StringIsNotEmpty(text)) {
+
+    if ([text hasPrefix:@"/"]) {
+      // Send a simple get request
+
+      text = [text substringFromIndex:1];
+
+      [self sendRequestWithText:text];
+
+    } else {
+      // Parse text into header and body for request
+
+      /*
+       example that turns off lamp by the door…
+
+          POST /services HTTP/1.1
+          Host: 192.168.1.9:80
+          Content-Length: 239
+          Authorization: Basic bW9vbmRlZXI6MWJsdWViZWFy
+          Content-Type: text/xml; charset="utf-8"
+          SOAPACTION:"urn:udi- com:service:X_Insteon_Lighting_Service:1#UDIService"
+
+          <s:Envelope>
+            <s:Body>
+              <u:UDIService xmlns:u="urn:udi-com:service:X_Insteon_Lighting_Service:1">
+                <control>DOF</control>
+                <action></action>
+                <flag>65531</flag>
+                <node>1B 6E B2 1</node>
+              </u:UDIService>
+            </s:Body>
+          </s:Envelope>
+       */
+
+      NSArray * lines = [text componentsSeparatedByCharactersInSet:NSNewlineCharacters];
+
+      NSMutableURLRequest * request = [NSMutableURLRequest new];
+
+      static NSArray const * kIgnoredHeaderValues;
+      static dispatch_once_t onceToken;
+      dispatch_once(&onceToken, ^{
+        kIgnoredHeaderValues = @[@"Host", @"Connection", @"Authorization", @"WWW-Authenticate", @"Content-Length"];
+      });
+
+      __block NSMutableString * body = nil;
+
+      [lines enumerateObjectsUsingBlock:^(NSString * line, NSUInteger idx, BOOL *stop) {
+
+        NSString * regex = @"^(GET|POST)\\s*([^ ]+)\\s*(.*)";
+        NSArray * matches = [line capturedStringsByMatchingFirstOccurrenceOfRegex:regex];
+
+        if ([matches count]) {
+
+          [request setHTTPMethod:matches[0]];
+          NSURL * url = [self.baseURL URLByAppendingPathComponent:[matches[1] substringFromIndex:1]];
+          [request setURL:url];
+
+        } else {
+
+          regex = @"^([a-zA-Z\\-]+):\\s*(.*)";
+          matches = [line capturedStringsByMatchingFirstOccurrenceOfRegex:regex];
+
+          if ([matches count]) {
+
+            if (![kIgnoredHeaderValues containsObject:matches[0]])
+              [request setValue:matches[1] forHTTPHeaderField:matches[0]];
+
+          } else if ([[line stringByRemovingCharactersFromSet:NSWhitespaceAndNewlineCharacters] length] == 0) {
+
+            body = [@"" mutableCopy];
+
+          } else if (body) {
+
+            [body appendString:line];
+
+          }
+
+        }
+
+      }];
+
+      if (body) [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+
+      [self sendRequestWithRequest:request];
+
+    }
+
+    // Clear command line
+    self.commandLine.text = nil;
+  }
 }
 
 @end

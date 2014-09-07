@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LogInfo>
+<description>
+	This file defines the permissible instances for the Network Interface sub errors
+</description>
+<errorMessages>
+	<msg id="200"><name>HTTP_OK</name></msg>
+	<msg id="304"><name>HTTP_NOT_MODIFIED</name></msg>
+	<msg id="400"><name>HTTP_BAD_REQUEST</name></msg>
+	<msg id="401"><name>HTTP_UNAUTHORIZED</name></msg>
+	<msg id="403"><name>HTTP_FORBIDDEN</name></msg>
+	<msg id="404"><name>HTTP_NOT_FOUND</name></msg>
+	<msg id="405"><name>HTTP_METHOD_NOT_ALLOWED</name></msg>
+	<msg id="409"><name>HTTP_CONFLICT</name></msg>
+	<msg id="500"><name>HTTP_INTERNAL_ERROR</name></msg>
+	
+	<msg id="200"><name>SOAP_OK</name></msg>
+	<msg id="401"><name>SOAP_INVALID_ACTION</name></msg>
+	<msg id="402"><name>SOAP_INVALID_ARGS</name></msg>
+	<msg id="501"><name>SOAP_ACTION_FAILED</name></msg>
+	<msg id="602"><name>SOAP_ACTION_NOT_IMPLEMENTED</name></msg>
+	<msg id="715"><name>SOAP_INVALID_CONTROL_URL</name></msg>
+	<msg id="803"><name>IS_LINKING_SEARCHING</name></msg>
+	<msg id="811"><name>SUBSCRIPTION_MISSING_CALLBACK_URL</name></msg>
+	<msg id="813"><name>SUBSCRIPTION_SID_NOT_FOUND</name></msg>
+	<msg id="814"><name>SUBSCRIPTION_INVALID_URL</name></msg>
+	<msg id="815"><name>SUBSCRIPTION_MAX_SUBSCRIBERS</name></msg>
+	<msg id="816"><name>NO_DISCLAIMER_AVAILABLE</name></msg>
+	<msg id="817"><name>SUBSCRIPTION_ALREADY_SUBSCRIBED</name></msg>
+</errorMessages>
+</LogInfo>

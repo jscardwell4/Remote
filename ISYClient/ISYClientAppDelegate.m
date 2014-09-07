@@ -14,16 +14,6 @@
 + (void)load { [MSLog addTaggingTTYLogger]; }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  // Override point for customization after application launch.
-
-  NSArray * availableFonts = [UIFont familyNames];
-  NSLog(@"availableFonts:\n%@", availableFonts);
-
-  if ([availableFonts containsObject:@"User"]) {
-    NSArray * userFontNames = [UIFont fontNamesForFamilyName:@"User"];
-    NSLog(@"font names for 'User' family:\n%@", userFontNames);
-  }
-
   return YES;
 }
 

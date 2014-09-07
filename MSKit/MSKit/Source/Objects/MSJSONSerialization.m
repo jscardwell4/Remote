@@ -127,7 +127,7 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
 
         else if ([object isKindOfClass:[NSNull class]]) [string appendString:@"null"];
 
-        else if ([object isKindOfClass:[NSString class]]) [string appendFormat:@"\"%@\"", object];
+        else if ([object isKindOfClass:[NSString class]]) [string appendFormat:@"\"%@\"", [object stringByEscapingControlCharacters]];
 
         return (NSString *)string;
     };

@@ -117,6 +117,9 @@ static CGSize    labelShadowOffset = DefaultShadowOffset;
 {
 
     MSBarButtonItem * item = [[MSBarButtonItem alloc]
+           
+                              
+                              
                               initWithTitle:[UIFont fontAwesomeIconForName:name]
                                       style:UIBarButtonItemStylePlain
                                      target:target

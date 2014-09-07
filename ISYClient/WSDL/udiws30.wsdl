@@ -1,0 +1,1879 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" 
+				  xmlns:u="http://www.universal-devices.com/wsdk/isy/3.0" 
+				  xmlns:uo="http://www.universal-devices.com/wsdk/isy/3.0/objects" 
+				  xmlns:ue="http://www.universal-devices.com/wsdk/isy/3.0/events" 
+				  xmlns:uupb="http://www.universal-devices.com/wsdk/isy/3.0/objects/upb"
+				  xmlns:uinsteon="http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon"
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+				  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+				  name="udi" targetNamespace="http://www.universal-devices.com/wsdk/isy/3.0">
+	<wsdl:documentation>
+		Copyright 2007-2012 Universal Devices, Inc.
+		All Rights Reserved
+
+		Web Services Flag, Objects, Parameters, Messages, and Bindings for ISY
+	</wsdl:documentation>
+
+	<wsdl:types>
+	<!-- following is used as a workaround for VS bug -->
+	<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+				xmlns:u="http://www.universal-devices.com/wsdk/isy/3.0" 
+				xmlns:uo="http://www.universal-devices.com/wsdk/isy/3.0/objects" 
+				xmlns:ue="http://www.universal-devices.com/wsdk/isy/3.0/events" 
+				xmlns:uupb="http://www.universal-devices.com/wsdk/isy/3.0/objects/upb"
+				xmlns:uinsteon="http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon"
+				targetNamespace="http://www.universal-devices.com/wsdk/isy/3.0"
+				elementFormDefault="unqualified">
+
+	  <xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects" schemaLocation="./udiobjs.xsd"/>
+	  <xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/events" schemaLocation="./udievnts.xsd"/>
+
+	<!-- PARAMETERS -->
+	<xsd:complexType name="IDParam">
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="NameParam">
+		<xsd:sequence>
+			<xsd:element name="name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="IDNameParam">
+		<xsd:complexContent>
+			<xsd:extension base="u:IDParam">
+				<xsd:sequence>
+					<xsd:element name="name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="QueryParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:NodeTypeFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialsParam">
+		<xsd:sequence>
+			<xsd:element name="name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="password" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="IDNameNodeTypeParam">
+		<xsd:complexContent>
+			<xsd:extension base="u:IDNameParam">
+				<xsd:sequence>
+					<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:NodeTypeFlag"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="AddNodeParam">
+		<xsd:complexContent>
+			<xsd:extension base="u:IDNameParam">
+				<xsd:sequence>
+					<xsd:element name="type" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:NodeOperationsFlag"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="NodeControllerParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="controller" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UDIServiceParam">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		In the case of X10:
+		 		1. User "X10" as the control
+		 		2. action may be null
+		 		3. use house code and unit code in node. The format is:
+		 		HouseCodeUnitCode (UnitCode may be null)
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="control" minOccurs="1" maxOccurs="1" type="uo:ControlType"/>
+			<xsd:element name="action" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:NodeTypeFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="NodeGroupParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="group" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="NodeParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+
+	<xsd:complexType name="MoveNodeParam">
+		<xsd:complexContent>
+			<xsd:extension base="u:NodeGroupParam">
+				<xsd:sequence>
+					<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:LinkModeFlag"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DiscoverNodesParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Optionally, provide the type of node to be discovered
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="StopNodesDiscoveryParam">
+		<xsd:sequence>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:NodeOperationsFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="InternetAccessParam">
+		<xsd:sequence>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:InternetAccessFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LinkingModeParam">
+		<xsd:sequence>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:LinkModeFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RestoreDevicesParam">
+		<xsd:sequence>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:RestoreDevicesFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RestoreDeviceParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:RestoreDevicesFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+
+	<xsd:complexType name="ReplaceDeviceParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="NewNode" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="firmware" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SecuritySystemActionParam">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Provide the command to be processed in the SecAction tag for example, see ELKActionCodes Provide the security code in the code tag
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="SecAction" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="code" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SetDebugLevelParam">
+		<xsd:sequence>
+			<xsd:element name="option" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SetSceneProfileParam">
+		<xsd:complexContent>
+			<xsd:extension base="u:NodeControllerParam">
+				<xsd:sequence>
+					<xsd:element name="control" minOccurs="1" maxOccurs="1" type="uo:ControlType"/>
+					<xsd:element name="action" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SubscriptionParam">
+		<xsd:sequence>
+			<xsd:element name="reportURL" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="duration" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="SID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			<!-- SID should be used in case of renewing subscriptions -->
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UnsubscriptionParam">
+		<xsd:sequence>
+			<xsd:element name="SID" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="flag" minOccurs="0" maxOccurs="1" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+			 			flag is optional:
+			 			0 (or if not supplied): Return error if not currently subscribed
+			 			1 : Do not return an error if not currently subscribed
+			 		</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="IsSubscribedParam">
+		<xsd:sequence>
+			<xsd:element name="SID" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="CurrentSystemStatusParam">
+		<xsd:sequence>
+			<xsd:element name="SID" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SetNodeEnabledParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:SetNodeEnabledFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="NodeHierarchyParam">
+		<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="nodeType" minOccurs="1" maxOccurs="1" type="uo:NodeHierarchyFlag"/>
+			<xsd:element name="parent" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="parentType" minOccurs="0" maxOccurs="1" type="uo:NodeHierarchyFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="DDNSHostParam">
+		<xsd:sequence>
+			<xsd:element name="host" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="DDNSHostAndIPParam">
+		<xsd:sequence>
+			<xsd:element name="host" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="ip" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="BatchModeParam">
+		<xsd:sequence>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:BatchModeFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+
+	<xsd:complexType name="BatteryDeviceWriteModeParam">
+		<xsd:sequence>
+			<xsd:element name="flag" minOccurs="1" maxOccurs="1" type="uo:BatteryDeviceWriteFlag"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="PowerInfoParam">
+			<xsd:annotation>
+					<xsd:documentation>
+						Only available on Orchestrator series
+					</xsd:documentation>
+				</xsd:annotation>
+			<xsd:sequence>
+			<xsd:element name="node" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="deviceClass" minOccurs="1" maxOccurs="1" type="uo:DeviceClass"/>
+			<xsd:element name="wattage" minOccurs="0" maxOccurs="1" type="xsd:unsignedInt"/>
+			<xsd:element name="dcPeriod" minOccurs="0" maxOccurs="1" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation>
+						The total amount of time, in minutes, which a duty cycle event uses to calculate
+						the amount of time the device should be on/off. 
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<!-- Variables -->
+
+	<xsd:complexType name="GetVariablesParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameter for retrieving all variables of a certain type
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" minOccurs="1" maxOccurs="1" type="uo:UDIVariableType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetVariableParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameter for retrieving the value of a specific variable
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" minOccurs="1" maxOccurs="1" type="uo:UDIVariableType"/>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+		
+	<xsd:complexType name="SetVariableParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameter for setting a variable to the desired value
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" minOccurs="1" maxOccurs="1" type="uo:UDIVariableType"/>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="val" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+		
+	
+	<!-- MESSAGE TYPES -->
+	<xsd:complexType name="UDIDefaultResponse">
+		<xsd:sequence>
+			<xsd:element name="status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="info" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UDITimeResponse">
+		<xsd:attribute name="val" type="xsd:dateTime" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Timestamp in the form of YYYYMMDD HH:MM:SS
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UDIIntResponse">
+		<xsd:attribute name="val" type="xsd:int" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Return value of type integer. Currently used for IsSubscribed
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+
+	
+	<xsd:element name="UDIService" type="u:UDIServiceParam"/>
+	<xsd:element name="Empty" type="uo:Empty"/>
+	<xsd:element name="GetNodesConfig" type="uo:Empty"/>
+	<xsd:element name="GetISYConfig" type="uo:Empty"/>
+	<xsd:element name="AddGroup" type="u:IDNameNodeTypeParam"/>
+	<xsd:element name="RemoveGroup" type="u:IDParam"/>
+	<xsd:element name="RenameGroup" type="u:IDNameParam"/>
+	<xsd:element name="AddFolder" type="u:IDNameParam"/>
+	<xsd:element name="RemoveFolder" type="u:IDParam"/>
+	<xsd:element name="RenameFolder" type="u:IDNameParam"/>
+	<xsd:element name="AddNode" type="u:AddNodeParam"/>
+	<xsd:element name="RemoveNode" type="u:IDParam"/>
+	<xsd:element name="RenameNode" type="u:IDNameParam"/>
+	<xsd:element name="MoveNode" type="u:MoveNodeParam"/>
+	<xsd:element name="RemoveFromGroup" type="u:NodeGroupParam"/>
+	<xsd:element name="RenameNetwork" type="u:NameParam"/>
+	<xsd:element name="QueryAll" type="u:QueryParam"/>
+	<xsd:element name="SetDeviceLinkMode" type="u:LinkingModeParam"/>
+	<xsd:element name="DiscoverNodes" type="u:DiscoverNodesParam"/>
+	<xsd:element name="CancelNodesDiscovery" type="u:StopNodesDiscoveryParam"/>
+	<xsd:element name="InternetAccess" type="u:InternetAccessParam"/>
+	<xsd:element name="GetSystemStatus" type="uo:Empty"/>
+	<xsd:element name="GetSystemTime" type="uo:Empty"/>
+	<xsd:element name="SetSystemTime" type="uo:DateTime"/>
+	<xsd:element name="GetSystemOptions" type="uo:Empty"/>
+	<xsd:element name="SetNotOptions" type="uo:NotificationsOptions"/>
+	<xsd:element name="SetProgramOptions" type="uo:ProgramOptions"/>
+	<xsd:element name="SetNTPOptions" type="uo:NTPOptions"/>
+	<xsd:element name="SynchWithNTS" type="uo:Empty"/>
+	<xsd:element name="GetSMTPConfig" type="uo:Empty"/>
+	<xsd:element name="SetSMTPConfig" type="uo:SMTPConfiguration"/>
+	<xsd:element name="Reboot" type="uo:Empty"/>
+	<xsd:element name="SetUserCredentials" type="u:CredentialsParam"/>
+	<xsd:element name="RestoreDevicesFromNodes" type="u:RestoreDevicesParam"/>
+	<xsd:element name="RestoreDeviceFromNode" type="u:RestoreDeviceParam"/>
+	<xsd:element name="ReplaceModem" type="uo:Empty"/>
+	<xsd:element name="RemoveModem" type="uo:Empty"/>
+	<xsd:element name="ReplaceDevice" type="u:ReplaceDeviceParam"/>
+	<xsd:element name="SecuritySystemRequest" type="u:SecuritySystemActionParam"/>
+	<xsd:element name="GetDebugLevel" type="uo:Empty"/>
+	<xsd:element name="SetDebugLevel" type="u:SetDebugLevelParam"/>
+	<xsd:element name="GetSceneProfiles" type="u:NodeControllerParam"/>
+	<xsd:element name="SetSceneProfile" type="u:SetSceneProfileParam"/>
+	<xsd:element name="Subscribe" type="u:SubscriptionParam"/>
+	<xsd:element name="Unsubscribe" type="u:UnsubscriptionParam"/>
+	<xsd:element name="IsSubscribed" type="u:IsSubscribedParam"/>
+	<xsd:element name="GetCurrentSystemStatus" type="u:CurrentSystemStatusParam"/>
+	<xsd:element name="SendTestEmail" type="u:IDParam"/>
+	<xsd:element name="ClearLastError" type="uo:Empty"/>
+	<xsd:element name="GetLastError" type="uo:Empty"/>
+	<xsd:element name="SetNodeEnabled" type="u:SetNodeEnabledParam"/>
+	<xsd:element name="SetParent" type="u:NodeHierarchyParam"/>
+	<xsd:element name="IsDDNSHostAvail" type="u:DDNSHostParam"/>
+	<xsd:element name="GetDDNSHost" type="uo:Empty"/>
+	<xsd:element name="AddDDNSHost" type="u:DDNSHostAndIPParam"/>
+	<xsd:element name="RemoveDDNSHost" type="uo:DDNSHost"/>
+	<xsd:element name="WriteDeviceUpdates" type="u:NodeParam"/>
+	<xsd:element name="SetBatchMode" type="u:BatchModeParam"/>
+	<xsd:element name="SetBatteryDeviceWriteMode" type="u:BatteryDeviceWriteModeParam"/>
+	<xsd:element name="SetNodePowerInfo" type="u:PowerInfoParam"/>
+	<xsd:element name="GetStartupTime" type="uo:Empty"/>
+	<xsd:element name="SendHeartbeat" type="uo:Empty"/>
+	<!-- variables -->
+	<xsd:element name="SetVariable" type="u:SetVariableParam"/>
+	<xsd:element name="GetVariable" type="u:GetVariableParam"/>
+	<xsd:element name="GetVariables" type="u:GetVariablesParam"/>
+	
+	<!--  Event -->
+	<xsd:element name="Event" type="ue:Event"/>
+	
+	</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- MESSAGES -->
+	<wsdl:message name="DefaultResponseMessage">
+		<wsdl:part name="response" type="u:UDIDefaultResponse"/>
+	</wsdl:message>
+	<wsdl:message name="TimeResponseMessage">
+		<wsdl:part name="timeResponse" type="u:UDITimeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IntResponseMessage">
+		<wsdl:part name="intResponse" type="u:UDIIntResponse"/>
+	</wsdl:message>
+	
+
+	<wsdl:message name="UDIServiceRequest">
+		<wsdl:part name="UDIService" element="u:UDIService"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetNodesConfigRequest">
+		<wsdl:part name="GetNodesConfig" element="u:GetNodesConfig"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetNodesConfigResponse">
+		<wsdl:part name="nodes" type="uo:nodes"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetISYConfigRequest">
+		<wsdl:part name="GetISYConfig" element="u:GetISYConfig"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetISYConfigResponse">
+		<wsdl:part name="configuration" type="uo:configuration"/>
+	</wsdl:message>
+
+	<wsdl:message name="AddGroupRequest">
+		<wsdl:part name="AddGroup" element="u:AddGroup"/>
+	</wsdl:message>
+
+	<wsdl:message name="RemoveGroupRequest">
+		<wsdl:part name="RemoveGroup" element="u:RemoveGroup"/>
+	</wsdl:message>
+
+	<wsdl:message name="RenameGroupRequest">
+		<wsdl:part name="RenameGroup" element="u:RenameGroup"/>
+	</wsdl:message>
+	
+	<wsdl:message name="AddFolderRequest">
+		<wsdl:part name="AddFolder" element="u:AddFolder"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="RemoveFolderRequest">
+		<wsdl:part name="RemoveFolder" element="u:RemoveFolder"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="RenameFolderRequest">
+		<wsdl:part name="RenameFolder" element="u:RenameFolder"/>
+	</wsdl:message>	
+
+	<wsdl:message name="AddNodeRequest">
+		<wsdl:part name="AddNode" element="u:AddNode"/>
+	</wsdl:message>
+
+	<wsdl:message name="RemoveNodeRequest">
+		<wsdl:part name="RemoveNode" element="u:RemoveNode"/>
+	</wsdl:message>
+
+	<wsdl:message name="RenameNodeRequest">
+		<wsdl:part name="RenameNode" element="u:RenameNode"/>
+	</wsdl:message>
+
+	<wsdl:message name="MoveNodeRequest">
+		<wsdl:part name="MoveNode" element="u:MoveNode"/>
+	</wsdl:message>
+
+	<wsdl:message name="RemoveFromGroupRequest">
+		<wsdl:part name="RemoveFromGroup" element="u:RemoveFromGroup"/>
+	</wsdl:message>
+
+	<wsdl:message name="RenameNetworkRequest">
+		<wsdl:part name="RenameNetwork" element="u:RenameNetwork"/>
+	</wsdl:message>
+
+	<wsdl:message name="QueryRequest">
+		<wsdl:part name="QueryAll" element="u:QueryAll"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetLinkingModeRequest">
+		<wsdl:part name="SetDeviceLinkMode" element="u:SetDeviceLinkMode"/>
+	</wsdl:message>
+
+	<wsdl:message name="StartNodesDiscoveryRequest">
+		<wsdl:part name="DiscoverNodes" element="u:DiscoverNodes"/>
+	</wsdl:message>
+
+	<wsdl:message name="StopNodesDiscoveryRequest">
+		<wsdl:part name="CancelNodesDiscovery" element="u:CancelNodesDiscovery"/>
+	</wsdl:message>
+
+	<wsdl:message name="InternetAccessRequest">
+		<wsdl:part name="InternetAccess" element="u:InternetAccess"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSystemStatusRequest">
+		<wsdl:part name="GetSystemStatus" element="u:GetSystemStatus"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSystemStatusResponse">
+		<wsdl:part name="SysStat" type="uo:SystemStatus"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDateTimeRequest">
+		<wsdl:part name="GetSystemTime" element="u:GetSystemTime"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDateTimeResponse">
+		<wsdl:part name="DT" type="uo:DateTime"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetDateTimeRequest">
+		<wsdl:part name="SetSystemTime" element="u:SetSystemTime"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSystemOptionsRequest">
+		<wsdl:part name="GetSystemOptions" element="u:GetSystemOptions"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSystemOptionsResponse">
+		<wsdl:part name="SystemOptions" type="uo:SystemOptions"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetNotificationsOptionsRequest">
+		<wsdl:part name="SetNotOptions" element="u:SetNotOptions"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetProgramOptionsRequest">
+		<wsdl:part name="SetProgramOptions" element="u:SetProgramOptions"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetNTPOptionsRequest">
+		<wsdl:part name="SetNTPOptions" element="u:SetNTPOptions"/>
+	</wsdl:message>
+
+	<wsdl:message name="SynchWithNTSRequest">
+		<wsdl:part name="SynchWithNTS" element="u:SynchWithNTS"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSMTPConfigRequest">
+		<wsdl:part name="GetSMTPConfig" element="u:GetSMTPConfig"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSMTPConfigResponse">
+		<wsdl:part name="SMTPConfig" type="uo:SMTPConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetSMTPConfigRequest">
+		<wsdl:part name="SetSMTPConfig" element="u:SetSMTPConfig"/>
+	</wsdl:message>
+
+	<wsdl:message name="RebootRequest">
+		<wsdl:part name="Reboot" element="u:Reboot"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetUserCredentialsRequest">
+		<wsdl:part name="SetUserCredentials" element="u:SetUserCredentials"/>
+	</wsdl:message>
+
+	<wsdl:message name="RestoreDevicesRequest">
+		<wsdl:part name="RestoreDevicesFromNodes" element="u:RestoreDevicesFromNodes"/>
+	</wsdl:message>
+
+	<wsdl:message name="RestoreDeviceRequest">
+		<wsdl:part name="RestoreDeviceFromNode" element="u:RestoreDeviceFromNode"/>
+	</wsdl:message>
+
+	<wsdl:message name="ReplaceModemRequest">
+		<wsdl:part name="ReplaceModem" element="u:ReplaceModem"/>
+	</wsdl:message>
+
+	<wsdl:message name="RemoveModemRequest">
+		<wsdl:part name="RemoveModem" element="u:RemoveModem"/>
+	</wsdl:message>
+
+	<wsdl:message name="ReplaceDeviceRequest">
+		<wsdl:part name="ReplaceDevice" element="u:ReplaceDevice"/>
+	</wsdl:message>
+
+	<wsdl:message name="SecuritySystemActionRequest">
+		<wsdl:part name="SecuritySystemRequest" element="u:SecuritySystemRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDebugLevelRequest">
+		<wsdl:part name="GetDebugLevel" element="u:GetDebugLevel"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetDebugLevelResponse">
+		<wsdl:part name="DBG" type="uo:DBG"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetDebugLevelRequest">
+		<wsdl:part name="SetDebugLevel" element="u:SetDebugLevel"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSceneProfilesRequest">
+		<wsdl:part name="GetSceneProfiles" element="u:GetSceneProfiles"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetSceneProfilesResponse">
+		<wsdl:part name="SceneProfiles" type="uo:SceneProfiles"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetSceneProfileRequest">
+		<wsdl:part name="SetSceneProfile" element="u:SetSceneProfile"/>
+	</wsdl:message>
+
+	<wsdl:message name="SubscribeRequest">
+		<wsdl:part name="Subscribe" element="u:Subscribe"/>
+	</wsdl:message>
+
+	<wsdl:message name="SubscribeResponse">
+		<wsdl:part name="SubscriptionResponse" type="uo:Subscription"/>
+	</wsdl:message>
+
+	<wsdl:message name="UnsubscribeRequest">
+		<wsdl:part name="Unsubscribe" element="u:Unsubscribe"/>
+	</wsdl:message>
+
+	<wsdl:message name="IsSubscribedRequest">
+		<wsdl:part name="IsSubscribed" element="u:IsSubscribed"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetCurrentSystemStatusRequest">
+		<wsdl:part name="GetCurrentSystemStatus" element="u:GetCurrentSystemStatus"/>
+	</wsdl:message>
+
+	<wsdl:message name="EventNotificationMessage">
+		<wsdl:part name="Event" element="u:Event"/>
+	</wsdl:message>
+
+	<wsdl:message name="SendTestEmailRequest">
+		<wsdl:part name="SendTestEmail" element="u:SendTestEmail"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ClearLastErrorRequest">
+		<wsdl:part name="ClearLastError" element="u:ClearLastError"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="GetLastErrorRequest">
+		<wsdl:part name="GetLastError" element="u:GetLastError"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetLastErrorResponse">
+		<wsdl:part name="LastError" type="uo:LastError"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="SetNodeEnabledRequest">
+		<wsdl:part name="SetNodeEnabled" element="u:SetNodeEnabled"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="SetParentRequest">
+		<wsdl:part name="SetParent" element="u:SetParent"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="IsDDNSHostAvailRequest">
+		<wsdl:part name="IsDDNSHostAvail" element="u:IsDDNSHostAvail"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetDDNSHostRequest">
+		<wsdl:part name="GetDDNSHost" element="u:GetDDNSHost"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetDDNSHostResponse">
+		<wsdl:part name="DDNSHost" type="uo:DDNSHost"/>
+	</wsdl:message>		
+	
+	<wsdl:message name="AddDDNSHostRequest">
+		<wsdl:part name="AddDDNSHost" element="u:AddDDNSHost"/>
+	</wsdl:message>
+	
+	<wsdl:message name="RemoveDDNSHostRequest">
+		<wsdl:part name="RemoveDDNSHost" element="u:RemoveDDNSHost"/>
+	</wsdl:message>
+	
+	<wsdl:message name="WriteDeviceUpdatesRequest">
+		<wsdl:part name="WriteDeviceUpdates" element="u:WriteDeviceUpdates"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetBatchModeRequest">
+		<wsdl:part name="SetBatchMode" element="u:SetBatchMode"/>
+	</wsdl:message>
+
+	<wsdl:message name="SetBatteryDeviceWriteModeRequest">
+		<wsdl:part name="SetBatteryDeviceWriteMode" element="u:SetBatteryDeviceWriteMode"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetNodePowerInfoRequest">
+		<wsdl:part name="SetNodePowerInfo" element="u:SetNodePowerInfo"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetStartupTimeRequest">
+		<wsdl:part name="GetStartupTime" element="u:GetStartupTime"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SendHeartbeatRequest">
+		<wsdl:part name="SendHeartbeat" element="u:SendHeartbeat"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetVariableRequest">
+		<wsdl:part name="SetVariable" element="u:SetVariable"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetVariableRequest">
+		<wsdl:part name="GetVariable" element="u:GetVariable"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetVariableResponse">
+		<wsdl:part name="var" type="uo:Variable"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetVariablesRequest">
+		<wsdl:part name="GetVariables" element="u:GetVariables"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetVariablesResponse">
+		<wsdl:part name="vars" type="uo:Variables"/>
+	</wsdl:message>
+	
+ <!-- Not implemented
+ GetSysConf
+ FileUpload (request program update)
+ GetSysConfFiles
+ GetReport
+ ResetReport
+ GetErrorLog
+ ResetErrorLog
+ GetAllD2D
+ GetAllD2DStatus
+ SetD2D
+ D2DCommand
+ SaveFLPL:deprecated
+ GetFLPL:depracated
+ ClearConfiguration
+ GetNodeProps:deprecated
+ SaveNodeProps:deprecated
+ ConfigureSecuritySys
+ GetSecuritySysConfig
+ GetSecuritySysURLs
+ *** Modules Related ****
+ ManageModules
+ InstallModule
+ GetUserDirectory
+ MakeUserDirectory
+ RemoveUserDirectory
+ RemoveUserFile
+ GetUserFile
+ MoveUserObject
+ GetFSStat
+ *** Linking ***
+ RestoreLink
+ -->
+
+	<wsdl:portType name="UDIServices_PortType">
+		<wsdl:operation name="UDIService">
+			<wsdl:input message="u:UDIServiceRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetISYConfig">
+			<wsdl:documentation>Returns the current configuration of ISY</wsdl:documentation>
+			<wsdl:input message="u:GetISYConfigRequest"/>
+			<wsdl:output message="u:GetISYConfigResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetNodesConfig">
+			<wsdl:documentation>Returns the configuration of nodes, groups, scenes, and any relationship thereto</wsdl:documentation>
+			<wsdl:input message="u:GetNodesConfigRequest"/>
+			<wsdl:output message="u:GetNodesConfigResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="AddGroup">
+			<wsdl:documentation>Adds a scene/group</wsdl:documentation>
+			<wsdl:input message="u:AddGroupRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveGroup">
+			<wsdl:documentation>Removes a group (permanently) from configuration</wsdl:documentation>
+			<wsdl:input message="u:RemoveGroupRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RenameGroup">
+			<wsdl:documentation>Renames a group in configuration</wsdl:documentation>
+			<wsdl:input message="u:RenameGroupRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddFolder">
+			<wsdl:documentation>Adds a folder</wsdl:documentation>
+			<wsdl:input message="u:AddFolderRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="RemoveFolder">
+			<wsdl:documentation>Removes a folder (permanently) from configuration</wsdl:documentation>
+			<wsdl:input message="u:RemoveFolderRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="RenameFolder">
+			<wsdl:documentation>Renames a folder in configuration</wsdl:documentation>
+			<wsdl:input message="u:RenameFolderRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>		
+
+		<wsdl:operation name="AddNode">
+			<wsdl:documentation>Adds a predefined node for a device with a given address</wsdl:documentation>
+			<wsdl:input message="u:AddNodeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveNode">
+			<wsdl:documentation>Removes a node (permanently) from configuration</wsdl:documentation>
+			<wsdl:input message="u:RemoveNodeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RenameNode">
+			<wsdl:documentation>Renames a node in configuration</wsdl:documentation>
+			<wsdl:input message="u:RenameNodeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="MoveNode">
+			<wsdl:documentation>Moves a node into a group/scene</wsdl:documentation>
+			<wsdl:input message="u:MoveNodeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveFromGroup">
+			<wsdl:documentation>Removes a Node from a Group</wsdl:documentation>
+			<wsdl:input message="u:RemoveFromGroupRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RenameNetwork">
+			<wsdl:documentation>Renames the Network name</wsdl:documentation>
+			<wsdl:input message="u:RenameNetworkRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="Query">
+			<wsdl:documentation>Queries a node, a scene, or even the whole network</wsdl:documentation>
+			<wsdl:input message="u:QueryRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetLinkingMode">
+			<wsdl:documentation>Changes the way ISY discovers nodes/devices ISY as a controller or ISY as a responder</wsdl:documentation>
+			<wsdl:input message="u:SetLinkingModeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="StartNodesDiscovery">
+			<wsdl:documentation>Puts ISY in discovery (linking) mode Optionally, provide the type of device to look for</wsdl:documentation>
+			<wsdl:input message="u:StartNodesDiscoveryRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="StopNodesDiscovery">
+			<wsdl:documentation>The flag decides the operations (reset, crawl, spider) to be performed after device(s) are discovered</wsdl:documentation>
+			<wsdl:input message="u:StopNodesDiscoveryRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="InternetAccess">
+			<wsdl:documentation>Enables/Disables port forwarding to ISY on UPnP enabled routers. This process might take a long time and, as such, one must take caution with TCP connect timeouts</wsdl:documentation>
+			<wsdl:input message="u:InternetAccessRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSystemStatus">
+			<wsdl:documentation>Returns the current state of ISY</wsdl:documentation>
+			<wsdl:input message="u:GetSystemStatusRequest"/>
+			<wsdl:output message="u:GetSystemStatusResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSystemDateTime">
+			<wsdl:documentation>Returns the current state of ISY</wsdl:documentation>
+			<wsdl:input message="u:GetDateTimeRequest"/>
+			<wsdl:output message="u:GetDateTimeResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSystemDateTime">
+			<wsdl:documentation>Returns the current state of ISY</wsdl:documentation>
+			<wsdl:input message="u:SetDateTimeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSystemOptions">
+			<wsdl:documentation>Returns the options by which ISY is configured</wsdl:documentation>
+			<wsdl:input message="u:GetSystemOptionsRequest"/>
+			<wsdl:output message="u:GetSystemOptionsResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSMTPConfig">
+			<wsdl:documentation>Returns the SMTP Options configured in ISY</wsdl:documentation>
+			<wsdl:input message="u:GetSMTPConfigRequest"/>
+			<wsdl:output message="u:GetSMTPConfigResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSMTPConfig">
+			<wsdl:documentation>Sets SMTP Configuration Parameters</wsdl:documentation>
+			<wsdl:input message="u:SetSMTPConfigRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetNotificationsOptions">
+			<wsdl:documentation>Sets Notifications Options</wsdl:documentation>
+			<wsdl:input message="u:SetNotificationsOptionsRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProgramOptions">
+			<wsdl:documentation>Sets Program Options</wsdl:documentation>
+			<wsdl:input message="u:SetProgramOptionsRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetNTPOptions">
+			<wsdl:documentation>Sets NTP Options</wsdl:documentation>
+			<wsdl:input message="u:SetNTPOptionsRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SynchWithNTS">
+			<wsdl:documentation>Adjusts the clock to NTS</wsdl:documentation>
+			<wsdl:input message="u:SynchWithNTSRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="Reboot">
+			<wsdl:documentation>Reboots the system</wsdl:documentation>
+			<wsdl:input message="u:RebootRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetUserCredentials">
+			<wsdl:documentation>Changes the userid and password for a user</wsdl:documentation>
+			<wsdl:input message="u:SetUserCredentialsRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+ 		<wsdl:operation name="RestoreDevices">
+			<wsdl:documentation>Restores devices from the configuration in ISY</wsdl:documentation>
+			<wsdl:input message="u:RestoreDevicesRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreDevice">
+			<wsdl:documentation>Restores a specific device from the configuration in ISY</wsdl:documentation>
+			<wsdl:input message="u:RestoreDeviceRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="ReplaceModem">
+			<wsdl:documentation>Replaces the modem attached to ISY and reconfigures devices if necessary</wsdl:documentation>
+			<wsdl:input message="u:ReplaceModemRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveModem">
+			<wsdl:documentation>Replaces the modem attached to ISY and reconfigures devices if necessary</wsdl:documentation>
+			<wsdl:input message="u:RemoveModemRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="ReplaceDevice">
+			<wsdl:documentation>Replaces one device with another (swap)</wsdl:documentation>
+			<wsdl:input message="u:ReplaceDeviceRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SecuritySystemAction">
+			<wsdl:documentation>Arm/disarm a security system</wsdl:documentation>
+			<wsdl:input message="u:SecuritySystemActionRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDebugLevel">
+			<wsdl:documentation>Gets the debug options and current level</wsdl:documentation>
+			<wsdl:input message="u:GetDebugLevelRequest"/>
+			<wsdl:output message="u:GetDebugLevelResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetDebugLevel">
+			<wsdl:documentation>Gets the debug options and current level</wsdl:documentation>
+			<wsdl:input message="u:SetDebugLevelRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSceneProfiles">
+			<wsdl:documentation>
+				Gets the profile attributes for responders.
+				Set the controller element to scene's address and:
+				In case this is an ISY scene, set the node element to "none."
+				In case this is a controller for a scene, set the node element to the controller's address
+			</wsdl:documentation>
+			<wsdl:input message="u:GetSceneProfilesRequest"/>
+			<wsdl:output message="u:GetSceneProfilesResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSceneProfile">
+			<wsdl:documentation>
+				Sets the profile attribute for responders.
+				Set the controller element to scene's address and:
+				In case this is an ISY scene, set the node element to "none"
+				In case this is a controller for a scene, set the node element to the responder's address
+			</wsdl:documentation>
+			<wsdl:input message="u:SetSceneProfileRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="Subscribe">
+			<wsdl:documentation>
+				reportURL: To reuse the socket, use REUSE_SOCKET as the value
+				duration: use infinite
+			</wsdl:documentation>
+			<wsdl:input message="u:SubscribeRequest"/>
+			<wsdl:output message="u:SubscribeResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="Unsubscribe">
+			<wsdl:documentation>Unsubscribe from ISY</wsdl:documentation>
+			<wsdl:input message="u:UnsubscribeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="IsSubscribed">
+			<wsdl:documentation>
+				Whether or not the client still holds a subscription to ISY; 
+				0 - Not subscribed
+				1 - Subscribed
+			</wsdl:documentation>
+			<wsdl:input message="u:IsSubscribedRequest"/>
+			<wsdl:output message="u:IntResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCurrentSystemStatus">
+			<wsdl:documentation>Sends the current system status (whole) to the given subscriber</wsdl:documentation>
+			<wsdl:input message="u:GetCurrentSystemStatusRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="SendTestEmail">
+			<wsdl:documentation>Sends a test email. This is used to check SMTP settings.</wsdl:documentation>
+			<wsdl:input message="u:SendTestEmailRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ClearLastError">
+			<wsdl:documentation>Clears the list of recent errors in ISY</wsdl:documentation>
+			<wsdl:input message="u:ClearLastErrorRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+					
+		<wsdl:operation name="GetLastError">
+			<wsdl:documentation>Gets the list of recent errors in ISY</wsdl:documentation>
+			<wsdl:input message="u:GetLastErrorRequest"/>
+			<wsdl:output message="u:GetLastErrorResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetNodeEnabled">
+			<wsdl:documentation>Enables or disables a node</wsdl:documentation>
+			<wsdl:input message="u:SetNodeEnabledRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetParent">
+			<wsdl:documentation>Sets a parent for a node</wsdl:documentation>
+			<wsdl:input message="u:SetParentRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="IsDDNSHostAvail">
+			<wsdl:documentation>Whether or not a DDNS Host is available</wsdl:documentation>
+			<wsdl:input message="u:IsDDNSHostAvailRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetDDNSHost">
+			<wsdl:documentation>Returns the currently configured DDNS host</wsdl:documentation>
+			<wsdl:input message="u:GetDDNSHostRequest"/>
+			<wsdl:output message="u:GetDDNSHostResponse"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddDDNSHost">
+			<wsdl:documentation>Registers and DDNS host with the associated IP</wsdl:documentation>
+			<wsdl:input message="u:AddDDNSHostRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="RemoveDDNSHost">
+			<wsdl:documentation>Removes the registered DDNS host. Must use GetDDNSHost</wsdl:documentation>
+			<wsdl:input message="u:RemoveDDNSHostRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+
+		<wsdl:operation name="WriteDeviceUpdates">
+			<wsdl:documentation>Causes device updates to be written to the given node</wsdl:documentation>
+			<wsdl:input message="u:WriteDeviceUpdatesRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetBatchMode">
+			<wsdl:documentation>Causes the system to go to/exit batch mode </wsdl:documentation>
+			<wsdl:input message="u:SetBatchModeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetBatteryDeviceWriteMode">
+			<wsdl:documentation>Enables/disables writing to battery devices automatically</wsdl:documentation>
+			<wsdl:input message="u:SetBatteryDeviceWriteModeRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetNodePowerInfo">
+			<wsdl:documentation>Sets the Power characteristics for a node</wsdl:documentation>
+			<wsdl:input message="u:SetNodePowerInfoRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetStartupTime">
+			<wsdl:documentation>Returns a timestamp of when ISY was last started</wsdl:documentation>
+			<wsdl:input message="u:GetStartupTimeRequest"/>
+			<wsdl:output message="u:TimeResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SendHeartbeat">
+			<wsdl:documentation>Immediately sends a heartbeat message to all subscribers</wsdl:documentation>
+			<wsdl:input message="u:SendHeartbeatRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetVariable">
+			<wsdl:documentation>Sets a variable to the desired value</wsdl:documentation>
+			<wsdl:input message="u:SetVariableRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetVariable">
+			<wsdl:documentation>Retrieves a variable</wsdl:documentation>
+			<wsdl:input message="u:GetVariableRequest"/>
+			<wsdl:output message="u:GetVariableResponse"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetVariables">
+			<wsdl:documentation>Retrieves all variables of a certain type</wsdl:documentation>
+			<wsdl:input message="u:GetVariablesRequest"/>
+			<wsdl:output message="u:GetVariablesResponse"/>
+		</wsdl:operation>
+		
+		<!-- EVENTING: Does not work with .NET yet-->
+		<!--
+		<wsdl:operation name="EventNotification">
+			<wsdl:output message="u:EventNotificationMessage"/>
+		</wsdl:operation>
+		-->
+	</wsdl:portType>
+
+	<wsdl:binding name="UDIServices_Binding" type="u:UDIServices_PortType">
+		<wsdl:documentation>UDI Binding binds the concrete Port (UDI Services) to the Abstract Port Type (UDIServices_PortType)</wsdl:documentation>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="UDIService">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetNodesConfig">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetISYConfig">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="AddGroup">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveGroup">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RenameGroup">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddFolder">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="RemoveFolder">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="RenameFolder">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+
+		<wsdl:operation name="AddNode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveNode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RenameNode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="MoveNode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveFromGroup">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RenameNetwork">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="Query">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="StartNodesDiscovery">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="StopNodesDiscovery">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="InternetAccess">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetLinkingMode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSystemStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSystemDateTime">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSystemDateTime">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSystemOptions">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+ 		<wsdl:operation name="GetSMTPConfig">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSMTPConfig">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetNotificationsOptions">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetProgramOptions">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetNTPOptions">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SynchWithNTS">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="Reboot">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetUserCredentials">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreDevices">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreDevice">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ReplaceModem">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RemoveModem">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ReplaceDevice">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SecuritySystemAction">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetDebugLevel">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+ 		<wsdl:operation name="SetDebugLevel">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSceneProfiles">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSceneProfile">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="Subscribe">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="Unsubscribe">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="IsSubscribed">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCurrentSystemStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SendTestEmail">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ClearLastError">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetLastError">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetNodeEnabled">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetParent">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="IsDDNSHostAvail">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetDDNSHost">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddDDNSHost">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="RemoveDDNSHost">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="WriteDeviceUpdates">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		
+		<wsdl:operation name="SetBatchMode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		
+		<wsdl:operation name="SetBatteryDeviceWriteMode">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetNodePowerInfo">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetStartupTime">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SendHeartbeat">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetVariable">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetVariable">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetVariables">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>		
+		</wsdl:operation>						
+		
+ <!--
+		<wsdl:operation name="EventNotification">
+			<soap:operation style="document"/>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+ -->
+	</wsdl:binding>
+</wsdl:definitions>

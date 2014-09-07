@@ -1,0 +1,673 @@
+{
+  "NodeFamily": {
+    "id": "1",
+    "name": "INSTEON",
+    "description": "Family of INSTEON Devices",
+    "nodeCategory": [
+      {
+        "id": "0",
+        "name": "Controllers",
+        "nodeSubCategory": [
+          {
+            "id": "0",
+            "name": "DEV_SCAT_CONTROLINC_2430"
+          },
+          {
+            "id": "5",
+            "name": "DEV_SCAT_ICON_REMOTELINC_2843"
+          },
+          {
+            "id": "6",
+            "name": "DEV_SCAT_ICON_TABLETOP_2830"
+          },
+          {
+            "id": "7",
+            "name": "DEV_SCAT_SIGNALINC_2442"
+          },
+          {
+            "id": "10",
+            "name": "DEV_SCAT_POOLUX_LCD_CONTROLLER"
+          },
+          {
+            "id": "11",
+            "name": "DEV_SCAT_ACCESSPOINT"
+          },
+          {
+            "id": "12",
+            "name": "DEV_SCAT_IES_COLOR_TOUCHSCREEN"
+          },
+          {
+            "id": "16",
+            "name": "DEV_SCAT_REMOTE_LINC_2_KEYPAD_4"
+          },
+          {
+            "id": "17",
+            "name": "DEV_SCAT_REMOTE_LINC_2_SWITCH"
+          },
+          {
+            "id": "18",
+            "name": "DEV_SCAT_REMOTE_LINC_2_KEYPAD_8"
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "Dimmable Devices",
+        "nodeSubCategory": [
+          {
+            "id": "0",
+            "name": "DEV_SCAT_LAMPLINC_V2_2456D3"
+          },
+          {
+            "id": "1",
+            "name": "DEV_SCAT_SWITCHLINC_V2_DIMMER_2476D"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_INLINE_DIMMABLE"
+          },
+          {
+            "id": "3",
+            "name": "DEV_SCAT_ICON_SWITCH_DIMMER_2876D3"
+          },
+          {
+            "id": "4",
+            "name": "DEV_SCAT_SWITCHLINK_V2_DIMMER_2476DH"
+          },
+          {
+            "id": "5",
+            "name": "DEV_SCAT_KEYPADLINC_TIMER_2484DWH8"
+          },
+          {
+            "id": "6",
+            "name": "DEV_SCAT_LAMPLINC_2_PIN"
+          },
+          {
+            "id": "7",
+            "name": "DEV_SCAT_ICON_LAMPLINC_V2_2_PIN_2456D2"
+          },
+          {
+            "id": "9",
+            "name": "DEV_SCAT_KEYPADLINC_DIMMER_2486D"
+          },
+          {
+            "id": "10",
+            "name": "DEV_SCAT_ICON_INWALL_CONTROLLER_2886D"
+          },
+          {
+            "id": "11",
+            "name": "DEV_SCAT_LAMPLINC_BI_PHY"
+          },
+          {
+            "id": "12",
+            "name": "DEV_SCAT_KEYPADLINC_DIMMER_2486DWH8"
+          },
+          {
+            "id": "13",
+            "name": "DEV_SCAT_SOCKETLINC_2454D"
+          },
+          {
+            "id": "14",
+            "name": "DEV_CAT_BIPHY_LAMPLINC_B2457D2"
+          },
+          {
+            "id": "19",
+            "name": "DEV_SCAT_ICON_SWITCHLINC_DIMMER_BELL_CANADA"
+          },
+          {
+            "id": "23",
+            "name": "DEV_SCAT_TOGGLELINC_DIMMER_2466D"
+          },
+          {
+            "id": "24",
+            "name": "DEV_SCAT_COMPANION_SWITCH_2474D"
+          },
+          {
+            "id": "25",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_W_SENSE_2476D"
+          },
+          {
+            "id": "26",
+            "name": "DEV_SCAT_INLINELINC_DIMMER_2475D"
+          },
+          {
+            "id": "27",
+            "name": "DEV_SCAT_KEYPAD_LINC_DIMMER_2486D_6"
+          },
+          {
+            "id": "28",
+            "name": "DEV_SCAT_KEYPAD_LINC_DIMMER_2486D_8"
+          },
+          {
+            "id": "29",
+            "name": "DEV_SCAT_SWITCH_LINC_DIMMER_2476DH"
+          },
+          {
+            "id": "30",
+            "name": "DEV_SCAT_ICON_SWITCH_DIMMER_2876DB"
+          },
+          {
+            "id": "31",
+            "name": "DEV_SCAT_TOGGLELINC_DIMMER_2466D_2"
+          },
+          {
+            "id": "32",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2477D"
+          },
+          {
+            "id": "33",
+            "name": "DEV_SCAT_OUTLETLINC_DIMMER_2472D_DUAL_BAND"
+          },
+          {
+            "id": "34",
+            "name": "DEV_SCAT_LAMPLINC_2_PIN_DIMMER_2457D2X"
+          },
+          {
+            "id": "36",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2WIRE_2474DWH"
+          },
+          {
+            "id": "39",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2477D_SP"
+          },
+          {
+            "id": "41",
+            "name": "DEV_SCAT_KEYPAD_LINC_DIMMER_2486D_8_SP"
+          },
+          {
+            "id": "42",
+            "name": "DEV_SCAT_LAMPLINC_2_PIN_DIMMER_2457D2X_SP"
+          },
+          {
+            "id": "43",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2477DH_SP"
+          },
+          {
+            "id": "44",
+            "name": "DEV_SCAT_INLINELINC_DIMMER_2475D_SP"
+          },
+          {
+            "id": "45",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2477DH"
+          },
+          {
+            "id": "46",
+            "name": "DEV_SCAT_FANLINC_2475F"
+          },
+          {
+            "id": "48",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2476D"
+          },
+          {
+            "id": "49",
+            "name": "DEV_SCAT_SWITCHLINC_DIMMER_2478D"
+          },
+          {
+            "id": "50",
+            "name": "DEV_SCAT_INLINELINC_DIMMER_2475DA1"
+          },
+          {
+            "id": "58",
+            "name": "DEV_SCAT_LED_BULB_8WATT_2672_222"
+          },
+          {
+            "id": "52",
+            "name": "DEV_SCAT_DIN_RAIL_DIMMER_2452_222"
+          },
+          {
+            "id": "54",
+            "name": "DEV_SCAT_DIN_RAIL_DIMMER_2452_422"
+          },
+          {
+            "id": "55",
+            "name": "DEV_SCAT_DIN_RAIL_DIMMER_2452_522"
+          },
+          {
+            "id": "53",
+            "name": "DEV_SCAT_MICRO_MODULE_DIMMER_2442_222"
+          },
+          {
+            "id": "56",
+            "name": "DEV_SCAT_MICRO_MODULE_DIMMER_2442_422"
+          },
+          {
+            "id": "57",
+            "name": "DEV_SCAT_MICRO_MODULE_DIMMER_2442_522"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "Switched/Relay Devices",
+        "nodeSubCategory": [
+          {
+            "id": "5",
+            "name": "DEV_SCAT_KEYPADLINC_RELAY_2486SWH8"
+          },
+          {
+            "id": "6",
+            "name": "DEV_SCAT_APPLIANCELINC_OUTDOOR_2456S3E"
+          },
+          {
+            "id": "7",
+            "name": "DEV_SCAT_TIMERLINC_2456S3T"
+          },
+          {
+            "id": "8",
+            "name": "DEV_SCAT_OUTLETLINC_2473"
+          },
+          {
+            "id": "9",
+            "name": "DEV_SCAT_APPLIANCELINC_2456S3"
+          },
+          {
+            "id": "10",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_2476S"
+          },
+          {
+            "id": "11",
+            "name": "DEV_SCAT_ICON_ON_OFF_SWITCH_2876S"
+          },
+          {
+            "id": "12",
+            "name": "DEV_SCAT_ICON_APPLIANCE_ADAPTER_2856S3"
+          },
+          {
+            "id": "13",
+            "name": "DEV_SCAT_TOGGLELINC_RELAY_2466S"
+          },
+          {
+            "id": "14",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_2476S_2"
+          },
+          {
+            "id": "15",
+            "name": "DEV_SCAT_KEYPADLINC_RELAY_2486S"
+          },
+          {
+            "id": "16",
+            "name": "DEV_SCAT_INLINE_RELAY"
+          },
+          {
+            "id": "17",
+            "name": "DEV_SCAT_EZSWITCH_30"
+          },
+          {
+            "id": "18",
+            "name": "DEV_SCAT_COMPANION_SWITCH_2474S"
+          },
+          {
+            "id": "19",
+            "name": "DEV_SCAT_ICON_SWTICHLINC_RELAY_BELL_CANADA"
+          },
+          {
+            "id": "20",
+            "name": "DEV_SCAT_INLINE_RELAY_WITH_SENSE"
+          },
+          {
+            "id": "21",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_W_SENSE_2476S"
+          },
+          {
+            "id": "22",
+            "name": "DEV_SCAT_ICON_RELAY_2876SB"
+          },
+          {
+            "id": "23",
+            "name": "DEV_SCAT_ICON_APPLIANCELINC_2856S3B"
+          },
+          {
+            "id": "24",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_2494S220"
+          },
+          {
+            "id": "25",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_2494S220_B"
+          },
+          {
+            "id": "26",
+            "name": "DEV_SCAT_TOGGLELINC_RELAY_2466S_2"
+          },
+          {
+            "id": "28",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_REMOTE_CONTROL_2476S"
+          },
+          {
+            "id": "30",
+            "name": "DEV_SCAT_KEYPADLINC_RELAY_2487S"
+          },
+          {
+            "id": "31",
+            "name": "DEV_SCAT_INLINELINC_RELAY_DUALBAND_2475SDB"
+          },
+          {
+            "id": "32",
+            "name": "DEV_SCAT_KEYPADLINC_RELAY_2486S_SP"
+          },
+          {
+            "id": "33",
+            "name": "DEV_SCAT_OUTLETLINC_2473_SP"
+          },
+          {
+            "id": "34",
+            "name": "DEV_SCAT_INLINE_RELAY_SP"
+          },
+          {
+            "id": "35",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_2476S_SP"
+          },
+          {
+            "id": "37",
+            "name": "DEV_SCAT_KEYPADLINC_TIMER_RELAY_2484SWH8"
+          },
+          {
+            "id": "41",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_COUNTDOWN_TIMER_2476ST"
+          },
+          {
+            "id": "42",
+            "name": "DEV_SCAT_SWITCHLINC_RELAY_DUAL_BAND_2477S"
+          },
+          {
+            "id": "44",
+            "name": "DEV_SCAT_KEYPADLINC_DUAL_BAND_RELAY_2487S"
+          },
+          {
+            "id": "46",
+            "name": "DEV_SCAT_DIN_RAIL_RELAY_2453_222"
+          },
+          {
+            "id": "51",
+            "name": "DEV_SCAT_DIN_RAIL_RELAY_2453_422"
+          },
+          {
+            "id": "52",
+            "name": "DEV_SCAT_DIN_RAIL_RELAY_2453_522"
+          },
+          {
+            "id": "47",
+            "name": "DEV_SCAT_MICRO_MODULE_RELAY_2443_222"
+          },
+          {
+            "id": "49",
+            "name": "DEV_SCAT_MICRO_MODULE_RELAY_2443_422"
+          },
+          {
+            "id": "50",
+            "name": "DEV_SCAT_MICRO_MODULE_RELAY_2443_522"
+          },
+          {
+            "id": "56",
+            "name": "DEV_SCAT_ON_OFF_OUTDOOR_MODULE_2634_222"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "Network Bridge",
+        "nodeSubCategory": [
+          {
+            "id": "1",
+            "name": "DEV_SCAT_POWERLINC_SERIAL_2414S"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_POWERLINC_USB_2414U"
+          },
+          {
+            "id": "3",
+            "name": "DEV_SCAT_ICON_POWERLINC_SERIAL_2814S"
+          },
+          {
+            "id": "4",
+            "name": "DEV_SCAT_ICON_POWERLINC_USB_2814U"
+          },
+          {
+            "id": "5",
+            "name": "DEV_SCAT_POWERLINE_MODEM"
+          },
+          {
+            "id": "6",
+            "name": "DEV_SCAT_IRLINC"
+          },
+          {
+            "id": "7",
+            "name": "DEV_SCAT_IRLINC_TX"
+          },
+          {
+            "id": "11",
+            "name": "DEV_SCAT_POWERLINC_MODEM_USB"
+          },
+          {
+            "id": "13",
+            "name": "DEV_SCAT_EZX10RF"
+          },
+          {
+            "id": "15",
+            "name": "DEV_SCAT_EZX10IR"
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "name": "Irrigation",
+        "nodeSubCategory": {
+          "id": "0",
+          "name": "DEV_SCAT_COMPACTA_EZFLORA_SPRINKLER_CONTROLLER"
+        }
+      },
+      {
+        "id": "5",
+        "name": "Climate",
+        "nodeSubCategory": [
+          {
+            "id": "0",
+            "name": "DEV_SCAT_BROAN_SMSC080_EXHAUST_FAN"
+          },
+          {
+            "id": "1",
+            "name": "DEV_SCAT_COMPACTA_EZTHERM"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_BROAN_SMSC110_EXHAUST_FAN"
+          },
+          {
+            "id": "3",
+            "name": "DEV_SCAT_INSTEON_THERMOSTAT_ADAPTER"
+          },
+          {
+            "id": "4",
+            "name": "DEV_SCAT_COMPACTA_EZTHERMX"
+          },
+          {
+            "id": "5",
+            "name": "DEV_SCAT_BROAN_VENMAR_BEST"
+          },
+          {
+            "id": "9",
+            "name": "DEV_SCAT_INSTEON_THERMOSTAT_ADAPTER_SP"
+          },
+          {
+            "id": "10",
+            "name": "DEV_SCAT_INSTEON_THERMOSTAT_WIRELESS_2441ZTH"
+          },
+          {
+            "id": "11",
+            "name": "DEV_SCAT_INSTEON_THERMOSTAT_TEMPLINC_2441TH"
+          },
+          {
+            "id": "14",
+            "name": "DEV_SCAT_INSTEON_THERMOSTAT_ADAPTER_2491T"
+          }
+        ]
+      },
+      {
+        "id": "6",
+        "name": "Pool Control",
+        "nodeSubCategory": {
+          "id": "0",
+          "name": "DEV_SCAT_COMPACTA_EZPOOL"
+        }
+      },
+      {
+        "id": "7",
+        "name": "Sensors and Actuators",
+        "nodeSubCategory": [
+          {
+            "id": "0",
+            "name": "DEV_SCAT_IO_LINC_2450"
+          },
+          {
+            "id": "1",
+            "name": "DEV_SCAT_COMPACTA_EZSENSE"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_COMPACTA_EZIO_8T"
+          },
+          {
+            "id": "3",
+            "name": "DEV_SCAT_COMPACTA_EZIO"
+          },
+          {
+            "id": "4",
+            "name": "DEV_SCAT_COMPACTA_EZIO_8"
+          },
+          {
+            "id": "5",
+            "name": "DEV_SCAT_COMPACTA_EZSNS_RF"
+          },
+          {
+            "id": "6",
+            "name": "DEV_SCAT_COMPACTA_EZISNS_RF"
+          },
+          {
+            "id": "7",
+            "name": "DEV_SCAT_COMPACTA_EZIO_6I"
+          },
+          {
+            "id": "8",
+            "name": "DEV_SCAT_COMPACTA_EZIO_4O"
+          },
+          {
+            "id": "9",
+            "name": "DEV_SCAT_SYNCHRO_LINC"
+          }
+        ]
+      },
+      {
+        "id": "9",
+        "name": "Energy Management",
+        "nodeSubCategory": [
+          {
+            "id": "0",
+            "name": "DEV_SCAT_EMETER_ZBPCM"
+          },
+          {
+            "id": "1",
+            "name": "DEV_SCAT_ONSITE_PRO_LEAK_DETECTOR"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_ONSITE_PRO_CONTROL_VALVE"
+          },
+          {
+            "id": "7",
+            "name": "DEV_SCAT_IMETER_SOLO"
+          },
+          {
+            "id": "10",
+            "name": "DEV_SCAT_DUAL_BAND_NO_RELAY_240V_2477SA1"
+          },
+          {
+            "id": "11",
+            "name": "DEV_SCAT_DUAL_BAND_NC_RELAY_240V_2477SA2"
+          },
+          {
+            "id": "13",
+            "name": "DEV_SCAT_ENERGY_DISPLAY_2448A2"
+          }
+        ]
+      },
+      {
+        "id": "14",
+        "name": "Windows/Shades",
+        "nodeSubCategory": {
+          "id": "0",
+          "name": "DEV_SCAT_SOMFY_DRAPE_CONTROLLER_RF"
+        }
+      },
+      {
+        "id": "15",
+        "name": "Access Control/Doors/Locks",
+        "nodeSubCategory": [
+          {
+            "id": "0",
+            "name": "DEV_SCAT_WEILAND_CENTRAL_DRIVE_CONTROLLER"
+          },
+          {
+            "id": "1",
+            "name": "DEV_SCAT_WEILAND_SECONDARY_CENTRAL_DRIVE"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_WEILAND_ASSIST_DRIVE"
+          },
+          {
+            "id": "3",
+            "name": "DEV_SCAT_WEILAND_ELEVATION_DRIVE"
+          },
+          {
+            "id": "6",
+            "name": "DEV_SCAT_MORNING_LINC"
+          }
+        ]
+      },
+      {
+        "id": "16",
+        "name": "Security/Health/Safety",
+        "nodeSubCategory": [
+          {
+            "id": "1",
+            "name": "DEV_SCAT_MOTION_SENSOR_2420M"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_TRIGGER_LINC_2421"
+          },
+          {
+            "id": "3",
+            "name": "DEV_SCAT_MOTION_SENSOR_2420M_SP"
+          },
+          {
+            "id": "8",
+            "name": "DEV_SCAT_LEAK_SENSOR_2852_222"
+          },
+          {
+            "id": "9",
+            "name": "DEV_SCAT_OPEN_CLOSE_SENSOR_2843_222"
+          },
+          {
+            "id": "10",
+            "name": "DEV_SCAT_SMOKE_SENSOR"
+          }
+        ]
+      },
+      {
+        "id": "113",
+        "name": "A10/X10 Nodes",
+        "nodeSubCategory": [
+          {
+            "id": "1",
+            "name": "DEV_SCAT_X10"
+          },
+          {
+            "id": "2",
+            "name": "DEV_SCAT_A10"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			targetNamespace="http://www.universal-devices.com/wsdk/isy/3.0/events"
+			xmlns:ue="http://www.universal-devices.com/wsdk/isy/3.0/events"
+			xmlns:uinsteon="http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon"
+			xmlns:uupb="http://www.universal-devices.com/wsdk/isy/3.0/objects/upb"
+			xmlns:uelk="http://www.universal-devices.com/wsdk/isy/elk/1.0/objects" 
+			elementFormDefault="unqualified">
+
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/upb" schemaLocation="./upb.xsd"/>
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon" schemaLocation="./insteon.xsd"/>
+    <xsd:import namespace="http://www.universal-devices.com/wsdk/isy/elk/1.0/objects" schemaLocation="./elkobjs.xsd"/>
+
+
+	<!-- EVENTS -->
+	<xsd:simpleType name="EventControls">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="_0"/><!-- Heart Beat -->
+			<xsd:enumeration value="_1"/><!-- Trigger Updated Event -->
+			<xsd:enumeration value="_2"/><!-- Protocol Specific Event -->
+			<xsd:enumeration value="_3"/><!-- Nodes Updated Event -->
+			<xsd:enumeration value="_4"/><!-- System Config Updated Event -->
+			<xsd:enumeration value="_5"/><!-- System Status Event -->
+			<xsd:enumeration value="_6"/><!-- Internet Access Event -->
+			<xsd:enumeration value="_7"/><!-- System Progress Event -->
+			<xsd:enumeration value="_8"/><!-- Security System Event -->
+			<xsd:enumeration value="_9"/><!-- System Alert Event -->
+			<xsd:enumeration value="_10"/><!-- Open ADR Event -->
+			<xsd:enumeration value="_11"/><!-- Climate Event -->
+			<xsd:enumeration value="_12"/><!-- AMI Meter Event -->
+			<xsd:enumeration value="_13"/><!-- Electricity Monitor Event-->
+			<xsd:enumeration value="_14"/><!-- UPB Linker Event-->
+			<xsd:enumeration value="_15"/><!-- UPB Device Adder State-->
+			<xsd:enumeration value="_16"/><!-- UPB Status Event-->
+			<xsd:enumeration value="_17"/><!-- Gas Meter Event-->
+			<xsd:enumeration value="_18"/><!-- Zigbee Event-->
+			<xsd:enumeration value="_19">
+				<xsd:annotation>
+					<xsd:documentation>
+						Actions and Event Info is defined in elkobjs.xsd	
+					</xsd:documentation>	
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="_20"> <!-- Device Linker Events -->
+				<xsd:annotation>
+					<xsd:documentation>
+						Device Linker Events.
+						EventInfo defined in DeviceLinkerEventInfo
+					</xsd:documentation>	
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="EventTypes">
+		<xsd:union memberTypes="ue:EventControls uupb:UPBControlTypes uinsteon:INSTEONControlTypes"/>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="HeartbeatAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain the max age in seconds before the next heartbeat is sent
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ControlAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain the specific value per each Control Type
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="TriggerAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain specific actions relating to Triggers
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Client Should Get Status -->
+			<xsd:enumeration value="2"/><!-- Key Changed -->
+			<xsd:enumeration value="3"/><!-- Information -->
+			<xsd:enumeration value="4"/><!-- IR Learn Mode -->
+			<xsd:enumeration value="5"/><!-- Schedule Event -->
+			<xsd:enumeration value="6"/><!-- Variable Status -->
+			<xsd:enumeration value="7"/><!-- Variable Initialized -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ProtocolSpecificAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Very much dependent on the underlying protocol (INSTEON, ZWave, etc.)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="NodeUpdatedAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain the possible Actions for when nodes are updated
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NN"/><!-- Node Renamed -->
+			<xsd:enumeration value="NR"/><!-- Node Removed -->
+			<xsd:enumeration value="ND"/><!-- Node Added -->
+			<xsd:enumeration value="NE"/><!-- Node Error -->
+			<xsd:enumeration value="CE"/><!-- Node Error Cleared -->
+			<xsd:enumeration value="MV"/><!-- Node Moved into a scene -->
+			<xsd:enumeration value="EN"/><!-- Node Enabled -->
+			<xsd:enumeration value="PC"/><!-- Node's Parent Changed; eventInfo structure: NodeHierarchyParam-->
+			<xsd:enumeration value="GN"/><!-- Group Renamed -->
+			<xsd:enumeration value="GR"/><!-- Group Removed -->
+			<xsd:enumeration value="GD"/><!-- Group Added -->
+			<xsd:enumeration value="FD"/><!-- Folder Added -->
+			<xsd:enumeration value="FN"/><!-- Folder Renamed -->
+			<xsd:enumeration value="FR"/><!-- Folder Removed -->
+			<xsd:enumeration value="MV"/><!-- Node Moved into Group -->
+			<xsd:enumeration value="RG"/><!-- Node Removed from Group -->
+			<xsd:enumeration value="CL"/><!-- Node Link Changed (master to slave or vice versa) -->
+			<xsd:enumeration value="SN"/><!-- Discovering Nodes: Linking -->
+			<xsd:enumeration value="SC"/><!-- Stopped Linking -->
+			<xsd:enumeration value="PI"/><!-- Power Info Changed -->
+			<xsd:enumeration value="WR"/><!-- Network Renamed -->
+			<xsd:enumeration value="WH"/><!-- Pending Device Writes -->
+			<xsd:enumeration value="WD"/><!-- Writing To Device-->
+			<!--  UPB ONLY -->
+			<xsd:enumeration value="CL"/><!-- Link changed (not supported on INSTEON)-->
+			<xsd:enumeration value="DI"/><!-- Device ID Changed (UPB ONLY)-->
+			<xsd:enumeration value="DP"/><!-- Device Property Changed(UPB ONLY)-->
+			<xsd:enumeration value="RV"/><!-- Node Revised(UPB ONLY)-->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SystemConfigAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain the possible Actions when system configuration is updated
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Time Configuration Updated -->
+			<xsd:enumeration value="2"/><!-- NTP Settings Updated -->
+			<xsd:enumeration value="3"/><!-- Notifications Settings Updated -->
+			<xsd:enumeration value="4"/><!-- NTP Server Comm. Error -->
+			<xsd:enumeration value="5"/><!-- Batch Mode Changed: 1 on/0 off -->
+			<xsd:enumeration value="6"/><!-- Battery Device Write Mode Changed: 1= auto, 0=manual -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SystemStatusAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain System Status
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/><!-- Not Busy -->
+			<xsd:enumeration value="1"/><!-- Busy ... might ignore commands -->
+			<xsd:enumeration value="2"/><!-- Completely idle -->
+			<xsd:enumeration value="3"/><!-- Safe Mode -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="InternetAccessAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain information about the state of Internet Access
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/><!-- Disabled -->
+			<xsd:enumeration value="1"/><!-- Enabled -->
+			<xsd:enumeration value="2"/><!-- Failed -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SystemProgressAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain system progress information
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Progress Updated Event -->
+			<!-- UPB ONLY -->
+			<xsd:enumeration value="2.1"/><!-- Device Adder Info Event -->
+			<xsd:enumeration value="2.2"/><!-- Device Adder Warn Event -->
+			<xsd:enumeration value="2.3"/><!-- Device Adder Error Event -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SecuritySystemAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain information the state of the security system
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/><!-- Disconnected -->
+			<xsd:enumeration value="1"/><!-- Connected -->
+			<xsd:enumeration value="DA"/><!-- Disarmed -->
+			<xsd:enumeration value="AW"/><!-- Armed Away -->
+			<xsd:enumeration value="AS"/><!-- Armed Stay -->
+			<xsd:enumeration value="ASI"/><!-- Armed Stay Instant-->
+			<xsd:enumeration value="AN"/><!-- Armed Night-->
+			<xsd:enumeration value="ANI"/><!-- Armed Night Instant-->
+			<xsd:enumeration value="AV"/><!-- Armed Vacation -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SystemAlertAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				A programmable alert sent to clients to do as they wish:
+				i.e. beep, change colors, do something else, etc.
+				The EventInfo holds:
+					bPrice = base price
+					cPrice = current price
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Electricity Peak Demand -->
+			<xsd:enumeration value="2"/><!-- Electricity Max Utilization -->
+			<xsd:enumeration value="3"/><!-- Gas Max Utilization -->
+			<xsd:enumeration value="4"/><!-- Water Max Utilization -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ElectricityAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Open Auto Demand/Response Actions.
+				The EventInfo structure holds:
+					bPrice = base price
+					cPrice = current price
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Error connecting to DRAS -->
+			<xsd:enumeration value="2"/><!-- Open ADR Status Update -->
+			<xsd:enumeration value="4" ><!-- Utilization report -->
+				<xsd:annotation>
+					<xsd:documentation>
+						Electricity meter information.
+						The EventInfo structure holds:
+							total	= total utilization in watts
+							watts	= instantaneous utilization in watts
+							voltage	= instantaneous voltage in Volts
+							current	= instantaneous current in Amps
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5"/><!-- Error connecting to FYP -->
+			<xsd:enumeration value="6"><!-- FYP Status -->
+				<xsd:annotation>
+					<xsd:documentation>
+						active = the actual status of FYP
+					</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ClimateAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Climate Information
+				The EventInfo structure holds:
+					value	= the value, usually, in double
+					unit	= the unit of measure for the value
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Temperature -->
+			<xsd:enumeration value="2"/><!-- Temperature High -->
+			<xsd:enumeration value="3"/><!-- Temperature Low -->
+			<xsd:enumeration value="4"/><!-- Feels Like -->
+			<xsd:enumeration value="5"/><!-- Temperature Rate -->
+			<xsd:enumeration value="6"/><!-- Humidity -->
+			<xsd:enumeration value="7"/><!-- Humidity Rate -->
+			<xsd:enumeration value="8"/><!-- Pressure -->
+			<xsd:enumeration value="9"/><!-- Pressure Rate -->
+			<xsd:enumeration value="10"/><!-- Dew Point -->
+			<xsd:enumeration value="11"/><!-- Wind Speed -->
+			<xsd:enumeration value="12"/><!-- Average Wind Speed -->
+			<xsd:enumeration value="13"/><!-- Wind Direction -->
+			<xsd:enumeration value="14"/><!-- Average Wind Direction -->
+			<xsd:enumeration value="15"/><!-- Gust Speed -->
+			<xsd:enumeration value="16"/><!-- Gust Direction -->
+			<xsd:enumeration value="17"/><!-- Rain Today -->
+			<xsd:enumeration value="18"/><!-- Light -->
+			<xsd:enumeration value="19"/><!-- Light Rate -->
+			<xsd:enumeration value="20"/><!-- Rain Rate -->
+			<xsd:enumeration value="21"/><!-- Max Rain Rate -->
+			<xsd:enumeration value="22"/><!-- Evapotranspiration-->
+			<xsd:enumeration value="23"/><!-- Irrigation Requirement -->
+			<xsd:enumeration value="24"/><!-- Water Deficit Yesterday-->
+			<xsd:enumeration value="25"/><!-- Elevation at that location-->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ElectricityMonitorAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Electricity Monitor Actions.
+				The EventInfo structure holds:
+					channel = channel number
+					value = data type and value
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"><!-- Number of channels being reported -->
+				<xsd:annotation>
+					<xsd:documentation>
+						EventInfo holds the number of data channels currently being
+						reported on by the monitor.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2"><!-- Report action for a channel -->
+				<xsd:annotation>
+					<xsd:documentation>
+						EventInfo holds the channel number followed by the energy utilization
+						for the most recent peroid measured. This is reported in watts.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7" ><!-- Raw message coming from Brultech in CDATA-->
+				<xsd:annotation>
+					<xsd:documentation>
+					Raw data coming from a monitoring device
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="UPBLinkerAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Events relating to UPB Linker
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Device Status -->
+			<xsd:enumeration value="2"/><!-- Pending Stop Find -->
+			<xsd:enumeration value="3"/><!-- Pending Cancel Device Adder-->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="UPBDeviceAdderAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Events relating to UPB Linker
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Device Status -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="ZigbeeAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Events relating to Zigbee Driver
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Network Status -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="DeviceLinkerAction">
+		<xsd:annotation>
+			<xsd:documentation>
+				Shall contain the possible Actions generated during/after device linking operations 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Linker Status -->
+			<xsd:enumeration value="2"/><!-- Linker Clear/Finished -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="EventActionTypes">
+		<xsd:union memberTypes="ue:ControlAction ue:HeartbeatAction ue:TriggerAction ue:ProtocolSpecificAction ue:NodeUpdatedAction ue:SystemConfigAction ue:SystemStatusAction ue:InternetAccessAction ue:SystemProgressAction ue:SecuritySystemAction ue:SystemAlertAction ue:ElectricityAction ue:ClimateAction ue:ElectricityMonitorAction ue:UPBLinkerAction ue:UPBDeviceAdderAction ue:ZigbeeAction uelk:ELKAction ue:DeviceLinkerAction"></xsd:union>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Event">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>
+					An XML structure with specific information for each event type
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="control" type="ue:EventTypes"/>
+			<xsd:element name="action" type="ue:EventActionTypes"/>
+			<xsd:element name="node" type="xsd:string"/>
+			<xsd:element name="eventInfo" type="xsd:string"/>
+		</xsd:sequence>
+		<xsd:attribute name="seqnum" type="xsd:double" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Unique message sequence number incremented with each message for this subscription
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="sid" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Subscription ID</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<!-- Device Linker -->
+	<xsd:simpleType name="DeviceLinkerState">
+		<xsd:annotation>
+			<xsd:documentation>
+				State codes for device linking events
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Device exists in the list -->
+			<xsd:enumeration value="2"/><!-- Device already exists in ISY -->
+			<xsd:enumeration value="3"/><!-- Device currently being added to ISY -->
+			<xsd:enumeration value="4"/><!-- The device was successfully added to ISY -->
+			<xsd:enumeration value="5"/><!-- The device could not be added to ISY (see DeviceLinkerError) -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="DeviceLinkerError">
+		<xsd:annotation>
+			<xsd:documentation>
+				Status codes for device linking events
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/><!-- No error-->
+			<xsd:enumeration value="1"/><!-- Device could not be added (undefined reason) -->
+			<xsd:enumeration value="2"/><!-- Cannot determine device type -->
+			<xsd:enumeration value="3"/><!-- Cannot determine Insteon Engine used by device -->
+			<xsd:enumeration value="4"/><!-- Device not set up properly (e.g. morningLinc) -->
+			<xsd:enumeration value="5"/><!-- Cannot communicate with the device -->
+			<xsd:enumeration value="6"/><!-- Cannot create device database file -->
+			<xsd:enumeration value="7"/><!-- No more ISY nodes available -->
+			<xsd:enumeration value="8"/><!-- Cannot add the device because it an old PLM -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="DeviceLinkerEventInfo">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>
+					An XML structure with specific information for DeviceLinkerAction.Status
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="state" type="ue:DeviceLinkerState" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="err" type="ue:DeviceLinkerError" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="addr" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The native address of the device 
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The type of the device (see family.xsd)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The name given to the device, empty if no name
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	
+</xsd:schema>

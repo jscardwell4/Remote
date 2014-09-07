@@ -411,6 +411,70 @@
 		C2D1022D19AAFCA300DE5346 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D1022C19AAFCA300DE5346 /* ImageView.m */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
 		C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E75BF819B13798006CEA86 /* Remote_Demo.json */; };
+		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
+		C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
+		C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
+		C2E8D99C19BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99819BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png */; };
+		C2E8D9BC19BCD5C400E6098E /* 1_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99E19BCD5C400E6098E /* 1_fam.xml */; };
+		C2E8D9BD19BCD5C400E6098E /* 1_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99E19BCD5C400E6098E /* 1_fam.xml */; };
+		C2E8D9BE19BCD5C400E6098E /* 3_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99F19BCD5C400E6098E /* 3_fam.xml */; };
+		C2E8D9BF19BCD5C400E6098E /* 3_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99F19BCD5C400E6098E /* 3_fam.xml */; };
+		C2E8D9C019BCD5C400E6098E /* 7_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A019BCD5C400E6098E /* 7_fam.xml */; };
+		C2E8D9C119BCD5C400E6098E /* 7_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A019BCD5C400E6098E /* 7_fam.xml */; };
+		C2E8D9C219BCD5C400E6098E /* 8_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A119BCD5C400E6098E /* 8_fam.xml */; };
+		C2E8D9C319BCD5C400E6098E /* 8_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A119BCD5C400E6098E /* 8_fam.xml */; };
+		C2E8D9C419BCD5C400E6098E /* cat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A219BCD5C400E6098E /* cat.xml */; };
+		C2E8D9C519BCD5C400E6098E /* cat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A219BCD5C400E6098E /* cat.xml */; };
+		C2E8D9C619BCD5C400E6098E /* elkobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A319BCD5C400E6098E /* elkobjs.xsd */; };
+		C2E8D9C719BCD5C400E6098E /* elkobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A319BCD5C400E6098E /* elkobjs.xsd */; };
+		C2E8D9C819BCD5C400E6098E /* family.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A419BCD5C400E6098E /* family.xsd */; };
+		C2E8D9C919BCD5C400E6098E /* family.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A419BCD5C400E6098E /* family.xsd */; };
+		C2E8D9CA19BCD5C400E6098E /* insteon.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A519BCD5C400E6098E /* insteon.xsd */; };
+		C2E8D9CB19BCD5C400E6098E /* insteon.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A519BCD5C400E6098E /* insteon.xsd */; };
+		C2E8D9CC19BCD5C400E6098E /* insterr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A619BCD5C400E6098E /* insterr.xml */; };
+		C2E8D9CD19BCD5C400E6098E /* insterr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A619BCD5C400E6098E /* insterr.xml */; };
+		C2E8D9CE19BCD5C400E6098E /* log.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A719BCD5C400E6098E /* log.xsd */; };
+		C2E8D9CF19BCD5C400E6098E /* log.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A719BCD5C400E6098E /* log.xsd */; };
+		C2E8D9D019BCD5C400E6098E /* loginfo.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A819BCD5C400E6098E /* loginfo.xml */; };
+		C2E8D9D119BCD5C400E6098E /* loginfo.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A819BCD5C400E6098E /* loginfo.xml */; };
+		C2E8D9D219BCD5C400E6098E /* netstat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A919BCD5C400E6098E /* netstat.xml */; };
+		C2E8D9D319BCD5C400E6098E /* netstat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A919BCD5C400E6098E /* netstat.xml */; };
+		C2E8D9D419BCD5C400E6098E /* sepobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AA19BCD5C400E6098E /* sepobjs.xsd */; };
+		C2E8D9D519BCD5C400E6098E /* sepobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AA19BCD5C400E6098E /* sepobjs.xsd */; };
+		C2E8D9D619BCD5C400E6098E /* smtperr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AB19BCD5C400E6098E /* smtperr.xml */; };
+		C2E8D9D719BCD5C400E6098E /* smtperr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AB19BCD5C400E6098E /* smtperr.xml */; };
+		C2E8D9D819BCD5C400E6098E /* udi3.0.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AC19BCD5C400E6098E /* udi3.0.wsdl */; };
+		C2E8D9D919BCD5C400E6098E /* udi3.0.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AC19BCD5C400E6098E /* udi3.0.wsdl */; };
+		C2E8D9DA19BCD5C400E6098E /* udielkws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AD19BCD5C400E6098E /* udielkws.wsdl */; };
+		C2E8D9DB19BCD5C400E6098E /* udielkws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AD19BCD5C400E6098E /* udielkws.wsdl */; };
+		C2E8D9DC19BCD5C400E6098E /* udielkws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AE19BCD5C400E6098E /* udielkws1.wsdl */; };
+		C2E8D9DD19BCD5C400E6098E /* udielkws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AE19BCD5C400E6098E /* udielkws1.wsdl */; };
+		C2E8D9DE19BCD5C400E6098E /* udievnts.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AF19BCD5C400E6098E /* udievnts.xsd */; };
+		C2E8D9DF19BCD5C400E6098E /* udievnts.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AF19BCD5C400E6098E /* udievnts.xsd */; };
+		C2E8D9E019BCD5C400E6098E /* udiobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B019BCD5C400E6098E /* udiobjs.xsd */; };
+		C2E8D9E119BCD5C400E6098E /* udiobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B019BCD5C400E6098E /* udiobjs.xsd */; };
+		C2E8D9E219BCD5C400E6098E /* udisepws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B119BCD5C400E6098E /* udisepws.wsdl */; };
+		C2E8D9E319BCD5C400E6098E /* udisepws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B119BCD5C400E6098E /* udisepws.wsdl */; };
+		C2E8D9E419BCD5C400E6098E /* udisepws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B219BCD5C400E6098E /* udisepws1.wsdl */; };
+		C2E8D9E519BCD5C400E6098E /* udisepws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B219BCD5C400E6098E /* udisepws1.wsdl */; };
+		C2E8D9E619BCD5C400E6098E /* udiupb1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B319BCD5C400E6098E /* udiupb1.wsdl */; };
+		C2E8D9E719BCD5C400E6098E /* udiupb1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B319BCD5C400E6098E /* udiupb1.wsdl */; };
+		C2E8D9E819BCD5C400E6098E /* udiws30-all.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B419BCD5C400E6098E /* udiws30-all.html */; };
+		C2E8D9E919BCD5C400E6098E /* udiws30-all.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B419BCD5C400E6098E /* udiws30-all.html */; };
+		C2E8D9EA19BCD5C400E6098E /* udiws30-justdoc.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B519BCD5C400E6098E /* udiws30-justdoc.html */; };
+		C2E8D9EB19BCD5C400E6098E /* udiws30-justdoc.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B519BCD5C400E6098E /* udiws30-justdoc.html */; };
+		C2E8D9EC19BCD5C400E6098E /* udiws30.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B619BCD5C400E6098E /* udiws30.wsdl */; };
+		C2E8D9ED19BCD5C400E6098E /* udiws30.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B619BCD5C400E6098E /* udiws30.wsdl */; };
+		C2E8D9EE19BCD5C400E6098E /* upb.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B719BCD5C400E6098E /* upb.xsd */; };
+		C2E8D9EF19BCD5C400E6098E /* upb.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B719BCD5C400E6098E /* upb.xsd */; };
+		C2E8D9F019BCD5C400E6098E /* upberr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B819BCD5C400E6098E /* upberr.xml */; };
+		C2E8D9F119BCD5C400E6098E /* upberr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B819BCD5C400E6098E /* upberr.xml */; };
+		C2E8D9F219BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */; };
+		C2E8D9F319BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */; };
+		C2E8D9F419BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
+		C2E8D9F519BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
+		C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
+		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2EF968717F7C4D4005AA639 /* BankCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C2EF968617F7C4D4005AA639 /* BankCollectionViewFlowLayout.m */; };
@@ -1012,6 +1076,54 @@
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
 		C2D635B81805D9B400960B10 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
 		C2E75BF819B13798006CEA86 /* Remote_Demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Demo.json; sourceTree = "<group>"; };
+		C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1067-gray-enter-fullscreen.png"; sourceTree = "<group>"; };
+		C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1067-gray-enter-fullscreen@2x.png"; sourceTree = "<group>"; };
+		C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1068-gray-exit-fullscreen.png"; sourceTree = "<group>"; };
+		C2E8D99819BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1068-gray-exit-fullscreen@2x.png"; sourceTree = "<group>"; };
+		C2E8D99E19BCD5C400E6098E /* 1_fam.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = 1_fam.xml; sourceTree = "<group>"; };
+		C2E8D99F19BCD5C400E6098E /* 3_fam.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = 3_fam.xml; sourceTree = "<group>"; };
+		C2E8D9A019BCD5C400E6098E /* 7_fam.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = 7_fam.xml; sourceTree = "<group>"; };
+		C2E8D9A119BCD5C400E6098E /* 8_fam.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = 8_fam.xml; sourceTree = "<group>"; };
+		C2E8D9A219BCD5C400E6098E /* cat.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = cat.xml; sourceTree = "<group>"; };
+		C2E8D9A319BCD5C400E6098E /* elkobjs.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = elkobjs.xsd; sourceTree = "<group>"; };
+		C2E8D9A419BCD5C400E6098E /* family.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = family.xsd; sourceTree = "<group>"; };
+		C2E8D9A519BCD5C400E6098E /* insteon.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = insteon.xsd; sourceTree = "<group>"; };
+		C2E8D9A619BCD5C400E6098E /* insterr.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = insterr.xml; sourceTree = "<group>"; };
+		C2E8D9A719BCD5C400E6098E /* log.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = log.xsd; sourceTree = "<group>"; };
+		C2E8D9A819BCD5C400E6098E /* loginfo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = loginfo.xml; sourceTree = "<group>"; };
+		C2E8D9A919BCD5C400E6098E /* netstat.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = netstat.xml; sourceTree = "<group>"; };
+		C2E8D9AA19BCD5C400E6098E /* sepobjs.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = sepobjs.xsd; sourceTree = "<group>"; };
+		C2E8D9AB19BCD5C400E6098E /* smtperr.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = smtperr.xml; sourceTree = "<group>"; };
+		C2E8D9AC19BCD5C400E6098E /* udi3.0.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udi3.0.wsdl; sourceTree = "<group>"; };
+		C2E8D9AD19BCD5C400E6098E /* udielkws.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udielkws.wsdl; sourceTree = "<group>"; };
+		C2E8D9AE19BCD5C400E6098E /* udielkws1.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udielkws1.wsdl; sourceTree = "<group>"; };
+		C2E8D9AF19BCD5C400E6098E /* udievnts.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udievnts.xsd; sourceTree = "<group>"; };
+		C2E8D9B019BCD5C400E6098E /* udiobjs.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udiobjs.xsd; sourceTree = "<group>"; };
+		C2E8D9B119BCD5C400E6098E /* udisepws.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udisepws.wsdl; sourceTree = "<group>"; };
+		C2E8D9B219BCD5C400E6098E /* udisepws1.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udisepws1.wsdl; sourceTree = "<group>"; };
+		C2E8D9B319BCD5C400E6098E /* udiupb1.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udiupb1.wsdl; sourceTree = "<group>"; };
+		C2E8D9B419BCD5C400E6098E /* udiws30-all.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "udiws30-all.html"; sourceTree = "<group>"; };
+		C2E8D9B519BCD5C400E6098E /* udiws30-justdoc.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "udiws30-justdoc.html"; sourceTree = "<group>"; };
+		C2E8D9B619BCD5C400E6098E /* udiws30.wsdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = udiws30.wsdl; sourceTree = "<group>"; };
+		C2E8D9B719BCD5C400E6098E /* upb.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = upb.xsd; sourceTree = "<group>"; };
+		C2E8D9B819BCD5C400E6098E /* upberr.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = upberr.xml; sourceTree = "<group>"; };
+		C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "wsdl-viewer-mod.xsl"; sourceTree = "<group>"; };
+		C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "wsdl-viewer.xsl"; sourceTree = "<group>"; };
+		C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = zigbee.xsd; sourceTree = "<group>"; };
+		C2E8D9F819BCD78C00E6098E /* 1_fam.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 1_fam.json; sourceTree = "<group>"; };
+		C2E8D9F919BCD78C00E6098E /* network.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = network.xml; sourceTree = "<group>"; };
+		C2E8D9FA19BCD78C00E6098E /* system.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = system.xml; sourceTree = "<group>"; };
+		C2E8D9FB19BCD82400E6098E /* cat.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cat.json; sourceTree = "<group>"; };
+		C2E8D9FC19BCDCB100E6098E /* insteon.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = insteon.json; sourceTree = "<group>"; };
+		C2E8D9FD19BCDCB100E6098E /* insterr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = insterr.json; sourceTree = "<group>"; };
+		C2E8D9FE19BCDCB100E6098E /* netstat.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = netstat.json; sourceTree = "<group>"; };
+		C2E8D9FF19BCDCB100E6098E /* udievnts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = udievnts.json; sourceTree = "<group>"; };
+		C2E8DA0019BCDCB100E6098E /* udiobjs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = udiobjs.json; sourceTree = "<group>"; };
+		C2E8DA0119BCDCB100E6098E /* udiws30.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = udiws30.json; sourceTree = "<group>"; };
+		C2E8DA0219BCDD1100E6098E /* family.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = family.json; sourceTree = "<group>"; };
+		C2E8DA0319BCE03C00E6098E /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		C2E8DA0419BCE03C00E6098E /* desc.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = desc.json; sourceTree = "<group>"; };
+		C2E8DA0519BCE03C00E6098E /* nodes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = nodes.json; sourceTree = "<group>"; };
 		C2E953EE17E8BAA70052518D /* BankableModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableModelObject.h; sourceTree = "<group>"; };
 		C2E953EF17E8BAA70052518D /* BankableModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankableModelObject.m; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
@@ -1856,6 +1968,25 @@
 		C2CA769519BA1E1800ACCD76 /* ISYClient */ = {
 			isa = PBXGroup;
 			children = (
+				C2E8DA0319BCE03C00E6098E /* config.json */,
+				C2E8DA0419BCE03C00E6098E /* desc.json */,
+				C2E8DA0519BCE03C00E6098E /* nodes.json */,
+				C2E8DA0219BCDD1100E6098E /* family.json */,
+				C2E8D9FC19BCDCB100E6098E /* insteon.json */,
+				C2E8D9FD19BCDCB100E6098E /* insterr.json */,
+				C2E8D9FE19BCDCB100E6098E /* netstat.json */,
+				C2E8D9FF19BCDCB100E6098E /* udievnts.json */,
+				C2E8DA0019BCDCB100E6098E /* udiobjs.json */,
+				C2E8DA0119BCDCB100E6098E /* udiws30.json */,
+				C2E8D9FB19BCD82400E6098E /* cat.json */,
+				C2E8D9F819BCD78C00E6098E /* 1_fam.json */,
+				C2E8D9F919BCD78C00E6098E /* network.xml */,
+				C2E8D9FA19BCD78C00E6098E /* system.xml */,
+				C2E8D99D19BCD5C400E6098E /* WSDL */,
+				C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */,
+				C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */,
+				C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */,
+				C2E8D99819BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png */,
 				C2F4370719BBAB3500B60FC3 /* config.xml */,
 				C2F4370819BBAB3500B60FC3 /* nodes.xml */,
 				C2CA76DD19BA6A3D00ACCD76 /* iPad */,
@@ -1934,6 +2065,43 @@
 				C2F2A46E17EF55E300DE2F41 /* Other */,
 			);
 			name = Bank;
+			sourceTree = "<group>";
+		};
+		C2E8D99D19BCD5C400E6098E /* WSDL */ = {
+			isa = PBXGroup;
+			children = (
+				C2E8D99E19BCD5C400E6098E /* 1_fam.xml */,
+				C2E8D99F19BCD5C400E6098E /* 3_fam.xml */,
+				C2E8D9A019BCD5C400E6098E /* 7_fam.xml */,
+				C2E8D9A119BCD5C400E6098E /* 8_fam.xml */,
+				C2E8D9A219BCD5C400E6098E /* cat.xml */,
+				C2E8D9A319BCD5C400E6098E /* elkobjs.xsd */,
+				C2E8D9A419BCD5C400E6098E /* family.xsd */,
+				C2E8D9A519BCD5C400E6098E /* insteon.xsd */,
+				C2E8D9A619BCD5C400E6098E /* insterr.xml */,
+				C2E8D9A719BCD5C400E6098E /* log.xsd */,
+				C2E8D9A819BCD5C400E6098E /* loginfo.xml */,
+				C2E8D9A919BCD5C400E6098E /* netstat.xml */,
+				C2E8D9AA19BCD5C400E6098E /* sepobjs.xsd */,
+				C2E8D9AB19BCD5C400E6098E /* smtperr.xml */,
+				C2E8D9AC19BCD5C400E6098E /* udi3.0.wsdl */,
+				C2E8D9AD19BCD5C400E6098E /* udielkws.wsdl */,
+				C2E8D9AE19BCD5C400E6098E /* udielkws1.wsdl */,
+				C2E8D9AF19BCD5C400E6098E /* udievnts.xsd */,
+				C2E8D9B019BCD5C400E6098E /* udiobjs.xsd */,
+				C2E8D9B119BCD5C400E6098E /* udisepws.wsdl */,
+				C2E8D9B219BCD5C400E6098E /* udisepws1.wsdl */,
+				C2E8D9B319BCD5C400E6098E /* udiupb1.wsdl */,
+				C2E8D9B419BCD5C400E6098E /* udiws30-all.html */,
+				C2E8D9B519BCD5C400E6098E /* udiws30-justdoc.html */,
+				C2E8D9B619BCD5C400E6098E /* udiws30.wsdl */,
+				C2E8D9B719BCD5C400E6098E /* upb.xsd */,
+				C2E8D9B819BCD5C400E6098E /* upberr.xml */,
+				C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */,
+				C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */,
+				C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */,
+			);
+			path = WSDL;
 			sourceTree = "<group>";
 		};
 		C2F2A46E17EF55E300DE2F41 /* Other */ = {
@@ -2100,13 +2268,16 @@
 				C2381EFC19A7EE3B00135DAB /* Ive-640x1136.jpg in Resources */,
 				C2381F8B19A7EE3B00135DAB /* ProDots-320x640-iPhone.jpg in Resources */,
 				C2381ED319A7EE3B00135DAB /* Chroma-640x1136.jpg in Resources */,
+				C2E8D9D619BCD5C400E6098E /* smtperr.xml in Resources */,
 				C26BB5B116DC18A90093D5B4 /* FontAwesome.ttf in Resources */,
 				C2381EDA19A7EE3B00135DAB /* Cloth-2048x1536-iPad@2x.jpg in Resources */,
 				C2381ECB19A7EE3B00135DAB /* Cardboard-2048x1536-iPad@2x.jpg in Resources */,
 				C2381EC619A7EE3B00135DAB /* Blueprint-2048x1536-iPad@2x.jpg in Resources */,
 				C2381F0819A7EE3B00135DAB /* Midnight-1536x2048.jpg in Resources */,
+				C2E8D9D019BCD5C400E6098E /* loginfo.xml in Resources */,
 				C2381EEB19A7EE3B00135DAB /* Gingham-320x640-iPhone.jpg in Resources */,
 				C265936E17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib in Resources */,
+				C2E8D9CA19BCD5C400E6098E /* insteon.xsd in Resources */,
 				C2381F0319A7EE3B00135DAB /* Linen-2048x1536-iPad@2x.jpg in Resources */,
 				C2381ED119A7EE3B00135DAB /* Chroma-320x480.jpg in Resources */,
 				C26BB5B216DC18A90093D5B4 /* glyphish.ttf in Resources */,
@@ -2137,11 +2308,14 @@
 				C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */,
 				C265936C17FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib in Resources */,
 				C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */,
+				C2E8D9D419BCD5C400E6098E /* sepobjs.xsd in Resources */,
 				C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */,
 				C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */,
 				C2381F0D19A7EE3B00135DAB /* Mint-1536x2048.jpg in Resources */,
 				C27BCC9C1801C16A0002464C /* IntegerKeyboard_5.png in Resources */,
 				C26BBA8816DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard in Resources */,
+				C2E8D9E419BCD5C400E6098E /* udisepws1.wsdl in Resources */,
+				C2E8D9CE19BCD5C400E6098E /* log.xsd in Resources */,
 				C27BCCA31801C16A0002464C /* IntegerKeyboard_7@2x.png in Resources */,
 				C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */,
 				C2381F1119A7EE3B00135DAB /* PaintedMetal-1024x768-iPad.jpg in Resources */,
@@ -2153,8 +2327,10 @@
 				C26BBAE916DC1B5C0093D5B4 /* 10-arrows-in@2x.png in Resources */,
 				C2381EE719A7EE3B00135DAB /* Dawn-640x960.jpg in Resources */,
 				C27BCCA01801C16A0002464C /* IntegerKeyboard_6@2x.png in Resources */,
+				C2E8D9D219BCD5C400E6098E /* netstat.xml in Resources */,
 				C27BCCA11801C16A0002464C /* IntegerKeyboard_7-Highlighted@2x.png in Resources */,
 				C2381EBF19A7EE3B00135DAB /* Blue-640x1136.jpg in Resources */,
+				C2E8D9E619BCD5C400E6098E /* udiupb1.wsdl in Resources */,
 				C27BCC951801C16A0002464C /* IntegerKeyboard_3-Highlighted@2x.png in Resources */,
 				C27BCC991801C16A0002464C /* IntegerKeyboard_4.png in Resources */,
 				C2381EC519A7EE3B00135DAB /* Blueprint-1024x768-iPad.jpg in Resources */,
@@ -2177,21 +2353,27 @@
 				C2381EFE19A7EE3B00135DAB /* Ive-1536x2048.jpg in Resources */,
 				C26BBAF116DC1B5C0093D5B4 /* AlignLeftEdgeIcon@2x.png in Resources */,
 				C26BBAF216DC1B5C0093D5B4 /* AlignRightEdgeIcon.png in Resources */,
+				C2E8D9DE19BCD5C400E6098E /* udievnts.xsd in Resources */,
+				C2E8D9CC19BCD5C400E6098E /* insterr.xml in Resources */,
 				C26BBAF316DC1B5C0093D5B4 /* AlignRightEdgeIcon@2x.png in Resources */,
 				C2381EE119A7EE3B00135DAB /* Corkboard-320x640-iPhone.jpg in Resources */,
 				C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */,
 				C27BCCAC1801C16A0002464C /* IntegerKeyboard_Blank@2x.png in Resources */,
+				C2E8D9DC19BCD5C400E6098E /* udielkws1.wsdl in Resources */,
 				C26BBAF416DC1B5C0093D5B4 /* AlignTopEdgeIcon.png in Resources */,
 				C2381F0219A7EE3B00135DAB /* Linen-1024x768-iPad.jpg in Resources */,
+				C2E8D9F019BCD5C400E6098E /* upberr.xml in Resources */,
 				C26BBAF516DC1B5C0093D5B4 /* AlignTopEdgeIcon@2x.png in Resources */,
 				C2381ED919A7EE3B00135DAB /* Cloth-1024x768-iPad.jpg in Resources */,
 				C26BBAF616DC1B5C0093D5B4 /* AlignVertCenterIcon.png in Resources */,
 				C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */,
 				C27BCCA61801C16A0002464C /* IntegerKeyboard_8@2x.png in Resources */,
+				C2E8D9BE19BCD5C400E6098E /* 3_fam.xml in Resources */,
 				C2381F0F19A7EE3B00135DAB /* PaintedMetal-640x960-iPhone@2x.jpg in Resources */,
 				C26BBAF716DC1B5C0093D5B4 /* AlignVertCenterIcon@2x.png in Resources */,
 				C2381F1219A7EE3B00135DAB /* PaintedMetal-2048x1536-iPad@2x.jpg in Resources */,
 				C2381EC019A7EE3B00135DAB /* Blue-1024x768.jpg in Resources */,
+				C2E8D9C219BCD5C400E6098E /* 8_fam.xml in Resources */,
 				C2381ED219A7EE3B00135DAB /* Chroma-640x960.jpg in Resources */,
 				C27BCCA81801C16A0002464C /* IntegerKeyboard_9.png in Resources */,
 				C2381EB419A7EE3B00135DAB /* AgedPaper-640x960-iPhone@2x.jpg in Resources */,
@@ -2199,6 +2381,7 @@
 				C2381F9819A7EE3B00135DAB /* Sunset-1024x768.jpg in Resources */,
 				C26BBAF916DC1B5C0093D5B4 /* App_Icon@2x.png in Resources */,
 				C2381EE219A7EE3B00135DAB /* Corkboard-640x960-iPhone@2x.jpg in Resources */,
+				C2E8D9E219BCD5C400E6098E /* udisepws.wsdl in Resources */,
 				C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */,
 				C2381F9E19A7EE3B00135DAB /* Teal-1536x2048.jpg in Resources */,
 				C2381ECF19A7EE3B00135DAB /* Chalkboard-1024x768-iPad.jpg in Resources */,
@@ -2212,6 +2395,7 @@
 				C2381EE419A7EE3B00135DAB /* Corkboard-1024x768-iPad.jpg in Resources */,
 				C27BCCA91801C16A0002464C /* IntegerKeyboard_9@2x.png in Resources */,
 				C2381EE019A7EE3B00135DAB /* convert.sh in Resources */,
+				C2E8D9EA19BCD5C400E6098E /* udiws30-justdoc.html in Resources */,
 				C2381EED19A7EE3B00135DAB /* Gingham-640x1136-iPhone5.jpg in Resources */,
 				C26BBAFE16DC1B5C0093D5B4 /* CopyButtonIcon.png in Resources */,
 				C2381EFA19A7EE3B00135DAB /* Ive-320x480.jpg in Resources */,
@@ -2225,14 +2409,17 @@
 				C26BBB0416DC1B5C0093D5B4 /* Default-568h@2x.png in Resources */,
 				C2381ED719A7EE3B00135DAB /* Cloth-640x960-iPhone@2x.jpg in Resources */,
 				C2381EF219A7EE3B00135DAB /* GoldIsBest-640x1136.jpg in Resources */,
+				C2E8D9C619BCD5C400E6098E /* elkobjs.xsd in Resources */,
 				C26BBB0516DC1B5C0093D5B4 /* Default.png in Resources */,
 				C27BCC9E1801C16A0002464C /* IntegerKeyboard_6-Highlighted@2x.png in Resources */,
+				C2E8D9C419BCD5C400E6098E /* cat.xml in Resources */,
 				C26BBB0616DC1B5C0093D5B4 /* Default@2x.png in Resources */,
 				C27BCC9D1801C16A0002464C /* IntegerKeyboard_5@2x.png in Resources */,
 				C26BBB0716DC1B5C0093D5B4 /* Delete.png in Resources */,
 				C2381EBC19A7EE3B00135DAB /* AppleWood-2048x1536-iPad@2x.jpg in Resources */,
 				C2381EC819A7EE3B00135DAB /* Cardboard-640x960-iPhone@2x.jpg in Resources */,
 				C26BBB0816DC1B5C0093D5B4 /* Delete@2x.png in Resources */,
+				C2E8D9E819BCD5C400E6098E /* udiws30-all.html in Resources */,
 				C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */,
 				C2381EC119A7EE3B00135DAB /* Blue-1536x2048.jpg in Resources */,
 				C26BBB0916DC1B5C0093D5B4 /* Dot.png in Resources */,
@@ -2241,10 +2428,12 @@
 				C26BBB0C16DC1B5C0093D5B4 /* DuplicateButtonIcon@2x.png in Resources */,
 				C2381ECD19A7EE3B00135DAB /* Chalkboard-640x960-iPhone@2x.jpg in Resources */,
 				C26BBB0D16DC1B5C0093D5B4 /* export.png in Resources */,
+				C2E8D9BC19BCD5C400E6098E /* 1_fam.xml in Resources */,
 				C26BBB0E16DC1B5C0093D5B4 /* export@2x.png in Resources */,
 				C27BCCA41801C16A0002464C /* IntegerKeyboard_8-Highlighted@2x.png in Resources */,
 				C26BBB0F16DC1B5C0093D5B4 /* Image.png in Resources */,
 				C26BBB1016DC1B5C0093D5B4 /* Image@2x.png in Resources */,
+				C2E8D9EC19BCD5C400E6098E /* udiws30.wsdl in Resources */,
 				C2381EEA19A7EE3B00135DAB /* Dawn-1536x2048.jpg in Resources */,
 				C265936017FBA1180017949C /* BankableDetailTableViewCell-TextField.xib in Resources */,
 				C26BBB1116DC1B5C0093D5B4 /* ImageOverImage.png in Resources */,
@@ -2259,15 +2448,18 @@
 				C27BCCA21801C16A0002464C /* IntegerKeyboard_7.png in Resources */,
 				C26BBB1416DC1B5C0093D5B4 /* import@2x.png in Resources */,
 				C2381F9319A7EE3B00135DAB /* Silver-1024x768.jpg in Resources */,
+				C2E8D9E019BCD5C400E6098E /* udiobjs.xsd in Resources */,
 				C26BBB1516DC1B5C0093D5B4 /* MachSizeIcon.png in Resources */,
 				C265936817FBA5890017949C /* BankableDetailTableViewCell-TextView.xib in Resources */,
 				C2381EE319A7EE3B00135DAB /* Corkboard-640x1136-iPhone5.jpg in Resources */,
 				C26BBB1616DC1B5C0093D5B4 /* MatchHeightIcon.png in Resources */,
 				C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */,
 				C26BBB1716DC1B5C0093D5B4 /* MatchHeightIcon@2x.png in Resources */,
+				C2E8D9C019BCD5C400E6098E /* 7_fam.xml in Resources */,
 				C26BBB1816DC1B5C0093D5B4 /* MatchSizeBarButtonIcon.png in Resources */,
 				C2381EFF19A7EE3B00135DAB /* Linen-320x640-iPhone.jpg in Resources */,
 				C2381EF819A7EE3B00135DAB /* GraphPaper-1024x768-iPad.jpg in Resources */,
+				C2E8D9F219BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */,
 				C26BBB1916DC1B5C0093D5B4 /* MatchSizeBarButtonIcon@2x.png in Resources */,
 				C26BBB1A16DC1B5C0093D5B4 /* MatchSizeIcon@2x.png in Resources */,
 				C26BBB1B16DC1B5C0093D5B4 /* MatchWidthIcon.png in Resources */,
@@ -2302,9 +2494,11 @@
 				C27BCC9A1801C16A0002464C /* IntegerKeyboard_4@2x.png in Resources */,
 				C2381EC419A7EE3B00135DAB /* Blueprint-640x1136-iPhone5.jpg in Resources */,
 				C2381EBD19A7EE3B00135DAB /* Blue-320x480.jpg in Resources */,
+				C2E8D9F419BCD5C400E6098E /* wsdl-viewer.xsl in Resources */,
 				C26BBB2816DC1B5C0093D5B4 /* Plus-White@2x.png in Resources */,
 				C2381EF019A7EE3B00135DAB /* GoldIsBest-320x480.jpg in Resources */,
 				C2381F0119A7EE3B00135DAB /* Linen-640x1136-iPhone5.jpg in Resources */,
+				C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */,
 				C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */,
 				C2381FA219A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg in Resources */,
 				C26BBB2916DC1B5C0093D5B4 /* Plus.png in Resources */,
@@ -2320,13 +2514,16 @@
 				C26BBB2B16DC1B5C0093D5B4 /* ScaleHorizontal.png in Resources */,
 				C25EE4D617FCF649000DA457 /* BankableDetailTableViewCell-List.xib in Resources */,
 				C26BBB2C16DC1B5C0093D5B4 /* ScaleHorizontal@2x.png in Resources */,
+				C2E8D9C819BCD5C400E6098E /* family.xsd in Resources */,
 				C2381EDE19A7EE3B00135DAB /* Concrete-1024x768-iPad.jpg in Resources */,
 				C26BBB2D16DC1B5C0093D5B4 /* ScaleVertical.png in Resources */,
+				C2E8D9DA19BCD5C400E6098E /* udielkws.wsdl in Resources */,
 				C26BBB2E16DC1B5C0093D5B4 /* ScaleVertical@2x.png in Resources */,
 				C26BBB2F16DC1B5C0093D5B4 /* Trash-Small.png in Resources */,
 				C2381EB619A7EE3B00135DAB /* AgedPaper-1024x768-iPad.jpg in Resources */,
 				C27BCCA71801C16A0002464C /* IntegerKeyboard_9-Highlighted@2x.png in Resources */,
 				C2381F0E19A7EE3B00135DAB /* PaintedMetal-320x640-iPhone.jpg in Resources */,
+				C2E8D9EE19BCD5C400E6098E /* upb.xsd in Resources */,
 				C26BBB3016DC1B5C0093D5B4 /* Trash-Small@2x.png in Resources */,
 				C2381EB919A7EE3B00135DAB /* AppleWood-640x960-iPhone@2x.jpg in Resources */,
 				C2381F8C19A7EE3B00135DAB /* ProDots-640x960-iPhone@2x.jpg in Resources */,
@@ -2357,6 +2554,7 @@
 				C2381ED619A7EE3B00135DAB /* Cloth-320x640-iPhone.jpg in Resources */,
 				C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */,
 				C2381F9219A7EE3B00135DAB /* Silver-640x1136.jpg in Resources */,
+				C2E8D9D819BCD5C400E6098E /* udi3.0.wsdl in Resources */,
 				C2381EBA19A7EE3B00135DAB /* AppleWood-640x1136-iPhone5.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2367,18 +2565,52 @@
 			files = (
 				C2CA76D719BA211100ACCD76 /* DSType - User-BoldCameo.otf in Resources */,
 				C2CA76D019BA1FE200ACCD76 /* DSType - User-Hairline.otf in Resources */,
+				C2E8D9C719BCD5C400E6098E /* elkobjs.xsd in Resources */,
+				C2E8D9DD19BCD5C400E6098E /* udielkws1.wsdl in Resources */,
+				C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */,
+				C2E8D9C319BCD5C400E6098E /* 8_fam.xml in Resources */,
+				C2E8D9F519BCD5C400E6098E /* wsdl-viewer.xsl in Resources */,
+				C2E8D9E119BCD5C400E6098E /* udiobjs.xsd in Resources */,
+				C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */,
+				C2E8D99C19BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png in Resources */,
 				C2CA76D119BA1FE200ACCD76 /* DSType - User-HairlineCameo.otf in Resources */,
+				C2E8D9F319BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */,
+				C2E8D9C919BCD5C400E6098E /* family.xsd in Resources */,
+				C2E8D9BF19BCD5C400E6098E /* 3_fam.xml in Resources */,
+				C2E8D9E519BCD5C400E6098E /* udisepws1.wsdl in Resources */,
+				C2E8D9EB19BCD5C400E6098E /* udiws30-justdoc.html in Resources */,
 				C2CA76D319BA1FE200ACCD76 /* DSType - User-LightCameo.otf in Resources */,
+				C2E8D9BD19BCD5C400E6098E /* 1_fam.xml in Resources */,
+				C2E8D9C519BCD5C400E6098E /* cat.xml in Resources */,
+				C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */,
+				C2E8D9DF19BCD5C400E6098E /* udievnts.xsd in Resources */,
+				C2E8D9D519BCD5C400E6098E /* sepobjs.xsd in Resources */,
+				C2E8D9CB19BCD5C400E6098E /* insteon.xsd in Resources */,
 				C2CA76D419BA1FE200ACCD76 /* DSType - User-Medium.otf in Resources */,
 				C2CA76D519BA1FE200ACCD76 /* DSType - User-MediumCameo.otf in Resources */,
+				C2E8D9E719BCD5C400E6098E /* udiupb1.wsdl in Resources */,
+				C2E8D9CD19BCD5C400E6098E /* insterr.xml in Resources */,
+				C2E8D9D119BCD5C400E6098E /* loginfo.xml in Resources */,
+				C2E8D9E919BCD5C400E6098E /* udiws30-all.html in Resources */,
+				C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */,
+				C2E8D9CF19BCD5C400E6098E /* log.xsd in Resources */,
 				C2CA76D219BA1FE200ACCD76 /* DSType - User-Light.otf in Resources */,
+				C2E8D9F119BCD5C400E6098E /* upberr.xml in Resources */,
 				C2CA76CE19BA1FE200ACCD76 /* DSType - User-ExtraLight.otf in Resources */,
+				C2E8D9D719BCD5C400E6098E /* smtperr.xml in Resources */,
+				C2E8D9E319BCD5C400E6098E /* udisepws.wsdl in Resources */,
 				C2CA76CF19BA1FE200ACCD76 /* DSType - User-ExtraLightCameo.otf in Resources */,
+				C2E8D9D919BCD5C400E6098E /* udi3.0.wsdl in Resources */,
 				C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */,
+				C2E8D9ED19BCD5C400E6098E /* udiws30.wsdl in Resources */,
+				C2E8D9C119BCD5C400E6098E /* 7_fam.xml in Resources */,
 				C2CA76CD19BA1FE200ACCD76 /* DSType - User-Bold.otf in Resources */,
 				C2CA76A819BA1E1800ACCD76 /* Images.xcassets in Resources */,
+				C2E8D9EF19BCD5C400E6098E /* upb.xsd in Resources */,
 				C2CA769A19BA1E1800ACCD76 /* InfoPlist.strings in Resources */,
+				C2E8D9DB19BCD5C400E6098E /* udielkws.wsdl in Resources */,
 				C2CA76A319BA1E1800ACCD76 /* Main.storyboard in Resources */,
+				C2E8D9D319BCD5C400E6098E /* netstat.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2763,7 +2995,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2804,7 +3036,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

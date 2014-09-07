@@ -71,6 +71,8 @@
 /// Replace returns with ⏎
 - (NSString *)stringByReplacingReturnsWithSymbol;
 
+- (NSString *)stringByEscapingNewlines;
+
 /// Escape control characters
 - (NSString *)stringByEscapingControlCharacters;
 

@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		    targetNamespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/sep"
+		    xmlns:sepo="http://www.universal-devices.com/wsdk/isy/3.0/objects/sep"
+		    xmlns:udizb="http://www.universal-devices.com/wsdk/isy/3.0/objects/zigbee"
+			elementFormDefault="unqualified">
+			
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/zigbee" schemaLocation="./zigbee.xsd"/>
+
+	<xsd:annotation>
+		<xsd:documentation>
+			Copyright 2007-2012 Universal Devices, Inc.
+			All Rights Reserved
+			
+			Common objects used for SEP communications
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:complexType name="Empty">
+	</xsd:complexType>
+	
+	<xsd:complexType name="SEPDateTime">
+		<xsd:annotation>
+			<xsd:documentation>
+				Date time in both NTP as well as readable format
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:unsignedLong">
+				<xsd:attribute name="readable" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							String representation of the date/time 
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>		
+	
+	<xsd:simpleType name="SEPDurationUOM">
+		<xsd:annotation>
+			<xsd:documentation>
+				Unit of measure for time
+				Minutes
+				@TODO
+				Although not supported by SEP, we should support
+				seconds and hours
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="minutes"></xsd:enumeration>		<!-- Minutes -->
+		</xsd:restriction>	
+	</xsd:simpleType>
+	
+	<xsd:complexType name="SEPDuration">
+		<xsd:annotation>
+			<xsd:documentation>
+				Duration of events can be defined here
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:unsignedLong">
+				<xsd:attribute name="uom" type="sepo:SEPDurationUOM" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+		<!-- SEP Objects -->
+	<xsd:simpleType name="SEPDRCriticality">
+		<xsd:annotation>
+			<xsd:documentation>
+				The levels by which a DR event can be categorized
+				0 = Unknown
+				1 = Green
+				2 = Level 1
+				3 = Level 2
+				4 = Level 3
+				5 = Level 4
+				6 = Level 5
+				7 = Emergency
+				8 = Planned Outage
+				9 = Service Disconnect
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:int">
+			<xsd:enumeration value="0"></xsd:enumeration><!-- Unknown -->
+			<xsd:enumeration value="1"></xsd:enumeration><!-- Green -->
+			<xsd:enumeration value="2"></xsd:enumeration><!-- Level 1 -->
+			<xsd:enumeration value="3"></xsd:enumeration><!-- Level 2 -->
+			<xsd:enumeration value="4"></xsd:enumeration><!-- Level 3 -->
+			<xsd:enumeration value="5"></xsd:enumeration><!-- Level 4 -->
+			<xsd:enumeration value="6"></xsd:enumeration><!-- Level 5 -->
+			<xsd:enumeration value="7"></xsd:enumeration><!-- Emergency -->
+			<xsd:enumeration value="8"></xsd:enumeration><!-- Planned Outage -->
+			<xsd:enumeration value="9"></xsd:enumeration><!-- Service Disconnect -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	
+	
+	<xsd:simpleType name="SEPMessagePriority">
+		<xsd:annotation>
+			<xsd:documentation>
+				The priority of an SEP message
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Low"></xsd:enumeration>		<!-- Low priority -->
+			<xsd:enumeration value="Medium"></xsd:enumeration>	<!-- Medium priority -->
+			<xsd:enumeration value="High"></xsd:enumeration>	<!-- High priority -->
+			<xsd:enumeration value="Critical"></xsd:enumeration><!-- Critical priority -->
+			<xsd:enumeration value="N/A"></xsd:enumeration>		<!-- Unknown -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	
+	
+	<xsd:simpleType name="SEPMessageStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+				The status of a message within ISY 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Confirmed"></xsd:enumeration>		<!-- The message has been confirmed by the user -->
+			<xsd:enumeration value="Unconfirmed"></xsd:enumeration>	    <!-- The message has not yet been confirmed by the user -->
+			<xsd:enumeration value="N/A"></xsd:enumeration>				<!-- Unknown -->
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	
+	<xsd:simpleType name="SEPDRStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+				The status of a DR event.
+				Unconfirmed : DR Event is active but the user has neither opted in or out
+				Completed 	: DR Event has been completed and no longer active
+				Canceled	: DR Event was canceled during processing
+				Superseded  : DR Event was superseded by another event
+				Opted In	: DR Event is active and the user has opted in
+				Opted Out 	: DR Event is active but the user has opted out
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Unconfirmed"></xsd:enumeration>	<!-- The DR Event is active but the user has neither opted in or out-->
+			<xsd:enumeration value="Completed"></xsd:enumeration>	<!-- The DR Event has been completed  and no longer active-->
+			<xsd:enumeration value="Canceled"></xsd:enumeration>	<!-- DR Event was canceled during processing -->
+			<xsd:enumeration value="Superseded"></xsd:enumeration>	<!-- DR Event was superseded by another event -->
+			<xsd:enumeration value="Opted In"></xsd:enumeration>	<!-- DR Event is active and the user has opted in -->
+			<xsd:enumeration value="Opted Out"></xsd:enumeration>	<!-- DR Event is active but the user has opted out -->
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:simpleType name="SEPDeviceClassDef">
+		<xsd:annotation>
+			<xsd:documentation>
+				Identifies the device classes to be used. Please note
+				the device class element is a bit map and thus multiple
+				device classes may be ORed 	
+				1 			= HVAC / Thermostats
+				2 			= Strip Heater 
+				4 			= Water Heater
+				8 			= Pool Pump
+				16 			= Smart Appliance 
+				32 			= Irrigation Pump 
+				64 			= Managed Load 
+				128			= Simple
+				256			= Exterior Lighting
+				512			= Interior Lighting
+				1024		= Electric Vehicle
+				2048		= Generation System
+				4096		= Washer
+				8192		= Dryer
+				16384		= Oven
+				32768		= Refrigerator
+				65535		= ALL (0) 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:int">
+			<xsd:enumeration value="1"></xsd:enumeration>			<!-- HVAC/Thermostats -->
+			<xsd:enumeration value="2"></xsd:enumeration>			<!-- Strip Heater -->
+			<xsd:enumeration value="4"></xsd:enumeration>			<!-- Water Heater -->
+			<xsd:enumeration value="8"></xsd:enumeration>			<!-- Pool Pump -->
+			<xsd:enumeration value="16"></xsd:enumeration>			<!-- Smart Appliance -->
+			<xsd:enumeration value="32"></xsd:enumeration>			<!-- Irrigation Pump -->
+			<xsd:enumeration value="64"></xsd:enumeration>			<!-- Managed Load -->
+			<xsd:enumeration value="128"></xsd:enumeration>			<!-- Simple -->
+			<xsd:enumeration value="256"></xsd:enumeration>			<!-- Exterior Lighting -->
+			<xsd:enumeration value="512"></xsd:enumeration>			<!-- Interior Lighting -->
+			<xsd:enumeration value="1024"></xsd:enumeration>		<!-- Electric Vehicle -->
+			<xsd:enumeration value="2048"></xsd:enumeration>		<!-- Generation System -->
+			<xsd:enumeration value="4096"></xsd:enumeration>		<!-- Washer -->
+			<xsd:enumeration value="8192"></xsd:enumeration>		<!-- Dryer -->
+			<xsd:enumeration value="16384"></xsd:enumeration>		<!-- Oven -->
+			<xsd:enumeration value="32768"></xsd:enumeration>		<!-- Refrigerator -->
+			<xsd:enumeration value="65535"></xsd:enumeration>		<!-- All -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="SEPDeviceClass">
+		<xsd:annotation>
+			<xsd:documentation>
+				A bit map of device class definitions (SEPDeviceClassDef) ORed
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="sepo:SEPDeviceClassDef"/>
+	</xsd:simpleType>
+		
+	<xsd:simpleType name="SEPPriceUOM">
+		<xsd:annotation>
+			<xsd:documentation>
+				Unit of measure for price
+				@TODO: add more 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="kWh"></xsd:enumeration><!-- kwh -->
+			<xsd:enumeration value="mWh"></xsd:enumeration><!-- kwh -->
+		</xsd:restriction>
+	</xsd:simpleType>		
+	
+	<xsd:simpleType name="SEPPriceCurrency">
+		<xsd:annotation>
+			<xsd:documentation>
+				The currency for price
+				@TODO: add more 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="840"></xsd:enumeration><!-- US$ -->
+			<xsd:enumeration value="124"></xsd:enumeration><!-- CA$ -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+		<!-- Price -->
+	<xsd:complexType name="SEPPriceTierDef">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Price tier as defined by SEP
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:unsignedInt">
+				<xsd:attribute name="numTiers" type="xsd:unsignedInt" use="optional" default="1"/>
+				<xsd:attribute name="registerTier" type="xsd:unsignedInt" use="optional" default="0"/>
+			</xsd:extension>
+		</xsd:simpleContent>		
+	</xsd:complexType>
+	
+	<xsd:complexType name="SEPPriceDef">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Price definition
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:unsignedInt">
+				<xsd:attribute name="ratio" type="xsd:unsignedInt" use="optional" default="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default is 0
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<!-- Metering -->
+	<xsd:simpleType name="SEPMeterType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The type of meter/ESI 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Electricity Meter"></xsd:enumeration>
+			<xsd:enumeration value="Gas Meter"></xsd:enumeration>
+			<xsd:enumeration value="Water Meter"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:simpleType name="SEPMeterStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+				The operating status of the meter
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Check Meter"></xsd:enumeration>
+			<xsd:enumeration value="Low Battery"></xsd:enumeration>
+			<xsd:enumeration value="Tamper Detect"></xsd:enumeration>
+			<xsd:enumeration value="Power Failure"></xsd:enumeration>
+			<xsd:enumeration value="Power Quality"></xsd:enumeration>
+			<xsd:enumeration value="Leak Detect"></xsd:enumeration>
+			<xsd:enumeration value="Service Disconnect Open"></xsd:enumeration>
+			<xsd:enumeration value="Reserved"></xsd:enumeration>
+			<xsd:enumeration value="All OK"></xsd:enumeration>
+			<xsd:enumeration value="Unknown"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:simpleType name="SEPMeteringUOM">
+		<xsd:annotation>
+			<xsd:documentation>
+				The unit of measure for reporting
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="kW-kWh"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="SEPMeterFormattingOptions">
+		<xsd:annotation>
+			<xsd:documentation>
+				Formatting options that can be used for reporting and profiling
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="digitsToRight" minOccurs="1" maxOccurs="1" type="xsd:unsignedShort">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The number of digits (precision) to the right of decimal point
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="digitsToLeft" minOccurs="1" maxOccurs="1" type="xsd:unsignedShort">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The number of digits (whole) to the left of decimal point
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="suppressLeadingZeros" minOccurs="1" maxOccurs="1" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Can leading zeros be suppressed?
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SEPMeterFormat">
+		<xsd:annotation>
+			<xsd:documentation>
+				Overall report and profiling formats to be used when communicating with the ESI/Meter
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="uom" minOccurs="1" maxOccurs="1" type="sepo:SEPMeteringUOM">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unit of measure 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="meterType" minOccurs="1" maxOccurs="1" type="sepo:SEPMeterType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The type of the meter
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="multiplier" minOccurs="1" maxOccurs="1" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The global multiplier that should be used when interpreting measurements
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="divisor" minOccurs="1" maxOccurs="1" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The global divisor that should be used when interpreting measurements
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="SumFormatting" minOccurs="1" maxOccurs="1" type="sepo:SEPMeterFormattingOptions">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Formatting options to be used for Summations
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>	
+			<xsd:element name="DemandFormatting" minOccurs="1" maxOccurs="1" type="sepo:SEPMeterFormattingOptions">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Formatting options to be used for Demand measurements
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>	
+			<xsd:element name="HistoryFormatting" minOccurs="1" maxOccurs="1" type="sepo:SEPMeterFormattingOptions">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Formatting options to be used for History measurements
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>				
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="SEPMeteringAttribute">
+		<xsd:annotation>
+			<xsd:documentation>
+				The meter attributes that can be read. All values are in hex and 4 digits long.
+				You should use these values in /rest/emeter/query/attr/one-of-the-below/[+3more]
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0000"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_SUMMATION_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0001"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_SUMMATION_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0002"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_MAX_DEMAND_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0003"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_MAX_DEMAND_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0004"><xsd:annotation><xsd:documentation> SEP_METER_ATT_DFT_SUMMATION</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0005"><xsd:annotation><xsd:documentation> SEP_METER_ATT_DAILY_FREEZE_TIME</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0006"><xsd:annotation><xsd:documentation> SEP_METER_ATT_POWER_FACTOR</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0007"><xsd:annotation><xsd:documentation> SEP_METER_ATT_READING_SNAPSHOT_TIME</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0008"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_MAX_DEMAND_DELIVERED_TIME</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0009"><xsd:annotation><xsd:documentation> SEP_METER_ATT_READING_MAX_DEMAND_RECEIVED_TIME</xsd:documentation></xsd:annotation></xsd:enumeration>
+
+			<xsd:enumeration value="0100"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER1_SUMM_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0101"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER1_SUMM_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0102"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER2_SUMM_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0103"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER2_SUMM_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0104"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER3_SUMM_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0105"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER3_SUMM_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0106"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER4_SUMM_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0107"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER4_SUMM_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0108"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER5_SUMM_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0109"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER5_SUMM_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="010A"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER6_SUMM_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="010B"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_TIER6_SUMM_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			
+			<xsd:enumeration value="0200"><xsd:annotation><xsd:documentation> SEP_METER_ATT_METER_STATUS</xsd:documentation></xsd:annotation></xsd:enumeration>
+			
+			<xsd:enumeration value="0300"><xsd:annotation><xsd:documentation> SEP_METER_ATT_UOM</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0301"><xsd:annotation><xsd:documentation> SEP_METER_ATT_GLOBAL_MULTIPLIER</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0302"><xsd:annotation><xsd:documentation> SEP_METER_ATT_GLOBAL_DIVISOR</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0303"><xsd:annotation><xsd:documentation> SEP_METER_ATT_SUMMATION_FORMATTING</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0304"><xsd:annotation><xsd:documentation> SEP_METER_ATT_DEMAND_FORMATTING</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0305"><xsd:annotation><xsd:documentation> SEP_METER_ATT_HISTORICAL_DEMAND_FORMATTING</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0306"><xsd:annotation><xsd:documentation> SEP_METER_ATT_METER_TYPE</xsd:documentation></xsd:annotation></xsd:enumeration>
+			
+			<xsd:enumeration value="0400"><xsd:annotation><xsd:documentation> SEP_METER_ATT_INSTANTANEOUS_DEMAND</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0401"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_DAY_CONSUMPTION_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0402"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_DAY_CONSUMPTION_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0403"><xsd:annotation><xsd:documentation> SEP_METER_ATT_PREVIOUS_DAY_CONSUMPTION_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0404"><xsd:annotation><xsd:documentation> SEP_METER_ATT_PREVIOUS_DAY_CONSUMPTION_RECEIVED</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0405"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_PARTIAL_PROFILE_STARTTIME_D</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0406"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_PARTIAL_PROFILE_STARTTIME_R</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0407"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_PARTIAL_PROFILE_INT_VALUE_D</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="0408"><xsd:annotation><xsd:documentation> SEP_METER_ATT_CURRENT_PARTIAL_PROFILE_INT_VALUE_R</xsd:documentation></xsd:annotation></xsd:enumeration>
+			
+			<xsd:enumeration value="0500"><xsd:annotation><xsd:documentation> SEP_METER_ATT_MAX_NUMBER_OF_PERIODS_DELIVERED</xsd:documentation></xsd:annotation></xsd:enumeration>					
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:simpleType name="SEPMeterAttributeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The type and size of the attribute
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UINT2"><xsd:annotation><xsd:documentation>A 16 bit unsigned number (2 bytes)</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="UINT4"><xsd:annotation><xsd:documentation>A 32 bit unsigned number (4 bytes)</xsd:documentation></xsd:annotation></xsd:enumeration>
+			<xsd:enumeration value="UINT8"><xsd:annotation><xsd:documentation>A 64 bit unsigned number (8 bytes)</xsd:documentation></xsd:annotation></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:complexType name="SEPMeteringAttrValue">
+		<xsd:annotation>
+			<xsd:documentation>
+				Attribute value with optional formatting information 
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="type" use="required" type="sepo:SEPMeterAttributeType">
+			<xsd:annotation>
+				<xsd:documentation>
+					The type and size of the value 
+				</xsd:documentation>
+			</xsd:annotation>				
+		</xsd:attribute>
+		<xsd:attribute name="digitsToRight" use="optional" type="xsd:unsignedShort">
+			<xsd:annotation>
+				<xsd:documentation>
+					The number of digits (precision) to the right of decimal point
+					Derived from sepo:SEPMeterFormattingOptions
+				</xsd:documentation>
+			</xsd:annotation>				
+		</xsd:attribute>
+		<xsd:attribute name="digitsToLeft" use="optional" type="xsd:unsignedShort">
+			<xsd:annotation>
+				<xsd:documentation>
+					The number of digits (whole) to the left of decimal point
+					Derived from sepo:SEPMeterFormattingOptions
+				</xsd:documentation>
+			</xsd:annotation>				
+		</xsd:attribute>
+		<xsd:attribute name="suppressLeadingZeros" use="optional" type="xsd:boolean">
+			<xsd:annotation>
+				<xsd:documentation>
+					Can leading zeros be suppressed?
+					Derived from sepo:SEPMeterFormattingOptions
+				</xsd:documentation>
+			</xsd:annotation>				
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SEPMeteringReport">
+		<xsd:annotation>
+			<xsd:documentation>
+				Report of all the values that have been queried and which provide operational and reported state of the meter
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="url" type="xsd:string" minOccurs="0" maxOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The path for REST.
+						For instance, if the base URL is /rest/emeter and if this elemnet is
+						metering, then the REST path to get directly to this object is /rest/emeter/metering
+					</xsd:documentation>
+				</xsd:annotation>	
+			</xsd:element>
+			<xsd:element name="currSumDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						Current Summation Delivered
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="currSumReceived" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						Current Summation Received 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="maxDemandDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="maxDemandReceived" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="dftSummation" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>	
+			<xsd:element name="dailyFreezeTime" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>	
+			<xsd:element name="powerFactor" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>	
+			<xsd:element name="readingSnapshotTime" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue">
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="maxDemandDeliveredTime" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxDemandReceivedTime" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier1Delivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier1Received" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier2Delivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier2Received" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier3Delivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier3Received" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier4Delivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier4Received" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier5Delivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier5Received" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier6Delivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="maxCurrTier6Received" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="instantaneousDemand" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="currDayDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="currDayReceived" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="previousDayDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="previousDayReceived" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="currParProfileTimeDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="currParProfileTimeReceived" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="currParProfileIntDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="currParProfileIntReceived" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+			<xsd:element name="numPeriodsDelivered" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringAttrValue"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>		
+		</xsd:sequence>
+		<xsd:attribute name="status" type="sepo:SEPMeterStatus" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Operational status of the meter
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="uom" type="sepo:SEPMeteringUOM" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Unit of measure (global) ... derived from sepo:SEPMeterFormattingOptions 
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="multiplier" type="xsd:unsignedShort" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Multiplier (global) ... derived from sepo:SEPMeterFormattingOptions 
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="divisor" type="xsd:unsignedShort" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Divisor (global) ... derived from sepo:SEPMeterFormattingOptions 
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<!--  EVENTS  -->
+	
+	<xsd:simpleType name="SEPEventState">
+		<xsd:annotation>
+			<xsd:documentation>
+				The status of a any event
+				Expired 	: The event has expired and all attributes have been cleared
+				Canceled 	: The event is canceled, not running, but all attributes remain
+				Scheduled	: The event is scheduled to be run in the future
+				Running		: This is the currently running event
+				Done  		: Completed processing the event
+				Restored	: Restored from the file system
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Expired"></xsd:enumeration>		<!-- The event has expired and all attributes have been cleared-->
+			<xsd:enumeration value="Canceled"></xsd:enumeration>	<!-- The event is canceled, not running, but all attributes remain-->
+			<xsd:enumeration value="Scheduled"></xsd:enumeration>	<!-- The event is scheduled to be run int the future-->
+			<xsd:enumeration value="Running"></xsd:enumeration>		<!-- This is the currently running event -->
+			<xsd:enumeration value="Done"></xsd:enumeration>		<!-- Completed processing the event -->
+			<xsd:enumeration value="Restored"></xsd:enumeration>	<!-- Restored from file system at boot up -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="ISEPEvent" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Superclass for all SEP Events
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies an event
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="enrollmentGroup" minOccurs="1" maxOccurs="1" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Enrollment Group defines the systems for which an event
+		 				is applicable
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="startTime" minOccurs="0" maxOccurs="1" type="sepo:SEPDateTime" />
+			<xsd:element name="duration" minOccurs="0" maxOccurs="1" type="sepo:SEPDuration">
+				<xsd:annotation>
+					<xsd:documentation>
+						The duration of time the event is active
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="urlBase" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The REST URL by which this event can be accessed
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="active" type="xsd:boolean" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					Whether or not the Event is active. In case of events coming from
+					ISY, this attribute is mandatory. Otherwise optional
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="eventState" type="sepo:SEPEventState" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					The current status of a DR Event. In case of events coming from
+					ISY, this attribute is mandatory. Otherwise optional.
+					Signifies the lifecycle of the event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	
+
+	<!--  SEP DRLC -->
+	<xsd:complexType name="SEPDRObject" block="extension" final="extension">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Definition of DR Event
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="sepo:ISEPEvent">
+				<xsd:sequence>
+					<xsd:element name="deviceClass" minOccurs="1" maxOccurs="1" type="sepo:SEPDeviceClass" />
+					<xsd:element name="criticality" minOccurs="1" maxOccurs="1" type="sepo:SEPDRCriticality" />
+					<xsd:element name="heatingOffset" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte"/>
+					<xsd:element name="coolingOffset" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte"/>
+					<xsd:element name="heatingSetpoint" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte"/>
+					<xsd:element name="coolingSetpoint" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte"/>
+					<xsd:element name="dutyCycle" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				The amount of time a relay device is cycled between on and off.
+				 				The value is in percentage
+				 			</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="avgLoadAdjustment" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				Load adjustment is applied to dimmers and it's a percentage
+				 			</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="startRandomized" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				Randomized start time in Minutes
+				 			</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="stopRandomized" minOccurs="0" maxOccurs="1" type="xsd:unsignedByte">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				Randomized stop time in Minutes
+				 			</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="status" type="sepo:SEPDRStatus" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The current status of a DR Event. In case of events coming from
+							ISY, this attribute is mandatory. Otherwise optional
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="stopReason" type="sepo:SEPDRStatus" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The current status of a DR Event. In case of events coming from
+							ISY, this attribute is mandatory. Otherwise optional.
+							Signifies the stop reason if the event has stopped
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+    <!--  SEP Messages -->
+	<xsd:complexType name="SEPMessageObject" block="extension" final="extension">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		SEP Message 
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="sepo:ISEPEvent">
+				<xsd:sequence>
+					<xsd:element name="confirm" minOccurs="1" maxOccurs="1" type="xsd:boolean">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				Whether or not the receipt of this message must be confirmed by the user
+				 			</xsd:documentation>
+						</xsd:annotation>	
+					</xsd:element>
+					<xsd:element name="priority" minOccurs="1" maxOccurs="1" type="sepo:SEPMessagePriority" />
+					<xsd:element name="message" minOccurs="1" maxOccurs="1" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				Free form text message 
+				 			</xsd:documentation>
+						</xsd:annotation>	
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="status" type="sepo:SEPMessageStatus" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The current status of a message (confirmed/unconfirmed). In case of events coming from
+							ISY, this attribute is mandatory. Otherwise ignored
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
+	
+	<!--  SEP Price -->
+	<xsd:complexType name="SEPPriceObject" block="extension" final="extension">
+		<xsd:complexContent>
+			<xsd:extension base="sepo:ISEPEvent">
+				<xsd:annotation>
+					<xsd:documentation>
+				 		Price Object
+				 	</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>	
+					<xsd:element name="base" minOccurs="1" maxOccurs="1" type="xsd:unsignedInt">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				Base price
+				 			</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="providerId" minOccurs="0" maxOccurs="1" type="xsd:unsignedInt"/>
+					<xsd:element name="price" minOccurs="1" maxOccurs="1" type="sepo:SEPPriceDef"/>
+					<xsd:element name="tier" minOccurs="0" maxOccurs="1" type="sepo:SEPPriceTierDef"/>
+					<xsd:element name="generationPrice" minOccurs="0" maxOccurs="1" type="sepo:SEPPriceDef"/>
+					<xsd:element name="label" minOccurs="0" maxOccurs="1" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+				 				A meaningful name for this price
+				 			</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uom" type="sepo:SEPPriceUOM" use="optional" default="kWh">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default is USD
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="currency" type="sepo:SEPPriceCurrency" use="optional" default="840">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default is 840/USD
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="trailingDigits" type="xsd:unsignedInt" use="optional" default="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default is 0
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeSEPTime">
+		<xsd:annotation>
+			<xsd:documentation>
+				Opting in and out of existing DR Events
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="url" type="xsd:string" minOccurs="0" maxOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The path for REST.
+						For instance, if the base URL is /rest/emeter and if this elemnet is
+						time, then the REST path to get directly to this object is /rest/emeter/time
+					</xsd:documentation>
+				</xsd:annotation>	
+			</xsd:element>
+			<xsd:element name="utcTime" minOccurs="1" maxOccurs="1" type="sepo:SEPDateTime">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Time in UTC format
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="localTime" minOccurs="1" maxOccurs="1" type="sepo:SEPDateTime">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Local time taking into account time zone offset and daylight saving
+		 				time if any
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="isSynchronized" type="xsd:boolean" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Whether or not the module's time has been synchronized with ESI/Meter
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SEPSummary">
+		<xsd:annotation>
+			<xsd:documentation>
+				The Summary of all SEP/AMI events and operational states
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Module" type="udizb:ZigbeeModule" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The Zigbee Module information
+					</xsd:documentation>
+				</xsd:annotation>	
+			</xsd:element>
+			<xsd:element name="ZBNetwork" minOccurs="1" maxOccurs="1" type="udizb:ZigbeeNetwork">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Zigbee network information
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="Time" minOccurs="0" maxOccurs="1" type="sepo:ZigbeeSEPTime">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Local/UTC time and whether or not we are synchronized with the meter.
+		 				This element is not present if Zigbee SEP Module is not activated
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="AMIMetering" minOccurs="0" maxOccurs="1" type="sepo:SEPMeteringReport">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Default Metering information.
+		 				This element is not present if Zigbee SEP Module is not activated
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="AMILoadControl" minOccurs="0" maxOccurs="1" type="sepo:SEPDRObject">
+				<xsd:annotation>
+					<xsd:documentation>
+						Active DR event if any. Otherwise, empty
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="AMIPrice" minOccurs="0" maxOccurs="1" type="sepo:SEPPriceObject">
+				<xsd:annotation>
+					<xsd:documentation>
+						Currently active price event if any. Otherwise, empty
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="AMIMessage" minOccurs="0" maxOccurs="1" type="sepo:SEPMessageObject">
+				<xsd:annotation>
+					<xsd:documentation>
+						Currently active message event if any. Otherwise, empty
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

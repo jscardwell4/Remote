@@ -11,6 +11,7 @@
 #import "NSNull+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
 #import "NSObject+MSKitAdditions.h"
+#import "MSLog.h"
 // #import "NSAttributedString+MSKitAdditions.h"
 #import <CoreText/CoreText.h>
 #import "NSValue+MSKitAdditions.h"
@@ -107,6 +108,17 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return s;
 }
 
+- (NSString *)stringByEscapingNewlines {
+  unichar    newLineCharacters[] = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085 };
+  NSString * escapedString       = [self copy];
+
+  for (int i = 0; i < 5; i++) {
+    escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%C", newLineCharacters[i]] withString:@"\\n"];
+  }
+
+  return escapedString;
+}
+
 - (NSString *)stringByEscapingControlCharacters {
   unichar    newLineCharacters[] = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085 };
   NSString * escapedString       = [self copy];
@@ -115,7 +127,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%C", newLineCharacters[i]] withString:@"\\n"];
   }
 
-  escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%d", 0x0009] withString:@"\\t"];
+  escapedString = [escapedString stringByReplacingOccurrencesOfString:@"	" withString:@"\\t"];
 
   return escapedString;
 }
