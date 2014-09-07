@@ -7,6 +7,7 @@
 //
 
 #import "MSXMLParserDelegate.h"
+#import "MSKitMacros.h"
 #import <objc/runtime.h>
 
 

@@ -47,6 +47,14 @@
                BlueprintName = "MSKitXML Tests"
                ReferencedContainer = "container:MSKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "MSKitXML_Tests/testDictionaryFromXML2">
+               </Test>
+               <Test
+                  Identifier = "MSKitXML_Tests/testDictionaryFromXML3">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

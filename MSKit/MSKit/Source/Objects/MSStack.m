@@ -14,7 +14,15 @@
 
 + (MSStack *)stack { return [self new]; }
 
-+ (MSStack *)stackWithArray:(NSArray *)array { return [[self alloc] initWithContentsOfArray:array]; }
++ (MSStack *)stackWithArray:(NSArray *)array {
+  if (!array) ThrowInvalidNilArgument(array);
+  return [[self alloc] initWithContentsOfArray:array];
+}
+
++ (MSStack *)stackWithObject:(id)obj {
+  if (!obj) ThrowInvalidNilArgument(obj);
+  return [[self alloc] initWithContentsOfArray:@[obj]];
+}
 
 - (id)init { if (self = [super init]) self->_array = [@[] mutableCopy]; return self; }
 

@@ -15,8 +15,10 @@
 #import "NSPointerArray+MSKitAdditions.h"
 #import "NSNumber+MSKitAdditions.h"
 #import "MSKitMacros.h"
+#import "MSLog.h"
 #import "MSXMLParserDelegate.h"
 #import "MSStack.h"
+#import "MSKeyPath.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -63,63 +65,125 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @param xmlData description
 /// @return MSDictionary *
 + (MSDictionary *)dictionaryByParsingXML:(NSData *)xmlData {
-  __block MSDictionary * dictionary = [MSDictionary dictionary];
-  __block MSStack * elements = [MSStack stack];
+
+  __block MSDictionary * dictionary      = [MSDictionary dictionary];
+  __block MSKeyPath    * keyPath         = [MSKeyPath new];
 
   NSXMLParser * parser = [[NSXMLParser alloc] initWithData:xmlData];
-  NSDictionary * handlers =
-  @{
-    SelectorString(@selector(parser:didStartElement:namespaceURI:qualifiedName:attributes:)):
-    ^(NSXMLParser * parser,
-      NSString * elementName,
-      NSString * namespaceURI,
-      NSString * qName,
-      NSDictionary * attributeDict)
-    {
-      NSString * key = elementName;
-      if ([dictionary count]) {
-        id existing = [dictionary valueForKeyPath:$(@"%@.%@",
-                                                    [elements componentsJoinedByString:@"."], elementName)];
-        if (existing) {
-          int i = 1;
-          do {
-            key = $(@"%@%i", elementName, ++i);
-            existing = [dictionary valueForKeyPath:$(@"%@.%@", [elements componentsJoinedByString:@"."], key)];
-          } while (existing);
-        }
+
+  /// Handle element start
+  NSString * didStartElementKey =
+  SelectorString(@selector(parser:didStartElement:namespaceURI:qualifiedName:attributes:));
+
+  void (^didStartElement)(NSXMLParser *, NSString *, NSString *, NSString *, NSDictionary *) =
+  ^(NSXMLParser * parser, NSString * element, NSString * uri, NSString * qName, NSDictionary * attrs) {
+
+    // Create fresh dictionary to be inserted somewhere below
+    MSDictionary * elementValue = [MSDictionary dictionaryWithDictionary:attrs];
+
+    // Get the appropriate dictionary to update
+    MSDictionary * currentDictionary = [dictionary valueForPath:keyPath];
+
+    // Check if there is an existing entry for element in the current dictionary
+    if ([currentDictionary hasKey:element]) {
+
+      // Get the existing entry, wrap it in a dictionary if necessary
+      id existingEntry = currentDictionary[element];
+
+      // Check if we already have an array
+      if (isArrayKind(existingEntry)) {
+
+        [existingEntry addObject:elementValue];
+
       }
-      [elements push:key];
-      [dictionary setValue:[MSDictionary dictionary] forKeyPath:[elements componentsJoinedByString:@"."]];
-    },
-    SelectorString(@selector(parser:foundAttributeDeclarationWithName:forElement:type:defaultValue:)):
-      ^(NSXMLParser * parser, NSString * name, NSString * element, NSString * type, NSString * defaultValue) {
-        nsprintf(@"parser found attribute '%@' for element '%@' of type '%@' and default '%@'",
-                 name, element, type, defaultValue);
-      },
-    SelectorString(@selector(parser:foundCharacters:)):
-      ^(NSXMLParser * parser, NSString * characters) {
 
-        // Don't add characters if they are nothing but whitespace
-        if (![[characters stringByRemovingCharactersFromSet:NSWhitespaceAndNewlineCharacters] length]) return;
+      // If we don't, create one
+      else {
 
-        [dictionary setValue:characters forKeyPath:[elements componentsJoinedByString:@"."]];
+        if (!isDictionaryKind(existingEntry))
+          existingEntry = [MSDictionary dictionaryWithObject:existingEntry forKey:element];
 
+        // Replace existing with array containing existing and an empty dictionary
+        currentDictionary[element] = [@[existingEntry, elementValue] mutableCopy];
 
-      },
-    SelectorString(@selector(parser:didEndElement:namespaceURI:qualifiedName:)):
-      ^(NSXMLParser * parser, NSString * elementName, NSString * namespaceURI, NSString * qName) {
-          [elements pop];
       }
-    };
 
-  MSXMLParserDelegate * delegate = [MSXMLParserDelegate parserDelegateWithHandlers:handlers];
+      // Push key to point to last object of array
+      [keyPath appendKeys:@[element, @"@lastObject"]];
+
+    }
+
+    // If no existing entry, insert element value
+    else {
+
+      currentDictionary[element] = elementValue;
+
+      [keyPath appendKey:element];
+
+    }
+
+  };
+
+
+  /// Handle characters found
+  NSString * foundCharactersKey = SelectorString(@selector(parser:foundCharacters:));
+
+  void (^foundCharacters)(NSXMLParser *, NSString *) = ^(NSXMLParser * parser, NSString * characters) {
+
+    // Don't add characters if they are nothing but whitespace
+    if ([[characters stringByRemovingCharactersFromSet:NSWhitespaceAndNewlineCharacters] length]) {
+
+      // Pop last key since we want to replace the dictionary that is there
+      NSString * key = [keyPath popLast];
+      BOOL pushBack = YES;
+
+      // Get the underlying key if we popped lastObject off and then put it back
+      if ([@"@lastObject" isEqualToString:key]) {
+        key = keyPath.lastKey;
+        [keyPath appendKey:@"@lastObject"];
+        pushBack = NO;
+      }
+
+
+      // Get the appropriate dictionary and update
+      MSDictionary * currentDictionary = [dictionary valueForPath:keyPath];
+      MSDictionary * existingObject = currentDictionary[key];
+      if (existingObject && isDictionaryKind(existingObject) && ![existingObject isEmpty])
+        currentDictionary = existingObject;
+
+      currentDictionary[key] = characters;
+
+      // Push key back onto key path so it can be popped off when element ends
+      if (pushBack) [keyPath appendKey:key];
+
+    }
+
+  };
+
+  /// Handle element end
+  NSString * didEndElementKey = SelectorString(@selector(parser:didEndElement:namespaceURI:qualifiedName:));
+
+  void (^didEndElement)(NSXMLParser *, NSString *, NSString *, NSString *) =
+  ^(NSXMLParser * parser, NSString * elementName, NSString * namespaceURI, NSString * qName) {
+
+    // Remove the element from the key path
+    NSString * previousElement = [keyPath popLast];
+    if ([@"@lastObject" isEqualToString:previousElement]) [keyPath popLast];
+
+  };
+
+  /// Create our parser delegate with the handlers we have defined.
+  MSXMLParserDelegate * delegate =
+  [MSXMLParserDelegate parserDelegateWithHandlers:@{ didStartElementKey : didStartElement,
+                                                     foundCharactersKey : foundCharacters,
+                                                     didEndElementKey   : didEndElement }];
   parser.delegate = delegate;
 
-  if ([parser parse] && [dictionary count] == 1 && [dictionary.firstValue isKindOfClass:[MSDictionary class]])
-    dictionary = dictionary.firstValue;
-  
-  return dictionary;
+  /// Return the dictionary if parse successful and nil otherwise
+  return [parser parse] ? dictionary : nil;
+
 }
+
 
 /// dictionaryByParsingArray:
 /// @param array description
@@ -205,6 +269,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return dictionary;
 }
 
+/// valueForPath:
+/// @param path description
+/// @return id
+- (id)valueForPath:(MSKeyPath *)path { return path.count ? [self valueForKeyPath:path.stringValue] : self; }
+
 /// isEmpty
 /// @return BOOL
 - (BOOL)isEmpty { return ([self count] == 0); }
@@ -254,26 +323,31 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @param levelIndent description
 /// @return NSString *
 - (NSString *)formattedDescriptionWithOptions:(NSUInteger)options levelIndent:(NSUInteger)levelIndent {
+
+  return [self.JSONString stringByShiftingRight:levelIndent];
+
+/*
   NSMutableArray * descriptionComponents = [@[] mutableCopy];
 
   NSUInteger maxKeyDescriptionLength =
-    UnsignedIntegerValue([self.keys valueForKeyPath:@"@max.description.length"]);
+  UnsignedIntegerValue([self.keys valueForKeyPath:@"@max.description.length"]);
   NSString * indentString = [NSString stringWithCharacter:' ' count:levelIndent * 4];
 
-  [self enumerateKeysAndObjectsUsingBlock:
-   ^(id key, id obj, BOOL * stop) {
+  [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
 
     NSString * spacerString = [NSString stringWithCharacter:' '
                                                       count:(maxKeyDescriptionLength
                                                              - [key description].length + 1)];
+
     NSString * keyString = $(@"%@%@: %@", indentString, [key description], spacerString);
-     NSMutableArray * objComponents = [[([obj isKindOfClass:[MSDictionary class]]
-                                         ? [obj formattedDescriptionWithOptions:options
-                                                                    levelIndent:levelIndent]
-                                         : (isDictionaryKind(obj)
-                                            ? [[MSDictionary dictionaryWithDictionary:obj]
-                                               formattedDescriptionWithOptions:options levelIndent:levelIndent]
-                                            : [obj description])) componentsSeparatedByString:@"\n"] mutableCopy];
+
+    NSMutableArray * objComponents = [[([obj isKindOfClass:[MSDictionary class]]
+                                        ? [obj formattedDescriptionWithOptions:options
+                                                                   levelIndent:levelIndent]
+                                        : (isDictionaryKind(obj)
+                                           ? [[MSDictionary dictionaryWithDictionary:obj]
+                                              formattedDescriptionWithOptions:options levelIndent:levelIndent]
+                                           : [obj description])) componentsSeparatedByString:@"\n"] mutableCopy];
     NSMutableString * objString = [objComponents[0] mutableCopy];
 
     if ([objComponents count] > 1) {
@@ -291,6 +365,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   }];
 
   return [descriptionComponents componentsJoinedByString:@"\n"];
+*/
 }
 
 /// objectAtIndexedSubscript:
@@ -489,7 +564,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// replaceKeysUsingKeyMap:
 /// @param keyMap description
 - (void)replaceKeysUsingKeyMap:(NSDictionary *)keyMap {
-  
+
   // Make sure all values are unique
   if ([[keyMap allValues] count] != [[[keyMap allValues] set] count])
     ThrowInvalidArgument(keyMap, "key map values are not all unique");
@@ -586,37 +661,37 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   [self enumerateKeysAndObjectsUsingBlock:
    ^(id key, id obj, BOOL * stop)
-  {
-    NSString * keyString = [key description];
-    dictionary[keyString] = obj;
+   {
+     NSString * keyString = [key description];
+     dictionary[keyString] = obj;
 
-    if (![NSJSONSerialization isValidJSONObject:dictionary]) {
-      [dictionary removeObjectForKey:keyString];
+     if (![NSJSONSerialization isValidJSONObject:dictionary]) {
+       [dictionary removeObjectForKey:keyString];
 
-      if ([obj respondsToSelector:@selector(JSONObject)]) {
-        id jsonObj = [obj JSONObject];
+       if ([obj respondsToSelector:@selector(JSONObject)]) {
+         id jsonObj = [obj JSONObject];
 
-        if ([NSJSONSerialization isValidJSONObject:jsonObj])
-          dictionary[keyString] = jsonObj;
+         if ([NSJSONSerialization isValidJSONObject:jsonObj])
+           dictionary[keyString] = jsonObj;
 
-        else
-          MSLogDebug(@"object of type %@ returned invalid JSON object",
-                     ClassTagStringForInstance(obj));
-      } else if ([obj respondsToSelector:@selector(JSONValue)])   {
-        id jsonValue = [obj JSONValue];
+         else
+           MSLogDebug(@"object of type %@ returned invalid JSON object",
+                      ClassTagStringForInstance(obj));
+       } else if ([obj respondsToSelector:@selector(JSONValue)])   {
+         id jsonValue = [obj JSONValue];
 
-        if ([MSJSONSerialization isValidJSONValue:jsonValue])
-          dictionary[keyString] = jsonValue;
+         if ([MSJSONSerialization isValidJSONValue:jsonValue])
+           dictionary[keyString] = jsonValue;
 
-        else
-          MSLogDebug(@"object of type %@ returned invalid JSON Value",
-                     ClassTagStringForInstance(obj));
-      }
+         else
+           MSLogDebug(@"object of type %@ returned invalid JSON Value",
+                      ClassTagStringForInstance(obj));
+       }
 
-      NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
-               @"Only valid JSON values should have been added to dictionary");
-    }
-  }];
+       NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
+                @"Only valid JSON values should have been added to dictionary");
+     }
+   }];
 
   return dictionary;
 }
@@ -695,7 +770,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
   if (self == otherDictionary) return YES;
   else if (!isMSDictionary(otherDictionary)) return NO;
   else return (  [_keys isEqualToArray:otherDictionary->_keys]
-              && [_values isEqualToArray:otherDictionary->_values]);
+               && [_values isEqualToArray:otherDictionary->_values]);
 }
 
 /// keyEnumerator
@@ -894,7 +969,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 /// removeObjectsForKeys:
 /// @param keyArray description
 - (void)removeObjectsForKeys:(NSArray *)keyArray {
-   BOOL (^test)(id, NSUInteger, BOOL *) = ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
+  BOOL (^test)(id, NSUInteger, BOOL *) = ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
     return [keyArray containsObject:obj];
   };
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "MSKitProtocols.h"
+@class MSKeyPath;
 
 @interface MSDictionary : NSMutableDictionary <MSJSONExport>
 
@@ -37,6 +38,8 @@
 
 - (id)keyForObject:(id)object;
 - (NSUInteger)indexOfObject:(id)object;
+
+- (id)valueForPath:(MSKeyPath *)path;
 
 - (id)popObjectForKey:(id<NSCopying>)key;
 

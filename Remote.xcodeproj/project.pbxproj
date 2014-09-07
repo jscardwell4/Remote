@@ -423,6 +423,7 @@
 		C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47717EF567700DE2F41 /* ImageDetailViewController.m */; };
 		C2F2A47B17EF568E00DE2F41 /* PresetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */; };
 		C2F2A47E17EF569F00DE2F41 /* ManufacturerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */; };
+		C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */; };
 		C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -1033,6 +1034,10 @@
 		C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresetDetailViewController.m; sourceTree = "<group>"; };
 		C2F2A47C17EF569F00DE2F41 /* ManufacturerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManufacturerDetailViewController.h; sourceTree = "<group>"; };
 		C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManufacturerDetailViewController.m; sourceTree = "<group>"; };
+		C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceConnection.h; sourceTree = "<group>"; };
+		C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceConnection.m; sourceTree = "<group>"; };
+		C2F4370719BBAB3500B60FC3 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
+		C2F4370819BBAB3500B60FC3 /* nodes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = nodes.xml; sourceTree = "<group>"; };
 		C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPresetCollectionViewController.h; sourceTree = "<group>"; };
 		C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPresetCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1457,6 +1462,8 @@
 				C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */,
 				C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */,
 				C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */,
+				C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */,
+				C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1849,6 +1856,8 @@
 		C2CA769519BA1E1800ACCD76 /* ISYClient */ = {
 			isa = PBXGroup;
 			children = (
+				C2F4370719BBAB3500B60FC3 /* config.xml */,
+				C2F4370819BBAB3500B60FC3 /* nodes.xml */,
 				C2CA76DD19BA6A3D00ACCD76 /* iPad */,
 				C2CA76DC19BA5C3D00ACCD76 /* parsed_desc.txt */,
 				C2CA76DB19BA5BFF00ACCD76 /* desc.xml */,
@@ -2451,6 +2460,7 @@
 				C25B478816FF8D5E0042B59E /* RockerView.m in Sources */,
 				C25B478916FF8D5E0042B59E /* ModeSelectionView.m in Sources */,
 				C25B478A16FF8D5E0042B59E /* ButtonGroupView.m in Sources */,
+				C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */,
 				C25B478B16FF8D5E0042B59E /* BatteryStatusButtonView.m in Sources */,
 				C25B478C16FF8D5E0042B59E /* ButtonView.m in Sources */,
 				C25B478D16FF8D5E0042B59E /* ConnectionStatusButtonView.m in Sources */,
@@ -2828,6 +2838,7 @@
 				C2CA766F19BA099000ACCD76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2CA76BC19BA1E1900ACCD76 /* Build configuration list for PBXNativeTarget "ISYClient" */ = {
 			isa = XCConfigurationList;
@@ -2836,6 +2847,7 @@
 				C2CA76BE19BA1E1900ACCD76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

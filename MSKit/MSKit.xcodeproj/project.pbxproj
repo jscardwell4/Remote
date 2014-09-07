@@ -25,7 +25,7 @@
 		C222481119B7DDE90093B07C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C20FF1C319AE2C1700D11F33 /* UIKit.framework */; };
 		C222481719B7DDE90093B07C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C222481519B7DDE90093B07C /* InfoPlist.strings */; };
 		C222481919B7DDE90093B07C /* MSKitXML_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C222481819B7DDE90093B07C /* MSKitXML_Tests.m */; };
-		C222482119B7DF890093B07C /* Test.xml in Resources */ = {isa = PBXBuildFile; fileRef = C222482019B7DF890093B07C /* Test.xml */; };
+		C222482119B7DF890093B07C /* Test1.xml in Resources */ = {isa = PBXBuildFile; fileRef = C222482019B7DF890093B07C /* Test1.xml */; };
 		C230F8A219A7CAC400900F0C /* Lumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.a */; };
 		C230F8A419A7CAC400900F0C /* ParseKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F89A19A7CA0300900F0C /* ParseKit.a */; };
 		C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2CE897B18138D6C00555D63 /* MSKit.h */; };
@@ -198,6 +198,14 @@
 		C23A0F0819A7A77A002BF2B6 /* MSTouchReporterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892818138CF700555D63 /* MSTouchReporterView.m */; };
 		C23A0F0919A7A77A002BF2B6 /* MSView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892A18138CF700555D63 /* MSView.m */; };
 		C28254B319B7FCD100B50CBE /* libMSKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23A0D5319A7A459002BF2B6 /* libMSKit.a */; };
+		C2F4370119BB78E100B60FC3 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C20FF1DF19AE3D7900D11F33 /* libicucore.dylib */; };
+		C2F4370419BB813F00B60FC3 /* MSKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F4370319BB813F00B60FC3 /* MSKeyPath.m */; };
+		C2F4370519BB815600B60FC3 /* MSKeyPath.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2F4370219BB813F00B60FC3 /* MSKeyPath.h */; };
+		C2F4370B19BBAB4400B60FC3 /* Test2.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370919BBAB4400B60FC3 /* Test2.xml */; };
+		C2F4370C19BBAB4400B60FC3 /* Test3.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370A19BBAB4400B60FC3 /* Test3.xml */; };
+		C2F4371019BBC25900B60FC3 /* Test1.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370D19BBC25900B60FC3 /* Test1.json */; };
+		C2F4371119BBC25900B60FC3 /* Test2.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370E19BBC25900B60FC3 /* Test2.json */; };
+		C2F4371219BBC25900B60FC3 /* Test3.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370F19BBC25900B60FC3 /* Test3.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -254,6 +262,7 @@
 			files = (
 				C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */,
 				C23A0D7A19A7A5D9002BF2B6 /* CALayer+MSKitAdditions.h in CopyFiles */,
+				C2F4370519BB815600B60FC3 /* MSKeyPath.h in CopyFiles */,
 				C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */,
 				C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */,
 				C23A0D7E19A7A5D9002BF2B6 /* NSDictionary+MSKitAdditions.h in CopyFiles */,
@@ -371,7 +380,7 @@
 		C222481619B7DDE90093B07C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C222481819B7DDE90093B07C /* MSKitXML_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSKitXML_Tests.m; sourceTree = "<group>"; };
 		C222481A19B7DDE90093B07C /* MSKitXML Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSKitXML Tests-Prefix.pch"; sourceTree = "<group>"; };
-		C222482019B7DF890093B07C /* Test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test.xml; sourceTree = "<group>"; };
+		C222482019B7DF890093B07C /* Test1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test1.xml; sourceTree = "<group>"; };
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
 		C23A0D5319A7A459002BF2B6 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -545,6 +554,13 @@
 		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
+		C2F4370219BB813F00B60FC3 /* MSKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKeyPath.h; sourceTree = "<group>"; };
+		C2F4370319BB813F00B60FC3 /* MSKeyPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKeyPath.m; sourceTree = "<group>"; };
+		C2F4370919BBAB4400B60FC3 /* Test2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test2.xml; sourceTree = "<group>"; };
+		C2F4370A19BBAB4400B60FC3 /* Test3.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Test3.xml; sourceTree = "<group>"; };
+		C2F4370D19BBC25900B60FC3 /* Test1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test1.json; sourceTree = "<group>"; };
+		C2F4370E19BBC25900B60FC3 /* Test2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test2.json; sourceTree = "<group>"; };
+		C2F4370F19BBC25900B60FC3 /* Test3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test3.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -564,6 +580,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F4370119BB78E100B60FC3 /* libicucore.dylib in Frameworks */,
 				C28254B319B7FCD100B50CBE /* libMSKit.a in Frameworks */,
 				C222480F19B7DDE90093B07C /* XCTest.framework in Frameworks */,
 				C222481119B7DDE90093B07C /* UIKit.framework in Frameworks */,
@@ -624,7 +641,12 @@
 		C222481319B7DDE90093B07C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C222482019B7DF890093B07C /* Test.xml */,
+				C2F4370D19BBC25900B60FC3 /* Test1.json */,
+				C2F4370E19BBC25900B60FC3 /* Test2.json */,
+				C2F4370F19BBC25900B60FC3 /* Test3.json */,
+				C222482019B7DF890093B07C /* Test1.xml */,
+				C2F4370919BBAB4400B60FC3 /* Test2.xml */,
+				C2F4370A19BBAB4400B60FC3 /* Test3.xml */,
 				C222481419B7DDE90093B07C /* MSKitXML Tests-Info.plist */,
 				C222481519B7DDE90093B07C /* InfoPlist.strings */,
 				C222481A19B7DDE90093B07C /* MSKitXML Tests-Prefix.pch */,
@@ -923,6 +945,8 @@
 				C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */,
 				C222480619B781FD0093B07C /* MSXMLParserDelegate.h */,
 				C222480719B781FD0093B07C /* MSXMLParserDelegate.m */,
+				C2F4370219BB813F00B60FC3 /* MSKeyPath.h */,
+				C2F4370319BB813F00B60FC3 /* MSKeyPath.m */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1096,8 +1120,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F4370B19BBAB4400B60FC3 /* Test2.xml in Resources */,
+				C2F4371219BBC25900B60FC3 /* Test3.json in Resources */,
+				C2F4370C19BBAB4400B60FC3 /* Test3.xml in Resources */,
+				C2F4371019BBC25900B60FC3 /* Test1.json in Resources */,
 				C222481719B7DDE90093B07C /* InfoPlist.strings in Resources */,
-				C222482119B7DF890093B07C /* Test.xml in Resources */,
+				C2F4371119BBC25900B60FC3 /* Test2.json in Resources */,
+				C222482119B7DF890093B07C /* Test1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1168,6 +1197,7 @@
 				C23A0EE219A7A77A002BF2B6 /* MSPopupBarButton.m in Sources */,
 				C222480819B781FD0093B07C /* MSXMLParserDelegate.m in Sources */,
 				C23A0EE319A7A77A002BF2B6 /* MSPopupBarButtonItem.m in Sources */,
+				C2F4370419BB813F00B60FC3 /* MSKeyPath.m in Sources */,
 				C23A0EE419A7A77A002BF2B6 /* MSScrollWheel.m in Sources */,
 				C23A0EE519A7A77A002BF2B6 /* MSKitLoggingFunctions.m in Sources */,
 				C23A0EE619A7A77A002BF2B6 /* MSKitMiscellaneousFunctions.m in Sources */,
@@ -1395,6 +1425,13 @@
 				INFOPLIST_FILE = "MSKitXML Tests/MSKitXML Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1434,6 +1471,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "MSKitXML Tests/MSKitXML Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;

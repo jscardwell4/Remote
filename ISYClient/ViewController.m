@@ -14,7 +14,7 @@ static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
+static NSString const * kBaseURL = @"http://192.168.1.9";
 
 @interface ViewController () <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UITextFieldDelegate>
 
@@ -30,6 +30,8 @@ static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
 
 @property (strong, nonatomic) dispatch_source_t   groupSource;
 @property (strong, nonatomic) NSURLConnection   * deviceConnection;
+
+@property (strong, nonatomic) NSMutableData     * dataReceived;
 
 @property (copy) NSString * location;
 @property (copy) NSURL * baseURL;
@@ -154,6 +156,8 @@ static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
 
   });
 
+  if (StringIsEmpty(string)) return;
+
   [MainQueue addOperationWithBlock:^{
 
     NSUInteger len = 0;
@@ -202,8 +206,6 @@ static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
   dispatch_source_set_event_handler(_groupSource, ^{
 
     if (StringIsNotEmpty(weakself.location)) {
-      NSLog(@"canceling source since we have a location already…");
-      dispatch_source_cancel(weakself.groupSource);
       return;
     }
 
@@ -444,6 +446,8 @@ static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
 - (void)setBaseURL:(NSURL *)baseURL {
   @synchronized(self) {
     _baseURL = baseURL;
+    if (self.groupSource && !dispatch_source_testcancel(self.groupSource))
+      dispatch_source_cancel(self.groupSource);
     assert(IsMainQueue);
     self.addressValue.text = [_baseURL.absoluteString substringFromIndex:7];
     self.portValue.text    = @"80";
@@ -489,9 +493,22 @@ static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
 /// @param data description
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 
-  MSDictionary * parsedXML = [MSDictionary dictionaryByParsingXML:data];
-  MSLogDebug(@"parsed response: %@", [parsedXML formattedDescription]);
-  [self appendMessage:[parsedXML formattedDescription]];
+  NSString * dataString = [NSString stringWithData:data];
+  MSLogDebug(@"string response:\n%@", dataString);
+
+  if (!self.dataReceived) self.dataReceived = [NSMutableData dataWithData:data];
+  else [self.dataReceived appendData:data];
+
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+  MSLogDebug(@"connection finished loading");
+  if (self.dataReceived) {
+    MSDictionary * parsedXML = [MSDictionary dictionaryByParsingXML:self.dataReceived];
+    MSLogDebug(@"parsed response: %@", [parsedXML formattedDescription]);
+    [self appendMessage:[parsedXML formattedDescription]];
+    self.dataReceived = nil;
+  }
 
 }
 
@@ -503,9 +520,20 @@ static NSString const * kBaseURL = nil; //@"http://192.168.1.9";
 /// textFieldShouldEndEditing:
 /// @param textField description
 /// @return BOOL
+/*
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 
   NSString * text = [textField.text hasPrefix:@"/"] ? [textField.text substringFromIndex:1] : textField.text;
+  [self sendRequestWithText:text];
+
+  return YES;
+}
+*/
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  NSString * text = ([textField.text hasPrefix:@"/"]
+                     ? [textField.text substringFromIndex:1]
+                     : textField.text);
   [self sendRequestWithText:text];
 
   return YES;
