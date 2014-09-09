@@ -44,6 +44,10 @@
 
 + (NSString *)stringWithData:(NSData *)data;
 
+- (NSUInteger)unsignedIntegerValue;
+
+- (unsigned int)uintValue;
+
 /// Returns the character at the specified index wrapped by boxed expression
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
 
@@ -162,7 +166,12 @@
 
 - (void)removeCharactersFromSet:(NSCharacterSet *)characterSet;
 
+- (void)replaceOccurrencesOfString:(NSString *)string withString:(NSString *)replacementString;
+
 - (void)replaceOccurrencesOfStringsWithDictionary:(NSDictionary *)replacements;
+
+- (void)shiftRight:(NSUInteger)shiftAmount;
+- (void)shiftRight:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine;
 
 @end
 

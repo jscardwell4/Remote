@@ -26,9 +26,11 @@ NS_ENUM(uint8_t, ConnectionManagerErrorCode) {
   ConnectionManagerErrorNoWifi,
   ConnectionManagerErrorInvalidID,
   ConnectionManagerErrorCommandEmpty,
+  ConnectionManagerErrorCommandHalted,
   ConnectionManagerErrorConnectionExists,
   ConnectionManagerErrorInvalidNetworkDevice,
   ConnectionManagerErrorConnectionInProgress,
+  ConnectionManagerErrorNetworkDeviceError,
   ConnectionManagerErrorAggregate
 };
 

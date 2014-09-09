@@ -6,10 +6,28 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
+
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
 @interface MacroCommandOperation : CommandOperation @end
+
+@interface MacroCommand () {
+  NSOperationQueue * _queue;
+  NSArray          * _operations;
+}
+/// Stores the `Command` objects to be executed in order when the `MacroCommand` is executed.
+@property (nonatomic, strong) NSOrderedSet * commands;
+/// Queue maintained for executing commands
+@property (nonatomic, readonly) NSOperationQueue * queue;
+@end
+
+@interface MacroCommand (CoreDataGeneratedAccessors)
+@property (nonatomic) NSMutableOrderedSet * primitiveCommands;
+@end
+
 
 @implementation MacroCommand
 

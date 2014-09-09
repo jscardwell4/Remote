@@ -8,7 +8,7 @@
 
 #import "NetworkDevice.h"
 #import "CoreDataManager.h"
-#import "NDiTachDevice.h"
+#import "ITachDevice.h"
 #import "ISYDevice.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -42,7 +42,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return instancetype
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
   if (self == [NetworkDevice class] && [@"itach" isEqualToString:data[@"type"]])
-    return [NDiTachDevice importObjectFromData:data context:moc];
+    return [ITachDevice importObjectFromData:data context:moc];
   else if (self == [NetworkDevice class] && [@"isy" isEqualToString:data[@"type"]])
     return [ISYDevice importObjectFromData:data context:moc];
   else

@@ -18,6 +18,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSArray (MSKitAdditions)
 
+- (NSArray *)allValues { return self; }
 
 /// _lastObjectForKeyPath:
 /// @param keyPath description
@@ -110,6 +111,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   return array;
 }
+
+/// uniqued
+/// @return NSArray *
+- (NSArray *)uniqued { return [[self set] allObjects]; }
 
 /// arrayFromRange:
 /// @param range description
@@ -336,6 +341,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     }
   }
 }
+
+/// unique
+- (void)unique { [self setArray:[self uniqued]]; }
 
 /// map:
 /// @param block description

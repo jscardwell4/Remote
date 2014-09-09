@@ -7,9 +7,20 @@
 //
 #import "Command_Private.h"
 #import "ComponentDevice.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
+
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
+
+@interface PowerCommand (CoreDataGeneratedAccessors)
+
+@property (nonatomic) ComponentDevice * primitiveDevice;
+@property (nonatomic) NSNumber        * primitiveState;
+
+@end
+
 
 @implementation PowerCommand
 

@@ -49,3 +49,15 @@
 
 @end
 
+@protocol MSKeyContaining <NSObject>
+
+- (BOOL)hasKey:(id<NSCopying>)key;
+- (id)valueForKey:(id<NSCopying>)key;
+
+@end
+
+@protocol MSKeySearchable <NSObject>
+
+- (NSArray *)allValues;
+
+@end

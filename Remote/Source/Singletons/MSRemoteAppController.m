@@ -84,6 +84,7 @@ static const int msLogContext = 0;
 
   [MSLog addTaggingTTYLogger];
   DDTTYLogger * ttyLogger = [DDTTYLogger sharedInstance];
+  ((MSLogFormatter *)ttyLogger.logFormatter).includeObjectName = NO;
 
   assert(ttyLogger);
   assert([ttyLogger colorsEnabled]);

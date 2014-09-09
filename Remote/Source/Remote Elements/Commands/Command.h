@@ -201,7 +201,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Sending IR Commands
 ////////////////////////////////////////////////////////////////////////////////
-@class IRCode, NetworkDevice;
+@class IRCode, NetworkDevice, ITachDevice;
 
 /**
  * `SendIRCommand` subclasses `Command` to send IR commands via <ConnectionManager> to networked
@@ -249,7 +249,7 @@
 @property (nonatomic, readonly) ComponentDevice * device;
 
 /// Wrapper for `code.device.networkDevice`
-@property (nonatomic, readonly) NetworkDevice * networkDevice;
+@property (nonatomic, readonly) ITachDevice * networkDevice;
 
 @end
 

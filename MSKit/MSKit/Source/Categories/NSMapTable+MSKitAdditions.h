@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MSKitProtocols.h"
 
-@interface NSMapTable (MSKitAdditions)
+@interface NSMapTable (MSKitAdditions) <MSKeySearchable, MSKeyContaining>
 
 + (id)weakToWeakObjectsMapTableFromDictionary:(NSDictionary *)dictionary;
 + (id)weakToStrongObjectsMapTableFromDictionary:(NSDictionary *)dictionary;

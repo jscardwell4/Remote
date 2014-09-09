@@ -11,27 +11,46 @@
 #import "Lumberjack/Lumberjack.h"
 #import "MSKit/MSKit.h"
 #import "MSRemoteMacros.h"
-
 #import "NetworkDevice.h"
 
-
-MSEXTERN_STRING ISYDeviceMulticastGroupAddress;
-MSEXTERN_STRING ISYDeviceMulticastGroupPort;
+@class ISYDeviceNode;
 
 @interface ISYDevice : NetworkDevice
 
-+ (void)deviceFromLocation:(NSString *)location
-                   context:(NSManagedObjectContext *)moc
-                completion:(void(^)(ISYDevice * device, NSError * error))completion;
+@property (nonatomic, copy,   readonly) NSString * modelNumber;
+@property (nonatomic, copy,   readonly) NSString * modelName;
+@property (nonatomic, copy,   readonly) NSString * modelDescription;
+@property (nonatomic, copy,   readonly) NSString * manufacturerURL;
+@property (nonatomic, copy,   readonly) NSString * manufacturer;
+@property (nonatomic, copy,   readonly) NSString * friendlyName;
+@property (nonatomic, copy,   readonly) NSString * deviceType;
+@property (nonatomic, copy,   readonly) NSString * baseURL;
+@property (nonatomic, strong, readonly) NSSet    * nodes;
 
-@property (nonatomic, copy, readonly) NSString * modelNumber;
-@property (nonatomic, copy, readonly) NSString * modelName;
-@property (nonatomic, copy, readonly) NSString * modelDescription;
-@property (nonatomic, copy, readonly) NSString * manufacturerURL;
-@property (nonatomic, copy, readonly) NSString * manufacturer;
-@property (nonatomic, copy, readonly) NSString * friendlyName;
-@property (nonatomic, copy, readonly) NSString * deviceType;
-@property (nonatomic, copy, readonly) NSString * presentationURL;
-@property (nonatomic, copy, readonly) NSString * baseURL;
+
+@end
+
+
+@interface ISYDeviceNode : NamedModelObject
+
+@property (nonatomic, copy,   readonly) NSNumber  * flag;
+@property (nonatomic, copy,   readonly) NSString  * address;
+@property (nonatomic, copy,   readonly) NSString  * type;
+@property (nonatomic, copy,   readonly) NSNumber  * enabled;
+@property (nonatomic, copy,   readonly) NSString  * pnode;
+@property (nonatomic, copy,   readonly) NSString  * propertyID;
+@property (nonatomic, copy,   readonly) NSString  * propertyValue;
+@property (nonatomic, copy,   readonly) NSString  * propertyUOM;
+@property (nonatomic, copy,   readonly) NSString  * propertyFormatted;
+@property (nonatomic, strong, readonly) ISYDevice * device;
+
+@end
+
+@interface ISYDeviceGroup : NamedModelObject
+
+@property (nonatomic, copy,   readonly) NSNumber  * flag;
+@property (nonatomic, copy,   readonly) NSString  * address;
+@property (nonatomic, copy,   readonly) NSNumber  * family;
+@property (nonatomic, strong, readonly) NSSet     * members;
 
 @end

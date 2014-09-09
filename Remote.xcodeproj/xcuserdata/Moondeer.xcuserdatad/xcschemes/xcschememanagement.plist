@@ -71,6 +71,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>iTachClient.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
 		<key>isy_client.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -135,6 +140,16 @@
 			<true/>
 		</dict>
 		<key>C2D87CD4171A3AFB00E61287</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2F940F619BE5E90007B5CC1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2F9411219BE5E90007B5CC1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

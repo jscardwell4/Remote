@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MSKitProtocols.h"
 
-@interface NSPointerArray (MSKitAdditions)
+@interface NSPointerArray (MSKitAdditions) <MSKeySearchable>
 
 - (void)setObjectsFromArray:(NSArray *)array;
 - (void)removePointerAtIndex:(NSUInteger)index compact:(BOOL)compact;

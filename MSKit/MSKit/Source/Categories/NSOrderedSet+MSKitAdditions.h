@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MSKitProtocols.h"
 
-@interface NSOrderedSet (MSKitAdditions) <MSJSONExport>
+@interface NSOrderedSet (MSKitAdditions) <MSJSONExport, MSKeySearchable>
 
 @property (nonatomic, readonly) BOOL isEmpty;
 

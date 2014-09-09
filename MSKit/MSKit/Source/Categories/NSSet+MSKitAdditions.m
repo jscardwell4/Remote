@@ -8,12 +8,15 @@
 
 #import "NSSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
+#import "MSLog.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation NSSet (MSKitAdditions)
+
+- (NSArray *)allValues { return [self allObjects]; }
 
 - (BOOL)isEmpty { return self.count == 0; }
 

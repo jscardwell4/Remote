@@ -8,11 +8,32 @@
 #import "Command_Private.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
-#import "NetworkDevice.h"
+#import "ITachDevice.h"
+#import "RemoteElementImportSupportFunctions.h"
+#import "RemoteElementExportSupportFunctions.h"
+
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel,msLogContext)
+
+@interface SendIRCommand () {
+@private
+  int16_t    __port;
+  int16_t    __offset;
+  int16_t    __repeatCount;
+  int64_t    __frequency;
+  NSString * __pattern;
+  NSString * __name;
+  int16_t    _portOverride;
+}
+@end
+
+@interface SendIRCommand (CoreDataGeneratedAccessors)
+
+@property (nonatomic) IRCode * primitiveCode;
+
+@end
 
 @implementation SendIRCommand
 
@@ -70,7 +91,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 - (ComponentDevice *)device { return self.primitiveCode.device; }
 
-- (NetworkDevice *)networkDevice { return self.primitiveCode.device.networkDevice; }
+- (ITachDevice *)networkDevice { return (ITachDevice *)self.primitiveCode.device.networkDevice; }
 
 - (int16_t)port { return __port; }
 

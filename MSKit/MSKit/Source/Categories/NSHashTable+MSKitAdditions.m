@@ -10,6 +10,8 @@
 #import "NSSet+MSKitAdditions.h"
 @implementation NSHashTable (MSKitAdditions)
 
+- (NSArray *)allValues { return self.allObjects; }
+
 - (void)enumerateObjectsUsingBlock:(void (^)(id obj, BOOL *stop))block {
     [[self setRepresentation] enumerateObjectsUsingBlock:block];
 }

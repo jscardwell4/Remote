@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
+#import "MSKitProtocols.h"
+
 NSString * MSNonce();
 
 void MSRunSyncOnMain(dispatch_block_t block);
@@ -18,3 +20,6 @@ BOOL MSSelectorInProtocol(SEL selector, Protocol * protocol, BOOL isRequired, BO
 
 NSString * classNametagWithSuffix(NSString *suffix, id obj);
 #define ClassNametagWithSuffix(SUFFIX) classNametagWithSuffix(SUFFIX, self)
+
+NSArray * findValuesForKeyInContainer(id<NSCopying>key, id<MSKeySearchable>container);
+id        findFirstValueForKeyInContainer(id<NSCopying>key, id<MSKeySearchable>container);

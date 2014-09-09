@@ -10,6 +10,7 @@
 #import "RemoteElementView.h"
 #import "RemoteViewController.h"
 #import "MSRemoteAppController.h"
+#import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -19,6 +20,13 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 // #define kSystemKeyMin 0
 
 BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 && (NSInteger)type < 6); }
+
+@interface SystemCommand (CoreDataGeneratedAccessors)
+
+/// Specifies the action performed by the system command
+@property (nonatomic) NSNumber * primitiveType;
+
+@end
 
 
 @interface SystemCommandOperation : CommandOperation @end

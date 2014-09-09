@@ -29,10 +29,4 @@
                                  port:(NSString *)port
                              delegate:(id<NetworkDeviceConnectionDelegate>)delegate;
 
-/// sendPacket:completion:
-/// @param packet description
-/// @param completion description
-- (void)sendPacket:(NSString *)packet completion:(void (^)(BOOL success, NSError * error))completion;
-
-
 @end

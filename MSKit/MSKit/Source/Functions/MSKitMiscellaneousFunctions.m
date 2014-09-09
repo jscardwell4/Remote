@@ -9,6 +9,7 @@
 #import "MSKitMiscellaneousFunctions.h"
 #import <objc/runtime.h>
 #import "NSObject+MSKitAdditions.h"
+#import "MSKitMacros.h"
 
 NSString * classNametagWithSuffix(NSString *suffix, id obj) {
   return $(@"%@%@", [obj className], (suffix ?: @""));
@@ -74,4 +75,25 @@ BOOL MSSelectorInProtocol(SEL selector, Protocol * protocol, BOOL isRequired, BO
     }
 
     return selectorInProtocol;
+}
+
+NSArray * findValuesForKeyInContainer(id<NSCopying>key, id<MSKeySearchable>container) {
+
+  NSMutableArray * values = [@[] mutableCopy];
+
+  if ([container conformsToProtocol:@protocol(MSKeyContaining)]) {
+    id<MSKeyContaining> keyedContainer = (id<MSKeyContaining>)container;
+    if ([keyedContainer hasKey:key]) [values addObject:[keyedContainer valueForKey:key]];
+  }
+
+  for (id value in [container allValues]) {
+    if ([value conformsToProtocol:@protocol(MSKeySearchable)])
+    [values addObjectsFromArray:findValuesForKeyInContainer(key, (id<MSKeySearchable>)value)];
+  }
+
+  return values;
+}
+
+id findFirstValueForKeyInContainer(id<NSCopying>key, id<MSKeySearchable>container) {
+  return [findValuesForKeyInContainer(key, container) firstObject];
 }

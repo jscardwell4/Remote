@@ -10,11 +10,15 @@
 #import "NetworkDeviceMulticastConnection.h"
 #import "ISYDevice.h"
 #import "Command.h"
+#import "ISYDeviceConnection.h"
 #import "ConnectionManager.h"
 
-static int ddLogLevel   = LOG_LEVEL_INFO;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 #pragma unused(ddLogLevel, msLogContext)
+
+MSSTATIC_STRING_CONST kISYMulticastGroupAddress = @"239.255.255.250";
+MSSTATIC_STRING_CONST kISYMulticastGroupPort    = @"1900";
 
 @interface ISYConnectionManager () <NetworkDeviceConnectionDelegate>
 
@@ -54,7 +58,7 @@ static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTE
     manager = [self new];
 
     manager.requestLog           = [@{} mutableCopy];
-    manager.deviceConnections    = [@{} mutableCopy];
+    manager.deviceConnections    = [@[] mutableCopy];
     manager.connectionCallbacks  = [@{} mutableCopy];
     manager.networkDevices       = [[ISYDevice findAll] mutableCopy] ?: [@[] mutableCopy];
     manager.beaconsReceived      = [NSMutableSet setWithCapacity:5];
@@ -64,8 +68,8 @@ static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTE
     ////////////////////////////////////////////////////////////////////////////////
 
     manager.multicastConnection =
-    [NetworkDeviceMulticastConnection connectionWithAddress:ISYDeviceMulticastGroupAddress
-                                                       port:ISYDeviceMulticastGroupPort
+    [NetworkDeviceMulticastConnection connectionWithAddress:kISYMulticastGroupAddress
+                                                       port:kISYMulticastGroupPort
                                                    delegate:manager];
 
 
@@ -218,42 +222,28 @@ static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTE
   NSString * location = entries[@"LOCATION"];
 
   // Check if device has already been discovered
-  if (location && ![self.beaconsReceived containsObject:location]) {
+  if ([location hasSuffix:@"/desc"] && ![self.beaconsReceived containsObject:location]) {
 
     // Add to list of received beacons
     [self.beaconsReceived addObject:location];
 
+    NSString * baseURL = [location stringByReplacingOccurrencesOfString:@"/desc" withString:@""];
     __weak ISYConnectionManager * weakself = self;
 
-    [ISYDevice deviceFromLocation:location
-                          context:[CoreDataManager defaultContext]
-                       completion:^(ISYDevice *device, NSError *error)
-    {
+    [ISYDeviceConnection connectionWithBaseURL:[NSURL URLWithString:baseURL]
+                                    completion:^(ISYDeviceConnection *connection)
+     {
+       assert(IsMainQueue);
 
-      if (!MSHandleErrors(error) && device)
-        [CoreDataManager saveWithBlock:nil completion:^(BOOL success, NSError * error) {
+       if (connection) {
 
-          MSHandleErrors(error);
+         assert([weakself.deviceConnections firstObjectCommonWithArray:@[connection]] == nil);
+         [weakself.deviceConnections addObject:connection];
+         [[weakself class] stopDetectingDevices:nil];
 
-          // Post notification of discovery if fetch/creation of network device was successful
-          if (success)
-            [MainQueue addOperationWithBlock:^{
+       }
 
-              MSLogInfoWeakTag(@"network device fetched/created:\n%@\n", device);
-
-              [weakself.networkDevices addObject:device];
-              [NotificationCenter postNotificationName:CMNetworkDeviceDiscoveryNotification
-                                                object:[weakself class]
-                                              userInfo:@{ CMNetworkDeviceKey : device.uuid }];
-
-              [[weakself class] stopDetectingDevices:nil];
-
-            }];
-          
-        }];
-      
-    }];
-
+     }];
 
   }
 

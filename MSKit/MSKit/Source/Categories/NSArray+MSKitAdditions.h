@@ -14,7 +14,7 @@
 //typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
 
-@interface NSArray (MSKitAdditions) <MSJSONExport>
+@interface NSArray (MSKitAdditions) <MSJSONExport, MSKeySearchable>
 
 @property (nonatomic, readonly) BOOL isEmpty;
 
@@ -41,6 +41,7 @@
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;
 - (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate;
 - (NSArray *)flattened;
+- (NSArray *)uniqued;
 - (NSArray *)mapped:(id (^)(id obj, NSUInteger idx))block;
 
 - (void)makeObjectsPerformSelectorBlock:(void (^)(id object))block;
@@ -56,6 +57,7 @@
 - (void)replaceAllObjectsWithNull;
 - (void)compact;
 - (void)flatten;
+- (void)unique;
 @end
 
 #define NSArrayOfVariableNames(...) \

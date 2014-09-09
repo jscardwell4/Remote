@@ -8,12 +8,15 @@
 
 #import "NSOrderedSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
+#import "MSLog.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation NSOrderedSet (MSKitAdditions)
+
+- (NSArray *)allValues { return self.array; }
 
 - (BOOL)isEmpty { return self.count == 0; }
 

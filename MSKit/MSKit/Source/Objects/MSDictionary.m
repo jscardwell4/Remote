@@ -324,48 +324,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return NSString *
 - (NSString *)formattedDescriptionWithOptions:(NSUInteger)options levelIndent:(NSUInteger)levelIndent {
 
-  return [self.JSONString stringByShiftingRight:levelIndent];
+  NSMutableString * description = [self.JSONString mutableCopy];
+  [description replaceRegEx:@"(?<=\\s)[\\{\\[]|[\\]\\}],?$|,$|\\b\\\"|\\\"\\b|\\\",?$|(?<=: )\\\"|^[\\{\\[]"
+                 withString:@""];
+  [description shiftRight:levelIndent];
 
-/*
-  NSMutableArray * descriptionComponents = [@[] mutableCopy];
+  return description;
 
-  NSUInteger maxKeyDescriptionLength =
-  UnsignedIntegerValue([self.keys valueForKeyPath:@"@max.description.length"]);
-  NSString * indentString = [NSString stringWithCharacter:' ' count:levelIndent * 4];
-
-  [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
-
-    NSString * spacerString = [NSString stringWithCharacter:' '
-                                                      count:(maxKeyDescriptionLength
-                                                             - [key description].length + 1)];
-
-    NSString * keyString = $(@"%@%@: %@", indentString, [key description], spacerString);
-
-    NSMutableArray * objComponents = [[([obj isKindOfClass:[MSDictionary class]]
-                                        ? [obj formattedDescriptionWithOptions:options
-                                                                   levelIndent:levelIndent]
-                                        : (isDictionaryKind(obj)
-                                           ? [[MSDictionary dictionaryWithDictionary:obj]
-                                              formattedDescriptionWithOptions:options levelIndent:levelIndent]
-                                           : [obj description])) componentsSeparatedByString:@"\n"] mutableCopy];
-    NSMutableString * objString = [objComponents[0] mutableCopy];
-
-    if ([objComponents count] > 1) {
-      [objComponents removeObjectAtIndex:0];
-      NSString * meatString = $(@"\n%@%@",
-                                indentString,
-                                [NSString stringWithCharacter:' '
-                                                        count:maxKeyDescriptionLength + 3]);
-      [objString appendFormat:@"%@%@",
-       meatString,
-       [objComponents componentsJoinedByString:meatString]];
-    }
-
-    [descriptionComponents addObject:$(@"%@%@", keyString, objString)];
-  }];
-
-  return [descriptionComponents componentsJoinedByString:@"\n"];
-*/
 }
 
 /// objectAtIndexedSubscript:
@@ -655,6 +620,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// JSONObject
 /// @return id
 - (id)JSONObject {
+
   if ([NSJSONSerialization isValidJSONObject:self]) return self;
 
   MSDictionary * dictionary = [MSDictionary dictionaryWithCapacity:[self count]];

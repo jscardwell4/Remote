@@ -8,9 +8,9 @@
 #import "ConnectionManager.h"
 #import "NetworkDevice.h"
 #import "SettingsManager.h"
-#import "GlobalCacheConnectionManager.h"
+#import "ITachConnectionManager.h"
 #import "ISYConnectionManager.h"
-#import "NDiTachDevice.h"
+#import "ITachDevice.h"
 #import "ISYDevice.h"
 #import "Command.h"
 #import "IRCode.h"
@@ -88,7 +88,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
     ////////////////////////////////////////////////////////////////////////////////
 
     void (^backgroundHandler)(MSNotificationReceptionist *) = ^(MSNotificationReceptionist * receptionist) {
-      [GlobalCacheConnectionManager suspend];
+      [ITachConnectionManager suspend];
       [ISYConnectionManager suspend];
     };
 
@@ -103,7 +103,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
     ////////////////////////////////////////////////////////////////////////////////
 
     void (^foregroundHandler)(MSNotificationReceptionist *) = ^(MSNotificationReceptionist * receptionist) {
-      [GlobalCacheConnectionManager resume];
+      [ITachConnectionManager resume];
       [ISYConnectionManager resume];
     };
 
@@ -152,7 +152,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
   };
 
-  [GlobalCacheConnectionManager startDetectingDevices:completionWrapper];
+  [ITachConnectionManager startDetectingDevices:completionWrapper];
   [ISYConnectionManager startDetectingDevices:completionWrapper];
 
   MSLogInfo(@"listening for network devices…");
@@ -193,7 +193,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
     
   };
 
-  [GlobalCacheConnectionManager stopDetectingDevices:completionWrapper];
+  [ITachConnectionManager stopDetectingDevices:completionWrapper];
   [ISYConnectionManager stopDetectingDevices:completionWrapper];
   
   MSLogInfo(@"no longer listenting for network devices…");
@@ -243,7 +243,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
     // Handle IR command
     else if (   [command isKindOfClass:[SendIRCommand class]]
-             && [((SendIRCommand *)command).networkDevice isKindOfClass:[NDiTachDevice class]])
+             && [((SendIRCommand *)command).networkDevice isKindOfClass:[ITachDevice class]])
     {
 
       // Just execute completion block after a brief delay if we are simulating commands
@@ -257,7 +257,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
       // Otherwise, if we are not simulating and we have a valid network device, send the command
       else if (!manager.simulateCommandSuccess)
-        [GlobalCacheConnectionManager sendCommand:(SendIRCommand *)command completion:completion];
+        [ITachConnectionManager sendCommand:(SendIRCommand *)command completion:completion];
 
     }
 
@@ -331,7 +331,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
  @return BOOL
 
  */
-+ (BOOL)isDetectingNetworkDevices { return [GlobalCacheConnectionManager isDetectingNetworkDevices]; }
++ (BOOL)isDetectingNetworkDevices { return [ITachConnectionManager isDetectingNetworkDevices]; }
 
 
 @end

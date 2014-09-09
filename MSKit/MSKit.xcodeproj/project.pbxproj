@@ -206,6 +206,10 @@
 		C2F4371019BBC25900B60FC3 /* Test1.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370D19BBC25900B60FC3 /* Test1.json */; };
 		C2F4371119BBC25900B60FC3 /* Test2.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370E19BBC25900B60FC3 /* Test2.json */; };
 		C2F4371219BBC25900B60FC3 /* Test3.json in Resources */ = {isa = PBXBuildFile; fileRef = C2F4370F19BBC25900B60FC3 /* Test3.json */; };
+		C2F9414519BE7D01007B5CC1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9414219BE7D01007B5CC1 /* GCDAsyncSocket.m */; };
+		C2F9414619BE7D01007B5CC1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9414419BE7D01007B5CC1 /* GCDAsyncUdpSocket.m */; };
+		C2F9414919BE7D47007B5CC1 /* GCDAsyncSocket.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */; };
+		C2F9414A19BE7D47007B5CC1 /* GCDAsyncUdpSocket.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2F9414319BE7D01007B5CC1 /* GCDAsyncUdpSocket.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,6 +266,8 @@
 			files = (
 				C23A0D7919A7A5D9002BF2B6 /* MSKit.h in CopyFiles */,
 				C23A0D7A19A7A5D9002BF2B6 /* CALayer+MSKitAdditions.h in CopyFiles */,
+				C2F9414919BE7D47007B5CC1 /* GCDAsyncSocket.h in CopyFiles */,
+				C2F9414A19BE7D47007B5CC1 /* GCDAsyncUdpSocket.h in CopyFiles */,
 				C2F4370519BB815600B60FC3 /* MSKeyPath.h in CopyFiles */,
 				C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */,
 				C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */,
@@ -561,6 +567,10 @@
 		C2F4370D19BBC25900B60FC3 /* Test1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test1.json; sourceTree = "<group>"; };
 		C2F4370E19BBC25900B60FC3 /* Test2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test2.json; sourceTree = "<group>"; };
 		C2F4370F19BBC25900B60FC3 /* Test3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test3.json; sourceTree = "<group>"; };
+		C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		C2F9414219BE7D01007B5CC1 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		C2F9414319BE7D01007B5CC1 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		C2F9414419BE7D01007B5CC1 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -694,6 +704,7 @@
 		C2CE885018138C4900555D63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C2F9414019BE7D01007B5CC1 /* CocoaAsyncSocket */,
 				C20FF1DF19AE3D7900D11F33 /* libicucore.dylib */,
 				C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */,
 				C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */,
@@ -985,6 +996,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		C2F9414019BE7D01007B5CC1 /* CocoaAsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */,
+				C2F9414219BE7D01007B5CC1 /* GCDAsyncSocket.m */,
+				C2F9414319BE7D01007B5CC1 /* GCDAsyncUdpSocket.h */,
+				C2F9414419BE7D01007B5CC1 /* GCDAsyncUdpSocket.m */,
+			);
+			path = CocoaAsyncSocket;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1209,6 +1231,7 @@
 				C23A0EEC19A7A77A002BF2B6 /* MSResizingLayer.m in Sources */,
 				C23A0EED19A7A77A002BF2B6 /* MSAssertionHandler.m in Sources */,
 				C23A0EEE19A7A77A002BF2B6 /* MSBitVector.m in Sources */,
+				C2F9414519BE7D01007B5CC1 /* GCDAsyncSocket.m in Sources */,
 				C23A0EEF19A7A77A002BF2B6 /* MSCompletionBlockOperation.m in Sources */,
 				C23A0EF019A7A77A002BF2B6 /* MSContextChangeReceptionist.m in Sources */,
 				C23A0EF119A7A77A002BF2B6 /* MSDictionary.m in Sources */,
@@ -1218,6 +1241,7 @@
 				C23A0EF419A7A77A002BF2B6 /* MSKVOReceptionist.m in Sources */,
 				C23A0EF519A7A77A002BF2B6 /* MSLog.m in Sources */,
 				C23A0EF619A7A77A002BF2B6 /* MSNetworkReachability.m in Sources */,
+				C2F9414619BE7D01007B5CC1 /* GCDAsyncUdpSocket.m in Sources */,
 				C23A0EF719A7A77A002BF2B6 /* MSPainter.m in Sources */,
 				C23A0EF819A7A77A002BF2B6 /* MSQueue.m in Sources */,
 				C23A0EF919A7A77A002BF2B6 /* MSSingleton.m in Sources */,

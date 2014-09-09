@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C2F9411219BE5E90007B5CC1"
+               BuildableName = "iTachClientTests.xctest"
+               BlueprintName = "iTachClientTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

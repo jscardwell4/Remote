@@ -7,8 +7,11 @@
 //
 
 #import "NSPointerArray+MSKitAdditions.h"
+#import "MSKitMacros.h"
 
 @implementation NSPointerArray (MSKitAdditions)
+
+- (NSArray *)allValues { return [self allObjects]; }
 
 - (void)setObjectsFromArray:(NSArray *)array
 {

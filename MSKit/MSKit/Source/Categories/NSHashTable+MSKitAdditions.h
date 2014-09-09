@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-@interface NSHashTable (MSKitAdditions)
+#import "MSKitProtocols.h"
+
+@interface NSHashTable (MSKitAdditions) <MSKeySearchable>
 
 - (void)enumerateObjectsUsingBlock:(void (^)(id obj, BOOL *stop))block;
 - (NSString *)componentsJoinedByString:(NSString *)string;

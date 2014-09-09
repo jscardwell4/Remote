@@ -14,7 +14,7 @@ typedef void(^NSDictionaryEnumerationBlock)(id obj, id key, BOOL *stop);
 typedef BOOL(^NSDictionaryPredicateBlock)  (id obj, id key, BOOL *stop);
 typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
 
-@interface NSDictionary (MSKitAdditions) <MSJSONExport>
+@interface NSDictionary (MSKitAdditions) <MSJSONExport, MSKeySearchable, MSKeyContaining>
 
 @property (nonatomic, readonly) BOOL isEmpty;
 

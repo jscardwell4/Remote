@@ -10,6 +10,8 @@
 
 @implementation NSMapTable (MSKitAdditions)
 
+- (NSArray *)allValues { return self.objectEnumerator.allObjects; }
+
 + (id)weakToWeakObjectsMapTableFromDictionary:(NSDictionary *)dictionary
 {
     NSMapTable * mapTable = [self weakToWeakObjectsMapTable];

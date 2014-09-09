@@ -8,26 +8,11 @@
 #import "ConnectionManager.h"
 #import "NetworkDeviceConnection_Subclass.h"
 #import "NetworkDevice.h"
+#import "MessageQueueEntry.h"
 
-static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int ddLogLevel   = LOG_LEVEL_INFO;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
-
-
-@implementation MessageQueueEntry
-
-+ (instancetype)entryWithMessage:(NSString *)message
-                      completion:(void(^)(BOOL success, NSError * error))completion
-{
-  if (StringIsEmpty(message)) ThrowInvalidNilArgument(message);
-  MessageQueueEntry * entry = [self new];
-  entry.message = message;
-  entry.completion = completion;
-
-  return entry;
-}
-
-@end
 
 @interface NetworkDeviceConnection ()
 @property (assign) int sourcesRegistered;
@@ -49,6 +34,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 + (instancetype)connectionForDevice:(NetworkDevice *)device
                            delegate:(id<NetworkDeviceConnectionDelegate>)delegate
 {
+
   if (!device) ThrowInvalidNilArgument(device);
 
 	NetworkDeviceConnection * connection = [self new];
@@ -56,13 +42,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 	connection.delegate = delegate;
 
 	return connection;
+
 }
 
+/// init
+/// @return instancetype
 - (instancetype)init {
 
-  if ((self = [super init])) {
+  if ((self = [super init]))
     self.messageQueue = [MSQueue queue];
-  }
 
   return self;
 
@@ -142,7 +130,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 			dispatch_source_set_event_handler(self.writeSource, writeEventHandler);
 
 
-		dispatch_block_t writeCancelHandler        = [self writeCancelHandler];
+		dispatch_block_t writeCancelHandler = [self writeCancelHandler];
 		if (writeCancelHandler)
 			dispatch_source_set_cancel_handler(self.writeSource, writeCancelHandler);
 
@@ -157,26 +145,32 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
+/// sourceFileDescriptor
+/// @return dispatch_fd_t
 - (dispatch_fd_t)sourceFileDescriptor { return -1; }
 
+/// readSourceQueue
+/// @return dispatch_queue_t
 - (dispatch_queue_t)readSourceQueue  {
-  static dispatch_once_t onceToken;
-  static dispatch_queue_t queue;
-  dispatch_once(&onceToken, ^{
-    queue = dispatch_queue_create("com.moondeerstudios.receive", DISPATCH_QUEUE_CONCURRENT);
-  });
-	return queue;
+
+  if (!_readSourceQueue) self.readSourceQueue = dispatch_queue_create("com.moondeerstudios.receive",
+                                                                      DISPATCH_QUEUE_CONCURRENT);
+	return _readSourceQueue;
+
 }
 
+/// writeSourceQueue
+/// @return dispatch_queue_t
 - (dispatch_queue_t)writeSourceQueue {
-  static dispatch_once_t onceToken;
-  static dispatch_queue_t queue;
-  dispatch_once(&onceToken, ^{
-    queue = dispatch_queue_create("com.moondeerstudios.send", DISPATCH_QUEUE_CONCURRENT);
-  });
-	return queue;
+
+  if (!_writeSourceQueue) self.writeSourceQueue = dispatch_queue_create("com.moondeerstudios.send",
+                                                                        DISPATCH_QUEUE_CONCURRENT);
+	return _writeSourceQueue;
+  
 }
 
+/// readEventHandler
+/// @return dispatch_block_t
 - (dispatch_block_t)readEventHandler {
 
 	__weak NetworkDeviceConnection * weakself = self;
@@ -210,6 +204,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
+/// writeEventHandler
+/// @return dispatch_block_t
 - (dispatch_block_t)writeEventHandler {
 
   __weak NetworkDeviceConnection * weakself = self;
@@ -243,7 +239,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
       }
 
       // Invoke completion block if set
-      if (entry.completion) entry.completion(success, error);
+      if (entry.completion) entry.completion(success, nil, error);
 
     }
 
@@ -253,6 +249,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return handler;
 
 }
+
+/// readCancelHandler
+/// @return dispatch_block_t
 - (dispatch_block_t)readCancelHandler {
 
 	__weak NetworkDeviceConnection * weakself = self;
@@ -293,6 +292,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
+/// writeCancelHandler
+/// @return dispatch_block_t
 - (dispatch_block_t)writeCancelHandler {
 
 	__weak NetworkDeviceConnection * weakself = self;
@@ -333,13 +334,17 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
+/// readRegistrationHandler
+/// @return dispatch_block_t
 - (dispatch_block_t)readRegistrationHandler  {
 
 	__weak NetworkDeviceConnection * weakself = self;
 
 	dispatch_block_t handler = ^{
 
+    MSLogDebugWeakTag(@"");
 		weakself.sourcesRegistered = weakself.sourcesRegistered + 1;
+
 
 		if (weakself.sourcesRegistered == 2) {
 
@@ -359,12 +364,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
+/// writeRegistrationHandler
+/// @return dispatch_block_t
 - (dispatch_block_t)writeRegistrationHandler {
 
 	__weak NetworkDeviceConnection * weakself = self;
 
 	dispatch_block_t handler = ^{
 
+    MSLogDebugWeakTag(@"");
 		weakself.sourcesRegistered = weakself.sourcesRegistered + 1;
 
 		if (weakself.sourcesRegistered == 2) {

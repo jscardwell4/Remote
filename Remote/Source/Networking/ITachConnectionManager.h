@@ -17,7 +17,7 @@
 #pragma mark - Global Caché Connection Manager
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface GlobalCacheConnectionManager : NSObject
+@interface ITachConnectionManager : NSObject
 
 /**
 

@@ -8,7 +8,7 @@
 #import "MSKitProtocols.h"
 @class MSKeyPath;
 
-@interface MSDictionary : NSMutableDictionary <MSJSONExport>
+@interface MSDictionary : NSMutableDictionary <MSJSONExport, MSKeySearchable, MSKeyContaining>
 
 @property (nonatomic, strong)   MSDictionary * userInfo;
 @property (nonatomic, readonly) NSSet        * validKeys;

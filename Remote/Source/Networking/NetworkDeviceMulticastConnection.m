@@ -41,20 +41,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 
-- (void)sendPacket:(NSString *)packet completion:(void (^)(BOOL success, NSError * error))completion {
-
-  if (StringIsEmpty(packet)) {
-    MSLogErrorTag(@"cannot send an empty string");
-    if (completion) completion(NO, [NSError errorWithDomain:ConnectionManagerErrorDomain
-                                                       code:ConnectionManagerErrorCommandEmpty
-                                                   userInfo:nil]);
-  } else {
-    [self.messageQueue enqueue:[MessageQueueEntry entryWithMessage:packet completion:completion]];
-  }
-
-
-}
-
 - (dispatch_fd_t)sourceFileDescriptor {
 
   /// Create a UDP socket for receiving the multicast group broadcast

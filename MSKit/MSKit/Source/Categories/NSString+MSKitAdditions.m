@@ -23,6 +23,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSString (MSKitAdditions)
 
+- (NSUInteger)unsignedIntegerValue { return (NSUInteger)[self integerValue]; }
+
+- (unsigned int)uintValue { return (unsigned int)[self intValue]; }
+
 + (NSString *)stringWithData:(NSData *)data {
   return (data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil);
 }
@@ -96,7 +100,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 - (NSString *)stringByRemovingLineBreaks {
-  return [self stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+  return [self stringByRemovingCharactersFromSet:NSNewlineCharacters];
 }
 
 + (NSString *)stringWithString:(NSString *)string count:(NSUInteger)count {
@@ -492,6 +496,20 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
 
 }
 
+- (void)shiftRight:(NSUInteger)shiftAmount {
+  [self shiftRight:shiftAmount shiftFirstLine:YES];
+}
+
+- (void)shiftRight:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine {
+
+  NSString * padding = [NSString stringWithCharacter:' ' count:shiftAmount];
+  if (shiftFirstLine)
+    [self insertString:padding atIndex:0];
+    [self replaceOccurrencesOfString:@"\n" withString:$(@"\n%@", padding)
+                             options:0
+                               range:NSMakeRange(0, [self length])];
+}
+
 - (void)setObject:(NSNumber *)object atIndexedSubscript:(NSUInteger)idx {
   if (idx >= self.length) [[NSException exceptionWithName:NSRangeException
                                                    reason:@"index out of range" userInfo:nil] raise];
@@ -507,6 +525,10 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
 
 - (void)removeCharactersFromSet:(NSCharacterSet *)characterSet {
   self.string = [self stringByRemovingCharactersFromSet:characterSet];
+}
+
+- (void)replaceOccurrencesOfString:(NSString *)string withString:(NSString *)replacementString {
+  [self replaceOccurrencesOfString:string withString:replacementString options:0 range:NSMakeRange(0, [self length])];
 }
 
 - (void)replaceOccurrencesOfStringsWithDictionary:(NSDictionary *)replacements {
