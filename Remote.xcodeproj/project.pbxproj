@@ -9,8 +9,10 @@
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
+		C209C0CF19BFE70700A6AB85 /* ISYDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C209C0CE19BFE70700A6AB85 /* ISYDeviceDetailViewController.m */; };
 		C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */; };
 		C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */; };
+		C20BD77E19BF3D340011E3F6 /* ITachDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20BD77D19BF3D340011E3F6 /* ITachDeviceDetailViewController.m */; };
 		C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
 		C20FF1F019AE6DED00D11F33 /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
@@ -142,6 +144,7 @@
 		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2436DB417EA99C600482186 /* BankCollectionViewController.m */; };
+		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
 		C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
@@ -215,18 +218,9 @@
 		C25BF65F19B179BC0038C724 /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25BF65E19B179BC0038C724 /* REBackgroundEditingViewController.m */; };
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
-		C25EE4D417FCA358000DA457 /* BankableDetailTableViewCell-Table.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */; };
-		C25EE4D617FCF649000DA457 /* BankableDetailTableViewCell-List.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */; };
 		C26296801810619900760056 /* CoreDataManager+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = C262967F1810619900760056 /* CoreDataManager+Model.m */; };
 		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
-		C265936017FBA1180017949C /* BankableDetailTableViewCell-TextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265935F17FBA1180017949C /* BankableDetailTableViewCell-TextField.xib */; };
 		C265936317FBA1B00017949C /* BankableDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C265936217FBA1B00017949C /* BankableDetailTableViewCell.m */; };
-		C265936717FBA5890017949C /* BankableDetailTableViewCell-Label.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */; };
-		C265936817FBA5890017949C /* BankableDetailTableViewCell-TextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936617FBA5890017949C /* BankableDetailTableViewCell-TextView.xib */; };
-		C265936C17FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936917FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib */; };
-		C265936D17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib */; };
-		C265936E17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936B17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib */; };
-		C265937017FBA5F40017949C /* BankableDetailTableViewCell-Button.xib in Resources */ = {isa = PBXBuildFile; fileRef = C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */; };
 		C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */; };
 		C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEB916DC10FE0093D5B4 /* main.m */; };
 		C26BB5AF16DC18A90093D5B4 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */; };
@@ -395,7 +389,6 @@
 		C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
 		C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */; };
 		C2CE8AE91814289300555D63 /* libMSKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AA31814231F00555D63 /* libMSKit.a */; };
-		C2D09DEE18089ED40036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D09DED18089ED30036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib */; };
 		C2D1022D19AAFCA300DE5346 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D1022C19AAFCA300DE5346 /* ImageView.m */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
 		C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E75BF819B13798006CEA86 /* Remote_Demo.json */; };
@@ -557,9 +550,13 @@
 		C2014FB9180E004E00C31780 /* JSONObjectKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONObjectKeys.m; sourceTree = "<group>"; };
 		C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
 		C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConstraint.m; sourceTree = "<group>"; };
+		C209C0CD19BFE70700A6AB85 /* ISYDeviceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceDetailViewController.h; sourceTree = "<group>"; };
+		C209C0CE19BFE70700A6AB85 /* ISYDeviceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceDetailViewController.m; sourceTree = "<group>"; };
 		C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionZoomView.h; sourceTree = "<group>"; };
 		C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionZoomView.m; sourceTree = "<group>"; };
 		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankCollectionZoomView.xib; path = "../../Source/Bank/View Controllers/BankCollectionZoomView.xib"; sourceTree = "<group>"; };
+		C20BD77C19BF3D340011E3F6 /* ITachDeviceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceDetailViewController.h; sourceTree = "<group>"; };
+		C20BD77D19BF3D340011E3F6 /* ITachDeviceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceDetailViewController.m; sourceTree = "<group>"; };
 		C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish_Test.json; sourceTree = "<group>"; };
 		C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Test.json; sourceTree = "<group>"; };
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -697,6 +694,7 @@
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C2436DB317EA99C600482186 /* BankCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionViewController.h; sourceTree = "<group>"; };
 		C2436DB417EA99C600482186 /* BankCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionViewController.m; sourceTree = "<group>"; };
+		C249174719BFBA870049638F /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
 		C25B2713180A167B0078C8D8 /* RemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RemoteController.json; sourceTree = "<group>"; };
 		C25B2715180A185D0078C8D8 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		C25B2716180A185D0078C8D8 /* ButtonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonGroup.h; sourceTree = "<group>"; };
@@ -780,19 +778,10 @@
 		C25C44DB19ABB3E2005594ED /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
 		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
 		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
-		C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Table.xib"; sourceTree = "<group>"; };
-		C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-List.xib"; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
 		C26296811811F9AE00760056 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
-		C265935F17FBA1180017949C /* BankableDetailTableViewCell-TextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-TextField.xib"; sourceTree = "<group>"; };
 		C265936117FBA1B00017949C /* BankableDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableDetailTableViewCell.h; sourceTree = "<group>"; };
 		C265936217FBA1B00017949C /* BankableDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankableDetailTableViewCell.m; sourceTree = "<group>"; };
-		C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Label.xib"; sourceTree = "<group>"; };
-		C265936617FBA5890017949C /* BankableDetailTableViewCell-TextView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-TextView.xib"; sourceTree = "<group>"; };
-		C265936917FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Image.xib"; sourceTree = "<group>"; };
-		C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Switch.xib"; sourceTree = "<group>"; };
-		C265936B17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Stepper.xib"; sourceTree = "<group>"; };
-		C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-Button.xib"; sourceTree = "<group>"; };
 		C26B5CE0182803DE005AB70E /* CommandSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSet.h; sourceTree = "<group>"; };
 		C26B5CE1182803DE005AB70E /* CommandSetCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSetCollection.h; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1061,7 +1050,6 @@
 		C2CA76DC19BA5C3D00ACCD76 /* parsed_desc.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = parsed_desc.txt; sourceTree = "<group>"; };
 		C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
 		C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
-		C2D09DED18089ED30036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "BankableDetailTableViewCell-DetailDisclosure.xib"; sourceTree = "<group>"; };
 		C2D1022B19AAFCA300DE5346 /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
 		C2D1022C19AAFCA300DE5346 /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
@@ -1414,30 +1402,11 @@
 			path = Bank/Bankables;
 			sourceTree = "<group>";
 		};
-		C265936417FBA55B0017949C /* BankableDetailTableViewCell Nibs */ = {
-			isa = PBXGroup;
-			children = (
-				C2D09DED18089ED30036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib */,
-				C25EE4D517FCF649000DA457 /* BankableDetailTableViewCell-List.xib */,
-				C25EE4D317FCA358000DA457 /* BankableDetailTableViewCell-Table.xib */,
-				C265936F17FBA5F40017949C /* BankableDetailTableViewCell-Button.xib */,
-				C265936917FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib */,
-				C265936A17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib */,
-				C265936B17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib */,
-				C265936517FBA5890017949C /* BankableDetailTableViewCell-Label.xib */,
-				C265936617FBA5890017949C /* BankableDetailTableViewCell-TextView.xib */,
-				C265935F17FBA1180017949C /* BankableDetailTableViewCell-TextField.xib */,
-			);
-			name = "BankableDetailTableViewCell Nibs";
-			path = "../../Source/Bank/View Controllers/BankableDetailTableViewCell Nibs";
-			sourceTree = "<group>";
-		};
 		C26B8A6918006B5100912DBB /* Bank */ = {
 			isa = PBXGroup;
 			children = (
 				C2F2A46317EDF85900DE2F41 /* Bank.storyboard */,
 				C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */,
-				C265936417FBA55B0017949C /* BankableDetailTableViewCell Nibs */,
 			);
 			name = Bank;
 			sourceTree = "<group>";
@@ -1462,6 +1431,8 @@
 		C26B8A6B18006C1D00912DBB /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				C209C0CD19BFE70700A6AB85 /* ISYDeviceDetailViewController.h */,
+				C209C0CE19BFE70700A6AB85 /* ISYDeviceDetailViewController.m */,
 				C2AB7B5C17F2083800906FAE /* BankableDetailTableViewController.h */,
 				C2AB7B5D17F2083800906FAE /* BankableDetailTableViewController.m */,
 				C2AB7B5F17F2096100906FAE /* BankableDetailTableViewController_Private.h */,
@@ -1477,6 +1448,8 @@
 				C2F2A47A17EF568E00DE2F41 /* PresetDetailViewController.m */,
 				C2F2A47C17EF569F00DE2F41 /* ManufacturerDetailViewController.h */,
 				C2F2A47D17EF569F00DE2F41 /* ManufacturerDetailViewController.m */,
+				C20BD77C19BF3D340011E3F6 /* ITachDeviceDetailViewController.h */,
+				C20BD77D19BF3D340011E3F6 /* ITachDeviceDetailViewController.m */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -1927,6 +1900,7 @@
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
+				C249174719BFBA870049638F /* NetworkDevice.json */,
 				C2E75BF819B13798006CEA86 /* Remote_Demo.json */,
 				C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */,
 				C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */,
@@ -2278,7 +2252,6 @@
 				C2381F0819A7EE3B00135DAB /* Midnight-1536x2048.jpg in Resources */,
 				C2E8D9D019BCD5C400E6098E /* loginfo.xml in Resources */,
 				C2381EEB19A7EE3B00135DAB /* Gingham-320x640-iPhone.jpg in Resources */,
-				C265936E17FBA5DB0017949C /* BankableDetailTableViewCell-Stepper.xib in Resources */,
 				C2E8D9CA19BCD5C400E6098E /* insteon.xsd in Resources */,
 				C2381F0319A7EE3B00135DAB /* Linen-2048x1536-iPad@2x.jpg in Resources */,
 				C2381ED119A7EE3B00135DAB /* Chroma-320x480.jpg in Resources */,
@@ -2308,7 +2281,6 @@
 				C2381EBE19A7EE3B00135DAB /* Blue-640x960.jpg in Resources */,
 				C2381ECE19A7EE3B00135DAB /* Chalkboard-640x1136-iPhone5.jpg in Resources */,
 				C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */,
-				C265936C17FBA5DB0017949C /* BankableDetailTableViewCell-Image.xib in Resources */,
 				C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */,
 				C2E8D9D419BCD5C400E6098E /* sepobjs.xsd in Resources */,
 				C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */,
@@ -2321,7 +2293,6 @@
 				C27BCCA31801C16A0002464C /* IntegerKeyboard_7@2x.png in Resources */,
 				C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */,
 				C2381F1119A7EE3B00135DAB /* PaintedMetal-1024x768-iPad.jpg in Resources */,
-				C265936D17FBA5DB0017949C /* BankableDetailTableViewCell-Switch.xib in Resources */,
 				C2381EB519A7EE3B00135DAB /* AgedPaper-640x1136-iPhone5.jpg in Resources */,
 				C26BBA8D16DC18A90093D5B4 /* MainStoryboard.storyboard in Resources */,
 				C26BBAE816DC1B5C0093D5B4 /* 10-arrows-in.png in Resources */,
@@ -2351,6 +2322,7 @@
 				C26BBAEE16DC1B5C0093D5B4 /* AlignHorizCenterIcon.png in Resources */,
 				C26BBAEF16DC1B5C0093D5B4 /* AlignHorizCenterIcon@2x.png in Resources */,
 				C2381EDD19A7EE3B00135DAB /* Concrete-640x1136-iPhone5.jpg in Resources */,
+				C249174819BFBA870049638F /* NetworkDevice.json in Resources */,
 				C26BBAF016DC1B5C0093D5B4 /* AlignLeftEdgeIcon.png in Resources */,
 				C2381EFE19A7EE3B00135DAB /* Ive-1536x2048.jpg in Resources */,
 				C26BBAF116DC1B5C0093D5B4 /* AlignLeftEdgeIcon@2x.png in Resources */,
@@ -2387,7 +2359,6 @@
 				C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */,
 				C2381F9E19A7EE3B00135DAB /* Teal-1536x2048.jpg in Resources */,
 				C2381ECF19A7EE3B00135DAB /* Chalkboard-1024x768-iPad.jpg in Resources */,
-				C265937017FBA5F40017949C /* BankableDetailTableViewCell-Button.xib in Resources */,
 				C26BBAFA16DC1B5C0093D5B4 /* ButtonOverButton.png in Resources */,
 				C26BBAFB16DC1B5C0093D5B4 /* ButtonOverButton@2x.png in Resources */,
 				C2381EF619A7EE3B00135DAB /* GraphPaper-640x960-iPhone@2x.jpg in Resources */,
@@ -2437,7 +2408,6 @@
 				C26BBB1016DC1B5C0093D5B4 /* Image@2x.png in Resources */,
 				C2E8D9EC19BCD5C400E6098E /* udiws30.wsdl in Resources */,
 				C2381EEA19A7EE3B00135DAB /* Dawn-1536x2048.jpg in Resources */,
-				C265936017FBA1180017949C /* BankableDetailTableViewCell-TextField.xib in Resources */,
 				C26BBB1116DC1B5C0093D5B4 /* ImageOverImage.png in Resources */,
 				C2381EFD19A7EE3B00135DAB /* Ive-1024x768.jpg in Resources */,
 				C2381F8E19A7EE3B00135DAB /* ProDots-1024x768-iPad.jpg in Resources */,
@@ -2452,7 +2422,6 @@
 				C2381F9319A7EE3B00135DAB /* Silver-1024x768.jpg in Resources */,
 				C2E8D9E019BCD5C400E6098E /* udiobjs.xsd in Resources */,
 				C26BBB1516DC1B5C0093D5B4 /* MachSizeIcon.png in Resources */,
-				C265936817FBA5890017949C /* BankableDetailTableViewCell-TextView.xib in Resources */,
 				C2381EE319A7EE3B00135DAB /* Corkboard-640x1136-iPhone5.jpg in Resources */,
 				C26BBB1616DC1B5C0093D5B4 /* MatchHeightIcon.png in Resources */,
 				C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */,
@@ -2508,13 +2477,11 @@
 				C2381EF119A7EE3B00135DAB /* GoldIsBest-640x960.jpg in Resources */,
 				C27BCC901801C16A0002464C /* IntegerKeyboard_1.png in Resources */,
 				C26BBB2A16DC1B5C0093D5B4 /* Plus@2x.png in Resources */,
-				C2D09DEE18089ED40036F87F /* BankableDetailTableViewCell-DetailDisclosure.xib in Resources */,
 				C2381F0019A7EE3B00135DAB /* Linen-640x960-iPhone@2x.jpg in Resources */,
 				C2381F8F19A7EE3B00135DAB /* ProDots-2048x1536-iPad@2x.jpg in Resources */,
 				C2381F9919A7EE3B00135DAB /* Sunset-1536x2048.jpg in Resources */,
 				C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */,
 				C26BBB2B16DC1B5C0093D5B4 /* ScaleHorizontal.png in Resources */,
-				C25EE4D617FCF649000DA457 /* BankableDetailTableViewCell-List.xib in Resources */,
 				C26BBB2C16DC1B5C0093D5B4 /* ScaleHorizontal@2x.png in Resources */,
 				C2E8D9C819BCD5C400E6098E /* family.xsd in Resources */,
 				C2381EDE19A7EE3B00135DAB /* Concrete-1024x768-iPad.jpg in Resources */,
@@ -2542,9 +2509,7 @@
 				C2381F9119A7EE3B00135DAB /* Silver-640x960.jpg in Resources */,
 				C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */,
 				C27BCC941801C16A0002464C /* IntegerKeyboard_2@2x.png in Resources */,
-				C265936717FBA5890017949C /* BankableDetailTableViewCell-Label.xib in Resources */,
 				C2381ECC19A7EE3B00135DAB /* Chalkboard-320x640-iPhone.jpg in Resources */,
-				C25EE4D417FCA358000DA457 /* BankableDetailTableViewCell-Table.xib in Resources */,
 				C2381F9D19A7EE3B00135DAB /* Teal-1024x768.jpg in Resources */,
 				C27BCC8F1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png in Resources */,
 				C2381EB819A7EE3B00135DAB /* AppleWood-320x640-iPhone.jpg in Resources */,
@@ -2701,6 +2666,7 @@
 				C2AB7B5E17F2083800906FAE /* BankableDetailTableViewController.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
 				C2F2A47217EF564100DE2F41 /* IRCodeDetailViewController.m in Sources */,
+				C20BD77E19BF3D340011E3F6 /* ITachDeviceDetailViewController.m in Sources */,
 				C2EF968717F7C4D4005AA639 /* BankCollectionViewFlowLayout.m in Sources */,
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
@@ -2751,6 +2717,7 @@
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
 				C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */,
+				C209C0CF19BFE70700A6AB85 /* ISYDeviceDetailViewController.m in Sources */,
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
 				C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */,
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
@@ -2854,7 +2821,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 			};
@@ -2864,7 +2831,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 			};
 			name = Release;

@@ -15,28 +15,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 MSNAMETAG_DEFINITION(BankableDetailHiddenNeighborConstraint);
 
-#define TextFieldNibName         @"BankableDetailTableViewCell-TextField"
-#define LabelNibName             @"BankableDetailTableViewCell-Label"
-#define ListNibName              @"BankableDetailTableViewCell-List"
-#define DetailDisclosureNibName  @"BankableDetailTableViewCell-DetailDisclosure"
-#define ImageNibName             @"BankableDetailTableViewCell-Image"
-#define TextViewNibName          @"BankableDetailTableViewCell-TextView"
-#define StepperNibName           @"BankableDetailTableViewCell-Stepper"
-#define SwitchNibName            @"BankableDetailTableViewCell-Switch"
-#define ButtonNibName            @"BankableDetailTableViewCell-Button"
-#define TableNibName             @"BankableDetailTableViewCell-Table"
-
-MSIDENTIFIER_DEFINITION(StepperCell);
-MSIDENTIFIER_DEFINITION(SwitchCell);
-MSIDENTIFIER_DEFINITION(LabelCell);
-MSIDENTIFIER_DEFINITION(LabelListCell);
-MSIDENTIFIER_DEFINITION(ButtonCell);
-MSIDENTIFIER_DEFINITION(ImageCell);
-MSIDENTIFIER_DEFINITION(TextFieldCell);
-MSIDENTIFIER_DEFINITION(TextViewCell);
-MSIDENTIFIER_DEFINITION(TableCell);
-MSIDENTIFIER_DEFINITION(DetailDisclosureCell);
-
 MSKEY_DEFINITION(BankableChangeHandler);
 MSKEY_DEFINITION(BankableValidationHandler);
 
@@ -65,8 +43,6 @@ NSString *textForSelection(id selection) {
 
 @interface BankableDetailTableViewController ()
 
-@property (nonatomic, strong) NSMutableDictionary * registeredNibs;
-
 @property (nonatomic, strong) MSDictionary        * steppersByIndexPath;
 @property (nonatomic, strong) MSDictionary        * indexPathsByStepper;
 @property (nonatomic, strong) NSMutableDictionary * stepperLabelsByIndexPath;
@@ -81,23 +57,134 @@ NSString *textForSelection(id selection) {
 @end
 
 @implementation BankableDetailTableViewController {
-  NSHashTable         * _editableViews;
+  NSHashTable * _editableViews;
 }
 
+
+/// controllerWithItem:
+/// @param item description
+/// @return instancetype
++ (instancetype)controllerWithItem:(BankableModelObject *)item {
+  return [self controllerWithItem:item editing:NO];
+}
+
+/// controllerWithItem:editing:
+/// @param item description
+/// @param isEditing description
+/// @return instancetype
++ (instancetype)controllerWithItem:(BankableModelObject *)item editing:(BOOL)isEditing {
+  return [[self alloc] initWithItem:item];
+}
+
+/// initWithItem:
+/// @param item description
+/// @return instancetype
+- (instancetype)initWithItem:(BankableModelObject *)item {
+  return [self initWithItem:item editing:NO];
+}
+
+/// initWithItem:editing:
+/// @param item description
+/// @param isEditing description
+/// @return instancetype
+- (instancetype)initWithItem:(BankableModelObject *)item  editing:(BOOL)isEditing {
+
+  if ((self = [super init])) {
+
+    self.item = item;
+    self.editing = isEditing;
+
+  }
+
+  return self;
+
+}
+
+/// hidesBottomBarWhenPushed
+/// @return BOOL
 - (BOOL)hidesBottomBarWhenPushed { return YES; }
 
+/// loadView
+- (void)loadView {
+
+  UITableView * tableView = [[UITableView alloc] initWithFrame:MainScreen.bounds
+                                                         style:UITableViewStyleGrouped];
+  tableView.rowHeight = 38.0;
+  tableView.sectionHeaderHeight = 10.0;
+  tableView.sectionFooterHeight = 10.0;
+  tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  tableView.delegate = self;
+  tableView.dataSource = self;
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellLabelStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellListStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellButtonStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellImageStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellSwitchStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellStepperStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellDetailStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellTextViewStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellTextFieldStyleIdentifier];
+  [tableView registerClass:[BankableDetailTableViewCell class]
+    forCellReuseIdentifier:BankableDetailCellTableStyleIdentifier];
+  assert(tableView.scrollEnabled);
+
+  self.tableView = tableView;
+  self.view = self.tableView;
+
+}
+
+/// navigationItem
+/// @return UINavigationItem *
+- (UINavigationItem *)navigationItem {
+
+  UINavigationItem * item = [super navigationItem];
+
+  // Check if we have initialized our navigation bar items
+  if (!self.nameTextField) {
+
+    UITextField * nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(70.0, 7.0, 180.0, 30.0)];
+    nameTextField.placeholder = @"Name";
+    nameTextField.font = [UIFont boldSystemFontOfSize:17.0];
+    nameTextField.keyboardAppearance = UIKeyboardAppearanceDark;
+    nameTextField.adjustsFontSizeToFitWidth = YES;
+    nameTextField.returnKeyType = UIReturnKeyDone;
+    nameTextField.enablesReturnKeyAutomatically = YES;
+    nameTextField.textAlignment = NSTextAlignmentCenter;
+    nameTextField.delegate = self;
+    if (self.item) nameTextField.text = self.item.name;
+
+    item.titleView = nameTextField;
+    self.nameTextField = nameTextField;
+
+    self.cancelBarButtonItem = SystemBarButton(UIBarButtonSystemItemCancel, @selector(cancel:));
+    item.rightBarButtonItem  = self.editButtonItem;
+
+  }
+
+
+  return item;
+
+}
+
+/// viewDidLoad
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-
-  // prepare navigation bar
-  self.cancelBarButtonItem               = SystemBarButton(UIBarButtonSystemItemCancel, @selector(cancel:));
-  self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
   if (self.item) [self updateDisplay];
 
 }
 
+/// updateDisplay
 - (void)updateDisplay {
 
   self.nameTextField.text     = self.item.name;
@@ -109,6 +196,7 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// didReceiveMemoryWarning
 - (void)didReceiveMemoryWarning {
 
   [super didReceiveMemoryWarning];
@@ -116,22 +204,24 @@ NSString *textForSelection(id selection) {
   if (![self isViewLoaded]) {
 
     self.cancelBarButtonItem = nil;
-    _registeredNibs          = nil;
 
   }
 
 }
 
+/// setEditing:animated:
+/// @param editing description
+/// @param animated description
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 
   [super setEditing:editing animated:animated];
 
-  self.navigationItem.leftBarButtonItem = (editing
-                                           ? SystemBarButton(UIBarButtonSystemItemCancel, @selector(cancel:))
-                                           : nil);
+  self.navigationItem.leftBarButtonItem = (editing ? _cancelBarButtonItem : nil);
 
   [self.editableViews setValue:@(editing) forKeyPath:@"userInteractionEnabled"];
 
+
+  __weak BankableDetailTableViewController * weakself = self;
 
   [_steppersByIndexPath enumerateKeysAndObjectsUsingBlock:
    ^(NSIndexPath * indexPath, UIStepper * stepper, BOOL * stop) {
@@ -139,10 +229,10 @@ NSString *textForSelection(id selection) {
      UILabel * label = _stepperLabelsByIndexPath[indexPath];
 
      if (!editing)
-       [self hideAnimationForView:stepper besideView:label];
+       [weakself hideAnimationForView:stepper besideView:label];
 
      else
-       [self revealAnimationForView:stepper besideView:label];
+       [weakself revealAnimationForView:stepper besideView:label];
 
    }];
 
@@ -155,6 +245,8 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// editableViews
+/// @return NSArray *
 - (NSArray *)editableViews {
 
   NSMutableArray * array = [@[_nameTextField] mutableCopy];
@@ -172,6 +264,8 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// registerEditableView:
+/// @param view description
 - (void)registerEditableView:(UIView *)view {
 
   if (!_editableViews)
@@ -181,10 +275,17 @@ NSString *textForSelection(id selection) {
 
 }
 
-- (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return (BankableDetailTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+/// cellForRowAtIndexPath:
+/// @param indexPath description
+/// @return BankableDetailTableViewCell *
+- (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath const *)indexPath {
+  return (BankableDetailTableViewCell *)[self.tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath];
 }
 
+/// dataForIndexPath:type:
+/// @param indexPath description
+/// @param type description
+/// @return id
 - (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type { return nil; }
 
 
@@ -193,23 +294,27 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)setItemClass:(Class<Bankable>)itemClass {}
+/// setItemClass:
+/// @param itemClass description
+- (void)setItemClass:(Class<BankableModel>)itemClass {}
 
-- (Class<Bankable>)itemClass { return [NSManagedObject class]; }
+/// itemClass
+/// @return Class<Bankable>
+- (Class<BankableModel>)itemClass { return [NSManagedObject class]; }
 
+/// editItem
 - (void)editItem { assert(_item && [_item isEditable]); [self setEditing:YES animated:YES]; }
 
-- (void)setItem:(NSManagedObject<Bankable> *)item {
+/// setItem:
+/// @param item description
+- (void)setItem:(BankableModelObject *)item {
 
-  assert([item conformsToProtocol:@protocol(Bankable)]);
+  if (![item isKindOfClass:self.itemClass])
+    ThrowInvalidArgument(item, "object is of the wrong class for this controller");
 
-  if ([item isKindOfClass:self.itemClass]) {
+  _item = item;
 
-    _item = item;
-
-    if ([self isViewLoaded]) [self updateDisplay];
-
-  }
+  if ([self isViewLoaded]) [self updateDisplay];
 
 }
 
@@ -218,6 +323,9 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// revealAnimationForView:besideView:
+/// @param hiddenView description
+/// @param neighborView description
 - (void)revealAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView {
 
   assert(  hiddenView
@@ -256,6 +364,9 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// hideAnimationForView:besideView:
+/// @param hiddenView description
+/// @param neighborView description
 - (void)hideAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView {
 
   assert(  hiddenView
@@ -303,6 +414,8 @@ NSString *textForSelection(id selection) {
 #pragma mark Managing stepper/label pairs
 ////////////////////////////////////////////////////////////////////////////////
 
+/// steppersByIndexPath
+/// @return MSDictionary *
 - (MSDictionary *)steppersByIndexPath {
 
   if (!_steppersByIndexPath) {
@@ -316,6 +429,10 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// registerStepper:withLabel:forIndexPath:
+/// @param stepper description
+/// @param label description
+/// @param indexPath description
 - (void)registerStepper:(UIStepper *)stepper
               withLabel:(UILabel *)label
            forIndexPath:(NSIndexPath *)indexPath
@@ -329,10 +446,16 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// indexPathForStepper:
+/// @param stepper description
+/// @return NSIndexPath *
 - (NSIndexPath *)indexPathForStepper:(UIStepper *)stepper {
   return (stepper ? _indexPathsByStepper[NSValueWithObjectPointer(stepper)] : nil);
 }
 
+/// stepperForIndexPath:
+/// @param indexPath description
+/// @return UIStepper *
 - (UIStepper *)stepperForIndexPath:(NSIndexPath *)indexPath {
   return _steppersByIndexPath[indexPath];
 }
@@ -342,6 +465,8 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// pickersByIndexPath
+/// @return MSDictionary *
 - (MSDictionary *)pickersByIndexPath {
 
   if (!_pickersByIndexPath) {
@@ -354,14 +479,22 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// pickerViewForIndexPath:
+/// @param indexPath description
+/// @return UIPickerView *
 - (UIPickerView *)pickerViewForIndexPath:(NSIndexPath *)indexPath {
   return _pickersByIndexPath[indexPath];
 }
 
+/// indexPathForPickerView:
+/// @param pickerView description
+/// @return NSIndexPath *
 - (NSIndexPath *)indexPathForPickerView:(UIPickerView *)pickerView {
   return _indexPathsByPicker[NSValueWithObjectPointer(pickerView)];
 }
 
+/// setVisiblePickerCellIndexPath:
+/// @param visiblePickerCellIndexPath description
 - (void)setVisiblePickerCellIndexPath:(NSIndexPath *)visiblePickerCellIndexPath {
 
   [self.tableView beginUpdates];
@@ -401,6 +534,9 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// registerPickerView:forIndexPath:
+/// @param pickerView description
+/// @param indexPath description
 - (void)registerPickerView:(UIPickerView *)pickerView forIndexPath:(NSIndexPath *)indexPath {
 
   pickerView.delegate                = self;
@@ -408,9 +544,14 @@ NSString *textForSelection(id selection) {
   pickerView.hidden                  = YES;
   self.pickersByIndexPath[indexPath] = pickerView;
   self.indexPathsByPicker[NSValueWithObjectPointer(pickerView)] = indexPath;
-  
+
 }
 
+/// pickerView:didSelectObject:row:indexPath:
+/// @param pickerView description
+/// @param selection description
+/// @param row description
+/// @param indexPath description
 - (void)pickerView:(UIPickerView *)pickerView
    didSelectObject:(id)selection
                row:(NSUInteger)row
@@ -438,8 +579,15 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// numberOfComponentsInPickerView:
+/// @param pickerView description
+/// @return NSInteger
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView { return 1; }
 
+/// pickerView:numberOfRowsInComponent:
+/// @param pickerView description
+/// @param component description
+/// @return NSInteger
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
 
   NSIndexPath * indexPath = [self indexPathForPickerView:pickerView];
@@ -448,6 +596,11 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// pickerView:titleForRow:forComponent:
+/// @param pickerView description
+/// @param row description
+/// @param component description
+/// @return NSString *
 - (NSString *)pickerView:(UIPickerView *)pickerView
              titleForRow:(NSInteger)row
             forComponent:(NSInteger)component
@@ -463,6 +616,10 @@ NSString *textForSelection(id selection) {
 #pragma mark Picker view delegate
 ////////////////////////////////////////////////////////////////////////////////
 
+/// pickerView:didSelectRow:inComponent:
+/// @param pickerView description
+/// @param row description
+/// @param component description
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component
@@ -483,6 +640,8 @@ NSString *textForSelection(id selection) {
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
+/// cancel:
+/// @param sender description
 - (IBAction)cancel:(id)sender {
 
   NSManagedObjectContext * moc = _item.managedObjectContext;
@@ -492,6 +651,8 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// save:
+/// @param sender description
 - (IBAction)save:(id)sender {
 
   NSManagedObjectContext * moc = _item.managedObjectContext;
@@ -507,6 +668,8 @@ NSString *textForSelection(id selection) {
 #pragma mark Managing text fields
 ////////////////////////////////////////////////////////////////////////////////
 
+/// textFieldsByIndexPath
+/// @return MSDictionary *
 - (MSDictionary *)textFieldsByIndexPath {
 
   if (!_textFieldsByIndexPath) {
@@ -522,6 +685,10 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// registerTextField:forIndexPath:handlers:
+/// @param textField description
+/// @param indexPath description
+/// @param handlers description
 - (void)registerTextField:(UITextField *)textField
              forIndexPath:(NSIndexPath *)indexPath
                  handlers:(NSDictionary *)handlers {
@@ -534,14 +701,23 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// textFieldForIndexPath:
+/// @param indexPath description
+/// @return UITextField *
 - (UITextField *)textFieldForIndexPath:(NSIndexPath *)indexPath {
   return _textFieldsByIndexPath[indexPath];
 }
 
+/// indexPathForTextField:
+/// @param textField description
+/// @return NSIndexPath *
 - (NSIndexPath *)indexPathForTextField:(UITextField *)textField {
   return _indexPathsByTextField[NSValueWithObjectPointer(textField)];
 }
 
+/// integerKeyboardViewForTextField:
+/// @param textField description
+/// @return UIView *
 - (UIView *)integerKeyboardViewForTextField:(UITextField *)textField {
 
   assert(textField);
@@ -608,8 +784,13 @@ NSString *textForSelection(id selection) {
 #pragma mark Text field delegate
 ////////////////////////////////////////////////////////////////////////////////
 
+/// textFieldShouldBeginEditing:
+/// @param textField description
+/// @return BOOL
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField { return [self isEditing]; }
 
+/// textFieldDidBeginEditing:
+/// @param textField description
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 
   [textField selectAll:nil];
@@ -617,12 +798,12 @@ NSString *textForSelection(id selection) {
   NSIndexPath * indexPath = [self indexPathForTextField:textField];
 
   if (indexPath)
-    self.visiblePickerCellIndexPath = ([self pickerViewForIndexPath:indexPath]
-                                       ? indexPath
-                                       : nil);
+    self.visiblePickerCellIndexPath = ([self pickerViewForIndexPath:indexPath] ? indexPath : nil);
 
 }
 
+/// textFieldDidEndEditing:
+/// @param textField description
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 
 
@@ -648,6 +829,9 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// textFieldShouldEndEditing:
+/// @param textField description
+/// @return BOOL
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 
   NSIndexPath * indexPath = [self indexPathForTextField:textField];
@@ -666,6 +850,9 @@ NSString *textForSelection(id selection) {
 
 }
 
+/// textFieldShouldReturn:
+/// @param textField description
+/// @return BOOL
 - (BOOL)textFieldShouldReturn:(UITextField *)textField { [textField resignFirstResponder]; return NO; }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -673,6 +860,11 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// textView:shouldChangeTextInRange:replacementText:
+/// @param textView description
+/// @param range description
+/// @param text description
+/// @return BOOL
 - (BOOL)         textView:(UITextView *)textView
   shouldChangeTextInRange:(NSRange)range
           replacementText:(NSString *)text
@@ -680,6 +872,11 @@ NSString *textForSelection(id selection) {
   return YES;
 }
 
+/// textView:shouldInteractWithTextAttachment:inRange:
+/// @param textView description
+/// @param textAttachment description
+/// @param characterRange description
+/// @return BOOL
 - (BOOL)                  textView:(UITextView *)textView
   shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment
                            inRange:(NSRange)characterRange
@@ -687,6 +884,11 @@ NSString *textForSelection(id selection) {
   return NO;
 }
 
+/// textView:shouldInteractWithURL:inRange:
+/// @param textView description
+/// @param URL description
+/// @param characterRange description
+/// @return BOOL
 - (BOOL)       textView:(UITextView *)textView
   shouldInteractWithURL:(NSURL *)URL
                 inRange:(NSRange)characterRange
@@ -694,16 +896,30 @@ NSString *textForSelection(id selection) {
   return NO;
 }
 
+/// textViewDidBeginEditing:
+/// @param textView description
 - (void)textViewDidBeginEditing:(UITextView *)textView {}
 
+/// textViewDidChange:
+/// @param textView description
 - (void)textViewDidChange:(UITextView *)textView {}
 
+/// textViewDidChangeSelection:
+/// @param textView description
 - (void)textViewDidChangeSelection:(UITextView *)textView {}
 
+/// textViewDidEndEditing:
+/// @param textView description
 - (void)textViewDidEndEditing:(UITextView *)textView {}
 
+/// textViewShouldBeginEditing:
+/// @param textView description
+/// @return BOOL
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView { return YES; }
 
+/// textViewShouldEndEditing:
+/// @param textView description
+/// @return BOOL
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView { return YES; }
 
 
@@ -712,6 +928,10 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// tableView:canEditRowAtIndexPath:
+/// @param tableView description
+/// @param indexPath description
+/// @return BOOL
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
   return NO;
 }
@@ -721,6 +941,10 @@ NSString *textForSelection(id selection) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// tableView:didEndDisplayingCell:forRowAtIndexPath:
+/// @param tableView description
+/// @param cell description
+/// @param indexPath description
 - (void)     tableView:(UITableView *)tableView
   didEndDisplayingCell:(UITableViewCell *)cell
      forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -742,56 +966,6 @@ NSString *textForSelection(id selection) {
     [_steppersByIndexPath removeObjectForKey:indexPath];
     [_stepperLabelsByIndexPath removeObjectForKey:indexPath];
   }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Nibs
-////////////////////////////////////////////////////////////////////////////////
-
-
-- (UINib *)nibForIdentifier:(NSString *)identifier {
-
-  static const NSDictionary * nibNameIndex = nil;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken, ^{
-
-    nibNameIndex = @{ TextFieldCellIdentifier        : TextFieldNibName,
-                      LabelCellIdentifier            : LabelNibName,
-                      LabelListCellIdentifier        : ListNibName,
-                      DetailDisclosureCellIdentifier : DetailDisclosureNibName,
-                      ImageCellIdentifier            : ImageNibName,
-                      TextViewCellIdentifier         : TextViewNibName,
-                      StepperCellIdentifier          : StepperNibName,
-                      SwitchCellIdentifier           : SwitchNibName,
-                      ButtonCellIdentifier           : ButtonNibName,
-                      TableCellIdentifier            : TableNibName };
-  });
-
-  return [UINib nibWithNibName:nibNameIndex[identifier] bundle:nil];
-
-}
-
-- (BankableDetailTableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
-                                                      forIndexPath:(NSIndexPath *)indexPath {
-
-  if (!self.registeredNibs[identifier]) {
-
-    UINib * nib = [self nibForIdentifier:identifier];
-    [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
-    _registeredNibs[identifier] = nib;
-
-  }
-
-  return [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-
-}
-
-- (NSMutableDictionary *)registeredNibs {
-
-  if (!_registeredNibs) _registeredNibs = [@{} mutableCopy];
-
-  return _registeredNibs;
 
 }
 

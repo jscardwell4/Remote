@@ -260,6 +260,10 @@ MSSTRING_CONST kGetMethod          = @"GET";
           saved = [moc save:&error];
           MSHandleErrors(error);
 
+          assert(saved);
+
+          nsprintf(@"%@", weakself.device.JSONString);
+
         }];
 
       }

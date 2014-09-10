@@ -26,12 +26,11 @@
     NSError * _error;
 }
 
-@property (nonatomic, assign, readonly)                         BOOL        executing;
-@property (nonatomic, assign, readonly)                         BOOL        finished;
-@property (nonatomic, strong, readonly)                         NSError   * error;
+@property (assign, readonly, getter = isExecuting)              BOOL      executing;
+@property (assign, readonly, getter = isFinished)               BOOL      finished;
+@property (nonatomic, strong, readonly)                         NSError * error;
 @property (nonatomic, strong, readonly)                         Command * command;
-@property (nonatomic, assign, readonly, getter = wasSuccessful) BOOL        success;
-
+@property (nonatomic, assign, readonly, getter = wasSuccessful) BOOL      success;
 + (instancetype)operationForCommand:(Command *)command;
 
 @end

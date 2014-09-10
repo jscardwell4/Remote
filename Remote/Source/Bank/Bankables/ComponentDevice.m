@@ -12,6 +12,7 @@
 #import "MSKit/NSManagedObject+MSKitAdditions.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "ComponentDeviceDetailViewController.h"
 
 
 @implementation ComponentDevice {
@@ -20,67 +21,36 @@
 
 @dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer, networkDevice;
 
-/*
- + (ComponentDevice *)importDeviceWithData:(NSDictionary *)data context:(NSManagedObjectContext *)moc
-   {
-    ComponentDevice * device = [self createInContext:moc];
+/// detailViewController
+/// @return ComponentDeviceDetailViewController *
+- (ComponentDeviceDetailViewController *)detailViewController {
+  return [ComponentDeviceDetailViewController controllerWithItem:self];
+}
 
-    NSString     * name          = data[@"name"];
-    NSNumber     * port          = data[@"port"];
-    NSNumber     * inputPowersOn = data[@"inputPowersOn"];
-    NSDictionary * onCommand     = data[@"onCommand"];
-    NSDictionary * offCommand    = data[@"offCommand"];
-    NSNumber     * alwaysOn      = data[@"alwaysOn"];
-    NSArray      * codes         = data[@"codes"];
+/// editingViewController
+/// @return ComponentDeviceDetailViewController *
+- (ComponentDeviceDetailViewController *)editingViewController {
+  return [ComponentDeviceDetailViewController controllerWithItem:self editing:YES];
+}
 
-    if (name) device.name = name;
-    if (port) device.port = [port intValue];
-    if (inputPowersOn) device.inputPowersOn = [inputPowersOn boolValue];
-    if (alwaysOn) device.alwaysOn = [alwaysOn boolValue];
-
-
-    return device;
-   }
-
- */
-
-/*
- + (ComponentDevice *)importFromData:(NSDictionary *)objectData inContext:(NSManagedObjectContext *)context;
-   {
-
-    NSAttributeDescription * primaryAttribute = [[self MR_entityDescription]
-                                                 MR_primaryAttributeToRelateBy];
-
-    id value = [objectData MR_valueForAttribute:primaryAttribute];
-
-    ComponentDevice * managedObject = [self findFirstByAttribute:[primaryAttribute name]
-                                                          withValue:value
-                                                          inContext:context];
-    if (managedObject == nil)
-    {
-        managedObject = [self createInContext:context];
-    }
-
-    [managedObject MR_importValuesForKeysWithObject:objectData];
-
-
-    return managedObject;
-   }
- */
-
-//- (void)awakeFromInsert {
-//  [super awakeFromInsert];
-//  self.user = @YES;
-//}
-
+/// fetchDeviceWithName:
+/// @param name description
+/// @return instancetype
 + (instancetype)fetchDeviceWithName:(NSString *)name {
   return [self findFirstByAttribute:@"name" withValue:name];
 }
 
+/// fetchDeviceWithName:context:
+/// @param name description
+/// @param context description
+/// @return instancetype
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context {
   return [self findFirstByAttribute:@"name" withValue:name inContext:context];
 }
 
+/// ignorePowerCommand:
+/// @param handler description
+/// @return BOOL
 - (BOOL)ignorePowerCommand:(void (^)(BOOL success, NSError *))handler {
   if (_ignoreNextPowerCommand) {
     _ignoreNextPowerCommand = NO;
@@ -91,6 +61,8 @@
   } else return NO;
 }
 
+/// powerOn:
+/// @param completion description
 - (void)powerOn:(void (^)(BOOL success, NSError *))completion {
   __weak ComponentDevice * weakself = self;
 
@@ -102,6 +74,8 @@
     }];
 }
 
+/// powerOff:
+/// @param completion description
 - (void)powerOff:(void (^)(BOOL success, NSError *))completion {
   __weak ComponentDevice * weakself = self;
 
@@ -113,11 +87,16 @@
     }];
 }
 
+/// objectForKeyedSubscript:
+/// @param name description
+/// @return IRCode *
 - (IRCode *)objectForKeyedSubscript:(NSString *)name {
   return [self.codes objectPassingTest:
           ^BOOL (IRCode * obj) { return [name isEqualToString:obj.name]; }];
 }
 
+/// JSONDictionary
+/// @return MSDictionary *
 - (MSDictionary *)JSONDictionary {
 
   MSDictionary * dictionary = [super JSONDictionary];
@@ -138,6 +117,8 @@
   return dictionary;
 }
 
+/// deepDescriptionDictionary
+/// @return MSDictionary *
 - (MSDictionary *)deepDescriptionDictionary {
   ComponentDevice * device = [self faultedObject];
 
@@ -152,10 +133,12 @@
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark Importing
+#pragma mark Import/Export
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// updateWithData:
+/// @param data description
 - (void)updateWithData:(NSDictionary *)data {
 
 
@@ -171,11 +154,16 @@
   NSManagedObjectContext * moc           = self.managedObjectContext;
 
 
-  if (port)          self.port          = port.shortValue;
-  if (onCommand)     self.onCommand     = [Command importObjectFromData:onCommand context:moc];
-  if (offCommand)    self.onCommand     = [Command importObjectFromData:offCommand context:moc];
-  if (manufacturer)  self.manufacturer  = [Manufacturer importObjectFromData:manufacturer context:moc];
-  if (codes)         self.codes         = [[IRCode importObjectsFromData:codes context:moc] set];
+  if (port) self.port = port.shortValue;
+
+  if (onCommand) self.onCommand = [Command importObjectFromData:onCommand context:moc];
+
+  if (offCommand) self.onCommand = [Command importObjectFromData:offCommand context:moc];
+
+  if (manufacturer) self.manufacturer = [Manufacturer importObjectFromData:manufacturer context:moc];
+
+  if (codes) self.codes = [[IRCode importObjectsFromData:codes context:moc] set];
+
   if (networkDevice) self.networkDevice = [NetworkDevice importObjectFromData:networkDevice context:moc];
 
 }
@@ -184,10 +172,16 @@
 #pragma mark - Bankable
 ////////////////////////////////////////////////////////////////////////////////
 
+/// directoryLabel
+/// @return NSString *
 + (NSString *)directoryLabel { return @"Component Devices"; }
 
+/// bankFlags
+/// @return BankFlags
 + (BankFlags)bankFlags { return (BankDetail | BankNoSections | BankEditable); }
 
+/// isEditable
+/// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 @end

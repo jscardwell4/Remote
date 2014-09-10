@@ -7,6 +7,7 @@
 //
 
 #import "ITachDevice.h"
+#import "ITachDeviceDetailViewController.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -42,6 +43,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @implementation ITachDevice
 
 @dynamic pcbPN, pkgLevel, sdkClass, make, model, status, configURL, revision;
+
+/// detailViewController
+/// @return ITachDeviceDetailViewController *
+- (ITachDeviceDetailViewController *)detailViewController {
+  return [ITachDeviceDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return ITachDeviceDetailViewController *
+- (ITachDeviceDetailViewController *)editingViewController {
+  return [ITachDeviceDetailViewController controllerWithItem:self editing:YES];
+}
 
 
 /// setModel:
@@ -100,8 +113,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   [super updateWithData:data];
 
-  self.pcbPN      = data[@"pcb_pn"];
-  self.pkgLevel   = data[@"pkg_level"];
+  self.pcbPN      = data[@"pcb-pn"];
+  self.pkgLevel   = data[@"pkg-level"];
   self.sdkClass   = data[@"sdk-class"];
   self.make       = data[@"make"];
   self.model      = data[@"model"];
@@ -117,13 +130,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  SafeSetValueForKey(self.pcbPN,      @"pcb_pn",      dictionary);
-  SafeSetValueForKey(self.pkgLevel,   @"pkg_level",   dictionary);
+  dictionary[@"type"] = @"itach";
+
+  SafeSetValueForKey(self.pcbPN,      @"pcb-pn",      dictionary);
+  SafeSetValueForKey(self.pkgLevel,   @"pkg-level",   dictionary);
   SafeSetValueForKey(self.sdkClass,   @"sdk-class",   dictionary);
   SafeSetValueForKey(self.make,       @"make",        dictionary);
   SafeSetValueForKey(self.model,      @"model",       dictionary);
   SafeSetValueForKey(self.status,     @"status",      dictionary);
-  SafeSetValueForKey(self.configURL,  @"configURL",   dictionary);
+  SafeSetValueForKey(self.configURL,  @"config-url",   dictionary);
   SafeSetValueForKey(self.revision,   @"revision",    dictionary);
 
   return dictionary;

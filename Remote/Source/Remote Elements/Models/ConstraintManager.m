@@ -1256,17 +1256,17 @@ RERelationshipType remoteElementRelationshipTypeForConstraint(RemoteElement * el
 NSUInteger bitIndexForNSLayoutAttribute(NSLayoutAttribute attribute) {
   switch (attribute) {
     case NSLayoutAttributeLeft:
-    case NSLayoutAttributeLeading:          return 7;
+    case NSLayoutAttributeLeading:    return 7;
     case NSLayoutAttributeRight:
-    case NSLayoutAttributeTrailing:         return 6;
-    case NSLayoutAttributeTop:              return 5;
+    case NSLayoutAttributeTrailing:   return 6;
+    case NSLayoutAttributeTop:        return 5;
     case NSLayoutAttributeBaseline:
-    case NSLayoutAttributeBottom:           return 4;
-    case NSLayoutAttributeCenterX:          return 3;
-    case NSLayoutAttributeCenterY:          return 2;
-    case NSLayoutAttributeWidth:            return 1;
-    case NSLayoutAttributeHeight:           return 0;
-    case NSLayoutAttributeNotAnAttribute:   return NSNotFound;
+    case NSLayoutAttributeBottom:     return 4;
+    case NSLayoutAttributeCenterX:    return 3;
+    case NSLayoutAttributeCenterY:    return 2;
+    case NSLayoutAttributeWidth:      return 1;
+    case NSLayoutAttributeHeight:     return 0;
+    default:                          return NSNotFound;
   }
 }
 

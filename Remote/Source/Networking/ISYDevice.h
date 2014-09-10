@@ -17,16 +17,16 @@
 
 @interface ISYDevice : NetworkDevice
 
-@property (nonatomic, copy,   readonly) NSString * modelNumber;
 @property (nonatomic, copy,   readonly) NSString * modelName;
+@property (nonatomic, copy,   readonly) NSString * modelNumber;
 @property (nonatomic, copy,   readonly) NSString * modelDescription;
-@property (nonatomic, copy,   readonly) NSString * manufacturerURL;
-@property (nonatomic, copy,   readonly) NSString * manufacturer;
 @property (nonatomic, copy,   readonly) NSString * friendlyName;
+@property (nonatomic, copy,   readonly) NSString * manufacturer;
+@property (nonatomic, copy,   readonly) NSString * manufacturerURL;
 @property (nonatomic, copy,   readonly) NSString * deviceType;
 @property (nonatomic, copy,   readonly) NSString * baseURL;
 @property (nonatomic, strong, readonly) NSSet    * nodes;
-
+@property (nonatomic, strong, readonly) NSSet    * groups;
 
 @end
 

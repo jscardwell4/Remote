@@ -11,8 +11,11 @@
 #import "Lumberjack/Lumberjack.h"
 #import "MSKit/MSKit.h"
 #import "MSRemoteMacros.h"
+#import "NamedModelObject.h"
 
-#import "ModelObject.h"
+@class BankableModelObject, BankableDetailTableViewController;
+
+/** Options for how a bank object is displayed */
 
 typedef NS_OPTIONS(uint8_t, BankFlags) {
     BankDefault    = 0b00000000,
@@ -26,47 +29,58 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 
 @protocol BankableDetailDelegate;
 
-@protocol Bankable <NamedModelObject>
 
-// Class info
+/** Protocol to ensure all bank objects have the necessary info to display */
+
+@protocol BankableModel <NamedModel>
+
+/// directoryLabel
+/// @return NSString *
 + (NSString *)directoryLabel;
+
+/// bankFlags
+/// @return BankFlags
 + (BankFlags)bankFlags;
+
+/// directoryIcon
+/// @return UIImage *
 + (UIImage *)directoryIcon;
-+ (Class<BankableDetailDelegate>)detailViewControllerClass;
+
+/// detailViewControllerClass
+/// @return BankableDetailTableViewController *
+- (BankableDetailTableViewController *)detailViewController;
+
+/// editingViewController
+/// @return BankableDetailTableViewController *
+- (BankableDetailTableViewController *)editingViewController;
+
+/// bankableItems
+/// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)bankableItems;
 
+/// updateItem
 - (void)updateItem;
+
+/// resetItem
 - (void)resetItem;
 
-// Object info
 @property (nonatomic, copy)                          NSString     * name;
 @property (nonatomic, copy)                          NSString     * category;
 @property (nonatomic, readonly)                      UIImage      * thumbnail;
 @property (nonatomic, readonly)                      UIImage      * preview;
 @property (nonatomic, copy)                          NSNumber     * user;
 @property (nonatomic, readonly, getter = isEditable) BOOL           editable;
-@property (nonatomic, readonly)                      MSDictionary * subBankables;
+@property (nonatomic, readonly)                      MSDictionary * subitems;
 
 @end
 
-@protocol BankableViewController <NSObject>
-
-@property (nonatomic, strong) Class<Bankable> itemClass;
-
-@end
-
-@protocol BankableDetailDelegate <BankableViewController>
-
-@property (nonatomic, strong) id<Bankable> item;
-- (void)editItem;
-
-@end
+/** The bank singleton interface */
 
 @interface Bank : MSSingletonController
 
+/// registeredClasses
+/// @return NSArray *
 + (NSArray *)registeredClasses;
-+ (UIViewController<BankableDetailDelegate> *)detailControllerForItem:(id<Bankable>)item;
-+ (UIViewController<BankableDetailDelegate> *)editingControllerForItem:(id<Bankable>)item;
 
 @end
 

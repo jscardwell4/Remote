@@ -41,13 +41,23 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @param moc description
 /// @return instancetype
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
+
   if (self == [NetworkDevice class] && [@"itach" isEqualToString:data[@"type"]])
     return [ITachDevice importObjectFromData:data context:moc];
+
   else if (self == [NetworkDevice class] && [@"isy" isEqualToString:data[@"type"]])
     return [ISYDevice importObjectFromData:data context:moc];
+
   else
     return [super importObjectFromData:data context:moc];
+
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Import/Export
+////////////////////////////////////////////////////////////////////////////////
+
 
 /// updateWithData:
 /// @param data description
@@ -58,14 +68,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   self.uniqueIdentifier = data[@"unique-identifier"];
   self.name             = data[@"name"];
 
-}
-
-/// networkDeviceForBeaconData:context:
-/// @param message description
-/// @param moc description
-/// @return instancetype
-+ (instancetype)networkDeviceFromDiscoveryBeacon:(NSString *)message context:(NSManagedObjectContext *)moc {
-  return nil;
 }
 
 /// JSONDictionary
@@ -82,8 +84,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
-- (NSString *)multicastGroupAddress { return nil; }
-- (NSString *)multicastGroupPort    { return nil; }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Bankable
+////////////////////////////////////////////////////////////////////////////////
+
+
++ (NSString *)directoryLabel { return @"Network Devices"; }
+
++ (BankFlags)bankFlags { return (BankDetail | BankNoSections | BankEditable); }
+
+- (BOOL)isEditable { return ([super isEditable] && self.user); }
+
 
 @end
 

@@ -8,6 +8,7 @@
 
 #import "ISYDevice.h"
 #import "ISYDeviceConnection.h"
+#import "ISYDeviceDetailViewController.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -79,6 +80,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @property (nonatomic, copy,   readwrite) NSString * deviceType;
 @property (nonatomic, copy,   readwrite) NSString * baseURL;
 @property (nonatomic, strong, readwrite) NSSet    * nodes;
+@property (nonatomic, strong, readwrite) NSSet    * groups;
 
 @end
 
@@ -93,6 +95,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @property (nonatomic) NSString     * primitiveDeviceType;
 @property (nonatomic) NSString     * primitiveBaseURL;
 @property (nonatomic) NSMutableSet * primitiveNodes;
+@property (nonatomic) NSMutableSet * primitiveGroups;
 
 @end
 
@@ -101,13 +104,42 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic modelNumber, modelName, modelDescription;
 @dynamic manufacturerURL, manufacturer;
 @dynamic friendlyName, deviceType, baseURL;
-@dynamic nodes;
+@dynamic nodes, groups;
+
+/// detailViewController
+/// @return ISYDeviceDetailViewController *
+- (ISYDeviceDetailViewController *)detailViewController {
+  return [ISYDeviceDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return ISYDeviceDetailViewController *
+- (ISYDeviceDetailViewController *)editingViewController {
+  return [ISYDeviceDetailViewController controllerWithItem:self editing:YES];
+}
+
 
 /// updateWithData:
 /// @param data description
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
+
+	self.modelNumber      = (data[@"model-number"]      ?: self.modelNumber     );
+	self.modelName        = (data[@"model-name"]        ?: self.modelName       );
+	self.modelDescription = (data[@"model-description"] ?: self.modelDescription);
+	self.manufacturerURL  = (data[@"manufacturer-url"]  ?: self.manufacturerURL );
+	self.manufacturer     = (data[@"manufacturer"]      ?: self.manufacturer    );
+	self.friendlyName     = (data[@"friendly-name"]     ?: self.friendlyName    );
+	self.deviceType       = (data[@"device-type"]       ?: self.deviceType      );
+	self.baseURL          = (data[@"base-url"]          ?: self.baseURL         );
+
+	NSArray * nodes = [ISYDeviceNode importObjectsFromData:data[@"nodes"] context:self.managedObjectContext];
+	if ([nodes count]) self.nodes = [nodes set];
+
+
+	NSArray * groups = [ISYDeviceGroup importObjectsFromData:data[@"groups"] context:self.managedObjectContext];
+	if ([groups count]) self.groups = [groups set];
 
 }
 
@@ -116,6 +148,19 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (MSDictionary *)JSONDictionary {
 
   MSDictionary * dictionary = [super JSONDictionary];
+
+  dictionary[@"type"] = @"isy";
+
+  SafeSetValueForKey(self.modelNumber,                                @"model-number",      dictionary);
+  SafeSetValueForKey(self.modelName,                                  @"model-name",        dictionary);
+  SafeSetValueForKey(self.modelDescription,                           @"model-description", dictionary);
+  SafeSetValueForKey(self.manufacturerURL,                            @"manufacturer-url",  dictionary);
+  SafeSetValueForKey(self.manufacturer,                               @"manufacturer",      dictionary);
+  SafeSetValueForKey(self.friendlyName,                               @"friendly-name",     dictionary);
+  SafeSetValueForKey(self.deviceType,                                 @"device-type",       dictionary);
+  SafeSetValueForKey(self.baseURL,                                    @"base-url",          dictionary);
+  SafeSetValueForKey([self valueForKeyPath:@"nodes.JSONDictionary"],  @"nodes",             dictionary);
+  SafeSetValueForKey([self valueForKeyPath:@"groups.JSONDictionary"], @"groups",            dictionary);
 
   return dictionary;
 
@@ -131,31 +176,33 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @interface ISYDeviceNode ()
 
-@property (nonatomic, copy,   readwrite) NSNumber  * flag;
-@property (nonatomic, copy,   readwrite) NSString  * address;
-@property (nonatomic, copy,   readwrite) NSString  * type;
-@property (nonatomic, copy,   readwrite) NSNumber  * enabled;
-@property (nonatomic, copy,   readwrite) NSString  * pnode;
-@property (nonatomic, copy,   readwrite) NSString  * propertyID;
-@property (nonatomic, copy,   readwrite) NSString  * propertyValue;
-@property (nonatomic, copy,   readwrite) NSString  * propertyUOM;
-@property (nonatomic, copy,   readwrite) NSString  * propertyFormatted;
-@property (nonatomic, strong, readwrite) ISYDevice * device;
+@property (nonatomic, copy,   readwrite) NSNumber       * flag;
+@property (nonatomic, copy,   readwrite) NSString       * address;
+@property (nonatomic, copy,   readwrite) NSString       * type;
+@property (nonatomic, copy,   readwrite) NSNumber       * enabled;
+@property (nonatomic, copy,   readwrite) NSString       * pnode;
+@property (nonatomic, copy,   readwrite) NSString       * propertyID;
+@property (nonatomic, copy,   readwrite) NSString       * propertyValue;
+@property (nonatomic, copy,   readwrite) NSString       * propertyUOM;
+@property (nonatomic, copy,   readwrite) NSString       * propertyFormatted;
+@property (nonatomic, strong, readwrite) ISYDevice      * device;
+@property (nonatomic, strong, readwrite) NSSet          * groups;
 
 @end
 
 @interface ISYDeviceNode (CoreDataGenerated)
 
-@property (nonatomic) NSNumber  * primitiveFlag;
-@property (nonatomic) NSString  * primitiveAddress;
-@property (nonatomic) NSString  * primitiveType;
-@property (nonatomic) NSNumber  * primitiveEnabled;
-@property (nonatomic) NSString  * primitivePnode;
-@property (nonatomic) NSString  * primitivePropertyID;
-@property (nonatomic) NSString  * primitivePropertyValue;
-@property (nonatomic) NSString  * primitivePropertyUOM;
-@property (nonatomic) NSString  * primitivePropertyFormatted;
-@property (nonatomic) ISYDevice * primitiveDevice;
+@property (nonatomic) NSNumber       * primitiveFlag;
+@property (nonatomic) NSString       * primitiveAddress;
+@property (nonatomic) NSString       * primitiveType;
+@property (nonatomic) NSNumber       * primitiveEnabled;
+@property (nonatomic) NSString       * primitivePnode;
+@property (nonatomic) NSString       * primitivePropertyID;
+@property (nonatomic) NSString       * primitivePropertyValue;
+@property (nonatomic) NSString       * primitivePropertyUOM;
+@property (nonatomic) NSString       * primitivePropertyFormatted;
+@property (nonatomic) ISYDevice      * primitiveDevice;
+@property (nonatomic) NSMutableSet   * primitiveGroups;
 
 @end
 
@@ -163,7 +210,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @dynamic flag, address, type, enabled, pnode;
 @dynamic propertyID, propertyValue, propertyUOM, propertyFormatted;
-@dynamic device;
+@dynamic device, groups;
 
 
 /// updateWithData:
@@ -171,6 +218,21 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
+
+	self.flag              =  (data[@"flag"]               ?: self.flag             );
+	self.address           =  (data[@"address"]            ?: self.address          );
+	self.type              =  (data[@"type"]               ?: self.type             );
+	self.enabled           =  (data[@"enabled"]            ?: self.enabled          );
+	self.pnode             =  (data[@"pnode"]              ?: self.pnode            );
+	self.propertyID        =  (data[@"property-id"]        ?: self.propertyID       );
+	self.propertyValue     =  (data[@"property-value"]     ?: self.propertyValue    );
+	self.propertyUOM       =  (data[@"property-uom"]       ?: self.propertyUOM      );
+	self.propertyFormatted =  (data[@"property-formatted"] ?: self.propertyFormatted);
+  self.groups = ([[[data[@"members"] mapped:^id (NSString * uuid, NSUInteger idx) {
+
+  	return ([ISYDeviceGroup existingObjectWithUUID:uuid] ?: NullObject);
+
+  }] compacted] set] ?: self.groups);
 
 }
 
@@ -180,11 +242,29 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   MSDictionary * dictionary = [super JSONDictionary];
 
+  SafeSetValueForKey(self.flag,                             @"flag",               dictionary);
+  SafeSetValueForKey(self.address,                          @"address",            dictionary);
+  SafeSetValueForKey(self.type,                             @"type",               dictionary);
+  SafeSetValueForKey(self.enabled,                          @"enabled",            dictionary);
+  SafeSetValueForKey(self.pnode,                            @"pnode",              dictionary);
+  SafeSetValueForKey(self.propertyID,                       @"property-id",        dictionary);
+  SafeSetValueForKey(self.propertyValue,                    @"property-value",     dictionary);
+  SafeSetValueForKey(self.propertyUOM,                      @"property-uom",       dictionary);
+  SafeSetValueForKey(self.propertyFormatted,                @"property-formatted", dictionary);
+  SafeSetValueForKey(self.device.uuid,                      @"device.uuid",        dictionary);
+  SafeSetValueForKey([self valueForKeyPath:@"groups.uuid"], @"groups",             dictionary);
+
   return dictionary;
 
 }
 
 @end
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - ISYDeviceGroup
+////////////////////////////////////////////////////////////////////////////////
+
 
 @interface ISYDeviceGroup ()
 
@@ -192,6 +272,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @property (nonatomic, copy,   readwrite) NSString  * address;
 @property (nonatomic, copy,   readwrite) NSNumber  * family;
 @property (nonatomic, strong, readwrite) NSSet     * members;
+@property (nonatomic, strong, readwrite) ISYDevice * device;
 
 @end
 
@@ -201,12 +282,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @property (nonatomic) NSString     * primitiveAddress;
 @property (nonatomic) NSNumber     * primitiveFamily;
 @property (nonatomic) NSMutableSet * primitiveMembers;
+@property (nonatomic) ISYDevice    * primitiveDevice;
 
 @end
 
 @implementation ISYDeviceGroup
 
-@dynamic flag, address, family, members;
+@dynamic flag, address, family, members, device;
 
 
 /// updateWithData:
@@ -215,6 +297,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   [super updateWithData:data];
 
+  self.flag    = (data[@"flag"]    ?: self.flag   );
+  self.address = (data[@"address"] ?: self.address);
+  self.family  = (data[@"family"]  ?: self.family );
+  self.members = ([[[data[@"members"] mapped:^id (NSString * uuid, NSUInteger idx) {
+
+  	return ([ISYDeviceNode existingObjectWithUUID:uuid] ?: NullObject);
+
+  }] compacted] set] ?: self.members);
+
 }
 
 /// JSONDictionary
@@ -222,6 +313,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (MSDictionary *)JSONDictionary {
 
   MSDictionary * dictionary = [super JSONDictionary];
+
+  SafeSetValueForKey(self.flag,                              @"flag",        dictionary);
+	SafeSetValueForKey(self.address,                           @"address",     dictionary);
+	SafeSetValueForKey(self.family,                            @"family",      dictionary);
+	SafeSetValueForKey([self valueForKeyPath:@"members.uuid"], @"members",     dictionary);
+	SafeSetValueForKey(self.device.uuid,                       @"device.uuid", dictionary);
+
 
   return dictionary;
 

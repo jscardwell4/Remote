@@ -8,8 +8,10 @@
 
 #import "Bank.h"
 #import "BankCollectionViewController.h"
+#import "BankableDetailTableViewController.h"
+#import "BankableModelObject.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
@@ -21,39 +23,20 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation Bank
 
-+ (NSArray *)registeredClasses
-{
-    return @[@"IRCode", @"Image", @"ComponentDevice", @"Preset", @"Manufacturer"];
+/// registeredClasses
+/// @return NSArray *
++ (NSArray *)registeredClasses {
+  return @[@"IRCode", @"Image", @"ComponentDevice", @"Preset", @"Manufacturer", @"NetworkDevice"];
 }
 
-- (UIViewController *)viewController
-{
-    if (!_viewController)
-        self.viewController = [[UIStoryboard storyboardWithName:@"Bank" bundle:nil]
-                               instantiateInitialViewController];
-    return _viewController;
-}
+/// viewController
+/// @return UIViewController *
+- (UIViewController *)viewController {
+  if (!_viewController)
+    self.viewController = [[UIStoryboard storyboardWithName:@"Bank" bundle:nil]
+                           instantiateInitialViewController];
 
-+ (UIViewController<BankableDetailDelegate> *)detailControllerForItem:(id<Bankable>)item
-{
-    MSLogDebug(@"item name: %@", item.name);
-    Class itemDetailClass = [[item class] detailViewControllerClass];
-    assert(   itemDetailClass
-           && [itemDetailClass conformsToProtocol:@protocol(BankableDetailDelegate)]);
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Bank" bundle:nil];
-    UIViewController<BankableDetailDelegate> * viewController =
-    (UIViewController<BankableDetailDelegate> *)
-    [storyboard instantiateViewControllerWithClassNameIdentifier:itemDetailClass];
-    viewController.item = item;
-    return viewController;
-}
-
-+ (UIViewController<BankableDetailDelegate> *)editingControllerForItem:(id<Bankable>)item
-{
-    UIViewController<BankableDetailDelegate> * viewController = [self detailControllerForItem:item];
-    [viewController editItem];
-    return viewController;
+  return _viewController;
 }
 
 @end
-

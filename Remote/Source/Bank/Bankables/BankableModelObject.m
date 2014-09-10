@@ -8,6 +8,7 @@
 
 #import "BankableModelObject.h"
 #import "CoreDataManager.h"
+#import "BankableDetailTableViewController.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -15,18 +16,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation BankableModelObject
-
 @dynamic category, user;
 
 
 + (BankFlags)bankFlags { return BankDefault; }
 + (NSString *)directoryLabel { return nil; }
 + (UIImage *)directoryIcon { return nil; }
-+ (Class)detailViewControllerClass {
-  return NSClassFromString($(@"%@DetailViewController", ClassString(self)));
-}
 
-+ (Class)editingViewControllerClass { return [self detailViewControllerClass]; }
+- (BankableDetailTableViewController *)detailViewController  { return nil; }
+- (BankableDetailTableViewController *)editingViewController { return nil; }
 
 - (void)updateItem {
   if ([self hasChanges]) {
@@ -79,7 +77,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (UIImage *)thumbnail { return nil; }
 - (UIImage *)preview { return nil; }
-- (MSDictionary *)subBankables { return nil; }
+- (MSDictionary *)subitems { return nil; }
 
 + (NSFetchedResultsController *)bankableItems {
   NSFetchedResultsController * controller = [self fetchAllGroupedBy:@"category"

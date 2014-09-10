@@ -18,12 +18,12 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
 
-static NSIndexPath * kManufacturerIndexPath;
-static NSIndexPath * kCodesetIndexPath;
-static NSIndexPath * kFrequencyIndexPath;
-static NSIndexPath * kRepeatIndexPath;
-static NSIndexPath * kOffsetIndexPath;
-static NSIndexPath * kOnOffPatternIndexPath;
+CellIndexPathDeclaration(Manufacturer);
+CellIndexPathDeclaration(Codeset);
+CellIndexPathDeclaration(Frequency);
+CellIndexPathDeclaration(Repeat);
+CellIndexPathDeclaration(Offset);
+CellIndexPathDeclaration(OnOffPattern);
 
 @interface IRCodeDetailViewController ()
 
@@ -42,37 +42,37 @@ static NSIndexPath * kOnOffPatternIndexPath;
 {
     if (self == [IRCodeDetailViewController class])
     {
-        kManufacturerIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        kCodesetIndexPath      = [NSIndexPath indexPathForRow:1 inSection:0];
-        kFrequencyIndexPath    = [NSIndexPath indexPathForRow:2 inSection:0];
-        kRepeatIndexPath       = [NSIndexPath indexPathForRow:3 inSection:0];
-        kOffsetIndexPath       = [NSIndexPath indexPathForRow:4 inSection:0];
-        kOnOffPatternIndexPath = [NSIndexPath indexPathForRow:5 inSection:0];
+        CellIndexPathDefinition(Manufacturer, 0, 0);
+        CellIndexPathDefinition(Codeset,      1, 0);
+        CellIndexPathDefinition(Frequency,    2, 0);
+        CellIndexPathDefinition(Repeat,       3, 0);
+        CellIndexPathDefinition(Offset,       4, 0);
+        CellIndexPathDefinition(OnOffPattern, 5, 0);
     }
 }
 
-- (Class<Bankable>)itemClass { return [IRCode class]; }
+- (Class<BankableModel>)itemClass { return [IRCode class]; }
 
 - (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type
 {
     switch (type)
     {
         case BankableDetailPickerViewData:
-            return ([indexPath isEqual:kManufacturerIndexPath]
+            return ([indexPath isEqual:ManufacturerCellIndexPath]
                     ? self.manufacturers
                     : self.codesets);
 
         case BankableDetailPickerViewSelection:
-            return ([indexPath isEqual:kManufacturerIndexPath]
+            return ([indexPath isEqual:ManufacturerCellIndexPath]
                     ? self.irCode.manufacturer
                     : self.irCode.codeset);
 
         case BankableDetailTextFieldData:
-            return ([indexPath isEqual:kFrequencyIndexPath]
+            return ([indexPath isEqual:FrequencyCellIndexPath]
                     ? [self.irCode.frequency stringValue]
-                    : ([indexPath isEqual:kRepeatIndexPath]
+                    : ([indexPath isEqual:RepeatCellIndexPath]
                        ? [self.irCode.repeatCount stringValue]
-                       : ([indexPath isEqual:kManufacturerIndexPath]
+                       : ([indexPath isEqual:ManufacturerCellIndexPath]
                           ? ([self.irCode valueForKeyPath:@"manufacturer.name"]
                              ?: @"No Manufacturer")
                           : ([self.irCode valueForKeyPath:@"codeset"]
@@ -120,14 +120,14 @@ static NSIndexPath * kOnOffPatternIndexPath;
                row:(NSUInteger)row
          indexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath isEqual:kManufacturerIndexPath])
+    if ([indexPath isEqual:ManufacturerCellIndexPath])
     {
         if (!row)
         {
             _irCode.manufacturer = nil;
             _codesets = nil;
-            [self cellForRowAtIndexPath:kManufacturerIndexPath].text = @"No Manufacturer";
-            [self cellForRowAtIndexPath:kCodesetIndexPath].text = @"No Codeset";
+            [self cellForRowAtIndexPath:ManufacturerCellIndexPath].text = @"No Manufacturer";
+            [self cellForRowAtIndexPath:CodesetCellIndexPath].text = @"No Codeset";
         }
 
         else
@@ -136,19 +136,19 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
              if (selection != _irCode.manufacturer)
              {
-                 [self cellForRowAtIndexPath:kCodesetIndexPath].text = @"No Codeset";
+                 [self cellForRowAtIndexPath:CodesetCellIndexPath].text = @"No Codeset";
                  _codesets = nil;
              }
 
             _irCode.manufacturer = selection;
-            [self cellForRowAtIndexPath:kManufacturerIndexPath].text = _irCode.manufacturer.name;
+            [self cellForRowAtIndexPath:ManufacturerCellIndexPath].text = _irCode.manufacturer.name;
        }
     }
 
-    else if ([indexPath isEqual:kCodesetIndexPath])
+    else if ([indexPath isEqual:CodesetCellIndexPath])
     {
         _irCode.codeset = (row ? selection : nil);
-        [self cellForRowAtIndexPath:kCodesetIndexPath].text = (row ? selection : @"No Codeset");
+        [self cellForRowAtIndexPath:CodesetCellIndexPath].text = (row ? selection : @"No Codeset");
     }
 
     [super pickerView:pickerView didSelectObject:selection row:row indexPath:indexPath];
@@ -159,7 +159,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setItem:(NSManagedObject<Bankable> *)item
+- (void)setItem:(BankableModelObject *)item
 {
     [super setItem:item];
     _irCode = (IRCode *)item;
@@ -185,7 +185,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
     {
         case 0:  // Manufacturer
         {
-            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"Manufacturer";
             cell.text = ([_irCode valueForKeyPath:@"manufacturer.name"] ? : @"No Manufacturer");
@@ -238,7 +238,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
         case 1:  // Codeset
         {
-            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"Codeset";
             cell.text = (_irCode.codeset ? : @"No Codeset");
@@ -267,16 +267,16 @@ static NSIndexPath * kOnOffPatternIndexPath;
                        forIndexPath:indexPath
                            handlers:@{ BankableValidationHandlerKey : validationHandler,
                                        BankableChangeHandlerKey     : changeHandler }];
-            
+
             [self registerPickerView:cell.pickerView forIndexPath:indexPath];
-            
+
 
             break;
         }
 
         case 2:  // Frequency
         {
-            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"Frequency";
             cell.text = [_irCode.frequency stringValue];
@@ -295,7 +295,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
         case 3:  // Repeat
         {
-            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"Repeat";
             cell.text = [_irCode.repeatCount stringValue];
@@ -312,7 +312,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
         case 4:  // Offset
         {
-            cell = [self dequeueReusableCellWithIdentifier:StepperCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellStepperStyleIdentifier
                                               forIndexPath:indexPath];
             cell.nameLabel.text           = @"Offset";
             cell.infoStepper.minimumValue = 0;
@@ -334,7 +334,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
         case 5:  // On-Off Pattern
         {
-            cell = [self dequeueReusableCellWithIdentifier:TextViewCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextViewStyleIdentifier
                                               forIndexPath:indexPath];
             cell.name = @"On-Off Pattern";
             cell.text = _irCode.onOffPattern;
@@ -356,7 +356,7 @@ static NSIndexPath * kOnOffPatternIndexPath;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ([indexPath isEqual:kOnOffPatternIndexPath]
+    return ([indexPath isEqual:OnOffPatternCellIndexPath]
             ? BankableDetailTextViewRowHeight
             : ([self.visiblePickerCellIndexPath isEqual:indexPath]
                ? BankableDetailExpandedRowHeight

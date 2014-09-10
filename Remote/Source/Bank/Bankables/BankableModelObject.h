@@ -5,20 +5,31 @@
 //  Created by Jason Cardwell on 9/17/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-@import UIKit;
-@import CoreData;
-@import Foundation;
-#import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
-#import "MSRemoteMacros.h"
-
-#import "NamedModelObject.h"
 #import "Bank.h"
 
-@interface BankableModelObject : NamedModelObject<Bankable>
+@class BankableDetailTableViewController;
 
-@property (nonatomic, copy, readwrite) NSString * category;
-@property (nonatomic, copy, readwrite) NSNumber * user;
+@interface BankableModelObject : NamedModelObject <BankableModel>
+
+// Class info
++ (NSString *)directoryLabel;
++ (BankFlags)bankFlags;
++ (UIImage *)directoryIcon;
++ (NSFetchedResultsController *)bankableItems;
+
+- (BankableDetailTableViewController *)detailViewController;
+- (BankableDetailTableViewController *)editingViewController;
+
+- (void)updateItem;
+- (void)resetItem;
+
+// Object info
+@property (nonatomic, copy)                          NSString     * category;
+@property (nonatomic, readonly)                      UIImage      * thumbnail;
+@property (nonatomic, readonly)                      UIImage      * preview;
+@property (nonatomic, copy)                          NSNumber     * user;
+@property (nonatomic, readonly, getter = isEditable) BOOL           editable;
+@property (nonatomic, readonly)                      MSDictionary * subitems;
 
 + (NSFetchedResultsController *)bankableItems;
 

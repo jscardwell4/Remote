@@ -309,8 +309,8 @@ BOOL UUIDIsValid(NSString * uuid) {
 }
 
 - (NSString *)modelObjectDescription {
-  return (([self conformsToProtocol:@protocol(NamedModelObject)])
-          ? namedModelObjectDescription((ModelObject<NamedModelObject> *)self)
+  return (([self conformsToProtocol:@protocol(NamedModel)])
+          ? namedModelObjectDescription((ModelObject<NamedModel> *)self)
           : unnamedModelObjectDescription(self)
   );
 }
@@ -370,7 +370,7 @@ ModelObject*memberOfCollectionAtIndex(id collection, NSUInteger idx) {
           : nil);
 }
 
-NSString*namedModelObjectDescription(ModelObject<NamedModelObject> * modelObject) {
+NSString*namedModelObjectDescription(ModelObject<NamedModel> * modelObject) {
   return (modelObject
           ? $(@"%@(%p):'%@'", modelObject.uuid, modelObject, (modelObject.name ?: @""))
           : @"nil");

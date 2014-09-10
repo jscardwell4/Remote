@@ -12,6 +12,7 @@
 #import "Bankables.h"
 #import "Remote.h"
 #import "Activity.h"
+#import "NetworkDevice.h"
 
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
@@ -26,6 +27,7 @@
 #define POWERCOMMANDS_LOG_FLAG    0
 #define MANUFACTURERS_LOG_FLAG    0
 #define COMPONENTDEVICES_LOG_FLAG 0
+#define NETWORKDEVICES_LOG_FLAG   0
 #define IRCODES_LOG_FLAG          0
 
 static int       ddLogLevel       = LOG_LEVEL_INFO;
@@ -77,7 +79,10 @@ void logImportedObject(id importedObject, int flag)
     [CoreDataManager saveWithBlockAndWait:
      ^(NSManagedObjectContext * context)
      {
-         @autoreleasepool { [self loadComponentDevices:context]; }
+         @autoreleasepool {
+           [self loadComponentDevices:context];
+           [self loadNetworkDevices:context];
+         }
      }];
 
     [CoreDataManager saveWithBlockAndWait:
@@ -235,6 +240,31 @@ void logImportedObject(id importedObject, int flag)
     MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
 
     logImportedObject(componentDevices, COMPONENTDEVICES_LOG_FLAG);
+}
+
++ (void)loadNetworkDevices:(NSManagedObjectContext *)context
+{
+  MSLogDebug(@"loading component devices...");
+
+  NSString * fileName = @"NetworkDevice";
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+
+  NSError * error = nil;
+  NSStringEncoding encoding;
+  NSString * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                 usedEncoding:&encoding
+                                                        error:&error];
+  if (error) { MSHandleErrors(error); return; }
+
+  logImportFile(fileName, fileContent, NETWORKDEVICES_LOG_FLAG);
+  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
+  if (error) { MSHandleErrors(error); return; }
+
+  logParsedImportFile(importObjects, NETWORKDEVICES_LOG_FLAG);
+  NSArray * networkDevices = [NetworkDevice importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%lu network devices imported", (unsigned long)[networkDevices count]);
+
+  logImportedObject(networkDevices, NETWORKDEVICES_LOG_FLAG);
 }
 
 + (void)loadImages:(NSManagedObjectContext *)context

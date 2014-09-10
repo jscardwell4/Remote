@@ -208,6 +208,8 @@ static NSArray const * kITachErrorCodes;
 
       assert(saved);
 
+      nsprintf(@"%@", device.JSONString);
+
     }
 
   }];

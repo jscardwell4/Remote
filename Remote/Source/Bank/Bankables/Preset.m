@@ -10,6 +10,7 @@
 #import "CoreDataManager.h"
 #import "RemoteElementView_Private.h"
 #import "Bank.h"
+#import "PresetDetailViewController.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -18,6 +19,19 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 @implementation Preset
 
 @dynamic element;
+
+/// detailViewController
+/// @return PresetDetailViewController *
+- (PresetDetailViewController *)detailViewController {
+  return [PresetDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return PresetDetailViewController *
+- (PresetDetailViewController *)editingViewController {
+  return [PresetDetailViewController controllerWithItem:self editing:YES];
+}
+
 
 + (instancetype)presetWithElement:(RemoteElement *)element
 {

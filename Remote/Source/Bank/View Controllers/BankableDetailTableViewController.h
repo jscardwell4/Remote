@@ -5,17 +5,37 @@
 //  Created by Jason Cardwell on 9/24/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-@import UIKit;
-@import CoreData;
-@import Foundation;
-#import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
-#import "MSRemoteMacros.h"
-
 #import "Bank.h"
 
-@interface BankableDetailTableViewController : UITableViewController  <BankableDetailDelegate>
+@class BankableModelObject;
 
-@property (nonatomic, strong) NSManagedObject<Bankable> * item;
+@interface BankableDetailTableViewController : UITableViewController
+
+/// controllerWithItem:
+/// @param item description
+/// @return instancetype
++ (instancetype)controllerWithItem:(BankableModelObject *)item;
+
+/// controllerWithItem:editing:
+/// @param item description
+/// @param isEditing description
+/// @return instancetype
++ (instancetype)controllerWithItem:(BankableModelObject *)item editing:(BOOL)isEditing;
+
+/// initWithItem:
+/// @param item description
+/// @return instancetype
+- (instancetype)initWithItem:(BankableModelObject *)item;
+
+/// initWithItem:editing:
+/// @param item description
+/// @param isEditing description
+/// @return instancetype
+- (instancetype)initWithItem:(BankableModelObject *)item editing:(BOOL)isEditing;
+
+/// editItem
+- (void)editItem;
+
+@property (nonatomic, strong) BankableModelObject * item;
 
 @end

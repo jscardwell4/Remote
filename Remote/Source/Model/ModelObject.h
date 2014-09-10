@@ -75,13 +75,13 @@ BOOL UUIDIsValid(NSString * uuid);
 ModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid);
 ModelObject * memberOfCollectionAtIndex(id collection, NSUInteger idx);
 
-@protocol NamedModelObject <NSObject>
+@protocol NamedModel <NSObject>
 
 - (NSString *)name;
 
 @end
 
-NSString * namedModelObjectDescription(ModelObject<NamedModelObject> * modelObject);
+NSString * namedModelObjectDescription(ModelObject<NamedModel> * modelObject);
 NSString * unnamedModelObjectDescription(ModelObject * modelObject);
 
 #import "CoreDataManager.h"

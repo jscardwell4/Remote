@@ -11,7 +11,7 @@
 #import "Lumberjack/Lumberjack.h"
 #import "MSKit/MSKit.h"
 #import "MSRemoteMacros.h"
-#import "NamedModelObject.h"
+#import "BankableModelObject.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,23 +19,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-@interface NetworkDevice : NamedModelObject
+@interface NetworkDevice : BankableModelObject
 
 /// deviceExistsWithUniqueIdentifier:
 /// @param identifier description
 /// @return BOOL
 + (BOOL)deviceExistsWithUniqueIdentifier:(NSString *)identifier;
 
-/// networkDeviceForBeaconData:context:
-/// @param message description
-/// @param moc description
-/// @return instancetype
-+ (instancetype)networkDeviceFromDiscoveryBeacon:(NSString *)message context:(NSManagedObjectContext *)moc;
-
-@property (nonatomic, strong) NSSet            * componentDevices;
-@property (nonatomic, copy, readonly) NSString * uniqueIdentifier;
-@property (nonatomic, readonly)       NSString * multicastGroupAddress;
-@property (nonatomic, readonly)       NSString * multicastGroupPort;
+@property (nonatomic, strong, readonly) NSSet    * componentDevices;
+@property (nonatomic, copy,   readonly) NSString * uniqueIdentifier;
 
 
 @end

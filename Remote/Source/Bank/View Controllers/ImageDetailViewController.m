@@ -16,8 +16,8 @@ static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-static NSIndexPath * kCategoryCellIndexPath;
-static NSIndexPath * kPreviewCellIndexPath;
+CellIndexPathDeclaration(Category);
+CellIndexPathDeclaration(Preview);
 
 @interface ImageDetailViewController ()
 
@@ -33,19 +33,19 @@ static NSIndexPath * kPreviewCellIndexPath;
 
 + (void)initialize {
   if (self == [ImageDetailViewController class]) {
-    kCategoryCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    kPreviewCellIndexPath  = [NSIndexPath indexPathForRow:0 inSection:1];
+    CellIndexPathDefinition(Category, 0, 0);
+    CellIndexPathDefinition(Preview,  0, 1);
   }
 }
 
-- (Class<Bankable>)itemClass { return [Image class]; }
+- (Class<BankableModel>)itemClass { return [Image class]; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setItem:(NSManagedObject<Bankable> *)item {
+- (void)setItem:(BankableModelObject *)item {
   [super setItem:item];
   _image = (Image *)item;
 }
@@ -74,8 +74,8 @@ static NSIndexPath * kPreviewCellIndexPath;
       switch (indexPath.row) {
         case 0:         // Category
         {
-          cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
-                                            forIndexPath:indexPath];
+          cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
+                                                      forIndexPath:indexPath];
           cell.name = @"Category";
           cell.text = (self.image.category ?: @"Uncategorized");
 
@@ -97,8 +97,8 @@ static NSIndexPath * kPreviewCellIndexPath;
 
         case 1:         // File name
         {
-          cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
-                                            forIndexPath:indexPath];
+          cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
+                                                      forIndexPath:indexPath];
           cell.name = @"File";
           cell.text = self.image.fileName;
 
@@ -107,8 +107,8 @@ static NSIndexPath * kPreviewCellIndexPath;
 
         case 2:         // Size
         {
-          cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
-                                            forIndexPath:indexPath];
+          cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
+                                                      forIndexPath:indexPath];
           cell.name = @"Size";
           cell.text = PrettySize(self.image.size);
 
@@ -121,8 +121,8 @@ static NSIndexPath * kPreviewCellIndexPath;
 
     case 1:     // Preview
     {
-      cell = [self dequeueReusableCellWithIdentifier:ImageCellIdentifier
-                                        forIndexPath:indexPath];
+      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellImageStyleIdentifier
+                                                  forIndexPath:indexPath];
       UIImage * image = _image.preview;
       cell.image = image;
 
@@ -146,7 +146,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return ([indexPath isEqual:kPreviewCellIndexPath]
+  return ([indexPath isEqual:PreviewCellIndexPath]
           ? BankableDetailPreviewRowHeight
           : ([indexPath isEqual:self.visiblePickerCellIndexPath]
              ? BankableDetailExpandedRowHeight
@@ -162,7 +162,7 @@ static NSIndexPath * kPreviewCellIndexPath;
   if (!_categories) {
     NSManagedObjectContext * context = self.item.managedObjectContext;
 
-    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"BankInfo"];
+    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"Image"];
     [request setResultType:NSDictionaryResultType];
     [request setReturnsDistinctResults:YES];
     [request setPropertiesToFetch:@[@"category"]];

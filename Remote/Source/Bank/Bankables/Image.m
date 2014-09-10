@@ -6,6 +6,7 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Image.h"
+#import "ImageDetailViewController.h"
 
 static int       ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_DEFAULT;
@@ -32,6 +33,23 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 @synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
 
+/// detailViewController
+/// @return ImageDetailViewController *
+- (ImageDetailViewController *)detailViewController {
+  return [ImageDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return ImageDetailViewController *
+- (ImageDetailViewController *)editingViewController {
+  return [ImageDetailViewController controllerWithItem:self editing:YES];
+}
+
+/// imageWithFileName:category:context:
+/// @param fileName description
+/// @param category description
+/// @param moc description
+/// @return instancetype
 + (instancetype)imageWithFileName:(NSString *)fileName
                          category:(NSString *)category
                           context:(NSManagedObjectContext *)moc {
@@ -43,6 +61,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   return image;
 }
 
+/// setFileName:
+/// @param fileName description
 - (void)setFileName:(NSString *)fileName {
   UIImage * image = [UIImage imageNamed:fileName];
 
@@ -55,6 +75,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     ThrowInvalidArgument(fileName, "could not produce image for file");
 }
 
+/// updateWithData:
+/// @param data description
 - (void)updateWithData:(NSDictionary *)data {
   /*
      example json:
@@ -77,12 +99,19 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   self.topCap   = data[@"top-cap"]   ?: self.topCap;
 }
 
+/// image
+/// @return UIImage *
 - (UIImage *)image { return [UIImage imageNamed:self.fileName]; }
 
+/// imageWithColor:
+/// @param color description
+/// @return UIImage *
 - (UIImage *)imageWithColor:(UIColor *)color {
   return [color isPatternBased] ? nil : [self.image recoloredImageWithColor:color];
 }
 
+/// size
+/// @return CGSize
 - (CGSize)size {
   [self willAccessValueForKey:@"size"];
   NSValue * imageSizeValue = self.primitiveSize;
@@ -90,20 +119,28 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   return (imageSizeValue ? CGSizeValue(imageSizeValue) : CGSizeZero);
 }
 
+/// setSize:
+/// @param imageSize description
 - (void)setSize:(CGSize)imageSize {
   [self willChangeValueForKey:@"size"];
   self.primitiveSize = NSValueWithCGSize(imageSize);
   [self didChangeValueForKey:@"size"];
 }
 
+/// thumbnailSize
+/// @return CGSize
 - (CGSize)thumbnailSize {
   if (CGSizeEqualToSize(CGSizeZero, _thumbnailSize))
     _thumbnailSize = CGSizeMake(100, 100);
+
   return _thumbnailSize;
 }
 
+/// flushThumbnail
 - (void)flushThumbnail { self.thumbnail = nil; }
 
+/// thumbnail
+/// @return UIImage *
 - (UIImage *)thumbnail {
   if (!_thumbnail) {
 
@@ -136,6 +173,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   return _thumbnail;
 }
 
+/// stretchableImage
+/// @return UIImage *
 - (UIImage *)stretchableImage {
   if (!_stretchableImage)
     self.stretchableImage = [self.image
@@ -145,15 +184,19 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   return _stretchableImage;
 }
 
+/// preview
+/// @return UIImage *
 - (UIImage *)preview { return [self image]; }
 
+/// JSONDictionary
+/// @return MSDictionary *
 - (MSDictionary *)JSONDictionary {
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  SafeSetValueForKey(self.fileName,        @"file-name", dictionary);
-  SetValueForKeyIfNotDefault(self.leftCap, @"leftCap",   dictionary);
-  SetValueForKeyIfNotDefault(self.topCap,  @"topCap",    dictionary);
+  SafeSetValueForKey(self.fileName, @"file-name", dictionary);
+  SetValueForKeyIfNotDefault(self.leftCap, @"leftCap", dictionary);
+  SetValueForKeyIfNotDefault(self.topCap,  @"topCap",  dictionary);
 
   [dictionary compact];
   [dictionary compress];
@@ -161,6 +204,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   return dictionary;
 }
 
+/// deepDescriptionDictionary
+/// @return MSDictionary *
 - (MSDictionary *)deepDescriptionDictionary {
   Image * image = [self faultedObject];
 
@@ -177,6 +222,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   return (MSDictionary *)dd;
 }
 
+/// commentedUUID
+/// @return NSString *
 - (NSString *)commentedUUID {
   NSString * uuid = self.uuid;
 
@@ -193,9 +240,16 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 #pragma mark - Bankable
 ////////////////////////////////////////////////////////////////////////////////
 
+/// bankFlags
+/// @return BankFlags
 + (BankFlags)bankFlags { return (BankPreview | BankThumbnail | BankDetail | BankEditable); }
+
+/// directoryLabel
+/// @return NSString *
 + (NSString *)directoryLabel { return @"Images"; }
 
+/// isEditable
+/// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 

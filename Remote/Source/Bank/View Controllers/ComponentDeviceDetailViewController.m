@@ -18,14 +18,14 @@ static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
-static NSIndexPath * kManufacturerCellIndexPath;
-static NSIndexPath * kAllCodesCellIndexPath;
-static NSIndexPath * kNetworkDeviceCellIndexPath;
-static NSIndexPath * kPortCellIndexPath;
-static NSIndexPath * kPowerOnCellIndexPath;
-static NSIndexPath * kPowerOffCellIndexPath;
-static NSIndexPath * kInputPowersOnCellIndexPath;
-static NSIndexPath * kInputsCellIndexPath;
+CellIndexPathDeclaration(Manufacturer);
+CellIndexPathDeclaration(AllCodes);
+CellIndexPathDeclaration(NetworkDevice);
+CellIndexPathDeclaration(Port);
+CellIndexPathDeclaration(PowerOn);
+CellIndexPathDeclaration(PowerOff);
+CellIndexPathDeclaration(InputPowersOn);
+CellIndexPathDeclaration(Inputs);
 
 static const CGFloat kInputsTableRowHeight = 120;
 
@@ -44,20 +44,20 @@ static const CGFloat kInputsTableRowHeight = 120;
   __weak ComponentDevice * _componentDevice;
 }
 
-- (Class<Bankable>)itemClass { return [ComponentDevice class]; }
+- (Class<BankableModel>)itemClass { return [ComponentDevice class]; }
 
 + (void)initialize {
 
   if (self == [ComponentDeviceDetailViewController class]) {
 
-    kManufacturerCellIndexPath  = [NSIndexPath indexPathForRow:0 inSection:0];
-    kAllCodesCellIndexPath      = [NSIndexPath indexPathForRow:1 inSection:0];
-    kNetworkDeviceCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-    kPortCellIndexPath          = [NSIndexPath indexPathForRow:1 inSection:1];
-    kPowerOnCellIndexPath       = [NSIndexPath indexPathForRow:0 inSection:2];
-    kPowerOffCellIndexPath      = [NSIndexPath indexPathForRow:1 inSection:2];
-    kInputPowersOnCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:3];
-    kInputsCellIndexPath        = [NSIndexPath indexPathForRow:1 inSection:3];
+    CellIndexPathDefinition(Manufacturer,  0, 0);
+    CellIndexPathDefinition(AllCodes,      1, 0);
+    CellIndexPathDefinition(NetworkDevice, 0, 1);
+    CellIndexPathDefinition(Port,          1, 1);
+    CellIndexPathDefinition(PowerOn,       0, 2);
+    CellIndexPathDefinition(PowerOff,      1, 2);
+    CellIndexPathDefinition(InputPowersOn, 0, 3);
+    CellIndexPathDefinition(Inputs,        1, 3);
 
   }
 
@@ -80,26 +80,17 @@ static const CGFloat kInputsTableRowHeight = 120;
   return _inputs;
 }
 
-- (UINib *)inputsTableViewCellNib {
-
-  if (!_inputsTableViewCellNib)
-    self.inputsTableViewCellNib = [self nibForIdentifier:LabelListCellIdentifier];
-
-  return _inputsTableViewCellNib;
-
-}
-
 - (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type {
 
   switch (type) {
 
     case BankableDetailPickerViewData:
-      return ([indexPath isEqual:kManufacturerCellIndexPath]
+      return ([indexPath isEqual:ManufacturerCellIndexPath]
               ? self.manufacturers
               : self.networkDevices);
 
     case BankableDetailPickerViewSelection:
-      return ([indexPath isEqual:kManufacturerCellIndexPath]
+      return ([indexPath isEqual:ManufacturerCellIndexPath]
               ? self.componentDevice.manufacturer
               : self.componentDevice.networkDevice);
 
@@ -118,27 +109,19 @@ static const CGFloat kInputsTableRowHeight = 120;
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setItem:(NSManagedObject<Bankable> *)item {
+- (void)setItem:(BankableModelObject *)item {
 
   [super setItem:item];
   _componentDevice = (ComponentDevice *)self.item;
 
 }
 
-/*
-   - (ComponentDevice *)componentDevice
-   {
-    if (!_componentDevice) _componentDevice = (ComponentDevice *)self.item;
-    return _componentDevice;
-   }
- */
-
 - (void)setInputsTableView:(UITableView *)inputsTableView {
 
   _inputsTableView            = inputsTableView;
   _inputsTableView.delegate   = self;
   _inputsTableView.dataSource = self;
-  [_inputsTableView registerNib:self.inputsTableViewCellNib forCellReuseIdentifier:LabelListCellIdentifier];
+
   // ???: reload data here?
 
 }
@@ -164,7 +147,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
   if (!_networkDevices)
     self.networkDevices = [@[@"No Network Device",
-                             [NetworkDevice findAllSortedBy:@"name,model"
+                             [NetworkDevice findAllSortedBy:@"name"
                                                   ascending:YES
                                                     context:self.item.managedObjectContext]] flattened];
 
@@ -178,7 +161,7 @@ static const CGFloat kInputsTableRowHeight = 120;
          indexPath:(NSIndexPath *)indexPath
 {
 
-  if ([indexPath isEqual:kManufacturerCellIndexPath]) {
+  if ([indexPath isEqual:ManufacturerCellIndexPath]) {
 
     if (row == [_manufacturers lastIndex])
       MSLogDebug(@"right now would be a good time to create a new manufacturer");
@@ -187,7 +170,7 @@ static const CGFloat kInputsTableRowHeight = 120;
       self.componentDevice.manufacturer = ([selection isKindOfClass:[Manufacturer class]] ? selection : nil);
 
 
-  } else if ([indexPath isEqual:kNetworkDeviceCellIndexPath])
+  } else if ([indexPath isEqual:NetworkDeviceCellIndexPath])
     self.componentDevice.networkDevice = ([selection isKindOfClass:[NetworkDevice class]] ? selection : nil);
 
   [super pickerView:pickerView didSelectObject:selection row:row indexPath:indexPath];
@@ -209,7 +192,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   return (tableView == _inputsTableView
           ? BankableDetailDefaultRowHeight
-          : ([indexPath isEqual:kInputsCellIndexPath]
+          : ([indexPath isEqual:InputsCellIndexPath]
              ? kInputsTableRowHeight
              : ([indexPath isEqual:self.visiblePickerCellIndexPath]
                 ? BankableDetailExpandedRowHeight
@@ -233,7 +216,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
   if (tableView == _inputsTableView) {
 
-    cell = [_inputsTableView dequeueReusableCellWithIdentifier:LabelListCellIdentifier
+    cell = [_inputsTableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
                                                   forIndexPath:indexPath];
 
     cell.infoLabel.text = self.inputs[indexPath.row];
@@ -248,7 +231,8 @@ static const CGFloat kInputsTableRowHeight = 120;
         switch (indexPath.row) {
 
           case 0: {
-            cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
+                                                        forIndexPath:indexPath];
             cell.name = @"Manufacturer";
             cell.text = ([_componentDevice valueForKeyPath:@"manufacturer.name"] ?: @"No Manufacturer");
 
@@ -296,8 +280,8 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 1: {
 
-            cell = [self dequeueReusableCellWithIdentifier:DetailDisclosureCellIdentifier
-                                              forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellDetailStyleIdentifier
+                                                        forIndexPath:indexPath];
             cell.text = @"Device Codes";
             [cell.infoButton addTarget:self
                                 action:@selector(viewIRCodes:)
@@ -314,7 +298,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 0: {          // Network Device Name
 
-            cell = [self dequeueReusableCellWithIdentifier:ButtonCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellButtonStyleIdentifier forIndexPath:indexPath];
             cell.name = @"Name";
             cell.text = ([_componentDevice valueForKeyPath:@"networkDevice.name"] ?: @"No Network Device");
 
@@ -332,7 +316,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 1: {          // Port
 
-            cell = [self dequeueReusableCellWithIdentifier:StepperCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellStepperStyleIdentifier forIndexPath:indexPath];
             cell.name                     = @"Port";
             cell.text                     = [@(self.componentDevice.port)stringValue];
             cell.infoStepper.minimumValue = 1;
@@ -365,7 +349,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 0: {          // Power On Command
 
-            cell = [self dequeueReusableCellWithIdentifier:ButtonCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellButtonStyleIdentifier forIndexPath:indexPath];
             cell.name = @"On";
             cell.text = ([self.componentDevice valueForKeyPath:@"onCommand.name"] ?: @"No On Command");
 
@@ -381,7 +365,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 1: {          // Power Off Command
 
-            cell = [self dequeueReusableCellWithIdentifier:ButtonCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellButtonStyleIdentifier forIndexPath:indexPath];
             cell.name = @"Off";
             cell.text = ([self.componentDevice valueForKeyPath:@"offCommand.name"] ?: @"No Off Command");
 
@@ -407,7 +391,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 0: {          // Input powers on device
 
-            cell = [self dequeueReusableCellWithIdentifier:SwitchCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellSwitchStyleIdentifier forIndexPath:indexPath];
             cell.name          = @"Inputs Power On Device";
             cell.infoSwitch.on = _componentDevice.inputPowersOn;
 
@@ -423,7 +407,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 
           case 1: {          // Inputs table
 
-            cell = [self dequeueReusableCellWithIdentifier:TableCellIdentifier forIndexPath:indexPath];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTableStyleIdentifier forIndexPath:indexPath];
             self.inputsTableView = cell.infoTableView;
 
             break;
@@ -447,7 +431,7 @@ static const CGFloat kInputsTableRowHeight = 120;
 ////////////////////////////////////////////////////////////////////////////////
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-  if (tableView == self.tableView && [indexPath isEqual:kAllCodesCellIndexPath])
+  if (tableView == self.tableView && [indexPath isEqual:AllCodesCellIndexPath])
     [self viewIRCodes:nil];
 }
 

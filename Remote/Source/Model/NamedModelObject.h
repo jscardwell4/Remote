@@ -14,7 +14,7 @@
 
 #import "ModelObject.h"
 
-@interface NamedModelObject : ModelObject <NamedModelObject>
+@interface NamedModelObject : ModelObject <NamedModel>
 
 @property (nonatomic, readonly) NSString * commentedUUID;
 @property (nonatomic, strong) NSString * name;

@@ -58,8 +58,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   socketHints.ai_family   = AF_UNSPEC;
   socketHints.ai_socktype = SOCK_DGRAM;
 
-  const char * address = [(self.address ?: self.device.multicastGroupAddress) UTF8String];
-  const char * port    = [(self.port    ?: self.device.multicastGroupPort)    UTF8String];
+  const char * address = [self.address UTF8String];
+  const char * port    = [self.port    UTF8String];
 
   error = getaddrinfo(address, port, &socketHints, &resolve);
 

@@ -12,6 +12,17 @@
 #import "MSKit/MSKit.h"
 #import "MSRemoteMacros.h"
 
+MSEXTERN_IDENTIFIER(BankableDetailCellLabelStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellListStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellButtonStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellImageStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellSwitchStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellStepperStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellDetailStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellTextViewStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellTextFieldStyle);
+MSEXTERN_IDENTIFIER(BankableDetailCellTableStyle);
+
 @interface BankableDetailTableViewCell : UITableViewCell
 
 @property (nonatomic, weak, readonly) IBOutlet UILabel      * nameLabel;

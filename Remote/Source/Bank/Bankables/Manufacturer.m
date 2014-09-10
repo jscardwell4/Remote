@@ -10,10 +10,23 @@
 #import "BankGroup.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
+#import "ManufacturerDetailViewController.h"
 
 @implementation Manufacturer
 
 @dynamic codes, devices;
+
+/// detailViewController
+/// @return ManufacturerDetailViewController *
+- (ManufacturerDetailViewController *)detailViewController {
+  return [ManufacturerDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return ManufacturerDetailViewController *
+- (ManufacturerDetailViewController *)editingViewController {
+  return [ManufacturerDetailViewController controllerWithItem:self editing:YES];
+}
 
 
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context {

@@ -35,15 +35,15 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken,
                   ^{
-                      pseudoAttributes = @{ @"nil" 		: @(NSLayoutAttributeNotAnAttribute),
+                      pseudoAttributes = @{ @"nil" 		  : @(NSLayoutAttributeNotAnAttribute),
                                             @"left"    	: @(NSLayoutAttributeLeft),
-                                            @"right" 	: @(NSLayoutAttributeRight),
-                                            @"top" 		: @(NSLayoutAttributeTop),
-                                            @"bottom" 	: @(NSLayoutAttributeBottom),
+                                            @"right" 	  : @(NSLayoutAttributeRight),
+                                            @"top" 		  : @(NSLayoutAttributeTop),
+                                            @"bottom" 	  : @(NSLayoutAttributeBottom),
                                             @"leading" 	: @(NSLayoutAttributeLeading),
                                             @"trailing" : @(NSLayoutAttributeTrailing),
-                                            @"width" 	: @(NSLayoutAttributeWidth),
-                                            @"height" 	: @(NSLayoutAttributeHeight),
+                                            @"width" 	  : @(NSLayoutAttributeWidth),
+                                            @"height" 	  : @(NSLayoutAttributeHeight),
                                             @"centerX" 	: @(NSLayoutAttributeCenterX),
                                             @"centerY" 	: @(NSLayoutAttributeCenterY),
                                             @"baseline" : @(NSLayoutAttributeBaseline) };

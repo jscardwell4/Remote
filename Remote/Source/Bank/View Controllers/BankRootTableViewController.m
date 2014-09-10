@@ -39,7 +39,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     for (NSString * className in [Bank registeredClasses]) {
       id class = NSClassFromString(className);
       assert(class);
-      assert([class conformsToProtocol:@protocol(Bankable)]);
+      assert([class conformsToProtocol:@protocol(BankableModel)]);
       NSString * directoryLabel = [class valueForKey:@"directoryLabel"];
       assert(directoryLabel);
       _rootItems[class] = directoryLabel;

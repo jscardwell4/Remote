@@ -16,6 +16,9 @@
 #import "IRCode.h"
 #import "ComponentDevice.h"
 
+#define SUPPRESS_DETECT_DEVICES
+
+
 static int ddLogLevel   = LOG_LEVEL_INFO;
 static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
@@ -128,6 +131,12 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
  */
 + (void)startDetectingDevices:(void(^)(BOOL success, NSError *error))completion {
 
+
+#ifdef SUPPRESS_DETECT_DEVICES
+  if (completion) completion(YES, nil);
+
+#else
+
   __block int       completionCount = 0;
   __block BOOL      completionSuccess         = YES;
   __block NSError * completionError           = nil;
@@ -156,6 +165,9 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
   [ISYConnectionManager startDetectingDevices:completionWrapper];
 
   MSLogInfo(@"listening for network devices…");
+
+#endif
+
 }
 
 
@@ -168,6 +180,11 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
  */
 + (void)stopDetectingDevices:(void (^)(BOOL, NSError *))completion {
 
+#ifdef SUPPRESS_DETECT_DEVICES
+
+  if (completion) completion(YES, nil);
+
+#else
 
   __block int       completionCount = 0;
   __block BOOL      completionSuccess         = YES;
@@ -197,6 +214,9 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
   [ISYConnectionManager stopDetectingDevices:completionWrapper];
   
   MSLogInfo(@"no longer listenting for network devices…");
+
+#endif
+  
 }
 
 /**

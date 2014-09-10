@@ -16,8 +16,8 @@ static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-static NSIndexPath * kCategoryCellIndexPath;
-static NSIndexPath * kPreviewCellIndexPath;
+CellIndexPathDeclaration(Category);
+CellIndexPathDeclaration(Preview);
 
 
 @interface PresetDetailViewController ()
@@ -36,19 +36,19 @@ static NSIndexPath * kPreviewCellIndexPath;
 {
     if (self == [PresetDetailViewController class])
     {
-        kCategoryCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        kPreviewCellIndexPath  = [NSIndexPath indexPathForRow:0 inSection:1];
+        CellIndexPathDefinition(Category, 0, 0);
+        CellIndexPathDefinition(Preview,  0, 1);
     }
 }
 
-- (Class<Bankable>)itemClass { return [Preset class]; }
+- (Class<BankableModel>)itemClass { return [Preset class]; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setItem:(NSManagedObject<Bankable> *)item
+- (void)setItem:(BankableModelObject *)item
 {
     [super setItem:item];
     _preset = (Preset *)item;
@@ -80,8 +80,8 @@ static NSIndexPath * kPreviewCellIndexPath;
             {
                 case 0:  // Category
                 {
-                    cell = [self dequeueReusableCellWithIdentifier:TextFieldCellIdentifier
-                                                      forIndexPath:indexPath];
+                  cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
+                                                              forIndexPath:indexPath];
                     cell.name = @"Category";
                     cell.text = (_preset.category ?: @"Uncategorized");
                     BankableChangeHandler change =
@@ -104,7 +104,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 
                 case 1:  // Type
                 {
-                    cell = [self dequeueReusableCellWithIdentifier:LabelCellIdentifier
+                    cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
                                                       forIndexPath:indexPath];
                     cell.name = @"Type";
                     REType type = [[_preset valueForKeyPath:@"element.type"] intValue];
@@ -119,7 +119,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 
         case 1:  // Preview
         {
-            cell = [self dequeueReusableCellWithIdentifier:ImageCellIdentifier
+            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellImageStyleIdentifier
                                               forIndexPath:indexPath];
             UIImage * image = _preset.preview;
             cell.image = image;
@@ -147,7 +147,7 @@ static NSIndexPath * kPreviewCellIndexPath;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ([indexPath isEqual:kPreviewCellIndexPath]
+    return ([indexPath isEqual:PreviewCellIndexPath]
             ? BankableDetailPreviewRowHeight
             : ([indexPath isEqual:self.visiblePickerCellIndexPath]
                ? BankableDetailExpandedRowHeight

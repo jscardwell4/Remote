@@ -11,7 +11,7 @@
 #import "Lumberjack/Lumberjack.h"
 #import "MSKit/MSKit.h"
 #import "MSRemoteMacros.h"
-
+#import "BankableModelObject.h"
 #import "BankableDetailTableViewController.h"
 #import "BankableDetailTableViewCell.h"
 
@@ -61,10 +61,7 @@ typedef BOOL(^BankableValidationHandler)(void);
 #pragma mark Table view management
 ////////////////////////////////////////////////////////////////////////////////
 
-- (UINib *)nibForIdentifier:(NSString *)identifier;
-- (BankableDetailTableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
-                                                      forIndexPath:(NSIndexPath *)indexPath;
-- (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath const *)indexPath;
 
 // data sources
 - (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type;
@@ -108,19 +105,14 @@ typedef BOOL(^BankableValidationHandler)(void);
 
 @end
 
+#define CellIndexPathDeclaration(CELL) \
+  static NSIndexPath const * __CONCAT(CELL,CellIndexPath)
+
+#define CellIndexPathDefinition(CELL,ROW,SEC) \
+  __CONCAT(CELL,CellIndexPath) = [NSIndexPath indexPathForRow:ROW inSection:SEC]
+
 
 MSEXTERN_NAMETAG(BankableDetailHiddenNeighborConstraint);
-
-MSEXTERN_IDENTIFIER(StepperCell);
-MSEXTERN_IDENTIFIER(SwitchCell);
-MSEXTERN_IDENTIFIER(LabelCell);
-MSEXTERN_IDENTIFIER(LabelListCell);
-MSEXTERN_IDENTIFIER(DetailDisclosureCell);
-MSEXTERN_IDENTIFIER(ButtonCell);
-MSEXTERN_IDENTIFIER(ImageCell);
-MSEXTERN_IDENTIFIER(TextFieldCell);
-MSEXTERN_IDENTIFIER(TextViewCell);
-MSEXTERN_IDENTIFIER(TableCell);
 
 MSEXTERN_KEY(BankableChangeHandler);
 MSEXTERN_KEY(BankableValidationHandler);

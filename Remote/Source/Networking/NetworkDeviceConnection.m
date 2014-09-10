@@ -258,17 +258,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 	dispatch_block_t handler = ^{
 
-		weakself.sourcesRegistered = weakself.sourcesRegistered - 1;
+    [MainQueue addOperationWithBlock:^{
 
-    close((int)dispatch_source_get_handle(weakself.readSource));
+      weakself.sourcesRegistered = weakself.sourcesRegistered - 1;
 
-    weakself.readSource = nil;
+      close((int)dispatch_source_get_handle(weakself.readSource));
 
-    if (weakself.writeSource && !dispatch_source_testcancel(weakself.writeSource))
-      dispatch_source_cancel(weakself.writeSource);
+      weakself.readSource = nil;
 
-    else
-      [MainQueue addOperationWithBlock:^{
+      if (weakself.writeSource && !dispatch_source_testcancel(weakself.writeSource))
+        dispatch_source_cancel(weakself.writeSource);
+
+      else {
 
         if (weakself.disconnectCallback) {
 
@@ -283,8 +284,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
         if (weakself.delegate)
           [weakself.delegate deviceDisconnected:weakself];
-
-      }];
+        
+      }
+      
+    }];
 
 	};
 
@@ -300,17 +303,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 	dispatch_block_t handler = ^{
 
-		weakself.sourcesRegistered = weakself.sourcesRegistered - 1;
+    [MainQueue addOperationWithBlock:^{
 
-    close((int)dispatch_source_get_handle(weakself.writeSource));
+      weakself.sourcesRegistered = weakself.sourcesRegistered - 1;
 
-    weakself.writeSource = nil;
+      close((int)dispatch_source_get_handle(weakself.writeSource));
 
-    if (weakself.readSource && !dispatch_source_testcancel(weakself.readSource))
-      dispatch_source_cancel(weakself.readSource);
+      weakself.writeSource = nil;
 
-    else
-	    [MainQueue addOperationWithBlock:^{
+      if (weakself.readSource && !dispatch_source_testcancel(weakself.readSource))
+        dispatch_source_cancel(weakself.readSource);
+
+      else {
 
 	      if (weakself.disconnectCallback) {
 
@@ -325,8 +329,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 	      if (weakself.delegate)
 	        [weakself.delegate deviceDisconnected:weakself];
-
-	    }];
+        
+      }
+      
+    }];
 
 	};
 

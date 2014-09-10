@@ -1071,7 +1071,7 @@
 		C2CE884618138C4900555D63 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Jason Cardwell";
 				TargetAttributes = {
 					C20FF1BD19AE2C1700D11F33 = {
@@ -1607,7 +1607,7 @@
 		C2CE886F18138C4900555D63 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;

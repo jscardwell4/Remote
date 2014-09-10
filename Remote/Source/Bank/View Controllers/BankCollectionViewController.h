@@ -16,10 +16,9 @@
 
 @class BankCollectionViewCell;
 
-@interface BankCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate,
-                                                                      BankableViewController>
+@interface BankCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) Class<Bankable> itemClass;
+@property (nonatomic, strong) Class<BankableModel> itemClass;
 @property (nonatomic, strong) NSFetchedResultsController * bankableItems;
 @property (nonatomic, assign) BankFlags bankFlags;
 
