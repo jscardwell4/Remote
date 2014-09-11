@@ -18,6 +18,8 @@
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
+		C22E1BDA19C12FB900A93D61 /* BankCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionViewListCell.swift */; };
+		C22E1BDE19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BDD19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift */; };
 		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2381EB319A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */; };
@@ -357,7 +359,6 @@
 		C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */; };
 		C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */; };
 		C29ABAD917F87472007D185F /* BankPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29ABAD817F87472007D185F /* BankPreviewViewController.m */; };
-		C29ABADC17F8761F007D185F /* BankCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29ABADB17F8761F007D185F /* BankCollectionViewCell.m */; };
 		C29ABAE017F87ADB007D185F /* BankCollectionHeaderReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
@@ -564,6 +565,9 @@
 		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
 		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
+		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
+		C22E1BD919C12FB900A93D61 /* BankCollectionViewListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewListCell.swift; sourceTree = "<group>"; };
+		C22E1BDD19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewThumbnailCell.swift; sourceTree = "<group>"; };
 		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
 		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
@@ -979,8 +983,6 @@
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C29ABAD717F87472007D185F /* BankPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankPreviewViewController.h; sourceTree = "<group>"; };
 		C29ABAD817F87472007D185F /* BankPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankPreviewViewController.m; sourceTree = "<group>"; };
-		C29ABADA17F8761F007D185F /* BankCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionViewCell.h; sourceTree = "<group>"; };
-		C29ABADB17F8761F007D185F /* BankCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionViewCell.m; sourceTree = "<group>"; };
 		C29ABADE17F87ADB007D185F /* BankCollectionHeaderReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCollectionHeaderReusableView.h; sourceTree = "<group>"; };
 		C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCollectionHeaderReusableView.m; sourceTree = "<group>"; };
 		C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
@@ -1416,14 +1418,14 @@
 			children = (
 				C2436DB317EA99C600482186 /* BankCollectionViewController.h */,
 				C2436DB417EA99C600482186 /* BankCollectionViewController.m */,
-				C29ABADA17F8761F007D185F /* BankCollectionViewCell.h */,
-				C29ABADB17F8761F007D185F /* BankCollectionViewCell.m */,
 				C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */,
 				C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */,
 				C29ABADE17F87ADB007D185F /* BankCollectionHeaderReusableView.h */,
 				C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */,
 				C2EF968517F7C4D4005AA639 /* BankCollectionViewFlowLayout.h */,
 				C2EF968617F7C4D4005AA639 /* BankCollectionViewFlowLayout.m */,
+				C22E1BD919C12FB900A93D61 /* BankCollectionViewListCell.swift */,
+				C22E1BDD19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift */,
 			);
 			name = Collections;
 			sourceTree = "<group>";
@@ -1503,6 +1505,7 @@
 			isa = PBXGroup;
 			children = (
 				C2011DCB19B238F900B982CD /* README.md */,
+				C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */,
 				C26BAEB516DC10FE0093D5B4 /* Remote-Info.plist */,
 				C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */,
 				C26BAEB916DC10FE0093D5B4 /* main.m */,
@@ -2659,7 +2662,6 @@
 				C2F2A47E17EF569F00DE2F41 /* ManufacturerDetailViewController.m in Sources */,
 				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
 				C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */,
-				C29ABADC17F8761F007D185F /* BankCollectionViewCell.m in Sources */,
 				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
 				C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */,
@@ -2707,11 +2709,13 @@
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
 				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
+				C22E1BDE19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift in Sources */,
 				C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */,
 				C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
+				C22E1BDA19C12FB900A93D61 /* BankCollectionViewListCell.swift in Sources */,
 				C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
@@ -2848,6 +2852,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -2860,6 +2865,8 @@
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -2873,6 +2880,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-licucore",
@@ -2884,6 +2892,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
 			};
 			name = Release;
 		};

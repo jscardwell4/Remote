@@ -92,7 +92,7 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 /// @param indexPath description
 /// @return UITableViewCell *
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  BankableDetailTableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
+  BankableDetailTableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
                                                                             forIndexPath:indexPath];
 
   if (!indexPath.section) {
@@ -162,8 +162,8 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
       vc.itemClass     = [IRCode class];
 
       if (!isUserCodeset) {
-        BankFlags bf = vc.bankFlags;
-        vc.bankFlags = bf | BankNoSections;
+//        BankFlags bf = vc.bankFlags;
+//        vc.bankFlags = bf | BankNoSections;
       }
 
       [self.navigationController pushViewController:vc animated:YES];

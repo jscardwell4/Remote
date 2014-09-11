@@ -12,6 +12,4 @@
 #import "MSKit/MSKit.h"
 #import "MSRemoteMacros.h"
 
-#import <UIKit/UIKit.h>
-
 @interface BankCollectionViewFlowLayout : UICollectionViewFlowLayout @end

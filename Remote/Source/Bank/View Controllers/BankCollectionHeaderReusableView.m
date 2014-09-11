@@ -9,21 +9,50 @@
 #import "BankCollectionHeaderReusableView.h"
 #import "BankCollectionViewController.h"
 
+MSIDENTIFIER_DEFINITION(BankCollectionHeader);
+
+@interface BankCollectionHeaderReusableView ()
+
+@property (nonatomic, weak) IBOutlet UIButton * button;
+
+@end
+
 @implementation BankCollectionHeaderReusableView
 
-- (IBAction)toggleItems:(id)sender {
-  [self.controller toggleItemsForSection:self.section];
+/// initWithFrame:
+/// @param frame description
+/// @return instancetype
+- (instancetype)initWithFrame:(CGRect)frame {
+
+  if ((self = [super initWithFrame:frame])) {
+
+    self.backgroundColor = [UIColor colorWithR:236 G:236 B:236 A:230];
+    UIButton * button = [UIButton newForAutolayout];
+    button.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    [button addTarget:self action:@selector(toggleItems:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:button];
+    self.button = button;
+    NSArray * constraints =
+      [NSLayoutConstraint constraintsByParsingString:[@"\n" join:@[@"|-18-[button]-18-|",
+                                                                   @"button.centerY = self.centerY"]]
+                                                           views:@{@"button": button, @"self": self} ];
+    [self addConstraints:constraints];
+
+  }
+
+  return self;
 }
 
-- (void)setTitle:(NSString *)title {
-  if (_button)
-    [self.button setTitle:title forState:UIControlStateNormal];
-  else if (_label)
-    self.label.text = title;
-}
+/// toggleItems:
+/// @param sender description
+- (IBAction)toggleItems:(id)sender { [self.controller toggleItemsForSection:self.section]; }
 
-- (NSString *)title {
-  return (_button ? [self.button titleForState:UIControlStateNormal] : self.label.text);
-}
+/// setTitle:
+/// @param title description
+- (void)setTitle:(NSString *)title { [self.button setTitle:title forState:UIControlStateNormal]; }
+
+/// title
+/// @return NSString *
+- (NSString *)title { return [self.button titleForState:UIControlStateNormal]; }
 
 @end

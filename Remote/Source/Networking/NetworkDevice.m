@@ -53,7 +53,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Import/Export
 ////////////////////////////////////////////////////////////////////////////////
@@ -84,20 +83,22 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Bankable
+#pragma mark - BankableModel
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// isSectionable
+/// @return BOOL
++ (BOOL)isSectionable { return NO;  }
+
+/// directoryLabel
+/// @return NSString *
 + (NSString *)directoryLabel { return @"Network Devices"; }
 
-+ (BankFlags)bankFlags { return (BankDetail | BankNoSections | BankEditable); }
-
+/// isEditable
+/// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 
 @end
-
-
-

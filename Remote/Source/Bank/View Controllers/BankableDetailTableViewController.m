@@ -165,7 +165,7 @@ NSString *textForSelection(id selection) {
     item.titleView = nameTextField;
     self.nameTextField = nameTextField;
 
-    self.cancelBarButtonItem = SystemBarButton(UIBarButtonSystemItemCancel, @selector(cancel:));
+    self.cancelBarButtonItem = SystemBarButton(Cancel, @selector(cancel:));
     item.rightBarButtonItem  = self.editButtonItem;
 
   }
@@ -341,6 +341,7 @@ NSString *textForSelection(id selection) {
        return [[@[neighborView, hiddenView] set] isEqualToSet:[@[obj.firstItem, obj.secondItem] set]];
      }];
 
+  //TODO: Fix this, it is broken
   assert(  currentConstraint
         && currentConstraint.relation == NSLayoutRelationEqual
         && (  currentConstraint.firstAttribute == NSLayoutAttributeTrailing

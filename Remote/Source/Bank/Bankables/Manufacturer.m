@@ -16,19 +16,10 @@
 
 @dynamic codes, devices;
 
-/// detailViewController
-/// @return ManufacturerDetailViewController *
-- (ManufacturerDetailViewController *)detailViewController {
-  return [ManufacturerDetailViewController controllerWithItem:self];
-}
-
-/// editingViewController
-/// @return ManufacturerDetailViewController *
-- (ManufacturerDetailViewController *)editingViewController {
-  return [ManufacturerDetailViewController controllerWithItem:self editing:YES];
-}
-
-
+/// manufacturerWithName:context:
+/// @param name description
+/// @param context description
+/// @return instancetype
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context {
   assert(name && context);
 
@@ -54,33 +45,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// updateWithData:
+/// @param data description
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-     {
-       "uuid": "D3D49520-818A-4E4A-9AD4-FDBC99BE99AC",
-       "name": "LG",
-       "codes": [
-           {
-               "uuid": "5AE3E47B-3743-4DF7-82C4-2E377529E13C",
-               "info": {
-                   "name": "1",
-                   "category": "(LG) 0768"
-               },
-               "codeset": "0768",
-               "frequency": 39105,
-               "onOffPattern": "344,176,22,3691,"
-           },
-       "devices": [
-           "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F" // Samsung TV
-           ]
-     }
-   */
 
   [super updateWithData:data];
 
-  NSArray                * codes    = data[@"codes"];
-  NSArray                * devices  = data[@"devices"];
-  NSManagedObjectContext * moc      = self.managedObjectContext;
+  NSArray                * codes   = data[@"codes"];
+  NSArray                * devices = data[@"devices"];
+  NSManagedObjectContext * moc     = self.managedObjectContext;
 
   if (codes) {
     NSMutableSet * manufacturerCodes = [NSMutableSet set];
@@ -121,10 +94,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// JSONDictionary
+/// @return MSDictionary *
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];
 
-  SafeSetValueForKey([self valueForKeyPath:@"codes.JSONDictionary"], @"codes", dictionary);
+  SafeSetValueForKey([self valueForKeyPath:@"codes.JSONDictionary"],  @"codes",   dictionary);
   SafeSetValueForKey([self valueForKeyPath:@"devices.commentedUUID"], @"devices", dictionary);
 
   [dictionary compact];
@@ -133,16 +108,36 @@
   return dictionary;
 }
 
+/// codesets
+/// @return NSSet *
 - (NSSet *)codesets { return [self.codes valueForKeyPath:@"codeset"]; }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Bankable
+#pragma mark - BankableModel
 ////////////////////////////////////////////////////////////////////////////////
 
+/// directoryLabel
+/// @return NSString *
 + (NSString *)directoryLabel { return @"Manufacturers"; }
 
-+ (BankFlags)bankFlags { return (BankDetail | BankNoSections | BankEditable); }
+/// detailViewController
+/// @return ManufacturerDetailViewController *
+- (ManufacturerDetailViewController *)detailViewController {
+  return [ManufacturerDetailViewController controllerWithItem:self];
+}
 
+/// editingViewController
+/// @return ManufacturerDetailViewController *
+- (ManufacturerDetailViewController *)editingViewController {
+  return [ManufacturerDetailViewController controllerWithItem:self editing:YES];
+}
+
+/// isSectionable
+/// @return BOOL
++ (BOOL)isSectionable { return NO;  }
+
+/// isEditable
+/// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 @end

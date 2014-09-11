@@ -297,11 +297,11 @@ MSSTATIC_INLINE NSIndexSet * _NSIndexSetMake(NSUInteger location,...)
                                     target:self                      \
                                     action:selector]
 #define SystemBarButton(item, selector)                             \
-    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:item       \
-                                                  target:self       \
+    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItem##item \
+                                                  target:self                        \
                                                   action:selector]
 #define CustomBarButton(view)   [[UIBarButtonItem alloc] initWithCustomView:view]
-#define FlexibleSpaceBarButton  SystemBarButton(UIBarButtonSystemItemFlexibleSpace, nil)
-#define FixedSpaceBarButton     SystemBarButton(UIBarButtonSystemItemFixedSpace, nil)
+#define FlexibleSpaceBarButton  SystemBarButton(FlexibleSpace, nil)
+#define FixedSpaceBarButton     SystemBarButton(FixedSpace, nil)
 #endif
 

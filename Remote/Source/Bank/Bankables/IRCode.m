@@ -103,19 +103,6 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 @dynamic frequency, offset, repeatCount, onOffPattern;
 @dynamic device, setsDeviceInput, prontoHex, manufacturer, codeset;
 
-/// detailViewController
-/// @return IRCodeDetailViewController *
-- (IRCodeDetailViewController *)detailViewController {
-  return [IRCodeDetailViewController controllerWithItem:self];
-}
-
-/// editingViewController
-/// @return IRCodeDetailViewController *
-- (IRCodeDetailViewController *)editingViewController {
-  return [IRCodeDetailViewController controllerWithItem:self editing:YES];
-}
-
-
 /// setProntoHex:
 /// @param prontoHex description
 - (void)setProntoHex:(NSString *)prontoHex {
@@ -184,16 +171,6 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 /// updateWithData:
 /// @param data description
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-      {
-          "uuid": "AE33A7C2-3C7A-4BAE-B87A-E29D060B6436",
-          "name": "Subtitle",
-          "category": "(LG) 0828",
-          "codeset": "0828",
-          "frequency": 39105,
-          "on-off-pattern": "344,176,22,3691,"
-      }
-   */
 
   [super updateWithData:data];
 
@@ -244,16 +221,24 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Bankable
+#pragma mark - BankableModel
 ////////////////////////////////////////////////////////////////////////////////
+
+/// detailViewController
+/// @return IRCodeDetailViewController *
+- (IRCodeDetailViewController *)detailViewController {
+  return [IRCodeDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return IRCodeDetailViewController *
+- (IRCodeDetailViewController *)editingViewController {
+  return [IRCodeDetailViewController controllerWithItem:self editing:YES];
+}
 
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"IR Codes"; }
-
-/// bankFlags
-/// @return BankFlags
-+ (BankFlags)bankFlags { return (BankDetail | BankEditable); }
 
 /// isEditable
 /// @return BOOL

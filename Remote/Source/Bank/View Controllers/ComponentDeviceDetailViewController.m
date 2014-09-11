@@ -458,8 +458,8 @@ static const CGFloat kInputsTableRowHeight = 120;
 
     vc.bankableItems = controller;
     vc.itemClass     = [IRCode class];
-    BankFlags bf = vc.bankFlags;
-    vc.bankFlags = bf | BankNoSections;
+//    BankFlags bf = vc.bankFlags;
+//    vc.bankFlags = bf | BankNoSections;
     [self.navigationController pushViewController:vc animated:YES];
 
   }

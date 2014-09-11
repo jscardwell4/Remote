@@ -12,13 +12,54 @@
 #import "Bank.h"
 #import "PresetDetailViewController.h"
 
-static int ddLogLevel = LOG_LEVEL_DEBUG;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
 @implementation Preset
 
 @dynamic element;
+
+
+/// presetWithElement:
+/// @param element description
+/// @return instancetype
++ (instancetype)presetWithElement:(RemoteElement *)element {
+  assert(element);
+  __block Preset * preset = nil;
+  [element.managedObjectContext performBlockAndWait:
+   ^{
+    preset = [self createInContext:element.managedObjectContext];
+    preset.element = element;
+    NSString * category = nil;
+    switch (element.elementType) {
+      case RETypeRemote:
+        category = @"Remote";
+        break;
+
+      case RETypeButtonGroup:
+        category = @"Button Group";
+        break;
+
+      case RETypeButton:
+        category = @"Button";
+        break;
+
+      default:
+        category = @"Uncategorized";
+        break;
+    }
+
+    preset.category = category;
+  }];
+  return preset;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - BankableModel
+////////////////////////////////////////////////////////////////////////////////
+
 
 /// detailViewController
 /// @return PresetDetailViewController *
@@ -32,53 +73,20 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
   return [PresetDetailViewController controllerWithItem:self editing:YES];
 }
 
+/// isPreviewable
+/// @return BOOL
++ (BOOL)isPreviewable { return YES;  }
 
-+ (instancetype)presetWithElement:(RemoteElement *)element
-{
-    assert(element);
-    __block Preset * preset = nil;
-    [element.managedObjectContext performBlockAndWait:
-     ^{
-         preset = [self createInContext:element.managedObjectContext];
-         preset.element = element;
-         NSString * category = nil;
-         switch (element.elementType)
-         {
-             case RETypeRemote:
-                 category = @"Remote";
-                 break;
+/// isThumbnailable
+/// @return BOOL
++ (BOOL)isThumbnailable { return YES;  }
 
-             case RETypeButtonGroup:
-                 category = @"Button Group";
-                 break;
-
-             case RETypeButton:
-                 category = @"Button";
-                 break;
-
-             default:
-                 category = @"Uncategorized";
-                 break;
-         }
-         preset.category = category;
-     }];
-    return preset;
-}
-
-- (void)awakeFromInsert
-{
-    [super awakeFromInsert];
-    self.user = @YES;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Bankable
-////////////////////////////////////////////////////////////////////////////////
-
+/// directoryLabel
+/// @return NSString *
 + (NSString *)directoryLabel { return @"Presets"; }
 
-+ (BankFlags)bankFlags { return (BankPreview|BankThumbnail|BankEditable|BankDetail); }
-
+/// isEditable
+/// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 @end

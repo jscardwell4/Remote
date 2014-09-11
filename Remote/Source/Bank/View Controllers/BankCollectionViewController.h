@@ -20,13 +20,12 @@
 
 @property (nonatomic, strong) Class<BankableModel> itemClass;
 @property (nonatomic, strong) NSFetchedResultsController * bankableItems;
-@property (nonatomic, assign) BankFlags bankFlags;
 
-- (void)zoomItemForCell:(BankCollectionViewCell *)cell;
-- (void)previewItemForCell:(BankCollectionViewCell *)cell;
-- (void)editItemForCell:(BankCollectionViewCell *)cell;
-- (void)detailItemForCell:(BankCollectionViewCell *)cell;
-- (void)deleteItemForCell:(BankCollectionViewCell *)cell;
+- (void)zoomItem:(BankableModelObject *)item;
+- (void)previewItem:(BankableModelObject *)item;
+- (void)editItem:(BankableModelObject *)item;
+- (void)detailItem:(BankableModelObject *)item;
+- (void)deleteItem:(BankableModelObject *)item;
 - (void)toggleItemsForSection:(NSInteger)section;
 
 @end

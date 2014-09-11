@@ -33,18 +33,6 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 @synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
 
-/// detailViewController
-/// @return ImageDetailViewController *
-- (ImageDetailViewController *)detailViewController {
-  return [ImageDetailViewController controllerWithItem:self];
-}
-
-/// editingViewController
-/// @return ImageDetailViewController *
-- (ImageDetailViewController *)editingViewController {
-  return [ImageDetailViewController controllerWithItem:self editing:YES];
-}
-
 /// imageWithFileName:category:context:
 /// @param fileName description
 /// @param category description
@@ -78,19 +66,6 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// updateWithData:
 /// @param data description
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-     example json:
-
-     {
-       "uuid": "4BC42EF3-8799-453D-BA50-9C2486B4B511",
-       "info": {
-           "name": "Speedometer",
-           "category": "Icons/Glyphish 7/White Selected"
-       },
-       "fileName": "917-white-speedometer-selected.png"
-       }
-   */
-
 
   [super updateWithData:data];
 
@@ -139,40 +114,6 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// flushThumbnail
 - (void)flushThumbnail { self.thumbnail = nil; }
 
-/// thumbnail
-/// @return UIImage *
-- (UIImage *)thumbnail {
-  if (!_thumbnail) {
-
-    CGSize thumbSize = [self.image sizeThatFits:self.thumbnailSize];
-    CGRect thumbRect;
-
-    thumbRect.size     = thumbSize;
-    thumbRect.origin.x = (_thumbnailSize.width - thumbSize.width) / 2.0;
-    thumbRect.origin.y = (_thumbnailSize.height - thumbSize.height) / 2.0;
-
-    void (^createThumbnail)(void) = ^(void) {
-      UIGraphicsBeginImageContextWithOptions(self.thumbnailSize, NO, MainScreenScale);
-
-      // draw scaled image into thumbnail context
-      [self.image drawInRect:thumbRect];
-
-      self.thumbnail = UIGraphicsGetImageFromCurrentImageContext();
-
-      // pop the context
-      UIGraphicsEndImageContext();
-    };
-
-    if ([NSThread isMainThread]) createThumbnail();
-    else dispatch_sync(dispatch_get_main_queue(), createThumbnail);
-
-    if (ValueIsNil(_thumbnail)) MSLogWarn(@"%@ could not scale image for thumbnail", ClassTagString);
-
-  }
-
-  return _thumbnail;
-}
-
 /// stretchableImage
 /// @return UIImage *
 - (UIImage *)stretchableImage {
@@ -183,10 +124,6 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
   return _stretchableImage;
 }
-
-/// preview
-/// @return UIImage *
-- (UIImage *)preview { return [self image]; }
 
 /// JSONDictionary
 /// @return MSDictionary *
@@ -237,12 +174,16 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Bankable
+#pragma mark - BankableModel
 ////////////////////////////////////////////////////////////////////////////////
 
-/// bankFlags
-/// @return BankFlags
-+ (BankFlags)bankFlags { return (BankPreview | BankThumbnail | BankDetail | BankEditable); }
+/// isPreviewable
+/// @return BOOL
++ (BOOL)isPreviewable { return YES;  }
+
+/// isThumbnailable
+/// @return BOOL
++ (BOOL)isThumbnailable { return YES;  }
 
 /// directoryLabel
 /// @return NSString *
@@ -251,6 +192,58 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// isEditable
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
+
+/// detailViewController
+/// @return ImageDetailViewController *
+- (ImageDetailViewController *)detailViewController {
+  return [ImageDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return ImageDetailViewController *
+- (ImageDetailViewController *)editingViewController {
+  return [ImageDetailViewController controllerWithItem:self editing:YES];
+}
+
+/// preview
+/// @return UIImage *
+- (UIImage *)preview { return [self image]; }
+
+/// thumbnail
+/// @return UIImage *
+- (UIImage *)thumbnail {
+
+  if (!_thumbnail) {
+
+    CGSize thumbSize = [self.image sizeThatFits:self.thumbnailSize];
+    CGRect thumbRect;
+
+    thumbRect.size     = thumbSize;
+    thumbRect.origin.x = (_thumbnailSize.width - thumbSize.width) / 2.0;
+    thumbRect.origin.y = (_thumbnailSize.height - thumbSize.height) / 2.0;
+
+    void (^createThumbnail)(void) = ^(void) {
+      UIGraphicsBeginImageContextWithOptions(self.thumbnailSize, NO, MainScreenScale);
+
+      // draw scaled image into thumbnail context
+      [self.image drawInRect:thumbRect];
+
+      self.thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+
+      // pop the context
+      UIGraphicsEndImageContext();
+    };
+
+    if ([NSThread isMainThread]) createThumbnail();
+    else dispatch_sync(dispatch_get_main_queue(), createThumbnail);
+
+    if (ValueIsNil(_thumbnail)) MSLogWarn(@"%@ could not scale image for thumbnail", ClassTagString);
+    
+  }
+  
+  return _thumbnail;
+  
+}
 
 
 @end

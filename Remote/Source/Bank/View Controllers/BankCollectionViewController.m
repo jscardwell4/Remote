@@ -8,7 +8,6 @@
 
 #import "BankCollectionViewController.h"
 #import "BankCollectionViewFlowLayout.h"
-#import "BankCollectionViewCell.h"
 #import "BankCollectionHeaderReusableView.h"
 #import "BankPreviewViewController.h"
 #import "BankCollectionZoomView.h"
@@ -16,6 +15,7 @@
 #import "CoreDataManager.h"
 #import "BankableModelObject.h"
 #import "BankableDetailTableViewController.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -57,13 +57,24 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
   [super viewDidLoad];
 
+
+  [self.collectionView registerClass:[BankCollectionHeaderReusableView class]
+          forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                 withReuseIdentifier:BankCollectionHeaderIdentifier];
+
+  [self.collectionView registerClass:[BankCollectionViewListCell class]
+          forCellWithReuseIdentifier:[BankCollectionViewListCell identifier]];
+
+  [self.collectionView registerClass:[BankCollectionViewThumbnailCell class]
+          forCellWithReuseIdentifier:[BankCollectionViewThumbnailCell identifier]];
+
   if (  _itemClass
-     && !(_bankFlags & BankThumbnail)
+     && ![_itemClass isThumbnailable]
      && [self.toolbarItems containsObject:_displayOptionsBarButtonItem])
   {
-    self.toolbarItems = [self.toolbarItems
-                         filteredArrayUsingPredicateWithFormat:@"self != %@",
-                         _displayOptionsBarButtonItem];
+    self.toolbarItems = [self.toolbarItems filtered:^BOOL(id evaluatedObject) {
+      return evaluatedObject != _displayOptionsBarButtonItem;
+    }];
   }
 
 }
@@ -128,15 +139,6 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
   return _previewController;
 }
 
-/// setItemClass:
-/// @param itemClass description
-- (void)setItemClass:(Class<BankableModel>)itemClass {
-  assert([(Class)itemClass conformsToProtocol: @protocol(BankableModel)]);
-
-  _itemClass = itemClass;
-  _bankFlags = [itemClass bankFlags];
-}
-
 /// hiddenSections
 /// @return NSMutableSet *
 - (NSMutableSet *)hiddenSections {
@@ -154,35 +156,26 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
   return _zoomView;
 }
 
-/// itemForCell:
-/// @param cell description
-/// @return BankableModelObject *
-- (BankableModelObject *)itemForCell:(BankCollectionViewCell *)cell {
-  return self.bankableItems[[self.collectionView indexPathForCell:cell]];
-}
-
 /// configureCell:atIndexPath:
 /// @param cell description
 /// @param indexPath description
 - (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-  BankableModelObject * item = self.bankableItems[indexPath];
-  cell.bankFlags      = _bankFlags;
-  cell.thumbnailImage = item.thumbnail;
-  cell.name           = item.name;
+//  cell.item = self.bankableItems[indexPath];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
-/// zoomItemForCell:
-/// @param cell description
-- (void)zoomItemForCell:(BankCollectionViewCell *)cell {
-  _zoomedItem              = [self itemForCell:cell];
+/// zoomItem:
+/// @param item description
+- (void)zoomItem:(BankableModelObject *)item {
+
+  _zoomedItem = item;
   self.zoomView.image      = _zoomedItem.preview;
   _zoomView.name           = _zoomedItem.name;
   _zoomView.editDisabled   = !([_zoomedItem isEditable]);
-  _zoomView.detailDisabled = !(_bankFlags & BankDetail);
+  _zoomView.detailDisabled = !([_itemClass isDetailable]);
 
   _zoomView.backgroundImageView.image = [[self.view snapshot]
                                           applyBlurWithRadius:3.0
@@ -191,35 +184,31 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                                                     maskImage:nil];
   [self.view addSubview:_zoomView];
   [self.view setNeedsUpdateConstraints];
+
 }
 
-/// previewItemForCell:
-/// @param cell description
-- (void)previewItemForCell:(BankCollectionViewCell *)cell {
-  BankableModelObject * item = [self itemForCell:cell];
+/// previewItem:
+/// @param item description
+- (void)previewItem:(BankableModelObject *)item {
   self.previewController.image = item.preview;
   [self presentViewController:_previewController animated:YES completion:nil];
 }
 
-/// deleteItemForCell:
-/// @param cell description
-- (void)deleteItemForCell:(BankCollectionViewCell *)cell {
-  BankableModelObject * item = [self itemForCell:cell];
-  assert([item isEditable]);
-  [item.managedObjectContext deleteObject:item];
+/// deleteItem:
+/// @param item description
+- (void)deleteItem:(BankableModelObject *)item {
+  if ([item isEditable]) [item.managedObjectContext deleteObject:item];
 }
 
-/// editItemForCell:
-/// @param cell description
-- (void)editItemForCell:(BankCollectionViewCell *)cell {
-  BankableModelObject * item = [self itemForCell:cell];
+/// editItem:
+/// @param item description
+- (void)editItem:(BankableModelObject *)item {
   [self.navigationController pushViewController:item.editingViewController animated:YES];
 }
 
-/// detailItemForCell:
-/// @param cell description
-- (void)detailItemForCell:(BankCollectionViewCell *)cell {
-  BankableModelObject * item = [self itemForCell:cell];
+/// detailItem:
+/// @param item description
+- (void)detailItem:(BankableModelObject *)item {
   [self.navigationController pushViewController:item.detailViewController animated:YES];
 }
 
@@ -300,11 +289,13 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSString               * cellIdentifier = (self.useListView ? ListCellIdentifier : ThumbnailCellIdentifier);
-  BankCollectionViewCell * cell           = [collectionView
-                                             dequeueReusableCellWithReuseIdentifier:cellIdentifier
-                                                                       forIndexPath:indexPath];
-  [self configureCell:cell atIndexPath:indexPath];
+  NSString * identifer = (self.useListView
+                          ? [BankCollectionViewListCell identifier]
+                          : [BankCollectionViewThumbnailCell identifier]);
+  BankCollectionViewListCell * cell =
+  [collectionView dequeueReusableCellWithReuseIdentifier:identifer forIndexPath:indexPath];
+  cell.item = self.bankableItems[indexPath];
+  cell.controller = self;
   return cell;
 }
 
@@ -324,13 +315,13 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath
 {
-  MSSTATIC_IDENTIFIER(Header);
 
   if ([UICollectionElementKindSectionHeader isEqualToString:kind]) {
     BankCollectionHeaderReusableView * view =
       [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                              withReuseIdentifier:HeaderIdentifier
+                                              withReuseIdentifier:BankCollectionHeaderIdentifier
                                                      forIndexPath:indexPath];
+    view.controller = self;
     view.section = indexPath.section;
     view.title   = [self.bankableItems.sections[indexPath.section] name];
 
@@ -415,7 +406,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     .width = 320, .height = 38
   };
 
-  return (_bankFlags & BankNoSections ? CGSizeZero : kHeaderSize);
+  return ([_itemClass isSectionable] ? kHeaderSize : CGSizeZero);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

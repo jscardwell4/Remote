@@ -21,18 +21,6 @@
 
 @dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer, networkDevice;
 
-/// detailViewController
-/// @return ComponentDeviceDetailViewController *
-- (ComponentDeviceDetailViewController *)detailViewController {
-  return [ComponentDeviceDetailViewController controllerWithItem:self];
-}
-
-/// editingViewController
-/// @return ComponentDeviceDetailViewController *
-- (ComponentDeviceDetailViewController *)editingViewController {
-  return [ComponentDeviceDetailViewController controllerWithItem:self editing:YES];
-}
-
 /// fetchDeviceWithName:
 /// @param name description
 /// @return instancetype
@@ -169,19 +157,31 @@
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Bankable
+#pragma mark - BankableModel
 ////////////////////////////////////////////////////////////////////////////////
 
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Component Devices"; }
 
-/// bankFlags
-/// @return BankFlags
-+ (BankFlags)bankFlags { return (BankDetail | BankNoSections | BankEditable); }
-
 /// isEditable
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
+
+/// isSectionable
+/// @return BOOL
++ (BOOL)isSectionable { return NO;  }
+
+/// detailViewController
+/// @return ComponentDeviceDetailViewController *
+- (ComponentDeviceDetailViewController *)detailViewController {
+  return [ComponentDeviceDetailViewController controllerWithItem:self];
+}
+
+/// editingViewController
+/// @return ComponentDeviceDetailViewController *
+- (ComponentDeviceDetailViewController *)editingViewController {
+  return [ComponentDeviceDetailViewController controllerWithItem:self editing:YES];
+}
 
 @end

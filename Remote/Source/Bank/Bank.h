@@ -15,20 +15,6 @@
 
 @class BankableModelObject, BankableDetailTableViewController;
 
-/** Options for how a bank object is displayed */
-
-typedef NS_OPTIONS(uint8_t, BankFlags) {
-    BankDefault    = 0b00000000,
-    BankDetail     = 0b00000001,
-    BankPreview    = 0b00000010,
-    BankThumbnail  = 0b00000100,
-    BankEditable   = 0b00001000,
-    BankNoSections = 0b00010000,
-    BankReserved   = 0b11100000
-};
-
-@protocol BankableDetailDelegate;
-
 
 /** Protocol to ensure all bank objects have the necessary info to display */
 
@@ -38,9 +24,25 @@ typedef NS_OPTIONS(uint8_t, BankFlags) {
 /// @return NSString *
 + (NSString *)directoryLabel;
 
-/// bankFlags
-/// @return BankFlags
-+ (BankFlags)bankFlags;
+/// isThumbnailable
+/// @return BOOL
++ (BOOL)isThumbnailable;
+
+/// isPreviewable
+/// @return BOOL
++ (BOOL)isPreviewable;
+
+/// isDetailable
+/// @return BOOL
++ (BOOL)isDetailable;
+
+/// isEditable
+/// @return BOOL
++ (BOOL)isEditable;
+
+/// isSectionable
+/// @return BOOL
++ (BOOL)isSectionable;
 
 /// directoryIcon
 /// @return UIImage *
