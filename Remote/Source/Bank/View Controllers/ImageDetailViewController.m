@@ -17,6 +17,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 CellIndexPathDeclaration(Category);
+CellIndexPathDeclaration(File);
+CellIndexPathDeclaration(Size);
 CellIndexPathDeclaration(Preview);
 
 @interface ImageDetailViewController ()
@@ -27,17 +29,19 @@ CellIndexPathDeclaration(Preview);
 @end
 
 @implementation ImageDetailViewController
-{
-  __weak Image * _image;
-}
 
+/// initialize
 + (void)initialize {
   if (self == [ImageDetailViewController class]) {
     CellIndexPathDefinition(Category, 0, 0);
-    CellIndexPathDefinition(Preview,  0, 1);
+    CellIndexPathDefinition(File,     0, 1);
+    CellIndexPathDefinition(Size,     0, 2);
+    CellIndexPathDefinition(Preview,  0, 3);
   }
 }
 
+/// itemClass
+/// @return Class<BankableModel>
 - (Class<BankableModel>)itemClass { return [Image class]; }
 
 
@@ -45,27 +49,63 @@ CellIndexPathDeclaration(Preview);
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setItem:(BankableModelObject *)item {
-  [super setItem:item];
-  _image = (Image *)item;
-}
 
-- (Image *)image {
-  if (!_image) _image = (Image *)self.item;
+/// image
+/// @return Image *
+- (Image *)image { return (Image *)self.item; }
 
-  return _image;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 2; }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return (section ? 1 : 3);
+
+/// numberOfSections
+/// @return NSInteger
+- (NSInteger)numberOfSections { return 2; }
+
+/// numberOfRowsInSection:
+/// @param section description
+/// @return NSInteger
+- (NSInteger)numberOfRowsInSection:(NSInteger)section { return (section ? 1 : 3); }
+
+/// editableRows
+/// @return NSSet const *
+- (NSSet const *)editableRows {
+
+  static NSSet const * rows = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    rows = [@[CategoryCellIndexPath] set];
+  });
+
+  return rows;
+
 }
 
+/// identifiers
+/// @return NSArray const *
+- (NSArray const *)identifiers {
+
+  static NSArray const * identifiers = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    identifiers = @[ @[BankableDetailCellTextFieldStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier],
+                     @[BankableDetailCellImageStyleIdentifier] ];
+  });
+
+  return identifiers;
+
+}
+
+/// tableView:cellForRowAtIndexPath:
+/// @param tableView description
+/// @param indexPath description
+/// @return UITableViewCell *
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
   BankableDetailTableViewCell * cell;
 
   switch (indexPath.section) {
@@ -74,43 +114,39 @@ CellIndexPathDeclaration(Preview);
       switch (indexPath.row) {
         case 0:         // Category
         {
-          cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
-                                                      forIndexPath:indexPath];
+          cell = [self dequeueCellForIndexPath:indexPath];
           cell.name = @"Category";
-          cell.text = (self.image.category ?: @"Uncategorized");
+          cell.info = (self.image.category ?: @"Uncategorized");
 
-          BankableChangeHandler changeHandler =
-          ^{
-            _image.category = cell.infoTextField.text;
 
-            if (![_categories containsObject:_image.category]) _categories = nil;
+          __weak ImageDetailViewController * weakself = self;
+          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+
+            weakself.image.category = cell.info;
+            if (![weakself.categories containsObject:weakself.image.category]) weakself.categories = nil;
+
           };
 
-          [self registerTextField:cell.infoTextField
-                     forIndexPath:indexPath
-                         handlers:@{ BankableChangeHandlerKey : changeHandler }];
-
-          [self registerPickerView:cell.pickerView forIndexPath:indexPath];
+          cell.pickerData = self.categories;
+          cell.pickerSelection = self.image.category;
 
           break;
         }
 
         case 1:         // File name
         {
-          cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
-                                                      forIndexPath:indexPath];
+          cell = [self dequeueCellForIndexPath:indexPath];
           cell.name = @"File";
-          cell.text = self.image.fileName;
+          cell.info = self.image.fileName;
 
           break;
         }
 
         case 2:         // Size
         {
-          cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
-                                                      forIndexPath:indexPath];
+          cell = [self dequeueCellForIndexPath:indexPath];
           cell.name = @"Size";
-          cell.text = PrettySize(self.image.size);
+          cell.info = PrettySize(self.image.size);
 
           break;
         }
@@ -121,16 +157,8 @@ CellIndexPathDeclaration(Preview);
 
     case 1:     // Preview
     {
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellImageStyleIdentifier
-                                                  forIndexPath:indexPath];
-      UIImage * image = _image.preview;
-      cell.image = image;
-
-      CGSize imageSize  = image.size;
-      CGSize boundsSize = cell.infoImageView.bounds.size;
-
-      if (CGSizeContainsSize(boundsSize, imageSize))
-        cell.infoImageView.contentMode = UIViewContentModeCenter;
+      cell = [self dequeueCellForIndexPath:indexPath];
+      cell.info = self.image.preview;
 
       break;
     }
@@ -140,24 +168,14 @@ CellIndexPathDeclaration(Preview);
   return cell;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Table view delegate
-////////////////////////////////////////////////////////////////////////////////
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return ([indexPath isEqual:PreviewCellIndexPath]
-          ? BankableDetailPreviewRowHeight
-          : ([indexPath isEqual:self.visiblePickerCellIndexPath]
-             ? BankableDetailExpandedRowHeight
-             : BankableDetailDefaultRowHeight));
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Managing picker views
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// categories
+/// @return NSArray *
 - (NSArray *)categories {
   if (!_categories) {
     NSManagedObjectContext * context = self.item.managedObjectContext;
@@ -177,10 +195,6 @@ CellIndexPathDeclaration(Preview);
   }
 
   return _categories;
-}
-
-- (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type {
-  return (type == BankableDetailPickerViewData ? self.categories : self.image.category);
 }
 
 @end

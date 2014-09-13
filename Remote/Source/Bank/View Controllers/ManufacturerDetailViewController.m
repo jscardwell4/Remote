@@ -19,6 +19,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 
+CellIndexPathDeclaration(Devices);
+CellIndexPathDeclaration(Codesets);
+
 @interface ManufacturerDetailViewController ()
 
 @property (nonatomic, weak, readonly) Manufacturer * manufacturer;
@@ -28,63 +31,73 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 @end
 
 @implementation ManufacturerDetailViewController
-{
-  __weak Manufacturer * _manufacturer;
-}
 
-// - (Manufacturer *)manufacturer { return (Manufacturer *)self.item; }
+/// initialize
++ (void)initialize {
+
+  if (self == [ManufacturerDetailViewController class]) {
+
+    CellIndexPathDefinition(Devices,  0, 0);
+    CellIndexPathDefinition(Codesets, 0, 1);
+
+  }
+
+}
 
 /// itemClass
 /// @return Class<BankableModel>
 - (Class<BankableModel>)itemClass { return [Manufacturer class]; }
 
-/// setItem:
-/// @param item description
-- (void)setItem:(BankableModelObject *)item {
-  [super setItem:item];
-  _manufacturer = (Manufacturer *)self.item;
+/// manufacturer
+/// @return Manufacturer *
+- (Manufacturer *)manufacturer { return (Manufacturer *)self.item; }
 
-  if (_manufacturer) {
-    self.devices = [self.manufacturer.devices allObjects];
-    NSSet * codesets = (self.manufacturer.codesets ?: [NSSet set]);
-    self.codesets = ([_devices count]
-                     ? [@[kDeviceCodesetText] arrayByAddingObjects : codesets]
-                     :[codesets allObjects]);
-  }
-
+/// devices
+/// @return NSArray *
+- (NSArray *)devices {
+  if (_devices) self.devices = [self.manufacturer.devices allObjects];
+  return _devices;
 }
 
-/*
-   - (void)updateDisplay
-   {
-    [super updateDisplay];
-    if ([self isViewLoaded]) [self.tableView reloadData];
-   }
- */
+/// codesets
+/// @return NSArray *
+- (NSArray *)codesets {
+  if (!_codesets) self.codesets = [self.manufacturer.codesets allObjects];
+  return _codesets;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
-/// numberOfSectionsInTableView:
-/// @param tableView description
+/// numberOfSections
 /// @return NSInteger
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 2; }
+- (NSInteger)numberOfSections { return 2; }
 
-/// tableView:numberOfRowsInSection:
-/// @param tableView description
+/// numberOfRowsInSection:
 /// @param section description
 /// @return NSInteger
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return (section ? [_codesets count] : [_devices count]);
+- (NSInteger)numberOfRowsInSection:(NSInteger)section {
+  return (section == 0 ? self.devices.count : self.codesets.count);
 }
 
-/// tableView:titleForHeaderInSection:
-/// @param tableView description
-/// @param section description
-/// @return NSString *
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-  return (section ? @"Codesets" : @"Devices");
+/// sectionHeaderTitles
+/// @return NSArray *
+- (NSArray *)sectionHeaderTitles { return @[@"Devices", @"Codesets"]; }
+
+/// identifiers
+/// @return NSArray const *
+- (NSArray const *)identifiers {
+
+  static NSArray const * identifiers = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    identifiers = @[ @[BankableDetailCellTableStyleIdentifier],
+                     @[BankableDetailCellTableStyleIdentifier] ];
+  });
+
+  return identifiers;
+
 }
 
 /// tableView:cellForRowAtIndexPath:
@@ -92,20 +105,19 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 /// @param indexPath description
 /// @return UITableViewCell *
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  BankableDetailTableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
-                                                                            forIndexPath:indexPath];
 
-  if (!indexPath.section) {
-    NSString * labelText = ([_devices count]
-                            ? [_devices[indexPath.row] valueForKey:@"name"]
-                            : @"No Devices");
-    cell.infoLabel.text = labelText;
-  } else   {
-    NSString * labelText = ([_codesets count] ? _codesets[indexPath.row] : @"No Codesets");
-    cell.infoLabel.text = labelText;
-  }
+  //FIXME: Why aren't there any sub-table cells?
+  BankableDetailTableViewCell * cell = [self dequeueCellForIndexPath:indexPath];
+
+  if ([indexPath isEqual:DevicesCellIndexPath])
+    cell.tableData = self.devices;
+
+  else if ([indexPath isEqual:CodesetsCellIndexPath])
+    cell.tableData = self.codesets;
+
 
   return cell;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -160,11 +172,6 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
     if (!MSHandleErrors(error)) {
       vc.bankableItems = controller;
       vc.itemClass     = [IRCode class];
-
-      if (!isUserCodeset) {
-//        BankFlags bf = vc.bankFlags;
-//        vc.bankFlags = bf | BankNoSections;
-      }
 
       [self.navigationController pushViewController:vc animated:YES];
 

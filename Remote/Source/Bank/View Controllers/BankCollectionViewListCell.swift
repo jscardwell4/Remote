@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 class BankCollectionViewListCell: UICollectionViewCell {
 
   class var identifier: String  { return "BankCollectionListCellIdentifier" }

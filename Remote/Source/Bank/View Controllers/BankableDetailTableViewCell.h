@@ -25,19 +25,49 @@ MSEXTERN_IDENTIFIER(BankableDetailCellTableStyle);
 
 @interface BankableDetailTableViewCell : UITableViewCell
 
-@property (nonatomic, weak, readonly) IBOutlet UILabel      * nameLabel;
-@property (nonatomic, weak, readonly) IBOutlet UIButton     * infoButton;
-@property (nonatomic, weak, readonly) IBOutlet UIImageView  * infoImageView;
-@property (nonatomic, weak, readonly) IBOutlet UISwitch     * infoSwitch;
-@property (nonatomic, weak, readonly) IBOutlet UILabel      * infoLabel;
-@property (nonatomic, weak, readonly) IBOutlet UIStepper    * infoStepper;
-@property (nonatomic, weak, readonly) IBOutlet UITextField  * infoTextField;
-@property (nonatomic, weak, readonly) IBOutlet UITextView   * infoTextView;
-@property (nonatomic, weak, readonly) IBOutlet UITableView  * infoTableView;
-@property (nonatomic, weak, readonly) IBOutlet UIPickerView * pickerView;
+/// validIdentifiers
+/// @return NSSet const *
++ (NSSet const *)validIdentifiers;
+
+/// isValidIentifier:
+/// @param identifier description
+/// @return BOOL
++ (BOOL)isValidIentifier:(NSString *)identifier;
+
+/// registerIdentifiersWithTableView:
+/// @param tableView description
++ (void)registerIdentifiersWithTableView:(UITableView *)tableView;
+
+@property (nonatomic, copy) void(^changeHandler    )     (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) BOOL(^validationHandler)     (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) void(^pickerSelectionHandler)(BankableDetailTableViewCell * cell, NSInteger row);
+@property (nonatomic, copy) void(^buttonActionHandler)   (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) void(^pickerDisplayCallback) (BankableDetailTableViewCell * cell, BOOL hidden);
+@property (nonatomic, copy) void(^rowSelectionHandler)   (BankableDetailTableViewCell * cell, NSUInteger row);
+
+@property (nonatomic, assign, getter=shouldUseIntegerKeyboard)     BOOL useIntegerKeyboard;
+@property (nonatomic, assign, getter=shouldAllowReturnsInTextView) BOOL allowReturnsInTextView;
+@property (nonatomic, assign, getter=isExpanded)                   BOOL expanded;
+@property (nonatomic, assign, getter=shouldAllowRowSelection)      BOOL allowRowSelection;
 
 @property (nonatomic, weak) NSString * name;
-@property (nonatomic, weak) NSString * text;
-@property (nonatomic, weak) UIImage  * image;
+@property (nonatomic, copy) id         info;
+
+@property (nonatomic, assign) double stepperMinValue;
+@property (nonatomic, assign) double stepperMaxValue;
+@property (nonatomic, assign) BOOL   stepperWraps;
+
+@property (nonatomic, weak, readonly) UITableView * table;
+
+@property (nonatomic, strong) NSString * tableIdentifier;
+@property (nonatomic, weak)   NSArray  * tableData;
+@property (nonatomic, weak)   NSArray  * pickerData;
+@property (nonatomic, strong) id         pickerSelection;
+
+/// showPickerView
+- (void)showPickerView;
+
+/// hidePickerView
+- (void)hidePickerView;
 
 @end

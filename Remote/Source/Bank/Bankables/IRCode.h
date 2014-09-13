@@ -31,4 +31,14 @@
 @property (nonatomic, copy)   NSString        * codeset;
 @property (nonatomic, strong) Manufacturer    * manufacturer;
 
+/// isValidOnOffPattern:
+/// @param pattern description
+/// @return BOOL
++ (BOOL)isValidOnOffPattern:(NSString *)pattern;
+
+/// compressedOnOffPatternFromPattern:
+/// @param pattern description
+/// @return NSString *
++ (NSString *)compressedOnOffPatternFromPattern:(NSString *)pattern;
+
 @end

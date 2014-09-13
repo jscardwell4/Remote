@@ -179,6 +179,11 @@ MSSTATIC_INLINE NSIndexSet * _NSIndexSetMake(NSUInteger location,...)
 #define NSWhitespaceAndNewlineCharacters [NSCharacterSet whitespaceAndNewlineCharacterSet]
 #define NSWhitespaceCharacters           [NSCharacterSet whitespaceCharacterSet]
 
+#define NSCharacterSetMake(STRING) \
+[NSCharacterSet characterSetWithCharactersInString:NSStringify(STRING)]
+#define NSMutableCharacterSetMake(STRING) \
+[NSMutableCharacterSet characterSetWithCharactersInString:NSStringify(STRING)]
+
 #define NSPredicateMake(FORMAT,...)  [NSPredicate predicateWithFormat:FORMAT,__VA_ARGS__]
 #define NSPredicateBlock(BLOCK)      [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings){return BLOCK;}]
 

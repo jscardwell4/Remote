@@ -58,6 +58,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
       return ClassString(class);
     }];
 
+    [bankableModelClasses sortUsingSelector:@selector(compare:)];
+    
     classes = [bankableModelClasses copy];
 
   });

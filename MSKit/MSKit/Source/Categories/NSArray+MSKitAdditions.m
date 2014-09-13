@@ -51,7 +51,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   if (error || !jsonData) {
     MSHandleErrors(error);
     return nil;
-  } else   {
+  } else {
     NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
     [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
     [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
@@ -94,7 +94,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
         else
           MSLogDebug(@"object of type %@ returned invalid JSON object",
                      ClassTagStringForInstance(obj));
-      } else if ([obj respondsToSelector:@selector(JSONValue)])   {
+      } else if ([obj respondsToSelector:@selector(JSONValue)]) {
         id jsonValue = [obj JSONValue];
 
         if ([MSJSONSerialization isValidJSONValue:jsonValue])
@@ -192,7 +192,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// filteredArrayUsingPredicateWithFormat:
 /// @param format description
 /// @return NSArray *
-- (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format, ... {
+- (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format, ...{
   va_list args;
   va_start(args, format);
   NSPredicate * predicate = [NSPredicate predicateWithFormat:format arguments:args];
@@ -207,8 +207,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// filteredArrayUsingPredicateWithBlock:
 /// @param block description
 /// @return NSArray *
-- (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject,
-                                                            NSDictionary * bindings))block {
+- (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject, NSDictionary * bindings))block {
   return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:block]];
 }
 
@@ -220,6 +219,52 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   NSMutableArray * array = [self mutableCopy];
   [array filter:block];
   return array;
+
+}
+
+/// filteredUsingPredicate:
+/// @param predicate description
+/// @return NSArray *
+- (NSArray *)filteredUsingPredicate:(NSPredicate *)predicate {
+  return [self filteredArrayUsingPredicate:predicate];
+}
+
+
+/// findFirstUsingPredicate:
+/// @param predicate description
+/// @return id
+- (id)findFirstUsingPredicate:(NSPredicate *)predicate {
+
+  __block id match = nil;
+
+  [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    if ([predicate evaluateWithObject:obj]) {
+      match = obj;
+      *stop = YES;
+    }
+  }];
+
+  return match;
+
+}
+
+
+/// findFirst:
+/// @param predicate description
+/// @return id
+- (id)findFirst:(BOOL (^)(id evaluatedObject))predicate {
+
+  __block id match = nil;
+
+  [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    if (predicate(obj)) {
+      match = obj;
+      *stop = YES;
+    }
+  }];
+
+  return match;
+
 }
 
 /// objectPassingTest:
@@ -317,7 +362,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   if ([indexes count])
     [self removeObjectsAtIndexes:indexes];
-  
+
 }
 
 /// flatten
@@ -347,10 +392,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// map:
 /// @param block description
-- (void)map:(id (^)(id, NSUInteger))block
-{
-    for (int i = 0; i < self.count; i++)
-        self[i] = block(self[i],i);
+- (void)map:(id (^)(id, NSUInteger))block {
+  for (int i = 0; i < self.count; i++)
+    self[i] = block(self[i], i);
 }
 
 /// replaceAllObjectsWithNull

@@ -782,6 +782,7 @@
 		C25C44DB19ABB3E2005594ED /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
 		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
 		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
+		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
 		C26296811811F9AE00760056 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
 		C265936117FBA1B00017949C /* BankableDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankableDetailTableViewCell.h; sourceTree = "<group>"; };
@@ -1651,6 +1652,7 @@
 				C26BB0B616DC18A30093D5B4 /* Fonts */,
 				C26BB59016DC18A90093D5B4 /* Storyboards and Nibs */,
 				C275D86217A03130004E0BE5 /* Glyphish.xcassets */,
+				C25EC02019C3849C00E5A437 /* QuickLookup.playground */,
 			);
 			name = Resources;
 			path = Remote/Resources;

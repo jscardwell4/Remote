@@ -37,8 +37,11 @@
 - (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format,...;
 - (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject,
                                                             NSDictionary * bindings))block;
+- (NSArray *)filteredUsingPredicate:(NSPredicate *)predicate;
 - (NSArray *)filtered:(BOOL (^)(id evaluatedObject))block;
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;
+- (id)findFirst:(BOOL (^)(id evaluatedObject))predicate;
+- (id)findFirstUsingPredicate:(NSPredicate *)predicate;
 - (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate;
 - (NSArray *)flattened;
 - (NSArray *)uniqued;

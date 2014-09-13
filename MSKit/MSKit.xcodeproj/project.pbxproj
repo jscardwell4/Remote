@@ -197,6 +197,8 @@
 		C23A0F0719A7A77A002BF2B6 /* MSReplicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892618138CF700555D63 /* MSReplicatorView.m */; };
 		C23A0F0819A7A77A002BF2B6 /* MSTouchReporterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892818138CF700555D63 /* MSTouchReporterView.m */; };
 		C23A0F0919A7A77A002BF2B6 /* MSView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE892A18138CF700555D63 /* MSView.m */; };
+		C2456BE519C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */; };
+		C2456BE619C39D01007162F3 /* NSIndexPath+MSKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2456BE319C39C8A007162F3 /* NSIndexPath+MSKitAdditions.h */; };
 		C28254B319B7FCD100B50CBE /* libMSKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23A0D5319A7A459002BF2B6 /* libMSKit.a */; };
 		C2F4370119BB78E100B60FC3 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C20FF1DF19AE3D7900D11F33 /* libicucore.dylib */; };
 		C2F4370419BB813F00B60FC3 /* MSKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F4370319BB813F00B60FC3 /* MSKeyPath.m */; };
@@ -272,6 +274,7 @@
 				C23A0D7C19A7A5D9002BF2B6 /* NSArray+MSKitAdditions.h in CopyFiles */,
 				C23A0D7D19A7A5D9002BF2B6 /* NSAttributedString+MSKitAdditions.h in CopyFiles */,
 				C23A0D7E19A7A5D9002BF2B6 /* NSDictionary+MSKitAdditions.h in CopyFiles */,
+				C2456BE619C39D01007162F3 /* NSIndexPath+MSKitAdditions.h in CopyFiles */,
 				C23A0D7F19A7A5D9002BF2B6 /* NSFetchedResultsController+MSKitAdditions.h in CopyFiles */,
 				C23A0D8019A7A5D9002BF2B6 /* NSFetchRequest+MSKitAdditions.h in CopyFiles */,
 				C23A0D8119A7A5D9002BF2B6 /* NSHashTable+MSKitAdditions.h in CopyFiles */,
@@ -390,6 +393,8 @@
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C230F89519A7CA0300900F0C /* ParseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ParseKit.xcodeproj; path = ParseKit/ParseKit.xcodeproj; sourceTree = "<group>"; };
 		C23A0D5319A7A459002BF2B6 /* libMSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2456BE319C39C8A007162F3 /* NSIndexPath+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+MSKitAdditions.h"; sourceTree = "<group>"; };
+		C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
@@ -828,6 +833,8 @@
 				C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */,
 				C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */,
 				C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */,
+				C2456BE319C39C8A007162F3 /* NSIndexPath+MSKitAdditions.h */,
+				C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1209,6 +1216,7 @@
 				C23A0ED719A7A77A002BF2B6 /* UITableView+MSKitAdditions.m in Sources */,
 				C23A0ED819A7A77A002BF2B6 /* UIView+MSKitAdditions.m in Sources */,
 				C23A0ED919A7A77A002BF2B6 /* UIViewController+MSKitAdditions.m in Sources */,
+				C2456BE519C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m in Sources */,
 				C23A0EDB19A7A77A002BF2B6 /* NSPointerArray+MSKitAdditions.m in Sources */,
 				C23A0EDC19A7A77A002BF2B6 /* NSAssertionHandler+MSKitAdditions.m in Sources */,
 				C23A0EDD19A7A77A002BF2B6 /* MSColorInputViewController.m in Sources */,

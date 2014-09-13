@@ -16,92 +16,32 @@
 #import "BankableDetailTableViewCell.h"
 
 
-typedef NS_ENUM(uint8_t, BankableDetailDataType)
-{
-    BankableDetailUndefinedData       = 0,
-    BankableDetailPickerViewData      = 1,
-    BankableDetailPickerViewSelection = 2,
-    BankableDetailPickerButtonData    = 3,
-    BankableDetailTextFieldData       = 4
-};
-
-typedef void(^BankableChangeHandler)(void);
-typedef BOOL(^BankableValidationHandler)(void);
-
-@interface BankableDetailTableViewController () <UITextFieldDelegate, UITextViewDelegate,
-                                                 UIPickerViewDataSource, UIPickerViewDelegate>
+@interface BankableDetailTableViewController (Subclass)
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Common interface items and actions
 ////////////////////////////////////////////////////////////////////////////////
-@property (nonatomic, weak)     IBOutlet UITextField     * nameTextField;
-@property (nonatomic, strong)   IBOutlet UIBarButtonItem * cancelBarButtonItem;
+
+@property (nonatomic, weak, readonly) UITextField * nameTextField;
 
 - (void)updateDisplay; // refresh user interface info
 
-// may be overridden by subclasses to have interaction toggled along with editing property
-@property (nonatomic, strong, readonly) NSHashTable * editableViews;
-- (void)registerEditableView:(UIView *)view;
+@property (nonatomic, strong, readonly ) NSSet        const * editableRows;
+@property (nonatomic, strong, readwrite) NSMutableArray     * expandedRows;  // Rows showing picker view
+@property (nonatomic, assign, readonly ) NSInteger            numberOfSections;
+@property (nonatomic, strong, readonly ) NSArray            * sectionHeaderTitles;
+@property (nonatomic, strong, readonly)  NSArray const * identifiers;
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Actions
-////////////////////////////////////////////////////////////////////////////////
+- (NSInteger)numberOfRowsInSection:(NSInteger)section;
+
+- (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath const *)indexPath;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)save:(id)sender;
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Animations
-////////////////////////////////////////////////////////////////////////////////
 
-- (void)revealAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView;
-- (void)hideAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView;
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Table view management
-////////////////////////////////////////////////////////////////////////////////
-
-- (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath const *)indexPath;
-
-// data sources
-- (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type;
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Stepper management
-////////////////////////////////////////////////////////////////////////////////
-
-- (void)registerStepper:(UIStepper *)stepper
-              withLabel:(UILabel *)label
-           forIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForStepper:(UIStepper *)stepper;
-- (UIStepper *)stepperForIndexPath:(NSIndexPath *)indexPath;
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Text field management
-////////////////////////////////////////////////////////////////////////////////
-
-- (UITextField *)textFieldForIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForTextField:(UITextField *)textField;
-- (void)registerTextField:(UITextField *)textField
-             forIndexPath:(NSIndexPath *)indexPath
-                  handlers:(NSDictionary *)handlers;
-- (UIView *)integerKeyboardViewForTextField:(UITextField *)textField;
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Picker view management
-////////////////////////////////////////////////////////////////////////////////
-
-- (void)registerPickerView:(UIPickerView *)pickerView forIndexPath:(NSIndexPath *)indexPath;
-- (UIPickerView *)pickerViewForIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForPickerView:(UIPickerView *)pickerView;
-- (void)pickerView:(UIPickerView *)pickerView
-   didSelectObject:(id)selection
-               row:(NSUInteger)row
-         indexPath:(NSIndexPath *)indexPath;
-
-// marks the current table cell, if any, that has expanded to reveal picker view
-@property (nonatomic, weak) NSIndexPath * visiblePickerCellIndexPath;
+// Cell dequeueing convenience
+- (BankableDetailTableViewCell *)dequeueCellForIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -112,14 +52,8 @@ typedef BOOL(^BankableValidationHandler)(void);
   __CONCAT(CELL,CellIndexPath) = [NSIndexPath indexPathForRow:ROW inSection:SEC]
 
 
-MSEXTERN_NAMETAG(BankableDetailHiddenNeighborConstraint);
-
-MSEXTERN_KEY(BankableChangeHandler);
-MSEXTERN_KEY(BankableValidationHandler);
-
 MSEXTERN const CGFloat BankableDetailDefaultRowHeight;
-MSEXTERN const CGFloat BankableDetailExpandedRowHeight;
+MSEXTERN const CGFloat BankableDetailExpandedRowHeight; // Picker view displayed
 MSEXTERN const CGFloat BankableDetailPreviewRowHeight;
 MSEXTERN const CGFloat BankableDetailTextViewRowHeight;
-
-NSString * textForSelection(id selection);
+MSEXTERN const CGFloat BankableDetailTableRowHeight;    // Cell containing another table view

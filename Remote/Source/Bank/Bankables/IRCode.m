@@ -103,6 +103,67 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 @dynamic frequency, offset, repeatCount, onOffPattern;
 @dynamic device, setsDeviceInput, prontoHex, manufacturer, codeset;
 
+/// isValidOnOffPattern:
+/// @param pattern description
+/// @return BOOL
++ (BOOL)isValidOnOffPattern:(NSString *)pattern {
+  return ([self compressedOnOffPatternFromPattern:pattern] != nil);
+}
+
+/// compressedOnOffPatternFromPattern:
+/// @param pattern description
+/// @return NSString *
++ (NSString *)compressedOnOffPatternFromPattern:(NSString *)pattern {
+
+  static const int max = 65635;
+
+  NSMutableString * compressed = [@"" mutableCopy];
+
+  NSScanner * scanner = [NSScanner scannerWithString:pattern];
+  scanner.caseSensitive = YES;
+  scanner.charactersToBeSkipped = NSWhitespaceAndNewlineCharacters;
+
+
+  NSMutableCharacterSet * availableCompressionCharacters = NSMutableCharacterSetMake("");
+  NSCharacterSet        * commaCharacterSet              = NSCharacterSetMake(",");
+  NSString * compressionCharacters = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  NSUInteger compressionIndex = 0;
+
+  while (!scanner.atEnd) {
+
+    NSString * scannedCompressionCharacters = nil;
+    if ([scanner scanCharactersFromSet:availableCompressionCharacters intoString:&scannedCompressionCharacters])
+      [compressed appendString:scannedCompressionCharacters];
+
+    else {
+      int on = 0, off = 0;
+
+      if (![scanner scanInt:&on] || on <= 0 || on > max) break;
+      if (![scanner scanCharactersFromSet:commaCharacterSet intoString:NULL]) break;
+      if (![scanner scanInt:&off] || off <= 0 || on > max) break;
+
+      if (compressionIndex < [compressionCharacters length]) {
+
+        NSString * availableCompressionCharacter =
+        [compressionCharacters substringWithRange:NSMakeRange(compressionIndex, 1)];
+
+        [availableCompressionCharacters addCharactersInString:availableCompressionCharacter];
+
+      }
+
+      if ([compressed numberOfMatchesForRegEx:@"^.*[0-9]$"])
+        [compressed appendString:@","];
+
+      [compressed appendFormat:@"%i,%i", on, off];
+      
+    }
+    
+  }
+  
+  return (scanner.atEnd ? compressed : nil);
+
+}
+
 /// setProntoHex:
 /// @param prontoHex description
 - (void)setProntoHex:(NSString *)prontoHex {

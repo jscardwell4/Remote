@@ -33,9 +33,6 @@
 /// @return instancetype
 - (instancetype)initWithItem:(BankableModelObject *)item editing:(BOOL)isEditing;
 
-/// editItem
-- (void)editItem;
-
 @property (nonatomic, strong) BankableModelObject * item;
 
 @end

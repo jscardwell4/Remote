@@ -29,9 +29,7 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 
 @interface ITachDeviceDetailViewController ()
 
-@property (nonatomic, weak) IBOutlet  UITableView * componentDevicesTableView;
 @property (nonatomic, weak, readonly) ITachDevice * iTachDevice;
-@property (nonatomic, strong)         UINib       * componentDevicesTableViewCellNib;
 @property (nonatomic, strong)         NSArray     * componentDevices;
 
 @end
@@ -62,14 +60,6 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 - (Class<BankableModel>)itemClass { return [ITachDevice class]; }
 
 
-/// updateDisplay
-- (void)updateDisplay {
-
-  [super updateDisplay];
-  [self.componentDevicesTableView reloadData];
-
-}
-
 /// componentDevices
 /// @return NSArray *
 - (NSArray *)componentDevices {
@@ -90,50 +80,54 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 /// @return NetworkDevice *
 - (ITachDevice *)iTachDevice { return(ITachDevice *)self.item; }
 
-/// setComponentDevicesTableView:
-/// @param componentDevicesTableView description
-- (void)setComponentDevicesTableView:(UITableView *)componentDevicesTableView {
-
-  _componentDevicesTableView            = componentDevicesTableView;
-  _componentDevicesTableView.delegate   = self;
-  _componentDevicesTableView.dataSource = self;
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/// numberOfSectionsInTableView:
-/// @param tableView description
+/// numberOfSections
 /// @return NSInteger
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return (tableView == self.componentDevicesTableView ? 1 : 2);
-}
+- (NSInteger)numberOfSections { return 2; }
 
-/// tableView:numberOfRowsInSection:
-/// @param tableView description
+/// numberOfRowsInSection:
 /// @param section description
 /// @return NSInteger
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  if (tableView == self.componentDevicesTableView) return [self.componentDevices count];
-  else
-    switch (section) {
-      case 0:  return 8;
-      case 1:  return 1;
-      default: return 0;
-    }
+- (NSInteger)numberOfRowsInSection:(NSInteger)section {
+
+  switch (section) {
+    case 0:  return 8;
+    case 1:  return 1;
+    default: return 0;
+  }
+
 }
 
-/// tableView:titleForHeaderInSection:
-/// @param tableView description
-/// @param section description
-/// @return NSString *
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-  return (section == 1 ? @"Component Devices" : nil);
-}
+/// sectionHeaderTitles
+/// @return NSArray *
+- (NSArray *)sectionHeaderTitles { return @[NullObject, @"Component Devices"]; }
 
+/// identifiers
+/// @return NSArray const *
+- (NSArray const *)identifiers {
+
+  static NSArray const * identifiers = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    identifiers = @[ @[BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier],
+                     @[BankableDetailCellTableStyleIdentifier] ];
+  });
+
+  return identifiers;
+
+}
 
 /// tableView:cellForRowAtIndexPath:
 /// @param tableView description
@@ -146,48 +140,46 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
 
-    kNames =
-      @[@"Identifier", @"Make", @"Model", @"Config-URL", @"Revision", @"PCB_PN", @"Pkg_Level", @"SDKClass"];
+    kNames = @[ @"Identifier",
+                @"Make",
+                @"Model",
+                @"Config-URL",
+                @"Revision",
+                @"PCB_PN",
+                @"Pkg_Level",
+                @"SDKClass" ];
 
-    kKeys =
-      @[@"uniqueIdentifier", @"make", @"model", @"configURL", @"revision", @"pcbPN", @"pkgLevel", @"sdkClass"];
+    kKeys = @[ @"uniqueIdentifier",
+               @"make",
+               @"model",
+               @"configURL",
+               @"revision",
+               @"pcbPN",
+               @"pkgLevel",
+               @"sdkClass" ];
 
   });
 
   // Create a reference for the cell we shall return
   BankableDetailTableViewCell * cell = nil;
 
-  // Check if the cell is for our list of component devices
-  if (tableView == self.componentDevicesTableView) {
+  // Check if the cell is for our first section of the primary table view
+  if (indexPath.row < kNames.count && indexPath.section == 0) {
 
-    cell = [self.componentDevicesTableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
-                                                                forIndexPath:indexPath];
+    cell = [self dequeueCellForIndexPath:indexPath];
+    cell.name = kNames[indexPath.row];
+    cell.info = [self.iTachDevice valueForKey:kKeys[indexPath.row]];
 
-    cell.infoLabel.text = ((ComponentDevice *)self.componentDevices[indexPath.row]).name;
+  }
+
+  // Otherwise make sure it is for our cell that will hold the list of component devices
+  else if (indexPath.section == 1 && indexPath.row == 0) {
+
+    cell = [self dequeueCellForIndexPath:indexPath];
+    cell.info = self.componentDevices;
 
   }
 
-  // Otherwise provide a cell for our primary table view
-  else {
-
-    // Check if the cell is for our first section of the primary table view
-    if (indexPath.row < kNames.count && indexPath.section == 0) {
-
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier forIndexPath:indexPath];
-      cell.name = kNames[indexPath.row];
-      cell.infoLabel.text = [self.iTachDevice valueForKey:kKeys[indexPath.row]];
-
-    }
-
-    // Otherwise make sure it is for our cell that will hold the list of component devices
-    else if (indexPath.section == 1 && indexPath.row == 0) {
-
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTableStyleIdentifier forIndexPath:indexPath];
-      self.componentDevicesTableView = cell.infoTableView;
-
-    }
-
-  }
 
   // Return the cell
   return cell;

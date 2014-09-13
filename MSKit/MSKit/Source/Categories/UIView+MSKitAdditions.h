@@ -42,32 +42,32 @@
 - (UIView *)viewWithNametag:(NSString *)nametag;
 - (UIView *)viewWithNametagPrefix:(NSString *)prefix;
 - (UIView *)viewWithNametagSuffix:(NSString *)suffixx;
-- (UIView *)viewWithNametagMatching:(NSPredicate *)predicate;
+- (UIView *)viewMatching:(NSPredicate *)predicate;
 
 - (NSArray *)viewsWithNametag:(NSString *)nametag;
 - (NSArray *)viewsWithNametagPrefix:(NSString *)prefix;
 - (NSArray *)viewsWithNametagSuffix:(NSString *)suffixx;
-- (NSArray *)viewsWithNametagMatching:(NSPredicate *)predicate;
+- (NSArray *)viewsMatching:(NSPredicate *)predicate;
 
 - (UIView *)subviewWithNametag:(NSString *)nametag;
 - (UIView *)subviewWithNametagPrefix:(NSString *)prefix;
 - (UIView *)subviewWithNametagSuffix:(NSString *)suffixx;
-- (UIView *)subviewWithNametagMatching:(NSPredicate *)predicate;
+- (UIView *)subviewMatching:(NSPredicate *)predicate;
 
 - (NSArray *)subviewsWithNametag:(NSString *)nametag;
 - (NSArray *)subviewsWithNametagPrefix:(NSString *)prefix;
 - (NSArray *)subviewsWithNametagSuffix:(NSString *)suffixx;
-- (NSArray *)subviewsWithNametagMatching:(NSPredicate *)predicate;
+- (NSArray *)subviewsMatching:(NSPredicate *)predicate;
 
 - (UIGestureRecognizer *)gestureWithNametag:(NSString *)nametag;
 - (UIGestureRecognizer *)gestureWithNametagPrefix:(NSString *)prefix;
 - (UIGestureRecognizer *)gestureWithNametagSuffix:(NSString *)suffixx;
-- (UIGestureRecognizer *)gestureWithNametagMatching:(NSPredicate *)predicate;
+- (UIGestureRecognizer *)gestureMatching:(NSPredicate *)predicate;
 
 - (NSArray *)gesturesWithNametag:(NSString *)nametag;
 - (NSArray *)gesturesWithNametagPrefix:(NSString *)prefix;
 - (NSArray *)gesturesWithNametagSuffix:(NSString *)suffixx;
-- (NSArray *)gesturesWithNametagMatching:(NSPredicate *)predicate;
+- (NSArray *)gesturesMatching:(NSPredicate *)predicate;
 
 - (NSLayoutConstraint *)constraintWithTag:(NSUInteger)tag;
 - (NSArray *)constraintsWithTag:(NSUInteger)tag;
@@ -75,12 +75,12 @@
 - (NSLayoutConstraint *)constraintWithNametag:(NSString *)nametag;
 - (NSLayoutConstraint *)constraintWithNametagPrefix:(NSString *)prefix;
 - (NSLayoutConstraint *)constraintWithNametagSuffix:(NSString *)suffix;
-- (NSLayoutConstraint *)constraintWithNametagMatching:(NSPredicate *)predicate;
+- (NSLayoutConstraint *)constraintMatching:(NSPredicate *)predicate;
 
 - (NSArray *)constraintsWithNametag:(NSString *)nametag;
 - (NSArray *)constraintsWithNametagPrefix:(NSString *)prefix;
 - (NSArray *)constraintsWithNametagSuffix:(NSString *)suffix;
-- (NSArray *)constraintsWithNametagMatching:(NSPredicate *)predicate;
+- (NSArray *)constraintsMatching:(NSPredicate *)predicate;
 
 - (void)replaceConstraintWithNametag:(NSString *)nametag
                       withConstraint:(NSLayoutConstraint *)constraint;

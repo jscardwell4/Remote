@@ -31,11 +31,7 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 
 @interface ISYDeviceDetailViewController ()
 
-@property (nonatomic, weak) IBOutlet  UITableView * componentDevicesTableView;
-@property (nonatomic, weak) IBOutlet  UITableView * nodesTableView;
-@property (nonatomic, weak) IBOutlet  UITableView * groupsTableView;
 @property (nonatomic, weak, readonly) ISYDevice   * iSYDevice;
-@property (nonatomic, strong)         UINib       * subTableViewCellNib;
 @property (nonatomic, strong)         NSArray     * componentDevices;
 @property (nonatomic, strong)         NSArray     * nodes;
 @property (nonatomic, strong)         NSArray     * groups;
@@ -70,16 +66,6 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 /// itemClass
 /// @return Class<Bankable>
 - (Class<BankableModel>)itemClass { return [ISYDevice class]; }
-
-/// updateDisplay
-- (void)updateDisplay {
-
-  [super updateDisplay];
-  [self.componentDevicesTableView reloadData];
-  [self.nodesTableView            reloadData];
-  [self.groupsTableView           reloadData];
-
-}
 
 /// componentDevices
 /// @return NSArray *
@@ -121,96 +107,60 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 /// @return NetworkDevice *
 - (ISYDevice *)iSYDevice { return(ISYDevice *)self.item; }
 
-/// setComponentDevicesTableView:
-/// @param componentDevicesTableView description
-- (void)setComponentDevicesTableView:(UITableView *)componentDevicesTableView {
-
-  _componentDevicesTableView            = componentDevicesTableView;
-  _componentDevicesTableView.delegate   = self;
-  _componentDevicesTableView.dataSource = self;
-
-}
-
-/// setNodesTableView:
-/// @param nodesTableView description
-- (void)setNodesTableView:(UITableView *)nodesTableView {
-
-  _nodesTableView            = nodesTableView;
-  _nodesTableView.delegate   = self;
-  _nodesTableView.dataSource = self;
-
-}
-
-/// setGroupsTableView:
-/// @param groupsTableView description
-- (void)setGroupsTableView:(UITableView *)groupsTableView {
-
-  _groupsTableView            = groupsTableView;
-  _groupsTableView.delegate   = self;
-  _groupsTableView.dataSource = self;
-
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
-/// tableView:heightForRowAtIndexPath:
-/// @param tableView description
-/// @param indexPath description
-/// @return CGFloat
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (indexPath.section > 2) return 120.0;
-  else return 37.0;
-}
 
-
-/// numberOfSectionsInTableView:
-/// @param tableView description
+/// numberOfSections
 /// @return NSInteger
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return (tableView == self.tableView ? 6 : 1);
-}
+- (NSInteger)numberOfSections { return 6; }
 
-/// tableView:numberOfRowsInSection:
-/// @param tableView description
+/// numberOfRowsInSection:
 /// @param section description
 /// @return NSInteger
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  if (tableView == self.componentDevicesTableView) return [self.componentDevices count];
-  else if (tableView == self.nodesTableView)       return [self.nodes            count];
-  else if (tableView == self.groupsTableView)      return [self.groups           count];
-  else
-    switch (section) {
-      case 0:  return 2;
-      case 1:  return 4;
-      case 2:  return 2;
-      case 3:
-      case 4:
-      case 5:  return 1;
-      default: return 0;
-    }
+- (NSInteger)numberOfRowsInSection:(NSInteger)section {
+  switch (section) {
+    case 0:  return 2;
+    case 1:  return 4;
+    case 2:  return 2;
+    case 3:
+    case 4:
+    case 5:  return 1;
+    default: return 0;
+  }
 }
 
-/// tableView:titleForHeaderInSection:
-/// @param tableView description
-/// @param section description
-/// @return NSString *
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-
-	switch (section) {
-    case 1:  return @"Model";
-    case 2:  return @"Manufacturer";
-		case 3:  return @"Nodes";
-		case 4:  return @"Groups";
-		case 5:  return @"Component Devices";
-		default: return nil;
-
-	}
-
+/// sectionHeaderTitles
+/// @return NSArray *
+- (NSArray *)sectionHeaderTitles {
+  return @[NullObject, @"Model", @"Manufacturer", @"Nodes", @"Groups", @"Component Devices"];
 }
 
+/// identifiers
+/// @return NSArray const *
+- (NSArray const *)identifiers {
+
+  static NSArray const * identifiers = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    identifiers = @[ @[BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier],
+                     @[BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier],
+                     @[BankableDetailCellLabelStyleIdentifier,
+                       BankableDetailCellLabelStyleIdentifier],
+                     @[BankableDetailCellTableStyleIdentifier],
+                     @[BankableDetailCellTableStyleIdentifier],
+                     @[BankableDetailCellTableStyleIdentifier] ];
+  });
+
+  return identifiers;
+
+}
 
 /// tableView:cellForRowAtIndexPath:
 /// @param tableView description
@@ -223,87 +173,50 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
 
-    kNames =
-      @[@[@"Identifier", @"Base URL"], @[@"Name", @"Number", @"Description",
-        @"Friendly Name"], @[@"Name", @"URL"]];
+    kNames = @[ @[ @"Identifier", @"Base URL" ],
+                @[ @"Name", @"Number", @"Description", @"Friendly Name" ],
+                @[ @"Name", @"URL" ] ];
 
-    kKeys =
-    @[@[@"uniqueIdentifier", @"baseURL"], @[@"modelName", @"modelNumber", @"modelDescription",
-        @"friendlyName"], @[@"manufacturer", @"manufacturerURL"]];
+    kKeys = @[ @[ @"uniqueIdentifier", @"baseURL" ],
+               @[ @"modelName", @"modelNumber", @"modelDescription", @"friendlyName" ],
+               @[ @"manufacturer", @"manufacturerURL" ] ];
 
   });
 
   // Create a reference for the cell we shall return
   BankableDetailTableViewCell * cell = nil;
 
-  // Check if the cell is for our list of component devices
-  if (tableView == self.componentDevicesTableView) {
+  // Check if the cell is for our first section of the primary table view
+  if (indexPath.section < [kNames count] && indexPath.row < [kNames[indexPath.section] count]) {
 
-    cell =
-    [self.componentDevicesTableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
-                                                         forIndexPath:indexPath];
-
-    cell.infoLabel.text = ((ComponentDevice *)self.componentDevices[indexPath.row]).name;
+    cell = [self dequeueCellForIndexPath:indexPath];
+    cell.name = kNames[indexPath.section][indexPath.row];
+    cell.info = [self.iSYDevice valueForKey:kKeys[indexPath.section][indexPath.row]];
 
   }
 
-  else if (tableView == self.nodesTableView) {
+  // Otherwise make sure it is for our cell that will hold the list of component devices
+  else if (indexPath == ComponentDevicesCellIndexPath) {
 
-    cell = [self.nodesTableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
-                                                     forIndexPath:indexPath];
-
-    cell.infoLabel.text = ((ISYDeviceNode *)self.nodes[indexPath.row]).name;
-    
-  }
-
-  else if (tableView == self.groupsTableView) {
-
-    cell = [self.groupsTableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
-                                                      forIndexPath:indexPath];
-
-    cell.infoLabel.text = ((ISYDeviceGroup *)self.groups[indexPath.row]).name;
-    
-  }
-
-  // Otherwise provide a cell for our primary table view
-  else {
-
-    // Check if the cell is for our first section of the primary table view
-    if (indexPath.section < [kNames count] && indexPath.row < [kNames[indexPath.section] count]) {
-
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellLabelStyleIdentifier
-                                                  forIndexPath:indexPath];
-      cell.name = kNames[indexPath.section][indexPath.row];
-      cell.infoLabel.text = [self.iSYDevice valueForKey:kKeys[indexPath.section][indexPath.row]];
-
-    }
-
-    // Otherwise make sure it is for our cell that will hold the list of component devices
-    else if (indexPath == ComponentDevicesCellIndexPath) {
-
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTableStyleIdentifier
-                                                  forIndexPath:indexPath];
-      self.componentDevicesTableView = cell.infoTableView;
-
-    }
-
-    else if (indexPath == NodesCellIndexPath) {
-
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTableStyleIdentifier
-                                                  forIndexPath:indexPath];
-      self.nodesTableView = cell.infoTableView;
-
-    }
-
-    else if (indexPath == GroupsCellIndexPath) {
-
-      cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTableStyleIdentifier
-                                                  forIndexPath:indexPath];
-      self.groupsTableView = cell.infoTableView;
-
-    }
+    cell = [self dequeueCellForIndexPath:indexPath];
+    cell.info = self.componentDevices;
 
   }
+
+  else if (indexPath == NodesCellIndexPath) {
+
+    cell = [self dequeueCellForIndexPath:indexPath];
+    cell.info = self.nodes;
+
+  }
+
+  else if (indexPath == GroupsCellIndexPath) {
+
+    cell = [self dequeueCellForIndexPath:indexPath];
+    cell.info = self.groups;
+
+  }
+
 
   // Return the cell
   return cell;

@@ -79,6 +79,7 @@
 #import "MSKit/MSCheckboxView.h"
 #import "MSKit/UIView+MSKitAdditions.h"
 #import "MSKit/MSColorInputView.h"
+#import "MSKit/NSIndexPath+MSKitAdditions.h"
 #import "MSKit/UIViewController+MSKitAdditions.h"
 #import "MSKit/MSMultiselectView.h"
 #import "MSKit/UIWindow+MSKitAdditions.h"

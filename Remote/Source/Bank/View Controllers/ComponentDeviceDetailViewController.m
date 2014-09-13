@@ -27,25 +27,22 @@ CellIndexPathDeclaration(PowerOff);
 CellIndexPathDeclaration(InputPowersOn);
 CellIndexPathDeclaration(Inputs);
 
-static const CGFloat kInputsTableRowHeight = 120;
-
 @interface ComponentDeviceDetailViewController ()
 
-@property (nonatomic, weak) IBOutlet  UITableView     * inputsTableView;
 @property (nonatomic, weak, readonly) ComponentDevice * componentDevice;
-@property (nonatomic, strong)         UINib           * inputsTableViewCellNib;
 @property (nonatomic, strong)         NSArray         * inputs;                   // inputsTableView data
 @property (nonatomic, strong)         NSArray         * manufacturers;            // picker data
 @property (nonatomic, strong)         NSArray         * networkDevices;           // picker data
 
 @end
 
-@implementation ComponentDeviceDetailViewController {
-  __weak ComponentDevice * _componentDevice;
-}
+@implementation ComponentDeviceDetailViewController
 
+/// itemClass
+/// @return Class<BankableModel>
 - (Class<BankableModel>)itemClass { return [ComponentDevice class]; }
 
+/// initialize
 + (void)initialize {
 
   if (self == [ComponentDeviceDetailViewController class]) {
@@ -63,13 +60,8 @@ static const CGFloat kInputsTableRowHeight = 120;
 
 }
 
-- (void)updateDisplay {
-
-  [super updateDisplay];
-  [self.inputsTableView reloadData];
-
-}
-
+/// inputs
+/// @return NSArray *
 - (NSArray *)inputs {
 
   if (!_inputs) {
@@ -80,57 +72,24 @@ static const CGFloat kInputsTableRowHeight = 120;
   return _inputs;
 }
 
-- (id)dataForIndexPath:(NSIndexPath *)indexPath type:(BankableDetailDataType)type {
-
-  switch (type) {
-
-    case BankableDetailPickerViewData:
-      return ([indexPath isEqual:ManufacturerCellIndexPath]
-              ? self.manufacturers
-              : self.networkDevices);
-
-    case BankableDetailPickerViewSelection:
-      return ([indexPath isEqual:ManufacturerCellIndexPath]
-              ? self.componentDevice.manufacturer
-              : self.componentDevice.networkDevice);
-
-    case BankableDetailTextFieldData:
-      return ([_componentDevice valueForKeyPath:@"manufacturer.name"]
-              ?: @"No Manufacturer");
-
-    default:
-      return nil;
-
-  }
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Aliased properties
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)setItem:(BankableModelObject *)item {
 
-  [super setItem:item];
-  _componentDevice = (ComponentDevice *)self.item;
+/// componentDevice
+/// @return ComponentDevice *
+- (ComponentDevice *)componentDevice { return (ComponentDevice *)self.item; }
 
-}
-
-- (void)setInputsTableView:(UITableView *)inputsTableView {
-
-  _inputsTableView            = inputsTableView;
-  _inputsTableView.delegate   = self;
-  _inputsTableView.dataSource = self;
-
-  // ???: reload data here?
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Managing picker views
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// manufacturers
+/// @return NSArray *
 - (NSArray *)manufacturers {
 
   if (!_manufacturers)
@@ -143,6 +102,8 @@ static const CGFloat kInputsTableRowHeight = 120;
 
 }
 
+/// networkDevices
+/// @return NSArray *
 - (NSArray *)networkDevices {
 
   if (!_networkDevices)
@@ -155,290 +116,312 @@ static const CGFloat kInputsTableRowHeight = 120;
 
 }
 
-- (void)pickerView:(UIPickerView *)pickerView
-   didSelectObject:(id)selection
-               row:(NSUInteger)row
-         indexPath:(NSIndexPath *)indexPath
-{
-
-  if ([indexPath isEqual:ManufacturerCellIndexPath]) {
-
-    if (row == [_manufacturers lastIndex])
-      MSLogDebug(@"right now would be a good time to create a new manufacturer");
-
-    else if (selection != self.componentDevice.manufacturer)
-      self.componentDevice.manufacturer = ([selection isKindOfClass:[Manufacturer class]] ? selection : nil);
-
-
-  } else if ([indexPath isEqual:NetworkDeviceCellIndexPath])
-    self.componentDevice.networkDevice = ([selection isKindOfClass:[NetworkDevice class]] ? selection : nil);
-
-  [super pickerView:pickerView didSelectObject:selection row:row indexPath:indexPath];
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return (tableView == _inputsTableView ? 1 : 4);
+
+/// numberOfSections
+/// @return NSInteger
+- (NSInteger)numberOfSections { return 4; }
+
+/// numberOfRowsInSection:
+/// @param section description
+/// @return NSInteger
+- (NSInteger)numberOfRowsInSection:(NSInteger)section { return 2; }
+
+/// sectionHeaderTitles
+/// @return NSArray *
+- (NSArray *)sectionHeaderTitles { return @[NullObject, @"Network Device", @"Power Commands", @"Inputs"]; }
+
+/// editableRows
+/// @return NSSet const *
+- (NSSet const *)editableRows {
+
+  static NSSet const * rows = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    rows = [@[ManufacturerCellIndexPath,
+              AllCodesCellIndexPath,
+              NetworkDeviceCellIndexPath,
+              PortCellIndexPath,
+              PowerOnCellIndexPath,
+              PowerOffCellIndexPath,
+              InputPowersOnCellIndexPath,
+              InputsCellIndexPath] set];
+  });
+
+  return rows;
+
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return (tableView == _inputsTableView ? [self.inputs count] : 2);
-}
+/// identifiers
+/// @return NSArray const *
+- (NSArray const *)identifiers {
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return (tableView == _inputsTableView
-          ? BankableDetailDefaultRowHeight
-          : ([indexPath isEqual:InputsCellIndexPath]
-             ? kInputsTableRowHeight
-             : ([indexPath isEqual:self.visiblePickerCellIndexPath]
-                ? BankableDetailExpandedRowHeight
-                : BankableDetailDefaultRowHeight)));
-}
+  static NSArray const * identifiers = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    identifiers = @[ @[BankableDetailCellTextFieldStyleIdentifier,
+                       BankableDetailCellDetailStyleIdentifier],
+                     @[BankableDetailCellButtonStyleIdentifier,
+                       BankableDetailCellStepperStyleIdentifier],
+                     @[BankableDetailCellButtonStyleIdentifier,
+                       BankableDetailCellButtonStyleIdentifier],
+                     @[BankableDetailCellSwitchStyleIdentifier,
+                       BankableDetailCellTableStyleIdentifier] ];
+  });
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-
-  switch (section) {
-    case 1:  return @"Network Device";
-    case 2:  return @"Power Commands";
-    case 3:  return @"Inputs";
-    default: return nil;
-  }
+  return identifiers;
 
 }
 
+/// tableView:cellForRowAtIndexPath:
+/// @param tableView description
+/// @param indexPath description
+/// @return UITableViewCell *
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   BankableDetailTableViewCell * cell;
 
-  if (tableView == _inputsTableView) {
+  switch (indexPath.section) {
 
-    cell = [_inputsTableView dequeueReusableCellWithIdentifier:BankableDetailCellListStyleIdentifier
-                                                  forIndexPath:indexPath];
+    case 0: {      // Manufacturer and Codes
 
-    cell.infoLabel.text = self.inputs[indexPath.row];
+      switch (indexPath.row) {
 
-  }
+        case 0: {
+          cell =
+          [self dequeueCellForIndexPath:indexPath];
+          cell.name = @"Manufacturer";
+          cell.info = ([self.componentDevice valueForKeyPath:@"manufacturer.name"] ?: @"No Manufacturer");
 
-  else
-    switch (indexPath.section) {
 
-      case 0: {      // Manufacturer and Codes
+          cell.validationHandler = ^BOOL(BankableDetailTableViewCell * cell) {
+            NSString * text = cell.info;
+            return (text && text.length > 0);
+          };
 
-        switch (indexPath.row) {
 
-          case 0: {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTextFieldStyleIdentifier
-                                                        forIndexPath:indexPath];
-            cell.name = @"Manufacturer";
-            cell.text = ([_componentDevice valueForKeyPath:@"manufacturer.name"] ?: @"No Manufacturer");
+          __weak ComponentDeviceDetailViewController * weakself = self;
+          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
 
-            BankableValidationHandler validationHandler = ^{ return (BOOL)(cell.text && cell.text.length > 0); };
+            NSString * text = cell.info;
 
-            BankableChangeHandler changeHandler = ^{
+            if ([@"No Manufacturer" isEqualToString:text]) weakself.componentDevice.manufacturer = nil;
 
-              NSString * text = cell.text;
+            else {
 
-              if ([@"No Manufacturer" isEqualToString:text]) _componentDevice.manufacturer = nil;
+              Manufacturer * manufacturer =
+              [weakself.manufacturers findFirst:^BOOL(Manufacturer * manufacturer) {
+                return [manufacturer.name isEqualToString:text];
+              }];
 
-              else {
+              if (!manufacturer) {
 
-                Manufacturer * manufacturer =
-                [_manufacturers objectPassingTest:^BOOL (id obj, NSUInteger idx) {
-                  return (  [obj isKindOfClass:[Manufacturer class]]
-                          && [[obj valueForKey:@"name"] isEqualToString:text]);
-                }];
-
-                if (!manufacturer) {
-
-                  manufacturer = [Manufacturer manufacturerWithName:text
-                                                            context:_componentDevice.managedObjectContext];
-                  _manufacturers = nil;
-
-                }
-
-                assert(manufacturer);
-
-                _componentDevice.manufacturer = manufacturer;
+                manufacturer =
+                [Manufacturer manufacturerWithName:text
+                                           context:weakself.componentDevice.managedObjectContext];
+                weakself.manufacturers = nil;
 
               }
 
-            };
+              assert(manufacturer);
 
-            [self registerTextField:cell.infoTextField
-                       forIndexPath:indexPath
-                           handlers:@{ BankableValidationHandlerKey : validationHandler,
-                                       BankableChangeHandlerKey     : changeHandler }];
+              weakself.componentDevice.manufacturer = manufacturer;
 
-            [self registerPickerView:cell.pickerView forIndexPath:indexPath];
+            }
 
-            break;
-          }
+          };
 
-          case 1: {
+          cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell, NSInteger row) {
 
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellDetailStyleIdentifier
-                                                        forIndexPath:indexPath];
-            cell.text = @"Device Codes";
-            [cell.infoButton addTarget:self
-                                action:@selector(viewIRCodes:)
-                      forControlEvents:UIControlEventTouchUpInside];
-            break;
-          }
+            if (row == [weakself.manufacturers lastIndex])
+              MSLogDebug(@"right now would be a good time to create a new manufacturer");
+
+            else {
+
+              Manufacturer * selection = weakself.manufacturers[row];
+              assert([selection isKindOfClass:[Manufacturer class]]);
+
+              if (selection != weakself.componentDevice.manufacturer)
+                weakself.componentDevice.manufacturer = selection;
+
+            }
+
+          };
+
+          cell.pickerData = self.manufacturers;
+          cell.pickerSelection = self.componentDevice.manufacturer;
+
+          break;
         }
 
-      }
+        case 1: {
 
-      case 1: {      // Network Device
+          cell = [self dequeueCellForIndexPath:indexPath];
+          cell.info = @"Device Codes";
+          __weak ComponentDeviceDetailViewController * weakself = self;
+          cell.buttonActionHandler = ^(BankableDetailTableViewCell * cell) {
+            [weakself viewIRCodes:cell];
+          };
 
-        switch (indexPath.row) {
-
-          case 0: {          // Network Device Name
-
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellButtonStyleIdentifier forIndexPath:indexPath];
-            cell.name = @"Name";
-            cell.text = ([_componentDevice valueForKeyPath:@"networkDevice.name"] ?: @"No Network Device");
-
-            __weak ComponentDeviceDetailViewController * weakself = self;
-            void (^actionBlock)(void) = ^{ weakself.visiblePickerCellIndexPath = indexPath; };
-
-            [cell.infoButton addActionBlock:actionBlock forControlEvents:UIControlEventTouchUpInside];
-
-            [self registerEditableView:cell.infoButton];
-            [self registerPickerView:cell.pickerView forIndexPath:indexPath];
-
-            break;
-
-          }
-
-          case 1: {          // Port
-
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellStepperStyleIdentifier forIndexPath:indexPath];
-            cell.name                     = @"Port";
-            cell.text                     = [@(self.componentDevice.port)stringValue];
-            cell.infoStepper.minimumValue = 1;
-            cell.infoStepper.maximumValue = 3;
-            cell.infoStepper.wraps        = YES;
-            cell.infoStepper.value        = self.componentDevice.port;
-
-            void (^actionBlock)(void) = ^{
-              _componentDevice.port = (int16_t)cell.infoStepper.value;
-              cell.infoLabel.text   = [@(cell.infoStepper.value)description];
-            };
-
-            [cell.infoStepper addActionBlock:actionBlock forControlEvents:UIControlEventValueChanged];
-
-            [self registerStepper:cell.infoStepper withLabel:cell.infoLabel forIndexPath:indexPath];
-
-            break;
-
-          }
-
+          break;
         }
-
-        break;
-
-      }
-
-      case 2: {      // Commands
-
-        switch (indexPath.row) {
-
-          case 0: {          // Power On Command
-
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellButtonStyleIdentifier forIndexPath:indexPath];
-            cell.name = @"On";
-            cell.text = ([self.componentDevice valueForKeyPath:@"onCommand.name"] ?: @"No On Command");
-
-            void (^actionBlock)(void) = ^{ MSLogDebug(@"Need to implement on command selection/creation"); };
-
-            [cell.infoButton addActionBlock:actionBlock forControlEvents:UIControlEventTouchUpInside];
-
-            [self registerEditableView:cell.infoButton];
-
-            break;
-
-          }
-
-          case 1: {          // Power Off Command
-
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellButtonStyleIdentifier forIndexPath:indexPath];
-            cell.name = @"Off";
-            cell.text = ([self.componentDevice valueForKeyPath:@"offCommand.name"] ?: @"No Off Command");
-
-            void (^actionBlock)(void) = ^{ MSLogDebug(@"Need to implement off command selection/creation"); };
-
-            [cell.infoButton addActionBlock:actionBlock forControlEvents:UIControlEventTouchUpInside];
-
-            [self registerEditableView:cell.infoButton];
-
-            break;
-
-          }
-
-        }
-
-        break;
-
-      }
-
-      case 3: {      // Inputs
-
-        switch (indexPath.row) {
-
-          case 0: {          // Input powers on device
-
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellSwitchStyleIdentifier forIndexPath:indexPath];
-            cell.name          = @"Inputs Power On Device";
-            cell.infoSwitch.on = _componentDevice.inputPowersOn;
-
-            void (^actionBlock)(void) = ^{ _componentDevice.inputPowersOn = cell.infoSwitch.on; };
-
-            [cell.infoSwitch addActionBlock:actionBlock forControlEvents:UIControlEventValueChanged];
-
-            [self registerEditableView:cell.infoSwitch];
-
-            break;
-
-          }
-
-          case 1: {          // Inputs table
-
-            cell = [self.tableView dequeueReusableCellWithIdentifier:BankableDetailCellTableStyleIdentifier forIndexPath:indexPath];
-            self.inputsTableView = cell.infoTableView;
-
-            break;
-
-          }
-
-        }
-
-        break;
-
       }
 
     }
+
+    case 1: {      // Network Device
+
+      switch (indexPath.row) {
+
+        case 0: {          // Network Device Name
+
+          cell      = [self dequeueCellForIndexPath:indexPath];
+          cell.name = @"Name";
+          cell.info = ([self.componentDevice valueForKeyPath:@"networkDevice.name"]
+                       ?: @"No Network Device");
+
+          __weak ComponentDeviceDetailViewController * weakself = self;
+          cell.buttonActionHandler = ^(BankableDetailTableViewCell * cell) {
+            [cell showPickerView];
+          };
+
+          cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell, NSInteger row) {
+
+            NetworkDevice * selection = weakself.networkDevices[row];
+            self.componentDevice.networkDevice = ([selection isKindOfClass:[NetworkDevice class]]
+                                                  ? selection
+                                                  : nil);
+
+          };
+
+          cell.pickerData = self.networkDevices;
+          cell.pickerSelection = self.componentDevice.networkDevice;
+
+          break;
+
+        }
+
+        case 1: {          // Port
+
+          cell = [self dequeueCellForIndexPath:indexPath];
+          cell.name            = @"Port";
+          cell.info            = [@(self.componentDevice.port)stringValue];
+          cell.stepperMinValue = 1;
+          cell.stepperMaxValue = 3;
+          cell.stepperWraps    = YES;
+          cell.info            = @(self.componentDevice.port);
+
+          __weak ComponentDeviceDetailViewController * weakself = self;
+          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+            weakself.componentDevice.port = (int16_t)[cell.info shortValue];
+          };
+
+          break;
+
+        }
+
+      }
+
+      break;
+
+    }
+
+    case 2: {      // Commands
+
+      switch (indexPath.row) {
+
+        case 0: {          // Power On Command
+
+          cell = [self dequeueCellForIndexPath:indexPath];
+          cell.name = @"On";
+          cell.info = ([self.componentDevice valueForKeyPath:@"onCommand.name"] ?: @"No On Command");
+
+          break;
+
+        }
+
+        case 1: {          // Power Off Command
+
+          cell = [self dequeueCellForIndexPath:indexPath];
+          cell.name = @"Off";
+          cell.info = ([self.componentDevice valueForKeyPath:@"offCommand.name"] ?: @"No Off Command");
+
+          break;
+
+        }
+
+      }
+
+      break;
+
+    }
+
+    case 3: {      // Inputs
+
+      switch (indexPath.row) {
+
+        case 0: {          // Input powers on device
+
+          cell = [self dequeueCellForIndexPath:indexPath];
+          cell.name = @"Inputs Power On Device";
+          cell.info = @(self.componentDevice.inputPowersOn);
+
+          __weak ComponentDeviceDetailViewController * weakself = self;
+          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+            weakself.componentDevice.inputPowersOn = [cell.info boolValue];
+          };
+
+          break;
+
+        }
+
+        case 1: {          // Inputs table
+
+          cell = [self dequeueCellForIndexPath:indexPath];
+          cell.tableData = self.inputs;
+
+          break;
+
+        }
+
+      }
+
+      break;
+
+    }
+
+  }
 
   return cell;
 
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Table view delegate
 ////////////////////////////////////////////////////////////////////////////////
 
+
+/// tableView:accessoryButtonTappedForRowWithIndexPath:
+/// @param tableView description
+/// @param indexPath description
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-  if (tableView == self.tableView && [indexPath isEqual:AllCodesCellIndexPath])
+  if ([indexPath isEqual:AllCodesCellIndexPath])
     [self viewIRCodes:nil];
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
+
+/// viewIRCodes:
+/// @param sender description
 - (IBAction)viewIRCodes:(id)sender {
 
   BankCollectionViewController * vc = UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
@@ -458,8 +441,6 @@ static const CGFloat kInputsTableRowHeight = 120;
 
     vc.bankableItems = controller;
     vc.itemClass     = [IRCode class];
-//    BankFlags bf = vc.bankFlags;
-//    vc.bankFlags = bf | BankNoSections;
     [self.navigationController pushViewController:vc animated:YES];
 
   }
