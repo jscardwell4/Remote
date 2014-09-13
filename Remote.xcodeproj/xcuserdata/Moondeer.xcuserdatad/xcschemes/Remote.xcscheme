@@ -28,26 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C2CA76AC19BA1E1900ACCD76"
-               BuildableName = "ISYClientTests.xctest"
-               BlueprintName = "ISYClientTests"
-               ReferencedContainer = "container:Remote.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C2F9411219BE5E90007B5CC1"
-               BuildableName = "iTachClientTests.xctest"
-               BlueprintName = "iTachClientTests"
-               ReferencedContainer = "container:Remote.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -94,7 +74,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-loadData YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-replace YES"
@@ -106,7 +86,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-simulate YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-uitest YES"

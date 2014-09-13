@@ -27,12 +27,12 @@ CellIndexPathDeclaration(Nodes);
 CellIndexPathDeclaration(Groups);
 CellIndexPathDeclaration(ComponentDevices);
 
-static const CGFloat kComponentDevicesTableRowHeight = 120;
+SectionHeadersDeclaration;
 
 @interface ISYDeviceDetailViewController ()
 
 @property (nonatomic, weak, readonly) ISYDevice   * iSYDevice;
-@property (nonatomic, strong)         NSArray     * componentDevices;
+@property (nonatomic, strong)         NSArray     * devices;
 @property (nonatomic, strong)         NSArray     * nodes;
 @property (nonatomic, strong)         NSArray     * groups;
 
@@ -59,6 +59,8 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
     CellIndexPathDefinition(Groups,           0, 4);
     CellIndexPathDefinition(ComponentDevices, 0, 5);
 
+    SectionHeadersDefinition(NullObject, @"Model", @"Manufacturer", @"Nodes", @"Groups", @"Component Devices");
+
   }
 
 }
@@ -67,45 +69,21 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 /// @return Class<Bankable>
 - (Class<BankableModel>)itemClass { return [ISYDevice class]; }
 
-/// componentDevices
-/// @return NSArray *
-- (NSArray *)componentDevices {
-
-  if (!_componentDevices && self.iSYDevice)
-    _componentDevices = [self.iSYDevice.componentDevices allObjects];
-
-  return _componentDevices;
-}
-
-/// nodes
-/// @return NSArray *
-- (NSArray *)nodes {
-
-  if (!_nodes && self.iSYDevice)
-    _nodes = [self.iSYDevice.nodes allObjects];
-
-  return _nodes;
-}
-
-/// groups
-/// @return NSArray *
-- (NSArray *)groups {
-
-  if (!_groups && self.iSYDevice)
-    _groups = [self.iSYDevice.groups allObjects];
-
-  return _groups;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Aliased properties
-////////////////////////////////////////////////////////////////////////////////
-
 
 /// iSYDevice
 /// @return NetworkDevice *
 - (ISYDevice *)iSYDevice { return(ISYDevice *)self.item; }
+
+/// devices
+/// @return NSArray *
+- (NSArray *)devices { if (!_devices) _devices = [self.iSYDevice.componentDevices allObjects]; return _devices; }
+
+/// nodes
+/// @return NSArray *
+- (NSArray *)nodes { if (!_nodes) _nodes = [self.iSYDevice.nodes allObjects]; return _nodes; }
+/// groups
+/// @return NSArray *
+- (NSArray *)groups { if (!_groups) _groups = [self.iSYDevice.groups allObjects]; return _groups; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -122,9 +100,9 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 /// @return NSInteger
 - (NSInteger)numberOfRowsInSection:(NSInteger)section {
   switch (section) {
-    case 0:  return 2;
-    case 1:  return 4;
+    case 0:
     case 2:  return 2;
+    case 1:  return 4;
     case 3:
     case 4:
     case 5:  return 1;
@@ -133,10 +111,8 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 }
 
 /// sectionHeaderTitles
-/// @return NSArray *
-- (NSArray *)sectionHeaderTitles {
-  return @[NullObject, @"Model", @"Manufacturer", @"Nodes", @"Groups", @"Component Devices"];
-}
+/// @return NSArray const *
+- (NSArray const *)sectionHeaderTitles { return TableSectionHeaders; }
 
 /// identifiers
 /// @return NSArray const *
@@ -162,11 +138,10 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
   // Some static arrays for filling our primary table view cells
   static NSArray const * kNames = nil, * kKeys = nil;
@@ -183,44 +158,20 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 
   });
 
-  // Create a reference for the cell we shall return
-  BankableDetailTableViewCell * cell = nil;
 
   // Check if the cell is for our first section of the primary table view
   if (indexPath.section < [kNames count] && indexPath.row < [kNames[indexPath.section] count]) {
 
-    cell = [self dequeueCellForIndexPath:indexPath];
     cell.name = kNames[indexPath.section][indexPath.row];
     cell.info = [self.iSYDevice valueForKey:kKeys[indexPath.section][indexPath.row]];
 
   }
 
-  // Otherwise make sure it is for our cell that will hold the list of component devices
-  else if (indexPath == ComponentDevicesCellIndexPath) {
+  else if (indexPath == ComponentDevicesCellIndexPath) cell.info = self.devices;
 
-    cell = [self dequeueCellForIndexPath:indexPath];
-    cell.info = self.componentDevices;
+  else if (indexPath == NodesCellIndexPath) cell.info = self.nodes;
 
-  }
-
-  else if (indexPath == NodesCellIndexPath) {
-
-    cell = [self dequeueCellForIndexPath:indexPath];
-    cell.info = self.nodes;
-
-  }
-
-  else if (indexPath == GroupsCellIndexPath) {
-
-    cell = [self dequeueCellForIndexPath:indexPath];
-    cell.info = self.groups;
-
-  }
-
-
-  // Return the cell
-  return cell;
-
+  else if (indexPath == GroupsCellIndexPath) cell.info = self.groups;
 
 }
 

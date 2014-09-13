@@ -26,7 +26,7 @@ MSIDENTIFIER_DEFINITION(BankableDetailCellTableStyle);
 
 MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
-@interface BankableDetailTableViewCell () <UITextFieldDelegate, UITextViewDelegate,
+@interface BankableDetailTableViewCell () <UITextFieldDelegate, UITextViewDelegate, UITextViewDelegate,
                                            UIPickerViewDataSource, UIPickerViewDelegate,
                                            UITableViewDataSource, UITableViewDelegate>
 
@@ -41,11 +41,34 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 @property (nonatomic, weak, readwrite) IBOutlet UITableView  * table;
 @property (nonatomic, weak, readwrite) IBOutlet UIPickerView * pickerView;
 
-@property (nonatomic, copy) NSString * textViewBeginState;
+@property (nonatomic, copy) NSString * beginStateText;
 
 @end
 
-@implementation BankableDetailTableViewCell
+static NSString *(^textFromObject)(id) = ^(id obj) {
+
+  NSString * text = nil;
+
+  if (isStringKind(obj)) text = obj;
+
+  else if (isNumberKind(obj)) text = [obj stringValue];
+
+  else if ([obj respondsToSelector:@selector(name)]) text = [obj name];
+
+  return text;
+
+};
+
+
+@implementation BankableDetailTableViewCell {
+  NSString * _tableIdentifier;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Reuse identifiers
+////////////////////////////////////////////////////////////////////////////////
+
 
 /// validIdentifiers
 /// @return NSSet const *
@@ -86,6 +109,12 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Initializer and reuse preparation
+////////////////////////////////////////////////////////////////////////////////
+
+
 /// initWithStyle:reuseIdentifier:
 /// @param style description
 /// @param reuseIdentifier description
@@ -97,17 +126,17 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
   dispatch_once(&onceToken, ^{
 
-    // Create some more or less generic constraint strings for use in decorator blocks
-
-    NSString * nameAndInfoBaselineConstraints = [@"\n" join:@[@"|-20-[name]-8-[info]-20-|",
-                                                              @"name.baseline = info.baseline",
-                                                              @"V:|-8-[name]-8-|"]];
+    /// Create some more or less generic constraint strings for use in decorator blocks
+    ////////////////////////////////////////////////////////////////////////////////
 
     NSString * nameAndInfoCenterYConstraints  = [@"\n" join:@[@"|-20-[name]-8-[info]-20-|",
                                                               @"name.centerY = info.centerY",
+                                                              @"name.height = info.height",
                                                               @"V:|-8-[name]-8-|"]];
 
     NSString * infoConstraints                = [@"\n" join:@[@"|-20-[info]-20-|", @"V:|-8-[info]-8-|"]];
+
+    NSString * infoDisclosureConstraints      = [@"\n" join:@[@"|-20-[info]-75-|", @"V:|-8-[info]-8-|"]];
 
     NSString * nameAndTextViewInfoConstraints = [@"\n" join:@[@"V:|-5-[name]-5-[info]-5-|",
                                                               @"|-20-[name]",
@@ -115,172 +144,217 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
     NSString * tableViewInfoConstraints       = [@"\n" join:@[@"|[info]|", @"V:|-5-[info]-5-|"]];
 
-    NSString * nameInfoAndStepperConstraints  = [@"\n" join:@[@"|-20-[name]-8-[info]-20-|",
-                                                              @"name.baseline = info.baseline",
-                                                              @"[info]-8-[stepper]",
+    NSString * nameInfoAndStepperConstraints  = [@"\n" join:@[@"|-20-[name]-8-[info]",
+                                                              @"'info trailing' info.trailing = stepper.leading - 20",
+                                                              @"name.centerY = info.centerY",
+                                                              @"name.height = info.height",
+                                                              @"'stepper leading' stepper.leading = content.trailing",
                                                               @"stepper.centerY = name.centerY",
                                                               @"V:|-8-[name]-8-|"]];
 
     NSString * imageViewInfoConstraints       = [@"\n" join:@[@"|-20-[info]-20-|", @"V:|-20-[info]-20-|"]];
 
 
-    // Create the fonts to use in decorator blocks
+    /// Create the fonts to use in decorator blocks
+    ////////////////////////////////////////////////////////////////////////////////
 
     UIFont  * nameFont  = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     UIFont  * infoFont  = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 
-    // Create the colors to use in decorator blocks
+    /// Create the colors to use in decorator blocks
+    ////////////////////////////////////////////////////////////////////////////////
 
-    UIColor * nameColor = [UIColor colorWithRed: 59.0/255.0 green: 60.0/255.0 blue: 64.0/255.0 alpha:1.0];
-    UIColor * infoColor = [UIColor colorWithRed:159.0/255.0 green:160.0/255.0 blue:164.0/255.0 alpha:1.0];
+    UIColor * nameColor = [UIColor colorWithR: 59.0f G: 60.0f B: 64.0f A:255.0f];
+    UIColor * infoColor = [UIColor colorWithR:159.0f G:160.0f B:164.0f A:255.0f];
 
-    // Create the decorator blocks keyed by the corresponding cell reuse identifier
+    /// Create some generic blocks to add name and info views
+    ////////////////////////////////////////////////////////////////////////////////
+
+    UILabel * (^addName)(UILabel *, BankableDetailTableViewCell *) =
+    ^(UILabel * name, BankableDetailTableViewCell * cell) {
+
+      name.translatesAutoresizingMaskIntoConstraints = NO;
+      [name setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+      name.font      = nameFont;
+      name.textColor = nameColor;
+      [cell.contentView addSubview:name];
+      cell.nameLabel = name;
+
+      return name;
+
+    };
+
+    id (^addInfo)(id, BankableDetailTableViewCell *) = ^(id info, BankableDetailTableViewCell * cell) {
+
+      [info setTranslatesAutoresizingMaskIntoConstraints:NO];
+      [cell.contentView addSubview:info];
+      [info setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh
+                                            forAxis:UILayoutConstraintAxisVertical];
+      [info setUserInteractionEnabled:NO];
+
+      if ([info isKindOfClass:[UILabel class]]) {
+        UILabel * infoLabel = info;
+        infoLabel.font          = infoFont;
+        infoLabel.textColor     = infoColor;
+        infoLabel.textAlignment = NSTextAlignmentRight;
+        cell.infoLabel = infoLabel;
+      }
+
+      else if ([info isKindOfClass:[UIButton class]]) {
+        UIButton * infoButton = info;
+        infoButton.titleLabel.font          = infoFont;
+        infoButton.titleLabel.textAlignment = NSTextAlignmentRight;
+        [infoButton addConstraints:
+         [NSLayoutConstraint constraintsByParsingString:[@"\n" join:@[@"title.right = button.right",
+                                                                      @"title.top = button.top",
+                                                                      @"title.bottom = button.bottom",
+                                                                      @"title.left = button.left"]]
+                                                  views:@{@"title": infoButton.titleLabel,
+                                                          @"button": infoButton}]];
+        [infoButton setTitleColor:infoColor forState:UIControlStateNormal];
+        [infoButton addTarget:cell
+                       action:@selector(buttonUpAction:)
+             forControlEvents:UIControlEventTouchUpInside];
+        cell.infoButton = infoButton;
+      }
+
+      else if ([info isKindOfClass:[UITextField class]]) {
+        UITextField * infoTextField = info;
+        infoTextField.font          = infoFont;
+        infoTextField.textColor     = infoColor;
+        infoTextField.textAlignment = NSTextAlignmentRight;
+        infoTextField.delegate      = cell;
+        cell.infoTextField = infoTextField;
+      }
+
+      else if ([info isKindOfClass:[UITextView class]]) {
+        UITextView * infoTextView = info;
+        infoTextView.font      = infoFont;
+        infoTextView.textColor = infoColor;
+        infoTextView.delegate  = cell;
+        cell.infoTextView = infoTextView;
+      }
+
+      else if ([info isKindOfClass:[UIImageView class]]) {
+        UIImageView * infoImageView = info;
+        infoImageView.contentMode = UIViewContentModeScaleAspectFit;
+        cell.infoImageView = infoImageView;
+      }
+
+      else if ([info isKindOfClass:[UITableView class]]) {
+        UITableView * infoTableView = info;
+        infoTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        infoTableView.rowHeight = 38.0;
+        infoTableView.delegate = cell;
+        infoTableView.dataSource = cell;
+        if (cell.tableIdentifier)
+          [infoTableView registerClass:[BankableDetailTableViewCell class]
+                forCellReuseIdentifier:cell.tableIdentifier];
+        cell.table = infoTableView;
+      }
+
+      else if ([info isKindOfClass:[UISwitch class]]) {
+        UISwitch * infoSwitch = info;
+        [infoSwitch addTarget:cell
+                       action:@selector(switchValueDidChange:)
+             forControlEvents:UIControlEventValueChanged];
+        cell.infoSwitch = infoSwitch;
+      }
+
+      else if ([info isKindOfClass:[UIStepper class]]) {
+        UIStepper * stepper = info;
+        [stepper addTarget:cell
+                    action:@selector(stepperValueDidChange:)
+          forControlEvents:UIControlEventValueChanged];
+        cell.stepper = stepper;
+      }
+
+      return info;
+
+    };
+
+
+    /// Create the decorator blocks keyed by the corresponding cell reuse identifier
+    /// These blocks are responsible for selecting which views to create and for adding appropriate constraints
+    ////////////////////////////////////////////////////////////////////////////////
 
     index = @{
 
               BankableDetailCellLabelStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * name = [UILabel newForAutolayout];
-                  name.font      = nameFont;
-                  name.textColor = nameColor;
-                  [cell.contentView addSubview:name];
-                  cell.nameLabel = name;
+                  UILabel * name = addName([UILabel new], cell);
+                  UILabel * info = addInfo([UILabel new], cell);
 
-                  UILabel * info = [UILabel newForAutolayout];
-                  info.font          = infoFont;
-                  info.textColor     = infoColor;
-                  info.textAlignment = NSTextAlignmentRight;
-                  [cell.contentView addSubview:info];
-                  cell.infoLabel = info;
-
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:nameAndInfoBaselineConstraints
-                                                           views:@{@"name": name, @"info": info}];
-
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:nameAndInfoCenterYConstraints
+                                                            views:@{@"name"   : name,
+                                                                    @"info"   : info,
+                                                                    @"content": cell.contentView}]];
 
                 },
 
               BankableDetailCellListStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * info = [UILabel newForAutolayout];
-                  info.font          = infoFont;
-                  info.textColor     = infoColor;
-                  info.textAlignment = NSTextAlignmentRight;
-                  [cell.contentView addSubview:info];
-                  cell.infoLabel = info;
+                  UILabel * info = addInfo([UILabel new], cell);
 
-                  NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:infoConstraints
-                                                                                   views:@{@"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:infoConstraints
+                                                            views:@{@"info": info}]];
 
                 },
 
               BankableDetailCellButtonStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * name = [UILabel newForAutolayout];
-                  name.font      = nameFont;
-                  name.textColor = nameColor;
-                  [cell.contentView addSubview:name];
-                  cell.nameLabel = name;
+                  UILabel  * name = addName([UILabel  new], cell);
+                  UIButton * info = addInfo([UIButton new], cell);
 
-                  UIButton * info = [UIButton newForAutolayout];
-                  info.titleLabel.font          = infoFont;
-                  info.titleLabel.textAlignment = NSTextAlignmentRight;
-                  [info setTitleColor:infoColor forState:UIControlStateNormal];
-                  info.userInteractionEnabled = NO;
-                  [cell.contentView addSubview:info];
-                  [info addTarget:cell
-                           action:@selector(buttonUpAction:)
-                 forControlEvents:UIControlEventTouchUpInside];
-                  cell.infoButton = info;
-
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:nameAndInfoBaselineConstraints
-                                                           views:@{@"name": name, @"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:nameAndInfoCenterYConstraints
+                                                            views:@{@"name"   : name,
+                                                                    @"info"   : info,
+                                                                    @"content": cell.contentView}]];
 
                 },
 
               BankableDetailCellImageStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UIImageView * info = [UIImageView newForAutolayout];
-                  info.contentMode = UIViewContentModeScaleAspectFit;
-                  [cell.contentView addSubview:info];
-                  cell.infoImageView = info;
+                  UIImageView * info = addInfo([UIImageView new], cell);
 
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:imageViewInfoConstraints
-                                                           views:@{@"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                        [NSLayoutConstraint constraintsByParsingString:imageViewInfoConstraints
+                                                                 views:@{@"info": info}]];
 
                 },
 
               BankableDetailCellSwitchStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * name = [UILabel newForAutolayout];
-                  name.font      = nameFont;
-                  name.textColor = nameColor;
-                  [cell.contentView addSubview:name];
-                  cell.nameLabel = name;
+                  UILabel  * name = addName([UILabel  new], cell);
+                  UISwitch * info = addInfo([UISwitch new], cell);
 
-                  UISwitch * info = [UISwitch newForAutolayout];
-                  info.userInteractionEnabled = NO;
-                  [cell.contentView addSubview:info];
-                  [info addTarget:cell
-                           action:@selector(switchValueDidChange:)
-                 forControlEvents:UIControlEventValueChanged];
-                  cell.infoSwitch = info;
-
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:nameAndInfoCenterYConstraints
-                                                           views:@{@"name": name, @"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:nameAndInfoCenterYConstraints
+                                                            views:@{@"name": name, @"info": info}]];
 
                 },
 
               BankableDetailCellStepperStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * name = [UILabel newForAutolayout];
-                  name.font      = nameFont;
-                  name.textColor = nameColor;
-                  [cell.contentView addSubview:name];
-                  cell.nameLabel = name;
+                  UILabel   * name    = addName([UILabel   new], cell);
+                  UILabel   * info    = addInfo([UILabel   new], cell);
+                  UIStepper * stepper = addInfo([UIStepper new], cell);
 
-                  UILabel * info = [UILabel newForAutolayout];
-                  info.font          = infoFont;
-                  info.textColor     = infoColor;
-                  info.textAlignment = NSTextAlignmentRight;
-                  [cell.contentView addSubview:info];
-                  cell.infoLabel = info;
-
-                  UIStepper * stepper = [UIStepper newForAutolayout];
-                  stepper.hidden = YES;
-                  info.userInteractionEnabled = NO;
-                  [cell.contentView addSubview:stepper];
-                  [stepper addTarget:cell
-                              action:@selector(stepperValueDidChange:)
-                    forControlEvents:UIControlEventValueChanged];
-                  cell.stepper = stepper;
-
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:nameInfoAndStepperConstraints
-                                                           views:@{@"name": name,
-                                                                   @"info": info,
-                                                                   @"stepper": stepper}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:nameInfoAndStepperConstraints
+                                                            views:@{@"name"   : name,
+                                                                    @"info"   : info,
+                                                                    @"stepper": stepper,
+                                                                    @"content": cell.contentView}]];
 
                 },
 
@@ -289,90 +363,50 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
                   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 
-                  UIButton * info = [UIButton newForAutolayout];
-                  info.titleLabel.font         = infoFont;
-                  info.titleLabel.textAlignment = NSTextAlignmentRight;
-                  [info setTitleColor:infoColor forState:UIControlStateNormal];
-                  [cell.contentView addSubview:info];
-                  [info addTarget:cell
-                           action:@selector(buttonUpAction:)
-                 forControlEvents:UIControlEventTouchUpInside];
-                  cell.infoButton = info;
+                  UIButton * info = addInfo([UIButton new], cell);
 
-                  NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:infoConstraints
-                                                                                   views:@{@"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:infoDisclosureConstraints
+                                                            views:@{@"info": info}]];
 
                 },
 
               BankableDetailCellTextViewStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * name = [UILabel newForAutolayout];
-                  name.font      = nameFont;
-                  name.textColor = nameColor;
-                  [cell.contentView addSubview:name];
-                  cell.nameLabel = name;
+                  UILabel    * name = addName([UILabel    new], cell);
+                  UITextView * info = addInfo([UITextView new], cell);
 
-                  UITextView * info = [UITextView newForAutolayout];
-                  info.font      = infoFont;
-                  info.textColor = infoColor;
-                  info.delegate  = cell;
-                  info.userInteractionEnabled = NO;
-                  [cell.contentView addSubview:info];
-                  cell.infoTextView = info;
-
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:nameAndTextViewInfoConstraints
-                                                           views:@{@"name": name, @"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:nameAndTextViewInfoConstraints
+                                                            views:@{@"name": name, @"info": info}]];
 
                 },
 
               BankableDetailCellTextFieldStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UILabel * name = [UILabel newForAutolayout];
-                  name.font      = nameFont;
-                  name.textColor = nameColor;
-                  [cell.contentView addSubview:name];
-                  cell.nameLabel = name;
+                  UILabel     * name = addName([UILabel     new], cell);
+                  UITextField * info = addInfo([UITextField new], cell);
 
-                  UITextField * info = [UITextField newForAutolayout];
-                  info.font          = infoFont;
-                  info.textColor     = infoColor;
-                  info.textAlignment = NSTextAlignmentRight;
-                  info.delegate      = cell;
-                  info.userInteractionEnabled = NO;
-                  [cell.contentView addSubview:info];
-                  cell.infoTextField = info;
-
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:nameAndInfoBaselineConstraints
-                                                           views:@{@"name": name, @"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:nameAndInfoCenterYConstraints
+                                                            views:@{@"name"   : name,
+                                                                    @"info"   : info,
+                                                                    @"content": cell.contentView}]];
 
                 },
 
               BankableDetailCellTableStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UITableView * info = [[UITableView alloc] initWithFrame:CGRectZero
-                                                                     style:UITableViewStylePlain];
-                  [info setTranslatesAutoresizingMaskIntoConstraints:NO];
-                  info.separatorStyle = UITableViewCellSeparatorStyleNone;
-                  info.rowHeight = 38.0;
-                  [cell.contentView addSubview:info];
-                  cell.table = info;
+                  UITableView * info = addInfo([[UITableView alloc] initWithFrame:CGRectZero
+                                                                            style:UITableViewStylePlain],
+                                               cell);
 
-                  NSArray * constraints =
-                  [NSLayoutConstraint constraintsByParsingString:tableViewInfoConstraints
-                                                           views:@{@"info": info}];
-                  assert([constraints count]);
-                  [cell.contentView addConstraints:constraints];
+                  [cell.contentView addConstraints:
+                   [NSLayoutConstraint constraintsByParsingString:tableViewInfoConstraints
+                                                            views:@{@"info": info}]];
 
                 }
 
@@ -381,11 +415,10 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
   });
 
 
-
+  /// Code to actually initialize the object
+  ////////////////////////////////////////////////////////////////////////////////
 
   if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-
-    assert(self.bounds.size.height > 0);
 
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -424,10 +457,6 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 - (void)prepareForReuse {
   [super prepareForReuse];
 
-  self.accessoryType = ([BankableDetailCellDetailStyleIdentifier isEqualToString:self.reuseIdentifier]
-                        ? UITableViewCellAccessoryDetailDisclosureButton
-                        : UITableViewCellAccessoryNone);
-
   _nameLabel.text = nil;
 
   [_infoButton setTitle:nil forState:UIControlStateNormal];
@@ -455,9 +484,15 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Accessors
+////////////////////////////////////////////////////////////////////////////////
+
+
 /// name
 /// @return NSString *
-- (NSString *)name { return (_nameLabel.text ?: nil); }
+- (NSString *)name { return _nameLabel.text; }
 
 /// setName:
 /// @param name description
@@ -519,21 +554,6 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
   static NSDictionary const * setters = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-
-
-    NSString *(^textFromObject)(id) = ^(id obj) {
-
-      NSString * text = nil;
-
-      if (isStringKind(obj)) text = obj;
-
-      else if (isNumberKind(obj)) text = [obj stringValue];
-
-      else if ([obj respondsToSelector:@selector(name)]) text = [obj name];
-
-      return text;
-
-    };
 
     setters = @{ BankableDetailCellLabelStyleIdentifier:
                    ^(BankableDetailTableViewCell * cell, id info) {
@@ -597,39 +617,6 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
 }
 
-/// image
-/// @return UIImage *
-- (UIImage *)image { return _infoImageView.image; }
-
-/// setImage:
-/// @param image description
-- (void)setImage:(UIImage *)image {
-
-  self.infoImageView.image = image;
-
-  CGSize imageSize  = image.size;
-  CGSize boundsSize = self.infoImageView.bounds.size;
-
-  if (CGSizeContainsSize(boundsSize, imageSize))
-    self.infoImageView.contentMode = UIViewContentModeCenter;
-
-}
-
-/// stepperValueDidChange:
-/// @param sender description
-- (void)stepperValueDidChange:(UIStepper *)sender {
-  if (self.changeHandler) self.changeHandler(self);
-  self.infoLabel.text = [@(sender.value) stringValue];
-}
-
-/// buttonUpAction:
-/// @param sender description
-- (void)buttonUpAction:(UIButton *)sender { if (self.buttonActionHandler) self.buttonActionHandler(self); }
-
-/// switchValueDidChange:
-/// @param sender description
-- (void)switchValueDidChange:(UISwitch *)sender { if (self.changeHandler) self.changeHandler(self); }
-
 /// setStepperMinValue:
 /// @param stepperMinValue description
 - (void)setStepperMinValue:(double)stepperMinValue { self.stepper.minimumValue = stepperMinValue; }
@@ -654,6 +641,57 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 /// @return BOOL
 - (BOOL)stepperWraps { return self.stepper.wraps; }
 
+/// setAllowRowSelection:
+/// @param allowRowSelection BOOL
+- (void)setAllowRowSelection:(BOOL)allowRowSelection { self.table.allowsSelection = allowRowSelection; }
+
+/// setTableCell:
+/// @param tableCell description
+- (void)setTableIdentifier:(NSString *)tableIdentifier {
+  _tableIdentifier = ([[self class] isValidIentifier:tableIdentifier] ? [tableIdentifier copy] : nil);
+  if (_tableIdentifier && self.table) [self.table registerClass:[self class] forCellReuseIdentifier:_tableIdentifier];
+}
+
+/// tableIdentifier
+/// @return NSString *
+- (NSString *)tableIdentifier {
+  if (!_tableIdentifier) self.tableIdentifier = BankableDetailCellListStyleIdentifier;
+  return _tableIdentifier;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Control action callbacks
+////////////////////////////////////////////////////////////////////////////////
+
+
+/// stepperValueDidChange:
+/// @param sender description
+- (void)stepperValueDidChange:(UIStepper *)sender {
+  if (self.changeHandler) self.changeHandler(self);
+  self.infoLabel.text = [@(sender.value) stringValue];
+}
+
+/// buttonUpAction:
+/// @param sender description
+- (void)buttonUpAction:(UIButton *)sender {
+  if (self.buttonActionHandler) self.buttonActionHandler(self);
+  if (self.pickerData) {
+    if (self.pickerView.hidden == YES) [self showPickerView];
+    else                               [self hidePickerView];
+  }
+}
+
+/// switchValueDidChange:
+/// @param sender description
+- (void)switchValueDidChange:(UISwitch *)sender { if (self.changeHandler) self.changeHandler(self); }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - State changes
+////////////////////////////////////////////////////////////////////////////////
+
+
 /// willTransitionToState:
 /// @param state description
 - (void)willTransitionToState:(UITableViewCellStateMask)state {
@@ -673,6 +711,12 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
                   BankableDetailCellStepperStyleIdentifier:
                     ^(BankableDetailTableViewCell *cell, BOOL editing) {
                       cell.stepper.userInteractionEnabled = editing;
+                      NSLayoutConstraint * infoTrailing  = [cell.contentView constraintWithNametag:@"info trailing"];
+                      NSLayoutConstraint * stepperLeading = [cell.contentView constraintWithNametag:@"stepper leading"];
+                      infoTrailing.constant  = (editing ? -8.0 : -20.0);
+                      stepperLeading.constant = (editing ? -20.0 - cell.stepper.bounds.size.width : 0.0);
+                      
+
                     },
                   BankableDetailCellTextViewStyleIdentifier:
                     ^(BankableDetailTableViewCell *cell, BOOL editing) {
@@ -778,33 +822,22 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark Text field delegate
+#pragma mark - UITextFieldDelegate
 ////////////////////////////////////////////////////////////////////////////////
 
-
-/// textFieldShouldBeginEditing:
-/// @param textField description
-/// @return BOOL
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField { return [self isEditing]; }
 
 /// textFieldDidBeginEditing:
 /// @param textField description
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-
-  [textField selectAll:nil];
-
-  if (self.pickerView) [self showPickerView];
-
+  self.beginStateText = [textField.text copy];
+  if (self.pickerData) [self showPickerView];
 }
 
 /// textFieldDidEndEditing:
 /// @param textField description
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-
-  if (self.changeHandler) self.changeHandler(self);
-
+  if (self.changeHandler && ![textField.text isEqualToString:self.beginStateText]) self.changeHandler(self);
   if (self.pickerView) [self hidePickerView];
-
 }
 
 /// textFieldShouldEndEditing:
@@ -817,29 +850,23 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 /// textFieldShouldReturn:
 /// @param textField description
 /// @return BOOL
-- (BOOL)textFieldShouldReturn:(UITextField *)textField { [textField resignFirstResponder]; return NO; }
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField { [textField resignFirstResponder]; return NO; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark Text view delegate
+#pragma mark - UITextViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
 
 
 /// textViewDidBeginEditing:
 /// @param textView description
-- (void)textViewDidBeginEditing:(UITextView *)textView { self.textViewBeginState = [textView.text copy]; }
+- (void)textViewDidBeginEditing:(UITextView *)textView { self.beginStateText = [textView.text copy]; }
 
 /// textViewDidEndEditing:
 /// @param textView description
 - (void)textViewDidEndEditing:(UITextView *)textView {
-  if (self.changeHandler && ![textView.text isEqualToString:self.textViewBeginState])
-    self.changeHandler(self);
+  if (self.changeHandler && ![textView.text isEqualToString:self.beginStateText]) self.changeHandler(self);
 }
-
-/// textViewShouldBeginEditing:
-/// @param textView description
-/// @return BOOL
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView { return [self isEditing]; }
 
 /// textViewShouldEndEditing:
 /// @param textView description
@@ -857,10 +884,7 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
   shouldChangeTextInRange:(NSRange)range
           replacementText:(NSString *)text
 {
-  if (!self.allowReturnsInTextView && text.length && [text[0] isEqual:@('\n')]) {
-    [textView resignFirstResponder];
-    return NO;
-  } else return YES;
+  return (!self.allowReturnsInTextView && [text containsString:@"\n"] && [textView resignFirstResponder] ? NO : YES);
 }
 
 
@@ -871,31 +895,22 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
 /// showPickerView
 - (void)showPickerView {
-
-  if (self.pickerData) {
-
+  if (self.pickerData && (!self.shouldShowPicker || self.shouldShowPicker(self)) ) {
     if (self.pickerSelection) {
       NSUInteger idx = [self.pickerData indexOfObject:self.pickerSelection];
       if (idx != NSNotFound) [self.pickerView selectRow:idx inComponent:0 animated:NO];
     }
-
     self.pickerView.hidden = NO;
-    self.expanded = YES;
-
-    if (self.pickerDisplayCallback) self.pickerDisplayCallback(self, NO);
+    if (self.didShowPicker) self.didShowPicker(self);
   }
-
 }
 
 /// hidePickerView
 - (void)hidePickerView {
-
-  if (!self.pickerView.hidden) {
+  if (!self.pickerView.hidden && (!self.shouldHidePicker || self.shouldHidePicker(self))) {
     self.pickerView.hidden = YES;
-    self.expanded = NO;
-    if (self.pickerDisplayCallback) self.pickerDisplayCallback(self, YES);
+    if (self.didHidePicker) self.didHidePicker(self);
   }
-
 }
 
 /// Picker view delegate
@@ -909,12 +924,11 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component
 {
-  if (self.pickerSelectionHandler) self.pickerSelectionHandler(self, row);
-
-  self.info = self.pickerData[row];
-
+  self.pickerSelection = self.pickerData[row];
+  if (self.pickerSelectionHandler) self.pickerSelectionHandler(self);
+  self.info = self.pickerSelection;
+  if ([self.infoTextField isFirstResponder]) [self.infoTextField resignFirstResponder];
   [self hidePickerView];
-
 }
 
 /// Picker view data source
@@ -943,54 +957,14 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
              titleForRow:(NSInteger)row
             forComponent:(NSInteger)component
 {
-  NSString * title = nil;
-
-  id value = self.pickerData[row];
-  if (isStringKind(value)) title = value;
-  else if ([value respondsToSelector:@selector(name)])
-    title = [value valueForKey:@"name"];
-
-  return title;
-
+  return textFromObject(self.pickerData[row]);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Table view management
+#pragma mark - UITableViewDataSource
 ////////////////////////////////////////////////////////////////////////////////
 
-
-/// setAllowRowSelection:
-/// @param allowRowSelection BOOL
-- (void)setAllowRowSelection:(BOOL)allowRowSelection { self.table.allowsSelection = allowRowSelection; }
-
-
-/// UITableViewDelegate
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-/// UITableViewDataSource
-////////////////////////////////////////////////////////////////////////////////
-
-
-/// tableIdentifier
-/// @return NSString *
-- (NSString *)tableIdentifier {
-  if (!_tableIdentifier) self.tableIdentifier = BankableDetailCellListStyleIdentifier;
-  return _tableIdentifier;
-}
-
-/// setTableCell:
-/// @param tableCell description
-- (void)setTableCellIdentifier:(NSString *)tableIdentifier {
-
-  _tableIdentifier = ([[self class] isValidIentifier:tableIdentifier]
-                          ? [tableIdentifier copy]
-                          : nil);
-  if (_tableIdentifier && self.table)
-    [self.table registerClass:[self class] forCellReuseIdentifier:_tableIdentifier];
-}
 
 /// numberOfSectionsInTableView:
 /// @param tableView description

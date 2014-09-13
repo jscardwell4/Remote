@@ -14,6 +14,7 @@
 #import "NetworkDevice.h"
 #import "BankCollectionViewController.h"
 
+
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
@@ -26,6 +27,8 @@ CellIndexPathDeclaration(PowerOn);
 CellIndexPathDeclaration(PowerOff);
 CellIndexPathDeclaration(InputPowersOn);
 CellIndexPathDeclaration(Inputs);
+
+SectionHeadersDeclaration;
 
 @interface ComponentDeviceDetailViewController ()
 
@@ -55,6 +58,8 @@ CellIndexPathDeclaration(Inputs);
     CellIndexPathDefinition(PowerOff,      1, 2);
     CellIndexPathDefinition(InputPowersOn, 0, 3);
     CellIndexPathDefinition(Inputs,        1, 3);
+
+    SectionHeadersDefinition(NullObject, @"Network Device", @"Power Commands", @"Inputs");
 
   }
 
@@ -132,8 +137,8 @@ CellIndexPathDeclaration(Inputs);
 - (NSInteger)numberOfRowsInSection:(NSInteger)section { return 2; }
 
 /// sectionHeaderTitles
-/// @return NSArray *
-- (NSArray *)sectionHeaderTitles { return @[NullObject, @"Network Device", @"Power Commands", @"Inputs"]; }
+/// @return NSArray const *
+- (NSArray const *)sectionHeaderTitles { return TableSectionHeaders; }
 
 /// editableRows
 /// @return NSSet const *
@@ -148,8 +153,7 @@ CellIndexPathDeclaration(Inputs);
               PortCellIndexPath,
               PowerOnCellIndexPath,
               PowerOffCellIndexPath,
-              InputPowersOnCellIndexPath,
-              InputsCellIndexPath] set];
+              InputPowersOnCellIndexPath] set];
   });
 
   return rows;
@@ -177,226 +181,96 @@ CellIndexPathDeclaration(Inputs);
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
-  BankableDetailTableViewCell * cell;
+  __weak ComponentDeviceDetailViewController * weakself = self;
 
-  switch (indexPath.section) {
+  if (indexPath == ManufacturerCellIndexPath) {
 
-    case 0: {      // Manufacturer and Codes
+    cell.name = @"Manufacturer";
+    cell.info = (self.componentDevice.manufacturer ?: @"No Manufacturer");
 
-      switch (indexPath.row) {
 
-        case 0: {
-          cell =
-          [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Manufacturer";
-          cell.info = ([self.componentDevice valueForKeyPath:@"manufacturer.name"] ?: @"No Manufacturer");
+    cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell) {
+      id selection = cell.pickerSelection;
+      weakself.componentDevice.manufacturer = ([selection isKindOfClass:[Manufacturer class]] ? selection : nil);
+    };
 
-
-          cell.validationHandler = ^BOOL(BankableDetailTableViewCell * cell) {
-            NSString * text = cell.info;
-            return (text && text.length > 0);
-          };
-
-
-          __weak ComponentDeviceDetailViewController * weakself = self;
-          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-
-            NSString * text = cell.info;
-
-            if ([@"No Manufacturer" isEqualToString:text]) weakself.componentDevice.manufacturer = nil;
-
-            else {
-
-              Manufacturer * manufacturer =
-              [weakself.manufacturers findFirst:^BOOL(Manufacturer * manufacturer) {
-                return [manufacturer.name isEqualToString:text];
-              }];
-
-              if (!manufacturer) {
-
-                manufacturer =
-                [Manufacturer manufacturerWithName:text
-                                           context:weakself.componentDevice.managedObjectContext];
-                weakself.manufacturers = nil;
-
-              }
-
-              assert(manufacturer);
-
-              weakself.componentDevice.manufacturer = manufacturer;
-
-            }
-
-          };
-
-          cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell, NSInteger row) {
-
-            if (row == [weakself.manufacturers lastIndex])
-              MSLogDebug(@"right now would be a good time to create a new manufacturer");
-
-            else {
-
-              Manufacturer * selection = weakself.manufacturers[row];
-              assert([selection isKindOfClass:[Manufacturer class]]);
-
-              if (selection != weakself.componentDevice.manufacturer)
-                weakself.componentDevice.manufacturer = selection;
-
-            }
-
-          };
-
-          cell.pickerData = self.manufacturers;
-          cell.pickerSelection = self.componentDevice.manufacturer;
-
-          break;
-        }
-
-        case 1: {
-
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.info = @"Device Codes";
-          __weak ComponentDeviceDetailViewController * weakself = self;
-          cell.buttonActionHandler = ^(BankableDetailTableViewCell * cell) {
-            [weakself viewIRCodes:cell];
-          };
-
-          break;
-        }
-      }
-
-    }
-
-    case 1: {      // Network Device
-
-      switch (indexPath.row) {
-
-        case 0: {          // Network Device Name
-
-          cell      = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Name";
-          cell.info = ([self.componentDevice valueForKeyPath:@"networkDevice.name"]
-                       ?: @"No Network Device");
-
-          __weak ComponentDeviceDetailViewController * weakself = self;
-          cell.buttonActionHandler = ^(BankableDetailTableViewCell * cell) {
-            [cell showPickerView];
-          };
-
-          cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell, NSInteger row) {
-
-            NetworkDevice * selection = weakself.networkDevices[row];
-            self.componentDevice.networkDevice = ([selection isKindOfClass:[NetworkDevice class]]
-                                                  ? selection
-                                                  : nil);
-
-          };
-
-          cell.pickerData = self.networkDevices;
-          cell.pickerSelection = self.componentDevice.networkDevice;
-
-          break;
-
-        }
-
-        case 1: {          // Port
-
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name            = @"Port";
-          cell.info            = [@(self.componentDevice.port)stringValue];
-          cell.stepperMinValue = 1;
-          cell.stepperMaxValue = 3;
-          cell.stepperWraps    = YES;
-          cell.info            = @(self.componentDevice.port);
-
-          __weak ComponentDeviceDetailViewController * weakself = self;
-          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-            weakself.componentDevice.port = (int16_t)[cell.info shortValue];
-          };
-
-          break;
-
-        }
-
-      }
-
-      break;
-
-    }
-
-    case 2: {      // Commands
-
-      switch (indexPath.row) {
-
-        case 0: {          // Power On Command
-
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"On";
-          cell.info = ([self.componentDevice valueForKeyPath:@"onCommand.name"] ?: @"No On Command");
-
-          break;
-
-        }
-
-        case 1: {          // Power Off Command
-
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Off";
-          cell.info = ([self.componentDevice valueForKeyPath:@"offCommand.name"] ?: @"No Off Command");
-
-          break;
-
-        }
-
-      }
-
-      break;
-
-    }
-
-    case 3: {      // Inputs
-
-      switch (indexPath.row) {
-
-        case 0: {          // Input powers on device
-
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Inputs Power On Device";
-          cell.info = @(self.componentDevice.inputPowersOn);
-
-          __weak ComponentDeviceDetailViewController * weakself = self;
-          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-            weakself.componentDevice.inputPowersOn = [cell.info boolValue];
-          };
-
-          break;
-
-        }
-
-        case 1: {          // Inputs table
-
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.tableData = self.inputs;
-
-          break;
-
-        }
-
-      }
-
-      break;
-
-    }
+    cell.pickerData = self.manufacturers;
+    cell.pickerSelection = self.componentDevice.manufacturer;
 
   }
 
-  return cell;
+  else if (indexPath == AllCodesCellIndexPath) {
+
+    cell.info = @"Device Codes";
+
+    cell.buttonActionHandler = ^(BankableDetailTableViewCell * cell) {
+      [weakself viewIRCodes:cell];
+    };
+
+  }
+
+  else if (indexPath == NetworkDeviceCellIndexPath) {
+
+    cell.name = @"Network Device";
+    cell.info = (self.componentDevice.networkDevice ?: @"No Network Device");
+
+    cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell) {
+      id selection = cell.pickerSelection;
+      weakself.componentDevice.networkDevice = ([selection isKindOfClass:[NetworkDevice class]] ? selection : nil);
+    };
+
+    cell.pickerData = self.networkDevices;
+    cell.pickerSelection = self.componentDevice.networkDevice;
+
+  }
+
+  else if (indexPath == PortCellIndexPath) {
+
+    cell.name            = @"Port";
+    cell.info            = [@(self.componentDevice.port)stringValue];
+    cell.stepperMinValue = 1;
+    cell.stepperMaxValue = 3;
+    cell.stepperWraps    = YES;
+    cell.info            = @(self.componentDevice.port);
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+      weakself.componentDevice.port = (int16_t)[cell.info shortValue];
+    };
+
+  }
+
+  else if (indexPath == PowerOnCellIndexPath) {
+
+    cell.name = @"On";
+    cell.info = (self.componentDevice.onCommand ?: @"No On Command");
+
+  }
+
+  else if (indexPath == PowerOffCellIndexPath) {
+    
+    cell.name = @"Off";
+    cell.info = (self.componentDevice.offCommand ?: @"No Off Command");
+
+  }
+
+  else if (indexPath == InputPowersOnCellIndexPath) {
+    
+    cell.name = @"Inputs Power On Device";
+    cell.info = @(self.componentDevice.inputPowersOn);
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+      weakself.componentDevice.inputPowersOn = [cell.info boolValue];
+    };
+
+  }
+
+  else if (indexPath == InputsCellIndexPath)
+    cell.info = self.inputs;
 
 }
 
@@ -424,7 +298,9 @@ CellIndexPathDeclaration(Inputs);
 /// @param sender description
 - (IBAction)viewIRCodes:(id)sender {
 
-  BankCollectionViewController * vc = UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
+  UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Bank" bundle:MainBundle];
+  BankCollectionViewController * vc = (BankCollectionViewController *)
+    [storyBoard instantiateViewControllerWithClassNameIdentifier:[BankCollectionViewController class]];
   vc.navigationItem.title = $(@"%@ Codes", self.componentDevice.name);
 
   NSFetchedResultsController * controller =

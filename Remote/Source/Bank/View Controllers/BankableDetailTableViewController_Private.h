@@ -28,9 +28,9 @@
 
 @property (nonatomic, strong, readonly ) NSSet        const * editableRows;
 @property (nonatomic, strong, readwrite) NSMutableArray     * expandedRows;  // Rows showing picker view
-@property (nonatomic, assign, readonly ) NSInteger            numberOfSections;
-@property (nonatomic, strong, readonly ) NSArray            * sectionHeaderTitles;
-@property (nonatomic, strong, readonly)  NSArray const * identifiers;
+@property (nonatomic, assign, readonly ) NSInteger    const   numberOfSections;
+@property (nonatomic, strong, readonly ) NSArray      const * sectionHeaderTitles;
+@property (nonatomic, strong, readonly)  NSArray      const * identifiers;
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section;
 
@@ -40,8 +40,7 @@
 - (IBAction)save:(id)sender;
 
 
-// Cell dequeueing convenience
-- (BankableDetailTableViewCell *)dequeueCellForIndexPath:(NSIndexPath *)indexPath;
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -51,6 +50,8 @@
 #define CellIndexPathDefinition(CELL,ROW,SEC) \
   __CONCAT(CELL,CellIndexPath) = [NSIndexPath indexPathForRow:ROW inSection:SEC]
 
+#define SectionHeadersDeclaration static NSArray const * TableSectionHeaders;
+#define SectionHeadersDefinition(...) TableSectionHeaders = @[__VA_ARGS__];
 
 MSEXTERN const CGFloat BankableDetailDefaultRowHeight;
 MSEXTERN const CGFloat BankableDetailExpandedRowHeight; // Picker view displayed

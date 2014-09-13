@@ -100,72 +100,47 @@ CellIndexPathDeclaration(Preview);
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
-  BankableDetailTableViewCell * cell;
+  if (indexPath == CategoryCellIndexPath) {
 
-  switch (indexPath.section) {
-    case 0:     // Info
-    {
-      switch (indexPath.row) {
-        case 0:         // Category
-        {
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Category";
-          cell.info = (self.image.category ?: @"Uncategorized");
+    cell.name = @"Category";
+    cell.info = (self.image.category ?: @"Uncategorized");
 
 
-          __weak ImageDetailViewController * weakself = self;
-          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+    __weak ImageDetailViewController * weakself = self;
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
 
-            weakself.image.category = cell.info;
-            if (![weakself.categories containsObject:weakself.image.category]) weakself.categories = nil;
+      weakself.image.category = cell.info;
+      if (![weakself.categories containsObject:weakself.image.category]) weakself.categories = nil;
 
-          };
+    };
 
-          cell.pickerData = self.categories;
-          cell.pickerSelection = self.image.category;
-
-          break;
-        }
-
-        case 1:         // File name
-        {
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"File";
-          cell.info = self.image.fileName;
-
-          break;
-        }
-
-        case 2:         // Size
-        {
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Size";
-          cell.info = PrettySize(self.image.size);
-
-          break;
-        }
-      }
-
-      break;
-    }
-
-    case 1:     // Preview
-    {
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.info = self.image.preview;
-
-      break;
-    }
+    cell.pickerData = self.categories;
+    cell.pickerSelection = self.image.category;
 
   }
 
-  return cell;
+  else if (indexPath == FileCellIndexPath) {
+
+    cell.name = @"File";
+    cell.info = self.image.fileName;
+
+  }
+
+  else if (indexPath == SizeCellIndexPath) {
+
+    cell.name = @"Size";
+    cell.info = PrettySize(self.image.size);
+
+  }
+
+  else if (indexPath == PreviewCellIndexPath)
+    cell.info = self.image.preview;
+
 }
 
 

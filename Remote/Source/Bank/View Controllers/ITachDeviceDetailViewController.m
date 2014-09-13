@@ -25,7 +25,7 @@ CellIndexPathDeclaration(PkgLevel);
 CellIndexPathDeclaration(SDKClass);
 CellIndexPathDeclaration(ComponentDevices);
 
-static const CGFloat kComponentDevicesTableRowHeight = 120;
+SectionHeadersDeclaration
 
 @interface ITachDeviceDetailViewController ()
 
@@ -50,6 +50,8 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
     CellIndexPathDefinition(PkgLevel,         6, 0);
     CellIndexPathDefinition(SDKClass,         7, 0);
     CellIndexPathDefinition(ComponentDevices, 0, 1);
+
+    SectionHeadersDefinition(NullObject, @"Component Devices");
 
   }
 
@@ -104,8 +106,8 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 }
 
 /// sectionHeaderTitles
-/// @return NSArray *
-- (NSArray *)sectionHeaderTitles { return @[NullObject, @"Component Devices"]; }
+/// @return NSArray const *
+- (NSArray const *)sectionHeaderTitles { return TableSectionHeaders; }
 
 /// identifiers
 /// @return NSArray const *
@@ -129,11 +131,10 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
   // Some static arrays for filling our primary table view cells
   static NSArray const * kNames = nil, * kKeys = nil;
@@ -160,30 +161,16 @@ static const CGFloat kComponentDevicesTableRowHeight = 120;
 
   });
 
-  // Create a reference for the cell we shall return
-  BankableDetailTableViewCell * cell = nil;
-
   // Check if the cell is for our first section of the primary table view
   if (indexPath.row < kNames.count && indexPath.section == 0) {
 
-    cell = [self dequeueCellForIndexPath:indexPath];
     cell.name = kNames[indexPath.row];
     cell.info = [self.iTachDevice valueForKey:kKeys[indexPath.row]];
 
   }
 
   // Otherwise make sure it is for our cell that will hold the list of component devices
-  else if (indexPath.section == 1 && indexPath.row == 0) {
-
-    cell = [self dequeueCellForIndexPath:indexPath];
-    cell.info = self.componentDevices;
-
-  }
-
-
-  // Return the cell
-  return cell;
-
+  else if (indexPath == ComponentDevicesCellIndexPath) cell.info = self.componentDevices;
 
 }
 

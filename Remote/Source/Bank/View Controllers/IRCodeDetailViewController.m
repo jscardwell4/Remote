@@ -140,195 +140,167 @@ CellIndexPathDeclaration(OnOffPattern);
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
-  BankableDetailTableViewCell       * cell     = nil;
   __weak IRCodeDetailViewController * weakself = self;
 
-  switch (indexPath.row) {
+  if (indexPath == ManufacturerCellIndexPath) {
 
-    case 0: {     // Manufacturer
+    cell.name = @"Manufacturer";
+    cell.info = ([self.irCode valueForKeyPath:@"manufacturer.name"] ?: @"No Manufacturer");
 
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.name = @"Manufacturer";
-      cell.info = ([self.irCode valueForKeyPath:@"manufacturer.name"] ?: @"No Manufacturer");
+    cell.validationHandler = ^BOOL(BankableDetailTableViewCell * cell) {
+      return (((NSString *)cell.info).length > 0);
+    };
 
-      cell.validationHandler = ^BOOL(BankableDetailTableViewCell * cell) {
-        return (((NSString *)cell.info).length > 0);
-      };
+    __weak IRCodeDetailViewController * weakself = self;
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
 
-      __weak IRCodeDetailViewController * weakself = self;
-      cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+      NSString * text = cell.info;
 
-        NSString * text = cell.info;
+      if ([@"No Manufacturer" isEqualToString:text]) weakself.irCode.manufacturer = nil;
 
-        if ([@"No Manufacturer" isEqualToString:text]) weakself.irCode.manufacturer = nil;
+      else {
 
-        else {
+        Manufacturer * manufacturer =
+        [weakself.manufacturers findFirstUsingPredicate:NSPredicateMake(@"name == %@", text)];
 
-          Manufacturer * manufacturer =
-            [weakself.manufacturers findFirstUsingPredicate:NSPredicateMake(@"name == %@", text)];
+        if (!manufacturer) {
 
-          if (!manufacturer) {
-
-            manufacturer = [Manufacturer manufacturerWithName:text
-                                                      context:weakself.irCode.managedObjectContext];
-            weakself.manufacturers = nil;
-          }
-
-          assert(manufacturer);
-
-          weakself.irCode.manufacturer = manufacturer;
+          manufacturer = [Manufacturer manufacturerWithName:text
+                                                    context:weakself.irCode.managedObjectContext];
+          weakself.manufacturers = nil;
         }
 
-      };
+        assert(manufacturer);
 
-      cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell, NSInteger row) {
+        weakself.irCode.manufacturer = manufacturer;
+      }
 
-        if (row == 0) {
+    };
 
-          weakself.irCode.manufacturer = nil;
-          weakself.codesets            = nil;
-          [weakself cellForRowAtIndexPath:CodesetCellIndexPath].info = @"No Codeset";
+    cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell) {
 
-        } else {
+      id selection = cell.pickerSelection;
 
-          Manufacturer * selection = weakself.manufacturers[row];
-          assert([selection isKindOfClass:[Manufacturer class]]);
+      Manufacturer * manufacturer = nil;
 
-          if (selection != weakself.irCode.manufacturer) {
+      if ([selection isKindOfClass:[Manufacturer class]]) manufacturer = selection;
 
-            [weakself cellForRowAtIndexPath:CodesetCellIndexPath].info = @"No Codeset";
-            weakself.codesets = nil;
+      if (!manufacturer) {
 
-          }
+        weakself.irCode.manufacturer = nil;
+        weakself.codesets            = nil;
+        [weakself cellForRowAtIndexPath:CodesetCellIndexPath].info = @"No Codeset";
 
-          weakself.irCode.manufacturer = selection;
+      } else if (manufacturer != weakself.irCode.manufacturer) {
 
-        }
+        [weakself cellForRowAtIndexPath:CodesetCellIndexPath].info = @"No Codeset";
+        weakself.codesets = nil;
+        weakself.irCode.manufacturer = selection;
 
-      };
+      }
 
-      cell.pickerData = self.manufacturers;
-      cell.pickerSelection = self.irCode.manufacturer;
+    };
 
-      break;
-    }
-
-    case 1: {     // Codeset
-
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.name = @"Codeset";
-      cell.info = (self.irCode.codeset ?: @"No Codeset");
-
-
-      __weak IRCodeDetailViewController * weakself = self;
-
-      cell.validationHandler =  ^BOOL(BankableDetailTableViewCell * cell) {
-        return (((NSString *)cell.info).length > 0);
-      };
-
-      cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-
-        NSString * text = cell.info;
-
-        if ([@"No Codeset" isEqualToString:text]) weakself.irCode.codeset = nil;
-
-        else {
-
-          weakself.irCode.codeset = text;
-
-          if (![weakself.codesets containsObject:text]) weakself.codesets = nil;
-
-        }
-
-      };
-
-
-      cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell, NSInteger row) {
-        weakself.irCode.codeset = (row ? weakself.codesets[row] : nil);
-      };
-
-      cell.pickerData = self.codesets;
-      cell.pickerSelection = self.irCode.codeset;
-
-      break;
-    }
-
-    case 2: {     // Frequency
-
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.name = @"Frequency";
-      cell.info = [self.irCode.frequency stringValue];
-
-      cell.useIntegerKeyboard = YES;
-
-      __weak IRCodeDetailViewController * weakself = self;
-      cell.changeHandler = ^(BankableDetailTableViewCell * cell) { weakself.irCode.frequency = cell.info; };
-
-      break;
-    }
-
-    case 3: {     // Repeat
-
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.name               = @"Repeat";
-      cell.info               = [self.irCode.repeatCount stringValue];
-      cell.useIntegerKeyboard = YES;
-
-      __weak IRCodeDetailViewController * weakself = self;
-      cell.changeHandler = ^(BankableDetailTableViewCell * cell) { weakself.irCode.repeatCount = cell.info; };
-
-      break;
-    }
-
-    case 4: {     // Offset
-
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.name            = @"Offset";
-      cell.stepperMinValue = 0;
-      cell.stepperMaxValue = 127;
-      cell.stepperWraps    = NO;
-      cell.info            = self.irCode.offset;
-
-      __weak IRCodeDetailViewController * weakself = self;
-      cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-        weakself.irCode.offset = cell.info;
-      };
-
-      break;
-    }
-
-    case 5: {     // On-Off Pattern
-
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.name = @"On-Off Pattern";
-      cell.info = self.irCode.onOffPattern;
-
-      __weak IRCodeDetailViewController * weakself = self;
-      cell.validationHandler = ^BOOL(BankableDetailTableViewCell * cell) {
-
-        NSString * text = [(NSString *)cell.info stringByTrimmingWhitespace];
-        return (text.length == 0 || [IRCode isValidOnOffPattern:text]);
-
-      };
-
-      cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-        NSString * text = [(NSString *)cell.info stringByTrimmingWhitespace];
-        NSString * compressedText = [IRCode compressedOnOffPatternFromPattern:text];
-        weakself.irCode.onOffPattern = compressedText;
-      };
-
-      break;
-    }
+    cell.pickerData = self.manufacturers;
+    cell.pickerSelection = self.irCode.manufacturer;
 
   }
 
-  return cell;
+  else if (indexPath == CodesetCellIndexPath) {
+
+    cell.name = @"Codeset";
+    cell.info = (self.irCode.codeset ?: @"No Codeset");
+
+    cell.validationHandler =  ^BOOL(BankableDetailTableViewCell * cell) {
+      return (((NSString *)cell.info).length > 0);
+    };
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+
+      NSString * text = cell.info;
+
+      if ([@"No Codeset" isEqualToString:text]) weakself.irCode.codeset = nil;
+
+      else {
+
+        weakself.irCode.codeset = text;
+
+        if (![weakself.codesets containsObject:text]) weakself.codesets = nil;
+
+      }
+
+    };
+
+
+    cell.pickerSelectionHandler = ^(BankableDetailTableViewCell * cell) {
+      id selection = cell.pickerSelection;
+      weakself.irCode.codeset = ([selection isEqualToString:@"No Codeset"] ? nil : selection);
+    };
+
+    cell.pickerData = self.codesets;
+    cell.pickerSelection = self.irCode.codeset;
+
+  }
+
+  else if (indexPath == FrequencyCellIndexPath) {
+
+    cell.name = @"Frequency";
+    cell.info = [self.irCode.frequency stringValue];
+
+    cell.useIntegerKeyboard = YES;
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) { weakself.irCode.frequency = cell.info; };
+
+  }
+
+  else if (indexPath == RepeatCellIndexPath) {
+
+    cell.name               = @"Repeat";
+    cell.info               = [self.irCode.repeatCount stringValue];
+    cell.useIntegerKeyboard = YES;
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) { weakself.irCode.repeatCount = cell.info; };
+
+  }
+
+  else if (indexPath == OffsetCellIndexPath) {
+
+    cell.name            = @"Offset";
+    cell.stepperMinValue = 0;
+    cell.stepperMaxValue = 127;
+    cell.stepperWraps    = NO;
+    cell.info            = self.irCode.offset;
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+      weakself.irCode.offset = cell.info;
+    };
+
+  }
+
+  else if (indexPath == OnOffPatternCellIndexPath) {
+
+    cell.name = @"On-Off Pattern";
+    cell.info = self.irCode.onOffPattern;
+
+    cell.validationHandler = ^BOOL(BankableDetailTableViewCell * cell) {
+
+      NSString * text = [(NSString *)cell.info stringByTrimmingWhitespace];
+      return (text.length == 0 || [IRCode isValidOnOffPattern:text]);
+
+    };
+
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+      NSString * text = [(NSString *)cell.info stringByTrimmingWhitespace];
+      NSString * compressedText = [IRCode compressedOnOffPatternFromPattern:text];
+      weakself.irCode.onOffPattern = compressedText;
+    };
+
+  }
 
 }
 

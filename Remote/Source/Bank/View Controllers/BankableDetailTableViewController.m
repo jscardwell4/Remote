@@ -122,6 +122,7 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 
     item.titleView = nameTextField;
     self.nameTextField = nameTextField;
+
     item.rightBarButtonItem  = self.editButtonItem;
 
   }
@@ -161,35 +162,6 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 /// @return NSArray const *
 - (NSArray const *)identifiers { return nil; }
 
-/// dequeueCellForIndexPath:
-/// @param indexPath description
-/// @return BankableDetailTableViewCell *
-- (BankableDetailTableViewCell *)dequeueCellForIndexPath:(NSIndexPath * )indexPath {
-
-  BankableDetailTableViewCell * cell = nil;
-
-  NSString * identifier = self.identifiers[indexPath.section][indexPath.row];
-
-  if ([BankableDetailTableViewCell isValidIentifier:identifier]) {
-
-    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-
-    __weak BankableDetailTableViewController * weakself = self;
-    cell.pickerDisplayCallback = ^(BankableDetailTableViewCell * cell, BOOL hidden) {
-
-      [weakself.tableView beginUpdates];
-      if (hidden) [weakself.expandedRows removeObject:indexPath];
-      else [weakself.expandedRows addObject:indexPath];
-      [weakself.tableView endUpdates];
-
-    };
-
-  }
-
-  return cell;
-
-}
-
 /// setEditing:animated:
 /// @param editing description
 /// @param animated description
@@ -202,6 +174,15 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
     self.nameTextField.userInteractionEnabled = editing;
 
     [super setEditing:editing animated:animated];
+
+    if (editing) {
+      [self.editButtonItem setAction:@selector(save:)];
+      self.editButtonItem.title = @"Save";
+    } else {
+      [self.editButtonItem setAction:@selector(setEditing:animated:)];
+      self.editButtonItem.title = @"Edit";
+    }
+
 
 /*
     for (NSIndexPath * indexPath in self.editableRows) {
@@ -235,131 +216,6 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark Animations
-////////////////////////////////////////////////////////////////////////////////
-
-
-/// revealAnimationForStepper:
-/// @param stepper description
-- (void)revealAnimationForStepper:(UIStepper *)stepper {
-
-
-
-}
-
-/// hideAnimationForStepper:
-/// @param stepper description
-- (void)hideAnimationForStepper:(UIStepper *)stepper {
-
-
-
-}
-
-
-/// revealAnimationForView:besideView:
-/// @param hiddenView description
-/// @param neighborView description
-- (void)revealAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView {
-
-  if (!hiddenView)        ThrowInvalidNilArgument(hiddenView);
-  if (!neighborView)      ThrowInvalidNilArgument(neighborView);
-  if (!hiddenView.hidden) ThrowInvalidInternalInconsistency("cannot reveal a view that is not hidden");
-
-  UIView * parentView = neighborView.superview;
-
-//  NSArray * views = @[neighborView, parentView];
-
-  NSPredicate * predicate =
-  [NSPredicate predicateWithFormat:
-   [@" && " join:@[ @"((firstAttribute == %@) || (secondAttribute == %@))",
-                    @"((firstAttribute == %@) || (secondAttribute == %@))",
-                    @"((firstItem == %@) || (secondItem == %@))",
-                    @"((firstItem == %@) || (secondItem == %@))",
-                    @"(firstAttribute != secondAttribute)",
-                    @"(firstItem != secondItem)",
-                    @"(relation == %@)"]],
-   @(NSLayoutAttributeTrailing),
-   @(NSLayoutAttributeTrailing),
-   @(NSLayoutAttributeLeading),
-   @(NSLayoutAttributeLeading),
-   neighborView,
-   neighborView,
-   parentView,
-   parentView,
-   @(NSLayoutRelationEqual)];
-
-  NSLayoutConstraint * oldConstraint = [parentView constraintMatching:predicate];
-
-  CGFloat constant = (oldConstraint.firstAttribute == NSLayoutAttributeTrailing ? -16.0 : 16.0);
-
-  NSLayoutConstraint * newConstraint = [NSLayoutConstraint constraintWithItem:neighborView
-                                                                    attribute:NSLayoutAttributeTrailing
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:hiddenView
-                                                                    attribute:NSLayoutAttributeLeading
-                                                                   multiplier:1.0
-                                                                     constant:constant];
-
-  hiddenView.hidden = NO;
-  [parentView removeConstraint:oldConstraint];
-  [parentView addConstraint:newConstraint];
-  [parentView layoutIfNeeded];
-
-}
-
-/// hideAnimationForView:besideView:
-/// @param hiddenView description
-/// @param neighborView description
-- (void)hideAnimationForView:(UIView *)hiddenView besideView:(UIView *)neighborView {
-
-  if (!hiddenView)       ThrowInvalidNilArgument(hiddenView);
-  if (!neighborView)     ThrowInvalidNilArgument(neighborView);
-  if (hiddenView.hidden) ThrowInvalidInternalInconsistency("cannot hide a view that is already hidden");
-
-  UIView * parentView = neighborView.superview;
-
-//  NSArray * views = @[neighborView, parentView];
-
-  NSPredicate * predicate =
-  [NSPredicate predicateWithFormat:
-   [@" && " join:@[ @"((firstAttribute == %@) || (secondAttribute == %@))",
-                    @"((firstAttribute == %@) || (secondAttribute == %@))",
-                    @"((firstItem == %@) || (secondItem == %@))",
-                    @"((firstItem == %@) || (secondItem == %@))",
-                    @"(firstAttribute != secondAttribute)",
-                    @"(firstItem != secondItem)",
-                    @"(relation == %@)"]],
-   @(NSLayoutAttributeTrailing),
-   @(NSLayoutAttributeTrailing),
-   @(NSLayoutAttributeLeading),
-   @(NSLayoutAttributeLeading),
-   neighborView,
-   neighborView,
-   parentView,
-   parentView,
-   @(NSLayoutRelationEqual)];
-
-  NSLayoutConstraint * oldConstraint = [parentView constraintMatching:predicate];
-
-  CGFloat constant = (oldConstraint.firstAttribute == NSLayoutAttributeTrailing ? -8.0 : 8.0);
-
-  NSLayoutConstraint * newConstraint = [NSLayoutConstraint constraintWithItem:neighborView
-                                                                    attribute:NSLayoutAttributeTrailing
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:hiddenView
-                                                                    attribute:NSLayoutAttributeLeading
-                                                                   multiplier:1.0
-                                                                     constant:constant];
-
-  hiddenView.hidden = YES;
-  [parentView removeConstraint:oldConstraint];
-  [parentView addConstraint:newConstraint];
-  [parentView layoutIfNeeded];
-
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -369,7 +225,10 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 - (IBAction)cancel:(id)sender {
 
   NSManagedObjectContext * moc = _item.managedObjectContext;
-  [moc performBlockAndWait:^{ [moc rollback]; }];
+  [moc performBlockAndWait:^{
+    [moc processPendingChanges];
+    [moc rollback];
+  }];
   [self setEditing:NO animated:YES];
   [self.tableView reloadData];
 
@@ -381,6 +240,7 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 
   NSManagedObjectContext * moc = _item.managedObjectContext;
   [moc performBlockAndWait:^{
+    [moc processPendingChanges];
     NSError * error = nil;
     [moc save:&error];
     MSHandleErrors(error);
@@ -410,7 +270,73 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark - UITableViewDelegate
+#pragma mark - Managing the table view
+////////////////////////////////////////////////////////////////////////////////
+
+
+/// editableRows
+/// @return NSSet const *
+- (NSSet const *)editableRows { return nil; }
+
+/// numberOfSections
+/// @return NSInteger
+- (NSInteger const)numberOfSections { return 1; }
+
+/// sectionHeaderTitles
+/// @return NSArray const *
+- (NSArray const *)sectionHeaderTitles { return nil; }
+
+/// numberOfRowsInSection:
+/// @param section description
+/// @return NSInteger
+- (NSInteger)numberOfRowsInSection:(NSInteger)section { return 0; }
+
+/// dequeueCellForIndexPath:
+/// @param indexPath description
+/// @return BankableDetailTableViewCell *
+- (BankableDetailTableViewCell *)dequeueCellForIndexPath:(NSIndexPath * )indexPath {
+
+  BankableDetailTableViewCell * cell = nil;
+
+  NSString * identifier = self.identifiers[indexPath.section][indexPath.row];
+
+  if ([BankableDetailTableViewCell isValidIentifier:identifier]) {
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+
+    __weak BankableDetailTableViewController * weakself = self;
+    cell.shouldShowPicker = ^BOOL(BankableDetailTableViewCell * cell) {
+      [weakself.tableView beginUpdates];
+      [weakself.expandedRows addObject:indexPath];
+      return YES;
+    };
+    cell.shouldHidePicker = ^BOOL(BankableDetailTableViewCell * cell) {
+      [weakself.tableView beginUpdates];
+      [weakself.expandedRows removeObject:indexPath];
+      return YES;
+    };
+    cell.didShowPicker = ^(BankableDetailTableViewCell * cell) {
+      [weakself.tableView endUpdates];
+    };
+
+    cell.didHidePicker = ^(BankableDetailTableViewCell * cell) {
+      [weakself.tableView endUpdates];
+    };
+
+
+  }
+
+  return cell;
+
+}
+
+/// decorateCell:forIndexPath:
+/// @param cell description
+/// @param indexPath description
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {}
+
+
+/// UITableViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -425,28 +351,22 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 }
 
 
+/// UITableViewDataSource
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark UITableViewDataSource
-////////////////////////////////////////////////////////////////////////////////
 
 
-/// editableRows
-/// @return NSSet const *
-- (NSSet const *)editableRows { return nil; }
+/// tableView:cellForRowAtIndexPath:
+/// @param tableView description
+/// @param indexPath description
+/// @return UITableViewCell *
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-/// numberOfSections
-/// @return NSInteger
-- (NSInteger)numberOfSections { return 1; }
+  BankableDetailTableViewCell * cell = [self dequeueCellForIndexPath:indexPath];
+  [self decorateCell:cell forIndexPath:indexPath];
 
-/// sectionHeaderTitles
-/// @return NSArray *
-- (NSArray *)sectionHeaderTitles { return nil; }
+  return cell;
 
-/// numberOfRowsInSection:
-/// @param section description
-/// @return NSInteger
-- (NSInteger)numberOfRowsInSection:(NSInteger)section { return 0; }
-
+}
 
 /// numberOfSectionsInTableView:
 /// @param tableView description

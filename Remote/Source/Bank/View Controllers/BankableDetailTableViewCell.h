@@ -40,14 +40,16 @@ MSEXTERN_IDENTIFIER(BankableDetailCellTableStyle);
 
 @property (nonatomic, copy) void(^changeHandler    )     (BankableDetailTableViewCell * cell);
 @property (nonatomic, copy) BOOL(^validationHandler)     (BankableDetailTableViewCell * cell);
-@property (nonatomic, copy) void(^pickerSelectionHandler)(BankableDetailTableViewCell * cell, NSInteger row);
+@property (nonatomic, copy) void(^pickerSelectionHandler)(BankableDetailTableViewCell * cell);
 @property (nonatomic, copy) void(^buttonActionHandler)   (BankableDetailTableViewCell * cell);
-@property (nonatomic, copy) void(^pickerDisplayCallback) (BankableDetailTableViewCell * cell, BOOL hidden);
-@property (nonatomic, copy) void(^rowSelectionHandler)   (BankableDetailTableViewCell * cell, NSUInteger row);
+@property (nonatomic, copy) void(^rowSelectionHandler)   (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) BOOL(^shouldShowPicker)      (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) BOOL(^shouldHidePicker)      (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) void(^didShowPicker)         (BankableDetailTableViewCell * cell);
+@property (nonatomic, copy) void(^didHidePicker)         (BankableDetailTableViewCell * cell);
 
 @property (nonatomic, assign, getter=shouldUseIntegerKeyboard)     BOOL useIntegerKeyboard;
 @property (nonatomic, assign, getter=shouldAllowReturnsInTextView) BOOL allowReturnsInTextView;
-@property (nonatomic, assign, getter=isExpanded)                   BOOL expanded;
 @property (nonatomic, assign, getter=shouldAllowRowSelection)      BOOL allowRowSelection;
 
 @property (nonatomic, weak) NSString * name;
@@ -63,6 +65,7 @@ MSEXTERN_IDENTIFIER(BankableDetailCellTableStyle);
 @property (nonatomic, weak)   NSArray  * tableData;
 @property (nonatomic, weak)   NSArray  * pickerData;
 @property (nonatomic, strong) id         pickerSelection;
+@property (nonatomic, strong) id         tableSelection;
 
 /// showPickerView
 - (void)showPickerView;

@@ -22,6 +22,8 @@ MSSTATIC_STRING_CONST kDeviceCodesetText = @"Device Codes";
 CellIndexPathDeclaration(Devices);
 CellIndexPathDeclaration(Codesets);
 
+SectionHeadersDeclaration;
+
 @interface ManufacturerDetailViewController ()
 
 @property (nonatomic, weak, readonly) Manufacturer * manufacturer;
@@ -40,6 +42,8 @@ CellIndexPathDeclaration(Codesets);
     CellIndexPathDefinition(Devices,  0, 0);
     CellIndexPathDefinition(Codesets, 0, 1);
 
+    SectionHeadersDefinition(@"Devices", @"Codesets");
+    
   }
 
 }
@@ -82,8 +86,8 @@ CellIndexPathDeclaration(Codesets);
 }
 
 /// sectionHeaderTitles
-/// @return NSArray *
-- (NSArray *)sectionHeaderTitles { return @[@"Devices", @"Codesets"]; }
+/// @return NSArray const*
+- (NSArray const *)sectionHeaderTitles { return TableSectionHeaders; }
 
 /// identifiers
 /// @return NSArray const *
@@ -100,14 +104,10 @@ CellIndexPathDeclaration(Codesets);
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  //FIXME: Why aren't there any sub-table cells?
-  BankableDetailTableViewCell * cell = [self dequeueCellForIndexPath:indexPath];
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
   if ([indexPath isEqual:DevicesCellIndexPath])
     cell.tableData = self.devices;

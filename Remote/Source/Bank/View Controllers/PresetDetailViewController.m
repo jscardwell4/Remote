@@ -96,52 +96,39 @@ CellIndexPathDeclaration(Preview);
 
 }
 
-/// tableView:cellForRowAtIndexPath:
-/// @param tableView description
+/// decorateCell:forIndexPath:
+/// @param cell description
 /// @param indexPath description
-/// @return UITableViewCell *
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  BankableDetailTableViewCell * cell;
+- (void)decorateCell:(BankableDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
-  __weak PresetDetailViewController * weakself = self;
 
-  switch (indexPath.section) {
+  if (indexPath == CategoryCellIndexPath) {
 
-    case 0: // Info
-      switch (indexPath.row) {
+    cell.name = @"Category";
+    cell.info = (self.preset.category ?: @"Uncategorized");
 
-        case 0: { // Category
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Category";
-          cell.info = (self.preset.category ?: @"Uncategorized");
-          cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
-            NSString * text = cell.info;
-            weakself.preset.category = (text.length ? text : nil);
-            if (![weakself.categories containsObject:weakself.preset.category]) weakself.categories = nil;
-          };
-          cell.pickerData = self.categories;
-          cell.pickerSelection = self.preset.category;
-          break;
-        }
+    __weak PresetDetailViewController * weakself = self;
 
-        case 1: { // Type
-          cell = [self dequeueCellForIndexPath:indexPath];
-          cell.name = @"Type";
-          cell.info = NSStringFromREType([[self.preset valueForKeyPath:@"element.type"] intValue]);
-          break;
-        }
-      }
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
+      NSString * text = cell.info;
+      weakself.preset.category = (text.length ? text : nil);
+      if (![weakself.categories containsObject:weakself.preset.category]) weakself.categories = nil;
+    };
 
-      break;
+    cell.pickerData = self.categories;
+    cell.pickerSelection = self.preset.category;
 
-    case 1: { // Preview
-      cell = [self dequeueCellForIndexPath:indexPath];
-      cell.info = self.preset.preview;
-      break;
-    }
   }
 
-  return cell;
+  else if (indexPath == TypeCellIndexPath) {
+
+    cell.name = @"Type";
+    cell.info = NSStringFromREType([[self.preset valueForKeyPath:@"element.type"] intValue]);
+
+  }
+
+  else if (indexPath == PreviewCellIndexPath)
+    cell.info = self.preset.preview;
 
 }
 
