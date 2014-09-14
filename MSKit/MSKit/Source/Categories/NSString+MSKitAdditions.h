@@ -55,6 +55,7 @@
 - (NSString *)camelCaseToDashCase;
 
 - (NSString *)join:(NSArray *)array;
+- (NSArray *)split:(NSString *)string;
 
 - (NSString *)quotedString;
 

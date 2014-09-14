@@ -33,7 +33,7 @@
 /// @param context description
 /// @return instancetype
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context {
-  return [self findFirstByAttribute:@"name" withValue:name inContext:context];
+  return [self findFirstByAttribute:@"name" withValue:name context:context];
 }
 
 /// ignorePowerCommand:

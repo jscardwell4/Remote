@@ -53,14 +53,10 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// @param fileName description
 - (void)setFileName:(NSString *)fileName {
   UIImage * image = [UIImage imageNamed:fileName];
-
-  if (image) {
-    [self willChangeValueForKey:@"fileName"];
-    [self setPrimitiveValue:fileName forKey:@"fileName"];
-    [self didChangeValueForKey:@"fileName"];
-    self.size = image.size;
-  } else
-    ThrowInvalidArgument(fileName, "could not produce image for file");
+  [self willChangeValueForKey:@"fileName"];
+  [self setPrimitiveValue:(image ? fileName : nil) forKey:@"fileName"];
+  [self didChangeValueForKey:@"fileName"];
+  self.size = (image ? image.size : CGSizeZero);
 }
 
 /// updateWithData:

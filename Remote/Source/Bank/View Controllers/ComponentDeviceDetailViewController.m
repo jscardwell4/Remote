@@ -315,7 +315,7 @@ SectionHeadersDeclaration;
 
   if (!MSHandleErrors(error)) {
 
-    vc.bankableItems = controller;
+    vc.allItems = controller;
     vc.itemClass     = [IRCode class];
     [self.navigationController pushViewController:vc animated:YES];
 

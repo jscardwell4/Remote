@@ -60,28 +60,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return NO;
 }
 
-+ (id)findFirstByAttribute:(NSString *)attribute
-                 withValue:(id)value
-                 inContext:(NSManagedObjectContext *)moc
-{
-  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
-
-  request.fetchLimit = 1;
-  request.predicate  = [NSPredicate predicateWithFormat:@"%K == %@", attribute, value];
-  NSError * error   = nil;
-  NSArray * results = [moc executeFetchRequest:request error:&error];
-
-  if ([results count] > 0) {
-    return results[0];
-  } else {
-    if (error) {
-      MSHandleErrors(error);
-    }
-
-    return nil;
-  }
-}
-
 - (NSURL *)permanentURI {
   if ([self.objectID isTemporaryID])
     [self.managedObjectContext obtainPermanentIDsForObjects:@[self] error:nil];

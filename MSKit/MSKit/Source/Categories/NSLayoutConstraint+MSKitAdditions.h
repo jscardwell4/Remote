@@ -93,7 +93,7 @@ MSEXTERN_STRING MSExtendedVisualFormatConstantOperatorName;
 #pragma mark - Associated Objects
 ////////////////////////////////////////////////////////////////////////////////
 
-@property (nonatomic, strong) NSString * nametag;
+@property (nonatomic, copy) NSString * nametag;
 @property (nonatomic, assign) NSUInteger tag;
 
 - (NSString *)prettyDescription;

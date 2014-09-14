@@ -23,6 +23,8 @@ MSEXTERN_IDENTIFIER(BankableDetailCellTextViewStyle);
 MSEXTERN_IDENTIFIER(BankableDetailCellTextFieldStyle);
 MSEXTERN_IDENTIFIER(BankableDetailCellTableStyle);
 
+MSEXTERN const CGFloat BankableDetailCellPickerHeight;
+
 @interface BankableDetailTableViewCell : UITableViewCell
 
 /// validIdentifiers

@@ -72,7 +72,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
   NSString * target = data[@"target"];
 
-  if (UUIDIsValid(target)) self.target = target;
+  if ([ModelObject isValidUUID:target]) self.target = target;
 
 }
 

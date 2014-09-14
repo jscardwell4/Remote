@@ -22,10 +22,7 @@ CellIndexPathDeclaration(Size);
 CellIndexPathDeclaration(Preview);
 
 @interface ImageDetailViewController ()
-
-@property (nonatomic, weak, readonly) Image   * image;
-@property (nonatomic, strong)         NSArray * categories;
-
+@property (nonatomic, strong) NSArray * categories;
 @end
 
 @implementation ImageDetailViewController
@@ -34,9 +31,9 @@ CellIndexPathDeclaration(Preview);
 + (void)initialize {
   if (self == [ImageDetailViewController class]) {
     CellIndexPathDefinition(Category, 0, 0);
-    CellIndexPathDefinition(File,     0, 1);
-    CellIndexPathDefinition(Size,     0, 2);
-    CellIndexPathDefinition(Preview,  0, 3);
+    CellIndexPathDefinition(File,     1, 0);
+    CellIndexPathDefinition(Size,     2, 0);
+    CellIndexPathDefinition(Preview,  0, 1);
   }
 }
 
@@ -44,21 +41,16 @@ CellIndexPathDeclaration(Preview);
 /// @return Class<BankableModel>
 - (Class<BankableModel>)itemClass { return [Image class]; }
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Aliased properties
-////////////////////////////////////////////////////////////////////////////////
-
-
 /// image
 /// @return Image *
 - (Image *)image { return (Image *)self.item; }
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Table view data source
-////////////////////////////////////////////////////////////////////////////////
-
+/// categories
+/// @return NSArray *
+- (NSArray *)categories {
+  if (!_categories) self.categories = [Image allValuesForAttribute:@"category" context:self.item.managedObjectContext];
+  return _categories;
+}
 
 /// numberOfSections
 /// @return NSInteger
@@ -75,9 +67,7 @@ CellIndexPathDeclaration(Preview);
 
   static NSSet const * rows = nil;
   static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    rows = [@[CategoryCellIndexPath] set];
-  });
+  dispatch_once(&onceToken, ^{ rows = [@[CategoryCellIndexPath] set]; });
 
   return rows;
 
@@ -110,13 +100,11 @@ CellIndexPathDeclaration(Preview);
     cell.name = @"Category";
     cell.info = (self.image.category ?: @"Uncategorized");
 
-
     __weak ImageDetailViewController * weakself = self;
-    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
 
+    cell.changeHandler = ^(BankableDetailTableViewCell * cell) {
       weakself.image.category = cell.info;
       if (![weakself.categories containsObject:weakself.image.category]) weakself.categories = nil;
-
     };
 
     cell.pickerData = self.categories;
@@ -124,52 +112,10 @@ CellIndexPathDeclaration(Preview);
 
   }
 
-  else if (indexPath == FileCellIndexPath) {
+  else if (indexPath == FileCellIndexPath)    { cell.name = @"File"; cell.info = self.image.fileName;         }
+  else if (indexPath == SizeCellIndexPath)    { cell.name = @"Size"; cell.info = PrettySize(self.image.size); }
+  else if (indexPath == PreviewCellIndexPath) { cell.info = self.image.preview;                               }
 
-    cell.name = @"File";
-    cell.info = self.image.fileName;
-
-  }
-
-  else if (indexPath == SizeCellIndexPath) {
-
-    cell.name = @"Size";
-    cell.info = PrettySize(self.image.size);
-
-  }
-
-  else if (indexPath == PreviewCellIndexPath)
-    cell.info = self.image.preview;
-
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Managing picker views
-////////////////////////////////////////////////////////////////////////////////
-
-
-/// categories
-/// @return NSArray *
-- (NSArray *)categories {
-  if (!_categories) {
-    NSManagedObjectContext * context = self.item.managedObjectContext;
-
-    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"Image"];
-    [request setResultType:NSDictionaryResultType];
-    [request setReturnsDistinctResults:YES];
-    [request setPropertiesToFetch:@[@"category"]];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"preset != nil"]];
-
-    NSError * error   = nil;
-    NSArray * objects = [context executeFetchRequest:request error:&error];
-
-    if (!MSHandleErrors(error))
-      self.categories = [@[@"Uncategorized"]
-                         arrayByAddingObjectsFromArray:[objects valueForKeyPath:@"category"]];
-  }
-
-  return _categories;
 }
 
 @end

@@ -14,18 +14,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingContextName";
 
-BOOL UUIDIsValid(NSString * uuid) {
-  if (!uuid) return NO;
-
-  NSRange r = [uuid rangeOfRegEX:@"[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"];
-
-  return (uuid && r.location == 0 && r.length == [uuid length]);
-}
-
 @interface ModelObject (CoreDataGeneratedAccessors)
-
 @property (nonatomic, copy) NSString * primitiveUuid;
-
 @end
 
 
@@ -33,12 +23,96 @@ BOOL UUIDIsValid(NSString * uuid) {
 
 @dynamic uuid;
 
-- (void)awakeFromInsert {
-  [super awakeFromInsert];
+/// isValidUUID:
+/// @param uuid description
+/// @return BOOL
++ (BOOL)isValidUUID:(NSString *)uuid {
+  NSRange r = [uuid rangeOfRegEX:@"[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"];
+  return (uuid && r.location == 0 && r.length == [uuid length]);
+}
 
-  self.primitiveUuid = MSNonce();
+/// objectWithUUID:
+/// @param uuid description
+/// @return instancetype
++ (instancetype)objectWithUUID:(NSString *)uuid {
+  return [self objectWithUUID:uuid context:[CoreDataManager defaultContext]];
+}
+
+/// This method will create a new model object with the specified uuid. if `uuid` is nil or invalid
+/// an automatically generated uuid is used. Throws an exception if the context is nil or if an object
+/// with the specified uuid already exists.
+///
+/// @param uuid description
+/// @param moc description
+/// @return instancetype
++ (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc {
+
+  if (!moc) ThrowInvalidNilArgument("context cannot be nil");
+
+  if (![self isValidUUID:uuid])
+    ThrowInvalidArgument(uuid, "provided uuid is not of the correct format");
+
+  if ([self existingObjectWithUUID:uuid context:moc])
+    ThrowInvalidArgument(uuid, "an object with the uuid provided already exists");
+
+  ModelObject * object = [self createInContext:moc];
+  object.primitiveUuid = uuid;
+
+  return object;
 
 }
+
+/// awakeFromInsert
+- (void)awakeFromInsert { [super awakeFromInsert]; self.primitiveUuid = MSNonce(); }
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark Subscripts
+////////////////////////////////////////////////////////////////////////////////
+
+/// keyedCollection
+/// @return id
+- (id)keyedCollection { return nil; }
+
+/// indexedCollection
+/// @return id
+- (id)indexedCollection { return nil; }
+
+/// objectForKeyedSubscript:
+/// @param uuid description
+/// @return id
+- (id)objectForKeyedSubscript:(NSString *)uuid { return memberOfCollectionWithUUID([self keyedCollection], uuid); }
+
+/// objectAtIndexedSubscript:
+/// @param idx description
+/// @return id
+- (id)objectAtIndexedSubscript:(NSUInteger)idx { return memberOfCollectionAtIndex([self indexedCollection], idx); }
+
+ModelObject *memberOfCollectionWithUUID(id collection, NSString * uuid) {
+
+  if (![ModelObject isValidUUID:uuid]) ThrowInvalidArgument(uuid, "uuid provided is not valid");
+
+  NSSet * set = nil;
+
+  if ([collection isKindOfClass:[NSSet class]])             set = (NSSet *)collection;
+  else if ([collection isKindOfClass:[NSOrderedSet class]]) set = [(NSOrderedSet *)collection set];
+
+  return [set objectPassingTest:^BOOL(id obj) {
+    return ([obj isKindOfClass:[ModelObject class]] && [((ModelObject *)obj).uuid isEqualToString : uuid]);
+  }];
+
+}
+
+ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
+  return ([collection respondsToSelector:@selector(objectAtIndexedSubscript:)] ? collection[idx] : nil);
+}
+
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Importing objects
+////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Importing)
 
 /// This method create or updates a model object from the specified data. If `data` contains an entry
 /// for `uuid` and an object exists with the specified uuid, the existing object should be updated with
@@ -53,15 +127,13 @@ BOOL UUIDIsValid(NSString * uuid) {
 /// @throws NSInvalidArgumentException if either parameter is nil
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
 
-  if (!moc) ThrowInvalidNilArgument("managed object context cannot be nil");
-
-  if (!data) return nil;
-
+  if (!moc) ThrowInvalidNilArgument(moc);
+  if (!data) ThrowInvalidNilArgument(data);
 
   NSString    * uuid   = data[@"uuid"];
   ModelObject * object = nil;
 
-  if (UUIDIsValid(uuid)) {
+  if ([self isValidUUID:uuid]) {
     object = [self existingObjectWithUUID:uuid context:moc];
 
     if (!object) object = [self objectWithUUID:uuid context:moc];
@@ -105,51 +177,188 @@ BOOL UUIDIsValid(NSString * uuid) {
   return nil;
 }
 
-+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
-  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class]) predicate:predicate];
-  NSError        * error   = nil;
-  NSArray        * result  = [moc executeFetchRequest:request error:&error];
+/// updateWithData:
+/// @param data description
+- (void)updateWithData:(NSDictionary *)data {}
 
-  MSHandleErrors(error);
+@end
 
-  return result;
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Finding objects
+////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Finding)
+
+/// existingObjectWithID:error:
+/// @param objectID description
+/// @param error description
+/// @return instancetype
++ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
+  return [self existingObjectWithID:objectID context:[CoreDataManager defaultContext] error:error];
 }
 
+/// existingObjectWithID:context:error:
+/// @param objectID description
+/// @param moc description
+/// @param error description
+/// @return instancetype
++ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
+                             context:(NSManagedObjectContext *)moc
+                               error:(NSError **)error
+{
+  NSManagedObject * object = [moc existingObjectWithID:objectID error:error];
+  return [object isKindOfClass:self] ? (ModelObject *)object : nil;
+}
+
+/// existingObjectWithUUID:
+/// @param uuid description
+/// @return instancetype
++ (instancetype)existingObjectWithUUID:(NSString *)uuid {
+  return [self existingObjectWithUUID:uuid context:[CoreDataManager defaultContext]];
+}
+
+/// existingObjectWithUUID:context:
+/// @param uuid description
+/// @param moc description
+/// @return instancetype
++ (instancetype)existingObjectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc {
+
+  if (!moc) ThrowInvalidNilArgument(context);
+
+  if (![self isValidUUID:uuid])
+    ThrowInvalidArgument(uuid, "provided uuid is not of the correct format");
+
+  return [self findFirstByAttribute:@"uuid" withValue:uuid context:moc];
+  
+}
+
+/// findFirstByAttribute:withValue:context:
+/// @param attribute description
+/// @param value description
+/// @param moc description
+/// @return instancetype
++ (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value context:(NSManagedObjectContext *)moc {
+
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
+  request.fetchLimit = 1;
+  request.predicate  = [NSPredicate predicateWithFormat:@"%K == %@", attribute, value];
+
+  NSError * error   = nil;
+  NSArray * results = [moc executeFetchRequest:request error:&error];
+  MSHandleErrors(error);
+
+  return [results firstObject];
+
+}
+/// findFirstByAttribute:withValue:
+/// @param attribute description
+/// @param value description
+/// @return instancetype
++ (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value {
+  return [self findFirstByAttribute:attribute withValue:value context:[CoreDataManager defaultContext]];
+}
+
+/// allValuesForAttribute:
+/// @param attribute description
+/// @return NSArray *
++ (NSArray *)allValuesForAttribute:(NSString *)attribute {
+  return [self allValuesForAttribute:attribute context:[CoreDataManager defaultContext]];
+}
+
+/// allValuesForAttribute:context:
+/// @param attribute description
+/// @param moc description
+/// @return NSArray *
++ (NSArray *)allValuesForAttribute:(NSString *)attribute context:(NSManagedObjectContext *)moc {
+
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
+  [request setResultType:NSDictionaryResultType];
+  [request setReturnsDistinctResults:YES];
+  [request setPropertiesToFetch:@[attribute]];
+
+  NSError * error = nil;
+  NSArray * results = [moc executeFetchRequest:request error:&error];
+  MSHandleErrors(error);
+
+  return [results valueForKeyPath:attribute];
+
+}
+
+/// findAllMatchingPredicate:
+/// @param predicate description
+/// @return NSArray *
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate {
   return [self findAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
-+ (NSArray *)findAllInContext:(NSManagedObjectContext *)moc {
-  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])];
+/// findAllMatchingPredicate:context:
+/// @param predicate description
+/// @param moc description
+/// @return NSArray *
++ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
+
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self) predicate:predicate];
   NSError        * error   = nil;
   NSArray        * result  = [moc executeFetchRequest:request error:&error];
-
   MSHandleErrors(error);
-
   return result;
 }
 
+/// findAll
+/// @return NSArray *
 + (NSArray *)findAll { return [self findAllInContext:[CoreDataManager defaultContext]]; }
 
-+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc {
-  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])];
+/// findAllInContext:
+/// @param moc description
+/// @return NSArray *
++ (NSArray *)findAllInContext:(NSManagedObjectContext *)moc {
 
-  request.sortDescriptors = [[sortBy componentsSeparatedByString:@","]
-                             mapped:^NSSortDescriptor *(NSString * obj, NSUInteger idx) {
-                               return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
-                             }];
-  NSError * error  = nil;
-  NSArray * result = [moc executeFetchRequest:request error:&error];
-
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
+  NSError        * error   = nil;
+  NSArray        * result  = [moc executeFetchRequest:request error:&error];
   MSHandleErrors(error);
-
   return result;
+
 }
 
+/// findAllSortedBy:ascending:
+/// @param sortBy description
+/// @param ascending description
+/// @return NSArray *
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending {
   return [self findAllSortedBy:sortBy ascending:ascending context:[CoreDataManager defaultContext]];
 }
 
+/// findAllSortedBy:ascending:context:
+/// @param sortBy description
+/// @param ascending description
+/// @param moc description
+/// @return NSArray *
++ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc {
+
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
+
+  request.sortDescriptors = [[@"," split:sortBy] mapped:^(NSString * obj, NSUInteger idx) {
+    return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
+  }];
+
+  NSError * error  = nil;
+  NSArray * result = [moc executeFetchRequest:request error:&error];
+  MSHandleErrors(error);
+  return result;
+
+}
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Counting objects
+////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Counting)
+
+/// countOfObjectsWithPredicate:context:
+/// @param predicate description
+/// @param moc description
+/// @return NSUInteger
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
 
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])
@@ -163,20 +372,49 @@ BOOL UUIDIsValid(NSString * uuid) {
 
 }
 
+/// countOfObjectsWithPredicate:
+/// @param predicate description
+/// @return NSUInteger
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate {
   return [self countOfObjectsWithPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Deleting objects
+////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Deleting)
+
+/// deleteAllMatchingPredicate:context:
+/// @param predicate description
+/// @param moc description
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
   NSArray * matches = [self findAllMatchingPredicate:predicate context:moc];
 
   if ([matches count] > 0) [moc deleteObjects:[matches set]];
 }
 
+/// deleteAllMatchingPredicate:
+/// @param predicate description
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
   [self deleteAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Fetching objects
+////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Fetching)
+
+/// fetchAllGroupedBy:withPredicate:sortedBy:ascending:context:
+/// @param groupBy description
+/// @param predicate description
+/// @param sortBy description
+/// @param ascending description
+/// @param moc description
+/// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
                                          sortedBy:(NSString *)sortBy
@@ -199,6 +437,32 @@ BOOL UUIDIsValid(NSString * uuid) {
   return resultsController;
 }
 
+/// fetchAllGroupedBy:sortedBy:context:
+/// @param groupBy description
+/// @param sortBy description
+/// @param moc description
+/// @return NSFetchedResultsController *
++ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
+                                         sortedBy:(NSString *)sortBy
+                                          context:(NSManagedObjectContext *)moc
+{
+  return [self fetchAllGroupedBy:groupBy withPredicate:nil sortedBy:sortBy ascending:YES context:moc];
+}
+
+/// fetchAllGroupedBy:sortedBy:
+/// @param groupBy description
+/// @param sortBy description
+/// @return NSFetchedResultsController *
++ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy sortedBy:(NSString *)sortBy {
+  return [self fetchAllGroupedBy:groupBy withPredicate:nil sortedBy:sortBy ascending:YES];
+}
+
+/// fetchAllGroupedBy:withPredicate:sortedBy:ascending:
+/// @param groupBy description
+/// @param predicate description
+/// @param sortBy description
+/// @param ascending description
+/// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
                                          sortedBy:(NSString *)sortBy
@@ -210,81 +474,15 @@ BOOL UUIDIsValid(NSString * uuid) {
                        context:[CoreDataManager defaultContext]];
 }
 
-+ (id)findFirstByAttribute:(NSString *)attribute withValue:(id)value {
-  return [self findFirstByAttribute:attribute withValue:value inContext:[CoreDataManager defaultContext]];
-}
-
-+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
-  return [self existingObjectWithID:objectID context:[CoreDataManager defaultContext] error:error];
-}
-
-+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
-                             context:(NSManagedObjectContext *)moc
-                               error:(NSError **)error
-{
-  NSManagedObject * object = [moc existingObjectWithID:objectID error:error];
-  return [object isKindOfClass:[self class]] ? (ModelObject *)object : nil;
-}
-
-+ (instancetype)existingObjectWithUUID:(NSString *)uuid {
-  return [self existingObjectWithUUID:uuid context:[CoreDataManager defaultContext]];
-}
-
-+ (instancetype)existingObjectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc {
-  if (!moc) ThrowInvalidNilArgument(context);
-
-  if (UUIDIsValid(uuid)) return [self findFirstByAttribute:@"uuid" withValue:uuid inContext:moc];
-  else return nil;
-}
-
-+ (instancetype)objectWithUUID:(NSString *)uuid {
-  return [self objectWithUUID:uuid context:[CoreDataManager defaultContext]];
-}
-
-/// This method will create a new model object with the specified uuid. if `uuid` is nil or invalid
-/// an automatically generated uuid is used. Throws an exception if the context is nil or if an object
-/// with the specified uuid already exists.
-///
-/// @param uuid description
-/// @param moc description
-/// @return instancetype
-+ (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc {
-  if (!moc) ThrowInvalidNilArgument("context cannot be nil");
-
-  ModelObject * object = [self existingObjectWithUUID:uuid context:moc];
-
-  if (object) ThrowInvalidArgument(uuid, "an object with this uuid already exists, "
-                                         "perhaps you meant to call existingObjectWithUUID:context: ?");
-
-  object = [self createInContext:moc];
-
-  if (UUIDIsValid(uuid)) object.primitiveUuid = uuid;
-
-  return object;
-}
-
-- (void)updateWithData:(NSDictionary *)data {}
+@end
 
 ////////////////////////////////////////////////////////////////////////////////
-#pragma mark Subscripts
+#pragma mark - Descriptions
 ////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Describing)
 
-- (id)keySubscriptedCollection { return nil; }
-
-- (id)indexSubscriptedCollection { return nil; }
-
-- (id)objectForKeyedSubscript:(NSString *)uuid {
-  return memberOfCollectionWithUUID([self keySubscriptedCollection], uuid);
-}
-
-- (id)objectAtIndexedSubscript:(NSUInteger)idx {
-  return memberOfCollectionAtIndex([self indexSubscriptedCollection], idx);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Descriptions
-////////////////////////////////////////////////////////////////////////////////
-
+/// deepDescriptionDictionary
+/// @return MSDictionary *
 - (MSDictionary *)deepDescriptionDictionary {
   MSDictionary * dd = [MSDictionary dictionary];
 
@@ -300,14 +498,22 @@ BOOL UUIDIsValid(NSString * uuid) {
   return (MSDictionary *)dd;
 }
 
+/// deepDescription
+/// @return NSString *
 - (NSString *)deepDescription { return [self deepDescriptionWithOptions:0 indentLevel:1]; }
 
+/// deepDescriptionWithOptions:indentLevel:
+/// @param options description
+/// @param level description
+/// @return NSString *
 - (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level {
   MSDictionary * dd = [self deepDescriptionDictionary];
 
   return [dd formattedDescriptionWithOptions:options levelIndent:level];
 }
 
+/// modelObjectDescription
+/// @return NSString *
 - (NSString *)modelObjectDescription {
   return (([self conformsToProtocol:@protocol(NamedModel)])
           ? namedModelObjectDescription((ModelObject<NamedModel> *)self)
@@ -315,67 +521,50 @@ BOOL UUIDIsValid(NSString * uuid) {
   );
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark JSON export
-////////////////////////////////////////////////////////////////////////////////
+NSString *namedModelObjectDescription(ModelObject<NamedModel> * modelObject) {
+  return (modelObject
+          ? $(@"%@(%p):'%@'", modelObject.uuid, modelObject, (modelObject.name ?: @""))
+          : @"nil");
+}
 
+NSString *unnamedModelObjectDescription(ModelObject * modelObject) {
+  return (modelObject ? $(@"%@(%p)", modelObject.uuid, modelObject) : @"nil");
+}
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - JSON export
+////////////////////////////////////////////////////////////////////////////////
+@implementation ModelObject (Exporting)
+
+/// JSONString
+/// @return NSString *
 - (NSString *)JSONString { return [self.JSONDictionary.JSONString stringByReplacingOccurrencesOfString:@"\\/" withString:@"\\"]; }
 
 
+/// JSONDictionary
+/// @return MSDictionary *
 - (MSDictionary *)JSONDictionary { return [MSDictionary dictionaryWithObject:self.uuid forKey:@"uuid"]; }
 
+/// JSONObject
+/// @return id
 - (id)JSONObject { return [self.JSONDictionary JSONObject]; }
 
+/// writeJSONToFile:
+/// @param file description
+/// @return BOOL
 - (BOOL)writeJSONToFile:(NSString *)file {
   NSString * json = self.JSONString;
   return StringIsEmpty(json) ? NO : [json writeToFile:file];
 }
 
+/// attributeValueIsDefault:
+/// @param attributeName description
+/// @return BOOL
 - (BOOL)attributeValueIsDefault:(NSString *)attributeName {
   return [[self valueForKey:attributeName] isEqual:[self defaultValueForAttribute:attributeName]];
 }
 
 @end
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Functions
-////////////////////////////////////////////////////////////////////////////////
-
-
-ModelObject *memberOfCollectionWithUUID(id collection, NSString * uuid) {
-  NSSet * set = nil;
-
-  if ([collection isKindOfClass:[NSSet class]])
-    set = (NSSet *)collection;
-
-  else if ([collection isKindOfClass:[NSOrderedSet class]])
-    set = [(NSOrderedSet *)collection set];
-
-  if (!set.count || StringIsEmpty(uuid))
-    return nil;
-
-  else
-    return [set objectPassingTest:
-            ^BOOL (id obj)
-    {
-      return (  [obj isKindOfClass:[ModelObject class]]
-             && [((ModelObject *)obj).uuid isEqualToString : uuid]);
-    }];
-}
-
-ModelObject*memberOfCollectionAtIndex(id collection, NSUInteger idx) {
-  return ([collection respondsToSelector:@selector(objectAtIndexedSubscript:)]
-          ? collection[idx]
-          : nil);
-}
-
-NSString*namedModelObjectDescription(ModelObject<NamedModel> * modelObject) {
-  return (modelObject
-          ? $(@"%@(%p):'%@'", modelObject.uuid, modelObject, (modelObject.name ?: @""))
-          : @"nil");
-}
-
-NSString*unnamedModelObjectDescription(ModelObject * modelObject) {
-  return (modelObject ? $(@"%@(%p)", modelObject.uuid, modelObject) : @"nil");
-}

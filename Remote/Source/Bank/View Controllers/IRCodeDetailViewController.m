@@ -9,7 +9,6 @@
 #import "BankableDetailTableViewController_Private.h"
 #import "IRCodeDetailViewController.h"
 #import "IRCode.h"
-#import "BankGroup.h"
 #import "Manufacturer.h"
 
 

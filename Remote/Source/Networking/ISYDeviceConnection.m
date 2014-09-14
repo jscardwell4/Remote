@@ -151,7 +151,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
           ISYDevice * device = [ISYDevice findFirstByAttribute:@"uniqueIdentifier"
                                                      withValue:attributes[@"uniqueIdentifier"]
-                                                     inContext:moc];
+                                                     context:moc];
 
           if (!device) device = [ISYDevice createInContext:moc];
 

@@ -14,7 +14,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 const CGFloat BankableDetailDefaultRowHeight  = 38.0;
-const CGFloat BankableDetailExpandedRowHeight = 200.0;
 const CGFloat BankableDetailPreviewRowHeight  = 291.0;
 const CGFloat BankableDetailTextViewRowHeight = 140.0;
 const CGFloat BankableDetailTableRowHeight    = 120.0;
@@ -179,7 +178,7 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
       [self.editButtonItem setAction:@selector(save:)];
       self.editButtonItem.title = @"Save";
     } else {
-      [self.editButtonItem setAction:@selector(setEditing:animated:)];
+      [self.editButtonItem setAction:@selector(edit:)];
       self.editButtonItem.title = @"Edit";
     }
 
@@ -233,6 +232,10 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
   [self.tableView reloadData];
 
 }
+
+/// edit:
+/// @param sender description
+- (IBAction)edit:(id)sender { if (!self.isEditing) [self setEditing:YES animated:YES]; }
 
 /// save:
 /// @param sender description
@@ -290,6 +293,11 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 /// @param section description
 /// @return NSInteger
 - (NSInteger)numberOfRowsInSection:(NSInteger)section { return 0; }
+
+/// heightForSubTableAtIndexPath:
+/// @param indexPath description
+/// @return CGFloat
+- (CGFloat)heightForSubTableAtIndexPath:(NSIndexPath *)indexPath { return 0.0; }
 
 /// dequeueCellForIndexPath:
 /// @param indexPath description
@@ -396,22 +404,25 @@ const CGFloat BankableDetailTableRowHeight    = 120.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   NSString * identifier = self.identifiers[indexPath.section][indexPath.row];
-  assert(identifier);
+
+  CGFloat height = 0.0;
 
   if ([identifier isEqualToString:BankableDetailCellTextViewStyleIdentifier])
-    return BankableDetailTextViewRowHeight;
+    height = BankableDetailTextViewRowHeight;
 
   else if ([identifier isEqualToString:BankableDetailCellImageStyleIdentifier])
-    return BankableDetailPreviewRowHeight;
+    height = BankableDetailPreviewRowHeight;
 
   else if ([identifier isEqualToString:BankableDetailCellTableStyleIdentifier])
-    return BankableDetailTableRowHeight;
-
-  else if ([self.expandedRows containsObject:indexPath])
-    return BankableDetailExpandedRowHeight;
+    height = [self heightForSubTableAtIndexPath:indexPath];
 
   else
-    return BankableDetailDefaultRowHeight;
+    height = BankableDetailDefaultRowHeight;
+
+  if ([self.expandedRows containsObject:indexPath])
+    height += BankableDetailCellPickerHeight;
+
+  return height;
 
 }
 

@@ -33,6 +33,7 @@
 @property (nonatomic, strong, readonly)  NSArray      const * identifiers;
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section;
+- (CGFloat)heightForSubTableAtIndexPath:(NSIndexPath *)indexPath;
 
 - (BankableDetailTableViewCell *)cellForRowAtIndexPath:(NSIndexPath const *)indexPath;
 
@@ -54,7 +55,6 @@
 #define SectionHeadersDefinition(...) TableSectionHeaders = @[__VA_ARGS__];
 
 MSEXTERN const CGFloat BankableDetailDefaultRowHeight;
-MSEXTERN const CGFloat BankableDetailExpandedRowHeight; // Picker view displayed
 MSEXTERN const CGFloat BankableDetailPreviewRowHeight;
 MSEXTERN const CGFloat BankableDetailTextViewRowHeight;
 MSEXTERN const CGFloat BankableDetailTableRowHeight;    // Cell containing another table view

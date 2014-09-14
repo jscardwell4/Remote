@@ -56,9 +56,9 @@
 /// @return BankableDetailTableViewController *
 - (BankableDetailTableViewController *)editingViewController;
 
-/// bankableItems
+/// allItems
 /// @return NSFetchedResultsController *
-+ (NSFetchedResultsController *)bankableItems;
++ (NSFetchedResultsController *)allItems;
 
 /// updateItem
 - (void)updateItem;

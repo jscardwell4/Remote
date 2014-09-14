@@ -549,7 +549,6 @@ MSSTRING_CONST   MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisual
     return [NSLayoutConstraint valueForAttribute:self.secondAttribute item:self.secondItem];
 }
 
-static const char *MSNSLayoutConstraintNametagKey = "MSNSLayoutConstraintNametagKey";
 static const char *MSNSLayoutConstraintTagKey     = "MSNSLayoutConstraintTagKey";
 
 - (NSUInteger)tag
@@ -565,18 +564,10 @@ static const char *MSNSLayoutConstraintTagKey     = "MSNSLayoutConstraintTagKey"
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id)nametag
-{
-    return objc_getAssociatedObject(self, (void *)MSNSLayoutConstraintNametagKey);
-}
 
-- (void)setNametag:(NSString *)nametag
-{
-    objc_setAssociatedObject(self,
-                             (void *)MSNSLayoutConstraintNametagKey,
-                             nametag,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
+- (NSString *)nametag { return self.identifier; }
+
+- (void)setNametag:(NSString *)nametag { self.identifier = nametag; }
 
 - (NSLayoutConstraint *)copyWithMultiplier:(CGFloat)multiplier
 {

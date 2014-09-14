@@ -21,22 +21,24 @@ static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
 
+static const CGSize ListItemCellSize      = (CGSize) { .width = 320, .height = 38  };
+static const CGSize ThumbnailItemCellSize = (CGSize) { .width = 100, .height = 100 };
+static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 38  };
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - BankCollectionViewController class extension
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface BankCollectionViewController ()
+@interface BankCollectionViewController () <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) NSBlockOperation          * updatesBlockOperation;
-@property (nonatomic, strong) NSMutableSet              * hiddenSections;
-@property (nonatomic, strong) BankPreviewViewController * previewController;
-@property (nonatomic, strong) BankCollectionZoomView    * zoomView;
+@property (nonatomic, strong) NSBlockOperation             * updatesBlockOperation;
+@property (nonatomic, strong) NSMutableSet                 * hiddenSections;
+@property (nonatomic, strong) BankPreviewViewController    * previewController;
+@property (nonatomic, strong) BankCollectionZoomView       * zoomView;
+@property (nonatomic, strong) BankCollectionViewFlowLayout * layout;
 
-@property (nonatomic, readonly, getter = shouldUseListView) BOOL useListView;
-
-@property (nonatomic, strong) IBOutlet UIBarButtonItem     * displayOptionsBarButtonItem;
-@property (nonatomic, weak)   IBOutlet UISegmentedControl  * displayOptionSegmentedControl;
+@property (nonatomic, assign, getter = shouldUseListView) BOOL useListView;
 
 @end
 
@@ -52,30 +54,79 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
   NSIndexPath         * _swipeToDeleteCellIndexPath;
 }
 
-/// viewDidLoad
-- (void)viewDidLoad {
+/// controllerWithItemClass:
+/// @param itemClass description
+/// @return instancetype
++ (instancetype)controllerWithItemClass:(Class<BankableModel>)itemClass {
 
-  [super viewDidLoad];
+  if (!itemClass) ThrowInvalidNilArgument(itemClass);
 
+  BankCollectionViewController * controller = [BankCollectionViewController new];
+  controller.itemClass = itemClass;
 
-  [self.collectionView registerClass:[BankCollectionHeaderReusableView class]
-          forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                 withReuseIdentifier:BankCollectionHeaderIdentifier];
+  return controller;
 
-  [self.collectionView registerClass:[BankCollectionViewListCell class]
-          forCellWithReuseIdentifier:[BankCollectionViewListCell identifier]];
+}
 
-  [self.collectionView registerClass:[BankCollectionViewThumbnailCell class]
-          forCellWithReuseIdentifier:[BankCollectionViewThumbnailCell identifier]];
+/// loadView
+- (void)loadView {
 
-  if (  _itemClass
-     && ![_itemClass isThumbnailable]
-     && [self.toolbarItems containsObject:_displayOptionsBarButtonItem])
-  {
-    self.toolbarItems = [self.toolbarItems filtered:^BOOL(id evaluatedObject) {
-      return evaluatedObject != _displayOptionsBarButtonItem;
-    }];
-  }
+  assert(self.itemClass);
+
+  self.useListView = YES;
+
+  self.layout = ({
+    BankCollectionViewFlowLayout * flowLayout = [BankCollectionViewFlowLayout new];
+    flowLayout.itemSize = CGSizeMake(100.0, 100.0);
+    flowLayout;
+  });
+
+  self.collectionView = ({
+    UICollectionView * collectionView = [[UICollectionView alloc] initWithFrame:MainScreen.bounds
+                                                           collectionViewLayout:self.layout];
+    collectionView.backgroundColor = WhiteColor;
+    [collectionView registerClass:[BankCollectionHeaderReusableView class]
+       forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+              withReuseIdentifier:BankCollectionHeaderIdentifier];
+
+    [collectionView registerClass:[BankCollectionViewCell class]
+       forCellWithReuseIdentifier:[BankCollectionViewCell listIdentifier]];
+
+    [collectionView registerClass:[BankCollectionViewCell class]
+       forCellWithReuseIdentifier:[BankCollectionViewCell thumbnailIdentifier]];
+
+    collectionView;
+  });
+
+  self.toolbarItems = ({
+    UIBarButtonItem * exportBarItem = ImageBarButton(@"702-gray-share", @selector(exportBankObject:));
+    UIBarButtonItem * spacer = FixedSpaceBarButton(20.0);
+    UIBarButtonItem * importBarItem = ImageBarButton(@"703-gray-download", @selector(importBankObject:));
+    UIBarButtonItem * flex = FlexibleSpaceBarButton;
+    UISegmentedControl * displayOptionsControl = [[UISegmentedControl alloc]
+                                                  initWithItems:@[UIImageMake(@"399-gray-list1"),
+                                                                  UIImageMake(@"822-gray-photo-2")]];
+    [displayOptionsControl addTarget:self
+                              action:@selector(segmentedControlValueDidChange:)
+                    forControlEvents:UIControlEventValueChanged];
+    UIBarButtonItem * displayOptionsItem = CustomBarButton(displayOptionsControl);
+    UIBarButtonItem * searchBarItem = ImageBarButton(@"708-gray-search", @selector(searchBankObjects:));
+    NSArray * toolbarItems = ([_itemClass isThumbnailable]
+                              ? @[exportBarItem, spacer, importBarItem, flex, displayOptionsItem, flex, searchBarItem]
+                              : @[exportBarItem, spacer, importBarItem, flex, searchBarItem]);
+    toolbarItems;
+  });
+
+}
+
+/// navigationItem
+/// @return UINavigationItem *
+- (UINavigationItem *)navigationItem {
+
+  UINavigationItem * navigationItem = [super navigationItem];
+  navigationItem.rightBarButtonItem = SystemBarButton(Done, @selector(dismiss:));
+
+  return navigationItem;
 
 }
 
@@ -91,12 +142,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
   [super didReceiveMemoryWarning];
 
   if (![self isViewLoaded]) {
-    self.displayOptionsBarButtonItem = nil;
     self.previewController           = nil;
     self.zoomView                    = nil;
     self.hiddenSections              = nil;
     self.updatesBlockOperation       = nil;
-    self.bankableItems               = nil;
+    self.allItems               = nil;
   }
 }
 
@@ -114,21 +164,17 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
   }
 }
 
-/// bankableItems
+/// allItems
 /// @return NSFetchedResultsController *
-- (NSFetchedResultsController *)bankableItems {
-  if (!_bankableItems && self.itemClass) {
-    self.bankableItems      = [self.itemClass bankableItems];
-    _bankableItems.delegate = self;
+- (NSFetchedResultsController *)allItems {
+  if (!_allItems && self.itemClass) {
+    self.allItems      = [self.itemClass allItems];
+    _allItems.delegate = self;
     self.hiddenSections     = [NSMutableSet set];
   }
 
-  return _bankableItems;
+  return _allItems;
 }
-
-/// shouldUseListView
-/// @return BOOL
-- (BOOL)shouldUseListView { return (_displayOptionSegmentedControl.selectedSegmentIndex == 0); }
 
 /// previewController
 /// @return BankPreviewViewController *
@@ -159,9 +205,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// configureCell:atIndexPath:
 /// @param cell description
 /// @param indexPath description
-- (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-//  cell.item = self.bankableItems[indexPath];
-}
+//- (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+//  cell.item = self.allItems[indexPath];
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
@@ -222,6 +268,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// segmentedControlValueDidChange:
 /// @param sender description
 - (IBAction)segmentedControlValueDidChange:(UISegmentedControl *)sender {
+  self.useListView = sender.selectedSegmentIndex == 0;
   [self.collectionView.collectionViewLayout invalidateLayout];
   [self.collectionView reloadData];
 }
@@ -277,9 +324,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
 {
-  return ([_bankableItems.sections count] && ![self.hiddenSections containsObject:@(section)]
-          ? [self.bankableItems.sections[section] numberOfObjects]
-          : 0);
+  return ([self.hiddenSections containsObject:@(section)]
+          ? 0
+          : [self.allItems.sections[section] numberOfObjects]);
 }
 
 /// collectionView:cellForItemAtIndexPath:
@@ -290,12 +337,15 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   NSString * identifer = (self.useListView
-                          ? [BankCollectionViewListCell identifier]
-                          : [BankCollectionViewThumbnailCell identifier]);
-  BankCollectionViewListCell * cell =
-  [collectionView dequeueReusableCellWithReuseIdentifier:identifer forIndexPath:indexPath];
-  cell.item = self.bankableItems[indexPath];
-  cell.controller = self;
+                          ? [BankCollectionViewCell listIdentifier]
+                          : [BankCollectionViewCell thumbnailIdentifier]);
+  BankCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifer
+                                                                            forIndexPath:indexPath];
+  cell.item       = self.allItems[indexPath];
+  __weak BankCollectionViewController * weakself = self;
+  cell.detailActionHandler = ^(BankCollectionViewCell * cell) { [weakself detailItem:cell.item]; };
+  cell.imageActionHandler = cell.detailActionHandler;
+  cell.deleteActionHandler = ^(BankCollectionViewCell * cell) { [weakself deleteItem:cell.item]; };
   return cell;
 }
 
@@ -303,7 +353,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @param collectionView description
 /// @return NSInteger
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-  return [self.bankableItems.sections count];
+  return [self.allItems.sections count];
 }
 
 /// collectionView:viewForSupplementaryElementOfKind:atIndexPath:
@@ -315,19 +365,21 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath
 {
-
+  UICollectionReusableView * view = nil;
   if ([UICollectionElementKindSectionHeader isEqualToString:kind]) {
-    BankCollectionHeaderReusableView * view =
+    BankCollectionHeaderReusableView * header =
       [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
                                               withReuseIdentifier:BankCollectionHeaderIdentifier
                                                      forIndexPath:indexPath];
-    view.controller = self;
-    view.section = indexPath.section;
-    view.title   = [self.bankableItems.sections[indexPath.section] name];
+    header.controller = self;
+    header.section    = indexPath.section;
+    header.title      = [self.allItems.sections[indexPath.section] name];
 
-    return view;
-  } else return nil;
+    view = header;
+  }
+  return view;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Collection view delegate
@@ -337,17 +389,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// collectionView:didSelectItemAtIndexPath:
 /// @param collectionView description
 /// @param indexPath description
-- (void)    collectionView:(UICollectionView *)collectionView
-  didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-  BankableModelObject * item = _bankableItems[indexPath];
-  assert([item isKindOfClass:[BankableModelObject class]]);
-
-  BankableDetailTableViewController * detailVC = item.detailViewController;
-  assert([detailVC isKindOfClass:[BankableDetailTableViewController class]]);
-
-  [self.navigationController pushViewController:detailVC animated:YES];
-
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  [self.navigationController pushViewController:[self.allItems[indexPath] detailViewController] animated:YES];
 }
 
 /// collectionView:canPerformAction:forItemAtIndexPath:withSender:
@@ -361,14 +404,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
     forItemAtIndexPath:(NSIndexPath *)indexPath
             withSender:(id)sender
 {
-  BOOL answer = NO;
-
-  BankableModelObject * item = self.bankableItems[indexPath];
-
-  if (action == @selector(deleteItemForCell:) && [item isEditable]) answer = YES;
-
-  return answer;
+  return (action == @selector(deleteItemForCell:) && [self.allItems[indexPath] isEditable]);
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Collection view delegate - flow layout
@@ -384,13 +422,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  static const CGSize kListViewCellSize = (CGSize) {
-    .width = 320, .height = 38
-  };
-  static const CGSize kThumbnailViewCellSize = (CGSize) {
-    .width = 100, .height = 100
-  };
-  return (self.useListView ? kListViewCellSize : kThumbnailViewCellSize);
+  return (self.useListView ? ListItemCellSize : ThumbnailItemCellSize);
 }
 
 /// collectionView:layout:referenceSizeForHeaderInSection:
@@ -402,11 +434,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
                            layout:(UICollectionViewLayout *)collectionViewLayout
   referenceSizeForHeaderInSection:(NSInteger)section
 {
-  static const CGSize kHeaderSize = (CGSize) {
-    .width = 320, .height = 38
-  };
-
-  return ([_itemClass isSectionable] ? kHeaderSize : CGSizeZero);
+  return ([self.itemClass isSectionable] ? HeaderSize : CGSizeZero);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -428,21 +456,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)controller:(NSFetchedResultsController *)controller
   didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type {
+     forChangeType:(NSFetchedResultsChangeType)type
+{
   __weak BankCollectionViewController * weakSelf = self;
-
-  [_updatesBlockOperation addExecutionBlock:
-   ^{
+  [_updatesBlockOperation addExecutionBlock:^{
     switch (type) {
-      case NSFetchedResultsChangeInsert:
-        [weakSelf.collectionView insertSections:NSIndexSetMake(sectionIndex)];
-        break;
-
-      case NSFetchedResultsChangeDelete:
-        [weakSelf.collectionView deleteSections:NSIndexSetMake(sectionIndex)];
-        break;
-
-      default: break;
+      case NSFetchedResultsChangeInsert: [weakSelf.collectionView insertSections:NSIndexSetMake(sectionIndex)]; break;
+      case NSFetchedResultsChangeDelete: [weakSelf.collectionView deleteSections:NSIndexSetMake(sectionIndex)]; break;
+      default:                                                                                                  break;
     }
   }];
 }
@@ -457,28 +478,16 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
    didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
   __weak BankCollectionViewController * weakSelf = self;
-  [_updatesBlockOperation addExecutionBlock:
-   ^{
+  [_updatesBlockOperation addExecutionBlock:^{
     switch (type) {
-      case NSFetchedResultsChangeInsert:
-        [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-        break;
-
-      case NSFetchedResultsChangeDelete:
-        [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-        break;
-
-      case NSFetchedResultsChangeUpdate: {
-        id cell = [weakSelf.collectionView cellForItemAtIndexPath:indexPath];
-        [weakSelf configureCell:cell atIndexPath:indexPath];
-      }   break;
-
-      case NSFetchedResultsChangeMove:
-        [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-        [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-        break;
+      case NSFetchedResultsChangeInsert: [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]]; break;
+      case NSFetchedResultsChangeDelete: [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];    break;
+      case NSFetchedResultsChangeMove:   [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                         [weakSelf.collectionView insertItemsAtIndexPaths:@[newIndexPath]]; break;
+      default:                                                                                              break;
     }
   }];
 }

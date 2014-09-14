@@ -171,7 +171,7 @@
         assert(element1UUID);
         element1 = [RemoteElement findFirstByAttribute:@"uuid"
                                                 withValue:element1UUID
-                                                inContext:context];
+                                                context:context];
         assert(element1);
 
         NSString * element2Name = NilSafe(d[MSExtendedVisualFormatItem2Name]);
@@ -181,7 +181,7 @@
             assert(element2UUID);
             element2 = [RemoteElement findFirstByAttribute:@"uuid"
                                                     withValue:element2UUID
-                                                    inContext:context];
+                                                    context:context];
             assert(element2);
         }
         

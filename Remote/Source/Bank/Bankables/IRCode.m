@@ -7,7 +7,6 @@
 //
 #import "IRCode.h"
 #import "ComponentDevice.h"
-#import "BankGroup.h"
 #import "Manufacturer.h"
 #import "IRCodeDetailViewController.h"
 
@@ -287,9 +286,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 
 /// detailViewController
 /// @return IRCodeDetailViewController *
-- (IRCodeDetailViewController *)detailViewController {
-  return [IRCodeDetailViewController controllerWithItem:self];
-}
+- (IRCodeDetailViewController *)detailViewController { return [IRCodeDetailViewController controllerWithItem:self]; }
 
 /// editingViewController
 /// @return IRCodeDetailViewController *

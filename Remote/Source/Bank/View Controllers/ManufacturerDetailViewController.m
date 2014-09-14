@@ -10,7 +10,6 @@
 #import "BankCollectionViewController.h"
 #import "ManufacturerDetailViewController.h"
 #import "Manufacturer.h"
-#import "BankGroup.h"
 #import "IRCode.h"
 #import "CoreDataManager.h"
 #import "ComponentDevice.h"
@@ -170,7 +169,7 @@ SectionHeadersDeclaration;
     [controller performFetch:&error];
 
     if (!MSHandleErrors(error)) {
-      vc.bankableItems = controller;
+      vc.allItems = controller;
       vc.itemClass     = [IRCode class];
 
       [self.navigationController pushViewController:vc animated:YES];

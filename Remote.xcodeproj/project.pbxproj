@@ -13,13 +13,10 @@
 		C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */; };
 		C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */; };
 		C20BD77E19BF3D340011E3F6 /* ITachDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20BD77D19BF3D340011E3F6 /* ITachDeviceDetailViewController.m */; };
-		C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
-		C20FF1F019AE6DED00D11F33 /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
-		C22E1BDA19C12FB900A93D61 /* BankCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionViewListCell.swift */; };
-		C22E1BDE19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BDD19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift */; };
+		C22E1BDA19C12FB900A93D61 /* BankCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionViewCell.swift */; };
 		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2381EB319A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */; };
@@ -153,7 +150,6 @@
 		C25B473316FF8D0A0042B59E /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* IRCode.m */; };
 		C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* Manufacturer.m */; };
 		C25B473A16FF8D0A0042B59E /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* Image.m */; };
-		C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46ED16FF69110042B59E /* BankGroup.m */; };
 		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
 		C25B474016FF8D0A0042B59E /* Preset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* Preset.m */; };
 		C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RemoteController.m */; };
@@ -392,6 +388,8 @@
 		C2CE8AE91814289300555D63 /* libMSKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CE8AA31814231F00555D63 /* libMSKit.a */; };
 		C2D1022D19AAFCA300DE5346 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D1022C19AAFCA300DE5346 /* ImageView.m */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
+		C2E164C619C6392700F0E526 /* Glyphish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C6A172182AFFFF0036261E /* Glyphish.json */; };
+		C2E164C719C6392D00F0E526 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2D635B81805D9B400960B10 /* Manufacturer.json */; };
 		C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E75BF819B13798006CEA86 /* Remote_Demo.json */; };
 		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
 		C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
@@ -566,8 +564,7 @@
 		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
-		C22E1BD919C12FB900A93D61 /* BankCollectionViewListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewListCell.swift; sourceTree = "<group>"; };
-		C22E1BDD19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewThumbnailCell.swift; sourceTree = "<group>"; };
+		C22E1BD919C12FB900A93D61 /* BankCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewCell.swift; sourceTree = "<group>"; };
 		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
 		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
@@ -772,8 +769,6 @@
 		C25B46D816FF69110042B59E /* IRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCode.m; sourceTree = "<group>"; };
 		C25B46DF16FF69110042B59E /* Manufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manufacturer.m; sourceTree = "<group>"; };
 		C25B46E516FF69110042B59E /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
-		C25B46EC16FF69110042B59E /* BankGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankGroup.h; sourceTree = "<group>"; };
-		C25B46ED16FF69110042B59E /* BankGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankGroup.m; sourceTree = "<group>"; };
 		C25B46F016FF69110042B59E /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview.h; sourceTree = "<group>"; };
 		C25B46F116FF69110042B59E /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectPreview.m; sourceTree = "<group>"; };
 		C25B46F516FF69110042B59E /* Preset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preset.m; sourceTree = "<group>"; };
@@ -1425,8 +1420,7 @@
 				C29ABADF17F87ADB007D185F /* BankCollectionHeaderReusableView.m */,
 				C2EF968517F7C4D4005AA639 /* BankCollectionViewFlowLayout.h */,
 				C2EF968617F7C4D4005AA639 /* BankCollectionViewFlowLayout.m */,
-				C22E1BD919C12FB900A93D61 /* BankCollectionViewListCell.swift */,
-				C22E1BDD19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift */,
+				C22E1BD919C12FB900A93D61 /* BankCollectionViewCell.swift */,
 			);
 			name = Collections;
 			sourceTree = "<group>";
@@ -2062,8 +2056,6 @@
 		C2F2A46E17EF55E300DE2F41 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				C25B46EC16FF69110042B59E /* BankGroup.h */,
-				C25B46ED16FF69110042B59E /* BankGroup.m */,
 				C25B46F016FF69110042B59E /* BankObjectPreview.h */,
 				C25B46F116FF69110042B59E /* BankObjectPreview.m */,
 			);
@@ -2285,7 +2277,6 @@
 				C2381F0B19A7EE3B00135DAB /* Mint-640x1136.jpg in Resources */,
 				C2381EBE19A7EE3B00135DAB /* Blue-640x960.jpg in Resources */,
 				C2381ECE19A7EE3B00135DAB /* Chalkboard-640x1136-iPhone5.jpg in Resources */,
-				C20FF1EE19AE687F00D11F33 /* Glyphish_Test.json in Resources */,
 				C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */,
 				C2E8D9D419BCD5C400E6098E /* sepobjs.xsd in Resources */,
 				C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */,
@@ -2316,6 +2307,7 @@
 				C2381FA019A7EE3B00135DAB /* WoodPlanks-640x960-iPhone@2x.jpg in Resources */,
 				C26BBAEB16DC1B5C0093D5B4 /* AlignBarButtonIcon@2x.png in Resources */,
 				C2381EF519A7EE3B00135DAB /* GraphPaper-320x640-iPhone.jpg in Resources */,
+				C2E164C619C6392700F0E526 /* Glyphish.json in Resources */,
 				C25C44DC19ABB3E2005594ED /* Activity.json in Resources */,
 				C2381F0519A7EE3B00135DAB /* Midnight-640x960.jpg in Resources */,
 				C27BCCA51801C16A0002464C /* IntegerKeyboard_8.png in Resources */,
@@ -2515,13 +2507,13 @@
 				C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */,
 				C27BCC941801C16A0002464C /* IntegerKeyboard_2@2x.png in Resources */,
 				C2381ECC19A7EE3B00135DAB /* Chalkboard-320x640-iPhone.jpg in Resources */,
+				C2E164C719C6392D00F0E526 /* Manufacturer.json in Resources */,
 				C2381F9D19A7EE3B00135DAB /* Teal-1024x768.jpg in Resources */,
 				C27BCC8F1801C16A0002464C /* IntegerKeyboard_1-Highlighted@2x.png in Resources */,
 				C2381EB819A7EE3B00135DAB /* AppleWood-320x640-iPhone.jpg in Resources */,
 				C2381EC719A7EE3B00135DAB /* Cardboard-320x640-iPhone.jpg in Resources */,
 				C27BCC921801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png in Resources */,
 				C2381ECA19A7EE3B00135DAB /* Cardboard-1024x768-iPad.jpg in Resources */,
-				C20FF1F019AE6DED00D11F33 /* Manufacturer_Test.json in Resources */,
 				C2381EE919A7EE3B00135DAB /* Dawn-1024x768.jpg in Resources */,
 				C2381ED619A7EE3B00135DAB /* Cloth-320x640-iPhone.jpg in Resources */,
 				C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */,
@@ -2628,7 +2620,6 @@
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
-				C25B473D16FF8D0A0042B59E /* BankGroup.m in Sources */,
 				C2F2A47817EF567700DE2F41 /* ImageDetailViewController.m in Sources */,
 				C29ABAD917F87472007D185F /* BankPreviewViewController.m in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
@@ -2711,13 +2702,12 @@
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
 				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
-				C22E1BDE19C1600200A93D61 /* BankCollectionViewThumbnailCell.swift in Sources */,
 				C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */,
 				C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
-				C22E1BDA19C12FB900A93D61 /* BankCollectionViewListCell.swift in Sources */,
+				C22E1BDA19C12FB900A93D61 /* BankCollectionViewCell.swift in Sources */,
 				C2F2A47517EF566600DE2F41 /* ComponentDeviceDetailViewController.m in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,

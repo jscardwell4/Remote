@@ -16,10 +16,15 @@
 
 @class BankCollectionViewCell;
 
-@interface BankCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
+@interface BankCollectionViewController : UICollectionViewController
+
+/// controllerWithItemClass:
+/// @param itemClass description
+/// @return instancetype
++ (instancetype)controllerWithItemClass:(Class<BankableModel>)itemClass;
 
 @property (nonatomic, strong) Class<BankableModel> itemClass;
-@property (nonatomic, strong) NSFetchedResultsController * bankableItems;
+@property (nonatomic, strong) NSFetchedResultsController * allItems;
 
 - (void)zoomItem:(BankableModelObject *)item;
 - (void)previewItem:(BankableModelObject *)item;

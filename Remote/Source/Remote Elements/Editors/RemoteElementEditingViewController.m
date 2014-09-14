@@ -1382,8 +1382,7 @@ NSUInteger const kFocusSelectionToolbarIndex    = 3;
 @implementation RemoteElementEditingViewController (Toolbars)
 
 - (UIBarButtonItem *)barButtonItemWithImage:(NSString *)imageName selector:(SEL)selector {
-  UIImage         * image         = [UIImage imageNamed:imageName];
-  UIBarButtonItem * barButtonItem = ImageBarButton(image, selector);
+  UIBarButtonItem * barButtonItem = ImageBarButton(imageName, selector);
   barButtonItem.width = 44.0f;
 
   return barButtonItem;

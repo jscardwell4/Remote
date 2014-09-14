@@ -133,6 +133,9 @@
 #define MenuController  [UIMenuController sharedMenuController]
 
 #define NSIndexPathMake(SECTION, ROW) [NSIndexPath indexPathForRow:ROW inSection:SECTION]
+
+#define UIImageMake(NAMED) [UIImage imageNamed:NAMED]
+
 #endif
 
 #define MainQueue             [NSOperationQueue mainQueue]
@@ -296,10 +299,10 @@ MSSTATIC_INLINE NSIndexSet * _NSIndexSetMake(NSUInteger location,...)
                                      style:UIBarButtonItemStylePlain \
                                     target:self                      \
                                     action:selector]
-#define ImageBarButton(image, selector)                              \
-    [[UIBarButtonItem alloc] initWithImage:image                     \
-                                     style:UIBarButtonItemStylePlain \
-                                    target:self                      \
+#define ImageBarButton(image, selector)                               \
+    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:image] \
+                                     style:UIBarButtonItemStylePlain  \
+                                    target:self                       \
                                     action:selector]
 #define SystemBarButton(item, selector)                             \
     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItem##item \
@@ -307,6 +310,6 @@ MSSTATIC_INLINE NSIndexSet * _NSIndexSetMake(NSUInteger location,...)
                                                   action:selector]
 #define CustomBarButton(view)   [[UIBarButtonItem alloc] initWithCustomView:view]
 #define FlexibleSpaceBarButton  SystemBarButton(FlexibleSpace, nil)
-#define FixedSpaceBarButton     SystemBarButton(FixedSpace, nil)
+#define FixedSpaceBarButton(WIDTH)    ({ UIBarButtonItem * fixed = SystemBarButton(FixedSpace, nil); fixed.width = WIDTH; fixed; })
 #endif
 

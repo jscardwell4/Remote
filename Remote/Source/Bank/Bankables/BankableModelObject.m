@@ -129,18 +129,20 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return MSDictionary *
 - (MSDictionary *)subitems { return nil; }
 
-/// bankableItems
+/// allCategories
+/// @return NSArray *
++ (NSArray *)allCategories {
+
+}
+
+/// allItems
 /// @return NSFetchedResultsController *
-+ (NSFetchedResultsController *)bankableItems {
++ (NSFetchedResultsController *)allItems {
 
-  NSFetchedResultsController * controller = [self fetchAllGroupedBy:@"category"
-                                                      withPredicate:nil
-                                                           sortedBy:@"category,name"
-                                                          ascending:YES];
+  NSFetchedResultsController * controller = [self fetchAllGroupedBy:@"category" sortedBy:@"category,name"];
+
   NSError * error = nil;
-
   [controller performFetch:&error];
-
   MSHandleErrors(error);
 
   return controller;

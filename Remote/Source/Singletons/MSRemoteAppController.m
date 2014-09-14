@@ -214,7 +214,7 @@ static const int msLogContext = 0;
     }
   }];
 
-  #define OUTPUT_JSON_FILES
+//  #define OUTPUT_JSON_FILES
 // #define LOG_JSON_FILES
 
     NSOperation * dumpJSON = [NSBlockOperation blockOperationWithBlock:^{

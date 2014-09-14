@@ -26,6 +26,9 @@ MSIDENTIFIER_DEFINITION(BankableDetailCellTableStyle);
 
 MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 
+const CGFloat BankableDetailCellPickerHeight = 162.0;
+
+
 @interface BankableDetailTableViewCell () <UITextFieldDelegate, UITextViewDelegate, UITextViewDelegate,
                                            UIPickerViewDataSource, UIPickerViewDelegate,
                                            UITableViewDataSource, UITableViewDelegate>
@@ -40,6 +43,8 @@ MSSTATIC_NAMETAG(BankableDetailCellIntegerKeyboard);
 @property (nonatomic, weak, readwrite) IBOutlet UITextView   * infoTextView;
 @property (nonatomic, weak, readwrite) IBOutlet UITableView  * table;
 @property (nonatomic, weak, readwrite) IBOutlet UIPickerView * pickerView;
+
+@property (nonatomic, weak) NSLayoutConstraint * contentBottomConstraint;
 
 @property (nonatomic, copy) NSString * beginStateText;
 
@@ -132,17 +137,17 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
     NSString * nameAndInfoCenterYConstraints  = [@"\n" join:@[@"|-20-[name]-8-[info]-20-|",
                                                               @"name.centerY = info.centerY",
                                                               @"name.height = info.height",
-                                                              @"V:|-8-[name]-8-|"]];
+                                                              @"V:|-2-[name]"]];
 
-    NSString * infoConstraints                = [@"\n" join:@[@"|-20-[info]-20-|", @"V:|-8-[info]-8-|"]];
+    NSString * infoConstraints                = [@"\n" join:@[@"|-20-[info]-20-|", @"V:|-8-[info]"]];
 
-    NSString * infoDisclosureConstraints      = [@"\n" join:@[@"|-20-[info]-75-|", @"V:|-8-[info]-8-|"]];
+    NSString * infoDisclosureConstraints      = [@"\n" join:@[@"|-20-[info]-75-|", @"V:|-8-[info]"]];
 
     NSString * nameAndTextViewInfoConstraints = [@"\n" join:@[@"V:|-5-[name]-5-[info]-5-|",
                                                               @"|-20-[name]",
                                                               @"|-20-[info]-20-|"]];
 
-    NSString * tableViewInfoConstraints       = [@"\n" join:@[@"|[info]|", @"V:|-5-[info]-5-|"]];
+    NSString * tableViewInfoConstraints       = [@"\n" join:@[@"|[info]|", @"V:|[info]|"]];
 
     NSString * nameInfoAndStepperConstraints  = [@"\n" join:@[@"|-20-[name]-8-[info]",
                                                               @"'info trailing' info.trailing = stepper.leading - 20",
@@ -150,9 +155,9 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
                                                               @"name.height = info.height",
                                                               @"'stepper leading' stepper.leading = content.trailing",
                                                               @"stepper.centerY = name.centerY",
-                                                              @"V:|-8-[name]-8-|"]];
+                                                              @"V:|-8-[name]"]];
 
-    NSString * imageViewInfoConstraints       = [@"\n" join:@[@"|-20-[info]-20-|", @"V:|-20-[info]-20-|"]];
+    NSString * imageViewInfoConstraints       = [@"\n" join:@[@"|[info]|", @"V:|[info]|"]];
 
 
     /// Create the fonts to use in decorator blocks
@@ -238,6 +243,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
       else if ([info isKindOfClass:[UIImageView class]]) {
         UIImageView * infoImageView = info;
         infoImageView.contentMode = UIViewContentModeScaleAspectFit;
+        infoImageView.clipsToBounds = YES;
         cell.infoImageView = infoImageView;
       }
 
@@ -322,11 +328,12 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
               BankableDetailCellImageStyleIdentifier:
                 ^(BankableDetailTableViewCell * cell) {
 
-                  UIImageView * info = addInfo([UIImageView new], cell);
+                  UIImageView * info = addInfo([[UIImageView alloc] initWithImage:nil], cell);
 
                   [cell.contentView addConstraints:
                         [NSLayoutConstraint constraintsByParsingString:imageViewInfoConstraints
-                                                                 views:@{@"info": info}]];
+                                                                 views:@{@"info": info,
+                                                                         @"content": cell.contentView}]];
 
                 },
 
@@ -421,6 +428,8 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
   if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
 
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentView.clipsToBounds = YES;
+    self.clipsToBounds = YES;
 
     UIPickerView * picker = [UIPickerView newForAutolayout];
     picker.delegate   = self;
@@ -430,13 +439,12 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
     self.pickerView = picker;
 
     NSString * constraintsString = [@"\n" join:@[@"|[content]|",
-                                                 @"V:|[content]",
-                                                 $(@"content.height = %@", @(self.height)),
+                                                 @"V:|[content]|",
                                                  @"|[picker]|",
-                                                 @"picker.height = 162",
-                                                 @"picker.top = content.bottom"]];
+                                                 $(@"'picker height' picker.height = %f", BankableDetailCellPickerHeight),
+                                                 @"picker.bottom = self.bottom"]];
 
-    NSDictionary * views = @{@"picker": picker, @"content": self.contentView};
+    NSDictionary * views = @{@"self": self, @"picker": self.pickerView, @"content": self.contentView};
 
     NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:constraintsString
                                                                      views:views];
@@ -452,6 +460,29 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 
 }
 
+/// updateConstraints
+- (void)updateConstraints {
+
+  [super updateConstraints];
+
+//  if (!self.contentBottomConstraint) {
+//
+//    NSString * constraintsString = [@"\n" join:@[@"content.left = self.left",
+//                                                 @"content.right = self.right",
+//                                                 @"content.top = self.top",
+//                                                 @"'content bottom' content.bottom = self.bottom",
+//                                                 @"picker.bottom = self.bottom",
+//                                                 @"|[picker]|",
+//                                                 $(@"picker.height = %f", BankableDetailCellPickerHeight)]];
+//    NSDictionary * views = @{@"content": self.contentView, @"picker": self.pickerView, @"self": self};
+//    [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraintsString views:views]];
+//    self.contentBottomConstraint = [self constraintWithNametag:@"content bottom"];
+//
+//  }
+
+
+}
+
 
 /// prepareForReuse
 - (void)prepareForReuse {
@@ -462,6 +493,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
   [_infoButton setTitle:nil forState:UIControlStateNormal];
 
   _infoImageView.image = nil;
+  _infoImageView.contentMode = UIViewContentModeScaleAspectFit;
 
   _infoSwitch.on = NO;
 
@@ -573,7 +605,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
                       cell.infoImageView.image = info;
                       if (info) {
                         CGSize imageSize  = ((UIImage *)info).size;
-                        CGSize boundsSize = cell.infoImageView.bounds.size;
+                        CGSize boundsSize = cell.bounds.size;
                         if (CGSizeContainsSize(boundsSize, imageSize))
                           cell.infoImageView.contentMode = UIViewContentModeCenter;
                       }
@@ -895,12 +927,14 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 
 /// showPickerView
 - (void)showPickerView {
+
   if (self.pickerData && (!self.shouldShowPicker || self.shouldShowPicker(self)) ) {
     if (self.pickerSelection) {
       NSUInteger idx = [self.pickerData indexOfObject:self.pickerSelection];
       if (idx != NSNotFound) [self.pickerView selectRow:idx inComponent:0 animated:NO];
     }
     self.pickerView.hidden = NO;
+//    self.contentBottomConstraint.constant = -BankableDetailCellPickerHeight;
     if (self.didShowPicker) self.didShowPicker(self);
   }
 }
@@ -909,6 +943,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 - (void)hidePickerView {
   if (!self.pickerView.hidden && (!self.shouldHidePicker || self.shouldHidePicker(self))) {
     self.pickerView.hidden = YES;
+//    self.contentBottomConstraint.constant = 0.0;
     if (self.didHidePicker) self.didHidePicker(self);
   }
 }

@@ -59,9 +59,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="18g-7n-1lT" kind="push" identifier="Push Bank Items" id="odK-YN-78y"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -100,91 +97,11 @@
             </objects>
             <point key="canvasLocation" x="-2014" y="-2324"/>
         </scene>
-        <!--Bank Collection View Controller-->
-        <scene sceneID="Upv-iN-yt1">
-            <objects>
-                <collectionViewController storyboardIdentifier="BankCollectionViewController" id="18g-7n-1lT" customClass="BankCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="KnA-Tt-H9S">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <gestureRecognizers/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="cmT-fT-NvO" customClass="BankCollectionViewFlowLayout">
-                            <size key="itemSize" width="100" height="100"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="18g-7n-1lT" id="6gV-4n-Qe4"/>
-                            <outlet property="delegate" destination="18g-7n-1lT" id="f0z-tr-KhN"/>
-                        </connections>
-                    </collectionView>
-                    <toolbarItems>
-                        <barButtonItem image="702-gray-share" style="plain" id="tHF-cG-Z1b">
-                            <connections>
-                                <action selector="exportBankObject:" destination="18g-7n-1lT" id="P1r-ON-fZp"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="R8A-TO-kt7"/>
-                        <barButtonItem image="703-gray-download" style="plain" id="eqT-oL-RvU">
-                            <connections>
-                                <action selector="importBankObject:" destination="18g-7n-1lT" id="f70-0v-RlA"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="yLJ-Og-hOw"/>
-                        <barButtonItem width="88" id="kgd-i9-8zO">
-                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="cG8-mC-nTO">
-                                <rect key="frame" x="116" y="7" width="88" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="" image="399-gray-list1" width="44"/>
-                                    <segment title="" image="822-gray-photo-2" width="44"/>
-                                </segments>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="SegmentedControlNametag"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="segmentedControlValueDidChange:" destination="18g-7n-1lT" eventType="valueChanged" id="kgh-p0-jHd"/>
-                                </connections>
-                            </segmentedControl>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="RkF-PI-msA"/>
-                        <barButtonItem image="708-gray-search" style="plain" id="hNt-Ga-7EN">
-                            <connections>
-                                <action selector="searchBankObjects:" destination="18g-7n-1lT" id="pmF-oT-K6u"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" id="yHe-Gq-G3l">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="5W7-D0-dwA">
-                            <connections>
-                                <action selector="dismiss:" destination="18g-7n-1lT" id="6we-AE-lxk"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="displayOptionSegmentedControl" destination="cG8-mC-nTO" id="3hv-UR-ofc"/>
-                        <outlet property="displayOptionsBarButtonItem" destination="kgd-i9-8zO" id="K1v-xB-p9c"/>
-                    </connections>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="V2f-i9-lik" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1632" y="-2324"/>
-        </scene>
     </scenes>
     <resources>
-        <image name="399-gray-list1" width="19" height="15"/>
         <image name="702-gray-share" width="21" height="28"/>
         <image name="703-gray-download" width="21" height="28"/>
         <image name="708-gray-search" width="28" height="28"/>
-        <image name="822-gray-photo-2" width="28" height="22"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <nil key="statusBar"/>

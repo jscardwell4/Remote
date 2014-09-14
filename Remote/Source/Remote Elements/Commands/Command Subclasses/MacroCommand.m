@@ -41,8 +41,8 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   self.indicator = YES;
 }
 
-- (id)keySubscriptedCollection { return self.commands; }
-- (id)indexSubscriptedCollection { return self.commands; }
+- (id)keyedCollection { return self.commands; }
+- (id)indexedCollection { return self.commands; }
 
 - (NSOperationQueue *)queue {
   if (!__queue) __queue = [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.macro"];

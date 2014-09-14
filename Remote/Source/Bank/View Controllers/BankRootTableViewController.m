@@ -79,6 +79,23 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 ////////////////////////////////////////////////////////////////////////////////
+#pragma mark - UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////
+
+
+/// tableView:didSelectRowAtIndexPath:
+/// @param tableView description
+/// @param indexPath description
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  Class itemClass = [_rootItems keyAtIndex:indexPath.row];
+  BankCollectionViewController * viewController =
+    [BankCollectionViewController controllerWithItemClass:itemClass];
+  [self.navigationController pushViewController:viewController animated:YES];
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
 #pragma mark Navigation
 ////////////////////////////////////////////////////////////////////////////////
 

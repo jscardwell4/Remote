@@ -7,7 +7,6 @@
 //
 
 #import "Manufacturer.h"
-#import "BankGroup.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
 #import "ManufacturerDetailViewController.h"
@@ -29,7 +28,7 @@
    ^{
     manufacturer = [self findFirstByAttribute:@"name"
                                     withValue:name
-                                    inContext:context];
+                                    context:context];
 
     if (!manufacturer) {
       manufacturer = [self createInContext:context];
@@ -71,7 +70,7 @@
     NSMutableSet * manufacturerDevices = [NSMutableSet set];
 
     for (id device in devices) {
-      if ([device isKindOfClass:[NSString class]] && UUIDIsValid(device)) {
+      if ([device isKindOfClass:[NSString class]] && [ModelObject isValidUUID:device]) {
         ComponentDevice * d = [ComponentDevice existingObjectWithUUID:device context:moc];
 
         if (!d) d = [ComponentDevice objectWithUUID:device context:moc];

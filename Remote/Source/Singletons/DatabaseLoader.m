@@ -35,229 +35,244 @@ static const int msLogContext     = (LOG_CONTEXT_BUILDING | LOG_CONTEXT_FILE | L
 static const int importLogContext = (LOG_CONTEXT_IMPORT | LOG_CONTEXT_FILE);
 #pragma unused(ddLogLevel, msLogContext)
 
-void logImportFile(NSString * fileName, NSString * fileContent, int flag)
-{
-    if ((flag & LOG_IMPORT_FILE) == LOG_IMPORT_FILE)
-        MSLogCDebugInContext(importLogContext, @"%@.json:\n%@\n", fileName, fileContent);
+void logImportFile(NSString * fileName, NSString * fileContent, int flag) {
+  if ((flag & LOG_IMPORT_FILE) == LOG_IMPORT_FILE)
+    MSLogCDebugInContext(importLogContext, @"%@.json:\n%@\n", fileName, fileContent);
 }
 
-void logParsedImportFile(id parsedObject, int flag)
-{
-    if ((flag & LOG_PARSED_FILE) == LOG_PARSED_FILE)
+void logParsedImportFile(id parsedObject, int flag) {
+  if ((flag & LOG_PARSED_FILE) == LOG_PARSED_FILE)
     MSLogCDebugInContext(importLogContext,
                          @"JSON from parsed file:\n%@\n",
                          [MSJSONSerialization JSONFromObject:parsedObject]);
 }
 
-void logImportedObject(id importedObject, int flag)
-{
-    if ((flag & LOG_RESULTING_OBJECT) == LOG_RESULTING_OBJECT)
-        MSLogCDebugInContextIf((importedObject != nil),
-                               importLogContext,
-                               @"JSON from imported object(s):\n%@\n",
-                               [MSJSONSerialization JSONFromObject:[importedObject JSONObject]]);
+void logImportedObject(id importedObject, int flag) {
+  if ((flag & LOG_RESULTING_OBJECT) == LOG_RESULTING_OBJECT)
+    MSLogCDebugInContextIf((importedObject != nil),
+                           importLogContext,
+                           @"JSON from imported object(s):\n%@\n",
+                           [MSJSONSerialization JSONFromObject:[importedObject JSONObject]]);
 }
 
 @implementation DatabaseLoader
 
-+ (BOOL)loadData
-{
-    MSLogDebug(@"beginning data load...");
+/// loadData
+/// @return BOOL
++ (BOOL)loadData {
+  MSLogDebug(@"beginning data load...");
 
-    [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool { [self loadImages:context]; }
-     }];
+  [CoreDataManager saveWithBlockAndWait:
+   ^(NSManagedObjectContext * context)
+  {
+    @autoreleasepool { [self loadImages:context]; }
+  }];
 
-    [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool { [self loadManufacturers:context]; }
-     }];
+  [CoreDataManager saveWithBlockAndWait:
+   ^(NSManagedObjectContext * context)
+  {
+    @autoreleasepool { [self loadManufacturers:context]; }
+  }];
 
-    [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool {
-           [self loadComponentDevices:context];
-           [self loadNetworkDevices:context];
-         }
-     }];
+  [CoreDataManager saveWithBlockAndWait:
+   ^(NSManagedObjectContext * context)
+  {
+    @autoreleasepool {
+      [self loadComponentDevices:context];
+      [self loadNetworkDevices:context];
+    }
+  }];
 
-    [CoreDataManager saveWithBlockAndWait:
-     ^(NSManagedObjectContext * context)
-     {
-         @autoreleasepool {
-           [self loadRemoteController:context];
-           [self loadActivities:context];
-           [self loadRemotes:context];
-         }
-     }];
+  [CoreDataManager saveWithBlockAndWait:
+   ^(NSManagedObjectContext * context)
+  {
+    @autoreleasepool {
+      [self loadRemoteController:context];
+      [self loadActivities:context];
+      [self loadRemotes:context];
+    }
+  }];
 
 
-    MSLogDebug(@"data load complete");
+  MSLogDebug(@"data load complete");
 
-    return YES;
+  return YES;
 }
 
-+ (void)loadRemotes:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading remotes...");
+/// loadRemotes:
+/// @param context description
++ (void)loadRemotes:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading remotes...");
 
-    NSString * fileName = @"Remote_Demo";
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+  NSString * fileName = @"Remote_Demo";
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
 
-    logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  if (error) { MSHandleErrors(error); return; }
 
-    logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
-    NSArray * remotes = [Remote importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
+  logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
+  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
 
-    error = nil;
-    [context save:&error];
-    MSHandleErrors(error);
+  if (error) { MSHandleErrors(error); return; }
 
-    logImportedObject(remotes, REMOTE_LOG_FLAG);
+  logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
+  NSArray * remotes = [Remote importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
+
+  error = nil;
+  [context save:&error];
+  MSHandleErrors(error);
+
+  logImportedObject(remotes, REMOTE_LOG_FLAG);
 }
 
-+ (void)loadRemoteController:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading remote controller...");
+/// loadRemoteController:
+/// @param context description
++ (void)loadRemoteController:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading remote controller...");
 
-    NSString * fileName = @"RemoteController";
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+  NSString * fileName = @"RemoteController";
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                  usedEncoding:&encoding
-                                                         error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
 
-    logImportFile(fileName, fileContent, REMOTECONTROLLER_LOG_FLAG);
-    MSDictionary * importObject = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  if (error) { MSHandleErrors(error); return; }
 
-    logParsedImportFile(importObject, REMOTECONTROLLER_LOG_FLAG);
-    RemoteController * remoteController = [RemoteController importObjectFromData:importObject
-                                                                      context:context];
-    MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
+  logImportFile(fileName, fileContent, REMOTECONTROLLER_LOG_FLAG);
+  MSDictionary * importObject = [MSJSONSerialization objectByParsingString:fileContent error:&error];
 
-    logImportedObject(remoteController, REMOTECONTROLLER_LOG_FLAG);
+  if (error) { MSHandleErrors(error); return; }
+
+  logParsedImportFile(importObject, REMOTECONTROLLER_LOG_FLAG);
+  RemoteController * remoteController = [RemoteController importObjectFromData:importObject
+                                                                       context:context];
+  MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
+
+  logImportedObject(remoteController, REMOTECONTROLLER_LOG_FLAG);
 }
 
-+ (void)loadActivities:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading activities...");
+/// loadActivities:
+/// @param context description
++ (void)loadActivities:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading activities...");
 
-    NSString * fileName = @"Activity";
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+  NSString * fileName = @"Activity";
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
 
-    logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  if (error) { MSHandleErrors(error); return; }
 
-    logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
-    NSArray * activities = [Activity importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu activities imported", (unsigned long)[activities count]);
+  logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
+  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
 
-    error = nil;
-    [context save:&error];
-    MSHandleErrors(error);
+  if (error) { MSHandleErrors(error); return; }
 
-    logImportedObject(activities, REMOTE_LOG_FLAG);
+  logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
+  NSArray * activities = [Activity importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%lu activities imported", (unsigned long)[activities count]);
+
+  error = nil;
+  [context save:&error];
+  MSHandleErrors(error);
+
+  logImportedObject(activities, REMOTE_LOG_FLAG);
 }
 
-+ (void)loadManufacturers:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading manufacturers...");
+/// loadManufacturers:
+/// @param context description
++ (void)loadManufacturers:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading manufacturers...");
 
-#define MANUFACTURER_TEST_CODES
-#ifdef MANUFACTURER_TEST_CODES
-  NSString * fileName = @"Manufacturer_Test";
-#else
-  NSString * fileName = @"Manufacturer";
-#endif
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+// #define MANUFACTURER_TEST_CODES
+  #ifdef MANUFACTURER_TEST_CODES
+    NSString * fileName = @"Manufacturer_Test";
+  #else
+    NSString * fileName = @"Manufacturer";
+  #endif
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
 
-    logImportFile(fileName, fileContent, MANUFACTURERS_LOG_FLAG);
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  if (error) { MSHandleErrors(error); return; }
 
-    logParsedImportFile(importObjects, MANUFACTURERS_LOG_FLAG);
+  logImportFile(fileName, fileContent, MANUFACTURERS_LOG_FLAG);
+  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
 
-    NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
+  if (error) { MSHandleErrors(error); return; }
 
-    logImportedObject(manufacturers, MANUFACTURERS_LOG_FLAG);
+  logParsedImportFile(importObjects, MANUFACTURERS_LOG_FLAG);
+
+  NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
+
+  logImportedObject(manufacturers, MANUFACTURERS_LOG_FLAG);
 }
 
+/// loadComponentDevices:
+/// @param context description
++ (void)loadComponentDevices:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading component devices...");
 
-+ (void)loadComponentDevices:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading component devices...");
+  NSString * fileName = @"ComponentDevice";
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-    NSString * fileName = @"ComponentDevice";
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
 
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  if (error) { MSHandleErrors(error); return; }
 
-    logImportFile(fileName, fileContent, COMPONENTDEVICES_LOG_FLAG);
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  logImportFile(fileName, fileContent, COMPONENTDEVICES_LOG_FLAG);
+  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
 
-    logParsedImportFile(importObjects, COMPONENTDEVICES_LOG_FLAG);
-    NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
+  if (error) { MSHandleErrors(error); return; }
 
-    logImportedObject(componentDevices, COMPONENTDEVICES_LOG_FLAG);
+  logParsedImportFile(importObjects, COMPONENTDEVICES_LOG_FLAG);
+  NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
+
+  logImportedObject(componentDevices, COMPONENTDEVICES_LOG_FLAG);
 }
 
-+ (void)loadNetworkDevices:(NSManagedObjectContext *)context
-{
+/// loadNetworkDevices:
+/// @param context description
++ (void)loadNetworkDevices:(NSManagedObjectContext *)context {
   MSLogDebug(@"loading component devices...");
 
   NSString * fileName = @"NetworkDevice";
   NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-  NSError * error = nil;
+  NSError        * error = nil;
   NSStringEncoding encoding;
-  NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                 usedEncoding:&encoding
-                                                        error:&error];
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
+
   if (error) { MSHandleErrors(error); return; }
 
   logImportFile(fileName, fileContent, NETWORKDEVICES_LOG_FLAG);
   NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
+
   if (error) { MSHandleErrors(error); return; }
 
   logParsedImportFile(importObjects, NETWORKDEVICES_LOG_FLAG);
@@ -267,35 +282,37 @@ void logImportedObject(id importedObject, int flag)
   logImportedObject(networkDevices, NETWORKDEVICES_LOG_FLAG);
 }
 
-+ (void)loadImages:(NSManagedObjectContext *)context
-{
-    MSLogDebug(@"loading images...");
-#define GLYPHISH_TEST_IMAGES
-#ifdef GLYPHISH_TEST_IMAGES
-  NSString * fileName = @"Glyphish_Test";
-#else
+/// loadImages:
+/// @param context description
++ (void)loadImages:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading images...");
+//  #define GLYPHISH_TEST_IMAGES
+  #ifdef GLYPHISH_TEST_IMAGES
+    NSString * fileName = @"Glyphish_Test";
+  #else
     NSString * fileName = @"Glyphish";
-#endif
-    NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+  #endif
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
 
-    NSError * error = nil;
-    NSStringEncoding encoding;
-    NSString * fileContent = [NSString stringWithContentsOfFile:filePath
-                                                   usedEncoding:&encoding
-                                                          error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
 
-    logImportFile(fileName, fileContent, IMAGES_LOG_FLAG);
+  if (error) { MSHandleErrors(error); return; }
 
-    NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
-    if (error) { MSHandleErrors(error); return; }
+  logImportFile(fileName, fileContent, IMAGES_LOG_FLAG);
 
-    logParsedImportFile(importObjects, IMAGES_LOG_FLAG);
-    NSArray * images = [Image importObjectsFromData:importObjects context:context];
-    MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
+  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent error:&error];
 
-    logImportedObject(images, IMAGES_LOG_FLAG);
+  if (error) { MSHandleErrors(error); return; }
+
+  logParsedImportFile(importObjects, IMAGES_LOG_FLAG);
+  NSArray * images = [Image importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
+
+  logImportedObject(images, IMAGES_LOG_FLAG);
 }
-
 
 @end

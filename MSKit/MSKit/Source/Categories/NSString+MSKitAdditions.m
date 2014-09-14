@@ -35,6 +35,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return [array componentsJoinedByString:self];
 }
 
+- (NSArray *)split:(NSString *)string { return [string componentsSeparatedByString:self]; }
+
 - (NSString *)quotedString { return [NSString stringWithFormat:@"\"%@\"", self]; }
 
 + (BOOL)isEmptyString:(NSString *)string {

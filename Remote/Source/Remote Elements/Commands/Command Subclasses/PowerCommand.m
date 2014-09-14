@@ -80,7 +80,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   if (device) {
     NSString * deviceUUID = device[@"uuid"];
 
-    if (UUIDIsValid(deviceUUID)) {
+    if ([ModelObject isValidUUID:deviceUUID]) {
       ComponentDevice * d = [ComponentDevice existingObjectWithUUID:deviceUUID context:moc];
 
       if (!d) d = [ComponentDevice importObjectFromData:device context:moc];
