@@ -9,7 +9,7 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 #import "BankableModelObject.h"
 
@@ -32,12 +32,12 @@
 @property (nonatomic, strong) Manufacturer    * manufacturer;
 
 /// isValidOnOffPattern:
-/// @param pattern description
+/// @param pattern
 /// @return BOOL
 + (BOOL)isValidOnOffPattern:(NSString *)pattern;
 
 /// compressedOnOffPatternFromPattern:
-/// @param pattern description
+/// @param pattern
 /// @return NSString *
 + (NSString *)compressedOnOffPatternFromPattern:(NSString *)pattern;
 

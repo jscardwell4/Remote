@@ -7,6 +7,7 @@
 //
 
 #import "NSIndexPath+MSKitAdditions.h"
+@import UIKit;
 
 @implementation NSIndexPath (MSKitAdditions)
 

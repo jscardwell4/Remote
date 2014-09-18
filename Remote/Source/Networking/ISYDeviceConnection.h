@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "Lumberjack/Lumberjack.h"
 
 @class ISYDevice;
@@ -15,29 +15,29 @@
 @interface ISYDeviceConnection : NSObject
 
 /// connectionForDevice:
-/// @param device description
+/// @param device
 /// @return instancetype
 + (instancetype)connectionForDevice:(ISYDevice *)device;
 
 /// connectionWithBaseURL:
-/// @param baseURL description
+/// @param baseURL
 /// @return instancetype
 + (void)connectionWithBaseURL:(NSURL *)baseURL
                    completion:(void (^)(ISYDeviceConnection * connection))completion;
 
 /// sendRestCommand:toNode:parameters:completion:
-/// @param command description
-/// @param nodeID description
-/// @param parameters description
-/// @param completion description
+/// @param command
+/// @param nodeID
+/// @param parameters
+/// @param completion
 - (void)sendRestCommand:(NSString *)command
                  toNode:(NSString *)nodeID
              parameters:(NSArray *)parameters
              completion:(void (^)(BOOL success, NSError * error))completion;
 
 /// sendSoapCommandWithBody:completion:
-/// @param body description
-/// @param completion description
+/// @param body
+/// @param completion
 - (void)sendSoapCommandWithBody:(NSString *)body completion:(void(^)(BOOL success, NSError * error))completion;
 
 @property (nonatomic, strong, readonly) ISYDevice * device;

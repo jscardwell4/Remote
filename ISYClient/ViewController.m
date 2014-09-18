@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <netdb.h>
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -101,7 +101,7 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// sendRequestWithText:
-/// @param text description
+/// @param text
 - (void)sendRequestWithText:(NSString *)text {
 
   NSURL * url = [NSURL URLWithString:text relativeToURL:self.baseURL];
@@ -111,13 +111,13 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// sendRequestWithRequest:
-/// @param request description
+/// @param request
 - (void)sendRequestWithRequest:(NSURLRequest *)request {
   self.deviceConnection = [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
 /// appendLogMessage:
-/// @param message description
+/// @param message
 - (void)appendLogMessage:(NSString *)message {
 
   static NSDictionary    * msgAttrs = nil;
@@ -138,7 +138,7 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// appendMessage:
-/// @param message description
+/// @param message
 - (void)appendMessage:(NSString *)message {
 
   assert(IsMainQueue);
@@ -161,9 +161,9 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// appendString:stringAttributes:timestampAttributes:
-/// @param string description
-/// @param stringAttributes description
-/// @param timestampAttributes description
+/// @param string
+/// @param stringAttributes
+/// @param timestampAttributes
 - (void)appendString:(NSString *)string
     stringAttributes:(NSDictionary *)stringAttributes
  timestampAttributes:(NSDictionary *)timestampAttributes
@@ -466,7 +466,7 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// setBaseURL:
-/// @param baseURL description
+/// @param baseURL
 - (void)setBaseURL:(NSURL *)baseURL {
   @synchronized(self) {
     _baseURL = baseURL;
@@ -485,8 +485,8 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
 
 /// connection:didFailWithError:
-/// @param connection description
-/// @param error description
+/// @param connection
+/// @param error
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
   MSHandleErrors(error);
   assert(IsMainQueue);
@@ -494,8 +494,8 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// connection:willSendRequestForAuthenticationChallenge:
-/// @param connection description
-/// @param challenge description
+/// @param connection
+/// @param challenge
 - (void)                         connection:(NSURLConnection *)connection
   willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
@@ -513,8 +513,8 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
 
 /// connection:didReceiveData:
-/// @param connection description
-/// @param data description
+/// @param connection
+/// @param data
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 
   NSString * dataString = [NSString stringWithData:data];
@@ -565,7 +565,7 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 
 
 /// toggleCommandLineHeight:
-/// @param sender description
+/// @param sender
 - (IBAction)toggleCommandLineHeight:(UIButton *)sender {
 
   self.commandLineHeightConstraint.constant = (sender.selected ? 20.0 : 200.0);
@@ -574,7 +574,7 @@ static NSString const * kBaseURL = @"http://192.168.1.9";
 }
 
 /// sendRequest:
-/// @param sender description
+/// @param sender
 - (IBAction)sendRequest:(UIButton *)sender {
 
   NSString * text = self.commandLine.text;

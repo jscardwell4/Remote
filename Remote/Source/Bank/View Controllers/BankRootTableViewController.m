@@ -84,8 +84,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// tableView:didSelectRowAtIndexPath:
-/// @param tableView description
-/// @param indexPath description
+/// @param tableView
+/// @param indexPath
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   Class itemClass = [_rootItems keyAtIndex:indexPath.row];

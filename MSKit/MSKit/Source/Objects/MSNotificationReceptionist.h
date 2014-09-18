@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jason Cardwell. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface MSNotificationReceptionist : NSObject
 

@@ -7,9 +7,9 @@
 //
 
 #import "MSKitDefines.h"
-#import <CoreText/CoreText.h>
-#import <CoreGraphics/CoreGraphics.h>
-#import <QuartzCore/QuartzCore.h>
+@import CoreText;
+@import CoreGraphics;
+@import QuartzCore;
 #import "NSString+MSKitAdditions.h"
 
 MSSTATIC_INLINE NSString *NSStringFromCATransform3D(CATransform3D transform)
@@ -100,7 +100,7 @@ MSSTATIC_INLINE NSString *NSStringFromCATransform3D(CATransform3D transform)
 
         if (n != 0)
         {
-            NSRange   trailingZeroRange = [nString rangeOfRegEX:@"0+$"];
+            NSRange   trailingZeroRange = [nString rangeOfRegEx:@"0+$"];
 
             if (trailingZeroRange.location != NSNotFound)
                 nString = [nString stringByReplacingCharactersInRange:trailingZeroRange withString:@""];
@@ -218,7 +218,7 @@ MSSTATIC_INLINE NSString *NSStringFromCATransform3DT(CATransform3D transform)
 
         if (n != 0)
         {
-            NSRange   trailingZeroRange = [nString rangeOfRegEX:@"0+$"];
+            NSRange   trailingZeroRange = [nString rangeOfRegEx:@"0+$"];
 
             if (trailingZeroRange.location != NSNotFound)
                 nString = [nString stringByReplacingCharactersInRange:trailingZeroRange withString:@""];

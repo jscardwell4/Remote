@@ -5,16 +5,19 @@
 //  Created by Jason Cardwell on 5/24/11.
 //  Copyright 2011 Moondeer Studios. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import "MSKitDefines.h"
+
+@import Foundation;
+@import UIKit;
+
 #import "MSKitProtocols.h"
+#import "MSKitDefines.h"
 
 //typedef void(^NSArrayEnumerationBlock)(id obj, NSUInteger idx, BOOL *stop);
 //typedef BOOL(^NSArrayPredicateBlock)  (id obj, NSUInteger idx, BOOL *stop);
 //typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
 
-@interface NSArray (MSKitAdditions) <MSJSONExport, MSKeySearchable>
+@interface NSArray (MSKitAdditions) <MSJSONExport, MSKeySearchable, MSObjectContaining>
 
 @property (nonatomic, readonly) BOOL isEmpty;
 
@@ -46,8 +49,6 @@
 - (NSArray *)flattened;
 - (NSArray *)uniqued;
 - (NSArray *)mapped:(id (^)(id obj, NSUInteger idx))block;
-
-- (void)makeObjectsPerformSelectorBlock:(void (^)(id object))block;
 
 @end
 

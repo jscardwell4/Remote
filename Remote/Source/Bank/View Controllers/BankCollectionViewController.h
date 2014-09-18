@@ -9,7 +9,7 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 
 #import "Bank.h"
@@ -19,7 +19,7 @@
 @interface BankCollectionViewController : UICollectionViewController
 
 /// controllerWithItemClass:
-/// @param itemClass description
+/// @param itemClass
 /// @return instancetype
 + (instancetype)controllerWithItemClass:(Class<BankableModel>)itemClass;
 

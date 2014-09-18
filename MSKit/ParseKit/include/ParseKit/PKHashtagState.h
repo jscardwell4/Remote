@@ -7,7 +7,7 @@
 //
 
 #if PK_PLATFORM_TWITTER_STATE
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "PKTokenizerState.h"
 /*!
  @class      PKHashtagState

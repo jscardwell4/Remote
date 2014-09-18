@@ -6,7 +6,7 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Image.h"
-#import "ImageDetailViewController.h"
+#import "ImageViewController.h"
 
 static int       ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_DEFAULT;
@@ -34,9 +34,9 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 @synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
 
 /// imageWithFileName:category:context:
-/// @param fileName description
-/// @param category description
-/// @param moc description
+/// @param fileName
+/// @param category
+/// @param moc
 /// @return instancetype
 + (instancetype)imageWithFileName:(NSString *)fileName
                          category:(NSString *)category
@@ -50,7 +50,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 }
 
 /// setFileName:
-/// @param fileName description
+/// @param fileName
 - (void)setFileName:(NSString *)fileName {
   UIImage * image = [UIImage imageNamed:fileName];
   [self willChangeValueForKey:@"fileName"];
@@ -60,7 +60,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 }
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
@@ -75,7 +75,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 - (UIImage *)image { return [UIImage imageNamed:self.fileName]; }
 
 /// imageWithColor:
-/// @param color description
+/// @param color
 /// @return UIImage *
 - (UIImage *)imageWithColor:(UIColor *)color {
   return [color isPatternBased] ? nil : [self.image recoloredImageWithColor:color];
@@ -91,7 +91,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 }
 
 /// setSize:
-/// @param imageSize description
+/// @param imageSize
 - (void)setSize:(CGSize)imageSize {
   [self willChangeValueForKey:@"size"];
   self.primitiveSize = NSValueWithCGSize(imageSize);
@@ -190,15 +190,15 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 /// detailViewController
-/// @return ImageDetailViewController *
-- (ImageDetailViewController *)detailViewController {
-  return [ImageDetailViewController controllerWithItem:self];
+/// @return ImageViewController *
+- (ImageViewController *)detailViewController {
+  return [ImageViewController controllerWithItem:self];
 }
 
 /// editingViewController
-/// @return ImageDetailViewController *
-- (ImageDetailViewController *)editingViewController {
-  return [ImageDetailViewController controllerWithItem:self editing:YES];
+/// @return ImageViewController *
+- (ImageViewController *)editingViewController {
+  return [ImageViewController controllerWithItem:self editing:YES];
 }
 
 /// preview

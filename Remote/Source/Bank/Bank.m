@@ -8,7 +8,7 @@
 
 #import "Bank.h"
 #import "BankCollectionViewController.h"
-#import "BankableDetailTableViewController.h"
+#import "BankItemViewController.h"
 #import "BankableModelObject.h"
 @import ObjectiveC;
 

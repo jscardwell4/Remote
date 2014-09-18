@@ -40,7 +40,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 @implementation ISYDeviceConnection
 
 /// connectionForDevice:
-/// @param device description
+/// @param device
 /// @return instancetype
 + (instancetype)connectionForDevice:(ISYDevice *)device {
 
@@ -84,7 +84,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
 
 /// setDevice:
-/// @param device description
+/// @param device
 - (void)setDevice:(ISYDevice *)device {
 
   _device = device;
@@ -282,7 +282,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
 
 /// sendRequestWithText:
-/// @param text description
+/// @param text
 - (void)sendRequestWithText:(NSString *)text
                  completion:(void(^)(BOOL success, NSError * error))completion
 {
@@ -295,7 +295,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 }
 
 /// sendRequestWithRequest:
-/// @param request description
+/// @param request
 - (void)sendRequestWithRequest:(NSURLRequest *)request
                     completion:(void(^)(BOOL success, NSError * error))completion
 {
@@ -305,10 +305,10 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
 
 /// sendRestCommand:toNode:parameters:completion:
-/// @param command description
-/// @param nodeID description
-/// @param parameters description
-/// @param completion description
+/// @param command
+/// @param nodeID
+/// @param parameters
+/// @param completion
 - (void)sendRestCommand:(NSString *)command
                  toNode:(NSString *)nodeID
              parameters:(NSArray *)parameters
@@ -328,8 +328,8 @@ MSSTRING_CONST kGetMethod          = @"GET";
 }
 
 /// sendSoapCommandWithBody:completion:
-/// @param body description
-/// @param completion description
+/// @param body
+/// @param completion
 - (void)sendSoapCommandWithBody:(NSString *)body completion:(void(^)(BOOL success, NSError * error))completion {
 
   if (StringIsEmpty(body)) ThrowInvalidNilArgument(body);
@@ -353,15 +353,15 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
 
 /// connection:didFailWithError:
-/// @param connection description
-/// @param error description
+/// @param connection
+/// @param error
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
   if (self.requestCompletion) self.requestCompletion(NO, error);
 }
 
 /// connection:willSendRequestForAuthenticationChallenge:
-/// @param connection description
-/// @param challenge description
+/// @param connection
+/// @param challenge
 - (void)                         connection:(NSURLConnection *)connection
   willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
@@ -378,8 +378,8 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
 
 /// connection:didReceiveData:
-/// @param connection description
-/// @param data description
+/// @param connection
+/// @param data
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 
   if (!self.dataReceived) self.dataReceived = [NSMutableData dataWithData:data];
@@ -388,7 +388,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 }
 
 /// connectionDidFinishLoading:
-/// @param connection description
+/// @param connection
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 
   if (self.dataReceived) {
@@ -410,7 +410,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
 
 /// isEqual:
-/// @param other description
+/// @param other
 /// @return BOOL
 - (BOOL)isEqual:(ISYDeviceConnection *)other {
 

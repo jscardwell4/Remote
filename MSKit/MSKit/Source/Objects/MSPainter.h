@@ -5,8 +5,9 @@
 //  Created by Jason Cardwell on 9/30/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-
-#import <QuartzCore/QuartzCore.h>
+@import Foundation;
+@import UIKit;
+@import QuartzCore;
 
 typedef NS_ENUM (NSInteger, MSPainterShape) {
     MSPainterShapeUndefined        = 0,

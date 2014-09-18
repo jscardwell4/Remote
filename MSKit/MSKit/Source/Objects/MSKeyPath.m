@@ -19,7 +19,7 @@
 @implementation MSKeyPath
 
 /// keyPathFromString:
-/// @param string description
+/// @param string
 /// @return instancetype
 + (instancetype)keyPathFromString:(NSString *)string {
   if (!string) ThrowInvalidNilArgument(string);
@@ -29,24 +29,24 @@
 }
 
 /// objectAtIndexedSubscript:
-/// @param idx description
+/// @param idx
 /// @return NSString *
 - (NSString *)objectAtIndexedSubscript:(NSUInteger)idx { return self.keys[idx]; }
 
 /// setObject:atIndexedSubscript:
-/// @param obj description
-/// @param idx description
+/// @param obj
+/// @param idx
 - (void)setObject:(NSString *)key atIndexedSubscript:(NSUInteger)idx { self.keys[idx] = key; }
 
 /// insertKey:atIndex:
-/// @param key description
-/// @param idx description
+/// @param key
+/// @param idx
 - (void)insertKey:(NSString *)key atIndex:(NSUInteger)idx { [self.keys insertObject:key atIndex:idx]; }
 
 /// countByEnumeratingWithState:objects:count:
-/// @param state description
-/// @param buffer description
-/// @param len description
+/// @param state
+/// @param buffer
+/// @param len
 /// @return NSUInteger
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
                                   objects:(__unsafe_unretained id [])buffer
@@ -97,11 +97,11 @@
 - (NSString *)lastKey { return [self.keys lastObject]; }
 
 /// appendKey:
-/// @param key description
+/// @param key
 - (void)appendKey:(NSString *)key { if (isStringKind(key)) [self.keys addObject:key]; }
 
 /// appendKeys:
-/// @param keys description
+/// @param keys
 - (void)appendKeys:(NSArray *)keys {
   [self.keys addObjectsFromArray:[keys filtered:^BOOL(id obj){ return isStringKind(obj); }]];
 }

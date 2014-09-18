@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 @interface MessageQueueEntry : NSObject
 
@@ -19,8 +19,8 @@
 @property (nonatomic, copy)   void (^completion)(BOOL, NSString *, NSError *);  /// Completion block for entry
 
 /// message:completion:
-/// @param message description
-/// @param completion description
+/// @param message
+/// @param completion
 /// @return instancetype
 + (instancetype)message:(NSString *)message
              completion:(void(^)(BOOL success, NSString * response, NSError * error))completion;

@@ -6,7 +6,9 @@
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+
+@import Foundation;
+@import UIKit;
 #import "MSKitProtocols.h"
 
 @interface NSMapTable (MSKitAdditions) <MSKeySearchable, MSKeyContaining>

@@ -118,7 +118,7 @@ NSArray *sharedKeysForType(CommandSetType type) {
 }
 
 /// Sets the type of the command set if the type specified represents a change, also creating a fresh index
-/// @param type description
+/// @param type
 - (void)setType:(CommandSetType)type {
   if (self.type != type) {
     [self willChangeValueForKey:@"type"];

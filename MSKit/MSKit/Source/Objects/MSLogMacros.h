@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Jason Cardwell. All rights reserved.
 //
 
-#import "MSKitMacros.h"
+//#import "MSKitMacros.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Log flags
@@ -39,8 +39,8 @@
 // #define LOG_LEVEL_ERROR     0b0000000000000001
 // #define LOG_LEVEL_WARN      0b0000000000000011
 // #define LOG_LEVEL_INFO      0b0000000000000111
-#undef LOG_LEVEL_DEBUG
-#define LOG_LEVEL_DEBUG        0b0000000000001011
+//#undef LOG_LEVEL_DEBUG
+//#define LOG_LEVEL_DEBUG        0b0000000000001011
 // #define LOG_LEVEL_VERBOSE   0b0000000000011111
 #define LOG_LEVEL_UNITTEST     0b1111111111111111
 
@@ -55,8 +55,8 @@
 // #define LOG_ASYNC_WARN     (YES && LOG_ASYNC_ENABLED)
 // #define LOG_ASYNC_INFO     (YES && LOG_ASYNC_ENABLED)
 // #define LOG_ASYNC_VERBOSE  (YES && LOG_ASYNC_ENABLED)
-#undef LOG_ASYNC_DEBUG
-#define LOG_ASYNC_DEBUG       (NO  && LOG_ASYNC_ENABLED)
+//#undef LOG_ASYNC_DEBUG
+//#define LOG_ASYNC_DEBUG       (NO  && LOG_ASYNC_ENABLED)
 #define LOG_ASYNC_UNITTEST    (NO  && LOG_ASYNC_ENABLED)
 
 

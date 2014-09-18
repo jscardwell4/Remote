@@ -5,10 +5,13 @@
 //  Created by Jason Cardwell on 4/17/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+@import Foundation;
+@import UIKit;
 #import "MSKitProtocols.h"
+
 @class MSKeyPath;
 
-@interface MSDictionary : NSMutableDictionary <MSJSONExport, MSKeySearchable, MSKeyContaining>
+@interface MSDictionary : NSMutableDictionary <MSJSONExport, MSKeySearchable, MSKeyContaining, MSObjectContaining>
 
 @property (nonatomic, strong)   MSDictionary * userInfo;
 @property (nonatomic, readonly) NSSet        * validKeys;
@@ -20,6 +23,8 @@
 @property (nonatomic, readonly) id             firstValue;
 @property (nonatomic, readonly) id             lastValue;
 
++ (MSDictionary *)dictionaryWithDictionary:(NSDictionary *)dictionary convertFoundationClasses:(BOOL)convert;
+- (void)convertFoundationClasses;
 - (MSDictionary *)dictionaryBySortingByKeys:(NSArray *)sortedKeys;
 - (MSDictionary *)compactedDictionary;
 - (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;

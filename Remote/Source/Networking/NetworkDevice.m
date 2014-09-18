@@ -30,15 +30,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic uniqueIdentifier, componentDevices;
 
 /// deviceExistsWithDeviceUUID:
-/// @param identifier description
+/// @param identifier
 /// @return BOOL
 + (BOOL)deviceExistsWithUniqueIdentifier:(NSString *)identifier {
   return [self countOfObjectsWithPredicate:NSPredicateMake(@"uniqueIdentifer == %@", identifier)] > 0;
 }
 
 /// importObjectFromData:context:
-/// @param data description
-/// @param moc description
+/// @param data
+/// @param moc
 /// @return instancetype
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
 
@@ -59,7 +59,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];

@@ -24,20 +24,20 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 - (id)nametag { return objc_getAssociatedObject(self, UIViewNametagKey); }
 
 /// setNametag:
-/// @param nametag description
+/// @param nametag
 - (void)setNametag:(NSString *)nametag {
   objc_setAssociatedObject(self, UIViewNametagKey, nametag, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 /// subviewsOfKind:
-/// @param kind description
+/// @param kind
 /// @return NSArray *
 - (NSArray *)subviewsOfKind:(Class)kind {
   return [self.subviews filtered:^BOOL (id obj) { return [obj isKindOfClass:kind]; }];
 }
 
 /// subviewsOfType:
-/// @param type description
+/// @param type
 /// @return NSArray *
 - (NSArray *)subviewsOfType:(Class)type {
   return [self.subviews filtered:^BOOL (id obj) { return [obj isMemberOfClass:type]; }];
@@ -59,7 +59,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// initForAutoLayoutWithFrame:
-/// @param frame description
+/// @param frame
 /// @return id
 - (id)initForAutoLayoutWithFrame:(CGRect)frame {
   if ((self = [self initWithFrame:frame]))
@@ -93,246 +93,246 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 - (CGFloat)width { return self.bounds.size.width; }
 
 /// viewMatching:
-/// @param predicate description
+/// @param predicate
 /// @return UIView *
 - (UIView *)viewMatching:(NSPredicate *)predicate {
   return ([predicate evaluateWithObject:self] ? self :  [self.subviews findFirstUsingPredicate:predicate]);
 }
 
 /// viewsMatching:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 - (NSArray *)viewsMatching:(NSPredicate *)predicate {
   return [[self.subviews arrayByAddingObject:self] filteredUsingPredicate:predicate];
 }
 
 /// subviewMatching:
-/// @param predicate description
+/// @param predicate
 /// @return UIView *
 - (UIView *)subviewMatching:(NSPredicate *)predicate {
   return [self.subviews findFirstUsingPredicate:predicate];
 }
 
 /// subviewsMatching:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 - (NSArray *)subviewsMatching:(NSPredicate *)predicate {
   return [self.subviews filteredUsingPredicate:predicate];
 }
 
 /// viewWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return UIView *
 - (UIView *)viewWithNametag:(NSString *)nametag {
   return [self viewMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// viewsWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return NSArray *
 - (NSArray *)viewsWithNametag:(NSString *)nametag {
   return [self viewsMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// subviewWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return UIView *
 - (UIView *)subviewWithNametag:(NSString *)nametag {
   return [self subviewMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// subviewsWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return NSArray *
 - (NSArray *)subviewsWithNametag:(NSString *)nametag {
   return [self subviewsMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// viewWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return UIView *
 - (UIView *)viewWithNametagPrefix:(NSString *)prefix {
   return [self viewMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// viewsWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return NSArray *
 - (NSArray *)viewsWithNametagPrefix:(NSString *)prefix {
   return [self viewsMatching: [NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// subviewWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return UIView *
 - (UIView *)subviewWithNametagPrefix:(NSString *)prefix {
   return [self subviewMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// subviewsWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return NSArray *
 - (NSArray *)subviewsWithNametagPrefix:(NSString *)prefix {
   return [self subviewsMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// viewWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return UIView *
 - (UIView *)viewWithNametagSuffix:(NSString *)suffix {
   return [self viewMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// viewsWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return NSArray *
 - (NSArray *)viewsWithNametagSuffix:(NSString *)suffix {
   return [self viewsMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// subviewWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return UIView *
 - (UIView *)subviewWithNametagSuffix:(NSString *)suffix {
   return [self subviewMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// subviewsWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return NSArray *
 - (NSArray *)subviewsWithNametagSuffix:(NSString *)suffix {
   return [self subviewsMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// gestureMatching:
-/// @param predicate description
+/// @param predicate
 /// @return UIGestureRecognizer *
 - (UIGestureRecognizer *)gestureMatching:(NSPredicate *)predicate {
   return [self.gestureRecognizers findFirstUsingPredicate:predicate];
 }
 
 /// gesturesMatching:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 - (NSArray *)gesturesMatching:(NSPredicate *)predicate {
   return [self.gestureRecognizers filteredUsingPredicate:predicate];
 }
 
 /// gestureWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return UIGestureRecognizer *
 - (UIGestureRecognizer *)gestureWithNametag:(NSString *)nametag {
   return [self gestureMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// gesturesWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return NSArray *
 - (NSArray *)gesturesWithNametag:(NSString *)nametag {
   return [self gesturesMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// gestureWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return UIGestureRecognizer *
 - (UIGestureRecognizer *)gestureWithNametagPrefix:(NSString *)prefix {
   return [self gestureMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// gesturesWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return NSArray *
 - (NSArray *)gesturesWithNametagPrefix:(NSString *)prefix {
   return [self gesturesMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// gestureWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return UIGestureRecognizer *
 - (UIGestureRecognizer *)gestureWithNametagSuffix:(NSString *)suffix {
   return [self gestureMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// gesturesWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return NSArray *
 - (NSArray *)gesturesWithNametagSuffix:(NSString *)suffix {
   return [self gesturesMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// constraintWithTag:
-/// @param tag description
+/// @param tag
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithTag:(NSUInteger)tag {
   return [self.constraints findFirstUsingPredicate:[NSPredicate predicateWithFormat:@"self.tag == %@", tag]];
 }
 
 /// constraintsWithTag:
-/// @param tag description
+/// @param tag
 /// @return NSArray *
 - (NSArray *)constraintsWithTag:(NSUInteger)tag {
   return [self.constraints filteredUsingPredicate:[NSPredicate predicateWithFormat:@"self.tag == %@", tag]];
 }
 
 /// constraintMatching:
-/// @param predicate description
+/// @param predicate
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintMatching:(NSPredicate *)predicate {
   return [self.constraints findFirstUsingPredicate:predicate];
 }
 
 /// constraintsMatching:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 - (NSArray *)constraintsMatching:(NSPredicate *)predicate {
   return [self.constraints filteredUsingPredicate:predicate];
 }
 
 /// constraintWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithNametag:(NSString *)nametag {
   return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// constraintsWithNametag:
-/// @param nametag description
+/// @param nametag
 /// @return NSArray *
 - (NSArray *)constraintsWithNametag:(NSString *)nametag {
   return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
 }
 
 /// constraintWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithNametagPrefix:(NSString *)prefix {
   return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// constraintsWithNametagPrefix:
-/// @param prefix description
+/// @param prefix
 /// @return NSArray *
 - (NSArray *)constraintsWithNametagPrefix:(NSString *)prefix {
   return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
 }
 
 /// constraintWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithNametagSuffix:(NSString *)suffix {
   return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// constraintsWithNametagSuffix:
-/// @param suffix description
+/// @param suffix
 /// @return NSArray *
 - (NSArray *)constraintsWithNametagSuffix:(NSString *)suffix {
   return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
 }
 
 /// replaceConstraintWithNametag:withConstraint:
-/// @param nametag description
-/// @param constraint description
+/// @param nametag
+/// @param constraint
 - (void)replaceConstraintWithNametag:(NSString *)nametag withConstraint:(NSLayoutConstraint *)constraint {
 
   NSLayoutConstraint * oldConstraint = [self constraintWithNametag:nametag];
@@ -347,8 +347,8 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// replaceConstraintsWithNametag:withConstraints:
-/// @param nametag description
-/// @param constraints description
+/// @param nametag
+/// @param constraints
 - (void)replaceConstraintsWithNametag:(NSString *)nametag withConstraints:(NSArray *)constraints {
 
   NSArray * oldConstraints = [self constraintsWithNametag:nametag];
@@ -363,7 +363,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// constraintsOfType:
-/// @param type description
+/// @param type
 /// @return NSArray *
 - (NSArray *)constraintsOfType:(Class)type {
   return [self.constraints filtered:^BOOL (id evaluatedObject) {
@@ -372,16 +372,16 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// replaceConstraintsOfType:withConstraints:
-/// @param type description
-/// @param constraints description
+/// @param type
+/// @param constraints
 - (void)replaceConstraintsOfType:(Class)type withConstraints:(NSArray *)constraints {
   [self removeConstraints:[self constraintsOfType:type]];
   [self addConstraints:constraints];
 }
 
 /// replaceConstraintsWithNametagPrefix:withConstraints:
-/// @param prefix description
-/// @param constraints description
+/// @param prefix
+/// @param constraints
 - (void)replaceConstraintsWithNametagPrefix:(NSString *)prefix withConstraints:(NSArray *)constraints {
 
   [self endEditing:YES];
@@ -404,22 +404,22 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// repositionFrameAtOrigin:
-/// @param origin description
+/// @param origin
 - (void)repositionFrameAtOrigin:(CGPoint)origin { self.frame = CGRectReposition(self.frame, origin); }
 
 /// resizeFrameToSize:anchored:
-/// @param size description
-/// @param anchored description
+/// @param size
+/// @param anchored
 - (void)resizeFrameToSize:(CGSize)size anchored:(BOOL)anchored {
   self.frame = (anchored ? CGRectAnchoredResize(self.frame, size) : CGRectResize(self.frame, size));
 }
 
 /// resizeBoundsToSize:
-/// @param size description
+/// @param size
 - (void)resizeBoundsToSize:(CGSize)size { self.bounds = CGRectResize(self.bounds, size); }
 
 /// unionFrameForViews:
-/// @param views description
+/// @param views
 /// @return CGRect
 + (CGRect)unionFrameForViews:(NSArray *)views {
 
@@ -437,14 +437,14 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// fitFrameToSize:anchored:
-/// @param size description
-/// @param anchored description
+/// @param size
+/// @param anchored
 - (void)fitFrameToSize:(CGSize)size anchored:(BOOL)anchored {
   [self resizeFrameToSize:CGSizeAspectMappedToSize(self.frame.size, size, YES) anchored:anchored];
 }
 
 /// fitBoundsToSize:
-/// @param size description
+/// @param size
 - (void)fitBoundsToSize:(CGSize)size {
   [self resizeBoundsToSize:CGSizeAspectMappedToSize(self.bounds.size, size, YES)];
 }
@@ -454,7 +454,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 + (UIView *)currentResponder { return [UIView firstResponderInView:[SharedApp keyWindow]]; }
 
 /// firstResponderInView:
-/// @param topView description
+/// @param topView
 /// @return UIView *
 + (UIView *)firstResponderInView:(UIView *)topView {
 
@@ -505,7 +505,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// Append '?' to property name in `properties` array if the value is a `BOOL` and you want "YES" or "NO"
-/// @param properties description
+/// @param properties
 /// @return NSString *
 - (NSString *)viewTreeDescriptionWithProperties:(NSArray *)properties {
 
@@ -557,7 +557,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// setAlignedCenter:
-/// @param center description
+/// @param center
 - (void)setAlignedCenter:(CGPoint)center { self.center = center; self.frame = CGRectIntegral(self.frame); }
 
 /// prettyConstraintsDescription

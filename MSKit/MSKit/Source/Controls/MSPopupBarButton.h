@@ -5,8 +5,9 @@
 // Created by Jason Cardwell on 1/18/13.
 // Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+
+@import Foundation;
+@import UIKit;
 
 #import "MSBarButtonItem.h"
 

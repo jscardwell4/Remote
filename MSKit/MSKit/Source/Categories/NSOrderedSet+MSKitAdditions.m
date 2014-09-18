@@ -8,6 +8,7 @@
 
 #import "NSOrderedSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
+#import "NSMutableString+MSKitAdditions.h"
 #import "MSLog.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;

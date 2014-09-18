@@ -7,13 +7,14 @@
 //
 
 #import "MSJSONAssembler.h"
-#import <ParseKit/ParseKit.h>
+#import <PEGKit/PEGKit.h>
 #import "MSStack.h"
 #import "MSDictionary.h"
 #import "NSArray+MSKitAdditions.h"
 #import "MSJSONParser.h"
 #import <objc/runtime.h>
 #import "NSObject+MSKitAdditions.h"
+#import "MSLog.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -221,7 +222,7 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 #pragma mark Matching top level object
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)parser:(PKSParser *)parser willStart:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser willStart:(PKAssembly *)assembly
 {
     self.assembledObject = nil;
     _commentIndex        = [MSDictionary dictionary];
@@ -237,7 +238,7 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 ////////////////////////////////////////////////////////////////////////////////
 
 
-- (void)parser:(PKSParser *)parser didMatchKeyPath:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchKeyPath:(PKAssembly *)assembly
 {
     if (!_splitKeyPaths)
         self.pendingKey = ((PKToken *)[assembly MS_peek]).quotedStringValue;
@@ -259,7 +260,7 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 #pragma mark Matching comments
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)parser:(PKSParser *)parser didMatchComment:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchComment:(PKAssembly *)assembly
 {
     NSString * comment = ((PKToken *)[assembly pop]).stringValue;
 
@@ -274,28 +275,28 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 #pragma mark Matching string, number, and boolean terminals
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)parser:(PKSParser *)parser didMatchString:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchString:(PKAssembly *)assembly
 {
     [self processValue:((PKToken *)[assembly MS_peek]).quotedStringValue
                 ofType:MSJSONAssemblerStringValueType];
 }
 
-- (void)parser:(PKSParser *)parser didMatchNumber:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchNumber:(PKAssembly *)assembly
 {
     [self processValue:((PKToken *)[assembly MS_peek]).value ofType:MSJSONAssemblerNumberValueType];
 }
 
-- (void)parser:(PKSParser *)parser didMatchNullLiteral:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchNullLiteral:(PKAssembly *)assembly
 {
     [self processValue:NullObject ofType:MSJSONAssemblerNullValueType];
 }
 
-- (void)parser:(PKSParser *)parser didMatchTrueLiteral:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchTrueLiteral:(PKAssembly *)assembly
 {
     [self processValue:@YES ofType:MSJSONAssemblerBooleanValueType];
 }
 
-- (void)parser:(PKSParser *)parser didMatchFalseLiteral:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchFalseLiteral:(PKAssembly *)assembly
 {
     [self processValue:@NO ofType:MSJSONAssemblerBooleanValueType];
 }
@@ -304,23 +305,23 @@ typedef NS_ENUM(uint8_t, MSJSONAssemblerValueType)
 #pragma mark Matching punction terminals - {}[],:
 ////////////////////////////////////////////////////////////////////////////////
 
-- (void)parser:(PKSParser *)parser didMatchOpenCurly:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchOpenCurly:(PKAssembly *)assembly
 {
     [self processValue:[MSDictionary dictionary] ofType:MSJSONAssemblerObjectValueType];
 }
 
-- (void)parser:(PKSParser *)parser didMatchCloseCurly:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchCloseCurly:(PKAssembly *)assembly
 {
     if (_pendingValue == [_activeObjects pop]) [self resolveKeyPathsForPendingValue];
 
 }
 
-- (void)parser:(PKSParser *)parser didMatchOpenBracket:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchOpenBracket:(PKAssembly *)assembly
 {
     [self processValue:[@[] mutableCopy] ofType:MSJSONAssemblerArrayValueType];
 }
 
-- (void)parser:(PKSParser *)parser didMatchCloseBracket:(PKSTokenAssembly *)assembly
+- (void)parser:(PKParser *)parser didMatchCloseBracket:(PKAssembly *)assembly
 {
     if (_pendingValue == [_activeObjects pop]) [self resolveKeyPathsForPendingValue];
 }

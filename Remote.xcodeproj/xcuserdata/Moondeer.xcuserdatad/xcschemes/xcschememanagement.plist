@@ -4,13 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>CoreDataLogicTests copy.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
-		</dict>
 		<key>CoreDataLogicTests-Magical/In-memory.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -31,38 +24,12 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
-		<key>CoreDataLogicTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
-		<key>CoreDataPersistentLogicTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
-		</dict>
-		<key>CoreDataTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>DatabaseConstructionTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
-		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Remote.xcscheme</key>
 		<dict>
@@ -73,13 +40,10 @@
 		</dict>
 		<key>iTachClient.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>11</integer>
-		</dict>
-		<key>isy_client.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -115,6 +79,11 @@
 			<true/>
 		</dict>
 		<key>C28FD57B171C65BB008560E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2C482C219C9F968002E84A9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

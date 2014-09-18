@@ -9,10 +9,9 @@
 #import "IRCode.h"
 #import "NetworkDevice.h"
 #import "Manufacturer.h"
-#import "MSKit/NSManagedObject+MSKitAdditions.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
-#import "ComponentDeviceDetailViewController.h"
+#import "ComponentDeviceViewController.h"
 
 
 @implementation ComponentDevice {
@@ -22,22 +21,22 @@
 @dynamic port, codes, power, inputPowersOn, alwaysOn, offCommand, onCommand, manufacturer, networkDevice;
 
 /// fetchDeviceWithName:
-/// @param name description
+/// @param name
 /// @return instancetype
 + (instancetype)fetchDeviceWithName:(NSString *)name {
   return [self findFirstByAttribute:@"name" withValue:name];
 }
 
 /// fetchDeviceWithName:context:
-/// @param name description
-/// @param context description
+/// @param name
+/// @param context
 /// @return instancetype
 + (instancetype)fetchDeviceWithName:(NSString *)name context:(NSManagedObjectContext *)context {
   return [self findFirstByAttribute:@"name" withValue:name context:context];
 }
 
 /// ignorePowerCommand:
-/// @param handler description
+/// @param handler
 /// @return BOOL
 - (BOOL)ignorePowerCommand:(void (^)(BOOL success, NSError *))handler {
   if (_ignoreNextPowerCommand) {
@@ -50,7 +49,7 @@
 }
 
 /// powerOn:
-/// @param completion description
+/// @param completion
 - (void)powerOn:(void (^)(BOOL success, NSError *))completion {
   __weak ComponentDevice * weakself = self;
 
@@ -63,7 +62,7 @@
 }
 
 /// powerOff:
-/// @param completion description
+/// @param completion
 - (void)powerOff:(void (^)(BOOL success, NSError *))completion {
   __weak ComponentDevice * weakself = self;
 
@@ -76,7 +75,7 @@
 }
 
 /// objectForKeyedSubscript:
-/// @param name description
+/// @param name
 /// @return IRCode *
 - (IRCode *)objectForKeyedSubscript:(NSString *)name {
   return [self.codes objectPassingTest:
@@ -126,7 +125,7 @@
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
 
@@ -173,15 +172,15 @@
 + (BOOL)isSectionable { return NO;  }
 
 /// detailViewController
-/// @return ComponentDeviceDetailViewController *
-- (ComponentDeviceDetailViewController *)detailViewController {
-  return [ComponentDeviceDetailViewController controllerWithItem:self];
+/// @return ComponentDeviceViewController *
+- (ComponentDeviceViewController *)detailViewController {
+  return [ComponentDeviceViewController controllerWithItem:self];
 }
 
 /// editingViewController
-/// @return ComponentDeviceDetailViewController *
-- (ComponentDeviceDetailViewController *)editingViewController {
-  return [ComponentDeviceDetailViewController controllerWithItem:self editing:YES];
+/// @return ComponentDeviceViewController *
+- (ComponentDeviceViewController *)editingViewController {
+  return [ComponentDeviceViewController controllerWithItem:self editing:YES];
 }
 
 @end

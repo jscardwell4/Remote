@@ -191,8 +191,6 @@ imageView = _imageView;
 
 - (void)setupGradient {
     
-    return;
-
     if (!(_usesGradient && _hasReflection))
         return;
     

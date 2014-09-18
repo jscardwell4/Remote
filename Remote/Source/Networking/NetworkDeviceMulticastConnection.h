@@ -9,7 +9,7 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 
 #import "NetworkDeviceConnection.h"
@@ -21,9 +21,9 @@
 @interface NetworkDeviceMulticastConnection : NetworkDeviceConnection
 
 /// connectionWithAddress:port:delegate:
-/// @param address description
-/// @param port description
-/// @param delegate description
+/// @param address
+/// @param port
+/// @param delegate
 /// @return instancetype
 + (instancetype)connectionWithAddress:(NSString *)address
                                  port:(NSString *)port

@@ -12,56 +12,141 @@
 #import "NSArray+MSKitAdditions.h"
 #import "NSObject+MSKitAdditions.h"
 #import "MSLog.h"
-// #import "NSAttributedString+MSKitAdditions.h"
-#import <CoreText/CoreText.h>
+#import "NSMutableString+MSKitAdditions.h"
+@import CoreText;
 #import "NSValue+MSKitAdditions.h"
 
 static int ddLogLevel   = LOG_LEVEL_WARN;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
-
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation NSString (MSKitAdditions)
 
+/// unsignedIntegerValue
+/// @return NSUInteger
 - (NSUInteger)unsignedIntegerValue { return (NSUInteger)[self integerValue]; }
 
+/// uintValue
+/// @return unsigned int
 - (unsigned int)uintValue { return (unsigned int)[self intValue]; }
 
-+ (NSString *)stringWithData:(NSData *)data {
-  return (data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil);
+/// Returns a range value with the full length of the string.
+- (NSRange)fullRange { return NSMakeRange(0, self.length); }
+
+/// stringWithData:
+/// @param data
+/// @return NSString *
++ (instancetype)stringWithData:(NSData *)data {
+  return (data ? [[self alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil);
 }
 
-- (NSString *)join:(NSArray *)array {
-  return [array componentsJoinedByString:self];
-}
-
-- (NSArray *)split:(NSString *)string { return [string componentsSeparatedByString:self]; }
-
-- (NSString *)quotedString { return [NSString stringWithFormat:@"\"%@\"", self]; }
-
-+ (BOOL)isEmptyString:(NSString *)string {
-  return [NSNull valueIsNil:string] || string.length == 0;
-}
-
-+ (BOOL)isNotEmptyString:(NSString *)string {
-  return ![self isEmptyString:string];
-}
-
-- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+/// objectAtIndexedSubscript:
+/// @param idx
+/// @return NSNumber *
+- (NSNumber *)objectAtIndexedSubscript:(NSUInteger)idx {
   if (idx >= self.length) [[NSException exceptionWithName:NSRangeException
                                                    reason:@"index out of range" userInfo:nil] raise];
 
   return @([self characterAtIndex:idx]);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Creating/Formatting
-////////////////////////////////////////////////////////////////////////////////
+/// Replaces occurences of dictionary key with dictionary value
+/// @param replacements
+/// @return NSString *
+- (NSString *)stringByReplacingOccurrencesWithDictionary:(NSDictionary *)replacements {
+  NSMutableString * newString = [self mutableCopy];
+  [newString replaceOccurrencesOfStringsWithDictionary:replacements];
+  return newString;
+}
 
+/// String containing the specified number of the specified character
+/// @param character
+/// @param count
+/// @return NSString *
++ (instancetype)stringWithCharacter:(unichar)character count:(NSUInteger)count {
+  return [[self alloc] initWithString:[NSMutableString stringWithCharacter:character count:count]];
+}
+
+/// String containing the specified number of the specified string
+/// @param string
+/// @param count
+/// @return NSString *
++ (instancetype)stringWithString:(NSString *)string count:(NSUInteger)count {
+  return [[self alloc] initWithString:[NSMutableString stringWithString:string count:count]];
+}
+
+/// Returns `YES` if the string has zero length or is null or is the null object
+/// @param string
+/// @return BOOL
++ (BOOL)isEmptyString:(NSString *)string {
+  return [NSNull valueIsNil:string] || string.length == 0;
+}
+
+/// Returns `YES` if the string has length greater than zero
+/// @param string
+/// @return BOOL
++ (BOOL)isNotEmptyString:(NSString *)string {
+  return ![self isEmptyString:string];
+}
+
+/// Convenience for writing to file using `NSUTF8StringEncoding` and logging error if encountered
+/// @param filePath
+/// @return BOOL
+- (BOOL)writeToFile:(NSString *)filePath {
+  NSError * error;
+
+  [self writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+  MSHandleErrors(error);
+
+  return (!error);
+}
+
+@end
+
+@implementation NSString (MSKitTransformingAdditions)
+
+/// Convert this-string to thisString
+/// @return NSString *
+- (NSString *)dashCaseToCamelCase {
+  NSArray         * components = [self componentsSeparatedByString:@"-"];
+  NSMutableString * camel      = nil;
+
+  for (NSString * component in components) {
+    if (!camel) camel = [component mutableCopy];
+    else [camel appendString:[component capitalizedString]];
+  }
+
+  return camel;
+}
+
+/// Convert thisString to this-string
+/// @return NSString *
+- (NSString *)camelCaseToDashCase {
+  NSMutableString * string = [@"" mutableCopy];
+
+  for (int i = 0; i < [self length]; i++) {
+    unichar character = [self characterAtIndex:i];
+
+    if (character >= 'A' && character <= 'Z')
+      [string appendString:@"-"];
+
+    [string appendFormat:@"%C", character];
+  }
+
+  return [string lowercaseString];
+}
+
+/// Right shifts all lines by the specified amount using leading spaces
+/// @param shiftAmount
+/// @return NSString *
 - (NSString *)stringByShiftingRight:(NSUInteger)shiftAmount {
   return [self stringByShiftingRight:shiftAmount shiftFirstLine:YES];
 }
 
+/// Right shifts all lines by the specified amount with the option to leave first line unshifted
+/// @param shiftAmount
+/// @param shiftFirstLine
+/// @return NSString *
 - (NSString *)stringByShiftingRight:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine {
   NSString * padding = [NSString stringWithCharacter:' ' count:shiftAmount];
 
@@ -71,10 +156,17 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
           : [self stringByReplacingOccurrencesOfString:@"\n" withString:$(@"\n%@", padding)]);
 }
 
+/// Left shifts all lines by the specified amount removing leading spaces
+/// @param shiftAmount
+/// @return NSString *
 - (NSString *)stringByShiftingLeft:(NSUInteger)shiftAmount {
   return [self stringByShiftingLeft:shiftAmount shiftFirstLine:YES];
 }
 
+/// Left shifts all lines by the specified amount with the option to leave first line unshifted
+/// @param shiftAmount
+/// @param shiftFirstLine
+/// @return NSString *
 - (NSString *)stringByShiftingLeft:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine {
   NSMutableString * shiftedString = [self mutableCopy];
 
@@ -88,198 +180,73 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return shiftedString;
 }
 
-+ (NSString *)stringWithCharacter:(unichar)character count:(NSUInteger)count {
-  NSString * returnString = @"";
-  NSString  *(^addCharacter)(NSString *) = ^(NSString * str) {
-    return [str stringByAppendingFormat:@"%c", character];
-  };
-
-  for (int i = 0; i < count; i++) {
-    returnString = addCharacter(returnString);
-  }
-
-  return returnString;
-}
-
-- (NSString *)stringByRemovingLineBreaks {
-  return [self stringByRemovingCharactersFromSet:NSNewlineCharacters];
-}
-
-+ (NSString *)stringWithString:(NSString *)string count:(NSUInteger)count {
-  NSMutableString * s = [@"" mutableCopy];
-
-  for (int i = 0; i < count; i++)
-    [s appendString:string];
-
-  return s;
-}
-
-- (NSString *)stringByEscapingNewlines {
-  unichar    newLineCharacters[] = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085 };
-  NSString * escapedString       = [self copy];
-
-  for (int i = 0; i < 5; i++) {
-    escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%C", newLineCharacters[i]] withString:@"\\n"];
-  }
-
-  return escapedString;
-}
-
-- (NSString *)stringByEscapingControlCharacters {
-  unichar    newLineCharacters[] = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085 };
-  NSString * escapedString       = [self copy];
-
-  for (int i = 0; i < 5; i++) {
-    escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%C", newLineCharacters[i]] withString:@"\\n"];
-  }
-
-  escapedString = [escapedString stringByReplacingOccurrencesOfString:@"	" withString:@"\\t"];
-
-  return escapedString;
-}
-
-- (NSString *)stringByUnescapingControlCharacters {
-  return [[[self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-           stringByReplacingRegEx:@"%5C(?:(%[0-9A-F]{2})|(n))" withString:@"$1$2=%0A="]
-          stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-}
-
-- (NSString *)stringByTrimmingLeadingWhitespace {
-  NSInteger i = 0;
-
-  while (  [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[self characterAtIndex:i]]
-        || [[NSCharacterSet newlineCharacterSet] characterIsMember:[self characterAtIndex:i]])
-    i++;
-
-  return [self substringFromIndex:i];
-}
-
-- (NSString *)stringByTrimmingTrailingWhitespace {
-  NSInteger i = [self length] - 1;
-
-  while (  [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[self characterAtIndex:i]]
-        || [[NSCharacterSet newlineCharacterSet] characterIsMember:[self characterAtIndex:i]])
-    i--;
-
-  return [self substringToIndex:i + 1];
-}
-
-- (NSString *)stringByTrimmingWhitespace {
-  return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-}
-
+/// String by right padding to specified length with specified character
+/// @param length
+/// @param character
+/// @return NSString *
 - (NSString *)stringByRightPaddingToLength:(NSUInteger)length withCharacter:(unichar)character {
   if (self.length >= length) return self;
   else return $(@"%@%@", self, [NSString stringWithCharacter:character count:length - self.length]);
 }
 
+/// String by left padding to specified length with specified character
+/// @param length
+/// @param character
+/// @return NSString *
 - (NSString *)stringByLeftPaddingToLength:(NSUInteger)length withCharacter:(unichar)character {
   if (self.length >= length) return self;
   else return $(@"%@%@", [NSString stringWithCharacter:character count:length - self.length], self);
 }
 
-- (NSString *)stringByStrippingTrailingZeroes {
-  return [self stringByReplacingRegEx:@"(?:([0-9]+\\.[0-9]*[1-9])0+)|(?:([0-9]+)\\.0+)" withString:@"$1$2"];
-}
-
-- (NSString *)dashCaseToCamelCase {
-  NSArray         * components = [self componentsSeparatedByString:@"-"];
-  NSMutableString * camel      = nil;
-
-  for (NSString * component in components) {
-    if (!camel) camel = [component mutableCopy];
-    else [camel appendString:[component capitalizedString]];
-  }
-
-  return camel;
-}
-
-- (NSString *)camelCaseToDashCase {
-  NSMutableString * string = [@"" mutableCopy];
-  for (int i = 0; i < [self length]; i++) {
-    unichar character = [self characterAtIndex:i];
-    if (character >= 'A' && character <= 'Z')
-      [string appendString:@"-"];
-    [string appendFormat:@"%C", character];
-  }
-  return [string lowercaseString];
-}
-
+/// Turn the string into a camelCase string
+/// @return NSString *
 - (NSString *)camelCase {
+
   if (!self.length) return self;
 
   NSMutableString * string = [@"" mutableCopy];
 
   [self enumerateSubstringsInRange:NSMakeRange(0, self.length)
                            options:NSStringEnumerationByWords
-                        usingBlock:^(NSString * substring,
-                                     NSRange substringRange,
-                                     NSRange enclosingRange,
-                                     BOOL * stop)
+                        usingBlock:^(NSString * substring, NSRange substringRange, NSRange enclosingRange, BOOL * stop)
   {
     NSMutableString * s = [substring mutableCopy];
     s[0] = @(toupper([s[0] charValue]));
     [string appendString:s];
-  }
+  }];
 
-  ];
   string[0] = @(tolower([string[0] charValue]));
 
   return string;
 }
 
-- (NSString *)stringByReplacingReturnsWithSymbol {
-  return [self stringByReplacingRegEx:@"[\n\r]" withString:@"⏎"];    // \u23CE
+/// stringByWrappingLinesAtColumn:
+/// @param column
+/// @return NSString *
+- (NSString *)stringByWrappingLinesAtColumn:(NSUInteger)column {
+  NSMutableString * string = [self mutableCopy];
+  [string wrapLinesAtColumn:column];
+  return string;
 }
 
-- (NSString *)stringByRemovingCharacter:(unichar)character {
-  return [self stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%c", character]
-                                         withString:@""];
+@end
+
+@implementation NSString (MSKitComponentsAdditions)
+
+/// Convenience for `[NSArray componentsJoinedByString:]`
+/// @param array
+/// @return NSString *
+- (NSString *)join:(NSArray *)array {
+  return [array componentsJoinedByString:self];
 }
 
-- (NSString *)stringByRemovingCharactersFromSet:(NSCharacterSet *)characterSet {
-  return [[self componentsSeparatedByCharactersInSet:characterSet] componentsJoinedByString:@""];
-}
+/// Convenience for `[NSString componentsSeparatedByString:]`
+/// @param string
+/// @return NSArray *
+- (NSArray *)split:(NSString *)string { return [string componentsSeparatedByString:self]; }
 
-- (NSArray *)componentsSplitWithMaxCharactersPerLine:(NSUInteger)charactersPerLine {
-  NSInteger length = [self length];
-
-  if (length <= 0) return nil;
-
-  else if (length < charactersPerLine)
-    return @[self];
-  else {
-    NSMutableArray * components = [@[] mutableCopy];
-
-    [self enumerateSubstringsInRange:NSMakeRange(0, self.length)
-                             options:NSStringEnumerationByLines
-                          usingBlock:^(NSString * line, NSRange lineRange, NSRange enclosingRange, BOOL * stop) {
-                            if (line.length < charactersPerLine)
-                              [components addObject:[line copy]];
-                            else {
-                              NSMutableString * currentLine = [NSMutableString stringWithCapacity:charactersPerLine];
-                              [line enumerateSubstringsInRange:NSMakeRange(0, line.length)
-                                                       options:NSStringEnumerationByWords
-                                                    usingBlock:^(NSString * word, NSRange wordRange, NSRange enclosingRange, BOOL * stop) {
-                                     if (currentLine.length + word.length + 1 < charactersPerLine)
-                                       [currentLine appendFormat:@" %@", word];
-                                     else {
-                                       [components addObject:[currentLine copy]];
-                                       [currentLine setString:word];
-                                     }
-                                   }
-
-                              ];
-                              [components addObject:[currentLine copy]];
-                            }
-                          }
-
-    ];
-
-    return components;
-  }
-}
-
+/// Divide the string in two near the middle
+/// @return NSArray *
 - (NSArray *)componentsSplitNearCenterOfString {
   NSArray * components = nil;
   NSInteger length     = [self length];
@@ -309,270 +276,186 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return components;
 }
 
-- (NSString *)stringByReplacingOccurrencesWithDictionary:(NSDictionary *)replacements {
-  NSMutableString * newString = [self mutableCopy];
+/// Divide the string into segements no longer than the specified width
+/// @param charactersPerLine
+/// @return NSArray *
+- (NSArray *)componentsSplitWithMaxCharactersPerLine:(NSUInteger)charactersPerLine {
+  NSInteger length = [self length];
 
-  [newString replaceOccurrencesOfStringsWithDictionary:replacements];
+  if (length <= 0) return nil;
 
-  return newString;
+  else if (length < charactersPerLine)
+    return @[self];
+  else {
+    NSMutableArray * components = [@[] mutableCopy];
+
+    [self enumerateSubstringsInRange:NSMakeRange(0, self.length)
+                             options:NSStringEnumerationByLines
+                          usingBlock:^(NSString * line, NSRange lineRange, NSRange enclosingRange, BOOL * stop) {
+                            if (line.length < charactersPerLine)
+                              [components addObject:[line copy]];
+                            else {
+                              NSMutableString * currentLine = [NSMutableString stringWithCapacity:charactersPerLine];
+                              [line enumerateSubstringsInRange:NSMakeRange(0, line.length)
+                                                       options:NSStringEnumerationByWords
+                                                    usingBlock:^(NSString * word, NSRange wordRange, NSRange enclosingRange, BOOL * stop) {
+                                 if (currentLine.length + word.length + 1 < charactersPerLine)
+                                   [currentLine appendFormat:@" %@", word];
+                                 else {
+                                   [components addObject:[currentLine copy]];
+                                   [currentLine setString:word];
+                                 }
+                               }
+
+                              ];
+                              [components addObject:[currentLine copy]];
+                            }
+                          }
+
+    ];
+
+    return components;
+  }
 }
 
+/// Splits string on '.'
+/// @return NSArray *
 - (NSArray *)keyPathComponents { return [self componentsSeparatedByString:@"."]; }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Logging Headers/Footers
-////////////////////////////////////////////////////////////////////////////////
+@end
 
-// vertical bar: \u2502
-// horizontal bar: \u2500
-// down and right: \u250C
-// down and left: \u2510
-// up, down, and right: \u251C
-// up, down, and left: \u2524
-// up and right: \u2514
-// up and left: \u2518
+@implementation NSString (MSKitStrippingAdditions)
 
-MSSTATIC_STRING_CONST kBoxTop = @"\u250C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510";
-
-MSSTATIC_STRING_CONST kBoxBottom = @"\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                   "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518";
-
-MSSTATIC_STRING_CONST kHeaderBottom = @"\u251C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
-                                      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524";
-
-MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                                         "
-                                   "                     \u2502";
-
-- (NSString *)singleBarMessage {
-  return [[[self componentsSplitWithMaxCharactersPerLine:76] mapped:^NSString *(NSString * obj, NSUInteger idx) {
-    return [NSString stringWithFormat:@"\u2502 %@\u2502", [obj stringByPaddingToLength:77 withString:@" " startingAtIndex:0]];
-  }
-
-          ] componentsJoinedByString:@"\n"];
+/// Remove leading whitespace and line breaks
+/// @return NSString *
+- (NSString *)stringByTrimmingLeadingWhitespace {
+  NSInteger i = 0;
+  while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self characterAtIndex:i]]) i++;
+  return [self substringFromIndex:i];
 }
 
-- (NSString *)dividerWithCharacterString:(NSString *)characterString {
-  return [[NSString stringWithFormat:@"%@ %@ ",
-           [NSString stringWithString:characterString count:(78 - self.length) / 2],
-           self] stringByPaddingToLength:80 withString:characterString startingAtIndex:0];
+/// Remove trailing whitespace and line breaks
+/// @return NSString *
+- (NSString *)stringByTrimmingTrailingWhitespace {
+  NSInteger i = [self length] - 1;
+  while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self characterAtIndex:i]]) i--;
+  return [self substringToIndex:i + 1];
 }
 
-- (NSString *)singleBarColumns:(NSUInteger)padLength {
-  NSArray * titles = [self componentsSeparatedByString:@"\t"];
-
-  titles = [titles mapped:^NSString *(NSString * obj, NSUInteger idx) {
-    if (idx == titles.count - 1) return obj;
-    else return [obj stringByPaddingToLength:padLength withString:@" " startingAtIndex:0];
-  }
-
-    ];
-
-  return [[titles componentsJoinedByString:@""] singleBarMessage];
+/// Remove leading and trailing whitespace and line breaks
+/// @return NSString *
+- (NSString *)stringByTrimmingWhitespace {
+  return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-- (NSString *)columnValues:(NSUInteger)padLength {
-  NSArray * lines = [self componentsSeparatedByString:@"\n"];
-
-  lines = [lines mapped:^NSString *(NSString * obj, NSUInteger idx) {
-    return [obj singleBarColumns:padLength];
-  }];
-
-  return [[lines componentsJoinedByString:@"\n"] singleBarMessage];
+/// Remove trailing '0's
+/// @return NSString *
+- (NSString *)stringByStrippingTrailingZeroes {
+  return [self stringByReplacingRegEx:@"(?:([0-9]+\\.[0-9]*[1-9])0+)|(?:([0-9]+)\\.0+)" withString:@"$1$2"];
 }
 
-- (NSString *)singleBarHeaderBox:(NSUInteger)padLength {
-  NSArray * lines = [self componentsSeparatedByString:@"\n"];
-
-  lines = [lines mapped:^NSString *(NSString * obj, NSUInteger idx) {
-    if (idx == 0)
-      return [obj singleBarHeaders:padLength];
-    else if (idx == lines.count - 1)
-      return [NSString stringWithFormat:@"%@\n%@", [obj singleBarColumns:padLength], kBoxBottom];
-    else
-      return [obj singleBarColumns:padLength];
-  }
-
-    ];
-
-  return [lines componentsJoinedByString:@"\n"];
+/// Remove the specified character
+/// @param character
+/// @return NSString *
+- (NSString *)stringByRemovingCharacter:(unichar)character {
+  return [self stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%c", character]
+                                         withString:@""];
 }
 
-- (NSString *)singleBarHeaders:(NSUInteger)padLength {
-  return [NSString stringWithFormat:@"%1$@\n%2$@\n%3$@",
-          kBoxTop,
-          [self singleBarColumns:padLength], kHeaderBottom];
+/// Remove characters from the specified set of characters
+/// @param characterSet
+/// @return NSString *
+- (NSString *)stringByRemovingCharactersFromSet:(NSCharacterSet *)characterSet {
+  return [[self componentsSeparatedByCharactersInSet:characterSet] componentsJoinedByString:@""];
 }
 
-- (NSString *)singleBarMessageBox {
-  return [NSString stringWithFormat:@"%1$@\n%2$@\n%3$@\n%2$@\n%4$@\n",
-          kBoxTop,
-          kBoxMiddle,
-          [self singleBarMessage],
-          kBoxBottom];
+/// Remove line break characters
+/// @return NSString *
+- (NSString *)stringByRemovingLineBreaks {
+  return [self stringByRemovingCharactersFromSet:NSNewlineCharacters];
 }
 
-- (BOOL)writeToFile:(NSString *)filePath {
-  NSError * error;
+/// Removes matching substrings for C style single line comments, '//…⏎'
+- (NSString *)stringByStrippingSingleLineComments {
+  NSMutableString * string = [self mutableCopy];
+  [string stripSingleLineComments];
+  return string;
+}
 
-  [self writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-  MSHandleErrors(error);
-
-  return (!error);
+/// Removes matching substrings for C style multiline comments, '/*…*/'
+- (NSString *)stringByStrippingMultiLineComments {
+  NSMutableString * string = [self mutableCopy];
+  [string stripMultiLineComments];
+  return string;
 }
 
 @end
 
-@implementation NSMutableString (MSKitAdditions)
+@implementation NSString (MSKitEscapingAdditions)
 
-- (void)insertString:(NSString *)aString atIndexes:(NSIndexSet *)indexes {
-  __block NSUInteger offset       = 0;
-  NSUInteger         offsetLength = [aString length];
+/// quotedString
+/// @return NSString *
+- (NSString *)quotedString { return [NSString stringWithFormat:@"\"%@\"", self]; }
 
-  [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * stop)
-  {
-    NSUInteger insertionIndex = idx + offset;
-
-    if (insertionIndex < [self length]) {
-      [self insertString:aString atIndex:insertionIndex];
-      offset += offsetLength;
-    } else if (insertionIndex == [self length])   {
-      [self appendString:aString];
-      *stop = YES;
-    } else   {
-      *stop = YES;
-    }
-  }];
+/// Replace returns with ⏎
+/// @return NSString *
+- (NSString *)stringByReplacingReturnsWithSymbol {
+  return [self stringByReplacingRegEx:@"[\n\r]" withString:@"⏎"];    // \u23CE
 }
 
-- (void)wrapLinesAtColumn:(NSUInteger)column {
-  if ([self length] < column) return;
+/// Escape new line characters
+/// @return NSString *
+- (NSString *)stringByEscapingNewlines {
+  unichar    newLineCharacters[] = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085 };
+  NSString * escapedString       = [self copy];
 
-  NSLinguisticTagger * tagger = [[NSLinguisticTagger alloc]
-                                 initWithTagSchemes:@[NSLinguisticTagSchemeTokenType]
-                                            options:0];
-
-  [tagger setString:self];
-  __block NSRange     range      = NSMakeRange(0, column);
-  NSMutableIndexSet * lineBreaks = [NSMutableIndexSet indexSet];
-
-  while (range.location < [self length] - column) {
-    NSArray * tokenRanges = nil;
-    NSArray * rangeTags   = [tagger tagsInRange:range
-                                         scheme:NSLinguisticTagSchemeTokenType
-                                        options:0
-                                    tokenRanges:&tokenRanges];
-
-    [rangeTags enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:
-     ^(NSString * tag, NSUInteger idx, BOOL * stop)
-    {
-      if ([NSLinguisticTagPunctuation isEqualToString:tag]) {
-        NSRange tagRange = RangeValue(tokenRanges[idx]);
-        NSUInteger insertionIndex = NSMaxRange(tagRange);
-        [lineBreaks addIndex:insertionIndex];
-        range.location = insertionIndex;
-        *stop = YES;
-      }
-    }];
+  for (int i = 0; i < 5; i++) {
+    escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%C", newLineCharacters[i]] withString:@"\\n"];
   }
 
-  [self insertString:@"\n" atIndexes:lineBreaks];
-
+  return escapedString;
 }
 
-- (void)shiftRight:(NSUInteger)shiftAmount {
-  [self shiftRight:shiftAmount shiftFirstLine:YES];
-}
+/// Escape control characters
+/// @return NSString *
+- (NSString *)stringByEscapingControlCharacters {
+  unichar    newLineCharacters[] = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085 };
+  NSString * escapedString       = [self copy];
 
-- (void)shiftRight:(NSUInteger)shiftAmount shiftFirstLine:(BOOL)shiftFirstLine {
-
-  NSString * padding = [NSString stringWithCharacter:' ' count:shiftAmount];
-  if (shiftFirstLine)
-    [self insertString:padding atIndex:0];
-    [self replaceOccurrencesOfString:@"\n" withString:$(@"\n%@", padding)
-                             options:0
-                               range:NSMakeRange(0, [self length])];
-}
-
-- (void)setObject:(NSNumber *)object atIndexedSubscript:(NSUInteger)idx {
-  if (idx >= self.length) [[NSException exceptionWithName:NSRangeException
-                                                   reason:@"index out of range" userInfo:nil] raise];
-
-  [self replaceCharactersInRange:NSMakeRange(idx, 1) withString:$(@"%c", [object charValue])];
-}
-
-- (void)removeCharacter:(unichar)character {
-  [self replaceOccurrencesOfString:[NSString stringWithFormat:@"%c", character]
-                        withString:@""
-                           options:0 range:NSMakeRange(0, self.length)];
-}
-
-- (void)removeCharactersFromSet:(NSCharacterSet *)characterSet {
-  self.string = [self stringByRemovingCharactersFromSet:characterSet];
-}
-
-- (void)replaceOccurrencesOfString:(NSString *)string withString:(NSString *)replacementString {
-  [self replaceOccurrencesOfString:string withString:replacementString options:0 range:NSMakeRange(0, [self length])];
-}
-
-- (void)replaceOccurrencesOfStringsWithDictionary:(NSDictionary *)replacements {
-  if (!replacements) return;
-
-  [replacements enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
-    NSRange range = [self rangeOfString:(NSString *)key];
-
-    while (range.location != NSNotFound) {
-      [self replaceCharactersInRange:range withString:(NSString *)obj];
-      range = [self rangeOfString:(NSString *)key];
-    }
+  for (int i = 0; i < 5; i++) {
+    escapedString = [escapedString stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%C", newLineCharacters[i]] withString:@"\\n"];
   }
 
-  ];
+  escapedString = [escapedString stringByReplacingOccurrencesOfString:@"  "withString:@"\\t"];
+
+  return escapedString;
+}
+
+/// Unescape control characters
+/// @return NSString *
+- (NSString *)stringByUnescapingControlCharacters {
+  return [[[self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+           stringByReplacingRegEx:@"%5C(?:(%[0-9A-F]{2})|(n))" withString:@"$1$2=%0A="]
+          stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Regular expressions
-////////////////////////////////////////////////////////////////////////////////
-
 
 @implementation NSString (MSKitRegularExpressionAdditions)
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Regular Expressions
-////////////////////////////////////////////////////////////////////////////////
-
-// Range of regular expression
-- (NSRange)rangeOfRegEX:(NSString *)regex { return [self rangeOfMatch:0 forRegEx:regex]; }
-
-- (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex {
-  return [self rangeOfCapture:0 inMatch:match forRegEx:regex];
-}
-
+/// Returns the range of the specified capture in the first match for the regular expression provided.
+/// @param capture
+/// @param regex
+/// @return NSRange
 - (NSRange)rangeOfCapture:(NSUInteger)capture forRegEx:(NSString *)regex {
   return [self rangeOfCapture:capture inMatch:0 forRegEx:regex];
 }
 
+/// Returns the range of the specified capture in the specified match for the regular expression provided.
+/// @param capture
+/// @param match
+/// @param regex
+/// @return NSRange
 - (NSRange)rangeOfCapture:(NSUInteger)capture inMatch:(NSUInteger)match forRegEx:(NSString *)regex {
   NSError             * error;
   NSRegularExpression * re = [NSRegularExpression
@@ -580,7 +463,7 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
                                                    options:NSRegularExpressionAnchorsMatchLines
                                                      error:&error];
 
-  if (error) { MSHandleErrors(error); return NSNotFoundRange; }
+  if (MSHandleErrors(error)) return NSNotFoundRange;
 
   NSArray * matches = [re matchesInString:self options:0 range:NSMakeRange(0, [self length])];
 
@@ -589,84 +472,87 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
           : NSNotFoundRange);
 }
 
+
+/// Returns the range for the first match for the regular expression provided.
+- (NSRange)rangeOfRegEx:(NSString *)regex { return [self rangeOfMatch:0 forRegEx:regex]; }
+
+/// Returns the range for the specified match for the regular expression provided.
+/// @param match
+/// @param regex
+/// @return NSRange
+- (NSRange)rangeOfMatch:(NSUInteger)match forRegEx:(NSString *)regex {
+  return [self rangeOfCapture:0 inMatch:match forRegEx:regex];
+}
+
+/// Returns an array containing the ranges of any matches for the regular expression provided.
+/// @param regex
+/// @return NSArray *
 - (NSArray *)rangesOfMatchesForRegEx:(NSString *)regex {
   NSError             * error;
   NSRegularExpression * re = [NSRegularExpression
                               regularExpressionWithPattern:regex
                                                    options:NSRegularExpressionAnchorsMatchLines
                                                      error:&error];
-
-  if (error) { MSHandleErrors(error); return nil; }
-
-  return [[re matchesInString:self options:0 range:NSMakeRange(0, [self length])]
-          valueForKeyPath:@"range"];
+  return (MSHandleErrors(error)
+          ? nil
+          : [[re matchesInString:self options:0 range:self.fullRange] valueForKeyPath:@"range"]);
 }
 
-- (NSArray *)componentsSeparatedByRegEx:(NSString *)regex {
-  NSMutableString     * string = [NSMutableString stringWithString:self];
-  NSError             * error;
-  NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                       options:NSRegularExpressionAnchorsMatchLines
-                                                                         error:&error];
-
-  if (error) { MSHandleErrors(error); return nil; }
-
-  [re replaceMatchesInString:string options:0 range:NSMakeRange(0, self.length) withTemplate:@"<match>"];
-
-  return [string componentsSeparatedByString:@"<match>"];
-}
-
+/// Returns the string formed by the range of the first match for the regular expression provided.
+/// @param regex
+/// @return NSString *
 - (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex {
   return [self stringByMatchingRegEx:regex match:0 capture:0];
 }
 
+/// Returns the string formed by the range of the specified capture in the first match for the expression provided.
+/// @param regex
+/// @param capture
+/// @return NSString *
 - (NSString *)stringByMatchingFirstOccurrenceOfRegEx:(NSString *)regex capture:(NSUInteger)capture {
   return [self stringByMatchingRegEx:regex match:0 capture:capture];
 }
 
-- (NSString *)stringByMatchingRegEx:(NSString *)regex
-                              match:(NSUInteger)match
-                            capture:(NSUInteger)capture {
+/// Returns the string formed by the range of the specified capture in the specified match for the expression provided.
+/// @param regex
+/// @param match
+/// @param capture
+/// @return NSString *
+- (NSString *)stringByMatchingRegEx:(NSString *)regex match:(NSUInteger)match capture:(NSUInteger)capture {
   NSRange range = [self rangeOfCapture:capture inMatch:match forRegEx:regex];
-
   return (range.location == NSNotFound ? nil : [self substringWithRange:range]);
 }
 
-- (NSArray *)matchingSubstringsForRegEx:(NSString *)regex {
-  return [[self rangesOfMatchesForRegEx:regex] mapped:^NSString *(NSValue * range, NSUInteger idx) {
-    NSRange r = RangeValue(range);
-    return (r.location == NSNotFound ? @"" : [self substringWithRange:r]);
-  }];
+
+/// Replaces occurences of the specified regular expression with the given string. Replacement strings can include
+/// captures using $*capture*. i.e. @"$1". Alternatively, text can be provided to replace a particular capture with
+/// $*capture*=*text*=. i.e. @"$1 $2=%0A="
+/// @param regex The regular expression used to locate text to replace.
+/// @param string The replacement text
+- (NSString *)stringByReplacingRegEx:(NSString *)regex withString:(NSString *)string {
+  NSMutableString * newString = [self mutableCopy];
+  [newString replaceRegEx:regex withString:string];
+  return newString;
 }
 
-- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex {
-  return [self numberOfMatchesForRegEx:regex options:0];
+/// Returns an array of substrings created by splitting the string on matches for the regular expression provided.
+/// @param regex
+/// @return NSArray *
+- (NSArray *)componentsSeparatedByRegEx:(NSString *)regex {
+  NSMutableString     * string = [self mutableCopy];
+  [string sub:regex template:@"<match>"];
+  return [string componentsSeparatedByString:@"<match>"];
 }
 
-- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex options:(NSRegularExpressionOptions)opts {
-  NSError             * error = NULL;
-  NSRegularExpression * re    = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                          options:opts
-                                                                            error:&error];
-
-  if (error) { MSHandleErrors(error); return 0; }
-
-  return [re numberOfMatchesInString:self options:0 range:NSMakeRange(0, [self length])];
-}
-
-- (BOOL)hasSubstring:(NSString *)substring options:(NSRegularExpressionOptions)options {
-  return ([self numberOfMatchesForRegEx:substring  // [NSRegularExpression escapedPatternForString:substring]
-                                options:options]);
-}
-
-- (BOOL)hasSubstring:(NSString *)substring { return [self hasSubstring:substring options:0]; }
-
+/// Returns the array of `NSTextCheckingResults` obtained by matching the regular expression provided.
+/// @param regex
+/// @return NSArray *
 - (NSArray *)matchesForRegEx:(NSString *)regex {
   NSError             * error = NULL;
   NSRegularExpression * re    = [NSRegularExpression
-                              regularExpressionWithPattern:regex
-                                                   options:NSRegularExpressionAnchorsMatchLines
-                                                     error:&error];
+                                 regularExpressionWithPattern:regex
+                                                      options:NSRegularExpressionAnchorsMatchLines
+                                                        error:&error];
 
   if (error) { MSHandleErrors(error); return nil; }
 
@@ -675,120 +561,95 @@ MSSTATIC_STRING_CONST kBoxMiddle = @"\u2502                                     
   return matches;
 }
 
-/*
-- (NSString *)sub:(NSString *)regex template:(NSString *)temp options:(NSRegularExpressionOptions)opts {
-  NSError             * error = nil;
-  NSRegularExpression * exp   = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                          options:opts
-                                                                            error:&error];
-
-  if (error) { MSHandleErrors(error); return nil; }
-
-  NSMutableString * string = [self mutableCopy];
-
-  return [exp stringByReplacingMatchesInString:string
-                                       options:0
-                                         range:NSMakeRange(0, string.length)
-                                  withTemplate:temp];
-}
-*/
-
-- (NSString *)stringByReplacingRegEx:(NSString *)regex withString:(NSString *)string {
-  NSMutableString * newString = [self mutableCopy];
-
-  [newString replaceRegEx:regex withString:string];
-
-  return newString;
+/// Returns an array of the substrings formed by matching the string against the regular expression provided.
+/// @param regex
+/// @return NSArray *
+- (NSArray *)matchingSubstringsForRegEx:(NSString *)regex {
+  return [[self rangesOfMatchesForRegEx:regex] mapped:^(NSValue * range, NSUInteger idx) {
+    NSRange r = RangeValue(range);
+    return (r.location == NSNotFound ? @"" : [self substringWithRange:r]);
+  }];
 }
 
+/// Returns a dictionary of the captured strings in the first match for the regular expression provided using specified
+/// array as keys for the dictionary entries, or `NSNumber` objects if keys are not provided.
+/// @param regex
+/// @param keys
+/// @return NSDictionary *
+- (NSDictionary *)dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex keys:(NSArray *)keys {
+  return [self dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex:regex keys:keys options:0];
+}
+
+/// Returns a dictionary of the captured strings in the first match for the regular expression provided using specified
+/// array as keys for the dictionary entries, or `NSNumber` objects if keys are not provided and the specified options.
+/// @param regex
+/// @param keys
+/// @param options
+/// @return NSDictionary *
+- (NSDictionary *)dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex
+                                                                         keys:(NSArray *)keys
+                                                                      options:(NSRegularExpressionOptions)options
+{
+
+  NSError * error = nil;
+  NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:regex options:options error:&error];
+  NSUInteger keyMax = [keys count];
+  if (MSHandleErrors(error)) return nil;
+  NSMutableDictionary * dict = [@{} mutableCopy];
+  NSTextCheckingResult * match = [re firstMatchInString:self options:9 range:self.fullRange];
+  if (match) {
+    for (NSUInteger i = 0; i < re.numberOfCaptureGroups; i++) {
+      NSRange r = [match rangeAtIndex:i + 1];
+      dict[(i < keyMax ? keys[i] : @(i))] = (r.location == NSNotFound ? NullObject : [self substringWithRange:r]);
+    }
+  }
+  return dict;
+}
+
+/// Returns an array of the substrings captured in the first match for the regular expression provided.
+/// @param regex
+/// @return NSArray *
 - (NSArray *)capturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex {
   return [self capturedStringsByMatchingFirstOccurrenceOfRegex:regex options:0];
 }
 
+
+/// Array of the substrings captured in the first match for the expression provided using the specified options.
+/// @param regex
+/// @param options
+/// @return NSArray *
 - (NSArray *)capturedStringsByMatchingFirstOccurrenceOfRegex:(NSString *)regex
-                                                     options:(NSRegularExpressionOptions)options {
+                                                     options:(NSRegularExpressionOptions)options
+{
+  return [[self dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex:regex keys:nil options:options] allValues];
+}
+
+/// Returns the number of matches for the regular expression provided.
+/// @param regex
+/// @return NSUInteger
+- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex { return [self numberOfMatchesForRegEx:regex options:0]; }
+
+/// Returns the number of matches for the regular expression provided using the specified options.
+/// @param regex
+/// @param opts
+/// @return NSUInteger
+- (NSUInteger)numberOfMatchesForRegEx:(NSString *)regex options:(NSRegularExpressionOptions)opts {
   NSError             * error = nil;
-  NSRegularExpression * exp   = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                          options:options
-                                                                            error:&error];
-
-  if (error) { MSHandleErrors(error); return nil; }
-
-  NSTextCheckingResult * match = [exp firstMatchInString:self
-                                                 options:0
-                                                   range:NSMakeRange(0, [self length])];
-
-  NSMutableArray * captures = [NSMutableArray arrayWithNullCapacity:exp.numberOfCaptureGroups];
-
-  if (match) {
-    for (NSUInteger i = 0; i < exp.numberOfCaptureGroups; i++) {
-      NSRange captureGroupRange = [match rangeAtIndex:i + 1];
-
-      if (captureGroupRange.location == NSNotFound) continue;
-
-      captures[i] = [self substringWithRange:captureGroupRange];
-    }
-  }
-
-  return captures;
+  NSRegularExpression * re    = [NSRegularExpression regularExpressionWithPattern:regex options:opts error:&error];
+  return (MSHandleErrors(error) ? 0 : [re numberOfMatchesInString:self options:0 range:NSMakeRange(0, [self length])]);
 }
 
-@end
-
-@implementation NSMutableString (MSKitRegularExpressionAdditions)
-
-- (void)replaceRegEx:(NSString *)regex withString:(NSString *)string {
-  NSInteger startingLength = self.length;
-  NSArray * matches        = [self matchesForRegEx:regex];
-  NSArray * captures       = [string matchingSubstringsForRegEx:@"\\$[0-9]([=][^=]+[=])?"];
-
-  for (NSTextCheckingResult * match in matches) {
-    NSRange matchRange = [match range];
-
-    matchRange.location -= startingLength - self.length;
-    NSMutableString * replaceString = [string mutableCopy];
-
-    for (NSString * capture in captures) {
-      NSString * capReplace = [capture stringByMatchingFirstOccurrenceOfRegEx:@"\\$[0-9][=]([^=]+)[=]" capture:1];
-      NSString * capNum     = [capture stringByRemovingCharacter:'$'];
-
-      if (capNum) {
-        NSInteger  n       = [capNum integerValue];
-        NSString * rString = @"";
-        NSRange    r       = [match rangeAtIndex:n];
-
-        if (n <= [match numberOfRanges] && r.location != NSNotFound) {
-          r.location -= startingLength - self.length;
-
-          if (capReplace)
-            rString = capReplace;
-          else
-            rString = [self substringWithRange:r];
-        }
-
-        [replaceString replaceOccurrencesOfString:capture withString:rString options:0 range:NSMakeRange(0, replaceString.length)];
-      }
-    }
-
-    [self replaceCharactersInRange:matchRange withString:replaceString];
-  }
+/// Returns whether a match is found for the regular expression provided using the specified options.
+/// @param substring
+/// @param options
+/// @return BOOL
+- (BOOL)hasSubstring:(NSString *)substring options:(NSRegularExpressionOptions)options {
+  return ([self numberOfMatchesForRegEx:substring options:options]);
 }
 
-- (void)sub:(NSString *)regex template:(NSString *)temp options:(NSRegularExpressionOptions)opts {
-  NSError             * error             = nil;
-  NSRegularExpression * regularExpression = [NSRegularExpression regularExpressionWithPattern:regex
-                                                                                      options:opts
-                                                                                        error:&error];
-
-  if (error) { MSHandleErrors(error); return; }
-
-  NSMutableString * string = [self mutableCopy];
-
-
-  [regularExpression replaceMatchesInString:string
-                                    options:0
-                                      range:NSMakeRange(0, string.length)
-                               withTemplate:temp];
-}
+/// Returns whether a match is found for the regular expression provided.
+/// @param substring
+/// @return BOOL
+- (BOOL)hasSubstring:(NSString *)substring { return [self hasSubstring:substring options:0]; }
 
 @end

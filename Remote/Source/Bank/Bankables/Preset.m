@@ -10,7 +10,7 @@
 #import "CoreDataManager.h"
 #import "RemoteElementView_Private.h"
 #import "Bank.h"
-#import "PresetDetailViewController.h"
+#import "PresetViewController.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -22,7 +22,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// presetWithElement:
-/// @param element description
+/// @param element
 /// @return instancetype
 + (instancetype)presetWithElement:(RemoteElement *)element {
   assert(element);
@@ -62,15 +62,15 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// detailViewController
-/// @return PresetDetailViewController *
-- (PresetDetailViewController *)detailViewController {
-  return [PresetDetailViewController controllerWithItem:self];
+/// @return PresetViewController *
+- (PresetViewController *)detailViewController {
+  return [PresetViewController controllerWithItem:self];
 }
 
 /// editingViewController
-/// @return PresetDetailViewController *
-- (PresetDetailViewController *)editingViewController {
-  return [PresetDetailViewController controllerWithItem:self editing:YES];
+/// @return PresetViewController *
+- (PresetViewController *)editingViewController {
+  return [PresetViewController controllerWithItem:self editing:YES];
 }
 
 /// isPreviewable

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "MSKitProtocols.h"
 @class MSDictionary;
 
@@ -14,7 +14,7 @@ typedef void(^NSDictionaryEnumerationBlock)(id obj, id key, BOOL *stop);
 typedef BOOL(^NSDictionaryPredicateBlock)  (id obj, id key, BOOL *stop);
 typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
 
-@interface NSDictionary (MSKitAdditions) <MSJSONExport, MSKeySearchable, MSKeyContaining>
+@interface NSDictionary (MSKitAdditions) <MSJSONExport, MSKeySearchable, MSKeyContaining, MSObjectContaining>
 
 @property (nonatomic, readonly) BOOL isEmpty;
 

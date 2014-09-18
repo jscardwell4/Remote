@@ -17,6 +17,7 @@
 #import <mach/mach_host.h>
 #import <mach/host_info.h>
 #import <libkern/OSAtomic.h>
+#import "NSMutableString+MSKitAdditions.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - MSLog

@@ -11,6 +11,7 @@
 #import "MSKitMacros.h"
 #import "NSObject+MSKitAdditions.h"
 #import "MSJSONSerialization.h"
+#import "NSMutableString+MSKitAdditions.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -18,10 +19,61 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation NSArray (MSKitAdditions)
 
+/// allValues
+/// @return NSArray *
 - (NSArray *)allValues { return self; }
 
+/// topLevelObjects
+/// @return NSArray *
+- (NSArray *)topLevelObjects { return self; }
+
+/// topLevelObjectsOfKind:
+/// @param objectKind
+/// @return NSArray *
+- (NSArray *)topLevelObjectsOfKind:(Class)objectKind {
+  return [self filtered:^BOOL(id evaluatedObject) { return [evaluatedObject isKindOfClass:objectKind]; }];
+}
+
+/// topLevelObjectsConformingTo:
+/// @param objectKind
+/// @return NSArray *
+- (NSArray *)topLevelObjectsConformingTo:(Protocol *)protocol {
+  return [self filtered:^BOOL(id evaluatedObject) { return [evaluatedObject conformsToProtocol:protocol]; }];
+}
+
+/// allObjectsOfKind:
+/// @param objectKind
+/// @return NSArray *
+- (NSArray *)allObjectsOfKind:(Class)objectKind {
+
+  NSMutableArray * objects = [[self topLevelObjectsOfKind:objectKind] mutableCopy];
+  [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    if ([obj conformsToProtocol:@protocol(MSObjectContaining)])
+      [objects addObjectsFromArray:[obj allObjectsOfKind:objectKind]];
+  }];
+
+  return objects;
+
+}
+
+/// allObjectsConformingTo:
+/// @param objectKind
+/// @return NSArray *
+- (NSArray *)allObjectsConformingTo:(Protocol *)protocol {
+
+  NSMutableArray * objects = [[self topLevelObjectsConformingTo:protocol] mutableCopy];
+  [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    if ([obj conformsToProtocol:@protocol(MSObjectContaining)])
+      [objects addObjectsFromArray:[obj allObjectsConformingTo:protocol]];
+  }];
+
+  return objects;
+  
+}
+
+
 /// _lastObjectForKeyPath:
-/// @param keyPath description
+/// @param keyPath
 /// @return id
 - (id)_lastObjectForKeyPath:(NSString *)keyPath {
   return [self.lastObject valueForKeyPath:keyPath];
@@ -32,8 +84,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (BOOL)isEmpty { return self.count == 0; }
 
 /// arrayWithObject:count:
-/// @param obj description
-/// @param count description
+/// @param obj
+/// @param count
 /// @return NSArray *
 + (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count {
   return [NSMutableArray arrayWithObject:obj count:count];
@@ -60,7 +112,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// writeJSONToFile:
-/// @param file description
+/// @param file
 /// @return BOOL
 - (BOOL)writeJSONToFile:(NSString *)file {
   NSString * json = self.JSONString;
@@ -117,7 +169,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSArray *)uniqued { return [[self set] allObjects]; }
 
 /// arrayFromRange:
-/// @param range description
+/// @param range
 /// @return NSArray *
 + (NSArray *)arrayFromRange:(NSRange)range {
   NSMutableArray * array = [NSMutableArray arrayWithCapacity:range.length];
@@ -144,7 +196,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 { return [NSOrderedSet orderedSetWithArray:self]; }
 
 /// arrayByAddingObjects:
-/// @param objects description
+/// @param objects
 /// @return NSArray *
 - (NSArray *)arrayByAddingObjects:(id)objects {
   if ([objects isKindOfClass:[NSArray class]])
@@ -162,35 +214,35 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// arrayByAddingKeysFromDictionary:
-/// @param dictionary description
+/// @param dictionary
 /// @return NSArray *
 - (NSArray *)arrayByAddingKeysFromDictionary:(NSDictionary *)dictionary {
   return [self arrayByAddingObjectsFromArray:[dictionary allKeys]];
 }
 
 /// arrayByAddingValuesFromDictionary:
-/// @param dictionary description
+/// @param dictionary
 /// @return NSArray *
 - (NSArray *)arrayByAddingValuesFromDictionary:(NSDictionary *)dictionary {
   return [self arrayByAddingObjectsFromArray:[dictionary allValues]];
 }
 
 /// arrayByAddingObjectsFromSet:
-/// @param set description
+/// @param set
 /// @return NSArray *
 - (NSArray *)arrayByAddingObjectsFromSet:(NSSet *)set {
   return [self arrayByAddingObjectsFromArray:[set allObjects]];
 }
 
 /// arrayByAddingObjectsFromOrderedSet:
-/// @param orderedSet description
+/// @param orderedSet
 /// @return NSArray *
 - (NSArray *)arrayByAddingObjectsFromOrderedSet:(NSOrderedSet *)orderedSet {
   return [self arrayByAddingObjectsFromArray:[orderedSet array]];
 }
 
 /// filteredArrayUsingPredicateWithFormat:
-/// @param format description
+/// @param format
 /// @return NSArray *
 - (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format, ...{
   va_list args;
@@ -205,14 +257,14 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// filteredArrayUsingPredicateWithBlock:
-/// @param block description
+/// @param block
 /// @return NSArray *
 - (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject, NSDictionary * bindings))block {
   return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:block]];
 }
 
 /// filtered:
-/// @param block description
+/// @param block
 /// @return NSArray *
 - (NSArray *)filtered:(BOOL (^)(id evaluatedObject))block {
 
@@ -223,7 +275,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// filteredUsingPredicate:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 - (NSArray *)filteredUsingPredicate:(NSPredicate *)predicate {
   return [self filteredArrayUsingPredicate:predicate];
@@ -231,7 +283,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// findFirstUsingPredicate:
-/// @param predicate description
+/// @param predicate
 /// @return id
 - (id)findFirstUsingPredicate:(NSPredicate *)predicate {
 
@@ -250,7 +302,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// findFirst:
-/// @param predicate description
+/// @param predicate
 /// @return id
 - (id)findFirst:(BOOL (^)(id evaluatedObject))predicate {
 
@@ -268,7 +320,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// objectPassingTest:
-/// @param predicate description
+/// @param predicate
 /// @return id
 - (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate {
   __block NSUInteger index = NSNotFound;
@@ -281,7 +333,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// objectsPassingTest:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 - (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL * stop))predicate {
   NSIndexSet * idxs = [self indexesOfObjectsPassingTest:predicate];
@@ -289,7 +341,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// mapped:
-/// @param block description
+/// @param block
 /// @return NSArray *
 - (NSArray *)mapped:(id (^)(id, NSUInteger))block {
   NSMutableArray * array = [self mutableCopy];
@@ -303,14 +355,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   NSMutableArray * array = [self mutableCopy];
   [array flatten];
   return array;
-}
-
-/// makeObjectsPerformSelectorBlock:
-/// @param block description
-- (void)makeObjectsPerformSelectorBlock:(void (^)(id object))block {
-  if (block) {
-    for (id object in self) block(object);
-  }
 }
 
 /// compacted
@@ -327,8 +371,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @implementation NSMutableArray (MSKitAdditions)
 
 /// arrayWithObject:count:
-/// @param obj description
-/// @param count description
+/// @param obj
+/// @param count
 /// @return instancetype
 + (instancetype)arrayWithObject:(id)obj count:(NSUInteger)count {
   if (!(obj && count)) return nil;
@@ -343,7 +387,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// arrayWithNullCapacity:
-/// @param capacity description
+/// @param capacity
 /// @return id
 + (id)arrayWithNullCapacity:(NSUInteger)capacity {
   NSMutableArray * array = [NSMutableArray arrayWithCapacity:capacity];
@@ -352,7 +396,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// filter:
-/// @param block description
+/// @param block
 - (void)filter:(BOOL (^)(id evaluatedObject))block {
 
   NSMutableIndexSet * indexes = [NSMutableIndexSet indexSet];
@@ -391,7 +435,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)unique { [self setArray:[self uniqued]]; }
 
 /// map:
-/// @param block description
+/// @param block
 - (void)map:(id (^)(id, NSUInteger))block {
   for (int i = 0; i < self.count; i++)
     self[i] = block(self[i], i);

@@ -8,7 +8,6 @@
 #import "REPresetCollectionViewController.h"
 #import "Preset.h"
 #import "BankObjectPreview.h"
-#import <MSKit/MSKit.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - BOPresetCell

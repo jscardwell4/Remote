@@ -20,13 +20,13 @@ MSIDENTIFIER_DEFINITION(BankCollectionHeader);
 @implementation BankCollectionHeaderReusableView
 
 /// initWithFrame:
-/// @param frame description
+/// @param frame
 /// @return instancetype
 - (instancetype)initWithFrame:(CGRect)frame {
 
   if ((self = [super initWithFrame:frame])) {
 
-    self.backgroundColor = [UIColor colorWithR:236 G:236 B:236 A:230];
+    self.backgroundColor = [UIColor colorWithR:136 G:136 B:136 A:230];
     UIButton * button = [UIButton newForAutolayout];
     button.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     [button addTarget:self action:@selector(toggleItems:) forControlEvents:UIControlEventTouchUpInside];
@@ -44,11 +44,11 @@ MSIDENTIFIER_DEFINITION(BankCollectionHeader);
 }
 
 /// toggleItems:
-/// @param sender description
+/// @param sender
 - (IBAction)toggleItems:(id)sender { [self.controller toggleItemsForSection:self.section]; }
 
 /// setTitle:
-/// @param title description
+/// @param title
 - (void)setTitle:(NSString *)title { [self.button setTitle:title forState:UIControlStateNormal]; }
 
 /// title

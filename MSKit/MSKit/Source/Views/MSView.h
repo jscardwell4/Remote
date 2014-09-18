@@ -5,8 +5,8 @@
 //  Created by Jason Cardwell on 3/23/12.
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 typedef NS_OPTIONS(uint8_t, MSViewStyle) {
     // drawing options

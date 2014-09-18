@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 typedef NS_ENUM(BOOL, MSBit) {
     MSBit1 = YES,

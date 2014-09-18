@@ -34,7 +34,6 @@
 
 + (BOOL)instancesRespondToSelector:(SEL)aSelector
 {
-    return YES;
     if ([[self superclass] instancesRespondToSelector:aSelector]) return YES;
     else if ([[NSArray class] instancesRespondToSelector:aSelector]) return YES;
     else return NO;
@@ -42,7 +41,6 @@
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
-    return YES;
     if ([super respondsToSelector:aSelector]) return YES;
     else if ([_array respondsToSelector:aSelector]) return YES;
     else return NO;

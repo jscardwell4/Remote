@@ -67,7 +67,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// This method updates the non-collection attributes with values for the specified state
-/// @param state description
+/// @param state
 - (void)updateButtonForState:(REState)state {
   self.title           = self.titles[state];
   self.icon            = self.icons[state];
@@ -78,7 +78,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// This method updates the collection attributes with values for the specified mode and then
 /// calls `updateButtonForState:` to update the non-collection attributes.
-/// @param mode description
+/// @param mode
 - (void)updateForMode:(NSString *)mode {
   [super updateForMode:mode];
   self.command          = ([self commandForMode:mode]           ?: [self commandForMode:REDefaultMode]);

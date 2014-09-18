@@ -5,10 +5,13 @@
 //  Created by Jason Cardwell on 2/23/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+
+@import Foundation;
+@import UIKit;
+@import Lumberjack;
 #import "MSKitDefines.h"
 #import "MSKitMacros.h"
 #import "MSError.h"
-#import "Lumberjack/Lumberjack.h"
 #import "MSLogMacros.h"
 #import "NSObject+MSKitAdditions.h"
 

@@ -9,10 +9,10 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import <CoreData/CoreData.h>
 
 #import "ModelObject.h"

@@ -92,9 +92,9 @@
  EA1002
  5/3/2013
  */
-
-#import <UIKit/UIKit.h>
-#import <Accelerate/Accelerate.h>
+@import Foundation;
+@import UIKit;
+@import Accelerate;
 
 @interface UIImage (ImageEffects)
 

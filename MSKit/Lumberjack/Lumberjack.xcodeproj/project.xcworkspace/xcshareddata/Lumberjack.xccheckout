@@ -12,20 +12,24 @@
 	<dict>
 		<key>5AF28B4A-B23E-458B-8B06-80CDAE14A9A5</key>
 		<string>https://github.com/robbiehanson/CocoaLumberjack</string>
+		<key>F6E31C773CB0250D1ABED18C2448F5DAA1102752</key>
+		<string>https://github.com/jscardwell4/Remote.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Xcode/LumberjackFramework/Mobile/Lumberjack.xcodeproj/project.xcworkspace</string>
+	<string>MSKit/Lumberjack/Lumberjack.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>5AF28B4A-B23E-458B-8B06-80CDAE14A9A5</key>
-		<string>../../../../..</string>
+		<string>../../../../../CocoaLumberjack</string>
+		<key>F6E31C773CB0250D1ABED18C2448F5DAA1102752</key>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/robbiehanson/CocoaLumberjack</string>
+	<string>https://github.com/jscardwell4/Remote.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>5AF28B4A-B23E-458B-8B06-80CDAE14A9A5</string>
+	<string>F6E31C773CB0250D1ABED18C2448F5DAA1102752</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>5AF28B4A-B23E-458B-8B06-80CDAE14A9A5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>CocoaLumberjack</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F6E31C773CB0250D1ABED18C2448F5DAA1102752</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Remote</string>
 		</dict>
 	</array>
 </dict>

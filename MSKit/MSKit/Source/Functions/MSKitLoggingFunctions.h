@@ -8,10 +8,10 @@
 #if TARGET_OS_IPHONE
 #import "UIImage+MSKitAdditions.h"
 #endif
-
-#import <QuartzCore/QuartzCore.h>
-#import <Accelerate/Accelerate.h>
-#import <CoreData/CoreData.h>
+@import Foundation;
+@import QuartzCore;
+@import Accelerate;
+@import CoreData;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Functions

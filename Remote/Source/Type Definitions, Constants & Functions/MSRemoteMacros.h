@@ -9,7 +9,7 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 #define DefaultDDLogLevel LOG_LEVEL_WARN
 

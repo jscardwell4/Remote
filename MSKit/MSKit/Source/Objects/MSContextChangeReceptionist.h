@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+@import Foundation;
+@import CoreData;
 #import "MSKitDefines.h"
 
 @interface MSContextChangeReceptionist : NSObject

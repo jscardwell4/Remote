@@ -5,7 +5,7 @@
 //  Created by Jason Cardwell on 10/15/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 // remote element types
 MSEXTERN_KEY(RETypeUndefinedJSON);

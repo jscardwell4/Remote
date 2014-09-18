@@ -10,35 +10,52 @@
 #import <UIKit/UIGestureRecognizerSubclass.h>
 #import "MSKitMacros.h"
 #import "MSKitLoggingFunctions.h"
-#import <objc/runtime.h>
-#import <objc/message.h>
+@import ObjectiveC;
 
 @implementation MSLongPressGestureRecognizer {
-    NSMutableArray * _mstargets;
+  NSMutableArray * _mstargets;
 }
 
+/// initWithTarget:action:
+/// @param target
+/// @param action
+/// @return id
 - (id)initWithTarget:(id)target action:(SEL)action {
-    if (self = [super initWithTarget:target action:action]) {
-        if (target && action)
-            _mstargets = [@[@[SelectorString(action),target]] mutableCopy];
-        else
-            _mstargets = [@[] mutableCopy];
-    }
-    return self;
+
+  if (self = [super initWithTarget:target action:action]) {
+    _mstargets = [@[] mutableCopy];
+    [self addTarget:target action:action];
+  }
+
+  return self;
 }
 
+/// addTarget:action:
+/// @param target
+/// @param action
 - (void)addTarget:(id)target action:(SEL)action {
-    [super addTarget:target action:action];
-    if (target && action)
-        [_mstargets addObject:@[SelectorString(action),target]];
+
+  [super addTarget:target action:action];
+
+  if (target && action) {
+
+    NSMethodSignature * signature = [target methodSignatureForSelector:action];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation setTarget:target];
+
+    [_mstargets addObject:invocation];
+
+  }
 }
+
+/// touchesBegan:withEvent:
+/// @param touches
+/// @param event
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    for (NSArray * actionTargetPair in self->_mstargets) {
-        SEL selector = NSSelectorFromString(actionTargetPair[0]);
-        id target = actionTargetPair[1];
-        objc_msgSend(target,selector,self);
-    }
-    [super touchesBegan:touches withEvent:event];
+
+  for (NSInvocation * invocation in _mstargets) [invocation invoke];
+  [super touchesBegan:touches withEvent:event];
+  
 }
 
 @end

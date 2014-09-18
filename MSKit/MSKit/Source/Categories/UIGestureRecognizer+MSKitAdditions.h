@@ -5,9 +5,10 @@
 //  Created by Jason Cardwell on 10/9/12.
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
+
+@import Foundation;
+@import UIKit;
 #import "MSKitDefines.h"
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 @interface UIGestureRecognizer (MSKitAdditions)
 
@@ -45,7 +46,7 @@ MSSTATIC_INLINE NSString * NSStringFromUIGestureRecognizerState(UIGestureRecogni
 		case UIGestureRecognizerStateFailed:
 			gestureRecognizerStateString = @"UIGestureRecognizerStateFailed";
 			break;
-            
+
 	}
 	return gestureRecognizerStateString;
 }

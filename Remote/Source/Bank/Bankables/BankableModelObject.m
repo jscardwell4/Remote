@@ -8,7 +8,7 @@
 
 #import "BankableModelObject.h"
 #import "CoreDataManager.h"
-#import "BankableDetailTableViewController.h"
+#import "BankItemViewController.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -21,7 +21,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
@@ -81,12 +81,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 + (UIImage *)directoryIcon { return nil; }
 
 /// detailViewController
-/// @return BankableDetailTableViewController *
-- (BankableDetailTableViewController *)detailViewController  { return nil; }
+/// @return BankItemViewController *
+- (BankItemViewController *)detailViewController  { return nil; }
 
 /// editingViewController
-/// @return BankableDetailTableViewController *
-- (BankableDetailTableViewController *)editingViewController { return nil; }
+/// @return BankItemViewController *
+- (BankItemViewController *)editingViewController { return nil; }
 
 /// updateItem
 - (void)updateItem {

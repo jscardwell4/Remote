@@ -19,6 +19,7 @@
 #import "MSXMLParserDelegate.h"
 #import "MSStack.h"
 #import "MSKeyPath.h"
+#import "NSMutableString+MSKitAdditions.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -38,8 +39,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @end
 
 
-@implementation MSDictionary
-{
+@implementation MSDictionary {
   MSDictionary * _userInfo;
   BOOL           _isUserInfo;
   NSSet        * _validKeys;
@@ -48,21 +48,33 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// init
 /// @return id
 - (id)init {
-  if (self = [super init]) {
-    self.keys       = [@[] mutableCopy];        // [NSPointerArray weakObjectsPointerArray];
-    self.values     = [@[] mutableCopy];        // [NSPointerArray weakObjectsPointerArray];
+
+  if ((self = [super init])) {
+    self.keys       = [@[] mutableCopy];
+    self.values     = [@[] mutableCopy];
     self.dictionary = [@{} mutableCopy];
   }
 
   return self;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark MSDictionary methods
 ////////////////////////////////////////////////////////////////////////////////
 
+/// dictionaryWithDictionary:convertFoundationClasses:
+/// @param dictionary
+/// @param convert
+/// @return MSDictionary *
++ (MSDictionary *)dictionaryWithDictionary:(NSDictionary *)dictionary convertFoundationClasses:(BOOL)convert {
+  MSDictionary * result = [self dictionaryWithDictionary:dictionary];
+  if (convert) [result convertFoundationClasses];
+  return result;
+}
+
 /// dictionaryByParsingXML:
-/// @param xmlData description
+/// @param xmlData
 /// @return MSDictionary *
 + (MSDictionary *)dictionaryByParsingXML:(NSData *)xmlData {
 
@@ -186,15 +198,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// dictionaryByParsingArray:
-/// @param array description
+/// @param array
 /// @return MSDictionary *
 + (MSDictionary *)dictionaryByParsingArray:(NSArray *)array {
   return [self dictionaryByParsingArray:array separator:@":"];
 }
 
 /// dictionaryByParsingArray:separator:
-/// @param array description
-/// @param separator description
+/// @param array
+/// @param separator
 /// @return MSDictionary *
 + (MSDictionary *)dictionaryByParsingArray:(NSArray *)array separator:(NSString *)separator {
   if (!separator) ThrowInvalidNilArgument("separator");
@@ -217,7 +229,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// setRequiresStringKeys:
-/// @param requiresStringKeys description
+/// @param requiresStringKeys
 - (void)setRequiresStringKeys:(BOOL)requiresStringKeys {
   if (!requiresStringKeys) _requiresStringKeys = requiresStringKeys;
   else {
@@ -231,8 +243,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// dictionaryWithValuesForKeys:usingBlock:
-/// @param keys description
-/// @param block description
+/// @param keys
+/// @param block
 /// @return MSDictionary *
 + (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys usingBlock:(id (^)(id<NSCopying> key))block {
 
@@ -254,12 +266,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (MSDictionary *)compactedDictionary {
   MSDictionary * dictionary = [self copy];
   [dictionary compact];
-
   return dictionary;
 }
 
 /// dictionaryWithValuesForKeys:
-/// @param keys description
+/// @param keys
 /// @return MSDictionary *
 - (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys {
   NSDictionary * source     = [super dictionaryWithValuesForKeys:keys];
@@ -270,9 +281,21 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// valueForPath:
-/// @param path description
+/// @param path
 /// @return id
 - (id)valueForPath:(MSKeyPath *)path { return path.count ? [self valueForKeyPath:path.stringValue] : self; }
+
+/// convertFoundationClasses
+- (void)convertFoundationClasses {
+
+  __weak MSDictionary * weakself = self;
+
+  [self.dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    if (isDictionaryKind(obj) && ![obj isKindOfClass:[MSDictionary class]])
+      weakself[key] = [MSDictionary dictionaryWithDictionary:obj convertFoundationClasses:YES];
+  }];
+
+}
 
 /// isEmpty
 /// @return BOOL
@@ -295,8 +318,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (id)lastValue { return self.isEmpty ? nil : [self.values lastObject]; }
 
 /// dictionaryWithValuesForKeys:fromDictionary:
-/// @param keys description
-/// @param dictionary description
+/// @param keys
+/// @param dictionary
 /// @return MSDictionary *
 + (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys
                                fromDictionary:(NSDictionary *)dictionary {
@@ -312,15 +335,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSString *)formattedDescription { return [self formattedDescriptionWithOptions:0 levelIndent:0]; }
 
 /// formattedDescriptionWithLevelIndent:
-/// @param levelIndent description
+/// @param levelIndent
 /// @return NSString *
 - (NSString *)formattedDescriptionWithLevelIndent:(NSUInteger)levelIndent {
   return [self formattedDescriptionWithOptions:0 levelIndent:levelIndent];
 }
 
 /// formattedDescriptionWithOptions:levelIndent:
-/// @param options description
-/// @param levelIndent description
+/// @param options
+/// @param levelIndent
 /// @return NSString *
 - (NSString *)formattedDescriptionWithOptions:(NSUInteger)options levelIndent:(NSUInteger)levelIndent {
 
@@ -334,22 +357,22 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// objectAtIndexedSubscript:
-/// @param idx description
+/// @param idx
 /// @return id
 - (id)objectAtIndexedSubscript:(NSUInteger)idx { return self.values[idx]; }
 
 /// objectAtIndex:
-/// @param idx description
+/// @param idx
 /// @return id
 - (id)objectAtIndex:(NSUInteger)idx { return [self objectAtIndexedSubscript:idx]; }
 
 /// keyAtIndex:
-/// @param idx description
+/// @param idx
 /// @return id
 - (id)keyAtIndex:(NSUInteger)idx { return self.keys[idx]; }
 
 /// dictionaryBySortingByKeys:
-/// @param sortedKeys description
+/// @param sortedKeys
 /// @return MSDictionary *
 - (MSDictionary *)dictionaryBySortingByKeys:(NSArray *)sortedKeys {
   MSDictionary * dictionary = [MSDictionary dictionaryWithDictionary:self];
@@ -362,7 +385,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSSet *)validKeys { return _validKeys; }
 
 /// isValidKey:
-/// @param key description
+/// @param key
 /// @return BOOL
 - (BOOL)isValidKey:(id<NSCopying>)key {
   if (_validKeys)
@@ -375,7 +398,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// popObjectForKey:
-/// @param key description
+/// @param key
 /// @return id
 - (id)popObjectForKey:(id<NSCopying>)key {
   id object = self[key];
@@ -384,7 +407,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// filter:
-/// @param predicate description
+/// @param predicate
 - (void)filter:(BOOL (^)(id<NSCopying> key, id value))predicate {
   NSMutableIndexSet * indexesToRemove = [NSMutableIndexSet indexSet];
   for (NSUInteger i = 0; i < [self count]; i++) {
@@ -463,11 +486,61 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// inflate
 - (void)inflate {
-  assert(NO);
+
+  [self.keys enumerateObjectsUsingBlock:^(id key, NSUInteger idx, BOOL *stop) {
+
+    if (isStringKind(key)) {
+
+      MSKeyPath * keyPath = [MSKeyPath keyPathFromString:key];
+      NSString * topKey = [keyPath popFirst];
+      NSString * lastKey = [keyPath popLast];
+
+      if (lastKey) {
+
+        MSDictionary * dict = [MSDictionary dictionary];
+
+        if (!keyPath.isEmpty)
+          for (NSString * subKey in keyPath) {
+
+            dict[subKey] = [MSDictionary dictionary];
+            dict = dict[subKey];
+
+          }
+
+        if (isArrayKind(self[key])) {
+
+          NSMutableArray * value = self[key];
+
+          [value enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+            MSDictionary * objDict = [dict copy];
+            objDict[lastKey] = obj;
+            value[idx] = objDict;
+
+          }];
+
+          [self replaceKey:key withKey:topKey];
+
+        }
+
+        else {
+
+          dict[lastKey] = self[key];
+          [self removeObjectForKey:key];
+          self[topKey] = dict;
+
+        }
+
+      }
+
+    }
+
+  }];
+
 }
 
 /// sortByKeys:
-/// @param sortedKeys description
+/// @param sortedKeys
 - (void)sortByKeys:(NSArray *)sortedKeys {
   NSMutableOrderedSet * keys = [NSMutableOrderedSet orderedSetWithArray:sortedKeys];
   [keys intersectOrderedSet:[NSOrderedSet orderedSetWithArray:self.keys]];
@@ -488,28 +561,28 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// sortKeysUsingSelector:
-/// @param comparator description
+/// @param comparator
 - (void)sortKeysUsingSelector:(SEL)comparator {
   [self.keys sortUsingSelector:comparator];
   self.values = [[self.dictionary objectsForKeys:self.keys notFoundMarker:NullObject] mutableCopy];
 }
 
 /// removeObjectAtIndex:
-/// @param index description
+/// @param index
 - (void)removeObjectAtIndex:(NSUInteger)index {
   if (index >= [self.keys count]) ThrowInvalidIndexArgument(index);
   else [self removeObjectForKey:self.keys[index]];
 }
 
 /// removeObjectsAtIndexes:
-/// @param indexes description
+/// @param indexes
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {
   [self removeObjectsForKeys:[self.keys objectsAtIndexes:indexes]];
 }
 
 /// replaceKey:withKey:
-/// @param key description
-/// @param replacementKey description
+/// @param key
+/// @param replacementKey
 - (void)replaceKey:(id)key withKey:(id)replacementKey {
   if (!replacementKey)
     ThrowInvalidNilArgument(replacementKey);
@@ -527,7 +600,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// replaceKeysUsingKeyMap:
-/// @param keyMap description
+/// @param keyMap
 - (void)replaceKeysUsingKeyMap:(NSDictionary *)keyMap {
 
   // Make sure all values are unique
@@ -542,8 +615,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// exchangeKeyValueAtIndex:withKeyValueAtIndex:
-/// @param index description
-/// @param otherIndex description
+/// @param index
+/// @param otherIndex
 - (void)exchangeKeyValueAtIndex:(NSUInteger)index withKeyValueAtIndex:(NSUInteger)otherIndex {
   if (index >= [self count]) ThrowInvalidIndexArgument(index);
   else if (otherIndex >= [self count]) ThrowInvalidIndexArgument(otherIndex);
@@ -554,20 +627,20 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// indexForKey:
-/// @param key description
+/// @param key
 /// @return NSUInteger
 - (NSUInteger)indexForKey:(id)key { return [_keys indexOfObject:key]; }
 
 /// indexForValue:
-/// @param value description
+/// @param value
 /// @return NSUInteger
 - (NSUInteger)indexForValue:(id)value { return [self indexOfObject:value]; }
 
 
 /// insertObject:forKey:atIndex:
-/// @param object description
-/// @param key description
-/// @param index description
+/// @param object
+/// @param key
+/// @param index
 - (void)insertObject:(id)object forKey:(id<NSCopying>)key atIndex:(NSUInteger)index {
   if (!object) ThrowInvalidNilArgument(object);
   else if (!key) ThrowInvalidNilArgument(key);
@@ -580,7 +653,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// setUserInfo:
-/// @param userInfo description
+/// @param userInfo
 - (void)setUserInfo:(MSDictionary *)userInfo {
   if (_isUserInfo) ThrowInvalidInternalInconsistency(cannot add userInfo to a userInfo dictionary);
   else {
@@ -599,7 +672,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// keyForObject:
-/// @param object description
+/// @param object
 /// @return id
 - (id)keyForObject:(id)object {
   NSUInteger index = [self indexOfObject:object];
@@ -607,7 +680,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// indexOfObject:
-/// @param object description
+/// @param object
 /// @return NSUInteger
 - (NSUInteger)indexOfObject:(id)object { return [_values indexOfObject:object]; }
 
@@ -681,7 +754,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (NSUInteger)count { return [self.dictionary count]; }
 
 /// objectForKey:
-/// @param aKey description
+/// @param aKey
 /// @return id
 - (id)objectForKey:(id)aKey { return [self.dictionary objectForKey:aKey]; }
 
@@ -698,7 +771,7 @@ MSSTATIC_KEY(MSDictionaryUserInfoStorage);
 MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 
 /// encodeWithCoder:
-/// @param aCoder description
+/// @param aCoder
 - (void)encodeWithCoder:(NSCoder *)aCoder {
   if ([aCoder allowsKeyedCoding]) {
     [super encodeWithCoder:aCoder];
@@ -713,7 +786,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// initWithCoder:
-/// @param aDecoder description
+/// @param aDecoder
 /// @return MSDictionary *
 - (MSDictionary *)initWithCoder:(NSCoder *)aDecoder {
   if ((self = [super initWithCoder:aDecoder]) && [aDecoder allowsKeyedCoding]) {
@@ -730,7 +803,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// isEqualToDictionary:
-/// @param otherDictionary description
+/// @param otherDictionary
 /// @return BOOL
 - (BOOL)isEqualToDictionary:(MSDictionary *)otherDictionary {
   if (self == otherDictionary) return YES;
@@ -744,7 +817,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 - (NSEnumerator *)keyEnumerator { return [self.keys objectEnumerator]; }
 
 /// allKeysForObject:
-/// @param anObject description
+/// @param anObject
 /// @return NSArray *
 - (NSArray *)allKeysForObject:(id)anObject {
   BOOL (^test)(id, NSUInteger, BOOL *) = ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
@@ -787,8 +860,8 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 - (NSEnumerator *)objectEnumerator { return [self.values objectEnumerator]; }
 
 /// objectsForKeys:notFoundMarker:
-/// @param keys description
-/// @param marker description
+/// @param keys
+/// @param marker
 /// @return NSArray *
 - (NSArray *)objectsForKeys:(NSArray *)keys notFoundMarker:(id)marker {
   NSMutableArray * objects = [@[] mutableCopy];
@@ -799,8 +872,8 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// getObjects:andKeys:
-/// @param objects description
-/// @param keys description
+/// @param objects
+/// @param keys
 - (void)getObjects:(id __unsafe_unretained [])objects andKeys:(id __unsafe_unretained [])keys {
   NSRange r = NSMakeRange(0, [self count]);
 
@@ -810,9 +883,9 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// initWithObjects:forKeys:count:
-/// @param objects description
-/// @param keys description
-/// @param cnt description
+/// @param objects
+/// @param keys
+/// @param cnt
 /// @return MSDictionary *
 - (MSDictionary *)initWithObjects:(const id [])objects
                           forKeys:(const id<NSCopying> [])keys
@@ -829,21 +902,21 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// copyWithZone:
-/// @param zone description
+/// @param zone
 /// @return id
 - (id)copyWithZone:(NSZone *)zone {
   return [MSDictionary dictionaryWithObjects:self.values forKeys:self.keys];
 }
 
 /// mutableCopyWithZone:
-/// @param zone description
+/// @param zone
 /// @return id
 - (id)mutableCopyWithZone:(NSZone *)zone { return [self copyWithZone:zone]; }
 
 /// countByEnumeratingWithState:objects:count:
-/// @param state description
-/// @param buffer description
-/// @param len description
+/// @param state
+/// @param buffer
+/// @param len
 /// @return NSUInteger
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
                                   objects:(__unsafe_unretained id [])buffer
@@ -852,14 +925,14 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// dictionaryWithSharedKeySet:
-/// @param keyset description
+/// @param keyset
 /// @return instancetype
 + (instancetype)dictionaryWithSharedKeySet:(id)keyset {
   return [[self alloc] initWithSharedKeySet:keyset];
 }
 
 /// initWithSharedKeySet:
-/// @param keyset description
+/// @param keyset
 /// @return MSDictionary *
 - (MSDictionary *)initWithSharedKeySet:(id)keyset {
   if (self = [super init]) {
@@ -876,7 +949,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// removeObjectForKey:
-/// @param aKey description
+/// @param aKey
 - (void)removeObjectForKey:(id)aKey {
   if ([self.keys containsObject:aKey]) {
     NSUInteger index = [self.keys indexOfObject:aKey];
@@ -887,13 +960,13 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// setObject:forKeyedSubscript:
-/// @param obj description
-/// @param key description
+/// @param obj
+/// @param key
 - (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key { [self setObject:obj forKey:key]; }
 
 /// setObject:forKey:
-/// @param anObject description
-/// @param aKey description
+/// @param anObject
+/// @param aKey
 - (void)setObject:(id)anObject forKey:(id<NSCopying>)aKey {
   if ([self.keys containsObject:aKey]) {
     NSUInteger index = [_keys indexOfObject:aKey];
@@ -933,7 +1006,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// removeObjectsForKeys:
-/// @param keyArray description
+/// @param keyArray
 - (void)removeObjectsForKeys:(NSArray *)keyArray {
   BOOL (^test)(id, NSUInteger, BOOL *) = ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
     return [keyArray containsObject:obj];
@@ -947,7 +1020,7 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
 }
 
 /// initWithCapacity:
-/// @param numItems description
+/// @param numItems
 /// @return MSDictionary *
 - (MSDictionary *)initWithCapacity:(NSUInteger)numItems {
   if (self = [super init]) {

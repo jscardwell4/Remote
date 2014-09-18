@@ -33,11 +33,8 @@ class BankCollectionViewCell: UICollectionViewCell {
   private weak var thumbnailImageView: UIImageView?
   private weak var nameLabel: UILabel?
   private weak var detailButton: UIButton?
-  private weak var deleteButton: UIButton?
-  private weak var leadingConstraint: NSLayoutConstraint?
   var imageActionHandler: ((cell: BankCollectionViewCell) -> Void)?
   var detailActionHandler: ((cell: BankCollectionViewCell) -> Void)?
-  var deleteActionHandler: ((cell: BankCollectionViewCell) -> Void)?
 
   /**
 
@@ -55,56 +52,59 @@ class BankCollectionViewCell: UICollectionViewCell {
 
       case self.dynamicType.listIdentifier:
         let nameLabel = UILabel.newForAutolayout()
-        self.addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         self.nameLabel = nameLabel
 
         let detailButton = UIButton.buttonWithType(.DetailDisclosure) as UIButton
         detailButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         detailButton.addTarget(self, action:"detailButtonAction", forControlEvents:.TouchUpInside)
-        self.addSubview(detailButton)
+        contentView.addSubview(detailButton)
         self.detailButton = detailButton
 
-        let deleteButton = UIButton.buttonWithType(.System) as UIButton
-        deleteButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        deleteButton.addTarget(self, action:"deleteButtonAction", forControlEvents:.TouchUpInside)
-        self.addSubview(deleteButton)
-        self.deleteButton = deleteButton
-
         let thumbnailImageView = UIImageView.newForAutolayout()
-        self.addSubview(thumbnailImageView)
+        contentView.addSubview(thumbnailImageView)
         self.thumbnailImageView = thumbnailImageView
 
-        let constraintsFormat = "\n".join(["'leading' image.left = self.left + 8",
-          "[image]-8-[label]-8-[detail]-8-|",
-          "delete.left = self.right",
-          "V:|-8-[label]-8-|",
-          "image.centerY = label.centerY",
-          "detail.centerY = label.centerY",
-          "delete.centerY = label.centerY",
-          "delete.width = 67",
-          "detail.width = detail.height",
-          "detail.width = 22",
-          "image.width = image.height",
-          "image.width = 32"])
+        let constraintsFormat = "\n".join(["image.left = content.left + 20",
+                                           "[image]-8-[label]-8-[detail]-20-|",
+                                           "V:|-8-[label]-8-|",
+                                           "image.centerY = label.centerY",
+                                           "detail.centerY = label.centerY",
+                                           "detail.width = detail.height",
+                                           "detail.width = 22",
+                                           "image.width = image.height",
+                                           "image.width = 32"])
 
-        let views = ["image": thumbnailImageView,
-          "label": nameLabel,
-          "detail": detailButton,
-          "delete": deleteButton,
-          "self": self]
+        let views = [ "image"  : thumbnailImageView,
+                      "label"  : nameLabel,
+                      "detail" : detailButton,
+                      "content": contentView ]
 
-        self.addConstraints(NSLayoutConstraint.constraintsByParsingString(constraintsFormat, views:views))
-        self.leadingConstraint = self.constraintWithNametag("leading")
+        contentView.addConstraints(NSLayoutConstraint.constraintsByParsingString(constraintsFormat, views:views))
 
         if (item != nil) {
           self.thumbnailImageView?.userInteractionEnabled = item!.dynamicType.isPreviewable()
-          self.detailButton?.enabled = item!.dynamicType.isDetailable()
-          self.thumbnailImageView?.image = item!.thumbnail
-          self.nameLabel?.text = item!.name
+          self.thumbnailImageView?.image                  = item!.thumbnail
+          self.detailButton?.enabled                      = item!.dynamicType.isDetailable()
+          self.nameLabel?.text                            = item!.name
         }
         break
 
       case self.dynamicType.thumbnailIdentifier:
+        contentView.backgroundColor = UIColor.yellowColor()
+        let thumbnailImageView = UIImageView.newForAutolayout()
+        thumbnailImageView.contentMode = .Center
+        contentView.addSubview(thumbnailImageView)
+        self.thumbnailImageView = thumbnailImageView
+
+        let constraintsFormat = "\n".join(["|[image]|", "V:|[image]|"])
+        let views = [ "image": thumbnailImageView]
+        contentView.addConstraints(NSLayoutConstraint.constraintsByParsingString(constraintsFormat, views:views))
+
+        if (item != nil) {
+          self.thumbnailImageView?.userInteractionEnabled = item!.dynamicType.isPreviewable()
+          self.thumbnailImageView?.image                  = item!.thumbnail
+        }
 
         break
 
@@ -137,13 +137,6 @@ class BankCollectionViewCell: UICollectionViewCell {
 
   */
   func thumbnailImageViewAction() { if let action = imageActionHandler { action(cell: self) } }
-
-  /**
-
-  deleteButtonAction
-
-  */
-  func deleteButtonAction() { if let action = deleteActionHandler { action(cell: self) } }
 
   /**
 

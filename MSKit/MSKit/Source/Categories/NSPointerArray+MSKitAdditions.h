@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Jason Cardwell. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "MSKitProtocols.h"
 
 @interface NSPointerArray (MSKitAdditions) <MSKeySearchable>

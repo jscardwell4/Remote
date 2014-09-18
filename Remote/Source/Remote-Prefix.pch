@@ -10,11 +10,11 @@
 #endif
 
 #ifdef __OBJC__
-//    #import <UIKit/UIKit.h>
-//    #import <Foundation/Foundation.h>
+//    @import UIKit;
+//    @import Foundation;
 //    #import <CoreData/CoreData.h>
 //    #import "Lumberjack/Lumberjack.h"
-//    #import "MSKit/MSKit.h"
+//    @import Moonkit;
 //    #import "MSRemoteMacros.h"
 //    #import "MSRemoteTypeDefinitions.h"
 //    #import "MSRemoteConstants.h"

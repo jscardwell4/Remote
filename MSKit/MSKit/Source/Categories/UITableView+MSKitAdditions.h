@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+#import "MSKitDefines.h"
 
 MSEXTERN_STRING MSDefaultCell;
 

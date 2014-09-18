@@ -7,7 +7,6 @@
 //
 #import "RemoteElementView_Private.h"
 #import "RemoteElementView.h"
-#import <MSKit/MSKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGL.h>
 #import "Image.h"
@@ -1490,13 +1489,13 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
     return $(@"%@\t%@\t%@", nameString, originString, sizeString);
   }];
 
-  return [[@"Element\t    Origin       \t      Size        \n" stringByAppendingString:
-           [frames componentsJoinedByString:@"\n"]] singleBarHeaderBox:20];
+  return [@"Element\t    Origin       \t      Size        \n" stringByAppendingString:
+           [frames componentsJoinedByString:@"\n"]];
 }
 
 - (NSString *)constraintsDescription {
   return $(@"%@\n%@\n\n%@",
-           [$(@"%@", self.name) singleBarMessageBox],
+           $(@"%@", self.name),
            [self.model constraintsDescription],
            [self viewConstraintsDescription]);
 }

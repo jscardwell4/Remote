@@ -25,7 +25,7 @@
                 Learn more on the <a target="_top" href="http://parsekit.com">project site</a>
 */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 // io
 #import "ParseKit/PKTypes.h"

@@ -17,7 +17,7 @@
 
 #if TARGET_OS_IPHONE
   #import <CFNetwork/CFNetwork.h>
-  #import <UIKit/UIKit.h>
+  @import UIKit;
 #endif
 
 #import <arpa/inet.h>

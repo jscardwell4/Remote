@@ -13,6 +13,7 @@
 #import "NSSet+MSKitAdditions.h"
 #import "MSKitGeometryFunctions.h"
 #import "NSOperationQueue+MSKitAdditions.h"
+#import "MSLog.h"
 
 static BOOL   msShouldLog = YES;
 static int ddLogLevel = LOG_LEVEL_DEBUG;

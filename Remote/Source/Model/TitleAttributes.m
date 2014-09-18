@@ -146,12 +146,12 @@ static NSDictionary const * kPropertyToAttribute;
 }
 
 /// This method provides the proper class for the value of the specified `TitleAttribute` property
-/// @param property description
+/// @param property
 /// @return Class
 + (Class)validClassForProperty:(NSString *)property { return property ? kPropertyClasses[property] : nil; }
 
 /// This method provides the proper class for the value of the specified `TitleAttribute` property
-/// @param property description
+/// @param property
 /// @return NSString *
 + (NSString *)attributeNameForProperty:(NSString *)property { return property ? kPropertyToAttribute[property] : nil; }
 

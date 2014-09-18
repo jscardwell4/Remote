@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
+@import Foundation;
+@import CoreData;
 
 @interface NSFetchRequest (MSKitAdditions)
 

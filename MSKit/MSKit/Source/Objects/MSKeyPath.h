@@ -11,31 +11,31 @@
 @interface MSKeyPath : NSObject <NSFastEnumeration>
 
 /// keyPathFromString:
-/// @param string description
+/// @param string
 /// @return instancetype
 + (instancetype)keyPathFromString:(NSString *)string;
 
 /// objectAtIndexedSubscript:
-/// @param idx description
+/// @param idx
 /// @return NSString *
 - (NSString *)objectAtIndexedSubscript:(NSUInteger)idx;
 
 /// setObject:atIndexedSubscript:
-/// @param key description
-/// @param idx description
+/// @param key
+/// @param idx
 - (void)setObject:(NSString *)key atIndexedSubscript:(NSUInteger)idx;
 
 /// insertKey:atIndex:
-/// @param key description
-/// @param idx description
+/// @param key
+/// @param idx
 - (void)insertKey:(NSString *)key atIndex:(NSUInteger)idx;
 
 /// addKey:
-/// @param key description
+/// @param key
 - (void)appendKey:(NSString *)key;
 
 /// appendKeys:
-/// @param keys description
+/// @param keys
 - (void)appendKeys:(NSArray *)keys;
 
 /// popFirst

@@ -5,9 +5,9 @@
 //  Created by Jason Cardwell on 4/8/11.
 //  Copyright 2011 Moondeer Studios. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+@import Foundation;
+@import UIKit;
+@import QuartzCore;
 
 typedef struct {
     CGBitmapInfo bitmapInfo;

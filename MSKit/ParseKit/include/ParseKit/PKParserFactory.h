@@ -6,7 +6,7 @@
 //  Copyright 2009 Todd Ditchendorf All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @class PKParser;
 @class PKAST;

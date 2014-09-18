@@ -7,14 +7,14 @@
 //
 
 #import "BankCollectionViewController.h"
-#import "BankCollectionViewFlowLayout.h"
-#import "BankCollectionHeaderReusableView.h"
+//#import "BankCollectionLayout.h"
+//#import "BankCollectionHeaderReusableView.h"
 #import "BankPreviewViewController.h"
 #import "BankCollectionZoomView.h"
 #import "MSRemoteAppController.h"
 #import "CoreDataManager.h"
 #import "BankableModelObject.h"
-#import "BankableDetailTableViewController.h"
+#import "BankItemViewController.h"
 #import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -36,7 +36,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 @property (nonatomic, strong) NSMutableSet                 * hiddenSections;
 @property (nonatomic, strong) BankPreviewViewController    * previewController;
 @property (nonatomic, strong) BankCollectionZoomView       * zoomView;
-@property (nonatomic, strong) BankCollectionViewFlowLayout * layout;
+@property (nonatomic, strong) BankCollectionLayout * layout;
 
 @property (nonatomic, assign, getter = shouldUseListView) BOOL useListView;
 
@@ -55,7 +55,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// controllerWithItemClass:
-/// @param itemClass description
+/// @param itemClass
 /// @return instancetype
 + (instancetype)controllerWithItemClass:(Class<BankableModel>)itemClass {
 
@@ -76,7 +76,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
   self.useListView = YES;
 
   self.layout = ({
-    BankCollectionViewFlowLayout * flowLayout = [BankCollectionViewFlowLayout new];
+    BankCollectionLayout * flowLayout = [BankCollectionLayout new];
     flowLayout.itemSize = CGSizeMake(100.0, 100.0);
     flowLayout;
   });
@@ -85,9 +85,9 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
     UICollectionView * collectionView = [[UICollectionView alloc] initWithFrame:MainScreen.bounds
                                                            collectionViewLayout:self.layout];
     collectionView.backgroundColor = WhiteColor;
-    [collectionView registerClass:[BankCollectionHeaderReusableView class]
+    [collectionView registerClass:[BankCollectionViewHeader class]
        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-              withReuseIdentifier:BankCollectionHeaderIdentifier];
+              withReuseIdentifier:[BankCollectionViewHeader identifier]];
 
     [collectionView registerClass:[BankCollectionViewCell class]
        forCellWithReuseIdentifier:[BankCollectionViewCell listIdentifier]];
@@ -131,7 +131,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// viewWillAppear:
-/// @param animated description
+/// @param animated
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   [self.collectionView reloadData];
@@ -203,8 +203,8 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// configureCell:atIndexPath:
-/// @param cell description
-/// @param indexPath description
+/// @param cell
+/// @param indexPath
 //- (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 //  cell.item = self.allItems[indexPath];
 //}
@@ -214,7 +214,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 ////////////////////////////////////////////////////////////////////////////////
 
 /// zoomItem:
-/// @param item description
+/// @param item
 - (void)zoomItem:(BankableModelObject *)item {
 
   _zoomedItem = item;
@@ -234,39 +234,39 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// previewItem:
-/// @param item description
+/// @param item
 - (void)previewItem:(BankableModelObject *)item {
   self.previewController.image = item.preview;
   [self presentViewController:_previewController animated:YES completion:nil];
 }
 
 /// deleteItem:
-/// @param item description
+/// @param item
 - (void)deleteItem:(BankableModelObject *)item {
   if ([item isEditable]) [item.managedObjectContext deleteObject:item];
 }
 
 /// editItem:
-/// @param item description
+/// @param item
 - (void)editItem:(BankableModelObject *)item {
   [self.navigationController pushViewController:item.editingViewController animated:YES];
 }
 
 /// detailItem:
-/// @param item description
+/// @param item
 - (void)detailItem:(BankableModelObject *)item {
   [self.navigationController pushViewController:item.detailViewController animated:YES];
 }
 
 /// toggleItemsForSection:
-/// @param section description
+/// @param section
 - (void)toggleItemsForSection:(NSInteger)section {
   [self.hiddenSections addOrRemoveObject:@(section)];
   [self.collectionView reloadSections:NSIndexSetMake(section)];
 }
 
 /// segmentedControlValueDidChange:
-/// @param sender description
+/// @param sender
 - (IBAction)segmentedControlValueDidChange:(UISegmentedControl *)sender {
   self.useListView = sender.selectedSegmentIndex == 0;
   [self.collectionView.collectionViewLayout invalidateLayout];
@@ -274,25 +274,25 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// importBankObject:
-/// @param sender description
+/// @param sender
 - (IBAction)importBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
 /// exportBankObject:
-/// @param sender description
+/// @param sender
 - (IBAction)exportBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
 /// searchBankObjects:
-/// @param sender description
+/// @param sender
 - (IBAction)searchBankObjects:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
 /// dismiss:
-/// @param sender description
+/// @param sender
 - (IBAction)dismiss:(id)sender {
   [AppController dismissViewController:[Bank viewController] completion:nil];
 }
 
 /// dismissZoom:
-/// @param sender description
+/// @param sender
 - (IBAction)dismissZoom:(id)sender {
 
   [self.zoomView removeFromSuperview];
@@ -318,8 +318,8 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
 
 /// collectionView:numberOfItemsInSection:
-/// @param collectionView description
-/// @param section description
+/// @param collectionView
+/// @param section
 /// @return NSInteger
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
@@ -330,8 +330,8 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// collectionView:cellForItemAtIndexPath:
-/// @param collectionView description
-/// @param indexPath description
+/// @param collectionView
+/// @param indexPath
 /// @return UICollectionViewCell *
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -343,23 +343,22 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
                                                                             forIndexPath:indexPath];
   cell.item       = self.allItems[indexPath];
   __weak BankCollectionViewController * weakself = self;
-  cell.detailActionHandler = ^(BankCollectionViewCell * cell) { [weakself detailItem:cell.item]; };
-  cell.imageActionHandler = cell.detailActionHandler;
-  cell.deleteActionHandler = ^(BankCollectionViewCell * cell) { [weakself deleteItem:cell.item]; };
+  cell.detailActionHandler = ^(BankCollectionViewCell * cell) { [weakself detailItem:cell.item];  };
+  cell.imageActionHandler  = ^(BankCollectionViewCell * cell) { [weakself previewItem:cell.item]; };
   return cell;
 }
 
 /// numberOfSectionsInCollectionView:
-/// @param collectionView description
+/// @param collectionView
 /// @return NSInteger
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
   return [self.allItems.sections count];
 }
 
 /// collectionView:viewForSupplementaryElementOfKind:atIndexPath:
-/// @param collectionView description
-/// @param kind description
-/// @param indexPath description
+/// @param collectionView
+/// @param kind
+/// @param indexPath
 /// @return UICollectionReusableView *
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind
@@ -367,9 +366,9 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 {
   UICollectionReusableView * view = nil;
   if ([UICollectionElementKindSectionHeader isEqualToString:kind]) {
-    BankCollectionHeaderReusableView * header =
+    BankCollectionViewHeader * header =
       [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                              withReuseIdentifier:BankCollectionHeaderIdentifier
+                                              withReuseIdentifier:[BankCollectionViewHeader identifier]
                                                      forIndexPath:indexPath];
     header.controller = self;
     header.section    = indexPath.section;
@@ -387,17 +386,17 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
 
 /// collectionView:didSelectItemAtIndexPath:
-/// @param collectionView description
-/// @param indexPath description
+/// @param collectionView
+/// @param indexPath
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   [self.navigationController pushViewController:[self.allItems[indexPath] detailViewController] animated:YES];
 }
 
 /// collectionView:canPerformAction:forItemAtIndexPath:withSender:
-/// @param collectionView description
-/// @param action description
-/// @param indexPath description
-/// @param sender description
+/// @param collectionView
+/// @param action
+/// @param indexPath
+/// @param sender
 /// @return BOOL
 - (BOOL)collectionView:(UICollectionView *)collectionView
       canPerformAction:(SEL)action
@@ -414,21 +413,47 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
 
 /// collectionView:layout:sizeForItemAtIndexPath:
-/// @param collectionView description
-/// @param collectionViewLayout description
-/// @param indexPath description
+/// @param collectionView
+/// @param collectionViewLayout
+/// @param indexPath
 /// @return CGSize
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  return (self.useListView ? ListItemCellSize : ThumbnailItemCellSize);
+
+  CGSize size = CGSizeZero;
+
+  if (self.useListView) size = ListItemCellSize;
+
+  else {
+
+    CGSize maxSize = ThumbnailItemCellSize;
+    BankableModelObject * item = self.allItems[indexPath];
+    assert(item);
+
+    CGSize imageSize = CGSizeZero;
+    UIImage * itemImage = item.preview;
+    if (itemImage) imageSize = itemImage.size;
+
+    CGSize fittedSize = CGSizeAspectMappedToSize(imageSize, maxSize, YES);
+    if (fittedSize.width < maxSize.width) fittedSize.width = ceil(fittedSize.width);
+    if (fittedSize.height < maxSize.height) fittedSize.height = ceil(fittedSize.height);
+
+    if (CGSizeContainsSize(maxSize, fittedSize)) size = fittedSize;
+
+    MSLogDebug(@"maxSize: %@, imageSize: %@, fittedSize: %@, finalSize: %@",
+               CGSizeString(maxSize), CGSizeString(imageSize), CGSizeString(fittedSize), CGSizeString(size));
+    
+  }
+
+  return size;
 }
 
 /// collectionView:layout:referenceSizeForHeaderInSection:
-/// @param collectionView description
-/// @param collectionViewLayout description
-/// @param section description
+/// @param collectionView
+/// @param collectionViewLayout
+/// @param section
 /// @return CGSize
 - (CGSize)         collectionView:(UICollectionView *)collectionView
                            layout:(UICollectionViewLayout *)collectionViewLayout
@@ -443,16 +468,16 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
 
 /// controllerWillChangeContent:
-/// @param controller description
+/// @param controller
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
   self.updatesBlockOperation = [NSBlockOperation new];
 }
 
 /// controller:didChangeSection:atIndex:forChangeType:
-/// @param controller description
-/// @param sectionInfo description
-/// @param sectionIndex description
-/// @param type description
+/// @param controller
+/// @param sectionInfo
+/// @param sectionIndex
+/// @param type
 - (void)controller:(NSFetchedResultsController *)controller
   didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex
@@ -469,11 +494,11 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:
-/// @param controller description
-/// @param anObject description
-/// @param indexPath description
-/// @param type description
-/// @param newIndexPath description
+/// @param controller
+/// @param anObject
+/// @param indexPath
+/// @param type
+/// @param newIndexPath
 - (void)controller:(NSFetchedResultsController *)controller
    didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath
@@ -493,7 +518,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 }
 
 /// controllerDidChangeContent:
-/// @param controller description
+/// @param controller
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
   [self.collectionView performBatchUpdates:^{ [_updatesBlockOperation start]; } completion:nil];
 }

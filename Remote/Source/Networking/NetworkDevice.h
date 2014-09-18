@@ -9,7 +9,7 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 #import "BankableModelObject.h"
 
@@ -22,7 +22,7 @@
 @interface NetworkDevice : BankableModelObject
 
 /// deviceExistsWithUniqueIdentifier:
-/// @param identifier description
+/// @param identifier
 /// @return BOOL
 + (BOOL)deviceExistsWithUniqueIdentifier:(NSString *)identifier;
 

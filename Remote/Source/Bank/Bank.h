@@ -9,11 +9,11 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 #import "NamedModelObject.h"
 
-@class BankableModelObject, BankableDetailTableViewController;
+@class BankableModelObject, BankItemViewController;
 
 
 /** Protocol to ensure all bank objects have the necessary info to display */
@@ -49,12 +49,12 @@
 + (UIImage *)directoryIcon;
 
 /// detailViewControllerClass
-/// @return BankableDetailTableViewController *
-- (BankableDetailTableViewController *)detailViewController;
+/// @return BankItemViewController *
+- (BankItemViewController *)detailViewController;
 
 /// editingViewController
-/// @return BankableDetailTableViewController *
-- (BankableDetailTableViewController *)editingViewController;
+/// @return BankItemViewController *
+- (BankItemViewController *)editingViewController;
 
 /// allItems
 /// @return NSFetchedResultsController *

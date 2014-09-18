@@ -7,7 +7,7 @@
 //
 
 #import "ITachDevice.h"
-#import "ITachDeviceDetailViewController.h"
+#import "ITachDeviceViewController.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -45,20 +45,20 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic pcbPN, pkgLevel, sdkClass, make, model, status, configURL, revision;
 
 /// detailViewController
-/// @return ITachDeviceDetailViewController *
-- (ITachDeviceDetailViewController *)detailViewController {
-  return [ITachDeviceDetailViewController controllerWithItem:self];
+/// @return ITachDeviceViewController *
+- (ITachDeviceViewController *)detailViewController {
+  return [ITachDeviceViewController controllerWithItem:self];
 }
 
 /// editingViewController
-/// @return ITachDeviceDetailViewController *
-- (ITachDeviceDetailViewController *)editingViewController {
-  return [ITachDeviceDetailViewController controllerWithItem:self editing:YES];
+/// @return ITachDeviceViewController *
+- (ITachDeviceViewController *)editingViewController {
+  return [ITachDeviceViewController controllerWithItem:self editing:YES];
 }
 
 
 /// setModel:
-/// @param model description
+/// @param model
 - (void)setModel:(NSString *)model {
   [self willChangeValueForKey:@"model"];
   self.primitiveModel = model;
@@ -75,7 +75,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// setMake:
-/// @param make description
+/// @param make
 - (void)setMake:(NSString *)make {
   [self willChangeValueForKey:@"make"];
   self.primitiveMake = make;
@@ -92,7 +92,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// setConfigURL:
-/// @param configURL description
+/// @param configURL
 - (void)setConfigURL:(NSString *)configURL {
 
   [self willChangeValueForKey:@"configURL"];
@@ -108,7 +108,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];

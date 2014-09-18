@@ -7,7 +7,7 @@
 //
 
 #import "MSView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface MSReflectingView : MSView
 

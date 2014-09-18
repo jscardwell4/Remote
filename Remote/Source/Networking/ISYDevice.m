@@ -8,7 +8,7 @@
 
 #import "ISYDevice.h"
 #import "ISYDeviceConnection.h"
-#import "ISYDeviceDetailViewController.h"
+#import "ISYDeviceViewController.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -107,20 +107,20 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @dynamic nodes, groups;
 
 /// detailViewController
-/// @return ISYDeviceDetailViewController *
-- (ISYDeviceDetailViewController *)detailViewController {
-  return [ISYDeviceDetailViewController controllerWithItem:self];
+/// @return ISYDeviceViewController *
+- (ISYDeviceViewController *)detailViewController {
+  return [ISYDeviceViewController controllerWithItem:self];
 }
 
 /// editingViewController
-/// @return ISYDeviceDetailViewController *
-- (ISYDeviceDetailViewController *)editingViewController {
-  return [ISYDeviceDetailViewController controllerWithItem:self editing:YES];
+/// @return ISYDeviceViewController *
+- (ISYDeviceViewController *)editingViewController {
+  return [ISYDeviceViewController controllerWithItem:self editing:YES];
 }
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
@@ -214,7 +214,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
@@ -292,7 +292,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];

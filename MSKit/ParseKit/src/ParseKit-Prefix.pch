@@ -1,5 +1,5 @@
 #ifdef __OBJC__
-    #import <Foundation/Foundation.h>
+    @import Foundation;
     #import <Foundation/NSObject.h>
     #import <CoreGraphics/CoreGraphics.h>
 #endif

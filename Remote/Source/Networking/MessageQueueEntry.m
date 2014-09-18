@@ -7,13 +7,13 @@
 //
 
 #import "MessageQueueEntry.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 @implementation MessageQueueEntry
 
 /// message:completion:
-/// @param message description
-/// @param completion description
+/// @param message
+/// @param completion
 /// @return instancetype
 + (instancetype)message:(NSString *)message
              completion:(void (^)(BOOL success, NSString * response, NSError * error))completion

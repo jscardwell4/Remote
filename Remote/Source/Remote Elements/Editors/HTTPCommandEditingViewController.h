@@ -9,10 +9,10 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 #import "MSRemoteMacros.h"
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 #import "CommandDetailViewController.h"
 

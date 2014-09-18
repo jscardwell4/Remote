@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #define BOOLValue(NUMBER)             [(NSNumber *)NUMBER boolValue]
 #define CharValue(NUMBER)             [(NSNumber *)NUMBER charValue]

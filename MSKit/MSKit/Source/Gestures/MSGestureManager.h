@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
+@import Foundation;
+@import UIKit;
+
 /// Specification for blocks registered for gesture responses.
 typedef BOOL (^ MSGestureManagerBlock)(UIGestureRecognizer *, id);
 

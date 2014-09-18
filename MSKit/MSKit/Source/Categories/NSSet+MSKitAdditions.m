@@ -9,6 +9,7 @@
 #import "NSSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
 #import "MSLog.h"
+#import "NSMutableString+MSKitAdditions.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

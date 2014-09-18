@@ -7,7 +7,7 @@
 //
 
 #import "CoreDataManager.h"
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

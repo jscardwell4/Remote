@@ -7,7 +7,6 @@
 //
 
 #import "NSAssertionHandler+MSKitAdditions.h"
-#import "MSKitMiscellaneousFunctions.h"
 #import "MSLog.h"
 
 @implementation NSAssertionHandler (MSKitAdditions)

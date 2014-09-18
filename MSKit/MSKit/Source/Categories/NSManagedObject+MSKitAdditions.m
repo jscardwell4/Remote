@@ -12,6 +12,7 @@
 #import "NSArray+MSKitAdditions.h"
 #import "NSDictionary+MSKitAdditions.h"
 #import "NSManagedObjectContext+MSKitAdditions.h"
+#import "MSLog.h"
 
 MSKEY_DEFINITION(MSDefaultValueForContainingClass);
 MSKEY_DEFINITION(MSDefaultValueForSubentity);

@@ -12,6 +12,7 @@
 #import "MessageQueueEntry.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
+@import Moonkit;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -157,8 +158,8 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// connectionFromDiscoveryBeacon:delegate:
-/// @param beacon description
-/// @param delegate description
+/// @param beacon
+/// @param delegate
 /// @return instancetype
 + (instancetype)connectionFromDiscoveryBeacon:(NSString *)beacon {
 
@@ -235,7 +236,7 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// entriesSentOverPort:
-/// @param port description
+/// @param port
 /// @return NSArray *
 - (NSArray *)entriesSentOverPort:(ITachDevicePort)port {
 
@@ -283,7 +284,7 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// connect:
-/// @param completion description
+/// @param completion
 - (void)connect:(void (^)(BOOL, NSError *))completion {
 
   if (!self.device)
@@ -329,7 +330,7 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// disconnect:
-/// @param completion description
+/// @param completion
 - (void)disconnect:(void (^)(BOOL, NSError *))completion {
 
   if (self.isConnected) {
@@ -397,9 +398,9 @@ static NSArray const * kITachErrorCodes;
 
 
 /// socket:didConnectToHost:port:
-/// @param sock description
-/// @param host description
-/// @param port description
+/// @param sock
+/// @param host
+/// @param port
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {
 
   self.isConnecting = NO;
@@ -416,9 +417,9 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// socket:didReadData:withTag:
-/// @param sock description
-/// @param data description
-/// @param tag description
+/// @param sock
+/// @param data
+/// @param tag
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
 
   NSString          * message = [NSString stringWithData:data];
@@ -503,8 +504,8 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// socket:didWriteDataWithTag:
-/// @param sock description
-/// @param tag description
+/// @param sock
+/// @param tag
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag {
 
   // Take the message sent out of our pending collection
@@ -532,8 +533,8 @@ static NSArray const * kITachErrorCodes;
 }
 
 /// socketDidDisconnect:withError:
-/// @param sock description
-/// @param err description
+/// @param sock
+/// @param err
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err {
 
   if (self.disconnectCallback) {

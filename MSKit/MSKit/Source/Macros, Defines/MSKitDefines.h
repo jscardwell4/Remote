@@ -5,8 +5,7 @@
 //  Created by Jason Cardwell on 4/13/11.
 //  Copyright 2011 Moondeer Studios. All rights reserved.
 //
-
-#import <Availability.h>
+@import ObjectiveC;
 
 #ifdef __cplusplus
 #define MSEXTERN extern "C" __attribute__((visibility("default")))

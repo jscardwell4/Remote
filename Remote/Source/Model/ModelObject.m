@@ -24,15 +24,15 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 @dynamic uuid;
 
 /// isValidUUID:
-/// @param uuid description
+/// @param uuid
 /// @return BOOL
 + (BOOL)isValidUUID:(NSString *)uuid {
-  NSRange r = [uuid rangeOfRegEX:@"[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"];
+  NSRange r = [uuid rangeOfRegEx:@"[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"];
   return (uuid && r.location == 0 && r.length == [uuid length]);
 }
 
 /// objectWithUUID:
-/// @param uuid description
+/// @param uuid
 /// @return instancetype
 + (instancetype)objectWithUUID:(NSString *)uuid {
   return [self objectWithUUID:uuid context:[CoreDataManager defaultContext]];
@@ -42,8 +42,8 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 /// an automatically generated uuid is used. Throws an exception if the context is nil or if an object
 /// with the specified uuid already exists.
 ///
-/// @param uuid description
-/// @param moc description
+/// @param uuid
+/// @param moc
 /// @return instancetype
 + (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc {
 
@@ -78,12 +78,12 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 - (id)indexedCollection { return nil; }
 
 /// objectForKeyedSubscript:
-/// @param uuid description
+/// @param uuid
 /// @return id
 - (id)objectForKeyedSubscript:(NSString *)uuid { return memberOfCollectionWithUUID([self keyedCollection], uuid); }
 
 /// objectAtIndexedSubscript:
-/// @param idx description
+/// @param idx
 /// @return id
 - (id)objectAtIndexedSubscript:(NSUInteger)idx { return memberOfCollectionAtIndex([self indexedCollection], idx); }
 
@@ -150,8 +150,8 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// an array of objects from this method with data being of some other class should not call super other than
 /// for throwing invalid nil argument exceptions
 ///
-/// @param data description
-/// @param moc description
+/// @param data
+/// @param moc
 /// @return NSArray *
 + (NSArray *)importObjectsFromData:(id)data context:(NSManagedObjectContext *)moc {
 
@@ -178,7 +178,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {}
 
 @end
@@ -189,17 +189,17 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 @implementation ModelObject (Finding)
 
 /// existingObjectWithID:error:
-/// @param objectID description
-/// @param error description
+/// @param objectID
+/// @param error
 /// @return instancetype
 + (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
   return [self existingObjectWithID:objectID context:[CoreDataManager defaultContext] error:error];
 }
 
 /// existingObjectWithID:context:error:
-/// @param objectID description
-/// @param moc description
-/// @param error description
+/// @param objectID
+/// @param moc
+/// @param error
 /// @return instancetype
 + (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
                              context:(NSManagedObjectContext *)moc
@@ -210,15 +210,15 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// existingObjectWithUUID:
-/// @param uuid description
+/// @param uuid
 /// @return instancetype
 + (instancetype)existingObjectWithUUID:(NSString *)uuid {
   return [self existingObjectWithUUID:uuid context:[CoreDataManager defaultContext]];
 }
 
 /// existingObjectWithUUID:context:
-/// @param uuid description
-/// @param moc description
+/// @param uuid
+/// @param moc
 /// @return instancetype
 + (instancetype)existingObjectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc {
 
@@ -232,9 +232,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// findFirstByAttribute:withValue:context:
-/// @param attribute description
-/// @param value description
-/// @param moc description
+/// @param attribute
+/// @param value
+/// @param moc
 /// @return instancetype
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value context:(NSManagedObjectContext *)moc {
 
@@ -250,23 +250,23 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 }
 /// findFirstByAttribute:withValue:
-/// @param attribute description
-/// @param value description
+/// @param attribute
+/// @param value
 /// @return instancetype
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value {
   return [self findFirstByAttribute:attribute withValue:value context:[CoreDataManager defaultContext]];
 }
 
 /// allValuesForAttribute:
-/// @param attribute description
+/// @param attribute
 /// @return NSArray *
 + (NSArray *)allValuesForAttribute:(NSString *)attribute {
   return [self allValuesForAttribute:attribute context:[CoreDataManager defaultContext]];
 }
 
 /// allValuesForAttribute:context:
-/// @param attribute description
-/// @param moc description
+/// @param attribute
+/// @param moc
 /// @return NSArray *
 + (NSArray *)allValuesForAttribute:(NSString *)attribute context:(NSManagedObjectContext *)moc {
 
@@ -284,15 +284,15 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// findAllMatchingPredicate:
-/// @param predicate description
+/// @param predicate
 /// @return NSArray *
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate {
   return [self findAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
 }
 
 /// findAllMatchingPredicate:context:
-/// @param predicate description
-/// @param moc description
+/// @param predicate
+/// @param moc
 /// @return NSArray *
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
 
@@ -308,7 +308,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 + (NSArray *)findAll { return [self findAllInContext:[CoreDataManager defaultContext]]; }
 
 /// findAllInContext:
-/// @param moc description
+/// @param moc
 /// @return NSArray *
 + (NSArray *)findAllInContext:(NSManagedObjectContext *)moc {
 
@@ -321,17 +321,17 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// findAllSortedBy:ascending:
-/// @param sortBy description
-/// @param ascending description
+/// @param sortBy
+/// @param ascending
 /// @return NSArray *
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending {
   return [self findAllSortedBy:sortBy ascending:ascending context:[CoreDataManager defaultContext]];
 }
 
 /// findAllSortedBy:ascending:context:
-/// @param sortBy description
-/// @param ascending description
-/// @param moc description
+/// @param sortBy
+/// @param ascending
+/// @param moc
 /// @return NSArray *
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc {
 
@@ -356,8 +356,8 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 @implementation ModelObject (Counting)
 
 /// countOfObjectsWithPredicate:context:
-/// @param predicate description
-/// @param moc description
+/// @param predicate
+/// @param moc
 /// @return NSUInteger
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
 
@@ -373,7 +373,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// countOfObjectsWithPredicate:
-/// @param predicate description
+/// @param predicate
 /// @return NSUInteger
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate {
   return [self countOfObjectsWithPredicate:predicate context:[CoreDataManager defaultContext]];
@@ -387,8 +387,8 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 @implementation ModelObject (Deleting)
 
 /// deleteAllMatchingPredicate:context:
-/// @param predicate description
-/// @param moc description
+/// @param predicate
+/// @param moc
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
   NSArray * matches = [self findAllMatchingPredicate:predicate context:moc];
 
@@ -396,7 +396,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// deleteAllMatchingPredicate:
-/// @param predicate description
+/// @param predicate
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
   [self deleteAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
 }
@@ -409,11 +409,11 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 @implementation ModelObject (Fetching)
 
 /// fetchAllGroupedBy:withPredicate:sortedBy:ascending:context:
-/// @param groupBy description
-/// @param predicate description
-/// @param sortBy description
-/// @param ascending description
-/// @param moc description
+/// @param groupBy
+/// @param predicate
+/// @param sortBy
+/// @param ascending
+/// @param moc
 /// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
@@ -438,9 +438,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// fetchAllGroupedBy:sortedBy:context:
-/// @param groupBy description
-/// @param sortBy description
-/// @param moc description
+/// @param groupBy
+/// @param sortBy
+/// @param moc
 /// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                          sortedBy:(NSString *)sortBy
@@ -450,18 +450,18 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 }
 
 /// fetchAllGroupedBy:sortedBy:
-/// @param groupBy description
-/// @param sortBy description
+/// @param groupBy
+/// @param sortBy
 /// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy sortedBy:(NSString *)sortBy {
   return [self fetchAllGroupedBy:groupBy withPredicate:nil sortedBy:sortBy ascending:YES];
 }
 
 /// fetchAllGroupedBy:withPredicate:sortedBy:ascending:
-/// @param groupBy description
-/// @param predicate description
-/// @param sortBy description
-/// @param ascending description
+/// @param groupBy
+/// @param predicate
+/// @param sortBy
+/// @param ascending
 /// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
@@ -503,8 +503,8 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 - (NSString *)deepDescription { return [self deepDescriptionWithOptions:0 indentLevel:1]; }
 
 /// deepDescriptionWithOptions:indentLevel:
-/// @param options description
-/// @param level description
+/// @param options
+/// @param level
 /// @return NSString *
 - (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level {
   MSDictionary * dd = [self deepDescriptionDictionary];
@@ -552,7 +552,7 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject) {
 - (id)JSONObject { return [self.JSONDictionary JSONObject]; }
 
 /// writeJSONToFile:
-/// @param file description
+/// @param file
 /// @return BOOL
 - (BOOL)writeJSONToFile:(NSString *)file {
   NSString * json = self.JSONString;
@@ -560,7 +560,7 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject) {
 }
 
 /// attributeValueIsDefault:
-/// @param attributeName description
+/// @param attributeName
 /// @return BOOL
 - (BOOL)attributeValueIsDefault:(NSString *)attributeName {
   return [[self valueForKey:attributeName] isEqual:[self defaultValueForAttribute:attributeName]];

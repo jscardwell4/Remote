@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
+@import Foundation;
+
 typedef void(^MSEmptyCompletionBlock)(void);
 typedef void(^MSBOOLCompletionBlock)(BOOL);
 typedef void(^MSBOOLBOOLCompletionBlock)(BOOL, BOOL);

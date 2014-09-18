@@ -5,7 +5,7 @@
 //  Created by Jason Cardwell on 4/29/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface MSStack : NSObject <NSFastEnumeration>
 

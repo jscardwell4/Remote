@@ -569,10 +569,10 @@ MSSTATIC_STRING_CONST kParentConstraintNametag  = @"kParentConstraintNametag";
                  ^{
     MSLogDebugTag(@"%@\n%@\n\n%@\n\n%@\n\n%@\n\n%@\n",
                   ClassTagSelectorString,
-                  [message dividerWithCharacterString:@"#"],
+                  message,
                   [_sourceView constraintsDescription],
                   [_sourceView framesDescription],
-                  [@"subelements" dividerWithCharacterString:@"#"],
+                  @"subelements",
                   [[_sourceView.subelementViews
                     valueForKeyPath:@"constraintsDescription"]
                    componentsJoinedByString:@"\n\n"]);

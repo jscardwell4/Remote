@@ -8,7 +8,7 @@
 
 #import "MSViewController.h"
 #import <netdb.h>
-#import "MSKit/MSKit.h"
+@import Moonkit;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -74,7 +74,7 @@ static NSString * kGroupPort    = @"9131";
 }
 
 /// setLocation:
-/// @param location description
+/// @param location
 - (void)setLocation:(NSString *)location {
   _location = [location copy];
   __weak MSViewController * weakself = self;
@@ -91,7 +91,7 @@ static NSString * kGroupPort    = @"9131";
 }
 
 /// sendRequestWithText:
-/// @param text description
+/// @param text
 - (void)sendRequestWithText:(NSString *)text {
 
   if (self.tcpSocket && [self.tcpSocket isConnected]) {
@@ -104,7 +104,7 @@ static NSString * kGroupPort    = @"9131";
 }
 
 /// appendLogMessage:
-/// @param message description
+/// @param message
 - (void)appendLogMessage:(NSString *)message {
 
   static NSDictionary    * msgAttrs = nil;
@@ -125,7 +125,7 @@ static NSString * kGroupPort    = @"9131";
 }
 
 /// appendMessage:
-/// @param message description
+/// @param message
 - (void)appendMessage:(NSString *)message {
 
   assert(IsMainQueue);
@@ -148,9 +148,9 @@ static NSString * kGroupPort    = @"9131";
 }
 
 /// appendString:stringAttributes:timestampAttributes:
-/// @param string description
-/// @param stringAttributes description
-/// @param timestampAttributes description
+/// @param string
+/// @param stringAttributes
+/// @param timestampAttributes
 - (void)appendString:(NSString *)string
     stringAttributes:(NSDictionary *)stringAttributes
  timestampAttributes:(NSDictionary *)timestampAttributes
@@ -606,7 +606,7 @@ static NSString * kGroupPort    = @"9131";
 
 
 /// toggleCommandLineHeight:
-/// @param sender description
+/// @param sender
 - (IBAction)toggleCommandLineHeight:(UIButton *)sender {
 
   self.commandLineHeightConstraint.constant = (sender.selected ? 20.0 : 200.0);
@@ -615,7 +615,7 @@ static NSString * kGroupPort    = @"9131";
 }
 
 /// sendRequest:
-/// @param sender description
+/// @param sender
 - (IBAction)sendRequest:(UIButton *)sender {
 
   NSString * text = self.commandLine.text;

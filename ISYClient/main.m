@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 #import "ISYClientAppDelegate.h"
 

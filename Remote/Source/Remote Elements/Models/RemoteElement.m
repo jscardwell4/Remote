@@ -347,7 +347,7 @@ MSSTRING_CONST REDefaultMode = @"default";
 }
 
 /// Calls `updateForMode:` intended for subclass overriding after setting the element's `currentMode`
-/// @param currentMode description
+/// @param currentMode
 - (void)setCurrentMode:(NSString *)currentMode {
   [self willChangeValueForKey:@"currentMode"];
   _currentMode = currentMode;

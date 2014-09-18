@@ -7,6 +7,7 @@
 //
 
 #import "MSDictionaryIndex.h"
+#import "MSKitMacros.h"
 
 @interface MSDictionaryIndex ()
 

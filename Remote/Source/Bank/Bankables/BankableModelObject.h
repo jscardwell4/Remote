@@ -7,7 +7,7 @@
 //
 #import "Bank.h"
 
-@class BankableDetailTableViewController;
+@class BankItemViewController;
 
 @interface BankableModelObject : NamedModelObject <BankableModel>
 

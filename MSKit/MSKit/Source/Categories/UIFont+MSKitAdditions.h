@@ -5,8 +5,8 @@
 //  Created by Jason Cardwell on 2/16/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 @interface UIFont (MSKitAdditions)
 

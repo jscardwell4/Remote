@@ -7,495 +7,459 @@
 //
 
 #import "MSJSONParser.h"
-#import <ParseKit/ParseKit.h>
+#import "MSJSONAssembler.h"
+@import PEGKit;
 
-static int ddLogLevel   = LOG_LEVEL_WARN;
-static int   msLogContext = LOG_CONTEXT_CONSOLE;
-#pragma unused(ddLogLevel,msLogContext)
+// start
+// @before {
+//     PKTokenizer *t = self.tokenizer;
+//     t.commentState.reportsCommentTokens = YES;
+//     [t setTokenizerState:t.commentState from:'/' to:'/'];
+//     [t.commentState addSingleLineStartMarker:@"//"];
+//     [t.commentState addMultiLineStartMarker:@"/*" endMarker:@"*/"];
+// }
+//                    = array | object;
 
-@interface PKSParser ()
+//  object            = openCurly (Empty | keyPath colon value (comma keyPath colon value)*) closeCurly;
+//  keyPath           = quote key (dot key)* quote;
+//  key               = Word;
 
-@property (nonatomic, retain) NSMutableDictionary  *_tokenKindTab;
-@property (nonatomic, retain) NSMutableArray       *_tokenKindNameTab;
+//  array             = openBracket (Empty | value (comma value)*) closeBracket;
 
-- (BOOL)_popBool;
-- (NSInteger)_popInteger;
-- (double)_popDouble;
-- (PKToken *)_popToken;
-- (NSString *)_popString;
+//  value             = (nullLiteral | trueLiteral | falseLiteral | number | string | array | object);
 
-- (void)_pushBool:(BOOL)yn;
-- (void)_pushInteger:(NSInteger)i;
-- (void)_pushDouble:(double)d;
+//  string            = QuotedString;
+//  number            = Number;
+//  nullLiteral       = 'null';
+//  trueLiteral       = 'true';
+//  falseLiteral      = 'false';
 
-@end
-
-/*
- @symbolState = '"';
-
- @start            = array | object;
-
- object            = openCurly (Empty | keyPath colon value (comma keyPath colon value)*) closeCurly;
- keyPath           = quote key (dot key)* quote;
- key               = Word;
-
- array             = openBracket (Empty | value (comma value)*) closeBracket;
-
- value             = (nullLiteral | trueLiteral | falseLiteral | number | string | array | object);
-
- string            = QuotedString;
- number            = Number;
- nullLiteral       = 'null';
- trueLiteral       = 'true';
- falseLiteral      = 'false';
-
- openCurly         = '{';
- closeCurly        = '}';
- openBracket       = '[';
- closeBracket      = ']';
- comma             = ',';
- colon             = ':';
- quote             = '"';
- dot               = '.';
- */
+//  openCurly         = '{';
+//  closeCurly        = '}';
+//  openBracket       = '[';
+//  closeBracket      = ']';
+//  comma             = ',';
+//  colon             = ':';
+//  quote             = '"';
+//  dot               = '.';
 
 @interface MSJSONParser ()
 
-@property (nonatomic, retain) NSMutableDictionary *object_memo;
-@property (nonatomic, retain) NSMutableDictionary *keyPath_memo;
-@property (nonatomic, retain) NSMutableDictionary *array_memo;
-@property (nonatomic, retain) NSMutableDictionary *value_memo;
-@property (nonatomic, retain) NSMutableDictionary *string_memo;
-@property (nonatomic, retain) NSMutableDictionary *number_memo;
-@property (nonatomic, retain) NSMutableDictionary *nullLiteral_memo;
-@property (nonatomic, retain) NSMutableDictionary *trueLiteral_memo;
-@property (nonatomic, retain) NSMutableDictionary *falseLiteral_memo;
-@property (nonatomic, retain) NSMutableDictionary *openCurly_memo;
-@property (nonatomic, retain) NSMutableDictionary *closeCurly_memo;
-@property (nonatomic, retain) NSMutableDictionary *openBracket_memo;
-@property (nonatomic, retain) NSMutableDictionary *closeBracket_memo;
-@property (nonatomic, retain) NSMutableDictionary *comma_memo;
-@property (nonatomic, retain) NSMutableDictionary *colon_memo;
-
+@property (nonatomic, strong) NSMutableDictionary * start_memo;
+@property (nonatomic, strong) NSMutableDictionary * object_memo;
+@property (nonatomic, strong) NSMutableDictionary * keyPath_memo;
+@property (nonatomic, strong) NSMutableDictionary * key_memo;
+@property (nonatomic, strong) NSMutableDictionary * array_memo;
+@property (nonatomic, strong) NSMutableDictionary * value_memo;
+@property (nonatomic, strong) NSMutableDictionary * string_memo;
+@property (nonatomic, strong) NSMutableDictionary * number_memo;
+@property (nonatomic, strong) NSMutableDictionary * nullLiteral_memo;
+@property (nonatomic, strong) NSMutableDictionary * trueLiteral_memo;
+@property (nonatomic, strong) NSMutableDictionary * falseLiteral_memo;
+@property (nonatomic, strong) NSMutableDictionary * openCurly_memo;
+@property (nonatomic, strong) NSMutableDictionary * closeCurly_memo;
+@property (nonatomic, strong) NSMutableDictionary * openBracket_memo;
+@property (nonatomic, strong) NSMutableDictionary * closeBracket_memo;
+@property (nonatomic, strong) NSMutableDictionary * comma_memo;
+@property (nonatomic, strong) NSMutableDictionary * colon_memo;
+@property (nonatomic, strong) NSMutableDictionary * quote_memo;
+@property (nonatomic, strong) NSMutableDictionary * dot_memo;
 @end
 
 @implementation MSJSONParser
 
-+ (MSJSONParser *)parserWithOptions:(MSJSONFormatOptions)options
-{
-    MSJSONParser * parser = [self new];
-    parser.options = options;
-    return parser;
+/// parserWithOptions:delegate:
+/// @param options description
+/// @param delegate description
+/// @return MSJSONParser *
++ (MSJSONParser *)parserWithOptions:(MSJSONFormatOptions)options delegate:(id)delegate {
+  MSJSONParser * parser = [[self alloc] initWithDelegate:delegate];
+  parser.options = options;
+  return parser;
 }
 
-- (id)init
-{
-    if (self = [super init])
-    {
-        self.enableAutomaticErrorRecovery = YES;
+/// initWithDelegate:
+/// @param delegate description
+/// @return instancetype
+- (instancetype)initWithDelegate:(id)delegate {
 
-        self._tokenKindTab[@"false"] = @(MSJSONPARSER_TOKEN_KIND_FALSELITERAL);
-        self._tokenKindTab[@"}"]     = @(MSJSONPARSER_TOKEN_KIND_CLOSECURLY);
-        self._tokenKindTab[@"["]     = @(MSJSONPARSER_TOKEN_KIND_OPENBRACKET);
-        self._tokenKindTab[@"null"]  = @(MSJSONPARSER_TOKEN_KIND_NULLLITERAL);
-        self._tokenKindTab[@","]     = @(MSJSONPARSER_TOKEN_KIND_COMMA);
-        self._tokenKindTab[@"true"]  = @(MSJSONPARSER_TOKEN_KIND_TRUELITERAL);
-        self._tokenKindTab[@"]"]     = @(MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET);
-        self._tokenKindTab[@"{"]     = @(MSJSONPARSER_TOKEN_KIND_OPENCURLY);
-        self._tokenKindTab[@":"]     = @(MSJSONPARSER_TOKEN_KIND_COLON);
+  if ((self = [super initWithDelegate:delegate])) {
 
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_FALSELITERAL] = @"false";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_CLOSECURLY]   = @"}";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_OPENBRACKET]  = @"[";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_NULLLITERAL]  = @"null";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_COMMA]        = @",";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_TRUELITERAL]  = @"true";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET] = @"]";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_OPENCURLY]    = @"{";
-        self._tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_COLON]        = @":";
+    self.startRuleName          = @"start";
+    self.tokenKindTab[@"false"] = @(MSJSONPARSER_TOKEN_KIND_FALSELITERAL);
+    self.tokenKindTab[@"."]     = @(MSJSONPARSER_TOKEN_KIND_DOT);
+    self.tokenKindTab[@"}"]     = @(MSJSONPARSER_TOKEN_KIND_CLOSECURLY);
+    self.tokenKindTab[@"\""]    = @(MSJSONPARSER_TOKEN_KIND_QUOTE);
+    self.tokenKindTab[@"["]     = @(MSJSONPARSER_TOKEN_KIND_OPENBRACKET);
+    self.tokenKindTab[@"null"]  = @(MSJSONPARSER_TOKEN_KIND_NULLLITERAL);
+    self.tokenKindTab[@","]     = @(MSJSONPARSER_TOKEN_KIND_COMMA);
+    self.tokenKindTab[@"true"]  = @(MSJSONPARSER_TOKEN_KIND_TRUELITERAL);
+    self.tokenKindTab[@"]"]     = @(MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET);
+    self.tokenKindTab[@"{"]     = @(MSJSONPARSER_TOKEN_KIND_OPENCURLY);
+    self.tokenKindTab[@":"]     = @(MSJSONPARSER_TOKEN_KIND_COLON);
 
-        self.object_memo       = [NSMutableDictionary dictionary];
-        self.keyPath_memo      = [NSMutableDictionary dictionary];
-        self.array_memo        = [NSMutableDictionary dictionary];
-        self.value_memo        = [NSMutableDictionary dictionary];
-        self.string_memo       = [NSMutableDictionary dictionary];
-        self.number_memo       = [NSMutableDictionary dictionary];
-        self.nullLiteral_memo  = [NSMutableDictionary dictionary];
-        self.trueLiteral_memo  = [NSMutableDictionary dictionary];
-        self.falseLiteral_memo = [NSMutableDictionary dictionary];
-        self.openCurly_memo    = [NSMutableDictionary dictionary];
-        self.closeCurly_memo   = [NSMutableDictionary dictionary];
-        self.openBracket_memo  = [NSMutableDictionary dictionary];
-        self.closeBracket_memo = [NSMutableDictionary dictionary];
-        self.comma_memo        = [NSMutableDictionary dictionary];
-        self.colon_memo        = [NSMutableDictionary dictionary];
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_FALSELITERAL] = @"false";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_DOT]          = @".";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_CLOSECURLY]   = @"}";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_QUOTE]        = @"\"";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_OPENBRACKET]  = @"[";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_NULLLITERAL]  = @"null";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_COMMA]        = @",";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_TRUELITERAL]  = @"true";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET] = @"]";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_OPENCURLY]    = @"{";
+    self.tokenKindNameTab[MSJSONPARSER_TOKEN_KIND_COLON]        = @":";
 
-    }
+    self.start_memo        = [@{} mutableCopy];
+    self.object_memo       = [@{} mutableCopy];
+    self.keyPath_memo      = [@{} mutableCopy];
+    self.key_memo          = [@{} mutableCopy];
+    self.array_memo        = [@{} mutableCopy];
+    self.value_memo        = [@{} mutableCopy];
+    self.string_memo       = [@{} mutableCopy];
+    self.number_memo       = [@{} mutableCopy];
+    self.nullLiteral_memo  = [@{} mutableCopy];
+    self.trueLiteral_memo  = [@{} mutableCopy];
+    self.falseLiteral_memo = [@{} mutableCopy];
+    self.openCurly_memo    = [@{} mutableCopy];
+    self.closeCurly_memo   = [@{} mutableCopy];
+    self.openBracket_memo  = [@{} mutableCopy];
+    self.closeBracket_memo = [@{} mutableCopy];
+    self.comma_memo        = [@{} mutableCopy];
+    self.colon_memo        = [@{} mutableCopy];
+    self.quote_memo        = [@{} mutableCopy];
+    self.dot_memo          = [@{} mutableCopy];
 
-    return self;
+  }
+
+  return self;
+
 }
 
-- (void)_clearMemo
-{
-    [_object_memo removeAllObjects];
-    [_keyPath_memo removeAllObjects];
-    [_array_memo removeAllObjects];
-    [_value_memo removeAllObjects];
-    [_string_memo removeAllObjects];
-    [_number_memo removeAllObjects];
-    [_nullLiteral_memo removeAllObjects];
-    [_trueLiteral_memo removeAllObjects];
-    [_falseLiteral_memo removeAllObjects];
-    [_openCurly_memo removeAllObjects];
-    [_closeCurly_memo removeAllObjects];
-    [_openBracket_memo removeAllObjects];
-    [_closeBracket_memo removeAllObjects];
-    [_comma_memo removeAllObjects];
-    [_colon_memo removeAllObjects];
+/// clearMemo
+- (void)clearMemo {
+
+  [_start_memo        removeAllObjects];
+  [_object_memo       removeAllObjects];
+  [_keyPath_memo      removeAllObjects];
+  [_key_memo          removeAllObjects];
+  [_array_memo        removeAllObjects];
+  [_value_memo        removeAllObjects];
+  [_string_memo       removeAllObjects];
+  [_number_memo       removeAllObjects];
+  [_nullLiteral_memo  removeAllObjects];
+  [_trueLiteral_memo  removeAllObjects];
+  [_falseLiteral_memo removeAllObjects];
+  [_openCurly_memo    removeAllObjects];
+  [_closeCurly_memo   removeAllObjects];
+  [_openBracket_memo  removeAllObjects];
+  [_closeBracket_memo removeAllObjects];
+  [_comma_memo        removeAllObjects];
+  [_colon_memo        removeAllObjects];
+  [_quote_memo        removeAllObjects];
+  [_dot_memo          removeAllObjects];
+
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Start
-////////////////////////////////////////////////////////////////////////////////
+- (void)start {
 
-- (void)_start
-{
-   
-    [self execute:(id)^{
-
-        PKTokenizer *t = self.tokenizer;
-        t.commentState.reportsCommentTokens = YES;
-        [t setTokenizerState:t.commentState from:'/' to:'/'];
-        [t.commentState addSingleLineStartMarker:@"//"];
-        [t.commentState addMultiLineStartMarker:@"/*" endMarker:@"*/"];
-
+    [self tryAndRecover:TOKEN_KIND_BUILTIN_EOF block:^{
+        [self start_];
+        [self matchEOF:YES];
+    } completion:^{
+        [self matchEOF:YES];
     }];
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-  [self fireAssemblerSelector:@selector(parser:willStart:)];
-#pragma clang diagnostic pop
-    [self tryAndRecover:TOKEN_KIND_BUILTIN_EOF
-                  block:^{
-                              if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0])
-                                  [self __comment];
-                              else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENBRACKET, 0])
-                                  [self array];
-                              else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENCURLY, 0])
-                                  [self object];
-                              else [self raise:@"No viable alternative found in rule '_start'."];
-
-                              if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
-
-                              [self matchEOF:YES];
-                          }
-             completion:^{ [self matchEOF:YES]; }];
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Object
-////////////////////////////////////////////////////////////////////////////////
+- (void)__start {
 
-- (void)__object
-{
-    [self openCurly];
-    [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_CLOSECURLY
-                  block:^{
-                      if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0])
-                      {
-                          [self keyPath];
+    [self execute:^{
 
-                          [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON
-                                        block:^{ [self colon]; }
-                                   completion:^{ [self colon]; }];
+    PKTokenizer *t = self.tokenizer;
+    t.commentState.reportsCommentTokens = YES;
+    [t setTokenizerState:t.commentState from:'/' to:'/'];
+    [t.commentState addSingleLineStartMarker:@"//"];
+    [t.commentState addMultiLineStartMarker:@"/*" endMarker:@"*/"];
 
-                          [self _value];
+    self.silentlyConsumesWhitespace = YES;
+    t.whitespaceState.reportsWhitespaceTokens = YES;
+    self.assembly.preservesWhitespaceTokens = YES;
 
-                          while ([self predicts:MSJSONPARSER_TOKEN_KIND_COMMA, 0])
-                          {
-                              BOOL commaKeyValue =
-                                  [self speculate:
-                                   ^{
-                                       [self comma];
+    }];
+    if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENBRACKET, 0]) {
+        [self array_];
+    } else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENCURLY, 0]) {
+        [self object_];
+    } else {
+        [self raise:@"No viable alternative found in rule 'start'."];
+    }
 
-                                       [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON
-                                                     block:^{ [self keyPath]; [self colon]; }
-                                                completion:^{ [self colon]; }];[self _value];
-                                   }];
-
-                              if (commaKeyValue)
-                              {
-                                  [self comma];
-
-                                  [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON
-                                                block:^{ [self keyPath]; [self colon]; }
-                                           completion:^{ [self colon]; }];
-
-                                  [self _value];
-                              }
-
-                              else break;
-                          }
-                      }
-
-                      [self closeCurly];
-                  }
-             completion:^{ [self closeCurly]; }];
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchObject:)];
-#pragma clang diagnostic pop
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchStart:)];
 }
 
-- (void)object { [self parseRule:@selector(__object) withMemo:_object_memo]; }
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Object keys and keypaths
-////////////////////////////////////////////////////////////////////////////////
-
-- (void)__keyPath
-{
-    [self match:TOKEN_KIND_BUILTIN_QUOTEDSTRING discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchKeyPath:)];
-#pragma clang diagnostic pop
-
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+- (void)start_ {
+    [self parseRule:@selector(__start) withMemo:_start_memo];
 }
-- (void)keyPath { [self parseRule:@selector(__keyPath) withMemo:_keyPath_memo]; }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Arrays
-////////////////////////////////////////////////////////////////////////////////
+- (void)__object {
 
-- (void)__array
-{
-    [self openBracket];
-    [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET
-                  block:^{
-                      if ([self predicts:MSJSONPARSER_TOKEN_KIND_FALSELITERAL,
-                                         MSJSONPARSER_TOKEN_KIND_NULLLITERAL,
-                                         MSJSONPARSER_TOKEN_KIND_OPENBRACKET,
-                                         MSJSONPARSER_TOKEN_KIND_OPENCURLY,
-                                         MSJSONPARSER_TOKEN_KIND_TRUELITERAL,
-                                         TOKEN_KIND_BUILTIN_NUMBER,
-                                         TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0])
-                      {
-                          [self _value];
+    [self openCurly_];
+                [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_CLOSECURLY block:^{
+        if ([self predicts:MSJSONPARSER_TOKEN_KIND_QUOTE, 0]) {
+            [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON block:^{
+                [self keyPath_];
+                [self colon_];
+            } completion:^{
+                [self colon_];
+            }];
+                [self value_];
+                while ([self speculate:^{ [self comma_]; [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON block:^{ [self keyPath_]; [self colon_]; } completion:^{ [self colon_]; }];[self value_]; }]) {
+                        [self comma_];
+                        [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_COLON block:^{
+                            [self keyPath_];
+                            [self colon_];
+                        } completion:^{
+                            [self colon_];
+                        }];
+                            [self value_];
+                }
+                    }
+                    [self closeCurly_];
+                } completion:^{
+                    [self closeCurly_];
+                }];
 
-                          while ([self predicts:MSJSONPARSER_TOKEN_KIND_COMMA, 0])
-                          {
-                              if ([self speculate:^{ [self comma]; [self _value]; }])
-                              {
-                                  [self comma];
-                                  [self _value];
-                              }
-
-                              else  break;
-                          }
-                      }
-
-                      [self closeBracket];
-                  }
-             completion:^{ [self closeBracket]; }
-     ];
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchArray:)];
-#pragma clang diagnostic pop
-
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchObject:)];
 }
-- (void)array { [self parseRule:@selector(__array) withMemo:_array_memo]; }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Object and array value
-////////////////////////////////////////////////////////////////////////////////
+- (void)object_ {
+    [self parseRule:@selector(__object) withMemo:_object_memo];
+}
 
-- (void)__value
-{
-    if      ([self predicts:MSJSONPARSER_TOKEN_KIND_NULLLITERAL, 0])  [self nullLiteral];
-    else if ([self predicts:MSJSONPARSER_TOKEN_KIND_TRUELITERAL, 0])  [self trueLiteral];
-    else if ([self predicts:MSJSONPARSER_TOKEN_KIND_FALSELITERAL, 0]) [self falseLiteral];
-    else if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, 0])            [self number];
-    else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0])      [self string];
-    else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENBRACKET, 0])  [self array];
-    else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENCURLY, 0])    [self object];
+- (void)__keyPath {
 
-    else
+    [self quote_];
+    [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_QUOTE block:^{
+        [self key_];
+        while ([self speculate:^{ [self dot_]; [self key_]; }]) {
+            [self dot_];
+            [self key_];
+        }
+        [self quote_];
+    } completion:^{
+        [self quote_];
+    }];
+
+    [self fireDelegateSelector:@selector(parser:didMatchKeyPath:)];
+}
+
+- (void)keyPath_ {
+    [self parseRule:@selector(__keyPath) withMemo:_keyPath_memo];
+}
+
+- (void)__key {
+
+    [self matchWord:NO];
+
+    [self fireDelegateSelector:@selector(parser:didMatchKey:)];
+}
+
+- (void)key_ {
+    [self parseRule:@selector(__key) withMemo:_key_memo];
+}
+
+- (void)__array {
+
+    [self openBracket_];
+    [self tryAndRecover:MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET block:^{
+        if ([self predicts:MSJSONPARSER_TOKEN_KIND_FALSELITERAL, MSJSONPARSER_TOKEN_KIND_NULLLITERAL, MSJSONPARSER_TOKEN_KIND_OPENBRACKET, MSJSONPARSER_TOKEN_KIND_OPENCURLY, MSJSONPARSER_TOKEN_KIND_TRUELITERAL, TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0]) {
+            [self value_];
+            while ([self speculate:^{ [self comma_]; [self value_]; }]) {
+                [self comma_];
+                [self value_];
+            }
+        }
+        [self closeBracket_];
+    } completion:^{
+        [self closeBracket_];
+    }];
+
+    [self fireDelegateSelector:@selector(parser:didMatchArray:)];
+}
+
+- (void)array_ {
+    [self parseRule:@selector(__array) withMemo:_array_memo];
+}
+
+- (void)__value {
+
+    if ([self predicts:MSJSONPARSER_TOKEN_KIND_NULLLITERAL, 0]) {
+        [self nullLiteral_];
+    } else if ([self predicts:MSJSONPARSER_TOKEN_KIND_TRUELITERAL, 0]) {
+        [self trueLiteral_];
+    } else if ([self predicts:MSJSONPARSER_TOKEN_KIND_FALSELITERAL, 0]) {
+        [self falseLiteral_];
+    } else if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, 0]) {
+        [self number_];
+    } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0]) {
+        [self string_];
+    } else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENBRACKET, 0]) {
+        [self array_];
+    } else if ([self predicts:MSJSONPARSER_TOKEN_KIND_OPENCURLY, 0]) {
+        [self object_];
+    } else {
         [self raise:@"No viable alternative found in rule 'value'."];
-    
+    }
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchValue:)];
 }
 
-- (void)_value { [self parseRule:@selector(__value) withMemo:_value_memo]; }
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Comments
-////////////////////////////////////////////////////////////////////////////////
-
-- (void)__comment
-{
-
-    [self matchComment:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchComment:)];
-#pragma clang diagnostic pop
-
+- (void)value_ {
+    [self parseRule:@selector(__value) withMemo:_value_memo];
 }
 
+- (void)__string {
 
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark String, number, and boolean terminals
-////////////////////////////////////////////////////////////////////////////////
-
-- (void)__string
-{
     [self matchQuotedString:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchString:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchString:)];
 }
-- (void)string { [self parseRule:@selector(__string) withMemo:_string_memo]; }
 
-- (void)__number
-{
+- (void)string_ {
+    [self parseRule:@selector(__string) withMemo:_string_memo];
+}
+
+- (void)__number {
+
     [self matchNumber:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchNumber:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchNumber:)];
 }
-- (void)number { [self parseRule:@selector(__number) withMemo:_number_memo]; }
 
-- (void)__nullLiteral
-{
+- (void)number_ {
+    [self parseRule:@selector(__number) withMemo:_number_memo];
+}
+
+- (void)__nullLiteral {
+
     [self match:MSJSONPARSER_TOKEN_KIND_NULLLITERAL discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchNullLiteral:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchNullLiteral:)];
 }
-- (void)nullLiteral { [self parseRule:@selector(__nullLiteral) withMemo:_nullLiteral_memo]; }
 
-- (void)__trueLiteral
-{
+- (void)nullLiteral_ {
+    [self parseRule:@selector(__nullLiteral) withMemo:_nullLiteral_memo];
+}
+
+- (void)__trueLiteral {
+
     [self match:MSJSONPARSER_TOKEN_KIND_TRUELITERAL discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchTrueLiteral:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchTrueLiteral:)];
 }
-- (void)trueLiteral { [self parseRule:@selector(__trueLiteral) withMemo:_trueLiteral_memo]; }
 
-- (void)__falseLiteral
-{
+- (void)trueLiteral_ {
+    [self parseRule:@selector(__trueLiteral) withMemo:_trueLiteral_memo];
+}
+
+- (void)__falseLiteral {
+
     [self match:MSJSONPARSER_TOKEN_KIND_FALSELITERAL discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchFalseLiteral:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchFalseLiteral:)];
 }
-- (void)falseLiteral { [self parseRule:@selector(__falseLiteral) withMemo:_falseLiteral_memo]; }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Punction terminals - {}[],:".
-////////////////////////////////////////////////////////////////////////////////
+- (void)falseLiteral_ {
+    [self parseRule:@selector(__falseLiteral) withMemo:_falseLiteral_memo];
+}
 
-- (void)__openCurly
-{
+- (void)__openCurly {
+
     [self match:MSJSONPARSER_TOKEN_KIND_OPENCURLY discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchOpenCurly:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchOpenCurly:)];
 }
-- (void)openCurly { [self parseRule:@selector(__openCurly) withMemo:_openCurly_memo]; }
 
-- (void)__closeCurly
-{
+- (void)openCurly_ {
+    [self parseRule:@selector(__openCurly) withMemo:_openCurly_memo];
+}
+
+- (void)__closeCurly {
+
     [self match:MSJSONPARSER_TOKEN_KIND_CLOSECURLY discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchCloseCurly:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchCloseCurly:)];
 }
-- (void)closeCurly { [self parseRule:@selector(__closeCurly) withMemo:_closeCurly_memo]; }
 
-- (void)__openBracket
-{
+- (void)closeCurly_ {
+    [self parseRule:@selector(__closeCurly) withMemo:_closeCurly_memo];
+}
+
+- (void)__openBracket {
+
     [self match:MSJSONPARSER_TOKEN_KIND_OPENBRACKET discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchOpenBracket:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchOpenBracket:)];
 }
-- (void)openBracket { [self parseRule:@selector(__openBracket) withMemo:_openBracket_memo]; }
 
-- (void)__closeBracket
-{
+- (void)openBracket_ {
+    [self parseRule:@selector(__openBracket) withMemo:_openBracket_memo];
+}
+
+- (void)__closeBracket {
+
     [self match:MSJSONPARSER_TOKEN_KIND_CLOSEBRACKET discard:NO];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self fireAssemblerSelector:@selector(parser:didMatchCloseBracket:)];
-#pragma clang diagnostic pop
 
-
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchCloseBracket:)];
 }
-- (void)closeBracket { [self parseRule:@selector(__closeBracket) withMemo:_closeBracket_memo]; }
 
-- (void)__comma
-{
+- (void)closeBracket_ {
+    [self parseRule:@selector(__closeBracket) withMemo:_closeBracket_memo];
+}
+
+- (void)__comma {
+
     [self match:MSJSONPARSER_TOKEN_KIND_COMMA discard:NO];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchComma:)];
 }
-- (void)comma { [self parseRule:@selector(__comma) withMemo:_comma_memo]; }
 
-- (void)__colon
-{
+- (void)comma_ {
+    [self parseRule:@selector(__comma) withMemo:_comma_memo];
+}
+
+- (void)__colon {
+
     [self match:MSJSONPARSER_TOKEN_KIND_COLON discard:NO];
 
-    if ([self predicts:TOKEN_KIND_BUILTIN_COMMENT, 0]) [self __comment];
+    [self fireDelegateSelector:@selector(parser:didMatchColon:)];
 }
-- (void)colon { [self parseRule:@selector(__colon) withMemo:_colon_memo]; }
+
+- (void)colon_ {
+    [self parseRule:@selector(__colon) withMemo:_colon_memo];
+}
+
+- (void)__quote {
+
+    [self match:MSJSONPARSER_TOKEN_KIND_QUOTE discard:NO];
+
+    [self fireDelegateSelector:@selector(parser:didMatchQuote:)];
+}
+
+- (void)quote_ {
+    [self parseRule:@selector(__quote) withMemo:_quote_memo];
+}
+
+- (void)__dot {
+
+    [self match:MSJSONPARSER_TOKEN_KIND_DOT discard:NO];
+
+    [self fireDelegateSelector:@selector(parser:didMatchDot:)];
+}
+
+- (void)dot_ {
+    [self parseRule:@selector(__dot) withMemo:_dot_memo];
+}
 
 @end

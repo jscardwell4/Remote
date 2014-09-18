@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+
+@import Foundation;
 
 @interface NSObject (MSKitAdditions)
 

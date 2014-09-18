@@ -1,14 +1,16 @@
 //
 //  MSKitMacros.h
-//  Remote
+//  MSKit
 //
 //  Created by Jason Cardwell on 3/28/12.
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
+@import Foundation;
+@import UIKit;
+#import "MSKitDefines.h"
 #import "NSNull+MSKitAdditions.h"
 #import "NSString+MSKitAdditions.h"
 #import "MSKitLoggingFunctions.h"
-#import "MSKitDefines.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////

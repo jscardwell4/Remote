@@ -8,7 +8,7 @@
 #import "IRCode.h"
 #import "ComponentDevice.h"
 #import "Manufacturer.h"
-#import "IRCodeDetailViewController.h"
+#import "IRCodeViewController.h"
 
 enum ProntoHexFormatParts {
   PatternType                 = 0,
@@ -103,14 +103,14 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 @dynamic device, setsDeviceInput, prontoHex, manufacturer, codeset;
 
 /// isValidOnOffPattern:
-/// @param pattern description
+/// @param pattern
 /// @return BOOL
 + (BOOL)isValidOnOffPattern:(NSString *)pattern {
   return ([self compressedOnOffPatternFromPattern:pattern] != nil);
 }
 
 /// compressedOnOffPatternFromPattern:
-/// @param pattern description
+/// @param pattern
 /// @return NSString *
 + (NSString *)compressedOnOffPatternFromPattern:(NSString *)pattern {
 
@@ -164,7 +164,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 }
 
 /// setProntoHex:
-/// @param prontoHex description
+/// @param prontoHex
 - (void)setProntoHex:(NSString *)prontoHex {
   [self willChangeValueForKey:@"prontoHex"];
   [self setPrimitiveValue:prontoHex forKey:@"prontoHex"];
@@ -198,7 +198,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 }
 
 /// setDevice:
-/// @param device description
+/// @param device
 - (void)setDevice:(ComponentDevice *)device {
   [self willChangeValueForKey:@"device"];
   [self setPrimitiveValue:device forKey:@"device"];
@@ -209,7 +209,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 }
 
 /// setCodeset:
-/// @param codeset description
+/// @param codeset
 - (void)setCodeset:(NSString *)codeset {
   [self willChangeValueForKey:@"codeset"];
   [self setPrimitiveValue:codeset forKey:@"codeset"];
@@ -219,7 +219,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 }
 
 /// setManufacturer:
-/// @param manufacturer description
+/// @param manufacturer
 - (void)setManufacturer:(Manufacturer *)manufacturer {
   [self willChangeValueForKey:@"manufacturer"];
   [self setPrimitiveValue:manufacturer forKey:@"manufacturer"];
@@ -229,7 +229,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 }
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
@@ -285,13 +285,13 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 ////////////////////////////////////////////////////////////////////////////////
 
 /// detailViewController
-/// @return IRCodeDetailViewController *
-- (IRCodeDetailViewController *)detailViewController { return [IRCodeDetailViewController controllerWithItem:self]; }
+/// @return IRCodeViewController *
+- (IRCodeViewController *)detailViewController { return [IRCodeViewController controllerWithItem:self]; }
 
 /// editingViewController
-/// @return IRCodeDetailViewController *
-- (IRCodeDetailViewController *)editingViewController {
-  return [IRCodeDetailViewController controllerWithItem:self editing:YES];
+/// @return IRCodeViewController *
+- (IRCodeViewController *)editingViewController {
+  return [IRCodeViewController controllerWithItem:self editing:YES];
 }
 
 /// directoryLabel
@@ -303,7 +303,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 /// setCategory:
-/// @param category description
+/// @param category
 - (void)setCategory:(NSString *)category {}
 
 @end

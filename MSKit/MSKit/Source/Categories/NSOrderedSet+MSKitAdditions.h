@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "MSKitProtocols.h"
 
 @interface NSOrderedSet (MSKitAdditions) <MSJSONExport, MSKeySearchable>

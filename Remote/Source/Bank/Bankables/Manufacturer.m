@@ -9,15 +9,15 @@
 #import "Manufacturer.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
-#import "ManufacturerDetailViewController.h"
+#import "ManufacturerViewController.h"
 
 @implementation Manufacturer
 
 @dynamic codes, devices;
 
 /// manufacturerWithName:context:
-/// @param name description
-/// @param context description
+/// @param name
+/// @param context
 /// @return instancetype
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context {
   assert(name && context);
@@ -45,7 +45,7 @@
 
 
 /// updateWithData:
-/// @param data description
+/// @param data
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
@@ -120,15 +120,15 @@
 + (NSString *)directoryLabel { return @"Manufacturers"; }
 
 /// detailViewController
-/// @return ManufacturerDetailViewController *
-- (ManufacturerDetailViewController *)detailViewController {
-  return [ManufacturerDetailViewController controllerWithItem:self];
+/// @return ManufacturerViewController *
+- (ManufacturerViewController *)detailViewController {
+  return [ManufacturerViewController controllerWithItem:self];
 }
 
 /// editingViewController
-/// @return ManufacturerDetailViewController *
-- (ManufacturerDetailViewController *)editingViewController {
-  return [ManufacturerDetailViewController controllerWithItem:self editing:YES];
+/// @return ManufacturerViewController *
+- (ManufacturerViewController *)editingViewController {
+  return [ManufacturerViewController controllerWithItem:self editing:YES];
 }
 
 /// isSectionable

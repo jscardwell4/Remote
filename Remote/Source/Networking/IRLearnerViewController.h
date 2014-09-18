@@ -6,7 +6,7 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "ConnectionManager.h"
 
 @class   IPhontoAppController;

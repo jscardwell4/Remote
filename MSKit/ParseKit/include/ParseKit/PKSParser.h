@@ -6,7 +6,7 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "PKTokenizer.h"
 #import "PKTokenizer.h"
 @class PKToken;
