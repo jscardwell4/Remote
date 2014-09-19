@@ -1,6 +1,6 @@
 {
   "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
-  "home-remote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD",
+  "home-remote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
   "top-toolbar": {
     "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
     "name": "Top Toolbar",
@@ -48,15 +48,15 @@
         },
         "icons.default": {
           "normal": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
             "color": "#7F7F7FFF"
           }
         }
@@ -71,15 +71,15 @@
         },
         "icons.default": {
           "normal": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73",
+            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73",
+            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73",
+            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
             "color": "#7F7F7FFF"
           }
         }
@@ -94,15 +94,15 @@
         },
         "icons.default": {
           "normal": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4",
+            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4",
+            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4",
+            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
             "color": "#7F7F7FFF"
           }
         }
@@ -113,19 +113,19 @@
         "role": "battery-status",
         "icons.default": {
           "normal": {
-            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93",
+            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93",
+            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384",
+            "image.uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384", // 856-gray-lightning-bolt.png
             "color": "#7F7F7FFF"
           },
           "selected": {
-            "image.uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC",
+            "image.uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC", // 396-gray-power-plug.png
             "color": "white"
           }
         }
@@ -136,15 +136,15 @@
         "role": "connection-status",
         "icons.default": {
           "normal": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B",
+            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B",
+            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B",
+            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
             "color": "#7F7F7FFF"
           }
         }

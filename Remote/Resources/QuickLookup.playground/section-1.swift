@@ -3,6 +3,8 @@
 import Foundation
 import UIKit
 
-let string = "{\n  \"uu\\\"id\": \"some-nasty-uuid\""
+let string = "abcdefghijklmnopqrstuvwxyz"
 
-let escaped = string.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+string[advance(string.startIndex, 6)]
+
+string[advance(string.endIndex, -6)]

@@ -10,58 +10,21 @@ import Foundation
 
 /**
 
-`JSONParser` is a simple class for parsing a JSON string into an object. The grammar recognized follows:
-
-*note: All whitespace excluding that which appears inside a quoted string is ignored. Additionally, anywhere such
-"discardable" whitespace can occur is also a valid location to insert the <comment> production listed below:
-
-comment → single-line-comment | multi-line-comment
-
-single-line-comment → / / ⏎ | / / single-line-comment-items ⏎
-single-line-comment-items → single-line-comment-item | single-line-comment-item single-line-comment-items
-single-line-comment-item → Any Unicode character except for ⏎
-
-multi-line-comment → / * * / | / * multi-line-comment-items * /
-multi-line-comment-items → multi-line-comment-item | multi-line-comment-item multi-line-comment-items
-multi-line-comment-item → non-asterisk-character | * non-solidus-character
-non-asterisk-character → Any Unicode character except for *
-non-solidus-character → Any Unicode character except for /
-
-This is the grammar without flooding the notation with all the possible appearances of the <comment> production:
+`JSONParser` is a simple class for parsing a JSON string into an object. The following grammar is used for parsing.
+*note: All whitespace excluding that which appears inside a quoted string is ignored.
 
 start → array | object
-
-object → { } | { key-value-list }
-key-value-list → key-value | key-value , key-value-list
-key-value → string-literal : value
-
-array → [ ] | [ value-list ]
-value-list → value | value , value-list
-
-value → null-literal | boolean-literal | number-literal | string-literal | array | object
-
-string-literal → " " | " ­quoted-text­ "
-quoted-text → quoted-text-item | quoted-text-item ­quoted-text­
-quoted-text-item → escaped-character | Any Unicode character except for ", ⏎, \
-escaped-character → \ escaped-character-item
-escaped-character-item → " | \ | / | b | f | n | r | t | u hexidecimal-digits
-hexidecimal-digits → hexidecimal-digit hexidecimal-digit hexidecimal-digit hexidecimal-digit
-hexidecimal-digit → 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F
-
-
-null-literal → null
-boolean-literal → true | false
-
-number-literal → decimal-literal | decimal-literal decimal-exponent
-decimal-literal → positive-decimal-literal | negative-decimal-literal
-negative-decimal-literal → - decimal-digits | - decimal-digits decimal-fraction
-positive-decimal-literal → decimal-digits | decimal-digits decimal-fraction
-decimal-digits → decimal-digit decimal-digitsœ
-decimal-digit → 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-decimal-fraction → . decimal-digits
-decimal-exponent →  decimal-exponent-e decimal-digits | decimal-exponent-e sign decimal-digits
-decimal-exponent-e → e | E
-sign → + | -
+object → comment? '{' comment? (key-value (comment? ',' comment? key-value)*)? comment? '}' comment?
+key-value → string comment? ':' comment? value
+array → comment? '[' comment? (value (comment? ',' comment? value)*)? comment? ']' comment?
+value → 'null' | 'true' | 'false' | number | string | array | object
+string → " ­character* "
+character → Any Unicode character except for ", ⏎, \ | \ ["\/bfnrt] | \ u [0-9A-F]{4}
+number →  -? [0-9]+ (. [0-9]+)? ([eE] [+-]? [0-9]+)?
+comment → '/' '/' non-return-character* '⏎' | '/' '*' (non-asterisk-character | '*' non-solidus-character)* '*' '/'
+non-return-character → Any Unicode character except for ⏎
+non-asterisk-character → Any Unicode character except for *
+non-solidus-character → Any Unicode character except for /
 
  */
 @objc(MSJSONParser)
@@ -95,29 +58,40 @@ public class JSONParser: NSObject {
   :param: code JSONParserErrorCode
   :param: reason String?
   */
-  private func setError(pointer: NSErrorPointer, _ code: JSONParserErrorCode, _ reason: String?) {
+  private func setError(pointer: NSErrorPointer,
+                      _ code: JSONParserErrorCode,
+                      _ reason: String?,
+                        underlyingError: NSError? = nil)
+  {
     if pointer != nil {
-      var info: [NSObject:AnyObject]?
-      if reason != nil { info = [NSLocalizedFailureReasonErrorKey: reason! + " near location \(idx)"] }
+      var info = [NSObject:AnyObject]()
+      if reason != nil { info[NSLocalizedFailureReasonErrorKey] = reason! + " near location \(idx)" }
+      if underlyingError != nil { info[NSUnderlyingErrorKey] = underlyingError! }
       pointer.memory = NSError(domain: JSONParserErrorDomain, code: code.toRaw(), userInfo: info)
     }
   }
 
   /**
-  setInternalError:reason:
+  setInternalError:reason:underlyingError:
 
   :param: pointer NSErrorPointer
   :param: reason String?
+  :param: underlyingError NSError? = nil
   */
-  private func setInternalError(pointer: NSErrorPointer, _ reason: String?) { setError(pointer, .Internal, reason) }
+  private func setInternalError(pointer: NSErrorPointer, _ reason: String?, underlyingError: NSError? = nil) {
+    setError(pointer, .Internal, reason, underlyingError: underlyingError)
+  }
 
   /**
-  setSyntaxError:reason:
+  setSyntaxError:reason:underlyingError:
 
   :param: pointer NSErrorPointer
   :param: reason String?
+  :param: underlyingError NSError? = nil
   */
-  private func setSyntaxError(pointer: NSErrorPointer, _ reason: String?) { setError(pointer, .InvalidSyntax, reason) }
+  private func setSyntaxError(pointer: NSErrorPointer, _ reason: String?, underlyingError: NSError? = nil) {
+    setError(pointer, .InvalidSyntax, reason, underlyingError: underlyingError)
+  }
 
   /**
   logContextStack:file:function:line:
@@ -157,28 +131,86 @@ public class JSONParser: NSObject {
     return (success, string)
   }
 
-
   /**
-  scanLiteralToken:
+  scanComment:
 
-  :param: token Token.ValueToken.StaticValueToken
-
-  :returns: Bool
+  :param: error NSErrorPointer
   */
-  private func scanLiteralToken(token: Token.ValueToken.StaticValueToken) -> Bool {
-    return scanner.scanString(token.toRaw(), intoString: nil)
+  private func scanComment(error: NSErrorPointer) {
+
+    // Try scanning the for solidus characters
+    let (success, solidusString) = scanToken(.Solidus, nil)
+
+    // Return if we didn't scan any
+    if !success { return }
+
+    // Otherwise check if we scanned two or more
+    if solidusString!.hasPrefix("//") {
+
+      // Scan to the end of the line
+      scanner.scanUpToCharactersFromSet(NSCharacterSet.newlineCharacterSet(), intoString: nil)
+
+    }
+
+    // Otherwise try scanning an opening asterisk
+    else if scanToken(.Asterisk, nil).success {
+
+      // We are inside an open multi-line comment, find the closing asterisk and solidus
+      var success = false
+
+      commentLoop: while !scanner.atEnd {
+
+        // Find the closing asterisk
+        if scanToken(.Asterisk, nil).success {
+
+          // Now check the next character
+          if string[idx] == "/" {
+
+            // We have found the end of the multi-line comment, break the loop
+            idx++
+            success = true
+            break commentLoop
+          }
+        }
+
+        // Make sure we ended any multi-line comment that we found
+        if !success { setSyntaxError(error, "multi-line comment without end") }
+
+      }
+
+    }
+
+    // If we get here then we have an illegal solitary solidus
+    else {
+      setSyntaxError(error, "malformed comment")
+    }
+
   }
 
   /**
   scanToken:
 
+  :param: token Token.ValueToken.StaticValueToken
+
+  :returns: Bool
+  */
+  private func scanToken(token: Token.ValueToken.StaticValueToken) -> Bool {
+    return scanner.scanString(token.toRaw(), intoString: nil)
+  }
+
+  /**
+  scanToken:error:
+
   :param: token Token.PunctuationToken
+  :param: error NSErrorPointer
 
   :returns: (success: Bool, value: String?)
   */
-  private func scanToken(token: Token.PunctuationToken) -> (success: Bool, value: String?) {
+  private func scanToken(token: Token.PunctuationToken, _ error: NSErrorPointer) -> (success: Bool, value: String?) {
+    if token.isCommentable { scanComment(error) }
     var string: NSString?
     let success = scanner.scanCharactersFromSet(token.characterSet, intoString: &string)
+    if success && token.isCommentable { scanComment(error) }
     return (success, string)
   }
 
@@ -197,16 +229,17 @@ public class JSONParser: NSObject {
   }
 
   /**
-  scanQuotedString:
+  scanQuotedString:error:
 
   :param: string AnyObject?
+  :param: error NSErrorPointer
 
   :returns: Bool
   */
-  private func scanQuotedString(inout string:AnyObject?) -> Bool {
+  private func scanQuotedString(inout string:AnyObject?, _ error: NSErrorPointer) -> Bool {
 
     // First get past the first quotation mark
-    var (success, _) = scanToken(.Quotation)
+    var (success, _) = scanToken(.Quotation, error)
 
     // Only proceed if we found a quotation mark
     if success {
@@ -225,7 +258,7 @@ public class JSONParser: NSObject {
       }
 
       // If we have been successful, set the `inout string` parameter to our `result` string
-      if success && result != nil { (success, _) = scanToken(.Quotation); if success { string = result } }
+      if success && result != nil { (success, _) = scanToken(.Quotation, error); if success { string = result } }
 
     }
 
@@ -243,9 +276,10 @@ public class JSONParser: NSObject {
   private func parseObject(error: NSErrorPointer = nil) -> Bool {
 
     var success = false
+    var localError: NSError?
 
     // Try to scan the opening punctuation for an object
-    if scanToken(Token.PunctuationToken.LeftCurlyBracket).success {
+    if scanToken(.LeftCurlyBracket, &localError).success {
 
       success = true
       objectStack.push(MSDictionary())   // Push a new dictionary onto the object stack
@@ -256,13 +290,13 @@ public class JSONParser: NSObject {
     }
 
     // Then try to scan a comma separating another object key value pair
-    else if scanToken(Token.PunctuationToken.Comma).success {
+    else if scanToken(.Comma, &localError).success {
       success = true
       contextStack.push(Context.Key)
     }
 
     // Lastly, try to scan the closing punctuation for an object
-    else if scanToken(Token.PunctuationToken.RightCurlyBracket).success {
+    else if scanToken(.RightCurlyBracket, &localError).success {
 
 
       // Pop context, making sure it is correct
@@ -283,17 +317,17 @@ public class JSONParser: NSObject {
           else if let dict = objectStack.pop() as? MSDictionary { success = addValueToTopObject(dict, error) }
 
           // If we can't get the completed array, set error
-          else { setInternalError(error, "dictionary absent from object stack") }
+          else { setInternalError(error, "dictionary absent from object stack", underlyingError: localError) }
 
         }
 
         // Set error if our context stack is empty
-        else { setInternalError(error, "empty context stack") }
+        else { setInternalError(error, "empty context stack", underlyingError: localError) }
 
       }
 
       // Set error if we popped a context other than object
-      else { setInternalError(error, "incorrect context popped off of stack") }
+      else { setInternalError(error, "incorrect context popped off of stack", underlyingError: localError) }
 
     }
 
@@ -311,9 +345,10 @@ public class JSONParser: NSObject {
   private func parseArray(error: NSErrorPointer = nil) -> Bool {
 
     var success = false
+    var localError: NSError?
 
     // Try to scan the opening punctuation for an object
-    if scanToken(Token.PunctuationToken.LeftSquareBracket).success {
+    if scanToken(.LeftSquareBracket, &localError).success {
 
       success = true
       objectStack.push([AnyObject]())   // Push a new array onto the object stack
@@ -323,10 +358,10 @@ public class JSONParser: NSObject {
     }
 
     // Then try to scan a comma separating another object key value pair
-    else if scanToken(Token.PunctuationToken.Comma).success { success = true; contextStack.push(Context.Value) }
+    else if scanToken(.Comma, &localError).success { success = true; contextStack.push(Context.Value) }
 
     // Lastly, try to scan the closing punctuation for an object
-    else if scanToken(Token.PunctuationToken.RightSquareBracket).success {
+    else if scanToken(.RightSquareBracket, &localError).success {
 
 
       // Pop context, making sure it is correct
@@ -346,17 +381,17 @@ public class JSONParser: NSObject {
           else if let array = objectStack.pop() as? [AnyObject] { success = addValueToTopObject(array, error) }
 
           // If we can't get the completed array, set error
-          else { setInternalError(error, "array absent from object stack") }
+          else { setInternalError(error, "array absent from object stack", underlyingError: localError) }
 
         }
 
         // Set error if our context stack is empty
-        else { setInternalError(error, "empty context stack") }
+        else { setInternalError(error, "empty context stack", underlyingError: localError) }
 
       }
 
       // Set error if we popped a context other than array
-      else { setInternalError(error, "incorrect context popped off of stack") }
+      else { setInternalError(error, "incorrect context popped off of stack", underlyingError: localError) }
 
     }
 
@@ -375,7 +410,7 @@ public class JSONParser: NSObject {
 
     var success = false
     var value: AnyObject?
-
+    var localError: NSError?
 
     if !(contextStack.pop() == Context.Value) {
       setInternalError(error, "incorrect context popped off of stack")
@@ -383,21 +418,25 @@ public class JSONParser: NSObject {
     }
 
     // Try scanning a true literal
-    if scanLiteralToken(.True) { value = true; success = true }
+    if scanToken(.True) { value = true; success = true }
 
     // Try scanning a false literal
-    else if scanLiteralToken(.False) { value = false; success = true  }
+    else if scanToken(.False) { value = false; success = true  }
 
     // Try scanning a null literal
-    else if scanLiteralToken(.Null) { value = NSNull(); success = true  }
+    else if scanToken(.Null) { value = NSNull(); success = true  }
 
     // Try scanning a number
-    else if scanNumber(&value) || scanQuotedString(&value) || parseObject(error: error) || parseArray(error: error) {
+    else if scanNumber(&value)
+      || scanQuotedString(&value, &localError)
+      || parseObject(error: &localError)
+      || parseArray(error: &localError)
+    {
       success = true
     }
 
     // Set error
-    else { setSyntaxError(error, "failed to parse value") }
+    else { setSyntaxError(error, "failed to parse value", underlyingError: localError) }
 
     if success && value != nil { success = addValueToTopObject(value!, error) }
 
@@ -416,8 +455,9 @@ public class JSONParser: NSObject {
 
     var success = false
     var key: AnyObject?
+    var localError: NSError?
 
-    if scanQuotedString(&key) {
+    if scanQuotedString(&key, &localError) {
 
 
       // Pop off context, making sure it is of the correct value
@@ -427,23 +467,23 @@ public class JSONParser: NSObject {
         logAddedObject(key!, keyStack, __FUNCTION__)
 
         // Parse the delimiting colon
-        if scanToken(.Colon).success {
+        if scanToken(.Colon, &localError).success {
           contextStack.push(.Value)
           success = true
         }
 
         // Set error if we could not match the colon
-        else { setSyntaxError(error, "missing colon after key") }
+        else { setSyntaxError(error, "missing colon after key", underlyingError: localError) }
 
       }
 
       // Set error if we popped a context other than key
-      else { setInternalError(error, "incorrect context popped off of stack") }
+      else { setInternalError(error, "incorrect context popped off of stack", underlyingError: localError) }
 
     }
 
     // Set error if we failed to match a key
-    else { setSyntaxError(error, "missing key for object element") }
+    else { setSyntaxError(error, "missing key for object element", underlyingError: localError) }
 
     return success
 
@@ -598,6 +638,10 @@ private enum Token: Printable {
     case Colon              = ":"
     case Comma              = ","
     case Quotation          = "\""
+    case Solidus            = "/"
+    case Asterisk           = "*"
+
+    var isCommentable: Bool { switch self { case .Quotation, .Solidus, .Asterisk: return false; default: return true } }
 
     var characterSet: NSCharacterSet {
       switch self {
@@ -608,16 +652,20 @@ private enum Token: Printable {
         case .Colon:              return PunctuationToken.ColonCharacterSet
         case .Comma:              return PunctuationToken.CommaCharacterSet
         case .Quotation:          return PunctuationToken.QuotationCharacterSet
+        case .Solidus:            return PunctuationToken.SolidusCharacterSet
+        case .Asterisk:           return PunctuationToken.AsteriskCharacterSet
       }
     }
 
-    static var LeftCurlyBracketCharacterSet   = NSCharacterSet(character: "{")
-    static var RightCurlyBracketCharacterSet  = NSCharacterSet(character: "}")
-    static var LeftSquareBracketCharacterSet  = NSCharacterSet(character: "[")
-    static var RightSquareBracketCharacterSet = NSCharacterSet(character: "]")
-    static var ColonCharacterSet              = NSCharacterSet(character: ":")
-    static var CommaCharacterSet              = NSCharacterSet(character: ",")
+    static var LeftCurlyBracketCharacterSet   = NSCharacterSet(character: "{" )
+    static var RightCurlyBracketCharacterSet  = NSCharacterSet(character: "}" )
+    static var LeftSquareBracketCharacterSet  = NSCharacterSet(character: "[" )
+    static var RightSquareBracketCharacterSet = NSCharacterSet(character: "]" )
+    static var ColonCharacterSet              = NSCharacterSet(character: ":" )
+    static var CommaCharacterSet              = NSCharacterSet(character: "," )
     static var QuotationCharacterSet          = NSCharacterSet(character: "\"")
+    static var SolidusCharacterSet            = NSCharacterSet(character: "/" )
+    static var AsteriskCharacterSet           = NSCharacterSet(character: "*" )
   }
 
   /// Generalized enumeration for value type tokens that are not collections of other tokens
@@ -636,45 +684,16 @@ private enum Token: Printable {
       static var TrueCharacterSet  = NSCharacterSet(charactersInString: "true")
       static var FalseCharacterSet = NSCharacterSet(charactersInString: "false")
 
-        var characterSet: NSCharacterSet {
-          switch self {
-            case .Null:  return StaticValueToken.NullCharacterSet
-            case .True:  return StaticValueToken.TrueCharacterSet
-            case .False: return StaticValueToken.FalseCharacterSet
-          }
-      }
     }
 
     case QuotedString (String)
     case Number       (NSNumber)
     case Static       (StaticValueToken)
 
-    static var NumberCharacterSet       = NSCharacterSet.decimalDigitCharacterSet()
-    static var QuotedStringCharacterSet = NSCharacterSet.illegalCharacterSet().invertedSet
-
-    var characterSet: NSCharacterSet {
-      switch self {
-        case .Static:       return self.0.characterSet
-        case .Number:       return ValueToken.NumberCharacterSet
-        case .QuotedString: return ValueToken.QuotedStringCharacterSet
-      }
-    }
-
   }
 
   case Value        (ValueToken)
   case Punctuation  (PunctuationToken)
-
-  static var LeftCurlyBracket   = Token.Punctuation(.LeftCurlyBracket)
-  static var RightCurlyBracket  = Token.Punctuation(.RightCurlyBracket)
-  static var LeftSquareBracket  = Token.Punctuation(.LeftSquareBracket)
-  static var RightSquareBracket = Token.Punctuation(.RightSquareBracket)
-  static var Colon              = Token.Punctuation(.Colon)
-  static var Comma              = Token.Punctuation(.Comma)
-  static var True               = Token.Value(.Static(.True))
-  static var False              = Token.Value(.Static(.False))
-  static var Null               = Token.Value(.Static(.Null))
-
 
   var characterSet: NSCharacterSet { return self.0.characterSet }
 
@@ -689,6 +708,8 @@ private enum Token: Printable {
           case .Colon:              return ":"
           case .Comma:              return ","
           case .Quotation:          return "\""
+          case .Solidus:            return "/"
+          case .Asterisk:           return "*"
         }
 
       case .Value(let v):
@@ -718,7 +739,7 @@ private enum Context: Printable {
       case .Value:  return "value"
       case .Array:  return "array"
       case .Key:    return "key"
-      case .End:    return "key"
+      case .End:    return "end"
     }
   }
 }

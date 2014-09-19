@@ -23,6 +23,10 @@ extension String {
   */
   func extendWith(string: String) -> String { return self + string }
 
+  subscript (i: Int) -> Character { return self[advance(i < 0 ? self.endIndex : self.startIndex, i)] }
+  subscript (r: Range<Int>) -> String {
+    return self[advance(self.startIndex, r.startIndex)..<advance(self.startIndex, r.endIndex)]
+  }
 
   /**
   matchFirst:
