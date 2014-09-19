@@ -513,6 +513,13 @@
 			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
 			remoteInfo = Moonkit;
 		};
+		C2AA245719CB15500062CF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C2C482D219C9F98A002E84A9;
+			remoteInfo = "Moonkit Tests";
+		};
 		C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -1992,6 +1999,7 @@
 			isa = PBXGroup;
 			children = (
 				C235911C19C7ACB900920F8D /* Moonkit.framework */,
+				C2AA245819CB15500062CF4C /* Moonkit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2233,6 +2241,13 @@
 			fileType = wrapper.framework;
 			path = Moonkit.framework;
 			remoteRef = C235911B19C7ACB900920F8D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C2AA245819CB15500062CF4C /* Moonkit Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Moonkit Tests.xctest";
+			remoteRef = C2AA245719CB15500062CF4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -3204,6 +3219,7 @@
 				C2C482CC19C9F968002E84A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2CA76BC19BA1E1900ACCD76 /* Build configuration list for PBXNativeTarget "ISYClient" */ = {
 			isa = XCConfigurationList;

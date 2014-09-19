@@ -21,6 +21,15 @@ struct Stack<T> {
   init(object:T) { storage = [object] }
 
   /**
+  map<U>:
+
+  :param: transform (T) -> U
+
+  :returns: [U]
+  */
+  func map<U>(transform: (T) -> U) -> [U] { return storage.map(transform) }
+
+  /**
   pop
 
   :returns: T?
@@ -30,24 +39,16 @@ struct Stack<T> {
   /**
   push:
 
-  :param: objects [T]
-  */
-  mutating func push(objects:[T]) { storage += objects }
-
-  /**
-  push:
-
   :param: obj T
   :param: count Int = 1
   */
-  mutating func push(obj:T, count:Int = 1) { self.push([T](count: count, repeatedValue: obj)) }
+  mutating func push(obj:T, count:Int = 1) { storage += [T](count: count, repeatedValue: obj) }
 
   /** empty */
   mutating func empty() { storage.removeAll(keepCapacity: false) }
 
   /** reverse */
   mutating func reverse() { storage.reverse() }
-
 
 }
 
@@ -62,7 +63,7 @@ extension Stack: SequenceType, _Sequence_Type {
 extension Stack: CollectionType, _CollectionType {
   var startIndex: Array<T>.Index { return storage.startIndex }
   var endIndex: Array<T>.Index { return storage.endIndex }
-  subscript (i: Array<T>.Index) -> T { return storage[i] }
+  subscript (i: Array<T>.Index) -> T { get { return storage[i] } set { storage[i] = newValue } }
 }
 
 extension Stack: ArrayLiteralConvertible {

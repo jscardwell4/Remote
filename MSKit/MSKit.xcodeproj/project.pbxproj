@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C216E74019CBAE0A0052E98A /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C216E73F19CBAE0A0052E98A /* Logging.swift */; };
 		C2358F1B19C78D6D00920F8D /* Moonkit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* Moonkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F2C19C78DA300920F8D /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.framework */; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
@@ -196,6 +197,7 @@
 		C235930219C8E04200920F8D /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592EE19C8E04200920F8D /* Generic.swift */; };
 		C235930319C8E04200920F8D /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C235930419C8E04200920F8D /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F219C8E04200920F8D /* JSONParser.swift */; };
+		C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* Moonkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* Moonkit.framework */; };
 		C2C482DE19C9FA73002E84A9 /* Moonkit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */; };
 		C2C482E219C9FF61002E84A9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C482E019C9FF61002E84A9 /* test.json */; };
@@ -239,6 +241,7 @@
 /* Begin PBXFileReference section */
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
+		C216E73F19CBAE0A0052E98A /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
@@ -264,6 +267,7 @@
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
+		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C482D219C9F98A002E84A9 /* Moonkit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Moonkit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482D519C9F98A002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Moonkit_Tests.m; sourceTree = "<group>"; };
@@ -520,6 +524,7 @@
 				C23592EB19C8E04200920F8D /* UIFont+MoonKitAdditions.swift */,
 				C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */,
 				C2C482E819CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift */,
+				C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -528,6 +533,7 @@
 			isa = PBXGroup;
 			children = (
 				C23592EE19C8E04200920F8D /* Generic.swift */,
+				C216E73F19CBAE0A0052E98A /* Logging.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -1125,6 +1131,7 @@
 				C2358F3919C78E0C00920F8D /* NSLayoutConstraint+MSKitAdditions.m in Sources */,
 				C2358F3A19C78E0C00920F8D /* NSManagedObject+MSKitAdditions.m in Sources */,
 				C2358F3B19C78E0C00920F8D /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
+				C216E74019CBAE0A0052E98A /* Logging.swift in Sources */,
 				C2358F3C19C78E0C00920F8D /* NSMapTable+MSKitAdditions.m in Sources */,
 				C23592F619C8E04200920F8D /* Array+MoonkitAdditions.swift in Sources */,
 				C2358F3D19C78E0C00920F8D /* NSNull+MSKitAdditions.m in Sources */,
@@ -1212,6 +1219,7 @@
 				C235930019C8E04200920F8D /* UIFont+MoonKitAdditions.swift in Sources */,
 				C2358F8719C78E0C00920F8D /* GCDAsyncSocket.m in Sources */,
 				C2358F8819C78E0C00920F8D /* GCDAsyncUdpSocket.m in Sources */,
+				C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */,
 				C2C482E919CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1469,6 +1477,7 @@
 				C2C482DA19C9F98A002E84A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2CE884918138C4900555D63 /* Build configuration list for PBXProject "MSKit" */ = {
 			isa = XCConfigurationList;

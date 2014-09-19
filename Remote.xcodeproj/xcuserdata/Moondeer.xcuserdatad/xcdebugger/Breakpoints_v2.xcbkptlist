@@ -476,11 +476,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MSKit/Moonkit Tests/Moonkit_Tests.m"
-            timestampString = "432668917.963408"
+            timestampString = "432744500.913463"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "-testJSONParser"
             landmarkType = "5">
          </BreakpointContent>
@@ -492,28 +492,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
-            timestampString = "432699430.061628"
+            timestampString = "432781735.28106"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "JSONParser"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
-            timestampString = "432699430.061628"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
-            landmarkName = "scanQuotedString()"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
+            landmarkName = "parseArray(error:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -524,41 +508,442 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
-            timestampString = "432699464.461514"
+            timestampString = "432781735.28106"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
-            landmarkName = "JSONParser"
-            landmarkType = "3">
+            startingLineNumber = "360"
+            endingLineNumber = "360"
+            landmarkName = "parseKey(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "511"
+            endingLineNumber = "511"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "408"
+            endingLineNumber = "408"
+            landmarkName = "addValueToTopObject(_:_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "Yes"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "476"
+            endingLineNumber = "476"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+            <Actions>
+               <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
+                  <ActionContent
+                     consoleCommand = "po idx">
+                  </ActionContent>
+               </BreakpointActionProxy>
+            </Actions>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "parseValue(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "parseArray(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "parseObject(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            condition = "success == false"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
+            landmarkName = "parseValue(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "478"
+            endingLineNumber = "478"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781855.920116"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "521"
+            endingLineNumber = "521"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "484"
+            endingLineNumber = "484"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "496"
+            endingLineNumber = "496"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONParser.swift"
+            timestampString = "432781735.28106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "507"
+            endingLineNumber = "507"
+            landmarkName = "parse(error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit Tests/Moonkit_Tests.m"
+            timestampString = "432781919.681268"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "-testJSONParser"
+            landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Moonkit.JSONParser.Token.description.getter : Swift.String"
-                  moduleName = "Moonkit"
-                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONParser.swift"
-                  timestampString = "432699467.608726"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.686167"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "155"
-                  endingLineNumber = "155"
-                  offsetFromSymbolStart = "42">
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4209">
                </Location>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "protocol witness for Swift.Printable.description.getter : Swift.String in conformance Moonkit.JSONParser.Token : Swift.Printable"
-                  moduleName = "Moonkit"
-                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONParser.swift"
-                  timestampString = "432699467.608958"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.686364"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "155"
-                  endingLineNumber = "155"
-                  offsetFromSymbolStart = "4">
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4216">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.686532"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4233">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.686697"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4238">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.686867"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4319">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.687039"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4367">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.687211"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "4452">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.687384"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "5730">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.687545"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "5993">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.687712"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "6089">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.687873"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "6698">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.688053"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "6758">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.688219"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "7826">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Moonkit_Tests testJSONParser]"
+                  moduleName = "Moonkit Tests"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit%20Tests/Moonkit_Tests.m"
+                  timestampString = "432781919.688374"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "7880">
                </Location>
             </Locations>
          </BreakpointContent>

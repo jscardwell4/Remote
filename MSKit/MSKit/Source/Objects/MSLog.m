@@ -32,6 +32,75 @@
                                               stringByAppendingPathComponent:@"MSKit"]];
 }
 
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+       file:(NSString *)file
+   function:(NSString *)function
+       line:(int)line
+        tag:(id)tag
+     format:(NSString *)format
+       args:(va_list)argList
+{
+  [DDLog log:asynchronous
+       level:level
+        flag:flag
+     context:context
+        file:[file UTF8String]
+    function:[function UTF8String]
+        line:line
+         tag:tag
+      format:format
+        args:argList];
+}
+
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+       file:(NSString *)file
+   function:(NSString *)function
+       line:(int)line
+        tag:(id)tag
+    message:(NSString *)message
+{
+  [DDLog log:asynchronous
+       level:level
+        flag:flag
+     context:context
+        file:[function UTF8String]
+    function:[function UTF8String]
+        line:line
+         tag:tag
+      format:@"%@", message];
+}
+
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+       file:(NSString *)file
+   function:(NSString *)function
+       line:(int)line
+        tag:(id)tag
+     format:(NSString *)format, ...
+{
+  va_list args;
+  va_start(args, format);
+  [DDLog log:asynchronous
+       level:level
+        flag:flag
+     context:context
+        file:[file UTF8String]
+    function:[function UTF8String]
+        line:line
+         tag:tag
+      format:format
+        args:args];
+  va_end(args);
+}
+
 + (NSString *)defaultLogDirectory
 {
     return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory,

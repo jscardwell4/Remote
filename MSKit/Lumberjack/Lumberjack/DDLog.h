@@ -231,17 +231,17 @@
 #define LOG_FLAG_VERBOSE  (1 << 4)  // 0...10000
 
 #define LOG_LEVEL_OFF     0
-#define LOG_LEVEL_ERROR   (LOG_FLAG_ERROR)                                                                      // 0...00001
-#define LOG_LEVEL_WARN    (LOG_FLAG_ERROR | LOG_FLAG_WARN)                                                      // 0...00011
-#define LOG_LEVEL_INFO    (LOG_FLAG_ERROR | LOG_FLAG_WARN | LOG_FLAG_INFO)                                      // 0...00111
-#define LOG_LEVEL_DEBUG   (LOG_FLAG_ERROR | LOG_FLAG_WARN | LOG_FLAG_INFO | LOG_FLAG_DEBUG)                     // 0...01111
-#define LOG_LEVEL_VERBOSE (LOG_FLAG_ERROR | LOG_FLAG_WARN | LOG_FLAG_INFO | LOG_FLAG_DEBUG | LOG_FLAG_VERBOSE)  // 0...11111
+#define LOG_LEVEL_ERROR   0b0001
+#define LOG_LEVEL_WARN    0b00011
+#define LOG_LEVEL_INFO    0b00111
+#define LOG_LEVEL_DEBUG   0b01111
+#define LOG_LEVEL_VERBOSE 0b11111
 #define LOG_LEVEL_ALL      0xFFFFFFFF // 1111....11111 (LOG_LEVEL_VERBOSE plus any other flags)
 
 #define LOG_ERROR         (LOG_LEVEL_DEF & LOG_FLAG_ERROR)
 #define LOG_WARN          (LOG_LEVEL_DEF & LOG_FLAG_WARN)
-//#define LOG_INFO          (LOG_LEVEL_DEF & LOG_FLAG_INFO)
-//#define LOG_DEBUG         (LOG_LEVEL_DEF & LOG_FLAG_DEBUG)
+#define LOG_INFO          (LOG_LEVEL_DEF & LOG_FLAG_INFO)
+#define LOG_DEBUG         (LOG_LEVEL_DEF & LOG_FLAG_DEBUG)
 #define LOG_VERBOSE       (LOG_LEVEL_DEF & LOG_FLAG_VERBOSE)
 
 #define LOG_ASYNC_ENABLED YES
@@ -249,7 +249,7 @@
 #define LOG_ASYNC_ERROR    ( NO && LOG_ASYNC_ENABLED)
 #define LOG_ASYNC_WARN     (YES && LOG_ASYNC_ENABLED)
 #define LOG_ASYNC_INFO     (YES && LOG_ASYNC_ENABLED)
-#define LOG_ASYNC_DEBUG    (YES && LOG_ASYNC_ENABLED)
+#define LOG_ASYNC_DEBUG    (NO && LOG_ASYNC_ENABLED)
 #define LOG_ASYNC_VERBOSE  (YES && LOG_ASYNC_ENABLED)
 
 #define DDLogError(frmt, ...)   LOG_OBJC_MAYBE(LOG_ASYNC_ERROR,   LOG_LEVEL_DEF, LOG_FLAG_ERROR,   0, frmt, ##__VA_ARGS__)

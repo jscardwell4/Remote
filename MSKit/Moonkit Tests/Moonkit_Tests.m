@@ -31,12 +31,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                                                                                 ofType:@"json"];
   NSError * error = nil;
   NSString * json = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
+  MSLogDebug(@"test json input:\n%@\n", json);
+
   if (MSHandleErrors(error)) XCTFail("error encountered creating json string from testfile");
   JSONParser * parser = [[JSONParser alloc] initWithString:json];
 
   XCTAssert(parser.string != nil, @"Pass");
 
-  [parser parse];
+  error = nil;
+  id object = [parser parseWithError:&error];
+  if (MSHandleErrors(error)) XCTFail("error encountered creating json object from string");
+  
+  MSLogDebug(@"parsed object:\n%@\n", object);
 
 }
 

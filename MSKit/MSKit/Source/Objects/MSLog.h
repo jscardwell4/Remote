@@ -23,6 +23,37 @@ MSEXTERN_KEY(MSLogContext);
 
 @interface MSLog : NSObject
 
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+       file:(NSString *)file
+   function:(NSString *)function
+       line:(int)line
+        tag:(id)tag
+     format:(NSString *)format, ... __attribute__ ((format (__NSString__, 9, 10)));
+
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+       file:(NSString *)file
+   function:(NSString *)function
+       line:(int)line
+        tag:(id)tag
+     message:(NSString *)message;
+
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+       file:(NSString *)file
+   function:(NSString *)function
+       line:(int)line
+        tag:(id)tag
+     format:(NSString *)format
+       args:(va_list)argList;
+
 + (void)addDefaultFileLoggerForContext:(NSUInteger)context directory:(NSString *)directory;
 + (DDFileLogger *)defaultFileLoggerForContext:(NSUInteger)context directory:(NSString *)directory;
 + (void)addTTYLogger;
