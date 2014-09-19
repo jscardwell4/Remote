@@ -20,10 +20,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation Moonkit_Tests
 
-+ (void)initialize {
-  if (self == [Moonkit_Tests class])
-    [MSLog addTaggingTTYLogger];
-}
++ (void)initialize { if (self == [Moonkit_Tests class]) [MSLog addTaggingTTYLogger]; }
 
 - (void)testJSONParser {
 
