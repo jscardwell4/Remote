@@ -99,6 +99,7 @@ static const int msLogContext = 0;
   [MSLog addTaggingASLLogger];
 
   NSString * logsDirectory = [MSLog defaultLogDirectory];
+  nsprintf(@"creating logs with base directory '%@'\n", logsDirectory);
 
   NSDictionary * fileLoggers = @{
     @(LOG_CONTEXT_FILE)          : $(@"%@/Default",       logsDirectory),

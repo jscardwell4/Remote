@@ -62,24 +62,60 @@ func documentsPathToFile(file: String) -> String? { return libraryPath()?.string
 ////////////////////////////////////////////////////////////////////////////////
 
 
-func aggregateErrorMessage(error: NSError) -> String {
-  var message = "-Error-\n"
-  message += "Description: \(error.localizedDescription)\n"
-  if let reason = error.localizedFailureReason    { message += "Reason: \(reason)\n"           }
-  if let recoveryOptions = error.localizedRecoveryOptions {
-    message += "Recovery Options:\n"
-    for option : AnyObject in recoveryOptions  {
-      if let optionString = option as? String { message += "\t\(optionString)\n" }
-    }
+/**
+detailedDescriptionForError:depth:
+
+:param: error NSError
+:param: depth Int = 0
+
+:returns: String
+*/
+func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
+
+  var depthIndent = "  " * depth
+  var message = "\(depthIndent)domain: \(error.domain)\n\(depthIndent)code: \(error.code)\n"
+
+  if let reason = error.localizedFailureReason { message += "\(depthIndent)reason: \(reason)\n" }
+
+  if let recoveryOptions = error.localizedRecoveryOptions as? [String] {
+    let joinString = ",\n" + (" " * 18) + depthIndent
+    message += "\(depthIndent)recovery options: \(joinString.join(recoveryOptions))\n"
   }
-  if let suggestion = error.localizedRecoverySuggestion { message += "Suggestion: \(suggestion)\n" }
+
+  if let suggestion = error.localizedRecoverySuggestion { message += "\(depthIndent)suggestion: \(suggestion)\n" }
+
+  if let underlying: AnyObject = error.userInfo?[NSUnderlyingErrorKey] {
+
+    if let underlyingError = underlying as? NSError {
+      // Add information gathered from the underlying error
+      message += "\(depthIndent)underlyingError:\n\(detailedDescriptionForError(underlyingError, depth: depth + 1))\n"
+    }
+
+    else if let underlyingErrors = underlying as? [NSError] {
+      // Add information gathered from each underlying error
+      let joinString = ",\n"
+      message += "\(depthIndent)underlyingErrors:\n"
+      message += joinString.join(underlyingErrors.map{detailedDescriptionForError($0, depth: depth + 1)}) + "\n"
+    }
+
+  }
 
   return message
+
 }
 
-func printError(error:NSError, message:String! = nil) {
-  println((message != nil ? "error: \(message)\n" : "") + aggregateErrorMessage(error))
+/**
+aggregateErrorMessage:
+
+:param: error NSError
+
+:returns: String
+*/
+func aggregateErrorMessage(error: NSError, message:String! = nil) -> String {
+  return "-Error-" + (message ?? "") + "\n\(detailedDescriptionForError(error, depth: 0))"
 }
+
+func printError(error:NSError, message:String! = nil) { println(aggregateErrorMessage(error, message: message)) }
 
 func warning(message:String) { println("warning: \(message)")}
 func info(message:String) { println("info: \(message)")}

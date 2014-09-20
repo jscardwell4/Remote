@@ -72,6 +72,7 @@ func ~=(lhs: NSRegularExpression, rhs: String) -> Bool {
 }
 func ~=(lhs: String, rhs: NSRegularExpression) -> Bool { return rhs ~= lhs }
 
+func *(lhs: String, var rhs: Int) -> String { var s = ""; while rhs-- > 0 { s += lhs }; return s }
 
 prefix operator ~/ {}
 

@@ -21,14 +21,16 @@
 #define LOG_PARSED_FILE      2
 #define LOG_RESULTING_OBJECT 4
 
-#define REMOTECONTROLLER_LOG_FLAG 3
-#define REMOTE_LOG_FLAG           3
-#define IMAGES_LOG_FLAG           3
-#define POWERCOMMANDS_LOG_FLAG    3
-#define MANUFACTURERS_LOG_FLAG    3
-#define COMPONENTDEVICES_LOG_FLAG 3
-#define NETWORKDEVICES_LOG_FLAG   3
-#define IRCODES_LOG_FLAG          3
+#define PARSE_ONLY YES
+
+#define REMOTECONTROLLER_LOG_FLAG 2
+#define REMOTE_LOG_FLAG           2
+#define IMAGES_LOG_FLAG           2
+#define POWERCOMMANDS_LOG_FLAG    2
+#define MANUFACTURERS_LOG_FLAG    2
+#define COMPONENTDEVICES_LOG_FLAG 2
+#define NETWORKDEVICES_LOG_FLAG   2
+#define IRCODES_LOG_FLAG          2
 
 static int       ddLogLevel       = LOG_LEVEL_DEBUG;
 static const int msLogContext     = (LOG_CONTEXT_BUILDING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
@@ -40,10 +42,11 @@ void logImportFile(NSString * fileName, NSString * fileContent, int flag) {
     MSLogCDebugInContext(importLogContext, @"%@.json:\n%@\n", fileName, fileContent);
 }
 
-void logParsedImportFile(id parsedObject, int flag) {
+void logParsedImportFile(NSString * fileName, id parsedObject, int flag) {
   if ((flag & LOG_PARSED_FILE) == LOG_PARSED_FILE)
     MSLogCDebugInContext(importLogContext,
-                         @"JSON from parsed file:\n%@\n",
+                         @"object parsed from %@.json:\n%@\n",
+                         fileName,
                          [MSJSONSerialization JSONFromObject:parsedObject]);
 }
 
@@ -85,7 +88,6 @@ void logImportedObject(id importedObject, int flag) {
     }
   }];
 
-
   MSLogDebug(@"data load complete");
 
   return YES;
@@ -115,7 +117,9 @@ void logImportedObject(id importedObject, int flag) {
 
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
+  logParsedImportFile(fileName, importObjects, REMOTE_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
   NSArray * remotes = [Remote importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu remotes imported", (unsigned long)[remotes count]);
 
@@ -150,7 +154,9 @@ void logImportedObject(id importedObject, int flag) {
 
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObject, REMOTECONTROLLER_LOG_FLAG);
+  logParsedImportFile(fileName, importObject, REMOTECONTROLLER_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
   RemoteController * remoteController = [RemoteController importObjectFromData:importObject
                                                                        context:context];
   MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
@@ -182,7 +188,9 @@ void logImportedObject(id importedObject, int flag) {
 
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObjects, REMOTE_LOG_FLAG);
+  logParsedImportFile(fileName, importObjects, REMOTE_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
   NSArray * activities = [Activity importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu activities imported", (unsigned long)[activities count]);
 
@@ -222,7 +230,8 @@ void logImportedObject(id importedObject, int flag) {
 
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObjects, MANUFACTURERS_LOG_FLAG);
+  logParsedImportFile(fileName, importObjects, MANUFACTURERS_LOG_FLAG);
+  if (PARSE_ONLY) return;
 
   NSArray * manufacturers = [Manufacturer importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu manufacturers imported", (unsigned long)[manufacturers count]);
@@ -254,7 +263,9 @@ void logImportedObject(id importedObject, int flag) {
 
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObjects, COMPONENTDEVICES_LOG_FLAG);
+  logParsedImportFile(fileName, importObjects, COMPONENTDEVICES_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
   NSArray * componentDevices = [ComponentDevice importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu component devices imported", (unsigned long)[componentDevices count]);
 
@@ -285,7 +296,9 @@ void logImportedObject(id importedObject, int flag) {
 
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObjects, NETWORKDEVICES_LOG_FLAG);
+  logParsedImportFile(fileName, importObjects, NETWORKDEVICES_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
   NSArray * networkDevices = [NetworkDevice importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu network devices imported", (unsigned long)[networkDevices count]);
 
@@ -321,7 +334,9 @@ void logImportedObject(id importedObject, int flag) {
                                                                  error:&error];
   if (MSHandleErrors(error)) return;
 
-  logParsedImportFile(importObjects, IMAGES_LOG_FLAG);
+  logParsedImportFile(fileName, importObjects, IMAGES_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
   NSArray * images = [Image importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
 

@@ -8,9 +8,13 @@
 
 import Foundation
 
+private let EmptyCharacterSet: NSCharacterSet = NSCharacterSet(charactersInString:"")
+
 extension NSCharacterSet {
 
   convenience init(character:Character) { self.init(charactersInString:String(character)) }
+
+  class var emptyCharacterSet: NSCharacterSet { return EmptyCharacterSet }
 
 }
 

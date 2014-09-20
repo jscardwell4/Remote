@@ -1,6 +1,6 @@
 [
   {
-    "uuid": "A7582E04-16F3-4319-9F21-41A17C922AC9",
+    "uuid": "A7582E04-16F3-4319-9F21-41A17C922AC9", // comment muthafucka!
     "name": "GlobalCache-iTachIP2IR",
     "unique-identifier": "GlobalCache_000C1E022AED",
     "type": "itach",
@@ -13,7 +13,7 @@
     "config-url": "192.168.1.45",
     "revision": "710-1005-05"
   },
-  {
+  {/* yo i'mma sneak in right har */
     "uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
     "name": "ISYDevice1",
     "unique-identifier": "uuid:00:21:b9:01:f2:b6",
@@ -43,6 +43,13 @@
         "groups": [
           "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0"
         ]
+        /*
+        check
+        me
+        out!
+        multiple
+        lines!
+        */
       },
       {
         "uuid": "D579559E-1BEA-4D40-8A06-8802A9FBF7D5",
