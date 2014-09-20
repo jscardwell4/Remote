@@ -7,7 +7,7 @@
 //
 
 #import "ISYClientAppDelegate.h"
-@import Moonkit;
+@import MoonKit;
 
 @implementation ISYClientAppDelegate
 

@@ -8,27 +8,87 @@
 
 import Foundation
 
-var ddLogLevel:   Int32 = LOG_LEVEL_DEBUG
-var ddLogContext: Int32 = LOG_CONTEXT_CONSOLE
+private var globalLogLevel:   Int32 = LOG_LEVEL_DEBUG
+private var globalLogContext: Int32 = LOG_CONTEXT_CONSOLE
 
-func logMessage(message: String, function: String, level: Int32, flag: Int32) {
-  if (ddLogLevel & level) == level {
-    MSLog.log(false,
-        level: ddLogLevel,
-         flag: flag,
-      context: ddLogContext,
-         file: "",
-     function: function,
-         line: 0,
-          tag: nil,
-      message: message)
-  }
+/**
+logMessage:function:level:flag:context:
+
+:param: message String
+:param: function String
+:param: level Int32
+:param: flag Int32
+:param: context Int32 = globalLogContext
+*/
+func logMessage(message: String, function: String, level: Int32, flag: Int32, context: Int32 = globalLogContext) {
+  MSLog.log(false, level: level, flag: flag, context: context, function: function, message: message)
 }
 
-func logDebug  (m: String, f: String) { logMessage(m, f, LOG_LEVEL_DEBUG,   LOG_FLAG_DEBUG)   }
-func logError  (m: String, f: String) { logMessage(m, f, LOG_LEVEL_ERROR,   LOG_FLAG_ERROR)   }
-func logWarn   (m: String, f: String) { logMessage(m, f, LOG_LEVEL_WARN,    LOG_FLAG_WARN)    }
-func logInfo   (m: String, f: String) { logMessage(m, f, LOG_LEVEL_INFO,    LOG_FLAG_INFO)    }
-func logVerbose(m: String, f: String) { logMessage(m, f, LOG_LEVEL_VERBOSE, LOG_FLAG_VERBOSE) }
+/**
+logDebug:function:level:
 
-func setLogLevel(level: Int32) { ddLogLevel = level }
+:param: message String
+:param: function String
+:param: level Int32 = globalLogLevel
+*/
+func logDebug  (message: String, function: String, level: Int32 = globalLogLevel) {
+  logMessage(message, function, level, LOG_FLAG_DEBUG)
+}
+
+/**
+logError:function:level:
+
+:param: message String
+:param: function String
+:param: level Int32 = globalLogLevel
+*/
+func logError  (message: String, function: String, level: Int32 = globalLogLevel) {
+  logMessage(message, function, level, LOG_FLAG_ERROR)
+}
+
+/**
+logWarn:function:level:
+
+:param: message String
+:param: function String
+:param: level Int32 = globalLogLevel
+*/
+func logWarn   (message: String, function: String, level: Int32 = globalLogLevel) {
+  logMessage(message, function, level, LOG_FLAG_WARN)
+}
+
+/**
+logInfo:function:level:
+
+:param: message String
+:param: function String
+:param: level Int32 = globalLogLevel
+*/
+func logInfo   (message: String, function: String, level: Int32 = globalLogLevel) {
+  logMessage(message, function, level, LOG_FLAG_INFO)
+}
+
+/**
+logVerbose:function:level:
+
+:param: message String
+:param: function String
+:param: level Int32 = globalLogLevel
+*/
+func logVerbose(message: String, function: String, level: Int32 = globalLogLevel) {
+  logMessage(message, function, level, LOG_FLAG_VERBOSE)
+}
+
+/**
+setGlobalLogLevel:
+
+:param: level Int32
+*/
+func setGlobalLogLevel(level: Int32) { globalLogLevel = level }
+
+/**
+setGlobalLogContext:
+
+:param: context Int32
+*/
+func setGlobalLogContext(context: Int32) { globalLogContext = context }

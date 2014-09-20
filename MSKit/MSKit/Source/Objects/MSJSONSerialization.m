@@ -17,6 +17,7 @@
 #import "NSMutableString+MSKitAdditions.h"
 #import "NSObject+MSKitAdditions.h"
 #import "MSLog.h"
+#import <MoonKit/MoonKit-Swift.h>
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -242,15 +243,9 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
   // We can only parse a string with actual text
   if (StringIsNotEmpty(string)) {
 
-    // Create a copy of the string and strip any comments out of the string's text
-    NSMutableString * normalizedString = [string mutableCopy];
-    [normalizedString stripSingleLineComments];
-    [normalizedString stripMultiLineComments];
-
     // Create an actual object out of the json string making sure containers are mutable
-    object = [NSJSONSerialization JSONObjectWithData:[normalizedString dataUsingEncoding:NSUTF8StringEncoding]
-                                             options:NSJSONReadingMutableContainers
-                                               error:error];
+    JSONParser * parser = [[JSONParser alloc] initWithString:string];
+    object = [parser parseWithError:error];
 
     // Return now if we aren't meant to inflate keypaths
     if ((options & MSJSONReadFormatOptionInflateKeyPaths) != MSJSONReadFormatOptionInflateKeyPaths) return object;

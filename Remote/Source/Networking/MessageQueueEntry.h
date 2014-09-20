@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-@import Moonkit;
+@import MoonKit;
 
 @interface MessageQueueEntry : NSObject
 

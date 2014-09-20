@@ -7,7 +7,7 @@
 //
 
 #import "MessageQueueEntry.h"
-@import Moonkit;
+@import MoonKit;
 
 @implementation MessageQueueEntry
 

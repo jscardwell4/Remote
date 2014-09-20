@@ -1,5 +1,5 @@
 //
-//  Dictionary+MoonkitExtensions.swift
+//  Dictionary+MoonKitExtensions.swift
 //  HomeRemote
 //
 //  Created by Jason Cardwell on 8/7/14.

@@ -9,9 +9,9 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-@import Moonkit;
+@import MoonKit;
 #import "MSRemoteMacros.h"
-@import Moonkit;
+@import MoonKit;
 #import "CoreDataManager.h"
 
 @protocol NamedModel <NSObject>

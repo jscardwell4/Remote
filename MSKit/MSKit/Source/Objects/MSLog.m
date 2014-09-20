@@ -43,16 +43,17 @@
      format:(NSString *)format
        args:(va_list)argList
 {
-  [DDLog log:asynchronous
-       level:level
-        flag:flag
-     context:context
-        file:[file UTF8String]
-    function:[function UTF8String]
-        line:line
-         tag:tag
-      format:format
-        args:argList];
+  if ((level & flag) == flag)
+    [DDLog log:asynchronous
+         level:level
+          flag:flag
+       context:context
+          file:[file UTF8String]
+      function:[function UTF8String]
+          line:line
+           tag:tag
+        format:format
+          args:argList];
 }
 
 + (void)log:(BOOL)asynchronous
@@ -65,12 +66,12 @@
         tag:(id)tag
     message:(NSString *)message
 {
-  [DDLog log:asynchronous
+  [self log:asynchronous
        level:level
         flag:flag
      context:context
-        file:[function UTF8String]
-    function:[function UTF8String]
+        file:file
+    function:function
         line:line
          tag:tag
       format:@"%@", message];
@@ -88,17 +89,35 @@
 {
   va_list args;
   va_start(args, format);
-  [DDLog log:asynchronous
+  [self log:asynchronous
        level:level
         flag:flag
      context:context
-        file:[file UTF8String]
-    function:[function UTF8String]
+        file:file
+    function:function
         line:line
          tag:tag
       format:format
         args:args];
   va_end(args);
+}
+
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+   function:(NSString *)function
+    message:(NSString *)message
+{
+  [self log:asynchronous
+      level:level
+       flag:flag
+    context:context
+       file:@""
+   function:function
+       line:0
+        tag:nil
+    message:message];
 }
 
 + (NSString *)defaultLogDirectory

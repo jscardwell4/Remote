@@ -14,7 +14,7 @@
 //    @import Foundation;
 //    #import <CoreData/CoreData.h>
 //    #import "Lumberjack/Lumberjack.h"
-//    @import Moonkit;
+//    @import MoonKit;
 //    #import "MSRemoteMacros.h"
 //    #import "MSRemoteTypeDefinitions.h"
 //    #import "MSRemoteConstants.h"

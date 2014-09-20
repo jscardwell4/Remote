@@ -54,6 +54,13 @@ MSEXTERN_KEY(MSLogContext);
      format:(NSString *)format
        args:(va_list)argList;
 
++ (void)log:(BOOL)asynchronous
+      level:(int)level
+       flag:(int)flag
+    context:(int)context
+   function:(NSString *)function
+    message:(NSString *)message;
+
 + (void)addDefaultFileLoggerForContext:(NSUInteger)context directory:(NSString *)directory;
 + (DDFileLogger *)defaultFileLoggerForContext:(NSUInteger)context directory:(NSString *)directory;
 + (void)addTTYLogger;

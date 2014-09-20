@@ -8,6 +8,8 @@
 
 import Foundation
 
+private var LogLevel: Int32 = LOG_LEVEL_DEBUG
+
 /**
 
 `JSONParser` is a simple class for parsing a JSON string into an object. The following grammar is used for parsing.
@@ -43,7 +45,12 @@ public class JSONParser: NSObject {
 
   :param: string String
   */
-  public init(string: String) { setLogLevel(LOG_LEVEL_ERROR); scanner = NSScanner(string: string); super.init() }
+  public init(string: String) { scanner = NSScanner(string: string); super.init() }
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  /// MARK: - Error handling and debugging
+  ////////////////////////////////////////////////////////////////////////////////
 
 
   /** Parser error domain and error codes */
@@ -69,6 +76,16 @@ public class JSONParser: NSObject {
       if underlyingError != nil { info[NSUnderlyingErrorKey] = underlyingError! }
       pointer.memory = NSError(domain: JSONParserErrorDomain, code: code.toRaw(), userInfo: info)
     }
+
+    if LogLevel == LOG_LEVEL_DEBUG {
+      var errorMessage = "Error(\(code))"
+      if reason != nil { errorMessage.extend(": \(reason!)") }
+      if underlyingError != nil {
+        errorMessage.extend("\nunderlying error: \(aggregateErrorMessage(underlyingError!))\n")
+      }
+      dumpState()
+    }
+
   }
 
   /**
@@ -102,7 +119,7 @@ public class JSONParser: NSObject {
   :param: line Int
   */
   private func logContextStack(message: String, _ function: String) {
-    logDebug("\(message) (\(String.CommaSpace.join(contextStack.map{$0.description})))", function)
+    logVerbose("\(message) (\(String.CommaSpace.join(contextStack.map{$0.description})))", function, level: LogLevel)
   }
 
   /**
@@ -115,8 +132,24 @@ public class JSONParser: NSObject {
   :param: line Int
   */
   private func logAddedObject(addedObject: AnyObject, _ containingObject: Printable, _ function: String) {
-    logDebug("added \(addedObject.description) to \(containingObject.description)", function)
+    logVerbose("added \(addedObject.description) to \(containingObject.description)", function, level: LogLevel)
   }
+
+  /**
+  dumpState
+  */
+  private func dumpState() {
+    println("scanner.atEnd? \(scanner.atEnd)\nidx: \(idx)")
+    println("keyStack[\(keyStack.count)]: \(String.CommaSpace.join(keyStack.map{String.Quote + $0 + String.Quote}))")
+    println("contextStack[\(contextStack.count)]: \(String.CommaSpace.join(contextStack.map{$0.description}))")
+    println("objectStack[\(objectStack.count)]:\n\(String.Newline.join(objectStack.map{$0.description}))")
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  /// MARK: - Scanning the string
+  ////////////////////////////////////////////////////////////////////////////////
+
 
   /**
   scanUpToToken:
@@ -161,7 +194,7 @@ public class JSONParser: NSObject {
       commentLoop: while !scanner.atEnd {
 
         // Find the closing asterisk
-        if scanToken(.Asterisk, nil).success {
+        if scanUpToToken(.Asterisk).success && scanToken(.Asterisk, nil).success {
 
           // Now check the next character
           if string[idx] == "/" {
@@ -239,7 +272,7 @@ public class JSONParser: NSObject {
   private func scanQuotedString(inout string:AnyObject?, _ error: NSErrorPointer) -> Bool {
 
     // First get past the first quotation mark
-    var (success, _) = scanToken(.Quotation, error)
+    var (success, quoteString) = scanToken(.Quotation, error)
 
     // Only proceed if we found a quotation mark
     if success {
@@ -265,6 +298,12 @@ public class JSONParser: NSObject {
     return success
 
   }
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  /// MARK: - Parsing the string
+  ////////////////////////////////////////////////////////////////////////////////
+
 
   /**
   parseObject:
@@ -351,7 +390,7 @@ public class JSONParser: NSObject {
     if scanToken(.LeftSquareBracket, &localError).success {
 
       success = true
-      objectStack.push([AnyObject]())   // Push a new array onto the object stack
+      objectStack.push(NSMutableArray())   // Push a new array onto the object stack
       contextStack.push(Context.Array)  // Push the array context
       contextStack.push(Context.Value)  // Push the value context
 
@@ -378,7 +417,7 @@ public class JSONParser: NSObject {
           }
 
           // If not the root object, pop this object off of the stack and add to underlying object
-          else if let array = objectStack.pop() as? [AnyObject] { success = addValueToTopObject(array, error) }
+          else if let array = objectStack.pop() as? NSMutableArray { success = addValueToTopObject(array, error) }
 
           // If we can't get the completed array, set error
           else { setInternalError(error, "array absent from object stack", underlyingError: localError) }
@@ -527,9 +566,9 @@ public class JSONParser: NSObject {
       else if context == Context.Array {
 
         // Then try getting the top object as an array
-        if var array = objectStack.pop() as? [AnyObject] {
+        if var array = objectStack.pop() as? NSMutableArray {
 
-          array.append(value)
+          array.addObject(value)
           objectStack.push(array)
           success = true
 
@@ -611,7 +650,10 @@ public class JSONParser: NSObject {
 
       // If we haven't set object and we have one object in our stack, pop it
       else { object = objectStack.pop() }
+
     }
+
+    logDebug("parsed object…\n\(object)", __FUNCTION__, level: LogLevel)
 
     return object
 
@@ -626,7 +668,7 @@ public class JSONParser: NSObject {
 
 /// Generalized enumeration for all parsable tokens
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-private enum Token: Printable {
+private enum Token {
 
   /// Enumeration for punctuation tokens used in `Token.Punctation` associations
   ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -696,35 +738,6 @@ private enum Token: Printable {
   case Punctuation  (PunctuationToken)
 
   var characterSet: NSCharacterSet { return self.0.characterSet }
-
-  var description: String {
-    switch self {
-      case .Punctuation(let p):
-        switch p {
-          case .LeftCurlyBracket:   return "{"
-          case .RightCurlyBracket:  return "}"
-          case .LeftSquareBracket:  return "["
-          case .RightSquareBracket: return "]"
-          case .Colon:              return ":"
-          case .Comma:              return ","
-          case .Quotation:          return "\""
-          case .Solidus:            return "/"
-          case .Asterisk:           return "*"
-        }
-
-      case .Value(let v):
-        switch v {
-          case .Static(let s):
-            switch s {
-              case .True:  return "true"
-              case .False: return "false"
-              case .Null:  return "null"
-            }
-          case .QuotedString(let s): return s
-          case .Number(let n):       return "\(n)"
-        }
-    }
-  }
 
 }
 

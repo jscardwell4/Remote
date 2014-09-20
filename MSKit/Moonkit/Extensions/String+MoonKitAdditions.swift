@@ -10,10 +10,12 @@ import Foundation
 
 extension String {
 
-  static let Space:      String = " "
-  static let Newline:    String = "\n"
-  static let Tab:        String = "\t"
-  static let CommaSpace: String = ", "
+  static let Space:       String = " "
+  static let Newline:     String = "\n"
+  static let Tab:         String = "\t"
+  static let CommaSpace:  String = ", "
+  static let Quote:       String = "'"
+  static let DoubleQuote: String = "\""
 
   /**
   extendWith:

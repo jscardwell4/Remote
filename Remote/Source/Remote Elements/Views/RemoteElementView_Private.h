@@ -9,7 +9,7 @@
 @import CoreData;
 @import Foundation;
 #import "Lumberjack/Lumberjack.h"
-@import Moonkit;
+@import MoonKit;
 #import "MSRemoteMacros.h"
 #import "RemoteElementView.h"
 #import "RemoteElement_Private.h"

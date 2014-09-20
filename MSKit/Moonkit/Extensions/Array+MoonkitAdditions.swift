@@ -1,5 +1,5 @@
 //
-//  Array+MoonkitAdditions.swift
+//  Array+MoonKitAdditions.swift
 //  HomeRemote
 //
 //  Created by Jason Cardwell on 8/9/14.

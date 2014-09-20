@@ -1,154 +1,125 @@
-{
-  "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
-  "home-remote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
-  "top-toolbar": {
-    "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
-    "name": "Top Toolbar",
-    "role": "toolbar",
-    "shape": "rectangle",
-    "constraints": {
-      "index": {
-        "batteryStatusButton": "8B75639D-9209-4AE8-BB2A-A76262FBA644",
-        "connectionStatusButton": "56157095-5D4A-4A58-971A-2E1B6D214E3B",
-        "editRemoteButton": "586B3D79-3766-42EA-95AE-AC7F4DDEBDF9",
-        "homeButton": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
-        "settingsButton": "7613EC8B-13A5-4836-9715-5931D72E2D72",
-        "topToolbar": "648C5ADA-F9E0-41BF-948A-6E980C657F97"
-      },
-      "format": [
-        "batteryStatusButton.centerY = homeButton.centerY",
-        "batteryStatusButton.left = connectionStatusButton.right + 20",
-        "batteryStatusButton.width = homeButton.width",
-        "connectionStatusButton.centerY = homeButton.centerY",
-        "connectionStatusButton.left = editRemoteButton.right + 20",
-        "connectionStatusButton.width = homeButton.width",
-        "editRemoteButton.centerY = homeButton.centerY",
-        "editRemoteButton.left = settingsButton.right + 20",
-        "editRemoteButton.width = homeButton.width",
-        "homeButton.centerY = topToolbar.centerY",
-        "homeButton.left = topToolbar.left + 4",
-        "settingsButton.centerY = homeButton.centerY",
-        "settingsButton.left = homeButton.right + 20",
-        "settingsButton.width = homeButton.width"
-      ]
-    },
-    "background-color.default": "gray@50%",
-    "subelements": [
+[
+  {
+    "uuid": "A7582E04-16F3-4319-9F21-41A17C922AC9",
+    "name": "GlobalCache-iTachIP2IR",
+    "unique-identifier": "GlobalCache_000C1E022AED",
+    "type": "itach",
+    "pcb-pn": "025-0028-03",
+    "pkg-level": "GCPK002",
+    "sdk-class": "Utility",
+    "make": "GlobalCache",
+    "model": "iTachIP2IR",
+    "status": "Ready",
+    "config-url": "192.168.1.45",
+    "revision": "710-1005-05"
+  },
+  {
+    "uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
+    "name": "ISYDevice1",
+    "unique-identifier": "uuid:00:21:b9:01:f2:b6",
+    "type": "isy",
+    "model-number": "1120",
+    "model-name": "ISY 994i 256",
+    "model-description": "X_Insteon_Lighting_Device:1",
+    "manufacturer-url": "http://www.universal-devices.com",
+    "manufacturer": "Universal Devices Inc.",
+    "friendly-name": "ISY",
+    "device-type": "urn:udi-com:device:X_Insteon_Lighting_Device:1",
+    "base-url": "http://192.168.1.9",
+    "nodes": [
       {
-        "uuid": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
-        "name": "Home Button",
-        "role": "toolbar",
-        "constraints": {
-          "index.homeButton": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
-          "format": "homeButton.width ≥ 44"
-        },
-        "commands.default": {
-          "class": "system",
-          "type": "return-to-launch-screen"
-        },
-        "icons.default": {
-          "normal": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
-            "color": "white"
-          },
-          "highlighted": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
-            "color":  "#00AFFFFF"
-          },
-          "disabled": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
-            "color": "#7F7F7FFF"
-          }
-        }
+        "uuid": "E20280B4-9D87-4C21-A983-2092C1CDE8D3",
+        "name": "20.12.40.1",
+        "flag": 128,
+        "address": "20 12 40 1",
+        "type": "1.58.193.0",
+        "enabled": 1,
+        "pnode": "20 12 40 1",
+        "property-id": "ST",
+        "property-value": 255,
+        "property-uom": "%/on/off",
+        "property-formatted": "On",
+        "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
+        "groups": [
+          "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0"
+        ]
       },
       {
-        "uuid": "7613EC8B-13A5-4836-9715-5931D72E2D72",
-        "name": "Settings Button",
-        "role": "toolbar",
-        "commands.default": {
-          "class": "system",
-          "type": "open-settings"
-        },
-        "icons.default": {
-          "normal": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
-            "color": "white"
-          },
-          "highlighted": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
-            "color":  "#00AFFFFF"
-          },
-          "disabled": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
-            "color": "#7F7F7FFF"
-          }
-        }
+        "uuid": "D579559E-1BEA-4D40-8A06-8802A9FBF7D5",
+        "name": "18.F0.08.1",
+        "flag": 128,
+        "address": "18 F0 8 1",
+        "type": "1.7.56.0",
+        "enabled": 0,
+        "pnode": "18 F0 8 1",
+        "property-id": "ST",
+        "property-value": 0,
+        "property-uom": "%/on/off",
+        "property-formatted": " ",
+        "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
+        "groups": [
+          "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0"
+        ]
       },
       {
-        "uuid": "586B3D79-3766-42EA-95AE-AC7F4DDEBDF9",
-        "name": "Edit Remote Button",
-        "role": "toolbar",
-        "commands.default": {
-          "class": "system",
-          "type": "open-editor"
-        },
-        "icons.default": {
-          "normal": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
-            "color": "white"
-          },
-          "highlighted": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
-            "color":  "#00AFFFFF"
-          },
-          "disabled": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
-            "color": "#7F7F7FFF"
-          }
-        }
+        "uuid": "64D33238-4A87-4962-A560-F40BF9522E6C",
+        "name": "Sofa Table Lamp",
+        "flag": 128,
+        "address": "23 78 77 1",
+        "type": "1.14.65.0",
+        "enabled": 1,
+        "pnode": "23 78 77 1",
+        "property-id": "ST",
+        "property-value": 255,
+        "property-uom": "%/on/off",
+        "property-formatted": "On",
+        "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
+        "groups": [
+          "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0"
+        ]
       },
       {
-        "uuid": "8B75639D-9209-4AE8-BB2A-A76262FBA644",
-        "name": "Battery Status Button",
-        "role": "battery-status",
-        "icons.default": {
-          "normal": {
-            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
-            "color": "white"
-          },
-          "highlighted": {
-            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
-            "color":  "#00AFFFFF"
-          },
-          "disabled": {
-            "image.uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384", // 856-gray-lightning-bolt.png
-            "color": "#7F7F7FFF"
-          },
-          "selected": {
-            "image.uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC", // 396-gray-power-plug.png
-            "color": "white"
-          }
-        }
+        "uuid": "9A31B606-D93C-452F-A0BB-CB878E369D4D",
+        "name": "Front Door Table Lamp",
+        "flag": 128,
+        "address": "1B 6E B2 1",
+        "type": "2.23.57.0",
+        "enabled": 1,
+        "pnode": "1B 6E B2 1",
+        "property-id": "ST",
+        "property-value": 255,
+        "property-uom": "on/off",
+        "property-formatted": "On",
+        "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
+        "groups": [
+          "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0"
+        ]
+      }
+    ],
+    "groups": [
+      {
+        "uuid": "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0",
+        "name": "ISY",
+        "flag": 12,
+        "address": "00:21:b9:01:f2:b6",
+        "family": 6,
+        "members": [
+          "E20280B4-9D87-4C21-A983-2092C1CDE8D3",
+          "9A31B606-D93C-452F-A0BB-CB878E369D4D",
+          "D579559E-1BEA-4D40-8A06-8802A9FBF7D5",
+          "64D33238-4A87-4962-A560-F40BF9522E6C"
+        ],
+        "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD"
       },
       {
-        "uuid": "56157095-5D4A-4A58-971A-2E1B6D214E3B",
-        "name": "Connection Status Button",
-        "role": "connection-status",
-        "icons.default": {
-          "normal": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
-            "color": "white"
-          },
-          "highlighted": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
-            "color":  "#00AFFFFF"
-          },
-          "disabled": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
-            "color": "#7F7F7FFF"
-          }
-        }
+        "uuid": "9CCD4C05-2887-43EE-8CDB-660CAD421175",
+        "name": "Auto DR",
+        "flag": 132,
+        "address": "ADR0001",
+        "family": 5,
+        "members": [],
+        "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD"
       }
     ]
   }
-}
+]

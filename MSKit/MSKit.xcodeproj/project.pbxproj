@@ -198,7 +198,7 @@
 		C235930319C8E04200920F8D /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C235930419C8E04200920F8D /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F219C8E04200920F8D /* JSONParser.swift */; };
 		C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
-		C2C482DB19C9FA0B002E84A9 /* Moonkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* Moonkit.framework */; };
+		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
 		C2C482DE19C9FA73002E84A9 /* Moonkit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */; };
 		C2C482E219C9FF61002E84A9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C482E019C9FF61002E84A9 /* test.json */; };
 		C2C482E319C9FF61002E84A9 /* TemplateIcon2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2C482E119C9FF61002E84A9 /* TemplateIcon2x.png */; };
@@ -245,7 +245,7 @@
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
-		C2358F1619C78D6D00920F8D /* Moonkit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Moonkit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2358F1619C78D6D00920F8D /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2358F1919C78D6D00920F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2358F1A19C78D6D00920F8D /* Moonkit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Moonkit.h; sourceTree = "<group>"; };
 		C23592D419C8783E00920F8D /* NSMutableString+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+MSKitAdditions.h"; sourceTree = "<group>"; };
@@ -456,7 +456,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2C482DB19C9FA0B002E84A9 /* Moonkit.framework in Frameworks */,
+				C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,7 +587,7 @@
 		C2CE884F18138C4900555D63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C2358F1619C78D6D00920F8D /* Moonkit.framework */,
+				C2358F1619C78D6D00920F8D /* MoonKit.framework */,
 				C2C482D219C9F98A002E84A9 /* Moonkit Tests.xctest */,
 			);
 			name = Products;
@@ -994,9 +994,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C2358F1519C78D6D00920F8D /* Moonkit */ = {
+		C2358F1519C78D6D00920F8D /* MoonKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C2358F2A19C78D6D00920F8D /* Build configuration list for PBXNativeTarget "Moonkit" */;
+			buildConfigurationList = C2358F2A19C78D6D00920F8D /* Build configuration list for PBXNativeTarget "MoonKit" */;
 			buildPhases = (
 				C2358F1119C78D6D00920F8D /* Sources */,
 				C2358F1219C78D6D00920F8D /* Frameworks */,
@@ -1008,9 +1008,9 @@
 			dependencies = (
 				C235911919C7A2E800920F8D /* PBXTargetDependency */,
 			);
-			name = Moonkit;
+			name = MoonKit;
 			productName = Moonkit;
-			productReference = C2358F1619C78D6D00920F8D /* Moonkit.framework */;
+			productReference = C2358F1619C78D6D00920F8D /* MoonKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		C2C482D119C9F98A002E84A9 /* Moonkit Tests */ = {
@@ -1066,7 +1066,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				C2358F1519C78D6D00920F8D /* Moonkit */,
+				C2358F1519C78D6D00920F8D /* MoonKit */,
 				C2C482D119C9F98A002E84A9 /* Moonkit Tests */,
 			);
 		};
@@ -1461,7 +1461,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C2358F2A19C78D6D00920F8D /* Build configuration list for PBXNativeTarget "Moonkit" */ = {
+		C2358F2A19C78D6D00920F8D /* Build configuration list for PBXNativeTarget "MoonKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2358F2619C78D6D00920F8D /* Debug */,
