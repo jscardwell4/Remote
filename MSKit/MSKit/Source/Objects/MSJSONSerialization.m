@@ -198,7 +198,7 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
                   error:(NSError * __autoreleasing *)error
 {
   NSString * string = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:error];
-  return (string ? [self parseString:string error:error] : nil);
+  return (string ? [self parseString:string options:options error:error] : nil);
 }
 
 /// Parses a string from and then back into json using the specified options and returns the resulting json string.
@@ -290,7 +290,7 @@ MSKEY_DEFINITION(MSJSONTrailingComment);
         object = [MSDictionary dictionaryWithDictionary:object convertFoundationClasses:YES];
         [object inflate];
       }
-      
+
       // Recursively visit objects contained by the root object that also conform to `MSObjectContaining` protocol
       visitContainingObjects(object);
 

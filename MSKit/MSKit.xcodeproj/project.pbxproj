@@ -197,6 +197,7 @@
 		C235930219C8E04200920F8D /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592EE19C8E04200920F8D /* Generic.swift */; };
 		C235930319C8E04200920F8D /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C235930419C8E04200920F8D /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F219C8E04200920F8D /* JSONParser.swift */; };
+		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
 		C2C482DE19C9FA73002E84A9 /* Moonkit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */; };
@@ -267,6 +268,7 @@
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
+		C29692A919CE53D400992240 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerialization.swift; path = Moonkit/Parsing/JSONSerialization.swift; sourceTree = SOURCE_ROOT; };
 		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C482D219C9F98A002E84A9 /* Moonkit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Moonkit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482D519C9F98A002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -799,6 +801,7 @@
 		C2CE88EB18138CF700555D63 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				C29692A919CE53D400992240 /* JSONSerialization.swift */,
 				C2CE88ED18138CF700555D63 /* MSAssertionHandler.h */,
 				C2CE88EE18138CF700555D63 /* MSAssertionHandler.m */,
 				C2CE88EF18138CF700555D63 /* MSBitVector.h */,
@@ -1130,6 +1133,7 @@
 				C2C482E719CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift in Sources */,
 				C2358F3919C78E0C00920F8D /* NSLayoutConstraint+MSKitAdditions.m in Sources */,
 				C2358F3A19C78E0C00920F8D /* NSManagedObject+MSKitAdditions.m in Sources */,
+				C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */,
 				C2358F3B19C78E0C00920F8D /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
 				C216E74019CBAE0A0052E98A /* Logging.swift in Sources */,
 				C2358F3C19C78E0C00920F8D /* NSMapTable+MSKitAdditions.m in Sources */,

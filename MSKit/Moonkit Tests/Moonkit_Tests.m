@@ -40,6 +40,17 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   if (MSHandleErrors(error)) XCTFail("error encountered creating json object from string");
   
   MSLogDebug(@"parsed object:\n%@\n", object);
+  if (object) {
+    MSLogDebug(@"json from parsed object:\n%@\n", [JSONSerialization JSONFromObject:object options:0]);
+  }
+
+  error = nil;
+  id filteredObject = [JSONSerialization objectByParsingString:json options:1 error:&error];
+  if (MSHandleErrors(error)) XCTFail("error encountered creating json object from string using `JSONSerialization`");
+  MSLogDebug(@"parsed object using `JSONSerialization`:\n%@\n", filteredObject);
+  if (object) {
+    MSLogDebug(@"json from parsed object using `JSONSerialization`:\n%@\n", [JSONSerialization JSONFromObject:filteredObject options:0]);
+  }
 
 }
 

@@ -10,6 +10,9 @@ import Foundation
 
 extension Array {
   mutating func replaceAll(value:Element) { for i in 0..<count { self[i] = value } }
+
+  func perform(action: (Element) -> ()) { for element in self { action(element) } }
+
 }
 
 func unique<T:Equatable>(array:[T]) -> [T] {
