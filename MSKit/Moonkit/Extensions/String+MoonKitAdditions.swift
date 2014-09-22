@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
 
   static let Space:       String = " "
   static let Newline:     String = "\n"
@@ -17,17 +17,32 @@ extension String {
   static let Quote:       String = "'"
   static let DoubleQuote: String = "\""
 
-  /**
-  extendWith:
+  var length: Int { return countElements(self) }
 
-  :param: string String
+  /**
+  subscript:
+
+  :param: i Int
+
+  :returns: Character
+  */
+  subscript (i: Int) -> Character {
+    let index: String.Index = advance(i < 0 ? self.endIndex : self.startIndex, i)
+    return self[index]
+  }
+
+  /**
+  subscript:
+
+  :param: r Range<Int>
+
   :returns: String
   */
-  func extendWith(string: String) -> String { return self + string }
-
-  subscript (i: Int) -> Character { return self[advance(i < 0 ? self.endIndex : self.startIndex, i)] }
   subscript (r: Range<Int>) -> String {
-    return self[advance(self.startIndex, r.startIndex)..<advance(self.startIndex, r.endIndex)]
+    let rangeStart: String.Index = advance(startIndex, r.startIndex)
+    let rangeEnd:   String.Index = advance(r.endIndex < 0 ? endIndex : startIndex, r.endIndex)
+    let range: Range<String.Index> = Range<String.Index>(start: rangeStart, end: rangeEnd)
+    return self[range]
   }
 
   /**
@@ -49,16 +64,14 @@ extension String {
 
   	let match: NSTextCheckingResult? = regex.firstMatchInString(self,
                                                         options: nil,
-                                                          range:NSRange(location: 0,
-                                                         length: (self as NSString).length))
+                                                          range: NSRange(location: 0, length: (self as NSString).length))
   	var captures: [String?] = [String?](count: regex.numberOfCaptureGroups, repeatedValue: nil)
   	for i in 0..<regex.numberOfCaptureGroups {
       if let range = match?.rangeAtIndex(i) {
-        if range.location != NSNotFound {
-          captures[i] = (self as NSString).substringWithRange(range)
-        }
+        if range.location != NSNotFound { captures[i] = (self as NSString).substringWithRange(range) }
       }
   	}
+
     return captures
   }
 

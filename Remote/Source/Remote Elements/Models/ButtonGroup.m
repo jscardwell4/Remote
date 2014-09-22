@@ -201,6 +201,7 @@ commandSetAtIndex: _commandSetCollectionIndex]);
 
   NSDictionary * commandSetData           = data[@"command-set"];
   NSDictionary * commandSetCollectionData = data[@"command-set-collection"];
+  NSDictionary * labelAttributesData      = data[@"label-attributes"];
 
   if (commandSetData && isDictionaryKind(commandSetData)) {
     for (NSString * mode  in commandSetData) {
@@ -220,7 +221,9 @@ commandSetAtIndex: _commandSetCollectionIndex]);
   }
 
   self.labelConstraints = data[@"label-constraints"];
-  self.labelAttributes  = [TitleAttributes importObjectFromData:data[@"label-attributes"] context:moc];
+
+  if (labelAttributesData && isDictionaryKind(labelAttributesData))
+    self.labelAttributes  = [TitleAttributes importObjectFromData:labelAttributesData context:moc];
 
 }
 

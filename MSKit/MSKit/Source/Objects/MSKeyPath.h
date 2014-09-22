@@ -64,5 +64,6 @@
 @property (nonatomic, readonly) NSUInteger count;
 @property (nonatomic, readonly) BOOL       isEmpty;
 @property (nonatomic, readonly) BOOL       isSingleKey;
+@property (nonatomic, readonly) NSArray  * keys;
 
 @end

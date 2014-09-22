@@ -37,7 +37,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
   NSString * nametag = ClassNametagWithSuffix(@"Label");
 
-  if (self.label && ![self constraintsWithNametagPrefix:nametag]) {
+  if (self.label && ![[self constraintsWithNametagPrefix:nametag] count]) {
     NSString * constraints =
       $(@"'%1$@' label.width = self.width\n"
         "'%1$@' label.height = self.height\n"

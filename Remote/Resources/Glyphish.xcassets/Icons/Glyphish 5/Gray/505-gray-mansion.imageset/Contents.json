@@ -9,6 +9,10 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "505-gray-mansion@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

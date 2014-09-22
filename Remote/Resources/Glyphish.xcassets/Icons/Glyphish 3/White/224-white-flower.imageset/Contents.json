@@ -9,6 +9,10 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "224-white-flower@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

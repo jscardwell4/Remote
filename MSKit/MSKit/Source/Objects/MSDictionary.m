@@ -73,6 +73,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return result;
 }
 
+
+
 /// dictionaryByParsingXML:
 /// @param xmlData
 /// @return MSDictionary *
@@ -485,59 +487,54 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// inflate
+/*
 - (void)inflate {
 
-  [self.keys enumerateObjectsUsingBlock:^(id key, NSUInteger idx, BOOL *stop) {
-
-    if (isStringKind(key)) {
-
-      MSKeyPath * keyPath = [MSKeyPath keyPathFromString:key];
-      NSString * topKey = [keyPath popFirst];
-      NSString * lastKey = [keyPath popLast];
-
-      if (lastKey) {
-
-        MSDictionary * dict = [MSDictionary dictionary];
-
-        if (!keyPath.isEmpty)
-          for (NSString * subKey in keyPath) {
-
-            dict[subKey] = [MSDictionary dictionary];
-            dict = dict[subKey];
-
-          }
-
-        if (isArrayKind(self[key])) {
-
-          NSMutableArray * value = self[key];
-
-          [value enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
-            MSDictionary * objDict = [dict copy];
-            objDict[lastKey] = obj;
-            value[idx] = objDict;
-
-          }];
-
-          [self replaceKey:key withKey:topKey];
-
-        }
-
-        else {
-
-          dict[lastKey] = self[key];
-          [self removeObjectForKey:key];
-          self[topKey] = dict;
-
-        }
-
-      }
-
-    }
-
+  // First gather a list of keys to inflate
+  NSArray * inflatableKeys = [self.keys filtered:^BOOL(id evaluatedObject) {
+    return isStringKind(evaluatedObject) && [(NSString *)evaluatedObject numberOfMatchesForRegEx:@"(?:\\w\\.)+\\w"];
   }];
 
+  // Enumerate the list inflating each key
+  for (NSString * key in inflatableKeys) {
+
+    MSKeyPath * keypath = [MSKeyPath keyPathFromString:key];  // Create a keypath from the inflatable key
+    NSString * first = [keypath popFirst];                    // This will become our key
+    NSString * last = [keypath popLast];                      // This will become the deepest key in our value
+
+    MSDictionary * dict = [MSDictionary dictionary];          // Create a dictionary within which to embed our value
+    MSDictionary * subdict = dict;                            // This will reference the dictionary to which our value entered
+
+    // If there are stops along the way from first to last, recursively embed in dictionaries
+    if (!keypath.isEmpty) {
+      for (NSString * subkey in keypath) {
+        subdict[subkey] = [MSDictionary dictionary];
+        subdict = dict[subkey];
+      }
+    }
+
+    id value = self[key];  // Get the value we are embedding
+
+    // If our value is an array, we embed each value in the array and keep our value as an array
+    if (isArrayKind(value))
+      value = [(NSArray *)value mapped:^id(id obj, NSUInteger idx) {
+        MSDictionary * d = [MSDictionary dictionaryWithDictionary:dict];
+        MSDictionary * subd = [d valueForKeyPath:keypath.stringValue];
+        subd[last] = obj;
+        return d;
+      }];
+
+    // Otherwise we embed the value
+    else { subdict[last] = value; value = dict; }
+
+    NSUInteger keyIndex = [self indexForKey:key];             // Get the key's index so we can respect the order of our entries
+    [self removeObjectForKey:key];                            // Remove the compressed key-value entry
+    [self insertObject:value forKey:first atIndex:keyIndex];  // Insert the inflated key-value entry
+
+  }
+
 }
+*/
 
 /// sortByKeys:
 /// @param sortedKeys
@@ -644,7 +641,8 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)insertObject:(id)object forKey:(id<NSCopying>)key atIndex:(NSUInteger)index {
   if (!object) ThrowInvalidNilArgument(object);
   else if (!key) ThrowInvalidNilArgument(key);
-  else if (index >= [self count]) ThrowInvalidIndexArgument(index);
+  else if (index > [self count]) ThrowInvalidIndexArgument(index);
+  else if (index == [self count]) self[key] = object;
   else {
     [_keys insertObject:key atIndex:index];
     [_values insertObject:object atIndex:index];
@@ -945,6 +943,18 @@ MSSTATIC_KEY(MSDictionaryValidKeysStorage);
     _dictionary = [NSMutableDictionary dictionaryWithSharedKeySet:keyset];
   }
 
+  return self;
+}
+
+/// initWithValues:forKeys:
+/// @param values
+/// @param keys
+/// @return instancetype
+- (instancetype)initWithValues:(NSArray *)values forKeys:(NSArray *)keys {
+  if ((self = [super initWithObjects:values forKeys:keys])) {
+    self.keys = [keys mutableCopy];
+    self.values = [values mutableCopy];
+  }
   return self;
 }
 

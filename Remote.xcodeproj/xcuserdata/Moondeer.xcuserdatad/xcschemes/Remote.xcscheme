@@ -98,7 +98,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-loadData YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-replace YES"

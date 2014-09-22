@@ -15,7 +15,7 @@
 #import "BankItemViewController.h"
 #import "BankItemViewController_Private.h"
 //#import "BankCollectionHeaderReusableView.h"
-#import "BankCollectionViewController.h"
+//#import "BankCollectionViewController.h"
 //#import "BankCollectionViewFlowLayout.h"
 #import "BankCollectionZoomView.h"
 #import "BankPreviewViewController.h"

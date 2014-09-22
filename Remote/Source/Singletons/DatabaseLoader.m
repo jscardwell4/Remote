@@ -21,7 +21,7 @@
 #define LOG_PARSED_FILE      2
 #define LOG_RESULTING_OBJECT 4
 
-#define PARSE_ONLY YES
+#define PARSE_ONLY NO
 
 #define REMOTECONTROLLER_LOG_FLAG 2
 #define REMOTE_LOG_FLAG           2
@@ -111,9 +111,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
-  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent
-                                                               options:MSJSONReadFormatOptionInflateKeyPaths
-                                                                 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -148,9 +146,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, REMOTECONTROLLER_LOG_FLAG);
-  MSDictionary * importObject = [MSJSONSerialization objectByParsingString:fileContent
-                                                                   options:MSJSONReadFormatOptionInflateKeyPaths
-                                                                     error:&error];
+  MSDictionary * importObject = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -182,9 +178,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, REMOTE_LOG_FLAG);
-  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent
-                                                               options:MSJSONReadFormatOptionInflateKeyPaths
-                                                                 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -224,9 +218,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, MANUFACTURERS_LOG_FLAG);
-  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent
-                                                               options:MSJSONReadFormatOptionInflateKeyPaths
-                                                                 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -257,9 +249,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, COMPONENTDEVICES_LOG_FLAG);
-  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent
-                                                               options:MSJSONReadFormatOptionInflateKeyPaths
-                                                                 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -290,9 +280,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, NETWORKDEVICES_LOG_FLAG);
-  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent
-                                                               options:MSJSONReadFormatOptionInflateKeyPaths
-                                                                 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -328,10 +316,7 @@ void logImportedObject(id importedObject, int flag) {
 
   logImportFile(fileName, fileContent, IMAGES_LOG_FLAG);
 
-  NSArray * importObjects = [MSJSONSerialization objectByParsingString:fileContent
-                                                               options:MSJSONReadFormatOptionInflateKeyPaths
-
-                                                                 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
   if (MSHandleErrors(error)) return;
 
   logParsedImportFile(fileName, importObjects, IMAGES_LOG_FLAG);

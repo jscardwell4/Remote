@@ -9,6 +9,10 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "113-white-navigation@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

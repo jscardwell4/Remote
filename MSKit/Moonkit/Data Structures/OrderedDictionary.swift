@@ -8,6 +8,7 @@
 
 import Foundation
 
+public
 struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   typealias KeyType = Key
   typealias ValueType = Value
@@ -18,11 +19,11 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   private var indexKeys: [KeyType]
   private var printableKeys = false
 
-  var userInfo: [String:AnyObject]?
-  var count: Int { return indexKeys.count }
-  var isEmpty: Bool { return indexKeys.isEmpty }
-  var keys: [KeyType] { return indexKeys }
-  var values: [ValueType] { return indexKeys.map { self.storage[$0]! } }
+  public var userInfo: [String:AnyObject]?
+  public var count: Int { return indexKeys.count }
+  public var isEmpty: Bool { return indexKeys.isEmpty }
+  public var keys: [KeyType] { return indexKeys }
+  public var values: [ValueType] { return indexKeys.map { self.storage[$0]! } }
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -30,30 +31,30 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  init(minimumCapacity: Int = 4) {
+  public init(minimumCapacity: Int = 4) {
     storage = [KeyType:ValueType](minimumCapacity: minimumCapacity)
     indexKeys = [KeyType]()
     indexKeys.reserveCapacity(minimumCapacity)
   }
 
-  init<K,V where K:Printable>(minimumCapacity: Int = 4) {
+  public init<K,V where K:Printable>(minimumCapacity: Int = 4) {
     storage = [KeyType:ValueType](minimumCapacity: minimumCapacity)
     indexKeys = [KeyType]()
     indexKeys.reserveCapacity(minimumCapacity)
     printableKeys = true
   }
 
-  init(_ dict: NSDictionary) {
+  public init(_ dict: NSDictionary) {
     self.init(dict as [NSObject:AnyObject])
   }
 
-  init(_ dict:[KeyType:ValueType]) {
+  public init(_ dict:[KeyType:ValueType]) {
     storage = dict
     indexKeys = Array(dict.keys)
     printableKeys = true
   }
 
-  init(keys:[KeyType], values:[ValueType]) {
+  public init(keys:[KeyType], values:[ValueType]) {
     self.init(minimumCapacity: keys.count)
     if keys.count == values.count {
       indexKeys += keys
@@ -61,17 +62,31 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     }
   }
 
+  public static func fromMSDictionary(msdict: MSDictionary) -> OrderedDictionary<NSObject, AnyObject> {
+    var orderedDict = OrderedDictionary<NSObject,AnyObject>()
+
+    let keys = msdict.allKeys as [NSObject]
+    let values = msdict.allValues as [AnyObject]
+
+    for i in 0..<keys.count {
+      let k = keys[i]
+      let v: AnyObject = values[i]
+      orderedDict.setValue(v, forKey: k)
+    }
+
+    return orderedDict
+  }
 
   ////////////////////////////////////////////////////////////////////////////////
   /// MARK: - Indexes
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var startIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys[0])! }
-  var endIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys.last!)! }
-  func indexForKey(key: KeyType) -> DictionaryIndex<KeyType, ValueType>? { return storage.indexForKey(key) }
-  subscript (key: KeyType) -> ValueType? { return storage[key] }
-  subscript (i: DictionaryIndex<KeyType, ValueType>) -> (KeyType, ValueType) { return storage[i] }
+  public var startIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys[0])! }
+  public var endIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys.last!)! }
+  public func indexForKey(key: KeyType) -> DictionaryIndex<KeyType, ValueType>? { return storage.indexForKey(key) }
+  public subscript (key: KeyType) -> ValueType? { return storage[key] }
+  public subscript (i: DictionaryIndex<KeyType, ValueType>) -> (KeyType, ValueType) { return storage[i] }
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -144,8 +159,8 @@ enum ColonFormatOption {
 
 extension  OrderedDictionary: Printable, DebugPrintable {
 
-  var description: String { return storage.description }
-  var debugDescription: String { return storage.debugDescription }
+  public var description: String { return storage.description }
+  public var debugDescription: String { return storage.debugDescription }
 
   //  i.e. with dictionary ["one": 1, "two": 2, "three": 3] and default values will output:
   //  one    :  1
@@ -194,7 +209,7 @@ extension  OrderedDictionary: Printable, DebugPrintable {
 
 
 extension  OrderedDictionary: DictionaryLiteralConvertible {
-  static func convertFromDictionaryLiteral(elements: (KeyType, ValueType)...) -> OrderedDictionary {
+  public static func convertFromDictionaryLiteral(elements: (KeyType, ValueType)...) -> OrderedDictionary {
     var orderedDict = OrderedDictionary(minimumCapacity: elements.count)
     for (key, value) in elements {
       orderedDict.indexKeys.append(key)
@@ -213,13 +228,13 @@ extension  OrderedDictionary: DictionaryLiteralConvertible {
 extension  OrderedDictionary: SequenceType  {
 
 
-  func generate() -> OrderedDictionaryGenerator<Key, Value> {
+  public func generate() -> OrderedDictionaryGenerator<Key, Value> {
     return OrderedDictionaryGenerator(value: self)
   }
 
 }
 
-struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType {
+public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType {
 
   let keys: [Key]
   let values: [Value]
@@ -227,7 +242,7 @@ struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType {
 
   init(value:OrderedDictionary<Key,Value>) { keys = value.keys; values = value.values }
 
-  mutating func next() -> (Key, Value)? {
+  public mutating func next() -> (Key, Value)? {
     if keyIndex < keys.count {
       let keyValue = (keys[keyIndex], values[keyIndex])
       keyIndex++

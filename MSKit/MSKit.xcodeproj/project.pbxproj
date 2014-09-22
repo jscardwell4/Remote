@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */; };
 		C216E74019CBAE0A0052E98A /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C216E73F19CBAE0A0052E98A /* Logging.swift */; };
 		C2358F1B19C78D6D00920F8D /* Moonkit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* Moonkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F2C19C78DA300920F8D /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.framework */; };
@@ -197,6 +198,7 @@
 		C235930219C8E04200920F8D /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592EE19C8E04200920F8D /* Generic.swift */; };
 		C235930319C8E04200920F8D /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C235930419C8E04200920F8D /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F219C8E04200920F8D /* JSONParser.swift */; };
+		C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
@@ -240,6 +242,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKitGeometryFunctions.m; sourceTree = "<group>"; };
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C216E73F19CBAE0A0052E98A /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
@@ -266,6 +269,7 @@
 		C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
+		C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C29692A919CE53D400992240 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerialization.swift; path = Moonkit/Parsing/JSONSerialization.swift; sourceTree = SOURCE_ROOT; };
@@ -527,6 +531,7 @@
 				C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */,
 				C2C482E819CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift */,
 				C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */,
+				C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -759,6 +764,7 @@
 				C2CE88D618138CF700555D63 /* MSKitLoggingFunctions.m */,
 				C2CE88D718138CF700555D63 /* MSKitMiscellaneousFunctions.h */,
 				C2CE88D818138CF700555D63 /* MSKitMiscellaneousFunctions.m */,
+				C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -1147,6 +1153,7 @@
 				C2358F4019C78E0C00920F8D /* NSOperationQueue+MSKitAdditions.m in Sources */,
 				C2358F4119C78E0C00920F8D /* NSOrderedSet+MSKitAdditions.m in Sources */,
 				C2358F4319C78E0C00920F8D /* NSSet+MSKitAdditions.m in Sources */,
+				C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */,
 				C2358F4419C78E0C00920F8D /* NSString+MSKitAdditions.m in Sources */,
 				C2358F4519C78E0C00920F8D /* NSURL+MSKitAdditions.m in Sources */,
 				C2358F4619C78E0C00920F8D /* NSUserDefaults+MSKitAdditions.m in Sources */,
@@ -1170,6 +1177,7 @@
 				C23592F319C8E04200920F8D /* Helpers.swift in Sources */,
 				C2358F5719C78E0C00920F8D /* MSColorInputViewController.m in Sources */,
 				C2358F5819C78E0C00920F8D /* MSPickerInputViewController.m in Sources */,
+				C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */,
 				C2358F5919C78E0C00920F8D /* MSBarButtonItem.m in Sources */,
 				C23592D719C8785D00920F8D /* NSMutableString+MSKitAdditions.m in Sources */,
 				C2358F5A19C78E0C00920F8D /* MSColorInputButton.m in Sources */,

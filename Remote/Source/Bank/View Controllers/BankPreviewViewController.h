@@ -8,7 +8,7 @@
 @import UIKit;
 @import CoreData;
 @import Foundation;
-#import "Lumberjack/Lumberjack.h"
+@import Lumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
 
@@ -17,5 +17,7 @@
 @interface BankPreviewViewController : UIViewController
 
 @property (nonatomic, strong) UIImage * image;
+
+- (instancetype)initWithImage:(UIImage *)image;
 
 @end

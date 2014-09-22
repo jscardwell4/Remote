@@ -100,7 +100,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
   NSString * nametag = ClassNametagWithSuffix(@"Remote");
 
-  if (self.remoteView && ![self.view constraintsWithNametagPrefix:nametag]) {
+  if (self.remoteView && ![[self.view constraintsWithNametagPrefix:nametag] count]) {
     NSString * rawConstraints = $(@"'%1$@' remote.centerX = view.centerX\n"
                                   "'%1$@' remote.bottom = view.bottom\n"
                                   "'%1$@' remote.top = view.top", nametag);

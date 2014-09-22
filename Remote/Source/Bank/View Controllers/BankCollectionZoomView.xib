@@ -4,11 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BankCollectionViewController">
-            <connections>
-                <outlet property="zoomView" destination="1" id="jSz-e0-Ydp"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BankCollectionViewController"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="1" userLabel="Zoom" customClass="BankCollectionZoomView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="385"/>

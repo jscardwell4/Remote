@@ -8,54 +8,93 @@
 
 import Foundation
 
+private let fileManager = NSFileManager.defaultManager()
 
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - File paths
-////////////////////////////////////////////////////////////////////////////////
+@objc public class MoonFunctions {
+
+  ////////////////////////////////////////////////////////////////////////////////
+  /// MARK: - File paths
+  ////////////////////////////////////////////////////////////////////////////////
 
 
-func libraryPath() -> String? {
+  /**
+  libraryPath
 
-  let fm = NSFileManager.defaultManager()
-  let urls = fm.URLsForDirectory(NSSearchPathDirectory.LibraryDirectory,
-                                 inDomains: NSSearchPathDomainMask.UserDomainMask)
-  if urls.count > 0 && urls[0] is NSURL {
-
-    let url = urls[0] as NSURL
-    return url.path
-
-  } else {
-
-    return nil
-
+  :returns: String?
+  */
+  @objc public class func libraryPath() -> String? {
+    let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.LibraryDirectory,
+                                                      inDomains: NSSearchPathDomainMask.UserDomainMask)
+    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
   }
 
-}
+  /**
+  libraryPathToFile:
 
-func libraryPathToFile(file: String) -> String? { return libraryPath()?.stringByAppendingPathComponent(file) }
-func cachePath() -> String? { return libraryPathToFile("Caches/\(NSBundle.mainBundle().bundleIdentifier)") }
-func cachePathToFile(file: String) -> String? { return cachePath()?.stringByAppendingPathComponent(file) }
+  :param: file String
 
-func documentsPath() -> String? {
-
-  let fm = NSFileManager.defaultManager()
-  let urls = fm.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory,
-                                 inDomains: NSSearchPathDomainMask.UserDomainMask)
-  if urls.count > 0 && urls[0] is NSURL {
-
-    let url = urls[0] as NSURL
-    return url.path
-
-  } else {
-
-    return nil
-
+  :returns: String?
+  */
+  @objc public class func libraryPathToFile(file: String) -> String? {
+    return libraryPath()?.stringByAppendingPathComponent(file)
   }
 
+  /**
+  cachePath
+
+  :returns: String?
+  */
+  @objc public class func cachePath() -> String? {
+    return libraryPathToFile("Caches/\(NSBundle.mainBundle().bundleIdentifier)")
+  }
+
+  /**
+  cachePathToFile:
+
+  :param: file String
+
+  :returns: String?
+  */
+  @objc public class func cachePathToFile(file: String) -> String? {
+    return cachePath()?.stringByAppendingPathComponent(file)
+  }
+
+  /**
+  documentsPath
+
+  :returns: String?
+  */
+  @objc public class func documentsPath() -> String! {
+    let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory,
+                                                     inDomains: NSSearchPathDomainMask.UserDomainMask)
+    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
+  }
+
+  /**
+  documentsDirectoryContents
+
+  :returns: [String]
+  */
+  @objc public class func documentsDirectoryContents() -> [String] {
+    var error: NSError? = nil
+    let directoryContents = fileManager.contentsOfDirectoryAtPath(documentsPath(), error: &error) as? [String]
+    if error != nil { logError(aggregateErrorMessage(error!, message: "failed to get directory contents"), __FUNCTION__) }
+    return directoryContents ?? []
+  }
+
+  /**
+  documentsPathToFile:
+
+  :param: file String
+
+  :returns: String?
+  */
+  @objc public class func documentsPathToFile(file: String) -> String? {
+    return documentsPath()?.stringByAppendingPathComponent(file)
+  }
+  
+
 }
-
-func documentsPathToFile(file: String) -> String? { return libraryPath()?.stringByAppendingPathComponent(file) }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - Errors and logging

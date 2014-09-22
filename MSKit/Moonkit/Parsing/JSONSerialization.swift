@@ -219,8 +219,12 @@ public class JSONSerialization: NSObject {
 
     if options == .InflateKeypaths {
       if let container = object as? MSObjectContaining {
-        if let dict = container as? MSDictionary { dict.inflate() }
-        if let dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] { dicts.perform{$0.inflate()} }
+        if let dict = container as? MSDictionary {
+          dict.inflate()
+        }
+        if let dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] {
+          dicts.perform{$0.inflate()}
+        }
       }
     }
 

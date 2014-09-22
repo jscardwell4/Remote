@@ -8,8 +8,8 @@
 
 #import "BankRootTableViewController.h"
 #import "MSRemoteAppController.h"
-#import "BankCollectionViewController.h"
 #import "Bank.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -89,24 +89,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   Class itemClass = [_rootItems keyAtIndex:indexPath.row];
-  BankCollectionViewController * viewController =
-    [BankCollectionViewController controllerWithItemClass:itemClass];
+  BankCollectionViewController * viewController = [[BankCollectionViewController alloc] initWithItemClass:itemClass];
   [self.navigationController pushViewController:viewController animated:YES];
 
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark Navigation
-////////////////////////////////////////////////////////////////////////////////
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  if ([@"Push Bank Items" isEqualToString:segue.identifier]) {
-    BankCollectionViewController * viewController = segue.destinationViewController;
-    NSInteger                      idx            = [self.tableView indexPathForSelectedRow].row;
-    viewController.navigationItem.title = _rootItems[idx];
-    viewController.itemClass            = [_rootItems keyAtIndex:idx];
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,8 @@
 @import MoonKit;
 #import "MSRemoteMacros.h"
 
+@class BankableModelObject;
+
 @interface BankCollectionZoomView : MSView
 
 @property (nonatomic, weak) UIImage * image;
@@ -19,6 +21,8 @@
 
 @property (nonatomic, getter = isEditDisabled) BOOL editDisabled;
 @property (nonatomic, getter = isDetailDisabled) BOOL detailDisabled;
+
+@property (nonatomic, weak) BankableModelObject * item;
 
 @property (nonatomic, weak, readonly) IBOutlet UIButton     * detailButton;
 @property (nonatomic, weak, readonly) IBOutlet UIButton     * editButton;

@@ -29,7 +29,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
       if attributes.representedElementCategory == .Cell { missingSections.addIndex(attributes.indexPath.section) }
     }
 
-    let allHeaderAttributes = allAttributes.filter { $0.representedElementKind == UICollectionElementKindSectionHeader }
+//    let allHeaderAttributes = allAttributes.filter { $0.representedElementKind == UICollectionElementKindSectionHeader }
 
 
     return allAttributes

@@ -128,20 +128,24 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 + (instancetype)importObjectFromData:(NSDictionary *)data context:(NSManagedObjectContext *)moc {
 
   if (!moc) ThrowInvalidNilArgument(moc);
-  if (!data) ThrowInvalidNilArgument(data);
 
-  NSString    * uuid   = data[@"uuid"];
   ModelObject * object = nil;
 
-  if ([self isValidUUID:uuid]) {
-    object = [self existingObjectWithUUID:uuid context:moc];
+  if (data) {
 
-    if (!object) object = [self objectWithUUID:uuid context:moc];
+    NSString    * uuid   = data[@"uuid"];
+
+    if ([self isValidUUID:uuid]) {
+      object = [self existingObjectWithUUID:uuid context:moc];
+
+      if (!object) object = [self objectWithUUID:uuid context:moc];
+    }
+
+    if (!object) object = [self createInContext:moc];
+
+    [object updateWithData:data];
+    
   }
-
-  if (!object) object = [self createInContext:moc];
-
-  [object updateWithData:data];
 
   return object;
 }

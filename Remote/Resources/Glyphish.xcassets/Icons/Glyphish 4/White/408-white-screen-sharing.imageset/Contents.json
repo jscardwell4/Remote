@@ -9,6 +9,10 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "408-white-screen-sharing@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

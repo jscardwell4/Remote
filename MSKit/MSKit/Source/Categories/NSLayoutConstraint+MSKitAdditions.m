@@ -248,7 +248,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 
   NSDictionary * formatDictionary = [self dictionaryFromExtendedVisualFormat:format];
 
-  if (formatDictionary) {
+  if ([formatDictionary count]) {
     formatDictionary = [self replaceObjectPlaceHolders:formatDictionary
                                                metrics:metrics
                                                  views:views];

@@ -40,7 +40,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   NSString * nametag = ClassNametagWithSuffix(@"Internal-LabelContainer");
 
   if (self.labelContainer) {
-    if (![self constraintsWithNametagPrefix:nametag]) {
+    if (![[self constraintsWithNametagPrefix:nametag] count]) {
 
       NSString * constraints =
         $(@"'%1$@' labels.centerY = self.centerY\n"
@@ -56,7 +56,7 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
 
     nametag = ClassNametagWithSuffix(@"Internal-Label");
 
-    if (![self.labelContainer constraintsWithNametagPrefix:nametag]) {
+    if (![[self.labelContainer constraintsWithNametagPrefix:nametag] count]) {
 
       NSMutableString * positionalConstraints = [@"H:|" mutableCopy];
 

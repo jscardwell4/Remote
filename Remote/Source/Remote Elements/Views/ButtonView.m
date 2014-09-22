@@ -56,7 +56,7 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
   NSString * labelNametag    = ClassNametagWithSuffix(@"InternalLabel");
   NSString * activityNametag = ClassNametagWithSuffix(@"InternalActivity");
 
-  if (![self constraintsWithNametagPrefix:labelNametag]) {
+  if (![[self constraintsWithNametagPrefix:labelNametag] count]) {
     UIEdgeInsets titleInsets = self.model.titleEdgeInsets;
     NSString   * constraints =
       $(@"'%1$@' label.left = self.left + %3$f @900\n"

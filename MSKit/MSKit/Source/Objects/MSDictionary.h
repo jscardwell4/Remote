@@ -35,6 +35,8 @@
 + (MSDictionary *)dictionaryByParsingXML:(NSData *)xmlData;
 + (MSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys usingBlock:(id (^)(id<NSCopying> key))block;
 
+- (instancetype)initWithValues:(NSArray *)values forKeys:(NSArray *)keys;
+
 - (BOOL)isValidKey:(id<NSCopying>)key;
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
@@ -60,7 +62,7 @@
 - (void)compress;
 
 /// Recursively looks for keypath-value pairs and expands into key-dictionary pairs
-- (void)inflate;
+//- (void)inflate;
 
 - (void)removeObjectAtIndex:(NSUInteger)index;
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;

@@ -17,6 +17,18 @@
 #import "BankItemViewController.h"
 #import "Remote-Swift.h"
 
+MSSTATIC_STRING_CONST kExportBarItemImage         = @"702-gray-share";
+MSSTATIC_STRING_CONST kExportBarItemImageSelected = @"702-gray-share-selected";
+MSSTATIC_STRING_CONST kImportBarItemImage         = @"703-gray-download";
+MSSTATIC_STRING_CONST kImportBarItemImageSelected = @"703-gray-download-selected";
+MSSTATIC_STRING_CONST kListSegmentImage           = @"399-gray-list1";
+MSSTATIC_STRING_CONST kThumbnailSegmentImage      = @"822-gray-photo-2";
+MSSTATIC_STRING_CONST kSearchBarItemImage         = @"708-gray-search";
+MSSTATIC_STRING_CONST kIndicatorImage             = @"1040-gray-checkmark";
+MSSTATIC_STRING_CONST kIndicatorImageSelected     = @"1040-gray-checkmark-selected";
+MSSTATIC_STRING_CONST kTextFieldTextColor         = @"#9FA0A4FF";
+
+
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel, msLogContext)
@@ -30,13 +42,18 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 #pragma mark - BankCollectionViewController class extension
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface BankCollectionViewController () <NSFetchedResultsControllerDelegate>
+@interface BankCollectionViewController () <NSFetchedResultsControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) NSBlockOperation             * updatesBlockOperation;
 @property (nonatomic, strong) NSMutableSet                 * hiddenSections;
 @property (nonatomic, strong) BankPreviewViewController    * previewController;
 @property (nonatomic, strong) BankCollectionZoomView       * zoomView;
-@property (nonatomic, strong) BankCollectionLayout * layout;
+@property (nonatomic, strong) BankCollectionLayout         * layout;
+
+@property (nonatomic, strong) UIAlertAction                * exportAlertAction;
+@property (nonatomic, strong) NSMutableSet                 * existingFiles;
+@property (nonatomic, strong) NSMutableSet                 * exportSelection;
+@property (nonatomic, assign) BOOL                           exportSelectionMode;
 
 @property (nonatomic, assign, getter = shouldUseListView) BOOL useListView;
 
@@ -99,34 +116,25 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
   });
 
   self.toolbarItems = ({
-    UIBarButtonItem * exportBarItem = ImageBarButton(@"702-gray-share", @selector(exportBankObject:));
+    UIBarButtonItem * exportBarItem = ImageBarButton(kExportBarItemImage, @selector(exportBankObject:));
     UIBarButtonItem * spacer = FixedSpaceBarButton(20.0);
-    UIBarButtonItem * importBarItem = ImageBarButton(@"703-gray-download", @selector(importBankObject:));
+    UIBarButtonItem * importBarItem = ImageBarButton(kImportBarItemImage, @selector(importBankObject:));
     UIBarButtonItem * flex = FlexibleSpaceBarButton;
     UISegmentedControl * displayOptionsControl = [[UISegmentedControl alloc]
-                                                  initWithItems:@[UIImageMake(@"399-gray-list1"),
-                                                                  UIImageMake(@"822-gray-photo-2")]];
+                                                  initWithItems:@[UIImageMake(kListSegmentImage),
+                                                                  UIImageMake(kThumbnailSegmentImage)]];
     [displayOptionsControl addTarget:self
                               action:@selector(segmentedControlValueDidChange:)
                     forControlEvents:UIControlEventValueChanged];
     UIBarButtonItem * displayOptionsItem = CustomBarButton(displayOptionsControl);
-    UIBarButtonItem * searchBarItem = ImageBarButton(@"708-gray-search", @selector(searchBankObjects:));
+    UIBarButtonItem * searchBarItem = ImageBarButton(kSearchBarItemImage, @selector(searchBankObjects:));
     NSArray * toolbarItems = ([_itemClass isThumbnailable]
                               ? @[exportBarItem, spacer, importBarItem, flex, displayOptionsItem, flex, searchBarItem]
                               : @[exportBarItem, spacer, importBarItem, flex, searchBarItem]);
     toolbarItems;
   });
 
-}
-
-/// navigationItem
-/// @return UINavigationItem *
-- (UINavigationItem *)navigationItem {
-
-  UINavigationItem * navigationItem = [super navigationItem];
-  navigationItem.rightBarButtonItem = SystemBarButton(Done, @selector(dismiss:));
-
-  return navigationItem;
+  [self refreshExistingFiles];
 
 }
 
@@ -134,6 +142,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 /// @param animated
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  self.navigationItem.rightBarButtonItem = SystemBarButton(Done, @selector(dismiss:));
   [self.collectionView reloadData];
 }
 
@@ -202,12 +211,128 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
   return _zoomView;
 }
 
-/// configureCell:atIndexPath:
-/// @param cell
-/// @param indexPath
-//- (void)configureCell:(BankCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-//  cell.item = self.allItems[indexPath];
-//}
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Exporting items
+////////////////////////////////////////////////////////////////////////////////
+
+
+/// refreshExistingFiles
+- (void)refreshExistingFiles {
+
+  __weak BankCollectionViewController * weakself = self;
+  dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_BACKGROUND, -1);
+  dispatch_queue_t backgroundQueue = dispatch_queue_create("com.moondeerstudios.background", attr);
+  dispatch_async(backgroundQueue, ^{
+    NSMutableArray * directoryContents = [[MoonFunctions documentsDirectoryContents] mutableCopy];
+    [directoryContents filter:^BOOL(NSString * name) { return [name hasSuffix:@".json"]; }];
+    [directoryContents map:^NSString *(NSString * name, NSUInteger idx) { return [name stringByDeletingPathExtension]; }];
+    if ([directoryContents count])
+      [MainQueue addOperationWithBlock:^{
+        weakself.existingFiles = [[directoryContents set] mutableCopy];
+        MSLogDebug(@"existing files in documents directory…\n\t%@", [directoryContents componentsJoinedByString:@"\n\t"]);
+      }];
+  });
+
+}
+
+/// setExportSelectionMode:
+/// @param exportSelectionMode
+- (void)setExportSelectionMode:(BOOL)exportSelectionMode {
+
+  _exportSelectionMode = exportSelectionMode;
+
+  self.exportSelection = _exportSelectionMode ? [NSMutableSet set] : nil;
+
+  if (!self.exportSelection) {
+    for (NSIndexPath * indexPath in [self.collectionView indexPathsForSelectedItems])
+      [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+  }
+
+  self.navigationItem.rightBarButtonItem = (_exportSelectionMode
+                                            ? TitleBarButton(@"Export", @selector(confirmExport:))
+                                            : SystemBarButton(Done, @selector(dismiss:)));
+
+  NSMutableArray * toolbarItems = [self.toolbarItems mutableCopy];
+  UIBarButtonItem * exportItem = ImageBarButton(_exportSelectionMode ? kExportBarItemImageSelected : kExportBarItemImage,
+                                                @selector(exportBankObject:));
+  [toolbarItems replaceObjectAtIndex:0 withObject:exportItem];
+  [self setToolbarItems:toolbarItems animated:YES];
+  self.collectionView.allowsMultipleSelection = _exportSelectionMode;
+
+  [self.collectionView setValue:_exportSelectionMode ? kIndicatorImage : nil forKeyPath:@"visibleCells.indicatorImage"];
+  assert(!([[self.collectionView indexPathsForSelectedItems] count] && _exportSelectionMode));
+
+}
+
+/// confirmExport:
+/// @param sender
+- (void)confirmExport:(id)sender {
+
+  UIAlertController * alert = nil;
+  __weak BankCollectionViewController * weakself = self;
+
+  if ([self.exportSelection count]) {
+
+    alert = [UIAlertController alertControllerWithTitle:@"Export Selection"
+                                                message:@"Enter a name for the exported file"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+      textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+      textField.textColor = [UIColor colorWithRGBAHexString:kTextFieldTextColor];
+      textField.delegate = weakself;
+    }];
+
+    [alert addAction:
+     [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+      weakself.exportSelectionMode = NO;
+      weakself.exportAlertAction = nil;
+      [weakself dismissViewControllerAnimated:YES completion:nil];
+    }]];
+
+    self.exportAlertAction =
+    [UIAlertAction actionWithTitle:@"Export" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      NSString    * text      = [alert.textFields.firstObject text];
+      assert([text length] && ![weakself.existingFiles containsObject:text]);
+      NSString * pathToFile = [MoonFunctions documentsPathToFile:[text stringByAppendingPathExtension:@"json"]];
+      [weakself exportSelectionToFile:pathToFile];
+
+      weakself.exportSelectionMode = NO;
+      [weakself dismissViewControllerAnimated:YES completion:nil];
+    }];
+
+    [alert addAction:self.exportAlertAction];
+
+  } else {
+
+    alert = [UIAlertController
+             alertControllerWithTitle:@"Export Selection"
+                              message:@"No items have been selected, what do you suppose I would be exporting?"
+                       preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:
+     [UIAlertAction actionWithTitle:@"Alright" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+      [weakself dismissViewControllerAnimated:YES completion:nil];
+    }]];
+
+  }
+
+  [self presentViewController:alert animated:YES completion:nil];
+
+}
+
+/// exportSelectionToFile:
+/// @param filePath
+- (void)exportSelectionToFile:(NSString *)filePath {
+
+  MSLogInfo(@"exporting selected items to file '%@'…", filePath);
+  [self.exportSelection.JSONString writeToFile:filePath];
+
+}
+
+/// exportBankObject:
+/// @param sender
+- (void)exportBankObject:(id)sender { self.exportSelectionMode = !self.exportSelectionMode; }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
@@ -267,7 +392,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
 /// segmentedControlValueDidChange:
 /// @param sender
-- (IBAction)segmentedControlValueDidChange:(UISegmentedControl *)sender {
+- (void)segmentedControlValueDidChange:(UISegmentedControl *)sender {
   self.useListView = sender.selectedSegmentIndex == 0;
   [self.collectionView.collectionViewLayout invalidateLayout];
   [self.collectionView reloadData];
@@ -275,25 +400,21 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
 /// importBankObject:
 /// @param sender
-- (IBAction)importBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
-
-/// exportBankObject:
-/// @param sender
-- (IBAction)exportBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
+- (void)importBankObject:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
 /// searchBankObjects:
 /// @param sender
-- (IBAction)searchBankObjects:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
+- (void)searchBankObjects:(id)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
 /// dismiss:
 /// @param sender
-- (IBAction)dismiss:(id)sender {
+- (void)dismiss:(id)sender {
   [AppController dismissViewController:[Bank viewController] completion:nil];
 }
 
 /// dismissZoom:
 /// @param sender
-- (IBAction)dismissZoom:(id)sender {
+- (void)dismissZoom:(id)sender {
 
   [self.zoomView removeFromSuperview];
 
@@ -370,7 +491,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
       [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
                                               withReuseIdentifier:[BankCollectionViewHeader identifier]
                                                      forIndexPath:indexPath];
-    header.controller = self;
+//    header.controller = self;
     header.section    = indexPath.section;
     header.title      = [self.allItems.sections[indexPath.section] name];
 
@@ -385,11 +506,48 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/// collectionView:willDisplayCell:forItemAtIndexPath:
+/// @param collectionView
+/// @param cell
+/// @param indexPath
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(BankCollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+//  cell.indicatorImage = (self.exportSelectionMode ? kIndicatorImage : nil);
+}
+
+/// collectionView:didDeselectItemAtIndexPath:
+/// @param collectionView
+/// @param indexPath
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  BankCollectionViewCell * cell = (BankCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+
+  // Check if we are selecting items to export
+  if (self.exportSelectionMode) {
+    [self.exportSelection removeObject:cell.item];  // Remove from our collection of items to export
+//    cell.indicatorImage = kIndicatorImage;          // Change the indicator to normal
+  }
+
+}
+
 /// collectionView:didSelectItemAtIndexPath:
 /// @param collectionView
 /// @param indexPath
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  [self.navigationController pushViewController:[self.allItems[indexPath] detailViewController] animated:YES];
+
+  BankCollectionViewCell * cell = (BankCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+
+  // Check if we are selecting items to export
+  if (self.exportSelectionMode) {
+    [self.exportSelection addObject:cell.item];     // Add to our collection of items to export
+//    cell.indicatorImage = kIndicatorImageSelected;  // Change indicator to selected
+  }
+
+  // Otherwise we push the item's detail view controller
+  else [self.navigationController pushViewController:[cell.item detailViewController] animated:YES];
+
 }
 
 /// collectionView:canPerformAction:forItemAtIndexPath:withSender:
@@ -444,7 +602,7 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
 
     MSLogDebug(@"maxSize: %@, imageSize: %@, fittedSize: %@, finalSize: %@",
                CGSizeString(maxSize), CGSizeString(imageSize), CGSizeString(fittedSize), CGSizeString(size));
-    
+
   }
 
   return size;
@@ -523,5 +681,50 @@ static const CGSize HeaderSize            = (CGSize) { .width = 320, .height = 3
   [self.collectionView performBatchUpdates:^{ [_updatesBlockOperation start]; } completion:nil];
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - UITextFieldDelegate
+////////////////////////////////////////////////////////////////////////////////
+
+/// textFieldShouldEndEditing:
+/// @param textField
+/// @return BOOL
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+  if ([self.existingFiles containsObject:textField.text]) {
+    textField.textColor = RedColor;
+    return NO;
+  }
+  return YES;
+}
+
+/// textField:shouldChangeCharactersInRange:replacementString:
+/// @param textField
+/// @param range
+/// @param string
+/// @return BOOL
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+  NSString * text = (range.length == 0
+                     ? [textField.text stringByAppendingString:string]
+                     : [textField.text stringByReplacingCharactersInRange:range withString:string]);
+  BOOL nameInvalid = [self.existingFiles containsObject:text];
+  textField.textColor = (nameInvalid
+                         ? [UIColor colorWithName:@"fire-brick"]
+                         : [UIColor colorWithRGBAHexString:kTextFieldTextColor]);
+  self.exportAlertAction.enabled = !nameInvalid;
+  return YES;
+}
+
+/// textFieldShouldReturn:
+/// @param textField
+/// @return BOOL
+- (BOOL)textFieldShouldReturn:(UITextField *)textField { return NO; }
+
+/// textFieldShouldClear:
+/// @param textField
+/// @return BOOL
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+  return YES;
+}
 
 @end

@@ -9,46 +9,53 @@
 #import "BankPreviewViewController.h"
 
 @interface BankPreviewViewController ()
-
 @property (weak, nonatomic) IBOutlet UIImageView * imageView;
-
 @end
 
-@implementation BankPreviewViewController
-{
+@implementation BankPreviewViewController {
   BOOL _showStatusBarOnDismiss;
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
+/// initWithImage:
+/// @param image
+/// @return instancetype
+- (instancetype)initWithImage:(UIImage *)image { if ((self = [super init])) self.image = image; return self; }
 
-  if (_image) self.imageView.image = _image;
+/// loadView
+- (void)loadView {
+  self.view = [[UIView alloc] initWithFrame:MainScreen.bounds];
+  UIImageView * imageView = [[UIImageView alloc] initWithImage:self.image];
+  imageView.contentMode = UIViewContentModeCenter;
+  [imageView addGestureRecognizer:[UITapGestureRecognizer gestureWithTarget:self action:@selector(dismissPreview:)]];
+  [self.view addSubview:imageView];
+  [self.view addConstraints:[NSLayoutConstraint constraintsByParsingString:[@"\n" join:@[@"|[image]|", @"V:|[image]|"]]
+                                                                     views:@{@"image": imageView}]];
+  self.imageView = imageView;
 }
 
+/// viewWillAppear:
+/// @param animated
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-
   if (!UIApp.statusBarHidden) {
     _showStatusBarOnDismiss = YES;
     UIApp.statusBarHidden   = YES;
   }
 }
 
+/// viewWillDisappear:
+/// @param animated
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-
   if (_showStatusBarOnDismiss) UIApp.statusBarHidden = NO;
 }
 
-- (void)setImage:(UIImage *)image {
-  _image = image;
+/// setImage:
+/// @param image
+- (void)setImage:(UIImage *)image { _image = image; if ([self isViewLoaded]) self.imageView.image = image; }
 
-  if ([self isViewLoaded])
-    self.imageView.image = image;
-}
-
-- (IBAction)dismissPreview:(id)sender {
-  [self dismissViewControllerAnimated:YES completion:nil];
-}
+/// dismissPreview:
+/// @param sender
+- (IBAction)dismissPreview:(id)sender { [self dismissViewControllerAnimated:YES completion:nil]; }
 
 @end

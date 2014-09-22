@@ -200,7 +200,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
   NSString * nametag = ClassNametagWithSuffix(@"Internal");
 
-  if (![self constraintsWithNametagPrefix:nametag]) {
+  if (![[self constraintsWithNametagPrefix:nametag] count]) {
     NSDictionary * views = NSDictionaryOfVariableBindings(self,
                                                           _backdropView,
                                                           _backgroundImageView,

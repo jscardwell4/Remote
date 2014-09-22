@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
+		C2037B6F19D08925001F6AD9 /* BankCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832219D06E5D000CB422 /* BankCollectionViewController.swift */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
 		C209C0CF19BFE70700A6AB85 /* ISYDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */; };
 		C20B1D5417F8F44B002F286A /* BankCollectionZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C20B1D5317F8F44B002F286A /* BankCollectionZoomView.m */; };
@@ -146,7 +147,6 @@
 		C2381FA319A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */; };
 		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
-		C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2436DB417EA99C600482186 /* BankCollectionViewController.m */; };
 		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
@@ -916,6 +916,7 @@
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
+		C274832219D06E5D000CB422 /* BankCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewController.swift; sourceTree = "<group>"; };
 		C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateColorSet.h; sourceTree = "<group>"; };
 		C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateImageSet.h; sourceTree = "<group>"; };
 		C275A0DE181F4DF900C9D446 /* ControlStateTitleSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateTitleSet.h; sourceTree = "<group>"; };
@@ -1406,6 +1407,7 @@
 		C26B8A6A18006BF500912DBB /* Collections */ = {
 			isa = PBXGroup;
 			children = (
+				C274832219D06E5D000CB422 /* BankCollectionViewController.swift */,
 				C2436DB317EA99C600482186 /* BankCollectionViewController.h */,
 				C2436DB417EA99C600482186 /* BankCollectionViewController.m */,
 				C20B1D5217F8F44B002F286A /* BankCollectionZoomView.h */,
@@ -1998,7 +2000,7 @@
 		C2CE8A9C1814231F00555D63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C235911C19C7ACB900920F8D /* Moonkit.framework */,
+				C235911C19C7ACB900920F8D /* MoonKit.framework */,
 				C2AA245819CB15500062CF4C /* Moonkit Tests.xctest */,
 			);
 			name = Products;
@@ -2236,10 +2238,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		C235911C19C7ACB900920F8D /* Moonkit.framework */ = {
+		C235911C19C7ACB900920F8D /* MoonKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Moonkit.framework;
+			path = MoonKit.framework;
 			remoteRef = C235911B19C7ACB900920F8D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2647,7 +2649,6 @@
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
 				C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */,
-				C2436DB517EA99C600482186 /* BankCollectionViewController.m in Sources */,
 				C265936317FBA1B00017949C /* BankItemTableViewCell.m in Sources */,
 				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,
 				C26C6E5E19B8DB3500B346AE /* ITachDevice.m in Sources */,
@@ -2671,6 +2672,7 @@
 				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
 				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,
 				C26296801810619900760056 /* CoreDataManager+Model.m in Sources */,
+				C2037B6F19D08925001F6AD9 /* BankCollectionViewController.swift in Sources */,
 				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
 				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
