@@ -31,17 +31,16 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 
   static const NSDictionary * pseudoAttributes = nil;
   static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken,
-                ^{
-    pseudoAttributes = @{ @"nil"        : @(NSLayoutAttributeNotAnAttribute),
+  dispatch_once(&onceToken, ^{
+    pseudoAttributes = @{ @"nil"      : @(NSLayoutAttributeNotAnAttribute),
                           @"left"     : @(NSLayoutAttributeLeft),
-                          @"right"      : @(NSLayoutAttributeRight),
-                          @"top"        : @(NSLayoutAttributeTop),
-                          @"bottom"     : @(NSLayoutAttributeBottom),
+                          @"right"    : @(NSLayoutAttributeRight),
+                          @"top"      : @(NSLayoutAttributeTop),
+                          @"bottom"   : @(NSLayoutAttributeBottom),
                           @"leading"  : @(NSLayoutAttributeLeading),
                           @"trailing" : @(NSLayoutAttributeTrailing),
-                          @"width"      : @(NSLayoutAttributeWidth),
-                          @"height"     : @(NSLayoutAttributeHeight),
+                          @"width"    : @(NSLayoutAttributeWidth),
+                          @"height"   : @(NSLayoutAttributeHeight),
                           @"centerX"  : @(NSLayoutAttributeCenterX),
                           @"centerY"  : @(NSLayoutAttributeCenterY),
                           @"baseline" : @(NSLayoutAttributeBaseline) };
@@ -122,12 +121,26 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
   NSMutableString * filteredString = [string mutableCopy];
   [filteredString replaceRegEx:@"\\s*⏎\\s*|\\s*::\\s*|\\s*;\\s*" withString:@"\n"];
   [filteredString enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
-    if (line.length > 0)
-      [constraintObjects addObjectsFromArray:[self constraintsFromFormat:line
-                                                                 options:options
-                                                                 metrics:metrics
-                                                                   views:views]
-      ];
+    if (line.length > 0) {
+
+      if ([line numberOfMatchesForRegEx:@"\\.center "] > 0) {
+        NSString * xLine = [line stringByReplacingOccurrencesOfString:@".center" withString:@".centerX"];
+        [constraintObjects addObjectsFromArray:[self constraintsFromFormat:xLine
+                                                                   options:options
+                                                                   metrics:metrics
+                                                                     views:views]];
+        NSString * yLine = [line stringByReplacingOccurrencesOfString:@".center" withString:@".centerY"];
+        [constraintObjects addObjectsFromArray:[self constraintsFromFormat:yLine
+                                                                   options:options
+                                                                   metrics:metrics
+                                                                     views:views]];
+      } else {
+        [constraintObjects addObjectsFromArray:[self constraintsFromFormat:line
+                                                                   options:options
+                                                                   metrics:metrics
+                                                                     views:views]];
+      }
+    }
   }];
 
   return constraintObjects;
@@ -150,6 +163,9 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
   return [self constraintsByParsingString:string options:0 metrics:nil views:views];
 }
 
+/// dictionaryFromExtendedVisualFormat:
+/// @param format
+/// @return NSDictionary *
 + (NSDictionary *)dictionaryFromExtendedVisualFormat:(NSString *)format {
   // regex for detecting extended format
   static NSString        * regex = nil;
@@ -199,14 +215,15 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
   return dictionary;
 }
 
+/// constraintDictionariesByParsingString:
+/// @param string
+/// @return NSArray *
 + (NSArray *)constraintDictionariesByParsingString:(NSString *)string {
   NSMutableArray * dictionaries = [@[] mutableCopy];
 
-  [string enumerateLinesUsingBlock:^(NSString * line, BOOL * stop)
-  {
+  [string enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
     if (line.length > 0) {
       NSDictionary * dictionary = [self dictionaryFromExtendedVisualFormat:line];
-
       if (dictionary) [dictionaries addObject:dictionary];
     }
   }];

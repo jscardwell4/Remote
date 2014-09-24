@@ -75,26 +75,38 @@
 - (NSLayoutConstraint *)constraintWithNametag:(NSString *)nametag;
 - (NSLayoutConstraint *)constraintWithNametagPrefix:(NSString *)prefix;
 - (NSLayoutConstraint *)constraintWithNametagSuffix:(NSString *)suffix;
+- (NSLayoutConstraint *)constraintWithIdentifier:(NSString *)identifier;
+- (NSLayoutConstraint *)constraintWithIdentifierPrefix:(NSString *)prefix;
+- (NSLayoutConstraint *)constraintWithIdentifierSuffix:(NSString *)suffix;
 - (NSLayoutConstraint *)constraintMatching:(NSPredicate *)predicate;
 
 - (NSArray *)constraintsWithNametag:(NSString *)nametag;
 - (NSArray *)constraintsWithNametagPrefix:(NSString *)prefix;
 - (NSArray *)constraintsWithNametagSuffix:(NSString *)suffix;
+- (NSArray *)constraintsWithIdentifier:(NSString *)identifier;
+- (NSArray *)constraintsWithIdentifierPrefix:(NSString *)prefix;
+- (NSArray *)constraintsWithIdentifierSuffix:(NSString *)suffix;
 - (NSArray *)constraintsMatching:(NSPredicate *)predicate;
 
-- (void)replaceConstraintWithNametag:(NSString *)nametag
-                      withConstraint:(NSLayoutConstraint *)constraint;
+- (void)replaceConstraintWithNametag:(NSString *)nametag withConstraint:(NSLayoutConstraint *)constraint;
 - (void)replaceConstraintsWithNametag:(NSString *)nametag withConstraints:(NSArray *)constraints;
 - (void)replaceConstraintsWithNametagPrefix:(NSString *)prefix withConstraints:(NSArray *)constraints;
+- (void)replaceConstraintWithIdentifier:(NSString *)identifier withConstraint:(NSLayoutConstraint *)constraint;
+- (void)replaceConstraintsWithIdentifier:(NSString *)identifier withConstraints:(NSArray *)constraints;
+- (void)replaceConstraintsWithIdentifierPrefix:(NSString *)prefix withConstraints:(NSArray *)constraints;
 - (NSArray *)constraintsOfType:(Class)type;
 - (void)replaceConstraintsOfType:(Class)type withConstraints:(NSArray *)constraints;
+
 - (UIImage *)snapshot;
 - (UIImage *)blurredSnapshot;
 
+- (void)constrainWithFormat:(NSString *)format identifier:(NSString *)identifier;
 - (void)constrainWithFormat:(NSString *)format nametag:(NSString *)nametag;
 - (void)constrainWithFormat:(NSString *)format; // Use 'self' as identifier to avoid issues with dictionary for views
 - (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views; // Adds self to `views`
 - (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag;
+- (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views identifier:(NSString *)identifier;
+
 @end
 
 @interface UIView (Debugger)

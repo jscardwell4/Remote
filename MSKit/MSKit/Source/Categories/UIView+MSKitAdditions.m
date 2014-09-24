@@ -292,71 +292,127 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 /// @param nametag
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithNametag:(NSString *)nametag {
-  return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
+  return [self constraintWithIdentifier:nametag];
 }
 
 /// constraintsWithNametag:
 /// @param nametag
 /// @return NSArray *
 - (NSArray *)constraintsWithNametag:(NSString *)nametag {
-  return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.nametag == %@", nametag]];
+  return [self constraintsWithIdentifier:nametag];
 }
 
 /// constraintWithNametagPrefix:
 /// @param prefix
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithNametagPrefix:(NSString *)prefix {
-  return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
+  return [self constraintWithIdentifierPrefix:prefix];
 }
 
 /// constraintsWithNametagPrefix:
 /// @param prefix
 /// @return NSArray *
 - (NSArray *)constraintsWithNametagPrefix:(NSString *)prefix {
-  return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.nametag beginsWith %@", prefix]];
+  return [self constraintsWithIdentifierPrefix:prefix];
 }
 
 /// constraintWithNametagSuffix:
 /// @param suffix
 /// @return NSLayoutConstraint *
 - (NSLayoutConstraint *)constraintWithNametagSuffix:(NSString *)suffix {
-  return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
+  return [self constraintWithIdentifierSuffix:suffix];
 }
 
 /// constraintsWithNametagSuffix:
 /// @param suffix
 /// @return NSArray *
 - (NSArray *)constraintsWithNametagSuffix:(NSString *)suffix {
-  return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.nametag endsWith %@", suffix]];
+  return [self constraintsWithIdentifierSuffix:suffix];
 }
 
 /// replaceConstraintWithNametag:withConstraint:
 /// @param nametag
 /// @param constraint
 - (void)replaceConstraintWithNametag:(NSString *)nametag withConstraint:(NSLayoutConstraint *)constraint {
-
-  NSLayoutConstraint * oldConstraint = [self constraintWithNametag:nametag];
-
-  if (oldConstraint) [self removeConstraint:oldConstraint];
-
-  if (constraint) {
-    constraint.nametag = nametag;
-    [self addConstraint:constraint];
-  }
-
+  [self replaceConstraintWithIdentifier:nametag withConstraint:constraint];
 }
 
 /// replaceConstraintsWithNametag:withConstraints:
 /// @param nametag
 /// @param constraints
 - (void)replaceConstraintsWithNametag:(NSString *)nametag withConstraints:(NSArray *)constraints {
+  [self replaceConstraintsWithIdentifier:nametag withConstraints:constraints];
+}
 
-  NSArray * oldConstraints = [self constraintsWithNametag:nametag];
+/// constraintWithIdentifier:
+/// @param identifier
+/// @return NSLayoutConstraint *
+- (NSLayoutConstraint *)constraintWithIdentifier:(NSString *)identifier {
+  return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.identifier == %@", identifier]];
+}
+
+/// constraintsWithIdentifier:
+/// @param identifier
+/// @return NSArray *
+- (NSArray *)constraintsWithIdentifier:(NSString *)identifier {
+  return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.identifier == %@", identifier]];
+}
+
+/// constraintWithIdentifierPrefix:
+/// @param prefix
+/// @return NSLayoutConstraint *
+- (NSLayoutConstraint *)constraintWithIdentifierPrefix:(NSString *)prefix {
+  return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.identifier beginsWith %@", prefix]];
+}
+
+/// constraintsWithIdentifierPrefix:
+/// @param prefix
+/// @return NSArray *
+- (NSArray *)constraintsWithIdentifierPrefix:(NSString *)prefix {
+  return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.identifier beginsWith %@", prefix]];
+}
+
+/// constraintWithIdentifierSuffix:
+/// @param suffix
+/// @return NSLayoutConstraint *
+- (NSLayoutConstraint *)constraintWithIdentifierSuffix:(NSString *)suffix {
+  return [self constraintMatching:[NSPredicate predicateWithFormat:@"self.identifier endsWith %@", suffix]];
+}
+
+/// constraintsWithIdentifierSuffix:
+/// @param suffix
+/// @return NSArray *
+- (NSArray *)constraintsWithIdentifierSuffix:(NSString *)suffix {
+  return [self constraintsMatching:[NSPredicate predicateWithFormat:@"self.identifier endsWith %@", suffix]];
+}
+
+/// replaceConstraintWithIdentifier:withConstraint:
+/// @param identifier
+/// @param constraint
+- (void)replaceConstraintWithIdentifier:(NSString *)identifier withConstraint:(NSLayoutConstraint *)constraint {
+
+  NSLayoutConstraint * oldConstraint = [self constraintWithIdentifier:identifier];
+
+  if (oldConstraint) [self removeConstraint:oldConstraint];
+
+  if (constraint) {
+    constraint.identifier = identifier;
+    [self addConstraint:constraint];
+  }
+
+}
+
+/// replaceConstraintsWithIdentifier:withConstraints:
+/// @param identifier
+/// @param constraints
+- (void)replaceConstraintsWithIdentifier:(NSString *)identifier withConstraints:(NSArray *)constraints {
+
+  NSArray * oldConstraints = [self constraintsWithIdentifier:identifier];
 
   if (oldConstraints) [self removeConstraints:oldConstraints];
 
   if (constraints) {
-    [constraints setValue:nametag forKeyPath:@"nametag"];
+    [constraints setValue:identifier forKeyPath:@"identifier"];
     [self addConstraints:constraints];
   }
 
@@ -383,18 +439,25 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 /// @param prefix
 /// @param constraints
 - (void)replaceConstraintsWithNametagPrefix:(NSString *)prefix withConstraints:(NSArray *)constraints {
+  [self replaceConstraintsWithIdentifierPrefix:prefix withConstraints:constraints];
+}
+
+/// replaceConstraintsWithIdentifierPrefix:withConstraints:
+/// @param prefix
+/// @param constraints
+- (void)replaceConstraintsWithIdentifierPrefix:(NSString *)prefix withConstraints:(NSArray *)constraints {
 
   [self endEditing:YES];
 
-  NSArray * oldConstraints = [self constraintsWithNametagPrefix:prefix];
+  NSArray * oldConstraints = [self constraintsWithIdentifierPrefix:prefix];
 
   if (oldConstraints) [self removeConstraints:oldConstraints];
 
   if (constraints) {
 
     for (NSLayoutConstraint * constraint in constraints) {
-      if (![constraint.nametag hasPrefix:prefix])
-        constraint.nametag = [prefix stringByAppendingFormat:@"-%@", constraint.nametag];
+      if (![constraint.identifier hasPrefix:prefix])
+        constraint.identifier = [prefix stringByAppendingFormat:@"-%@", constraint.identifier];
     }
 
     [self addConstraints:constraints];
@@ -581,7 +644,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
     else if (!name && view) fullName = $(@"<%@:%p>", ClassString([view class]), view);
 
     return fullName;
-    
+
   };
 
   NSArray * descriptions = [self.constraints mapped:^id (NSLayoutConstraint * constraint, NSUInteger idx) {
@@ -627,6 +690,12 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
   //TODO: Look into using new UIVisualEffect object
 
+  return [[self snapshot] applyBlurWithRadius:3.0
+                                    tintColor:[UIColor colorWithWhite:1.0 alpha:0.5]
+                        saturationDeltaFactor:1.0
+                                    maskImage:nil];
+
+/*
   // Create the image context
   UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.0);
 
@@ -647,6 +716,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
   UIGraphicsEndImageContext();
 
   return blurredSnapshotImage;
+*/
 
 }
 
@@ -657,6 +727,12 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
   [self constrainWithFormat:format views:@{} nametag:nametag];
 }
 
+/// constrainWithFormat:identifier:
+/// @param format
+/// @param identifier
+- (void)constrainWithFormat:(NSString *)format identifier:(NSString *)identifier {
+  [self constrainWithFormat:format views:@{} identifier:identifier];
+}
 
 /// constrainWithFormat:
 /// @param format
@@ -674,15 +750,21 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 /// @param views
 /// @param nametag
 - (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag {
+  [self constrainWithFormat:format views:views identifier:nametag];
+}
+
+/// constraintWithFormat:views:identifier:
+/// @param format
+/// @param views
+/// @param identifier
+- (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views identifier:(NSString *)identifier {
   if (StringIsNotEmpty(format)) {
     NSMutableDictionary * dict = [views mutableCopy];
     dict[@"self"] = self;
     NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:format views:dict];
-    if (nametag) [constraints setValue:nametag forKeyPath:@"nametag"];
+    if (identifier) [constraints setValue:identifier forKeyPath:@"identifier"];
     [self addConstraints:constraints];
-
   }
-
 }
 
 @end

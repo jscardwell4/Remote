@@ -206,9 +206,8 @@ class BankCollectionViewController: UICollectionViewController {
   override func updateViewConstraints() {
     super.updateViewConstraints()
 
-    if view.constraintsWithNametag("zoom").count == 0 && zoomView != nil && zoomView!.superview === view {
-      view.constrainWithFormat("'zoom' zoom.centerX = self.centerX;'zoom' zoom.centerY = self.centerY",
-                         views: ["zoom": zoomView!])
+    if view.constraintsWithIdentifier("zoom").count == 0 && zoomView != nil && zoomView!.superview === view {
+      view.constrainWithFormat("'zoom' zoom.center = self.center", views: ["zoom": zoomView!])
     }
 
   }
@@ -411,10 +410,7 @@ class BankCollectionViewController: UICollectionViewController {
     if let zoom = zoomView {
 
       zoom.item = item
-      zoom.backgroundImageView.image = view.snapshot().applyBlurWithRadius(3.0,
-                                                                 tintColor: UIColor(white: 1.0, alpha: 0.5),
-                                                     saturationDeltaFactor: 1.8,
-                                                                 maskImage: nil)
+      zoom.backgroundImage = view.blurredSnapshot()
       view.addSubview(zoom)
       view.setNeedsUpdateConstraints()
 

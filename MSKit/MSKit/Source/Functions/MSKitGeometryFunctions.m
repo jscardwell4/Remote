@@ -159,7 +159,7 @@ CGRect CGRectAnchoredResize(CGRect rect, CGSize size) {
 }
 CGRect CGRectWithSizeAndCenter(CGSize s, CGPoint c) { return (CGRect) {CGPointOriginForSizeCenter(s, c), s }; }
 CGRect CGRectCenteredOnPoint(CGRect r, CGPoint p) { return (CGRect) {CGPointOriginForSizeCenter(r.size, p), r.size }; }
-CGSize CGSizeAddedToSize(CGSize a, CGSize b) { return (CGSize) {.width = a.width + b.width, .height = a.height + b.height }; }
+CGSize CGSizeAddedToSize(CGSize a, CGSize b) { return (CGSize) {a.width + b.width, a.height + b.height }; }
 CGSize CGSizeApplyScale(CGSize size, CGFloat scale) { return CGSizeMake(size.width * scale, size.height * scale); }
 BOOL CGSizeContainsSize(CGSize a, CGSize b) { return (a.width >= b.width && a.height >= b.height); }
 CGSize CGSizeUnionSize(CGSize a, CGSize b) { return CGSizeMake(MAX(a.width, b.width), MAX(a.height, b.height)); }
@@ -173,6 +173,19 @@ BOOL CGSizeGreaterThanOrEqualToSize(CGSize s1, CGSize s2) {
   return (CGSizeGreaterThanSize(s1, s2) || CGSizeEqualToSize(s1, s2));
 }
 BOOL CGSizeLessThanOrEqualToSize(CGSize s1, CGSize s2) { return (CGSizeLessThanSize(s1, s2) || CGSizeEqualToSize(s1, s2)); }
+CGSize CGSizeIntegral(CGSize s) { return (CGSize){round(s.width), round(s.height)}; }
+CGSize CGSizeIntegralRoundingUp(CGSize s) {
+  CGSize roundedSize = CGSizeIntegral(s);
+  if (roundedSize.width < s.width) roundedSize.width += 1;
+  if (roundedSize.height < s.height) roundedSize.height += 1;
+  return roundedSize;
+}
+CGSize CGSizeIntegralRoundingDown(CGSize s) {
+  CGSize roundedSize = CGSizeIntegral(s);
+  if (roundedSize.width > s.width) roundedSize.width -= 1;
+  if (roundedSize.height > s.height) roundedSize.height -= 1;
+  return roundedSize;
+}
 CGSize CGSizeMaxSize(CGSize s1, CGSize s2) { return (CGSizeGetArea(s1) > CGSizeGetArea(s2) ? s1 : s2); }
 CGSize CGSizeMinSize(CGSize s1, CGSize s2) { return (CGSizeGetArea(s1) < CGSizeGetArea(s2) ? s1 : s2); }
 CGSize CGSizeAspectMappedToWidth(CGSize s, CGFloat w) { return CGSizeMake(w, (w * s.height) / s.width); }

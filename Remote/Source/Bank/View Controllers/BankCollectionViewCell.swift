@@ -68,61 +68,110 @@ class BankCollectionViewCell: UICollectionViewCell {
   */
   override func updateConstraints() {
 
-    super.updateConstraints()
-
-    removeConstraints(constraintsWithNametag(BankCollectionViewCellInternalConstraintNametag))
+    let identifierPrefix    = "Internal"
+    let listIdentifier      = "List"
+    let thumbnailIdentifier = "Thumbnail"
+    let indicatorIdentifier = "Indicator"
 
     switch viewingMode {
 
       case .List:
         precondition(CGSizeEqualToSize(bounds.size, BankCollectionLayout.ListItemCellSize), "Why hasn't our size updated?")
-        indicatorConstraint = {[unowned self] in
-          let constraint = NSLayoutConstraint(item: self.indicator,
-                                              attribute: .Right,
-                                              relatedBy: .Equal,
-                                                 toItem: self.contentView,
-                                              attribute: .Left,
-                                             multiplier: 1.0,
-                                               constant: 0.0)
-          constraint.nametag = BankCollectionViewCellInternalConstraintNametag
-          self.addConstraint(constraint)
-          return constraint
-        }()
 
-        let format = "\n".join(
-          ["image.left = indicator.right + 20",
-            "image.height = content.height",
-            "[image]-8-[label]",
-            "label.right = content.right - 64",
-            "[detail]-20-|",
-            "V:|-8-[label]-8-|",
-            "indicator.centerY = label.centerY",
-            "detail.centerY = label.centerY" ]
-        )
+        // Deactivate any thumbnail viewing mode constraints we find
+        let thumbnailConstraints = contentView.constraintsWithIdentifierSuffix(thumbnailIdentifier)
+        for thumbnailConstraint in thumbnailConstraints as [NSLayoutConstraint] { thumbnailConstraint.active = false }
 
-        let views = [ "indicator": indicator,
-                      "image"    : thumbnailImageView,
-                      "label"    : nameLabel,
-                      "detail"   : detailButton,
-                      "content"  : contentView]
+        // Look for existing list viewing mode constraints
+        let listConstraints = contentView.constraintsWithIdentifierSuffix(listIdentifier)
 
-        constrainWithFormat(format, views: views, nametag: BankCollectionViewCellInternalConstraintNametag)
-        indicator.hidden = false
-        nameLabel.hidden = false
+        // Just active them if they exist
+        if listConstraints.count > 0 {
+          for listConstraint in listConstraints as [NSLayoutConstraint] { listConstraint.active = true }
+        }
+
+        // Otherwise we need to create them
+        else {
+
+          indicatorConstraint = {[unowned self] in
+            let constraint = NSLayoutConstraint(item: self.indicator,
+                                                attribute: .Right,
+                                                relatedBy: .Equal,
+                                                   toItem: self.contentView,
+                                                attribute: .Left,
+                                               multiplier: 1.0,
+                                                 constant: 0.0)
+            constraint.identifier = "-".join([identifierPrefix, indicatorIdentifier, listIdentifier])
+            self.contentView.addConstraint(constraint)
+            return constraint
+          }()
+
+          let contentSize = BankCollectionLayout.ListItemCellSize
+          let format = "\n".join(
+            [ "image.height = content.height",
+              "image.width = image.height",
+              "[indicator]-20-[image]-8-[label]-8-[detail(44)]-20-|",
+              "V:|-8-[label]-8-|",
+              "indicator.centerY = label.centerY",
+              "detail.centerY = label.centerY",
+              "content.width = \(contentSize.width)",
+              "content.height = \(contentSize.height)"]
+          )
+
+          let views = [ "indicator": indicator,
+                        "image"    : thumbnailImageView,
+                        "label"    : nameLabel,
+                        "detail"   : detailButton,
+                        "content"  : contentView]
+
+          contentView.constrainWithFormat(format, views: views, identifier: "-".join([identifierPrefix, listIdentifier]))
+
+        }
+
+        // Finally we must make sure our views are not hidden
+        indicator.hidden    = false
+        nameLabel.hidden    = false
         detailButton.hidden = false
+
 
       case .Thumbnail:
         precondition(CGSizeEqualToSize(bounds.size, BankCollectionLayout.ThumbnailItemCellSize), "Why hasn't our size updated?")
-        indicator.hidden = true
+
+        // Deactivate any list viewing mode constraints we find
+        let listConstraints = contentView.constraintsWithIdentifierSuffix(listIdentifier)
+        for listConstraint in listConstraints as [NSLayoutConstraint] { listConstraint.active = false }
+
+        // Look for existing thumbnail viewing mode constraints
+        let thumbnailConstraints = contentView.constraintsWithIdentifierSuffix(thumbnailIdentifier)
+
+        // Just activate them if they exist
+        if thumbnailConstraints.count > 0 {
+          for thumbnailConstraint in thumbnailConstraints as [NSLayoutConstraint] { thumbnailConstraint.active = true }
+        }
+
+        // Otherwise we must create them
+        else {
+
+          let contentSize = BankCollectionLayout.ThumbnailItemCellSize
+          let format = "\n".join(["|[image]|",
+                                  "image.height = image.width",
+                                  "content.width = \(contentSize.width)",
+                                  "content.height = \(contentSize.height)"])
+          let views = ["image": thumbnailImageView, "content": contentView]
+          contentView.constrainWithFormat(format, views:views, identifier: "-".join([identifierPrefix, thumbnailIdentifier]))
+
+        }
+
+        // Finally we must make sure that the views we want hidden are actually hidden
+        indicator.hidden    = true
         detailButton.hidden = true
-        nameLabel.hidden = true
-        let format = "|[image]| :: V:|[image]|"
-        let views = ["image": thumbnailImageView]
-        constrainWithFormat(format, views:views, nametag: BankCollectionViewCellInternalConstraintNametag)
+        nameLabel.hidden    = true
 
       default: break
 
     }
+
+    super.updateConstraints()
 
   }
 
@@ -133,10 +182,10 @@ class BankCollectionViewCell: UICollectionViewCell {
   */
   override init(frame: CGRect) {
     super.init(frame: frame)
+    contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
 
     indicator = { [unowned self] in
       let indicator = UIImageView.newForAutolayout()
-      indicator.constrainWithFormat("self.height = self.width")
       self.contentView.addSubview(indicator)
       return indicator
       }()
@@ -154,14 +203,12 @@ class BankCollectionViewCell: UICollectionViewCell {
       detailButton.setImage(UIImage(named: "724-gray-info-selected"), forState: .Highlighted)
       detailButton.setTranslatesAutoresizingMaskIntoConstraints(false)
       detailButton.addTarget(self, action:"detailAction", forControlEvents:.TouchUpInside)
-      detailButton.constrainWithFormat("self.height = self.width")
       self.contentView.addSubview(detailButton)
       return detailButton
       }()
 
     thumbnailImageView = { [unowned self] in
       let thumbnailImageView = UIImageView.newForAutolayout()
-      thumbnailImageView.constrainWithFormat("self.width ≤ self.height @999")
       self.previewGesture = { [unowned self, thumbnailImageView] in
         let previewGesture = UITapGestureRecognizer(target: self, action: "previewAction")
         thumbnailImageView.addGestureRecognizer(previewGesture)
@@ -180,6 +227,13 @@ class BankCollectionViewCell: UICollectionViewCell {
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
+  /**
+  requiresConstraintBasedLayout
+
+  :returns: Bool
+  */
+  override class func requiresConstraintBasedLayout() -> Bool { return true }
+  
   /**
 
   prepareForReuse

@@ -47,7 +47,7 @@ const CGFloat BankItemTableRowHeight    = 120.0;
 /// @param isEditing
 /// @return instancetype
 + (instancetype)controllerWithItem:(BankableModelObject *)item editing:(BOOL)isEditing {
-  return [[self alloc] initWithItem:item];
+  return [[self alloc] initWithItem:item editing:isEditing];
 }
 
 /// initWithItem:
