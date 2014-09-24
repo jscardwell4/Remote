@@ -9,193 +9,118 @@
 import Foundation
 import UIKit
 
-class BankCollectionViewCell: UICollectionViewCell {
+private let BankCollectionViewCellInternalConstraintNametag = "BankCollectionViewCellInternalConstraintNametag"
 
-  class var listIdentifier: String  { return "BankCollectionListCellIdentifier" }
-  class var thumbnailIdentifier: String  { return "BankCollectionThumbnailCellIdentifier" }
+@objc(BankCollectionViewCell)
+class BankCollectionViewCell: UICollectionViewCell {
 
   var item: BankableModelObject? {
     didSet {
       if item != nil {
-        self.thumbnailImageView?.userInteractionEnabled = item!.dynamicType.isPreviewable()
-        self.detailButton?.enabled = item!.dynamicType.isDetailable()
-        self.thumbnailImageView?.image = item!.thumbnail
-        self.nameLabel?.text = item!.name
+        thumbnailImageView.userInteractionEnabled = item!.dynamicType.isPreviewable()
+        detailButton.enabled = item!.dynamicType.isDetailable()
+        thumbnailImageView.image = item!.thumbnail
+        nameLabel.text = item!.name
+        detailable = item!.dynamicType.isDetailable()
       } else {
-        self.thumbnailImageView?.userInteractionEnabled = false
-        self.detailButton?.enabled = false
-        self.thumbnailImageView?.image = nil
-        self.nameLabel?.text = nil
+        thumbnailImageView.userInteractionEnabled = false
+        detailButton.enabled = false
+        thumbnailImageView.image = nil
+        nameLabel.text = nil
+        detailable = false
       }
     }
   }
 
-  private weak var thumbnailImageView: UIImageView?
-  private weak var nameLabel: UILabel?
-  private weak var detailButton: UIButton?
-  private weak var indicator: UIImageView?
+  private weak var thumbnailImageView: UIImageView!
+  private weak var nameLabel: UILabel!
+  private weak var detailButton: UIButton!
+  private weak var indicator: UIImageView!
+  private weak var previewGesture: UITapGestureRecognizer!
+  private weak var indicatorConstraint: NSLayoutConstraint?
 
-  var imageActionHandler: ((cell: BankCollectionViewCell) -> Void)?
+  private var detailable: Bool = false { didSet { detailButton.enabled = detailable } }
+  private var previewable: Bool = false { didSet { previewGesture.enabled = previewable } }
+  private var viewingMode: BankCollectionLayoutAttributes.ViewingMode = .None { didSet { setNeedsUpdateConstraints() } }
+
+  var previewActionHandler: ((cell: BankCollectionViewCell) -> Void)?
   var detailActionHandler: ((cell: BankCollectionViewCell) -> Void)?
   var indicatorImage: UIImage? {
     didSet {
-      var constant: CGFloat = 0.0
-      if let image = indicatorImage {
-        indicator?.image = image
-        constant = 60.0
-      } else {
-        indicator?.image = nil
-      }
-      let constraint = contentView.constraintWithNametag("indicator")
-      precondition(constraint != nil, "we should have been able to retrieve a constraint with nametag 'indicator'")
-      UIView.animateWithDuration(0.25) { constraint!.constant = constant }
+      indicator?.image = indicatorImage
+      let constant: CGFloat = indicatorImage == nil ? 0.0 : 40.0
+      if let constraint = indicatorConstraint { UIView.animateWithDuration(0.25) { constraint.constant = constant } }
     }
   }
 
-  private func configureCellForListViewWithoutThumbnails() {
+  /**
+  applyLayoutAttributes:
 
-    precondition(item != nil, "we cannot configure the cell properly if we don't have an item")
-
-    let indicator = UIImageView.newForAutolayout()
-    indicator.addConstraints(
-      NSLayoutConstraint.constraintsByParsingString("indicator.width = 22\nindicator.height = indicator.width",
-                                              views: ["indicator": indicator]))
-    contentView.addSubview(indicator)
-    self.indicator = indicator
-
-    let nameLabel = UILabel.newForAutolayout()
-    nameLabel.text = item?.name
-    contentView.addSubview(nameLabel)
-    self.nameLabel = nameLabel
-
-    let detailButton = UIButton.buttonWithType(.DetailDisclosure) as UIButton
-    detailButton.enabled = item!.dynamicType.isDetailable()
-    detailButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-    detailButton.addTarget(self, action:"detailButtonAction", forControlEvents:.TouchUpInside)
-    detailButton.addConstraints(
-      NSLayoutConstraint.constraintsByParsingString("detail.width = 22\ndetail.height = detail.width",
-                                              views: ["detail": detailButton]))
-    contentView.addSubview(detailButton)
-    self.detailButton = detailButton
-
-    let constraintsFormat = "\n".join(
-      [ "'indicator' indicator.right = content.left",
-        "[indicator]-20-[label]-8-[detail]-20-|",
-        "V:|-8-[label]-8-|",
-        "indicator.centerY = label.centerY",
-        "detail.centerY = label.centerY" ]
-    )
-
-    let views = [ "indicator": indicator,
-                  "label"    : nameLabel,
-                  "detail"   : detailButton,
-                  "content"  : contentView ]
-
-    contentView.addConstraints(NSLayoutConstraint.constraintsByParsingString(constraintsFormat, views:views))
-
-  }
-
-  private func configureCellForListViewWithThumbnails() {
-
-    precondition(item != nil, "we cannot configure the cell properly if we don't have an item")
-
-    let indicator = UIImageView.newForAutolayout()
-    indicator.addConstraints(
-      NSLayoutConstraint.constraintsByParsingString("indicator.width = 22\nindicator.height = indicator.width",
-                                              views: ["indicator": indicator]))
-    contentView.addSubview(indicator)
-    self.indicator = indicator
-
-    let nameLabel = UILabel.newForAutolayout()
-    nameLabel.text = item!.name
-    contentView.addSubview(nameLabel)
-    self.nameLabel = nameLabel
-
-    let detailButton = UIButton.buttonWithType(.DetailDisclosure) as UIButton
-    detailButton.enabled = item!.dynamicType.isDetailable()
-    detailButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-    detailButton.addTarget(self, action:"detailButtonAction", forControlEvents:.TouchUpInside)
-    detailButton.addConstraints(
-      NSLayoutConstraint.constraintsByParsingString("detail.width = 22\ndetail.height = detail.width",
-                                              views: ["detail": detailButton]))
-    contentView.addSubview(detailButton)
-    self.detailButton = detailButton
-
-    let thumbnailImageView = UIImageView.newForAutolayout()
-    thumbnailImageView.userInteractionEnabled = item!.dynamicType.isPreviewable()
-    thumbnailImageView.image = item!.thumbnail
-    thumbnailImageView.addConstraints(
-      NSLayoutConstraint.constraintsByParsingString("image.width = 32\nimage.height = image.width",
-                                              views: ["image": thumbnailImageView]))
-    contentView.addSubview(thumbnailImageView)
-    self.thumbnailImageView = thumbnailImageView
-
-    let constraintsFormat = "\n".join(
-      [ "'indicator' indicator.right = content.left",
-        "image.left = indicator.right + 20",
-        "[image]-8-[label]-8-[detail]-20-|",
-        "V:|-8-[label]-8-|",
-        "indicator.centerY = label.centerY",
-        "image.centerY = label.centerY",
-        "detail.centerY = label.centerY" ]
-    )
-
-    let views = [ "indicator": indicator,
-                  "image"    : thumbnailImageView,
-                  "label"    : nameLabel,
-                  "detail"   : detailButton,
-                  "content"  : contentView ]
-
-    contentView.addConstraints(NSLayoutConstraint.constraintsByParsingString(constraintsFormat, views:views))
-
-  }
-
-
-  private func configureCellForThumbnailView() {
-
-    precondition(item != nil, "we cannot configure the cell properly if we don't have an item")
-
-    let thumbnailImageView = UIImageView.newForAutolayout()
-    thumbnailImageView.userInteractionEnabled = item!.dynamicType.isPreviewable()
-    thumbnailImageView.image = item!.thumbnail
-    thumbnailImageView.contentMode = .Center
-    contentView.addSubview(thumbnailImageView)
-    self.thumbnailImageView = thumbnailImageView
-
-    let constraintsFormat = "\n".join(["|[image]|", "V:|[image]|"])
-    let views = [ "image": thumbnailImageView]
-    contentView.addConstraints(NSLayoutConstraint.constraintsByParsingString(constraintsFormat, views:views))
-
+  :param: layoutAttributes UICollectionViewLayoutAttributes!
+  */
+  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
+    super.applyLayoutAttributes(layoutAttributes)
+    if let attributes = layoutAttributes as? BankCollectionLayoutAttributes { viewingMode = attributes.viewingMode }
   }
 
   /**
-
-  willMoveToSuperview:
-
-  :param: newSuperview UIView?
-
+  updateConstraints
   */
-  override func willMoveToSuperview(newSuperview: UIView?) {
+  override func updateConstraints() {
 
+    super.updateConstraints()
 
-    if newSuperview != nil {
+    removeConstraints(constraintsWithNametag(BankCollectionViewCellInternalConstraintNametag))
 
-      precondition(item != nil, "we cannot configure the cell properly if we don't have an item")
+    switch viewingMode {
 
-      switch reuseIdentifier {
+      case .List:
+        precondition(CGSizeEqualToSize(bounds.size, BankCollectionLayout.ListItemCellSize), "Why hasn't our size updated?")
+        indicatorConstraint = {[unowned self] in
+          let constraint = NSLayoutConstraint(item: self.indicator,
+                                              attribute: .Right,
+                                              relatedBy: .Equal,
+                                                 toItem: self.contentView,
+                                              attribute: .Left,
+                                             multiplier: 1.0,
+                                               constant: 0.0)
+          constraint.nametag = BankCollectionViewCellInternalConstraintNametag
+          self.addConstraint(constraint)
+          return constraint
+        }()
 
-        case BankCollectionViewCell.listIdentifier:
-          if item!.dynamicType.isThumbnailable() { configureCellForListViewWithThumbnails()    }
-          else                                   { configureCellForListViewWithoutThumbnails() }
+        let format = "\n".join(
+          ["image.left = indicator.right + 20",
+            "image.height = content.height",
+            "[image]-8-[label]",
+            "label.right = content.right - 64",
+            "[detail]-20-|",
+            "V:|-8-[label]-8-|",
+            "indicator.centerY = label.centerY",
+            "detail.centerY = label.centerY" ]
+        )
 
+        let views = [ "indicator": indicator,
+                      "image"    : thumbnailImageView,
+                      "label"    : nameLabel,
+                      "detail"   : detailButton,
+                      "content"  : contentView]
 
-        case BankCollectionViewCell.thumbnailIdentifier:
-          // TODO: Add indicator to thumbnail view
-          configureCellForThumbnailView()
+        constrainWithFormat(format, views: views, nametag: BankCollectionViewCellInternalConstraintNametag)
+        indicator.hidden = false
+        nameLabel.hidden = false
+        detailButton.hidden = false
 
-        default: break
+      case .Thumbnail:
+        precondition(CGSizeEqualToSize(bounds.size, BankCollectionLayout.ThumbnailItemCellSize), "Why hasn't our size updated?")
+        indicator.hidden = true
+        detailButton.hidden = true
+        nameLabel.hidden = true
+        let format = "|[image]| :: V:|[image]|"
+        let views = ["image": thumbnailImageView]
+        constrainWithFormat(format, views:views, nametag: BankCollectionViewCellInternalConstraintNametag)
 
-      }
+      default: break
 
     }
 
@@ -206,14 +131,54 @@ class BankCollectionViewCell: UICollectionViewCell {
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) { super.init(frame: frame) }
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    indicator = { [unowned self] in
+      let indicator = UIImageView.newForAutolayout()
+      indicator.constrainWithFormat("self.height = self.width")
+      self.contentView.addSubview(indicator)
+      return indicator
+      }()
+
+    nameLabel = { [unowned self] in
+      let nameLabel = UILabel.newForAutolayout()
+      nameLabel.text = self.item?.name
+      self.contentView.addSubview(nameLabel)
+      return nameLabel
+      }()
+
+    detailButton = { [unowned self] in
+      let detailButton = UIButton.newForAutolayout()
+      detailButton.setImage(UIImage(named: "724-gray-info"), forState: .Normal)
+      detailButton.setImage(UIImage(named: "724-gray-info-selected"), forState: .Highlighted)
+      detailButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+      detailButton.addTarget(self, action:"detailAction", forControlEvents:.TouchUpInside)
+      detailButton.constrainWithFormat("self.height = self.width")
+      self.contentView.addSubview(detailButton)
+      return detailButton
+      }()
+
+    thumbnailImageView = { [unowned self] in
+      let thumbnailImageView = UIImageView.newForAutolayout()
+      thumbnailImageView.constrainWithFormat("self.width ≤ self.height @999")
+      self.previewGesture = { [unowned self, thumbnailImageView] in
+        let previewGesture = UITapGestureRecognizer(target: self, action: "previewAction")
+        thumbnailImageView.addGestureRecognizer(previewGesture)
+        return previewGesture
+        }()
+      thumbnailImageView.image = self.item?.thumbnail
+      self.contentView.addSubview(thumbnailImageView)
+      return thumbnailImageView
+      }()
+  }
 
   /**
   init:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /**
 
@@ -227,13 +192,13 @@ class BankCollectionViewCell: UICollectionViewCell {
   thumbnailImageViewAction
 
   */
-  func thumbnailImageViewAction() { if let action = imageActionHandler { action(cell: self) } }
+  func previewAction() { if let action = previewActionHandler { action(cell: self) } }
 
   /**
 
   detailButtonAction
 
   */
-  func detailButtonAction() { if let action = detailActionHandler { action(cell: self) } }
+  func detailAction() { if let action = detailActionHandler { action(cell: self) } }
 
 }

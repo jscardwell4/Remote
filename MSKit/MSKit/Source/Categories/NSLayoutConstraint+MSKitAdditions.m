@@ -11,7 +11,7 @@
 #import "NSLayoutConstraint+MSKitAdditions.h"
 #import <objc/runtime.h>
 #import "UIView+MSKitAdditions.h"
-
+#import "NSMutableString+MSKitAdditions.h"
 
 // keys used in dictionary entries for extended visual format syntax
 MSSTRING_CONST MSExtendedVisualFormatNametagName          = @"MSExtendedVisualFormatNametagName";
@@ -119,7 +119,9 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 
   NSMutableArray * constraintObjects = [@[] mutableCopy];
 
-  [string enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
+  NSMutableString * filteredString = [string mutableCopy];
+  [filteredString replaceRegEx:@"\\s*⏎\\s*|\\s*::\\s*|\\s*;\\s*" withString:@"\n"];
+  [filteredString enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
     if (line.length > 0)
       [constraintObjects addObjectsFromArray:[self constraintsFromFormat:line
                                                                  options:options

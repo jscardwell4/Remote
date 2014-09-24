@@ -168,8 +168,11 @@
 
 - (NSString *)quotedString;
 
-/// Replace returns with ⏎
+/// Replace '\\n' and '\\r' with ⏎
 - (NSString *)stringByReplacingReturnsWithSymbol;
+
+/// Replace ⏎ with '\\n'
+- (NSString *)stringByReplacingReturnSymbolsWithNewline;
 
 /// Escape new line characters
 - (NSString *)stringByEscapingNewlines;

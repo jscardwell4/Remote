@@ -14,7 +14,7 @@
 #import "NSArray+MSKitAdditions.h"
 #import "UIGestureRecognizer+MSKitAdditions.h"
 #import "UIImage+ImageEffects.h"
-
+#import "NSDictionary+MSKitAdditions.h"
 static const void *UIViewNametagKey = &UIViewNametagKey;
 
 @implementation UIView (MSKitAdditions)
@@ -647,6 +647,41 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
   UIGraphicsEndImageContext();
 
   return blurredSnapshotImage;
+
+}
+
+/// constrainWithFormat:nametag:
+/// @param format
+/// @param nametag
+- (void)constrainWithFormat:(NSString *)format nametag:(NSString *)nametag {
+  [self constrainWithFormat:format views:@{} nametag:nametag];
+}
+
+
+/// constrainWithFormat:
+/// @param format
+- (void)constrainWithFormat:(NSString *)format { [self constrainWithFormat:format views:@{}]; }
+
+/// constrainWithFormat:views:
+/// @param format
+/// @param views
+- (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views {
+  [self constrainWithFormat:format views:views nametag:nil];
+}
+
+/// constraintWithFormat:views:nametag:
+/// @param format
+/// @param views
+/// @param nametag
+- (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag {
+  if (StringIsNotEmpty(format)) {
+    NSMutableDictionary * dict = [views mutableCopy];
+    dict[@"self"] = self;
+    NSArray * constraints = [NSLayoutConstraint constraintsByParsingString:format views:dict];
+    if (nametag) [constraints setValue:nametag forKeyPath:@"nametag"];
+    [self addConstraints:constraints];
+
+  }
 
 }
 

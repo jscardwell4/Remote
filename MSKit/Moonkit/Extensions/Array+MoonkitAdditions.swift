@@ -11,8 +11,8 @@ import Foundation
 public extension Array {
   public mutating func replaceAll(value:Element) { for i in 0..<count { self[i] = value } }
 
-  public func perform(action: (Element) -> ()) { for element in self { action(element) } }
-
+  public mutating func apply(block:(Element) -> Void) { reduce(Void()){block($0.1)} }
+  public func findFirst(matchElement:(Element)->Bool) -> Element? { return filter(matchElement).first }
 }
 
 public func unique<T:Equatable>(array:[T]) -> [T] {

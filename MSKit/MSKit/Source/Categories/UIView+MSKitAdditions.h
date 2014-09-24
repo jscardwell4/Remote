@@ -90,6 +90,11 @@
 - (void)replaceConstraintsOfType:(Class)type withConstraints:(NSArray *)constraints;
 - (UIImage *)snapshot;
 - (UIImage *)blurredSnapshot;
+
+- (void)constrainWithFormat:(NSString *)format nametag:(NSString *)nametag;
+- (void)constrainWithFormat:(NSString *)format; // Use 'self' as identifier to avoid issues with dictionary for views
+- (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views; // Adds self to `views`
+- (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag;
 @end
 
 @interface UIView (Debugger)

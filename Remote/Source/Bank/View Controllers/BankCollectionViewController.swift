@@ -20,13 +20,11 @@ private let SearchBarItemImage         = UIImage(named:"708-gray-search")
 private let IndicatorImage             = UIImage(named:"1040-gray-checkmark")
 private let IndicatorImageSelected     = UIImage(named:"1040-gray-checkmark-selected")
 private let TextFieldTextColor         = UIColor(RGBAHexString:"#9FA0A4FF")
-
-private let ListItemCellSize      = CGSize(width: 320.0, height: 38.0)
-private let ThumbnailItemCellSize = CGSize(width: 100.0, height: 100.0)
-private let HeaderSize            = CGSize(width: 320.0, height: 38.0)
+private let CellIdentifier             = "Cell"
+private let HeaderIdentifier           = "Header"
 
 @objc(BankCollectionViewController)
-class BankCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UITextFieldDelegate {
+class BankCollectionViewController: UICollectionViewController {
 
   private(set) lazy var allItems: NSFetchedResultsController! = {
     let controller = self.itemClass.allItems()
@@ -38,21 +36,9 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 	private var updatesBlock: NSBlockOperation?
 	private var hiddenSections = [Int]()
 
-  private var previewController: BankPreviewViewController? {
-    get {
-      if self.previewController == nil { self.previewController = BankPreviewViewController() }
-      return self.previewController
-    }
-    set { self.previewController = newValue }
-  }
+  private lazy var zoomView: BankCollectionZoomView? = BankCollectionZoomView(frame: self.view.bounds, delegate: self)
 
-  private lazy var zoomView: BankCollectionZoomView! = {
-    let nibContents = NSBundle.mainBundle().loadNibNamed("BankCollectionZoomView", owner: self, options: nil)
-    return nibContents[0] as? BankCollectionZoomView
-    }()
-
-	private var layout:            BankCollectionLayout!
-	private var exportAlertAction: UIAlertAction?
+  private var exportAlertAction: UIAlertAction?
   private var existingFiles:     [String]! {
     didSet {
       if let files = existingFiles {
@@ -62,7 +48,7 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
     }
   }
 
-	private var exportSelection = [BankableModelObject]()
+	private lazy var exportSelection = [BankableModelObject]()
 
   private var exportSelectionMode: Bool = false {
     didSet {
@@ -115,10 +101,7 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   }
 
 	private var useListView = true
-
-	private var zoomedItem:                 BankableModelObject?
 	private var swipeToDeleteCellIndexPath: NSIndexPath?
-
 
 	/**
 	initWithItemClass:
@@ -127,7 +110,7 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 	*/
   init(itemClass: BankableModelObject.Type) {
 		self.itemClass = itemClass
-		super.init(nibName: nil, bundle: nil)
+    super.init(collectionViewLayout: BankCollectionLayout())
 	}
 
 	/**
@@ -136,7 +119,9 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 	:param: aDecoder NSCoder
 	*/
 	required init(coder aDecoder: NSCoder) {
-	    fatalError("init(coder:) has not been implemented")
+    let itemClassName = aDecoder.decodeObjectForKey("itemClass") as String
+    itemClass = NSClassFromString(itemClassName) as BankableModelObject.Type
+    super.init(coder: aDecoder)
 	}
 
 	/**
@@ -144,34 +129,46 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 	*/
 	override func loadView() {
 
-    // Create the collection layout
-		layout = BankCollectionLayout()
-		layout.itemSize = CGSize(width: 100.0, height: 100.0)
 
-    // Create the collection view
-		collectionView = UICollectionView(frame: UIScreen.mainScreen().bounds, collectionViewLayout: layout)
-		collectionView!.backgroundColor = UIColor.whiteColor()
+    collectionView = { [unowned self] in
 
-    // Register header and cell classes
-    collectionView!.registerClass(BankCollectionViewHeader.self,
-      forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-             withReuseIdentifier: BankCollectionViewHeader.identifier)
-    collectionView!.registerClass(BankCollectionViewCell.self,
-       forCellWithReuseIdentifier: BankCollectionViewCell.listIdentifier)
-    collectionView!.registerClass(BankCollectionViewCell.self,
-       forCellWithReuseIdentifier: BankCollectionViewCell.thumbnailIdentifier)
+      // Create the collection layout
+      (self.collectionViewLayout as BankCollectionLayout).viewingMode = .List
 
-    // Create the toolbar items
-    let exportBarItem = UIBarButtonItem(image: ExportBarItemImage, style: .Plain, target: self, action: "exportBankObject:")
-    let spacer = UIBarButtonItem.fixedSpace(20.0)
-    let importBarItem = UIBarButtonItem(image: ImportBarItemImage, style: .Plain, target: self, action: "importBankObject:")
-    let flex = UIBarButtonItem.flexibleSpace()
-    let displayOptions = UISegmentedControl(items: [ListSegmentImage, ThumbnailSegmentImage])
-    let searchBarItem = UIBarButtonItem(image: SearchBarItemImage, style: .Plain, target: self, action: "searchBankObjects:")
+      // Create the collection view
+      let collectionView = UICollectionView(frame: UIScreen.mainScreen().bounds,
+                       collectionViewLayout: self.collectionViewLayout)
+      collectionView.backgroundColor = UIColor.whiteColor()
 
-    toolbarItems = itemClass.isThumbnailable()
-      ? [exportBarItem, spacer, importBarItem, flex, displayOptions, flex, searchBarItem]
-      : [exportBarItem, spacer, importBarItem, flex, searchBarItem]
+      // Register header and cell classes
+      collectionView.registerClass(BankCollectionViewCell.self, forCellWithReuseIdentifier: CellIdentifier)
+      collectionView.registerClass(BankCollectionViewHeader.self,
+        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+               withReuseIdentifier: HeaderIdentifier)
+      return collectionView
+
+    }()
+
+    toolbarItems = {[unowned self] in
+
+      // Create the toolbar items
+      let exportBarItem = UIBarButtonItem(image: ExportBarItemImage, style: .Plain, target: self, action: "exportBankObject:")
+      let spacer = UIBarButtonItem.fixedSpace(20.0)
+      let importBarItem = UIBarButtonItem(image: ImportBarItemImage, style: .Plain, target: self, action: "importBankObject:")
+      let flex = UIBarButtonItem.flexibleSpace()
+
+      let displayOptions = UISegmentedControl(items: [ListSegmentImage, ThumbnailSegmentImage])
+      displayOptions.selectedSegmentIndex = 0
+      displayOptions.addTarget(self, action: "segmentedControlValueDidChange:", forControlEvents: .ValueChanged)
+
+      let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+      let searchBarItem = UIBarButtonItem(image: SearchBarItemImage, style: .Plain, target: self, action: "searchBankObjects:")
+      
+
+      return self.itemClass.isThumbnailable()
+               ? [exportBarItem, spacer, importBarItem, flex, displayOptionsItem, flex, searchBarItem]
+               : [exportBarItem, spacer, importBarItem, flex, searchBarItem]
+    }()
 
     // Refresh our list of existing file names for checking during file export
     refreshExistingFiles()
@@ -186,7 +183,9 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "dismiss:")
-    collectionView?.reloadData()
+
+    // ???: Should we reload data here?
+    // collectionView?.reloadData()
   }
 
   /**
@@ -194,8 +193,8 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   */
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    previewController = nil
-    zoomView = nil
+    // Can't figure out how to create lazy getter without causing infinite recursion
+    //zoomView = nil
     updatesBlock = nil
     allItems = nil
   }
@@ -207,10 +206,9 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   override func updateViewConstraints() {
     super.updateViewConstraints()
 
-    if zoomView != nil && zoomView!.superview != nil {
-      let format = "\n".join(["zoom.centerX = view.centerX", "zoom.centerY = view.centerY"])
-      let views = ["zoom": zoomView!, "view": view]
-      view.addConstraints(NSLayoutConstraint.constraintsByParsingString(format, views: views))
+    if view.constraintsWithNametag("zoom").count == 0 && zoomView != nil && zoomView!.superview === view {
+      view.constrainWithFormat("'zoom' zoom.centerX = self.centerX;'zoom' zoom.centerY = self.centerY",
+                         views: ["zoom": zoomView!])
     }
 
   }
@@ -323,42 +321,7 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   /// MARK: - Actions
   ////////////////////////////////////////////////////////////////////////////////
 
-  /**
-  zoomItem:
-
-  :param: item BankableModelObject
-  */
-  func zoomItem(item: BankableModelObject) {
-
-    zoomedItem = item
-
-    if let zoom = zoomView {
-
-      zoom.item = item
-      zoom.backgroundImageView.image = view.snapshot().applyBlurWithRadius(3.0,
-                                                                 tintColor: UIColor(white: 1.0, alpha: 0.5),
-                                                     saturationDeltaFactor: 1.8,
-                                                                 maskImage: nil)
-      view.addSubview(zoom)
-      view.setNeedsUpdateConstraints()
-
-    }
-
-  }
-
-  /**
-  previewItem:
-
-  :param: item BankableModelObject
-  */
-  func previewItem(item: BankableModelObject) {
-    if let controller = previewController {
-      controller.image = item.preview
-      presentViewController(controller, animated: true, completion: nil)
-    }
-  }
-
-  /**
+   /**
   deleteItem:
 
   :param: item BankableModelObject
@@ -401,8 +364,8 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   */
   func segmentedControlValueDidChange(sender: UISegmentedControl) {
     useListView = Bool(sender.selectedSegmentIndex == 0)
-    collectionView?.collectionViewLayout.invalidateLayout()
-    collectionView?.reloadData()
+    (collectionViewLayout as BankCollectionLayout).viewingMode = useListView ? .List : .Thumbnail
+    collectionViewLayout.invalidateLayout()
   }
 
   /**
@@ -428,23 +391,82 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
     MSRemoteAppController.sharedAppController().dismissViewController(Bank.viewController(), completion: nil)
   }
 
-  /**
-  dismissZoom:
 
-  :param: sender AnyObject?
+  ////////////////////////////////////////////////////////////////////////////////
+  /// MARK: - Zooming a cell's item
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+  private var zoomedItem: BankableModelObject?
+
+  /**
+  zoomItem:
+
+  :param: item BankableModelObject
   */
-  func dismissZoom(sender: AnyObject?) {
+  func zoomItem(item: BankableModelObject) {
+
+    zoomedItem = item
+
     if let zoom = zoomView {
-      zoom.removeFromSuperview()
-      var viewController: UIViewController?
-      if let button = sender as? UIButton {
-        if button === zoom.editButton { viewController = zoomedItem!.editingViewController() }
-        else if button === zoom.detailButton { viewController = zoomedItem!.detailViewController() }
-      }
-      if viewController != nil { navigationController?.pushViewController(viewController!, animated: true) }
+
+      zoom.item = item
+      zoom.backgroundImageView.image = view.snapshot().applyBlurWithRadius(3.0,
+                                                                 tintColor: UIColor(white: 1.0, alpha: 0.5),
+                                                     saturationDeltaFactor: 1.8,
+                                                                 maskImage: nil)
+      view.addSubview(zoom)
+      view.setNeedsUpdateConstraints()
+
     }
 
   }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - BankCollectionZoomViewDelegate
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionViewController: BankCollectionZoomViewDelegate {
+
+  /**
+  didDismissZoomView:
+
+  :param: zoom BankCollectionZoomView
+  */
+  func didDismissZoomView(zoom: BankCollectionZoomView) {
+    precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
+    zoom.removeFromSuperview()
+  }
+
+  /**
+  didDismissForDetailZoomView:
+
+  :param: zoom BankCollectionZoomView
+  */
+  func didDismissForDetailZoomView(zoom: BankCollectionZoomView) {
+    precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
+    zoom.removeFromSuperview()
+    navigationController?.pushViewController(zoomedItem!.detailViewController(), animated: true)
+  }
+
+  /**
+  didDismissForEditingZoomView:
+
+  :param: zoom BankCollectionZoomView
+  */
+  func didDismissForEditingZoomView(zoom: BankCollectionZoomView) {
+    precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
+    zoom.removeFromSuperview()
+    navigationController?.pushViewController(zoomedItem!.editingViewController(), animated: true)
+  }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - Selecting/deselecting
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionViewController {
 
   /**
   selectAll:
@@ -476,10 +498,12 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
     }
   }
 
-  ////////////////////////////////////////////////////////////////////////////////
-  /// MARK: - Collection view data source
-  ////////////////////////////////////////////////////////////////////////////////
+}
 
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UICollectionViewDataSource
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionViewController: UICollectionViewDataSource {
 
   /**
   collectionView:numberOfItemsInSection:
@@ -490,7 +514,7 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   :returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return hiddenSections ∋ section ? 0 : (allItems.sections as [NSFetchedResultsSectionInfo])[section].numberOfObjects
+    return (allItems.sections as [NSFetchedResultsSectionInfo])[section].numberOfObjects
   }
 
   /**
@@ -501,14 +525,14 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 
   :returns: UICollectionViewCell
   */
-  override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-
-    let identifer = useListView ? BankCollectionViewCell.listIdentifier : BankCollectionViewCell.thumbnailIdentifier
-
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifer, forIndexPath:indexPath) as BankCollectionViewCell
+  override func collectionView(collectionView: UICollectionView,
+        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+  {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier,
+                                                        forIndexPath: indexPath) as BankCollectionViewCell
     cell.item = (allItems[indexPath] as BankableModelObject)
-    cell.detailActionHandler = {[unowned self] (cell) in self.detailItem(cell.item!)}
-    cell.imageActionHandler  = {[unowned self] (cell) in self.previewItem(cell.item!)}
+    cell.detailActionHandler   = {[unowned self] (cell) in self.detailItem(cell.item!)}
+    cell.previewActionHandler  = {[unowned self] (cell) in self.zoomItem(cell.item!)}
 
     return cell
   }
@@ -542,11 +566,14 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
     if kind == UICollectionElementKindSectionHeader {
       let header =
         collectionView.dequeueReusableSupplementaryViewOfKind(kind,
-                                          withReuseIdentifier: BankCollectionViewHeader.identifier,
+                                          withReuseIdentifier: HeaderIdentifier,
                                                  forIndexPath: indexPath) as BankCollectionViewHeader
-      header.controller = self
-      header.section    = indexPath.section
+      let section = indexPath.section
+      header.section    = section
       header.title      = (allItems.sections as [NSFetchedResultsSectionInfo])[indexPath.section].name
+      header.toggleActionHandler = {[unowned self] _ in
+        (self.collectionViewLayout! as BankCollectionLayout).toggleItemsForSection(section)
+      }
 
       view = header
     }
@@ -554,11 +581,12 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
     return view ?? UICollectionReusableView()
   }
 
+}
 
-  ////////////////////////////////////////////////////////////////////////////////
-  /// MARK: - Collection view delegate
-  ////////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UICollectionViewDelegate
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionViewController: UICollectionViewDelegate {
 
   /**
   collectionView:willDisplayCell:forItemAtIndexPath:
@@ -567,12 +595,14 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
   :param: cell UICollectionViewCell
   :param: indexPath NSIndexPath
   */
+/*
   override func collectionView(collectionView: UICollectionView,
                willDisplayCell cell: UICollectionViewCell,
             forItemAtIndexPath indexPath: NSIndexPath)
   {
     (cell as BankCollectionViewCell).indicatorImage = exportSelectionMode ? IndicatorImage : nil
   }
+*/
 
   /**
   collectionView:didDeselectItemAtIndexPath:
@@ -613,90 +643,12 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 
   }
 
-  /**
-  collectionView:canPerformAction:forItemAtIndexPath:withSender:
+}
 
-  :param: collectionView UICollectionView
-  :param: action Selector
-  :param: indexPath NSIndexPath
-  :param: sender AnyObject!
-
-  :returns: Bool
-  */
-  override func collectionView(collectionView: UICollectionView,
-              canPerformAction action: Selector,
-            forItemAtIndexPath indexPath: NSIndexPath,
-                    withSender sender: AnyObject!) -> Bool
-  {
-    return (action == "deleteItemForCell:" && (allItems[indexPath] as BankableModelObject).editable)
-  }
-
-
-  ////////////////////////////////////////////////////////////////////////////////
-  /// MARK: - Collection view delegate - flow layout
-  ////////////////////////////////////////////////////////////////////////////////
-
-
-  /**
-  collectionView:layout:sizeForItemAtIndexPath:
-
-  :param: collectionView UICollectionView
-  :param: collectionViewLayout UICollectionViewLayout
-  :param: indexPath NSIndexPath
-
-  :returns: CGSize
-  */
-  func      collectionView(collectionView: UICollectionView,
-                    layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
-  {
-
-    var size = CGSize()
-
-    if useListView { size = ListItemCellSize }
-
-    else {
-
-      let maxSize = ThumbnailItemCellSize
-      let item = allItems[indexPath] as BankableModelObject
-
-      var imageSize = CGSize()
-
-      if let itemImage = item.preview { imageSize = itemImage.size }
-
-      var fittedSize = CGSizeAspectMappedToSize(imageSize, maxSize, true)
-
-      if fittedSize.width < maxSize.width   { fittedSize.width  = ceil(fittedSize.width)  }
-      if fittedSize.height < maxSize.height { fittedSize.height = ceil(fittedSize.height) }
-
-      if CGSizeContainsSize(maxSize, fittedSize) { size = fittedSize } else { size = CGSize() }
-
-    }
-
-    return size
-
-  }
-
-  /**
-  collectionView:layout:referenceSizeForHeaderInSection:
-
-  :param: collectionView UICollectionView
-  :param: collectionViewLayout UICollectionViewLayout
-  :param: section Int
-
-  :returns: CGSize
-  */
-  func      collectionView(collectionView: UICollectionView,
-                   layout collectionViewLayout: UICollectionViewLayout,
-  referenceSizeForHeaderInSection section: Int) -> CGSize
-  {
-    return itemClass.isSectionable() ? HeaderSize : CGSize()
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////
-  /// MARK: - Fetched results controller delegate
-  ////////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - NSFetchedResultsControllerDelegate
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionViewController: NSFetchedResultsControllerDelegate {
 
   /**
   controllerWillChangeContent:
@@ -763,10 +715,12 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
                              completion: nil)
   }
 
+}
 
-  ////////////////////////////////////////////////////////////////////////////////
-  /// MARK: - UITextFieldDelegate
-  ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UITextFieldDelegate
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionViewController: UITextFieldDelegate {
 
   /**
   textFieldShouldEndEditing:
@@ -792,7 +746,9 @@ class BankCollectionViewController: UICollectionViewController, NSFetchedResults
 
   :returns: Bool
   */
-  func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+  func                  textField(textField: UITextField,
+    shouldChangeCharactersInRange range: NSRange,
+                replacementString string: String) -> Bool
   {
     let text = (range.length == 0
                        ? textField.text + string

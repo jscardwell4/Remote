@@ -218,20 +218,6 @@
 			remoteGlobalIDString = C23A0F2F19A7B46F002BF2B6;
 			remoteInfo = Lumberjack;
 		};
-		C235902619C79DBE00920F8D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C230F8AF19A7CBD400900F0C;
-			remoteInfo = LumberjackLibrary;
-		};
-		C235902819C79DBE00920F8D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2358FF619C795AA00920F8D;
-			remoteInfo = LumberjackTests;
-		};
 		C235911819C7A2E800920F8D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */;
@@ -472,9 +458,7 @@
 		C230F88A19A7C9F800900F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C235902719C79DBE00920F8D /* LumberjackLibrary.a */,
 				C230F88E19A7C9F900900F0C /* Lumberjack.framework */,
-				C235902919C79DBE00920F8D /* LumberjackTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1089,20 +1073,6 @@
 			remoteRef = C230F88D19A7C9F900900F0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C235902719C79DBE00920F8D /* LumberjackLibrary.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = LumberjackLibrary.a;
-			remoteRef = C235902619C79DBE00920F8D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C235902919C79DBE00920F8D /* LumberjackTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LumberjackTests.xctest;
-			remoteRef = C235902819C79DBE00920F8D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1458,7 +1428,7 @@
 		C2CE886F18138C4900555D63 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1480,7 +1450,7 @@
 				C2358F2719C78D6D00920F8D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C2C482D819C9F98A002E84A9 /* Build configuration list for PBXNativeTarget "Moonkit Tests" */ = {
 			isa = XCConfigurationList;
@@ -1489,7 +1459,7 @@
 				C2C482DA19C9F98A002E84A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C2CE884918138C4900555D63 /* Build configuration list for PBXProject "MSKit" */ = {
 			isa = XCConfigurationList;
@@ -1498,7 +1468,7 @@
 				C2CE887018138C4900555D63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

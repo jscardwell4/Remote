@@ -148,7 +148,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (instancetype)dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary {
   NSMutableDictionary * d = [self mutableCopy];
   [d addEntriesFromDictionary:dictionary];
-  return [[self class] dictionaryWithDictionary:d];
+  return d;
 }
 
 /// dictionaryByMappingObjectsToBlock:

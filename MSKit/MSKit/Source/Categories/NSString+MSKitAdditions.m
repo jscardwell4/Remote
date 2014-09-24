@@ -397,10 +397,16 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return NSString *
 - (NSString *)quotedString { return [NSString stringWithFormat:@"\"%@\"", self]; }
 
-/// Replace returns with ⏎
+/// Replace '\\n' and '\\r'  with ⏎
 /// @return NSString *
 - (NSString *)stringByReplacingReturnsWithSymbol {
   return [self stringByReplacingRegEx:@"[\n\r]" withString:@"⏎"];    // \u23CE
+}
+
+/// Replace ⏎ with '\\n'
+/// @return NSString *
+- (NSString *)stringByReplacingReturnSymbolsWithNewline {
+  return [self stringByReplacingOccurrencesOfString:@"⏎" withString:@"\n"];    // \u23CE
 }
 
 /// Escape new line characters

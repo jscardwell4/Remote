@@ -39,7 +39,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.style = MSViewStyleBorderLine | MSViewStyleDrawShadow;
+    self.style = MSView
+    
+    StyleBorderLine | MSViewStyleDrawShadow;
     self.borderThickness = 2.0;
     self.borderRadii = CGSizeZero;
     self.nametag = @"zoom";

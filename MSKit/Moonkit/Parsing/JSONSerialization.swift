@@ -222,8 +222,8 @@ public class JSONSerialization: NSObject {
         if let dict = container as? MSDictionary {
           dict.inflate()
         }
-        if let dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] {
-          dicts.perform{$0.inflate()}
+        if var dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] {
+          dicts.apply{$0.inflate()}
         }
       }
     }

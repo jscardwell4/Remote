@@ -9,44 +9,51 @@
 import Foundation
 import UIKit
 
+@objc(BankCollectionViewHeader)
 class BankCollectionViewHeader: UICollectionReusableView {
-
-  class var identifier: String { return "BankCollectionViewHeaderIdentifier" }
 
   var title: String? { get { return button?.titleForState(.Normal) }
                        set { button?.setTitle(newValue, forState: .Normal) } }
 
   var section: Int = -1
-  
-  weak var controller: BankCollectionViewController?
+
+  var toggleActionHandler: ((header: BankCollectionViewHeader) -> Void)?
 
   private weak var button: UIButton!
 
+  /**
+  initWithFrame:
+
+  :param: frame CGRect
+  */
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = UIColor(r: 136, g: 136, b: 136, a: 230)
-    let button = UIButton(forAutoLayout:())
-    button.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    button.addTarget(self, action: "toggleItems:", forControlEvents: .TouchUpInside)
-    self.addSubview(button)
-    self.button = button
-    self.addConstraints(
-      NSLayoutConstraint.constraintsByParsingString("|-18-[button]-18-|\nbutton.centerY = self.centerY",
-                                              views: ["button": button, "self": self])
-    )
+    button = { [unowned self] in
+      let button = UIButton(forAutoLayout:())
+      button.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+      button.addTarget(self, action: "toggleAction:", forControlEvents: .TouchUpInside)
+      self.addSubview(button)
+      return button
+    }()
+    constrainWithFormat("|-18-[button]-18-| :: button.centerY = self.centerY", views: ["button": button!])
   }
 
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
+  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
+    
+  }
 
   /**
+  init:
 
-  toggleItems:
-
-  :param: sender AnyObject?
-
+  :param: aDecoder NSCoder
   */
-  func toggleItems(sender:AnyObject?) { controller?.toggleItemsForSection(section) }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+
+  /**
+  toggleAction
+  */
+  func toggleAction(sender: AnyObject?) { if let action = toggleActionHandler { action(header: self) } }
 
 
 }

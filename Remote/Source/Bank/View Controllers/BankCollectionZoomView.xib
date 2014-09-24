@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BankCollectionViewController"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="1" userLabel="Zoom" customClass="BankCollectionZoomView">
+        <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="1" userLabel="Zoom" customClass="BankCollectionZoomView" customModule="Remote" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="385"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -25,25 +26,6 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="image"/>
                     </userDefinedRuntimeAttributes>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOg-58-XPJ" userLabel="Detail">
-                    <rect key="frame" x="264" y="31" width="44" height="44"/>
-                    <accessibility key="accessibilityConfiguration" label="detailButton"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="44" id="320-CC-YJR"/>
-                        <constraint firstAttribute="height" constant="44" id="OP6-YS-s9e"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <inset key="imageEdgeInsets" minX="11" minY="11" maxX="11" maxY="11"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="detail"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="dismissZoom:" destination="-1" eventType="touchUpInside" id="U6x-Af-Go2"/>
-                    </connections>
-                </button>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SkQ-OZ-CN6" userLabel="Edit">
                     <rect key="frame" x="264" y="331" width="44" height="44"/>
                     <accessibility key="accessibilityConfiguration" label="editButton"/>
@@ -52,9 +34,10 @@
                         <constraint firstAttribute="height" constant="44" id="n1W-Ip-L2l"/>
                     </constraints>
                     <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                    <state key="normal" image="Pencil.png">
+                    <state key="normal" image="830-gray-pencil">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <state key="highlighted" image="830-gray-pencil-selected"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="edit"/>
                     </userDefinedRuntimeAttributes>
@@ -70,13 +53,32 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="iHR-xF-m97"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="name"/>
                     </userDefinedRuntimeAttributes>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOg-58-XPJ" userLabel="Detail">
+                    <rect key="frame" x="264" y="31" width="44" height="44"/>
+                    <accessibility key="accessibilityConfiguration" label="detailButton"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="44" id="320-CC-YJR"/>
+                        <constraint firstAttribute="height" constant="44" id="OP6-YS-s9e"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="11" minY="11" maxX="11" maxY="11"/>
+                    <state key="normal" image="724-gray-info">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted" image="724-gray-info-selected"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="detail"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissZoom:" destination="-1" eventType="touchUpInside" id="U6x-Af-Go2"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <accessibility key="accessibilityConfiguration" label="zoomView">
@@ -106,21 +108,6 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="string" keyPath="nametag" value="zoom"/>
-                <userDefinedRuntimeAttribute type="number" keyPath="style">
-                    <integer key="value" value="10"/>
-                </userDefinedRuntimeAttribute>
-                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                    <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                </userDefinedRuntimeAttribute>
-                <userDefinedRuntimeAttribute type="number" keyPath="borderThickness">
-                    <integer key="value" value="2"/>
-                </userDefinedRuntimeAttribute>
-                <userDefinedRuntimeAttribute type="size" keyPath="borderRadii">
-                    <size key="value" width="0.0" height="0.0"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="backgroundImageView" destination="9l2-ZM-9f2" id="dpu-A0-JnY"/>
                 <outlet property="detailButton" destination="DOg-58-XPJ" id="3bs-pl-vFV"/>
@@ -137,7 +124,10 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="Pencil.png" width="44" height="44"/>
+        <image name="724-gray-info" width="28" height="28"/>
+        <image name="724-gray-info-selected" width="28" height="28"/>
+        <image name="830-gray-pencil" width="28" height="28"/>
+        <image name="830-gray-pencil-selected" width="28" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

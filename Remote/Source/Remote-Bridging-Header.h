@@ -17,7 +17,7 @@
 //#import "BankCollectionHeaderReusableView.h"
 //#import "BankCollectionViewController.h"
 //#import "BankCollectionViewFlowLayout.h"
-#import "BankCollectionZoomView.h"
+//#import "BankCollectionZoomView.h"
 #import "BankPreviewViewController.h"
 #import "BankRootTableViewController.h"
 #import "ComponentDeviceViewController.h"
