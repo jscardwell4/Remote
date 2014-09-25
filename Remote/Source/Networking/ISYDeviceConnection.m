@@ -233,7 +233,8 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
           NSError * error = nil;
           BOOL saved = [moc save:&error];
-
+          assert(saved);
+          
           if (MSHandleErrors(error)) error = nil;
 
           NSArray * groups = findFirstValueForKeyInContainer(@"group", weakself.dataParsed);

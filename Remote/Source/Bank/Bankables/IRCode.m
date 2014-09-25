@@ -173,7 +173,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
   if (prontoHex) {
     NSDictionary * d = parseIRCodeFromProntoHex(prontoHex);
     self.frequency = d[IRCodeFrequencyKey];
-    struct HexPair hexpair;
+    struct HexPair hexpair = {0, 0};
     [d[IRCodeLeadInKey] getValue:&hexpair];
     NSMutableString * pattern = [$(@"%u,%u", hexpair.num1, hexpair.num2) mutableCopy];
 
@@ -297,6 +297,10 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"IR Codes"; }
+
+/// directoryIcon
+/// @return UIImage *
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"tv-remote"]; }
 
 /// isEditable
 /// @return BOOL

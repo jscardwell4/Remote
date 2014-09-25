@@ -550,7 +550,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
   NSMutableString * outstring = [@"" mutableCopy];
 
   __block void (^dumpView)(UIView *, int) = nil;
-  __block void(__weak ^ weakDumpView)(UIView *, int) = dumpView;
+  __block void(__weak ^ weakDumpView)(UIView *, int) = nil;
 
   dumpView = ^(UIView * view, int indent) {
 
@@ -561,6 +561,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
   };
 
+  weakDumpView = dumpView;
   dumpView(self, 0);
 
   return outstring;

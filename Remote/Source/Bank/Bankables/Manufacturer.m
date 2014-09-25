@@ -119,6 +119,11 @@
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Manufacturers"; }
 
+/// directoryIcon
+/// @return UIImage *
+//+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"909-gray-tags"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"1022-gray-factory"]; }
+
 /// detailViewController
 /// @return ManufacturerViewController *
 - (ManufacturerViewController *)detailViewController {

@@ -1,5 +1,5 @@
 //
-//  BankCollectionViewHeader.swift
+//  BankCollectionHeader.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 9/15/14.
@@ -9,15 +9,21 @@
 import Foundation
 import UIKit
 
-@objc(BankCollectionViewHeader)
-class BankCollectionViewHeader: UICollectionReusableView {
+@objc(BankCollectionHeader)
+class BankCollectionHeader: UICollectionReusableView {
 
-  var title: String? { get { return button?.titleForState(.Normal) }
-                       set { button?.setTitle(newValue, forState: .Normal) } }
+  var title: String? {
+    didSet {
+      button.setAttributedTitle(NSAttributedString(string: title ?? "", attributes: titleAttributes), forState: .Normal)
+    }
+  }
 
-  var section: Int = -1
+  private let titleAttributes: [String:AnyObject] = [
+    NSFontAttributeName           : UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline),
+    NSForegroundColorAttributeName: UIColor.whiteColor()
+  ]
 
-  var toggleActionHandler: ((header: BankCollectionViewHeader) -> Void)?
+  var toggleActionHandler: ((header: BankCollectionHeader) -> Void)?
 
   private weak var button: UIButton!
 
@@ -28,19 +34,19 @@ class BankCollectionViewHeader: UICollectionReusableView {
   */
   override init(frame: CGRect) {
     super.init(frame: frame)
+
     backgroundColor = UIColor(r: 136, g: 136, b: 136, a: 230)
+
     button = { [unowned self] in
       let button = UIButton(forAutoLayout:())
-      button.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
       button.addTarget(self, action: "toggleAction:", forControlEvents: .TouchUpInside)
       self.addSubview(button)
       return button
     }()
-    constrainWithFormat("|-18-[button]-18-| :: button.centerY = self.centerY", views: ["button": button!])
-  }
 
-  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
-    
+    constrainWithFormat("button.center = self.center :: button.width = self.width :: button.height = self.height",
+                  views: ["button": button!])
+
   }
 
   /**

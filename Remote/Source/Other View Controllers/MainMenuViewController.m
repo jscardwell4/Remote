@@ -11,6 +11,7 @@
 #import "RemoteElement.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
+@import MoonKit;
 
 static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
@@ -44,9 +45,15 @@ static const int msLogContext = 0;
     versionInfoLabel.text = [NSString stringWithFormat:@"version: %@", [MSRemoteAppController versionInfo]];
 }
 
-- (void)viewDidAppear:(BOOL)animated { UIApp.statusBarStyle = UIStatusBarStyleLightContent; }
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  UIApp.statusBarStyle = UIStatusBarStyleLightContent;
+}
 
-- (void)viewDidDisappear:(BOOL)animated { UIApp.statusBarStyle = UIStatusBarStyleDefault; }
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  UIApp.statusBarStyle = UIStatusBarStyleDefault;
+}
 
 /// @name ￼Actions
 - (IBAction)showRemote { [AppController showRemote]; }

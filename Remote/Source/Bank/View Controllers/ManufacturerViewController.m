@@ -7,12 +7,13 @@
 //
 
 #import "BankItemViewController_Private.h"
-#import "BankCollectionViewController.h"
 #import "ManufacturerViewController.h"
 #import "Manufacturer.h"
 #import "IRCode.h"
 #import "CoreDataManager.h"
 #import "ComponentDevice.h"
+#import "Remote-Swift.h"
+
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
@@ -144,18 +145,9 @@ SectionHeadersDeclaration;
 
     if (isUserCodeset) codeset = nil;
 
-    BankCollectionViewController * vc =
-      UIStoryboardInstantiateSceneByClassName(BankCollectionViewController);
+    NSPredicate * predicate = NSPredicateMake(@"(manufacturer = %@) && (codeset = %@)", self.manufacturer, codeset);
 
-    vc.navigationItem.title = $(@"(%@) %@",
-                                self.manufacturer.name,
-                                (isUserCodeset ? @"Devices" : codeset));
-
-    NSPredicate * predicate =
-      NSPredicateMake(@"(manufacturer = %@) && (codeset = %@)", self.manufacturer, codeset);
-
-    NSString * groupBy = (isUserCodeset ? @"device.name" : nil);
-
+    NSString * groupBy  = (isUserCodeset ? @"device.name" : nil);
     NSString * sortedBy = (isUserCodeset ? @"device.name,name" : @"name");
 
     NSManagedObjectContext * moc = self.manufacturer.managedObjectContext;
@@ -169,14 +161,13 @@ SectionHeadersDeclaration;
     [controller performFetch:&error];
 
     if (!MSHandleErrors(error)) {
-      vc.allItems = controller;
-      vc.itemClass     = [IRCode class];
-
+      BankCollectionController * vc = [[BankCollectionController alloc] initWithItems:controller];
+      vc.navigationItem.title = $(@"(%@) %@", self.manufacturer.name, (isUserCodeset ? @"Devices" : codeset));
       [self.navigationController pushViewController:vc animated:YES];
-
     }
 
   }
+  
 }
 
 @end

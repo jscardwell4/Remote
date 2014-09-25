@@ -24,6 +24,10 @@
 /// @return NSString *
 + (NSString *)directoryLabel;
 
+/// directoryIcon
+/// @return UIImage *
++ (UIImage *)directoryIcon;
+
 /// isThumbnailable
 /// @return BOOL
 + (BOOL)isThumbnailable;
@@ -44,10 +48,6 @@
 /// @return BOOL
 + (BOOL)isSectionable;
 
-/// directoryIcon
-/// @return UIImage *
-+ (UIImage *)directoryIcon;
-
 /// detailViewControllerClass
 /// @return BankItemViewController *
 - (BankItemViewController *)detailViewController;
@@ -66,13 +66,16 @@
 /// resetItem
 - (void)resetItem;
 
-@property (nonatomic, copy)                          NSString     * name;
-@property (nonatomic, copy)                          NSString     * category;
-@property (nonatomic, readonly)                      UIImage      * thumbnail;
-@property (nonatomic, readonly)                      UIImage      * preview;
-@property (nonatomic, copy)                          NSNumber     * user;
-@property (nonatomic, readonly, getter = isEditable) BOOL           editable;
-@property (nonatomic, readonly)                      MSDictionary * subitems;
+@property (nonatomic, copy)                               NSString     * name;
+@property (nonatomic, copy)                               NSString     * category;
+@property (nonatomic, readonly)                           UIImage      * thumbnail;
+@property (nonatomic, readonly)                           UIImage      * preview;
+@property (nonatomic, copy)                               NSNumber     * user;
+@property (nonatomic, readonly, getter = isEditable)      BOOL           editable;
+@property (nonatomic, readonly, getter = isThumbnailable) BOOL           thumbnailable;
+@property (nonatomic, readonly, getter = isPreviewable)   BOOL           previewable;
+@property (nonatomic, readonly, getter = isDetailable)    BOOL           detailable;
+@property (nonatomic, readonly)                           MSDictionary * subitems;
 
 @end
 

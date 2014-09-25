@@ -105,7 +105,6 @@ MSSTRING_CONST REDefaultMode = @"default";
   NSDictionary           * backgroundColor      = data[@"background-color"];
   NSDictionary           * backgroundImageAlpha = data[@"background-image-alpha"];
   NSDictionary           * backgroundImage      = data[@"background-image"];
-  NSDictionary           * theme                = data[@"theme"];
   NSArray                * subelements          = data[@"subelements"];
   NSDictionary           * constraints          = data[@"constraints"];
   NSManagedObjectContext * moc                  = self.managedObjectContext;
@@ -506,7 +505,7 @@ MSSTRING_CONST REDefaultMode = @"default";
   NSMutableString * outstring = [[NSMutableString alloc] init];
   __block void      (^dumpElement)(RemoteElement *, int) = nil;
 
-  __block void(__weak ^ weakDumpElement)(RemoteElement *, int) = dumpElement;
+  __block void(__weak ^ weakDumpElement)(RemoteElement *, int) = nil;
   dumpElement =
     ^(RemoteElement * element, int indent) {
     NSString * dashes = [NSString stringWithCharacter:'-' count:indent * 3];
@@ -532,6 +531,7 @@ MSSTRING_CONST REDefaultMode = @"default";
       weakDumpElement(subelement, indent + 1);
   };
 
+  weakDumpElement = dumpElement;
   dumpElement(self, 0);
 
   return outstring;

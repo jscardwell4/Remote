@@ -101,7 +101,7 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
 */
 
 /*
-+ (BankCollectionViewController *)bankCollectionViewController
++ (BankCollectionController *)bankCollectionViewController
 {
     return [mainStoryboard instantiateViewControllerWithIdentifier:@"Bank Item Collection"];
 }

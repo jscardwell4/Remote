@@ -21,6 +21,7 @@
 #import "Manufacturer.h"
 #import "Image.h"
 #import "SettingsViewController.h"
+@import CoreImage;
 
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -167,6 +168,8 @@ static const int msLogContext = 0;
     MSLogInfo(@"skipDataStack argument detected, skipping setup...");
     return YES;
   }
+
+//  nsprintf(@"CIFitlers…\n\t%@", [@"\n\t" join:[CIFilter filterNamesInCategories:nil]]);
 
   // set a reference to our launch screen view controller
   MainMenuViewController * mainMenuVC = (MainMenuViewController *)[self.window rootViewController];

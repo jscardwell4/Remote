@@ -85,6 +85,11 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Presets"; }
 
+/// directoryIcon
+/// @return UIImage *
+//+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"949-gray-paint-brush"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"1059-gray-sliders"]; }
+
 /// isEditable
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }

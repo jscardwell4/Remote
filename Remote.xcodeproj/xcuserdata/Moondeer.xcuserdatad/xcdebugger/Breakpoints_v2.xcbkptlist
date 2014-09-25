@@ -851,13 +851,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433222037.15362"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433359745.288095"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "BankCollectionViewCell"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "BankCollectionCell"
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
@@ -867,7 +867,7 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionZoomView.swift"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionZoom.swift"
             timestampString = "433282857.217997"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -883,7 +883,7 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionZoomView.swift"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionZoom.swift"
             timestampString = "433283068.825362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -899,14 +899,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433360140.569362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
-            landmarkName = "BankCollectionViewCell"
-            landmarkType = "3">
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "init(frame:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -915,14 +915,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433360140.569362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
-            landmarkName = "BankCollectionViewCell"
-            landmarkType = "3">
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "init(frame:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -947,14 +947,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433274806.689798"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433359900.168575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "applyLayoutAttributes(_:)"
-            landmarkType = "5">
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "BankCollectionCell"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -994,11 +994,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankCollectionLayout.swift"
-            timestampString = "433224472.095807"
+            timestampString = "433346712.443288"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "layoutAttributesForElementsInRect(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1009,12 +1009,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewHeader.swift"
-            timestampString = "433211945.528872"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionHeader.swift"
+            timestampString = "433294856.474263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "init(frame:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1035,12 +1035,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433359900.168575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "updateConstraints()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1051,12 +1051,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433360140.569362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
             landmarkName = "updateConstraints()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1067,12 +1067,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433359900.168575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "updateConstraints()"
             landmarkType = "5">
             <Locations>
@@ -1113,45 +1113,93 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "updateConstraints()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionViewCell.swift"
-            timestampString = "433275543.212512"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
-            landmarkName = "updateConstraints()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/BankCollectionZoomView.swift"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionZoom.swift"
             timestampString = "433282857.217997"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
             endingLineNumber = "42"
             landmarkName = "BankCollectionZoomView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433359745.288095"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "BankCollectionCell"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionLayout.swift"
+            timestampString = "433346712.443288"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "BankCollectionLayout"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionCell.swift"
+            timestampString = "433359900.168575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "BankCollectionCell"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/BankRootController.swift"
+            timestampString = "433375919.410097"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/BankRootCell.swift"
+            timestampString = "433376211.155401"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "BankRootCell"
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>

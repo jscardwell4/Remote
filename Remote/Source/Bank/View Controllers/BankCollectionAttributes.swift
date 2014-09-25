@@ -1,5 +1,5 @@
 //
-//  BankCollectionLayoutAttributes.swift
+//  BankCollectionAttributes.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 9/23/14.
@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-@objc(BankCollectionLayoutAttributes)
-class BankCollectionLayoutAttributes: UICollectionViewLayoutAttributes {
+@objc(BankCollectionAttributes)
+class BankCollectionAttributes: UICollectionViewLayoutAttributes {
 
   enum ViewingMode { case None, List, Thumbnail }
 
@@ -24,7 +24,7 @@ class BankCollectionLayoutAttributes: UICollectionViewLayoutAttributes {
   */
   override func copyWithZone(zone: NSZone) -> AnyObject {
     let attributes: AnyObject = super.copyWithZone(zone)
-    if let bankAttributes = attributes as? BankCollectionLayoutAttributes {
+    if let bankAttributes = attributes as? BankCollectionAttributes {
       bankAttributes.viewingMode = viewingMode
     }
     return attributes
@@ -38,7 +38,7 @@ class BankCollectionLayoutAttributes: UICollectionViewLayoutAttributes {
   :returns: Bool
   */
   override func isEqual(object: AnyObject?) -> Bool {
-    if let other = object as? BankCollectionLayoutAttributes {
+    if let other = object as? BankCollectionAttributes {
       return viewingMode == other.viewingMode ? super.isEqual(object) : false
     } else { return false }
   }

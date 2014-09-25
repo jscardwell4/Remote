@@ -58,6 +58,7 @@ initialColor         = _initialColor;
 }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
     if (!_presetPickerView.superview) {
         [_pickerContainer addSubview:_presetPickerView];
 

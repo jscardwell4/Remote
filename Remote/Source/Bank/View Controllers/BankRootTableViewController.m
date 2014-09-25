@@ -32,6 +32,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation BankRootTableViewController
 
+/// rootItems
+/// @return MSDictionary *
 - (MSDictionary *)rootItems {
   if (!_rootItems) {
     self.rootItems = [MSDictionary dictionary];
@@ -53,14 +55,25 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark - Table view data source
 ////////////////////////////////////////////////////////////////////////////////
 
+/// numberOfSectionsInTableView:
+/// @param tableView
+/// @return NSInteger
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return 1;
 }
 
+/// tableView:numberOfRowsInSection:
+/// @param tableView
+/// @param section
+/// @return NSInteger
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   return [self.rootItems count];
 }
 
+/// tableView:cellForRowAtIndexPath:
+/// @param tableView
+/// @param indexPath
+/// @return UITableViewCell *
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   MSSTATIC_STRING_CONST kCellIdentifier = @"Cell";
   UITableViewCell     * cell            = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier
@@ -71,11 +84,6 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
   return cell;
 }
-
-- (void)   tableView:(UITableView *)tableView
-  commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-   forRowAtIndexPath:(NSIndexPath *)indexPath
-{}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,8 +96,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @param indexPath
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  Class itemClass = [_rootItems keyAtIndex:indexPath.row];
-  BankCollectionViewController * viewController = [[BankCollectionViewController alloc] initWithItemClass:itemClass];
+  Class                      itemClass      = [_rootItems keyAtIndex:indexPath.row];
+  BankCollectionController * viewController = [[BankCollectionController alloc] initWithItemClass:itemClass];
   [self.navigationController pushViewController:viewController animated:YES];
 
 }
@@ -98,12 +106,20 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark Actions
 ////////////////////////////////////////////////////////////////////////////////
 
+/// importBankObject:
+/// @param sender
 - (IBAction)importBankObject:(UIBarButtonItem *)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
+/// exportBankObject:
+/// @param sender
 - (IBAction)exportBankObject:(UIBarButtonItem *)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
+/// searchBankObjects:
+/// @param sender
 - (IBAction)searchBankObjects:(UIBarButtonItem *)sender { MSLogDebug(@"%@", ClassTagSelectorString); }
 
+/// dismiss:
+/// @param sender
 - (IBAction)dismiss:(id)sender {
   [AppController dismissViewController:[Bank viewController] completion:nil];
 }

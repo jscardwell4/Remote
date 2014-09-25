@@ -52,6 +52,7 @@ MSSTATIC_STRING_CONST kParentConstraintNametag  = @"kParentConstraintNametag";
 
 - (void)viewDidLoad {
 
+  [super viewDidLoad];
   [self initializeToolbars];
   [self attachGestureRecognizers];
 

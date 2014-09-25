@@ -21,11 +21,10 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
   class var ThumbnailItemCellSize: CGSize { return CGSize(width: 100.0, height: 100.0) }
   class var HeaderSize : CGSize { return CGSize(width: 320.0, height: 38.0) }
 
-  var viewingMode: BankCollectionLayoutAttributes.ViewingMode = .None {
+  var viewingMode: BankCollectionAttributes.ViewingMode = .None {
     didSet {
-      if viewingMode != .None { headerReferenceSize = BankCollectionLayout.HeaderSize }
       switch viewingMode {
-        case .List: itemSize = BankCollectionLayout.ListItemCellSize
+        case .List:      itemSize = BankCollectionLayout.ListItemCellSize
         case .Thumbnail: itemSize = BankCollectionLayout.ThumbnailItemCellSize
         default: break
       }
@@ -35,7 +34,31 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
   private var hiddenSections = [Int]()
 
   /**
-  toggleItemsForSection:
+  init
+  */
+  override init() {
+    super.init()
+    headerReferenceSize = BankCollectionLayout.HeaderSize
+  }
+
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    headerReferenceSize = BankCollectionLayout.HeaderSize
+  }
+
+  var includeSectionHeaders: Bool = true {
+    didSet {
+      headerReferenceSize = includeSectionHeaders ? BankCollectionLayout.HeaderSize : CGSizeZero
+    }
+  }
+
+  /**
+  Add or remove section to/from `hiddenSections` and invalidate the layout
 
   :param: section Int
   */
@@ -60,11 +83,11 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
     let sectionCount = collectionView!.numberOfSections()
 
     // Get the attributes as the super class would lay them out
-    var attributes = super.layoutAttributesForElementsInRect(rect) as [BankCollectionLayoutAttributes]
+    var attributes = super.layoutAttributesForElementsInRect(rect) as [BankCollectionAttributes]
 
     // Create an array to hold arrays of attributes by section
-    var attributesBySection = [[BankCollectionLayoutAttributes]](count: sectionCount,
-                                                                 repeatedValue: [BankCollectionLayoutAttributes]())
+    var attributesBySection = [[BankCollectionAttributes]](count: sectionCount,
+                                                                 repeatedValue: [BankCollectionAttributes]())
 
     // Iterate through the attributes to assign our viewing mode and partition by section
     for attrs in attributes {
@@ -76,18 +99,18 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
     for section in hiddenSections {
 
       // Get all the cell attributes for the section
-      var sectionAttributes = attributesBySection[section].filter{
+      var sectionCellAttributes = attributesBySection[section].filter{
         $0.representedElementCategory == UICollectionElementCategory.Cell
       }
 
       // Hide all the cells in this section
-      sectionAttributes.reduce(Void()){$0.1.hidden = true}
+      sectionCellAttributes.reduce(Void()){$0.1.hidden = true}
 
       // Shouldn't need to perform computations unless there are more sections to follow this section
-      if sectionAttributes.count > 0 && section + 1 < sectionCount {
+      if sectionCellAttributes.count > 0 && section + 1 < sectionCount {
 
         // Get the min and max y values for the frames of the attributes in this section
-        let (minY, maxY) = sectionAttributes.reduce((CGFloat.max, CGFloat.min)) {
+        let (minY, maxY) = sectionCellAttributes.reduce((CGFloat.max, CGFloat.min)) {
           (min($0.0.0, CGRectGetMinY($0.1.frame)), max($0.0.1, CGRectGetMaxY($0.1.frame)))
         }
 
@@ -118,7 +141,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
 
   :returns: AnyClass
   */
-  override class func layoutAttributesClass() -> AnyClass { return BankCollectionLayoutAttributes.self }
+  override class func layoutAttributesClass() -> AnyClass { return BankCollectionAttributes.self }
 
   /**
 

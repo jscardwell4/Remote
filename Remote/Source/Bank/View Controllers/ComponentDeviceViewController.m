@@ -12,8 +12,7 @@
 #import "Manufacturer.h"
 #import "IRCode.h"
 #import "NetworkDevice.h"
-#import "BankCollectionViewController.h"
-
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -298,11 +297,6 @@ SectionHeadersDeclaration;
 /// @param sender
 - (IBAction)viewIRCodes:(id)sender {
 
-  UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Bank" bundle:MainBundle];
-  BankCollectionViewController * vc = (BankCollectionViewController *)
-    [storyBoard instantiateViewControllerWithClassNameIdentifier:[BankCollectionViewController class]];
-  vc.navigationItem.title = $(@"%@ Codes", self.componentDevice.name);
-
   NSFetchedResultsController * controller =
     [IRCode fetchAllGroupedBy:nil
                 withPredicate:NSPredicateMake(@"device = %@", self.componentDevice)
@@ -315,8 +309,8 @@ SectionHeadersDeclaration;
 
   if (!MSHandleErrors(error)) {
 
-    vc.allItems = controller;
-    vc.itemClass     = [IRCode class];
+    BankCollectionController * vc = [[BankCollectionController alloc] initWithItems:controller];
+    vc.navigationItem.title = $(@"%@ Codes", self.componentDevice.name);
     [self.navigationController pushViewController:vc animated:YES];
 
   }

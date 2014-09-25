@@ -101,13 +101,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
     [superEntity setValue:userInfo forKeyPath:keypath];
 
-    NSArray * subentitiesOfSubentities = [[superEntity valueForKeyPath:@"subentities.subentities"]
-                                          filteredArrayUsingPredicateWithBlock:
-                                          ^BOOL (NSArray * evaluatedObject, NSDictionary * bindings)
-    {
-      return [evaluatedObject count] > 0;
-    }];
-
 };
 
 /// The method programatically modifies the specified model to add more detail to various attributes,

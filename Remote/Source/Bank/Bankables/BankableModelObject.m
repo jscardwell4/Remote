@@ -56,6 +56,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return BOOL
 + (BOOL)isPreviewable { return NO;  }
 
+/// isPreviewable
+/// @return BOOL
+- (BOOL)isPreviewable { return [[self class] isPreviewable]; }
+
 /// isSectionable
 /// @return BOOL
 + (BOOL)isSectionable { return YES;  }
@@ -64,13 +68,25 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return BOOL
 + (BOOL)isThumbnailable { return NO;  }
 
+/// isThumbnailable
+/// @return BOOL
+- (BOOL)isThumbnailable { return [[self class] isThumbnailable]; }
+
 /// isDetailable
 /// @return BOOL
 + (BOOL)isDetailable { return YES; }
 
+/// isDetailable
+/// @return BOOL
+- (BOOL)isDetailable { return [[self class] isDetailable]; }
+
 /// isEditable
 /// @return BOOL
 + (BOOL)isEditable { return YES; }
+
+/// isEditable
+/// @return BOOL
+- (BOOL)isEditable { return [[self class] isEditable]; }
 
 /// directoryLabel
 /// @return NSString *
@@ -112,10 +128,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     [moc performBlockAndWait:^{ [moc refreshObject:weakself mergeChanges:NO]; }];
   }
 }
-
-/// isEditable
-/// @return BOOL
-- (BOOL)isEditable { return [[self class] isEditable]; }
 
 /// thumbnail
 /// @return UIImage *

@@ -131,7 +131,6 @@
 
   [super updateWithData:data];
 
-  NSString               * name          = data[@"name"];
   NSNumber               * port          = data[@"port"];
   NSDictionary           * onCommand     = data[@"on-command"];
   NSDictionary           * offCommand    = data[@"off-command"];
@@ -162,6 +161,10 @@
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Component Devices"; }
+
+/// directoryIcon
+/// @return UIImage *
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"969-gray-television"]; }
 
 /// isEditable
 /// @return BOOL

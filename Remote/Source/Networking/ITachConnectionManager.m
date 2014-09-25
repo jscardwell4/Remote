@@ -168,9 +168,6 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
  */
 + (void)sendCommand:(SendIRCommand *)command completion:(void (^)(BOOL success, NSError *))completion {
 
-  NSString * cmd = command.commandString;
-
-
   // Exit early if command string has no content to send
   if (StringIsEmpty(command.commandString)) {
 

@@ -24,6 +24,7 @@ contentContainerView = _contentContainerView;
 // }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
 // self.view.layer.borderWidth = 2.0;
 // self.view.layer.borderColor = [[UIColor colorWithRed:0 green:175/255.0 blue:1.0 alpha:1.0]
 // CGColor];

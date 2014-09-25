@@ -96,6 +96,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Network Devices"; }
 
+/// directoryIcon
+/// @return UIImage *
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"937-gray-wifi-signal"]; }
+
 /// isEditable
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }

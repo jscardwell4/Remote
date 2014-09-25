@@ -93,8 +93,8 @@ presentedControlState = _presentedControlState;
 + (Class)elementClass { return [ButtonView class]; }
 
 - (void)viewDidAppear:(BOOL)animated {
-    static BOOL   buttonEditorHasAutoLaunched = NO;
-
+  [super viewDidAppear:animated];
+  static BOOL   buttonEditorHasAutoLaunched = NO;
     if (AUTO_LAUNCH_DETAIL_EDITOR && !buttonEditorHasAutoLaunched) {
         if (REPLACE_BUTTON_COMMAND) {
             ComponentDevice * tv =
@@ -122,6 +122,7 @@ presentedControlState = _presentedControlState;
 }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
     if (ValueIsNotNil(_buttonModel)) {
         self.buttonView                    = (ButtonView *)[ButtonView viewWithModel:_buttonModel];
         _buttonView.editingMode            = REButtonEditingMode;

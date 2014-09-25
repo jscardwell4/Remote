@@ -8,20 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
-		C2037B6F19D08925001F6AD9 /* BankCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832219D06E5D000CB422 /* BankCollectionViewController.swift */; };
-		C2037B7519D0F29B001F6AD9 /* BankCollectionZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */; };
+		C2037B6F19D08925001F6AD9 /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832219D06E5D000CB422 /* BankCollectionController.swift */; };
+		C2037B7519D0F29B001F6AD9 /* BankCollectionZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
 		C209C0CF19BFE70700A6AB85 /* ISYDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */; };
-		C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */; };
 		C20BD77E19BF3D340011E3F6 /* ITachDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20BD77D19BF3D340011E3F6 /* ITachDeviceViewController.m */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
-		C22E1BDA19C12FB900A93D61 /* BankCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionViewCell.swift */; };
+		C22E1BDA19C12FB900A93D61 /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */; };
 		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2358F0D19C781DA00920F8D /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */; };
-		C2358F0F19C7843500920F8D /* BankCollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0E19C7843500920F8D /* BankCollectionViewHeader.swift */; };
+		C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */; };
 		C235930519C9C26200920F8D /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
 		C235930619C9C26600920F8D /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
 		C2381EB319A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */; };
@@ -146,6 +145,9 @@
 		C2381FA219A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */; };
 		C2381FA319A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */; };
 		C23F1E5D1705064E0084718A /* SendCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C23F1E5C1705064E0084718A /* SendCommand.m */; };
+		C2400F9519D4B87000D9BB13 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2400F9419D4B87000D9BB13 /* Remote.xcassets */; };
+		C2400F9819D4B9B600D9BB13 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9719D4B9B600D9BB13 /* BankRootController.swift */; };
+		C2400F9A19D4BB5400D9BB13 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
@@ -358,7 +360,6 @@
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
 		C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */; };
 		C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */; };
-		C29ABAD917F87472007D185F /* BankPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29ABAD817F87472007D185F /* BankPreviewViewController.m */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
 		C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */; };
@@ -366,7 +367,7 @@
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2AB7B5E17F2083800906FAE /* BankItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AB7B5D17F2083800906FAE /* BankItemViewController.m */; };
-		C2C1756C19D1F58A008B8E16 /* BankCollectionLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C1756B19D1F58A008B8E16 /* BankCollectionLayoutAttributes.swift */; };
+		C2C1756C19D1F58A008B8E16 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
 		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
 		C2CA769219BA1E1800ACCD76 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
@@ -534,12 +535,11 @@
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		C2014FB8180DFC1200C31780 /* JSONObjectKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONObjectKeys.h; sourceTree = "<group>"; };
 		C2014FB9180E004E00C31780 /* JSONObjectKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONObjectKeys.m; sourceTree = "<group>"; };
-		C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoomView.swift; sourceTree = "<group>"; };
+		C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoom.swift; sourceTree = "<group>"; };
 		C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
 		C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConstraint.m; sourceTree = "<group>"; };
 		C209C0CD19BFE70700A6AB85 /* ISYDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceViewController.h; sourceTree = "<group>"; };
 		C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceViewController.m; sourceTree = "<group>"; };
-		C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankCollectionZoomView.xib; path = "../../Source/Bank/View Controllers/BankCollectionZoomView.xib"; sourceTree = "<group>"; };
 		C20BD77C19BF3D340011E3F6 /* ITachDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceViewController.h; sourceTree = "<group>"; };
 		C20BD77D19BF3D340011E3F6 /* ITachDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceViewController.m; sourceTree = "<group>"; };
 		C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish_Test.json; sourceTree = "<group>"; };
@@ -550,13 +550,13 @@
 		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
-		C22E1BD919C12FB900A93D61 /* BankCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewCell.swift; sourceTree = "<group>"; };
+		C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionCell.swift; sourceTree = "<group>"; };
 		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
 		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
 		C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionLayout.swift; sourceTree = "<group>"; };
-		C2358F0E19C7843500920F8D /* BankCollectionViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewHeader.swift; sourceTree = "<group>"; };
+		C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionHeader.swift; sourceTree = "<group>"; };
 		C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "AgedPaper-320x640-iPhone.jpg"; sourceTree = "<group>"; };
 		C2381DC219A7EE3B00135DAB /* AgedPaper-640x960-iPhone@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "AgedPaper-640x960-iPhone@2x.jpg"; sourceTree = "<group>"; };
 		C2381DC319A7EE3B00135DAB /* AgedPaper-640x1136-iPhone5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "AgedPaper-640x1136-iPhone5.jpg"; sourceTree = "<group>"; };
@@ -679,6 +679,9 @@
 		C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-1024x768-iPad.jpg"; sourceTree = "<group>"; };
 		C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-2048x1536-iPad@2x.jpg"; sourceTree = "<group>"; };
 		C23F1E5C1705064E0084718A /* SendCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendCommand.m; sourceTree = "<group>"; };
+		C2400F9419D4B87000D9BB13 /* Remote.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Remote.xcassets; sourceTree = "<group>"; };
+		C2400F9719D4B9B600D9BB13 /* BankRootController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankRootController.swift; sourceTree = "<group>"; };
+		C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankRootCell.swift; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C249174719BFBA870049638F /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
@@ -914,7 +917,7 @@
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
-		C274832219D06E5D000CB422 /* BankCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionViewController.swift; sourceTree = "<group>"; };
+		C274832219D06E5D000CB422 /* BankCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionController.swift; sourceTree = "<group>"; };
 		C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateColorSet.h; sourceTree = "<group>"; };
 		C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateImageSet.h; sourceTree = "<group>"; };
 		C275A0DE181F4DF900C9D446 /* ControlStateTitleSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateTitleSet.h; sourceTree = "<group>"; };
@@ -964,8 +967,6 @@
 		C2997F1E16FA06B400290737 /* RockerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RockerView.m; sourceTree = "<group>"; };
 		C2997F1F16FA06B400290737 /* ModeSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModeSelectionView.m; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C29ABAD717F87472007D185F /* BankPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankPreviewViewController.h; sourceTree = "<group>"; };
-		C29ABAD817F87472007D185F /* BankPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankPreviewViewController.m; sourceTree = "<group>"; };
 		C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23DB178505AA00CD782B /* Remote.base 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 11.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23DC178505AA00CD782B /* Remote.base 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -1003,7 +1004,7 @@
 		C2B4998F17C958B100EC6C7C /* Bankables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bankables.h; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
 		C2C1756919D10CB7008B8E16 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = "MSKit/Lumberjack/build/Debug-iphoneos/Lumberjack.framework"; sourceTree = "<group>"; };
-		C2C1756B19D1F58A008B8E16 /* BankCollectionLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionLayoutAttributes.swift; sourceTree = "<group>"; };
+		C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionAttributes.swift; sourceTree = "<group>"; };
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482C719C9F968002E84A9 /* Remote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Remote_Tests.m; sourceTree = "<group>"; };
@@ -1395,7 +1396,6 @@
 			isa = PBXGroup;
 			children = (
 				C2F2A46317EDF85900DE2F41 /* Bank.storyboard */,
-				C20B1D5517F8F488002F286A /* BankCollectionZoomView.xib */,
 			);
 			name = Bank;
 			sourceTree = "<group>";
@@ -1403,12 +1403,12 @@
 		C26B8A6A18006BF500912DBB /* Collections */ = {
 			isa = PBXGroup;
 			children = (
-				C274832219D06E5D000CB422 /* BankCollectionViewController.swift */,
-				C22E1BD919C12FB900A93D61 /* BankCollectionViewCell.swift */,
+				C274832219D06E5D000CB422 /* BankCollectionController.swift */,
+				C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */,
 				C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */,
-				C2358F0E19C7843500920F8D /* BankCollectionViewHeader.swift */,
-				C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */,
-				C2C1756B19D1F58A008B8E16 /* BankCollectionLayoutAttributes.swift */,
+				C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */,
+				C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */,
+				C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */,
 			);
 			name = Collections;
 			sourceTree = "<group>";
@@ -1637,6 +1637,7 @@
 				C26BB59016DC18A90093D5B4 /* Storyboards and Nibs */,
 				C275D86217A03130004E0BE5 /* Glyphish.xcassets */,
 				C25EC02019C3849C00E5A437 /* QuickLookup.playground */,
+				C2400F9419D4B87000D9BB13 /* Remote.xcassets */,
 			);
 			name = Resources;
 			path = Remote/Resources;
@@ -2074,10 +2075,10 @@
 			children = (
 				C2F2A46517EDF98800DE2F41 /* BankRootTableViewController.h */,
 				C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */,
-				C29ABAD717F87472007D185F /* BankPreviewViewController.h */,
-				C29ABAD817F87472007D185F /* BankPreviewViewController.m */,
 				C26B8A6A18006BF500912DBB /* Collections */,
 				C26B8A6B18006C1D00912DBB /* Detail */,
+				C2400F9719D4B9B600D9BB13 /* BankRootController.swift */,
+				C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */,
 			);
 			name = "View Controllers";
 			path = "Bank/View Controllers";
@@ -2261,6 +2262,7 @@
 				C2381EFC19A7EE3B00135DAB /* Ive-640x1136.jpg in Resources */,
 				C2381F8B19A7EE3B00135DAB /* ProDots-320x640-iPhone.jpg in Resources */,
 				C2381ED319A7EE3B00135DAB /* Chroma-640x1136.jpg in Resources */,
+				C2400F9519D4B87000D9BB13 /* Remote.xcassets in Resources */,
 				C2E8D9D619BCD5C400E6098E /* smtperr.xml in Resources */,
 				C26BB5B116DC18A90093D5B4 /* FontAwesome.ttf in Resources */,
 				C2381EDA19A7EE3B00135DAB /* Cloth-2048x1536-iPad@2x.jpg in Resources */,
@@ -2348,7 +2350,6 @@
 				C2E8D9CC19BCD5C400E6098E /* insterr.xml in Resources */,
 				C26BBAF316DC1B5C0093D5B4 /* AlignRightEdgeIcon@2x.png in Resources */,
 				C2381EE119A7EE3B00135DAB /* Corkboard-320x640-iPhone.jpg in Resources */,
-				C20B1D5617F8F488002F286A /* BankCollectionZoomView.xib in Resources */,
 				C27BCCAC1801C16A0002464C /* IntegerKeyboard_Blank@2x.png in Resources */,
 				C2E8D9DC19BCD5C400E6098E /* udielkws1.wsdl in Resources */,
 				C26BBAF416DC1B5C0093D5B4 /* AlignTopEdgeIcon.png in Resources */,
@@ -2649,7 +2650,6 @@
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
 				C2F2A47817EF567700DE2F41 /* ImageViewController.m in Sources */,
-				C29ABAD917F87472007D185F /* BankPreviewViewController.m in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
 				C25B474016FF8D0A0042B59E /* Preset.m in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
@@ -2662,9 +2662,9 @@
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
 				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
 				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,
-				C2C1756C19D1F58A008B8E16 /* BankCollectionLayoutAttributes.swift in Sources */,
+				C2C1756C19D1F58A008B8E16 /* BankCollectionAttributes.swift in Sources */,
 				C26296801810619900760056 /* CoreDataManager+Model.m in Sources */,
-				C2037B6F19D08925001F6AD9 /* BankCollectionViewController.swift in Sources */,
+				C2037B6F19D08925001F6AD9 /* BankCollectionController.swift in Sources */,
 				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
 				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
@@ -2681,6 +2681,7 @@
 				C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */,
 				C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */,
 				C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */,
+				C2400F9A19D4BB5400D9BB13 /* BankRootCell.swift in Sources */,
 				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
 				C2F2A47E17EF569F00DE2F41 /* ManufacturerViewController.m in Sources */,
 				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
@@ -2720,7 +2721,7 @@
 				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
-				C2358F0F19C7843500920F8D /* BankCollectionViewHeader.swift in Sources */,
+				C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */,
 				C26C6E6519B8DB9500B346AE /* ISYDevice.m in Sources */,
 				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
 				C2F2A47B17EF568E00DE2F41 /* PresetViewController.m in Sources */,
@@ -2737,15 +2738,16 @@
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
-				C22E1BDA19C12FB900A93D61 /* BankCollectionViewCell.swift in Sources */,
+				C22E1BDA19C12FB900A93D61 /* BankCollectionCell.swift in Sources */,
 				C2F2A47517EF566600DE2F41 /* ComponentDeviceViewController.m in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
 				C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */,
 				C209C0CF19BFE70700A6AB85 /* ISYDeviceViewController.m in Sources */,
+				C2400F9819D4B9B600D9BB13 /* BankRootController.swift in Sources */,
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
-				C2037B7519D0F29B001F6AD9 /* BankCollectionZoomView.swift in Sources */,
+				C2037B7519D0F29B001F6AD9 /* BankCollectionZoom.swift in Sources */,
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
 				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,
 				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
@@ -2880,7 +2882,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -2912,7 +2914,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",

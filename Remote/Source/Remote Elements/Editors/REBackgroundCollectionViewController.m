@@ -91,13 +91,13 @@
 
 - (void)selectBackgroundImage:(Image *)backgroundImage
 {
-    NSIndexPath * indexPath = nil;
-    if (!backgroundImage)
-    {
-        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    }
+//    NSIndexPath * indexPath = nil;
+//    if (!backgroundImage)
+//    {
+//        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//    }
 
-    else
+    if (backgroundImage)
     {
         NSUInteger index = 0;
 //        [self.backgrounds indexOfObjectPassingTest:

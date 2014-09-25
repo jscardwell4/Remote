@@ -1034,7 +1034,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
                                   forIndexPath:indexPath];
 
   id value = self.tableData[indexPath.row];
-
+  cell.info = value;
 
   return cell;
 

@@ -26,7 +26,7 @@
          MainMenuViewController,
          REBackgroundEditingViewController,
          BankTableViewController,
-         BankCollectionViewController,
+         BankCollectionController,
          BankViewController;
 
 @interface StoryboardProxy : NSObject
@@ -45,7 +45,7 @@
 + (REBackgroundEditingViewController *)backgroundEditingViewController;
 //+ (UINavigationController *)bankIndexViewController;
 //+ (BankTableViewController *)bankItemViewController;
-//+ (BankCollectionViewController *)bankCollectionViewController;
+//+ (BankCollectionController *)bankCollectionViewController;
 //+ (BankViewController *)bankViewController;
 + (SettingsViewController *)settingsViewController;
 + (MainMenuViewController *)mainMenuViewController;

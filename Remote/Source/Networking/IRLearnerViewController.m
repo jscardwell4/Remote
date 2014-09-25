@@ -144,6 +144,7 @@ static int ddLogLevel = DefaultDDLogLevel;
  */
 - (void)viewWillAppear:(BOOL)animated {
 // _learnerSwitch.on = self.appDelegate.learnerEnabled;
+  [super viewWillAppear:animated];
 }
 
 /*

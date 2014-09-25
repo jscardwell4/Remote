@@ -185,6 +185,8 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Images"; }
 
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"926-gray-photos"]; }
+
 /// isEditable
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }

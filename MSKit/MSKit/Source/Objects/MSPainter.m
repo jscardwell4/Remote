@@ -458,7 +458,7 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
     UIGraphicsPushContext(context);
     CGContextSetTextDrawingMode(context, kCGTextInvisible);
     //    CGContextShowTextAtPoint(context, 0.0f, 0.0f, [text UTF8String], text.length);
-
+    CGFontRelease(fontRef);
     CGPoint endPoint = CGContextGetTextPosition(context);
 
     UIGraphicsPopContext();

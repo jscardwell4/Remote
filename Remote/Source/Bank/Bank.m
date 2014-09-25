@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
-#import "Bank.h"
-#import "BankItemViewController.h"
-#import "BankableModelObject.h"
 @import ObjectiveC;
+#import "Bank.h"
+#import "BankableModelObject.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -69,10 +69,9 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// viewController
 /// @return UIViewController *
 - (UIViewController *)viewController {
-  if (!_viewController)
-    self.viewController = [[UIStoryboard storyboardWithName:@"Bank" bundle:nil]
-                           instantiateInitialViewController];
-
+  if (!_viewController) {
+    self.viewController = [[UINavigationController alloc] initWithRootViewController:[BankRootController new]];
+  }
   return _viewController;
 }
 
