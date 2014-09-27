@@ -31,12 +31,12 @@ class ImageDetailController: BankItemDetailController {
     precondition(item is Image, "we should have been given a image")
 
     // section 0 - row 0: category
-    let categoryRow = Row(identifier: BankItemCellTextFieldStyleIdentifier, isEditable: true) { [unowned self] in
+    let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
       $0.info = self.image.category ?? "Uncategorized"
-      $0.changeHandler = {[unowned self] cell in
-        let text = cell.info as? String
+      $0.changeHandler = {[unowned self] c in
+        let text = c.info as? String
         self.image.category = text
         if self.image.category != nil && self.categories ∌ self.image.category! {
           self.categories.append(self.image.category!)
@@ -48,19 +48,19 @@ class ImageDetailController: BankItemDetailController {
     }
 
     // section 0 - row 1: file
-    let fileRow = Row(identifier: BankItemCellLabelStyleIdentifier, isEditable: false) { [unowned self] in
+    let fileRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
       $0.name = "File"
       $0.info = self.image.fileName
     }
 
     // section 0 - row 2: size
-    let sizeRow = Row(identifier: BankItemCellLabelStyleIdentifier, isEditable: false) { [unowned self] in
+    let sizeRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
       $0.name = "Size"
       $0.info = PrettySize(self.image.size)
     }
 
     // section 1 - row 0: preview
-    let previewRow = Row(identifier: BankItemCellImageStyleIdentifier, isEditable: false) {[unowned self] in
+    let previewRow = Row(identifier: .Image, isEditable: false) {[unowned self] in
       $0.info = self.image.preview
     }
 
@@ -84,7 +84,7 @@ class ImageDetailController: BankItemDetailController {
   :param: style UITableViewStyle
   */
   override init(style: UITableViewStyle) { super.init(style: style) }
-  
+
   /**
   init:
 

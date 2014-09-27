@@ -1,8 +1,8 @@
 //
-//  BankItemDetailCell.swift
+//  BankItemCell.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 10/1/13.
+//  Created by Jason Cardwell on 9/26/14.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 
@@ -10,11 +10,10 @@ import Foundation
 import UIKit
 import MoonKit
 
-private let IntegerKeyboardNametag = "Integer Keyboard"
+@objc(BankItemCell)
+class BankItemCell: UITableViewCell {
 
-@objc(BankItemDetailCell)
-class BankItemDetailCell: UITableViewCell {
-
+  /** A simple string-based enum to establish valid reuse identifiers for use with styling the cell */
 	enum Identifier: String {
 		case Label     = "BankItemDetailLabelCell"
 		case List      = "BankItemDetailListCell"
@@ -26,15 +25,9 @@ class BankItemDetailCell: UITableViewCell {
 		case TextView  = "BankItemDetailTextViewCell"
 		case TextField = "BankItemDetailTextFieldCell"
 		case Table     = "BankItemDetailTableCell"
-
-		var identifier: String { return self.toRaw() }
 	}
 
-	class var validIdentifiers: [String] {
-		let styles: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
-		return styles.map{$0.identifier}
-	}
-
+/*
 	/**
 	isValidIdentifier:
 
@@ -44,24 +37,29 @@ class BankItemDetailCell: UITableViewCell {
 	*/
 	class func isValidIdentifier(identifier: String) -> Bool { return Identifier.fromRaw(identifier) != nil }
 
+*/
+
+  class var PickerHeight: CGFloat { return 162.0 }
+
 	/**
 	registerIdentifiersWithTableView:
 
 	:param: tableView UITableView
 	*/
 	class func registerIdentifiersWithTableView(tableView: UITableView) {
-		for identifier in self.validIdentifiers { tableView.registerClass(self, forCellReuseIdentifier: identifier) }
+    let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
+		for identifier in identifiers { tableView.registerClass(self, forCellReuseIdentifier: identifier.toRaw()) }
 	}
 
-	var changeHandler          : ((BankItemDetailCell) -> Void)?
-	var validationHandler      : ((BankItemDetailCell) -> Bool)?
-	var pickerSelectionHandler : ((BankItemDetailCell) -> Void)?
-	var buttonActionHandler    : ((BankItemDetailCell) -> Void)?
-	var rowSelectionHandler    : ((BankItemDetailCell) -> Void)?
-	var shouldShowPicker       : ((BankItemDetailCell) -> Bool)?
-	var shouldHidePicker       : ((BankItemDetailCell) -> Bool)?
-	var didShowPicker          : ((BankItemDetailCell) -> Void)?
-	var didHidePicker          : ((BankItemDetailCell) -> Void)?
+	var changeHandler          : ((BankItemCell) -> Void)?
+	var validationHandler      : ((BankItemCell) -> Bool)?
+	var pickerSelectionHandler : ((BankItemCell) -> Void)?
+	var buttonActionHandler    : ((BankItemCell) -> Void)?
+	var rowSelectionHandler    : ((BankItemCell) -> Void)?
+	var shouldShowPicker       : ((BankItemCell) -> Bool)?
+	var shouldHidePicker       : ((BankItemCell) -> Bool)?
+	var didShowPicker          : ((BankItemCell) -> Void)?
+	var didHidePicker          : ((BankItemCell) -> Void)?
 
   var shouldUseIntegerKeyboard: Bool = false {
 		didSet {
@@ -138,15 +136,7 @@ class BankItemDetailCell: UITableViewCell {
 		return text
 	}
 
-	var tableIdentifier: Identifier = .List {
-		willSet {
-      // docs say to pass nil to unregister but this doesn't compile
-			//table?.registerClass(nil, forCellReuseIdentifier: tableIdentifier.identifier)
-		}
-		didSet {
-			table?.registerClass(BankItemDetailCell.self, forCellReuseIdentifier: tableIdentifier.identifier)
-		}
-	}
+	var tableIdentifier: Identifier = .List
 
 	var tableData:       [NSObject]?
 	var pickerData:      [NSObject]?
@@ -191,7 +181,7 @@ class BankItemDetailCell: UITableViewCell {
 			self.addSubview(view)
 			return view
 			}()
-			constrainWithFormat("|[content]| :: V:|[content]| :: |[picker]| :: V:[picker(==162)]|",
+			constrainWithFormat("|[content]| :: V:|[content]| :: |[picker]| :: V:[picker(==\(BankItemCell.PickerHeight))]|",
 			              views: ["content": contentView, "picker": pickerView])
 
 
@@ -202,15 +192,15 @@ class BankItemDetailCell: UITableViewCell {
     let nameAndInfoCenterYConstraints  = "\n".join(["|-20-[name]-8-[info]-20-|",
                                                     "name.centerY = info.centerY",
                                                     "name.height = info.height",
-                                                    "V:|-2-[name]"])
+                                                    "V:|-8-[name]-8-|"])
 
-    let infoConstraints                = "|-20-[info]-20-| :: V:|-8-[info]"
+    let infoConstraints                = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
 
-    let infoDisclosureConstraints      = "|-20-[info]-75-| :: V:|-8-[info]"
+    let infoDisclosureConstraints      = "|-20-[info]-75-| :: V:|-8-[info]-8-|"
 
-    let nameAndTextViewInfoConstraints = "V:|-5-[name]-5-[info]-5-| :: |-20-[name] :: |-20-[info]-20-|"
+    let nameAndTextViewInfoConstraints = "V:|-8-[name]-8-[info]-8-| :: |-20-[name]-(>=20)-| :: |-20-[info]-20-|"
 
-    let tableViewInfoConstraints       = "|[info]| :: V:|[info]|"
+    let tableViewInfoConstraints       = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
 
     let nameInfoAndStepperConstraints  = "\n".join(["|-20-[name]-8-[info]",
 	                                                  "'info trailing' info.trailing = stepper.leading - 20",
@@ -218,32 +208,20 @@ class BankItemDetailCell: UITableViewCell {
 	                                                  "name.height = info.height",
 	                                                  "'stepper leading' stepper.leading = self.trailing",
 	                                                  "stepper.centerY = name.centerY",
-	                                                  "V:|-8-[name]"])
+	                                                  "V:|-8-[name]-8-|"])
 
-    let imageViewInfoConstraints       = "|[info]| :: V:|[info]|"
+    let imageViewInfoConstraints       = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
 
-
-    /// Create the fonts to use in decorator blocks
-    ////////////////////////////////////////////////////////////////////////////////
-
-    let nameFont = UIFont(name:"Elysio-Medium", size:15.0)
-    let infoFont = UIFont(name:"Elysio-Light",  size:15.0)
-
-    /// Create the colors to use in decorator blocks
-    ////////////////////////////////////////////////////////////////////////////////
-
-    let nameColor = UIColor(r: 59, g: 60, b: 64, a:255)
-    let infoColor = UIColor(r:159, g:160, b:164, a:255)
 
 		/// Create some generic blocks to add name and info views
     ////////////////////////////////////////////////////////////////////////////////
 
-    let addName = {(name: UILabel, cell: BankItemDetailCell) -> UILabel in
+    let addName = {(name: UILabel, cell: BankItemCell) -> UILabel in
 
       name.setTranslatesAutoresizingMaskIntoConstraints(false)
       name.setContentHuggingPriority(750.0, forAxis:.Horizontal)
-      name.font      = nameFont
-      name.textColor = nameColor
+      name.font      = BankAppearance.LabelFont
+      name.textColor = BankAppearance.LabelColor
       cell.contentView.addSubview(name)
       cell.nameLabel = name
 
@@ -251,7 +229,7 @@ class BankItemDetailCell: UITableViewCell {
 
     }
 
-    let addInfo = {(info: NSObject, cell: BankItemDetailCell) -> NSObject in
+    let addInfo = {(info: NSObject, cell: BankItemCell) -> NSObject in
 
       if let view = info as? UIView {
         view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -261,32 +239,32 @@ class BankItemDetailCell: UITableViewCell {
       }
 
       if let infoLabel = info as? UILabel {
-        infoLabel.font          = infoFont
-        infoLabel.textColor     = infoColor
+        infoLabel.font          = BankAppearance.InfoFont
+        infoLabel.textColor     = BankAppearance.InfoColor
         infoLabel.textAlignment = .Right
         cell.infoLabel = infoLabel
       }
 
       else if let infoButton = info as? UIButton {
-        infoButton.titleLabel?.font          = infoFont;
+        infoButton.titleLabel?.font          = BankAppearance.InfoFont;
         infoButton.titleLabel?.textAlignment = .Right;
         infoButton.constrainWithFormat("|[title]| :: V:|[title]|", views: ["title": infoButton.titleLabel!])
-        infoButton.setTitleColor(infoColor, forState:.Normal)
+        infoButton.setTitleColor(BankAppearance.InfoColor, forState:.Normal)
         infoButton.addTarget(cell, action:"buttonUpAction:", forControlEvents:.TouchUpInside)
         cell.infoButton = infoButton
       }
 
       else if let infoTextField = info as? UITextField {
-        infoTextField.font          = infoFont
-        infoTextField.textColor     = infoColor
+        infoTextField.font          = BankAppearance.InfoFont
+        infoTextField.textColor     = BankAppearance.InfoColor
         infoTextField.textAlignment = .Right
         infoTextField.delegate      = cell
         cell.infoTextField = infoTextField
       }
 
       else if let infoTextView = info as? UITextView {
-        infoTextView.font      = infoFont
-        infoTextView.textColor = infoColor
+        infoTextView.font      = BankAppearance.InfoFont
+        infoTextView.textColor = BankAppearance.InfoColor
         infoTextView.delegate  = cell
         cell.infoTextView = infoTextView
       }
@@ -302,6 +280,7 @@ class BankItemDetailCell: UITableViewCell {
         infoTableView.rowHeight      = 38.0
         infoTableView.delegate       = cell
         infoTableView.dataSource     = cell
+        BankItemCell.registerIdentifiersWithTableView(infoTableView)
         cell.table = infoTableView
       }
 
@@ -319,6 +298,8 @@ class BankItemDetailCell: UITableViewCell {
 
     }
 
+    /// Use blocks to create subviews switching on identifer
+		////////////////////////////////////////////////////////////////////////////////////////////////////
     switch identifier {
 			case .Label:
 				let name = addName(UILabel(), self)
@@ -410,7 +391,6 @@ class BankItemDetailCell: UITableViewCell {
 	private func integerKeyboardForInput(input: UITextField) -> UIView {
 
 		let view = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 216))
-		view.nametag = IntegerKeyboardNametag
 
 		let index = [0: "1",      1: "2",  2: "3",
 		             3: "4",      4: "5",  5: "6",
@@ -510,7 +490,7 @@ class BankItemDetailCell: UITableViewCell {
 }
 
 
-extension BankItemDetailCell: UITextFieldDelegate {
+extension BankItemCell: UITextFieldDelegate {
 
 	/**
 	textFieldDidBeginEditing:
@@ -545,7 +525,7 @@ extension BankItemDetailCell: UITextFieldDelegate {
 
 
 
-extension BankItemDetailCell: UITextViewDelegate {
+extension BankItemCell: UITextViewDelegate {
 
 	/**
 	textViewDidBeginEditing:
@@ -593,7 +573,7 @@ extension BankItemDetailCell: UITextViewDelegate {
 
 
 
-extension BankItemDetailCell: UIPickerViewDataSource {
+extension BankItemCell: UIPickerViewDataSource {
 
 
 	/**
@@ -630,7 +610,7 @@ extension BankItemDetailCell: UIPickerViewDataSource {
 
 }
 
-extension BankItemDetailCell: UIPickerViewDelegate {
+extension BankItemCell: UIPickerViewDelegate {
 
 	/**
 	pickerView:didSelectRow:inComponent:
@@ -649,7 +629,7 @@ extension BankItemDetailCell: UIPickerViewDelegate {
 
 }
 
-extension BankItemDetailCell: UITableViewDataSource {
+extension BankItemCell: UITableViewDataSource {
 
 
   /**
@@ -693,12 +673,12 @@ extension BankItemDetailCell: UITableViewDataSource {
   :returns: UITableViewCell
   */
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-  	let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.identifier, forIndexPath: indexPath) as? UITableViewCell
-  	if let bankItemCell = cell as? BankItemDetailCell { bankItemCell.info = tableData?[indexPath.row] }
+  	let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.toRaw(), forIndexPath: indexPath) as? UITableViewCell
+  	if let bankItemCell = cell as? BankItemCell { bankItemCell.info = tableData?[indexPath.row] }
   	return cell ?? UITableViewCell()
   }
 
 }
 
 
-extension BankItemDetailCell: UITableViewDelegate {}
+extension BankItemCell: UITableViewDelegate {}

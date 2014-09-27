@@ -41,7 +41,7 @@ class BankRootCell: UITableViewCell {
 
   private let label: UILabel = {
     let view = UILabel.newForAutolayout()
-    view.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+    view.font = BankAppearance.InfoFont
     return view
   }()
 

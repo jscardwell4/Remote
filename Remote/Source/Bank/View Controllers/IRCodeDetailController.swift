@@ -37,12 +37,12 @@ class IRCodeDetailController: BankItemDetailController {
     codesets = irCode.manufacturer.codesets.allObjects as [String]
 
     // section 0 - row 0: manufacturer
-    let manufacturerRow = Row(identifier: BankItemCellTextFieldStyleIdentifier, isEditable: true) {[unowned self] in
+    let manufacturerRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Manufacturer"
       $0.info = self.irCode.manufacturer ?? "No Manufacturer"
       $0.validationHandler = {($0.info as NSString).length > 0}
-      $0.changeHandler = {[unowned self] cell in
-        if let text = cell.info as? String {
+      $0.changeHandler = {[unowned self] c in
+        if let text = c.info as? String {
           if text == "No Manufacturer" { self.irCode.manufacturer = nil }
           else {
             var manufacturer = self.manufacturers.filter{$0.name == text}.first
@@ -55,8 +55,8 @@ class IRCodeDetailController: BankItemDetailController {
           }
         }
       }
-      $0.pickerSelectionHandler = {[unowned self] cell in
-        if let selection = cell.pickerSelection as? Manufacturer {
+      $0.pickerSelectionHandler = {[unowned self] c in
+        if let selection = c.pickerSelection as? Manufacturer {
           if self.irCode.manufacturer != selection {
             self.irCode.manufacturer = selection
             self.irCode.codeset = nil
@@ -73,12 +73,12 @@ class IRCodeDetailController: BankItemDetailController {
     }
 
     // section 0 - row 1: codeset
-    let codesetRow = Row(identifier: BankItemCellTextFieldStyleIdentifier, isEditable: true) {[unowned self] in
+    let codesetRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Codeset"
       $0.info = self.irCode.codeset ?? "No Codeset"
       $0.validationHandler = {($0.info as NSString).length > 0}
-      $0.changeHandler = {[unowned self] cell in
-        if let text = cell.info as? String {
+      $0.changeHandler = {[unowned self] c in
+        if let text = c.info as? String {
           if self.irCode.codeset != text {
             self.irCode.codeset = text
             if self.codesets ∌ text {
@@ -88,8 +88,8 @@ class IRCodeDetailController: BankItemDetailController {
           }
         }
       }
-      $0.pickerSelectionHandler = {[unowned self] cell in
-        if let selection = cell.pickerSelection as? String {
+      $0.pickerSelectionHandler = {[unowned self] c in
+        if let selection = c.pickerSelection as? String {
           self.irCode.codeset = selection
         }
       }
@@ -98,44 +98,44 @@ class IRCodeDetailController: BankItemDetailController {
     }
 
     // section 0 - row 2: frequency
-    let frequencyRow = Row(identifier: BankItemCellTextFieldStyleIdentifier, isEditable: true) {[unowned self] in
+    let frequencyRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Frequency"
       $0.info = self.irCode.frequency
-      $0.useIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] cell in self.irCode.frequency = cell.info as NSNumber}
+      $0.shouldUseIntegerKeyboard = true
+      $0.changeHandler = {[unowned self] c in self.irCode.frequency = c.info as NSNumber}
     }
 
     // section 0 - row 3: repeat
-    let repeatRow = Row(identifier: BankItemCellTextFieldStyleIdentifier, isEditable: true) {[unowned self] in
+    let repeatRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Repeat"
       $0.info = self.irCode.repeatCount
-      $0.useIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] cell in self.irCode.repeatCount = cell.info as NSNumber}
+      $0.shouldUseIntegerKeyboard = true
+      $0.changeHandler = {[unowned self] c in self.irCode.repeatCount = c.info as NSNumber}
     }
 
     // section 0 - row 4: offset
-    let offsetRow = Row(identifier: BankItemCellStepperStyleIdentifier, isEditable: true) {[unowned self] in
+    let offsetRow = Row(identifier: .Stepper, isEditable: true) {[unowned self] in
       $0.name = "Offset"
       $0.stepperMinValue = 0
       $0.stepperMaxValue = 127
       $0.stepperWraps = false
       $0.info = self.irCode.offset
-      $0.changeHandler = {[unowned self] cell in self.irCode.offset = cell.info as NSNumber}
+      $0.changeHandler = {[unowned self] c in self.irCode.offset = c.info as NSNumber}
     }
 
     // section 0 - row 5: on-off pattern
-    let onOffPatternRow = Row(identifier: BankItemCellTextViewStyleIdentifier, isEditable: true) {[unowned self] in
+    let onOffPatternRow = Row(identifier: .TextView, isEditable: true) {[unowned self] in
       $0.name = "On-Off Pattern"
       $0.info = self.irCode.onOffPattern
-      $0.validationHandler = { (cell) -> Bool in
-        if let text = cell.info as? NSString {
+      $0.validationHandler = { (c) -> Bool in
+        if let text = c.info as? NSString {
           let trimmedText = text.stringByTrimmingWhitespace()
           return trimmedText.length == 0 || IRCode.isValidOnOffPattern(trimmedText)
         }
         return true
       }
-      $0.changeHandler = {[unowned self] cell in
-        if let text = cell.info as? String {
+      $0.changeHandler = {[unowned self] c in
+        if let text = c.info as? String {
           if let compressedText = IRCode.compressedOnOffPatternFromPattern(text.stringByTrimmingWhitespace()) {
             self.irCode.onOffPattern = compressedText
           }
@@ -162,7 +162,7 @@ class IRCodeDetailController: BankItemDetailController {
   :param: style UITableViewStyle
   */
   override init(style: UITableViewStyle) { super.init(style: style) }
-  
+
   /**
   init:
 

@@ -32,12 +32,12 @@ class PresetDetailController: BankItemDetailController {
     precondition(item is Preset, "we should have been given a preset")
 
     // section 0 - row 0: category
-    let categoryRow = Row(identifier: BankItemCellTextFieldStyleIdentifier, isEditable: true) { [unowned self] in
+    let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
       $0.info = self.preset.category ?? "Uncategorized"
-      $0.changeHandler = {[unowned self] cell in
-        let text = cell.info as? String
+      $0.changeHandler = {[unowned self] c in
+        let text = c.info as? String
         self.preset.category = text
         if self.preset.category != nil && self.categories ∌ self.preset.category! {
           self.categories.append(self.preset.category!)
@@ -49,13 +49,13 @@ class PresetDetailController: BankItemDetailController {
     }
 
     // section 0 - row 1: type
-    let typeRow = Row(identifier: BankItemCellLabelStyleIdentifier, isEditable: false) { [unowned self] in
+    let typeRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
       $0.name = "Type"
       $0.info = "FIXME"
    }
 
     // section 1 - row 0: preview
-    let previewRow = Row(identifier: BankItemCellImageStyleIdentifier, isEditable: false) {[unowned self] in
+    let previewRow = Row(identifier: .Image, isEditable: false) {[unowned self] in
       $0.info = self.preset.preview
     }
 
@@ -79,7 +79,7 @@ class PresetDetailController: BankItemDetailController {
   :param: style UITableViewStyle
   */
   override init(style: UITableViewStyle) { super.init(style: style) }
-  
+
   /**
   init:
 

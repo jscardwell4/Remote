@@ -11,8 +11,6 @@
 		C2037B6F19D08925001F6AD9 /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832219D06E5D000CB422 /* BankCollectionController.swift */; };
 		C2037B7519D0F29B001F6AD9 /* BankCollectionZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
-		C209C0CF19BFE70700A6AB85 /* ISYDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */; };
-		C20BD77E19BF3D340011E3F6 /* ITachDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20BD77D19BF3D340011E3F6 /* ITachDeviceViewController.m */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
@@ -223,7 +221,6 @@
 		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
 		C26296801810619900760056 /* CoreDataManager+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = C262967F1810619900760056 /* CoreDataManager+Model.m */; };
 		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
-		C265936317FBA1B00017949C /* BankItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C265936217FBA1B00017949C /* BankItemTableViewCell.m */; };
 		C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */; };
 		C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEB916DC10FE0093D5B4 /* main.m */; };
 		C26BB5AF16DC18A90093D5B4 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */; };
@@ -365,9 +362,9 @@
 		C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
-		C2AB7B5E17F2083800906FAE /* BankItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AB7B5D17F2083800906FAE /* BankItemViewController.m */; };
 		C2C1756C19D1F58A008B8E16 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
+		C2C628D319D7188C00E40176 /* BankAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C628D219D7188C00E40176 /* BankAppearance.swift */; };
 		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
 		C2CA769219BA1E1800ACCD76 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
 		C2CA769419BA1E1800ACCD76 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769319BA1E1800ACCD76 /* UIKit.framework */; };
@@ -410,14 +407,13 @@
 		C2E8126419D4DD9600FD80C4 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125519D4DC4600FD80C4 /* Type Dynamic - Elysio.otf */; };
 		C2E8126619D5B7FA00FD80C4 /* BankItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */; };
 		C2E8126C19D5CE3F00FD80C4 /* ManufacturerDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126B19D5CE3F00FD80C4 /* ManufacturerDetailController.swift */; };
-		C2E8127519D6080200FD80C4 /* ComponentDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47417EF566600DE2F41 /* ComponentDeviceViewController.m */; };
 		C2E8127719D6083200FD80C4 /* ImageDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126D19D5CE5800FD80C4 /* ImageDetailController.swift */; };
 		C2E8127819D6083A00FD80C4 /* PresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126F19D5CE6D00FD80C4 /* PresetDetailController.swift */; };
 		C2E8127919D6085000FD80C4 /* IRCodeDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126919D5CE2300FD80C4 /* IRCodeDetailController.swift */; };
 		C2E8127A19D6085B00FD80C4 /* ComponentDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126719D5CDF300FD80C4 /* ComponentDeviceDetailController.swift */; };
 		C2E8127B19D6121C00FD80C4 /* ITachDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127319D5CEB600FD80C4 /* ITachDeviceDetailController.swift */; };
 		C2E8127C19D6121F00FD80C4 /* ISYDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127119D5CEA100FD80C4 /* ISYDeviceDetailController.swift */; };
-		C2E8128019D65BF700FD80C4 /* BankItemDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* BankItemDetailCell.swift */; };
+		C2E8128019D65BF700FD80C4 /* BankItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* BankItemCell.swift */; };
 		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
 		C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
 		C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
@@ -486,10 +482,6 @@
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
-		C2F2A47217EF564100DE2F41 /* IRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47117EF564100DE2F41 /* IRCodeViewController.m */; };
-		C2F2A47817EF567700DE2F41 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47717EF567700DE2F41 /* ImageViewController.m */; };
-		C2F2A47B17EF568E00DE2F41 /* PresetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47A17EF568E00DE2F41 /* PresetViewController.m */; };
-		C2F2A47E17EF569F00DE2F41 /* ManufacturerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47D17EF569F00DE2F41 /* ManufacturerViewController.m */; };
 		C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */; };
 		C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */; };
 		C2F940F819BE5E90007B5CC1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
@@ -558,10 +550,6 @@
 		C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoom.swift; sourceTree = "<group>"; };
 		C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
 		C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConstraint.m; sourceTree = "<group>"; };
-		C209C0CD19BFE70700A6AB85 /* ISYDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceViewController.h; sourceTree = "<group>"; };
-		C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceViewController.m; sourceTree = "<group>"; };
-		C20BD77C19BF3D340011E3F6 /* ITachDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceViewController.h; sourceTree = "<group>"; };
-		C20BD77D19BF3D340011E3F6 /* ITachDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceViewController.m; sourceTree = "<group>"; };
 		C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish_Test.json; sourceTree = "<group>"; };
 		C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Test.json; sourceTree = "<group>"; };
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -787,8 +775,6 @@
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
 		C26296811811F9AE00760056 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
-		C265936117FBA1B00017949C /* BankItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankItemTableViewCell.h; sourceTree = "<group>"; };
-		C265936217FBA1B00017949C /* BankItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankItemTableViewCell.m; sourceTree = "<group>"; };
 		C26B5CE0182803DE005AB70E /* CommandSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSet.h; sourceTree = "<group>"; };
 		C26B5CE1182803DE005AB70E /* CommandSetCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSetCollection.h; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1011,9 +997,6 @@
 		C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceMulticastConnection.m; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
-		C2AB7B5C17F2083800906FAE /* BankItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankItemViewController.h; sourceTree = "<group>"; };
-		C2AB7B5D17F2083800906FAE /* BankItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankItemViewController.m; sourceTree = "<group>"; };
-		C2AB7B5F17F2096100906FAE /* BankItemViewController_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankItemViewController_Private.h; sourceTree = "<group>"; };
 		C2B4998917C9562D00EC6C7C /* IRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCode.h; sourceTree = "<group>"; };
 		C2B4998A17C9567800EC6C7C /* Image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		C2B4998B17C9568900EC6C7C /* Preset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preset.h; sourceTree = "<group>"; };
@@ -1025,6 +1008,7 @@
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482C719C9F968002E84A9 /* Remote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Remote_Tests.m; sourceTree = "<group>"; };
+		C2C628D219D7188C00E40176 /* BankAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankAppearance.swift; sourceTree = "<group>"; };
 		C2C6A172182AFFFF0036261E /* Glyphish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish.json; sourceTree = "<group>"; };
 		C2CA766519BA099000ACCD76 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C2CA768F19BA1E1800ACCD76 /* ISYClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ISYClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1083,7 +1067,7 @@
 		C2E8126F19D5CE6D00FD80C4 /* PresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetDetailController.swift; sourceTree = "<group>"; };
 		C2E8127119D5CEA100FD80C4 /* ISYDeviceDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceDetailController.swift; sourceTree = "<group>"; };
 		C2E8127319D5CEB600FD80C4 /* ITachDeviceDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDeviceDetailController.swift; sourceTree = "<group>"; };
-		C2E8127D19D6454300FD80C4 /* BankItemDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailCell.swift; sourceTree = "<group>"; };
+		C2E8127D19D6454300FD80C4 /* BankItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemCell.swift; sourceTree = "<group>"; };
 		C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1067-gray-enter-fullscreen.png"; sourceTree = "<group>"; };
 		C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1067-gray-enter-fullscreen@2x.png"; sourceTree = "<group>"; };
 		C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1068-gray-exit-fullscreen.png"; sourceTree = "<group>"; };
@@ -1139,16 +1123,6 @@
 		C2F225491715CB8500D22B5F /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		C2F2254B1715E39600D22B5F /* ModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelObject.h; sourceTree = "<group>"; };
 		C2F2254C1715E39600D22B5F /* ModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelObject.m; sourceTree = "<group>"; };
-		C2F2A47017EF564100DE2F41 /* IRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeViewController.h; sourceTree = "<group>"; };
-		C2F2A47117EF564100DE2F41 /* IRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeViewController.m; sourceTree = "<group>"; };
-		C2F2A47317EF566600DE2F41 /* ComponentDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentDeviceViewController.h; sourceTree = "<group>"; };
-		C2F2A47417EF566600DE2F41 /* ComponentDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComponentDeviceViewController.m; sourceTree = "<group>"; };
-		C2F2A47617EF567700DE2F41 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
-		C2F2A47717EF567700DE2F41 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
-		C2F2A47917EF568E00DE2F41 /* PresetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetViewController.h; sourceTree = "<group>"; };
-		C2F2A47A17EF568E00DE2F41 /* PresetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresetViewController.m; sourceTree = "<group>"; };
-		C2F2A47C17EF569F00DE2F41 /* ManufacturerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManufacturerViewController.h; sourceTree = "<group>"; };
-		C2F2A47D17EF569F00DE2F41 /* ManufacturerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManufacturerViewController.m; sourceTree = "<group>"; };
 		C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceConnection.h; sourceTree = "<group>"; };
 		C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceConnection.m; sourceTree = "<group>"; };
 		C2F4370719BBAB3500B60FC3 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
@@ -1444,26 +1418,7 @@
 		C26B8A6B18006C1D00912DBB /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				C2E8127D19D6454300FD80C4 /* BankItemDetailCell.swift */,
-				C209C0CD19BFE70700A6AB85 /* ISYDeviceViewController.h */,
-				C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */,
-				C2AB7B5C17F2083800906FAE /* BankItemViewController.h */,
-				C2AB7B5D17F2083800906FAE /* BankItemViewController.m */,
-				C2AB7B5F17F2096100906FAE /* BankItemViewController_Private.h */,
-				C265936117FBA1B00017949C /* BankItemTableViewCell.h */,
-				C265936217FBA1B00017949C /* BankItemTableViewCell.m */,
-				C2F2A47017EF564100DE2F41 /* IRCodeViewController.h */,
-				C2F2A47117EF564100DE2F41 /* IRCodeViewController.m */,
-				C2F2A47317EF566600DE2F41 /* ComponentDeviceViewController.h */,
-				C2F2A47417EF566600DE2F41 /* ComponentDeviceViewController.m */,
-				C2F2A47617EF567700DE2F41 /* ImageViewController.h */,
-				C2F2A47717EF567700DE2F41 /* ImageViewController.m */,
-				C2F2A47917EF568E00DE2F41 /* PresetViewController.h */,
-				C2F2A47A17EF568E00DE2F41 /* PresetViewController.m */,
-				C2F2A47C17EF569F00DE2F41 /* ManufacturerViewController.h */,
-				C2F2A47D17EF569F00DE2F41 /* ManufacturerViewController.m */,
-				C20BD77C19BF3D340011E3F6 /* ITachDeviceViewController.h */,
-				C20BD77D19BF3D340011E3F6 /* ITachDeviceViewController.m */,
+				C2E8127D19D6454300FD80C4 /* BankItemCell.swift */,
 				C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */,
 				C2E8126719D5CDF300FD80C4 /* ComponentDeviceDetailController.swift */,
 				C2E8126919D5CE2300FD80C4 /* IRCodeDetailController.swift */,
@@ -2121,6 +2076,7 @@
 		C2F2A46F17EF560900DE2F41 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C2C628D219D7188C00E40176 /* BankAppearance.swift */,
 				C2400F9719D4B9B600D9BB13 /* BankRootController.swift */,
 				C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */,
 				C26B8A6A18006BF500912DBB /* Collections */,
@@ -2700,7 +2656,6 @@
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
 				C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */,
-				C265936317FBA1B00017949C /* BankItemTableViewCell.m in Sources */,
 				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,
 				C26C6E5E19B8DB3500B346AE /* ITachDevice.m in Sources */,
 				C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */,
@@ -2708,14 +2663,14 @@
 				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
 				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
-				C2F2A47817EF567700DE2F41 /* ImageViewController.m in Sources */,
+				C2C628D319D7188C00E40176 /* BankAppearance.swift in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
 				C25B474016FF8D0A0042B59E /* Preset.m in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
 				C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */,
 				C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */,
 				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
-				C2E8128019D65BF700FD80C4 /* BankItemDetailCell.swift in Sources */,
+				C2E8128019D65BF700FD80C4 /* BankItemCell.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
 				C2E8127C19D6121F00FD80C4 /* ISYDeviceDetailController.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
@@ -2745,15 +2700,11 @@
 				C2E8126C19D5CE3F00FD80C4 /* ManufacturerDetailController.swift in Sources */,
 				C2400F9A19D4BB5400D9BB13 /* BankRootCell.swift in Sources */,
 				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
-				C2F2A47E17EF569F00DE2F41 /* ManufacturerViewController.m in Sources */,
 				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
 				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
 				C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */,
-				C2AB7B5E17F2083800906FAE /* BankItemViewController.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
-				C2F2A47217EF564100DE2F41 /* IRCodeViewController.m in Sources */,
-				C20BD77E19BF3D340011E3F6 /* ITachDeviceViewController.m in Sources */,
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C279E08A182179E500C17FB1 /* REFont.m in Sources */,
@@ -2778,7 +2729,6 @@
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
 				C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */,
-				C2E8127519D6080200FD80C4 /* ComponentDeviceViewController.m in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
 				C2E8127719D6083200FD80C4 /* ImageDetailController.swift in Sources */,
 				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
@@ -2787,7 +2737,6 @@
 				C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */,
 				C26C6E6519B8DB9500B346AE /* ISYDevice.m in Sources */,
 				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
-				C2F2A47B17EF568E00DE2F41 /* PresetViewController.m in Sources */,
 				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
 				C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */,
 				C2E8127919D6085000FD80C4 /* IRCodeDetailController.swift in Sources */,
@@ -2810,7 +2759,6 @@
 				C2E8127A19D6085B00FD80C4 /* ComponentDeviceDetailController.swift in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
 				C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */,
-				C209C0CF19BFE70700A6AB85 /* ISYDeviceViewController.m in Sources */,
 				C2E8126619D5B7FA00FD80C4 /* BankItemDetailController.swift in Sources */,
 				C2400F9819D4B9B600D9BB13 /* BankRootController.swift in Sources */,
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,

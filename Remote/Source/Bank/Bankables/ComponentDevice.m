@@ -11,7 +11,6 @@
 #import "Manufacturer.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
-#import "ComponentDeviceViewController.h"
 #import "Remote-Swift.h"
 
 @implementation ComponentDevice {

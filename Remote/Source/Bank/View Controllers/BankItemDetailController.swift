@@ -19,9 +19,9 @@ class BankItemDetailController: UITableViewController {
   }
 
   struct Row {
-    var identifier: String
+    var identifier: BankItemCell.Identifier
     var isEditable: Bool
-    var configureCell: (BankItemDetailCell) -> Void
+    var configureCell: (BankItemCell) -> Void
   }
 
   var sections: [Section] = []
@@ -93,11 +93,12 @@ class BankItemDetailController: UITableViewController {
     tableView.separatorStyle = .None
     tableView.delegate = self
     tableView.dataSource = self
-    BankItemDetailCell.registerIdentifiersWithTableView(tableView)
+    BankItemCell.registerIdentifiersWithTableView(tableView)
     nameTextField = { [unowned self] in
       let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
       textField.placeholder = "Name"
-      textField.font = UIFont(name: "Elysio-Bold", size: 17.0)
+      textField.font = BankAppearance.BoldLabelFont
+      textField.textColor = BankAppearance.LabelColor
       textField.keyboardAppearance = .Dark
       textField.adjustsFontSizeToFitWidth = true
       textField.returnKeyType = .Done
@@ -179,12 +180,12 @@ class BankItemDetailController: UITableViewController {
 
   :param: indexPath NSIndexPath
 
-  :returns: BankItemDetailCell
+  :returns: BankItemCell
   */
-  func cellForRowAtIndexPath(indexPath: NSIndexPath) -> BankItemDetailCell! {
-    return tableView.cellForRowAtIndexPath(indexPath) as? BankItemDetailCell
+  func cellForRowAtIndexPath(indexPath: NSIndexPath) -> BankItemCell! {
+    return tableView.cellForRowAtIndexPath(indexPath) as? BankItemCell
   }
-  
+
 
   /**
   identifierForIndexPath:
@@ -193,8 +194,8 @@ class BankItemDetailController: UITableViewController {
 
   :returns: String?
   */
-  private func identifierForIndexPath(indexPath: NSIndexPath) -> String? {
-    var identifier: String?
+  private func identifierForIndexPath(indexPath: NSIndexPath) -> BankItemCell.Identifier? {
+    var identifier: BankItemCell.Identifier?
     if indexPath.section < sections.count {
       let section = sections[indexPath.section]
       if indexPath.row < section.rows.count {
@@ -210,27 +211,25 @@ class BankItemDetailController: UITableViewController {
 
   :param: indexPath NSIndexPath
 
-  :returns: BankItemDetailCell?
+  :returns: BankItemCell?
   */
-  func dequeueCellForIndexPath(indexPath: NSIndexPath) -> BankItemDetailCell? {
-    var cell: BankItemDetailCell?
+  func dequeueCellForIndexPath(indexPath: NSIndexPath) -> BankItemCell? {
+    var cell: BankItemCell?
 
     if let identifier = identifierForIndexPath(indexPath) {
-      if BankItemDetailCell.isValidIdentifier(identifier) {
-        cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BankItemDetailCell
-        cell?.shouldShowPicker = {[unowned self] (c: BankItemDetailCell!) -> Bool in
-          self.tableView.beginUpdates()
-          self.expandedRows.append(indexPath)
-          return true
-        }
-        cell?.shouldHidePicker = {[unowned self] (c: BankItemDetailCell!) -> Bool in
-          self.tableView.beginUpdates()
-          self.expandedRows = self.expandedRows.filter{$0 != indexPath}
-          return true
-        }
-        cell?.didShowPicker = {[unowned self] (c: BankItemDetailCell!) in self.tableView.endUpdates() }
-        cell?.didHidePicker = {[unowned self] (c: BankItemDetailCell!) in self.tableView.endUpdates() }
+      cell = tableView.dequeueReusableCellWithIdentifier(identifier.toRaw(), forIndexPath: indexPath) as? BankItemCell
+      cell?.shouldShowPicker = {[unowned self] (c: BankItemCell!) -> Bool in
+        self.tableView.beginUpdates()
+        self.expandedRows.append(indexPath)
+        return true
       }
+      cell?.shouldHidePicker = {[unowned self] (c: BankItemCell!) -> Bool in
+        self.tableView.beginUpdates()
+        self.expandedRows = self.expandedRows.filter{$0 != indexPath}
+        return true
+      }
+      cell?.didShowPicker = {[unowned self] (c: BankItemCell!) in self.tableView.endUpdates() }
+      cell?.didHidePicker = {[unowned self] (c: BankItemCell!) in self.tableView.endUpdates() }
     }
 
     return cell
@@ -239,10 +238,10 @@ class BankItemDetailController: UITableViewController {
   /**
   decorateCell:forIndexPath:
 
-  :param: cell BankItemDetailCell
+  :param: cell BankItemCell
   :param: indexPath NSIndexPath
   */
-  private func decorateCell(cell: BankItemDetailCell, forIndexPath indexPath: NSIndexPath) {
+  private func decorateCell(cell: BankItemCell, forIndexPath indexPath: NSIndexPath) {
     if indexPath.section < sections.count {
       let section = sections[indexPath.section]
       if indexPath.row < section.rows.count {
@@ -337,12 +336,13 @@ extension BankItemDetailController: UITableViewDataSource {
     var height: CGFloat = 0.0
     if let identifier = identifierForIndexPath(indexPath) {
       switch identifier {
-        case BankItemCellTextViewStyleIdentifier: height = BankItemDetailController.TextViewRowHeight
-        case BankItemCellImageStyleIdentifier:    height = BankItemDetailController.PreviewRowHeight
-        case BankItemCellTableStyleIdentifier:    height = BankItemDetailController.TableRowHeight
-        default:                                  height = BankItemDetailController.DefaultRowHeight
+        case .TextView: height = BankItemDetailController.TextViewRowHeight
+        case .Image:    height = BankItemDetailController.PreviewRowHeight
+        case .Table:    height = BankItemDetailController.TableRowHeight
+        default:        height = BankItemDetailController.DefaultRowHeight
       }
     }
+    if expandedRows ∋ indexPath { height += BankItemCell.PickerHeight }
     return height
   }
 

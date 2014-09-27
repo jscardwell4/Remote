@@ -31,12 +31,12 @@ class ManufacturerDetailController: BankItemDetailController {
     codesets = manufacturer.codesets.allObjects as [String]
 
     // section 0 - row 0: devices
-    let devicesRow = Row(identifier: BankItemCellTableStyleIdentifier, isEditable: true) { [unowned self] in
+    let devicesRow = Row(identifier: .Table, isEditable: true) { [unowned self] in
       $0.info = self.devices
     }
 
     // section 1 - row 0: codesets
-    let codesetsRow = Row(identifier: BankItemCellImageStyleIdentifier, isEditable: false) {[unowned self] in
+    let codesetsRow = Row(identifier: .Table, isEditable: false) {[unowned self] in
       $0.info = self.codesets
     }
 
@@ -60,7 +60,7 @@ class ManufacturerDetailController: BankItemDetailController {
   :param: style UITableViewStyle
   */
   override init(style: UITableViewStyle) { super.init(style: style) }
-  
+
   /**
   init:
 

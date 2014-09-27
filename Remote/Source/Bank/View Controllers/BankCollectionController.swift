@@ -186,9 +186,6 @@ class BankCollectionController: UICollectionViewController {
                : [exportBarItem, spacer, importBarItem, flex, searchBarItem]
     }()
 
-    // Refresh our list of existing file names for checking during file export
-    refreshExistingFiles()
-
   }
 
   deinit { view.removeFromSuperview() }
@@ -256,6 +253,9 @@ class BankCollectionController: UICollectionViewController {
     // Check if we actually have any items selected for export
     if exportSelection.count > 0 {
 
+      // Refresh our list of existing file names for checking during file export
+      refreshExistingFiles()
+      
       // Create the controller with export title and filename message
       alert = UIAlertController(title:          "Export Selection",
                                 message:        "Enter a name for the exported file",

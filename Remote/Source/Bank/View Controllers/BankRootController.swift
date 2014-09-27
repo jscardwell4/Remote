@@ -39,7 +39,8 @@ class BankRootController: UITableViewController {
   override func loadView() {
 
     title = "Bank"
-
+    navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName           : BankAppearance.BoldLabelFont,
+                                                                NSForegroundColorAttributeName: BankAppearance.LabelColor ]
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
       tableView.backgroundColor = UIColor.whiteColor()
@@ -79,19 +80,20 @@ class BankRootController: UITableViewController {
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "dismiss")
+    navigationController?.toolbarHidden = false
   }
 
   /** dismiss */
   func dismiss() { MSRemoteAppController.sharedAppController().showMainMenu() }
 
   /** importBankObject */
-  private func importBankObject() { logInfo("not yet implemented", __FUNCTION__) }
+  func importBankObject() { logInfo("not yet implemented", __FUNCTION__) }
 
   /** exportBankObject */
-  private func exportBankObject() { logInfo("not yet implemented", __FUNCTION__) }
+  func exportBankObject() { logInfo("not yet implemented", __FUNCTION__) }
 
   /** searchBankObjects */
-  private func searchBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func searchBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
 
 }
 
@@ -139,7 +141,7 @@ extension BankRootController: UITableViewDataSource {
   */
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return RegisteredClasses.count }
 
-  
+
   /**
   tableView:cellForRowAtIndexPath:
 
