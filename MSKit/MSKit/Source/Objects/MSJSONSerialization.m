@@ -8,7 +8,7 @@
 
 #import "MSJSONSerialization.h"
 #import "MSLogMacros.h"
-#import "Lumberjack/Lumberjack.h"
+@import Lumberjack;
 #import "MSStack.h"
 #import "MSDictionary.h"
 #import "NSArray+MSKitAdditions.h"

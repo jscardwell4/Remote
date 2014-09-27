@@ -109,7 +109,7 @@ detailedDescriptionForError:depth:
 
 :returns: String
 */
-func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
+public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
 
   var depthIndent = "  " * depth
   var message = "\(depthIndent)domain: \(error.domain)\n\(depthIndent)code: \(error.code)\n"
@@ -144,27 +144,39 @@ func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
 }
 
 /**
+handleError:function:
+
+:param: error NSError?
+:param: function String
+
+:returns: Bool
+*/
+public func handleError(error: NSError?, function: String, message: String? = nil) -> Bool {
+  if let e = error { logDebug(aggregateErrorMessage(e, message: message), function); return true } else { return false }
+}
+
+/**
 aggregateErrorMessage:
 
 :param: error NSError
 
 :returns: String
 */
-func aggregateErrorMessage(error: NSError, message:String! = nil) -> String {
+public func aggregateErrorMessage(error: NSError, message:String! = nil) -> String {
   return "-Error-" + (message ?? "") + "\n\(detailedDescriptionForError(error, depth: 0))"
 }
 
-func printError(error:NSError, message:String! = nil) { println(aggregateErrorMessage(error, message: message)) }
+public func printError(error:NSError, message:String! = nil) { println(aggregateErrorMessage(error, message: message)) }
 
-func warning(message:String) { println("warning: \(message)")}
-func info(message:String) { println("info: \(message)")}
-func debug(message:String) { println("debug: \(message)")}
+public func warning(message:String) { println("warning: \(message)")}
+public func info(message:String) { println("info: \(message)")}
+public func debug(message:String) { println("debug: \(message)")}
 
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - Exceptions
 ////////////////////////////////////////////////////////////////////////////////
 
 
-func raiseException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
+public func raiseException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
   NSException(name: name, reason: reason, userInfo: userinfo).raise()
 }

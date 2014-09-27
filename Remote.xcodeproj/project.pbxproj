@@ -17,7 +17,6 @@
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22E1BDA19C12FB900A93D61 /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */; };
-		C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */ = {isa = PBXBuildFile; fileRef = C2318B1C17E3DACA00CF58D9 /* Bank.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2358F0D19C781DA00920F8D /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */; };
 		C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */; };
@@ -395,6 +394,30 @@
 		C2E164C619C6392700F0E526 /* Glyphish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C6A172182AFFFF0036261E /* Glyphish.json */; };
 		C2E164C719C6392D00F0E526 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2D635B81805D9B400960B10 /* Manufacturer.json */; };
 		C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E75BF819B13798006CEA86 /* Remote_Demo.json */; };
+		C2E8125719D4DD9600FD80C4 /* Type Dynamic - Elysio Black Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124819D4DC4600FD80C4 /* Type Dynamic - Elysio Black Italic.otf */; };
+		C2E8125819D4DD9600FD80C4 /* Type Dynamic - Elysio Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124919D4DC4600FD80C4 /* Type Dynamic - Elysio Black.otf */; };
+		C2E8125919D4DD9600FD80C4 /* Type Dynamic - Elysio Bold Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124A19D4DC4600FD80C4 /* Type Dynamic - Elysio Bold Italic.otf */; };
+		C2E8125A19D4DD9600FD80C4 /* Type Dynamic - Elysio Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124B19D4DC4600FD80C4 /* Type Dynamic - Elysio Bold.otf */; };
+		C2E8125B19D4DD9600FD80C4 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124C19D4DC4600FD80C4 /* Type Dynamic - Elysio Hairline Italic.otf */; };
+		C2E8125C19D4DD9600FD80C4 /* Type Dynamic - Elysio Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124D19D4DC4600FD80C4 /* Type Dynamic - Elysio Hairline.otf */; };
+		C2E8125D19D4DD9600FD80C4 /* Type Dynamic - Elysio Light Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124E19D4DC4600FD80C4 /* Type Dynamic - Elysio Light Italic.otf */; };
+		C2E8125E19D4DD9600FD80C4 /* Type Dynamic - Elysio Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8124F19D4DC4600FD80C4 /* Type Dynamic - Elysio Light.otf */; };
+		C2E8125F19D4DD9600FD80C4 /* Type Dynamic - Elysio Medium Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125019D4DC4600FD80C4 /* Type Dynamic - Elysio Medium Italic.otf */; };
+		C2E8126019D4DD9600FD80C4 /* Type Dynamic - Elysio Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125119D4DC4600FD80C4 /* Type Dynamic - Elysio Medium.otf */; };
+		C2E8126119D4DD9600FD80C4 /* Type Dynamic - Elysio Regular Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125219D4DC4600FD80C4 /* Type Dynamic - Elysio Regular Italic.otf */; };
+		C2E8126219D4DD9600FD80C4 /* Type Dynamic - Elysio Thin Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125319D4DC4600FD80C4 /* Type Dynamic - Elysio Thin Italic.otf */; };
+		C2E8126319D4DD9600FD80C4 /* Type Dynamic - Elysio Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125419D4DC4600FD80C4 /* Type Dynamic - Elysio Thin.otf */; };
+		C2E8126419D4DD9600FD80C4 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8125519D4DC4600FD80C4 /* Type Dynamic - Elysio.otf */; };
+		C2E8126619D5B7FA00FD80C4 /* BankItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */; };
+		C2E8126C19D5CE3F00FD80C4 /* ManufacturerDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126B19D5CE3F00FD80C4 /* ManufacturerDetailController.swift */; };
+		C2E8127519D6080200FD80C4 /* ComponentDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47417EF566600DE2F41 /* ComponentDeviceViewController.m */; };
+		C2E8127719D6083200FD80C4 /* ImageDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126D19D5CE5800FD80C4 /* ImageDetailController.swift */; };
+		C2E8127819D6083A00FD80C4 /* PresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126F19D5CE6D00FD80C4 /* PresetDetailController.swift */; };
+		C2E8127919D6085000FD80C4 /* IRCodeDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126919D5CE2300FD80C4 /* IRCodeDetailController.swift */; };
+		C2E8127A19D6085B00FD80C4 /* ComponentDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126719D5CDF300FD80C4 /* ComponentDeviceDetailController.swift */; };
+		C2E8127B19D6121C00FD80C4 /* ITachDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127319D5CEB600FD80C4 /* ITachDeviceDetailController.swift */; };
+		C2E8127C19D6121F00FD80C4 /* ISYDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127119D5CEA100FD80C4 /* ISYDeviceDetailController.swift */; };
+		C2E8128019D65BF700FD80C4 /* BankItemDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* BankItemDetailCell.swift */; };
 		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
 		C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
 		C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
@@ -463,10 +486,7 @@
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
-		C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2F2A46317EDF85900DE2F41 /* Bank.storyboard */; };
-		C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */; };
 		C2F2A47217EF564100DE2F41 /* IRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47117EF564100DE2F41 /* IRCodeViewController.m */; };
-		C2F2A47517EF566600DE2F41 /* ComponentDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47417EF566600DE2F41 /* ComponentDeviceViewController.m */; };
 		C2F2A47817EF567700DE2F41 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47717EF567700DE2F41 /* ImageViewController.m */; };
 		C2F2A47B17EF568E00DE2F41 /* PresetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47A17EF568E00DE2F41 /* PresetViewController.m */; };
 		C2F2A47E17EF569F00DE2F41 /* ManufacturerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2A47D17EF569F00DE2F41 /* ManufacturerViewController.m */; };
@@ -551,8 +571,6 @@
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
 		C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionCell.swift; sourceTree = "<group>"; };
-		C2318B1B17E3DACA00CF58D9 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bank.h; path = Bank/Bank.h; sourceTree = "<group>"; };
-		C2318B1C17E3DACA00CF58D9 /* Bank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Bank.m; path = Bank/Bank.m; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
 		C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionLayout.swift; sourceTree = "<group>"; };
@@ -1001,7 +1019,6 @@
 		C2B4998B17C9568900EC6C7C /* Preset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preset.h; sourceTree = "<group>"; };
 		C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComponentDevice.h; sourceTree = "<group>"; };
 		C2B4998D17C956AE00EC6C7C /* Manufacturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Manufacturer.h; sourceTree = "<group>"; };
-		C2B4998F17C958B100EC6C7C /* Bankables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bankables.h; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
 		C2C1756919D10CB7008B8E16 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = "MSKit/Lumberjack/build/Debug-iphoneos/Lumberjack.framework"; sourceTree = "<group>"; };
 		C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionAttributes.swift; sourceTree = "<group>"; };
@@ -1044,6 +1061,29 @@
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
 		C2D635B81805D9B400960B10 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
 		C2E75BF819B13798006CEA86 /* Remote_Demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Demo.json; sourceTree = "<group>"; };
+		C2E8124819D4DC4600FD80C4 /* Type Dynamic - Elysio Black Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Black Italic.otf"; sourceTree = "<group>"; };
+		C2E8124919D4DC4600FD80C4 /* Type Dynamic - Elysio Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Black.otf"; sourceTree = "<group>"; };
+		C2E8124A19D4DC4600FD80C4 /* Type Dynamic - Elysio Bold Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Bold Italic.otf"; sourceTree = "<group>"; };
+		C2E8124B19D4DC4600FD80C4 /* Type Dynamic - Elysio Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Bold.otf"; sourceTree = "<group>"; };
+		C2E8124C19D4DC4600FD80C4 /* Type Dynamic - Elysio Hairline Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Hairline Italic.otf"; sourceTree = "<group>"; };
+		C2E8124D19D4DC4600FD80C4 /* Type Dynamic - Elysio Hairline.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Hairline.otf"; sourceTree = "<group>"; };
+		C2E8124E19D4DC4600FD80C4 /* Type Dynamic - Elysio Light Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Light Italic.otf"; sourceTree = "<group>"; };
+		C2E8124F19D4DC4600FD80C4 /* Type Dynamic - Elysio Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Light.otf"; sourceTree = "<group>"; };
+		C2E8125019D4DC4600FD80C4 /* Type Dynamic - Elysio Medium Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Medium Italic.otf"; sourceTree = "<group>"; };
+		C2E8125119D4DC4600FD80C4 /* Type Dynamic - Elysio Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Medium.otf"; sourceTree = "<group>"; };
+		C2E8125219D4DC4600FD80C4 /* Type Dynamic - Elysio Regular Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Regular Italic.otf"; sourceTree = "<group>"; };
+		C2E8125319D4DC4600FD80C4 /* Type Dynamic - Elysio Thin Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Thin Italic.otf"; sourceTree = "<group>"; };
+		C2E8125419D4DC4600FD80C4 /* Type Dynamic - Elysio Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Thin.otf"; sourceTree = "<group>"; };
+		C2E8125519D4DC4600FD80C4 /* Type Dynamic - Elysio.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio.otf"; sourceTree = "<group>"; };
+		C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailController.swift; sourceTree = "<group>"; };
+		C2E8126719D5CDF300FD80C4 /* ComponentDeviceDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentDeviceDetailController.swift; sourceTree = "<group>"; };
+		C2E8126919D5CE2300FD80C4 /* IRCodeDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRCodeDetailController.swift; sourceTree = "<group>"; };
+		C2E8126B19D5CE3F00FD80C4 /* ManufacturerDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManufacturerDetailController.swift; sourceTree = "<group>"; };
+		C2E8126D19D5CE5800FD80C4 /* ImageDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailController.swift; sourceTree = "<group>"; };
+		C2E8126F19D5CE6D00FD80C4 /* PresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetDetailController.swift; sourceTree = "<group>"; };
+		C2E8127119D5CEA100FD80C4 /* ISYDeviceDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceDetailController.swift; sourceTree = "<group>"; };
+		C2E8127319D5CEB600FD80C4 /* ITachDeviceDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDeviceDetailController.swift; sourceTree = "<group>"; };
+		C2E8127D19D6454300FD80C4 /* BankItemDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailCell.swift; sourceTree = "<group>"; };
 		C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1067-gray-enter-fullscreen.png"; sourceTree = "<group>"; };
 		C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1067-gray-enter-fullscreen@2x.png"; sourceTree = "<group>"; };
 		C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1068-gray-exit-fullscreen.png"; sourceTree = "<group>"; };
@@ -1099,9 +1139,6 @@
 		C2F225491715CB8500D22B5F /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		C2F2254B1715E39600D22B5F /* ModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelObject.h; sourceTree = "<group>"; };
 		C2F2254C1715E39600D22B5F /* ModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelObject.m; sourceTree = "<group>"; };
-		C2F2A46317EDF85900DE2F41 /* Bank.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bank.storyboard; sourceTree = "<group>"; };
-		C2F2A46517EDF98800DE2F41 /* BankRootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankRootTableViewController.h; sourceTree = "<group>"; };
-		C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankRootTableViewController.m; sourceTree = "<group>"; };
 		C2F2A47017EF564100DE2F41 /* IRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCodeViewController.h; sourceTree = "<group>"; };
 		C2F2A47117EF564100DE2F41 /* IRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCodeViewController.m; sourceTree = "<group>"; };
 		C2F2A47317EF566600DE2F41 /* ComponentDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentDeviceViewController.h; sourceTree = "<group>"; };
@@ -1374,7 +1411,6 @@
 			children = (
 				C2E953EE17E8BAA70052518D /* BankableModelObject.h */,
 				C2E953EF17E8BAA70052518D /* BankableModelObject.m */,
-				C2B4998F17C958B100EC6C7C /* Bankables.h */,
 				C2B4998D17C956AE00EC6C7C /* Manufacturer.h */,
 				C25B46DF16FF69110042B59E /* Manufacturer.m */,
 				C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */,
@@ -1390,14 +1426,6 @@
 			);
 			name = Bankables;
 			path = Bank/Bankables;
-			sourceTree = "<group>";
-		};
-		C26B8A6918006B5100912DBB /* Bank */ = {
-			isa = PBXGroup;
-			children = (
-				C2F2A46317EDF85900DE2F41 /* Bank.storyboard */,
-			);
-			name = Bank;
 			sourceTree = "<group>";
 		};
 		C26B8A6A18006BF500912DBB /* Collections */ = {
@@ -1416,6 +1444,7 @@
 		C26B8A6B18006C1D00912DBB /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				C2E8127D19D6454300FD80C4 /* BankItemDetailCell.swift */,
 				C209C0CD19BFE70700A6AB85 /* ISYDeviceViewController.h */,
 				C209C0CE19BFE70700A6AB85 /* ISYDeviceViewController.m */,
 				C2AB7B5C17F2083800906FAE /* BankItemViewController.h */,
@@ -1435,6 +1464,14 @@
 				C2F2A47D17EF569F00DE2F41 /* ManufacturerViewController.m */,
 				C20BD77C19BF3D340011E3F6 /* ITachDeviceViewController.h */,
 				C20BD77D19BF3D340011E3F6 /* ITachDeviceViewController.m */,
+				C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */,
+				C2E8126719D5CDF300FD80C4 /* ComponentDeviceDetailController.swift */,
+				C2E8126919D5CE2300FD80C4 /* IRCodeDetailController.swift */,
+				C2E8126B19D5CE3F00FD80C4 /* ManufacturerDetailController.swift */,
+				C2E8126D19D5CE5800FD80C4 /* ImageDetailController.swift */,
+				C2E8126F19D5CE6D00FD80C4 /* PresetDetailController.swift */,
+				C2E8127119D5CEA100FD80C4 /* ISYDeviceDetailController.swift */,
+				C2E8127319D5CEB600FD80C4 /* ITachDeviceDetailController.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -1604,6 +1641,20 @@
 		C26BB0B616DC18A30093D5B4 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				C2E8124819D4DC4600FD80C4 /* Type Dynamic - Elysio Black Italic.otf */,
+				C2E8124919D4DC4600FD80C4 /* Type Dynamic - Elysio Black.otf */,
+				C2E8124A19D4DC4600FD80C4 /* Type Dynamic - Elysio Bold Italic.otf */,
+				C2E8124B19D4DC4600FD80C4 /* Type Dynamic - Elysio Bold.otf */,
+				C2E8124C19D4DC4600FD80C4 /* Type Dynamic - Elysio Hairline Italic.otf */,
+				C2E8124D19D4DC4600FD80C4 /* Type Dynamic - Elysio Hairline.otf */,
+				C2E8124E19D4DC4600FD80C4 /* Type Dynamic - Elysio Light Italic.otf */,
+				C2E8124F19D4DC4600FD80C4 /* Type Dynamic - Elysio Light.otf */,
+				C2E8125019D4DC4600FD80C4 /* Type Dynamic - Elysio Medium Italic.otf */,
+				C2E8125119D4DC4600FD80C4 /* Type Dynamic - Elysio Medium.otf */,
+				C2E8125219D4DC4600FD80C4 /* Type Dynamic - Elysio Regular Italic.otf */,
+				C2E8125319D4DC4600FD80C4 /* Type Dynamic - Elysio Thin Italic.otf */,
+				C2E8125419D4DC4600FD80C4 /* Type Dynamic - Elysio Thin.otf */,
+				C2E8125519D4DC4600FD80C4 /* Type Dynamic - Elysio.otf */,
 				C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */,
 				C26BB0B816DC18A30093D5B4 /* Fico.otf */,
 				C26BB0B916DC18A30093D5B4 /* FontAwesome.ttf */,
@@ -1620,7 +1671,6 @@
 		C26BB59016DC18A90093D5B4 /* Storyboards and Nibs */ = {
 			isa = PBXGroup;
 			children = (
-				C26B8A6918006B5100912DBB /* Bank */,
 				C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */,
 				C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */,
 				C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */,
@@ -2014,8 +2064,6 @@
 		C2E67D201705E92A00AB0392 /* Bank */ = {
 			isa = PBXGroup;
 			children = (
-				C2318B1B17E3DACA00CF58D9 /* Bank.h */,
-				C2318B1C17E3DACA00CF58D9 /* Bank.m */,
 				C2F2A46F17EF560900DE2F41 /* View Controllers */,
 				C25B46D016FF69110042B59E /* Bankables */,
 				C2F2A46E17EF55E300DE2F41 /* Other */,
@@ -2073,12 +2121,10 @@
 		C2F2A46F17EF560900DE2F41 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C2F2A46517EDF98800DE2F41 /* BankRootTableViewController.h */,
-				C2F2A46617EDF98800DE2F41 /* BankRootTableViewController.m */,
-				C26B8A6A18006BF500912DBB /* Collections */,
-				C26B8A6B18006C1D00912DBB /* Detail */,
 				C2400F9719D4B9B600D9BB13 /* BankRootController.swift */,
 				C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */,
+				C26B8A6A18006BF500912DBB /* Collections */,
+				C26B8A6B18006C1D00912DBB /* Detail */,
 			);
 			name = "View Controllers";
 			path = "Bank/View Controllers";
@@ -2271,6 +2317,7 @@
 				C2381F0819A7EE3B00135DAB /* Midnight-1536x2048.jpg in Resources */,
 				C2E8D9D019BCD5C400E6098E /* loginfo.xml in Resources */,
 				C2381EEB19A7EE3B00135DAB /* Gingham-320x640-iPhone.jpg in Resources */,
+				C2E8125819D4DD9600FD80C4 /* Type Dynamic - Elysio Black.otf in Resources */,
 				C2E8D9CA19BCD5C400E6098E /* insteon.xsd in Resources */,
 				C2381F0319A7EE3B00135DAB /* Linen-2048x1536-iPad@2x.jpg in Resources */,
 				C2381ED119A7EE3B00135DAB /* Chroma-320x480.jpg in Resources */,
@@ -2293,6 +2340,7 @@
 				C2381EEC19A7EE3B00135DAB /* Gingham-640x960-iPhone@2x.jpg in Resources */,
 				C2381EDC19A7EE3B00135DAB /* Concrete-640x960-iPhone@2x.jpg in Resources */,
 				C2381F0419A7EE3B00135DAB /* Midnight-320x480.jpg in Resources */,
+				C2E8126419D4DD9600FD80C4 /* Type Dynamic - Elysio.otf in Resources */,
 				C2381F9719A7EE3B00135DAB /* Sunset-640x1136.jpg in Resources */,
 				C2381F9A19A7EE3B00135DAB /* Teal-320x480.jpg in Resources */,
 				C2381F0A19A7EE3B00135DAB /* Mint-640x960.jpg in Resources */,
@@ -2331,6 +2379,7 @@
 				C2381EF519A7EE3B00135DAB /* GraphPaper-320x640-iPhone.jpg in Resources */,
 				C2E164C619C6392700F0E526 /* Glyphish.json in Resources */,
 				C25C44DC19ABB3E2005594ED /* Activity.json in Resources */,
+				C2E8126319D4DD9600FD80C4 /* Type Dynamic - Elysio Thin.otf in Resources */,
 				C2381F0519A7EE3B00135DAB /* Midnight-640x960.jpg in Resources */,
 				C27BCCA51801C16A0002464C /* IntegerKeyboard_8.png in Resources */,
 				C2381EF919A7EE3B00135DAB /* GraphPaper-2048x1536-iPad@2x.jpg in Resources */,
@@ -2380,6 +2429,7 @@
 				C235930619C9C26600920F8D /* Manufacturer_Test.json in Resources */,
 				C26BBAFA16DC1B5C0093D5B4 /* ButtonOverButton.png in Resources */,
 				C26BBAFB16DC1B5C0093D5B4 /* ButtonOverButton@2x.png in Resources */,
+				C2E8125719D4DD9600FD80C4 /* Type Dynamic - Elysio Black Italic.otf in Resources */,
 				C2381EF619A7EE3B00135DAB /* GraphPaper-640x960-iPhone@2x.jpg in Resources */,
 				C2381EF719A7EE3B00135DAB /* GraphPaper-640x1136-iPhone5.jpg in Resources */,
 				C26BBAFC16DC1B5C0093D5B4 /* Circle-Add.png in Resources */,
@@ -2395,6 +2445,7 @@
 				C26BBB0016DC1B5C0093D5B4 /* CopyStyleIcon.png in Resources */,
 				C26BBB0116DC1B5C0093D5B4 /* CopyStyleIcon@2x.png in Resources */,
 				C2381EEF19A7EE3B00135DAB /* Gingham-2048x1536-iPad@2x.jpg in Resources */,
+				C2E8125D19D4DD9600FD80C4 /* Type Dynamic - Elysio Light Italic.otf in Resources */,
 				C26BBB0216DC1B5C0093D5B4 /* DashedBox.png in Resources */,
 				C27BCC981801C16A0002464C /* IntegerKeyboard_4-Highlighted@2x.png in Resources */,
 				C26BBB0316DC1B5C0093D5B4 /* DashedBox@2x.png in Resources */,
@@ -2408,11 +2459,13 @@
 				C26BBB0616DC1B5C0093D5B4 /* Default@2x.png in Resources */,
 				C27BCC9D1801C16A0002464C /* IntegerKeyboard_5@2x.png in Resources */,
 				C26BBB0716DC1B5C0093D5B4 /* Delete.png in Resources */,
+				C2E8125E19D4DD9600FD80C4 /* Type Dynamic - Elysio Light.otf in Resources */,
 				C2381EBC19A7EE3B00135DAB /* AppleWood-2048x1536-iPad@2x.jpg in Resources */,
 				C2381EC819A7EE3B00135DAB /* Cardboard-640x960-iPhone@2x.jpg in Resources */,
 				C26BBB0816DC1B5C0093D5B4 /* Delete@2x.png in Resources */,
 				C2E8D9E819BCD5C400E6098E /* udiws30-all.html in Resources */,
 				C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */,
+				C2E8125919D4DD9600FD80C4 /* Type Dynamic - Elysio Bold Italic.otf in Resources */,
 				C2381EC119A7EE3B00135DAB /* Blue-1536x2048.jpg in Resources */,
 				C26BBB0916DC1B5C0093D5B4 /* Dot.png in Resources */,
 				C26BBB0A16DC1B5C0093D5B4 /* Dot@2x.png in Resources */,
@@ -2428,6 +2481,7 @@
 				C2E8D9EC19BCD5C400E6098E /* udiws30.wsdl in Resources */,
 				C2381EEA19A7EE3B00135DAB /* Dawn-1536x2048.jpg in Resources */,
 				C26BBB1116DC1B5C0093D5B4 /* ImageOverImage.png in Resources */,
+				C2E8125F19D4DD9600FD80C4 /* Type Dynamic - Elysio Medium Italic.otf in Resources */,
 				C2381EFD19A7EE3B00135DAB /* Ive-1024x768.jpg in Resources */,
 				C2381F8E19A7EE3B00135DAB /* ProDots-1024x768-iPad.jpg in Resources */,
 				C2381EC919A7EE3B00135DAB /* Cardboard-640x1136-iPhone5.jpg in Resources */,
@@ -2460,12 +2514,14 @@
 				C27BCCAA1801C16A0002464C /* IntegerKeyboard_Blank-Highlighted@2x.png in Resources */,
 				C26BBB1E16DC1B5C0093D5B4 /* PaintBrush1@2x.png in Resources */,
 				C2381F0919A7EE3B00135DAB /* Mint-320x480.jpg in Resources */,
+				C2E8125A19D4DD9600FD80C4 /* Type Dynamic - Elysio Bold.otf in Resources */,
 				C27BCC9B1801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png in Resources */,
 				C2381F0619A7EE3B00135DAB /* Midnight-640x1136.jpg in Resources */,
 				C26BBB1F16DC1B5C0093D5B4 /* PaintBrush2.png in Resources */,
 				C26BBB2016DC1B5C0093D5B4 /* PaintBrush2@2x.png in Resources */,
 				C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */,
 				C27BCC961801C16A0002464C /* IntegerKeyboard_3.png in Resources */,
+				C2E8126119D4DD9600FD80C4 /* Type Dynamic - Elysio Regular Italic.otf in Resources */,
 				C2381F0719A7EE3B00135DAB /* Midnight-1024x768.jpg in Resources */,
 				C26BBB2116DC1B5C0093D5B4 /* PaintBrush3.png in Resources */,
 				C2381F0C19A7EE3B00135DAB /* Mint-1024x768.jpg in Resources */,
@@ -2498,6 +2554,7 @@
 				C26BBB2A16DC1B5C0093D5B4 /* Plus@2x.png in Resources */,
 				C2381F0019A7EE3B00135DAB /* Linen-640x960-iPhone@2x.jpg in Resources */,
 				C2381F8F19A7EE3B00135DAB /* ProDots-2048x1536-iPad@2x.jpg in Resources */,
+				C2E8125B19D4DD9600FD80C4 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */,
 				C2381F9919A7EE3B00135DAB /* Sunset-1536x2048.jpg in Resources */,
 				C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */,
 				C26BBB2B16DC1B5C0093D5B4 /* ScaleHorizontal.png in Resources */,
@@ -2506,6 +2563,7 @@
 				C2381EDE19A7EE3B00135DAB /* Concrete-1024x768-iPad.jpg in Resources */,
 				C26BBB2D16DC1B5C0093D5B4 /* ScaleVertical.png in Resources */,
 				C2E8D9DA19BCD5C400E6098E /* udielkws.wsdl in Resources */,
+				C2E8126019D4DD9600FD80C4 /* Type Dynamic - Elysio Medium.otf in Resources */,
 				C26BBB2E16DC1B5C0093D5B4 /* ScaleVertical@2x.png in Resources */,
 				C26BBB2F16DC1B5C0093D5B4 /* Trash-Small.png in Resources */,
 				C2381EB619A7EE3B00135DAB /* AgedPaper-1024x768-iPad.jpg in Resources */,
@@ -2526,6 +2584,7 @@
 				C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */,
 				C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */,
 				C2381FA319A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg in Resources */,
+				C2E8125C19D4DD9600FD80C4 /* Type Dynamic - Elysio Hairline.otf in Resources */,
 				C2381F9119A7EE3B00135DAB /* Silver-640x960.jpg in Resources */,
 				C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */,
 				C27BCC941801C16A0002464C /* IntegerKeyboard_2@2x.png in Resources */,
@@ -2536,10 +2595,10 @@
 				C2381EB819A7EE3B00135DAB /* AppleWood-320x640-iPhone.jpg in Resources */,
 				C2381EC719A7EE3B00135DAB /* Cardboard-320x640-iPhone.jpg in Resources */,
 				C27BCC921801C16A0002464C /* IntegerKeyboard_2-Highlighted@2x.png in Resources */,
+				C2E8126219D4DD9600FD80C4 /* Type Dynamic - Elysio Thin Italic.otf in Resources */,
 				C2381ECA19A7EE3B00135DAB /* Cardboard-1024x768-iPad.jpg in Resources */,
 				C2381EE919A7EE3B00135DAB /* Dawn-1024x768.jpg in Resources */,
 				C2381ED619A7EE3B00135DAB /* Cloth-320x640-iPhone.jpg in Resources */,
-				C2F2A46417EDF85900DE2F41 /* Bank.storyboard in Resources */,
 				C2381F9219A7EE3B00135DAB /* Silver-640x1136.jpg in Resources */,
 				C2E8D9D819BCD5C400E6098E /* udi3.0.wsdl in Resources */,
 				C2381EBA19A7EE3B00135DAB /* AppleWood-640x1136-iPhone5.jpg in Resources */,
@@ -2656,7 +2715,9 @@
 				C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */,
 				C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */,
 				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
+				C2E8128019D65BF700FD80C4 /* BankItemDetailCell.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
+				C2E8127C19D6121F00FD80C4 /* ISYDeviceDetailController.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
 				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
@@ -2681,11 +2742,11 @@
 				C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */,
 				C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */,
 				C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */,
+				C2E8126C19D5CE3F00FD80C4 /* ManufacturerDetailController.swift in Sources */,
 				C2400F9A19D4BB5400D9BB13 /* BankRootCell.swift in Sources */,
 				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
 				C2F2A47E17EF569F00DE2F41 /* ManufacturerViewController.m in Sources */,
 				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
-				C2318B1D17E3DACA00CF58D9 /* Bank.m in Sources */,
 				C25B476C16FF8D5E0042B59E /* SystemCommand.m in Sources */,
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
 				C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */,
@@ -2717,7 +2778,9 @@
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
 				C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */,
+				C2E8127519D6080200FD80C4 /* ComponentDeviceViewController.m in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
+				C2E8127719D6083200FD80C4 /* ImageDetailController.swift in Sources */,
 				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
@@ -2727,24 +2790,28 @@
 				C2F2A47B17EF568E00DE2F41 /* PresetViewController.m in Sources */,
 				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
 				C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */,
+				C2E8127919D6085000FD80C4 /* IRCodeDetailController.swift in Sources */,
 				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
+				C2E8127819D6083A00FD80C4 /* PresetDetailController.swift in Sources */,
 				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
 				C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */,
 				C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */,
+				C2E8127B19D6121C00FD80C4 /* ITachDeviceDetailController.swift in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
 				C22E1BDA19C12FB900A93D61 /* BankCollectionCell.swift in Sources */,
-				C2F2A47517EF566600DE2F41 /* ComponentDeviceViewController.m in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
+				C2E8127A19D6085B00FD80C4 /* ComponentDeviceDetailController.swift in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
 				C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */,
 				C209C0CF19BFE70700A6AB85 /* ISYDeviceViewController.m in Sources */,
+				C2E8126619D5B7FA00FD80C4 /* BankItemDetailController.swift in Sources */,
 				C2400F9819D4B9B600D9BB13 /* BankRootController.swift in Sources */,
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
 				C2037B7519D0F29B001F6AD9 /* BankCollectionZoom.swift in Sources */,
@@ -2757,7 +2824,6 @@
 				C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */,
 				C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */,
 				C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */,
-				C2F2A46717EDF98800DE2F41 /* BankRootTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

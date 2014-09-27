@@ -394,9 +394,7 @@ class BankCollectionController: UICollectionViewController {
 
   :param: sender AnyObject?
   */
-  func dismiss(sender: AnyObject?) {
-    MSRemoteAppController.sharedAppController().dismissViewController(Bank.viewController(), completion: nil)
-  }
+  func dismiss(sender: AnyObject?) { MSRemoteAppController.sharedAppController().showMainMenu()  }
 
 
   ////////////////////////////////////////////////////////////////////////////////

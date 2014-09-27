@@ -8,7 +8,7 @@
 @import UIKit;
 @import CoreData;
 @import Foundation;
-#import "Lumberjack/Lumberjack.h"
+@import Lumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
 
@@ -34,7 +34,7 @@ MSEXTERN const CGFloat BankItemCellPickerHeight;
 /// isValidIentifier:
 /// @param identifier
 /// @return BOOL
-+ (BOOL)isValidIentifier:(NSString *)identifier;
++ (BOOL)isValidIdentifier:(NSString *)identifier;
 
 /// registerIdentifiersWithTableView:
 /// @param tableView

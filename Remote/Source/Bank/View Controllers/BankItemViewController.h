@@ -5,7 +5,8 @@
 //  Created by Jason Cardwell on 9/24/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
-#import "Bank.h"
+@import Foundation;
+@import UIKit;
 
 @class BankableModelObject;
 

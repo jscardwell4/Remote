@@ -9,7 +9,7 @@
 #import "Manufacturer.h"
 #import "IRCode.h"
 #import "ComponentDevice.h"
-#import "ManufacturerViewController.h"
+#import "Remote-Swift.h"
 
 @implementation Manufacturer
 
@@ -126,14 +126,14 @@
 
 /// detailViewController
 /// @return ManufacturerViewController *
-- (ManufacturerViewController *)detailViewController {
-  return [ManufacturerViewController controllerWithItem:self];
+- (ManufacturerDetailController *)detailViewController {
+  return [[ManufacturerDetailController alloc] initWithItem:self editing:NO];
 }
 
 /// editingViewController
 /// @return ManufacturerViewController *
-- (ManufacturerViewController *)editingViewController {
-  return [ManufacturerViewController controllerWithItem:self editing:YES];
+- (ManufacturerDetailController *)editingViewController {
+  return [[ManufacturerDetailController alloc] initWithItem:self editing:YES];
 }
 
 /// isSectionable

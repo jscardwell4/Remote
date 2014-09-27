@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "MSLog.h"
-#import "Lumberjack/Lumberjack.h"
+@import Lumberjack;
 #import "MSKitMiscellaneousFunctions.h"
 #import "NSString+MSKitAdditions.h"
 #import "NSOperationQueue+MSKitAdditions.h"

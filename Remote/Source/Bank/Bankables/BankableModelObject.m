@@ -8,7 +8,7 @@
 
 #import "BankableModelObject.h"
 #import "CoreDataManager.h"
-#import "BankItemViewController.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -98,11 +98,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// detailViewController
 /// @return BankItemViewController *
-- (BankItemViewController *)detailViewController  { return nil; }
+- (BankItemDetailController *)detailViewController  { return nil; }
 
 /// editingViewController
 /// @return BankItemViewController *
-- (BankItemViewController *)editingViewController { return nil; }
+- (BankItemDetailController *)editingViewController { return nil; }
 
 /// updateItem
 - (void)updateItem {

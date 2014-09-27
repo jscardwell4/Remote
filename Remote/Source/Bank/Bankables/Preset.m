@@ -9,8 +9,7 @@
 #import "RemoteElement.h"
 #import "CoreDataManager.h"
 #import "RemoteElementView_Private.h"
-#import "Bank.h"
-#import "PresetViewController.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -63,14 +62,14 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// detailViewController
 /// @return PresetViewController *
-- (PresetViewController *)detailViewController {
-  return [PresetViewController controllerWithItem:self];
+- (PresetDetailController *)detailViewController {
+  return [[PresetDetailController alloc] initWithItem:self editing:NO];
 }
 
 /// editingViewController
 /// @return PresetViewController *
-- (PresetViewController *)editingViewController {
-  return [PresetViewController controllerWithItem:self editing:YES];
+- (PresetDetailController *)editingViewController {
+  return [[PresetDetailController alloc] initWithItem:self editing:YES];
 }
 
 /// isPreviewable

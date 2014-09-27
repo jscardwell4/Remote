@@ -12,7 +12,7 @@
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 #import "ComponentDeviceViewController.h"
-
+#import "Remote-Swift.h"
 
 @implementation ComponentDevice {
   BOOL _ignoreNextPowerCommand;
@@ -176,14 +176,14 @@
 
 /// detailViewController
 /// @return ComponentDeviceViewController *
-- (ComponentDeviceViewController *)detailViewController {
-  return [ComponentDeviceViewController controllerWithItem:self];
+- (ComponentDeviceDetailController *)detailViewController {
+  return [[ComponentDeviceDetailController alloc] initWithItem:self editing:NO];
 }
 
 /// editingViewController
 /// @return ComponentDeviceViewController *
-- (ComponentDeviceViewController *)editingViewController {
-  return [ComponentDeviceViewController controllerWithItem:self editing:YES];
+- (ComponentDeviceDetailController *)editingViewController {
+  return [[ComponentDeviceDetailController alloc] initWithItem:self editing:YES];
 }
 
 @end

@@ -28,10 +28,9 @@ MSSTATIC_NAMETAG(BankItemCellIntegerKeyboard);
 
 const CGFloat BankItemCellPickerHeight = 162.0;
 
-
-@interface BankItemTableViewCell () <UITextFieldDelegate, UITextViewDelegate, UITextViewDelegate,
-                                           UIPickerViewDataSource, UIPickerViewDelegate,
-                                           UITableViewDataSource, UITableViewDelegate>
+@interface BankItemTableViewCell () <UITextFieldDelegate, UITextViewDelegate,
+                                     UIPickerViewDataSource, UIPickerViewDelegate,
+                                     UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UILabel      * nameLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton     * infoButton;
@@ -43,8 +42,6 @@ const CGFloat BankItemCellPickerHeight = 162.0;
 @property (nonatomic, weak, readwrite) IBOutlet UITextView   * infoTextView;
 @property (nonatomic, weak, readwrite) IBOutlet UITableView  * table;
 @property (nonatomic, weak, readwrite) IBOutlet UIPickerView * pickerView;
-
-@property (nonatomic, weak) NSLayoutConstraint * contentBottomConstraint;
 
 @property (nonatomic, copy) NSString * beginStateText;
 
@@ -58,7 +55,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 
   else if (isNumberKind(obj)) text = [obj stringValue];
 
-  else if ([obj respondsToSelector:@selector(name)]) text = [obj name];
+  else if ([obj respondsToSelector:@selector(name)]) text = [obj valueForKey:@"name"];
 
   return text;
 
@@ -103,7 +100,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 /// isValidIentifier:
 /// @param identifier
 /// @return BOOL
-+ (BOOL)isValidIentifier:(NSString *)identifier { return [[self validIdentifiers] containsObject:identifier]; }
++ (BOOL)isValidIdentifier:(NSString *)identifier { return [[self validIdentifiers] containsObject:identifier]; }
 
 /// registerIdentifiersWithTableView:
 /// @param tableView
@@ -163,8 +160,8 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
     /// Create the fonts to use in decorator blocks
     ////////////////////////////////////////////////////////////////////////////////
 
-    UIFont  * nameFont  = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    UIFont  * infoFont  = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    UIFont  * nameFont  = [UIFont fontWithName:@"Elysio-Medium" size:15.0];
+    UIFont  * infoFont  = [UIFont fontWithName:@"Elysio-Light" size:15.0];
 
     /// Create the colors to use in decorator blocks
     ////////////////////////////////////////////////////////////////////////////////
@@ -441,7 +438,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
     NSString * constraintsString = [@"\n" join:@[@"|[content]|",
                                                  @"V:|[content]|",
                                                  @"|[picker]|",
-                                                 $(@"'picker height' picker.height = %f", BankItemCellPickerHeight),
+                                                 $(@"picker.height = %@", @(BankItemCellPickerHeight)),
                                                  @"picker.bottom = self.bottom"]];
 
     NSDictionary * views = @{@"self": self, @"picker": self.pickerView, @"content": self.contentView};
@@ -459,30 +456,6 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
   return self;
 
 }
-
-/// updateConstraints
-- (void)updateConstraints {
-
-  [super updateConstraints];
-
-//  if (!self.contentBottomConstraint) {
-//
-//    NSString * constraintsString = [@"\n" join:@[@"content.left = self.left",
-//                                                 @"content.right = self.right",
-//                                                 @"content.top = self.top",
-//                                                 @"'content bottom' content.bottom = self.bottom",
-//                                                 @"picker.bottom = self.bottom",
-//                                                 @"|[picker]|",
-//                                                 $(@"picker.height = %f", BankItemCellPickerHeight)]];
-//    NSDictionary * views = @{@"content": self.contentView, @"picker": self.pickerView, @"self": self};
-//    [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraintsString views:views]];
-//    self.contentBottomConstraint = [self constraintWithNametag:@"content bottom"];
-//
-//  }
-
-
-}
-
 
 /// prepareForReuse
 - (void)prepareForReuse {
@@ -680,7 +653,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 /// setTableCell:
 /// @param tableCell
 - (void)setTableIdentifier:(NSString *)tableIdentifier {
-  _tableIdentifier = ([[self class] isValidIentifier:tableIdentifier] ? [tableIdentifier copy] : nil);
+  _tableIdentifier = ([[self class] isValidIdentifier:tableIdentifier] ? [tableIdentifier copy] : nil);
   if (_tableIdentifier && self.table) [self.table registerClass:[self class] forCellReuseIdentifier:_tableIdentifier];
 }
 
@@ -747,7 +720,7 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
                       NSLayoutConstraint * stepperLeading = [cell.contentView constraintWithNametag:@"stepper leading"];
                       infoTrailing.constant  = (editing ? -8.0 : -20.0);
                       stepperLeading.constant = (editing ? -20.0 - cell.stepper.bounds.size.width : 0.0);
-                      
+
 
                     },
                   BankItemCellTextViewStyleIdentifier:
@@ -879,11 +852,6 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
   return (self.validationHandler ? self.validationHandler(self) : YES);
 }
 
-/// textFieldShouldReturn:
-/// @param textField
-/// @return BOOL
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField { [textField resignFirstResponder]; return NO; }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - UITextViewDelegate
@@ -934,7 +902,6 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
       if (idx != NSNotFound) [self.pickerView selectRow:idx inComponent:0 animated:NO];
     }
     self.pickerView.hidden = NO;
-//    self.contentBottomConstraint.constant = -BankItemCellPickerHeight;
     if (self.didShowPicker) self.didShowPicker(self);
   }
 }
@@ -943,7 +910,6 @@ static NSString *(^textFromObject)(id) = ^(id obj) {
 - (void)hidePickerView {
   if (!self.pickerView.hidden && (!self.shouldHidePicker || self.shouldHidePicker(self))) {
     self.pickerView.hidden = YES;
-//    self.contentBottomConstraint.constant = 0.0;
     if (self.didHidePicker) self.didHidePicker(self);
   }
 }

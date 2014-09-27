@@ -6,10 +6,19 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 
+@import UIKit;
+@import CoreData;
+@import Lumberjack;
+@import MoonKit;
+#import "MSRemoteMacros.h"
 #import "DatabaseLoader.h"
 #import "RemoteElement.h"
 #import "RemoteController.h"
-#import "Bankables.h"
+#import "ComponentDevice.h"
+#import "Image.h"
+#import "Preset.h"
+#import "Manufacturer.h"
+#import "IRCode.h"
 #import "Remote.h"
 #import "Activity.h"
 #import "NetworkDevice.h"

@@ -13,7 +13,6 @@
 #import "SettingsManager.h"
 #import "ConnectionManager.h"
 #import "MSRemoteAppController.h"
-#import "Bank.h"
 #import "StoryboardProxy.h"
 #import "RemoteController.h"
 #import "Remote.h"
@@ -21,6 +20,7 @@
 #import "Manufacturer.h"
 #import "Image.h"
 #import "SettingsViewController.h"
+#import "Remote-Swift.h"
 @import CoreImage;
 
 
@@ -170,6 +170,8 @@ static const int msLogContext = 0;
   }
 
 //  nsprintf(@"CIFitlers…\n\t%@", [@"\n\t" join:[CIFilter filterNamesInCategories:nil]]);
+//  nsprintf(@"available fonts…\n\t%@", [@"\n\t" join:[UIFont familyNames]]);
+//  nsprintf(@"elysio fonts…\n\t%@", [@"\n\t" join:[UIFont fontNamesForFamilyName:@"Elysio"]]);
 
   // set a reference to our launch screen view controller
   MainMenuViewController * mainMenuVC = (MainMenuViewController *)[self.window rootViewController];
@@ -312,21 +314,22 @@ static const int msLogContext = 0;
 #pragma mark - Setting Root View Controller
 ////////////////////////////////////////////////////////////////////////////////
 
+/// showViewController:
+/// @param viewController
 - (void)showViewController:(UIViewController *)viewController {
   if (!viewController) ThrowInvalidNilArgument(viewController);
-
   if ([self.window.rootViewController isKindOfClass:[MainMenuViewController class]])
     self.window.rootViewController = viewController;
-
-  else
-    [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+  else [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
 }
 
+/// showRemote
 - (void)showRemote {
   RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
   self.window.rootViewController = controller.viewController;
 }
 
+/// showEditor
 - (void)showEditor {
   RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
   editorVC.delegate  = self;
@@ -340,28 +343,41 @@ static const int msLogContext = 0;
   }
 }
 
+/// remoteElementEditorDidCancel:
+/// @param editor
 - (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)editor {
   [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
+/// remoteElementEditorDidSave:
+/// @param editor
 - (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)editor {
   [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
+/// showMainMenu
 - (void)showMainMenu {
   if (![self.window.rootViewController isKindOfClass:[MainMenuViewController class]])
     self.window.rootViewController = [StoryboardProxy mainMenuViewController];
 }
 
-- (void)showBank { [self showViewController:[Bank viewController]]; }
+/// showBank
+- (void)showBank {
+  [self showViewController:[[UINavigationController alloc] initWithRootViewController:[BankRootController new]]];
+}
 
+/// showSettings
 - (void)showSettings { [self showViewController:[StoryboardProxy settingsViewController]]; }
 
+/// dismissViewController:completion:
+/// @param viewController
+/// @param completion
 - (void)dismissViewController:(UIViewController *)viewController completion:(void (^)(void))completion {
   if (self.window.rootViewController == viewController) [self showMainMenu];
   else [viewController dismissViewControllerAnimated:YES completion:completion];
 }
 
+/// showHelp
 - (void)showHelp { MSLogWarn(@"help has not been implemented yet"); }
 
 @end

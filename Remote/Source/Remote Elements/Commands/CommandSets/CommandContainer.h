@@ -8,7 +8,7 @@
 @import UIKit;
 @import CoreData;
 @import Foundation;
-#import "Lumberjack/Lumberjack.h"
+@import Lumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
 #import "NamedModelObject.h"

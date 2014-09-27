@@ -8,7 +8,7 @@
 
 @import Foundation;
 @import MoonKit;
-#import "Lumberjack/Lumberjack.h"
+@import Lumberjack;
 
 @class ISYDevice;
 

@@ -1,21 +1,41 @@
 //
-//  BankRootControllerTableViewController.swift
+//  BankRootController.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 9/25/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
+import Foundation
 import UIKit
+import ObjectiveC
+import MoonKit
 
 private let RootCellIdentifier = "RootCell"
+
+/** An array containing the names of all direct subclasses of the `BankableModelObject` class */
+private let RegisteredClasses: [String] = {
+  var bankableModelClasses: [String] = []
+  var outcount: UInt32 = 0
+  let allClasses = objc_copyClassList(&outcount)
+  for i in 0..<outcount {
+    if let anyClass: AnyClass = allClasses[Int(i)] {
+      if let anySuperClass: AnyClass = class_getSuperclass(anyClass) {
+        let anySuperClassName = NSStringFromClass(anySuperClass)
+        if anySuperClassName == NSStringFromClass(BankableModelObject.self) {
+          bankableModelClasses.append(NSStringFromClass(anyClass))
+        }
+      }
+    }
+  }
+  bankableModelClasses.sort(<)
+  return bankableModelClasses
+  }()
 
 @objc(BankRootController)
 class BankRootController: UITableViewController {
 
-  /**
-  loadView
-  */
+  /** loadView */
   override func loadView() {
 
     title = "Bank"
@@ -52,45 +72,6 @@ class BankRootController: UITableViewController {
   }
 
   /**
-  init
-  */
-  override init() {
-    rootItems = Bank.registeredClasses() as [String]
-    super.init()
-  }
-
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    rootItems = Bank.registeredClasses() as [String]
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) {
-    rootItems = Bank.registeredClasses() as [String]
-    super.init(style: style)
-  }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) {
-    rootItems = Bank.registeredClasses() as [String]
-    super.init(coder: aDecoder)
-  }
-
-  /**
   viewWillAppear:
 
   :param: animated Bool
@@ -100,28 +81,16 @@ class BankRootController: UITableViewController {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "dismiss")
   }
 
-  private var rootItems: [String]
+  /** dismiss */
+  func dismiss() { MSRemoteAppController.sharedAppController().showMainMenu() }
 
-  /**
-  dismiss
-  */
-  func dismiss() {
-    MSRemoteAppController.sharedAppController().dismissViewController(Bank.viewController(), completion: nil)
-  }
-
-  /**
-  importBankObject
-  */
+  /** importBankObject */
   private func importBankObject() { logInfo("not yet implemented", __FUNCTION__) }
 
-  /**
-  exportBankObject
-  */
+  /** exportBankObject */
   private func exportBankObject() { logInfo("not yet implemented", __FUNCTION__) }
 
-  /**
-  searchBankObjects
-  */
+  /** searchBankObjects */
   private func searchBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
 
 }
@@ -138,8 +107,8 @@ extension BankRootController: UITableViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let itemClass = NSClassFromString(rootItems[indexPath.row]) as? BankableModelObject.Type {
-      let collectionController = BankCollectionController(itemClass: itemClass)
+    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
+      let collectionController = BankCollectionController(itemClass: bankableModelClass)
       navigationController?.pushViewController(collectionController, animated: true)
     }
   }
@@ -168,7 +137,7 @@ extension BankRootController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return rootItems.count }
+  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return RegisteredClasses.count }
 
   
   /**
@@ -181,7 +150,9 @@ extension BankRootController: UITableViewDataSource {
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as BankRootCell
-    cell.bankableModelClassName = rootItems[indexPath.row]
+    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
+      cell.bankableModelClass = bankableModelClass
+    }
     return cell
   }
 

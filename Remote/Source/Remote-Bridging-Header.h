@@ -1,9 +1,7 @@
 //
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
-#import "Bank.h"
 #import "BankableModelObject.h"
-#import "Bankables.h"
 #import "ComponentDevice.h"
 #import "Image.h"
 #import "ImageView.h"
@@ -14,12 +12,6 @@
 #import "BankItemTableViewCell.h"
 #import "BankItemViewController.h"
 #import "BankItemViewController_Private.h"
-//#import "BankCollectionHeaderReusableView.h"
-//#import "BankCollectionController.h"
-//#import "BankCollectionViewFlowLayout.h"
-//#import "BankCollectionZoom.h"
-//#import "BankPreviewViewController.h"
-#import "BankRootTableViewController.h"
 #import "ComponentDeviceViewController.h"
 #import "ImageViewController.h"
 #import "IRCodeViewController.h"

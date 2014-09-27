@@ -34,8 +34,8 @@ CellIndexPathDeclaration(Preview);
 + (void)initialize {
   if (self == [PresetViewController class]) {
     CellIndexPathDefinition(Category, 0, 0);
-    CellIndexPathDefinition(Type,     0, 1);
-    CellIndexPathDefinition(Preview,  0, 2);
+    CellIndexPathDefinition(Type,     1, 0);
+    CellIndexPathDefinition(Preview,  0, 1);
   }
 }
 

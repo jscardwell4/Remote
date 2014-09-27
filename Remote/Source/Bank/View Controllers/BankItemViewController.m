@@ -300,7 +300,7 @@ const CGFloat BankItemTableRowHeight    = 120.0;
 
   NSString * identifier = self.identifiers[indexPath.section][indexPath.row];
 
-  if ([BankItemTableViewCell isValidIentifier:identifier]) {
+  if ([BankItemTableViewCell isValidIdentifier:identifier]) {
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
 

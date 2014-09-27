@@ -6,7 +6,7 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "Image.h"
-#import "ImageViewController.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_DEFAULT;
@@ -193,14 +193,14 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 /// detailViewController
 /// @return ImageViewController *
-- (ImageViewController *)detailViewController {
-  return [ImageViewController controllerWithItem:self];
+- (ImageDetailController *)detailViewController {
+  return [[ImageDetailController alloc] initWithItem:self editing:NO];
 }
 
 /// editingViewController
 /// @return ImageViewController *
-- (ImageViewController *)editingViewController {
-  return [ImageViewController controllerWithItem:self editing:YES];
+- (ImageDetailController *)editingViewController {
+  return [[ImageDetailController alloc] initWithItem:self editing:YES];
 }
 
 /// preview

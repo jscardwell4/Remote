@@ -7,7 +7,7 @@
 //
 
 #import "ITachDevice.h"
-#import "ITachDeviceViewController.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -46,14 +46,14 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// detailViewController
 /// @return ITachDeviceViewController *
-- (ITachDeviceViewController *)detailViewController {
-  return [ITachDeviceViewController controllerWithItem:self];
+- (ITachDeviceDetailController *)detailViewController {
+  return [[ITachDeviceDetailController alloc] initWithItem:self editing:NO];
 }
 
 /// editingViewController
 /// @return ITachDeviceViewController *
-- (ITachDeviceViewController *)editingViewController {
-  return [ITachDeviceViewController controllerWithItem:self editing:YES];
+- (ITachDeviceDetailController *)editingViewController {
+  return [[ITachDeviceDetailController alloc] initWithItem:self editing:YES];
 }
 
 

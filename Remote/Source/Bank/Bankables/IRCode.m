@@ -8,7 +8,7 @@
 #import "IRCode.h"
 #import "ComponentDevice.h"
 #import "Manufacturer.h"
-#import "IRCodeViewController.h"
+#import "Remote-Swift.h"
 
 enum ProntoHexFormatParts {
   PatternType                 = 0,
@@ -286,12 +286,12 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 
 /// detailViewController
 /// @return IRCodeViewController *
-- (IRCodeViewController *)detailViewController { return [IRCodeViewController controllerWithItem:self]; }
+- (IRCodeDetailController *)detailViewController { return [[IRCodeDetailController alloc] initWithItem:self editing:NO]; }
 
 /// editingViewController
 /// @return IRCodeViewController *
-- (IRCodeViewController *)editingViewController {
-  return [IRCodeViewController controllerWithItem:self editing:YES];
+- (IRCodeDetailController *)editingViewController {
+  return [[IRCodeDetailController alloc] initWithItem:self editing:YES];
 }
 
 /// directoryLabel
