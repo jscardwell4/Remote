@@ -1,50 +1,74 @@
 //
-//  BankRootController.swift
+//  BankCategoryController.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 9/25/14.
+//  Created by Jason Cardwell on 9/27/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
 import Foundation
 import UIKit
-import ObjectiveC
 import MoonKit
 
-private let RootCellIdentifier = "RootCell"
+private let CategoryCellIdentifier = "CategoryCell"
 
-/** An array containing the names of all direct subclasses of the `BankableModelObject` class */
-private let RegisteredClasses: [String] = {
-  var bankableModelClasses: [String] = []
-  var outcount: UInt32 = 0
-  let allClasses = objc_copyClassList(&outcount)
-  for i in 0..<outcount {
-    if let anyClass: AnyClass = allClasses[Int(i)] {
-      if let anySuperClass: AnyClass = class_getSuperclass(anyClass) {
-        let anySuperClassName = NSStringFromClass(anySuperClass)
-        if anySuperClassName == NSStringFromClass(BankableModelObject.self) {
-          bankableModelClasses.append(NSStringFromClass(anyClass))
-        }
-      }
-    }
+@objc(BankCategoryController)
+class BankCategoryController: UITableViewController, BankController {
+
+  var categoryItems: [BankableCategory] = []
+  var categoryItemClass: BankableModelObject.Type?
+
+  /**
+  initWithItemClass:
+
+  :param: itemClass BankableModelObject.Type
+  */
+  init(itemClass: BankableModelObject.Type) {
+    super.init(style: .Plain)
+  	categoryItemClass = itemClass
+  	categoryItems = (categoryItemClass!.rootCategories() as? [BankableCategory]) ?? []
   }
-  bankableModelClasses.sort(<)
-  return bankableModelClasses
-  }()
 
-@objc(BankRootController)
-class BankRootController: UITableViewController, BankController {
+  /**
+  initWithItems:
+
+  :param: items [BankableCategory]
+  */
+  init(items: [BankableCategory]) {
+    super.init(style: .Plain)
+    categoryItems = items
+  }
+
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+
+  /**
+  init:bundle:
+
+  :param: nibNameOrNil String?
+  :param: nibBundleOrNil NSBundle?
+  */
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
 
   /** loadView */
   override func loadView() {
 
-    title = "Bank"
+    title = categoryItemClass?.directoryLabel()
+    if title == nil && categoryItems.count > 0 { title = categoryItems[0].parentCategory?.name }
     navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName           : Bank.BoldLabelFont,
                                                                 NSForegroundColorAttributeName: Bank.LabelColor ]
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
       tableView.backgroundColor = UIColor.whiteColor()
-      tableView.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
+      tableView.registerClass(BankCategoryCell.self, forCellReuseIdentifier: CategoryCellIdentifier)
       tableView.separatorStyle = .None
       tableView.rowHeight = 38.0
       return tableView
@@ -62,7 +86,6 @@ class BankRootController: UITableViewController, BankController {
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "dismiss")
-    navigationController?.toolbarHidden = false
   }
 
   /** dismiss */
@@ -82,7 +105,7 @@ class BankRootController: UITableViewController, BankController {
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - UITableViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
-extension BankRootController: UITableViewDelegate {
+extension BankCategoryController: UITableViewDelegate {
 
   /**
   tableView:didSelectRowAtIndexPath:
@@ -91,10 +114,19 @@ extension BankRootController: UITableViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
-      let vc = bankableModelClass.isCategorized()
-                 ? BankCategoryController(itemClass: bankableModelClass)
-                 : BankCollectionController(itemClass: bankableModelClass)
+    let category = categoryItems[indexPath.row]
+    if let subcategories = category.subCategories?.allObjects {
+      if subcategories.count == 0 {
+        if let allItems = category.allItems?.allObjects {
+          let vc = BankCollectionController(objects: allItems as [BankableModelObject])
+          navigationController?.pushViewController(vc, animated: true)
+        }
+      } else {
+        let vc = BankCategoryController(items: subcategories as [BankableCategory])
+        navigationController?.pushViewController(vc, animated: true)
+      }
+    } else if let allItems = category.allItems?.allObjects {
+      let vc = BankCollectionController(objects: allItems as [BankableModelObject])
       navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -104,7 +136,7 @@ extension BankRootController: UITableViewDelegate {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // MARK: - Table view data source
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-extension BankRootController: UITableViewDataSource {
+extension BankCategoryController: UITableViewDataSource {
 
   /**
   numberOfSectionsInTableView:
@@ -123,7 +155,7 @@ extension BankRootController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return RegisteredClasses.count }
+  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return categoryItems.count }
 
 
   /**
@@ -135,10 +167,9 @@ extension BankRootController: UITableViewDataSource {
   :returns: UITableViewCell
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as BankRootCell
-    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
-      cell.bankableModelClass = bankableModelClass
-    }
+    let cell = tableView.dequeueReusableCellWithIdentifier(CategoryCellIdentifier, forIndexPath: indexPath) as BankCategoryCell
+    let category = categoryItems[indexPath.row]
+    cell.labelText = category.name
     return cell
   }
 

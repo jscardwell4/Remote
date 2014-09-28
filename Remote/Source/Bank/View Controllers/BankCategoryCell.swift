@@ -1,45 +1,18 @@
 //
-//  BankRootCell.swift
+//  BankCategoryCell.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 9/25/14.
+//  Created by Jason Cardwell on 9/27/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 import Foundation
 import UIKit
 import MoonKit
 
-@objc(BankRootCell)
-class BankRootCell: UITableViewCell {
+@objc(BankCategoryCell)
+class BankCategoryCell: UITableViewCell {
 
-  var bankableModelClassName: String? {
-    didSet {
-      if let name = bankableModelClassName {
-        if let modelClass = NSClassFromString(name) as? BankableModelObject.Type {
-          bankableModelClass = modelClass
-        }
-      }
-    }
-  }
-
-  var bankableModelClass: BankableModelObject.Type? {
-    didSet {
-      if let model = bankableModelClass {
-        icon.image = model.directoryIcon()
-        label.text = model.directoryLabel()
-      } else {
-        icon.image = nil
-        label.text = nil
-      }
-    }
-  }
-
-  private let icon: UIImageView = {
-    let view = UIImageView.newForAutolayout()
-    view.constrainWithFormat("self.width = self.height")
-    view.contentMode = .ScaleAspectFit
-    return view
-  }()
+  var labelText: String? { get { return label.text } set { label.text = newValue } }
 
   private let label: UILabel = {
     let view = UILabel.newForAutolayout()
@@ -61,8 +34,8 @@ class BankRootCell: UITableViewCell {
   override func updateConstraints() {
     let identifier = "Internal"
     if constraintsWithIdentifier(identifier).count == 0 {
-      let format = "|-20-[icon]-20-[label]-8-[chevron]-20-| :: V:|-8-[icon]-8-| :: V:|[label]| :: V:|-8-[chevron]-8-|"
-      let views = ["icon": icon, "label": label, "chevron": chevron, "content": contentView]
+      let format = "|-20-[label]-8-[chevron]-20-| :: V:|[label]| :: V:|-8-[chevron]-8-|"
+      let views = ["label": label, "chevron": chevron, "content": contentView]
       constrainWithFormat(format, views: views, identifier: identifier)
     }
     super.updateConstraints()
@@ -77,7 +50,6 @@ class BankRootCell: UITableViewCell {
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setTranslatesAutoresizingMaskIntoConstraints(false)
-    contentView.addSubview(icon)
     contentView.addSubview(label)
     contentView.addSubview(chevron)
     setNeedsUpdateConstraints()
@@ -91,7 +63,6 @@ class BankRootCell: UITableViewCell {
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setTranslatesAutoresizingMaskIntoConstraints(false)
-    contentView.addSubview(icon)
     contentView.addSubview(label)
     contentView.addSubview(chevron)
     setNeedsUpdateConstraints()

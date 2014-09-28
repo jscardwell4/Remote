@@ -17,24 +17,22 @@
 #pragma mark - Image
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface Image : BankableModelObject
+@class ImageCategory;
 
-+ (instancetype)imageWithFileName:(NSString *)fileName
-                         category:(NSString *)category
-                          context:(NSManagedObjectContext *)moc;
+@interface Image : BankableModelObject
 
 - (UIImage *)imageWithColor:(UIColor *)color;
 
 - (void)flushThumbnail;
 
-
-@property (nonatomic, weak,   readonly) UIImage  * image;
-@property (nonatomic, assign)           CGSize     thumbnailSize;
-@property (nonatomic, strong)           NSString * fileName;
-@property (nonatomic, strong)           NSNumber * leftCap;
-@property (nonatomic, strong)           NSNumber * topCap;
-@property (nonatomic, strong, readonly) UIImage  * stretchableImage;
-@property (nonatomic, assign, readonly) CGSize     size;
+@property (nonatomic, weak,   readonly) UIImage       * image;
+@property (nonatomic, assign)           CGSize          thumbnailSize;
+@property (nonatomic, strong)           NSString      * fileName;
+@property (nonatomic, strong)           NSNumber      * leftCap;
+@property (nonatomic, strong)           NSNumber      * topCap;
+@property (nonatomic, strong, readonly) UIImage       * stretchableImage;
+@property (nonatomic, assign, readonly) CGSize          size;
+@property (nonatomic, strong)           ImageCategory * category;
 
 @end
 

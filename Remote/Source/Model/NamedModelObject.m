@@ -37,6 +37,10 @@
   else [self autoGenerateName];
 }
 
+- (void)updateWithData:(NSDictionary *)data {
+  [super updateWithData:data];
+  self.name = data[@"name"] ?: self.name;
+}
 
 - (MSDictionary *)JSONDictionary {
   MSDictionary * dictionary = [super JSONDictionary];

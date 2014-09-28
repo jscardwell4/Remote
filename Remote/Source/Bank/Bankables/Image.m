@@ -8,7 +8,7 @@
 #import "Image.h"
 #import "Remote-Swift.h"
 
-static int       ddLogLevel   = LOG_LEVEL_WARN;
+static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 #pragma unused(ddLogLevel, msLogContext)
@@ -29,25 +29,9 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 @implementation Image
 
-@dynamic size, fileName, leftCap, topCap;
+@dynamic size, fileName, leftCap, topCap, category;
 
 @synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
-
-/// imageWithFileName:category:context:
-/// @param fileName
-/// @param category
-/// @param moc
-/// @return instancetype
-+ (instancetype)imageWithFileName:(NSString *)fileName
-                         category:(NSString *)category
-                          context:(NSManagedObjectContext *)moc {
-  Image * image = [self createInContext:moc];
-
-  image.fileName = fileName; // Will throw exception if can't generate UIImage from `fileName`
-  image.category = category;
-
-  return image;
-}
 
 /// setFileName:
 /// @param fileName
@@ -64,6 +48,9 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 - (void)updateWithData:(NSDictionary *)data {
 
   [super updateWithData:data];
+
+  MSDictionary * categoryData = data[@"category"];
+  if (categoryData) self.category = [ImageCategory importObjectFromData:categoryData context:self.managedObjectContext];
 
   self.fileName = data[@"file-name"] ?: self.fileName;
   self.leftCap  = data[@"left-cap"]  ?: self.leftCap;
@@ -127,6 +114,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
   MSDictionary * dictionary = [super JSONDictionary];
 
+  SafeSetValueForKey(self.category.commentedUUID, @"category", dictionary);
   SafeSetValueForKey(self.fileName, @"file-name", dictionary);
   SetValueForKeyIfNotDefault(self.leftCap, @"leftCap", dictionary);
   SetValueForKeyIfNotDefault(self.topCap,  @"topCap",  dictionary);
@@ -147,6 +135,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
 
   dd[@"name"]     = (image.name ?: @"");
+  dd[@"category"] = $(@"'%@':%@", image.category.name, image.category.uuid);
   dd[@"fileName"] = (image.fileName ?: @"");
   dd[@"leftCap"]  = image.leftCap ?: @0;
   dd[@"topCap"]   = image.topCap ?: @0;
@@ -181,6 +170,10 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// @return BOOL
 + (BOOL)isThumbnailable { return YES;  }
 
+/// isCategorized
+/// @return BOOL
++ (BOOL)isCategorized { return YES; }
+
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Images"; }
@@ -201,6 +194,43 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// @return ImageViewController *
 - (ImageDetailController *)editingViewController {
   return [[ImageDetailController alloc] initWithItem:self editing:YES];
+}
+
+/// rootCategories
+/// @return NSArray *
++ (NSArray *)rootCategories {
+  return [ImageCategory findAllMatchingPredicate:[NSPredicate predicateWithFormat:@"parentCategory == nil"]];
+}
+
+/// allItems
+/// @return NSFetchedResultsController *
++ (NSFetchedResultsController *)allItems {
+
+  NSFetchedResultsController * controller = [self fetchAllGroupedBy:@"category.categoryPath" sortedBy:nil];
+
+  NSError * error = nil;
+  [controller performFetch:&error];
+  MSHandleErrors(error);
+
+  return controller;
+  
+}
+
+/// category
+/// @return ImageCategory *
+- (ImageCategory *)category {
+  [self willAccessValueForKey:@"category"];
+  ImageCategory * category = [self primitiveValueForKey:@"category"];
+  [self didAccessValueForKey:@"category"];
+  return category;
+}
+
+/// setCategory:
+/// @param category
+- (void)setCategory:(ImageCategory *)category {
+  [self willChangeValueForKey:@"category"];
+  [self setPrimitiveValue:category forKey:@"category"];
+  [self didChangeValueForKey:@"category"];
 }
 
 /// preview
@@ -236,11 +266,11 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
     else dispatch_sync(dispatch_get_main_queue(), createThumbnail);
 
     if (ValueIsNil(_thumbnail)) MSLogWarn(@"%@ could not scale image for thumbnail", ClassTagString);
-    
+
   }
-  
+
   return _thumbnail;
-  
+
 }
 
 

@@ -16,9 +16,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
 @implementation BankableModelObject
-@dynamic category, user;
-
-
+@dynamic user;
 
 /// updateWithData:
 /// @param data
@@ -60,9 +58,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return BOOL
 - (BOOL)isPreviewable { return [[self class] isPreviewable]; }
 
-/// isSectionable
+/// isCategorized
 /// @return BOOL
-+ (BOOL)isSectionable { return YES;  }
++ (BOOL)isCategorized { return NO;  }
 
 /// isThumbnailable
 /// @return BOOL
@@ -109,22 +107,27 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   if ([self hasChanges]) {
     NSManagedObjectContext * moc = self.managedObjectContext;
 
-    [moc performBlockAndWait:
-     ^{
+    [moc performBlockAndWait:^{
        NSError * error = nil;
        [moc save:&error];
-
        if (!MSHandleErrors(error)) [moc processPendingChanges];
      }];
   }
 }
+
+/// category
+/// @return id<BankableCategory>
+- (id<BankableCategory>)category { return nil; }
+
+/// setCategory:
+/// @param category
+- (void)setCategory:(id<BankableCategory>)category {}
 
 /// resetItem
 - (void)resetItem {
   if ([self hasChanges]) {
     NSManagedObjectContext * moc      = self.managedObjectContext;
     __weak NSManagedObject * weakself = self;
-
     [moc performBlockAndWait:^{ [moc refreshObject:weakself mergeChanges:NO]; }];
   }
 }
@@ -137,21 +140,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return UIImage *
 - (UIImage *)preview { return nil; }
 
-/// subitems
-/// @return MSDictionary *
-- (MSDictionary *)subitems { return nil; }
-
-/// allCategories
-/// @return NSArray *
-+ (NSArray *)allCategories {
-
-}
-
 /// allItems
 /// @return NSFetchedResultsController *
 + (NSFetchedResultsController *)allItems {
 
-  NSFetchedResultsController * controller = [self fetchAllGroupedBy:@"category" sortedBy:@"category,name"];
+  NSFetchedResultsController * controller = [self fetchAllGroupedBy:nil sortedBy:@"name"];
 
   NSError * error = nil;
   [controller performFetch:&error];
@@ -160,5 +153,9 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return controller;
 
 }
+
+/// rootCategories
+/// @return NSArray *
++ (NSArray *)rootCategories { return nil; }
 
 @end

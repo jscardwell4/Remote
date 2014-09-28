@@ -199,6 +199,7 @@
 		C235930319C8E04200920F8D /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C235930419C8E04200920F8D /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F219C8E04200920F8D /* JSONParser.swift */; };
 		C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */; };
+		C277AB8719D787EA008DEE39 /* ToggleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
@@ -256,6 +257,7 @@
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleBarButtonItem.swift; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C29692A919CE53D400992240 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerialization.swift; path = Moonkit/Parsing/JSONSerialization.swift; sourceTree = SOURCE_ROOT; };
@@ -466,6 +468,7 @@
 		C2358F1719C78D6D00920F8D /* Moonkit */ = {
 			isa = PBXGroup;
 			children = (
+				C277AB8519D7878A008DEE39 /* Objects */,
 				C23592DB19C8E04200920F8D /* Convenience */,
 				C23592DD19C8E04200920F8D /* Data Structures */,
 				C23592E019C8E04200920F8D /* Extensions */,
@@ -543,6 +546,14 @@
 				C23592F219C8E04200920F8D /* JSONParser.swift */,
 			);
 			path = Parsing;
+			sourceTree = "<group>";
+		};
+		C277AB8519D7878A008DEE39 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */,
+			);
+			path = Objects;
 			sourceTree = "<group>";
 		};
 		C2C482D319C9F98A002E84A9 /* Moonkit Tests */ = {
@@ -1141,6 +1152,7 @@
 				C2358F5119C78E0C00920F8D /* UITableView+MSKitAdditions.m in Sources */,
 				C2358F5219C78E0C00920F8D /* UIView+MSKitAdditions.m in Sources */,
 				C2358F5319C78E0C00920F8D /* UIViewController+MSKitAdditions.m in Sources */,
+				C277AB8719D787EA008DEE39 /* ToggleBarButtonItem.swift in Sources */,
 				C2358F5419C78E0C00920F8D /* NSPointerArray+MSKitAdditions.m in Sources */,
 				C2358F5519C78E0C00920F8D /* NSAssertionHandler+MSKitAdditions.m in Sources */,
 				C2358F5619C78E0C00920F8D /* NSIndexPath+MSKitAdditions.m in Sources */,

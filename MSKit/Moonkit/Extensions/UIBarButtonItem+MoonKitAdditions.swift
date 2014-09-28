@@ -21,4 +21,8 @@ public extension UIBarButtonItem {
     return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
   }
 
+  convenience init(imageNamed: String, style: UIBarButtonItemStyle, target: AnyObject?, action: Selector) {
+    self.init(image: UIImage(named: imageNamed), style: style, target: target, action: action)
+  }
+
 }

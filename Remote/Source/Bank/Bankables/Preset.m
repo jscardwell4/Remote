@@ -17,43 +17,7 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 @implementation Preset
 
-@dynamic element;
-
-
-/// presetWithElement:
-/// @param element
-/// @return instancetype
-+ (instancetype)presetWithElement:(RemoteElement *)element {
-  assert(element);
-  __block Preset * preset = nil;
-  [element.managedObjectContext performBlockAndWait:
-   ^{
-    preset = [self createInContext:element.managedObjectContext];
-    preset.element = element;
-    NSString * category = nil;
-    switch (element.elementType) {
-      case RETypeRemote:
-        category = @"Remote";
-        break;
-
-      case RETypeButtonGroup:
-        category = @"Button Group";
-        break;
-
-      case RETypeButton:
-        category = @"Button";
-        break;
-
-      default:
-        category = @"Uncategorized";
-        break;
-    }
-
-    preset.category = category;
-  }];
-  return preset;
-}
-
+@dynamic element, category;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - BankableModel
@@ -79,6 +43,10 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 /// isThumbnailable
 /// @return BOOL
 + (BOOL)isThumbnailable { return YES;  }
+
+/// isCategorized
+/// @return BOOL
++ (BOOL)isCategorized { return YES; }
 
 /// directoryLabel
 /// @return NSString *

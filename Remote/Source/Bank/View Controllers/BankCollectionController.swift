@@ -10,13 +10,8 @@ import Foundation
 import UIKit
 import MoonKit
 
-private let ExportBarItemImage         = UIImage(named:"702-gray-share")
-private let ExportBarItemImageSelected = UIImage(named:"702-gray-share-selected")
-private let ImportBarItemImage         = UIImage(named:"703-gray-download")
-private let ImportBarItemImageSelected = UIImage(named:"703-gray-download-selected")
-private let ListSegmentImage           = UIImage(named:"399-gray-list1") // 1073-gray-grid-1
-private let ThumbnailSegmentImage      = UIImage(named:"822-gray-photo-2") // 1076-gray-grid-4
-private let SearchBarItemImage         = UIImage(named:"708-gray-search")
+private let ListSegmentImage           = UIImage(named:"1073-gray-grid-1") // 1073-gray-grid-1399-gray-list1
+private let ThumbnailSegmentImage      = UIImage(named:"1076-gray-grid-4") // 1076-gray-grid-4822-gray-photo-2
 private let IndicatorImage             = UIImage(named:"1040-gray-checkmark")
 private let IndicatorImageSelected     = UIImage(named:"1040-gray-checkmark-selected")
 private let TextFieldTextColor         = UIColor(RGBAHexString:"#9FA0A4FF")
@@ -24,13 +19,14 @@ private let CellIdentifier             = "Cell"
 private let HeaderIdentifier           = "Header"
 
 @objc(BankCollectionController)
-class BankCollectionController: UICollectionViewController {
+class BankCollectionController: UICollectionViewController, BankController {
 
-  let collectionItems: NSFetchedResultsController
+  let collectionItemsController: NSFetchedResultsController?
   let collectionItemClass: BankableModelObject.Type
+  var collectionItems: [BankableModelObject]?
 
-	private var updatesBlock: NSBlockOperation?
-	private var hiddenSections = [Int]()
+  private var updatesBlock: NSBlockOperation?
+  private var hiddenSections = [Int]()
 
   private lazy var zoomView: BankCollectionZoom? = BankCollectionZoom(frame: self.view.bounds, delegate: self)
 
@@ -46,7 +42,7 @@ class BankCollectionController: UICollectionViewController {
 
   private var layout: BankCollectionLayout { return collectionViewLayout as BankCollectionLayout }
 
-	private lazy var exportSelection = [BankableModelObject]()
+  private lazy var exportSelection = [BankableModelObject]()
 
   private var exportSelectionMode: Bool = false {
     didSet {
@@ -54,7 +50,6 @@ class BankCollectionController: UICollectionViewController {
       // Create some variables to hold values for common actions to perform
       var rightBarButtonItems: [UIBarButtonItem]
       var cellIndicatorImage: UIImage?
-      var exportBarItemImage: UIImage
 
       // Determine if we are entering or leaving export selection mode
       if exportSelectionMode {
@@ -72,13 +67,11 @@ class BankCollectionController: UICollectionViewController {
 
 
         cellIndicatorImage = IndicatorImage              // Set indicator image
-        exportBarItemImage = ExportBarItemImageSelected  // Set export bar item image
 
 
       } else {
         exportAlertAction = nil  // Make sure we don't leave a dangling alert action
         rightBarButtonItems = [ UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "dismiss:") ]
-        exportBarItemImage = ExportBarItemImage  // Set export bar item image
 
       }
 
@@ -86,32 +79,26 @@ class BankCollectionController: UICollectionViewController {
 
       navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
 
-      // Update image for export toolbar button
-      if var items = toolbarItems as? [UIBarButtonItem] {
-        items[0] = UIBarButtonItem(image: exportBarItemImage, style: .Plain, target: self, action: "exportBankObject:")
-        self.setToolbarItems(items, animated: true)
-      }
-
       // Update visible cells
       collectionView?.setValue(cellIndicatorImage, forKeyPath: "visibleCells.indicatorImage")
 
     }
   }
 
-	private var useListView = true
+  private var useListView = true
 
-	/**
-	initWithItemClass:
+  /**
+  initWithItemClass:
 
-	:param: collectionItemClass BankableModel.Type
-	*/
+  :param: collectionItemClass BankableModel.Type
+  */
   init(itemClass: BankableModelObject.Type) {
-		collectionItemClass = itemClass
-    collectionItems = collectionItemClass.allItems()
+    collectionItemClass = itemClass
     super.init(collectionViewLayout: BankCollectionLayout())
-    collectionItems.delegate = self
-    if !collectionItemClass.isSectionable() { layout.includeSectionHeaders = false }
-	}
+    collectionItemsController = collectionItemClass.allItems()
+    collectionItemsController?.delegate = self
+    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+  }
 
   /**
   initWithItems:
@@ -119,33 +106,46 @@ class BankCollectionController: UICollectionViewController {
   :param: items NSFetchedResultsController
   */
   init(items: NSFetchedResultsController) {
-    collectionItems = items
     collectionItemClass = NSClassFromString(items.fetchRequest.entity.managedObjectClassName) as BankableModelObject.Type
     super.init(collectionViewLayout: BankCollectionLayout())
-    collectionItems.delegate = self
-    if !collectionItemClass.isSectionable() { layout.includeSectionHeaders = false }
+    collectionItemsController = items
+    collectionItemsController?.delegate = self
+    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
   }
 
-	/**
-	init:
+  /**
+  initWithItems:
 
-	:param: aDecoder NSCoder
-	*/
-	required init(coder aDecoder: NSCoder) {
+  :param: items [BankableModelObject]
+  */
+  init(objects: [BankableModelObject]) {
+    collectionItemClass = objects[0].dynamicType.self
+    super.init(collectionViewLayout: BankCollectionLayout())
+    collectionItems = objects
+    layout.includeSectionHeaders = false
+  }
+
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) {
     let collectionItemClassName = aDecoder.decodeObjectForKey("collectionItemClass") as String
     collectionItemClass = NSClassFromString(collectionItemClassName) as BankableModelObject.Type
-    collectionItems = collectionItemClass.allItems()
+    collectionItemsController = collectionItemClass.allItems()
     super.init(coder: aDecoder)
-    collectionItems.delegate = self
-    if !collectionItemClass.isSectionable() { layout.includeSectionHeaders = false }
-	}
+    collectionItemsController?.delegate = self
+    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+  }
 
-	/**
-	loadView
-	*/
-	override func loadView() {
+  /**
+  loadView
+  */
+  override func loadView() {
 
-    title = collectionItemClass.directoryLabel()
+    if collectionItems != nil { title = collectionItems![0].category.name }
+    else { title = collectionItemClass.directoryLabel() }
 
     collectionView = { [unowned self] in
 
@@ -165,26 +165,25 @@ class BankCollectionController: UICollectionViewController {
 
     }()
 
+
     toolbarItems = {[unowned self] in
 
-      // Create the toolbar items
-      let exportBarItem = UIBarButtonItem(image: ExportBarItemImage, style: .Plain, target: self, action: "exportBankObject:")
-      let spacer = UIBarButtonItem.fixedSpace(20.0)
-      let importBarItem = UIBarButtonItem(image: ImportBarItemImage, style: .Plain, target: self, action: "importBankObject:")
-      let flex = UIBarButtonItem.flexibleSpace()
+      var items = Bank.toolbarItemsForController(self)
 
-      let displayOptions = UISegmentedControl(items: [ListSegmentImage, ThumbnailSegmentImage])
-      displayOptions.selectedSegmentIndex = 0
-      displayOptions.addTarget(self, action: "segmentedControlValueDidChange:", forControlEvents: .ValueChanged)
+      if self.collectionItemClass.isThumbnailable() {
+        // Create the toolbar items
+        let displayOptions = UISegmentedControl(items: [ListSegmentImage, ThumbnailSegmentImage])
+        displayOptions.selectedSegmentIndex = 0
+        displayOptions.addTarget(self, action: "segmentedControlValueDidChange:", forControlEvents: .ValueChanged)
 
-      let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
-      let searchBarItem = UIBarButtonItem(image: SearchBarItemImage, style: .Plain, target: self, action: "searchBankObjects:")
+        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
 
+        items.insert(UIBarButtonItem.flexibleSpace(), atIndex: 4)
+        items.insert(displayOptionsItem, atIndex: 4)
+      }
 
-      return self.collectionItemClass.isThumbnailable()
-               ? [exportBarItem, spacer, importBarItem, flex, displayOptionsItem, flex, searchBarItem]
-               : [exportBarItem, spacer, importBarItem, flex, searchBarItem]
-    }()
+      return items
+      }()
 
   }
 
@@ -255,7 +254,7 @@ class BankCollectionController: UICollectionViewController {
 
       // Refresh our list of existing file names for checking during file export
       refreshExistingFiles()
-      
+
       // Create the controller with export title and filename message
       alert = UIAlertController(title:          "Export Selection",
                                 message:        "Enter a name for the exported file",
@@ -321,7 +320,7 @@ class BankCollectionController: UICollectionViewController {
 
   :param: sender AnyObject?
   */
-  func exportBankObject(sender: AnyObject?) { exportSelectionMode = !exportSelectionMode }
+  func exportBankObjects() { exportSelectionMode = !exportSelectionMode }
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -380,14 +379,14 @@ class BankCollectionController: UICollectionViewController {
 
   :param: sender AnyObject?
   */
-  func importBankObject(sender: AnyObject?) { logInfo("item import not yet implemented", __FUNCTION__)  }
+  func importBankObjects() { logInfo("item import not yet implemented", __FUNCTION__)  }
 
   /**
   searchBankObjects:
 
   :param: sender AnyObject?
   */
-  func searchBankObjects(sender: AnyObject?) { logInfo("item search not yet implemented", __FUNCTION__)  }
+  func searchBankObjects() { logInfo("item search not yet implemented", __FUNCTION__)  }
 
   /**
   dismiss:
@@ -480,32 +479,37 @@ extension BankCollectionController {
     // Make sure we are in export selection mode
     if exportSelectionMode {
 
-      // Enumerate all the sections
-      for (sectionNumber, section) in enumerate(collectionItems.sections as [NSFetchedResultsSectionInfo]) {
+      if let controller = collectionItemsController {
+        // Enumerate all the sections
+        for (sectionNumber, section) in enumerate(controller.sections as [NSFetchedResultsSectionInfo]) {
 
-        // Enumerate the items in this section
-        for row in 0..<section.numberOfObjects {
+          // Enumerate the items in this section
+          for row in 0..<section.numberOfObjects {
 
-          // Create the index path
-          let indexPath = NSIndexPath(forRow: row, inSection: sectionNumber)
+            // Create the index path
+            let indexPath = NSIndexPath(forRow: row, inSection: sectionNumber)
 
-          // Get the corresponding item
-          let item = collectionItems.objectAtIndexPath(indexPath) as BankableModelObject
+            // Get the corresponding item
+            let item = controller.objectAtIndexPath(indexPath) as BankableModelObject
 
-          // Add the item to our export selection
-          exportSelection.append(item)
+            // Add the item to our export selection
+            exportSelection.append(item)
 
-          // Select the cell
-          collectionView!.selectItemAtIndexPath(indexPath, animated: true, scrollPosition: .None)
+            // Select the cell
+            collectionView!.selectItemAtIndexPath(indexPath, animated: true, scrollPosition: .None)
 
-          // Update the cell if it is visible
-          if let cell = collectionView!.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
-            cell.indicatorImage = IndicatorImageSelected
+            // Update the cell if it is visible
+            if let cell = collectionView!.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+              cell.indicatorImage = IndicatorImageSelected
+            }
+            
           }
-
+        
         }
 
       }
+
+      // TODO: Add selection when using `collectionItems`
 
     }
 
@@ -558,9 +562,13 @@ extension BankCollectionController: UICollectionViewDataSource {
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     var count = 0
-      if let sections = collectionItems.sections as? [NSFetchedResultsSectionInfo] {
+    if let controller = collectionItemsController {
+      if let sections = controller.sections as? [NSFetchedResultsSectionInfo] {
         if sections.count > section { count = sections[section].numberOfObjects }
       }
+    } else if collectionItems != nil {
+      count = collectionItems!.count
+    }
     return count
   }
 
@@ -577,7 +585,11 @@ extension BankCollectionController: UICollectionViewDataSource {
   {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier,
                                                         forIndexPath: indexPath) as BankCollectionCell
-    cell.item = (collectionItems[indexPath] as BankableModelObject)
+    if let controller = collectionItemsController {
+      cell.item = (controller[indexPath] as BankableModelObject)
+    } else if let items = collectionItems {
+      cell.item = items[indexPath.row]
+    }
     cell.detailActionHandler   = {[unowned self] (cell) in self.detailItem(cell.item!)}
     cell.previewActionHandler  = {[unowned self] (cell) in self.zoomItem(cell.item!)}
 
@@ -592,7 +604,13 @@ extension BankCollectionController: UICollectionViewDataSource {
   :returns: Int
   */
   override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return (collectionItems.sections as [NSFetchedResultsSectionInfo]).count
+    if let controller = collectionItemsController {
+      return (controller.sections as [NSFetchedResultsSectionInfo]).count
+    } else if collectionItems != nil {
+      return 1
+    } else {
+      return 0
+    }
   }
 
   /**
@@ -610,14 +628,14 @@ extension BankCollectionController: UICollectionViewDataSource {
   {
     var view: UICollectionReusableView?
 
-    if kind == UICollectionElementKindSectionHeader {
+    if kind == UICollectionElementKindSectionHeader && collectionItemsController != nil {
       let header =
         collectionView.dequeueReusableSupplementaryViewOfKind(kind,
                                           withReuseIdentifier: HeaderIdentifier,
                                                  forIndexPath: indexPath) as BankCollectionHeader
       let section = indexPath.section
       // FIXME: Crash when loading component device codes
-      if let sections = collectionItems.sections as? [NSFetchedResultsSectionInfo] {
+      if let sections = collectionItemsController!.sections as? [NSFetchedResultsSectionInfo] {
         if sections.count > section {
           let sectionInfo = sections[section]
           header.title = sectionInfo.name
@@ -626,7 +644,7 @@ extension BankCollectionController: UICollectionViewDataSource {
           }
         }
       }
-      header.title = (collectionItems.sections as [NSFetchedResultsSectionInfo])[indexPath.section].name
+      header.title = (collectionItemsController!.sections as [NSFetchedResultsSectionInfo])[indexPath.section].name
 
       view = header
     }

@@ -88,10 +88,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/// isSectionable
-/// @return BOOL
-+ (BOOL)isSectionable { return NO;  }
-
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Network Devices"; }

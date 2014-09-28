@@ -35,17 +35,17 @@ class PresetDetailController: BankItemDetailController {
     let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
-      $0.info = self.preset.category ?? "Uncategorized"
-      $0.changeHandler = {[unowned self] c in
-        let text = c.info as? String
-        self.preset.category = text
-        if self.preset.category != nil && self.categories ∌ self.preset.category! {
-          self.categories.append(self.preset.category!)
-          self.categories.sort(<)
-        }
-      }
-      $0.pickerData = self.categories
-      $0.pickerSelection = self.preset.category
+//      $0.info = self.preset.category ?? "Uncategorized"
+//      $0.changeHandler = {[unowned self] c in
+//        let text = c.info as? String
+//        self.preset.category = text
+//        if self.preset.category != nil && self.categories ∌ self.preset.category! {
+//          self.categories.append(self.preset.category!)
+//          self.categories.sort(<)
+//        }
+//      }
+//      $0.pickerData = self.categories
+//      $0.pickerSelection = self.preset.category
     }
 
     // section 0 - row 1: type

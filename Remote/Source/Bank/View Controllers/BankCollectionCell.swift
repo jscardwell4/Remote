@@ -37,7 +37,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   private let nameLabel: UILabel = {
     let label = UILabel.newForAutolayout()
-    label.font = BankAppearance.InfoFont
+    label.font = Bank.InfoFont
     label.constrainWithFormat("self.height = 38")
     return label
   }()

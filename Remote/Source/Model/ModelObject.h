@@ -14,12 +14,16 @@
 @import MoonKit;
 #import "CoreDataManager.h"
 
-@protocol NamedModel <NSObject>
-- (NSString *)name;
+@protocol Model <NSObject>
+@property (nonatomic, copy, readonly) NSString * uuid;
+@end
+
+@protocol NamedModel <Model>
+@property (nonatomic, copy, readonly) NSString * name;
 @end
 
 
-@interface ModelObject : NSManagedObject
+@interface ModelObject : NSManagedObject <Model>
 
 MSEXTERN_STRING ModelObjectInitializingContextName;
 

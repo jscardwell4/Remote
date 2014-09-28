@@ -34,7 +34,7 @@ class IRCodeDetailController: BankItemDetailController {
     super.init(item: item, editing: editing)
     precondition(item is IRCode, "we should have been given an ircode")
 
-    codesets = irCode.manufacturer.codesets.allObjects as [String]
+//    codesets = irCode.manufacturer.codesets.allObjects as [String]
 
     // section 0 - row 0: manufacturer
     let manufacturerRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
@@ -55,6 +55,7 @@ class IRCodeDetailController: BankItemDetailController {
           }
         }
       }
+/*
       $0.pickerSelectionHandler = {[unowned self] c in
         if let selection = c.pickerSelection as? Manufacturer {
           if self.irCode.manufacturer != selection {
@@ -68,6 +69,7 @@ class IRCodeDetailController: BankItemDetailController {
           self.updateDisplay()
         }
       }
+*/
       $0.pickerData = self.manufacturers
       $0.pickerSelection = self.irCode.manufacturer
     }
@@ -75,26 +77,26 @@ class IRCodeDetailController: BankItemDetailController {
     // section 0 - row 1: codeset
     let codesetRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Codeset"
-      $0.info = self.irCode.codeset ?? "No Codeset"
-      $0.validationHandler = {($0.info as NSString).length > 0}
-      $0.changeHandler = {[unowned self] c in
-        if let text = c.info as? String {
-          if self.irCode.codeset != text {
-            self.irCode.codeset = text
-            if self.codesets ∌ text {
-              self.codesets.append(text)
-              self.codesets.sort(<)
-            }
-          }
-        }
-      }
-      $0.pickerSelectionHandler = {[unowned self] c in
-        if let selection = c.pickerSelection as? String {
-          self.irCode.codeset = selection
-        }
-      }
-      $0.pickerData = self.codesets
-      $0.pickerSelection = self.irCode.codeset
+//      $0.info = self.irCode.codeset ?? "No Codeset"
+//      $0.validationHandler = {($0.info as NSString).length > 0}
+//      $0.changeHandler = {[unowned self] c in
+//        if let text = c.info as? String {
+//          if self.irCode.codeset != text {
+//            self.irCode.codeset = text
+//            if self.codesets ∌ text {
+//              self.codesets.append(text)
+//              self.codesets.sort(<)
+//            }
+//          }
+//        }
+//      }
+//      $0.pickerSelectionHandler = {[unowned self] c in
+//        if let selection = c.pickerSelection as? String {
+//          self.irCode.codeset = selection
+//        }
+//      }
+//      $0.pickerData = self.codesets
+//      $0.pickerSelection = self.irCode.codeset
     }
 
     // section 0 - row 2: frequency

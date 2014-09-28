@@ -136,10 +136,6 @@
   return [[ManufacturerDetailController alloc] initWithItem:self editing:YES];
 }
 
-/// isSectionable
-/// @return BOOL
-+ (BOOL)isSectionable { return NO;  }
-
 /// isEditable
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }

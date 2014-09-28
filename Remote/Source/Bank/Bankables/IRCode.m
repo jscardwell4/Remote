@@ -100,7 +100,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 @implementation IRCode
 
 @dynamic frequency, offset, repeatCount, onOffPattern;
-@dynamic device, setsDeviceInput, prontoHex, manufacturer, codeset;
+@dynamic device, setsDeviceInput, prontoHex, manufacturer, codeSet;
 
 /// isValidOnOffPattern:
 /// @param pattern
@@ -154,11 +154,11 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
         [compressed appendString:@","];
 
       [compressed appendFormat:@"%i,%i", on, off];
-      
+
     }
-    
+
   }
-  
+
   return (scanner.atEnd ? compressed : nil);
 
 }
@@ -189,12 +189,13 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 
 /// updateCategory
 - (void)updateCategory {
-  NSString * manufacturerName = (self.manufacturer.name
-                                 ? $(@"(%@) ", self.manufacturer.name)
-                                 : @"");
-  NSString * codesetName = (self.codeset ?: @"-");
-  NSString * deviceName  = (self.device.name ? $(@" [%@]", self.device.name) : @"");
-  self.category = [@"" join:@[manufacturerName, codesetName, deviceName]];
+  //FIXME: Come back after adding category stuff to model
+//  NSString * manufacturerName = (self.manufacturer.name
+//                                 ? $(@"(%@) ", self.manufacturer.name)
+//                                 : @"");
+//  NSString * codesetName = (self.codeset ?: @"-");
+//  NSString * deviceName  = (self.device.name ? $(@" [%@]", self.device.name) : @"");
+//  self.category = [@"" join:@[manufacturerName, codesetName, deviceName]];
 }
 
 /// setDevice:
@@ -205,17 +206,8 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
   [self didChangeValueForKey:@"device"];
 
   self.manufacturer = device.manufacturer;
-  self.codeset      = nil;
-}
-
-/// setCodeset:
-/// @param codeset
-- (void)setCodeset:(NSString *)codeset {
-  [self willChangeValueForKey:@"codeset"];
-  [self setPrimitiveValue:codeset forKey:@"codeset"];
-  [self didChangeValueForKey:@"codeset"];
-
-  [self updateCategory];
+  //TODO: Revisit this after implementing categories
+  //  self.codeSet      = nil;
 }
 
 /// setManufacturer:
@@ -234,7 +226,8 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 
   [super updateWithData:data];
 
-  self.codeset      = data[@"codeset"]         ?: self.codeset;
+  MSDictionary * codeSetData = data[@"codeset"];
+  if (codeSetData)  self.codeSet = [IRCodeSet importObjectFromData:codeSetData context:self.managedObjectContext];
   self.frequency    = data[@"frequency"]       ?: self.frequency;
   self.onOffPattern = data[@"on-off-pattern"]  ?: self.onOffPattern;
 
@@ -246,8 +239,8 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 
   MSDictionary * dictionary = [super JSONDictionary];
 
-  SafeSetValueForKey(self.device.commentedUUID, @"device",  dictionary);
-  SafeSetValueForKey(self.codeset,              @"codeset", dictionary);
+  SafeSetValueForKey(self.device.commentedUUID,  @"device",  dictionary);
+  SafeSetValueForKey(self.codeSet.commentedUUID, @"codeset", dictionary);
   SetValueForKeyIfNotDefault(@(self.setsDeviceInput), @"setsDeviceInput", dictionary);
   SetValueForKeyIfNotDefault(self.offset,             @"offset",          dictionary);
   SetValueForKeyIfNotDefault(self.repeatCount,        @"repeatCount",     dictionary);
@@ -271,7 +264,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
   MSDictionary * dd = [[super deepDescriptionDictionary] mutableCopy];
   dd[@"name"]            = [code name];
   dd[@"device"]          = $(@"'%@':%@", code.device.name, code.device.uuid);
-  dd[@"codeset"]         = code.codeset;
+  dd[@"codeset"]         = $(@"'%@':%@", code.codeSet.name, code.codeSet.uuid);
   dd[@"setsDeviceInput"] = BOOLString(code.setsDeviceInput);
   dd[@"offset"]          = $(@"%@", code.offset);
   dd[@"repeatCount"]     = $(@"%@", code.repeatCount);
@@ -294,6 +287,10 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
   return [[IRCodeDetailController alloc] initWithItem:self editing:YES];
 }
 
+/// isCategorized
+/// @return BOOL
++ (BOOL)isCategorized { return YES; }
+
 /// directoryLabel
 /// @return NSString *
 + (NSString *)directoryLabel { return @"IR Codes"; }
@@ -306,8 +303,14 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
+/// category
+/// @return id<BankableCategory>
+- (id<BankableCategory>)category { return self.codeSet; }
+
 /// setCategory:
 /// @param category
-- (void)setCategory:(NSString *)category {}
+- (void)setCategory:(id<BankableCategory>)category {
+  if ([category isKindOfClass:[IRCodeSet class]]) self.codeSet = (IRCodeSet *)category;
+}
 
 @end

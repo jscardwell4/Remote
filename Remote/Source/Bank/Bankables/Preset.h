@@ -13,15 +13,15 @@
 #import "MSRemoteMacros.h"
 #import "BankableModelObject.h"
 
-@class RemoteElement;
+@class RemoteElement, PresetCategory;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Presets
 ////////////////////////////////////////////////////////////////////////////////
 @interface Preset : BankableModelObject
 
-+ (instancetype)presetWithElement:(RemoteElement *)element;
-
 @property (nonatomic, strong, readwrite) RemoteElement  * element;
+
+@property (nonatomic, strong) PresetCategory * category;
 
 @end

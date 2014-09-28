@@ -94,7 +94,6 @@ MSSTRING_CONST REDefaultMode = @"default";
 
   [super updateWithData:data];
 
-  self.name       = data[@"name"];
   self.role       = remoteElementRoleFromImportKey(data[@"role"]);
   self.key        = data[@"key"];
   self.shape      = remoteElementShapeFromImportKey(data[@"shape"]);

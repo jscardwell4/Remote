@@ -169,10 +169,6 @@
 /// @return BOOL
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
-/// isSectionable
-/// @return BOOL
-+ (BOOL)isSectionable { return NO;  }
-
 /// detailViewController
 /// @return ComponentDeviceViewController *
 - (ComponentDeviceDetailController *)detailViewController {

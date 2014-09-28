@@ -22,6 +22,7 @@
 #import "Remote.h"
 #import "Activity.h"
 #import "NetworkDevice.h"
+#import "Remote-Swift.h"
 
 #define USER_CODES_PLIST    @"UserCodes"
 #define CODE_DATABASE_PLIST @"CodeDatabase-Pruned"
@@ -331,7 +332,7 @@ void logImportedObject(id importedObject, int flag) {
   logParsedImportFile(fileName, importObjects, IMAGES_LOG_FLAG);
   if (PARSE_ONLY) return;
 
-  NSArray * images = [Image importObjectsFromData:importObjects context:context];
+  NSArray * images = [ImageCategory importObjectsFromData:importObjects context:context];
   MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
 
   logImportedObject(images, IMAGES_LOG_FLAG);

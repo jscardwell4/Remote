@@ -426,11 +426,11 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
                                         context:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])
                                                               predicate:predicate];
-
-  request.sortDescriptors = [[sortBy componentsSeparatedByString:@","]
-                             mapped:^NSSortDescriptor *(NSString * obj, NSUInteger idx) {
-                               return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
-                             }];
+  if (sortBy)
+    request.sortDescriptors = [[sortBy componentsSeparatedByString:@","]
+                               mapped:^NSSortDescriptor *(NSString * obj, NSUInteger idx) {
+                                 return [NSSortDescriptor sortDescriptorWithKey:obj ascending:ascending];
+                               }];
 
   NSFetchedResultsController * resultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:request

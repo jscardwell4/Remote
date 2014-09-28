@@ -13,7 +13,7 @@
 #import "MSRemoteMacros.h"
 #import "BankableModelObject.h"
 
-@class ComponentDevice, IRCodeset, Manufacturer;
+@class ComponentDevice, IRCodeSet, Manufacturer;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - IR Code
@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSString        * prontoHex;
 @property (nonatomic, strong) ComponentDevice * device;
 @property (nonatomic, assign) BOOL              setsDeviceInput;
-@property (nonatomic, copy)   NSString        * codeset;
+@property (nonatomic, strong) IRCodeSet       * codeSet;
 @property (nonatomic, strong) Manufacturer    * manufacturer;
 
 /// isValidOnOffPattern:

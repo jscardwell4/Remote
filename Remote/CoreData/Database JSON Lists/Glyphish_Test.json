@@ -1,98 +1,148 @@
 [
   {
-    "uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC",
-    "name": "Power Plug",
-    "category": "Icons/Glyphish 4/Gray",
-    "file-name": "396-gray-power-plug.png"
+    "uuid": "9725EE33-27C3-44C8-9074-9B17DC0B7680",
+    "name": "Icons",
+    "subcategories": [
+      {
+        "uuid": "83722C2E-2B47-45F1-9A9F-80E8F1BD1E62",
+        "name": "Glyphish 3",
+        "subcategories": [
+          {
+            "uuid": "6F6E533A-98FF-4C79-81A9-EA077CC4D37C",
+            "name": "Xtras",
+            "subcategories": [
+              {
+                "uuid": "A7A5E8E8-08E0-45F8-A698-7301587FB2DC",
+                "name": "Gray",
+                "images": [
+                  {
+                    "uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
+                    "name": "Power",
+                    "file-name": "51-gray-power.png"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "B83807E3-3F25-4032-B9EA-62D7BF079023",
+        "name": "Glyphish 4",
+        "subcategories": [
+          {
+            "uuid": "90D9C0B1-09F0-451A-9542-D9981FAE6CFC",
+            "name": "Gray",
+            "images": [
+              {
+                "uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
+                "name": "Minus",
+                "file-name": "437-gray-minus.png"
+              },
+              {
+                "uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
+                "name": "Light Switch",
+                "file-name": "306-gray-light-switch.png"
+              },
+              {
+                "uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
+                "name": "Plus",
+                "file-name": "436-gray-plus.png"
+              },
+              {
+                "uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC",
+                "name": "Power Plug",
+                "file-name": "396-gray-power-plug.png"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "4C296816-D4C7-40A4-AD2D-8A7F418117F4",
+        "name": "Glyphish 6",
+        "subcategories": [
+          {
+            "uuid": "4CA79E9C-F3E9-40CA-B4BB-18769E33681F",
+            "name": "Gray",
+            "images": [
+              {
+                "uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226",
+                "name": "Arrow Right",
+                "file-name": "766-gray-arrow-right.png"
+              },
+              {
+                "uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869",
+                "name": "Arrow Left",
+                "file-name": "765-gray-arrow-left.png"
+              },
+              {
+                "uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384",
+                "name": "Lightning Bolt",
+                "file-name": "856-gray-lightning-bolt.png"
+              },
+              {
+                "uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73",
+                "name": "Gear",
+                "file-name": "740-gray-gear.png"
+              },
+              {
+                "uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00",
+                "name": "Arrow Down",
+                "file-name": "764-gray-arrow-down.png"
+              },
+              {
+                "uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677",
+                "name": "Arrow Up",
+                "file-name": "763-gray-arrow-up.png"
+              },
+              {
+                "uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+                "name": "Home",
+                "file-name": "750-gray-home.png"
+              },
+              {
+                "uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4",
+                "name": "Pencil",
+                "file-name": "830-gray-pencil.png"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "4237D91C-A468-41C9-A789-6FC913D952AE",
+        "name": "Glyphish 7",
+        "subcategories": [
+          {
+            "uuid": "78834256-802B-44D6-BF4C-B068E6B5DCEC",
+            "name": "Gray",
+            "images": [
+              {
+                "uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93",
+                "name": "Battery",
+                "file-name": "933-gray-battery.png"
+              },
+              {
+                "uuid": "2CBE6763-64AC-4438-A169-1A759620381B",
+                "name": "Wifi Signal",
+                "file-name": "937-gray-wifi-signal.png"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    "uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
-    "name": "Pro Dots",
-    "category": "Backgrounds",
-    "file-name": "Pro Dots.png"
-  },
-  {
-    "uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226",
-    "name": "Arrow Right",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "766-gray-arrow-right.png"
-  },
-  {
-    "uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869",
-    "name": "Arrow Left",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "765-gray-arrow-left.png"
-  },
-  {
-    "uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384",
-    "name": "Lightning Bolt",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "856-gray-lightning-bolt.png"
-  },
-  {
-    "uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
-    "name": "Minus",
-    "category": "Icons/Glyphish 4/Gray",
-    "file-name": "437-gray-minus.png"
-  },
-  {
-    "uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73",
-    "name": "Gear",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "740-gray-gear.png"
-  },
-  {
-    "uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00",
-    "name": "Arrow Down",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "764-gray-arrow-down.png"
-  },
-  {
-    "uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677",
-    "name": "Arrow Up",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "763-gray-arrow-up.png"
-  },
-  {
-    "uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
-    "name": "Light Switch",
-    "category": "Icons/Glyphish 4/Gray",
-    "file-name": "306-gray-light-switch.png"
-  },
-  {
-    "uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93",
-    "name": "Battery",
-    "category": "Icons/Glyphish 7/Gray",
-    "file-name": "933-gray-battery.png"
-  },
-  {
-    "uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
-    "name": "Plus",
-    "category": "Icons/Glyphish 4/Gray",
-    "file-name": "436-gray-plus.png"
-  },
-  {
-    "uuid": "2CBE6763-64AC-4438-A169-1A759620381B",
-    "name": "Wifi Signal",
-    "category": "Icons/Glyphish 7/Gray",
-    "file-name": "937-gray-wifi-signal.png"
-  },
-  {
-    "uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
-    "name": "Home",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "750-gray-home.png"
-  },
-  {
-    "uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
-    "name": "Power",
-    "category": "Icons/Glyphish 3/Xtras/Gray",
-    "file-name": "51-gray-power.png"
-  },
-  {
-    "uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4",
-    "name": "Pencil",
-    "category": "Icons/Glyphish 6/Gray",
-    "file-name": "830-gray-pencil.png"
+    "uuid": "021AF04A-2ADE-4F84-A17B-508D0FD1E773",
+    "name": "Backgrounds",
+    "images": [
+      {
+        "uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
+        "name": "Pro Dots",
+        "file-name": "Pro Dots.png"
+      }
+    ]
   }
 ]
