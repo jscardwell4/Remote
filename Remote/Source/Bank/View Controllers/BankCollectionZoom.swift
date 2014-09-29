@@ -96,8 +96,8 @@ class BankCollectionZoom: UIView {
 
     detailButton = {
     	let detailButton = UIButton.newForAutolayout()
-      detailButton.setImage(UIImage(named: "724-gray-info"), forState: .Normal)
-      detailButton.setImage(UIImage(named: "724-gray-info-selected"), forState: .Highlighted)
+      detailButton.setImage(UIImage(named: "724-info"), forState: .Normal)
+      detailButton.setImage(UIImage(named: "724-info-selected"), forState: .Highlighted)
       detailButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
     	self.addSubview(detailButton)
     	return detailButton
@@ -105,8 +105,8 @@ class BankCollectionZoom: UIView {
 
     editButton = {
     	let editButton = UIButton.newForAutolayout()
-      editButton.setImage(UIImage(named: "830-gray-pencil"), forState: .Normal)
-      editButton.setImage(UIImage(named: "830-gray-pencil-selected"), forState: .Highlighted)
+      editButton.setImage(UIImage(named: "830-pencil"), forState: .Normal)
+      editButton.setImage(UIImage(named: "830-pencil-selected"), forState: .Highlighted)
       editButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
     	self.addSubview(editButton)
     	return editButton

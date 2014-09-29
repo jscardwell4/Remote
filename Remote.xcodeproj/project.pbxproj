@@ -359,6 +359,13 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
+		C28D098019D8747F00DF8100 /* Manufacturer_Dish.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097919D8747F00DF8100 /* Manufacturer_Dish.json */; };
+		C28D098119D8747F00DF8100 /* Manufacturer_LG.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097A19D8747F00DF8100 /* Manufacturer_LG.json */; };
+		C28D098219D8747F00DF8100 /* Manufacturer_Philips.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097B19D8747F00DF8100 /* Manufacturer_Philips.json */; };
+		C28D098319D8747F00DF8100 /* Manufacturer_Samsung.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097C19D8747F00DF8100 /* Manufacturer_Samsung.json */; };
+		C28D098419D8747F00DF8100 /* Manufacturer_Sony.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097D19D8747F00DF8100 /* Manufacturer_Sony.json */; };
+		C28D098519D8747F00DF8100 /* Manufacturer_Toshiba.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097E19D8747F00DF8100 /* Manufacturer_Toshiba.json */; };
+		C28D098619D8747F00DF8100 /* Manufacturer_Yamaha.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097F19D8747F00DF8100 /* Manufacturer_Yamaha.json */; };
 		C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */; };
 		C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
@@ -976,6 +983,14 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
+		C28D097919D8747F00DF8100 /* Manufacturer_Dish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Dish.json; sourceTree = "<group>"; };
+		C28D097A19D8747F00DF8100 /* Manufacturer_LG.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_LG.json; sourceTree = "<group>"; };
+		C28D097B19D8747F00DF8100 /* Manufacturer_Philips.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Philips.json; sourceTree = "<group>"; };
+		C28D097C19D8747F00DF8100 /* Manufacturer_Samsung.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Samsung.json; sourceTree = "<group>"; };
+		C28D097D19D8747F00DF8100 /* Manufacturer_Sony.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Sony.json; sourceTree = "<group>"; };
+		C28D097E19D8747F00DF8100 /* Manufacturer_Toshiba.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Toshiba.json; sourceTree = "<group>"; };
+		C28D097F19D8747F00DF8100 /* Manufacturer_Yamaha.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Yamaha.json; sourceTree = "<group>"; };
+		C28D098819D8872900DF8100 /* swift1.0.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = swift1.0.swift; sourceTree = "<group>"; };
 		C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ComponentDevice.json; sourceTree = "<group>"; };
 		C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementImportSupportFunctions.m; sourceTree = "<group>"; };
 		C28FAF7E173014D8002902D9 /* RemoteElementImportSupportFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementImportSupportFunctions.h; sourceTree = "<group>"; };
@@ -1448,6 +1463,7 @@
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
+				C28D098819D8872900DF8100 /* swift1.0.swift */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
 				C26BAEB316DC10FE0093D5B4 /* Remote */,
 				C2CA769519BA1E1800ACCD76 /* ISYClient */,
@@ -1909,6 +1925,13 @@
 		C28F7E2E18037AA000E007B5 /* Database JSON lists */ = {
 			isa = PBXGroup;
 			children = (
+				C28D097919D8747F00DF8100 /* Manufacturer_Dish.json */,
+				C28D097A19D8747F00DF8100 /* Manufacturer_LG.json */,
+				C28D097B19D8747F00DF8100 /* Manufacturer_Philips.json */,
+				C28D097C19D8747F00DF8100 /* Manufacturer_Samsung.json */,
+				C28D097D19D8747F00DF8100 /* Manufacturer_Sony.json */,
+				C28D097E19D8747F00DF8100 /* Manufacturer_Toshiba.json */,
+				C28D097F19D8747F00DF8100 /* Manufacturer_Yamaha.json */,
 				C249174719BFBA870049638F /* NetworkDevice.json */,
 				C2E75BF819B13798006CEA86 /* Remote_Demo.json */,
 				C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */,
@@ -2296,6 +2319,7 @@
 				C2381ED119A7EE3B00135DAB /* Chroma-320x480.jpg in Resources */,
 				C26BB5B216DC18A90093D5B4 /* glyphish.ttf in Resources */,
 				C2381EE619A7EE3B00135DAB /* Dawn-320x480.jpg in Resources */,
+				C28D098219D8747F00DF8100 /* Manufacturer_Philips.json in Resources */,
 				C27BCC9F1801C16A0002464C /* IntegerKeyboard_6.png in Resources */,
 				C2381F9B19A7EE3B00135DAB /* Teal-640x960.jpg in Resources */,
 				C26BB5B316DC18A90093D5B4 /* gui_design_icons.otf in Resources */,
@@ -2312,11 +2336,14 @@
 				C2381EFB19A7EE3B00135DAB /* Ive-640x960.jpg in Resources */,
 				C2381EEC19A7EE3B00135DAB /* Gingham-640x960-iPhone@2x.jpg in Resources */,
 				C2381EDC19A7EE3B00135DAB /* Concrete-640x960-iPhone@2x.jpg in Resources */,
+				C28D098519D8747F00DF8100 /* Manufacturer_Toshiba.json in Resources */,
 				C2381F0419A7EE3B00135DAB /* Midnight-320x480.jpg in Resources */,
+				C28D098619D8747F00DF8100 /* Manufacturer_Yamaha.json in Resources */,
 				C2E8126419D4DD9600FD80C4 /* Type Dynamic - Elysio.otf in Resources */,
 				C2381F9719A7EE3B00135DAB /* Sunset-640x1136.jpg in Resources */,
 				C2381F9A19A7EE3B00135DAB /* Teal-320x480.jpg in Resources */,
 				C2381F0A19A7EE3B00135DAB /* Mint-640x960.jpg in Resources */,
+				C28D098319D8747F00DF8100 /* Manufacturer_Samsung.json in Resources */,
 				C2381F0B19A7EE3B00135DAB /* Mint-640x1136.jpg in Resources */,
 				C2381EBE19A7EE3B00135DAB /* Blue-640x960.jpg in Resources */,
 				C2381ECE19A7EE3B00135DAB /* Chalkboard-640x1136-iPhone5.jpg in Resources */,
@@ -2452,6 +2479,7 @@
 				C26BBB0F16DC1B5C0093D5B4 /* Image.png in Resources */,
 				C26BBB1016DC1B5C0093D5B4 /* Image@2x.png in Resources */,
 				C2E8D9EC19BCD5C400E6098E /* udiws30.wsdl in Resources */,
+				C28D098019D8747F00DF8100 /* Manufacturer_Dish.json in Resources */,
 				C2381EEA19A7EE3B00135DAB /* Dawn-1536x2048.jpg in Resources */,
 				C26BBB1116DC1B5C0093D5B4 /* ImageOverImage.png in Resources */,
 				C2E8125F19D4DD9600FD80C4 /* Type Dynamic - Elysio Medium Italic.otf in Resources */,
@@ -2470,6 +2498,7 @@
 				C26BBB1516DC1B5C0093D5B4 /* MachSizeIcon.png in Resources */,
 				C2381EE319A7EE3B00135DAB /* Corkboard-640x1136-iPhone5.jpg in Resources */,
 				C26BBB1616DC1B5C0093D5B4 /* MatchHeightIcon.png in Resources */,
+				C28D098419D8747F00DF8100 /* Manufacturer_Sony.json in Resources */,
 				C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */,
 				C26BBB1716DC1B5C0093D5B4 /* MatchHeightIcon@2x.png in Resources */,
 				C2E8D9C019BCD5C400E6098E /* 7_fam.xml in Resources */,
@@ -2489,6 +2518,7 @@
 				C2381F0919A7EE3B00135DAB /* Mint-320x480.jpg in Resources */,
 				C2E8125A19D4DD9600FD80C4 /* Type Dynamic - Elysio Bold.otf in Resources */,
 				C27BCC9B1801C16A0002464C /* IntegerKeyboard_5-Highlighted@2x.png in Resources */,
+				C28D098119D8747F00DF8100 /* Manufacturer_LG.json in Resources */,
 				C2381F0619A7EE3B00135DAB /* Midnight-640x1136.jpg in Resources */,
 				C26BBB1F16DC1B5C0093D5B4 /* PaintBrush2.png in Resources */,
 				C26BBB2016DC1B5C0093D5B4 /* PaintBrush2@2x.png in Resources */,

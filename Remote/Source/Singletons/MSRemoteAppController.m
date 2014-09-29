@@ -51,15 +51,10 @@ static const int msLogContext = 0;
     NSMutableString * s = [@"" mutableCopy];
 
     if ([UserDefaults boolForKey:@"loadData"]) [s appendString:@"-loadData"];
-
-    if ([UserDefaults boolForKey:@"rebuild"]) [s appendString:@"-rebuild"];
-
-    if ([UserDefaults boolForKey:@"replace"]) [s appendString:@"-replace"];
-
-    if ([UserDefaults boolForKey:@"remote"]) [s appendString:@"-remote"];
-
-    if ([UserDefaults boolForKey:@"uitest"]) [s appendString:@"-uitest"];
-
+    if ([UserDefaults boolForKey:@"rebuild"])  [s appendString:@"-rebuild"];
+    if ([UserDefaults boolForKey:@"replace"])  [s appendString:@"-replace"];
+    if ([UserDefaults boolForKey:@"remote"])   [s appendString:@"-remote"];
+    if ([UserDefaults boolForKey:@"uitest"])   [s appendString:@"-uitest"];
     if ([UserDefaults boolForKey:@"simulate"]) [s appendString:@"-simulate"];
 
     kVersionInfo = [prefix stringByAppendingString:s];

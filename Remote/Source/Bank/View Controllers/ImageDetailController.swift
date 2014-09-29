@@ -34,23 +34,20 @@ class ImageDetailController: BankItemDetailController {
     let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
-//      $0.info = self.image.category ?? "Uncategorized"
-//      $0.changeHandler = {[unowned self] c in
-//        let text = c.info as? String
-//        self.image.category = text
-//        if self.image.category != nil && self.categories ∌ self.image.category! {
-//          self.categories.append(self.image.category!)
-//          self.categories.sort(<)
-//        }
-//      }
-//      $0.pickerData = self.categories
-//      $0.pickerSelection = self.image.category
+      $0.info = self.image.category?.categoryPath ?? "Uncategorized"
+      $0.changeHandler = {[unowned self] c in
+        if let category = c.info as? ImageCategory {
+          self.image.category = category
+        }
+      }
+      $0.pickerData = self.categories
+      $0.pickerSelection = self.image.category
     }
 
     // section 0 - row 1: file
     let fileRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
-      $0.name = "File"
-      $0.info = self.image.fileName
+      $0.name = "Asset"
+      $0.info = self.image.assetName
     }
 
     // section 0 - row 2: size

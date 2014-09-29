@@ -163,7 +163,7 @@
 
 /// directoryIcon
 /// @return UIImage *
-+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"969-gray-television"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"969-television"]; }
 
 /// isEditable
 /// @return BOOL

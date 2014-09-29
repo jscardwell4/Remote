@@ -8,6 +8,19 @@
 
 import Foundation
 
+// crashes Xcode
+/*
+public func advance<T: ForwardIndexType>(inout range: Range<T>, amount: T.Distance) {
+  let start: T = advance(range.startIndex, amount)
+  let end: T = advance(range.endIndex, amount)
+//  range = Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
+}
+
+*/
+public func advance<T: ForwardIndexType>(range: Range<T>, amount: T.Distance) -> Range<T> {
+  return Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
+}
+
 
 /**
 The function is a simple wrapper around `reduce` that ignores the actual reduction as a way to visit every element

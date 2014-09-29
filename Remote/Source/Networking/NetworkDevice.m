@@ -94,7 +94,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// directoryIcon
 /// @return UIImage *
-+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"937-gray-wifi-signal"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"937-wifi-signal"]; }
 
 /// isEditable
 /// @return BOOL

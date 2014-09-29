@@ -54,8 +54,8 @@ static const int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// directoryIcon
 /// @return UIImage *
-//+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"949-gray-paint-brush"]; }
-+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"1059-gray-sliders"]; }
+//+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"949-paint-brush"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"1059-sliders"]; }
 
 /// isEditable
 /// @return BOOL

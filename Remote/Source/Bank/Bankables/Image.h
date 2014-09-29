@@ -27,7 +27,7 @@
 
 @property (nonatomic, weak,   readonly) UIImage       * image;
 @property (nonatomic, assign)           CGSize          thumbnailSize;
-@property (nonatomic, strong)           NSString      * fileName;
+@property (nonatomic, strong)           NSString      * assetName;
 @property (nonatomic, strong)           NSNumber      * leftCap;
 @property (nonatomic, strong)           NSNumber      * topCap;
 @property (nonatomic, strong, readonly) UIImage       * stretchableImage;

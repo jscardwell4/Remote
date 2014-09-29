@@ -13,7 +13,7 @@
 
 @implementation Manufacturer
 
-@dynamic codes, devices;
+@dynamic codes, codeSets, devices;
 
 /// manufacturerWithName:context:
 /// @param name
@@ -50,20 +50,22 @@
 
   [super updateWithData:data];
 
-  NSArray                * codes   = data[@"codes"];
-  NSArray                * devices = data[@"devices"];
-  NSManagedObjectContext * moc     = self.managedObjectContext;
+  NSArray                * codeSets = data[@"codesets"];
+  NSArray                * devices  = data[@"devices"];
+  NSManagedObjectContext * moc      = self.managedObjectContext;
 
-  if (codes) {
-    NSMutableSet * manufacturerCodes = [NSMutableSet set];
+  if (codeSets) {
+    NSMutableSet * manufacturerCodesets = [self mutableSetValueForKey:@"codeSets"];
+    NSMutableSet * manufacturerCodes    = [self mutableSetValueForKey:@"codes"];
+    for (NSDictionary * codeSet in codeSets) {
+      IRCodeSet * manufacturerCodeset = [IRCodeSet importObjectFromData:codeSet context:moc];
 
-    for (NSDictionary * code in codes) {
-      IRCode * manufacturerCode = [IRCode importObjectFromData:code context:moc];
-
-      if (manufacturerCode) [manufacturerCodes addObject:manufacturerCode];
+      if (manufacturerCodeset) {
+        [manufacturerCodesets addObject:manufacturerCodeset];
+        NSSet * codesetCodes = manufacturerCodeset.codes;
+        if (codesetCodes) [manufacturerCodes addObjectsFromArray:codesetCodes.allObjects];
+      }
     }
-
-    self.codes = manufacturerCodes;
   }
 
   if (devices) {
@@ -121,8 +123,8 @@
 
 /// directoryIcon
 /// @return UIImage *
-//+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"909-gray-tags"]; }
-+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"1022-gray-factory"]; }
+//+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"909-tags"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"1022-factory"]; }
 
 /// detailViewController
 /// @return ManufacturerViewController *

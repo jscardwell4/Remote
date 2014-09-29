@@ -187,15 +187,15 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
   }
 }
 
-/// updateCategory
-- (void)updateCategory {
-  //FIXME: Come back after adding category stuff to model
-//  NSString * manufacturerName = (self.manufacturer.name
-//                                 ? $(@"(%@) ", self.manufacturer.name)
-//                                 : @"");
-//  NSString * codesetName = (self.codeset ?: @"-");
-//  NSString * deviceName  = (self.device.name ? $(@" [%@]", self.device.name) : @"");
-//  self.category = [@"" join:@[manufacturerName, codesetName, deviceName]];
+/// setCodeSet:
+/// @param codeSet
+- (void)setCodeSet:(IRCodeSet *)codeSet {
+  [self willChangeValueForKey:@"codeSet"];
+  [self setPrimitiveValue:codeSet forKey:@"codeSet"];
+  [self didChangeValueForKey:@"codeSet"];
+
+  if (self.manufacturer && self.manufacturer != codeSet.manufacturer)
+    self.manufacturer = nil;
 }
 
 /// setDevice:
@@ -217,7 +217,8 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
   [self setPrimitiveValue:manufacturer forKey:@"manufacturer"];
   [self didChangeValueForKey:@"manufacturer"];
 
-  [self updateCategory];
+  if (self.codeSet && self.codeSet.manufacturer && manufacturer && self.codeSet.manufacturer != manufacturer)
+    self.codeSet = nil;
 }
 
 /// updateWithData:
@@ -306,6 +307,10 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 /// category
 /// @return id<BankableCategory>
 - (id<BankableCategory>)category { return self.codeSet; }
+
+/// rootCategories
+/// @return NSArray *
++ (NSArray *)rootCategories { return [IRCodeSet findAll]; }
 
 /// setCategory:
 /// @param category

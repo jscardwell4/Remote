@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 import MoonKit
 
-private let ListSegmentImage           = UIImage(named:"1073-gray-grid-1") // 1073-gray-grid-1399-gray-list1
-private let ThumbnailSegmentImage      = UIImage(named:"1076-gray-grid-4") // 1076-gray-grid-4822-gray-photo-2
-private let IndicatorImage             = UIImage(named:"1040-gray-checkmark")
-private let IndicatorImageSelected     = UIImage(named:"1040-gray-checkmark-selected")
+private let ListSegmentImage           = UIImage(named:"1073-grid-1") // 1073-grid-1399-list1
+private let ThumbnailSegmentImage      = UIImage(named:"1076-grid-4") // 1076-grid-4822-photo-2
+private let IndicatorImage             = UIImage(named:"1040-checkmark")
+private let IndicatorImageSelected     = UIImage(named:"1040-checkmark-selected")
 private let TextFieldTextColor         = UIColor(RGBAHexString:"#9FA0A4FF")
 private let CellIdentifier             = "Cell"
 private let HeaderIdentifier           = "Header"

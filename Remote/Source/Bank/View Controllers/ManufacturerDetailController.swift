@@ -15,7 +15,7 @@ class ManufacturerDetailController: BankItemDetailController {
   var manufacturer: Manufacturer { return item as Manufacturer }
 
   var devices: [ComponentDevice] = [] { didSet { devices.sort{$0.0.name < $0.1.name} } }
-  var codesets: [String] = [] { didSet { codesets.sort(<) } }
+  var codeSets: [IRCodeSet] = [] { didSet { codeSets.sort{$0.0.name < $0.1.name} } }
 
   /**
   initWithItem:editing:
@@ -28,20 +28,20 @@ class ManufacturerDetailController: BankItemDetailController {
     precondition(item is Manufacturer, "we should have been given a manufacturer")
 
     devices = manufacturer.devices.allObjects as [ComponentDevice]
-    codesets = manufacturer.codesets.allObjects as [String]
+    codeSets = manufacturer.codeSets.allObjects as [IRCodeSet]
 
     // section 0 - row 0: devices
     let devicesRow = Row(identifier: .Table, isEditable: true) { [unowned self] in
       $0.info = self.devices
     }
 
-    // section 1 - row 0: codesets
-    let codesetsRow = Row(identifier: .Table, isEditable: false) {[unowned self] in
-      $0.info = self.codesets
+    // section 1 - row 0: codeSets
+    let codeSetsRow = Row(identifier: .Table, isEditable: false) {[unowned self] in
+      $0.info = self.codeSets
     }
 
     sections = [ Section(title: "Devices",  rows: [devicesRow]),
-                 Section(title: "Codesets", rows: [codesetsRow]) ]
+                 Section(title: "Code Sets", rows: [codeSetsRow]) ]
   }
 
   /**

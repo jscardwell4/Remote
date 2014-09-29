@@ -142,11 +142,13 @@ public class JSONSerialization: NSObject {
 
 	:returns: String?
 	*/
-	class func parseFile(filePath: String, options: WriteOptions = .None, error: NSErrorPointer = nil) -> String?
-	{
+	class func parseFile(filePath: String, options: WriteOptions = .None, error: NSErrorPointer = nil) -> String?	{
+
+    var returnString: String?
+
+		// Get the file's contents as a string
     var localError: NSError?
     let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
-    var returnString: String?
 
     if localError != nil {
       let message = aggregateErrorMessage(localError!, message: "failed to create string from file")
@@ -212,8 +214,9 @@ public class JSONSerialization: NSObject {
 	*/
 	class func objectByParsingString(string: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
 
-    var object: AnyObject?
+    var object: AnyObject? // Our return object
 
+    // Create the parser with the provided string
     let parser = JSONParser(string: string)
     object = parser.parse(error: error)
 
@@ -256,17 +259,71 @@ public class JSONSerialization: NSObject {
 	*/
 	class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
 
-    var localError: NSError?
-    let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
-    var returnObject: AnyObject?
+    var returnObject: AnyObject?  // The object we will be passing back to the caller
+    var localError: NSError?      // So we can intercept errors before passing them along to caller
 
-    if localError != nil {
-      let message = aggregateErrorMessage(localError!, message: "failed to create string from file")
-      logError(message, __FUNCTION__, level: LOG_LEVEL_ERROR)
-      if error != nil { error.memory = localError }
+    // Create a block for logging local errors and setting error pointer
+    let handleError: (String) -> Bool = {
+    	if localError == nil { return false }
+    	logError(aggregateErrorMessage(localError!, message: $0), __FUNCTION__)
+    	if error != nil { error.memory = localError }
+    	return true
     }
 
-    else { returnObject = objectByParsingString(string, options: options, error: error) }
+    // Get the contents of the file to parse
+    var string = String(contentsOfFile: filePath, error: &localError)
+
+    // If no error than we look for any "@include" statements
+    if !handleError("failed to get file content for '\(filePath)") {
+
+	    // Look for include entries in the file-loaded string
+	    let pattern = ~/"<@include ([^>]+)>"
+
+      // Get the path to the provided file's directory so we can use it when looking for include files
+      let directory = filePath.stringByDeletingLastPathComponent
+
+      var offset = 0 // Holds the over/under from making substitutions in string
+
+      // Iterate through matches for pattern
+      for match in pattern /…≈ string {
+
+        // Make sure we have a valid range
+        if var range = match {
+
+          // Advance our range by the offset
+          let 𝘥 = distance(range.startIndex, range.endIndex)
+          let end = advance(range.startIndex, offset + 𝘥)
+          let start = advance(range.startIndex, offset)
+
+          range.endIndex = end
+          range.startIndex = start
+
+          // Get the name of the file to include
+          if let includeFile = pattern /~ (string[range], 1) {
+
+            // Create the file path by combining the directory with the name
+            let includePath = "\(directory)/\(includeFile)"
+            let includeText = String(contentsOfFile: includePath, error: &localError)
+
+            // Move on to next if error
+            if handleError("failed to get file content for include directive '\(includePath)'") { continue }
+
+            // Replace include directive with the text
+
+            string.replaceRange(string.indexRangeFromIntRange(range), with: includeText)
+
+            // Update `offset`
+            offset += includeText.length - countElements(range)
+
+          }
+
+        }
+
+      }
+
+      returnObject = objectByParsingString(string, options: options, error: error)
+
+    }
 
     return returnObject
 

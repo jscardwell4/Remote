@@ -15,12 +15,12 @@ private let BankBoldLabelFont = UIFont(name: "Elysio-Bold",   size: 17.0)
 private let BankInfoFont      = UIFont(name: "Elysio-Light",  size: 15.0)
 private let BankLabelColor    = UIColor(r: 59, g: 60, b: 64, a:255)
 private let BankInfoColor     = UIColor(r:159, g:160, b:164, a:255)
-private let BankExportBarItemImage         = UIImage(named:"702-gray-share")
-private let BankExportBarItemImageSelected = UIImage(named:"702-gray-share-selected")
-private let BankImportBarItemImage         = UIImage(named:"703-gray-download")
-private let BankImportBarItemImageSelected = UIImage(named:"703-gray-download-selected")
-private let BankSearchBarItemImage         = UIImage(named:"708-gray-search")
-private let BankSearchBarItemImageSelected = UIImage(named:"708-gray-search-selected")
+private let BankExportBarItemImage         = UIImage(named:"702-share")
+private let BankExportBarItemImageSelected = UIImage(named:"702-share-selected")
+private let BankImportBarItemImage         = UIImage(named:"703-download")
+private let BankImportBarItemImageSelected = UIImage(named:"703-download-selected")
+private let BankSearchBarItemImage         = UIImage(named:"708-search")
+private let BankSearchBarItemImageSelected = UIImage(named:"708-search-selected")
 
 
 protocol BankController: class {

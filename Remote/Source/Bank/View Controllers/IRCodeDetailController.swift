@@ -22,7 +22,7 @@ class IRCodeDetailController: BankItemDetailController {
     return manufacturers
     }()
 
-  var codesets: [String] = [] { didSet { codesets.sort(<) } }
+  var codesets: [IRCodeSet] = [] { didSet { codesets.sort{$0.0.name < $0.1.name} } }
 
   /**
   initWithItem:editing:
@@ -34,7 +34,7 @@ class IRCodeDetailController: BankItemDetailController {
     super.init(item: item, editing: editing)
     precondition(item is IRCode, "we should have been given an ircode")
 
-//    codesets = irCode.manufacturer.codesets.allObjects as [String]
+    codesets = irCode.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? []
 
     // section 0 - row 0: manufacturer
     let manufacturerRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
@@ -42,61 +42,60 @@ class IRCodeDetailController: BankItemDetailController {
       $0.info = self.irCode.manufacturer ?? "No Manufacturer"
       $0.validationHandler = {($0.info as NSString).length > 0}
       $0.changeHandler = {[unowned self] c in
-        if let text = c.info as? String {
-          if text == "No Manufacturer" { self.irCode.manufacturer = nil }
-          else {
-            var manufacturer = self.manufacturers.filter{$0.name == text}.first
-            if manufacturer == nil {
-              manufacturer = Manufacturer(name: text, context: self.irCode.managedObjectContext)
-              self.manufacturers.append(manufacturer!)
+
+        var newManufacturer: Manufacturer?
+
+        if let manufacturer = c.info as? Manufacturer { newManufacturer = manufacturer }
+        else if let manufacturerName = c.info as? String {
+          newManufacturer = self.manufacturers.filter{$0.name == manufacturerName}.first
+          if newManufacturer == nil &&  manufacturerName != "No Manufacturer" {
+              newManufacturer = Manufacturer(name: manufacturerName, context: self.irCode.managedObjectContext)
+              self.manufacturers.append(newManufacturer!)
               self.manufacturers.sort{$0.0.name < $0.1.name}
-            }
-            if self.irCode.manufacturer != manufacturer { self.irCode.manufacturer = manufacturer }
           }
         }
+        if self.irCode.manufacturer != newManufacturer { self.irCode.manufacturer = newManufacturer }
       }
-/*
+
       $0.pickerSelectionHandler = {[unowned self] c in
         if let selection = c.pickerSelection as? Manufacturer {
           if self.irCode.manufacturer != selection {
             self.irCode.manufacturer = selection
-            self.irCode.codeset = nil
             self.updateDisplay()
           }
         } else {
           self.irCode.manufacturer = nil
-          self.irCode.codeset = nil
           self.updateDisplay()
         }
       }
-*/
+
       $0.pickerData = self.manufacturers
       $0.pickerSelection = self.irCode.manufacturer
     }
 
     // section 0 - row 1: codeset
     let codesetRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
-      $0.name = "Codeset"
-//      $0.info = self.irCode.codeset ?? "No Codeset"
-//      $0.validationHandler = {($0.info as NSString).length > 0}
-//      $0.changeHandler = {[unowned self] c in
-//        if let text = c.info as? String {
-//          if self.irCode.codeset != text {
-//            self.irCode.codeset = text
-//            if self.codesets ∌ text {
-//              self.codesets.append(text)
-//              self.codesets.sort(<)
-//            }
-//          }
-//        }
-//      }
-//      $0.pickerSelectionHandler = {[unowned self] c in
-//        if let selection = c.pickerSelection as? String {
-//          self.irCode.codeset = selection
-//        }
-//      }
-//      $0.pickerData = self.codesets
-//      $0.pickerSelection = self.irCode.codeset
+      $0.name = "Code Set"
+      $0.info = self.irCode.codeSet ?? "No Code Set"
+      $0.validationHandler = {($0.info as NSString).length > 0}
+      $0.changeHandler = {[unowned self] c in
+        if let codeSet = c.info as? IRCodeSet {
+          if self.irCode.codeSet != codeSet {
+            self.irCode.codeSet = codeSet
+            if self.codesets ∌ codeSet {
+              self.codesets.append(codeSet)
+              self.codesets.sort{$0.0.name < $0.1.name}
+            }
+          }
+        }
+      }
+      $0.pickerSelectionHandler = {[unowned self] c in
+        if let selection = c.pickerSelection as? IRCodeSet {
+          self.irCode.codeSet = selection
+        }
+      }
+      $0.pickerData = self.codesets
+      $0.pickerSelection = self.irCode.codeSet
     }
 
     // section 0 - row 2: frequency

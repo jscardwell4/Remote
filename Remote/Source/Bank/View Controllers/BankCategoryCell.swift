@@ -23,7 +23,7 @@ class BankCategoryCell: UITableViewCell {
   private let chevron: UIImageView = {
     let view = UIImageView.newForAutolayout()
     view.constrainWithFormat("self.width = self.height")
-    view.image = UIImage(named: "766-gray-arrow-right")
+    view.image = UIImage(named: "766-arrow-right")
     view.contentMode = .ScaleAspectFit
     return view
     }()

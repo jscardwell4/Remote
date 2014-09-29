@@ -228,7 +228,7 @@ void logImportedObject(id importedObject, int flag) {
   if (MSHandleErrors(error)) return;
 
   logImportFile(fileName, fileContent, MANUFACTURERS_LOG_FLAG);
-  NSArray * importObjects = [JSONSerialization objectByParsingString:fileContent options:1 error:&error];
+  NSArray * importObjects = [JSONSerialization objectByParsingFile:filePath options:1 error:&error];
 
   if (MSHandleErrors(error)) return;
 
@@ -307,7 +307,7 @@ void logImportedObject(id importedObject, int flag) {
 /// @param context
 + (void)loadImages:(NSManagedObjectContext *)context {
   MSLogDebug(@"loading images...");
-  #define GLYPHISH_TEST_IMAGES
+//  #define GLYPHISH_TEST_IMAGES
   #ifdef GLYPHISH_TEST_IMAGES
     NSString * fileName = @"Glyphish_Test";
   #else

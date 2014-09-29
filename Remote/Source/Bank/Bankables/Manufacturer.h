@@ -13,7 +13,7 @@
 #import "MSRemoteMacros.h"
 #import "BankableModelObject.h"
 
-@class IRCodeset, ComponentDevice;
+@class IRCodeSet, ComponentDevice;
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Manufacturer
@@ -23,7 +23,7 @@
 
 + (instancetype)manufacturerWithName:(NSString *)name context:(NSManagedObjectContext *)context;
 
-@property (nonatomic, weak, readonly) NSSet * codesets;
+@property (nonatomic, weak, readonly) NSSet * codeSets;
 @property (nonatomic, strong) NSSet * codes;
 @property (nonatomic, strong) NSSet * devices;
 

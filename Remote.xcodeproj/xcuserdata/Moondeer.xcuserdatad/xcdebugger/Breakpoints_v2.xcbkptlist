@@ -523,22 +523,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
-            timestampString = "433003411.018327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "objectByParsingString(_:options:error:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MSKit/MSKit/Source/Categories/NSArray+MSKitAdditions.m"
             timestampString = "433003488.558914"
             startingColumnNumber = "9223372036854775807"
@@ -556,71 +540,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
-            timestampString = "433003568.591019"
+            timestampString = "433617267.366231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
-            landmarkName = "objectByParsingString(_:options:error:)"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MoonKit.JSONSerialization.objectByParsingString (MoonKit.JSONSerialization.Type)(Swift.String, options : MoonKit.JSONSerialization.ReadOptions, error : Swift.AutoreleasingUnsafeMutablePointer&lt;Swift.Optional&lt;ObjectiveC.NSError&gt;&gt;) -&gt; Swift.Optional&lt;Swift.AnyObject&gt;"
-                  moduleName = "MoonKit"
-                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONSerialization.swift"
-                  timestampString = "433005575.225657"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "226"
-                  endingLineNumber = "226"
-                  offsetFromSymbolStart = "2399">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MoonKit.JSONSerialization.(objectByParsingString (MoonKit.JSONSerialization.Type) -&gt; (Swift.String, options : MoonKit.JSONSerialization.ReadOptions, error : Swift.AutoreleasingUnsafeMutablePointer&lt;Swift.Optional&lt;ObjectiveC.NSError&gt;&gt;) -&gt; Swift.Optional&lt;Swift.AnyObject&gt;).(closure #1)"
-                  moduleName = "MoonKit"
-                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONSerialization.swift"
-                  timestampString = "433005575.225944"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "226"
-                  endingLineNumber = "226"
-                  offsetFromSymbolStart = "12">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "reabstraction thunk helper from @callee_owned (@owned ObjectiveC.MSDictionary) -&gt; (@unowned ()) to @callee_owned (@in ObjectiveC.MSDictionary) -&gt; (@unowned ())"
-                  moduleName = "MoonKit"
-                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONSerialization.swift"
-                  timestampString = "433005575.226206"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "226"
-                  endingLineNumber = "226"
-                  offsetFromSymbolStart = "4">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
-            timestampString = "433003553.380355"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "objectByParsingString(_:options:error:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1547,7 +1471,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "39"
             endingLineNumber = "39"
-            landmarkName = "-setFileName:"
+            landmarkName = "-setAssetName:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1628,6 +1552,160 @@
             startingLineNumber = "121"
             endingLineNumber = "121"
             landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Extensions/String+MoonKitAdditions.swift"
+            timestampString = "433642584.949188"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit./~ infix (ObjectiveC.NSRegularExpression, (Swift.String, Swift.Int)) -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Extensions/String+MoonKitAdditions.swift"
+                  timestampString = "433617554.020386"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "194">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit./~ infix (ObjectiveC.NSRegularExpression, (Swift.String, Swift.Int)) -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Extensions/String+MoonKitAdditions.swift"
+                  timestampString = "433617554.020552"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "361">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
+            timestampString = "433643323.905005"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
+            landmarkName = "objectByParsingFile(_:options:error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
+            timestampString = "433643323.905005"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
+            landmarkName = "objectByParsingFile(_:options:error:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit.JSONSerialization.objectByParsingFile (MoonKit.JSONSerialization.Type)(Swift.String, options : MoonKit.JSONSerialization.ReadOptions, error : Swift.AutoreleasingUnsafeMutablePointer&lt;Swift.Optional&lt;ObjectiveC.NSError&gt;&gt;) -&gt; Swift.Optional&lt;Swift.AnyObject&gt;"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONSerialization.swift"
+                  timestampString = "433642585.376486"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "304"
+                  endingLineNumber = "304"
+                  offsetFromSymbolStart = "3787">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit.JSONSerialization.objectByParsingFile (MoonKit.JSONSerialization.Type)(Swift.String, options : MoonKit.JSONSerialization.ReadOptions, error : Swift.AutoreleasingUnsafeMutablePointer&lt;Swift.Optional&lt;ObjectiveC.NSError&gt;&gt;) -&gt; Swift.Optional&lt;Swift.AnyObject&gt;"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Parsing/JSONSerialization.swift"
+                  timestampString = "433642585.376725"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "304"
+                  endingLineNumber = "304"
+                  offsetFromSymbolStart = "7957">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
+            timestampString = "433639205.361561"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "objectByParsingFile(_:options:error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Parsing/JSONSerialization.swift"
+            timestampString = "433643323.905005"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
+            landmarkName = "objectByParsingFile(_:options:error:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/IRCodeDetailController.swift"
+            timestampString = "433707622.506593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "init(item:editing:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

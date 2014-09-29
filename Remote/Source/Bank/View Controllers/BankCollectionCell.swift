@@ -44,8 +44,8 @@ class BankCollectionCell: UICollectionViewCell {
 
   private let detailButton: UIButton = {
     let button = UIButton.newForAutolayout()
-    button.setImage(UIImage(named: "766-gray-arrow-right"),          forState: .Normal)
-    button.setImage(UIImage(named: "766-gray-arrow-right-selected"), forState: .Highlighted)
+    button.setImage(UIImage(named: "766-arrow-right"),          forState: .Normal)
+    button.setImage(UIImage(named: "766-arrow-right-selected"), forState: .Highlighted)
     button.constrainWithFormat("self.width = self.height :: self.height = 22")
     return button
     }()

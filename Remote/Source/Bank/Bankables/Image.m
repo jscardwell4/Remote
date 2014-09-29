@@ -29,17 +29,17 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
 @implementation Image
 
-@dynamic size, fileName, leftCap, topCap, category;
+@dynamic size, assetName, leftCap, topCap, category;
 
 @synthesize thumbnail = _thumbnail, stretchableImage = _stretchableImage, thumbnailSize = _thumbnailSize;
 
-/// setFileName:
-/// @param fileName
-- (void)setFileName:(NSString *)fileName {
-  UIImage * image = [UIImage imageNamed:fileName];
-  [self willChangeValueForKey:@"fileName"];
-  [self setPrimitiveValue:(image ? fileName : nil) forKey:@"fileName"];
-  [self didChangeValueForKey:@"fileName"];
+/// setAssetName:
+/// @param assetName
+- (void)setAssetName:(NSString *)assetName {
+  UIImage * image = [UIImage imageNamed:assetName];
+  [self willChangeValueForKey:@"assetName"];
+  [self setPrimitiveValue:(image ? assetName : nil) forKey:@"assetName"];
+  [self didChangeValueForKey:@"assetName"];
   self.size = (image ? image.size : CGSizeZero);
 }
 
@@ -52,14 +52,14 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   MSDictionary * categoryData = data[@"category"];
   if (categoryData) self.category = [ImageCategory importObjectFromData:categoryData context:self.managedObjectContext];
 
-  self.fileName = data[@"file-name"] ?: self.fileName;
+  self.assetName = data[@"asset-name"] ?: self.assetName;
   self.leftCap  = data[@"left-cap"]  ?: self.leftCap;
   self.topCap   = data[@"top-cap"]   ?: self.topCap;
 }
 
 /// image
 /// @return UIImage *
-- (UIImage *)image { return [UIImage imageNamed:self.fileName]; }
+- (UIImage *)image { return [UIImage imageNamed:self.assetName]; }
 
 /// imageWithColor:
 /// @param color
@@ -115,7 +115,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   MSDictionary * dictionary = [super JSONDictionary];
 
   SafeSetValueForKey(self.category.commentedUUID, @"category", dictionary);
-  SafeSetValueForKey(self.fileName, @"file-name", dictionary);
+  SafeSetValueForKey(self.assetName, @"file-name", dictionary);
   SetValueForKeyIfNotDefault(self.leftCap, @"leftCap", dictionary);
   SetValueForKeyIfNotDefault(self.topCap,  @"topCap",  dictionary);
 
@@ -136,7 +136,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 
   dd[@"name"]     = (image.name ?: @"");
   dd[@"category"] = $(@"'%@':%@", image.category.name, image.category.uuid);
-  dd[@"fileName"] = (image.fileName ?: @"");
+  dd[@"assetName"] = (image.assetName ?: @"");
   dd[@"leftCap"]  = image.leftCap ?: @0;
   dd[@"topCap"]   = image.topCap ?: @0;
   dd[@"size"]     = CGSizeString(image.size);
@@ -150,7 +150,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   NSString * uuid = self.uuid;
 
   if (uuid) {
-    NSString * filename = self.fileName;
+    NSString * filename = self.assetName;
 
     if (filename) uuid.comment = MSSingleLineComment(filename);
   }
@@ -178,7 +178,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
 /// @return NSString *
 + (NSString *)directoryLabel { return @"Images"; }
 
-+ (UIImage *)directoryIcon { return [UIImage imageNamed:@"926-gray-photos"]; }
++ (UIImage *)directoryIcon { return [UIImage imageNamed:@"926-photos"]; }
 
 /// isEditable
 /// @return BOOL
@@ -213,7 +213,7 @@ static const int msLogContext = LOG_CONTEXT_DEFAULT;
   MSHandleErrors(error);
 
   return controller;
-  
+
 }
 
 /// category
