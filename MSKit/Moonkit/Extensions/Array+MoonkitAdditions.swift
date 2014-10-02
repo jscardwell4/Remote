@@ -20,5 +20,6 @@ public extension Array {
   :returns: Element?
   */
   public func findFirst(matchElement:(Element)->Bool) -> Element? { return filter(matchElement).first }
+
 }
 

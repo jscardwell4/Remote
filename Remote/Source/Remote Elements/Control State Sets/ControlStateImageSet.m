@@ -8,9 +8,9 @@
 #import "ControlStateImageSet.h"
 #import "ControlStateColorSet.h"
 #import "ImageView.h"
-#import "Image.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);

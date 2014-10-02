@@ -34,14 +34,14 @@ class ImageDetailController: BankItemDetailController {
     let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
-      $0.info = self.image.category?.categoryPath ?? "Uncategorized"
+      $0.info = self.image.imageCategory?.categoryPath ?? "Uncategorized"
       $0.changeHandler = {[unowned self] c in
         if let category = c.info as? ImageCategory {
           self.image.category = category
         }
       }
       $0.pickerData = self.categories
-      $0.pickerSelection = self.image.category
+      $0.pickerSelection = self.image.imageCategory
     }
 
     // section 0 - row 1: file

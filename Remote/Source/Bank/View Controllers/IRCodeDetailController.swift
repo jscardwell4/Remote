@@ -49,7 +49,7 @@ class IRCodeDetailController: BankItemDetailController {
         else if let manufacturerName = c.info as? String {
           newManufacturer = self.manufacturers.filter{$0.name == manufacturerName}.first
           if newManufacturer == nil &&  manufacturerName != "No Manufacturer" {
-              newManufacturer = Manufacturer(name: manufacturerName, context: self.irCode.managedObjectContext)
+              newManufacturer = Manufacturer.manufacturerWithName(manufacturerName, context: self.irCode.managedObjectContext)
               self.manufacturers.append(newManufacturer!)
               self.manufacturers.sort{$0.0.name < $0.1.name}
           }
@@ -101,17 +101,17 @@ class IRCodeDetailController: BankItemDetailController {
     // section 0 - row 2: frequency
     let frequencyRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Frequency"
-      $0.info = self.irCode.frequency
+      $0.info = NSNumber(longLong: self.irCode.frequency)
       $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] c in self.irCode.frequency = c.info as NSNumber}
+      $0.changeHandler = {[unowned self] c in self.irCode.frequency = (c.info as NSNumber).longLongValue}
     }
 
     // section 0 - row 3: repeat
     let repeatRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Repeat"
-      $0.info = self.irCode.repeatCount
+      $0.info = NSNumber(short: self.irCode.repeatCount)
       $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] c in self.irCode.repeatCount = c.info as NSNumber}
+      $0.changeHandler = {[unowned self] c in self.irCode.repeatCount = (c.info as NSNumber).shortValue}
     }
 
     // section 0 - row 4: offset
@@ -120,8 +120,8 @@ class IRCodeDetailController: BankItemDetailController {
       $0.stepperMinValue = 0
       $0.stepperMaxValue = 127
       $0.stepperWraps = false
-      $0.info = self.irCode.offset
-      $0.changeHandler = {[unowned self] c in self.irCode.offset = c.info as NSNumber}
+      $0.info = NSNumber(short: self.irCode.offset)
+      $0.changeHandler = {[unowned self] c in self.irCode.offset = (c.info as NSNumber).shortValue}
     }
 
     // section 0 - row 5: on-off pattern

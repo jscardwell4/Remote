@@ -7,7 +7,7 @@
 //
 
 #import "REBackgroundCollectionViewController.h"
-#import "Image.h"
+#import "Remote-Swift.h"
 
 @interface REBackgroundCollectionViewController ()
 

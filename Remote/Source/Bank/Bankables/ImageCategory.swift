@@ -11,9 +11,9 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-class ImageCategory: NamedModelObject, BankableCategory {
+class ImageCategory: NamedModelObject, BankableModelCategory {
 
-  @NSManaged var subCategories: NSSet?
+  @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var parentCategory: ImageCategory?
   @NSManaged var images: NSSet?
 
@@ -27,7 +27,9 @@ class ImageCategory: NamedModelObject, BankableCategory {
     return path
   }
 
-  var allItems: NSSet? { return images }
+  var subcategories: [ImageCategory] { return (subcategoriesSet?.allObjects ?? []) as [ImageCategory] }
+
+  var allItems: [Image] { return (images?.allObjects ?? []) as [Image] }
 
   /**
   updateWithData:
@@ -48,10 +50,10 @@ class ImageCategory: NamedModelObject, BankableCategory {
 
     // Try importing subcategories
     if let subCategoryData = data["subcategories"] as? NSArray {
-      if subCategories == nil { subCategories = NSSet() }
-      let mutableSubCategories = mutableSetValueForKey("subCategories")
-      if let importedSubCategories = ImageCategory.importObjectsFromData(subCategoryData, context: managedObjectContext) {
-        mutableSubCategories.addObjectsFromArray(importedSubCategories)
+      if subcategoriesSet == nil { subcategoriesSet = NSSet() }
+      let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
+      if let importedSubcategories = ImageCategory.importObjectsFromData(subCategoryData, context: managedObjectContext) {
+        mutableSubcategories.addObjectsFromArray(importedSubcategories)
       }
     }
 

@@ -8,9 +8,9 @@
 #import "ITachConnectionManager.h"
 #import "NetworkDeviceMulticastConnection.h"
 #import "ITachDeviceConnection.h"
-#import "ITachDevice.h"
 #import "Command.h"
 #import "ConnectionManager.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_WARN;
 static int msLogContext = (LOG_CONTEXT_NETWORKING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);

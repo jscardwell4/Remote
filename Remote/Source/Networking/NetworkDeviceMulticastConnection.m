@@ -8,8 +8,8 @@
 #import "NetworkDeviceConnection_Subclass.h"
 #import "NetworkDeviceMulticastConnection.h"
 #import <netdb.h>
-#import "NetworkDevice.h"
 #import "ConnectionManager.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

@@ -7,8 +7,8 @@
 //
 @import CoreData;
 #import "ISYDeviceConnection.h"
-#import "ISYDevice.h"
 #import "CoreDataManager.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

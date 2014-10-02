@@ -225,7 +225,7 @@ prefix operator ~/ {}
 public prefix func ~/(pattern: String) -> NSRegularExpression! {
   var error: NSError? = nil
   let regex = NSRegularExpression(pattern: pattern, options: nil, error: &error)
-  if error != nil { printError(error!, message: "failed to create regular expression object") }
+  MSHandleError(error, message: "failed to create regular expression object")
   return regex
 }
 

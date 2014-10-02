@@ -6,12 +6,10 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "ITachDeviceConnection.h"
-#import "ITachDevice.h"
 #import "ConnectionManager.h"
 #import "Command.h"
 #import "MessageQueueEntry.h"
-#import "IRCode.h"
-#import "ComponentDevice.h"
+#import "Remote-Swift.h"
 @import MoonKit;
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;

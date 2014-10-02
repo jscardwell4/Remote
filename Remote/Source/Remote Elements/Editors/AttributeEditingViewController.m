@@ -25,24 +25,19 @@ MSSTRING_CONST   kAttributeEditingImageKey        = @"kAttributeEditingImageKey"
 @synthesize detailedButtonEditor, button;
 
 - (void)setInitialValuesFromDictionary:(NSDictionary *)initialValues {
-    self.button = NilSafe(initialValues[kAttributeEditingButtonKey]);
+  self.button = NilSafe(initialValues[kAttributeEditingButtonKey]);
 }
 
-- (void)resetToInitialState
-{}
+- (void)resetToInitialState {}
 
-- (void)storeCurrentValues
-{}
+- (void)storeCurrentValues {}
 
-- (void)restoreCurrentValues
-{}
+- (void)restoreCurrentValues {}
 
-- (void)syncCurrentValuesWithIntialValues
-{}
+- (void)syncCurrentValuesWithIntialValues {}
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-    if ([parent isMemberOfClass:[DetailedButtonEditingViewController class]]) self.detailedButtonEditor = (DetailedButtonEditingViewController *)parent;
-    else self.detailedButtonEditor = nil;
+  self.detailedButtonEditor = (DetailedButtonEditingViewController *)parent;
 }
 
 @end

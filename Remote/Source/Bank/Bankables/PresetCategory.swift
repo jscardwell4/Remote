@@ -11,12 +11,14 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-class PresetCategory: NamedModelObject, BankableCategory {
+class PresetCategory: NamedModelObject, BankableModelCategory {
 
-  @NSManaged var subCategories: NSSet?
+  @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var parentCategory: PresetCategory?
   @NSManaged var presets: NSSet?
 
-  var allItems: NSSet? { return presets }
+  var subcategories: [PresetCategory] { return (subcategoriesSet?.allObjects ?? []) as [PresetCategory] }
+
+  var allItems: [Preset] { return (presets?.allObjects ?? []) as [Preset] }
 
 }

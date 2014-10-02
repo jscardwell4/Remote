@@ -7,7 +7,7 @@
 //
 
 #import "ImageView.h"
-#import "Image.h"
+#import "Remote-Swift.h"
 
 
 @interface ImageView ()

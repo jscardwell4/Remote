@@ -6,8 +6,6 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "IRCode.h"
-#import "ComponentDevice.h"
-#import "Manufacturer.h"
 #import "Remote-Swift.h"
 
 enum ProntoHexFormatParts {
@@ -305,8 +303,8 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 - (BOOL)isEditable { return ([super isEditable] && self.user); }
 
 /// category
-/// @return id<BankableCategory>
-- (id<BankableCategory>)category { return self.codeSet; }
+/// @return id<BankableModelCategory>
+- (id<BankableModelCategory>)category { return self.codeSet; }
 
 /// rootCategories
 /// @return NSArray *
@@ -314,7 +312,7 @@ NSDictionary *parseIRCodeFromProntoHex(NSString * prontoHex) {
 
 /// setCategory:
 /// @param category
-- (void)setCategory:(id<BankableCategory>)category {
+- (void)setCategory:(id<BankableModelCategory>)category {
   if ([category isKindOfClass:[IRCodeSet class]]) self.codeSet = (IRCodeSet *)category;
 }
 

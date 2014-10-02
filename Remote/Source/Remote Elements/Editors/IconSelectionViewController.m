@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "IconSelectionViewController.h"
-#import "Image.h"
+#import "Remote-Swift.h"
 
 #define MAX_COL 5
 #define MIN_COL 1

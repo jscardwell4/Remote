@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import MoonKit
 
+var msLogLevel = LOG_LEVEL_DEBUG
+
 private let ListSegmentImage           = UIImage(named:"1073-grid-1") // 1073-grid-1399-list1
 private let ThumbnailSegmentImage      = UIImage(named:"1076-grid-4") // 1076-grid-4822-photo-2
 private let IndicatorImage             = UIImage(named:"1040-checkmark")
@@ -35,7 +37,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     didSet {
       if let files = existingFiles {
         let filesString = "\n\t".join(files)
-        logDebug("existing json files in documents directory:\n\t\(filesString)", __FUNCTION__)
+        MSLogDebug("existing json files in documents directory:\n\t\(filesString)")
       }
     }
   }
@@ -105,23 +107,23 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   :param: items NSFetchedResultsController
   */
-  init(items: NSFetchedResultsController) {
-    collectionItemClass = NSClassFromString(items.fetchRequest.entity.managedObjectClassName) as BankableModelObject.Type
-    super.init(collectionViewLayout: BankCollectionLayout())
-    collectionItemsController = items
-    collectionItemsController?.delegate = self
-    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
-  }
+//  init(controller: NSFetchedResultsController) {
+//    collectionItemClass = NSClassFromString(controller.fetchRequest.entity.managedObjectClassName) as BankableModelObject.Type
+//    super.init(collectionViewLayout: BankCollectionLayout())
+//    collectionItemsController = controller
+//    collectionItemsController?.delegate = self
+//    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+//  }
 
   /**
   initWithItems:
 
   :param: items [BankableModelObject]
   */
-  init(objects: [BankableModelObject]) {
-    collectionItemClass = objects[0].dynamicType.self
+  init(items: [BankableModelObject]) {
+    collectionItemClass = items[0].dynamicType.self
     super.init(collectionViewLayout: BankCollectionLayout())
-    collectionItems = objects
+    collectionItems = items
     layout.includeSectionHeaders = false
   }
 
@@ -137,6 +139,16 @@ class BankCollectionController: UICollectionViewController, BankController {
     super.init(coder: aDecoder)
     collectionItemsController?.delegate = self
     if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+  }
+
+  /**
+  didMoveToParentViewController:
+
+  :param: parent UIViewController?
+  */
+  override func didMoveToParentViewController(parent: UIViewController?) {
+    super.didMoveToParentViewController(parent)
+    if parent != nil { layout.includeSectionHeaders = false }
   }
 
   /**
@@ -379,14 +391,14 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   :param: sender AnyObject?
   */
-  func importBankObjects() { logInfo("item import not yet implemented", __FUNCTION__)  }
+  func importBankObjects() { MSLogInfo("item import not yet implemented")  }
 
   /**
   searchBankObjects:
 
   :param: sender AnyObject?
   */
-  func searchBankObjects() { logInfo("item search not yet implemented", __FUNCTION__)  }
+  func searchBankObjects() { MSLogInfo("item search not yet implemented")  }
 
   /**
   dismiss:

@@ -11,8 +11,7 @@
 @import Lumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
-#import "NetworkDevice.h"
-
+//#import "NetworkDevice.h"
 
 @interface ITachDevice : NetworkDevice
 

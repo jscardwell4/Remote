@@ -15,6 +15,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 #pragma unused(ddLogLevel,msLogContext)
 
+@interface BankableModelObject () <BankDisplayItemModel>
+
+@end
+
 @implementation BankableModelObject
 @dynamic user;
 
@@ -45,14 +49,42 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   return dictionary;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - BankDisplayItem
+////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark - BankableModel
-////////////////////////////////////////////////////////////////////////////////
++ (NSString *)label { return nil; }
++ (UIImage *)icon { return nil; }
+
+/// isThumbnailable
+/// @return BOOL
++ (BOOL)isThumbnailable { return NO;  }
 
 /// isPreviewable
 /// @return BOOL
 + (BOOL)isPreviewable { return NO;  }
+
+/// isDetailable
+/// @return BOOL
++ (BOOL)isDetailable { return YES; }
+
+/// isEditable
+/// @return BOOL
++ (BOOL)isEditable { return NO; }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - BankDisplayItemModel
+////////////////////////////////////////////////////////////////////////////////
+
+
+- (BankItemDetailController *)detailController { return nil; }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#pragma mark - BankableModel
+////////////////////////////////////////////////////////////////////////////////
 
 /// isPreviewable
 /// @return BOOL
@@ -64,23 +96,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// isThumbnailable
 /// @return BOOL
-+ (BOOL)isThumbnailable { return NO;  }
-
-/// isThumbnailable
-/// @return BOOL
 - (BOOL)isThumbnailable { return [[self class] isThumbnailable]; }
 
 /// isDetailable
 /// @return BOOL
-+ (BOOL)isDetailable { return YES; }
-
-/// isDetailable
-/// @return BOOL
 - (BOOL)isDetailable { return [[self class] isDetailable]; }
-
-/// isEditable
-/// @return BOOL
-+ (BOOL)isEditable { return YES; }
 
 /// isEditable
 /// @return BOOL
@@ -116,12 +136,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 }
 
 /// category
-/// @return id<BankableCategory>
-- (id<BankableCategory>)category { return nil; }
+/// @return id<BankDisplayItemCategory>
+- (id<BankDisplayItemCategory>)category { return nil; }
 
 /// setCategory:
 /// @param category
-- (void)setCategory:(id<BankableCategory>)category {}
+- (void)setCategory:(id<BankDisplayItemCategory>)category {}
 
 /// resetItem
 - (void)resetItem {

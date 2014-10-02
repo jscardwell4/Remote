@@ -7,8 +7,8 @@
 //
 #import "ConnectionManager.h"
 #import "NetworkDeviceConnection_Subclass.h"
-#import "NetworkDevice.h"
 #import "MessageQueueEntry.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_INFO;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

@@ -24,7 +24,6 @@ void printfobj(FILE * file, NSString * formatString,...);
 void dumpObjectIntrospection(id obj);
 
 #if TARGET_OS_IPHONE
-NSString * ObjectDebugDescription(id object);
 NSString * PrettyFloat(CGFloat f);
 NSString * PrettySize(CGSize size);
 NSString * AvailableCIFiltersDescription();

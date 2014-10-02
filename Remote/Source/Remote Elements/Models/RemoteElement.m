@@ -12,7 +12,7 @@
 #import "ButtonGroup.h"
 #import "Button.h"
 #import "Remote.h"
-#import "Image.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSOLE);

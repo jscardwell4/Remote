@@ -61,3 +61,8 @@
 @end
 
 #define AppController [MSRemoteAppController sharedAppController]
+
+// logging
+extern int msLogLevel;
+extern void setGlobalLogLevel(int level);
+extern int getGlobalLogLevel();

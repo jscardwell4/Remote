@@ -7,8 +7,8 @@
 //
 
 #import "PowerCommandEditingViewController.h"
-#import "ComponentDevice.h"
 #import "ViewDecorator.h"
+#import "Remote-Swift.h"
 
 @interface PowerCommandEditingViewController ()
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * deviceButton;

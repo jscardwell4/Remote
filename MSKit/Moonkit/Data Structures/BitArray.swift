@@ -39,19 +39,19 @@ struct BitArray: CollectionType {
 
   /** Toggle an individual bit */
   mutating func toggleBit(i:Int) {
-    if i >= count { raiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
     (isBitSet(i) ? unsetBit : setBit)(i)
   }
 
   /** Set an individual bit */
   mutating func setBit(i:Int) {
-    if i >= count { raiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
     storage |= UInt64(1) << UInt64(i)
   }
 
   /** Unset an individual bit */
   mutating func unsetBit(i:Int) {
-    if i >= count { raiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
     storage &= ~(UInt64(1) << UInt64(i))
   }
 
@@ -60,7 +60,7 @@ struct BitArray: CollectionType {
 
   /** Query whether an individual bit is set */
   func isBitSet(i:Int) -> Bool {
-    if i >= count { raiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
     return Bit.fromRaw(Int(storage >> UInt64(i) & UInt64(1)))!.boolValue
   }
 

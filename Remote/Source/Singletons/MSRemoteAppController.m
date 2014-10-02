@@ -16,12 +16,13 @@
 #import "StoryboardProxy.h"
 #import "RemoteController.h"
 #import "Remote.h"
-#import "ComponentDevice.h"
-#import "Manufacturer.h"
-#import "Image.h"
 #import "SettingsViewController.h"
 #import "Remote-Swift.h"
 @import CoreImage;
+
+int msLogLevel = LOG_LEVEL_DEBUG;
+void setGlobalLogLevel(int level) { msLogLevel = level; }
+int getGlobalLogLevel() { return msLogLevel; }
 
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;

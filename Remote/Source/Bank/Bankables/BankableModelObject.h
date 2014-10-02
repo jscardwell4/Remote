@@ -7,8 +7,6 @@
 //
 #import "NamedModelObject.h"
 #import "Bank.h"
-/** Protocol to ensure all bank objects have the necessary info to display */
-
 
 @interface BankableModelObject : NamedModelObject <BankableModel>
 

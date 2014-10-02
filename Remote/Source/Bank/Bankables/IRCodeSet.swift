@@ -11,12 +11,12 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-class IRCodeSet: NamedModelObject, BankableCategory {
+class IRCodeSet: NamedModelObject, BankableModelCategory {
 
   @NSManaged var codes: NSSet?
   @NSManaged var manufacturer: Manufacturer?
 
-  var allItems: NSSet? { return codes }
+  var allItems: [IRCode] { return (codes?.allObjects ?? []) as [IRCode] }
 
   /**
   updateWithData:

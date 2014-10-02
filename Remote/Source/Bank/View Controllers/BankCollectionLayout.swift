@@ -51,7 +51,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
     headerReferenceSize = BankCollectionLayout.HeaderSize
   }
 
-  var includeSectionHeaders: Bool = true {
+  var includeSectionHeaders: Bool = false {
     didSet {
       headerReferenceSize = includeSectionHeaders ? BankCollectionLayout.HeaderSize : CGSizeZero
     }

@@ -69,13 +69,13 @@ class BankRootController: UITableViewController, BankController {
   func dismiss() { MSRemoteAppController.sharedAppController().showMainMenu() }
 
   /** importBankObject */
-  func importBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func importBankObjects() { MSLogInfo("not yet implemented") }
 
   /** exportBankObject */
-  func exportBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func exportBankObjects() { MSLogInfo("not yet implemented") }
 
   /** searchBankObjects */
-  func searchBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func searchBankObjects() { MSLogInfo("not yet implemented") }
 
 }
 

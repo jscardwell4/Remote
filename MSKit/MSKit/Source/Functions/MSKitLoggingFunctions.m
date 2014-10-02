@@ -283,15 +283,6 @@ void dumpObjectIntrospection(id obj) {
     return [NSString stringWithFormat:@"\nAvailable fitlers...\n\t%@", [builtinFilters componentsJoinedByString:@"\n\t"]];
   }
 
-  NSString *ObjectDebugDescription(id object) {
-
-    NSMutableString * mutableDescription = [[NSMutableString alloc] initWithFormat:@"\nclass = %@",
-                                            NSStringFromClass([object class])];
-
-
-    return mutableDescription;
-  }
-
   NSString *NSStringFromNSAttributeType(NSAttributeType type) {
     switch (type) {
       case NSUndefinedAttributeType: return @"NSUndefinedAttributeType";

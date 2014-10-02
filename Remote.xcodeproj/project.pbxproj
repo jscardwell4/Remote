@@ -11,10 +11,18 @@
 		C2037B6F19D08925001F6AD9 /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832219D06E5D000CB422 /* BankCollectionController.swift */; };
 		C2037B7519D0F29B001F6AD9 /* BankCollectionZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
+		C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5919DB788E0052DDB7 /* Preset.swift */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22E1BDA19C12FB900A93D61 /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */; };
+		C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */; };
+		C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */; };
+		C230DF3F19DC7164008C2337 /* ITachDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3E19DC7164008C2337 /* ITachDevice.swift */; };
+		C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF4019DC7164008C2337 /* ISYDevice.swift */; };
+		C230DF4319DC7164008C2337 /* ISYDeviceNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF4219DC7164008C2337 /* ISYDeviceNode.swift */; };
+		C230DF4419DCA6F7008C2337 /* IRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5519DB788E0052DDB7 /* IRCode.swift */; };
+		C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5319DB788E0052DDB7 /* Manufacturer.swift */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C2358F0D19C781DA00920F8D /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */; };
 		C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */; };
@@ -149,12 +157,7 @@
 		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
-		C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D416FF69110042B59E /* ComponentDevice.m */; };
-		C25B473316FF8D0A0042B59E /* IRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46D816FF69110042B59E /* IRCode.m */; };
-		C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46DF16FF69110042B59E /* Manufacturer.m */; };
-		C25B473A16FF8D0A0042B59E /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46E516FF69110042B59E /* Image.m */; };
 		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
-		C25B474016FF8D0A0042B59E /* Preset.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F516FF69110042B59E /* Preset.m */; };
 		C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RemoteController.m */; };
 		C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A416FF67D00042B59E /* RemoteViewController.m */; };
 		C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* ControlStateColorSet.m */; };
@@ -201,7 +204,6 @@
 		C25B478D16FF8D5E0042B59E /* ConnectionStatusButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B456916FF61C90042B59E /* ConnectionStatusButtonView.m */; };
 		C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7716DC18530093D5B4 /* ConnectionManager.m */; };
 		C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF7C16DC18530093D5B4 /* ITachConnectionManager.m */; };
-		C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8216DC18530093D5B4 /* NetworkDevice.m */; };
 		C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */; };
 		C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9016DC18530093D5B4 /* CommandDetailViewController.m */; };
 		C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAF9A16DC18530093D5B4 /* IconSelectionViewController.m */; };
@@ -217,6 +219,7 @@
 		C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */; };
 		C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
 		C25BF65F19B179BC0038C724 /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25BF65E19B179BC0038C724 /* REBackgroundEditingViewController.m */; };
+		C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */; };
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
 		C26296801810619900760056 /* CoreDataManager+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = C262967F1810619900760056 /* CoreDataManager+Model.m */; };
@@ -312,8 +315,6 @@
 		C26BBB3216DC1B5C0093D5B4 /* Trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE516DC1B5C0093D5B4 /* Trash@2x.png */; };
 		C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */; };
 		C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */; };
-		C26C6E5E19B8DB3500B346AE /* ITachDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E5D19B8DB3500B346AE /* ITachDevice.m */; };
-		C26C6E6519B8DB9500B346AE /* ISYDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6419B8DB9500B346AE /* ISYDevice.m */; };
 		C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */; };
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchCommand.m */; };
@@ -359,6 +360,9 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
+		C2879F5B19DB78D60052DDB7 /* ComponentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F4E19DB788D0052DDB7 /* ComponentDevice.swift */; };
+		C2879F5C19DBA2CC0052DDB7 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5719DB788E0052DDB7 /* Image.swift */; };
+		C2879F5E19DBA86F0052DDB7 /* ModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5D19DBA86F0052DDB7 /* ModelObject.swift */; };
 		C28D098019D8747F00DF8100 /* Manufacturer_Dish.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097919D8747F00DF8100 /* Manufacturer_Dish.json */; };
 		C28D098119D8747F00DF8100 /* Manufacturer_LG.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097A19D8747F00DF8100 /* Manufacturer_LG.json */; };
 		C28D098219D8747F00DF8100 /* Manufacturer_Philips.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097B19D8747F00DF8100 /* Manufacturer_Philips.json */; };
@@ -571,6 +575,10 @@
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
 		C22E1BD919C12FB900A93D61 /* BankCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionCell.swift; sourceTree = "<group>"; };
+		C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceGroup.swift; sourceTree = "<group>"; };
+		C230DF3E19DC7164008C2337 /* ITachDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDevice.swift; sourceTree = "<group>"; };
+		C230DF4019DC7164008C2337 /* ISYDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDevice.swift; sourceTree = "<group>"; };
+		C230DF4219DC7164008C2337 /* ISYDeviceNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceNode.swift; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
 		C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionLayout.swift; sourceTree = "<group>"; };
@@ -772,15 +780,11 @@
 		C25B46C416FF68900042B59E /* ConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintManager.m; sourceTree = "<group>"; };
 		C25B46CC16FF68A90042B59E /* Constraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constraint.h; sourceTree = "<group>"; };
 		C25B46CD16FF68A90042B59E /* Constraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constraint.m; sourceTree = "<group>"; };
-		C25B46D416FF69110042B59E /* ComponentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ComponentDevice.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C25B46D816FF69110042B59E /* IRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRCode.m; sourceTree = "<group>"; };
-		C25B46DF16FF69110042B59E /* Manufacturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manufacturer.m; sourceTree = "<group>"; };
-		C25B46E516FF69110042B59E /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		C25B46F016FF69110042B59E /* BankObjectPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankObjectPreview.h; sourceTree = "<group>"; };
 		C25B46F116FF69110042B59E /* BankObjectPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankObjectPreview.m; sourceTree = "<group>"; };
-		C25B46F516FF69110042B59E /* Preset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preset.m; sourceTree = "<group>"; };
 		C25BF65D19B179BC0038C724 /* REBackgroundEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundEditingViewController.h; sourceTree = "<group>"; };
 		C25BF65E19B179BC0038C724 /* REBackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundEditingViewController.m; sourceTree = "<group>"; };
+		C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankSurrogateCategory.swift; sourceTree = "<group>"; };
 		C25C44DB19ABB3E2005594ED /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
 		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
 		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
@@ -799,8 +803,6 @@
 		C26BAF7716DC18530093D5B4 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
 		C26BAF7B16DC18530093D5B4 /* ITachConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachConnectionManager.h; sourceTree = "<group>"; };
 		C26BAF7C16DC18530093D5B4 /* ITachConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ITachConnectionManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAF8116DC18530093D5B4 /* NetworkDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDevice.h; sourceTree = "<group>"; };
-		C26BAF8216DC18530093D5B4 /* NetworkDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NetworkDevice.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAF8D16DC18530093D5B4 /* ColorSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectionViewController.h; sourceTree = "<group>"; };
 		C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectionViewController.m; sourceTree = "<group>"; };
 		C26BAF8F16DC18530093D5B4 /* CommandDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandDetailViewController.h; sourceTree = "<group>"; };
@@ -926,10 +928,6 @@
 		C26BBAE516DC1B5C0093D5B4 /* Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash@2x.png"; sourceTree = "<group>"; };
 		C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Windows-White.png"; sourceTree = "<group>"; };
 		C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Windows-White@2x.png"; sourceTree = "<group>"; };
-		C26C6E5C19B8DB3500B346AE /* ITachDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDevice.h; sourceTree = "<group>"; };
-		C26C6E5D19B8DB3500B346AE /* ITachDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDevice.m; sourceTree = "<group>"; };
-		C26C6E6319B8DB9500B346AE /* ISYDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDevice.h; sourceTree = "<group>"; };
-		C26C6E6419B8DB9500B346AE /* ISYDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDevice.m; sourceTree = "<group>"; };
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
@@ -983,6 +981,13 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
+		C2879F4E19DB788D0052DDB7 /* ComponentDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentDevice.swift; sourceTree = "<group>"; };
+		C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkDevice.swift; sourceTree = "<group>"; };
+		C2879F5319DB788E0052DDB7 /* Manufacturer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manufacturer.swift; sourceTree = "<group>"; };
+		C2879F5519DB788E0052DDB7 /* IRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRCode.swift; sourceTree = "<group>"; };
+		C2879F5719DB788E0052DDB7 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		C2879F5919DB788E0052DDB7 /* Preset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		C2879F5D19DBA86F0052DDB7 /* ModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelObject.swift; sourceTree = "<group>"; };
 		C28D097919D8747F00DF8100 /* Manufacturer_Dish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Dish.json; sourceTree = "<group>"; };
 		C28D097A19D8747F00DF8100 /* Manufacturer_LG.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_LG.json; sourceTree = "<group>"; };
 		C28D097B19D8747F00DF8100 /* Manufacturer_Philips.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Philips.json; sourceTree = "<group>"; };
@@ -1023,11 +1028,6 @@
 		C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceMulticastConnection.m; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
-		C2B4998917C9562D00EC6C7C /* IRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCode.h; sourceTree = "<group>"; };
-		C2B4998A17C9567800EC6C7C /* Image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
-		C2B4998B17C9568900EC6C7C /* Preset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preset.h; sourceTree = "<group>"; };
-		C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComponentDevice.h; sourceTree = "<group>"; };
-		C2B4998D17C956AE00EC6C7C /* Manufacturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Manufacturer.h; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
 		C2C1756919D10CB7008B8E16 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = "MSKit/Lumberjack/build/Debug-iphoneos/Lumberjack.framework"; sourceTree = "<group>"; };
 		C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionAttributes.swift; sourceTree = "<group>"; };
@@ -1229,6 +1229,7 @@
 				C25C44DE19ABCA2A005594ED /* TitleAttributes.m */,
 				C2F940EE19BD4C0F007B5CC1 /* ModelKeychainWrapper.h */,
 				C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */,
+				C2879F5D19DBA86F0052DDB7 /* ModelObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1411,21 +1412,22 @@
 			children = (
 				C2E953EE17E8BAA70052518D /* BankableModelObject.h */,
 				C2E953EF17E8BAA70052518D /* BankableModelObject.m */,
-				C2B4998D17C956AE00EC6C7C /* Manufacturer.h */,
-				C25B46DF16FF69110042B59E /* Manufacturer.m */,
-				C2B4998C17C9569C00EC6C7C /* ComponentDevice.h */,
-				C25B46D416FF69110042B59E /* ComponentDevice.m */,
-				C2B4998B17C9568900EC6C7C /* Preset.h */,
-				C25B46F516FF69110042B59E /* Preset.m */,
-				C2B4998A17C9567800EC6C7C /* Image.h */,
-				C25B46E516FF69110042B59E /* Image.m */,
-				C2B4998917C9562D00EC6C7C /* IRCode.h */,
-				C25B46D816FF69110042B59E /* IRCode.m */,
 				C2D1022B19AAFCA300DE5346 /* ImageView.h */,
 				C2D1022C19AAFCA300DE5346 /* ImageView.m */,
 				C277AB7B19D74011008DEE39 /* IRCodeSet.swift */,
 				C277AB7F19D74AD6008DEE39 /* ImageCategory.swift */,
 				C277AB7D19D74AD5008DEE39 /* PresetCategory.swift */,
+				C2879F5919DB788E0052DDB7 /* Preset.swift */,
+				C2879F5719DB788E0052DDB7 /* Image.swift */,
+				C2879F5519DB788E0052DDB7 /* IRCode.swift */,
+				C2879F5319DB788E0052DDB7 /* Manufacturer.swift */,
+				C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */,
+				C2879F4E19DB788D0052DDB7 /* ComponentDevice.swift */,
+				C230DF4219DC7164008C2337 /* ISYDeviceNode.swift */,
+				C230DF4019DC7164008C2337 /* ISYDevice.swift */,
+				C230DF3E19DC7164008C2337 /* ITachDevice.swift */,
+				C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */,
+				C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */,
 			);
 			name = Bankables;
 			path = Bank/Bankables;
@@ -1557,16 +1559,10 @@
 				C26BAF7716DC18530093D5B4 /* ConnectionManager.m */,
 				C26BAF7B16DC18530093D5B4 /* ITachConnectionManager.h */,
 				C26BAF7C16DC18530093D5B4 /* ITachConnectionManager.m */,
-				C26BAF8116DC18530093D5B4 /* NetworkDevice.h */,
-				C26BAF8216DC18530093D5B4 /* NetworkDevice.m */,
 				C240DD5D170485F2005CC390 /* IRLearner.h */,
 				C240DD5E170485F2005CC390 /* IRLearner.m */,
 				C222480319B76E270093B07C /* ISYConnectionManager.h */,
 				C222480419B76E270093B07C /* ISYConnectionManager.m */,
-				C26C6E5C19B8DB3500B346AE /* ITachDevice.h */,
-				C26C6E5D19B8DB3500B346AE /* ITachDevice.m */,
-				C26C6E6319B8DB9500B346AE /* ISYDevice.h */,
-				C26C6E6419B8DB9500B346AE /* ISYDevice.m */,
 				C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */,
 				C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */,
 				C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */,
@@ -2702,25 +2698,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
-				C25B473116FF8D0A0042B59E /* ComponentDevice.m in Sources */,
+				C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */,
 				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,
-				C26C6E5E19B8DB3500B346AE /* ITachDevice.m in Sources */,
 				C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */,
-				C25B473316FF8D0A0042B59E /* IRCode.m in Sources */,
-				C25B473616FF8D0A0042B59E /* Manufacturer.m in Sources */,
-				C25B473A16FF8D0A0042B59E /* Image.m in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
 				C2C628D319D7188C00E40176 /* Bank.swift in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
-				C25B474016FF8D0A0042B59E /* Preset.m in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
 				C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */,
+				C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */,
 				C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */,
 				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
 				C277AB7E19D74AD6008DEE39 /* PresetCategory.swift in Sources */,
 				C2E8128019D65BF700FD80C4 /* BankItemCell.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
 				C2E8127C19D6121F00FD80C4 /* ISYDeviceDetailController.swift in Sources */,
+				C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
 				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
@@ -2739,6 +2732,7 @@
 				C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */,
 				C25B475B16FF8D5E0042B59E /* ButtonEditingViewController.m in Sources */,
 				C25B475C16FF8D5E0042B59E /* ButtonGroupEditingViewController.m in Sources */,
+				C2879F5E19DBA86F0052DDB7 /* ModelObject.swift in Sources */,
 				C25B475D16FF8D5E0042B59E /* DetailedButtonEditingViewController.m in Sources */,
 				C25B476216FF8D5E0042B59E /* RemoteElementEditingViewController.m in Sources */,
 				C25B476316FF8D5E0042B59E /* RemoteEditingViewController.m in Sources */,
@@ -2758,9 +2752,12 @@
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C277AB8319D7791C008DEE39 /* BankCategoryCell.swift in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
+				C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */,
+				C230DF4319DC7164008C2337 /* ISYDeviceNode.swift in Sources */,
 				C279E08A182179E500C17FB1 /* REFont.m in Sources */,
 				C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */,
 				C25B477B16FF8D5E0042B59E /* Button.m in Sources */,
+				C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */,
 				C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */,
 				C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */,
 				C25B478016FF8D5E0042B59E /* Remote.m in Sources */,
@@ -2779,23 +2776,24 @@
 				C25B478D16FF8D5E0042B59E /* ConnectionStatusButtonView.m in Sources */,
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
-				C25B479D16FF8D5E0042B59E /* NetworkDevice.m in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
 				C2E8127719D6083200FD80C4 /* ImageDetailController.swift in Sources */,
 				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
 				C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */,
-				C26C6E6519B8DB9500B346AE /* ISYDevice.m in Sources */,
 				C25B47A016FF8D5E0042B59E /* IconSelectionViewController.m in Sources */,
 				C25B47A116FF8D5E0042B59E /* IRLearnerViewController.m in Sources */,
 				C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */,
 				C2E8127919D6085000FD80C4 /* IRCodeDetailController.swift in Sources */,
+				C230DF3F19DC7164008C2337 /* ITachDevice.swift in Sources */,
 				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
+				C2879F5B19DB78D60052DDB7 /* ComponentDevice.swift in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
+				C2879F5C19DBA2CC0052DDB7 /* Image.swift in Sources */,
 				C2E8127819D6083A00FD80C4 /* PresetDetailController.swift in Sources */,
 				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
 				C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */,
@@ -2803,7 +2801,9 @@
 				C2E8127B19D6121C00FD80C4 /* ITachDeviceDetailController.swift in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
+				C230DF4419DCA6F7008C2337 /* IRCode.swift in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
+				C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */,
 				C22E1BDA19C12FB900A93D61 /* BankCollectionCell.swift in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
@@ -2956,6 +2956,7 @@
 					"-licucore",
 					"-ObjC",
 				);
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SEPARATE_STRIP = YES;
@@ -2996,6 +2997,376 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
 			};
 			name = Release;
+		};
+		C272040C19DB3A47008DC4C8 /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Verbose;
+		};
+		C272040D19DB3A47008DC4C8 /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
+				);
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-licucore",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SEPARATE_STRIP = YES;
+				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Verbose;
+		};
+		C272040E19DB3A47008DC4C8 /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Verbose;
+		};
+		C272040F19DB3A47008DC4C8 /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Verbose;
+		};
+		C272041019DB3A47008DC4C8 /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Remote Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+			};
+			name = Verbose;
+		};
+		C272041119DB3A58008DC4C8 /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Info;
+		};
+		C272041219DB3A58008DC4C8 /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
+				);
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-licucore",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SEPARATE_STRIP = YES;
+				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Info;
+		};
+		C272041319DB3A58008DC4C8 /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Info;
+		};
+		C272041419DB3A58008DC4C8 /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Info;
+		};
+		C272041519DB3A58008DC4C8 /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Remote Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+			};
+			name = Info;
 		};
 		C2C482CB19C9F968002E84A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3268,6 +3639,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C26BAEDE16DC10FE0093D5B4 /* Debug */,
+				C272041119DB3A58008DC4C8 /* Info */,
+				C272040C19DB3A47008DC4C8 /* Verbose */,
 				C26BAEDF16DC10FE0093D5B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3277,6 +3650,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C26BAEE116DC10FE0093D5B4 /* Debug */,
+				C272041219DB3A58008DC4C8 /* Info */,
+				C272040D19DB3A47008DC4C8 /* Verbose */,
 				C26BAEE216DC10FE0093D5B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3286,6 +3661,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2C482CB19C9F968002E84A9 /* Debug */,
+				C272041519DB3A58008DC4C8 /* Info */,
+				C272041019DB3A47008DC4C8 /* Verbose */,
 				C2C482CC19C9F968002E84A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3295,6 +3672,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2CA76BD19BA1E1900ACCD76 /* Debug */,
+				C272041319DB3A58008DC4C8 /* Info */,
+				C272040E19DB3A47008DC4C8 /* Verbose */,
 				C2CA76BE19BA1E1900ACCD76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3304,6 +3683,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2F9412219BE5E90007B5CC1 /* Debug */,
+				C272041419DB3A58008DC4C8 /* Info */,
+				C272040F19DB3A47008DC4C8 /* Verbose */,
 				C2F9412319BE5E90007B5CC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

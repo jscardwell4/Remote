@@ -150,9 +150,7 @@ public class JSONSerialization: NSObject {
     var localError: NSError?
     let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
 
-    if localError != nil {
-      let message = aggregateErrorMessage(localError!, message: "failed to create string from file")
-      logError(message, __FUNCTION__, level: LOG_LEVEL_ERROR)
+    if MSHandleError(localError, message: "failed to create string from file") {
       if error != nil { error.memory = localError }
     }
 
@@ -264,10 +262,10 @@ public class JSONSerialization: NSObject {
 
     // Create a block for logging local errors and setting error pointer
     let handleError: (String) -> Bool = {
-    	if localError == nil { return false }
-    	logError(aggregateErrorMessage(localError!, message: $0), __FUNCTION__)
-    	if error != nil { error.memory = localError }
-    	return true
+      if MSHandleError(localError, message: $0) {
+        if error != nil { error.memory = localError }
+        return true
+      } else { return false }
     }
 
     // Get the contents of the file to parse

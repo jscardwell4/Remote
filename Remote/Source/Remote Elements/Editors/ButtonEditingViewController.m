@@ -8,8 +8,8 @@
 #import "RemoteElementEditingViewController_Private.h"
 #import "Button.h"
 #import "RemoteElementView.h"
-#import "ComponentDevice.h"
 #import "StoryboardProxy.h"
+#import "Remote-Swift.h"
 
 #define AUTO_LAUNCH_DETAIL_EDITOR NO
 #define REPLACE_BUTTON_COMMAND    NO
@@ -97,9 +97,7 @@ presentedControlState = _presentedControlState;
   static BOOL   buttonEditorHasAutoLaunched = NO;
     if (AUTO_LAUNCH_DETAIL_EDITOR && !buttonEditorHasAutoLaunched) {
         if (REPLACE_BUTTON_COMMAND) {
-            ComponentDevice * tv =
-                [ComponentDevice fetchDeviceWithName:@"Samsung TV"
-                                                    context:_buttonModel.managedObjectContext];
+            ComponentDevice * tv = [ComponentDevice findFirstByAttribute:@"name" withValue:@"Samsung TV"];
             SendIRCommand * command = (SendIRCommand *)tv.onCommand;
 
             _buttonModel.command = command;

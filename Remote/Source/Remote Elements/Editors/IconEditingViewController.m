@@ -12,12 +12,12 @@
 #import "ControlStateImageSet.h"
 #import "ControlStateTitleSet.h"
 #import "ControlStateColorSet.h"
-#import "Image.h"
 #import <QuartzCore/QuartzCore.h>
 #import "RemoteElementView.h"
 #import "Button.h"
 #import "StoryboardProxy.h"
 #import "ImageView.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "REPresetCollectionViewController.h"
-#import "Preset.h"
 #import "BankObjectPreview.h"
+#import "Remote-Swift.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - BOPresetCell

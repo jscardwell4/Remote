@@ -8,19 +8,27 @@
 
 import Foundation
 
-// crashes Xcode
-/*
 public func advance<T: ForwardIndexType>(inout range: Range<T>, amount: T.Distance) {
+  let d = distance(range.startIndex, range.endIndex)
   let start: T = advance(range.startIndex, amount)
-  let end: T = advance(range.endIndex, amount)
-//  range = Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
+  let end: T = advance(range.startIndex, amount + d)
+  range = Range<T>(start: start, end: end)
 }
 
-*/
+
 public func advance<T: ForwardIndexType>(range: Range<T>, amount: T.Distance) -> Range<T> {
   return Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
 }
 
+prefix operator ∀⦱ {}
+
+postfix operator ‽ {}
+
+public postfix func ‽<T>(lhs: [Optional<T>]) -> [T] { return lhs.filter{$0 != nil}.map{$0!} }
+
+public func compressed<T>(array:[Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
+
+public func flattened<T>(array:[[T]]) -> [T] { var a: [T] = []; for s in array { a += s}; return a }
 
 /**
 The function is a simple wrapper around `reduce` that ignores the actual reduction as a way to visit every element

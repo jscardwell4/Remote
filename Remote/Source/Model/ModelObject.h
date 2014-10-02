@@ -65,7 +65,7 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject);
 
 @property (nonatomic, weak, readonly) id         JSONObject;
 @property (nonatomic, weak, readonly) NSString * JSONString;
-@property (nonatomic, weak, readonly) MSDictionary * JSONDictionary;
+- (MSDictionary *)JSONDictionary;
 
 - (BOOL)writeJSONToFile:(NSString *)file;
 - (BOOL)attributeValueIsDefault:(NSString *)attributeName;

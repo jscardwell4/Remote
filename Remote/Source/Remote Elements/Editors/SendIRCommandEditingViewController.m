@@ -7,9 +7,8 @@
 //
 
 #import "SendIRCommandEditingViewController.h"
-#import "IRCode.h"
-#import "ComponentDevice.h"
 #import "ViewDecorator.h"
+#import "Remote-Swift.h"
 
 @interface SendIRCommandEditingViewController ()
 

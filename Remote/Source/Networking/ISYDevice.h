@@ -11,9 +11,9 @@
 @import Lumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
-#import "NetworkDevice.h"
+//#import "NetworkDevice.h"
 
-@class ISYDeviceNode;
+@class NetworkDevice, ISYDeviceNode;
 
 @interface ISYDevice : NetworkDevice
 

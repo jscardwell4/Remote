@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-@protocol NamedModel, BankableCategory;
+@protocol NamedModel, BankableModelCategory;
 @class BankItemDetailController;
 
 /// inherits `uuid` from `Model` and `name` from `NamedModel`
@@ -64,7 +64,7 @@
 /// Method for forcing an item to reload itself from storage
 - (void)resetItem;
 
-@property (nonatomic, strong)                             id<BankableCategory>   category;
+@property (nonatomic, strong)                             id<BankableModelCategory>   category;
 @property (nonatomic, readonly)                           UIImage              * thumbnail;
 @property (nonatomic, readonly)                           UIImage              * preview;
 @property (nonatomic, copy)                               NSNumber             * user;
@@ -75,12 +75,53 @@
 
 @end
 
-@protocol BankableCategory <NamedModel>
+@protocol BankableModelItem <NamedModel>
 
-@property (nonatomic, readonly) NSSet                * allItems;
+@property (nonatomic, strong)                             id<BankableModelCategory>   category;
+@property (nonatomic, readonly)                           UIImage              * thumbnail;
+@property (nonatomic, readonly)                           UIImage              * preview;
+@property (nonatomic, copy)                               NSNumber             * user;
+@property (nonatomic, readonly, getter = isEditable)      BOOL                   editable;
+@property (nonatomic, readonly, getter = isThumbnailable) BOOL                   thumbnailable;
+@property (nonatomic, readonly, getter = isPreviewable)   BOOL                   previewable;
+@property (nonatomic, readonly, getter = isDetailable)    BOOL                   detailable;
 
-@optional
-@property (nonatomic, readonly) NSSet                * subCategories;
-@property (nonatomic, readonly) id<BankableCategory>   parentCategory;
+/// Method for forcing an item to save any changes to storage
+- (void)updateItem;
+
+/// Method for forcing an item to reload itself from storage
+- (void)resetItem;
+
+/// Items provide a thumbnail image
+/// @return BOOL
++ (BOOL)isThumbnailable;
+
+/// Items provide a preview image
+/// @return BOOL
++ (BOOL)isPreviewable;
+
+/// Items provide a detail view controller
+/// @return BOOL
++ (BOOL)isDetailable;
+
+/// Items provide an editing view controller
+/// @return BOOL
++ (BOOL)isEditable;
+
+/// Items can be divided into logical sections
+/// @return BOOL
++ (BOOL)isCategorized;
 
 @end
+
+
+@protocol BankableModelCategory <NamedModel>
+
+@optional
+@property (nonatomic, readonly) NSArray * allItems;
+@property (nonatomic, readonly) NSArray                * subcategories;
+@property (nonatomic, readonly) id<BankableModelCategory>   parentCategory;
+
+@end
+
+

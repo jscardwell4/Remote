@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 
 @objc(BankItemDetailController)
-class BankItemDetailController: UITableViewController {
+class BankItemDetailController: UITableViewController, BankDetailController {
 
   struct Section {
     var title: String?
@@ -68,22 +68,14 @@ class BankItemDetailController: UITableViewController {
 
   :param: item BankableModelObject
   */
-  required init(item: BankableModelObject, editing: Bool) {
+  required init(item: BankableModelObject, editing: Bool = false) {
     super.init(style: .Grouped)
     self.item = item
     self.editing = editing
     hidesBottomBarWhenPushed = true
   }
 
-  /**
-  initWithItem:
-
-  :param: item BankableModelObject
-  */
-  convenience init(item: BankableModelObject) {
-    self.init(item: item, editing: false)
-  }
-
+  /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
     tableView.rowHeight = BankItemDetailController.DefaultRowHeight
@@ -168,7 +160,7 @@ class BankItemDetailController: UITableViewController {
       moc.processPendingChanges()
       var error: NSError?
       moc.save(&error)
-      handleError(error, __FUNCTION__)
+      MSHandleError(error)
     }
     setEditing(false, animated: true)
   }

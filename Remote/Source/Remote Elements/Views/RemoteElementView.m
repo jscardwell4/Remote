@@ -9,9 +9,9 @@
 #import "RemoteElementView.h"
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGL.h>
-#import "Image.h"
 #import "RemoteElementLayoutConstraint.h"
 #import "ConstraintManager.h"
+#import "Remote-Swift.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Global Variables

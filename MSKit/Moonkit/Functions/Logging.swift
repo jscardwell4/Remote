@@ -8,87 +8,196 @@
 
 import Foundation
 
-private var globalLogLevel:   Int32 = LOG_LEVEL_DEBUG
-private var globalLogContext: Int32 = LOG_CONTEXT_CONSOLE
+var msLogLevel = LOG_LEVEL_ERROR
 
 /**
-logMessage:function:level:flag:context:
+MSLogMessage:flag:function:line:level:context:
 
-:param: message String
-:param: function String
-:param: level Int32
+:param: message StaticString
 :param: flag Int32
-:param: context Int32 = globalLogContext
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+:param: level Int32 = msLogLevel
+:param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func logMessage(message: String, function: String, level: Int32, flag: Int32, context: Int32 = globalLogContext) {
-  MSLog.log(false, level: level, flag: flag, context: context, function: function, message: message)
+public func MSLogMessage(message: AssertString,
+                    flag: Int32,
+                function: StaticString = __FUNCTION__,
+                    line: Int = __LINE__,
+                   level: Int32 = msLogLevel,
+                 context: Int32 = LOG_CONTEXT_DEFAULT)
+{
+  MSLog.log(false, level: level, flag: flag, context: context, function: function.stringValue, message: message.stringValue)
 }
 
 /**
-logDebug:function:level:
+MSLogDebug:function:line:level:context:
 
-:param: message String
-:param: function String
-:param: level Int32 = globalLogLevel
+:param: message StaticString
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+:param: level Int32 = msLogLevel
+:param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func logDebug (message: String, function: String, level: Int32 = globalLogLevel) {
-  logMessage(message, function, level, LOG_FLAG_DEBUG)
+public func MSLogDebug(message: AssertString,
+              function: StaticString = __FUNCTION__,
+                  line: Int = __LINE__,
+                 level: Int32 = msLogLevel,
+               context: Int32 = LOG_CONTEXT_DEFAULT)
+{
+  MSLogMessage(message, LOG_FLAG_DEBUG, function: function, line: line, level: level, context: context)
 }
 
 /**
-logError:function:level:
+MSLogError:function:line:level:context:
 
-:param: message String
-:param: function String
-:param: level Int32 = globalLogLevel
+:param: message StaticString
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+:param: level Int32 = msLogLevel
+:param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func logError (message: String, function: String, level: Int32 = globalLogLevel) {
-  logMessage(message, function, level, LOG_FLAG_ERROR)
+public func MSLogError(message: AssertString,
+              function: StaticString = __FUNCTION__,
+                  line: Int = __LINE__,
+                 level: Int32 = msLogLevel,
+               context: Int32 = LOG_CONTEXT_DEFAULT)
+{
+  MSLogMessage(message, LOG_FLAG_ERROR, function: function, line: line, level: level, context: context)
 }
 
 /**
-logWarn:function:level:
+MSLogInfo:function:line:level:context:
 
-:param: message String
-:param: function String
-:param: level Int32 = globalLogLevel
+:param: message StaticString
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+:param: level Int32 = msLogLevel
+:param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func logWarn (message: String, function: String, level: Int32 = globalLogLevel) {
-  logMessage(message, function, level, LOG_FLAG_WARN)
+public func MSLogInfo(message: AssertString,
+             function: StaticString = __FUNCTION__,
+                 line: Int = __LINE__,
+                level: Int32 = msLogLevel,
+              context: Int32 = LOG_CONTEXT_DEFAULT)
+{
+  MSLogMessage(message, LOG_FLAG_INFO, function: function, line: line, level: level, context: context)
 }
 
 /**
-logInfo:function:level:
+MSLogWarn:function:line:level:context:
 
-:param: message String
-:param: function String
-:param: level Int32 = globalLogLevel
+:param: message StaticString
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+:param: level Int32 = msLogLevel
+:param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func logInfo (message: String, function: String, level: Int32 = globalLogLevel) {
-  logMessage(message, function, level, LOG_FLAG_INFO)
+public func MSLogWarn(message: AssertString,
+             function: StaticString = __FUNCTION__,
+                 line: Int = __LINE__,
+                level: Int32 = msLogLevel,
+              context: Int32 = LOG_CONTEXT_DEFAULT)
+{
+  MSLogMessage(message, LOG_FLAG_WARN, function: function, line: line, level: level, context: context)
 }
 
 /**
-logVerbose:function:level:
+MSLogVerbose:function:line:level:context:
 
-:param: message String
-:param: function String
-:param: level Int32 = globalLogLevel
+:param: message StaticString
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+:param: level Int32 = msLogLevel
+:param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func logVerbose(message: String, function: String, level: Int32 = globalLogLevel) {
-  logMessage(message, function, level, LOG_FLAG_VERBOSE)
+public func MSLogVerbose(message: AssertString,
+                function: StaticString = __FUNCTION__,
+                    line: Int = __LINE__,
+                   level: Int32 = msLogLevel,
+                 context: Int32 = LOG_CONTEXT_DEFAULT)
+{
+  MSLogMessage(message, LOG_FLAG_VERBOSE, function: function, line: line, level: level, context: context)
 }
 
 /**
-setGlobalLogLevel:
+detailedDescriptionForError:depth:
 
-:param: level Int32
+:param: error NSError
+:param: depth Int = 0
+
+:returns: String
 */
-public func setGlobalLogLevel(level: Int32) { globalLogLevel = level }
+public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
+
+  var depthIndent = "  " * depth
+  var message = "\(depthIndent)domain: \(error.domain)\n\(depthIndent)code: \(error.code)\n"
+
+  if let reason = error.localizedFailureReason { message += "\(depthIndent)reason: \(reason)\n" }
+
+  if let recoveryOptions = error.localizedRecoveryOptions as? [String] {
+    let joinString = ",\n" + (" " * 18) + depthIndent
+    message += "\(depthIndent)recovery options: \(joinString.join(recoveryOptions))\n"
+  }
+
+  if let suggestion = error.localizedRecoverySuggestion { message += "\(depthIndent)suggestion: \(suggestion)\n" }
+
+  if let underlying: AnyObject = error.userInfo?[NSUnderlyingErrorKey] {
+
+    if let underlyingError = underlying as? NSError {
+      // Add information gathered from the underlying error
+      message += "\(depthIndent)underlyingError:\n\(detailedDescriptionForError(underlyingError, depth: depth + 1))\n"
+    }
+
+    else if let underlyingErrors = underlying as? [NSError] {
+      // Add information gathered from each underlying error
+      let joinString = ",\n"
+      message += "\(depthIndent)underlyingErrors:\n"
+      message += joinString.join(underlyingErrors.map{detailedDescriptionForError($0, depth: depth + 1)}) + "\n"
+    }
+
+  }
+
+  return message
+
+}
 
 /**
-setGlobalLogContext:
+MSHandleError:message:function:line:
 
-:param: context Int32
+:param: error NSError?
+:param: message String? = nil
+:param: function StaticString = __FUNCTION__
+:param: line Int = __LINE__
+
+:returns: Bool
 */
-public func setGlobalLogContext(context: Int32) { globalLogContext = context }
+public func MSHandleError(error: NSError?,
+                  message: String? = nil,
+                 function: StaticString = __FUNCTION__,
+                     line: Int = __LINE__) -> Bool
+{
+  if error == nil { return false }
+  let logMessage = AssertString("-Error- \(message ?? String())\n\(detailedDescriptionForError(error!, depth: 0))")
+  MSLogError(logMessage, function: function, line: line)
+  return true
+}
+
+/**
+recursiveDescription<T>:description:subelements:
+
+:param: base [T]
+:param: description (T) -> String
+:param: subelements (T) -> [T]
+*/
+public func recursiveDescription<T>(base: [T], level: Int = 0, description: (T) -> String, subelements:(T) -> [T]) -> String {
+  var result = ""
+  let indent = "\t" * level
+  for object in base {
+    result += indent + description(object) + "\n"
+    for subelement in subelements(object) {
+      result += recursiveDescription([subelement], level: level + 1, description, subelements)
+    }
+  }
+  return result
+}

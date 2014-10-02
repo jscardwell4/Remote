@@ -133,7 +133,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
   if (data) {
 
-    NSString    * uuid   = data[@"uuid"];
+    NSString * uuid = data[@"uuid"];
 
     if ([self isValidUUID:uuid]) {
       object = [self existingObjectWithUUID:uuid context:moc];

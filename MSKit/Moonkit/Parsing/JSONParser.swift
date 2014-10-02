@@ -116,7 +116,7 @@ public class JSONParser: NSObject {
     }
 
     // Log debug info if log level accomodates
-    if LogLevel == LOG_LEVEL_DEBUG { if let error = pointer.memory { printError(error); dumpState() } }
+    if LogLevel == LOG_LEVEL_DEBUG { if let error = pointer.memory { MSHandleError(error); dumpState() } }
 
   }
 
@@ -699,7 +699,7 @@ public class JSONParser: NSObject {
 
     }
 
-    logDebug("parsed object…\n\(object)", __FUNCTION__, level: LogLevel)
+    MSLogDebug("parsed object…\n\(object)")
 
     return object
 

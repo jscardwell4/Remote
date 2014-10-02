@@ -6,9 +6,9 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
-#import "ComponentDevice.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
+#import "Remote-Swift.h"
 
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;

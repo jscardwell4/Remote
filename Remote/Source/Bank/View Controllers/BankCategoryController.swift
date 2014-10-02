@@ -11,12 +11,18 @@ import UIKit
 import MoonKit
 
 private let CategoryCellIdentifier = "CategoryCell"
+private let CategoryCellHeight: CGFloat = 38.0
 
 @objc(BankCategoryController)
-class BankCategoryController: UITableViewController, BankController {
+class BankCategoryController: UIViewController, BankController, UITableViewDataSource, UITableViewDelegate {
 
-  var categoryItems: [BankableCategory] = []
+  var category: BankableModelCategory?
+  var subcategories: [BankableModelCategory] = []
   var categoryItemClass: BankableModelObject.Type?
+
+  weak var categoryItems: BankCollectionController?
+
+  private weak var tableView: UITableView!
 
   /**
   initWithItemClass:
@@ -24,19 +30,32 @@ class BankCategoryController: UITableViewController, BankController {
   :param: itemClass BankableModelObject.Type
   */
   init(itemClass: BankableModelObject.Type) {
-    super.init(style: .Plain)
+    super.init(nibName: nil, bundle: nil)
   	categoryItemClass = itemClass
-  	categoryItems = (categoryItemClass!.rootCategories() as? [BankableCategory]) ?? []
+  	subcategories = (categoryItemClass!.rootCategories() as? [BankableModelCategory]) ?? []
+    let categoryTree = recursiveDescription(subcategories, level: 0, {$0.name}, {($0.subcategories as? [BankableModelCategory]) ?? []})
+    println(categoryTree)
   }
 
   /**
   initWithItems:
 
-  :param: items [BankableCategory]
+  :param: items [BankDisplayItemCategory]
   */
-  init(items: [BankableCategory]) {
-    super.init(style: .Plain)
-    categoryItems = items
+  init(category: BankableModelCategory) {
+    super.init(nibName: nil, bundle: nil)
+    self.category = category
+    self.subcategories = category.subcategories as? [BankableModelCategory] ?? []
+    if let items = category.allItems as? [BankableModelObject] {
+      if items.count > 0 {
+        categoryItems = {
+          let categoryItems = BankCollectionController(items: items)
+          self.addChildViewController(categoryItems)
+          categoryItems.didMoveToParentViewController(self)
+          return categoryItems
+        }()
+      }
+    }
   }
 
   /**
@@ -44,9 +63,7 @@ class BankCategoryController: UITableViewController, BankController {
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-  }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /**
   init:bundle:
@@ -61,21 +78,55 @@ class BankCategoryController: UITableViewController, BankController {
   /** loadView */
   override func loadView() {
 
+    view = UIView(frame: UIScreen.mainScreen().bounds)
+
     title = categoryItemClass?.directoryLabel()
-    if title == nil && categoryItems.count > 0 { title = categoryItems[0].parentCategory?.name }
+    if title == nil && subcategories.count > 0 { title = subcategories[0].parentCategory?.name }
+
     navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName           : Bank.BoldLabelFont,
                                                                 NSForegroundColorAttributeName: Bank.LabelColor ]
     tableView = {
-      let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
+      let tableView = UITableView.newForAutolayout()
       tableView.backgroundColor = UIColor.whiteColor()
       tableView.registerClass(BankCategoryCell.self, forCellReuseIdentifier: CategoryCellIdentifier)
       tableView.separatorStyle = .None
-      tableView.rowHeight = 38.0
+      tableView.rowHeight = CategoryCellHeight
+      tableView.delegate = self
+      tableView.dataSource = self
+      self.view.addSubview(tableView)
       return tableView
     }()
 
+    if categoryItems != nil {
+      let items = categoryItems!.view
+      items.setTranslatesAutoresizingMaskIntoConstraints(false)
+      view.addSubview(items)
+    }
+
+
+
     toolbarItems = Bank.toolbarItemsForController(self)
 
+
+    view.setNeedsUpdateConstraints()
+  }
+
+  /**
+  updateViewConstraints
+  */
+  override func updateViewConstraints() {
+    let identifier = "Internal"
+    if view.constraintsWithIdentifier(identifier).count == 0 {
+      if categoryItems != nil {
+        let h = CGFloat(subcategories.count) * CategoryCellHeight
+        view.constrainWithFormat("|[table]| :: |[items]| :: V:|[table(==\(h))][items]|",
+                           views: ["table": tableView, "items": categoryItems!.view],
+                      identifier: identifier)
+      } else {
+        view.constrainWithFormat("|[table]| :: V:|[table]|", views: ["table": tableView], identifier: identifier)
+      }
+    }
+    super.updateViewConstraints()
   }
 
   /**
@@ -92,13 +143,13 @@ class BankCategoryController: UITableViewController, BankController {
   func dismiss() { MSRemoteAppController.sharedAppController().showMainMenu() }
 
   /** importBankObject */
-  func importBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func importBankObjects() { MSLogInfo("not yet implemented") }
 
   /** exportBankObject */
-  func exportBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func exportBankObjects() { MSLogInfo("not yet implemented") }
 
   /** searchBankObjects */
-  func searchBankObjects() { logInfo("not yet implemented", __FUNCTION__) }
+  func searchBankObjects() { MSLogInfo("not yet implemented") }
 
 }
 
@@ -113,22 +164,26 @@ extension BankCategoryController: UITableViewDelegate {
   :param: tableView UITableView
   :param: indexPath NSIndexPath
   */
-  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let category = categoryItems[indexPath.row]
-    if let subcategories = category.subCategories?.allObjects {
-      if subcategories.count == 0 {
-        if let allItems = category.allItems?.allObjects {
-          let vc = BankCollectionController(objects: allItems as [BankableModelObject])
-          navigationController?.pushViewController(vc, animated: true)
-        }
-      } else {
-        let vc = BankCategoryController(items: subcategories as [BankableCategory])
-        navigationController?.pushViewController(vc, animated: true)
-      }
-    } else if let allItems = category.allItems?.allObjects {
-      let vc = BankCollectionController(objects: allItems as [BankableModelObject])
-      navigationController?.pushViewController(vc, animated: true)
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+    // Get the selected category
+    let selectedCategory = subcategories[indexPath.row]
+
+    // Check if there are any subcategories
+    if selectedCategory.subcategories?.count > 0 {
+
+      // We need to push another category controller
+      navigationController?.pushViewController(BankCategoryController(category: selectedCategory), animated: true)
+
     }
+
+    // Otherwise we can just push a collection controller
+    else if let allItems = selectedCategory.allItems as? [BankableModelObject] {
+
+      navigationController?.pushViewController(BankCollectionController(items: allItems), animated: true)
+
+    }
+
   }
 
 }
@@ -145,7 +200,7 @@ extension BankCategoryController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
+  func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
 
   /**
   tableView:numberOfRowsInSection:
@@ -155,7 +210,7 @@ extension BankCategoryController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return categoryItems.count }
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return subcategories.count }
 
 
   /**
@@ -166,9 +221,9 @@ extension BankCategoryController: UITableViewDataSource {
 
   :returns: UITableViewCell
   */
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(CategoryCellIdentifier, forIndexPath: indexPath) as BankCategoryCell
-    let category = categoryItems[indexPath.row]
+    let category = subcategories[indexPath.row]
     cell.labelText = category.name
     return cell
   }

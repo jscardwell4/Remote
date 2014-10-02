@@ -6,15 +6,11 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "ConnectionManager.h"
-#import "NetworkDevice.h"
 #import "SettingsManager.h"
 #import "ITachConnectionManager.h"
 #import "ISYConnectionManager.h"
-#import "ITachDevice.h"
-#import "ISYDevice.h"
 #import "Command.h"
-#import "IRCode.h"
-#import "ComponentDevice.h"
+#import "Remote-Swift.h"
 
 #define SUPPRESS_DETECT_DEVICES
 

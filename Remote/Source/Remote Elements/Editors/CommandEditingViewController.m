@@ -10,13 +10,8 @@
 #import "AttributeEditingViewController_Private.h"
 #import "Command.h"
 #import "Button.h"
-
-
 #import "RemoteController.h"
-//#import "BankObject.h"
-//#import "BankObject.h"
 #import <QuartzCore/QuartzCore.h>
-#
 #import "CommandDetailViewController.h"
 #import "HTTPCommandEditingViewController.h"
 #import "SendIRCommandEditingViewController.h"
@@ -29,17 +24,17 @@
 #define kCommandDetailsViewFrame CGRectMake(0, 40, 320, 232)
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
-static int       msLogContext = LOG_CONTEXT_EDITOR;
+static int msLogContext = LOG_CONTEXT_EDITOR;
 
 static UIFont  * labelFont;
 static UIColor * labelTextColor;
 static UIColor * buttonTitleColor;
 
-// static NSString const * kCreateCommandString = @"Create New Command";
 static NSDictionary const * commandTypes;
-static NSArray const      * createableCommands;
+static NSArray      const * createableCommands;
 
 @interface CommandEditingViewController ()
+
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * commandTypeButton;
 @property (strong, nonatomic) IBOutlet UIView              * contentContainer;
 @property (strong, nonatomic) IBOutlet MSView              * commandDetailsContainer;
@@ -58,210 +53,201 @@ static NSArray const      * createableCommands;
 
 @implementation CommandEditingViewController
 
-#pragma mark - Methods for managing initial/selected values
-@synthesize detailsLabel = _detailsLabel;
-@synthesize
-removeCommandButton     = _removeCommandButton,
-commandDetailEditors    = _commandDetailEditors,
-commandDetailsContainer = _commandDetailsContainer,
-contentContainer        = _contentContainer,
-initialCommand          = _initialCommand,
-currentCommand          = _currentCommand,
-commandTypeButton       = _commandTypeButton,
-button                  = _button;
-
+/// initialize
 + (void)initialize {
-    if (self == [CommandEditingViewController class])
-    {
-        commandTypes = @{NSStringFromClass([Command class])       : @"Generic",
-                         NSStringFromClass([PowerCommand class])  : @"Power",
-                         NSStringFromClass([SwitchCommand class]) : @"Switch",
-                         NSStringFromClass([MacroCommand class])  : @"Macro",
-                         NSStringFromClass([DelayCommand class])  : @"Delay",
-                         NSStringFromClass([SystemCommand class]) : @"System",
-                         NSStringFromClass([SendIRCommand class]) : @"Send IR",
-                         NSStringFromClass([HTTPCommand class])   : @"HTTP"};
+  if (self == [CommandEditingViewController class]) {
+    commandTypes = @{
+      NSStringFromClass([Command class])       : @"Generic",
+      NSStringFromClass([PowerCommand class])  : @"Power",
+      NSStringFromClass([SwitchCommand class]) : @"Switch",
+      NSStringFromClass([MacroCommand class])  : @"Macro",
+      NSStringFromClass([DelayCommand class])  : @"Delay",
+      NSStringFromClass([SystemCommand class]) : @"System",
+      NSStringFromClass([SendIRCommand class]) : @"Send IR",
+      NSStringFromClass([HTTPCommand class])   : @"HTTP"
+    };
 
-        NSSet * excludedCommands = [NSSet setWithObjects:@"Generic", @"System", nil];
+    NSSet * excludedCommands = [NSSet setWithObjects:@"Generic", @"System", nil];
 
-        createableCommands = [[commandTypes allValues] objectsAtIndexes:
-                              [[commandTypes allValues]
-                               indexesOfObjectsPassingTest:
-                               ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
-                return ![excludedCommands member:obj];
-            }
-
-                              ]
-                             ];
-        labelFont        = [UIFont boldSystemFontOfSize:14.0];
-        labelTextColor   = [UIColor whiteColor];
-        buttonTitleColor = [UIColor colorWithRed:0.0 green:175.0 / 255.0 blue:1.0 alpha:1.0];
-    }
+    createableCommands = [[commandTypes allValues] objectsAtIndexes:
+                          [[commandTypes allValues] indexesOfObjectsPassingTest: ^BOOL (id obj, NSUInteger idx, BOOL * stop) {
+                            return ![excludedCommands member:obj];
+                          }]];
+    labelFont        = [UIFont boldSystemFontOfSize:14.0];
+    labelTextColor   = [UIColor whiteColor];
+    buttonTitleColor = [UIColor colorWithRed:0.0 green:175.0 / 255.0 blue:1.0 alpha:1.0];
+  }
 }
 
-+ (NSArray *)createableCommands {
-    return [createableCommands copy];
-}
+/// createableCommands
+/// @return NSArray *
++ (NSArray *)createableCommands { return [createableCommands copy]; }
 
-+ (NSDictionary *)commandTypes {
-    return [commandTypes copy];
-}
+/// commandTypes
+/// @return NSDictionary *
++ (NSDictionary *)commandTypes { return [commandTypes copy]; }
 
-+ (NSString *)titleForClassOfCommand:(Command *)command {
-    return commandTypes[NSStringFromClass([command class])];
-}
+/// titleForClassOfCommand:
+/// @param command
+/// @return NSString *
++ (NSString *)titleForClassOfCommand:(Command *)command { return commandTypes[NSStringFromClass([command class])]; }
 
+/// setInitialValuesFromDictionary:
+/// @param initialValues
 - (void)setInitialValuesFromDictionary:(NSDictionary *)initialValues {
-    [super setInitialValuesFromDictionary:initialValues];
-
-    MSLogDebug(@"%@\n\tbutton:%@", ClassTagString, [self.button debugDescription]);
-
-    if (ValueIsNotNil(_button)) self.initialCommand = _button.command;
-
-    [self syncCurrentValuesWithIntialValues];
+  [super setInitialValuesFromDictionary:initialValues];
+  MSLogDebug(@"%@\n\tbutton:%@", ClassTagString, [self.button debugDescription]);
+  if (self.button) self.initialCommand = self.button.command;
+  [self syncCurrentValuesWithIntialValues];
 }
 
-- (void)syncCurrentValuesWithIntialValues {
-    self.currentCommand = _initialCommand;
-}
+/// syncCurrentValuesWithIntialValues
+- (void)syncCurrentValuesWithIntialValues { self.currentCommand = _initialCommand; }
 
+/// restoreCurrentValues
 - (void)restoreCurrentValues {
-    if (ValueIsNotNil(_currentCommand)) {
-        [_commandTypeButton setTitle:commandTypes[NSStringFromClass([_currentCommand class])]
-                            forState:UIControlStateDisabled];
-        _commandTypeButton.enabled  = NO;
-        _button.command             = _currentCommand;
-        _removeCommandButton.hidden = NO;
-        _detailsLabel.hidden        = NO;
-        [self pushChildControllerForCommand:_currentCommand];
-    } else if (ValueIsNotNil(_initialCommand)) {
-        _button.command = nil;
-        [_button.managedObjectContext deleteObject:_initialCommand];
-        _commandTypeButton.enabled  = YES;
-        _removeCommandButton.hidden = YES;
-        _detailsLabel.hidden        = YES;
-        [self removeAllChildren];
-    }
-}
 
-- (void)resetToInitialState {
-    [self syncCurrentValuesWithIntialValues];
+  if (_currentCommand) {
 
+    [_commandTypeButton setTitle:commandTypes[NSStringFromClass([_currentCommand class])] forState:UIControlStateDisabled];
+    _commandTypeButton.enabled  = NO;
+    self.button.command         = _currentCommand;
+    _removeCommandButton.hidden = NO;
+    _detailsLabel.hidden        = NO;
+    [self pushChildControllerForCommand:_currentCommand];
+
+  } else if (ValueIsNotNil(_initialCommand)) {
+
+    self.button.command = nil;
+    [self.button.managedObjectContext deleteObject:_initialCommand];
+    _commandTypeButton.enabled  = YES;
+    _removeCommandButton.hidden = YES;
+    _detailsLabel.hidden        = YES;
     [self removeAllChildren];
 
-    [self restoreCurrentValues];
+  }
+
 }
 
-- (void)removeAllChildren {
-    while ([self.childViewControllers count] > 0)
-        [self popChildController];
+/// resetToInitialState
+- (void)resetToInitialState {
+  [self syncCurrentValuesWithIntialValues];
+  [self removeAllChildren];
+  [self restoreCurrentValues];
 }
 
+/// removeAllChildren
+- (void)removeAllChildren { while ([self.childViewControllers count] > 0) [self popChildController]; }
+
+/// pushChildControllerForCommand:
+/// @param command
 - (void)pushChildControllerForCommand:(Command *)command {
-    NSString                    * identifier      = ClassString([command class]);
-    CommandDetailViewController * childController =
-        [self.commandDetailEditors instantiateViewControllerWithIdentifier:identifier];
 
-    childController.command = command;
+  NSString * identifier = ClassString([command class]);
+  CommandDetailViewController * childController = [self.commandDetailEditors instantiateViewControllerWithIdentifier:identifier];
 
-    if ([self.childViewControllers count] > 0) childController.controllerNested = YES;
+  childController.command = command;
 
-    [self addChildViewController:childController];
-    childController.view.frame = _commandDetailsContainer.bounds;
-    [_commandDetailsContainer addSubview:childController.view];
-    [childController didMoveToParentViewController:self];
+  if ([self.childViewControllers count] > 0) childController.controllerNested = YES;
+
+  [self addChildViewController:childController];
+  childController.view.frame = _commandDetailsContainer.bounds;
+  [_commandDetailsContainer addSubview:childController.view];
+  [childController didMoveToParentViewController:self];
+
 }
 
+/// popChildController
 - (void)popChildController {
-    CommandDetailViewController * childController = [self.childViewControllers lastObject];
-
-    [childController removeFromParentViewController];
-    [childController didMoveToParentViewController:nil];
-    [childController.view removeFromSuperview];
+  CommandDetailViewController * childController = [self.childViewControllers lastObject];
+  [childController removeFromParentViewController];
+  [childController didMoveToParentViewController:nil];
+  [childController.view removeFromSuperview];
 }
 
+/// commandDetailEditors
+/// @return UIStoryboard *
 - (UIStoryboard *)commandDetailEditors {
-    if (ValueIsNotNil(_commandDetailEditors)) return _commandDetailEditors;
-
-    self.commandDetailEditors = [UIStoryboard storyboardWithName:@"CommandDetailEditorsStoryboard"
-                                                          bundle:nil];
-
-    return _commandDetailEditors;
+  if (!_commandDetailEditors)  self.commandDetailEditors = [UIStoryboard storyboardWithName:@"CommandDetailEditorsStoryboard"
+                                                                                     bundle:nil];
+  return _commandDetailEditors;
 }
 
+/// viewDidLoad
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+  [super viewDidLoad];
 
-    // Resize view to fit appropriately
-    self.view.frame = self.contentContainer.bounds;
+  // Resize view to fit appropriately
+  self.view.frame = self.contentContainer.bounds;
 
-    [ViewDecorator decorateButton:_commandTypeButton excludedStates:UIControlStateDisabled];
-    _commandTypeButton.inputView.cancelBarButtonItem = [ViewDecorator pickerInputCancelBarButtonItem];
-    _commandTypeButton.inputView.selectBarButtonItem = [ViewDecorator pickerInputSelectBarButtonItem];
+  [ViewDecorator decorateButton:_commandTypeButton excludedStates:UIControlStateDisabled];
+  _commandTypeButton.inputView.cancelBarButtonItem = [ViewDecorator pickerInputCancelBarButtonItem];
+  _commandTypeButton.inputView.selectBarButtonItem = [ViewDecorator pickerInputSelectBarButtonItem];
 
-    [_commandTypeButton setTitle:@"Create New Command" forState:UIControlStateNormal];
+  [_commandTypeButton setTitle:@"Create New Command" forState:UIControlStateNormal];
 
-    [self restoreCurrentValues];
+  [self restoreCurrentValues];
 }
 
+/// didReceiveMemoryWarning
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    [self setCommandTypeButton:nil];
-    [self setContentContainer:nil];
-    [self setCommandDetailsContainer:nil];
-    [self setRemoveCommandButton:nil];
-    [self setDetailsLabel:nil];
-    if ([self isViewLoaded] && self.view.window == nil) self.view = nil;
+  [super didReceiveMemoryWarning];
+  _commandTypeButton = nil;
+  _contentContainer = nil;
+  _commandDetailsContainer = nil;
+  _removeCommandButton = nil;
+  _detailsLabel = nil;
+
+  if ([self isViewLoaded] && self.view.window == nil) self.view = nil;
 }
 
-- (NSInteger)numberOfComponentsInPickerInput:(MSPickerInputView *)pickerInput {
-    return 1;
+/// numberOfComponentsInPickerInput:
+/// @param pickerInput
+/// @return NSInteger
+- (NSInteger)numberOfComponentsInPickerInput:(MSPickerInputView *)pickerInput { return 1; }
+
+/// pickerInput:numberOfRowsInComponent:
+/// @param pickerInput
+/// @param component
+/// @return NSInteger
+- (NSInteger) pickerInput:(MSPickerInputView *)pickerInput numberOfRowsInComponent:(NSInteger)component {
+  return [createableCommands count];
 }
 
-- (NSInteger)   pickerInput:(MSPickerInputView *)pickerInput
-    numberOfRowsInComponent:(NSInteger)component {
-    return [createableCommands count];
+/// pickerInput:titleForRow:forComponent:
+/// @param pickerInput
+/// @param row
+/// @param component
+/// @return NSString *
+- (NSString *)pickerInput:(MSPickerInputView *)pickerInput titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+  return createableCommands[row];
 }
 
-- (NSString *)pickerInput:(MSPickerInputView *)pickerInput
-              titleForRow:(NSInteger)row
-             forComponent:(NSInteger)component {
-    return createableCommands[row];
-}
+/// pickerInputDidCancel:
+/// @param pickerInput
+- (void)pickerInputDidCancel:(MSPickerInputView *)pickerInput { [_commandTypeButton resignFirstResponder]; }
 
-- (void)pickerInputDidCancel:(MSPickerInputView *)pickerInput {
-    [_commandTypeButton resignFirstResponder];
-}
-
+/// pickerInput:selectedRows:
+/// @param pickerInput
+/// @param rows
 - (void)pickerInput:(MSPickerInputView *)pickerInput selectedRows:(NSArray *)rows {
-    [_commandTypeButton resignFirstResponder];
 
-    NSString * selection         = createableCommands[[rows[0] integerValue]];
-    NSString * classString =
-        [[commandTypes keysOfEntriesPassingTest:
-          ^BOOL (id key, id obj, BOOL * stop) {
-            if ([selection isEqualToString:(NSString *)obj]) {
-                *stop = YES;
+  [_commandTypeButton resignFirstResponder];
 
-                return YES;
-            } else
-                return NO;
-        }
+  NSString * selection   = createableCommands[[rows[0] integerValue]];
+  NSString * classString = [[commandTypes keysOfEntriesPassingTest:^BOOL (id key, id obj, BOOL * stop) {
+                             if ([selection isEqualToString:(NSString *)obj]) { *stop = YES; return YES; }
+                             else return NO;
+                           }] anyObject];
 
-         ] anyObject];
-    Class     commandClass = NSClassFromString(classString);
-    Command * newCommand   = (Command *)[commandClass commandInContext:_button.managedObjectContext];
+  Class     commandClass = NSClassFromString(classString);
+  Command * newCommand   = (Command *)[commandClass commandInContext:self.button.managedObjectContext];
 
-    if (newCommand) {
-        self.currentCommand = newCommand;
-        [self restoreCurrentValues];
-    }
+  if (newCommand) { self.currentCommand = newCommand; [self restoreCurrentValues]; }
 }
 
-- (IBAction)removeCommandAction:(UIButton *)sender {
-    self.currentCommand = nil;
-    [self restoreCurrentValues];
-}
+/// removeCommandAction:
+/// @param sender
+- (IBAction)removeCommandAction:(UIButton *)sender { self.currentCommand = nil; [self restoreCurrentValues]; }
 
 @end
