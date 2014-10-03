@@ -7,7 +7,7 @@
 //
 #import "ModelObject.h"
 
-@interface NamedModelObject : ModelObject <NamedModel>
+@interface NamedModelObject : ModelObject <NamedModel, RenameableModel>
 
 @property (nonatomic, readonly) NSString * commentedUUID;
 @property (nonatomic, copy, readwrite) NSString * name;

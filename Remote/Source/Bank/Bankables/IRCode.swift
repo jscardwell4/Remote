@@ -73,8 +73,9 @@ class IRCode: BankableModelObject {
 
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return IRCodeSet.self }
 
-  override class var label: String? { return "IR Codes" }
-  override class var icon: UIImage? { return UIImage(named: "tv-remote") }
+  class var rootCategory: Bank.RootCategory {
+    return Bank.RootCategory(label: "IR Codes", icon: UIImage(named: "tv-remote")!, categories: [])
+  }
 
   override class func isThumbnailable() -> Bool { return false }
   override class func isPreviewable()   -> Bool { return false }

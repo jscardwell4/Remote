@@ -80,8 +80,9 @@ class Image: BankableModelObject {
 
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return ImageCategory.self }
 
-  override class var label: String? { return "Images" }
-  override class var icon: UIImage? { return UIImage(named: "926-photos") }
+  class var rootCategory: Bank.RootCategory {
+    return Bank.RootCategory(label: "Images", icon: UIImage(named: "926-photos")!, categories: [])
+  }
 
   override class func isThumbnailable() -> Bool { return true }
   override class func isDetailable()    -> Bool { return true }

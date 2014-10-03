@@ -13,27 +13,6 @@ import MoonKit
 
 private let RootCellIdentifier = "RootCell"
 
-/** An array containing the names of all direct subclasses of the `BankableModelObject` class */
-/*
-private let RegisteredClasses: [String] = {
-  var bankableModelClasses: [String] = []
-  var outcount: UInt32 = 0
-  let allClasses = objc_copyClassList(&outcount)
-  for i in 0..<outcount {
-    if let anyClass: AnyClass = allClasses[Int(i)] {
-      if let anySuperClass: AnyClass = class_getSuperclass(anyClass) {
-        let anySuperClassName = NSStringFromClass(anySuperClass)
-        if anySuperClassName == NSStringFromClass(BankableModelObject.self) {
-          bankableModelClasses.append(NSStringFromClass(anyClass))
-        }
-      }
-    }
-  }
-  bankableModelClasses.sort(<)
-  return bankableModelClasses
-  }()
-
-*/
 class BankRootController: UITableViewController, BankController {
 
   /** loadView */

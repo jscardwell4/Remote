@@ -364,7 +364,7 @@ static const int msLogContext = 0;
 
 /// showBank
 - (void)showBank {
-//  [self showViewController:[[UINavigationController alloc] initWithRootViewController:[BankRootController new]]];
+  [self showViewController:[[UINavigationController alloc] initWithRootViewController:[BankRootController new]]];
 }
 
 /// showSettings

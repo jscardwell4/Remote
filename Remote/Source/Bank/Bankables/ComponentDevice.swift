@@ -89,8 +89,9 @@ class ComponentDevice: BankableModelObject {
     }
   }
 
-  override class var label: String? { return "Component Devices" }
-  override class var icon: UIImage? { return UIImage(named: "969-television") }
+  class var rootCategory: Bank.RootCategory {
+    return Bank.RootCategory(label: "Component Devices", icon: UIImage(named: "969-television")!, categories: [])
+  }
 
   override class func isThumbnailable() -> Bool { return false }
   override class func isDetailable()    -> Bool { return true  }

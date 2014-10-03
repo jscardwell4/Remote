@@ -11,15 +11,10 @@ import UIKit
 import CoreData
 import MoonKit
 
-class BankableModelCategory: NamedModelObject { //, BankDisplayItemCategory {
+class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
 
-//  class func isThumbnailable() -> Bool { return false }
-//  class func isEditable() -> Bool { return false }
-//  class func isPreviewable() -> Bool { return false }
-//  class func isDetailable() -> Bool { return false }
-//  class func label() -> String? { return nil }
-//  class func icon() -> UIImage? { return nil }
-//  var items: [BankDisplayItemModel] { return [] }
-//  var subcategories: [BankDisplayItemCategory] { return [] }
-//  var parentCategory: BankDisplayItemCategory? { return nil }
+  var items: [BankDisplayItemModel] { return [] }
+  var subcategories: [BankDisplayItemCategory] { return [] }
+  var parentCategory: BankDisplayItemCategory? { return nil }
+  
 }

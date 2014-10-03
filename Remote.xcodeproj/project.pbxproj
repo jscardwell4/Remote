@@ -19,6 +19,8 @@
 		C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF4019DC7164008C2337 /* ISYDevice.swift */; };
 		C230DF4319DC7164008C2337 /* ISYDeviceNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF4219DC7164008C2337 /* ISYDeviceNode.swift */; };
 		C230DF4419DCA6F7008C2337 /* IRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5519DB788E0052DDB7 /* IRCode.swift */; };
+		C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9719D4B9B600D9BB13 /* BankRootController.swift */; };
+		C2328CD319DF449900D292E2 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */; };
 		C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5319DB788E0052DDB7 /* Manufacturer.swift */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C235930519C9C26200920F8D /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
@@ -2738,6 +2740,7 @@
 				C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */,
 				C25BF65F19B179BC0038C724 /* REBackgroundEditingViewController.m in Sources */,
 				C25B478816FF8D5E0042B59E /* RockerView.m in Sources */,
+				C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */,
 				C25B478916FF8D5E0042B59E /* ModeSelectionView.m in Sources */,
 				C25B478A16FF8D5E0042B59E /* ButtonGroupView.m in Sources */,
 				C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */,
@@ -2767,6 +2770,7 @@
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C230DF4419DCA6F7008C2337 /* IRCode.swift in Sources */,
+				C2328CD319DF449900D292E2 /* BankRootCell.swift in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
 				C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,

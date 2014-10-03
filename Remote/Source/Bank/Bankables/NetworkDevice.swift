@@ -54,8 +54,9 @@ class NetworkDevice: BankableModelObject {
 
     return device
   }
-  override class var label: String? { return "Network Devices" }
-  override class var icon: UIImage? { return UIImage(named: "937-wifi-signal") }
+  class var rootCategory: Bank.RootCategory {
+    return Bank.RootCategory(label: "Network Devices", icon: UIImage(named: "937-wifi-signal")!, categories: [])
+  }
 
   override class func isThumbnailable() -> Bool { return false }
   override class func isDetailable()    -> Bool { return true  }

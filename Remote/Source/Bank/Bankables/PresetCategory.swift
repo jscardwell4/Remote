@@ -15,23 +15,23 @@ class PresetCategory: BankableModelCategory {
 
   @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var primitiveParentCategory: PresetCategory?
-//  override var parentCategory: BankDisplayItemCategory? {
-//    get {
-//      willAccessValueForKey("parentCategory")
-//      let category = primitiveParentCategory
-//      didAccessValueForKey("parentCategory")
-//      return category
-//    }
-//    set {
-//        willChangeValueForKey("parentCategory")
-//        primitiveParentCategory = newValue as? PresetCategory
-//        didChangeValueForKey("parentCategory")
-//    }
-//  }
+  override var parentCategory: BankDisplayItemCategory? {
+    get {
+      willAccessValueForKey("parentCategory")
+      let category = primitiveParentCategory
+      didAccessValueForKey("parentCategory")
+      return category
+    }
+    set {
+        willChangeValueForKey("parentCategory")
+        primitiveParentCategory = newValue as? PresetCategory
+        didChangeValueForKey("parentCategory")
+    }
+  }
   @NSManaged var presets: NSSet?
 
-//  override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [PresetCategory] }
+  override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [PresetCategory] }
 
-//  override var items: [BankDisplayItemModel] { return (presets?.allObjects ?? []) as [Preset] }
+  override var items: [BankDisplayItemModel] { return (presets?.allObjects ?? []) as [Preset] }
 
 }

@@ -42,8 +42,9 @@ class Manufacturer: BankableModelObject {
     }
   }
 
-  override class var label: String? { return "Manufacturers" }
-  override class var icon: UIImage? { return UIImage(named: "1022-factory") }
+  class var rootCategory: Bank.RootCategory {
+    return Bank.RootCategory(label: "Manufacturers", icon: UIImage(named: "1022-factory")!, categories: [])
+  }
 
   override class func isThumbnailable() -> Bool { return false }
   override class func isDetailable()    -> Bool { return true  }

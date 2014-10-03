@@ -10,19 +10,17 @@ import Foundation
 import CoreData
 import MoonKit
 
-class BankableModelObject: NamedModelObject {
+class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 
 	@NSManaged var user: Bool
 
 	override func updateWithData(data: [NSObject : AnyObject]!) {
 		super.updateWithData(data)
-		name = data?["name"] as? NSString ?? name
 		user = (data?["user"] as? NSNumber)?.boolValue ?? user
 	}
 
 	override func JSONDictionary() -> MSDictionary! {
 		let dictionary = super.JSONDictionary()
-		setIfNotDefault("name", inDictionary: dictionary)
 		setIfNotDefault("user", inDictionary: dictionary)
 		dictionary.compact()
 		dictionary.compress()
@@ -33,8 +31,8 @@ class BankableModelObject: NamedModelObject {
 
 //  class var rootCategories: [BankDisplayItemCategory] { return [] }
 
-  class var label: String? { return "" }
-  class var icon: UIImage? { return UIImage() }
+//  class var label: String? { return "" }
+//  class var icon: UIImage? { return UIImage() }
 
   var preview:   UIImage? { return nil }
   var thumbnail: UIImage? { return nil }

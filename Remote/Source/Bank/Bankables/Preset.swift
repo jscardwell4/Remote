@@ -19,6 +19,8 @@ class Preset: BankableModelObject {
 
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return PresetCategory.self }
 //  override class func detailControllerType() -> BankDetailController.Protocol { return PresetDetailController.self }
-  override class var label: String? { return "Presets" }
-  override class var icon: UIImage? { return UIImage(named: "1059-sliders") }
+  class var rootCategory: Bank.RootCategory {
+    return Bank.RootCategory(label: "Presets", icon: UIImage(named: "1059-sliders")!, categories: [])
+  }
+
 }

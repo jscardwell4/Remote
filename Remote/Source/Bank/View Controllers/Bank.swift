@@ -10,48 +10,41 @@ import Foundation
 import UIKit
 import MoonKit
 
-//protocol BankRootCategory {
-//  class var label: String? { get }
-//  class var icon: UIImage? { get }
-//  class var rootCategories: [BankDisplayItemCategory] { get }
-//}
-
 /** Protocol inheriting from `BankDisplayItem` for actual items of interest */
-//protocol BankDisplayItemModel: NamedModel {
+@objc protocol BankDisplayItemModel: RenameableModel {
 
-//  class func isThumbnailable() -> Bool  // Whether items of the conforming type may have thumbnails
-//  class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
-//  class func isDetailable()    -> Bool  // Whether items of the conforming type may be opened in a detail controller
-//  class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
-//
+  class func isThumbnailable() -> Bool  // Whether items of the conforming type may have thumbnails
+  class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
+  class func isDetailable()    -> Bool  // Whether items of the conforming type may be opened in a detail controller
+  class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
+  var preview: UIImage? { get }
+  var thumbnail: UIImage? { get }
+  func save()
+  func delete()
+  func rollback()
+
 //  class func detailControllerType() -> BankDetailController.Protocol
 //  class func categoryType() -> BankDisplayItemCategory.Protocol
 //  typealias CategoryType: BankDisplayItemCategory
 
 //  optional var category: CategoryType { get }
 //
-//  var name: String! { get set }
-//  var preview: UIImage? { get }
-//  var thumbnail: UIImage? { get }
-//  func save()
-//  func delete()
-//  func rollback()
-//}
+}
 
 //func ==(lhs: BankDisplayItemModel, rhs: BankDisplayItemModel) -> Bool {
 //  return lhs.isEqual(rhs)
 //}
 
 /** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
-//protocol BankDisplayItemCategory {
+@objc protocol BankDisplayItemCategory: class, NSObjectProtocol {
 
 //  var name: String! { get }
-//
-//  var items: [BankDisplayItemModel] { get }
-//
-//  var subcategories:  [BankDisplayItemCategory] { get }
-//  var parentCategory: BankDisplayItemCategory?   { get }
-//}
+
+  var items: [BankDisplayItemModel] { get }
+
+  var subcategories:  [BankDisplayItemCategory] { get }
+  var parentCategory: BankDisplayItemCategory?   { get }
+}
 
 /** Protocol for types that wish to display Bank item details */
 protocol BankDetailController: class {
@@ -70,6 +63,12 @@ protocol BankController: class {
 }
 
 class Bank {
+
+  struct RootCategory {
+    let label: String
+    let icon: UIImage
+    let categories: [BankDisplayItemCategory]
+  }
 
   /// A private structure to encapsulate the bank's constant properties
   ////////////////////////////////////////////////////////////////////////////////
@@ -158,4 +157,12 @@ class Bank {
     })
   }
 
+  class var rootCategories: [RootCategory] {
+    return [ ComponentDevice.rootCategory,
+             IRCode.rootCategory,
+             Image.rootCategory,
+             Manufacturer.rootCategory,
+             NetworkDevice.rootCategory,
+             Preset.rootCategory ]
+  }
 }

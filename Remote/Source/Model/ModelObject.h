@@ -19,6 +19,11 @@
 @property (nonatomic, copy, readonly) NSString * name;
 @end
 
+@protocol RenameableModel <Model>
+
+@property (nonatomic, copy, readwrite) NSString * name;
+
+@end
 
 @interface ModelObject : NSManagedObject <Model>
 
