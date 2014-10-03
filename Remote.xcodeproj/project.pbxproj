@@ -155,6 +155,8 @@
 		C2400F9A19D4BB5400D9BB13 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
+		C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9119DE126D00C1870E /* BankableModelObject.swift */; };
+		C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9419DE327600C1870E /* BankableModelCategory.swift */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
 		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
@@ -494,7 +496,6 @@
 		C2E8D9F519BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
 		C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
-		C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E953EF17E8BAA70052518D /* BankableModelObject.m */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
@@ -711,6 +712,8 @@
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C249174719BFBA870049638F /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
+		C24ECC9119DE126D00C1870E /* BankableModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankableModelObject.swift; sourceTree = "<group>"; };
+		C24ECC9419DE327600C1870E /* BankableModelCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankableModelCategory.swift; sourceTree = "<group>"; };
 		C25B2713180A167B0078C8D8 /* RemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RemoteController.json; sourceTree = "<group>"; };
 		C25B2715180A185D0078C8D8 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		C25B2716180A185D0078C8D8 /* ButtonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonGroup.h; sourceTree = "<group>"; };
@@ -1428,6 +1431,8 @@
 				C230DF3E19DC7164008C2337 /* ITachDevice.swift */,
 				C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */,
 				C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */,
+				C24ECC9119DE126D00C1870E /* BankableModelObject.swift */,
+				C24ECC9419DE327600C1870E /* BankableModelCategory.swift */,
 			);
 			name = Bankables;
 			path = Bank/Bankables;
@@ -2750,6 +2755,7 @@
 				C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
+				C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */,
 				C277AB8319D7791C008DEE39 /* BankCategoryCell.swift in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */,
@@ -2773,12 +2779,12 @@
 				C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */,
 				C25B478B16FF8D5E0042B59E /* BatteryStatusButtonView.m in Sources */,
 				C25B478C16FF8D5E0042B59E /* ButtonView.m in Sources */,
+				C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */,
 				C25B478D16FF8D5E0042B59E /* ConnectionStatusButtonView.m in Sources */,
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
 				C2E8127719D6083200FD80C4 /* ImageDetailController.swift in Sources */,
-				C2E953F017E8BAA70052518D /* BankableModelObject.m in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
 				C2358F0F19C7843500920F8D /* BankCollectionHeader.swift in Sources */,

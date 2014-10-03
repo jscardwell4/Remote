@@ -62,18 +62,19 @@ extension Manufacturer: MSJSONExport {
 
 extension Manufacturer: BankDisplayItem {
 
-  class var label: String   { return "Manufacturers"                }
-  class var icon:  UIImage? { return UIImage(named: "1022-factory") }
+  override class func label() -> String   { return "Manufacturers"                }
+  override class func icon()  -> UIImage? { return UIImage(named: "1022-factory") }
 
-  class var isThumbnailable: Bool { return false }
-  class var isDetailable:    Bool { return true  }
-  class var isEditable:      Bool { return true  }
-  class var isPreviewable:   Bool { return false }
+  override class func isThumbnailable() -> Bool { return false }
+  override class func isDetailable()    -> Bool { return true  }
+  override class func isEditable()      -> Bool { return true  }
+  override class func isPreviewable()   -> Bool { return false }
 
 }
 
 extension Manufacturer: BankDisplayItemModel {
 
-  var detailController: BankDetailController { return ManufacturerDetailController(item: self, editing: false) }
+  override var detailController: DetailControllerType? { return ManufacturerDetailController(item: self, editing: false) }
+  override var editingController: DetailControllerType? { return ManufacturerDetailController(item: self, editing: true) }
 
 }

@@ -14,14 +14,19 @@ import MoonKit
 @objc(BankSurrogateCategory)
 class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
 
-	class var isThumbnailable: Bool { return false }
-	class var isPreviewable:   Bool { return false }
-	class var isDetailable:    Bool { return false }
-	class var isEditable:      Bool { return false }
+	class func isThumbnailable() -> Bool { return false }
+	class func isPreviewable()   -> Bool { return false }
+	class func isDetailable()    -> Bool { return false }
+	class func isEditable()      -> Bool { return false }
+
   var uuid: String { return MSNonce() }
   var name: String { return "surrogate" }
+  var subcategories: [BankDisplayItemCategory] { return [] }
+  var parentCategory: BankDisplayItemCategory? { return nil }
 
-	var items: [BankableModelObject] = []
+  typealias ItemType = BankableModelObject
+
+	var items: [ItemType] = []
 
 	init(itemType: BankableModelObject.Type) {
 

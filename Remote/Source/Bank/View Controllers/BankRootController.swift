@@ -39,14 +39,13 @@ class BankRootController: UITableViewController, BankController {
   override func loadView() {
 
     title = "Bank"
-    navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName           : Bank.BoldLabelFont,
-                                                                NSForegroundColorAttributeName: Bank.LabelColor ]
+    navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
-      tableView.backgroundColor = UIColor.whiteColor()
+      tableView.backgroundColor = Bank.backgroundColor
       tableView.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
-      tableView.separatorStyle = .None
-      tableView.rowHeight = 38.0
+      tableView.separatorStyle = Bank.separatorStyle
+      tableView.rowHeight = Bank.defaultRowHeight
       return tableView
     }()
 
@@ -61,12 +60,9 @@ class BankRootController: UITableViewController, BankController {
   */
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "dismiss")
+    navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
     navigationController?.toolbarHidden = false
   }
-
-  /** dismiss */
-  func dismiss() { MSRemoteAppController.sharedAppController().showMainMenu() }
 
   /** importBankObject */
   func importBankObjects() { MSLogInfo("not yet implemented") }

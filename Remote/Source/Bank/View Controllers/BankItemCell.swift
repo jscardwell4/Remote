@@ -220,8 +220,8 @@ class BankItemCell: UITableViewCell {
 
       name.setTranslatesAutoresizingMaskIntoConstraints(false)
       name.setContentHuggingPriority(750.0, forAxis:.Horizontal)
-      name.font      = Bank.LabelFont
-      name.textColor = Bank.LabelColor
+      name.font      = Bank.labelFont
+      name.textColor = Bank.labelColor
       cell.contentView.addSubview(name)
       cell.nameLabel = name
 
@@ -239,32 +239,32 @@ class BankItemCell: UITableViewCell {
       }
 
       if let infoLabel = info as? UILabel {
-        infoLabel.font          = Bank.InfoFont
-        infoLabel.textColor     = Bank.InfoColor
+        infoLabel.font          = Bank.infoFont
+        infoLabel.textColor     = Bank.infoColor
         infoLabel.textAlignment = .Right
         cell.infoLabel = infoLabel
       }
 
       else if let infoButton = info as? UIButton {
-        infoButton.titleLabel?.font          = Bank.InfoFont;
+        infoButton.titleLabel?.font          = Bank.infoFont;
         infoButton.titleLabel?.textAlignment = .Right;
         infoButton.constrainWithFormat("|[title]| :: V:|[title]|", views: ["title": infoButton.titleLabel!])
-        infoButton.setTitleColor(Bank.InfoColor, forState:.Normal)
+        infoButton.setTitleColor(Bank.infoColor, forState:.Normal)
         infoButton.addTarget(cell, action:"buttonUpAction:", forControlEvents:.TouchUpInside)
         cell.infoButton = infoButton
       }
 
       else if let infoTextField = info as? UITextField {
-        infoTextField.font          = Bank.InfoFont
-        infoTextField.textColor     = Bank.InfoColor
+        infoTextField.font          = Bank.infoFont
+        infoTextField.textColor     = Bank.infoColor
         infoTextField.textAlignment = .Right
         infoTextField.delegate      = cell
         cell.infoTextField = infoTextField
       }
 
       else if let infoTextView = info as? UITextView {
-        infoTextView.font      = Bank.InfoFont
-        infoTextView.textColor = Bank.InfoColor
+        infoTextView.font      = Bank.infoFont
+        infoTextView.textColor = Bank.infoColor
         infoTextView.delegate  = cell
         cell.infoTextView = infoTextView
       }

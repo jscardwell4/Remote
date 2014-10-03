@@ -100,7 +100,7 @@ extension ComponentDevice: MSJSONExport {
     setIfNotDefault("port",          inDictionary: dictionary)
     setIfNotDefault("alwaysOn",      inDictionary: dictionary)
     setIfNotDefault("inputPowersOn", inDictionary: dictionary)
-      
+
     safeSetValueForKeyPath("onCommand.JSONDictionary",    forKey: "on-command",          inDictionary: dictionary)
     safeSetValueForKeyPath("offCommand.JSONDictionary",   forKey: "off-command",         inDictionary: dictionary)
     safeSetValueForKeyPath("manufacturer.commentedUUID",  forKey: "manufacturer.uuid",   inDictionary: dictionary)
@@ -118,18 +118,19 @@ extension ComponentDevice: MSJSONExport {
 
 extension ComponentDevice: BankDisplayItem {
 
-  class var label: String   { return "Component Devices"              }
-  class var icon:  UIImage? { return UIImage(named: "969-television") }
+  class func label() -> String   { return "Component Devices"              }
+  class func icon()  -> UIImage? { return UIImage(named: "969-television") }
 
-  class var isThumbnailable: Bool { return false }
-  class var isDetailable:    Bool { return true  }
-  class var isEditable:      Bool { return true  }
-  class var isPreviewable:   Bool { return false }
+  class func isThumbnailable() -> Bool { return false }
+  class func isDetailable()    -> Bool { return true  }
+  class func isEditable()      -> Bool { return true  }
+  class func isPreviewable()   -> Bool { return false }
 
 }
 
 extension ComponentDevice: BankDisplayItemModel {
 
-  var detailController: BankDetailController { return ComponentDeviceDetailController(item: self, editing: false) }
+  override var detailController: DetailControllerType { return ComponentDeviceDetailController(item: self, editing: false) }
+  override var editingController: DetailControllerType { return ComponentDeviceDetailController(item: self, editing: true) }
 
 }

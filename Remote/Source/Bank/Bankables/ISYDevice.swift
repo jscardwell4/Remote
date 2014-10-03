@@ -121,6 +121,8 @@ extension ISYDevice: MSJSONExport {
 
 extension ISYDevice: BankDisplayItemModel {
 
-  var detailController: BankDetailController { return ISYDeviceDetailController(item: self, editing: false); }
+  override var detailController: DetailControllerType? { return ISYDeviceDetailController(item: self, editing: false); }
+  override var editingController: DetailControllerType? { return ISYDeviceDetailController(item: self, editing: true); }
+  override var preview: UIImage? { return nil }
 
 }

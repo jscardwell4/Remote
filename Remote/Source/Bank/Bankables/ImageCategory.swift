@@ -11,25 +11,28 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-class ImageCategory: NamedModelObject, BankableModelCategory {
+class ImageCategory: BankableModelCategory {
 
   @NSManaged var subcategoriesSet: NSSet?
-  @NSManaged var parentCategory: ImageCategory?
+  @NSManaged var primitiveParentCategory: ImageCategory?
+  override var parentCategory: BankDisplayItemCategory? {
+    get {
+      willAccessValueForKey("parentCategory")
+      let category = primitiveParentCategory
+      didAccessValueForKey("parentCategory")
+      return category
+    }
+    set {
+      willChangeValueForKey("parentCategory")
+      primitiveParentCategory = newValue as? ImageCategory
+      didChangeValueForKey("parentCategory")
+    }
+  }
   @NSManaged var images: NSSet?
 
-  var categoryPath: String {
-    var path = name
-    var currentCategory = self
-      while let parent = currentCategory.parentCategory {
-        path = parent.name + "/" + path
-        currentCategory = parent
-      }
-    return path
-  }
+  override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [ImageCategory] }
 
-  var subcategories: [ImageCategory] { return (subcategoriesSet?.allObjects ?? []) as [ImageCategory] }
-
-  var allItems: [Image] { return (images?.allObjects ?? []) as [Image] }
+  override var items: [BankableModelObject] { return (images?.allObjects ?? []) as [Image] }
 
   /**
   updateWithData:

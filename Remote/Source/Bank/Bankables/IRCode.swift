@@ -71,6 +71,8 @@ class IRCode: BankableModelObject {
     onOffPattern = data["on-off-pattern"]  as? NSString                 ?? onOffPattern
   }
 
+  override class func categoryType() -> BankDisplayItemCategory.Protocol { return IRCodeSet.self }
+
 }
 
 extension IRCode: MSJSONExport {
@@ -98,11 +100,22 @@ extension IRCode: MSJSONExport {
   }
 }
 
+extension IRCode: BankDisplayItem {
+
+  override class func label() -> String?  { return "IR Codes" }
+  override class func icon()  -> UIImage? { return UIImage(named: "tv-remote") }
+
+  override class func isThumbnailable() -> Bool { return false }
+  override class func isPreviewable()   -> Bool { return false }
+  override class func isDetailable()    -> Bool { return true }
+  override class func isEditable()      -> Bool { return true }
+
+}
+
 extension IRCode: BankDisplayItemModel {
 
-  var detailController: BankDetailController { return IRCodeDetailController(item: self, editing: false) }
-  class var isThumbnailable: Bool { return false }
-  class var isPreviewable:   Bool { return false }
-  class var isDetailable:    Bool { return true }
-  class var isEditable:      Bool { return true }
+
+  override var detailController: DetailControllerType? { return IRCodeDetailController(item: self, editing: false) }
+  override var editingController: DetailControllerType? { return IRCodeDetailController(item: self, editing: true) }
+
 }

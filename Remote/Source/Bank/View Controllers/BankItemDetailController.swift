@@ -89,8 +89,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     nameTextField = { [unowned self] in
       let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
       textField.placeholder = "Name"
-      textField.font = Bank.BoldLabelFont
-      textField.textColor = Bank.LabelColor
+      textField.font = Bank.boldLabelFont
+      textField.textColor = Bank.labelColor
       textField.keyboardAppearance = .Dark
       textField.adjustsFontSizeToFitWidth = true
       textField.returnKeyType = .Done

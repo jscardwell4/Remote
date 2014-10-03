@@ -97,9 +97,9 @@ class BankCollectionController: UICollectionViewController, BankController {
   init(itemClass: BankableModelObject.Type) {
     collectionItemClass = itemClass
     super.init(collectionViewLayout: BankCollectionLayout())
-    collectionItemsController = collectionItemClass.allItems()
+//    collectionItemsController = collectionItemClass.allItems()
     collectionItemsController?.delegate = self
-    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+//    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
   }
 
   /**
@@ -135,10 +135,10 @@ class BankCollectionController: UICollectionViewController, BankController {
   required init(coder aDecoder: NSCoder) {
     let collectionItemClassName = aDecoder.decodeObjectForKey("collectionItemClass") as String
     collectionItemClass = NSClassFromString(collectionItemClassName) as BankableModelObject.Type
-    collectionItemsController = collectionItemClass.allItems()
+//    collectionItemsController = collectionItemClass.allItems()
     super.init(coder: aDecoder)
     collectionItemsController?.delegate = self
-    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+//    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
   }
 
   /**
@@ -156,8 +156,8 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   override func loadView() {
 
-    if collectionItems != nil { title = collectionItems![0].category.name }
-    else { title = collectionItemClass.directoryLabel() }
+//    if collectionItems != nil { title = collectionItems![0].category.name }
+//    else { title = collectionItemClass.directoryLabel() }
 
     collectionView = { [unowned self] in
 
@@ -344,7 +344,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   :param: item BankableModelObject
   */
-  func deleteItem(item: BankableModelObject) { if item.editable { item.managedObjectContext.deleteObject(item) } }
+  func deleteItem(item: BankableModelObject) { if item.dynamicType.isEditable() { item.managedObjectContext.deleteObject(item) } }
 
   /**
   editItem:
@@ -352,7 +352,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: item BankableModelObject
   */
   func editItem(item: BankableModelObject) {
-    navigationController?.pushViewController(item.editingViewController(), animated: true)
+    navigationController?.pushViewController(item.detailController!, animated: true)
   }
 
   /**
@@ -361,7 +361,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: item BankableModelObject
   */
   func detailItem(item: BankableModelObject) {
-    navigationController?.pushViewController(item.detailViewController(), animated: true)
+    navigationController?.pushViewController(item.detailController!, animated: true)
   }
 
   /**
@@ -460,7 +460,7 @@ extension BankCollectionController: BankCollectionZoomDelegate {
   func didDismissForDetailZoomView(zoom: BankCollectionZoom) {
     precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
     zoom.removeFromSuperview()
-    navigationController?.pushViewController(zoomedItem!.detailViewController(), animated: true)
+    navigationController?.pushViewController(zoomedItem!.detailController!, animated: true)
   }
 
   /**
@@ -471,7 +471,7 @@ extension BankCollectionController: BankCollectionZoomDelegate {
   func didDismissForEditingZoomView(zoom: BankCollectionZoom) {
     precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
     zoom.removeFromSuperview()
-    navigationController?.pushViewController(zoomedItem!.editingViewController(), animated: true)
+    navigationController?.pushViewController(zoomedItem!.editingController!, animated: true)
   }
 
 }
@@ -725,7 +725,7 @@ extension BankCollectionController: UICollectionViewDelegate {
     }
 
     // Otherwise we push the item's detail view controller
-    else { navigationController?.pushViewController(cell.item!.detailViewController(), animated:true) }
+    else { navigationController?.pushViewController(cell.item!.detailController!, animated:true) }
 
   }
 

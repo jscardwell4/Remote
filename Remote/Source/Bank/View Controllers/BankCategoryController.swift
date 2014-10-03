@@ -13,11 +13,10 @@ import MoonKit
 private let CategoryCellIdentifier = "CategoryCell"
 private let CategoryCellHeight: CGFloat = 38.0
 
-@objc(BankCategoryController)
 class BankCategoryController: UIViewController, BankController, UITableViewDataSource, UITableViewDelegate {
 
-  var category: BankableModelCategory?
-  var subcategories: [BankableModelCategory] = []
+  var category: BankDisplayItemCategory?
+  var subcategories: [BankDisplayItemCategory] = []
   var categoryItemClass: BankableModelObject.Type?
 
   weak var categoryItems: BankCollectionController?
@@ -32,8 +31,8 @@ class BankCategoryController: UIViewController, BankController, UITableViewDataS
   init(itemClass: BankableModelObject.Type) {
     super.init(nibName: nil, bundle: nil)
   	categoryItemClass = itemClass
-  	subcategories = (categoryItemClass!.rootCategories() as? [BankableModelCategory]) ?? []
-    let categoryTree = recursiveDescription(subcategories, level: 0, {$0.name}, {($0.subcategories as? [BankableModelCategory]) ?? []})
+//  	subcategories = categoryItemClass!.rootCategories
+    let categoryTree = recursiveDescription(subcategories, level: 0, {$0.name}, {$0.subcategories})
     println(categoryTree)
   }
 
@@ -42,19 +41,17 @@ class BankCategoryController: UIViewController, BankController, UITableViewDataS
 
   :param: items [BankDisplayItemCategory]
   */
-  init(category: BankableModelCategory) {
+  init(category: BankDisplayItemCategory) {
     super.init(nibName: nil, bundle: nil)
     self.category = category
-    self.subcategories = category.subcategories as? [BankableModelCategory] ?? []
-    if let items = category.allItems as? [BankableModelObject] {
-      if items.count > 0 {
+    self.subcategories = category.subcategories
+    if category.items.count > 0 {
         categoryItems = {
-          let categoryItems = BankCollectionController(items: items)
+          let categoryItems = BankCollectionController(items: category.items)
           self.addChildViewController(categoryItems)
           categoryItems.didMoveToParentViewController(self)
           return categoryItems
         }()
-      }
     }
   }
 
@@ -80,11 +77,11 @@ class BankCategoryController: UIViewController, BankController, UITableViewDataS
 
     view = UIView(frame: UIScreen.mainScreen().bounds)
 
-    title = categoryItemClass?.directoryLabel()
+    title = categoryItemClass?.label()
     if title == nil && subcategories.count > 0 { title = subcategories[0].parentCategory?.name }
 
-    navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName           : Bank.BoldLabelFont,
-                                                                NSForegroundColorAttributeName: Bank.LabelColor ]
+    navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName           : Bank.boldLabelFont,
+                                                                NSForegroundColorAttributeName: Bank.labelColor ]
     tableView = {
       let tableView = UITableView.newForAutolayout()
       tableView.backgroundColor = UIColor.whiteColor()
@@ -170,7 +167,7 @@ extension BankCategoryController: UITableViewDelegate {
     let selectedCategory = subcategories[indexPath.row]
 
     // Check if there are any subcategories
-    if selectedCategory.subcategories?.count > 0 {
+    if selectedCategory.subcategories.count > 0 {
 
       // We need to push another category controller
       navigationController?.pushViewController(BankCategoryController(category: selectedCategory), animated: true)
@@ -178,9 +175,9 @@ extension BankCategoryController: UITableViewDelegate {
     }
 
     // Otherwise we can just push a collection controller
-    else if let allItems = selectedCategory.allItems as? [BankableModelObject] {
+    else if selectedCategory.items.count > 0 {
 
-      navigationController?.pushViewController(BankCollectionController(items: allItems), animated: true)
+      navigationController?.pushViewController(BankCollectionController(items: selectedCategory.items), animated: true)
 
     }
 

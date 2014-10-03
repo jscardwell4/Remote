@@ -22,15 +22,19 @@ class BankRootCell: UITableViewCell {
     }
   }
 
-  var bankableModelClass: BankableModelObject.Type? {
+  var bankableModelClass: BankDisplayItem.Protocol? {
     didSet {
-      if let model = bankableModelClass {
-        icon.image = model.directoryIcon()
-        label.text = model.directoryLabel()
-      } else {
-        icon.image = nil
-        label.text = nil
-      }
+//      if let model = bankableModelClass {
+//        if let image = model.icon?() {
+//          icon.image = image
+//        } else { icon.image = nil }
+//        if let text = model.label?() {
+//          label.text = text
+//        } else { label.text = nil }
+//      } else {
+//        icon.image = nil
+//        label.text = nil
+//      }
     }
   }
 
@@ -43,7 +47,7 @@ class BankRootCell: UITableViewCell {
 
   private let label: UILabel = {
     let view = UILabel.newForAutolayout()
-    view.font = Bank.InfoFont
+    view.font = Bank.infoFont
     return view
   }()
 

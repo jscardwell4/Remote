@@ -16,7 +16,7 @@ class BankCategoryCell: UITableViewCell {
 
   private let label: UILabel = {
     let view = UILabel.newForAutolayout()
-    view.font = Bank.InfoFont
+    view.font = Bank.infoFont
     return view
   }()
 

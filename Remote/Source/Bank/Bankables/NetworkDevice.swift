@@ -71,12 +71,12 @@ extension NetworkDevice: MSJSONExport {
 
 extension NetworkDevice: BankDisplayItem {
 
-  class var label: String   { return "Network Devices"                 }
-  class var icon:  UIImage? { return UIImage(named: "937-wifi-signal") }
+  override class func label() -> String   { return "Network Devices"                 }
+  override class func icon()  -> UIImage? { return UIImage(named: "937-wifi-signal") }
 
-  class var isThumbnailable: Bool { return false }
-  class var isDetailable:    Bool { return true  }
-  class var isEditable:      Bool { return true  }
-  class var isPreviewable:   Bool { return false }
+  override class func isThumbnailable() -> Bool { return false }
+  override class func isDetailable()    -> Bool { return true  }
+  override class func isEditable()      -> Bool { return true  }
+  override class func isPreviewable()   -> Bool { return false }
 
 }
