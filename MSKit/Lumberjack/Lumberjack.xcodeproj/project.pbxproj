@@ -156,7 +156,7 @@
 		2A37F96F18E37270009FAAA7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				TargetAttributes = {
 					C2358FEB19C795AA00920F8D = {
 						CreatedOnToolsVersion = 6.0;
@@ -211,7 +211,7 @@
 		2A37F99818E37270009FAAA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;

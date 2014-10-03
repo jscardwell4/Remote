@@ -15,28 +15,10 @@ class Preset: BankableModelObject {
 
     @NSManaged var presetCategory: PresetCategory
     @NSManaged var element: RemoteElement
-    @NSManaged var presetPreview: BankObjectPreview
-
-  override class func categoryType() -> BankDisplayItemCategory.Protocol { return PresetCategory.self }
-}
-
-extension Preset: BankDisplayItem {
-
-  override class func label() -> String   { return "Presets"                      }
-  override class func icon()  -> UIImage? { return UIImage(named: "1059-sliders") }
-
-  override class func isThumbnailable() -> Bool { return true }
-  override class func isDetailable()    -> Bool { return true }
-  override class func isEditable()      -> Bool { return true }
-  override class func isPreviewable()   -> Bool { return true }
-
-}
-
-extension Preset: BankDisplayItemModel {
+//    @NSManaged var presetPreview: BankObjectPreview
 
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return PresetCategory.self }
-
-  override var detailController: DetailControllerType? { return PresetDetailController(item: self, editing: false) }
-  override var editingController: DetailControllerType? { return PresetDetailController(item: self, editing: true) }
-
+//  override class func detailControllerType() -> BankDetailController.Protocol { return PresetDetailController.self }
+  override class var label: String? { return "Presets" }
+  override class var icon: UIImage? { return UIImage(named: "1059-sliders") }
 }

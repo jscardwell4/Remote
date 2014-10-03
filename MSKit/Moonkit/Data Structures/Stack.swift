@@ -8,6 +8,7 @@
 
 import Foundation
 
+public
 struct Stack<T> {
 
   private var storage: [T]
@@ -53,19 +54,21 @@ struct Stack<T> {
 }
 
 extension Stack: Printable {
-  var description: String { return storage.description }
+  public var description: String { return storage.description }
 }
 
 extension Stack: SequenceType, _Sequence_Type {
-  func generate() -> Array<T>.Generator { return storage.generate() }
+  public func generate() -> Array<T>.Generator { return storage.generate() }
 }
 
 extension Stack: CollectionType, _CollectionType {
-  var startIndex: Array<T>.Index { return storage.startIndex }
-  var endIndex: Array<T>.Index { return storage.endIndex }
-  subscript (i: Array<T>.Index) -> T { get { return storage[i] } set { storage[i] = newValue } }
+  public var startIndex: Array<T>.Index { return storage.startIndex }
+  public var endIndex: Array<T>.Index { return storage.endIndex }
+  public subscript (i: Array<T>.Index) -> T { get { return storage[i] } set { storage[i] = newValue } }
 }
 
 extension Stack: ArrayLiteralConvertible {
-  static func convertFromArrayLiteral(elements: T...) -> Stack<T> { return Stack<T>(objects: elements) }
+  public init(arrayLiteral elements: T...) {
+    self = Stack<T>(objects: elements)
+  }
 }

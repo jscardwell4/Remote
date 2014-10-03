@@ -9,18 +9,17 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(BankCategoryCell)
 class BankCategoryCell: UITableViewCell {
 
   var labelText: String? { get { return label.text } set { label.text = newValue } }
 
-  private let label: UILabel = {
+  private let label: UILabel! = {
     let view = UILabel.newForAutolayout()
     view.font = Bank.infoFont
     return view
   }()
 
-  private let chevron: UIImageView = {
+  private let chevron: UIImageView! = {
     let view = UIImageView.newForAutolayout()
     view.constrainWithFormat("self.width = self.height")
     view.image = UIImage(named: "766-arrow-right")
@@ -47,7 +46,7 @@ class BankCategoryCell: UITableViewCell {
   :param: style UITableViewCellStyle
   :param: reuseIdentifier String?
   */
-  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     contentView.addSubview(label)

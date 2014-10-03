@@ -9,6 +9,7 @@
 #import "RemoteElementExportSupportFunctions.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "JSONObjectKeys.h"
+#import "CoreDataManager.h"
 //#import <objc/runtime.h>
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;

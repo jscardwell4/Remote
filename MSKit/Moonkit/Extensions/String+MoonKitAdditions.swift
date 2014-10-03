@@ -10,14 +10,14 @@ import Foundation
 
 public extension String {
 
-  static let Space:       String = " "
-  static let Newline:     String = "\n"
-  static let Tab:         String = "\t"
-  static let CommaSpace:  String = ", "
-  static let Quote:       String = "'"
-  static let DoubleQuote: String = "\""
+  public static let Space:       String = " "
+  public static let Newline:     String = "\n"
+  public static let Tab:         String = "\t"
+  public static let CommaSpace:  String = ", "
+  public static let Quote:       String = "'"
+  public static let DoubleQuote: String = "\""
 
-  var length: Int { return countElements(self) }
+  public var length: Int { return countElements(self) }
 
   /**
   initWithContentsOfFile:error:
@@ -25,8 +25,15 @@ public extension String {
   :param: contentsOfFile String
   :param: error NSErrorPointer = nil
   */
-  init(contentsOfFile: String, error: NSErrorPointer = nil) {
-    self = NSString(contentsOfFile: contentsOfFile, encoding: NSUTF8StringEncoding, error: error)
+  public init?(contentsOfFile: String, error: NSErrorPointer = nil) {
+    if let string = NSString(contentsOfFile: contentsOfFile, encoding: NSUTF8StringEncoding, error: error) {
+      self = string as String
+    } else { return nil }
+  }
+
+
+  public func substringFromRange(range: Range<Int>) -> String {
+    return self[range]
   }
 
   /**
@@ -36,7 +43,7 @@ public extension String {
 
   :returns: Character
   */
-  subscript (i: Int) -> Character {
+  public subscript (i: Int) -> Character {
     let index: String.Index = advance(i < 0 ? self.endIndex : self.startIndex, i)
     return self[index]
   }
@@ -48,9 +55,17 @@ public extension String {
 
   :returns: String
   */
-  subscript (r: Range<Int>) -> String {
+  public subscript (r: Range<Int>) -> String {
     let rangeStart: String.Index = advance(startIndex, r.startIndex)
     let rangeEnd:   String.Index = advance(r.endIndex < 0 ? endIndex : startIndex, r.endIndex)
+    let range: Range<String.Index> = Range<String.Index>(start: rangeStart, end: rangeEnd)
+    return self[range]
+  }
+
+
+  public subscript (r: Range<UInt>) -> String {
+    let rangeStart: String.Index = advance(startIndex, Int(r.startIndex))
+    let rangeEnd:   String.Index = advance(startIndex, Int(distance(r.startIndex, r.endIndex)))
     let range: Range<String.Index> = Range<String.Index>(start: rangeStart, end: rangeEnd)
     return self[range]
   }
@@ -62,7 +77,7 @@ public extension String {
 
   :returns: String
   */
-  subscript (r: NSRange) -> String {
+  public subscript (r: NSRange) -> String {
     let rangeStart: String.Index = advance(startIndex, r.location)
     let rangeEnd:   String.Index = advance(startIndex, r.location + r.length)
     let range: Range<String.Index> = Range<String.Index>(start: rangeStart, end: rangeEnd)
@@ -75,7 +90,7 @@ public extension String {
   :param: pattern String
   :returns: [String?]
   */
-  func matchFirst(pattern: String) -> [String?] { return matchFirst(~/pattern) }
+  public func matchFirst(pattern: String) -> [String?] { return matchFirst(~/pattern) }
 
 
   /**
@@ -84,7 +99,7 @@ public extension String {
   :param: regex NSRegularExpression
   :returns: [String?]
   */
-  func matchFirst(regex: NSRegularExpression) -> [String?] {
+  public func matchFirst(regex: NSRegularExpression) -> [String?] {
     let r = NSRange(location: 0, length: length)
   	let match: NSTextCheckingResult? = regex.firstMatchInString(self, options: nil, range: r)
   	var captures: [String?] = [String?](count: regex.numberOfCaptureGroups + 1, repeatedValue: nil)
@@ -104,7 +119,7 @@ public extension String {
 
   :returns: Range<String
   */
-  func indexRangeFromIntRange(range: Range<Int>) -> Range<String.Index> {
+  public func indexRangeFromIntRange(range: Range<Int>) -> Range<String.Index> {
     let s = advance(startIndex, range.startIndex)
     let e = advance(startIndex, range.endIndex)
     return Range<String.Index>(start: s, end: e)
@@ -127,13 +142,13 @@ public func ~=(lhs: NSRegularExpression, rhs: String) -> Bool {
                              options: nil,
                                range: NSRange(location: 0,  length: (rhs as NSString).length)) > 0
 }
-public func ~=(lhs: String, rhs: NSRegularExpression) -> Bool { return rhs ~= lhs }
+//public func ~=(lhs: String, rhs: NSRegularExpression) -> Bool { return rhs ~= lhs }
 
 infix operator /~ { associativity left precedence 140 }
 infix operator /≈ { associativity left precedence 140 }
 
 /** func for an operator that returns the first matching substring for a pattern */
-public func /~(lhs: String, rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
+//public func /~(lhs: String, rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
 public func /~(lhs: NSRegularExpression, rhs: String) -> String? {
   var matchString: String?
   let range = NSRange(location: 0, length: rhs.length)
@@ -146,7 +161,7 @@ public func /~(lhs: NSRegularExpression, rhs: String) -> String? {
 }
 
 /** func for an operator that returns an array of matching substrings for a pattern */
-public func /≈(lhs: String, rhs: NSRegularExpression) -> [String] { return rhs /≈ lhs }
+//public func /≈(lhs: String, rhs: NSRegularExpression) -> [String] { return rhs /≈ lhs }
 public func /≈(lhs: NSRegularExpression, rhs: String) -> [String] {
   var substrings: [String] = []
   let range = NSRange(location: 0, length: rhs.length)
@@ -167,11 +182,11 @@ infix operator /…≈ { associativity left precedence 140 }
 //infix operator |≈| { associativity left precedence 140 }
 
 /** func for an operator that returns the range of the first match in a string for a pattern */
-public func /…~(lhs: String, rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
+//public func /…~(lhs: String, rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
 public func /…~(lhs: NSRegularExpression, rhs: String) -> Range<Int>? { return lhs /…~ (rhs, 0) }
 
 /** func for an operator that returns the range of the specified capture for the first match in a string for a pattern */
-public func /…~(lhs: (String, Int), rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
+//public func /…~(lhs: (String, Int), rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
 public func /…~(lhs: NSRegularExpression, rhs: (String, Int)) -> Range<Int>? {
   var range: Range<Int>?
   if let match = lhs.firstMatchInString(rhs.0, options: nil, range: NSRange(location: 0, length: rhs.0.length)) {
@@ -186,11 +201,11 @@ public func /…~(lhs: NSRegularExpression, rhs: (String, Int)) -> Range<Int>? {
 }
 
 /** func for an operator that returns the ranges of all matches in a string for a pattern */
-public func /…≈(lhs: String, rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
+//public func /…≈(lhs: String, rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
 public func /…≈(lhs: NSRegularExpression, rhs: String) -> [Range<Int>?] { return lhs /…≈ (rhs, 0) }
 
 /** func for an operator that returns the ranges of the specified capture for all matches in a string for a pattern */
-public func /…≈(lhs: (String, Int), rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
+//public func /…≈(lhs: (String, Int), rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
 public func /…≈(lhs: NSRegularExpression, rhs: (String, Int)) -> [Range<Int>?] {
   var ranges: [Range<Int>?] = []
   if let matches = lhs.matchesInString(rhs.0, options: nil, range: NSRange(location: 0, length: rhs.0.length)) as? [NSTextCheckingResult] {
@@ -210,7 +225,7 @@ public func /…≈(lhs: NSRegularExpression, rhs: (String, Int)) -> [Range<Int>
 
 
 /** func for an operator that returns the specified capture for the first match in a string for a pattern */
-public func /~(lhs: (String, Int), rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
+//public func /~(lhs: (String, Int), rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
 public func /~(lhs: NSRegularExpression, rhs: (String, Int)) -> String? {
   let captures = rhs.0.matchFirst(lhs)
   return rhs.1 >= 0 && rhs.1 <= lhs.numberOfCaptureGroups ? captures[rhs.1] : nil

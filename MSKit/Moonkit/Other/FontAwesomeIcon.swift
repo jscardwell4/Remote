@@ -296,7 +296,7 @@ enum FontAwesomeIcon: Character {
   case Bounds                  = "\u{F121}"
   case None                    = "\u{0000}"
 
-  init(_ character:Character) { self = FontAwesomeIcon.fromRaw(character) ?? .None }
+  init(_ character:Character) { self = FontAwesomeIcon(rawValue: character) ?? .None }
   init(_ name: String) {
     switch name {
       case "space":                     self = .Space
@@ -588,7 +588,7 @@ enum FontAwesomeIcon: Character {
     }
   }
 
-  var character: Character { return self.toRaw() }
+  var character: Character { return self.rawValue }
   var name: String {
     switch self {
       case .Space:                    return "space"

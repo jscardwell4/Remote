@@ -26,7 +26,7 @@ class ImageDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init(item: BankableModelObject, editing: Bool) {
+  required init(item: BankDisplayItemModel, editing: Bool) {
     super.init(item: item, editing: editing)
     precondition(item is Image, "we should have been given a image")
 
@@ -34,10 +34,10 @@ class ImageDetailController: BankItemDetailController {
     let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
-      $0.info = self.image.imageCategory?.categoryPath ?? "Uncategorized"
+//      $0.info = self.image.imageCategory?.categoryPath ?? "Uncategorized"
       $0.changeHandler = {[unowned self] c in
         if let category = c.info as? ImageCategory {
-          self.image.category = category
+//          self.image.category = category
         }
       }
       $0.pickerData = self.categories

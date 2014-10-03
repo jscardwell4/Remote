@@ -14,6 +14,7 @@ import MoonKit
 private let RootCellIdentifier = "RootCell"
 
 /** An array containing the names of all direct subclasses of the `BankableModelObject` class */
+/*
 private let RegisteredClasses: [String] = {
   var bankableModelClasses: [String] = []
   var outcount: UInt32 = 0
@@ -32,7 +33,7 @@ private let RegisteredClasses: [String] = {
   return bankableModelClasses
   }()
 
-@objc(BankRootController)
+*/
 class BankRootController: UITableViewController, BankController {
 
   /** loadView */
@@ -42,10 +43,10 @@ class BankRootController: UITableViewController, BankController {
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
-      tableView.backgroundColor = Bank.backgroundColor
-      tableView.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
-      tableView.separatorStyle = Bank.separatorStyle
-      tableView.rowHeight = Bank.defaultRowHeight
+      tableView?.backgroundColor = Bank.backgroundColor
+      tableView?.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
+      tableView?.separatorStyle = Bank.separatorStyle
+      tableView?.rowHeight = Bank.defaultRowHeight
       return tableView
     }()
 
@@ -87,12 +88,12 @@ extension BankRootController: UITableViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
-      let vc = bankableModelClass.isCategorized()
-                 ? BankCategoryController(itemClass: bankableModelClass)
-                 : BankCollectionController(itemClass: bankableModelClass)
-      navigationController?.pushViewController(vc, animated: true)
-    }
+//    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
+//      let vc = bankableModelClass.isCategorized()
+//                 ? BankCategoryController(itemClass: bankableModelClass)
+//                 : BankCollectionController(itemClass: bankableModelClass)
+//      navigationController?.pushViewController(vc, animated: true)
+//    }
   }
 
 }
@@ -119,7 +120,7 @@ extension BankRootController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return RegisteredClasses.count }
+  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 0 } // RegisteredClasses.count }
 
 
   /**
@@ -132,9 +133,9 @@ extension BankRootController: UITableViewDataSource {
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as BankRootCell
-    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
-      cell.bankableModelClass = bankableModelClass
-    }
+//    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
+//      cell.bankableModelClass = bankableModelClass
+//    }
     return cell
   }
 

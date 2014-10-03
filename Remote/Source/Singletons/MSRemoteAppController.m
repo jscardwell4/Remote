@@ -6,6 +6,11 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 //#import "RemoteElementConstructionManager.h"
+@import CoreData;
+@import Lumberjack;
+@import MoonKit;
+#import "MSRemoteMacros.h"
+
 #import "RemoteViewController.h"
 #import "MainMenuViewController.h"
 #import "CoreDataManager.h"
@@ -359,7 +364,7 @@ static const int msLogContext = 0;
 
 /// showBank
 - (void)showBank {
-  [self showViewController:[[UINavigationController alloc] initWithRootViewController:[BankRootController new]]];
+//  [self showViewController:[[UINavigationController alloc] initWithRootViewController:[BankRootController new]]];
 }
 
 /// showSettings

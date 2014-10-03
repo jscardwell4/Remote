@@ -6,11 +6,11 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementView_Private.h"
-#import "ImageView.h"
 #import "TitleAttributes.h"
 #import "Button.h"
 #import "Command.h"
 #import "ControlStateTitleSet.h"
+#import "Remote-Swift.h"
 
 // #define DEBUG_BV_COLOR_BG
 

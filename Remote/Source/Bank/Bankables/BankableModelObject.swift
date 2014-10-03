@@ -29,33 +29,39 @@ class BankableModelObject: NamedModelObject {
 		return dictionary
 	}
 
-  class func categoryType() -> BankDisplayItemCategory.Protocol { return BankSurrogateCategory.self }
+//  class func categoryType() -> BankDisplayItemCategory.Protocol { return BankSurrogateCategory.self }
 
+//  class var rootCategories: [BankDisplayItemCategory] { return [] }
 
-}
+  class var label: String? { return "" }
+  class var icon: UIImage? { return UIImage() }
 
-extension BankableModelObject: BankDisplayItem {
+  var preview:   UIImage? { return nil }
+  var thumbnail: UIImage? { return nil }
 
   class func isThumbnailable() -> Bool { return false }
   class func isPreviewable()   -> Bool { return false }
   class func isDetailable()    -> Bool { return false }
   class func isEditable()      -> Bool { return false }
 
-  class func label() -> String? { return nil }
-  class func icon() -> UIImage? { return nil }
-}
+//  class func detailControllerType() -> BankDetailController.Protocol { return BankItemDetailController.self }
 
-extension BankableModelObject: BankDisplayItemModel {
+  func save() {
+    managedObjectContext?.performBlockAndWait {
+      self.managedObjectContext!.processPendingChanges()
+      var error: NSError?
+      self.managedObjectContext!.save(&error)
+      MSHandleError(error, message: "save failed for '\(self.name)'")
+    }
+  }
 
-  typealias DetailControllerType = BankItemDetailController
+  func delete() { managedObjectContext?.deleteObject(self) }
 
-
-  var preview:   UIImage? { return nil }
-  var thumbnail: UIImage? { return nil }
-
-  
-
-  var detailController: DetailControllerType? { return nil }
-  var editingController: DetailControllerType? { return nil }
+  func rollback() {
+    managedObjectContext?.performBlockAndWait {
+      self.managedObjectContext!.processPendingChanges()
+      self.managedObjectContext!.rollback()
+    }
+  }
 
 }

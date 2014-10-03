@@ -10,55 +10,53 @@ import Foundation
 import UIKit
 import MoonKit
 
-/** Base protocol for objects that can be displayed in Bank table or collection cells */
-@objc protocol BankDisplayItem: class, NamedModel {
-
-  optional class func label() -> String?    // Text to use for root directory
-  optional class func icon()  -> UIImage?  // Image to use for root directory
-
-  class func isThumbnailable() -> Bool  // Whether items of the conforming type may have thumbnails
-  class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
-  class func isDetailable()    -> Bool  // Whether items of the conforming type may be opened in a detail controller
-  class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
-
-}
+//protocol BankRootCategory {
+//  class var label: String? { get }
+//  class var icon: UIImage? { get }
+//  class var rootCategories: [BankDisplayItemCategory] { get }
+//}
 
 /** Protocol inheriting from `BankDisplayItem` for actual items of interest */
-protocol BankDisplayItemModel: class, BankDisplayItem {
+//protocol BankDisplayItemModel: NamedModel {
 
-  typealias DetailControllerType: UIViewController, BankDetailController
-
-//  var rootCategories: [BankDisplayItemCategory] { get }
-
-  var detailController: DetailControllerType? { get }
-  var editingController: DetailControllerType? { get }
-
-  class func categoryType() -> BankDisplayItemCategory.Protocol
+//  class func isThumbnailable() -> Bool  // Whether items of the conforming type may have thumbnails
+//  class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
+//  class func isDetailable()    -> Bool  // Whether items of the conforming type may be opened in a detail controller
+//  class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
+//
+//  class func detailControllerType() -> BankDetailController.Protocol
+//  class func categoryType() -> BankDisplayItemCategory.Protocol
 //  typealias CategoryType: BankDisplayItemCategory
 
 //  optional var category: CategoryType { get }
+//
+//  var name: String! { get set }
+//  var preview: UIImage? { get }
+//  var thumbnail: UIImage? { get }
+//  func save()
+//  func delete()
+//  func rollback()
+//}
 
-  var preview: UIImage? { get }
-
-  var thumbnail: UIImage? { get }
-
-}
+//func ==(lhs: BankDisplayItemModel, rhs: BankDisplayItemModel) -> Bool {
+//  return lhs.isEqual(rhs)
+//}
 
 /** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
-protocol BankDisplayItemCategory: class, BankDisplayItem {
+//protocol BankDisplayItemCategory {
 
-//  typealias ItemType: BankableModelObject, BankDisplayItemModel
-
-  var items: [BankableModelObject] { get }
-
-  var subcategories:  [BankDisplayItemCategory] { get }
-  var parentCategory: BankDisplayItemCategory?   { get }
-}
+//  var name: String! { get }
+//
+//  var items: [BankDisplayItemModel] { get }
+//
+//  var subcategories:  [BankDisplayItemCategory] { get }
+//  var parentCategory: BankDisplayItemCategory?   { get }
+//}
 
 /** Protocol for types that wish to display Bank item details */
 protocol BankDetailController: class {
 
-  init(item: BankableModelObject, editing: Bool)
+//  init?(item: BankDisplayItemModel, editing: Bool)
 
 }
 
@@ -78,22 +76,22 @@ class Bank {
   private struct BankProperties {
 
     // Fonts
-    static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)
-    static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)
-    static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)
+    static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
+    static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
+    static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
 
     // Colors
-    static let labelColor                 = UIColor(r: 59, g: 60, b: 64, a:255)
-    static let infoColor                  = UIColor(r:159, g:160, b:164, a:255)
+    static let labelColor                 = UIColor(r: 59, g: 60, b: 64, a:255)!
+    static let infoColor                  = UIColor(r:159, g:160, b:164, a:255)!
     static let backgroundColor            = UIColor.whiteColor()
 
     // Images
-    static let exportBarItemImage         = UIImage(named:"702-share")
-    static let exportBarItemImageSelected = UIImage(named:"702-share-selected")
-    static let importBarItemImage         = UIImage(named:"703-download")
-    static let importBarItemImageSelected = UIImage(named:"703-download-selected")
-    static let searchBarItemImage         = UIImage(named:"708-search")
-    static let searchBarItemImageSelected = UIImage(named:"708-search-selected")
+    static let exportBarItemImage         = UIImage(named:"702-share")!
+    static let exportBarItemImageSelected = UIImage(named:"702-share-selected")!
+    static let importBarItemImage         = UIImage(named:"703-download")!
+    static let importBarItemImageSelected = UIImage(named:"703-download-selected")!
+    static let searchBarItemImage         = UIImage(named:"708-search")!
+    static let searchBarItemImageSelected = UIImage(named:"708-search-selected")!
 
     static let defaultRowHeight: CGFloat = 38.0
     static let separatorStyle: UITableViewCellSeparatorStyle = .None

@@ -5,14 +5,11 @@
 //  Created by Jason Cardwell on 4/10/13.
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
+@import Foundation;
 @import UIKit;
 @import CoreData;
-@import Foundation;
 @import Lumberjack;
 @import MoonKit;
-#import "MSRemoteMacros.h"
-@import MoonKit;
-#import "CoreDataManager.h"
 
 @protocol Model <NSObject>
 @property (nonatomic, copy, readonly) NSString * uuid;

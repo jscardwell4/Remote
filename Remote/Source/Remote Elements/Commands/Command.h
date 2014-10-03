@@ -5,12 +5,6 @@
 // Created by Jason Cardwell on 6/1/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
-@import UIKit;
-@import CoreData;
-@import Foundation;
-@import Lumberjack;
-@import MoonKit;
-#import "MSRemoteMacros.h"
 #import "NamedModelObject.h"
 #import "RETypedefs.h"
 

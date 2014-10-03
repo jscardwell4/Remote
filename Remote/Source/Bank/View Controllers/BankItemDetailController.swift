@@ -31,7 +31,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   class var TextViewRowHeight: CGFloat { return 140.0 }
   class var TableRowHeight:    CGFloat { return 120.0 }
 
-  let item: BankableModelObject!
+  let item: BankDisplayItemModel!
   weak var nameTextField: UITextField!
 
   /**
@@ -49,7 +49,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   :param: style UITableViewStyle
   */
-  override init(style: UITableViewStyle) {
+  override init?(style: UITableViewStyle) {
     super.init(style: style)
   }
 
@@ -66,9 +66,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /**
   initWithItem:
 
-  :param: item BankableModelObject
+  :param: item BankDisplayItemModel
   */
-  required init(item: BankableModelObject, editing: Bool = false) {
+  required init?(item: BankDisplayItemModel, editing: Bool = false) {
     super.init(style: .Grouped)
     self.item = item
     self.editing = editing
@@ -78,26 +78,26 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
-    tableView.rowHeight = BankItemDetailController.DefaultRowHeight
-    tableView.sectionHeaderHeight = 10.0
-    tableView.sectionFooterHeight = 10.0
-    tableView.allowsSelection = false
-    tableView.separatorStyle = .None
-    tableView.delegate = self
-    tableView.dataSource = self
+    tableView?.rowHeight = BankItemDetailController.DefaultRowHeight
+    tableView?.sectionHeaderHeight = 10.0
+    tableView?.sectionFooterHeight = 10.0
+    tableView?.allowsSelection = false
+    tableView?.separatorStyle = .None
+    tableView?.delegate = self
+    tableView?.dataSource = self
     BankItemCell.registerIdentifiersWithTableView(tableView)
     nameTextField = { [unowned self] in
       let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
-      textField.placeholder = "Name"
-      textField.font = Bank.boldLabelFont
-      textField.textColor = Bank.labelColor
-      textField.keyboardAppearance = .Dark
-      textField.adjustsFontSizeToFitWidth = true
-      textField.returnKeyType = .Done
-      textField.enablesReturnKeyAutomatically = true
-      textField.textAlignment = .Center
-      textField.clearsOnBeginEditing = true
-      textField.delegate = self
+      textField?.placeholder = "Name"
+      textField?.font = Bank.boldLabelFont
+      textField?.textColor = Bank.labelColor
+      textField?.keyboardAppearance = .Dark
+      textField?.adjustsFontSizeToFitWidth = true
+      textField?.returnKeyType = .Done
+      textField?.enablesReturnKeyAutomatically = true
+      textField?.textAlignment = .Center
+      textField?.clearsOnBeginEditing = true
+      textField?.delegate = self
       self.navigationItem.titleView = textField
       return textField
     }()
@@ -106,9 +106,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   /** updateDisplay */
   func updateDisplay() {
-    nameTextField.text = item.name
-    navigationItem.rightBarButtonItem?.enabled = item.editable
-    tableView.reloadData()
+//    nameTextField.text = item.name
+//    navigationItem.rightBarButtonItem?.enabled = item?.dynamicType.isEditable() ?? false
+//    tableView.reloadData()
   }
 
   /**
@@ -141,11 +141,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   /** cancel */
   func cancel() {
-    let moc = item.managedObjectContext
-    moc.performBlockAndWait{
-      moc.processPendingChanges()
-      moc.rollback()
-    }
+//    item.rollback()
     setEditing(false, animated: true)
     updateDisplay()
   }
@@ -155,13 +151,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   /** save */
   func save() {
-    let moc = item.managedObjectContext
-    moc.performBlockAndWait{
-      moc.processPendingChanges()
-      var error: NSError?
-      moc.save(&error)
-      MSHandleError(error)
-    }
+//    item.save()
     setEditing(false, animated: true)
   }
 
@@ -209,7 +199,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     var cell: BankItemCell?
 
     if let identifier = identifierForIndexPath(indexPath) {
-      cell = tableView.dequeueReusableCellWithIdentifier(identifier.toRaw(), forIndexPath: indexPath) as? BankItemCell
+      cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? BankItemCell
       cell?.shouldShowPicker = {[unowned self] (c: BankItemCell!) -> Bool in
         self.tableView.beginUpdates()
         self.expandedRows.append(indexPath)
@@ -367,7 +357,7 @@ extension BankItemDetailController: UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField === nameTextField && textField.text?.length > 0 { item.name = textField.text }
+//    if textField === nameTextField && textField.text?.length > 0 { item.name = textField.text }
   }
 
 }

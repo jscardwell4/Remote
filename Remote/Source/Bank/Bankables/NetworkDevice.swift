@@ -54,6 +54,14 @@ class NetworkDevice: BankableModelObject {
 
     return device
   }
+  override class var label: String? { return "Network Devices" }
+  override class var icon: UIImage? { return UIImage(named: "937-wifi-signal") }
+
+  override class func isThumbnailable() -> Bool { return false }
+  override class func isDetailable()    -> Bool { return true  }
+  override class func isEditable()      -> Bool { return true  }
+  override class func isPreviewable()   -> Bool { return false }
+
 }
 
 extension NetworkDevice: MSJSONExport {
@@ -65,18 +73,5 @@ extension NetworkDevice: MSJSONExport {
       dictionary.compress()
       return dictionary
   }
-
-}
-
-
-extension NetworkDevice: BankDisplayItem {
-
-  override class func label() -> String   { return "Network Devices"                 }
-  override class func icon()  -> UIImage? { return UIImage(named: "937-wifi-signal") }
-
-  override class func isThumbnailable() -> Bool { return false }
-  override class func isDetailable()    -> Bool { return true  }
-  override class func isEditable()      -> Bool { return true  }
-  override class func isPreviewable()   -> Bool { return false }
 
 }

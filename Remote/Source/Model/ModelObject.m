@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "ModelObject.h"
+#import "MSRemoteMacros.h"
+#import "CoreDataManager.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

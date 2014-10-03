@@ -87,6 +87,8 @@ class ITachDevice: NetworkDevice {
     revision  = data["revision"]   as? NSString ?? revision
   }
 
+//  override class func detailControllerType() -> BankDetailController.Protocol { return ITachDeviceDetailController.self }
+
 }
 
 extension ITachDevice: MSJSONExport {
@@ -105,11 +107,5 @@ extension ITachDevice: MSJSONExport {
     dictionary.compress()
     return dictionary
   }
-
-}
-
-extension ITachDevice: BankDisplayItemModel {
-
-  var detailController: BankDetailController { return ITachDeviceDetailController(item: self, editing: false) }
 
 }

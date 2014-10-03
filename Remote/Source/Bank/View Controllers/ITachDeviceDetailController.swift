@@ -22,7 +22,7 @@ class ITachDeviceDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init(item: BankableModelObject, editing: Bool) {
+  required init(item: BankDisplayItemModel, editing: Bool) {
     super.init(item: item, editing: editing)
     precondition(item is ITachDevice, "we should have been given an itach device")
 

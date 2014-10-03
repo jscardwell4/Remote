@@ -5,21 +5,15 @@
 // Created by Jason Cardwell on 10/3/12.
 // Copyright © 2012 Moondeer Studios. All rights reserved.
 //
-@import UIKit;
-@import CoreData;
-@import Foundation;
-@import Lumberjack;
-@import MoonKit;
-#import "MSRemoteMacros.h"
 #import "NamedModelObject.h"
 #import "RETypedefs.h"
 #import "REBackgroundEditingViewController.h"
-#import "Constraint.h"
+//#import "Constraint.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element
 ////////////////////////////////////////////////////////////////////////////////
-@class RemoteController, ConstraintManager, Image;
+@class RemoteController, Constraint, ConstraintManager, Image;
 
 MSEXTERN_STRING REDefaultMode;
 

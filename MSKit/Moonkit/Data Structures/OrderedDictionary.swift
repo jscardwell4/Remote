@@ -63,7 +63,7 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   }
 
   public static func fromMSDictionary(msdict: MSDictionary) -> OrderedDictionary<NSObject, AnyObject> {
-    var orderedDict = OrderedDictionary<NSObject,AnyObject>()
+    var orderedDict = OrderedDictionary<NSObject,AnyObject>(minimumCapacity: 4)
 
     let keys = msdict.allKeys as [NSObject]
     let values = msdict.allValues as [AnyObject]
@@ -209,13 +209,13 @@ extension  OrderedDictionary: Printable, DebugPrintable {
 
 
 extension  OrderedDictionary: DictionaryLiteralConvertible {
-  public static func convertFromDictionaryLiteral(elements: (KeyType, ValueType)...) -> OrderedDictionary {
+  public init(dictionaryLiteral elements: (Key, Value)...) {
     var orderedDict = OrderedDictionary(minimumCapacity: elements.count)
     for (key, value) in elements {
       orderedDict.indexKeys.append(key)
       orderedDict.storage[key] = value
     }
-    return orderedDict
+    self = orderedDict
   }
 }
 

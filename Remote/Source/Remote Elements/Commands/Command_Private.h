@@ -5,13 +5,6 @@
 // Created by Jason Cardwell on 3/17/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-@import UIKit;
-@import CoreData;
-@import Foundation;
-@import Lumberjack;
-@import MoonKit;
-#import "MSRemoteMacros.h"
-
 #import "Command.h"
 
 ////////////////////////////////////////////////////////////////////////////////

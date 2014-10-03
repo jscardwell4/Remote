@@ -62,7 +62,7 @@ class Image: BankableModelObject {
     topCap = (data["top-cap"] as? NSNumber)?.intValue ?? topCap
   }
 
-  var image: UIImage { return UIImage(named: assetName) }
+  var image: UIImage? { return UIImage(named: assetName) }
   override var commentedUUID: String { var uuidCopy: NSString = uuid!; uuidCopy.comment = " // \(assetName)"; return uuidCopy }
 
   override func JSONDictionary() -> MSDictionary! {
@@ -76,30 +76,19 @@ class Image: BankableModelObject {
     return dictionary
   }
 
-  var stretchableImage: UIImage { return image.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
+  var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
 
-  override class func categoryType() -> BankDisplayItemCategory.Protocol { return ImageCategory.self }
+//  override class func categoryType() -> BankDisplayItemCategory.Protocol { return ImageCategory.self }
 
-}
-
-extension Image: BankDisplayItem {
-
-  override class func label() -> String   { return "Images"                     }
-  override class func icon()  -> UIImage? { return UIImage(named: "926-photos") }
+  override class var label: String? { return "Images" }
+  override class var icon: UIImage? { return UIImage(named: "926-photos") }
 
   override class func isThumbnailable() -> Bool { return true }
   override class func isDetailable()    -> Bool { return true }
   override class func isEditable()      -> Bool { return true }
   override class func isPreviewable()   -> Bool { return true }
 
-}
-
-extension Image: BankDisplayItemModel {
-
-
-  override var detailController: DetailControllerType? { return ImageDetailController(item: self, editing: false) }
-  override var editingController: DetailControllerType? { return ImageDetailController(item: self, editing: true) }
+//  override class func detailControllerType() -> BankDetailController.Protocol { return ImageDetailController.self }
   override var preview: UIImage? { return image }
-
 
 }

@@ -16,7 +16,6 @@
 #import "RemoteElementView.h"
 #import "Button.h"
 #import "StoryboardProxy.h"
-#import "ImageView.h"
 #import "Remote-Swift.h"
 
 static int ddLogLevel = LOG_LEVEL_WARN;

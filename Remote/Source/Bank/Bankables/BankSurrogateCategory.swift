@@ -12,26 +12,19 @@ import UIKit
 import MoonKit
 
 @objc(BankSurrogateCategory)
-class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
+class BankSurrogateCategory { //: BankDisplayItemCategory {
 
-	class func isThumbnailable() -> Bool { return false }
-	class func isPreviewable()   -> Bool { return false }
-	class func isDetailable()    -> Bool { return false }
-	class func isEditable()      -> Bool { return false }
+//  var subcategories: [BankDisplayItemCategory] { return [] }
+//  var parentCategory: BankDisplayItemCategory? { return nil }
+//
+//  typealias ItemType = BankableModelObject
+//
+//	var items: [BankDisplayItemModel] = []
+//  var name: String! { return nil }
+//	init(itemType: BankableModelObject.Type) {
 
-  var uuid: String { return MSNonce() }
-  var name: String { return "surrogate" }
-  var subcategories: [BankDisplayItemCategory] { return [] }
-  var parentCategory: BankDisplayItemCategory? { return nil }
+//		if let fetchedItems = itemType.findAll() as? [BankableModelObject] { items = fetchedItems }
 
-  typealias ItemType = BankableModelObject
-
-	var items: [ItemType] = []
-
-	init(itemType: BankableModelObject.Type) {
-
-		if let fetchedItems = itemType.findAll() as? [BankableModelObject] { items = fetchedItems }
-
-	}
+//	}
 
 }

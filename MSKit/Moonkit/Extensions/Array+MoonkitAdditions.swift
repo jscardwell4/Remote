@@ -8,10 +8,10 @@
 
 import Foundation
 
-public extension Array {
-  public mutating func replaceAll(value:Element) { for i in 0..<count { self[i] = value } }
+extension Array {
+  mutating func replaceAll(value:Element) { for i in 0..<count { self[i] = value } }
 
-  public mutating func apply(block:(Element) -> Void) { reduce(Void()){block($0.1)} }
+  mutating func apply(block:(Element) -> Void) { reduce(Void()){block($0.1)} }
   /**
   findFirst:
 
@@ -19,7 +19,7 @@ public extension Array {
 
   :returns: Element?
   */
-  public func findFirst(matchElement:(Element)->Bool) -> Element? { return filter(matchElement).first }
+  func findFirst(matchElement:(Element)->Bool) -> Element? { return filter(matchElement).first }
 
 }
 

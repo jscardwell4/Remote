@@ -11,6 +11,7 @@
 #import "RemoteElement.h"
 #import "Remote.h"
 #import "RemoteElementImportSupportFunctions.h"
+#import "CoreDataManager.h"
 
 @interface Activity (CoreDataGenerateAccessors)
 

@@ -48,7 +48,7 @@ class BankItemCell: UITableViewCell {
 	*/
 	class func registerIdentifiersWithTableView(tableView: UITableView) {
     let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
-		for identifier in identifiers { tableView.registerClass(self, forCellReuseIdentifier: identifier.toRaw()) }
+		for identifier in identifiers { tableView.registerClass(self, forCellReuseIdentifier: identifier.rawValue) }
 	}
 
 	var changeHandler          : ((BankItemCell) -> Void)?
@@ -169,8 +169,8 @@ class BankItemCell: UITableViewCell {
 	:param: style UITableViewStyle
 	:param: reuseIdentifier String
 	*/
-	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-		identifier = Identifier.fromRaw(reuseIdentifier ?? "") ?? .Label
+	override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
+		identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
 		super.init(style:style, reuseIdentifier: reuseIdentifier)
 		contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
 		pickerView = {
@@ -673,7 +673,7 @@ extension BankItemCell: UITableViewDataSource {
   :returns: UITableViewCell
   */
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-  	let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.toRaw(), forIndexPath: indexPath) as? UITableViewCell
+  	let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.rawValue, forIndexPath: indexPath) as? UITableViewCell
   	if let bankItemCell = cell as? BankItemCell { bankItemCell.info = tableData?[indexPath.row] }
   	return cell ?? UITableViewCell()
   }

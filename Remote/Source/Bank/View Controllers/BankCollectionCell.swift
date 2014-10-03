@@ -9,17 +9,15 @@
 import Foundation
 import UIKit
 
-// FIXME: ivar_destroyer crash
-@objc(BankCollectionCell)
 class BankCollectionCell: UICollectionViewCell {
 
-  weak var item: BankableModelObject? {
+  weak var item: BankDisplayItemModel? {
     didSet {
       if let newItem = item {
         nameLabel.text = newItem.name
-        detailable = newItem.dynamicType.isDetailable()
-        previewable = newItem.dynamicType.isPreviewable()
-        thumbnailable = newItem.dynamicType.isThumbnailable()
+//        detailable = newItem.dynamicType.isDetailable()
+//        previewable = newItem.dynamicType.isPreviewable()
+//        thumbnailable = newItem.dynamicType.isThumbnailable()
       } else {
         nameLabel.text = nil
         previewable = false
@@ -74,7 +72,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   private var thumbnailable: Bool = false {
     didSet {
-      thumbnailImageView.image = item?.thumbnail
+//      thumbnailImageView.image = item?.thumbnail
       thumbnailImageView.hidden = !thumbnailable
     }
   }

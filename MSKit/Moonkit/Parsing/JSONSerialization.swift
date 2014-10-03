@@ -18,7 +18,7 @@ public class JSONSerialization: NSObject {
 
   :returns: String?
   */
-  public class func JSONFromObject(object: AnyObject, options: WriteOptions.Raw) -> String? {
+  public class func JSONFromObject(object: AnyObject, options: WriteOptions.RawValue) -> String? {
     return JSONFromObject(object, options: WriteOptions.fromMask(options))
   }
 
@@ -129,7 +129,7 @@ public class JSONSerialization: NSObject {
 
 	:returns: String?
 	*/
-	public class func parseFile(filePath: String, options: WriteOptions.Raw, error: NSErrorPointer) -> String? {
+	public class func parseFile(filePath: String, options: WriteOptions.RawValue, error: NSErrorPointer) -> String? {
 		return parseFile(filePath, options: WriteOptions.fromMask(options), error: error)
 	}
 
@@ -150,11 +150,11 @@ public class JSONSerialization: NSObject {
     var localError: NSError?
     let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
 
-    if MSHandleError(localError, message: "failed to create string from file") {
+    if MSHandleError(localError, message: "failed to create string from file") || string == nil {
       if error != nil { error.memory = localError }
     }
 
-    else { returnString = parseString(string, options: options, error: error) }
+    else { returnString = parseString(string!, options: options, error: error) }
 
     return returnString
 	}
@@ -168,7 +168,7 @@ public class JSONSerialization: NSObject {
 
 	:returns: String?
 	*/
-	public class func parseString(string: String, options: WriteOptions.Raw, error: NSErrorPointer) -> String? {
+	public class func parseString(string: String, options: WriteOptions.RawValue, error: NSErrorPointer) -> String? {
 		return parseString(string, options: WriteOptions.fromMask(options), error: error)
 	}
 
@@ -197,8 +197,8 @@ public class JSONSerialization: NSObject {
 
 	:returns: AnyObject?
 	*/
-	public class func objectByParsingString(string: String, options: ReadOptions.Raw, error: NSErrorPointer) -> AnyObject? {
-		return objectByParsingString(string, options:(ReadOptions.fromRaw(options) ?? .None), error: error)
+	public class func objectByParsingString(string: String, options: ReadOptions.RawValue, error: NSErrorPointer) -> AnyObject? {
+		return objectByParsingString(string, options:(ReadOptions(rawValue: options) ?? .None), error: error)
 	}
 
 	/**
@@ -242,8 +242,8 @@ public class JSONSerialization: NSObject {
 
 	:returns: AnyObject?
 	*/
-	public class func objectByParsingFile(filePath: String, options: ReadOptions.Raw, error: NSErrorPointer) -> AnyObject? {
-		return objectByParsingFile(filePath, options: (ReadOptions.fromRaw(options) ?? .None), error: error)
+	public class func objectByParsingFile(filePath: String, options: ReadOptions.RawValue, error: NSErrorPointer) -> AnyObject? {
+    return objectByParsingFile(filePath, options: (ReadOptions(rawValue: options) ?? .None), error: error)
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class JSONSerialization: NSObject {
     }
 
     // Get the contents of the file to parse
-    var string = String(contentsOfFile: filePath, error: &localError)
+    if var string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError) as? String {
 
     // If no error than we look for any "@include" statements
     if !handleError("failed to get file content for '\(filePath)") {
@@ -295,28 +295,31 @@ public class JSONSerialization: NSObject {
 
           range.endIndex = end
           range.startIndex = start
+          let s = String.Space
+          let r = NSRange(location: range.startIndex, length: distance(range.startIndex, range.endIndex))
 
           // Get the name of the file to include
-          if let includeFile = pattern /~ (string[range], 1) {
+          let substring = (string as NSString).substringWithRange(r)
+          if let includeFile = pattern /~ (substring, 1) {
 
             // Create the file path by combining the directory with the name
             let includePath = "\(directory)/\(includeFile)"
-            let includeText = String(contentsOfFile: includePath, error: &localError)
+            let includeText = NSString(contentsOfFile: includePath, encoding: NSUTF8StringEncoding, error: &localError) as? String
 
             // Move on to next if error
-            if handleError("failed to get file content for include directive '\(includePath)'") { continue }
+            if handleError("failed to get file content for include directive '\(includePath)'") || includeText == nil { continue }
 
             // Replace include directive with the text
-
-            string.replaceRange(string.indexRangeFromIntRange(range), with: includeText)
+            string.replaceRange(string.indexRangeFromIntRange(range), with: includeText!)
 
             // Update `offset`
-            offset += includeText.length - countElements(range)
+            offset += includeText!.length - countElements(range)
 
           }
 
         }
 
+      }
       }
 
       returnObject = objectByParsingString(string, options: options, error: error)
@@ -339,57 +342,55 @@ public class JSONSerialization: NSObject {
 
   struct WriteOptions: RawOptionSetType {
 
-    private var value: UInt = 0
+    var rawValue: UInt = 0
 
-    var boolValue: Bool { return value != 0 }
+    var boolValue: Bool { return rawValue != 0 }
 
     static var allZeros: WriteOptions { return WriteOptions.None }
 
-    func toRaw() -> UInt { return value }
+    init(rawValue: UInt) { self.rawValue = rawValue }
+    init(nilLiteral: Void) { self.rawValue = 0 }
+    static func fromRaw(raw: UInt)      -> WriteOptions? { return self(rawValue: raw) }
+    static func fromMask(raw: UInt)     -> WriteOptions  { return self(rawValue: raw) }
+    static func convertFromNilLiteral() -> WriteOptions  { return self(rawValue: 0)   }
 
-    init(_ value: UInt) { self.value = value }
-
-    static func fromRaw(raw: UInt)      -> WriteOptions? { return self(raw) }
-    static func fromMask(raw: UInt)     -> WriteOptions  { return self(raw) }
-    static func convertFromNilLiteral() -> WriteOptions  { return self(0)   }
-
-    static var None                          : WriteOptions = WriteOptions(0b0000_0000_0000_0000)
-    static var PreserveWhitespace            : WriteOptions = WriteOptions(0b0000_0000_0000_0001)
-    static var CreateKeypaths                : WriteOptions = WriteOptions(0b0000_0000_0000_0010)
-    static var KeepComments                  : WriteOptions = WriteOptions(0b0000_0000_0000_0100)
-    static var IndentByDepth                 : WriteOptions = WriteOptions(0b0000_0000_0000_1000)
-    static var KeepOneLiners                 : WriteOptions = WriteOptions(0b0000_0000_0001_0000)
-    static var ForceOneLiners                : WriteOptions = WriteOptions(0b0000_0000_0010_0000)
-    static var BreakAfterLeftSquareBracket   : WriteOptions = WriteOptions(0b0000_0000_0100_0000)
-    static var BreakBeforeRightSquareBracket : WriteOptions = WriteOptions(0b0000_0000_1000_0000)
-    static var BreakInsideSquareBrackets     : WriteOptions = WriteOptions(0b0000_0000_1100_0000)
-    static var BreakAfterLeftCurlyBracket    : WriteOptions = WriteOptions(0b0000_0001_0000_0000)
-    static var BreakBeforeRightCurlyBracket  : WriteOptions = WriteOptions(0b0000_0010_0000_0000)
-    static var BreakInsideCurlyBrackets      : WriteOptions = WriteOptions(0b0000_0011_0000_0000)
-    static var BreakAfterComma               : WriteOptions = WriteOptions(0b0000_0100_0000_0000)
-    static var BreakBetweenColonAndArray     : WriteOptions = WriteOptions(0b0000_1000_0000_0000)
-    static var BreakBetweenColonAndObject    : WriteOptions = WriteOptions(0b0001_0000_0000_0000)
+    static var None                          : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_0000)
+    static var PreserveWhitespace            : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_0001)
+    static var CreateKeypaths                : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_0010)
+    static var KeepComments                  : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_0100)
+    static var IndentByDepth                 : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_1000)
+    static var KeepOneLiners                 : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0001_0000)
+    static var ForceOneLiners                : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0010_0000)
+    static var BreakAfterLeftSquareBracket   : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0100_0000)
+    static var BreakBeforeRightSquareBracket : WriteOptions = WriteOptions(rawValue: 0b0000_0000_1000_0000)
+    static var BreakInsideSquareBrackets     : WriteOptions = WriteOptions(rawValue: 0b0000_0000_1100_0000)
+    static var BreakAfterLeftCurlyBracket    : WriteOptions = WriteOptions(rawValue: 0b0000_0001_0000_0000)
+    static var BreakBeforeRightCurlyBracket  : WriteOptions = WriteOptions(rawValue: 0b0000_0010_0000_0000)
+    static var BreakInsideCurlyBrackets      : WriteOptions = WriteOptions(rawValue: 0b0000_0011_0000_0000)
+    static var BreakAfterComma               : WriteOptions = WriteOptions(rawValue: 0b0000_0100_0000_0000)
+    static var BreakBetweenColonAndArray     : WriteOptions = WriteOptions(rawValue: 0b0000_1000_0000_0000)
+    static var BreakBetweenColonAndObject    : WriteOptions = WriteOptions(rawValue: 0b0001_0000_0000_0000)
 
   }
 
 }
 
-func ==(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> Bool { return lhs.value == rhs.value }
+func ==(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> Bool { return lhs.rawValue == rhs.rawValue }
 
 func &(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(lhs.value & rhs.value)
+  return JSONSerialization.WriteOptions.fromMask(lhs.rawValue & rhs.rawValue)
 }
 
 func |(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(lhs.value | rhs.value)
+  return JSONSerialization.WriteOptions.fromMask(lhs.rawValue | rhs.rawValue)
 }
 
 func ^(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(lhs.value ^ rhs.value)
+  return JSONSerialization.WriteOptions.fromMask(lhs.rawValue ^ rhs.rawValue)
 }
 
 prefix func ~(value:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(~value.value)
+  return JSONSerialization.WriteOptions.fromMask(~value.rawValue)
 }
 
 

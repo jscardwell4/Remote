@@ -11,25 +11,23 @@ import UIKit
 import MoonKit
 import Lumberjack
 
-@objc(BankCollectionZoomDelegate)
-protocol BankCollectionZoomDelegate: NSObjectProtocol {
+protocol BankCollectionZoomDelegate {
   func didDismissZoomView(BankCollectionZoom)
   func didDismissForEditingZoomView(BankCollectionZoom)
   func didDismissForDetailZoomView(BankCollectionZoom)
 }
 
-@objc(BankCollectionZoom)
 class BankCollectionZoom: UIView {
 
   class var LabelHeight: CGFloat { return 21.0 }
   class var ButtonSize: CGSize { return CGSize(width: 44.0, height: 44.0) }
 
-	var item: BankableModelObject? {
+	var item: BankDisplayItemModel? {
 		didSet {
-			nameLabel.text       = item?.name
-      image                = item?.preview
-			editButton.enabled   = item?.editable ?? false
-			detailButton.enabled = item?.dynamicType.isDetailable() ?? false
+//			nameLabel.text       = item?.name
+//      image                = item?.preview
+//			editButton.enabled   = item?.dynamicType.isEditable() ?? false
+//			detailButton.enabled = item?.dynamicType.isDetailable() ?? false
 		}
 	}
 

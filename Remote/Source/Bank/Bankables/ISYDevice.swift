@@ -96,6 +96,8 @@ class ISYDevice: NetworkDevice {
     }
   }
 
+//  override class func detailControllerType() -> BankDetailController.Protocol { return ISYDeviceDetailController.self }
+
 }
 
 extension ISYDevice: MSJSONExport {
@@ -116,13 +118,5 @@ extension ISYDevice: MSJSONExport {
       dictionary.compress()
       return dictionary
   }
-
-}
-
-extension ISYDevice: BankDisplayItemModel {
-
-  override var detailController: DetailControllerType? { return ISYDeviceDetailController(item: self, editing: false); }
-  override var editingController: DetailControllerType? { return ISYDeviceDetailController(item: self, editing: true); }
-  override var preview: UIImage? { return nil }
 
 }

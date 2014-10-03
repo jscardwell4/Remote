@@ -8,7 +8,6 @@
 //
 #import "RemoteElementEditingViewController_Private.h"
 #import "Button.h"
-#import "ImageView.h"
 #import "RemoteElementView.h"
 #import "SelectionViewController.h"
 #import "IconEditingViewController.h"
@@ -16,6 +15,7 @@
 #import "CommandEditingViewController.h"
 #import "LabelEditingViewController.h"
 #import "ControlStateImageSet.h"
+#import "Remote-Swift.h"
 
 #define kChildContainerFrame     CGRectMake(0, 129, 320, 332)
 #define USE_CURL_DOWN_TRANSITION NO

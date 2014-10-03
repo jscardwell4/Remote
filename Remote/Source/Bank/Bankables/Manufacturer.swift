@@ -42,6 +42,16 @@ class Manufacturer: BankableModelObject {
     }
   }
 
+  override class var label: String? { return "Manufacturers" }
+  override class var icon: UIImage? { return UIImage(named: "1022-factory") }
+
+  override class func isThumbnailable() -> Bool { return false }
+  override class func isDetailable()    -> Bool { return true  }
+  override class func isEditable()      -> Bool { return true  }
+  override class func isPreviewable()   -> Bool { return false }
+
+//  override class func detailControllerType() -> BankDetailController.Protocol { return ManufacturerDetailController.self }
+
 }
 
 extension Manufacturer: MSJSONExport {
@@ -57,24 +67,5 @@ extension Manufacturer: MSJSONExport {
 
     return dictionary
   }
-
-}
-
-extension Manufacturer: BankDisplayItem {
-
-  override class func label() -> String   { return "Manufacturers"                }
-  override class func icon()  -> UIImage? { return UIImage(named: "1022-factory") }
-
-  override class func isThumbnailable() -> Bool { return false }
-  override class func isDetailable()    -> Bool { return true  }
-  override class func isEditable()      -> Bool { return true  }
-  override class func isPreviewable()   -> Bool { return false }
-
-}
-
-extension Manufacturer: BankDisplayItemModel {
-
-  override var detailController: DetailControllerType? { return ManufacturerDetailController(item: self, editing: false) }
-  override var editingController: DetailControllerType? { return ManufacturerDetailController(item: self, editing: true) }
 
 }

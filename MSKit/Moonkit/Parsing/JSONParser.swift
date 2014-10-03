@@ -111,7 +111,7 @@ public class JSONParser: NSObject {
       }
 
       // Finally, set the pointer's memory to a new error object
-      pointer.memory = NSError(domain: JSONParserErrorDomain, code: code.toRaw(), userInfo: info)
+      pointer.memory = NSError(domain: JSONParserErrorDomain, code: code.rawValue, userInfo: info)
 
     }
 

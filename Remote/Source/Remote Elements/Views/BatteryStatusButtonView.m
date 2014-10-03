@@ -6,10 +6,8 @@
 // Copyright 2011 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementView_Private.h"
-#import "ImageView.h"
 #import "Button.h"
 #import "ControlStateImageSet.h"
-#import "ImageView.h"
 #import "Remote-Swift.h"
 
 @interface BatteryStatusButtonView ()

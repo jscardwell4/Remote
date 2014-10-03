@@ -27,7 +27,7 @@ class PresetDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init(item: BankableModelObject, editing: Bool) {
+  required init(item: BankDisplayItemModel, editing: Bool) {
     super.init(item: item, editing: editing)
     precondition(item is Preset, "we should have been given a preset")
 

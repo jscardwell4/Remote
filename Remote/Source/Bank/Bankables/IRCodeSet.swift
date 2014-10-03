@@ -16,7 +16,7 @@ class IRCodeSet: BankableModelCategory {
   @NSManaged var codes: NSSet?
   @NSManaged var manufacturer: Manufacturer?
 
-  override var items: [BankableModelObject] { return (codes?.allObjects ?? []) as [IRCode] }
+//  override var items: [BankDisplayItemModel] { return (codes?.allObjects ?? []) as [IRCode] }
 
   /**
   updateWithData:

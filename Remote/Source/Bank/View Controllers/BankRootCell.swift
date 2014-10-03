@@ -9,21 +9,20 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(BankRootCell)
 class BankRootCell: UITableViewCell {
 
-  var bankableModelClassName: String? {
-    didSet {
-      if let name = bankableModelClassName {
-        if let modelClass = NSClassFromString(name) as? BankableModelObject.Type {
-          bankableModelClass = modelClass
-        }
-      }
-    }
-  }
+//  var bankableModelClassName: String? {
+//    didSet {
+//      if let name = bankableModelClassName {
+//        if let modelClass = NSClassFromString(name) as? BankableModelObject.Type {
+//          bankableModelClass = modelClass
+//        }
+//      }
+//    }
+//  }
 
-  var bankableModelClass: BankDisplayItem.Protocol? {
-    didSet {
+//  var bankableModelClass: BankRootCategory.Protocol? {
+//    didSet {
 //      if let model = bankableModelClass {
 //        if let image = model.icon?() {
 //          icon.image = image
@@ -35,23 +34,23 @@ class BankRootCell: UITableViewCell {
 //        icon.image = nil
 //        label.text = nil
 //      }
-    }
-  }
+//    }
+//  }
 
-  private let icon: UIImageView = {
+  private let icon: UIImageView! = {
     let view = UIImageView.newForAutolayout()
     view.constrainWithFormat("self.width = self.height")
     view.contentMode = .ScaleAspectFit
     return view
   }()
 
-  private let label: UILabel = {
+  private let label: UILabel! = {
     let view = UILabel.newForAutolayout()
     view.font = Bank.infoFont
     return view
   }()
 
-  private let chevron: UIImageView = {
+  private let chevron: UIImageView! = {
     let view = UIImageView.newForAutolayout()
     view.constrainWithFormat("self.width = self.height")
     view.image = UIImage(named: "766-arrow-right")
@@ -78,7 +77,7 @@ class BankRootCell: UITableViewCell {
   :param: style UITableViewCellStyle
   :param: reuseIdentifier String?
   */
-  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     contentView.addSubview(icon)

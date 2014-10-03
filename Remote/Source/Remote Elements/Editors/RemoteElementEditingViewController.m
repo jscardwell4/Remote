@@ -12,6 +12,8 @@
 #import "ViewDecorator.h"
 #import "RemoteElementView.h"
 #import "StoryboardProxy.h"
+#import "CoreDataManager.h"
+#import "Constraint.h"
 #import "REBackgroundEditingViewController.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;

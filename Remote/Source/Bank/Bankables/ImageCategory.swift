@@ -15,24 +15,24 @@ class ImageCategory: BankableModelCategory {
 
   @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var primitiveParentCategory: ImageCategory?
-  override var parentCategory: BankDisplayItemCategory? {
-    get {
-      willAccessValueForKey("parentCategory")
-      let category = primitiveParentCategory
-      didAccessValueForKey("parentCategory")
-      return category
-    }
-    set {
-      willChangeValueForKey("parentCategory")
-      primitiveParentCategory = newValue as? ImageCategory
-      didChangeValueForKey("parentCategory")
-    }
-  }
+//  override var parentCategory: BankDisplayItemCategory? {
+//    get {
+//      willAccessValueForKey("parentCategory")
+//      let category = primitiveParentCategory
+//      didAccessValueForKey("parentCategory")
+//      return category
+//    }
+//    set {
+//      willChangeValueForKey("parentCategory")
+//      primitiveParentCategory = newValue as? ImageCategory
+//      didChangeValueForKey("parentCategory")
+//    }
+//  }
   @NSManaged var images: NSSet?
 
-  override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [ImageCategory] }
+//  override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [ImageCategory] }
 
-  override var items: [BankableModelObject] { return (images?.allObjects ?? []) as [Image] }
+//  override var items: [BankDisplayItemModel] { return (images?.allObjects ?? []) as [Image] }
 
   /**
   updateWithData:

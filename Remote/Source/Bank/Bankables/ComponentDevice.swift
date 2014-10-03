@@ -60,7 +60,7 @@ class ComponentDevice: BankableModelObject {
 
   :returns: AnyObject!
   */
-  override func objectForKeyedSubscript(name: String!) -> AnyObject! {
+  subscript(name: String) -> AnyObject! {
     return (codes.allObjects as [IRCode]).filter{$0.name == name}.first
   }
 
@@ -74,20 +74,30 @@ class ComponentDevice: BankableModelObject {
 
     port = (data["port"] as? NSNumber)?.shortValue
       ?? port
-    onCommand = Command.importObjectFromData(data["on-command"] as? NSDictionary, context: managedObjectContext)
+    onCommand = Command.importObjectFromData(data["on-command"] as? NSDictionary, context: managedObjectContext!)
       ?? onCommand
-    offCommand = Command.importObjectFromData(data["off-command"] as? NSDictionary, context: managedObjectContext)
+    offCommand = Command.importObjectFromData(data["off-command"] as? NSDictionary, context: managedObjectContext!)
       ?? offCommand
-    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary, context: managedObjectContext)
+    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary, context: managedObjectContext!)
       ?? manufacturer
-    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary, context: managedObjectContext)
+    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary, context: managedObjectContext!)
       ?? networkDevice
 
-    if let newCodes = IRCode.importObjectsFromData(data["codes"], context: managedObjectContext) {
+    if let newCodes = IRCode.importObjectsFromData(data["codes"], context: managedObjectContext!) {
       let mutableCodes: NSMutableSet = mutableSetValueForKey("codes") ?? NSMutableSet()
       mutableCodes.addObjectsFromArray(newCodes)
     }
   }
+
+  override class var label: String? { return "Component Devices" }
+  override class var icon: UIImage? { return UIImage(named: "969-television") }
+
+  override class func isThumbnailable() -> Bool { return false }
+  override class func isDetailable()    -> Bool { return true  }
+  override class func isEditable()      -> Bool { return true  }
+  override class func isPreviewable()   -> Bool { return false }
+
+//  override class func detailControllerType() -> BankDetailController.Protocol { return ComponentDeviceDetailController.self }
 
 }
 
@@ -113,24 +123,5 @@ extension ComponentDevice: MSJSONExport {
     return dictionary
 
   }
-
-}
-
-extension ComponentDevice: BankDisplayItem {
-
-  class func label() -> String   { return "Component Devices"              }
-  class func icon()  -> UIImage? { return UIImage(named: "969-television") }
-
-  class func isThumbnailable() -> Bool { return false }
-  class func isDetailable()    -> Bool { return true  }
-  class func isEditable()      -> Bool { return true  }
-  class func isPreviewable()   -> Bool { return false }
-
-}
-
-extension ComponentDevice: BankDisplayItemModel {
-
-  override var detailController: DetailControllerType { return ComponentDeviceDetailController(item: self, editing: false) }
-  override var editingController: DetailControllerType { return ComponentDeviceDetailController(item: self, editing: true) }
 
 }

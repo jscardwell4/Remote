@@ -7,7 +7,6 @@
 //
 #import "ControlStateImageSet.h"
 #import "ControlStateColorSet.h"
-#import "ImageView.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 #import "Remote-Swift.h"
@@ -74,13 +73,16 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
           Image * image = [Image importObjectFromData:imageData context:moc];
           UIColor * color = colorFromImportValue(obj[@"color"]);
 
+          //FIXME: Disabled
+/*
           if (image) {
             ImageView *imageView = [ImageView imageViewWithImage:image color:color];
 
             if (imageView)
               self[key] = imageView;
           }
-        }
+
+*/        }
       }
     }
   }];

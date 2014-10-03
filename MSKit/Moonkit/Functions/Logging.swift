@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Lumberjack
 
 var msLogLevel = LOG_LEVEL_ERROR
 
@@ -20,14 +21,14 @@ MSLogMessage:flag:function:line:level:context:
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func MSLogMessage(message: AssertString,
+public func MSLogMessage(message: String,
                     flag: Int32,
                 function: StaticString = __FUNCTION__,
-                    line: Int = __LINE__,
+                    line: Int32 = __LINE__,
                    level: Int32 = msLogLevel,
                  context: Int32 = LOG_CONTEXT_DEFAULT)
 {
-  MSLog.log(false, level: level, flag: flag, context: context, function: function.stringValue, message: message.stringValue)
+  MSLog.log(false, level: level, flag: flag, context: context, function: function.stringValue, message: message)
 }
 
 /**
@@ -39,9 +40,9 @@ MSLogDebug:function:line:level:context:
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func MSLogDebug(message: AssertString,
+public func MSLogDebug(message: String,
               function: StaticString = __FUNCTION__,
-                  line: Int = __LINE__,
+                  line: Int32 = __LINE__,
                  level: Int32 = msLogLevel,
                context: Int32 = LOG_CONTEXT_DEFAULT)
 {
@@ -57,9 +58,9 @@ MSLogError:function:line:level:context:
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func MSLogError(message: AssertString,
+public func MSLogError(message: String,
               function: StaticString = __FUNCTION__,
-                  line: Int = __LINE__,
+                  line: Int32 = __LINE__,
                  level: Int32 = msLogLevel,
                context: Int32 = LOG_CONTEXT_DEFAULT)
 {
@@ -75,9 +76,9 @@ MSLogInfo:function:line:level:context:
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func MSLogInfo(message: AssertString,
+public func MSLogInfo(message: String,
              function: StaticString = __FUNCTION__,
-                 line: Int = __LINE__,
+                 line: Int32 = __LINE__,
                 level: Int32 = msLogLevel,
               context: Int32 = LOG_CONTEXT_DEFAULT)
 {
@@ -93,9 +94,9 @@ MSLogWarn:function:line:level:context:
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func MSLogWarn(message: AssertString,
+public func MSLogWarn(message: String,
              function: StaticString = __FUNCTION__,
-                 line: Int = __LINE__,
+                 line: Int32 = __LINE__,
                 level: Int32 = msLogLevel,
               context: Int32 = LOG_CONTEXT_DEFAULT)
 {
@@ -111,9 +112,9 @@ MSLogVerbose:function:line:level:context:
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
-public func MSLogVerbose(message: AssertString,
+public func MSLogVerbose(message: String,
                 function: StaticString = __FUNCTION__,
-                    line: Int = __LINE__,
+                    line: Int32 = __LINE__,
                    level: Int32 = msLogLevel,
                  context: Int32 = LOG_CONTEXT_DEFAULT)
 {
@@ -175,10 +176,10 @@ MSHandleError:message:function:line:
 public func MSHandleError(error: NSError?,
                   message: String? = nil,
                  function: StaticString = __FUNCTION__,
-                     line: Int = __LINE__) -> Bool
+                     line: Int32 = __LINE__) -> Bool
 {
   if error == nil { return false }
-  let logMessage = AssertString("-Error- \(message ?? String())\n\(detailedDescriptionForError(error!, depth: 0))")
+  let logMessage = String("-Error- \(message ?? String())\n\(detailedDescriptionForError(error!, depth: 0))")
   MSLogError(logMessage, function: function, line: line)
   return true
 }
