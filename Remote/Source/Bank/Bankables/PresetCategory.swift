@@ -31,7 +31,10 @@ class PresetCategory: BankableModelCategory {
   @NSManaged var presets: NSSet?
 
   override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [PresetCategory] }
-
   override var items: [BankDisplayItemModel] { return (presets?.allObjects ?? []) as [Preset] }
+  override var thumbnailableItems: Bool { return Preset.isThumbnailable() }
+  override var previewableItems:   Bool { return Preset.isPreviewable()   }
+  override var detailableItems:    Bool { return Preset.isDetailable()    }
+  override var editableItems:      Bool { return Preset.isEditable()      }
 
 }

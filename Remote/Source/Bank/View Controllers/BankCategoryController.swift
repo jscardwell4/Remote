@@ -86,7 +86,7 @@ class BankCategoryController: UIViewController, BankController, UITableViewDataS
     tableView = {
       let tableView = UITableView.newForAutolayout()
       tableView.backgroundColor = UIColor.whiteColor()
-      tableView.registerClass(BankCategoryCell.self, forCellReuseIdentifier: CategoryCellIdentifier)
+      tableView.registerClass(BankCollectionCategoryCell.self, forCellReuseIdentifier: CategoryCellIdentifier)
       tableView.separatorStyle = .None
       tableView.rowHeight = CategoryCellHeight
       tableView.delegate = self
@@ -218,7 +218,7 @@ extension BankCategoryController: UITableViewDataSource {
   :returns: UITableViewCell
   */
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(CategoryCellIdentifier, forIndexPath: indexPath) as BankCategoryCell
+    let cell = tableView.dequeueReusableCellWithIdentifier(CategoryCellIdentifier, forIndexPath: indexPath) as BankCollectionCategoryCell
 //    let category = subcategories[indexPath.row]
 //    cell.labelText = category.name
     return cell

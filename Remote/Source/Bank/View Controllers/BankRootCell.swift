@@ -11,40 +11,23 @@ import MoonKit
 
 class BankRootCell: UITableViewCell {
 
-//  var bankableModelClassName: String? {
-//    didSet {
-//      if let name = bankableModelClassName {
-//        if let modelClass = NSClassFromString(name) as? BankableModelObject.Type {
-//          bankableModelClass = modelClass
-//        }
-//      }
-//    }
-//  }
+  var rootCategory: Bank.RootCategory? {
+    didSet {
+      if let category = rootCategory {
+        icon.image = category.icon
+        label.text = category.label
+      }
+    }
+  }
 
-//  var bankableModelClass: BankRootCategory.Protocol? {
-//    didSet {
-//      if let model = bankableModelClass {
-//        if let image = model.icon?() {
-//          icon.image = image
-//        } else { icon.image = nil }
-//        if let text = model.label?() {
-//          label.text = text
-//        } else { label.text = nil }
-//      } else {
-//        icon.image = nil
-//        label.text = nil
-//      }
-//    }
-//  }
-
-  private let icon: UIImageView! = {
+  private let icon: UIImageView = {
     let view = UIImageView.newForAutolayout()
     view.constrainWithFormat("self.width = self.height")
     view.contentMode = .ScaleAspectFit
     return view
   }()
 
-  private let label: UILabel! = {
+  private let label: UILabel = {
     let view = UILabel.newForAutolayout()
     view.font = Bank.infoFont
     return view

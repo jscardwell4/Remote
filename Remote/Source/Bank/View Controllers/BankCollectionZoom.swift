@@ -24,10 +24,10 @@ class BankCollectionZoom: UIView {
 
 	var item: BankDisplayItemModel? {
 		didSet {
-//			nameLabel.text       = item?.name
-//      image                = item?.preview
-//			editButton.enabled   = item?.dynamicType.isEditable() ?? false
-//			detailButton.enabled = item?.dynamicType.isDetailable() ?? false
+			nameLabel.text       = item?.name
+      image                = item?.preview
+			editButton.enabled   = item?.editable ?? false
+			detailButton.enabled = item?.detailable ?? false
 		}
 	}
 

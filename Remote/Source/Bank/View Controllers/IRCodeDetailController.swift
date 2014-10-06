@@ -30,7 +30,7 @@ class IRCodeDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init(item: BankDisplayItemModel, editing: Bool) {
+  required init?(item: BankDisplayItemModel, editing: Bool) {
     super.init(item: item, editing: editing)
     precondition(item is IRCode, "we should have been given an ircode")
 
@@ -49,7 +49,7 @@ class IRCodeDetailController: BankItemDetailController {
         else if let manufacturerName = c.info as? String {
           newManufacturer = self.manufacturers.filter{$0.name == manufacturerName}.first
           if newManufacturer == nil &&  manufacturerName != "No Manufacturer" {
-              newManufacturer = Manufacturer.manufacturerWithName(manufacturerName, context: self.irCode.managedObjectContext)
+              newManufacturer = Manufacturer.manufacturerWithName(manufacturerName, context: self.irCode.managedObjectContext!)
               self.manufacturers.append(newManufacturer!)
               self.manufacturers.sort{$0.0.name < $0.1.name}
           }
@@ -162,7 +162,7 @@ class IRCodeDetailController: BankItemDetailController {
 
   :param: style UITableViewStyle
   */
-  override init(style: UITableViewStyle) { super.init(style: style) }
+  override init?(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   init:

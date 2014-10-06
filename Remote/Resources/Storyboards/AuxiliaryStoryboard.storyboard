@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
     </dependencies>
     <scenes>
         <!--Icon Selection View Controller-->
@@ -169,7 +168,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="jKI-dY-ndz">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="jKI-dY-ndz">
                                 <rect key="frame" x="-160" y="-284" width="640" height="1136"/>
                             </imageView>
                         </subviews>
@@ -1171,7 +1170,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="s8t-yT-hf7">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="s8t-yT-hf7">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="1136"/>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="c5P-DR-PaI">
@@ -1581,7 +1580,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="At3-wb-2X1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Blueprint-640x1136-iPhone5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="At3-wb-2X1">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="1136"/>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="1q2-F2-4Qf">
@@ -1849,7 +1848,7 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ahf-ah-LNm">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ahf-ah-LNm">
                                         <rect key="frame" x="63" y="9" width="218" height="29"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.01" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -1873,7 +1872,7 @@
                                             <action selector="launchIconSelection:" destination="dK2-I9-trH" eventType="touchUpInside" id="yje-W8-PSL"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K8G-Ua-dOu">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K8G-Ua-dOu">
                                         <rect key="frame" x="282" y="20" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="18" id="8PO-AR-Bcj"/>

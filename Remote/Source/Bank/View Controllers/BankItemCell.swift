@@ -27,18 +27,6 @@ class BankItemCell: UITableViewCell {
 		case Table     = "BankItemDetailTableCell"
 	}
 
-/*
-	/**
-	isValidIdentifier:
-
-	:param: identifier String
-
-	:returns: Bool
-	*/
-	class func isValidIdentifier(identifier: String) -> Bool { return Identifier.fromRaw(identifier) != nil }
-
-*/
-
   class var PickerHeight: CGFloat { return 162.0 }
 
 	/**
@@ -271,7 +259,6 @@ class BankItemCell: UITableViewCell {
 
       else if let infoImageView = info as? UIImageView {
         infoImageView.contentMode = .ScaleAspectFit
-        infoImageView.clipsToBounds = true
         cell.infoImageView = infoImageView
       }
 
@@ -661,7 +648,7 @@ extension BankItemCell: UITableViewDataSource {
   :returns: CGFloat
   */
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-  	return BankItemDetailController.DefaultRowHeight
+    return BankItemDetailController.DefaultRowHeight
   }
 
   /**

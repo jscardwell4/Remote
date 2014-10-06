@@ -19,6 +19,7 @@ class BankRootController: UITableViewController, BankController {
   override func loadView() {
 
     title = "Bank"
+    rootCategories = Bank.rootCategories
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
@@ -32,6 +33,8 @@ class BankRootController: UITableViewController, BankController {
     toolbarItems = Bank.toolbarItemsForController(self)
 
   }
+
+  var rootCategories: [Bank.RootCategory] = []
 
   /**
   viewWillAppear:
@@ -67,6 +70,10 @@ extension BankRootController: UITableViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let rootCategory = rootCategories[indexPath.row]
+    let category = BankSurrogateCategory(title: rootCategory.label, subcategories: rootCategory.categories)
+    let collectionController = BankCollectionController(category: category)!
+    navigationController?.pushViewController(collectionController, animated: true)
 //    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
 //      let vc = bankableModelClass.isCategorized()
 //                 ? BankCategoryController(itemClass: bankableModelClass)
@@ -99,7 +106,7 @@ extension BankRootController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 0 } // RegisteredClasses.count }
+  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return rootCategories.count }
 
 
   /**
@@ -112,9 +119,7 @@ extension BankRootController: UITableViewDataSource {
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as BankRootCell
-//    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
-//      cell.bankableModelClass = bankableModelClass
-//    }
+    cell.rootCategory = rootCategories[indexPath.row]
     return cell
   }
 

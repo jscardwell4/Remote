@@ -136,19 +136,28 @@ public func enumerateMatches(pattern: String,
   }
 }
 
+/** predicates */
+prefix operator ∀ {}
+public prefix func ∀(predicate: String) -> NSPredicate! {
+  return NSPredicate(format: predicate)
+}
+public prefix func ∀(predicate: (String, [AnyObject]?)) -> NSPredicate! {
+  return NSPredicate(format: predicate.0, argumentArray: predicate.1)
+}
+
 /** pattern matching operator */
+public func ~=(lhs: String, rhs: NSRegularExpression) -> Bool { return rhs ~= lhs }
 public func ~=(lhs: NSRegularExpression, rhs: String) -> Bool {
   return lhs.numberOfMatchesInString(rhs,
                              options: nil,
                                range: NSRange(location: 0,  length: (rhs as NSString).length)) > 0
 }
-//public func ~=(lhs: String, rhs: NSRegularExpression) -> Bool { return rhs ~= lhs }
 
 infix operator /~ { associativity left precedence 140 }
 infix operator /≈ { associativity left precedence 140 }
 
 /** func for an operator that returns the first matching substring for a pattern */
-//public func /~(lhs: String, rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
+public func /~(lhs: String, rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
 public func /~(lhs: NSRegularExpression, rhs: String) -> String? {
   var matchString: String?
   let range = NSRange(location: 0, length: rhs.length)
@@ -161,7 +170,7 @@ public func /~(lhs: NSRegularExpression, rhs: String) -> String? {
 }
 
 /** func for an operator that returns an array of matching substrings for a pattern */
-//public func /≈(lhs: String, rhs: NSRegularExpression) -> [String] { return rhs /≈ lhs }
+public func /≈(lhs: String, rhs: NSRegularExpression) -> [String] { return rhs /≈ lhs }
 public func /≈(lhs: NSRegularExpression, rhs: String) -> [String] {
   var substrings: [String] = []
   let range = NSRange(location: 0, length: rhs.length)
@@ -182,11 +191,11 @@ infix operator /…≈ { associativity left precedence 140 }
 //infix operator |≈| { associativity left precedence 140 }
 
 /** func for an operator that returns the range of the first match in a string for a pattern */
-//public func /…~(lhs: String, rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
+public func /…~(lhs: String, rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
 public func /…~(lhs: NSRegularExpression, rhs: String) -> Range<Int>? { return lhs /…~ (rhs, 0) }
 
 /** func for an operator that returns the range of the specified capture for the first match in a string for a pattern */
-//public func /…~(lhs: (String, Int), rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
+public func /…~(lhs: (String, Int), rhs: NSRegularExpression) -> Range<Int>? { return rhs /…~ lhs }
 public func /…~(lhs: NSRegularExpression, rhs: (String, Int)) -> Range<Int>? {
   var range: Range<Int>?
   if let match = lhs.firstMatchInString(rhs.0, options: nil, range: NSRange(location: 0, length: rhs.0.length)) {
@@ -201,11 +210,11 @@ public func /…~(lhs: NSRegularExpression, rhs: (String, Int)) -> Range<Int>? {
 }
 
 /** func for an operator that returns the ranges of all matches in a string for a pattern */
-//public func /…≈(lhs: String, rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
+public func /…≈(lhs: String, rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
 public func /…≈(lhs: NSRegularExpression, rhs: String) -> [Range<Int>?] { return lhs /…≈ (rhs, 0) }
 
 /** func for an operator that returns the ranges of the specified capture for all matches in a string for a pattern */
-//public func /…≈(lhs: (String, Int), rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
+public func /…≈(lhs: (String, Int), rhs: NSRegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
 public func /…≈(lhs: NSRegularExpression, rhs: (String, Int)) -> [Range<Int>?] {
   var ranges: [Range<Int>?] = []
   if let matches = lhs.matchesInString(rhs.0, options: nil, range: NSRange(location: 0, length: rhs.0.length)) as? [NSTextCheckingResult] {
@@ -225,7 +234,7 @@ public func /…≈(lhs: NSRegularExpression, rhs: (String, Int)) -> [Range<Int>
 
 
 /** func for an operator that returns the specified capture for the first match in a string for a pattern */
-//public func /~(lhs: (String, Int), rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
+public func /~(lhs: (String, Int), rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
 public func /~(lhs: NSRegularExpression, rhs: (String, Int)) -> String? {
   let captures = rhs.0.matchFirst(lhs)
   return rhs.1 >= 0 && rhs.1 <= lhs.numberOfCaptureGroups ? captures[rhs.1] : nil

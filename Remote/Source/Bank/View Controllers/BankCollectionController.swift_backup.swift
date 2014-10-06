@@ -12,17 +12,23 @@ import MoonKit
 
 var msLogLevel = LOG_LEVEL_DEBUG
 
-private let IndicatorImage             = UIImage(named:"1040-checkmark-toolbar")!
-private let IndicatorImageSelected     = UIImage(named:"1040-checkmark-toolbar-selected")!
+private let ListSegmentImage           = UIImage(named:"1073-grid-1") // 1073-grid-1399-list1
+private let ThumbnailSegmentImage      = UIImage(named:"1076-grid-4") // 1076-grid-4822-photo-2
+private let IndicatorImage             = UIImage(named:"1040-checkmark")
+private let IndicatorImageSelected     = UIImage(named:"1040-checkmark-selected")
 private let TextFieldTextColor         = UIColor(RGBAHexString:"#9FA0A4FF")
-private let ItemCellIdentifier         = "ItemCell"
-private let CategoryCellIdentifier     = "CategoryCell"
+private let CellIdentifier             = "Cell"
 private let HeaderIdentifier           = "Header"
 
 @objc(BankCollectionController)
 class BankCollectionController: UICollectionViewController, BankController {
 
-  var category: BankDisplayItemCategory!
+//  let collectionItemsController: NSFetchedResultsController?
+//  let collectionItemClass: BankDisplayItemModel.Protocol
+  var collectionItems: [BankDisplayItemModel]?
+
+  private var updatesBlock: NSBlockOperation?
+  private var hiddenSections = [Int]()
 
   private lazy var zoomView: BankCollectionZoom? = BankCollectionZoom(frame: self.view.bounds, delegate: self)
 
@@ -69,10 +75,6 @@ class BankCollectionController: UICollectionViewController, BankController {
       navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
 
       // Update visible cells
-//      if let visibleCells = collectionView?.visibleCells() as? [UICollectionViewCell] {
-//        let itemCells = visibleCells.filter{$0 is BankCollectionItemCell}
-//        for itemCell in itemCells as [BankCollectionItemCell] { itemCell.indicatorImage = cellIndicatorImage }
-//      }
       collectionView?.setValue(cellIndicatorImage, forKeyPath: "visibleCells.indicatorImage")
 
     }
@@ -80,9 +82,42 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   private var useListView = true
 
-  init?(category: BankDisplayItemCategory) {
+  /**
+  initWithItemClass:
+
+  :param: collectionItemClass BankableModel.Type
+  */
+  init?(itemClass: BankDisplayItemModel.Type) {
+//    collectionItemClass = itemClass
     super.init(collectionViewLayout: BankCollectionLayout())
-    self.category = category
+//    collectionItemsController = collectionItemClass.allItems()
+//    collectionItemsController?.delegate = self
+//    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+  }
+
+  /**
+  initWithItems:
+
+  :param: items NSFetchedResultsController
+  */
+//  init(controller: NSFetchedResultsController) {
+//    collectionItemClass = NSClassFromString(controller.fetchRequest.entity.managedObjectClassName) as BankDisplayItemModel.Type
+//    super.init(collectionViewLayout: BankCollectionLayout())
+//    collectionItemsController = controller
+//    collectionItemsController?.delegate = self
+//    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+//  }
+
+  /**
+  initWithItems:
+
+  :param: items [BankDisplayItemModel]
+  */
+  init?(items: [BankDisplayItemModel]) {
+//    collectionItemClass = items[0].dynamicType.self
+    super.init(collectionViewLayout: BankCollectionLayout())
+    collectionItems = items
+    layout.includeSectionHeaders = false
   }
 
   /**
@@ -90,37 +125,44 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) {
+//    let collectionItemClassName = aDecoder.decodeObjectForKey("collectionItemClass") as String
+//    collectionItemClass = NSClassFromString(collectionItemClassName) as BankDisplayItemModel.Protocol
+//    collectionItemsController = collectionItemClass.allItems()
+    super.init(coder: aDecoder)
+//    collectionItemsController?.delegate = self
+//    if !collectionItemClass.isCategorized() { layout.includeSectionHeaders = false }
+  }
 
   /**
   didMoveToParentViewController:
 
   :param: parent UIViewController?
   */
-  /*
   override func didMoveToParentViewController(parent: UIViewController?) {
     super.didMoveToParentViewController(parent)
     if parent != nil { layout.includeSectionHeaders = false }
   }
-  */
 
   /**
   loadView
   */
   override func loadView() {
 
-    title = category.title
-    layout.viewingMode = .List
+//    if collectionItems != nil { title = collectionItems![0].category.name }
+//    else { title = collectionItemClass.directoryLabel() }
 
     collectionView = {
+
+      // Create the collection layout
+      self.layout.viewingMode = .List
 
       // Create the collection view
       let collectionView = UICollectionView(frame: UIScreen.mainScreen().bounds, collectionViewLayout: self.layout)
       collectionView?.backgroundColor = Bank.backgroundColor
 
       // Register header and cell classes
-      collectionView?.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: CategoryCellIdentifier)
-      collectionView?.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: ItemCellIdentifier)
+      collectionView?.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: CellIdentifier)
       collectionView?.registerClass(BankCollectionHeader.self,
         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                withReuseIdentifier: HeaderIdentifier)
@@ -133,20 +175,17 @@ class BankCollectionController: UICollectionViewController, BankController {
 
       var items = Bank.toolbarItemsForController(self)
 
-      if self.category.thumbnailableItems {
-        // Create the toolbar items
-        if let displayOptions = UISegmentedControl(items: [UIImage(named:"1073-grid-1-toolbar")!,
-                                                           UIImage(named:"1076-grid-4-toolbar")!])
-        {
-          displayOptions.selectedSegmentIndex = 0
-          displayOptions.addTarget(self, action: "segmentedControlValueDidChange:", forControlEvents: .ValueChanged)
-
-          let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
-
-          items.insert(UIBarButtonItem.flexibleSpace(), atIndex: 4)
-          items.insert(displayOptionsItem, atIndex: 4)
-        }
-      }
+//      if self.collectionItemClass.isThumbnailable() {
+//        // Create the toolbar items
+//        let displayOptions = UISegmentedControl(items: [ListSegmentImage, ThumbnailSegmentImage])
+//        displayOptions.selectedSegmentIndex = 0
+//        displayOptions.addTarget(self, action: "segmentedControlValueDidChange:", forControlEvents: .ValueChanged)
+//
+//        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+//
+//        items.insert(UIBarButtonItem.flexibleSpace(), atIndex: 4)
+//        items.insert(displayOptionsItem, atIndex: 4)
+//      }
 
       return items
       }()
@@ -278,7 +317,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: file String
   */
   private func exportSelectionToFile(file: String) {
-    ((exportSelection as NSArray).JSONString as NSString).writeToFile(file as NSString)
+//    ((exportSelection as NSArray).JSONString as NSString).writeToFile(file as NSString)
   }
 
   /**
@@ -299,7 +338,11 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: item BankDisplayItemModel
   */
   func deleteItem(item: BankDisplayItemModel) {
-    if item.editable { item.delete() }
+//    if item.dynamicType.isEditable() {
+//      if let model = item as? BankableModelObject {
+//        model.managedObjectContext.deleteObject(model)
+//      }
+//    }
   }
 
   /**
@@ -318,6 +361,17 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   func detailItem(item: BankDisplayItemModel) {
 //    navigationController?.pushViewController(item.detailController!, animated: true)
+  }
+
+  /**
+  toggleItemsForSection:
+
+  :param: section Int
+  */
+  func toggleItemsForSection(section: Int) {
+    if hiddenSections ∋ section { hiddenSections = hiddenSections.filter{$0 != section} }
+    else                        { hiddenSections.append(section) }
+    collectionView?.reloadSections(NSIndexSet(index: section))
   }
 
   /**
@@ -454,9 +508,9 @@ extension BankCollectionController {
 //            if let cell = collectionView!.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
 //              cell.indicatorImage = IndicatorImageSelected
 //            }
-//
+//            
 //          }
-//
+//        
 //        }
 //
 //      }
@@ -513,7 +567,15 @@ extension BankCollectionController: UICollectionViewDataSource {
   :returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return section == 0 ? category.subcategories.count  : category.items.count
+    var count = 0
+//    if let controller = collectionItemsController {
+//      if let sections = controller.sections as? [NSFetchedResultsSectionInfo] {
+//        if sections.count > section { count = sections[section].numberOfObjects }
+//      }
+//    } else if collectionItems != nil {
+//      count = collectionItems!.count
+//    }
+    return count
   }
 
   /**
@@ -527,22 +589,17 @@ extension BankCollectionController: UICollectionViewDataSource {
   override func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
   {
-    switch indexPath.section {
-      case 0:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CategoryCellIdentifier,
-                                                            forIndexPath: indexPath) as BankCollectionCategoryCell
-        let subcategory = category.subcategories[indexPath.row]
-        cell.labelText = subcategory.title
-        return cell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier,
+                                                        forIndexPath: indexPath) as BankCollectionItemCell
+//    if let controller = collectionItemsController {
+//      cell.item = (controller[indexPath] as BankDisplayItemModel)
+//    } else if let items = collectionItems {
+//      cell.item = items[indexPath.row]
+//    }
+//    cell.detailActionHandler   = {[unowned self] (cell) in self.detailItem(cell.item!)}
+//    cell.previewActionHandler  = {[unowned self] (cell) in self.zoomItem(cell.item!)}
 
-      default:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ItemCellIdentifier,
-                                                            forIndexPath: indexPath) as BankCollectionItemCell
-        let item = category.items[indexPath.row]
-        cell.item = item
-        cell.previewActionHandler = {self.zoomItem(item)}
-        return cell
-    }
+    return cell
   }
 
   /**
@@ -552,7 +609,54 @@ extension BankCollectionController: UICollectionViewDataSource {
 
   :returns: Int
   */
-  override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int { return 2 }
+  override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+//    if let controller = collectionItemsController {
+//      return (controller.sections as [NSFetchedResultsSectionInfo]).count
+//    } else if collectionItems != nil {
+//      return 1
+//    } else {
+      return 0
+//    }
+  }
+
+  /**
+  collectionView:viewForSupplementaryElementOfKind:atIndexPath:
+
+  :param: collectionView UICollectionView
+  :param: kind String
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionReusableView
+  */
+  override func        collectionView(collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+                          atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView
+  {
+    var view: UICollectionReusableView?
+
+    if kind == UICollectionElementKindSectionHeader { // && collectionItemsController != nil {
+      let header =
+        collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+                                          withReuseIdentifier: HeaderIdentifier,
+                                                 forIndexPath: indexPath) as BankCollectionHeader
+      let section = indexPath.section
+      // FIXME: Crash when loading component device codes
+//      if let sections = collectionItemsController!.sections as? [NSFetchedResultsSectionInfo] {
+//        if sections.count > section {
+//          let sectionInfo = sections[section]
+//          header.title = sectionInfo.name
+//          header.toggleActionHandler = {[unowned self] _ in
+//            (self.collectionViewLayout! as BankCollectionLayout).toggleItemsForSection(section)
+//          }
+//        }
+//      }
+//      header.title = (collectionItemsController!.sections as [NSFetchedResultsSectionInfo])[indexPath.section].name
+
+      view = header
+    }
+
+    return view ?? UICollectionReusableView()
+  }
 
 }
 
@@ -574,11 +678,10 @@ extension BankCollectionController: UICollectionViewDelegate {
             forItemAtIndexPath indexPath: NSIndexPath)
   {
 
-    if let bankCell = cell as? BankCollectionItemCell {
-      bankCell.indicatorImage = (exportSelectionMode
-                                  ? (contains(exportSelection){bankCell.item!.isEqual($0)} ? IndicatorImageSelected : IndicatorImage)
-                                  : nil)
-    }
+    let bankCell = cell as BankCollectionItemCell
+    bankCell.indicatorImage = (exportSelectionMode
+                                ? (contains(exportSelection){bankCell.item!.isEqual($0)} ? IndicatorImageSelected : IndicatorImage)
+                                : nil)
   }
 
   /**
@@ -589,14 +692,12 @@ extension BankCollectionController: UICollectionViewDelegate {
   */
   override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
 
-    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
+    let cell = collectionView.cellForItemAtIndexPath(indexPath) as BankCollectionItemCell
 
-      // Check if we are selecting items to export
-      if exportSelectionMode {
-        exportSelection = exportSelection.filter{!cell.item!.isEqual($0)}  // Remove from our collection of items to export
-        cell.indicatorImage = IndicatorImage                               // Change the indicator to normal
-      }
-
+    // Check if we are selecting items to export
+    if exportSelectionMode {
+      exportSelection = exportSelection.filter{!cell.item!.isEqual($0)}  // Remove from our collection of items to export
+      cell.indicatorImage = IndicatorImage                       // Change the indicator to normal
     }
 
   }
@@ -609,27 +710,93 @@ extension BankCollectionController: UICollectionViewDelegate {
   */
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
-    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
+    let cell = collectionView.cellForItemAtIndexPath(indexPath) as BankCollectionItemCell
 
-      // Check if we are selecting items to export
-      if exportSelectionMode {
-        exportSelection.append(cell.item!)             // Add to our collection of items to export
-        cell.indicatorImage = IndicatorImageSelected  // Change indicator to selected
-      }
-
-      // Otherwise we push the item's detail view controller
-      //else { navigationController?.pushViewController(cell.item!.detailController!, animated:true) }
-
+    // Check if we are selecting items to export
+    if exportSelectionMode {
+      exportSelection.append(cell.item!)             // Add to our collection of items to export
+      cell.indicatorImage = IndicatorImageSelected  // Change indicator to selected
     }
 
-    else if indexPath.section == 0 {
+    // Otherwise we push the item's detail view controller
+//    else { navigationController?.pushViewController(cell.item!.detailController!, animated:true) }
 
-      let subcategory = category.subcategories[indexPath.row]
-      if let controller = BankCollectionController(category: subcategory) {
-        navigationController?.pushViewController(controller, animated: true)
+  }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - NSFetchedResultsControllerDelegate
+////////////////////////////////////////////////////////////////////////////////
+extension BankCollectionController: NSFetchedResultsControllerDelegate {
+
+  /**
+  controllerWillChangeContent:
+
+  :param: controller NSFetchedResultsController
+  */
+  func controllerWillChangeContent(controller: NSFetchedResultsController) { } //updatesBlock = NSBlockOperation() }
+
+  /**
+  controller:didChangeSection:atIndex:forChangeType:
+
+  :param: controller NSFetchedResultsController
+  :param: sectionInfo NSFetchedResultsSectionInfo
+  :param: sectionIndex Int
+  :param: type NSFetchedResultsChangeType
+  */
+  func    controller(controller: NSFetchedResultsController,
+    didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+             atIndex sectionIndex: Int,
+       forChangeType type: NSFetchedResultsChangeType)
+  {
+/*
+    updatesBlock?.addExecutionBlock { [unowned self] in
+      switch type {
+        case .Insert: self.collectionView?.insertSections(NSIndexSet(index:sectionIndex))
+        case .Delete: self.collectionView?.deleteSections(NSIndexSet(index:sectionIndex))
+        default: break
       }
     }
 
+*/  }
+
+  /**
+  controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:
+
+  :param: controller NSFetchedResultsController
+  :param: anObject AnyObject
+  :param: indexPath NSIndexPath?
+  :param: type NSFetchedResultsChangeType
+  :param: newIndexPath NSIndexPath?
+  */
+  func controller(controller: NSFetchedResultsController,
+  didChangeObject anObject: AnyObject,
+      atIndexPath indexPath: NSIndexPath?,
+    forChangeType type: NSFetchedResultsChangeType,
+     newIndexPath: NSIndexPath?)
+  {
+/*
+    updatesBlock?.addExecutionBlock{[unowned self] in
+      switch type {
+        case .Insert: self.collectionView?.insertItemsAtIndexPaths([newIndexPath!])
+        case .Delete: self.collectionView?.deleteItemsAtIndexPaths([indexPath!])
+        case .Move:   self.collectionView?.deleteItemsAtIndexPaths([indexPath!])
+                      self.collectionView?.insertItemsAtIndexPaths([newIndexPath!])
+        default: break
+      }
+    }
+
+*/  }
+
+  /**
+  controllerDidChangeContent:
+
+  :param: controller NSFetchedResultsController
+  */
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+//    collectionView?.performBatchUpdates({[unowned self] in NSOperationQueue.mainQueue().addOperation(self.updatesBlock!) },
+//                             completion: nil)
   }
 
 }

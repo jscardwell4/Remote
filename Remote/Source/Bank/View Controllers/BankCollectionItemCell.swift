@@ -1,5 +1,5 @@
 //
-//  BankCollectionCell.swift
+//  BankCollectionItemCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 9/10/14.
@@ -9,19 +9,17 @@
 import Foundation
 import UIKit
 
-class BankCollectionCell: UICollectionViewCell {
+class BankCollectionItemCell: UICollectionViewCell {
 
   weak var item: BankDisplayItemModel? {
     didSet {
       if let newItem = item {
         nameLabel.text = newItem.name
-//        detailable = newItem.dynamicType.isDetailable()
-//        previewable = newItem.dynamicType.isPreviewable()
-//        thumbnailable = newItem.dynamicType.isThumbnailable()
+        previewable = newItem.previewable
+        thumbnailable = newItem.thumbnailable
       } else {
         nameLabel.text = nil
         previewable = false
-        detailable = false
         thumbnailable = false
       }
     }
@@ -30,6 +28,7 @@ class BankCollectionCell: UICollectionViewCell {
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView.newForAutolayout()
     view.constrainWithFormat("self.width = self.height")
+    view.contentMode = .Center
     return view
     }()
 
@@ -40,12 +39,12 @@ class BankCollectionCell: UICollectionViewCell {
     return label
   }()
 
-  private let detailButton: UIButton = {
-    let button = UIButton.newForAutolayout()
-    button.setImage(UIImage(named: "766-arrow-right"),          forState: .Normal)
-    button.setImage(UIImage(named: "766-arrow-right-selected"), forState: .Highlighted)
-    button.constrainWithFormat("self.width = self.height :: self.height = 22")
-    return button
+  private let chevron: UIImageView! = {
+    let view = UIImageView.newForAutolayout()
+    view.constrainWithFormat("self.width = self.height :: self.height = 22")
+    view.image = UIImage(named: "766-arrow-right")
+    view.contentMode = .ScaleAspectFit
+    return view
     }()
 
   private let indicator: UIImageView = {
@@ -57,13 +56,6 @@ class BankCollectionCell: UICollectionViewCell {
   private let previewGesture: UITapGestureRecognizer = UITapGestureRecognizer()
   private var indicatorConstraint: NSLayoutConstraint?
 
-  private var detailable: Bool = false {
-    didSet {
-      detailButton.enabled = detailable
-      detailButton.hidden = !detailable || viewingMode != .List
-    }
-  }
-
   private var previewable: Bool = false {
     didSet {
       previewGesture.enabled = previewable && viewingMode == .List
@@ -72,20 +64,19 @@ class BankCollectionCell: UICollectionViewCell {
 
   private var thumbnailable: Bool = false {
     didSet {
-//      thumbnailImageView.image = item?.thumbnail
+      thumbnailImageView.image = item?.thumbnail
       thumbnailImageView.hidden = !thumbnailable
     }
   }
 
-  private var viewingMode: BankCollectionAttributes.ViewingMode = .None {
+  private var viewingMode: BankCollectionAttributes.ViewingMode = .List {
     didSet {
       previewGesture.enabled = (viewingMode == BankCollectionAttributes.ViewingMode.List && previewable)
       setNeedsUpdateConstraints()
     }
   }
 
-  var previewActionHandler: ((cell: BankCollectionCell) -> Void)?
-  var detailActionHandler: ((cell: BankCollectionCell) -> Void)?
+  var previewActionHandler: ((Void) -> Void)?
 
   var indicatorImage: UIImage? {
     didSet {
@@ -147,10 +138,12 @@ class BankCollectionCell: UICollectionViewCell {
             return constraint
           }()
 
-          let size = BankCollectionLayout.ListItemCellSize
+          let size = BankCollectionLayout.listItemCellSize
           var formatStrings = [
             "label.centerY = content.centerY",
-            "detail.centerY = content.centerY",
+            "chevron.centerY = content.centerY",
+            "chevron.left = label.right + 8",
+            "chevron.right = content.right - 20",
             "indicator.centerY = content.centerY",
             "content.width = \(size.width)",
             "content.height = \(size.height)"
@@ -168,23 +161,12 @@ class BankCollectionCell: UICollectionViewCell {
             ]
           }
 
-          if detailable {
-            formatStrings += [
-              "detail.left = label.right + 8",
-              "detail.right = content.right - 20"
-            ]
-          } else {
-            formatStrings += [
-              "label.right = content.right - 20"
-            ]
-          }
-
           let format = "\n".join(formatStrings)
 
           let views = [ "indicator": indicator,
                         "image"    : thumbnailImageView,
                         "label"    : nameLabel,
-                        "detail"   : detailButton,
+                        "chevron"  : chevron,
                         "content"  : contentView]
 
           contentView.constrainWithFormat(format, views: views, identifier: "-".join([identifierPrefix, listIdentifier]))
@@ -194,7 +176,7 @@ class BankCollectionCell: UICollectionViewCell {
         // Finally we must make sure our views are not hidden
         indicator.hidden    = false
         nameLabel.hidden    = false
-        detailButton.hidden = false
+        chevron.hidden      = false
 
 
       case .Thumbnail:
@@ -214,7 +196,7 @@ class BankCollectionCell: UICollectionViewCell {
         // Otherwise we must create them
         else {
 
-          let contentSize = BankCollectionLayout.ThumbnailItemCellSize
+          let contentSize = BankCollectionLayout.thumbnailItemCellSize
           let format = "\n".join([
             "|[image]|",
             "image.height = image.width",
@@ -232,7 +214,7 @@ class BankCollectionCell: UICollectionViewCell {
 
         // Finally we must make sure that the views we want hidden are actually hidden
         indicator.hidden    = indicatorImage == nil
-        detailButton.hidden = true
+        chevron.hidden      = true
         nameLabel.hidden    = true
 
       default: break
@@ -251,13 +233,9 @@ class BankCollectionCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
-
     contentView.addSubview(indicator)
     contentView.addSubview(nameLabel)
-
-    contentView.addSubview(detailButton)
-    detailButton.addTarget(self, action:"detailAction", forControlEvents:.TouchUpInside)
-
+    contentView.addSubview(chevron)
     contentView.addSubview(thumbnailImageView)
     previewGesture.addTarget(self, action: "previewAction")
     thumbnailImageView.addGestureRecognizer(previewGesture)
@@ -271,12 +249,9 @@ class BankCollectionCell: UICollectionViewCell {
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
-
     contentView.addSubview(indicator)
     contentView.addSubview(nameLabel)
-
-    contentView.addSubview(detailButton)
-    detailButton.addTarget(self, action:"detailAction", forControlEvents:.TouchUpInside)
+    contentView.addSubview(chevron)
 
     contentView.addSubview(thumbnailImageView)
     previewGesture.addTarget(self, action: "previewAction")
@@ -305,13 +280,6 @@ class BankCollectionCell: UICollectionViewCell {
   thumbnailImageViewAction
 
   */
-  func previewAction() { if let action = previewActionHandler { action(cell: self) } }
-
-  /**
-
-  detailButtonAction
-
-  */
-  func detailAction() { if let action = detailActionHandler { action(cell: self) } }
+  func previewAction() { if let action = previewActionHandler { action() } }
 
 }

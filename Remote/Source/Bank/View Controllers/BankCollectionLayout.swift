@@ -10,62 +10,20 @@ import Foundation
 import UIKit
 import MoonKit
 
-private let ListItemCellSize      = CGSize(width: 320.0, height: 38.0)
-private let ThumbnailItemCellSize = CGSize(width: 100.0, height: 100.0)
-private let HeaderSize            = CGSize(width: 320.0, height: 38.0)
-
 @objc(BankCollectionLayout)
 class BankCollectionLayout: UICollectionViewFlowLayout {
 
-  class var ListItemCellSize: CGSize { return CGSize(width: 320.0, height: 38.0) }
-  class var ThumbnailItemCellSize: CGSize { return CGSize(width: 100.0, height: 100.0) }
-  class var HeaderSize : CGSize { return CGSize(width: 320.0, height: 38.0) }
+  class var listItemCellSize:      CGSize { return CGSize(width: 320.0, height: 38.0) }
+  class var thumbnailItemCellSize: CGSize { return CGSize(width: 100.0, height: 100.0) }
 
-  var viewingMode: BankCollectionAttributes.ViewingMode = .None {
+  var viewingMode: BankCollectionAttributes.ViewingMode = .List {
     didSet {
       switch viewingMode {
-        case .List:      itemSize = BankCollectionLayout.ListItemCellSize
-        case .Thumbnail: itemSize = BankCollectionLayout.ThumbnailItemCellSize
+        case .List:      itemSize = BankCollectionLayout.listItemCellSize
+        case .Thumbnail: itemSize = BankCollectionLayout.thumbnailItemCellSize
         default: break
       }
     }
-  }
-
-  private var hiddenSections = [Int]()
-
-  /**
-  init
-  */
-  override init() {
-    super.init()
-    headerReferenceSize = BankCollectionLayout.HeaderSize
-  }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    headerReferenceSize = BankCollectionLayout.HeaderSize
-  }
-
-  var includeSectionHeaders: Bool = false {
-    didSet {
-      headerReferenceSize = includeSectionHeaders ? BankCollectionLayout.HeaderSize : CGSizeZero
-    }
-  }
-
-  /**
-  Add or remove section to/from `hiddenSections` and invalidate the layout
-
-  :param: section Int
-  */
-  func toggleItemsForSection(section: Int) {
-    if hiddenSections ∋ section { hiddenSections = hiddenSections.filter{$0 != section} }
-    else                        { hiddenSections.append(section); hiddenSections.sort(<) }
-    invalidateLayout()
   }
 
   /**
@@ -87,7 +45,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
 
     // Create an array to hold arrays of attributes by section
     var attributesBySection = [[BankCollectionAttributes]](count: sectionCount,
-                                                                 repeatedValue: [BankCollectionAttributes]())
+                                                           repeatedValue: [BankCollectionAttributes]())
 
     // Iterate through the attributes to assign our viewing mode and partition by section
     for attrs in attributes {
@@ -96,6 +54,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
     }
 
     // Iterate through the hidden sections
+/*
     for section in hiddenSections {
 
       // Get all the cell attributes for the section
@@ -131,6 +90,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
       }
 
     }
+*/
 
     return attributes
 

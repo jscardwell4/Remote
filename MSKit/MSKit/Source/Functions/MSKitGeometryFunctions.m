@@ -197,6 +197,13 @@ CGSize CGSizeAspectMappedToSize(CGSize s1, CGSize s2, BOOL bound) {
   return s;
 }
 
+UIEdgeInsets UIEdgeInsetsForSizeCenteredInSize(CGSize s1, CGSize s2) {
+  CGSize delta = CGSizeGetDelta(s2, s1);
+  CGFloat verticalOffset = delta.height / 2.0;
+  CGFloat horizontalOffset = delta.width / 2.0;
+  return UIEdgeInsetsMake(verticalOffset, horizontalOffset, verticalOffset, horizontalOffset);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - CGAffineTransform
 ////////////////////////////////////////////////////////////////////////////////////////////////////

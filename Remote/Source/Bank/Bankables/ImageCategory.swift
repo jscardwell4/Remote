@@ -30,9 +30,20 @@ class ImageCategory: BankableModelCategory {
   }
   @NSManaged var images: NSSet?
 
-  override var subcategories: [BankDisplayItemCategory] { return (subcategoriesSet?.allObjects ?? []) as [ImageCategory] }
-
-  override var items: [BankDisplayItemModel] { return (images?.allObjects ?? []) as [Image] }
+  override var subcategories: [BankDisplayItemCategory] {
+    var categories = (subcategoriesSet?.allObjects ?? []) as [ImageCategory]
+    categories.sort{$0.0.title < $0.1.title}
+    return categories
+  }
+  override var items: [BankDisplayItemModel] {
+    var items = (images?.allObjects ?? []) as [Image]
+    items.sort{$0.0.name < $0.1.name}
+    return items
+  }
+  override var thumbnailableItems: Bool { return Image.isThumbnailable() }
+  override var previewableItems:   Bool { return Image.isPreviewable()   }
+  override var detailableItems:    Bool { return Image.isDetailable()    }
+  override var editableItems:      Bool { return Image.isEditable()      }
 
   /**
   updateWithData:

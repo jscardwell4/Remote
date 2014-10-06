@@ -88,16 +88,16 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     BankItemCell.registerIdentifiersWithTableView(tableView)
     nameTextField = { [unowned self] in
       let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
-      textField?.placeholder = "Name"
-      textField?.font = Bank.boldLabelFont
-      textField?.textColor = Bank.labelColor
-      textField?.keyboardAppearance = .Dark
-      textField?.adjustsFontSizeToFitWidth = true
-      textField?.returnKeyType = .Done
-      textField?.enablesReturnKeyAutomatically = true
-      textField?.textAlignment = .Center
-      textField?.clearsOnBeginEditing = true
-      textField?.delegate = self
+      textField.placeholder = "Name"
+      textField.font = Bank.boldLabelFont
+      textField.textColor = Bank.labelColor
+      textField.keyboardAppearance = .Dark
+      textField.adjustsFontSizeToFitWidth = true
+      textField.returnKeyType = .Done
+      textField.enablesReturnKeyAutomatically = true
+      textField.textAlignment = .Center
+      textField.clearsOnBeginEditing = true
+      textField.delegate = self
       self.navigationItem.titleView = textField
       return textField
     }()
@@ -106,9 +106,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   /** updateDisplay */
   func updateDisplay() {
-//    nameTextField.text = item.name
-//    navigationItem.rightBarButtonItem?.enabled = item?.dynamicType.isEditable() ?? false
-//    tableView.reloadData()
+    nameTextField.text = item.name
+    navigationItem.rightBarButtonItem?.enabled = item?.editable ?? false
+    tableView.reloadData()
   }
 
   /**
@@ -141,7 +141,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   /** cancel */
   func cancel() {
-//    item.rollback()
+    item.rollback()
     setEditing(false, animated: true)
     updateDisplay()
   }
@@ -151,7 +151,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   /** save */
   func save() {
-//    item.save()
+    item.save()
     setEditing(false, animated: true)
   }
 
@@ -165,7 +165,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   :returns: BankItemCell
   */
   func cellForRowAtIndexPath(indexPath: NSIndexPath) -> BankItemCell! {
-    return tableView.cellForRowAtIndexPath(indexPath) as? BankItemCell
+    return tableView?.cellForRowAtIndexPath(indexPath) as? BankItemCell
   }
 
 
@@ -357,7 +357,7 @@ extension BankItemDetailController: UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-//    if textField === nameTextField && textField.text?.length > 0 { item.name = textField.text }
+    if textField === nameTextField && textField.text?.length > 0 { item.name = textField.text }
   }
 
 }

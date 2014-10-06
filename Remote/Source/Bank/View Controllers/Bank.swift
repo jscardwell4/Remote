@@ -17,6 +17,12 @@ import MoonKit
   class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
   class func isDetailable()    -> Bool  // Whether items of the conforming type may be opened in a detail controller
   class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
+
+  var thumbnailable: Bool { get }
+  var previewable:   Bool { get }
+  var detailable:    Bool { get }
+  var editable:      Bool { get }
+
   var preview: UIImage? { get }
   var thumbnail: UIImage? { get }
   func save()
@@ -38,9 +44,15 @@ import MoonKit
 /** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
 @objc protocol BankDisplayItemCategory: class, NSObjectProtocol {
 
-//  var name: String! { get }
+  var title: String { get }
 
   var items: [BankDisplayItemModel] { get }
+
+  var thumbnailableItems: Bool { get }
+  var previewableItems:   Bool { get }
+  var detailableItems:    Bool { get }
+  var editableItems:      Bool { get }
+
 
   var subcategories:  [BankDisplayItemCategory] { get }
   var parentCategory: BankDisplayItemCategory?   { get }
@@ -68,6 +80,13 @@ class Bank {
     let label: String
     let icon: UIImage
     let categories: [BankDisplayItemCategory]
+    let controller: ((Void) -> BankController)?
+
+    init(label: String, icon: UIImage, categories: [BankDisplayItemCategory]) {
+      self.label = label
+      self.icon = icon
+      self.categories = categories
+    }
   }
 
   /// A private structure to encapsulate the bank's constant properties
@@ -85,12 +104,12 @@ class Bank {
     static let backgroundColor            = UIColor.whiteColor()
 
     // Images
-    static let exportBarItemImage         = UIImage(named:"702-share")!
-    static let exportBarItemImageSelected = UIImage(named:"702-share-selected")!
-    static let importBarItemImage         = UIImage(named:"703-download")!
-    static let importBarItemImageSelected = UIImage(named:"703-download-selected")!
-    static let searchBarItemImage         = UIImage(named:"708-search")!
-    static let searchBarItemImageSelected = UIImage(named:"708-search-selected")!
+    static let exportBarItemImage         = UIImage(named:"702-share-toolbar")!
+    static let exportBarItemImageSelected = UIImage(named:"702-share-toolbar-selected")!
+    static let importBarItemImage         = UIImage(named:"703-download-toolbar")!
+    static let importBarItemImageSelected = UIImage(named:"703-download-toolbar-selected")!
+    static let searchBarItemImage         = UIImage(named:"708-search-toolbar")!
+    static let searchBarItemImageSelected = UIImage(named:"708-search-toolbar-selected")!
 
     static let defaultRowHeight: CGFloat = 38.0
     static let separatorStyle: UITableViewCellSeparatorStyle = .None

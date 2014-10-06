@@ -78,10 +78,11 @@ class Image: BankableModelObject {
 
   var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
 
-//  override class func categoryType() -> BankDisplayItemCategory.Protocol { return ImageCategory.self }
 
   class var rootCategory: Bank.RootCategory {
-    return Bank.RootCategory(label: "Images", icon: UIImage(named: "926-photos")!, categories: [])
+    var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil") as [ImageCategory]
+    categories.sort{$0.0.title < $0.1.title}
+    return Bank.RootCategory(label: "Images", icon: UIImage(named: "926-photos")!, categories: categories)
   }
 
   override class func isThumbnailable() -> Bool { return true }
@@ -91,5 +92,6 @@ class Image: BankableModelObject {
 
 //  override class func detailControllerType() -> BankDetailController.Protocol { return ImageDetailController.self }
   override var preview: UIImage? { return image }
+  override var thumbnail: UIImage? { return image }
 
 }

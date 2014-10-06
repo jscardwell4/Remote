@@ -14,34 +14,34 @@ var msLogLevel = LOG_LEVEL_ERROR
 /**
 MSLogMessage:flag:function:line:level:context:
 
-:param: message StaticString
+:param: message String
 :param: flag Int32
-:param: function StaticString = __FUNCTION__
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
 public func MSLogMessage(message: String,
                     flag: Int32,
-                function: StaticString = __FUNCTION__,
+                function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
                    level: Int32 = msLogLevel,
                  context: Int32 = LOG_CONTEXT_DEFAULT)
 {
-  MSLog.log(false, level: level, flag: flag, context: context, function: function.stringValue, message: message)
+  MSLog.log(false, level: level, flag: flag, context: context, function: function, message: message)
 }
 
 /**
 MSLogDebug:function:line:level:context:
 
-:param: message StaticString
-:param: function StaticString = __FUNCTION__
+:param: message String
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
 public func MSLogDebug(message: String,
-              function: StaticString = __FUNCTION__,
+              function: String = __FUNCTION__,
                   line: Int32 = __LINE__,
                  level: Int32 = msLogLevel,
                context: Int32 = LOG_CONTEXT_DEFAULT)
@@ -52,14 +52,14 @@ public func MSLogDebug(message: String,
 /**
 MSLogError:function:line:level:context:
 
-:param: message StaticString
-:param: function StaticString = __FUNCTION__
+:param: message String
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
 public func MSLogError(message: String,
-              function: StaticString = __FUNCTION__,
+              function: String = __FUNCTION__,
                   line: Int32 = __LINE__,
                  level: Int32 = msLogLevel,
                context: Int32 = LOG_CONTEXT_DEFAULT)
@@ -70,14 +70,14 @@ public func MSLogError(message: String,
 /**
 MSLogInfo:function:line:level:context:
 
-:param: message StaticString
-:param: function StaticString = __FUNCTION__
+:param: message String
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
 public func MSLogInfo(message: String,
-             function: StaticString = __FUNCTION__,
+             function: String = __FUNCTION__,
                  line: Int32 = __LINE__,
                 level: Int32 = msLogLevel,
               context: Int32 = LOG_CONTEXT_DEFAULT)
@@ -88,14 +88,14 @@ public func MSLogInfo(message: String,
 /**
 MSLogWarn:function:line:level:context:
 
-:param: message StaticString
-:param: function StaticString = __FUNCTION__
+:param: message String
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
 public func MSLogWarn(message: String,
-             function: StaticString = __FUNCTION__,
+             function: String = __FUNCTION__,
                  line: Int32 = __LINE__,
                 level: Int32 = msLogLevel,
               context: Int32 = LOG_CONTEXT_DEFAULT)
@@ -106,14 +106,14 @@ public func MSLogWarn(message: String,
 /**
 MSLogVerbose:function:line:level:context:
 
-:param: message StaticString
-:param: function StaticString = __FUNCTION__
+:param: message String
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
 :param: context Int32 = LOG_CONTEXT_DEFAULT
 */
 public func MSLogVerbose(message: String,
-                function: StaticString = __FUNCTION__,
+                function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
                    level: Int32 = msLogLevel,
                  context: Int32 = LOG_CONTEXT_DEFAULT)
@@ -168,14 +168,14 @@ MSHandleError:message:function:line:
 
 :param: error NSError?
 :param: message String? = nil
-:param: function StaticString = __FUNCTION__
+:param: function String = __FUNCTION__
 :param: line Int = __LINE__
 
 :returns: Bool
 */
 public func MSHandleError(error: NSError?,
                   message: String? = nil,
-                 function: StaticString = __FUNCTION__,
+                 function: String = __FUNCTION__,
                      line: Int32 = __LINE__) -> Bool
 {
   if error == nil { return false }

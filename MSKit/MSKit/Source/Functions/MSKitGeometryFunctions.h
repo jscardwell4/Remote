@@ -10,6 +10,7 @@
 @import CoreText;
 @import CoreGraphics;
 @import QuartzCore;
+@import UIKit;
 
 NSString *NSStringFromCATransform3D(CATransform3D transform);
 NSString *NSStringFromCATransform3DT(CATransform3D transform);
@@ -81,6 +82,7 @@ CGSize CGSizeMinSize(CGSize s1, CGSize s2);
 CGSize CGSizeAspectMappedToWidth(CGSize s, CGFloat w);
 CGSize CGSizeAspectMappedToHeight(CGSize s, CGFloat h);
 CGSize CGSizeAspectMappedToSize(CGSize s1, CGSize s2, BOOL bound);
+UIEdgeInsets UIEdgeInsetsForSizeCenteredInSize(CGSize s1, CGSize s2);
 CGAffineTransform CGAffineTransformMakeScaleTranslate(CGFloat sx, CGFloat sy, CGFloat dx, CGFloat dy);
 CGAffineTransform CGAffineTransformMakeShear(CGFloat shearX, CGFloat shearY);
 CGAffineTransform CGAffineTransformShear(CGAffineTransform transform, CGFloat shearX, CGFloat shearY);

@@ -42,6 +42,11 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
   class func isDetailable()    -> Bool { return false }
   class func isEditable()      -> Bool { return false }
 
+  var thumbnailable: Bool { return self.dynamicType.isThumbnailable() }
+  var previewable:   Bool { return self.dynamicType.isThumbnailable() }
+  var detailable:    Bool { return self.dynamicType.isThumbnailable() }
+  var editable:      Bool { return self.dynamicType.isThumbnailable() }
+
 //  class func detailControllerType() -> BankDetailController.Protocol { return BankItemDetailController.self }
 
   func save() {
