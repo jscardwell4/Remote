@@ -9,6 +9,7 @@
 import Foundation
 
 extension Array {
+
   mutating func replaceAll(value:Element) { for i in 0..<count { self[i] = value } }
 
   mutating func apply(block:(Element) -> Void) { reduce(Void()){block($0.1)} }

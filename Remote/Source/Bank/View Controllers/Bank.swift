@@ -157,7 +157,7 @@ class Bank {
                                             toggledImage: BankProperties.exportBarItemImageSelected) {
                                               _ in controller.exportBankObjects()
                                             }
-    let spacer = UIBarButtonItem.fixedSpace(20.0)
+    let spacer = UIBarButtonItem.fixedSpace(4.0)
     let importBarItem = ToggleBarButtonItem(image: BankProperties.importBarItemImage,
                                             toggledImage: BankProperties.importBarItemImageSelected) {
                                               _ in controller.importBankObjects()

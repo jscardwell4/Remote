@@ -202,6 +202,7 @@
 		C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */; };
 		C277AB8719D787EA008DEE39 /* ToggleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */; };
 		C28D097819D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28D097719D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift */; };
+		C295E30419E2FBBB008309B8 /* ToggleImageSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2A7CA9719CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
@@ -264,6 +265,7 @@
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C28D097719D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageSegmentedControl.swift; sourceTree = "<group>"; };
 		C29692A919CE53D400992240 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerialization.swift; path = Moonkit/Parsing/JSONSerialization.swift; sourceTree = SOURCE_ROOT; };
 		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C482D219C9F98A002E84A9 /* Moonkit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Moonkit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -558,6 +560,7 @@
 			children = (
 				C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */,
 				C24ECC8F19DE085D00C1870E /* BarButtonItem.swift */,
+				C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1190,6 +1193,7 @@
 				C2358F6919C78E0C00920F8D /* MSCompletionBlockOperation.m in Sources */,
 				C2358F6A19C78E0C00920F8D /* MSContextChangeReceptionist.m in Sources */,
 				C2358F6B19C78E0C00920F8D /* MSDictionary.m in Sources */,
+				C295E30419E2FBBB008309B8 /* ToggleImageSegmentedControl.swift in Sources */,
 				C2358F6C19C78E0C00920F8D /* MSDictionaryIndex.m in Sources */,
 				C2358F6D19C78E0C00920F8D /* MSError.m in Sources */,
 				C2358F6E19C78E0C00920F8D /* MSKVOReceptionist.m in Sources */,
