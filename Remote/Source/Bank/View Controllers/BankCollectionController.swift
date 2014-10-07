@@ -130,9 +130,6 @@ class BankCollectionController: UICollectionViewController, BankController {
 
 
     toolbarItems = {
-
-      var items = Bank.toolbarItemsForController(self)
-
       if self.category.thumbnailableItems {
         // Create the toolbar items
         if let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
@@ -141,24 +138,17 @@ class BankCollectionController: UICollectionViewController, BankController {
                                                                     UIImage(named: "1076-grid-4-toolbar-selected")!])
         {
           displayOptions.selectedSegmentIndex = 0
-          displayOptions.addTarget(self, action: "segmentedControlValueDidChange:", forControlEvents: .ValueChanged)
-//          UIGraphicsBeginImageContextWithOptions(CGSize(width: 38.0, height: 38.0), false, 0.0)
-//          let path = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: 38.0, height: 38.0), cornerRadius: 3.0)
-//          path.stroke()
-//          let image = UIGraphicsGetImageFromCurrentImageContext()
-//          UIGraphicsEndImageContext()
-//          let stretchableImage = image.resizableImageWithCapInsets(UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0))
-//          let templateImage = image.imageWithRenderingMode(.AlwaysTemplate)
-//          displayOptions.setBackgroundImage(templateImage, forState: .Normal, barMetrics: .Default)
-
+          displayOptions.toggleAction = {[unowned self] control in
+            self.useListView = control.selectedSegmentIndex == 0
+            self.layout.viewingMode = self.useListView ? .List : .Thumbnail
+            self.layout.invalidateLayout()
+          }
           let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
-
-          items.insert(UIBarButtonItem.flexibleSpace(), atIndex: 4)
-          items.insert(displayOptionsItem, atIndex: 4)
+          return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
         }
       }
 
-      return items
+      return Bank.toolbarItemsForController(self)
       }()
 
   }

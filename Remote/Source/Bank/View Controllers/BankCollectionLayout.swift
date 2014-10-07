@@ -11,19 +11,99 @@ import UIKit
 import MoonKit
 
 @objc(BankCollectionLayout)
-class BankCollectionLayout: UICollectionViewFlowLayout {
+class BankCollectionLayout: UICollectionViewLayout {
+
+  /// Default cell sizes
+  ////////////////////////////////////////////////////////////////////////////////
 
   class var listItemCellSize:      CGSize { return CGSize(width: 320.0, height: 38.0) }
   class var thumbnailItemCellSize: CGSize { return CGSize(width: 100.0, height: 100.0) }
 
+  /// Customizable cell sizes, spacing, and viewing mode
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var itemListSize      = BankCollectionLayout.listItemCellSize
+  var itemThumbnailSize = BankCollectionLayout.thumbnailItemCellSize
+  var categorySize      = BankCollectionLayout.listItemCellSize
+
+  var verticalSpacing:   CGFloat = 10.0
+  var horizontalSpacing: CGFloat = 10.0
+
   var viewingMode: BankCollectionAttributes.ViewingMode = .List {
     didSet {
       switch viewingMode {
-        case .List:      itemSize = BankCollectionLayout.listItemCellSize
-        case .Thumbnail: itemSize = BankCollectionLayout.thumbnailItemCellSize
+        case .List:      itemSize = itemListSize
+        case .Thumbnail: itemSize = itemThumbnailSize
         default: break
       }
     }
+  }
+
+  /// Private variables to hold calculations
+  ////////////////////////////////////////////////////////////////////////////////
+
+  private var itemSize  = BankCollectionLayout.listItemCellSize
+
+  private var categoryCount = 0
+  private var itemCount     = 0
+
+  private var categorySectionHeight: CGFloat = 0
+  private var itemSectionHeight:     CGFloat = 0
+
+  private var categoryAttributes: [BankCollectionAttributes] = []
+  private var itemAttributes:     [BankCollectionAttributes] = []
+
+  /** prepareLayout */
+  override func prepareLayout() {
+    precondition(collectionView!.numberOfSections() == 2, "should only be a catgories section and an items section")
+
+
+    // Get the total number of categories and items
+    categoryCount = collectionView!.numberOfItemsInSection(0)
+    itemCount     = collectionView!.numberOfItemsInSection(1)
+
+    // Calculate category section height
+    var spacerCount = CGFloat(max(categoryCount - 1, 0))
+    categorySectionHeight = CGFloat(categoryCount) * categorySize.height + verticalSpacing * spacerCount
+
+    // Calculate item section height
+    let rowCount = CGFloat(itemCount / (viewingMode == .Thumbnail ? 3 : 1))
+    spacerCount = (max(rowCount - 1, 0))
+    itemSectionHeight =  rowCount * itemSize.height + verticalSpacing * spacerCount
+
+    // Precalculate category attributes
+    categoryAttributes.removeAll()
+    categoryAttributes.reserveCapacity(categoryCount)
+    var frame = CGRect(origin: CGPointZero, size: categorySize)
+    for category in 0 ..< categoryCount {
+      let indexPath = NSIndexPath(forRow: category, inSection: 0)
+      let attributes = BankCollectionAttributes(forCellWithIndexPath: indexPath)
+      attributes.frame = frame
+      attributes.viewingMode = viewingMode
+      categoryAttributes.append(attributes)
+      frame.origin.y += categorySize.height + verticalSpacing
+    }
+
+    // Precalculate item attributes
+    itemAttributes.removeAll()
+    itemAttributes.reserveCapacity(itemCount)
+    let itemsPerRow = viewingMode == .Thumbnail ? 3 : 1
+    let offset = CGFloat(categorySectionHeight + verticalSpacing)
+    frame.size = itemSize
+    for item in 0 ..< itemCount {
+      let indexPath = NSIndexPath(forRow: item, inSection: 1)
+      let attributes = BankCollectionAttributes(forCellWithIndexPath: indexPath)
+      attributes.frame = frame
+      attributes.viewingMode = viewingMode
+      itemAttributes.append(attributes)
+      let row = item / itemsPerRow
+      let col = item % 3 + 1
+      if col == 3 || itemsPerRow == 1 { frame.origin.y += itemSize.height + verticalSpacing }
+
+      if col == 3 || itemsPerRow == 1 { frame.origin.x = 0.0 }
+      else { frame.origin.x += itemSize.width + horizontalSpacing }
+    }
+
   }
 
   /**
@@ -36,64 +116,29 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
 
   */
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
+    return categoryAttributes.filter{CGRectIntersectsRect($0.frame, rect)} + itemAttributes.filter{CGRectIntersectsRect($0.frame, rect)}
+  }
 
-    // Get the total number of sections
-    let sectionCount = collectionView!.numberOfSections()
+  /**
+  layoutAttributesForItemAtIndexPath:
 
-    // Get the attributes as the super class would lay them out
-    var attributes = super.layoutAttributesForElementsInRect(rect) as [BankCollectionAttributes]
+  :param: indexPath NSIndexPath
 
-    // Create an array to hold arrays of attributes by section
-    var attributesBySection = [[BankCollectionAttributes]](count: sectionCount,
-                                                           repeatedValue: [BankCollectionAttributes]())
+  :returns: UICollectionViewLayoutAttributes!
+  */
+  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    return indexPath.section == 0 ? categoryAttributes[indexPath.row] : itemAttributes[indexPath.row]
+  }
 
-    // Iterate through the attributes to assign our viewing mode and partition by section
-    for attrs in attributes {
-      attrs.viewingMode = viewingMode
-      attributesBySection[attrs.indexPath.section].append(attrs)
-    }
+  /**
+  collectionViewContentSize
 
-    // Iterate through the hidden sections
-/*
-    for section in hiddenSections {
-
-      // Get all the cell attributes for the section
-      var sectionCellAttributes = attributesBySection[section].filter{
-        $0.representedElementCategory == UICollectionElementCategory.Cell
-      }
-
-      // Hide all the cells in this section
-      sectionCellAttributes.reduce(Void()){$0.1.hidden = true}
-
-      // Shouldn't need to perform computations unless there are more sections to follow this section
-      if sectionCellAttributes.count > 0 && section + 1 < sectionCount {
-
-        // Get the min and max y values for the frames of the attributes in this section
-        let (minY, maxY) = sectionCellAttributes.reduce((CGFloat.max, CGFloat.min)) {
-          (min($0.0.0, CGRectGetMinY($0.1.frame)), max($0.0.1, CGRectGetMaxY($0.1.frame)))
-        }
-
-        // Get the difference, which we will subtract from the frames of following sections
-        let adjustY = maxY - minY
-
-        // Iterate through the remaining sections
-        for sectionToAdjust in section + 1..<sectionCount {
-
-          // Get all attributes for the section to adjust
-          var sectionToAdjustAttributes = attributesBySection[sectionToAdjust]
-
-          // Iterate through the attributes to update the frame values
-          for attr in sectionToAdjustAttributes { attr.frame.origin.y -= adjustY }
-
-        }
-
-      }
-
-    }
-*/
-
-    return attributes
-
+  :returns: CGSize
+  */
+  override func collectionViewContentSize() -> CGSize {
+    var size = CGSize(width: 320.0, height: categorySectionHeight + itemSectionHeight)
+    if categoryCount > 0 && itemCount > 0 { size.height += verticalSpacing }
+    return size
   }
 
   /**
@@ -112,7 +157,7 @@ class BankCollectionLayout: UICollectionViewFlowLayout {
   :returns: Bool
 
   */
-  override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool { return true }
+   // override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool { return true }
 
 
 }

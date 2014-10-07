@@ -14,39 +14,68 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   private var selectedImages: [UIImage?] = []
   private var previouslySelectedSegmentIndex = UISegmentedControlNoSegment
 
+  /**
+  removeSegmentAtIndex:animated:
+
+  :param: segment Int
+  :param: animated Bool
+  */
   public override func removeSegmentAtIndex(segment: Int, animated: Bool) {
     super.removeSegmentAtIndex(segment, animated: animated)
-    precondition(defaultImages.count > segment && selectedImages.count > segment, "we should have had images in our arrays for the segment to remove")
+    precondition(defaultImages.count > segment && selectedImages.count > segment,
+                 "we should have had images in our arrays for the segment to remove")
     defaultImages.removeAtIndex(segment)
     selectedImages.removeAtIndex(segment)
   }
 
+  /** removeAllSegments */
   public override func removeAllSegments() {
     super.removeAllSegments()
     defaultImages.removeAll(keepCapacity: false)
     selectedImages.removeAll(keepCapacity: false)
   }
 
+  /**
+  insertSegmentWithImage:selectedImage:atIndex:animated:
+
+  :param: image UIImage
+  :param: selectedImage UIImage
+  :param: segment Int
+  :param: animated Bool
+  */
   public func insertSegmentWithImage(image: UIImage, selectedImage: UIImage, atIndex segment: Int, animated: Bool) {
     super.insertSegmentWithImage(image, atIndex: segment, animated: animated)
     defaultImages.insert(image, atIndex: segment)
     selectedImages.insert(selectedImage, atIndex: segment)
   }
 
+  /**
+  insertSegmentWithImage:atIndex:animated:
+
+  :param: image UIImage
+  :param: segment Int
+  :param: animated Bool
+  */
   public override func insertSegmentWithImage(image: UIImage, atIndex segment: Int, animated: Bool) {
     // Disallow setting only one image
   }
 
+  /**
+  insertSegmentWithTitle:atIndex:animated:
+
+  :param: title String!
+  :param: segment Int
+  :param: animated Bool
+  */
   public override func insertSegmentWithTitle(title: String!, atIndex segment: Int, animated: Bool) {
     // Disallow segments with titles for now
   }
 
-  // Only override drawRect: if you perform custom drawing.
-  // An empty implementation adversely affects performance during animation.
-//  override public func drawRect(rect: CGRect) {
-    // Drawing code
-//  }
+  /**
+  initWithFrame:
 
+  :param: frame CGRect
+  */
   override init(frame: CGRect) {
     super.init(frame: frame)
     UIGraphicsBeginImageContextWithOptions(frame.size, false, 0.0)
@@ -56,6 +85,11 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     addTarget(self, action: "toggleImage", forControlEvents: .ValueChanged)
   }
 
+  /**
+  initWithItems:
+
+  :param: items [AnyObject]!
+  */
   override public init?(items: [AnyObject]!) {
     var defaultImages: [UIImage]?
     var selectedImages: [UIImage]?
@@ -87,10 +121,29 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
 
   }
 
+  public var toggleAction: ((ToggleImageSegmentedControl) -> Void)?
+
+  /**
+  initWithItems:action:
+
+  :param: items [AnyObject]!
+  :param: action ((ToggleImageSegmentedControl) -> Void)? = nil
+  */
+//  public convenience init?(items: [AnyObject]!, action: ((ToggleImageSegmentedControl) -> Void)? = nil) {
+//    self.init(items: items)
+//    toggleAction = action
+//  }
+
+  /**
+  initWithCoder:
+
+  :param: aDecoder NSCoder
+  */
   required public init(coder aDecoder: NSCoder) {
       super.init(coder: aDecoder)
   }
 
+  /** toggleImage */
   func toggleImage() {
     if previouslySelectedSegmentIndex != UISegmentedControlNoSegment {
       super.setImage(defaultImages[previouslySelectedSegmentIndex], forSegmentAtIndex: previouslySelectedSegmentIndex)
@@ -99,8 +152,16 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     if selectedSegmentIndex != UISegmentedControlNoSegment {
       super.setImage(selectedImages[selectedSegmentIndex], forSegmentAtIndex: selectedSegmentIndex)
     }
+    toggleAction?(self)
   }
 
+  /**
+  setImage:selectedImage:forSegmentAtIndex:
+
+  :param: image UIImage?
+  :param: selectedImage UIImage?
+  :param: segment Int
+  */
   public func setImage(image: UIImage?, selectedImage: UIImage?, forSegmentAtIndex segment: Int) {
     if segment < numberOfSegments {
       defaultImages[segment] = image
