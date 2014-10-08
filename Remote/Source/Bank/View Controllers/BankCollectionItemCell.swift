@@ -13,6 +13,10 @@ import MoonKit
 
 class BankCollectionItemCell: BankCollectionCell {
 
+  override class func load() {
+    registerLogLevel(LOG_LEVEL_ERROR)
+  }
+
   weak var item: BankDisplayItemModel? {
     didSet {
       if let newItem = item {
@@ -32,6 +36,7 @@ class BankCollectionItemCell: BankCollectionCell {
     view.contentMode = .Center
     view.nametag = "thumbnail"
     view.constrainWithFormat("self.width ≤ self.height")
+    view.tintColor = UIColor.blackColor()
     return view
     }()
 
@@ -85,23 +90,20 @@ class BankCollectionItemCell: BankCollectionCell {
     if let attributes = layoutAttributes as? BankCollectionAttributes { viewingMode = attributes.viewingMode }
   }
 
-  override var indicatorConstraint: NSLayoutConstraint? {
-    didSet { if indicatorConstraint != nil && viewingMode == .Thumbnail { indicatorConstraint!.active = false } }
-  }
-
 
   /** updateConstraints */
   override func updateConstraints() {
 
-    super.updateConstraints()
-
     let listIdentifier      = createIdentifier(self, ["Internal", "List"])
     let thumbnailIdentifier = createIdentifier(self, ["Internal", "Thumbnail"])
 
-    println("before…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
-
     removeConstraintsWithIdentifier(listIdentifier)
     removeConstraintsWithIdentifier(thumbnailIdentifier)
+
+    super.updateConstraints()
+
+    MSLogDebug("before…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
+
 
     switch viewingMode {
 
@@ -114,7 +116,7 @@ class BankCollectionItemCell: BankCollectionCell {
           "chevron.left = label.right + 8",
           "chevron.right = content.right - 20",
           "indicator.centerY = content.centerY",
-          "indicator.right = content.left"
+          "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
         ]
 
         if thumbnailable {
@@ -139,16 +141,18 @@ class BankCollectionItemCell: BankCollectionCell {
 
         constrainWithFormat(format, views: views, identifier: listIdentifier)
 
-        indicatorConstraint?.active = true
-
+        let predicate = NSPredicate(format: "firstItem == %@" +
+                                            "AND secondItem == %@ " +
+                                            "AND firstAttribute == \(NSLayoutAttribute.Right.rawValue)" +
+                                            "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
+                                            "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
+        indicatorConstraint = constraintMatching(predicate)
         indicator.hidden    = false
         nameLabel.hidden    = false
         chevron.hidden      = false
 
 
       case .Thumbnail:
-
-        indicatorConstraint?.active = false
 
         let format = "\n".join([
           "|[image]|",
@@ -169,7 +173,7 @@ class BankCollectionItemCell: BankCollectionCell {
 
     }
 
-    println("after…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
+    MSLogDebug("after…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
 
   }
 

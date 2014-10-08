@@ -12,6 +12,10 @@ import MoonKit
 
 class BankCollectionCell: UICollectionViewCell {
 
+  override class func load() {
+    registerLogLevel(LOG_LEVEL_ERROR)
+  }
+
   let indicator: UIImageView = {
     let view = UIImageView.newForAutolayout()
     view.nametag = "indicator"
@@ -46,7 +50,7 @@ class BankCollectionCell: UICollectionViewCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    println("before…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
+    MSLogDebug("before…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
 
   	let identifier          = createIdentifier(self, "Internal")
     let indicatorIdentifier = createIdentifier(self, ["Internal", "Indicator"])
@@ -79,7 +83,7 @@ class BankCollectionCell: UICollectionViewCell {
     }
 */
 
-    println("after…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
+    MSLogDebug("after…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
 
     super.updateConstraints()
 

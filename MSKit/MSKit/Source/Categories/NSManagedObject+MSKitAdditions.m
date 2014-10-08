@@ -7,7 +7,7 @@
 //
 #import "NSManagedObject+MSKitAdditions.h"
 #import "MSKitMacros.h"
-@import Lumberjack;
+@import CocoaLumberjack;
 #import "NSSet+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
 #import "NSDictionary+MSKitAdditions.h"

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "MSLog.h"
-@import Lumberjack;
+@import CocoaLumberjack;
 #import "MSKitMiscellaneousFunctions.h"
 #import "NSString+MSKitAdditions.h"
 #import "NSOperationQueue+MSKitAdditions.h"
@@ -350,6 +350,7 @@
 @interface MSLogFileManager ()
 
 @property (nonatomic, copy, readwrite) NSString * currentLogFile;
+@property (nonatomic, copy, readwrite) NSString * customLogsDirectory;
 
 @end
 
@@ -389,9 +390,11 @@
     return _currentLogFile;
 }
 
+- (NSString *)logsDirectory { return self.customLogsDirectory ?: [super logsDirectory]; }
+
 - (void)setLogsDirectory:(NSString *)logsDirectory
 {
-    BOOL isValidDirectory = NO;
+  BOOL isValidDirectory = NO;
 	if (![[NSFileManager defaultManager] fileExistsAtPath:logsDirectory])
 	{
 		NSError *err = nil;
@@ -408,7 +411,7 @@
     else
         isValidDirectory = YES;
 
-    if (isValidDirectory) _logsDirectory = logsDirectory;
+    if (isValidDirectory) self.customLogsDirectory = logsDirectory;
 }
 
 - (BOOL)isLogFile:(NSString *)fileName

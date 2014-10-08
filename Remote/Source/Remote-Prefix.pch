@@ -13,7 +13,7 @@
 //    @import UIKit;
 //    @import Foundation;
 //    #import <CoreData/CoreData.h>
-//    @import Lumberjack;
+//    @import CocoaLumberjack;
 //    @import MoonKit;
 //    #import "MSRemoteMacros.h"
 //    #import "MSRemoteTypeDefinitions.h"

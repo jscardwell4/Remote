@@ -11,6 +11,10 @@ import MoonKit
 
 class BankCollectionCategoryCell: BankCollectionCell {
 
+  override class func load() {
+    registerLogLevel(LOG_LEVEL_ERROR)
+  }
+
   var labelText: String? { get { return label.text } set { label.text = newValue } }
 
   private let label: UILabel! = {

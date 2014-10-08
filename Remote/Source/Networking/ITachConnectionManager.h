@@ -8,7 +8,7 @@
 @import UIKit;
 @import CoreData;
 @import Foundation;
-@import Lumberjack;
+@import CocoaLumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
 @class SendIRCommand;

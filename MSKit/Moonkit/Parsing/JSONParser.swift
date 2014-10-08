@@ -8,7 +8,7 @@
 
 import Foundation
 
-private var LogLevel: Int32 = LOG_LEVEL_WARN
+private var LogLevel: Int32 = 0b11
 
 /**
 
@@ -116,7 +116,7 @@ public class JSONParser: NSObject {
     }
 
     // Log debug info if log level accomodates
-    if LogLevel == LOG_LEVEL_DEBUG { if let error = pointer.memory { MSHandleError(error); dumpState() } }
+    if LogLevel == 0b1111 { if let error = pointer.memory { MSHandleError(error); dumpState() } }
 
   }
 

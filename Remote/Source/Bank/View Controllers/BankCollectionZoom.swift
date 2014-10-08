@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
-import Lumberjack
+import CocoaLumberjack
 
 protocol BankCollectionZoomDelegate {
   func didDismissZoomView(BankCollectionZoom)

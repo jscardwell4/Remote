@@ -7,7 +7,7 @@
 //
 //#import "RemoteElementConstructionManager.h"
 @import CoreData;
-@import Lumberjack;
+@import CocoaLumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
 

@@ -63,18 +63,16 @@ class BankCollectionLayout: UICollectionViewLayout {
     itemCount     = collectionView!.numberOfItemsInSection(1)
 
     // Calculate category section height
-    var spacerCount = CGFloat(max(categoryCount - 1, 0))
-    categorySectionHeight = CGFloat(categoryCount) * categorySize.height + verticalSpacing * spacerCount
+    categorySectionHeight = CGFloat(categoryCount) * (categorySize.height + verticalSpacing)
 
     // Calculate item section height
     let rowCount = CGFloat(itemCount / (viewingMode == .Thumbnail ? 3 : 1))
-    spacerCount = (max(rowCount - 1, 0))
-    itemSectionHeight =  rowCount * itemSize.height + verticalSpacing * spacerCount
+    itemSectionHeight =  rowCount * (itemSize.height + verticalSpacing)
 
     // Precalculate category attributes
     categoryAttributes.removeAll()
     categoryAttributes.reserveCapacity(categoryCount)
-    var frame = CGRect(origin: CGPointZero, size: categorySize)
+    var frame = CGRect(origin: CGPoint(x: 0.0, y: verticalSpacing), size: categorySize)
     for category in 0 ..< categoryCount {
       let indexPath = NSIndexPath(forRow: category, inSection: 0)
       let attributes = BankCollectionAttributes(forCellWithIndexPath: indexPath)
@@ -88,7 +86,6 @@ class BankCollectionLayout: UICollectionViewLayout {
     itemAttributes.removeAll()
     itemAttributes.reserveCapacity(itemCount)
     let itemsPerRow = viewingMode == .Thumbnail ? 3 : 1
-    let offset = CGFloat(categorySectionHeight + verticalSpacing)
     frame.size = itemSize
     for item in 0 ..< itemCount {
       let indexPath = NSIndexPath(forRow: item, inSection: 1)

@@ -1025,7 +1025,6 @@
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
-		C2C1756919D10CB7008B8E16 /* Lumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lumberjack.framework; path = "MSKit/Lumberjack/build/Debug-iphoneos/Lumberjack.framework"; sourceTree = "<group>"; };
 		C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionAttributes.swift; sourceTree = "<group>"; };
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1482,7 +1481,6 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C2C1756919D10CB7008B8E16 /* Lumberjack.framework */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
 				C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,

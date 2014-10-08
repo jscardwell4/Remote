@@ -7,7 +7,15 @@
 //
 
 import Foundation
-import Lumberjack
+import CocoaLumberjack
+
+private var msLogLevel: Int32 = 0b1111
+private var registeredLogLevels: [String:Int32] = [:]
+
+public func registerLogLevel(level: Int32, forFile file: String = __FILE__) {
+  registeredLogLevels[file] = level
+}
+
 
 /**
 MSLogMessage:flag:function:line:level:context:
@@ -17,17 +25,20 @@ MSLogMessage:flag:function:line:level:context:
 :param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
-:param: context Int32 = LOG_CONTEXT_DEFAULT
+:param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogMessage(message: String,
                     flag: Int32,
                 function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
-                   level: Int32 = LOG_LEVEL_DEBUG,
-                 context: Int32 = LOG_CONTEXT_DEFAULT)
+                    file: String = __FILE__,
+                   level: Int32 = msLogLevel,
+                 context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLog.log(false, level: level, flag: flag, context: context, function: function, message: message)
+  let logLevel = registeredLogLevels[file]
+  MSLog.log(false, level: logLevel ?? level, flag: flag, context: context, function: function, message: message)
 }
+
 
 /**
 MSLogDebug:function:line:level:context:
@@ -36,15 +47,16 @@ MSLogDebug:function:line:level:context:
 :param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
-:param: context Int32 = LOG_CONTEXT_DEFAULT
+:param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogDebug(message: String,
               function: String = __FUNCTION__,
                   line: Int32 = __LINE__,
-                 level: Int32 = LOG_LEVEL_DEBUG,
-               context: Int32 = LOG_CONTEXT_DEFAULT)
+                  file: String = __FILE__,
+                 level: Int32 = msLogLevel,
+               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, LOG_FLAG_DEBUG, function: function, line: line, level: level, context: context)
+  MSLogMessage(message, LOG_FLAG_DEBUG, function: function, file: file, line: line, level: level, context: context)
 }
 
 /**
@@ -54,15 +66,16 @@ MSLogError:function:line:level:context:
 :param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
-:param: context Int32 = LOG_CONTEXT_DEFAULT
+:param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogError(message: String,
               function: String = __FUNCTION__,
                   line: Int32 = __LINE__,
-                 level: Int32 = LOG_LEVEL_DEBUG,
-               context: Int32 = LOG_CONTEXT_DEFAULT)
+                  file: String = __FILE__,
+                 level: Int32 = msLogLevel,
+               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, LOG_FLAG_ERROR, function: function, line: line, level: level, context: context)
+  MSLogMessage(message, LOG_FLAG_ERROR, function: function, file: file, line: line, level: level, context: context)
 }
 
 /**
@@ -72,15 +85,16 @@ MSLogInfo:function:line:level:context:
 :param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
-:param: context Int32 = LOG_CONTEXT_DEFAULT
+:param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogInfo(message: String,
              function: String = __FUNCTION__,
                  line: Int32 = __LINE__,
-                level: Int32 = LOG_LEVEL_DEBUG,
-              context: Int32 = LOG_CONTEXT_DEFAULT)
+                 file: String = __FILE__,
+                level: Int32 = msLogLevel,
+              context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, LOG_FLAG_INFO, function: function, line: line, level: level, context: context)
+  MSLogMessage(message, LOG_FLAG_INFO, function: function, file: file, line: line, level: level, context: context)
 }
 
 /**
@@ -90,15 +104,16 @@ MSLogWarn:function:line:level:context:
 :param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
-:param: context Int32 = LOG_CONTEXT_DEFAULT
+:param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogWarn(message: String,
              function: String = __FUNCTION__,
                  line: Int32 = __LINE__,
-                level: Int32 = LOG_LEVEL_DEBUG,
-              context: Int32 = LOG_CONTEXT_DEFAULT)
+                 file: String = __FILE__,
+                level: Int32 = msLogLevel,
+              context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, LOG_FLAG_WARN, function: function, line: line, level: level, context: context)
+  MSLogMessage(message, LOG_FLAG_WARN, function: function, file: file, line: line, level: level, context: context)
 }
 
 /**
@@ -108,15 +123,16 @@ MSLogVerbose:function:line:level:context:
 :param: function String = __FUNCTION__
 :param: line Int = __LINE__
 :param: level Int32 = msLogLevel
-:param: context Int32 = LOG_CONTEXT_DEFAULT
+:param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogVerbose(message: String,
                 function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
-                   level: Int32 = LOG_LEVEL_DEBUG,
-                 context: Int32 = LOG_CONTEXT_DEFAULT)
+                    file: String = __FILE__,
+                   level: Int32 = msLogLevel,
+                 context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, LOG_FLAG_VERBOSE, function: function, line: line, level: level, context: context)
+  MSLogMessage(message, LOG_FLAG_VERBOSE, function: function, file: file, line: line, level: level, context: context)
 }
 
 /**

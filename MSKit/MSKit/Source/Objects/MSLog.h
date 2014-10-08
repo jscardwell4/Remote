@@ -8,11 +8,11 @@
 
 @import Foundation;
 @import UIKit;
-@import Lumberjack;
+#import "MSLogMacros.h"
+@import CocoaLumberjack;
 #import "MSKitDefines.h"
 #import "MSKitMacros.h"
 #import "MSError.h"
-#import "MSLogMacros.h"
 #import "NSObject+MSKitAdditions.h"
 
 // keys

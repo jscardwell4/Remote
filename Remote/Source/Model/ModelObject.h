@@ -8,7 +8,7 @@
 @import Foundation;
 @import UIKit;
 @import CoreData;
-@import Lumberjack;
+@import CocoaLumberjack;
 @import MoonKit;
 
 @protocol Model <NSObject>
