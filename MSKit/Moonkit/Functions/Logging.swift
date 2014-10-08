@@ -9,8 +9,6 @@
 import Foundation
 import Lumberjack
 
-var msLogLevel = LOG_LEVEL_ERROR
-
 /**
 MSLogMessage:flag:function:line:level:context:
 
@@ -25,7 +23,7 @@ public func MSLogMessage(message: String,
                     flag: Int32,
                 function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
-                   level: Int32 = msLogLevel,
+                   level: Int32 = LOG_LEVEL_DEBUG,
                  context: Int32 = LOG_CONTEXT_DEFAULT)
 {
   MSLog.log(false, level: level, flag: flag, context: context, function: function, message: message)
@@ -43,7 +41,7 @@ MSLogDebug:function:line:level:context:
 public func MSLogDebug(message: String,
               function: String = __FUNCTION__,
                   line: Int32 = __LINE__,
-                 level: Int32 = msLogLevel,
+                 level: Int32 = LOG_LEVEL_DEBUG,
                context: Int32 = LOG_CONTEXT_DEFAULT)
 {
   MSLogMessage(message, LOG_FLAG_DEBUG, function: function, line: line, level: level, context: context)
@@ -61,7 +59,7 @@ MSLogError:function:line:level:context:
 public func MSLogError(message: String,
               function: String = __FUNCTION__,
                   line: Int32 = __LINE__,
-                 level: Int32 = msLogLevel,
+                 level: Int32 = LOG_LEVEL_DEBUG,
                context: Int32 = LOG_CONTEXT_DEFAULT)
 {
   MSLogMessage(message, LOG_FLAG_ERROR, function: function, line: line, level: level, context: context)
@@ -79,7 +77,7 @@ MSLogInfo:function:line:level:context:
 public func MSLogInfo(message: String,
              function: String = __FUNCTION__,
                  line: Int32 = __LINE__,
-                level: Int32 = msLogLevel,
+                level: Int32 = LOG_LEVEL_DEBUG,
               context: Int32 = LOG_CONTEXT_DEFAULT)
 {
   MSLogMessage(message, LOG_FLAG_INFO, function: function, line: line, level: level, context: context)
@@ -97,7 +95,7 @@ MSLogWarn:function:line:level:context:
 public func MSLogWarn(message: String,
              function: String = __FUNCTION__,
                  line: Int32 = __LINE__,
-                level: Int32 = msLogLevel,
+                level: Int32 = LOG_LEVEL_DEBUG,
               context: Int32 = LOG_CONTEXT_DEFAULT)
 {
   MSLogMessage(message, LOG_FLAG_WARN, function: function, line: line, level: level, context: context)
@@ -115,7 +113,7 @@ MSLogVerbose:function:line:level:context:
 public func MSLogVerbose(message: String,
                 function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
-                   level: Int32 = msLogLevel,
+                   level: Int32 = LOG_LEVEL_DEBUG,
                  context: Int32 = LOG_CONTEXT_DEFAULT)
 {
   MSLogMessage(message, LOG_FLAG_VERBOSE, function: function, line: line, level: level, context: context)

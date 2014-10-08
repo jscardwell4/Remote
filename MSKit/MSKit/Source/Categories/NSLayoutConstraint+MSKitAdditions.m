@@ -134,7 +134,20 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
                                                                    options:options
                                                                    metrics:metrics
                                                                      views:views]];
-      } else {
+      }
+      else if ([line numberOfMatchesForRegEx:@"\\.size "] > 0) {
+        NSString * widthLine = [line stringByReplacingOccurrencesOfString:@".size" withString:@".width"];
+        [constraintObjects addObjectsFromArray:[self constraintsFromFormat:widthLine
+                                                                   options:options
+                                                                   metrics:metrics
+                                                                     views:views]];
+        NSString * heightLine = [line stringByReplacingOccurrencesOfString:@".size" withString:@".height"];
+        [constraintObjects addObjectsFromArray:[self constraintsFromFormat:heightLine
+                                                                   options:options
+                                                                   metrics:metrics
+                                                                     views:views]];
+      }
+      else {
         [constraintObjects addObjectsFromArray:[self constraintsFromFormat:line
                                                                    options:options
                                                                    metrics:metrics

@@ -94,6 +94,13 @@
 - (void)replaceConstraintWithIdentifier:(NSString *)identifier withConstraint:(NSLayoutConstraint *)constraint;
 - (void)replaceConstraintsWithIdentifier:(NSString *)identifier withConstraints:(NSArray *)constraints;
 - (void)replaceConstraintsWithIdentifierPrefix:(NSString *)prefix withConstraints:(NSArray *)constraints;
+- (void)replaceConstraintsWithIdentifierSuffix:(NSString *)suffix withConstraints:(NSArray *)constraints;
+
+- (void)removeConstraintWithIdentifier:(NSString *)identifier;
+- (void)removeConstraintsWithIdentifier:(NSString *)identifier;
+- (void)removeConstraintsWithIdentifierPrefix:(NSString *)prefix;
+- (void)removeConstraintsWithIdentifierSuffix:(NSString *)suffix;
+
 - (NSArray *)constraintsOfType:(Class)type;
 - (void)replaceConstraintsOfType:(Class)type withConstraints:(NSArray *)constraints;
 
@@ -106,6 +113,9 @@
 - (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views; // Adds self to `views`
 - (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag;
 - (void)constrainWithFormat:(NSString *)format views:(NSDictionary *)views identifier:(NSString *)identifier;
+
+- (void)constrainToSize:(CGSize)size;
+- (void)constrainToSize:(CGSize)size identifier:(NSString *)identifier;
 
 @end
 

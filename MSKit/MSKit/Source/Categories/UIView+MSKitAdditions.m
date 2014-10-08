@@ -466,6 +466,42 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
 }
 
+- (void)replaceConstraintsWithIdentifierSuffix:(NSString *)suffix withConstraints:(NSArray *)constraints {
+
+  [self endEditing:YES];
+
+  NSArray * oldConstraints = [self constraintsWithIdentifierSuffix:suffix];
+
+  if (oldConstraints) [self removeConstraints:oldConstraints];
+
+  if (constraints) {
+
+    for (NSLayoutConstraint * constraint in constraints) {
+      if (![constraint.identifier hasSuffix:suffix])
+        constraint.identifier = [constraint.identifier stringByAppendingFormat:@"-%@", suffix];
+    }
+
+    [self addConstraints:constraints];
+
+  }
+
+}
+- (void)removeConstraintWithIdentifier:(NSString *)identifier {
+  [self replaceConstraintWithIdentifier:identifier withConstraint:nil];
+}
+
+- (void)removeConstraintsWithIdentifier:(NSString *)identifier {
+  [self replaceConstraintsWithIdentifier:identifier withConstraints:nil];
+}
+
+- (void)removeConstraintsWithIdentifierPrefix:(NSString *)prefix {
+  [self replaceConstraintsWithIdentifierPrefix:prefix withConstraints:nil];
+}
+
+- (void)removeConstraintsWithIdentifierSuffix:(NSString *)suffix {
+  [self replaceConstraintsWithIdentifierSuffix:suffix withConstraints:nil];
+}
+
 /// repositionFrameAtOrigin:
 /// @param origin
 - (void)repositionFrameAtOrigin:(CGPoint)origin { self.frame = CGRectReposition(self.frame, origin); }
@@ -766,6 +802,14 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
     if (identifier) [constraints setValue:identifier forKeyPath:@"identifier"];
     [self addConstraints:constraints];
   }
+}
+
+- (void)constrainToSize:(CGSize)size {
+  [self constrainWithFormat:$(@"self.width = %@ :: self.height = %@", @(size.width), @(size.height))];
+}
+
+- (void)constrainToSize:(CGSize)size identifier:(NSString *)identifier {
+  [self constrainWithFormat:$(@"self.width = %@ :: self.height = %@", @(size.width), @(size.height)) identifier: identifier];
 }
 
 @end

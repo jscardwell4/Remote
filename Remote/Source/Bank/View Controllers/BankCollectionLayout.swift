@@ -42,7 +42,7 @@ class BankCollectionLayout: UICollectionViewLayout {
   /// Private variables to hold calculations
   ////////////////////////////////////////////////////////////////////////////////
 
-  private var itemSize  = BankCollectionLayout.listItemCellSize
+  private(set) var itemSize  = BankCollectionLayout.listItemCellSize
 
   private var categoryCount = 0
   private var itemCount     = 0

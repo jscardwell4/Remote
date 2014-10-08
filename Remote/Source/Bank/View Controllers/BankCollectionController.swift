@@ -10,8 +10,6 @@ import Foundation
 import UIKit
 import MoonKit
 
-var msLogLevel = LOG_LEVEL_DEBUG
-
 private let IndicatorImage             = UIImage(named:"1040-checkmark-toolbar")!
 private let IndicatorImageSelected     = UIImage(named:"1040-checkmark-toolbar-selected")!
 private let TextFieldTextColor         = UIColor(RGBAHexString:"#9FA0A4FF")
@@ -318,17 +316,6 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   func detailItem(item: BankDisplayItemModel) {
 //    navigationController?.pushViewController(item.detailController!, animated: true)
-  }
-
-  /**
-  segmentedControlValueDidChange:
-
-  :param: sender UISegmentedControl
-  */
-  func segmentedControlValueDidChange(sender: UISegmentedControl) {
-    useListView = sender.selectedSegmentIndex == 0
-    layout.viewingMode = useListView ? .List : .Thumbnail
-    layout.invalidateLayout()
   }
 
   /**

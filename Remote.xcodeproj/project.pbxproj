@@ -11,6 +11,7 @@
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
 		C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5919DB788E0052DDB7 /* Preset.swift */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
+		C21F931819E48CA800E9FF2D /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */; };
@@ -563,6 +564,7 @@
 		C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Test.json; sourceTree = "<group>"; };
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
+		C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionCell.swift; sourceTree = "<group>"; };
 		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
 		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
@@ -1432,6 +1434,7 @@
 				C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */,
 				C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */,
 				C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */,
+				C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */,
 			);
 			name = Collections;
 			sourceTree = "<group>";
@@ -2685,6 +2688,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
+				C21F931819E48CA800E9FF2D /* BankCollectionCell.swift in Sources */,
 				C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */,
 				C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */,
 				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,

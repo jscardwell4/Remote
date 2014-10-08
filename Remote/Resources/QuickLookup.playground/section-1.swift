@@ -31,3 +31,20 @@ wtf.disposition
 string.utf16[6..<9]
 let wtffuck = string.utf16
 let somewtffuck = wtffuck[6..<8]
+
+
+"\(UICollectionViewCell.self)"
+
+class PureSwiftClass {
+}
+
+var myvar0 = NSString() // Objective-C class
+var myvar1 = PureSwiftClass()
+var myvar2 = 42
+var myvar3 = "Hans"
+
+println( "TypeName0 = \(_stdlib_getDemangledTypeName(myvar0))")
+println( "TypeName1 = \(_stdlib_getDemangledTypeName(myvar1))")
+println( "TypeName2 = \(_stdlib_getDemangledTypeName(myvar2))")
+println( "TypeName3 = \(_stdlib_getDemangledTypeName(myvar3))")
+

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */; };
 		C216E74019CBAE0A0052E98A /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C216E73F19CBAE0A0052E98A /* Logging.swift */; };
+		C21F931B19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */; };
 		C2358F1B19C78D6D00920F8D /* Moonkit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* Moonkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F2C19C78DA300920F8D /* Lumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C230F88E19A7C9F900900F0C /* Lumberjack.framework */; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
@@ -236,6 +237,7 @@
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C216E73F19CBAE0A0052E98A /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
 		C230F88919A7C9F800900F0C /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = Lumberjack/Lumberjack.xcodeproj; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */,
 				C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */,
 				C28D097719D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift */,
+				C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1121,6 +1124,7 @@
 			files = (
 				C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */,
 				C2358F3319C78E0C00920F8D /* NSArray+MSKitAdditions.m in Sources */,
+				C21F931B19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */,
 				C2358F3419C78E0C00920F8D /* NSAttributedString+MSKitAdditions.m in Sources */,
 				C2358F3519C78E0C00920F8D /* NSDictionary+MSKitAdditions.m in Sources */,
 				C2358F3619C78E0C00920F8D /* NSFetchedResultsController+MSKitAdditions.m in Sources */,
