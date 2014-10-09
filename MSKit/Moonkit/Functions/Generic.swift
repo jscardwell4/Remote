@@ -248,7 +248,9 @@ public func collect<T where T:GeneratorType>(generator: T) -> [T.Element] {
   return generator⭆
 }
 
-public func collectFrom<C:CollectionType, S:SequenceType where C.Index == S.Generator.Element>(source: C, indexes: S) -> [C.Generator.Element] {
+public func collectFrom<C:CollectionType, S:SequenceType where C.Index == S.Generator.Element>(source: C, indexes: S)
+  -> [C.Generator.Element]
+{
   var result: [C.Generator.Element] = []
   for idx in indexes { result.append(source[idx]) }
   return result

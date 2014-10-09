@@ -27,6 +27,16 @@ class BankItemCell: UITableViewCell {
 		case Table     = "BankItemDetailTableCell"
 	}
 
+  /** A simple enum to specify kinds of data */
+  enum DataType {
+    case IntData(ClosedInterval<Int32>)
+    case IntegerData(ClosedInterval<Int>)
+    case LongLongData(ClosedInterval<Int64>)
+    case FloatData(ClosedInterval<Float>)
+    case DoubleData(ClosedInterval<Double>)
+    case StringData
+  }
+
   class var PickerHeight: CGFloat { return 162.0 }
 
 	/**
@@ -50,6 +60,62 @@ class BankItemCell: UITableViewCell {
 	var didShowPicker          : ((BankItemCell) -> Void)?
 	var didHidePicker          : ((BankItemCell) -> Void)?
 
+  var returnKeyType: UIReturnKeyType = .Done {
+    didSet {
+      infoTextField?.returnKeyType = returnKeyType
+      infoTextView?.returnKeyType = returnKeyType
+    }
+  }
+
+  var keyboardType: UIKeyboardType = .Default {
+    didSet {
+      infoTextField?.keyboardType = keyboardType
+      infoTextView?.keyboardType = keyboardType
+    }
+  }
+
+  var autocapitalizationType: UITextAutocapitalizationType = .None {
+    didSet {
+      infoTextField?.autocapitalizationType = autocapitalizationType
+      infoTextView?.autocapitalizationType = autocapitalizationType
+    }
+  }
+
+  var autocorrectionType: UITextAutocorrectionType = .No {
+    didSet {
+      infoTextField?.autocorrectionType = autocorrectionType
+      infoTextView?.autocorrectionType = autocorrectionType
+    }
+  }
+
+  var spellCheckingType: UITextSpellCheckingType = .No {
+    didSet {
+      infoTextField?.spellCheckingType = spellCheckingType
+      infoTextView?.spellCheckingType = spellCheckingType
+    }
+  }
+
+  var enablesReturnKeyAutomatically: Bool = false {
+  	didSet {
+  		infoTextField?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+  		infoTextView?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+  	}
+  }
+
+  var keyboardAppearance: UIKeyboardAppearance = .Default {
+  	didSet {
+  		infoTextField?.keyboardAppearance = keyboardAppearance
+  		infoTextView?.keyboardAppearance = keyboardAppearance
+  	}
+  }
+
+  var secureTextEntry: Bool = false {
+  	didSet {
+  		infoTextField?.secureTextEntry = secureTextEntry
+  		infoTextView?.secureTextEntry = secureTextEntry
+  	}
+  }
+
   var shouldUseIntegerKeyboard: Bool = false {
 		didSet {
 			if let input = infoTextField { input.inputView = shouldUseIntegerKeyboard ? integerKeyboardForInput(input) : nil }
@@ -57,13 +123,20 @@ class BankItemCell: UITableViewCell {
 	}
 	var shouldAllowReturnsInTextView = false
 
-	var shouldAllowRowSelection: Bool? { get { return table?.allowsSelection } set { table?.allowsSelection = newValue ?? false } }
+	var shouldAllowRowSelection: Bool? {
+    get { return table?.allowsSelection }
+    set { table?.allowsSelection = newValue ?? false }
+  }
 
 	var stepperWraps: Bool?      { get { return stepper?.wraps        } set { stepper?.wraps = newValue ?? true       } }
 	var stepperMinValue: Double? { get { return stepper?.minimumValue } set { stepper?.minimumValue = newValue ?? 0.0 } }
 	var stepperMaxValue: Double? { get { return stepper?.maximumValue } set { stepper?.maximumValue = newValue ?? 0.0 } }
+  var stepperStepValue: Double? { get { return stepper?.stepValue } set { stepper?.stepValue = max(newValue ?? 1.0, 1.0) } }
 
 	var name: String? { get { return nameLabel?.text } set { nameLabel?.text = newValue } }
+
+  var infoDataType: DataType = .StringData
+
 	var info: AnyObject? {
 		get {
 			switch identifier {
@@ -72,25 +145,34 @@ class BankItemCell: UITableViewCell {
 				case .Image:     				 return infoImageView?.image
 				case .Switch:    				 return infoSwitch?.on
 				case .Stepper:   				 return stepper?.value
-				case .TextView:  				 return infoTextView?.text
-				case .TextField: 				 return infoTextField?.text
+				case .TextView:  				 return numberFromText(infoTextView?.text, dataType: infoDataType) ?? infoTextView?.text
+				case .TextField: 				 return numberFromText(infoTextField?.text, dataType: infoDataType) ?? infoTextField?.text
 				case .Table:     				 return tableData
 			}
 		}
 		set {
 			switch identifier {
-        case .Label, .List: infoLabel?.text = newValue != nil ? textFromObject(newValue!) : nil
-        case .Button, .Detail: infoButton?.setTitle(newValue != nil ? textFromObject(newValue!) : nil, forState:.Normal)
+        case .Label, .List:
+          infoLabel?.text = textFromObject(newValue)
+        case .Button, .Detail:
+          infoButton?.setTitle(textFromObject(newValue), forState:.Normal)
 				case .Image:
-					if let image = newValue as? UIImage {
-						infoImageView?.image = image
-						infoImageView?.contentMode = CGSizeContainsSize(bounds.size, image.size) ? .Center : .ScaleAspectFit
-					} else { infoImageView?.image = nil }
-				case .Switch: if let v = newValue as? Bool { infoSwitch?.on = v }
-				case .Stepper: if let v = newValue as? Double { stepper?.value = v; infoLabel?.text = "\(v)" }
-        case .TextView: infoTextView?.text = newValue != nil ? textFromObject(newValue!) : nil
-        case .TextField: infoTextField?.text = newValue != nil ? textFromObject(newValue!) : nil
-				case .Table: if let data = newValue as? [NSObject] { tableData = data; table?.reloadData() }
+          infoImageView?.image = newValue as? UIImage
+					if let imageSize = (newValue as? UIImage)?.size {
+						infoImageView?.contentMode = CGSizeContainsSize(bounds.size, imageSize) ? .Center : .ScaleAspectFit
+					}
+				case .Switch:
+          infoSwitch?.on = newValue as? Bool ?? false
+				case .Stepper:
+          stepper?.value = newValue as? Double ?? 0.0
+          infoLabel?.text = textFromObject(newValue, dataType: infoDataType)
+        case .TextView:
+          infoTextView?.text = textFromObject(newValue, dataType: infoDataType)
+        case .TextField:
+          infoTextField?.text = textFromObject(newValue, dataType: infoDataType)
+				case .Table:
+          tableData = newValue as? [NSObject]
+          table?.reloadData()
 			}
 		}
 	}
@@ -109,21 +191,59 @@ class BankItemCell: UITableViewCell {
 	private var beginStateText: String?
 	private let identifier: Identifier
 
-	/**
-	textFromObject:
+  /**
+  textFromObject:dataType:
 
-	:param: obj AnyObject
+  :param: obj AnyObject
+  :param: dataType DataType = .StringData
 
-	:returns: String
-	*/
-	private func textFromObject(obj: AnyObject) -> String {
+  :returns: String
+  */
+  private func textFromObject(obj: AnyObject?, dataType: DataType = .StringData) -> String {
 		var text = ""
 		if let string = obj as? String { text = string }
-		else if let number = obj as? NSNumber { text = number.stringValue }
-		else if obj.respondsToSelector("name") { if let name = obj.valueForKey("name") as? String { text = name } }
-		else { text = "\(obj)" }
+		else if let number = obj as? NSNumber { text = "\(number)" }
+		else if obj != nil {
+      if obj!.respondsToSelector("name") { if let name = obj!.valueForKey("name") as? String { text = name } }
+      else { text = "\(obj)" }
+    }
 		return text
 	}
+
+  private func numberFromText(text: String?, dataType: DataType = .IntegerData(Int.min...Int.max)) -> NSNumber? {
+    var number: NSNumber?
+    if text != nil {
+      switch dataType {
+        case .IntData(let r):
+          let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
+          var n: Int32 = 0
+          if scanner.scanInt(&n) && r ∋ n { number = NSNumber(int: n) }
+        case .IntegerData(let r):
+          let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
+          var n: Int = 0
+          if scanner.scanInteger(&n) && r ∋ n { number = NSNumber(long: n) }
+          if r ∌ n { return false }
+        case .LongLongData(let r):
+          let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
+          var n: Int64 = 0
+          if scanner.scanLongLong(&n) && r ∋ n { number = NSNumber(longLong: n) }
+          if r ∌ n { return false }
+        case .FloatData(let r):
+          let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
+          var n: Float = 0
+          if scanner.scanFloat(&n) && r ∋ n { number = NSNumber(float: n) }
+          if r ∌ n { return false }
+        case .DoubleData(let r):
+          let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
+          var n: Double = 0
+          if scanner.scanDouble(&n) && r ∋ n { number = NSNumber(double: n) }
+          if r ∌ n { return false }
+         default:
+           break
+      }
+    }
+    return number
+  }
 
 	var tableIdentifier: Identifier = .List
 
@@ -248,6 +368,14 @@ class BankItemCell: UITableViewCell {
         infoTextField.textColor     = Bank.infoColor
         infoTextField.textAlignment = .Right
         infoTextField.delegate      = cell
+        infoTextField.returnKeyType = cell.returnKeyType
+        infoTextField.keyboardType = cell.keyboardType
+        infoTextField.autocapitalizationType = cell.autocapitalizationType
+        infoTextField.autocorrectionType = cell.autocorrectionType
+        infoTextField.spellCheckingType = cell.spellCheckingType
+        infoTextField.enablesReturnKeyAutomatically = cell.enablesReturnKeyAutomatically
+        infoTextField.keyboardAppearance = cell.keyboardAppearance
+        infoTextField.secureTextEntry = cell.secureTextEntry
         cell.infoTextField = infoTextField
       }
 
@@ -255,6 +383,14 @@ class BankItemCell: UITableViewCell {
         infoTextView.font      = Bank.infoFont
         infoTextView.textColor = Bank.infoColor
         infoTextView.delegate  = cell
+        infoTextView.returnKeyType = cell.returnKeyType
+        infoTextView.keyboardType = cell.keyboardType
+        infoTextView.autocapitalizationType = cell.autocapitalizationType
+        infoTextView.autocorrectionType = cell.autocorrectionType
+        infoTextView.spellCheckingType = cell.spellCheckingType
+        infoTextView.enablesReturnKeyAutomatically = cell.enablesReturnKeyAutomatically
+        infoTextView.keyboardAppearance = cell.keyboardAppearance
+        infoTextView.secureTextEntry = cell.secureTextEntry
         cell.infoTextView = infoTextView
       }
 
@@ -380,7 +516,7 @@ class BankItemCell: UITableViewCell {
 	*/
 	private func integerKeyboardForInput(input: UITextField) -> UIView {
 
-		let view = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 216))
+		let view = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 219))
 
 		let index = [0: "1",      1: "2",  2: "3",
 		             3: "4",      4: "5",  5: "6",
@@ -389,14 +525,13 @@ class BankItemCell: UITableViewCell {
 
 		for i in 0...11 {
 			let b = UIButton.newForAutolayout()
-      b.backgroundColor = UIColor.yellowColor()
 			if i == 11 {
 				b.backgroundColor = UIColor(r:0, g:122, b:255, a:255)
 				b.setTitle("Done", forState: .Normal)
 				b.setTitleColor(UIColor.whiteColor(), forState: .Normal)
 			} else {
-				b.setImage(UIImage(named:"IntegerKeyboard_\(index[i])"), forState: .Normal)
-				b.setImage(UIImage(named:"IntegerKeyboard_\(index[i])-Highlighted"), forState: .Highlighted)
+				b.setImage(UIImage(named:"IntegerKeyboard_\(index[i]!)"), forState: .Normal)
+				b.setImage(UIImage(named:"IntegerKeyboard_\(index[i]!)-Highlighted"), forState: .Highlighted)
 			}
 
       var actionBlock: (Void) -> Void
@@ -406,7 +541,7 @@ class BankItemCell: UITableViewCell {
         default: actionBlock = {input.insertText(index[i]!)}
       }
       b.addActionBlock(actionBlock, forControlEvents: .TouchUpInside)
-      b.constrainWithFormat("self.height = \(i < 3 ? 54 : 53.5) :: self.width = \(i % 3 > 0 && (i + 1) % 3 > 0 ? 110 : 104.5)")
+      b.constrainWithFormat("self.height = 54 :: self.width = 106")
       view.addSubview(b)
 
       let views = ["b": b]
@@ -415,11 +550,11 @@ class BankItemCell: UITableViewCell {
       else if i > 8            { view.constrainWithFormat("b.bottom = self.bottom",           views: views)  }
 
       if i % 3 == 0            { view.constrainWithFormat("b.left = self.left",               views: views) }
-      else if (i + 1) % 3 > 0  { view.constrainWithFormat("b.right = self.right",             views: views) }
+      else if (i + 1) % 3 == 0 { view.constrainWithFormat("b.right = self.right",             views: views) }
       else                     { view.constrainWithFormat("b.centerX = self.centerX",         views: views) }
 
-      if i >= 3 && i <= 5      { view.constrainWithFormat("b.centerY = self.centerY - 26.75", views: views) }
-      else if i >= 6 && i <= 8 { view.constrainWithFormat("b.centerY = self.centerY + 27.25", views: views) }
+      if 3...5 ∋ i      { view.constrainWithFormat("b.centerY = self.centerY - 27.5", views: views) }
+      else if 6...8 ∋ i { view.constrainWithFormat("b.centerY = self.centerY + 27.5", views: views) }
 
     }
 
@@ -434,7 +569,7 @@ class BankItemCell: UITableViewCell {
 	*/
 	func stepperValueDidChange(sender: UIStepper) {
 		changeHandler?(self)
-		infoLabel?.text = "\(sender.value)"
+		infoLabel?.text = textFromObject(sender.value, dataType: infoDataType)
 	}
 
 	/**
@@ -513,7 +648,38 @@ extension BankItemCell: UITextFieldDelegate {
 
 	:returns: Bool
 	*/
-	func textFieldShouldEndEditing(textField: UITextField) -> Bool { return validationHandler?(self) ?? true }
+	func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+    switch infoDataType {
+      case .IntData(let r):
+        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+        var n: Int32 = 0
+        if !scanner.scanInt(&n) { return false }
+        if r ∌ n { return false }
+      case .IntegerData(let r):
+        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+        var n: Int = 0
+        if !scanner.scanInteger(&n) { return false }
+        if r ∌ n { return false }
+      case .LongLongData(let r):
+        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+        var n: Int64 = 0
+        if !scanner.scanLongLong(&n) { return false }
+        if r ∌ n { return false }
+      case .FloatData(let r):
+        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+        var n: Float = 0
+        if !scanner.scanFloat(&n) { return false }
+        if r ∌ n { return false }
+      case .DoubleData(let r):
+        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+        var n: Double = 0
+        if !scanner.scanDouble(&n) { return false }
+        if r ∌ n { return false }
+       default:
+         break
+    }
+    return validationHandler?(self) ?? true
+  }
 
   /**
   textFieldShouldReturn:

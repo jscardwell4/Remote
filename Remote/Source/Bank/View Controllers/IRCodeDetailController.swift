@@ -9,18 +9,28 @@ import Foundation
 import UIKit
 import MoonKit
 
+/**
+The `IRCodeDetailController` is the view controller responsible for viewing and editing
+the details for an `IRCode` model object. A valid `IRCode` conforms to the following
+pieces of an iTach "sendir" command:
+
+  …<frequency>,<repeat>,<offset>,<on1>,<off1>,<on2>,<off2>,…,<onN>,<offN>…
+
+where…
+
+-  N is less than 260 or a total of 520 numbers
+-  <frequency> is |15000|15001|....|500000|
+-  <repeat> is |1|2|....|50|
+-  <offset> is |1|3|5|....|383|
+-  <on1> is |1|2|...|65635|
+-  <off1> is |1|2|...|65635|
+*/
 @objc(IRCodeDetailController)
 class IRCodeDetailController: BankItemDetailController {
 
   var irCode: IRCode { return item as IRCode }
 
-  lazy var manufacturers: [Manufacturer] = {
-    var manufacturers: [Manufacturer] = []
-    if let fetchedManufacturers = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] {
-      manufacturers += fetchedManufacturers
-    }
-    return manufacturers
-    }()
+  lazy var manufacturers: [Manufacturer] = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] ?? []
 
   var codesets: [IRCodeSet] = [] { didSet { codesets.sort{$0.0.name < $0.1.name} } }
 
@@ -102,26 +112,30 @@ class IRCodeDetailController: BankItemDetailController {
     let frequencyRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Frequency"
       $0.info = NSNumber(longLong: self.irCode.frequency)
+      $0.infoDataType = .LongLongData(15000...500000)
       $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] c in self.irCode.frequency = (c.info as NSNumber).longLongValue}
+      $0.changeHandler = {[unowned self] c in if let i = (c.info as? NSNumber)?.longLongValue { self.irCode.frequency = i } }
     }
 
     // section 0 - row 3: repeat
     let repeatRow = Row(identifier: .TextField, isEditable: true) {[unowned self] in
       $0.name = "Repeat"
       $0.info = NSNumber(short: self.irCode.repeatCount)
+      $0.infoDataType = .IntData(1...50)
       $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] c in self.irCode.repeatCount = (c.info as NSNumber).shortValue}
+      $0.changeHandler = {[unowned self] c in if let i = (c.info as? NSNumber)?.shortValue { self.irCode.repeatCount = i } }
     }
 
     // section 0 - row 4: offset
     let offsetRow = Row(identifier: .Stepper, isEditable: true) {[unowned self] in
       $0.name = "Offset"
-      $0.stepperMinValue = 0
-      $0.stepperMaxValue = 127
+      $0.stepperMinValue = 1
+      $0.stepperMaxValue = 383
+      $0.stepperStepValue = 2
+      $0.infoDataType = .IntData(1...383)
       $0.stepperWraps = false
       $0.info = NSNumber(short: self.irCode.offset)
-      $0.changeHandler = {[unowned self] c in self.irCode.offset = (c.info as NSNumber).shortValue}
+      $0.changeHandler = {[unowned self] c in if let i = (c.info as? NSNumber)?.shortValue { self.irCode.offset = i } }
     }
 
     // section 0 - row 5: on-off pattern
