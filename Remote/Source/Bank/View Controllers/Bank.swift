@@ -29,7 +29,7 @@ import MoonKit
   func delete()
   func rollback()
 
-//  class func detailControllerType() -> BankDetailController.Protocol
+  func detailController() -> UIViewController
 //  class func categoryType() -> BankDisplayItemCategory.Protocol
 //  typealias CategoryType: BankDisplayItemCategory
 
@@ -58,10 +58,20 @@ import MoonKit
   var parentCategory: BankDisplayItemCategory?   { get }
 }
 
-/** Protocol for types that wish to display Bank item details */
-protocol BankDetailController: class {
+func categoryPath(category: BankDisplayItemCategory) -> String {
+  var path: [String] = [category.title]
+  var tempCategory = category.parentCategory
+  while tempCategory != nil {
+    path.append(tempCategory!.title)
+    tempCategory = tempCategory!.parentCategory
+  }
+  return "/".join(path.reverse())
+}
 
-//  init?(item: BankDisplayItemModel, editing: Bool)
+/** Protocol for types that wish to display Bank item details */
+@objc protocol BankDetailController: class, NSObjectProtocol {
+
+  init?(item: BankDisplayItemModel, editing: Bool)
 
 }
 
@@ -79,13 +89,30 @@ class Bank {
   struct RootCategory {
     let label: String
     let icon: UIImage
-    let categories: [BankDisplayItemCategory]
-    let controller: ((Void) -> BankController)?
+    let subcategories: [BankDisplayItemCategory]
+    let items: [BankDisplayItemModel]
+    let thumbnailableItems: Bool
+    let previewableItems:   Bool
+    let detailableItems:    Bool
+    let editableItems:      Bool
 
-    init(label: String, icon: UIImage, categories: [BankDisplayItemCategory]) {
+    init(label: String,
+         icon: UIImage,
+         subcategories: [BankDisplayItemCategory] = [],
+         items: [BankDisplayItemModel] = [],
+         thumbnailableItems: Bool = false,
+         previewableItems: Bool = false,
+         detailableItems: Bool = false,
+         editableItems: Bool = false)
+    {
       self.label = label
       self.icon = icon
-      self.categories = categories
+      self.subcategories = subcategories
+      self.items = items
+      self.thumbnailableItems = thumbnailableItems
+      self.previewableItems = previewableItems
+      self.detailableItems = detailableItems
+      self.editableItems = editableItems
     }
   }
 

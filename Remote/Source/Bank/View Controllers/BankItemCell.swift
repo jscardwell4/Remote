@@ -35,7 +35,8 @@ class BankItemCell: UITableViewCell {
 	:param: tableView UITableView
 	*/
 	class func registerIdentifiersWithTableView(tableView: UITableView) {
-    let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
+    let identifiers: [Identifier] =
+      [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
 		for identifier in identifiers { tableView.registerClass(self, forCellReuseIdentifier: identifier.rawValue) }
 	}
 
@@ -259,6 +260,8 @@ class BankItemCell: UITableViewCell {
 
       else if let infoImageView = info as? UIImageView {
         infoImageView.contentMode = .ScaleAspectFit
+        infoImageView.tintColor = UIColor.blackColor()
+        infoImageView.backgroundColor = UIColor.clearColor()
         cell.infoImageView = infoImageView
       }
 
@@ -386,6 +389,7 @@ class BankItemCell: UITableViewCell {
 
 		for i in 0...11 {
 			let b = UIButton.newForAutolayout()
+      b.backgroundColor = UIColor.yellowColor()
 			if i == 11 {
 				b.backgroundColor = UIColor(r:0, g:122, b:255, a:255)
 				b.setTitle("Done", forState: .Normal)
@@ -430,7 +434,7 @@ class BankItemCell: UITableViewCell {
 	*/
 	func stepperValueDidChange(sender: UIStepper) {
 		changeHandler?(self)
-		infoLabel?.text = "(sender.value)"
+		infoLabel?.text = "\(sender.value)"
 	}
 
 	/**
@@ -476,6 +480,9 @@ class BankItemCell: UITableViewCell {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UITextFieldDelegate
+////////////////////////////////////////////////////////////////////////////////
 
 extension BankItemCell: UITextFieldDelegate {
 
@@ -507,6 +514,18 @@ extension BankItemCell: UITextFieldDelegate {
 	:returns: Bool
 	*/
 	func textFieldShouldEndEditing(textField: UITextField) -> Bool { return validationHandler?(self) ?? true }
+
+  /**
+  textFieldShouldReturn:
+
+  :param: textField UITextField
+
+  :returns: Bool
+  */
+  func textFieldShouldReturn(textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return false
+  }
 
 }
 
@@ -558,6 +577,9 @@ extension BankItemCell: UITextViewDelegate {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UIPickerViewDataSource
+////////////////////////////////////////////////////////////////////////////////
 
 
 extension BankItemCell: UIPickerViewDataSource {
@@ -597,6 +619,10 @@ extension BankItemCell: UIPickerViewDataSource {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UIPickerViewDelegate
+////////////////////////////////////////////////////////////////////////////////
+
 extension BankItemCell: UIPickerViewDelegate {
 
 	/**
@@ -615,6 +641,10 @@ extension BankItemCell: UIPickerViewDelegate {
 	}
 
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////
 
 extension BankItemCell: UITableViewDataSource {
 
@@ -667,5 +697,8 @@ extension BankItemCell: UITableViewDataSource {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// MARK: - UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////
 
 extension BankItemCell: UITableViewDelegate {}

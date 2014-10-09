@@ -87,7 +87,9 @@ class ITachDevice: NetworkDevice {
     revision  = data["revision"]   as? NSString ?? revision
   }
 
-//  override class func detailControllerType() -> BankDetailController.Protocol { return ITachDeviceDetailController.self }
+  override func detailController() -> UIViewController {
+    return ITachDeviceDetailController(item: self, editing: false)!
+  }
 
 }
 

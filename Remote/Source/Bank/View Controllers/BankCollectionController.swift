@@ -67,10 +67,6 @@ class BankCollectionController: UICollectionViewController, BankController {
       navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
 
       // Update visible cells
-//      if let visibleCells = collectionView?.visibleCells() as? [UICollectionViewCell] {
-//        let itemCells = visibleCells.filter{$0 is BankCollectionItemCell}
-//        for itemCell in itemCells as [BankCollectionItemCell] { itemCell.indicatorImage = cellIndicatorImage }
-//      }
       collectionView?.setValue(cellIndicatorImage, forKeyPath: "visibleCells.indicatorImage")
 
     }
@@ -90,25 +86,10 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
-  /**
-  didMoveToParentViewController:
-
-  :param: parent UIViewController?
-  */
-  /*
-  override func didMoveToParentViewController(parent: UIViewController?) {
-    super.didMoveToParentViewController(parent)
-    if parent != nil { layout.includeSectionHeaders = false }
-  }
-  */
-
-  /**
-  loadView
-  */
+  /** loadView */
   override func loadView() {
 
     title = category.title
-    layout.viewingMode = .List
 
     collectionView = {
 
@@ -119,17 +100,17 @@ class BankCollectionController: UICollectionViewController, BankController {
       // Register header and cell classes
       collectionView?.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: CategoryCellIdentifier)
       collectionView?.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: ItemCellIdentifier)
-      collectionView?.registerClass(BankCollectionHeader.self,
-        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-               withReuseIdentifier: HeaderIdentifier)
       return collectionView
 
     }()
 
 
     toolbarItems = {
+
+      // Check if we should include viewing mode control
       if self.category.thumbnailableItems {
-        // Create the toolbar items
+
+        // Create the segmented control
         if let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
                                                                     UIImage(named: "1073-grid-1-toolbar-selected")!,
                                                                     UIImage(named: "1076-grid-4-toolbar")!,
@@ -142,10 +123,13 @@ class BankCollectionController: UICollectionViewController, BankController {
             self.layout.invalidateLayout()
           }
           let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+
+          // Return the toolbar with segmented control added
           return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
         }
       }
 
+      // Otherwise return the default toolbar items
       return Bank.toolbarItemsForController(self)
       }()
 
@@ -159,9 +143,6 @@ class BankCollectionController: UICollectionViewController, BankController {
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
-
-    // ???: Should we reload data here?
-    // collectionView?.reloadData()
   }
 
   /**
@@ -170,7 +151,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   override func updateViewConstraints() {
     super.updateViewConstraints()
 
-    let identifier = "Internal"
+    let identifier = createIdentifier(self, "Internal")
 
     if view.constraintsWithIdentifier(identifier).count == 0 && zoomView != nil && zoomView!.superview === view {
       view.constrainWithFormat("zoom.center = self.center", views: ["zoom": zoomView!], identifier: identifier)
@@ -184,9 +165,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  /**
-  refreshExistingFiles
-  */
+  /** refreshExistingFiles */
   private func refreshExistingFiles() {
     let attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_BACKGROUND, -1)
     let queue = dispatch_queue_create("com.moondeerstudios.background", attr)
@@ -306,7 +285,9 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: item BankDisplayItemModel
   */
   func editItem(item: BankDisplayItemModel) {
-//    navigationController?.pushViewController(item.detailController!, animated: true)
+    let detailController = item.detailController()
+    detailController.editing = true
+    navigationController?.pushViewController(detailController, animated: true)
   }
 
   /**
@@ -315,7 +296,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: item BankDisplayItemModel
   */
   func detailItem(item: BankDisplayItemModel) {
-//    navigationController?.pushViewController(item.detailController!, animated: true)
+    navigationController?.pushViewController(item.detailController(), animated: true)
   }
 
   /**
@@ -349,7 +330,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 
     zoomedItem = item
 
-/*
+
     if let zoom = zoomView {
 
       zoom.item = item
@@ -359,7 +340,6 @@ class BankCollectionController: UICollectionViewController, BankController {
 
     }
 
-*/
   }
 
 }
@@ -387,7 +367,7 @@ extension BankCollectionController: BankCollectionZoomDelegate {
   func didDismissForDetailZoomView(zoom: BankCollectionZoom) {
     precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
     zoom.removeFromSuperview()
-//    navigationController?.pushViewController(zoomedItem!.detailController!, animated: true)
+    detailItem(zoom.item!)
   }
 
   /**
@@ -398,7 +378,7 @@ extension BankCollectionController: BankCollectionZoomDelegate {
   func didDismissForEditingZoomView(zoom: BankCollectionZoom) {
     precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
     zoom.removeFromSuperview()
-//    navigationController?.pushViewContrboller(zoomedItem!.editingController!, animated: true)
+    editItem(zoom.item!)
   }
 
 }
@@ -605,7 +585,7 @@ extension BankCollectionController: UICollectionViewDelegate {
       }
 
       // Otherwise we push the item's detail view controller
-      //else { navigationController?.pushViewController(cell.item!.detailController!, animated:true) }
+      else { detailItem(cell.item!) }
 
     }
 

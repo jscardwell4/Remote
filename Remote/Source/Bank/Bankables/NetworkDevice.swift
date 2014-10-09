@@ -55,7 +55,12 @@ class NetworkDevice: BankableModelObject {
     return device
   }
   class var rootCategory: Bank.RootCategory {
-    return Bank.RootCategory(label: "Network Devices", icon: UIImage(named: "937-wifi-signal")!, categories: [])
+    let networkDevices = findAllSortedBy("name", ascending: true) as? [NetworkDevice]
+    return Bank.RootCategory(label: "Network Devices",
+                             icon: UIImage(named: "937-wifi-signal")!,
+                             items: networkDevices ?? [],
+                             detailableItems: true,
+                             editableItems: true)
   }
 
   override class func isThumbnailable() -> Bool { return false }

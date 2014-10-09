@@ -71,15 +71,15 @@ extension BankRootController: UITableViewDelegate {
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let rootCategory = rootCategories[indexPath.row]
-    let category = BankSurrogateCategory(title: rootCategory.label, subcategories: rootCategory.categories)
+    let category = BankSurrogateCategory(title: rootCategory.label,
+                                         subcategories: rootCategory.subcategories,
+                                         items: rootCategory.items,
+                                         thumbnailableItems: rootCategory.thumbnailableItems,
+                                         previewableItems: rootCategory.previewableItems,
+                                         detailableItems: rootCategory.detailableItems,
+                                         editableItems: rootCategory.editableItems)
     let collectionController = BankCollectionController(category: category)!
     navigationController?.pushViewController(collectionController, animated: true)
-//    if let bankableModelClass = NSClassFromString(RegisteredClasses[indexPath.row]) as? BankableModelObject.Type {
-//      let vc = bankableModelClass.isCategorized()
-//                 ? BankCategoryController(itemClass: bankableModelClass)
-//                 : BankCollectionController(itemClass: bankableModelClass)
-//      navigationController?.pushViewController(vc, animated: true)
-//    }
   }
 
 }

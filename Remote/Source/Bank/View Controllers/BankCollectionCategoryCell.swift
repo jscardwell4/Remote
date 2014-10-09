@@ -35,20 +35,27 @@ class BankCollectionCategoryCell: BankCollectionCell {
   override func updateConstraints() {
 
     let identifier = createIdentifier(self, "Internal")
-
     removeConstraintsWithIdentifier(identifier)
+
+    super.updateConstraints()
 
     let format = "\n".join([
       "[indicator]-20-[label]-8-[chevron]-20-|",
       "label.centerY = content.centerY",
       "chevron.centerY = content.centerY",
       "indicator.centerY = content.centerY",
-      "indicator.right = content.left"
+      "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
       ])
     let views = ["label": label, "indicator": indicator, "chevron": chevron, "content": contentView]
     constrainWithFormat(format, views: views, identifier: identifier)
 
-    super.updateConstraints()
+    let predicate = NSPredicate(format: "firstItem == %@" +
+      "AND secondItem == %@ " +
+      "AND firstAttribute == \(NSLayoutAttribute.Right.rawValue)" +
+      "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
+      "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
+    indicatorConstraint = constraintMatching(predicate)
+
 
   }
 

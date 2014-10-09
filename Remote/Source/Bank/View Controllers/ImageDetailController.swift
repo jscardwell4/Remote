@@ -14,11 +14,13 @@ class ImageDetailController: BankItemDetailController {
 
   var image: Image { return item as Image }
 
-  lazy var categories: [String] = { [unowned self] in
+  lazy var categories: [String] = []/*
+{ [unowned self] in
     var categories: [String] = []
     if let fetchedCategories = Image.allValuesForAttribute("category") as? [String] { categories += fetchedCategories }
     return categories
     }()
+*/
 
   /**
   initWithItem:editing:
@@ -34,14 +36,14 @@ class ImageDetailController: BankItemDetailController {
     let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
 
       $0.name = "Category"
-//      $0.info = self.image.imageCategory?.categoryPath ?? "Uncategorized"
-      $0.changeHandler = {[unowned self] c in
-        if let category = c.info as? ImageCategory {
+      $0.info = self.image.imageCategory != nil ? categoryPath(self.image.imageCategory) : "Uncategorized"
+//      $0.changeHandler = {[unowned self] c in
+//        if let category = c.info as? ImageCategory {
 //          self.image.category = category
-        }
-      }
-      $0.pickerData = self.categories
-      $0.pickerSelection = self.image.imageCategory
+//        }
+//      }
+//      $0.pickerData = self.categories
+//      $0.pickerSelection = self.image.imageCategory
     }
 
     // section 0 - row 1: file

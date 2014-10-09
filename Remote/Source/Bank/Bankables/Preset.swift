@@ -13,14 +13,23 @@ import MoonKit
 @objc(Preset)
 class Preset: BankableModelObject {
 
-    @NSManaged var presetCategory: PresetCategory
-    @NSManaged var element: RemoteElement
+  @NSManaged var presetCategory: PresetCategory
+  @NSManaged var element: RemoteElement
 //    @NSManaged var presetPreview: BankObjectPreview
+  override class func isThumbnailable() -> Bool { return true }
+  override class func isDetailable()    -> Bool { return true }
+  override class func isEditable()      -> Bool { return true }
+  override class func isPreviewable()   -> Bool { return true }
 
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return PresetCategory.self }
-//  override class func detailControllerType() -> BankDetailController.Protocol { return PresetDetailController.self }
+  override func detailController() -> UIViewController { return PresetDetailController(item: self, editing: false)! }
   class var rootCategory: Bank.RootCategory {
-    return Bank.RootCategory(label: "Presets", icon: UIImage(named: "1059-sliders")!, categories: [])
+    return Bank.RootCategory(label: "Presets",
+                             icon: UIImage(named: "1059-sliders")!,
+                             detailableItems: true,
+                             editableItems: true,
+                             previewableItems: true,
+                             thumbnailableItems: true)
   }
 
 }

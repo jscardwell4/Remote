@@ -82,7 +82,13 @@ class Image: BankableModelObject {
   class var rootCategory: Bank.RootCategory {
     var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil") as [ImageCategory]
     categories.sort{$0.0.title < $0.1.title}
-    return Bank.RootCategory(label: "Images", icon: UIImage(named: "926-photos")!, categories: categories)
+    return Bank.RootCategory(label: "Images",
+                             icon: UIImage(named: "926-photos")!,
+                             subcategories: categories,
+                             detailableItems: true,
+                             editableItems: true,
+                             previewableItems: true,
+                             thumbnailableItems: true)
   }
 
   override class func isThumbnailable() -> Bool { return true }
@@ -90,7 +96,7 @@ class Image: BankableModelObject {
   override class func isEditable()      -> Bool { return true }
   override class func isPreviewable()   -> Bool { return true }
 
-//  override class func detailControllerType() -> BankDetailController.Protocol { return ImageDetailController.self }
+  override func detailController() -> UIViewController { return ImageDetailController(item: self, editing: false)! }
   override var preview: UIImage? { return image }
   override var thumbnail: UIImage? { return image }
 

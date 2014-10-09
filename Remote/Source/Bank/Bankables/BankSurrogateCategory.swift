@@ -14,20 +14,32 @@ import MoonKit
 @objc(BankSurrogateCategory)
 class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
 
-  var subcategories: [BankDisplayItemCategory] 
+  let subcategories: [BankDisplayItemCategory]
   var parentCategory: BankDisplayItemCategory? { return nil }
 
-	var items: [BankDisplayItemModel] = []
-  var title: String = ""
+	let items: [BankDisplayItemModel]
+  let title: String
 
-  var thumbnailableItems: Bool { return false }
-  var previewableItems:   Bool { return false }
-  var detailableItems:    Bool { return false }
-  var editableItems:      Bool { return false }
+  let thumbnailableItems: Bool
+  let previewableItems:   Bool
+  let detailableItems:    Bool
+  let editableItems:      Bool
 
-  init(title: String, subcategories: [BankDisplayItemCategory]) {
+  init(title: String,
+       subcategories: [BankDisplayItemCategory] = [],
+       items: [BankDisplayItemModel] = [],
+       thumbnailableItems: Bool = false,
+       previewableItems: Bool = false,
+       detailableItems: Bool = false,
+       editableItems: Bool = false)
+  {
     self.title = title
     self.subcategories = subcategories
+    self.items = items
+    self.thumbnailableItems = thumbnailableItems
+    self.previewableItems = previewableItems
+    self.detailableItems = detailableItems
+    self.editableItems = editableItems
   }
 
 }

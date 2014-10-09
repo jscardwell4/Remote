@@ -60,9 +60,7 @@ class ComponentDevice: BankableModelObject {
 
   :returns: AnyObject!
   */
-  subscript(name: String) -> AnyObject! {
-    return (codes.allObjects as [IRCode]).filter{$0.name == name}.first
-  }
+  subscript(name: String) -> AnyObject! { return (codes.allObjects as [IRCode]).filter{$0.name == name}.first }
 
   /**
   updateWithData:
@@ -72,16 +70,15 @@ class ComponentDevice: BankableModelObject {
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
 
-    port = (data["port"] as? NSNumber)?.shortValue
-      ?? port
-    onCommand = Command.importObjectFromData(data["on-command"] as? NSDictionary, context: managedObjectContext!)
-      ?? onCommand
-    offCommand = Command.importObjectFromData(data["off-command"] as? NSDictionary, context: managedObjectContext!)
-      ?? offCommand
-    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary, context: managedObjectContext!)
-      ?? manufacturer
-    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary, context: managedObjectContext!)
-      ?? networkDevice
+    port = (data["port"] as? NSNumber)?.shortValue ?? port
+    onCommand = Command.importObjectFromData(data["on-command"] as? NSDictionary,
+                                     context: managedObjectContext!) ?? onCommand
+    offCommand = Command.importObjectFromData(data["off-command"] as? NSDictionary,
+                                      context: managedObjectContext!) ?? offCommand
+    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary,
+                                             context: managedObjectContext!) ?? manufacturer
+    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary,
+                                               context: managedObjectContext!) ?? networkDevice
 
     if let newCodes = IRCode.importObjectsFromData(data["codes"], context: managedObjectContext!) {
       let mutableCodes: NSMutableSet = mutableSetValueForKey("codes") ?? NSMutableSet()
@@ -90,20 +87,60 @@ class ComponentDevice: BankableModelObject {
   }
 
   class var rootCategory: Bank.RootCategory {
-    return Bank.RootCategory(label: "Component Devices", icon: UIImage(named: "969-television")!, categories: [])
+    let devices = findAllSortedBy("name", ascending: true) as? [ComponentDevice]
+    return Bank.RootCategory(label: "Component Devices",
+                             icon: UIImage(named: "969-television")!,
+                             items: devices ?? [],
+                             detailableItems: true,
+                             editableItems: true)
   }
 
-  override class func isThumbnailable() -> Bool { return false }
-  override class func isDetailable()    -> Bool { return true  }
-  override class func isEditable()      -> Bool { return true  }
-  override class func isPreviewable()   -> Bool { return false }
+  /**
+  isThumbnailable
 
-//  override class func detailControllerType() -> BankDetailController.Protocol { return ComponentDeviceDetailController.self }
+  :returns: Bool
+  */
+  override class func isThumbnailable() -> Bool { return false }
+
+  /**
+  isDetailable
+
+  :returns: Bool
+  */
+  override class func isDetailable() -> Bool { return true  }
+
+  /**
+  isEditable
+
+  :returns: Bool
+  */
+  override class func isEditable() -> Bool { return true  }
+
+  /**
+  isPreviewable
+
+  :returns: Bool
+  */
+  override class func isPreviewable() -> Bool { return false }
+
+  /**
+  detailController
+
+  :returns: UIViewController
+  */
+  override func detailController() -> UIViewController {
+    return ComponentDeviceDetailController(item: self, editing: false)!
+  }
 
 }
 
 extension ComponentDevice: MSJSONExport {
 
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
   override func JSONDictionary() -> MSDictionary! {
 
     let dictionary = super.JSONDictionary()

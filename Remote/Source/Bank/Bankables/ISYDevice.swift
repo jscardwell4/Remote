@@ -96,7 +96,9 @@ class ISYDevice: NetworkDevice {
     }
   }
 
-//  override class func detailControllerType() -> BankDetailController.Protocol { return ISYDeviceDetailController.self }
+  override func detailController() -> UIViewController {
+    return ISYDeviceDetailController(item: self, editing: false)!
+  }
 
 }
 

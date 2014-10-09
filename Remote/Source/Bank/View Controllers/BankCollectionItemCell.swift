@@ -33,7 +33,7 @@ class BankCollectionItemCell: BankCollectionCell {
 
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView.newForAutolayout()
-    view.contentMode = .Center
+    view.contentMode = .ScaleAspectFit
     view.nametag = "thumbnail"
     view.constrainWithFormat("self.width ≤ self.height")
     view.tintColor = UIColor.blackColor()
@@ -67,6 +67,9 @@ class BankCollectionItemCell: BankCollectionCell {
   private var thumbnailable: Bool = false {
     didSet {
       thumbnailImageView.image = item?.thumbnail
+      if let imageSize = thumbnailImageView.image?.size {
+        thumbnailImageView.contentMode = CGSizeContainsSize(contentSize, imageSize) ? .Center : .ScaleAspectFit
+      }
       thumbnailImageView.hidden = !thumbnailable
     }
   }

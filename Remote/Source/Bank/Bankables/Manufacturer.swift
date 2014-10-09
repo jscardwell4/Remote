@@ -43,7 +43,12 @@ class Manufacturer: BankableModelObject {
   }
 
   class var rootCategory: Bank.RootCategory {
-    return Bank.RootCategory(label: "Manufacturers", icon: UIImage(named: "1022-factory")!, categories: [])
+    let manufacturers = findAllSortedBy("name", ascending: true) as? [Manufacturer]
+    return Bank.RootCategory(label: "Manufacturers",
+                             icon: UIImage(named: "1022-factory")!,
+                             items: manufacturers ?? [],
+                             detailableItems: true,
+                             editableItems: true)
   }
 
   override class func isThumbnailable() -> Bool { return false }
@@ -51,7 +56,9 @@ class Manufacturer: BankableModelObject {
   override class func isEditable()      -> Bool { return true  }
   override class func isPreviewable()   -> Bool { return false }
 
-//  override class func detailControllerType() -> BankDetailController.Protocol { return ManufacturerDetailController.self }
+  override func detailController() -> UIViewController {
+    return ManufacturerDetailController(item: self, editing: false)!
+  }
 
 }
 

@@ -27,13 +27,6 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 		return dictionary
 	}
 
-//  class func categoryType() -> BankDisplayItemCategory.Protocol { return BankSurrogateCategory.self }
-
-//  class var rootCategories: [BankDisplayItemCategory] { return [] }
-
-//  class var label: String? { return "" }
-//  class var icon: UIImage? { return UIImage() }
-
   var preview:   UIImage? { return nil }
   var thumbnail: UIImage? { return nil }
 
@@ -43,11 +36,11 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
   class func isEditable()      -> Bool { return false }
 
   var thumbnailable: Bool { return self.dynamicType.isThumbnailable() }
-  var previewable:   Bool { return self.dynamicType.isThumbnailable() }
-  var detailable:    Bool { return self.dynamicType.isThumbnailable() }
-  var editable:      Bool { return self.dynamicType.isThumbnailable() }
+  var previewable:   Bool { return self.dynamicType.isPreviewable() }
+  var detailable:    Bool { return self.dynamicType.isDetailable() }
+  var editable:      Bool { return self.dynamicType.isEditable() }
 
-//  class func detailControllerType() -> BankDetailController.Protocol { return BankItemDetailController.self }
+  func detailController() -> UIViewController { return BankItemDetailController(item: self, editing: false)! }
 
   func save() {
     managedObjectContext?.performBlockAndWait {

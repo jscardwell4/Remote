@@ -23,4 +23,6 @@ class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
   var detailableItems:    Bool { return BankableModelObject.isDetailable()    }
   var editableItems:      Bool { return BankableModelObject.isEditable()      }
 
+  
+
 }

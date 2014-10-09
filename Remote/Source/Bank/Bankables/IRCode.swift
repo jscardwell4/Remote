@@ -74,7 +74,12 @@ class IRCode: BankableModelObject {
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return IRCodeSet.self }
 
   class var rootCategory: Bank.RootCategory {
-    return Bank.RootCategory(label: "IR Codes", icon: UIImage(named: "tv-remote")!, categories: [])
+    let categories = IRCodeSet.findAllSortedBy("name", ascending: true) as? [IRCodeSet]
+    return Bank.RootCategory(label: "IR Codes",
+                             icon: UIImage(named: "tv-remote")!,
+                             subcategories: categories ?? [],
+                             detailableItems: true,
+                             editableItems: true)
   }
 
   override class func isThumbnailable() -> Bool { return false }
@@ -82,7 +87,7 @@ class IRCode: BankableModelObject {
   override class func isDetailable()    -> Bool { return true }
   override class func isEditable()      -> Bool { return true }
 
-//  override class func detailControllerType() -> BankDetailController.Protocol { return IRCodeDetailController.self }
+  override func detailController() -> UIViewController { return IRCodeDetailController(item: self, editing: false)! }
 
 }
 

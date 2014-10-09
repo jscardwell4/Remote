@@ -23,7 +23,7 @@ class BankCollectionCell: UICollectionViewCell {
     return view
   }()
 
-  private var contentSize = CGSizeZero
+  private(set) var contentSize = CGSizeZero
 
   var indicatorConstraint: NSLayoutConstraint?
 
