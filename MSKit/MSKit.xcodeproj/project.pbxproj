@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */; };
 		C216E74019CBAE0A0052E98A /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C216E73F19CBAE0A0052E98A /* Logging.swift */; };
+		C217E47B19E83D8900B36983 /* MSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47A19E83D8900B36983 /* MSButton.swift */; };
+		C217E47E19E860DE00B36983 /* MSIntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */; };
 		C21F931B19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */; };
 		C2358F1B19C78D6D00920F8D /* Moonkit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* Moonkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
@@ -244,6 +246,8 @@
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C216E73F19CBAE0A0052E98A /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		C217E47A19E83D8900B36983 /* MSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButton.swift; sourceTree = "<group>"; };
+		C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSIntegerInputView.swift; sourceTree = "<group>"; };
 		C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
@@ -572,6 +576,8 @@
 				C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */,
 				C24ECC8F19DE085D00C1870E /* BarButtonItem.swift */,
 				C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */,
+				C217E47A19E83D8900B36983 /* MSButton.swift */,
+				C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1176,6 +1182,7 @@
 				C2358F4C19C78E0C00920F8D /* UIFont+MSKitAdditions.m in Sources */,
 				C2358F4D19C78E0C00920F8D /* UIGestureRecognizer+MSKitAdditions.m in Sources */,
 				C2358F4E19C78E0C00920F8D /* UIImage+ImageEffects.m in Sources */,
+				C217E47E19E860DE00B36983 /* MSIntegerInputView.swift in Sources */,
 				C2358F4F19C78E0C00920F8D /* UIImage+MSKitAdditions.m in Sources */,
 				C2358F5019C78E0C00920F8D /* UIStoryboard+MSKitAdditions.m in Sources */,
 				C2358F5119C78E0C00920F8D /* UITableView+MSKitAdditions.m in Sources */,
@@ -1190,6 +1197,7 @@
 				C2358F5819C78E0C00920F8D /* MSPickerInputViewController.m in Sources */,
 				C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */,
 				C2358F5919C78E0C00920F8D /* MSBarButtonItem.m in Sources */,
+				C217E47B19E83D8900B36983 /* MSButton.swift in Sources */,
 				C23592D719C8785D00920F8D /* NSMutableString+MSKitAdditions.m in Sources */,
 				C2358F5A19C78E0C00920F8D /* MSColorInputButton.m in Sources */,
 				C24ECC9019DE085D00C1870E /* BarButtonItem.swift in Sources */,

@@ -1666,12 +1666,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemCell.swift"
-            timestampString = "434575668.012693"
+            timestampString = "434662461.22416"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
-            landmarkName = "init(style:reuseIdentifier:)"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
+            landmarkName = "hidePickerView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1682,12 +1682,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemCell.swift"
-            timestampString = "434575668.012693"
+            timestampString = "434662461.22416"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
-            landmarkName = "init(style:reuseIdentifier:)"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "BankItemCell"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/MSIntegerInputView.swift"
+            timestampString = "434675095.227485"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "init(frame:target:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

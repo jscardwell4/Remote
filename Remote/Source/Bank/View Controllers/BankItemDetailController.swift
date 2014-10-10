@@ -324,7 +324,7 @@ extension BankItemDetailController: UITableViewDataSource {
         default:        height = BankItemDetailController.DefaultRowHeight
       }
     }
-    if expandedRows ∋ indexPath { height += BankItemCell.PickerHeight }
+    if expandedRows ∋ indexPath { height += BankItemCell.pickerHeight }
     return height
   }
 

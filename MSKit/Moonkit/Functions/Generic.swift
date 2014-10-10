@@ -58,6 +58,24 @@ unique<T:Equatable>:
 */
 public func unique<T:Equatable>(inout array:[T]) { array = unique(array) }
 
+infix operator ∅|| {
+associativity right
+precedence 130
+}
+
+
+/**
+Returns true if `lhs` is nil or `rhs` evaluates to true
+
+:param: lhs Optional<T>
+:param: rhs @autoclosure () -> Bool
+
+:returns: Bool
+*/
+public func ∅||<T>(lhs: Optional<T>, rhs: @autoclosure () -> Bool) -> Bool {
+  return lhs == nil || rhs()
+}
+
 infix operator ⩢ {}
 infix operator ∈ 	{  // element of
 associativity none

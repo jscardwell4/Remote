@@ -140,11 +140,11 @@ class Bank {
 
     static let defaultRowHeight: CGFloat = 38.0
     static let separatorStyle: UITableViewCellSeparatorStyle = .None
+    static let keyboardAppearance: UIKeyboardAppearance = .Dark
 
     static let titleTextAttributes = [ NSFontAttributeName:            BankProperties.boldLabelFont,
                                        NSForegroundColorAttributeName: BankProperties.labelColor ]
   }
-
   /// Font accessors
   ////////////////////////////////////////////////////////////////////////////////
 
@@ -158,6 +158,11 @@ class Bank {
   class var labelColor                 : UIColor { return BankProperties.labelColor      }
 	class var infoColor                  : UIColor { return BankProperties.infoColor       }
   class var backgroundColor            : UIColor { return BankProperties.backgroundColor }
+
+  /// Keyboard
+  ////////////////////////////////////////////////////////////////////////////////
+
+  class var keyboardAppearance: UIKeyboardAppearance { return BankProperties.keyboardAppearance }
 
   /// Metrics
   ////////////////////////////////////////////////////////////////////////////////
