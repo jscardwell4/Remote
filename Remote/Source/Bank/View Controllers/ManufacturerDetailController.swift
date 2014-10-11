@@ -31,16 +31,14 @@ class ManufacturerDetailController: BankItemDetailController {
     codeSets = manufacturer.codeSets.allObjects as [IRCodeSet]
 
     // section 0 - row 0: devices
-    let devicesRow = Row(identifier: .Table, isEditable: true) { [unowned self] in
-      $0.info = self.devices
-    }
+    let devicesRow = Row(identifier: .Table, isEditable: true,
+      height: CGFloat(devices.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.devices })
 
     // section 1 - row 0: codeSets
-    let codeSetsRow = Row(identifier: .Table, isEditable: false) {[unowned self] in
-      $0.info = self.codeSets
-    }
+    let codeSetsRow = Row(identifier: .Table, isEditable: false,
+      height: CGFloat(codeSets.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.codeSets })
 
-    sections = [ Section(title: "Devices",  rows: [devicesRow]),
+    sections = [ Section(title: "Devices", rows: [devicesRow]),
                  Section(title: "Code Sets", rows: [codeSetsRow]) ]
   }
 

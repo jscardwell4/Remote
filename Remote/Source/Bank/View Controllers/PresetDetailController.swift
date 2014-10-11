@@ -15,11 +15,7 @@ class PresetDetailController: BankItemDetailController {
 
   var preset: Preset { return item as Preset }
 
-  lazy var categories: [String] = { [unowned self] in
-    var categories: [String] = []
-    if let fetchedCategories = Preset.allValuesForAttribute("category") as? [String] { categories += fetchedCategories }
-    return categories
-    }()
+  lazy var categories: [PresetCategory] = PresetCategory.findAll() as? [PresetCategory] ?? []
 
   /**
   initWithItem:editing:
@@ -32,10 +28,10 @@ class PresetDetailController: BankItemDetailController {
     precondition(item is Preset, "we should have been given a preset")
 
     // section 0 - row 0: category
-    let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
+    let categoryRow = Row(identifier: .TextField, isEditable: true, configureCell: {
 
       $0.name = "Category"
-//      $0.info = self.preset.category ?? "Uncategorized"
+      $0.info = self.preset.presetCategory
 //      $0.changeHandler = {[unowned self] c in
 //        let text = c.info as? String
 //        self.preset.category = text
@@ -46,18 +42,18 @@ class PresetDetailController: BankItemDetailController {
 //      }
 //      $0.pickerData = self.categories
 //      $0.pickerSelection = self.preset.category
-    }
+    })
 
     // section 0 - row 1: type
-    let typeRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
+    let typeRow = Row(identifier: .Label, isEditable: false, configureCell: {
       $0.name = "Type"
       $0.info = "FIXME"
-   }
+   })
 
     // section 1 - row 0: preview
-    let previewRow = Row(identifier: .Image, isEditable: false) {[unowned self] in
+    let previewRow = Row(identifier: .Image, isEditable: false, configureCell: {
       $0.info = self.preset.preview
-    }
+    })
 
     sections = [ Section(title: nil, rows: [categoryRow, typeRow]),
                  Section(title: nil, rows: [previewRow]) ]

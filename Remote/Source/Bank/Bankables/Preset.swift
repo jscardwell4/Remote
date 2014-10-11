@@ -13,7 +13,7 @@ import MoonKit
 @objc(Preset)
 class Preset: BankableModelObject {
 
-  @NSManaged var presetCategory: PresetCategory
+  @NSManaged var presetCategory: PresetCategory?
   @NSManaged var element: RemoteElement
 //    @NSManaged var presetPreview: BankObjectPreview
   override class func isThumbnailable() -> Bool { return true }

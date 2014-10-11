@@ -52,7 +52,7 @@ class BankItemCell: UITableViewCell {
 
   var changeHandler          : ((BankItemCell) -> Void)?
   var validationHandler      : ((BankItemCell) -> Bool)?
-  var pickerSelectionHandler : ((BankItemCell) -> Void)?
+  var pickerSelectionHandler : ((NSObject?) -> Void)?
   var buttonActionHandler    : ((BankItemCell) -> Void)?
   var rowSelectionHandler    : ((BankItemCell) -> Void)?
   var shouldShowPicker       : ((BankItemCell) -> Bool)?
@@ -309,7 +309,7 @@ class BankItemCell: UITableViewCell {
   var pickerEnabled = false
   var pickerData: [NSObject]? { didSet { pickerEnabled = pickerData != nil } }
   var pickerSelection: NSObject?
-  var pickerNilSelectionTitle: String?
+  var pickerNilSelectionTitle: String? { didSet { if info == nil { info = pickerNilSelectionTitle } } }
 
   /** togglePicker */
   func togglePicker() { if picker.hidden { showPickerView() } else { hidePickerView() } }
@@ -321,7 +321,7 @@ class BankItemCell: UITableViewCell {
     if shouldShowPicker ∅|| shouldShowPicker!(self) {             	// Check if we should show the picker
       if pickerSelection != nil {                                 		// Check if we have a picker selection set
         if let idx = find(pickerData!, pickerSelection!) {
-          picker.selectRow(idx, inComponent: 0, animated: false)
+          picker.selectRow(pickerNilSelectionTitle != nil ? idx + 1 : idx, inComponent: 0, animated: false)
         }
       } else if pickerNilSelectionTitle != nil {                  		// Check if we have a title set for empty selections
         picker.selectRow(0, inComponent: 0, animated: false)
@@ -337,6 +337,7 @@ class BankItemCell: UITableViewCell {
     if picker.hidden { return }                                  		// Make sure picker is actually visible
     if shouldHidePicker ∅|| shouldHidePicker!(self) {             	// Check if we should hide the picker
       picker.hidden = true
+      if textFieldℹ︎ != nil && textFieldℹ︎!.isFirstResponder() { textFieldℹ︎?.resignFirstResponder() }
       didHidePicker?(self)
     }
   }
@@ -780,7 +781,11 @@ extension BankItemCell: UIPickerViewDataSource {
 
   :returns: Int
   */
-  func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { return pickerData?.count ?? 0 }
+  func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    var count = pickerData?.count ?? 0
+    if pickerNilSelectionTitle != nil { count++ }
+    return count
+  }
 
   /**
   pickerView:titleForRow:forComponent:
@@ -792,7 +797,11 @@ extension BankItemCell: UIPickerViewDataSource {
   :returns: String?
   */
   func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return textFromObject(pickerData?[row] ?? "")
+    if let nilTitle = pickerNilSelectionTitle {
+      return row == 0 ? nilTitle : textFromObject(pickerData?[row - 1] ?? "")
+    } else {
+      return textFromObject(pickerData?[row] ?? "")
+    }
   }
 
 }
@@ -810,10 +819,17 @@ extension BankItemCell: UIPickerViewDelegate {
   :param: component Int
   */
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    pickerSelection = pickerData?[row]
-    pickerSelectionHandler?(self)
+    if pickerNilSelectionTitle != nil {
+      if row == 0 {
+        pickerSelection = nil
+      } else {
+        pickerSelection = pickerData?[row - 1]
+      }
+    } else {
+      pickerSelection = pickerData?[row]
+    }
+    pickerSelectionHandler?(pickerSelection)
     info = pickerSelection
-    if textFieldℹ︎ != nil && textFieldℹ︎!.isFirstResponder() { textFieldℹ︎?.resignFirstResponder() }
     hidePickerView()
   }
 
@@ -854,7 +870,7 @@ extension BankItemCell: UITableViewDataSource {
   :returns: CGFloat
   */
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return BankItemDetailController.DefaultRowHeight
+    return BankItemDetailController.defaultRowHeight
   }
 
   /**
@@ -866,9 +882,9 @@ extension BankItemCell: UITableViewDataSource {
   :returns: UITableViewCell
   */
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.rawValue, forIndexPath: indexPath) as? UITableViewCell
-    if let bankItemCell = cell as? BankItemCell { bankItemCell.info = tableData?[indexPath.row] }
-    return cell ?? UITableViewCell()
+    let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.rawValue, forIndexPath: indexPath) as BankItemCell
+    cell.info = tableData?[indexPath.row]
+    return cell
   }
 
 }

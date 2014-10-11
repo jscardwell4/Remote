@@ -58,9 +58,10 @@ import MoonKit
   var parentCategory: BankDisplayItemCategory?   { get }
 }
 
-func categoryPath(category: BankDisplayItemCategory) -> String {
-  var path: [String] = [category.title]
-  var tempCategory = category.parentCategory
+func categoryPath(category: BankDisplayItemCategory?) -> String? {
+  if category == nil { return nil }
+  var path: [String] = [category!.title]
+  var tempCategory = category!.parentCategory
   while tempCategory != nil {
     path.append(tempCategory!.title)
     tempCategory = tempCategory!.parentCategory

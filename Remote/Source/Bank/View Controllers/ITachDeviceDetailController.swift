@@ -13,7 +13,7 @@ class ITachDeviceDetailController: BankItemDetailController {
 
 	var iTachDevice: ITachDevice { return item as ITachDevice }
 
-	var componentDevices: [ComponentDevice]? { return iTachDevice.componentDevices.allObjects as? [ComponentDevice] }
+	var componentDevices: [ComponentDevice] { return iTachDevice.componentDevices.allObjects as? [ComponentDevice] ?? [] }
 
 
   /**
@@ -27,55 +27,57 @@ class ITachDeviceDetailController: BankItemDetailController {
     precondition(item is ITachDevice, "we should have been given an itach device")
 
 		// section 0 - row 0: unique identifier
-		let uniqueIdentifierRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let uniqueIdentifierRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Identifier"
 			$0.info = self.iTachDevice.uniqueIdentifier
-		}
+		})
 
 		// section 0 - row 1: make
-		let makeRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let makeRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Make"
 			$0.info = self.iTachDevice.make
-		}
+		})
 
 		// section 0 - row 2: model
-		let modelRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let modelRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Model"
 			$0.info = self.iTachDevice.model
-		}
+		})
 
 		// section 0 - row 3: config url
-		let configURLRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let configURLRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Config-URL"
 			$0.info = self.iTachDevice.configURL
-		}
+		})
 
 		// section 0 - row 4: revision
-		let revisionRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let revisionRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Revision"
 			$0.info = self.iTachDevice.revision
-		}
+		})
 
 		// section 0 - row 5: pcbpn
-		let pcbPNRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let pcbPNRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Pcb_PN"
 			$0.info = self.iTachDevice.pcbPN
-		}
+		})
 
 		// section 0 - row 6: pkg level
-		let pkgLevelRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let pkgLevelRow = Row(identifier: .Label, configureCell:{
 			$0.name = "Pkg_Level"
 			$0.info = self.iTachDevice.pkgLevel
-		}
+		})
 
 		// section 0 - row 7: sdk class
-		let sDKClassRow = Row(identifier: .Label, isEditable: false){[unowned self] in
+		let sDKClassRow = Row(identifier: .Label, configureCell:{
 			$0.name = "SDKClass"
 			$0.info = self.iTachDevice.sdkClass
-		}
+		})
 
 		// section 1 - row 0: component devices
-		let componentDevicesRow = Row(identifier: .Table, isEditable: false){[unowned self] in $0.info = self.componentDevices}
+		let componentDevicesRow = Row(identifier: .Table,
+			height: CGFloat(componentDevices.count) * BankItemDetailController.defaultRowHeight + 14.0,
+			configureCell:{ $0.info = self.componentDevices})
 
 		sections = [ Section(title: nil, rows: [uniqueIdentifierRow,
 																						makeRow,

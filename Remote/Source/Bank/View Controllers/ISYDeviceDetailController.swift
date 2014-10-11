@@ -13,9 +13,9 @@ class ISYDeviceDetailController: BankItemDetailController {
 
   var iSYDevice: ISYDevice { return item as ISYDevice }
 
-	var devices: [ComponentDevice]? { return iSYDevice.componentDevices.allObjects as? [ComponentDevice] }
-	var nodes:   [ISYDeviceNode]?   { return iSYDevice.nodes.allObjects            as? [ISYDeviceNode]   }
-	var groups:  [ISYDeviceGroup]?  { return iSYDevice.groups.allObjects           as? [ISYDeviceGroup]  }
+	var devices: [ComponentDevice] { return iSYDevice.componentDevices.allObjects as? [ComponentDevice] ?? [] }
+	var nodes:   [ISYDeviceNode]  { return iSYDevice.nodes.allObjects as? [ISYDeviceNode] ?? [] }
+	var groups:  [ISYDeviceGroup] { return iSYDevice.groups.allObjects as? [ISYDeviceGroup] ?? [] }
 
   /**
   initWithItem:editing:
@@ -27,47 +27,50 @@ class ISYDeviceDetailController: BankItemDetailController {
     super.init(item: item, editing: editing)
     precondition(item is ISYDevice, "we should have been given an isy device")
 
-    let uniqueIdentifierRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    let uniqueIdentifierRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Identifier"
     	$0.info = self.iSYDevice.uniqueIdentifier
-    }
-    let baseURLRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let baseURLRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Base URL"
     	$0.info = self.iSYDevice.baseURL
-    }
-    let modelNameRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let modelNameRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Name"
     	$0.info = self.iSYDevice.modelName
-    }
-    let modelNumberRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let modelNumberRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Number"
     	$0.info = self.iSYDevice.modelNumber
-    }
-    let modelDescriptionRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let modelDescriptionRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Description"
     	$0.info = self.iSYDevice.modelDescription
-    }
-    let friendlyNameRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let friendlyNameRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Friendly Name"
     	$0.info = self.iSYDevice.friendlyName
-    }
-    let manufacturerRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let manufacturerRow = Row(identifier: .Label, configureCell: {
     	$0.name = "Name"
     	$0.info = self.iSYDevice.manufacturer
-    }
-    let manufacturerURLRow = Row(identifier: .Label, isEditable: false) {[unowned self] in
+    })
+    let manufacturerURLRow = Row(identifier: .Label, configureCell: {
     	$0.name = "URL"
     	$0.info = self.iSYDevice.manufacturerURL
-    }
-    let nodesRow            = Row(identifier: .Table, isEditable: false) {[unowned self] in $0.info = self.nodes   }
-    let groupsRow           = Row(identifier: .Table, isEditable: false) {[unowned self] in $0.info = self.groups  }
-    let componentDevicesRow = Row(identifier: .Table, isEditable: false) {[unowned self] in $0.info = self.devices }
+    })
+    let nodesRow = Row(identifier: .Table,
+      height: CGFloat(nodes.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.nodes   })
+    let groupsRow = Row(identifier: .Table,
+      height: CGFloat(groups.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.groups  })
+    let componentDevicesRow = Row(identifier: .Table,
+      height: CGFloat(devices.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.devices })
 
-    sections = [ Section(title: nil,                 rows: [uniqueIdentifierRow, baseURLRow]),
-                 Section(title: "Model",             rows: [modelNameRow, modelNumberRow, modelDescriptionRow]),
-                 Section(title: "Manufacturer",      rows: [manufacturerRow, manufacturerURLRow]),
-                 Section(title: "Nodes",             rows: [nodesRow]),
-                 Section(title: "Groups",            rows: [groupsRow]),
+    sections = [ Section(title: nil, rows: [uniqueIdentifierRow, baseURLRow]),
+                 Section(title: "Model", rows: [modelNameRow, modelNumberRow, modelDescriptionRow]),
+                 Section(title: "Manufacturer", rows: [manufacturerRow, manufacturerURLRow]),
+                 Section(title: "Nodes", rows: [nodesRow]),
+                 Section(title: "Groups", rows: [groupsRow]),
                  Section(title: "Component Devices", rows: [componentDevicesRow]) ]
 
   }

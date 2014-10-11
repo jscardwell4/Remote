@@ -14,22 +14,46 @@ import MoonKit
 class BankItemDetailController: UITableViewController, BankDetailController {
 
   struct Section {
-    var title: String?
-    var rows: [Row]
+    let title: String?
+    let rows: [Row]
   }
 
   struct Row {
-    var identifier: BankItemCell.Identifier
-    var isEditable: Bool
-    var configureCell: (BankItemCell) -> Void
+    let identifier: BankItemCell.Identifier
+    let isEditable: Bool
+    let height: CGFloat
+    let configureCell: (BankItemCell) -> Void
+
+    /**
+    initWithIdentifier:isEditable:height:configureCell:
+
+    :param: identifier BankItemCell.Identifier
+    :param: isEditable Bool = false
+    :param: height CGFloat? = nil
+    :param: configureCell (BankItemCell) -> Void
+    */
+    init(identifier: BankItemCell.Identifier, isEditable: Bool = false, height: CGFloat? = nil, configureCell: (BankItemCell) -> Void) {
+      self.identifier = identifier
+      self.isEditable = isEditable
+      if let h = height { self.height = max(h, BankItemDetailController.defaultRowHeight) }
+      else {
+        switch identifier {
+        case .TextView: self.height = BankItemDetailController.textViewRowHeight
+        case .Image:    self.height = BankItemDetailController.previewRowHeight
+        case .Table:    self.height = BankItemDetailController.tableRowHeight
+        default:        self.height = BankItemDetailController.defaultRowHeight
+        }
+      }
+      self.configureCell = configureCell
+    }
   }
 
   var sections: [Section] = []
 
-  class var DefaultRowHeight:  CGFloat { return 38.0  }
-  class var PreviewRowHeight:  CGFloat { return 291.0 }
-  class var TextViewRowHeight: CGFloat { return 140.0 }
-  class var TableRowHeight:    CGFloat { return 120.0 }
+  class var defaultRowHeight:  CGFloat { return 38.0  }
+  class var previewRowHeight:  CGFloat { return 291.0 }
+  class var textViewRowHeight: CGFloat { return 140.0 }
+  class var tableRowHeight:    CGFloat { return 120.0 }
 
   let item: BankDisplayItemModel!
   weak var nameTextField: UITextField!
@@ -78,7 +102,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
-    tableView?.rowHeight = BankItemDetailController.DefaultRowHeight
+    tableView?.rowHeight = BankItemDetailController.defaultRowHeight
     tableView?.sectionHeaderHeight = 10.0
     tableView?.sectionFooterHeight = 10.0
     tableView?.allowsSelection = false
@@ -91,12 +115,10 @@ class BankItemDetailController: UITableViewController, BankDetailController {
       textField.placeholder = "Name"
       textField.font = Bank.boldLabelFont
       textField.textColor = Bank.labelColor
-      textField.keyboardAppearance = .Dark
+      textField.keyboardAppearance = Bank.keyboardAppearance
       textField.adjustsFontSizeToFitWidth = true
       textField.returnKeyType = .Done
-      textField.enablesReturnKeyAutomatically = true
       textField.textAlignment = .Center
-      textField.clearsOnBeginEditing = true
       textField.delegate = self
       self.navigationItem.titleView = textField
       return textField
@@ -316,12 +338,11 @@ extension BankItemDetailController: UITableViewDataSource {
   */
   override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     var height: CGFloat = 0.0
-    if let identifier = identifierForIndexPath(indexPath) {
-      switch identifier {
-        case .TextView: height = BankItemDetailController.TextViewRowHeight
-        case .Image:    height = BankItemDetailController.PreviewRowHeight
-        case .Table:    height = BankItemDetailController.TableRowHeight
-        default:        height = BankItemDetailController.DefaultRowHeight
+    if indexPath.section < sections.count {
+      let section = sections[indexPath.section]
+      if indexPath.row < section.rows.count {
+        let row = section.rows[indexPath.row]
+        height = row.height
       }
     }
     if expandedRows ∋ indexPath { height += BankItemCell.pickerHeight }
@@ -358,6 +379,7 @@ extension BankItemDetailController: UITextFieldDelegate {
   */
   func textFieldDidEndEditing(textField: UITextField) {
     if textField === nameTextField && textField.text?.length > 0 { item.name = textField.text }
+    else { textField.text = item.name }
   }
 
 }

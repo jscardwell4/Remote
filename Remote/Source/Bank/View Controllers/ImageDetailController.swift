@@ -33,10 +33,11 @@ class ImageDetailController: BankItemDetailController {
     precondition(item is Image, "we should have been given a image")
 
     // section 0 - row 0: category
-    let categoryRow = Row(identifier: .TextField, isEditable: true) { [unowned self] in
+    let categoryRow = Row(identifier: .TextField, isEditable: true, configureCell: {
 
       $0.name = "Category"
-      $0.info = self.image.imageCategory != nil ? categoryPath(self.image.imageCategory) : "Uncategorized"
+      $0.info = categoryPath(self.image.imageCategory)
+      $0.pickerNilSelectionTitle = "Uncategorized"
 //      $0.changeHandler = {[unowned self] c in
 //        if let category = c.info as? ImageCategory {
 //          self.image.category = category
@@ -44,24 +45,24 @@ class ImageDetailController: BankItemDetailController {
 //      }
 //      $0.pickerData = self.categories
 //      $0.pickerSelection = self.image.imageCategory
-    }
+    })
 
     // section 0 - row 1: file
-    let fileRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
+    let fileRow = Row(identifier: .Label, isEditable: false, configureCell: {
       $0.name = "Asset"
       $0.info = self.image.assetName
-    }
+    })
 
     // section 0 - row 2: size
-    let sizeRow = Row(identifier: .Label, isEditable: false) { [unowned self] in
+    let sizeRow = Row(identifier: .Label, isEditable: false, configureCell: {
       $0.name = "Size"
       $0.info = PrettySize(self.image.size)
-    }
+    })
 
     // section 1 - row 0: preview
-    let previewRow = Row(identifier: .Image, isEditable: false) {[unowned self] in
+    let previewRow = Row(identifier: .Image, isEditable: false, configureCell: {
       $0.info = self.image.preview
-    }
+    })
 
     sections = [ Section(title: nil, rows: [categoryRow, fileRow, sizeRow]),
                  Section(title: nil, rows: [previewRow]) ]
