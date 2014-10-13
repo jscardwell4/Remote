@@ -47,17 +47,14 @@ class Manufacturer: BankableModelObject {
     return Bank.RootCategory(label: "Manufacturers",
                              icon: UIImage(named: "1022-factory")!,
                              items: manufacturers ?? [],
-                             detailableItems: true,
                              editableItems: true)
   }
 
-  override class func isThumbnailable() -> Bool { return false }
-  override class func isDetailable()    -> Bool { return true  }
   override class func isEditable()      -> Bool { return true  }
   override class func isPreviewable()   -> Bool { return false }
 
   override func detailController() -> UIViewController {
-    return ManufacturerDetailController(item: self, editing: false)!
+    return ManufacturerDetailController(item: self)!
   }
 
 }

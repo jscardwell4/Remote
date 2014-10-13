@@ -13,89 +13,96 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
   var componentDevice: ComponentDevice { return item as ComponentDevice }
 
-  var inputs: [AnyObject] = []
-
-  lazy var manufacturers: [Manufacturer] = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] ?? []
-
-  lazy var networkDevices: [NetworkDevice] = NetworkDevice.findAllSortedBy("name", ascending: true) as? [NetworkDevice] ?? []
+  var codes: [IRCode]?
 
   /**
   initWithItem:editing:
 
   :param: item BankableModelObject
-  :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel, editing: Bool) {
-    super.init(item: item, editing: editing)
+  required init?(item: BankDisplayItemModel) {
+    super.init(item: item)
     precondition(item is ComponentDevice, "we should have been given a component device")
+
+    codes = (componentDevice.codeSet?.codes?.allObjects as? [IRCode])?.sorted{$0.0.name < $0.1.name}
 
     // section 0 - row 0: manufacturer
     let manufacturerRow = Row(identifier: .TextField, isEditable: true, configureCell: {
       $0.name = "Manufacturer"
-      $0.info = self.componentDevice.manufacturer
       $0.pickerNilSelectionTitle = "No Manufacturer"
       $0.pickerSelectionHandler = { self.componentDevice.manufacturer = $0 as? Manufacturer }
-      $0.pickerData = self.manufacturers
+      $0.pickerData = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer]
       $0.pickerSelection = self.componentDevice.manufacturer
     })
 
-    // section 0 - row 1: all codes
+    // section 0 - row 1: code set
     // TODO: Add ability to change the code set used by a component device
-    let allCodesRow = Row(identifier: .Button, isEditable: false, configureCell: {
-      $0.info = "Device Codes"
-      let viewCodes = self.viewIRCodes
-      $0.buttonActionHandler = {_ in viewCodes()}
+    let codeSetRow = Row(identifier: .Detail, configureCell: { cell in
+      cell.name = "Code Set"
+      cell.buttonActionHandler = {
+        let controller = BankCollectionController(category: self.componentDevice.codeSet!)
+        self.navigationController?.pushViewController(controller!, animated: true)
+      }
+      cell.pickerNilSelectionTitle = "No Code Set"
+      cell.pickerSelection = self.componentDevice.codeSet
+      cell.pickerData = (self.componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet])?.sorted{$0.0.name < $0.1.name}
     })
 
     // section 1 - row 0: network device
-    let networkDeviceRow = Row(identifier: .Button, isEditable: false, configureCell: {
-      $0.name = "Network Device"
-      $0.info = self.componentDevice.networkDevice
-      $0.pickerNilSelectionTitle = "No Network Device"
-      $0.pickerSelectionHandler = {self.componentDevice.networkDevice = $0 as? NetworkDevice }
-      $0.pickerData = self.networkDevices
-      $0.pickerSelection = self.componentDevice.networkDevice
+    let networkDeviceRow = Row(identifier: .Button, isEditable: true, configureCell: { cell in
+      cell.name = "Network Device"
+      cell.info = self.componentDevice.networkDevice
+      cell.pickerNilSelectionTitle = "No Network Device"
+      cell.pickerSelectionHandler = {self.componentDevice.networkDevice = $0 as? NetworkDevice }
+      cell.pickerData = NetworkDevice.findAllSortedBy("name", ascending: true) as? [NetworkDevice]
+      cell.pickerSelection = self.componentDevice.networkDevice
     })
 
     // section 1 - row 1: port
-    let portRow = Row(identifier: .Stepper, isEditable: true, configureCell: {
-      $0.name = "Port"
-      $0.info = Int(self.componentDevice.port)
-      $0.stepperMinValue = 1
-      $0.stepperMaxValue = 3
-      $0.stepperWraps = true
-      $0.changeHandler = {[unowned self] c in if let n = c.info as? NSNumber { self.componentDevice.port = n.shortValue } }
+    let portRow = Row(identifier: .Stepper, isEditable: true, configureCell: { cell in
+      cell.name = "Port"
+      cell.info = Int(self.componentDevice.port)
+      cell.stepperMinValue = 1
+      cell.stepperMaxValue = 3
+      cell.stepperWraps = true
+      cell.changeHandler = { if let n = $0 as? NSNumber { self.componentDevice.port = n.shortValue } }
     })
 
     // TODO: Add button action handlers to allow setting of power on/off commands
 
     // section 2 - row 0: power on
-    let powerOnRow = Row(identifier: .Button, isEditable: true, configureCell: {
-      $0.name = "On"
-      $0.info = self.componentDevice.onCommand ?? "No On Command"
+    let powerOnRow = Row(identifier: .Button, isEditable: true, configureCell: { cell in
+      cell.name = "On"
+      cell.info = self.componentDevice.onCommand
+      cell.pickerNilSelectionTitle = "No On Command"
+      cell.pickerSelection = self.componentDevice.onCommand?.code
+      cell.pickerSelectionHandler = { if let code = $0 as? IRCode { self.componentDevice.onCommand?.code = code } }
+      cell.pickerData = self.codes
     })
 
     // section 2 - row 1: power off
-    let powerOffRow = Row(identifier: .Button, isEditable: true, configureCell: {
-      $0.name = "Off"
-      $0.info = self.componentDevice.offCommand ?? "No Off Command"
+    let powerOffRow = Row(identifier: .Button, isEditable: true, configureCell: { cell in
+      cell.name = "Off"
+      cell.info = self.componentDevice.offCommand
+      cell.pickerNilSelectionTitle = "No Off Command"
+      cell.pickerSelection = self.componentDevice.offCommand?.code
+      cell.pickerSelectionHandler = { if let code = $0 as? IRCode { self.componentDevice.offCommand?.code = code } }
+      cell.pickerData = self.codes
     })
 
     // section 3 - row 0: input powers on
-    let inputPowersOnRow = Row(identifier: .Switch, isEditable: true, configureCell: {
-      $0.name = "Inputs Power On Device"
-      $0.info = self.componentDevice.inputPowersOn
-      $0.changeHandler = {[unowned self] c in self.componentDevice.inputPowersOn = c.info as Bool }
+    let inputPowersOnRow = Row(identifier: .Switch, isEditable: true, configureCell: { cell in
+      cell.name = "Inputs Power On Device"
+      cell.info = self.componentDevice.inputPowersOn
+      cell.changeHandler = { self.componentDevice.inputPowersOn = $0 as Bool }
     })
 
     // section 3 - row 1: inputs
-    let inputsRow = Row(identifier: .Table, isEditable: true,
-      height: CGFloat(inputs.count) * BankItemDetailController.defaultRowHeight + 14.0,
-      configureCell: { $0.info = self.inputs })
+    let inputsRow = Row(identifier: .Table, isEditable: true, height: 14.0, configureCell: { cell in})
 
-    sections = [ Section(title: nil,              rows: [manufacturerRow, allCodesRow]),
+    sections = [ Section(title: nil,              rows: [manufacturerRow, codeSetRow]),
                  Section(title: "Network Device", rows: [networkDeviceRow, portRow]),
-                 Section(title: "Power Commands", rows: [powerOnRow, powerOffRow]),
+                 Section(title: "Power",          rows: [powerOnRow, powerOffRow]),
                  Section(title: "Inputs",         rows: [inputPowersOnRow, inputsRow]) ]
   }
 

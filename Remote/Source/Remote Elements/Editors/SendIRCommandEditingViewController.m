@@ -140,7 +140,7 @@ command        = _command;
     if (ValueIsNotNil(_selectedDevice)) {
         [_deviceButton setTitle:_selectedDevice.name forState:UIControlStateNormal];
 // _codeButton.enabled = YES;
-        self.codes = [_selectedDevice.codes allObjects];
+//        self.codes = [_selectedDevice.codes allObjects];
     } else {
         [_deviceButton setTitle:@"Select Device" forState:UIControlStateNormal];
         _selectedCode = nil;

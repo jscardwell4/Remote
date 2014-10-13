@@ -97,7 +97,7 @@ class ISYDevice: NetworkDevice {
   }
 
   override func detailController() -> UIViewController {
-    return ISYDeviceDetailController(item: self, editing: false)!
+    return ISYDeviceDetailController(item: self)!
   }
 
 }

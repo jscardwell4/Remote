@@ -22,8 +22,8 @@ class ITachDeviceDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel, editing: Bool) {
-    super.init(item: item, editing: editing)
+  required init?(item: BankDisplayItemModel) {
+    super.init(item: item)
     precondition(item is ITachDevice, "we should have been given an itach device")
 
 		// section 0 - row 0: unique identifier

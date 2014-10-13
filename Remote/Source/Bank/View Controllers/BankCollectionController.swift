@@ -108,7 +108,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     toolbarItems = {
 
       // Check if we should include viewing mode control
-      if self.category.thumbnailableItems {
+      if self.category.previewableItems {
 
         // Create the segmented control
         if let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,

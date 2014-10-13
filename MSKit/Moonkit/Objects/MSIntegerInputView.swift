@@ -27,9 +27,8 @@ public class MSIntegerInputView: UIInputView {
     for i in 0...11 {
       let b = MSButton.newForAutolayout()
       if i == 11 {
-//        b.setBackgroundColor(UIColor(r: 0, g: 122, b: 255, a: 255), forState: .Normal)
-        b.setBackgroundColor(UIColor.clearColor(), forState: .Normal)
-        b.setBackgroundColor(UIColor(r: 135, g: 135, b: 135, a: 255), forState: .Highlighted)
+        b.setBackgroundColor(UIColor(r: 0, g: 122, b: 255, a: 255), forState: .Normal)
+        b.setBackgroundColor(UIColor.clearColor(), forState: .Highlighted)
         b.setTitle("Done", forState: .Normal)
       } else if i == 9 {
         b.setBackgroundColor(UIColor.clearColor(), forState: .Normal)

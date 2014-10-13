@@ -92,10 +92,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   :param: item BankDisplayItemModel
   */
-  required init?(item: BankDisplayItemModel, editing: Bool = false) {
+  required init?(item: BankDisplayItemModel) {
     super.init(style: .Grouped)
     self.item = item
-    self.editing = editing
     hidesBottomBarWhenPushed = true
   }
 

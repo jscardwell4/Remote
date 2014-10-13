@@ -85,18 +85,14 @@ class Image: BankableModelObject {
     return Bank.RootCategory(label: "Images",
                              icon: UIImage(named: "926-photos")!,
                              subcategories: categories,
-                             detailableItems: true,
                              editableItems: true,
-                             previewableItems: true,
-                             thumbnailableItems: true)
+                             previewableItems: true)
   }
 
-  override class func isThumbnailable() -> Bool { return true }
-  override class func isDetailable()    -> Bool { return true }
   override class func isEditable()      -> Bool { return true }
   override class func isPreviewable()   -> Bool { return true }
 
-  override func detailController() -> UIViewController { return ImageDetailController(item: self, editing: false)! }
+  override func detailController() -> UIViewController { return ImageDetailController(item: self)! }
   override var preview: UIImage? { return image }
   override var thumbnail: UIImage? { return image }
 

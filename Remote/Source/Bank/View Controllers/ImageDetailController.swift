@@ -28,8 +28,8 @@ class ImageDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel, editing: Bool) {
-    super.init(item: item, editing: editing)
+  required init?(item: BankDisplayItemModel) {
+    super.init(item: item)
     precondition(item is Image, "we should have been given a image")
 
     // section 0 - row 0: category

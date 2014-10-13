@@ -59,12 +59,9 @@ class NetworkDevice: BankableModelObject {
     return Bank.RootCategory(label: "Network Devices",
                              icon: UIImage(named: "937-wifi-signal")!,
                              items: networkDevices ?? [],
-                             detailableItems: true,
                              editableItems: true)
   }
 
-  override class func isThumbnailable() -> Bool { return false }
-  override class func isDetailable()    -> Bool { return true  }
   override class func isEditable()      -> Bool { return true  }
   override class func isPreviewable()   -> Bool { return false }
 

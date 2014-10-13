@@ -30,17 +30,13 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
   var preview:   UIImage? { return nil }
   var thumbnail: UIImage? { return nil }
 
-  class func isThumbnailable() -> Bool { return false }
   class func isPreviewable()   -> Bool { return false }
-  class func isDetailable()    -> Bool { return false }
   class func isEditable()      -> Bool { return false }
 
-  var thumbnailable: Bool { return self.dynamicType.isThumbnailable() }
   var previewable:   Bool { return self.dynamicType.isPreviewable() }
-  var detailable:    Bool { return self.dynamicType.isDetailable() }
   var editable:      Bool { return self.dynamicType.isEditable() }
 
-  func detailController() -> UIViewController { return BankItemDetailController(item: self, editing: false)! }
+  func detailController() -> UIViewController { return BankItemDetailController(item: self)! }
 
   func save() {
     managedObjectContext?.performBlockAndWait {

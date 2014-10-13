@@ -18,9 +18,7 @@ class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
   var subcategories: [BankDisplayItemCategory] { return [] }
   var parentCategory: BankDisplayItemCategory? { return nil }
 
-  var thumbnailableItems: Bool { return BankableModelObject.isThumbnailable() }
   var previewableItems:   Bool { return BankableModelObject.isPreviewable()   }
-  var detailableItems:    Bool { return BankableModelObject.isDetailable()    }
   var editableItems:      Bool { return BankableModelObject.isEditable()      }
 
   

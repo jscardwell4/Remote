@@ -20,25 +20,19 @@ class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
 	let items: [BankDisplayItemModel]
   let title: String
 
-  let thumbnailableItems: Bool
   let previewableItems:   Bool
-  let detailableItems:    Bool
   let editableItems:      Bool
 
   init(title: String,
        subcategories: [BankDisplayItemCategory] = [],
        items: [BankDisplayItemModel] = [],
-       thumbnailableItems: Bool = false,
        previewableItems: Bool = false,
-       detailableItems: Bool = false,
        editableItems: Bool = false)
   {
     self.title = title
     self.subcategories = subcategories
     self.items = items
-    self.thumbnailableItems = thumbnailableItems
     self.previewableItems = previewableItems
-    self.detailableItems = detailableItems
     self.editableItems = editableItems
   }
 

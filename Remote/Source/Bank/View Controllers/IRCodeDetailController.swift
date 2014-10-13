@@ -40,8 +40,8 @@ class IRCodeDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel, editing: Bool) {
-    super.init(item: item, editing: editing)
+  required init?(item: BankDisplayItemModel) {
+    super.init(item: item)
     precondition(item is IRCode, "we should have been given an ircode")
 
     codesets = irCode.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? []
@@ -51,13 +51,13 @@ class IRCodeDetailController: BankItemDetailController {
       $0.name = "Manufacturer"
       $0.info = self.irCode.manufacturer
       $0.pickerNilSelectionTitle = "No Manufacturer"
-      $0.validationHandler = {($0.info as NSString).length > 0}
-      $0.changeHandler = {[unowned self] c in
+      $0.validationHandler = {($0 as? NSString)?.length > 0}
+      $0.changeHandler = {
 
         var newManufacturer: Manufacturer?
 
-        if let manufacturer = c.info as? Manufacturer { newManufacturer = manufacturer }
-        else if let manufacturerName = c.info as? String {
+        if let manufacturer = $0 as? Manufacturer { newManufacturer = manufacturer }
+        else if let manufacturerName = $0 as? String {
           newManufacturer = self.manufacturers.filter{$0.name == manufacturerName}.first
           if newManufacturer == nil && manufacturerName != "No Manufacturer" {
               newManufacturer = Manufacturer.manufacturerWithName(manufacturerName, context: self.irCode.managedObjectContext!)
@@ -81,9 +81,9 @@ class IRCodeDetailController: BankItemDetailController {
     let codesetRow = Row(identifier: .TextField, isEditable: true, configureCell: {
       $0.name = "Code Set"
       $0.info = self.irCode.codeSet ?? "No Code Set"
-      $0.validationHandler = {($0.info as NSString).length > 0}
-      $0.changeHandler = {[unowned self] c in
-        if let codeSet = c.info as? IRCodeSet {
+      $0.validationHandler = {($0 as? NSString)?.length > 0}
+      $0.changeHandler = {
+        if let codeSet = $0 as? IRCodeSet {
           if self.irCode.codeSet != codeSet {
             self.irCode.codeSet = codeSet
             if self.codesets ∌ codeSet {
@@ -106,7 +106,7 @@ class IRCodeDetailController: BankItemDetailController {
       $0.info = NSNumber(longLong: self.irCode.frequency)
       $0.infoDataType = .LongLongData(15000...500000)
       $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] c in if let i = (c.info as? NSNumber)?.longLongValue { self.irCode.frequency = i } }
+      $0.changeHandler = { if let i = ($0 as? NSNumber)?.longLongValue { self.irCode.frequency = i } }
     })
 
     // section 0 - row 3: repeat
@@ -115,7 +115,7 @@ class IRCodeDetailController: BankItemDetailController {
       $0.info = NSNumber(short: self.irCode.repeatCount)
       $0.infoDataType = .IntData(1...50)
       $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = {[unowned self] c in if let i = (c.info as? NSNumber)?.shortValue { self.irCode.repeatCount = i } }
+      $0.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.repeatCount = i } }
     })
 
     // section 0 - row 4: offset
@@ -127,22 +127,22 @@ class IRCodeDetailController: BankItemDetailController {
       $0.infoDataType = .IntData(1...383)
       $0.stepperWraps = false
       $0.info = NSNumber(short: self.irCode.offset)
-      $0.changeHandler = {[unowned self] c in if let i = (c.info as? NSNumber)?.shortValue { self.irCode.offset = i } }
+      $0.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.offset = i } }
     })
 
     // section 0 - row 5: on-off pattern
     let onOffPatternRow = Row(identifier: .TextView, isEditable: true, configureCell: {
       $0.name = "On-Off Pattern"
       $0.info = self.irCode.onOffPattern
-      $0.validationHandler = { (c) -> Bool in
-        if let text = c.info as? NSString {
+      $0.validationHandler = {
+        if let text = $0 as? NSString {
           let trimmedText = text.stringByTrimmingWhitespace()
           return trimmedText.length == 0 || IRCode.isValidOnOffPattern(trimmedText)
         }
         return true
       }
-      $0.changeHandler = {[unowned self] c in
-        if let text = c.info as? String {
+      $0.changeHandler = {
+        if let text = $0 as? String {
           if let compressedText = IRCode.compressedOnOffPatternFromPattern(text.stringByTrimmingWhitespace()) {
             self.irCode.onOffPattern = compressedText
           }

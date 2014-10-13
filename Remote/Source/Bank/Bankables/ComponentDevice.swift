@@ -17,11 +17,11 @@ class ComponentDevice: BankableModelObject {
   @NSManaged var inputPowersOn: Bool
   @NSManaged var port: Int16
   @NSManaged var power: Bool
-  @NSManaged var codes: NSSet
+  @NSManaged var codeSet: IRCodeSet?
   @NSManaged var manufacturer: Manufacturer?
   @NSManaged var networkDevice: NetworkDevice?
-  @NSManaged var offCommand: Command?
-  @NSManaged var onCommand: Command?
+  @NSManaged var offCommand: SendIRCommand?
+  @NSManaged var onCommand: SendIRCommand?
   @NSManaged var powerCommands: NSSet
 
   private var ignoreNextPowerCommand = false
@@ -60,7 +60,7 @@ class ComponentDevice: BankableModelObject {
 
   :returns: AnyObject!
   */
-  subscript(name: String) -> AnyObject! { return (codes.allObjects as [IRCode]).filter{$0.name == name}.first }
+//  subscript(name: String) -> AnyObject! { return (codes.allObjects as [IRCode]).filter{$0.name == name}.first }
 
   /**
   updateWithData:
@@ -71,19 +71,16 @@ class ComponentDevice: BankableModelObject {
     super.updateWithData(data)
 
     port = (data["port"] as? NSNumber)?.shortValue ?? port
-    onCommand = Command.importObjectFromData(data["on-command"] as? NSDictionary,
-                                     context: managedObjectContext!) ?? onCommand
-    offCommand = Command.importObjectFromData(data["off-command"] as? NSDictionary,
-                                      context: managedObjectContext!) ?? offCommand
+    onCommand = SendIRCommand.importObjectFromData(data["on-command"] as? NSDictionary,
+                                           context: managedObjectContext!) ?? onCommand
+    offCommand = SendIRCommand.importObjectFromData(data["off-command"] as? NSDictionary,
+                                            context: managedObjectContext!) ?? offCommand
     manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary,
                                              context: managedObjectContext!) ?? manufacturer
     networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary,
                                                context: managedObjectContext!) ?? networkDevice
-
-    if let newCodes = IRCode.importObjectsFromData(data["codes"], context: managedObjectContext!) {
-      let mutableCodes: NSMutableSet = mutableSetValueForKey("codes") ?? NSMutableSet()
-      mutableCodes.addObjectsFromArray(newCodes)
-    }
+    codeSet = IRCodeSet.importObjectFromData(data["code-set"] as? NSDictionary,
+                                     context: managedObjectContext) ?? codeSet
   }
 
   class var rootCategory: Bank.RootCategory {
@@ -91,23 +88,8 @@ class ComponentDevice: BankableModelObject {
     return Bank.RootCategory(label: "Component Devices",
                              icon: UIImage(named: "969-television")!,
                              items: devices ?? [],
-                             detailableItems: true,
                              editableItems: true)
   }
-
-  /**
-  isThumbnailable
-
-  :returns: Bool
-  */
-  override class func isThumbnailable() -> Bool { return false }
-
-  /**
-  isDetailable
-
-  :returns: Bool
-  */
-  override class func isDetailable() -> Bool { return true  }
 
   /**
   isEditable
@@ -129,7 +111,7 @@ class ComponentDevice: BankableModelObject {
   :returns: UIViewController
   */
   override func detailController() -> UIViewController {
-    return ComponentDeviceDetailController(item: self, editing: false)!
+    return ComponentDeviceDetailController(item: self)!
   }
 
 }
@@ -153,7 +135,7 @@ extension ComponentDevice: MSJSONExport {
     safeSetValueForKeyPath("offCommand.JSONDictionary",   forKey: "off-command",         inDictionary: dictionary)
     safeSetValueForKeyPath("manufacturer.commentedUUID",  forKey: "manufacturer.uuid",   inDictionary: dictionary)
     safeSetValueForKeyPath("networkDevice.commentedUUID", forKey: "network-device.uuid", inDictionary: dictionary)
-    safeSetValueForKeyPath("codes.JSONDictionary",        forKey: "codes",               inDictionary: dictionary)
+    safeSetValueForKeyPath("codeSet.commentedUUID",       forKey: "code-set",            inDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

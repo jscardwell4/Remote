@@ -78,16 +78,13 @@ class IRCode: BankableModelObject {
     return Bank.RootCategory(label: "IR Codes",
                              icon: UIImage(named: "tv-remote")!,
                              subcategories: categories ?? [],
-                             detailableItems: true,
                              editableItems: true)
   }
 
-  override class func isThumbnailable() -> Bool { return false }
   override class func isPreviewable()   -> Bool { return false }
-  override class func isDetailable()    -> Bool { return true }
   override class func isEditable()      -> Bool { return true }
 
-  override func detailController() -> UIViewController { return IRCodeDetailController(item: self, editing: false)! }
+  override func detailController() -> UIViewController { return IRCodeDetailController(item: self)! }
 
 }
 

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(BankItemCell)
+
 class BankItemCell: UITableViewCell {
 
 
@@ -32,6 +32,26 @@ class BankItemCell: UITableViewCell {
     case TextView  = "BankItemDetailTextViewCell"
     case TextField = "BankItemDetailTextFieldCell"
     case Table     = "BankItemDetailTableCell"
+
+    /**
+    registerWithTableView:
+
+    :param: tableView UITableView
+    */
+    func registerWithTableView(tableView: UITableView) {
+      switch self {
+        case .Label:     tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .List:      tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .Button:    tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .Image:     tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .Switch:    tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .Stepper:   tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .Detail:    tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .TextView:  tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .TextField: tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+        case .Table:     tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
+      }
+    }
   }
 
   /**
@@ -40,9 +60,8 @@ class BankItemCell: UITableViewCell {
   :param: tableView UITableView
   */
   class func registerIdentifiersWithTableView(tableView: UITableView) {
-    let identifiers: [Identifier] =
-      [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
-    for identifier in identifiers { tableView.registerClass(self, forCellReuseIdentifier: identifier.rawValue) }
+    let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
+    for identifier in identifiers { identifier.registerWithTableView(tableView) }
   }
 
 
@@ -50,15 +69,16 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var changeHandler          : ((BankItemCell) -> Void)?
-  var validationHandler      : ((BankItemCell) -> Bool)?
+  var changeHandler : ((NSObject?) -> Void)?
+  var validationHandler : ((NSObject?) -> Bool)?
   var pickerSelectionHandler : ((NSObject?) -> Void)?
-  var buttonActionHandler    : ((BankItemCell) -> Void)?
-  var rowSelectionHandler    : ((BankItemCell) -> Void)?
-  var shouldShowPicker       : ((BankItemCell) -> Bool)?
-  var shouldHidePicker       : ((BankItemCell) -> Bool)?
-  var didShowPicker          : ((BankItemCell) -> Void)?
-  var didHidePicker          : ((BankItemCell) -> Void)?
+  var buttonActionHandler : ((Void) -> Void)?
+  var buttonEditingActionHandler : ((Void) -> Void)?
+  var rowSelectionHandler : ((NSObject?) -> Void)?
+  var shouldShowPicker : ((BankItemCell) -> Bool)?
+  var shouldHidePicker : ((BankItemCell) -> Bool)?
+  var didShowPicker : ((BankItemCell) -> Void)?
+  var didHidePicker : ((BankItemCell) -> Void)?
 
 
   /// MARK: Keyboard settings
@@ -67,57 +87,57 @@ class BankItemCell: UITableViewCell {
 
   var returnKeyType: UIReturnKeyType = .Done {
     didSet {
-      textFieldℹ︎?.returnKeyType = returnKeyType
-      textViewℹ︎?.returnKeyType = returnKeyType
+      textFieldℹ?.returnKeyType = returnKeyType
+      textViewℹ?.returnKeyType = returnKeyType
     }
   }
 
   var keyboardType: UIKeyboardType = .ASCIICapable {
     didSet {
-      textFieldℹ︎?.keyboardType = keyboardType
-      textViewℹ︎?.keyboardType = keyboardType
+      textFieldℹ?.keyboardType = keyboardType
+      textViewℹ?.keyboardType = keyboardType
     }
   }
 
   var autocapitalizationType: UITextAutocapitalizationType = .None {
     didSet {
-      textFieldℹ︎?.autocapitalizationType = autocapitalizationType
-      textViewℹ︎?.autocapitalizationType = autocapitalizationType
+      textFieldℹ?.autocapitalizationType = autocapitalizationType
+      textViewℹ?.autocapitalizationType = autocapitalizationType
     }
   }
 
   var autocorrectionType: UITextAutocorrectionType = .No {
     didSet {
-      textFieldℹ︎?.autocorrectionType = autocorrectionType
-      textViewℹ︎?.autocorrectionType = autocorrectionType
+      textFieldℹ?.autocorrectionType = autocorrectionType
+      textViewℹ?.autocorrectionType = autocorrectionType
     }
   }
 
   var spellCheckingType: UITextSpellCheckingType = .No {
     didSet {
-      textFieldℹ︎?.spellCheckingType = spellCheckingType
-      textViewℹ︎?.spellCheckingType = spellCheckingType
+      textFieldℹ?.spellCheckingType = spellCheckingType
+      textViewℹ?.spellCheckingType = spellCheckingType
     }
   }
 
   var enablesReturnKeyAutomatically: Bool = false {
     didSet {
-      textFieldℹ︎?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-      textViewℹ︎?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+      textFieldℹ?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+      textViewℹ?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
     }
   }
 
   var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance {
     didSet {
-      textFieldℹ︎?.keyboardAppearance = keyboardAppearance
-      textViewℹ︎?.keyboardAppearance = keyboardAppearance
+      textFieldℹ?.keyboardAppearance = keyboardAppearance
+      textViewℹ?.keyboardAppearance = keyboardAppearance
     }
   }
 
   var secureTextEntry: Bool = false {
     didSet {
-      textFieldℹ︎?.secureTextEntry = secureTextEntry
-      textViewℹ︎?.secureTextEntry = secureTextEntry
+      textFieldℹ?.secureTextEntry = secureTextEntry
+      textViewℹ?.secureTextEntry = secureTextEntry
     }
   }
 
@@ -125,7 +145,7 @@ class BankItemCell: UITableViewCell {
 
   var shouldUseIntegerKeyboard: Bool = false {
     didSet {
-      if let input = textFieldℹ︎ {
+      if let input = textFieldℹ {
         input.inputView = shouldUseIntegerKeyboard
                             ? MSIntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: input)
                             : nil
@@ -184,15 +204,22 @@ class BankItemCell: UITableViewCell {
 
   :returns: String
   */
-  private func textFromObject(obj: AnyObject?, dataType: DataType = .StringData) -> String {
-    var text = ""
-    if let string = obj as? String { text = string }
-    else if let number = obj as? NSNumber { text = "\(number)" }
-    else if obj != nil {
-      if obj!.respondsToSelector("name") { if let name = obj!.valueForKey("name") as? String { text = name } }
-      else { text = "\(obj)" }
+  func textFromObject(object: AnyObject?) -> String? {
+
+    var text: String?
+
+    if let string = object as? String {
+      text = string
+    } else if let obj: AnyObject = object {
+      if obj.respondsToSelector("name") {
+        text = obj.valueForKey("name") as? String
+      } else {
+        text = "\(obj)"
+      }
     }
+
     return text
+
   }
 
   /**
@@ -203,8 +230,10 @@ class BankItemCell: UITableViewCell {
 
   :returns: NSNumber?
   */
-  private func numberFromText(text: String?, dataType: DataType = .IntegerData(Int.min...Int.max)) -> NSNumber? {
+  func numberFromText(text: String?, dataType: DataType = .IntegerData(Int.min...Int.max)) -> NSNumber? {
+
     var number: NSNumber?
+
     if text != nil {
       switch dataType {
       case .IntData(let r):
@@ -235,42 +264,43 @@ class BankItemCell: UITableViewCell {
         break
       }
     }
+
     return number
   }
 
   var info: AnyObject? {
     get {
       switch identifier {
-        case .Label, .List:      return labelℹ︎?.text
-        case .Button, .Detail:   return buttonℹ︎?.titleForState(.Normal)
-        case .Image:             return imageℹ︎?.image
-        case .Switch:            return switchℹ︎?.on
+        case .Label, .List:      return labelℹ?.text
+        case .Button, .Detail:   return buttonℹ?.titleForState(.Normal)
+        case .Image:             return imageℹ?.image
+        case .Switch:            return switchℹ?.on
         case .Stepper:           return stepper?.value
-        case .TextView:          return numberFromText(textViewℹ︎?.text, dataType: infoDataType) ?? textViewℹ︎?.text
-        case .TextField:         return numberFromText(textFieldℹ︎?.text, dataType: infoDataType) ?? textFieldℹ︎?.text
+        case .TextView:          return numberFromText(textViewℹ?.text, dataType: infoDataType) ?? textViewℹ?.text
+        case .TextField:         return numberFromText(textFieldℹ?.text, dataType: infoDataType) ?? textFieldℹ?.text
         case .Table:             return tableData
       }
     }
     set {
       switch identifier {
         case .Label, .List:
-          labelℹ︎?.text = textFromObject(newValue)
+          labelℹ?.text = textFromObject(newValue)
         case .Button, .Detail:
-          buttonℹ︎?.setTitle(textFromObject(newValue), forState:.Normal)
+          buttonℹ?.setTitle(textFromObject(newValue), forState:.Normal)
         case .Image:
-          imageℹ︎?.image = newValue as? UIImage
+          imageℹ?.image = newValue as? UIImage
           if let imageSize = (newValue as? UIImage)?.size {
-            imageℹ︎?.contentMode = CGSizeContainsSize(bounds.size, imageSize) ? .Center : .ScaleAspectFit
+            imageℹ?.contentMode = CGSizeContainsSize(bounds.size, imageSize) ? .Center : .ScaleAspectFit
           }
         case .Switch:
-          switchℹ︎?.on = newValue as? Bool ?? false
+          switchℹ?.on = newValue as? Bool ?? false
         case .Stepper:
           stepper?.value = newValue as? Double ?? 0.0
-          labelℹ︎?.text = textFromObject(newValue, dataType: infoDataType)
+          labelℹ?.text = textFromObject(newValue)
         case .TextView:
-          textViewℹ︎?.text = textFromObject(newValue, dataType: infoDataType)
+          textViewℹ?.text = textFromObject(newValue)
         case .TextField:
-          textFieldℹ︎?.text = textFromObject(newValue, dataType: infoDataType)
+          textFieldℹ?.text = textFromObject(newValue)
         case .Table:
           tableData = newValue as? [NSObject]
           tableℹ?.reloadData()
@@ -285,13 +315,13 @@ class BankItemCell: UITableViewCell {
 
   private weak var tableℹ: UITableView?
   private weak var nameLabel: UILabel?
-  private weak var buttonℹ︎: UIButton?
-  private weak var imageℹ︎: UIImageView?
-  private weak var switchℹ︎: UISwitch?
-  private weak var labelℹ︎: UILabel?
+  private weak var buttonℹ: UIButton?
+  private weak var imageℹ: UIImageView?
+  private weak var switchℹ: UISwitch?
+  private weak var labelℹ: UILabel?
   private weak var stepper: UIStepper?
-  private weak var textFieldℹ︎: UITextField?
-  private weak var textViewℹ︎: UITextView?
+  private weak var textFieldℹ: UITextField?
+  private weak var textViewℹ: UITextView?
   private weak var picker: UIPickerView!
 
 
@@ -306,10 +336,22 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
   class var pickerHeight: CGFloat { return 162.0 }
-  var pickerEnabled = false
   var pickerData: [NSObject]? { didSet { pickerEnabled = pickerData != nil } }
-  var pickerSelection: NSObject?
-  var pickerNilSelectionTitle: String? { didSet { if info == nil { info = pickerNilSelectionTitle } } }
+  var pickerSelection: NSObject? { didSet { info = pickerSelection ?? pickerNilSelectionTitle } }
+  var pickerNilSelectionTitle: String? { didSet { prependedPickerItemCount = pickerNilSelectionTitle != nil ? 1 : 0 } }
+  var pickerEnabled = false
+  var prependedPickerItemCount = 0
+
+  /**
+  pickerDataItemForRow:
+
+  :param: row Int
+
+  :returns: NSObject?
+  */
+  func pickerDataItemForRow(row: Int) -> NSObject? {
+    return prependedPickerItemCount > 0 && row == 0 ? pickerNilSelectionTitle :  pickerData?[row - prependedPickerItemCount]
+  }
 
   /** togglePicker */
   func togglePicker() { if picker.hidden { showPickerView() } else { hidePickerView() } }
@@ -321,7 +363,7 @@ class BankItemCell: UITableViewCell {
     if shouldShowPicker ∅|| shouldShowPicker!(self) {             	// Check if we should show the picker
       if pickerSelection != nil {                                 		// Check if we have a picker selection set
         if let idx = find(pickerData!, pickerSelection!) {
-          picker.selectRow(pickerNilSelectionTitle != nil ? idx + 1 : idx, inComponent: 0, animated: false)
+          picker.selectRow(idx + prependedPickerItemCount, inComponent: 0, animated: false)
         }
       } else if pickerNilSelectionTitle != nil {                  		// Check if we have a title set for empty selections
         picker.selectRow(0, inComponent: 0, animated: false)
@@ -337,10 +379,15 @@ class BankItemCell: UITableViewCell {
     if picker.hidden { return }                                  		// Make sure picker is actually visible
     if shouldHidePicker ∅|| shouldHidePicker!(self) {             	// Check if we should hide the picker
       picker.hidden = true
-      if textFieldℹ︎ != nil && textFieldℹ︎!.isFirstResponder() { textFieldℹ︎?.resignFirstResponder() }
+      if textFieldℹ != nil && textFieldℹ!.isFirstResponder() { textFieldℹ?.resignFirstResponder() }
       didHidePicker?(self)
     }
   }
+
+
+  /// MARK: Initializers
+  ////////////////////////////////////////////////////////////////////////////////
+
 
   /**
   initWithStyle:reuseIdentifier:
@@ -351,7 +398,7 @@ class BankItemCell: UITableViewCell {
   override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
-    contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    shouldIndentWhileEditing = false
     picker = {
       let view = UIPickerView.newForAutolayout()
       view.delegate = self
@@ -360,190 +407,58 @@ class BankItemCell: UITableViewCell {
       self.addSubview(view)
       return view
       }()
-      constrainWithFormat("|[content]| :: V:|[content]| :: |[picker]| :: V:[picker(==\(BankItemCell.pickerHeight))]|",
-                    views: ["content": contentView, "picker": picker])
+      constrainWithFormat("|[picker]| :: V:[picker(==\(BankItemCell.pickerHeight))]|",
+                    views: ["picker": picker])
 
-
-
-    /// Create some more or less generic constraint strings for use in decorator blocks
-    ////////////////////////////////////////////////////////////////////////////////
-
-    let nameAndInfoCenterYConstraints  = "\n".join(["|-20-[name]-8-[info]-20-|",
-                                                    "name.centerY = info.centerY",
-                                                    "name.height = info.height",
-                                                    "V:|-8-[name]-8-|"])
-
-    let infoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
-
-    let infoDisclosureConstraints = "|-20-[info]-75-| :: V:|-8-[info]-8-|"
-
-    let nameAndTextViewInfoConstraints = "V:|-8-[name]-8-[info]-8-| :: |-20-[name]-(>=20)-| :: |-20-[info]-20-|"
-
-    let tableViewInfoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
-
-    let nameInfoAndStepperConstraints  = "\n".join(["|-20-[name]-8-[info]",
-                                                    "'info trailing' info.trailing = stepper.leading - 20",
-                                                    "name.centerY = info.centerY",
-                                                    "name.height = info.height",
-                                                    "'stepper leading' stepper.leading = self.trailing",
-                                                    "stepper.centerY = name.centerY",
-                                                    "V:|-8-[name]-8-|"])
-
-    let imageViewInfoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
-
-
-    /// Create some generic blocks to add name and info views
-    ////////////////////////////////////////////////////////////////////////////////
-
-    let addName = {(name: UILabel, cell: BankItemCell) -> UILabel in
-
-      name.setTranslatesAutoresizingMaskIntoConstraints(false)
-      name.setContentHuggingPriority(750.0, forAxis:.Horizontal)
-      name.font      = Bank.labelFont
-      name.textColor = Bank.labelColor
-      cell.contentView.addSubview(name)
-      cell.nameLabel = name
-
-      return name
-
-    }
-
-    let addInfo = {(info: NSObject, cell: BankItemCell) -> NSObject in
-
-      if let view = info as? UIView {
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
-        cell.contentView.addSubview(view)
-        view.setContentCompressionResistancePriority(750.0, forAxis:.Vertical)
-        view.userInteractionEnabled = false
-      }
-
-      if let labelℹ︎ = info as? UILabel {
-        labelℹ︎.font = Bank.infoFont
-        labelℹ︎.textColor = Bank.infoColor
-        labelℹ︎.textAlignment = .Right
-        cell.labelℹ︎ = labelℹ︎
-      }
-
-      else if let buttonℹ︎ = info as? UIButton {
-        buttonℹ︎.titleLabel?.font = Bank.infoFont;
-        buttonℹ︎.titleLabel?.textAlignment = .Right;
-        buttonℹ︎.constrainWithFormat("|[title]| :: V:|[title]|", views: ["title": buttonℹ︎.titleLabel!])
-        buttonℹ︎.setTitleColor(Bank.infoColor, forState:.Normal)
-        buttonℹ︎.addTarget(cell, action:"buttonUpAction:", forControlEvents:.TouchUpInside)
-        cell.buttonℹ︎ = buttonℹ︎
-      }
-
-      else if let textFieldℹ︎ = info as? UITextField {
-        textFieldℹ︎.font = Bank.infoFont
-        textFieldℹ︎.textColor = Bank.infoColor
-        textFieldℹ︎.textAlignment = .Right
-        textFieldℹ︎.delegate = cell
-        textFieldℹ︎.returnKeyType = cell.returnKeyType
-        textFieldℹ︎.keyboardType = cell.keyboardType
-        textFieldℹ︎.autocapitalizationType = cell.autocapitalizationType
-        textFieldℹ︎.autocorrectionType = cell.autocorrectionType
-        textFieldℹ︎.spellCheckingType = cell.spellCheckingType
-        textFieldℹ︎.enablesReturnKeyAutomatically = cell.enablesReturnKeyAutomatically
-        textFieldℹ︎.keyboardAppearance = cell.keyboardAppearance
-        textFieldℹ︎.secureTextEntry = cell.secureTextEntry
-        cell.textFieldℹ︎ = textFieldℹ︎
-      }
-
-      else if let textViewℹ︎ = info as? UITextView {
-        textViewℹ︎.font = Bank.infoFont
-        textViewℹ︎.textColor = Bank.infoColor
-        textViewℹ︎.delegate = cell
-        textViewℹ︎.returnKeyType = cell.returnKeyType
-        textViewℹ︎.keyboardType = cell.keyboardType
-        textViewℹ︎.autocapitalizationType = cell.autocapitalizationType
-        textViewℹ︎.autocorrectionType = cell.autocorrectionType
-        textViewℹ︎.spellCheckingType = cell.spellCheckingType
-        textViewℹ︎.enablesReturnKeyAutomatically = cell.enablesReturnKeyAutomatically
-        textViewℹ︎.keyboardAppearance = cell.keyboardAppearance
-        textViewℹ︎.secureTextEntry = cell.secureTextEntry
-        cell.textViewℹ︎ = textViewℹ︎
-      }
-
-      else if let imageℹ︎ = info as? UIImageView {
-        imageℹ︎.contentMode = .ScaleAspectFit
-        imageℹ︎.tintColor = UIColor.blackColor()
-        imageℹ︎.backgroundColor = UIColor.clearColor()
-        cell.imageℹ︎ = imageℹ︎
-      }
-
-      else if let infoTableView = info as? UITableView {
-        infoTableView.separatorStyle = .None
-        infoTableView.rowHeight = Bank.defaultRowHeight
-        infoTableView.delegate = cell
-        infoTableView.dataSource = cell
-        BankItemCell.registerIdentifiersWithTableView(infoTableView)
-        cell.tableℹ = infoTableView
-      }
-
-      else if let switchℹ︎ = info as? UISwitch {
-        switchℹ︎.addTarget(cell, action:"switchValueDidChange:", forControlEvents:.ValueChanged)
-        cell.switchℹ︎ = switchℹ︎
-      }
-
-      else if let stepper = info as? UIStepper {
-        stepper.addTarget(cell, action:"stepperValueDidChange:", forControlEvents:.ValueChanged)
-        cell.stepper = stepper
-      }
-
-      return info
-
-    }
-
-    /// Use blocks to create subviews switching on identifer
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
     switch identifier {
       case .Label:
-        let name = addName(UILabel(), self)
-        let info = addInfo(UILabel(), self)
-        contentView.constrainWithFormat(nameAndInfoCenterYConstraints, views: ["name": name, "info": info])
+        contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addLabel(self)])
 
       case .List:
-        let info = addInfo(UILabel(), self)
-        contentView.constrainWithFormat(infoConstraints, views: ["info": info])
+        contentView.constrainWithFormat(infoConstraints,
+                                 views: ["info": addLabel(self)])
 
       case .Button:
-        let name = addName(UILabel(), self)
-        let info = addInfo(UIButton(), self)
-        contentView.constrainWithFormat(nameAndInfoCenterYConstraints, views: ["name": name, "info": info])
+        contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addButton(self)])
 
       case .Image:
-        let info = addInfo(UIImageView(), self)
-        contentView.constrainWithFormat(imageViewInfoConstraints, views: ["info": info])
+        contentView.constrainWithFormat(thumbnailViewInfoConstraints,
+                                 views: ["info": addImageView(self)])
 
       case .Switch:
-        let name = addName(UILabel(), self)
-        let info = addInfo(UISwitch(), self)
-        contentView.constrainWithFormat(nameAndInfoCenterYConstraints, views: ["name": name, "info": info])
+        contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addSwitch(self)])
 
       case .Stepper:
-        let name    = addName(UILabel(), self)
-        let info    = addInfo(UILabel(), self)
-        let stepper = addInfo(UIStepper(), self)
-        contentView.constrainWithFormat(nameInfoAndStepperConstraints, views: ["name": name, "info": info, "stepper": stepper])
+        contentView.constrainWithFormat(nameInfoAndStepperConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addLabel(self),
+                                         "stepper": addStepper(self)])
 
       case .Detail:
         accessoryType = .DetailDisclosureButton
-        let info = addInfo(UIButton(), self)
-        contentView.constrainWithFormat(infoDisclosureConstraints, views: ["info": info])
+        contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addButton(self)])
 
       case .TextView:
-        let name = addName(UILabel(), self)
-        let info = addInfo(UITextView(), self)
-        contentView.constrainWithFormat(nameAndTextViewInfoConstraints, views: ["name": name, "info": info])
+        contentView.constrainWithFormat(nameAndTextViewInfoConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addTextView(self)])
 
       case .TextField:
-        let name = addName(UILabel(), self)
-        let info = addInfo(UITextField(), self)
-        contentView.constrainWithFormat(nameAndInfoCenterYConstraints, views: ["name": name, "info": info])
+        contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
+                                 views: ["name": addNameLabel(self),
+                                         "info": addTextField(self)])
 
       case .Table:
-        let info = addInfo(UITableView(), self)
-        contentView.constrainWithFormat(tableViewInfoConstraints, views: ["info": info])
+        contentView.constrainWithFormat(tableViewInfoConstraints,
+                                 views: ["info": addTableView(self)])
 
     }
 
@@ -560,22 +475,27 @@ class BankItemCell: UITableViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
     nameLabel?.text = nil
-    buttonℹ︎?.setTitle(nil, forState: .Normal)
-    imageℹ︎?.image = nil
-    imageℹ︎?.contentMode = .ScaleAspectFit
-    switchℹ︎?.on = false
-    labelℹ︎?.text = nil
+    buttonℹ?.setTitle(nil, forState: .Normal)
+    imageℹ?.image = nil
+    imageℹ?.contentMode = .ScaleAspectFit
+    switchℹ?.on = false
+    labelℹ?.text = nil
     stepper?.value = 0.0
     stepper?.minimumValue = Double(CGFloat.min)
     stepper?.maximumValue = Double(CGFloat.max)
     stepper?.wraps = true
-    textFieldℹ︎?.text = nil
-    textViewℹ︎?.text = nil
+    textFieldℹ?.text = nil
+    textViewℹ?.text = nil
     tableData = nil
     tableℹ?.reloadData()
     pickerData = nil
     pickerSelection = nil
   }
+
+
+  /// MARK: Action callbacks
+  ////////////////////////////////////////////////////////////////////////////////
+
 
   /**
   stepperValueDidChange:
@@ -584,7 +504,7 @@ class BankItemCell: UITableViewCell {
   */
   func stepperValueDidChange(sender: UIStepper) {
     changeHandler?(self)
-    labelℹ︎?.text = textFromObject(sender.value, dataType: infoDataType)
+    labelℹ?.text = textFromObject(sender.value)
   }
 
   /**
@@ -593,8 +513,12 @@ class BankItemCell: UITableViewCell {
   :param: sender UIButton
   */
   func buttonUpAction(sender: UIButton) {
-    buttonActionHandler?(self)
-    if pickerEnabled { togglePicker() }
+    if isEditingState {
+      buttonEditingActionHandler?()
+      if pickerEnabled { togglePicker() }
+    } else {
+      buttonActionHandler?()
+    }
   }
 
   /**
@@ -602,30 +526,36 @@ class BankItemCell: UITableViewCell {
 
   :param: sender UISwitch
   */
-  func switchValueDidChange(sender: UISwitch) { if let action = changeHandler { action(self) } }
+  func switchValueDidChange(sender: UISwitch) { changeHandler?(NSNumber(bool: sender.on)) }
 
-  /**
-  willTransitionToState:
 
-  :param: state UITableViewCellStateMask
-  */
-  override func willTransitionToState(state: UITableViewCellStateMask) {
-    let isEditingState: Bool = ((state & .ShowingEditControlMask) == .ShowingEditControlMask)
-    switch identifier {
-      case .Button:  buttonℹ︎?.userInteractionEnabled = isEditingState
-      case .Switch:  switchℹ︎?.userInteractionEnabled = isEditingState
-      case .Stepper:
-        stepper?.userInteractionEnabled = isEditingState
-        if let infoTrailing = contentView.constraintWithIdentifier("info trailing") {
-          if let stepperLeading = contentView.constraintWithIdentifier("stepper leading") {
-            infoTrailing.constant = isEditingState ? -8.0 : -20.0
-            stepperLeading.constant = isEditingState ? -20.0 - (stepper?.bounds.size.width ?? 0.0) : 0.0
-          }
-        }
-      case .TextView:  textViewℹ︎?.userInteractionEnabled  = isEditingState
-      case .TextField: textFieldℹ︎?.userInteractionEnabled = isEditingState
-      default: break
+  /// MARK: UITableViewCell
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var wtf = false
+
+  dynamic var isEditingState: Bool = false {
+    didSet {
+      switch identifier {
+          case .Button:  buttonℹ?.userInteractionEnabled = isEditingState
+          case .Switch:  switchℹ?.userInteractionEnabled = isEditingState
+          case .Stepper:
+            stepper?.userInteractionEnabled = isEditingState
+            if let infoTrailing = contentView.constraintWithIdentifier("info trailing") {
+              if let stepperLeading = contentView.constraintWithIdentifier("stepper leading") {
+                infoTrailing.constant = isEditingState ? -8.0 : -20.0
+                stepperLeading.constant = isEditingState ? -20.0 - (stepper?.bounds.size.width ?? 0.0) : 0.0
+              }
+            }
+          case .TextView:  textViewℹ?.userInteractionEnabled  = isEditingState
+          case .TextField: textFieldℹ?.userInteractionEnabled = isEditingState
+          default: break
+      }
     }
+  }
+  override func setEditing(editing: Bool, animated: Bool) {
+    isEditingState = editing
+    wtf = editing
   }
 
 }
@@ -651,7 +581,7 @@ extension BankItemCell: UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField.text != beginStateText { if let action = changeHandler { action(self) } }
+    if textField.text != beginStateText { changeHandler?(textField.text) }
     if picker != nil && !picker!.hidden { hidePickerView() }
   }
 
@@ -692,7 +622,7 @@ extension BankItemCell: UITextFieldDelegate {
        default:
          break
     }
-    return validationHandler?(self) ?? true
+    return validationHandler?(textField.text) ?? true
   }
 
   /**
@@ -726,7 +656,7 @@ extension BankItemCell: UITextViewDelegate {
 
   :param: textView UITextView
   */
-  func textViewDidEndEditing(textView: UITextView) { if textView.text != beginStateText { changeHandler?(self) } }
+  func textViewDidEndEditing(textView: UITextView) { if textView.text != beginStateText { changeHandler?(textView.text) } }
 
   /**
   textViewShouldEndEditing:
@@ -735,7 +665,7 @@ extension BankItemCell: UITextViewDelegate {
 
   :returns: Bool
   */
-  func textViewShouldEndEditing(textField: UITextView) -> Bool { return validationHandler?(self) ?? true }
+  func textViewShouldEndEditing(textView: UITextView) -> Bool { return validationHandler?(textView.text) ?? true }
 
   /**
   textView:shouldChangeTextInRange:replacementText:
@@ -782,9 +712,7 @@ extension BankItemCell: UIPickerViewDataSource {
   :returns: Int
   */
   func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    var count = pickerData?.count ?? 0
-    if pickerNilSelectionTitle != nil { count++ }
-    return count
+    return (pickerData?.count ?? 0) + prependedPickerItemCount
   }
 
   /**
@@ -797,11 +725,7 @@ extension BankItemCell: UIPickerViewDataSource {
   :returns: String?
   */
   func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    if let nilTitle = pickerNilSelectionTitle {
-      return row == 0 ? nilTitle : textFromObject(pickerData?[row - 1] ?? "")
-    } else {
-      return textFromObject(pickerData?[row] ?? "")
-    }
+    return textFromObject(pickerDataItemForRow(row))
   }
 
 }
@@ -819,6 +743,7 @@ extension BankItemCell: UIPickerViewDelegate {
   :param: component Int
   */
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+
     if pickerNilSelectionTitle != nil {
       if row == 0 {
         pickerSelection = nil
@@ -829,7 +754,6 @@ extension BankItemCell: UIPickerViewDelegate {
       pickerSelection = pickerData?[row]
     }
     pickerSelectionHandler?(pickerSelection)
-    info = pickerSelection
     hidePickerView()
   }
 
@@ -839,7 +763,6 @@ extension BankItemCell: UIPickerViewDelegate {
 /// MARK: - UITableViewDataSource
 ////////////////////////////////////////////////////////////////////////////////
 extension BankItemCell: UITableViewDataSource {
-
 
   /**
   numberOfSectionsInTableView:
@@ -892,4 +815,240 @@ extension BankItemCell: UITableViewDataSource {
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - UITableViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
-extension BankItemCell: UITableViewDelegate {}
+extension BankItemCell: UITableViewDelegate {
+
+  /**
+  tableView:didSelectRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: indexPath NSIndexPath
+  */
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    rowSelectionHandler?(tableData?[indexPath.row])
+  }
+
+}
+
+
+/// Create some more or less generic constraint strings for use in decorator blocks
+///////////////////////////////////////////////////////////////////////////////////
+
+private let nameAndInfoCenterYConstraints  = "\n".join([
+  "|-20-[name]-8-[info]-20-|",
+  "name.centerY = info.centerY",
+  "name.height = info.height",
+  "V:|-8-[name]-8-|"
+  ])
+
+private let infoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
+
+private let nameAndTextViewInfoConstraints = "V:|-8-[name]-8-[info]-8-| :: |-20-[name]-(>=20)-| :: |-20-[info]-20-|"
+
+private let tableViewInfoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
+
+private let nameInfoAndStepperConstraints  = "\n".join([
+  "|-20-[name]-8-[info]",
+  "'info trailing' info.trailing = stepper.leading - 20",
+  "name.centerY = info.centerY",
+  "name.height = info.height",
+  "'stepper leading' stepper.leading = self.trailing",
+  "stepper.centerY = name.centerY",
+  "V:|-8-[name]-8-|"
+  ])
+
+private let thumbnailViewInfoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
+
+
+/// MARK: - Helper functions for adding subviews per identfier style
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+addNameLabel:
+
+:param: cell BankItemCell
+
+:returns: UILabel
+*/
+private func addNameLabel(cell: BankItemCell) -> UILabel {
+
+  let name = UILabel()
+  name.setTranslatesAutoresizingMaskIntoConstraints(false)
+  name.setContentHuggingPriority(750.0, forAxis:.Horizontal)
+  name.font      = Bank.labelFont
+  name.textColor = Bank.labelColor
+  cell.contentView.addSubview(name)
+  cell.nameLabel = name
+
+  return name
+
+}
+
+/**
+addInfoView:cell:
+
+:param: info UIView
+:param: cell BankItemCell
+
+:returns: UIView
+*/
+private func addInfoView(info: UIView, cell: BankItemCell) {
+  info.setTranslatesAutoresizingMaskIntoConstraints(false)
+  cell.contentView.addSubview(info)
+  info.setContentCompressionResistancePriority(750.0, forAxis:.Vertical)
+  info.userInteractionEnabled = false
+}
+
+/**
+addLabel:
+
+:param: cell BankItemCell
+
+:returns: UILabel
+*/
+private func addLabel(cell: BankItemCell) -> UILabel {
+  let view = UILabel()
+  addInfoView(view, cell)
+  view.font = Bank.infoFont
+  view.textColor = Bank.infoColor
+  view.textAlignment = .Right
+  cell.labelℹ = view
+  return view
+}
+
+/**
+addButton:
+
+:param: cell BankItemCell
+
+:returns: UIButton
+*/
+private func addButton(cell: BankItemCell) -> UIButton {
+  let view = UIButton()
+  addInfoView(view, cell)
+  view.titleLabel?.font = Bank.infoFont;
+  view.titleLabel?.textAlignment = .Right;
+  view.constrainWithFormat("|[title]| :: V:|[title]|", views: ["title": view.titleLabel!])
+  view.setTitleColor(Bank.infoColor, forState:.Normal)
+  view.addTarget(cell, action:"buttonUpAction:", forControlEvents:.TouchUpInside)
+  cell.buttonℹ = view
+  return view
+}
+
+/**
+addSwitch:
+
+:param: cell BankItemCell
+
+:returns: UISwitch
+*/
+private func addSwitch(cell: BankItemCell) -> UISwitch {
+  let view = UISwitch()
+  addInfoView(view, cell)
+  view.addTarget(cell, action:"switchValueDidChange:", forControlEvents:.ValueChanged)
+  cell.switchℹ = view
+  return view
+}
+
+/**
+addStepper:
+
+:param: cell BankItemCell
+
+:returns: UIStepper
+*/
+private func addStepper(cell: BankItemCell) -> UIStepper {
+  let view = UIStepper()
+  addInfoView(view, cell)
+  view.addTarget(cell, action:"stepperValueDidChange:", forControlEvents:.ValueChanged)
+  cell.stepper = view
+  return view
+}
+
+/**
+addImageView:
+
+:param: cell BankItemCell
+
+:returns: UIImageView
+*/
+private func addImageView(cell: BankItemCell) -> UIImageView {
+  let view = UIImageView()
+  addInfoView(view, cell)
+  view.contentMode = .ScaleAspectFit
+  view.tintColor = UIColor.blackColor()
+  view.backgroundColor = UIColor.clearColor()
+  cell.imageℹ = view
+  return view
+}
+
+/**
+addTextField:
+
+:param: cell BankItemCell
+
+:returns: UITextField
+*/
+private func addTextField(cell: BankItemCell) -> UITextField {
+  let view = UITextField()
+  addInfoView(view, cell)
+  view.font = Bank.infoFont
+  view.textColor = Bank.infoColor
+  view.textAlignment = .Right
+  view.delegate = cell
+  view.returnKeyType = cell.returnKeyType
+  view.keyboardType = cell.keyboardType
+  view.autocapitalizationType = cell.autocapitalizationType
+  view.autocorrectionType = cell.autocorrectionType
+  view.spellCheckingType = cell.spellCheckingType
+  view.enablesReturnKeyAutomatically = cell.enablesReturnKeyAutomatically
+  view.keyboardAppearance = cell.keyboardAppearance
+  view.secureTextEntry = cell.secureTextEntry
+  cell.textFieldℹ = view
+  return view
+}
+
+/**
+addTextView:
+
+:param: cell BankItemCell
+
+:returns: UITextView
+*/
+private func addTextView(cell: BankItemCell) -> UITextView {
+  let view = UITextView()
+  addInfoView(view, cell)
+  view.font = Bank.infoFont
+  view.textColor = Bank.infoColor
+  view.delegate = cell
+  view.returnKeyType = cell.returnKeyType
+  view.keyboardType = cell.keyboardType
+  view.autocapitalizationType = cell.autocapitalizationType
+  view.autocorrectionType = cell.autocorrectionType
+  view.spellCheckingType = cell.spellCheckingType
+  view.enablesReturnKeyAutomatically = cell.enablesReturnKeyAutomatically
+  view.keyboardAppearance = cell.keyboardAppearance
+  view.secureTextEntry = cell.secureTextEntry
+  cell.textViewℹ = view
+  return view
+}
+
+/**
+addUITableView:
+
+:param: cell BankItemCell
+
+:returns: UITableView
+*/
+private func addTableView(cell: BankItemCell) -> UITableView {
+  let view = UITableView()
+  addInfoView(view, cell)
+  view.separatorStyle = .None
+  view.rowHeight = Bank.defaultRowHeight
+  view.delegate = cell
+  view.dataSource = cell
+  BankItemCell.registerIdentifiersWithTableView(view)
+  cell.tableℹ = view
+  return view
+}
+
+

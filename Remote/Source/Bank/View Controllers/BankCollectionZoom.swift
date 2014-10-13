@@ -27,7 +27,7 @@ class BankCollectionZoom: UIView {
 			nameLabel.text       = item?.name
       image                = item?.preview
 			editButton.enabled   = item?.editable ?? false
-			detailButton.enabled = item?.detailable ?? false
+			detailButton.enabled = item != nil
 		}
 	}
 

@@ -34,17 +34,17 @@
     void (^_completion)(BOOL, NSError *);
 }
 /// `ComponentDevice` this command powers on.
-@property (nonatomic, strong) ComponentDevice * onDevice;
+//@property (nonatomic, strong) ComponentDevice * onDevice;
 /// `Button` object executing the command.
 @property (nonatomic, strong) Button * button;
 /// `ComponentDevice` this command powers off.
-@property (nonatomic, strong) ComponentDevice * offDevice;
+//@property (nonatomic, strong) ComponentDevice * offDevice;
 /// `CommandOperation` object that encapsulates the task performed by the command
 @property (nonatomic, readonly) CommandOperation * operation;
 @end
 
 @interface Command (CoreDataGeneratedAccessors)
-@property (nonatomic) ComponentDevice * primitiveOnDevice;
-@property (nonatomic) ComponentDevice * primitiveOffDevice;
+//@property (nonatomic) ComponentDevice * primitiveOnDevice;
+//@property (nonatomic) ComponentDevice * primitiveOffDevice;
 @end
 

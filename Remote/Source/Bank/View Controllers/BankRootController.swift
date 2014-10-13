@@ -74,9 +74,7 @@ extension BankRootController: UITableViewDelegate {
     let category = BankSurrogateCategory(title: rootCategory.label,
                                          subcategories: rootCategory.subcategories,
                                          items: rootCategory.items,
-                                         thumbnailableItems: rootCategory.thumbnailableItems,
                                          previewableItems: rootCategory.previewableItems,
-                                         detailableItems: rootCategory.detailableItems,
                                          editableItems: rootCategory.editableItems)
     let collectionController = BankCollectionController(category: category)!
     navigationController?.pushViewController(collectionController, animated: true)

@@ -106,6 +106,7 @@
 		  ]
 	  },
 	  {
+	  	"uuid": "F8DD5512-938C-42B1-8CD2-DE44B05061C6",
 	  	"name": "AV Receiver",
 	  	"user": true,
 	  	"codes": [
@@ -421,6 +422,7 @@
 			    "on-off-pattern": "96,24,48,24B24,24CBCCCCCCBBC24,863ABBCCBCCCCCCBBCDABBCCBCCCCCCBBC24,4019"
 			  },
 			  {
+			  	"uuid": "12470A9F-CC42-4C31-B261-213DFDA79BEC",
 			    "name": "Power",
 			    "repeatCount": 3,
 			    "on-off-pattern": "96,23,48,24,24,24BCBCCCCCCBBC24,800"

@@ -40,9 +40,7 @@ class ImageCategory: BankableModelCategory {
     items.sort{$0.0.name < $0.1.name}
     return items
   }
-  override var thumbnailableItems: Bool { return Image.isThumbnailable() }
   override var previewableItems:   Bool { return Image.isPreviewable()   }
-  override var detailableItems:    Bool { return Image.isDetailable()    }
   override var editableItems:      Bool { return Image.isEditable()      }
 
   /**

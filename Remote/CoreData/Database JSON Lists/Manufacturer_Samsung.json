@@ -3,6 +3,7 @@
   "uuid": "CDA611FD-95C1-4981-ABE6-B07B8CB79A7E",
   "codesets": [
     {
+      "uuid": "919CA443-DA0C-4064-A6D2-2868DE28F2C9",
       "name": "Samsung TV",
       "user": true,
       "codes": [
@@ -90,6 +91,7 @@
           "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCCBBCCBBBBCCB21,1776ABBBCCCCCBBBCCCCCBCCCCBBCCBBBBCCBDABBBCCCCCBBBCCCCCBCCCCBBCCBBBBCCB21,4878"
         },
         {
+          "uuid": "4386551B-5B7B-4017-A187-62AAFBB49399",
           "name": "Power On",
           "repeatCount": 2,
           "frequency": 38000,
@@ -207,6 +209,7 @@
           "on-off-pattern": "171,171,21,64BB21,21CC21,22CBBBCCCCCDDBCCCCCBBCBBBBB21,1776ABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBBEABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBBEABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBB21,4878"
         },
         {
+          "uuid": "45693E54-0E98-4D15-89D5-97E89488EDCE",
           "name": "Power Off",
           "frequency": 38000,
           "on-off-pattern": "172,172,21,64BB21,21CCCCBBBCCCCCCCCBBCCBBBBCCBBC21,1673"

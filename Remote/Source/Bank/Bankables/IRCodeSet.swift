@@ -13,12 +13,11 @@ import MoonKit
 @objc(IRCodeSet)
 class IRCodeSet: BankableModelCategory {
 
+  @NSManaged var devices: NSSet?
   @NSManaged var codes: NSSet?
   @NSManaged var manufacturer: Manufacturer?
   override var items: [BankDisplayItemModel] { return ((codes?.allObjects ?? []) as [IRCode]).sorted{$0.0.name < $0.1.name} }
-  override var thumbnailableItems: Bool { return IRCode.isThumbnailable() }
   override var previewableItems:   Bool { return IRCode.isPreviewable()   }
-  override var detailableItems:    Bool { return IRCode.isDetailable()    }
   override var editableItems:      Bool { return IRCode.isEditable()      }
 
   /**

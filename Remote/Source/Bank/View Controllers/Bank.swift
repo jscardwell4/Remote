@@ -13,14 +13,10 @@ import MoonKit
 /** Protocol inheriting from `BankDisplayItem` for actual items of interest */
 @objc protocol BankDisplayItemModel: RenameableModel {
 
-  class func isThumbnailable() -> Bool  // Whether items of the conforming type may have thumbnails
   class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
-  class func isDetailable()    -> Bool  // Whether items of the conforming type may be opened in a detail controller
   class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
 
-  var thumbnailable: Bool { get }
   var previewable:   Bool { get }
-  var detailable:    Bool { get }
   var editable:      Bool { get }
 
   var preview: UIImage? { get }
@@ -30,16 +26,8 @@ import MoonKit
   func rollback()
 
   func detailController() -> UIViewController
-//  class func categoryType() -> BankDisplayItemCategory.Protocol
-//  typealias CategoryType: BankDisplayItemCategory
 
-//  optional var category: CategoryType { get }
-//
 }
-
-//func ==(lhs: BankDisplayItemModel, rhs: BankDisplayItemModel) -> Bool {
-//  return lhs.isEqual(rhs)
-//}
 
 /** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
 @objc protocol BankDisplayItemCategory: class, NSObjectProtocol {
@@ -48,9 +36,7 @@ import MoonKit
 
   var items: [BankDisplayItemModel] { get }
 
-  var thumbnailableItems: Bool { get }
   var previewableItems:   Bool { get }
-  var detailableItems:    Bool { get }
   var editableItems:      Bool { get }
 
 
@@ -72,7 +58,7 @@ func categoryPath(category: BankDisplayItemCategory?) -> String? {
 /** Protocol for types that wish to display Bank item details */
 @objc protocol BankDetailController: class, NSObjectProtocol {
 
-  init?(item: BankDisplayItemModel, editing: Bool)
+  init?(item: BankDisplayItemModel)
 
 }
 
@@ -92,27 +78,21 @@ class Bank {
     let icon: UIImage
     let subcategories: [BankDisplayItemCategory]
     let items: [BankDisplayItemModel]
-    let thumbnailableItems: Bool
     let previewableItems:   Bool
-    let detailableItems:    Bool
     let editableItems:      Bool
 
     init(label: String,
          icon: UIImage,
          subcategories: [BankDisplayItemCategory] = [],
          items: [BankDisplayItemModel] = [],
-         thumbnailableItems: Bool = false,
          previewableItems: Bool = false,
-         detailableItems: Bool = false,
          editableItems: Bool = false)
     {
       self.label = label
       self.icon = icon
       self.subcategories = subcategories
       self.items = items
-      self.thumbnailableItems = thumbnailableItems
       self.previewableItems = previewableItems
-      self.detailableItems = detailableItems
       self.editableItems = editableItems
     }
   }

@@ -23,8 +23,8 @@ class ISYDeviceDetailController: BankItemDetailController {
   :param: item BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel, editing: Bool) {
-    super.init(item: item, editing: editing)
+  required init?(item: BankDisplayItemModel) {
+    super.init(item: item)
     precondition(item is ISYDevice, "we should have been given an isy device")
 
     let uniqueIdentifierRow = Row(identifier: .Label, configureCell: {

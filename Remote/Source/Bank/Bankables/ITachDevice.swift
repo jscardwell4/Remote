@@ -88,7 +88,7 @@ class ITachDevice: NetworkDevice {
   }
 
   override func detailController() -> UIViewController {
-    return ITachDeviceDetailController(item: self, editing: false)!
+    return ITachDeviceDetailController(item: self)!
   }
 
 }

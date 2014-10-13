@@ -3,20 +3,13 @@
     "uuid": "F0419941-0226-4D06-A4F0-4F3B70BE23CF",
     "name": "Dish Hopper",
     "always-on": true,
+    "code-set.uuid": "43B85EE9-9D46-4513-8CA8-33AF46754650",
     "manufacturer.uuid": "34D0583C-BA66-4C1C-9FD0-F59612B38E18" // Dish
   },
   {
     "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
     "name": "PS3",
     "port": 3,
-    "on-command": {
-      "class": "sendir",
-      "code.uuid": "29F4A5B7-B9DD-4348-8C0F-EC36BC6CE1B3" // Discrete On
-    },
-    "off-command": {
-      "class": "sendir",
-      "code.uuid": "9326516F-1923-4461-AD31-E726B4AAAFB1" // Discrete Off
-    },
     "manufacturer.uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70" // Sony
   },
   {
@@ -24,6 +17,7 @@
     "name": "AV Receiver",
     "port": 2,
     "input-powers-on": true,
+    "code-set.uuid": "F8DD5512-938C-42B1-8CD2-DE44B05061C6",
     "off-command": {
       "class": "sendir",
       "code.uuid": "12470A9F-CC42-4C31-B261-213DFDA79BEC" // Power
@@ -34,6 +28,7 @@
     "uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F", // Samsung TV
     "name": "Samsung TV",
     "port": 3,
+    "code-set.uuid": "919CA443-DA0C-4064-A6D2-2868DE28F2C9",
     "on-command": {
       "class": "sendir",
       "code.uuid": "4386551B-5B7B-4017-A187-62AAFBB49399" // Power On

@@ -22,11 +22,9 @@ class BankCollectionItemCell: BankCollectionCell {
       if let newItem = item {
         nameLabel.text = newItem.name
         previewable = newItem.previewable
-        thumbnailable = newItem.thumbnailable
       } else {
         nameLabel.text = nil
         previewable = false
-        thumbnailable = false
       }
     }
   }
@@ -60,17 +58,12 @@ class BankCollectionItemCell: BankCollectionCell {
 
   private var previewable: Bool = false {
     didSet {
-      previewGesture.enabled = previewable && viewingMode == .List
-    }
-  }
-
-  private var thumbnailable: Bool = false {
-    didSet {
-      thumbnailImageView.image = item?.thumbnail
+      thumbnailImageView.image = item?.preview
       if let imageSize = thumbnailImageView.image?.size {
         thumbnailImageView.contentMode = CGSizeContainsSize(contentSize, imageSize) ? .Center : .ScaleAspectFit
       }
-      thumbnailImageView.hidden = !thumbnailable
+      thumbnailImageView.hidden = !previewable
+      previewGesture.enabled = previewable && viewingMode == .List
     }
   }
 
@@ -122,7 +115,7 @@ class BankCollectionItemCell: BankCollectionCell {
           "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
         ]
 
-        if thumbnailable {
+        if previewable {
           formatStrings += [
             "image.left = indicator.right + 20",
             "image.height = content.height",
