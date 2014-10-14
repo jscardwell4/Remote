@@ -23,6 +23,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     let isEditable: Bool
     let height: CGFloat
     let configureCell: (BankItemCell) -> Void
+    let selectionHandler: ((Void) -> Void)?
 
     /**
     initWithIdentifier:isEditable:height:configureCell:
@@ -32,7 +33,12 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     :param: height CGFloat? = nil
     :param: configureCell (BankItemCell) -> Void
     */
-    init(identifier: BankItemCell.Identifier, isEditable: Bool = false, height: CGFloat? = nil, configureCell: (BankItemCell) -> Void) {
+    init(identifier: BankItemCell.Identifier,
+         isEditable: Bool = false,
+         height: CGFloat? = nil,
+         selectionHandler: ((Void) -> Void)? = nil,
+         configureCell: (BankItemCell) -> Void)
+    {
       self.identifier = identifier
       self.isEditable = isEditable
       if let h = height { self.height = max(h, BankItemDetailController.defaultRowHeight) }
@@ -44,6 +50,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
         default:        self.height = BankItemDetailController.defaultRowHeight
         }
       }
+      self.selectionHandler = selectionHandler
       self.configureCell = configureCell
     }
   }
@@ -104,7 +111,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     tableView?.rowHeight = BankItemDetailController.defaultRowHeight
     tableView?.sectionHeaderHeight = 10.0
     tableView?.sectionFooterHeight = 10.0
-    tableView?.allowsSelection = false
+//    tableView?.allowsSelection = false
     tableView?.separatorStyle = .None
     tableView?.delegate = self
     tableView?.dataSource = self
@@ -156,6 +163,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
       nameTextField.userInteractionEnabled = editing
       navigationItem.rightBarButtonItem?.title = editing ? "Save" : "Edit"
       navigationItem.rightBarButtonItem?.action = editing ? "save" : "edit"
+      for cell in tableView!.visibleCells() as [BankItemCell] {
+        cell.isEditingState = editing
+      }
       super.setEditing(editing, animated: animated)
     }
   }
@@ -256,6 +266,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
 }
 
+/// MARK: - UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////
 extension BankItemDetailController: UITableViewDelegate {
 
   /**
@@ -272,8 +284,39 @@ extension BankItemDetailController: UITableViewDelegate {
     return .None
   }
 
+  /**
+  tableView:willDisplayCell:forRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: cell UITableViewCell
+  :param: indexPath NSIndexPath
+  */
+  override func tableView(tableView: UITableView,
+          willDisplayCell cell: UITableViewCell,
+        forRowAtIndexPath indexPath: NSIndexPath)
+  {
+    (cell as BankItemCell).isEditingState = editing
+  }
+
+  /**
+  tableView:didSelectRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: indexPath NSIndexPath
+  */
+  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    if indexPath.section < sections.count {
+      let section = sections[indexPath.section]
+      if indexPath.row < section.rows.count {
+        section.rows[indexPath.row].selectionHandler?()
+      }
+    }
+  }
+
 }
 
+/// MARK: - UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////
 extension BankItemDetailController: UITableViewDataSource {
 
   /**
@@ -357,13 +400,13 @@ extension BankItemDetailController: UITableViewDataSource {
   :returns: Bool
   */
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    if indexPath.section < sections.count {
-      let section = sections[indexPath.section]
-      if indexPath.row < section.rows.count {
-        let row = section.rows[indexPath.row]
-        return row.isEditable
-      }
-    }
+//    if indexPath.section < sections.count {
+//      let section = sections[indexPath.section]
+//      if indexPath.row < section.rows.count {
+//        let row = section.rows[indexPath.row]
+//        return row.isEditable
+//      }
+//    }
     return false
   }
 

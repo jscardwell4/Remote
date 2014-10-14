@@ -69,16 +69,16 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var changeHandler : ((NSObject?) -> Void)?
-  var validationHandler : ((NSObject?) -> Bool)?
-  var pickerSelectionHandler : ((NSObject?) -> Void)?
-  var buttonActionHandler : ((Void) -> Void)?
-  var buttonEditingActionHandler : ((Void) -> Void)?
-  var rowSelectionHandler : ((NSObject?) -> Void)?
-  var shouldShowPicker : ((BankItemCell) -> Bool)?
-  var shouldHidePicker : ((BankItemCell) -> Bool)?
-  var didShowPicker : ((BankItemCell) -> Void)?
-  var didHidePicker : ((BankItemCell) -> Void)?
+  var changeHandler              : ((NSObject?)    -> Void)?
+  var validationHandler          : ((NSObject?)    -> Bool)?
+  var pickerSelectionHandler     : ((NSObject?)    -> Void)?
+  var buttonActionHandler        : ((Void)         -> Void)?
+  var buttonEditingActionHandler : ((Void)         -> Void)?
+  var rowSelectionHandler        : ((NSObject?)    -> Void)?
+  var shouldShowPicker           : ((BankItemCell) -> Bool)?
+  var shouldHidePicker           : ((BankItemCell) -> Bool)?
+  var didShowPicker              : ((BankItemCell) -> Void)?
+  var didHidePicker              : ((BankItemCell) -> Void)?
 
 
   /// MARK: Keyboard settings
@@ -399,6 +399,7 @@ class BankItemCell: UITableViewCell {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
     shouldIndentWhileEditing = false
+    selectionStyle = .None
     picker = {
       let view = UIPickerView.newForAutolayout()
       view.delegate = self
@@ -441,7 +442,7 @@ class BankItemCell: UITableViewCell {
                                          "stepper": addStepper(self)])
 
       case .Detail:
-        accessoryType = .DetailDisclosureButton
+        accessoryType = .DisclosureIndicator
         contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
                                  views: ["name": addNameLabel(self),
                                          "info": addButton(self)])
@@ -532,9 +533,7 @@ class BankItemCell: UITableViewCell {
   /// MARK: UITableViewCell
   ////////////////////////////////////////////////////////////////////////////////
 
-  var wtf = false
-
-  dynamic var isEditingState: Bool = false {
+  var isEditingState: Bool = false {
     didSet {
       switch identifier {
           case .Button:  buttonℹ?.userInteractionEnabled = isEditingState
@@ -552,10 +551,6 @@ class BankItemCell: UITableViewCell {
           default: break
       }
     }
-  }
-  override func setEditing(editing: Bool, animated: Bool) {
-    isEditingState = editing
-    wtf = editing
   }
 
 }
