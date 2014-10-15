@@ -699,7 +699,7 @@ public class JSONParser: NSObject {
 
     }
 
-    MSLogDebug("parsed object…\n\(object)")
+    MSLogVerbose("parsed object…\n\(object)")
 
     return object
 

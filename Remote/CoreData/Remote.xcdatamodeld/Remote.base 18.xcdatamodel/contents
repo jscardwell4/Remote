@@ -80,6 +80,7 @@
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="codes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="device" inverseEntity="IRCode" syncable="YES"/>
         <relationship name="codeSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IRCodeSet" inverseName="devices" inverseEntity="IRCodeSet" syncable="YES"/>
+        <relationship name="inputs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="inputForDevice" inverseEntity="IRCode" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="devices" inverseEntity="Manufacturer" syncable="YES"/>
         <relationship name="networkDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NetworkDevice" inverseName="componentDevices" inverseEntity="NetworkDevice" syncable="YES"/>
         <relationship name="offCommand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SendIRCommand" inverseName="offCommandForDevice" inverseEntity="SendIRCommand" syncable="YES"/>
@@ -196,6 +197,7 @@
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="codeSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IRCodeSet" inverseName="codes" inverseEntity="IRCodeSet" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="codes" inverseEntity="ComponentDevice" syncable="YES"/>
+        <relationship name="inputForDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="inputs" inverseEntity="ComponentDevice" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="codes" inverseEntity="Manufacturer" syncable="YES"/>
         <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SendIRCommand" inverseName="code" inverseEntity="SendIRCommand" indexed="YES" syncable="YES"/>
     </entity>
@@ -399,7 +401,7 @@
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandSet" positionX="0" positionY="0" width="128" height="90"/>
         <element name="CommandSetCollection" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="283"/>
+        <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="298"/>
         <element name="Constraint" positionX="0" positionY="0" width="128" height="225"/>
         <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="210"/>
@@ -409,7 +411,7 @@
         <element name="Image" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ImageCategory" positionX="36" positionY="180" width="128" height="133"/>
         <element name="ImageView" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="IRCode" positionX="0" positionY="0" width="128" height="253"/>
+        <element name="IRCode" positionX="0" positionY="0" width="128" height="268"/>
         <element name="IRCodeSet" positionX="9" positionY="153" width="128" height="133"/>
         <element name="ISYDevice" positionX="0" positionY="0" width="128" height="195"/>
         <element name="ISYDeviceGroup" positionX="0" positionY="0" width="128" height="165"/>

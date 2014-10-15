@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import MoonKit
 
+// TODO: Add editing state or swipe-to-delete
+
 private let IndicatorImage             = UIImage(named:"1040-checkmark-toolbar")!
 private let IndicatorImageSelected     = UIImage(named:"1040-checkmark-toolbar-selected")!
 private let TextFieldTextColor         = UIColor(RGBAHexString:"#9FA0A4FF")

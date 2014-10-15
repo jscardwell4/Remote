@@ -15,10 +15,51 @@ class ComponentDevice: BankableModelObject {
 
   @NSManaged var alwaysOn: Bool
   @NSManaged var inputPowersOn: Bool
+  @NSManaged var inputs: NSSet
   @NSManaged var port: Int16
   @NSManaged var power: Bool
-  @NSManaged var codeSet: IRCodeSet?
-  @NSManaged var manufacturer: Manufacturer?
+  @NSManaged var primitiveCodeSet: IRCodeSet?
+  var codeSet: IRCodeSet? {
+    get {
+      willAccessValueForKey("codeSet")
+      let codeSet = primitiveCodeSet
+      didAccessValueForKey("codeSet")
+      return codeSet
+    }
+    set {
+      willChangeValueForKey("codeSet")
+      primitiveCodeSet = newValue
+      didChangeValueForKey("codeSet")
+      if let codeSet = primitiveCodeSet {
+        if let manufacturer = primitiveManufacturer {
+          if manufacturer != codeSet.manufacturer {
+            self.manufacturer = nil
+          }
+        }
+      }
+    }
+  }
+  @NSManaged var primitiveManufacturer: Manufacturer?
+  var manufacturer: Manufacturer? {
+    get {
+      willAccessValueForKey("manufacturer")
+      let manufacturer = primitiveManufacturer
+      didAccessValueForKey("manufacturer")
+      return manufacturer
+    }
+    set {
+      willChangeValueForKey("manufacturer")
+      primitiveManufacturer = newValue
+      didChangeValueForKey("manufacturer")
+      if let manufacturer = primitiveManufacturer {
+        if let codeSet = primitiveCodeSet {
+          if codeSet.manufacturer != manufacturer {
+            self.codeSet = nil
+          }
+        }
+      }
+    }
+  }
   @NSManaged var networkDevice: NetworkDevice?
   @NSManaged var offCommand: SendIRCommand?
   @NSManaged var onCommand: SendIRCommand?

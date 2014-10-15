@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
+// TODO: Add creation row option for table style cells as well as ability to delete member rows
 
 class BankItemCell: UITableViewCell {
 
@@ -69,16 +70,17 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var changeHandler              : ((NSObject?)    -> Void)?
-  var validationHandler          : ((NSObject?)    -> Bool)?
-  var pickerSelectionHandler     : ((NSObject?)    -> Void)?
-  var buttonActionHandler        : ((Void)         -> Void)?
-  var buttonEditingActionHandler : ((Void)         -> Void)?
-  var rowSelectionHandler        : ((NSObject?)    -> Void)?
-  var shouldShowPicker           : ((BankItemCell) -> Bool)?
-  var shouldHidePicker           : ((BankItemCell) -> Bool)?
-  var didShowPicker              : ((BankItemCell) -> Void)?
-  var didHidePicker              : ((BankItemCell) -> Void)?
+  var changeHandler               : ((NSObject?)    -> Void)?
+  var validationHandler           : ((NSObject?)    -> Bool)?
+  var pickerSelectionHandler      : ((NSObject?)    -> Void)?
+  var pickerCreateSelectionHandler: ((Void)         -> Void)?
+  var buttonActionHandler         : ((Void)         -> Void)?
+  var buttonEditingActionHandler  : ((Void)         -> Void)?
+  var rowSelectionHandler         : ((NSObject?)    -> Void)?
+  var shouldShowPicker            : ((BankItemCell) -> Bool)?
+  var shouldHidePicker            : ((BankItemCell) -> Bool)?
+  var didShowPicker               : ((BankItemCell) -> Void)?
+  var didHidePicker               : ((BankItemCell) -> Void)?
 
 
   /// MARK: Keyboard settings
@@ -336,11 +338,48 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
   class var pickerHeight: CGFloat { return 162.0 }
-  var pickerData: [NSObject]? { didSet { pickerEnabled = pickerData != nil } }
-  var pickerSelection: NSObject? { didSet { info = pickerSelection ?? pickerNilSelectionTitle } }
-  var pickerNilSelectionTitle: String? { didSet { prependedPickerItemCount = pickerNilSelectionTitle != nil ? 1 : 0 } }
+
+  var pickerData: [NSObject]? {
+    didSet {
+      pickerEnabled = pickerData != nil
+      picker.reloadAllComponents()
+    }
+  }
+
+  var pickerSelection: NSObject? {
+    didSet {
+      info = pickerSelection ?? pickerNilSelectionTitle
+      if picker.hidden == false {
+        picker.selectRow(pickerSelectionIndex, inComponent: 0, animated: true)
+      }
+    }
+  }
+
+  var pickerSelectionIndex: Int {
+    if let idx = find(pickerData!, pickerSelection) {
+      return idx + prependedPickerItemCount
+    } else {
+      return 0
+    }
+  }
+
+  var pickerNilSelectionTitle: String? {
+    didSet { prependedPickerItemCount = pickerNilSelectionTitle != nil ? 1 : 0 }
+  }
+
+  var pickerCreateSelectionTitle: String? {
+    didSet { appendedPickerItemCount = pickerCreateSelectionTitle != nil ? 1 : 0 }
+  }
+
   var pickerEnabled = false
   var prependedPickerItemCount = 0
+  var appendedPickerItemCount = 0
+
+  var pickerItemCount: Int {
+    var count = prependedPickerItemCount + appendedPickerItemCount
+    if pickerData != nil { count += pickerData!.count }
+    return count
+  }
 
   /**
   pickerDataItemForRow:
@@ -350,7 +389,9 @@ class BankItemCell: UITableViewCell {
   :returns: NSObject?
   */
   func pickerDataItemForRow(row: Int) -> NSObject? {
-    return prependedPickerItemCount > 0 && row == 0 ? pickerNilSelectionTitle :  pickerData?[row - prependedPickerItemCount]
+    if prependedPickerItemCount > 0 && row == 0 { return pickerNilSelectionTitle }
+    else if appendedPickerItemCount > 0 && row == pickerItemCount - 1 { return pickerCreateSelectionTitle }
+    else { return pickerData?[row - prependedPickerItemCount] }
   }
 
   /** togglePicker */
@@ -361,13 +402,12 @@ class BankItemCell: UITableViewCell {
     precondition(pickerEnabled, "method should only be called when picker is enabled")
     if !picker.hidden { return }                                  		// Make sure picker is actually hidden
     if shouldShowPicker ∅|| shouldShowPicker!(self) {             	// Check if we should show the picker
-      if pickerSelection != nil {                                 		// Check if we have a picker selection set
-        if let idx = find(pickerData!, pickerSelection!) {
-          picker.selectRow(idx + prependedPickerItemCount, inComponent: 0, animated: false)
-        }
-      } else if pickerNilSelectionTitle != nil {                  		// Check if we have a title set for empty selections
-        picker.selectRow(0, inComponent: 0, animated: false)
-      }
+      picker.selectRow(pickerSelectionIndex, inComponent: 0, animated: false)
+//      if let idx = find(pickerData!, pickerSelection) {         	  	// Check if we have a picker selection set
+//          picker.selectRow(idx + prependedPickerItemCount, inComponent: 0, animated: false)
+//      } else if pickerNilSelectionTitle != nil {                  		// Check if we have a title set for empty selections
+//        picker.selectRow(0, inComponent: 0, animated: false)
+//      }
       picker.hidden = false
       didShowPicker?(self)
     }
@@ -379,7 +419,7 @@ class BankItemCell: UITableViewCell {
     if picker.hidden { return }                                  		// Make sure picker is actually visible
     if shouldHidePicker ∅|| shouldHidePicker!(self) {             	// Check if we should hide the picker
       picker.hidden = true
-      if textFieldℹ != nil && textFieldℹ!.isFirstResponder() { textFieldℹ?.resignFirstResponder() }
+      textFieldℹ?.resignFirstResponder()
       didHidePicker?(self)
     }
   }
@@ -398,10 +438,12 @@ class BankItemCell: UITableViewCell {
   override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
-    shouldIndentWhileEditing = false
+//    shouldIndentWhileEditing = false
     selectionStyle = .None
     picker = {
-      let view = UIPickerView.newForAutolayout()
+      let view = UIPickerView()
+      view.setTranslatesAutoresizingMaskIntoConstraints(false)
+//      view.backgroundColor = UIColor.yellowColor()
       view.delegate = self
       view.dataSource = self
       view.hidden = true
@@ -550,6 +592,7 @@ class BankItemCell: UITableViewCell {
           case .TextField: textFieldℹ?.userInteractionEnabled = isEditingState
           default: break
       }
+      if !picker.hidden { hidePickerView() }
     }
   }
 
@@ -707,7 +750,7 @@ extension BankItemCell: UIPickerViewDataSource {
   :returns: Int
   */
   func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return (pickerData?.count ?? 0) + prependedPickerItemCount
+    return pickerItemCount
   }
 
   /**
@@ -739,17 +782,13 @@ extension BankItemCell: UIPickerViewDelegate {
   */
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 
-    if pickerNilSelectionTitle != nil {
-      if row == 0 {
-        pickerSelection = nil
-      } else {
-        pickerSelection = pickerData?[row - 1]
-      }
-    } else {
-      pickerSelection = pickerData?[row]
+    if appendedPickerItemCount > 0 && row == pickerItemCount - 1 { pickerCreateSelectionHandler?() }
+    else {
+      if prependedPickerItemCount > 0 && row == 0 { pickerSelection = nil }
+      else { pickerSelection = pickerData?[row - prependedPickerItemCount] }
+      pickerSelectionHandler?(pickerSelection)
+      hidePickerView()
     }
-    pickerSelectionHandler?(pickerSelection)
-    hidePickerView()
   }
 
 }
@@ -832,7 +871,7 @@ private let nameAndInfoCenterYConstraints  = "\n".join([
   "|-20-[name]-8-[info]-20-|",
   "name.centerY = info.centerY",
   "name.height = info.height",
-  "V:|-8-[name]-8-|"
+  "V:|-8-[name]"
   ])
 
 private let infoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
@@ -903,6 +942,7 @@ addLabel:
 private func addLabel(cell: BankItemCell) -> UILabel {
   let view = UILabel()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.cyanColor()
   view.font = Bank.infoFont
   view.textColor = Bank.infoColor
   view.textAlignment = .Right
@@ -920,6 +960,7 @@ addButton:
 private func addButton(cell: BankItemCell) -> UIButton {
   let view = UIButton()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.brownColor()
   view.titleLabel?.font = Bank.infoFont;
   view.titleLabel?.textAlignment = .Right;
   view.constrainWithFormat("|[title]| :: V:|[title]|", views: ["title": view.titleLabel!])
@@ -939,6 +980,7 @@ addSwitch:
 private func addSwitch(cell: BankItemCell) -> UISwitch {
   let view = UISwitch()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.magentaColor()
   view.addTarget(cell, action:"switchValueDidChange:", forControlEvents:.ValueChanged)
   cell.switchℹ = view
   return view
@@ -954,6 +996,7 @@ addStepper:
 private func addStepper(cell: BankItemCell) -> UIStepper {
   let view = UIStepper()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.redColor()
   view.addTarget(cell, action:"stepperValueDidChange:", forControlEvents:.ValueChanged)
   cell.stepper = view
   return view
@@ -969,6 +1012,7 @@ addImageView:
 private func addImageView(cell: BankItemCell) -> UIImageView {
   let view = UIImageView()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.orangeColor()
   view.contentMode = .ScaleAspectFit
   view.tintColor = UIColor.blackColor()
   view.backgroundColor = UIColor.clearColor()
@@ -986,6 +1030,7 @@ addTextField:
 private func addTextField(cell: BankItemCell) -> UITextField {
   let view = UITextField()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.blueColor()
   view.font = Bank.infoFont
   view.textColor = Bank.infoColor
   view.textAlignment = .Right
@@ -1012,6 +1057,7 @@ addTextView:
 private func addTextView(cell: BankItemCell) -> UITextView {
   let view = UITextView()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.purpleColor()
   view.font = Bank.infoFont
   view.textColor = Bank.infoColor
   view.delegate = cell
@@ -1037,6 +1083,7 @@ addUITableView:
 private func addTableView(cell: BankItemCell) -> UITableView {
   let view = UITableView()
   addInfoView(view, cell)
+//  view.backgroundColor = UIColor.greenColor()
   view.separatorStyle = .None
   view.rowHeight = Bank.defaultRowHeight
   view.delegate = cell

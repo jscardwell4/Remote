@@ -20,6 +20,10 @@ public func advance<T: ForwardIndexType>(range: Range<T>, amount: T.Distance) ->
   return Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
 }
 
+public func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, value: C.Generator.Element?) -> C.Index? {
+  if let v = value { return find(domain, v) } else { return nil }
+}
+
 prefix operator ∀⦱ {}
 
 postfix operator ‽ {}

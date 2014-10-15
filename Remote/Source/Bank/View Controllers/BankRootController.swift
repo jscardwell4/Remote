@@ -19,7 +19,6 @@ class BankRootController: UITableViewController, BankController {
   override func loadView() {
 
     title = "Bank"
-    rootCategories = Bank.rootCategories
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
@@ -45,6 +44,7 @@ class BankRootController: UITableViewController, BankController {
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
     navigationController?.toolbarHidden = false
+    rootCategories = Bank.rootCategories
   }
 
   /** importBankObject */
