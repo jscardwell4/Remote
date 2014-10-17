@@ -45,4 +45,109 @@ class BankItemDetailRow {
 		self.configureCell = configureCell
 	}
 
+
+	/**
+	initWithPushableItem:isEditable:
+
+	:param: pushableItem BankDisplayItemModel
+	:param: isEditable Bool = true
+	*/
+	convenience init(pushableItem: BankDisplayItemModel, isEditable: Bool = true) {
+		self.init(identifier: .List, isEditable: isEditable,
+			selectionHandler: {
+				let controller = pushableItem.detailController()
+				if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+					nav.pushViewController(controller, animated: true)
+				}
+			},
+			configureCell: {
+				(cell: BankItemCell) -> Void in
+					cell.info = pushableItem
+			})
+	}
+
+	/**
+	initWithPushableCategory:isEditable:
+
+	:param: pushableCategory BankDisplayItemCategory
+	:param: isEditable Bool = true
+	*/
+	convenience init(pushableCategory: BankDisplayItemCategory, isEditable: Bool = true) {
+		self.init(identifier: .List, isEditable: isEditable,
+			selectionHandler: {
+				if let controller = BankCollectionController(category: pushableCategory) {
+					if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+						nav.pushViewController(controller, animated: true)
+					}
+				}
+			},
+			configureCell: {
+				(cell: BankItemCell) -> Void in
+					cell.info = pushableCategory
+			})
+	}
+
+	/**
+	initWithPushableCategory:label:isEditable:
+
+	:param: pushableCategory BankDisplayItemCategory
+	:param: label String
+	:param: isEditable Bool = true
+	*/
+	convenience init(pushableCategory: BankDisplayItemCategory, label: String, isEditable: Bool = true) {
+		self.init(identifier: .Label, isEditable: isEditable,
+			selectionHandler: {
+				if let controller = BankCollectionController(category: pushableCategory) {
+					if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+						nav.pushViewController(controller, animated: true)
+					}
+				}
+			},
+			configureCell: {
+				(cell: BankItemCell) -> Void in
+					cell.name = label
+					cell.info = pushableCategory
+			})
+	}
+
+	/**
+	initWithNamedItem:isEditable:
+
+	:param: namedItem NamedModelObject
+	:param: isEditable Bool = true
+	*/
+	convenience init(namedItem: NamedModelObject, isEditable: Bool = true) {
+		self.init(identifier: .List, isEditable: isEditable, configureCell: {
+			(cell: BankItemCell) -> Void in
+				cell.info = namedItem
+		})
+	}
+
+	/**
+	initWithPreviewableItem:
+
+	:param: previewableItem BankDisplayItemModel
+	*/
+	convenience init(previewableItem: BankDisplayItemModel) {
+		self.init(identifier: .Image, configureCell: {
+			(cell: BankItemCell) -> Void in
+				cell.info = previewableItem.preview
+			})
+	}
+
+	/**
+	initWithLabel:value:
+
+	:param: label String
+	:param: value String
+	*/
+	convenience init(label: String, value: String) {
+		self.init(identifier: .Label, configureCell: {
+			(cell: BankItemCell) -> Void in
+				cell.name = label
+				cell.info = value
+			})
+	}
+
 }
+

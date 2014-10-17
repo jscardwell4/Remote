@@ -23,109 +23,60 @@ class ISYDeviceDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is ISYDevice, "we should have been given an isy device")
 
+    /// Identification section: Identifier, Base URL
+    ////////////////////////////////////////////////////////////////////////////////
+
     let idSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-      let uniqueIdentifierRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "Identifier"
-        	cell.info = self.iSYDevice.uniqueIdentifier
-      })
-
-      let baseURLRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "Base URL"
-        	cell.info = self.iSYDevice.baseURL
-      })
+      let uniqueIdentifierRow = BankItemDetailRow(label: "Identifier", value: self.iSYDevice.uniqueIdentifier)
+      let baseURLRow = BankItemDetailRow(label: "Base URL", value: self.iSYDevice.baseURL)
 
       return [uniqueIdentifierRow, baseURLRow]
     })
 
+    /// Model section: Name, Number, Description, Friendly Name
+    ////////////////////////////////////////////////////////////////////////////////
+
     let modelSection = BankItemDetailSection(sectionNumber: 1, title: "Model", createRows: {
 
-      let modelNameRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "Name"
-        	cell.info = self.iSYDevice.modelName
-      })
-
-      let modelNumberRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "Number"
-        	cell.info = self.iSYDevice.modelNumber
-      })
-
-      let modelDescriptionRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "Description"
-        	cell.info = self.iSYDevice.modelDescription
-      })
-
-      let friendlyNameRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Friendly Name"
-          cell.info = self.iSYDevice.friendlyName
-      })
+      let modelNameRow = BankItemDetailRow(label: "Name", value: self.iSYDevice.modelName)
+      let modelNumberRow = BankItemDetailRow(label: "Number", value: self.iSYDevice.modelNumber)
+      let modelDescriptionRow = BankItemDetailRow(label: "Description", value: self.iSYDevice.modelDescription)
+      let friendlyNameRow = BankItemDetailRow(label: "Friendly Name", value: self.iSYDevice.friendlyName)
 
       return [modelNameRow, modelNumberRow, modelDescriptionRow, friendlyNameRow]
     })
 
+    /// Manufacturer section: Name, URL
+    ////////////////////////////////////////////////////////////////////////////////
+
     let manufacturerSection = BankItemDetailSection(sectionNumber: 2, title: "Manufacturer", createRows: {
 
-      let manufacturerRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "Name"
-        	cell.info = self.iSYDevice.manufacturer
-      })
-
-      let manufacturerURLRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-        	cell.name = "URL"
-        	cell.info = self.iSYDevice.manufacturerURL
-      })
+      let manufacturerRow = BankItemDetailRow(label: "Name", value: self.iSYDevice.manufacturer)
+      let manufacturerURLRow = BankItemDetailRow(label: "URL", value: self.iSYDevice.manufacturerURL)
 
       return [manufacturerRow, manufacturerURLRow]
     })
 
+    /// Nodes section
+    ////////////////////////////////////////////////////////////////////////////////
+
     let nodesSection = BankItemDetailSection(sectionNumber: 3, title: "Nodes", createRows: {
-      var rows: [BankItemDetailRow] = []
-      if let nodes = sortedByName(self.iSYDevice.nodes.allObjects as? [ISYDeviceNode]) {
-        for node in nodes {
-          let nodeRow = BankItemDetailRow(identifier: .List, configureCell: {
-            (cell: BankItemCell) -> Void in
-              cell.info = node
-          })
-          rows.append(nodeRow)
-        }
-      }
-      return rows
+      return sortedByName(self.iSYDevice.nodes).map{BankItemDetailRow(namedItem: $0)} ?? []
     })
+
+    /// Groups section
+    ////////////////////////////////////////////////////////////////////////////////
 
     let groupsSection = BankItemDetailSection(sectionNumber: 4, title: "Groups", createRows: {
-      var rows: [BankItemDetailRow] = []
-      if let groups = sortedByName(self.iSYDevice.groups.allObjects as? [ISYDeviceGroup]) {
-        for group in groups {
-          let groupRow = BankItemDetailRow(identifier: .List, configureCell: {
-            (cell: BankItemCell) -> Void in
-              cell.info = group
-          })
-          rows.append(groupRow)
-        }
-      }
-      return rows
+      return sortedByName(self.iSYDevice.groups).map{BankItemDetailRow(namedItem: $0)} ?? []
     })
 
+    /// Component Devices section
+    ////////////////////////////////////////////////////////////////////////////////
+
     let componentDevicesSection = BankItemDetailSection(sectionNumber: 5, title: "Component Devices", createRows: {
-      var rows: [BankItemDetailRow] = []
-      if let devices = sortedByName(self.iSYDevice.componentDevices.allObjects as? [ComponentDevice]) {
-        for device in devices {
-          let deviceRow = BankItemDetailRow(identifier: .List, configureCell: {
-            (cell: BankItemCell) -> Void in
-              cell.info = device
-          })
-          rows.append(deviceRow)
-        }
-      }
-      return rows
+      return sortedByName(self.iSYDevice.componentDevices).map{BankItemDetailRow(pushableItem: $0)} ?? []
     })
 
     sections = [idSection, modelSection, manufacturerSection, nodesSection, groupsSection, componentDevicesSection]

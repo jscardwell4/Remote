@@ -73,8 +73,34 @@ class ISYDevice: NetworkDevice {
     @NSManaged var modelDescription: String
     @NSManaged var modelName: String
     @NSManaged var modelNumber: String
-    @NSManaged var groups: NSSet
-    @NSManaged var nodes: NSSet
+    @NSManaged var primitiveGroups: NSSet
+    var groups: [ISYDeviceGroup] {
+      get {
+        willAccessValueForKey("groups")
+        let groups = primitiveGroups.allObjects as? [ISYDeviceGroup]
+        didAccessValueForKey("groups")
+        return groups ?? []
+      }
+      set {
+        willChangeValueForKey("groups")
+        primitiveGroups = NSSet(array: newValue)
+        didChangeValueForKey("groups")
+      }
+    }
+    @NSManaged var primitiveNodes: NSSet
+    var nodes: [ISYDeviceNode] {
+      get {
+        willAccessValueForKey("nodes")
+        let nodes = primitiveNodes.allObjects as? [ISYDeviceNode]
+        didAccessValueForKey("nodes")
+        return nodes ?? []
+      }
+      set {
+        willChangeValueForKey("nodes")
+        primitiveNodes = NSSet(array: newValue)
+        didChangeValueForKey("nodes")
+      }
+    }
 
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)

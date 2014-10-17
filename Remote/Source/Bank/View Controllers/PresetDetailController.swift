@@ -27,26 +27,14 @@ class PresetDetailController: BankItemDetailController {
 
     let detailsSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-      let categoryRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Category"
-          cell.info = self.preset.presetCategory
-      })
-
-      let typeRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Type"
-      })
+      let categoryRow = BankItemDetailRow(pushableCategory: self.preset.presetCategory!, label: "Category")
+      let typeRow = BankItemDetailRow(label: "Type", value: "FIXME")
 
       return [categoryRow, typeRow]
     })
 
     let previewSection = BankItemDetailSection(sectionNumber: 1, createRows: {
-      let previewRow = BankItemDetailRow(identifier: .Image, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.info = self.preset.preview
-      })
-      return [previewRow]
+      return [BankItemDetailRow(previewableItem: self.preset)]
     })
 
     sections = [detailsSection, previewSection]

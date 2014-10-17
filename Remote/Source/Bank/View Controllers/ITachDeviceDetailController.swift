@@ -23,72 +23,29 @@ class ITachDeviceDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is ITachDevice, "we should have been given an itach device")
 
+    /// Main section: Identifier, Make, Model, Config-URL, Revision, Pcb_PN, Pkg_Level, SDKClass
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
     let mainSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-			let uniqueIdentifierRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Identifier"
-					cell.info = self.iTachDevice.uniqueIdentifier
-			})
-
-			let makeRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Make"
-					cell.info = self.iTachDevice.make
-			})
-
-			let modelRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Model"
-					cell.info = self.iTachDevice.model
-			})
-
-			let configURLRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Config-URL"
-					cell.info = self.iTachDevice.configURL
-			})
-
-			let revisionRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Revision"
-					cell.info = self.iTachDevice.revision
-			})
-
-			let pcbPNRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Pcb_PN"
-					cell.info = self.iTachDevice.pcbPN
-			})
-
-			let pkgLevelRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "Pkg_Level"
-					cell.info = self.iTachDevice.pkgLevel
-			})
-
-			let sDKClassRow = BankItemDetailRow(identifier: .Label, configureCell:{
-				(cell: BankItemCell) -> Void in
-					cell.name = "SDKClass"
-					cell.info = self.iTachDevice.sdkClass
-			})
+			let uniqueIdentifierRow = BankItemDetailRow(label: "Identifier", value: self.iTachDevice.uniqueIdentifier)
+			let makeRow = BankItemDetailRow(label: "Make", value: self.iTachDevice.make)
+			let modelRow = BankItemDetailRow(label: "Model", value: self.iTachDevice.model)
+			let configURLRow = BankItemDetailRow(label: "Config-URL", value: self.iTachDevice.configURL)
+			let revisionRow = BankItemDetailRow(label: "Revision", value: self.iTachDevice.revision)
+			let pcbPNRow = BankItemDetailRow(label: "Pcb_PN", value: self.iTachDevice.pcbPN)
+			let pkgLevelRow = BankItemDetailRow(label: "Pkg_Level", value: self.iTachDevice.pkgLevel)
+			let sDKClassRow = BankItemDetailRow(label: "SDKClass", value: self.iTachDevice.sdkClass)
 
 			return [uniqueIdentifierRow, makeRow, modelRow, configURLRow, revisionRow, pcbPNRow, pkgLevelRow, sDKClassRow]
 
 		})
 
+    /// Component Devices section
+    ////////////////////////////////////////////////////////////////////////////////
+
 		let componentDevicesSection = BankItemDetailSection(sectionNumber: 1, title: "Component Devices", createRows: {
-			var rows: [BankItemDetailRow] = []
-			if let devices = sortedByName(self.iTachDevice.componentDevices.allObjects as? [ComponentDevice]) {
-				for device in devices {
-					let deviceRow = BankItemDetailRow(identifier: .List, configureCell: {
-						(cell: BankItemCell) -> Void in
-							cell.info = device
-					})
-					rows.append(deviceRow)
-				}
-			}
-			return rows
+      return sortedByName(self.iTachDevice.componentDevices).map{BankItemDetailRow(pushableItem: $0)} ?? []
 		})
 
 		sections = [mainSection, componentDevicesSection]

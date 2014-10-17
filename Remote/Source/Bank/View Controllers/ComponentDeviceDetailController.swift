@@ -29,7 +29,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     precondition(item is ComponentDevice, "we should have been given a component device")
 
     codes = componentDevice.codeSet?.codes?.allObjects as? [IRCode]
-    codeSets = componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet]
+    codeSets = componentDevice.manufacturer?.codeSets
     manufacturers = Manufacturer.findAllInContext(componentDevice.managedObjectContext!) as? [Manufacturer]
     networkDevices = NetworkDevice.findAllInContext(componentDevice.managedObjectContext!) as? [NetworkDevice]
 

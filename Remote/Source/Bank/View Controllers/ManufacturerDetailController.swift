@@ -29,22 +29,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = BankItemDetailSection(sectionNumber: 0, title: "Devices", createRows: {
-      var rows: [BankItemDetailRow] = []
-      if let devices = sortedByName(self.manufacturer.devices.allObjects as? [ComponentDevice]) {
-        for device in devices {
-          let deviceRow = BankItemDetailRow(identifier: .Button, isEditable: true,
-            selectionHandler: {
-              let controller = device.detailController()
-              self.navigationController?.pushViewController(controller, animated: true)
-            },
-            configureCell: {
-              (cell: BankItemCell) -> Void in
-                cell.info = device
-          })
-          rows.append(deviceRow)
-        }
-      }
-      return rows
+      return sortedByName(self.manufacturer.devices).map{BankItemDetailRow(pushableItem: $0)} ?? []
     })
 
     // Code Sets
@@ -52,23 +37,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = BankItemDetailSection(sectionNumber: 1, title: "Code Sets", createRows: {
-      var rows: [BankItemDetailRow] = []
-      if let codeSets = sortedByName(self.manufacturer.codeSets.allObjects as? [IRCodeSet]) {
-        for codeSet in codeSets {
-          let codeSetRow = BankItemDetailRow(identifier: .Button, isEditable: true,
-            selectionHandler: {
-              if let controller = BankCollectionController(category: codeSet) {
-                self.navigationController?.pushViewController(controller, animated: true)
-              }
-            },
-            configureCell: {
-              (cell: BankItemCell) -> Void in
-                cell.info = codeSet
-          })
-          rows.append(codeSetRow)
-        }
-      }
-      return rows
+      return sortedByName(self.manufacturer.codeSets).map{BankItemDetailRow(pushableCategory: $0)} ?? []
     })
 
     /// Create the sections

@@ -14,14 +14,6 @@ class ImageDetailController: BankItemDetailController {
 
   var image: Image { return item as Image }
 
-  lazy var categories: [String] = []/*
-{ [unowned self] in
-    var categories: [String] = []
-    if let fetchedCategories = Image.allValuesForAttribute("category") as? [String] { categories += fetchedCategories }
-    return categories
-    }()
-*/
-
   /**
   initWithItem:editing:
 
@@ -34,37 +26,16 @@ class ImageDetailController: BankItemDetailController {
 
     let detailsSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-      let categoryRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Category"
-          cell.info = self.image.imageCategory
-          cell.pickerNilSelectionTitle = "Uncategorized"
-          cell.pickerData = self.categories
-      })
-
-      let fileRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Asset"
-          cell.info = self.image.assetName
-      })
-
-      let sizeRow = BankItemDetailRow(identifier: .Label, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Size"
-          cell.info = PrettySize(self.image.size)
-      })
+      let categoryRow = BankItemDetailRow(pushableCategory: self.image.imageCategory, label: "Category")
+      let fileRow = BankItemDetailRow(label: "Asset", value: self.image.assetName)
+      let sizeRow = BankItemDetailRow(label: "Size", value: PrettySize(self.image.size))
 
       return [categoryRow, fileRow, sizeRow]
 
     })
 
     let previewSection = BankItemDetailSection(sectionNumber: 1, createRows: {
-      let previewRow = BankItemDetailRow(identifier: .Image, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.info = self.image.preview
-      })
-
-      return [previewRow]
+      return [BankItemDetailRow(previewableItem: self.image)]
     })
 
     sections = [detailsSection, previewSection]
