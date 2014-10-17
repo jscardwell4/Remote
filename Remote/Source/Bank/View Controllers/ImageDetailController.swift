@@ -32,40 +32,43 @@ class ImageDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is Image, "we should have been given a image")
 
-    // section 0 - row 0: category
-    let categoryRow = Row(identifier: .TextField, isEditable: true, configureCell: {
+    let detailsSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-      $0.name = "Category"
-      $0.info = categoryPath(self.image.imageCategory)
-      $0.pickerNilSelectionTitle = "Uncategorized"
-//      $0.changeHandler = {[unowned self] c in
-//        if let category = c.info as? ImageCategory {
-//          self.image.category = category
-//        }
-//      }
-//      $0.pickerData = self.categories
-//      $0.pickerSelection = self.image.imageCategory
+      let categoryRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Category"
+          cell.info = self.image.imageCategory
+          cell.pickerNilSelectionTitle = "Uncategorized"
+          cell.pickerData = self.categories
+      })
+
+      let fileRow = BankItemDetailRow(identifier: .Label, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Asset"
+          cell.info = self.image.assetName
+      })
+
+      let sizeRow = BankItemDetailRow(identifier: .Label, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Size"
+          cell.info = PrettySize(self.image.size)
+      })
+
+      return [categoryRow, fileRow, sizeRow]
+
     })
 
-    // section 0 - row 1: file
-    let fileRow = Row(identifier: .Label, isEditable: false, configureCell: {
-      $0.name = "Asset"
-      $0.info = self.image.assetName
+    let previewSection = BankItemDetailSection(sectionNumber: 1, createRows: {
+      let previewRow = BankItemDetailRow(identifier: .Image, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.info = self.image.preview
+      })
+
+      return [previewRow]
     })
 
-    // section 0 - row 2: size
-    let sizeRow = Row(identifier: .Label, isEditable: false, configureCell: {
-      $0.name = "Size"
-      $0.info = PrettySize(self.image.size)
-    })
+    sections = [detailsSection, previewSection]
 
-    // section 1 - row 0: preview
-    let previewRow = Row(identifier: .Image, isEditable: false, configureCell: {
-      $0.info = self.image.preview
-    })
-
-    sections = [ Section(title: nil, rows: [categoryRow, fileRow, sizeRow]),
-                 Section(title: nil, rows: [previewRow]) ]
   }
 
   /**

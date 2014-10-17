@@ -29,6 +29,11 @@ import MoonKit
 
 }
 
+func sortedByName<T: NamedModel>(array: [T]) -> [T] { return array.sorted{$0.0.name < $0.1.name} }
+func sortedByName<T: NamedModel>(array: [T]?) -> [T]? { return array?.sorted{$0.0.name < $0.1.name} }
+func sortByName<T: NamedModel>(inout array: [T]) { array.sort{$0.0.name < $0.1.name} }
+func sortByName<T: NamedModel>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }
+
 /** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
 @objc protocol BankDisplayItemCategory: class, NSObjectProtocol {
 

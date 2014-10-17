@@ -14,9 +14,6 @@ class ManufacturerDetailController: BankItemDetailController {
 
   var manufacturer: Manufacturer { return item as Manufacturer }
 
-  var devices: [ComponentDevice] = [] { didSet { devices.sort{$0.0.name < $0.1.name} } }
-  var codeSets: [IRCodeSet] = [] { didSet { codeSets.sort{$0.0.name < $0.1.name} } }
-
   /**
   initWithItem:editing:
 
@@ -27,19 +24,58 @@ class ManufacturerDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is Manufacturer, "we should have been given a manufacturer")
 
-    devices = manufacturer.devices.allObjects as [ComponentDevice]
-    codeSets = manufacturer.codeSets.allObjects as [IRCodeSet]
+    // Devices
+    // section 0 - row 0
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // section 0 - row 0: devices
-    let devicesRow = Row(identifier: .Table, isEditable: true,
-      height: CGFloat(devices.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.devices })
+    let devicesSection = BankItemDetailSection(sectionNumber: 0, title: "Devices", createRows: {
+      var rows: [BankItemDetailRow] = []
+      if let devices = sortedByName(self.manufacturer.devices.allObjects as? [ComponentDevice]) {
+        for device in devices {
+          let deviceRow = BankItemDetailRow(identifier: .Button, isEditable: true,
+            selectionHandler: {
+              let controller = device.detailController()
+              self.navigationController?.pushViewController(controller, animated: true)
+            },
+            configureCell: {
+              (cell: BankItemCell) -> Void in
+                cell.info = device
+          })
+          rows.append(deviceRow)
+        }
+      }
+      return rows
+    })
 
-    // section 1 - row 0: codeSets
-    let codeSetsRow = Row(identifier: .Table, isEditable: false,
-      height: CGFloat(codeSets.count) * BankItemDetailController.defaultRowHeight + 14.0, configureCell: { $0.info = self.codeSets })
+    // Code Sets
+    // section 1 - row 0
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    sections = [ Section(title: "Devices", rows: [devicesRow]),
-                 Section(title: "Code Sets", rows: [codeSetsRow]) ]
+    let codeSetsSection = BankItemDetailSection(sectionNumber: 1, title: "Code Sets", createRows: {
+      var rows: [BankItemDetailRow] = []
+      if let codeSets = sortedByName(self.manufacturer.codeSets.allObjects as? [IRCodeSet]) {
+        for codeSet in codeSets {
+          let codeSetRow = BankItemDetailRow(identifier: .Button, isEditable: true,
+            selectionHandler: {
+              if let controller = BankCollectionController(category: codeSet) {
+                self.navigationController?.pushViewController(controller, animated: true)
+              }
+            },
+            configureCell: {
+              (cell: BankItemCell) -> Void in
+                cell.info = codeSet
+          })
+          rows.append(codeSetRow)
+        }
+      }
+      return rows
+    })
+
+    /// Create the sections
+    ////////////////////////////////////////////////////////////////////////////////
+
+    sections = [devicesSection, codeSetsSection]
+
   }
 
   /**
@@ -65,7 +101,5 @@ class ManufacturerDetailController: BankItemDetailController {
   :param: aDecoder NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
-
-  //TODO: Add table row selection support for sub-tables
 
 }

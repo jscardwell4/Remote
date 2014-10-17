@@ -15,8 +15,6 @@ class PresetDetailController: BankItemDetailController {
 
   var preset: Preset { return item as Preset }
 
-  lazy var categories: [PresetCategory] = PresetCategory.findAll() as? [PresetCategory] ?? []
-
   /**
   initWithItem:editing:
 
@@ -27,36 +25,32 @@ class PresetDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is Preset, "we should have been given a preset")
 
-    // section 0 - row 0: category
-    let categoryRow = Row(identifier: .TextField, isEditable: true, configureCell: {
+    let detailsSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-      $0.name = "Category"
-      $0.info = self.preset.presetCategory
-//      $0.changeHandler = {[unowned self] c in
-//        let text = c.info as? String
-//        self.preset.category = text
-//        if self.preset.category != nil && self.categories ∌ self.preset.category! {
-//          self.categories.append(self.preset.category!)
-//          self.categories.sort(<)
-//        }
-//      }
-//      $0.pickerData = self.categories
-//      $0.pickerSelection = self.preset.category
+      let categoryRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Category"
+          cell.info = self.preset.presetCategory
+      })
+
+      let typeRow = BankItemDetailRow(identifier: .Label, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Type"
+      })
+
+      return [categoryRow, typeRow]
     })
 
-    // section 0 - row 1: type
-    let typeRow = Row(identifier: .Label, isEditable: false, configureCell: {
-      $0.name = "Type"
-      $0.info = "FIXME"
-   })
-
-    // section 1 - row 0: preview
-    let previewRow = Row(identifier: .Image, isEditable: false, configureCell: {
-      $0.info = self.preset.preview
+    let previewSection = BankItemDetailSection(sectionNumber: 1, createRows: {
+      let previewRow = BankItemDetailRow(identifier: .Image, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.info = self.preset.preview
+      })
+      return [previewRow]
     })
 
-    sections = [ Section(title: nil, rows: [categoryRow, typeRow]),
-                 Section(title: nil, rows: [previewRow]) ]
+    sections = [detailsSection, previewSection]
+
   }
 
   /**

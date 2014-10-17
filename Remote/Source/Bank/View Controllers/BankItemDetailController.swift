@@ -55,11 +55,12 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     }
   }
 
-  var sections: [Section] = []
+  var sections: [BankItemDetailSection] = []
 
   class var defaultRowHeight:  CGFloat { return 38.0  }
   class var previewRowHeight:  CGFloat { return 291.0 }
   class var textViewRowHeight: CGFloat { return 140.0 }
+  class var switchRowHeight:   CGFloat { return 48.0  }
   class var tableRowHeight:    CGFloat { return 120.0 }
 
   let item: BankDisplayItemModel!
@@ -199,6 +200,20 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     return tableView?.cellForRowAtIndexPath(indexPath) as? BankItemCell
   }
 
+  /**
+  rowForIndexPath:
+
+  :param: indexPath NSIndexPath
+
+  :returns: Row?
+  */
+  private func rowForIndexPath(indexPath: NSIndexPath) -> BankItemDetailRow? {
+    if indexPath.section < sections.count && indexPath.row < sections[indexPath.section].rows.count {
+      return sections[indexPath.section].rows[indexPath.row]
+    } else {
+      return nil
+    }
+  }
 
   /**
   identifierForIndexPath:
@@ -208,15 +223,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   :returns: String?
   */
   private func identifierForIndexPath(indexPath: NSIndexPath) -> BankItemCell.Identifier? {
-    var identifier: BankItemCell.Identifier?
-    if indexPath.section < sections.count {
-      let section = sections[indexPath.section]
-      if indexPath.row < section.rows.count {
-        let row = section.rows[indexPath.row]
-        identifier = row.identifier
-      }
-    }
-    return identifier
+    return rowForIndexPath(indexPath)?.identifier
   }
 
   /**
@@ -231,18 +238,20 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
     if let identifier = identifierForIndexPath(indexPath) {
       cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? BankItemCell
-      cell?.shouldShowPicker = {[unowned self] (c: BankItemCell!) -> Bool in
-        self.tableView.beginUpdates()
-        self.expandedRows.append(indexPath)
-        return true
+      cell?.shouldShowPicker = {
+        (c: BankItemCell!) -> Bool in
+          self.tableView.beginUpdates()
+          self.expandedRows.append(indexPath)
+          return true
       }
-      cell?.shouldHidePicker = {[unowned self] (c: BankItemCell!) -> Bool in
-        self.tableView.beginUpdates()
-        self.expandedRows = self.expandedRows.filter{$0 != indexPath}
-        return true
+      cell?.shouldHidePicker = {
+        (c: BankItemCell!) -> Bool in
+          self.tableView.beginUpdates()
+          self.expandedRows = self.expandedRows.filter{$0 != indexPath}
+          return true
       }
-      cell?.didShowPicker = {[unowned self] (c: BankItemCell!) in self.tableView.endUpdates() }
-      cell?.didHidePicker = {[unowned self] (c: BankItemCell!) in self.tableView.endUpdates() }
+      cell?.didShowPicker = { (c: BankItemCell!) in self.tableView.endUpdates() }
+      cell?.didHidePicker = { (c: BankItemCell!) in self.tableView.endUpdates() }
     }
 
     return cell
@@ -255,13 +264,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   :param: indexPath NSIndexPath
   */
   private func decorateCell(cell: BankItemCell, forIndexPath indexPath: NSIndexPath) {
-    if indexPath.section < sections.count {
-      let section = sections[indexPath.section]
-      if indexPath.row < section.rows.count {
-        let row = section.rows[indexPath.row]
-        row.configureCell(cell)
-      }
-    }
+    rowForIndexPath(indexPath)?.configureCell(cell)
   }
 
 }
@@ -299,18 +302,25 @@ extension BankItemDetailController: UITableViewDelegate {
   }
 
   /**
+  tableView:willSelectRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: indexPath NSIndexPath
+
+  :returns: NSIndexPath?
+  */
+//  override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+//    return rowForIndexPath(indexPath)?.selectionHandler != nil ? indexPath : nil
+//  }
+
+  /**
   tableView:didSelectRowAtIndexPath:
 
   :param: tableView UITableView
   :param: indexPath NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if indexPath.section < sections.count {
-      let section = sections[indexPath.section]
-      if indexPath.row < section.rows.count {
-        section.rows[indexPath.row].selectionHandler?()
-      }
-    }
+    rowForIndexPath(indexPath)?.selectionHandler?()
   }
 
 }
@@ -400,13 +410,6 @@ extension BankItemDetailController: UITableViewDataSource {
   :returns: Bool
   */
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//    if indexPath.section < sections.count {
-//      let section = sections[indexPath.section]
-//      if indexPath.row < section.rows.count {
-//        let row = section.rows[indexPath.row]
-//        return row.isEditable
-//      }
-//    }
     return false
   }
 

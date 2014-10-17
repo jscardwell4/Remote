@@ -32,7 +32,7 @@ class IRCodeDetailController: BankItemDetailController {
 
   lazy var manufacturers: [Manufacturer] = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] ?? []
 
-  var codesets: [IRCodeSet] = [] { didSet { codesets.sort{$0.0.name < $0.1.name} } }
+  var codeSets: [IRCodeSet] = [] { didSet { codeSets.sort{$0.0.name < $0.1.name} } }
 
   /**
   initWithItem:editing:
@@ -44,113 +44,137 @@ class IRCodeDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is IRCode, "we should have been given an ircode")
 
-    codesets = irCode.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? []
+    codeSets = irCode.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? []
 
-    // section 0 - row 0: manufacturer
-    let manufacturerRow = Row(identifier: .TextField, isEditable: true, configureCell: {
-      $0.name = "Manufacturer"
-      $0.info = self.irCode.manufacturer
-      $0.pickerNilSelectionTitle = "No Manufacturer"
-      $0.validationHandler = {($0 as? NSString)?.length > 0}
-      $0.changeHandler = {
+      let section = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-        var newManufacturer: Manufacturer?
+      /// Manufacturer
+      ////////////////////////////////////////////////////////////////////////////////
 
-        if let manufacturer = $0 as? Manufacturer { newManufacturer = manufacturer }
-        else if let manufacturerName = $0 as? String {
-          newManufacturer = self.manufacturers.filter{$0.name == manufacturerName}.first
-          if newManufacturer == nil && manufacturerName != "No Manufacturer" {
-              newManufacturer = Manufacturer.manufacturerWithName(manufacturerName, context: self.irCode.managedObjectContext!)
-              self.manufacturers.append(newManufacturer!)
-              self.manufacturers.sort{$0.0.name < $0.1.name}
-          }
-        }
-        if self.irCode.manufacturer != newManufacturer { self.irCode.manufacturer = newManufacturer }
-      }
+      let manufacturerRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Manufacturer"
+          cell.info = self.irCode.manufacturer
+          cell.pickerNilSelectionTitle = "No Manufacturer"
+          cell.changeHandler = {
+            (item: NSObject?) -> Void in
+            let moc = self.irCode.managedObjectContext!
+            moc.performBlock {
+              var newManufacturer: Manufacturer?
 
-      $0.pickerSelectionHandler = {
-        self.irCode.manufacturer = $0 as? Manufacturer
-        self.updateDisplay()
-      }
-
-      $0.pickerData = self.manufacturers
-      $0.pickerSelection = self.irCode.manufacturer
-    })
-
-    // section 0 - row 1: codeset
-    let codesetRow = Row(identifier: .TextField, isEditable: true, configureCell: {
-      $0.name = "Code Set"
-      $0.info = self.irCode.codeSet ?? "No Code Set"
-      $0.validationHandler = {($0 as? NSString)?.length > 0}
-      $0.changeHandler = {
-        if let codeSet = $0 as? IRCodeSet {
-          if self.irCode.codeSet != codeSet {
-            self.irCode.codeSet = codeSet
-            if self.codesets ∌ codeSet {
-              self.codesets.append(codeSet)
-              self.codesets.sort{$0.0.name < $0.1.name}
+              if let manufacturer = item as? Manufacturer { newManufacturer = manufacturer }
+              else if let manufacturerName = item as? String {
+                newManufacturer = self.manufacturers.filter{$0.name == manufacturerName}.first
+                if newManufacturer == nil && manufacturerName != "No Manufacturer" {
+                    newManufacturer = Manufacturer.manufacturerWithName(manufacturerName, context: moc)
+                    self.manufacturers.append(newManufacturer!)
+                    sortByName(&(self.manufacturers))
+                }
+              }
+              if self.irCode.manufacturer != newManufacturer { self.irCode.manufacturer = newManufacturer }
             }
           }
-        }
-      }
-      $0.pickerSelectionHandler = {[unowned self] pickerSelection in
-        self.irCode.codeSet = pickerSelection as? IRCodeSet
-      }
-      $0.pickerData = self.codesets
-      $0.pickerSelection = self.irCode.codeSet
-    })
 
-    // section 0 - row 2: frequency
-    let frequencyRow = Row(identifier: .TextField, isEditable: true, configureCell: {
-      $0.name = "Frequency"
-      $0.info = NSNumber(longLong: self.irCode.frequency)
-      $0.infoDataType = .LongLongData(15000...500000)
-      $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = { if let i = ($0 as? NSNumber)?.longLongValue { self.irCode.frequency = i } }
-    })
-
-    // section 0 - row 3: repeat
-    let repeatRow = Row(identifier: .TextField, isEditable: true, configureCell: {
-      $0.name = "Repeat"
-      $0.info = NSNumber(short: self.irCode.repeatCount)
-      $0.infoDataType = .IntData(1...50)
-      $0.shouldUseIntegerKeyboard = true
-      $0.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.repeatCount = i } }
-    })
-
-    // section 0 - row 4: offset
-    let offsetRow = Row(identifier: .Stepper, isEditable: true, configureCell: {
-      $0.name = "Offset"
-      $0.stepperMinValue = 1
-      $0.stepperMaxValue = 383
-      $0.stepperStepValue = 2
-      $0.infoDataType = .IntData(1...383)
-      $0.stepperWraps = false
-      $0.info = NSNumber(short: self.irCode.offset)
-      $0.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.offset = i } }
-    })
-
-    // section 0 - row 5: on-off pattern
-    let onOffPatternRow = Row(identifier: .TextView, isEditable: true, configureCell: {
-      $0.name = "On-Off Pattern"
-      $0.info = self.irCode.onOffPattern
-      $0.validationHandler = {
-        if let text = $0 as? NSString {
-          let trimmedText = text.stringByTrimmingWhitespace()
-          return trimmedText.length == 0 || IRCode.isValidOnOffPattern(trimmedText)
-        }
-        return true
-      }
-      $0.changeHandler = {
-        if let text = $0 as? String {
-          if let compressedText = IRCode.compressedOnOffPatternFromPattern(text.stringByTrimmingWhitespace()) {
-            self.irCode.onOffPattern = compressedText
+          cell.pickerSelectionHandler = {
+            self.irCode.manufacturer = $0 as? Manufacturer
+            self.updateDisplay()
           }
-        }
-      }
+
+          cell.pickerData = self.manufacturers
+          cell.pickerSelection = self.irCode.manufacturer
+      })
+
+      /// Code Set
+      ////////////////////////////////////////////////////////////////////////////////
+
+      let codeSetRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Code Set"
+          cell.info = self.irCode.codeSet ?? "No Code Set"
+          cell.validationHandler = {($0 as? NSString)?.length > 0}
+          cell.changeHandler = {
+            if let codeSet = $0 as? IRCodeSet {
+              if self.irCode.codeSet != codeSet {
+                self.irCode.codeSet = codeSet
+                if self.codeSets ∌ codeSet {
+                  self.codeSets.append(codeSet)
+                  sortByName(&self.codeSets)
+                }
+              }
+            }
+          }
+          cell.pickerSelectionHandler = { self.irCode.codeSet = $0 as? IRCodeSet }
+          cell.pickerData = self.codeSets
+          cell.pickerSelection = self.irCode.codeSet
+      })
+
+      /// Frequency
+      ////////////////////////////////////////////////////////////////////////////////
+
+      let frequencyRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Frequency"
+          cell.info = NSNumber(longLong: self.irCode.frequency)
+          cell.infoDataType = .LongLongData(15000...500000)
+          cell.shouldUseIntegerKeyboard = true
+          cell.changeHandler = { if let i = ($0 as? NSNumber)?.longLongValue { self.irCode.frequency = i } }
+      })
+
+      /// Repeat
+      ////////////////////////////////////////////////////////////////////////////////
+
+      let repeatRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Repeat"
+          cell.info = NSNumber(short: self.irCode.repeatCount)
+          cell.infoDataType = .IntData(1...50)
+          cell.shouldUseIntegerKeyboard = true
+          cell.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.repeatCount = i } }
+      })
+
+      /// Offset
+      ////////////////////////////////////////////////////////////////////////////////
+
+      let offsetRow = BankItemDetailRow(identifier: .Stepper, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "Offset"
+          cell.stepperMinValue = 1
+          cell.stepperMaxValue = 383
+          cell.stepperStepValue = 2
+          cell.infoDataType = .IntData(1...383)
+          cell.stepperWraps = false
+          cell.info = NSNumber(short: self.irCode.offset)
+          cell.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.offset = i } }
+      })
+
+      /// On-Off Pattern
+      ////////////////////////////////////////////////////////////////////////////////
+
+      let onOffPatternRow = BankItemDetailRow(identifier: .TextView, isEditable: true, configureCell: {
+        (cell: BankItemCell) -> Void in
+          cell.name = "On-Off Pattern"
+          cell.info = self.irCode.onOffPattern
+          cell.validationHandler = {
+            if let text = $0 as? NSString {
+              let trimmedText = text.stringByTrimmingWhitespace()
+              return trimmedText.length == 0 || IRCode.isValidOnOffPattern(trimmedText)
+            }
+            return true
+          }
+          cell.changeHandler = {
+            if let text = $0 as? String {
+              if let compressedText = IRCode.compressedOnOffPatternFromPattern(text.stringByTrimmingWhitespace()) {
+                self.irCode.onOffPattern = compressedText
+              }
+            }
+          }
+      })
+
+        return [manufacturerRow, codeSetRow, frequencyRow, repeatRow, offsetRow, onOffPatternRow]
     })
 
-    sections = [Section(title: nil, rows: [manufacturerRow, codesetRow, frequencyRow, repeatRow, offsetRow, onOffPatternRow])]
+
+    sections = [section]
   }
 
   /**

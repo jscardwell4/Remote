@@ -417,6 +417,8 @@
 		C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
 		C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
+		C2E1639F19F079F300D1B88E /* BankItemDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E1639E19F079F300D1B88E /* BankItemDetailSection.swift */; };
+		C2E163A219F07A0200D1B88E /* BankItemDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E163A119F07A0200D1B88E /* BankItemDetailRow.swift */; };
 		C2E164C619C6392700F0E526 /* Glyphish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C6A172182AFFFF0036261E /* Glyphish.json */; };
 		C2E164C719C6392D00F0E526 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2D635B81805D9B400960B10 /* Manufacturer.json */; };
 		C2E75BF919B13798006CEA86 /* Remote_Demo.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E75BF819B13798006CEA86 /* Remote_Demo.json */; };
@@ -1073,6 +1075,8 @@
 		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
 		C2D635B81805D9B400960B10 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
+		C2E1639E19F079F300D1B88E /* BankItemDetailSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailSection.swift; sourceTree = "<group>"; };
+		C2E163A119F07A0200D1B88E /* BankItemDetailRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailRow.swift; sourceTree = "<group>"; };
 		C2E75BF819B13798006CEA86 /* Remote_Demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Demo.json; sourceTree = "<group>"; };
 		C2E8124819D4DC4600FD80C4 /* Type Dynamic - Elysio Black Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Black Italic.otf"; sourceTree = "<group>"; };
 		C2E8124919D4DC4600FD80C4 /* Type Dynamic - Elysio Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Black.otf"; sourceTree = "<group>"; };
@@ -1462,6 +1466,8 @@
 				C2E8126F19D5CE6D00FD80C4 /* PresetDetailController.swift */,
 				C2E8127119D5CEA100FD80C4 /* ISYDeviceDetailController.swift */,
 				C2E8127319D5CEB600FD80C4 /* ITachDeviceDetailController.swift */,
+				C2E1639E19F079F300D1B88E /* BankItemDetailSection.swift */,
+				C2E163A119F07A0200D1B88E /* BankItemDetailRow.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -2762,11 +2768,13 @@
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */,
 				C27DE08719E5E67F00CCB725 /* ImageDetailController.swift in Sources */,
+				C2E163A219F07A0200D1B88E /* BankItemDetailRow.swift in Sources */,
 				C230DF4319DC7164008C2337 /* ISYDeviceNode.swift in Sources */,
 				C2A0026819DF2D6E0082A53C /* ImageView.swift in Sources */,
 				C279E08A182179E500C17FB1 /* REFont.m in Sources */,
 				C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */,
 				C25B477B16FF8D5E0042B59E /* Button.m in Sources */,
+				C2E1639F19F079F300D1B88E /* BankItemDetailSection.swift in Sources */,
 				C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */,
 				C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */,
 				C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */,

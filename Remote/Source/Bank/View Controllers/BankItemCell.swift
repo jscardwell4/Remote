@@ -11,6 +11,7 @@ import UIKit
 import MoonKit
 
 // TODO: Add creation row option for table style cells as well as ability to delete member rows
+// TODO: Create a specific cell type for the cells of a table style cell
 
 class BankItemCell: UITableViewCell {
 
@@ -160,15 +161,33 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var tableIdentifier: Identifier = .List
+  private let subcellIdentifier = "Subcell"
   var tableData:       [NSObject]?
   var tableSelection:  NSObject?
+  var editableRows = false
 
-  var shouldAllowRowSelection: Bool? {
-    get { return tableℹ?.allowsSelection }
-    set { tableℹ?.allowsSelection = newValue ?? false }
+  /**
+  selectRowAtPoint:
+
+  :param: point CGPoint
+  */
+  func selectRowAtPoint(point: CGPoint) {
+    if let table = tableℹ {
+      if let indexPath = table.indexPathForRowAtPoint(point) {
+        table.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .None)
+        tableView(table, didSelectRowAtIndexPath: indexPath)
+      }
+    }
   }
 
+  /**
+  handleTableTap:
+
+  :param: gesture UITapGestureRecognizer
+  */
+  func handleTableTap(gesture: UITapGestureRecognizer) {
+    println("handleTableTap:")
+  }
 
   /// MARK: Stepper settings
   ////////////////////////////////////////////////////////////////////////////////
@@ -787,7 +806,7 @@ extension BankItemCell: UIPickerViewDelegate {
       if prependedPickerItemCount > 0 && row == 0 { pickerSelection = nil }
       else { pickerSelection = pickerData?[row - prependedPickerItemCount] }
       pickerSelectionHandler?(pickerSelection)
-      hidePickerView()
+      // hidePickerView()
     }
   }
 
@@ -797,6 +816,32 @@ extension BankItemCell: UIPickerViewDelegate {
 /// MARK: - UITableViewDataSource
 ////////////////////////////////////////////////////////////////////////////////
 extension BankItemCell: UITableViewDataSource {
+
+  /**
+  tableView:commitEditingStyle:forRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: editingStyle UITableViewCellEditingStyle
+  :param: indexPath NSIndexPath
+  */
+  func       tableView(tableView: UITableView,
+    commitEditingStyle editingStyle: UITableViewCellEditingStyle,
+    forRowAtIndexPath indexPath: NSIndexPath)
+  {
+
+  }
+
+  /**
+  tableView:canEditRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: indexPath NSIndexPath
+
+  :returns: Bool
+  */
+  func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return editableRows
+  }
 
   /**
   numberOfSectionsInTableView:
@@ -839,8 +884,8 @@ extension BankItemCell: UITableViewDataSource {
   :returns: UITableViewCell
   */
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(tableIdentifier.rawValue, forIndexPath: indexPath) as BankItemCell
-    cell.info = tableData?[indexPath.row]
+    let cell = tableView.dequeueReusableCellWithIdentifier(subcellIdentifier, forIndexPath: indexPath) as BankItemSubcell
+    cell.title = textFromObject(tableData?[indexPath.row])
     return cell
   }
 
@@ -1088,9 +1133,48 @@ private func addTableView(cell: BankItemCell) -> UITableView {
   view.rowHeight = Bank.defaultRowHeight
   view.delegate = cell
   view.dataSource = cell
-  BankItemCell.registerIdentifiersWithTableView(view)
+  view.addGestureRecognizer(UITapGestureRecognizer(target: cell, action: "handleTableTap:"))
+  view.registerClass(BankItemSubcell.self, forCellReuseIdentifier: cell.subcellIdentifier)
   cell.tableℹ = view
   return view
 }
 
+
+/// MARK: - BankItemSubcell
+////////////////////////////////////////////////////////////////////////////////
+
+private class BankItemSubcell: UITableViewCell {
+
+  var label: UILabel!
+  var title: String? {
+    get { return label?.text }
+    set { label?.text = newValue }
+  }
+
+  /**
+  initWithStyle:reuseIdentifier:
+
+  :param: style UITableViewStyle
+  :param: reuseIdentifier String?
+  */
+  override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    selectionStyle = .None
+    label = UILabel()
+    label.setTranslatesAutoresizingMaskIntoConstraints(false)
+    label.font = Bank.infoFont
+    label.textAlignment = .Right
+    label.textColor = Bank.infoColor
+    contentView.addSubview(label)
+    contentView.constrainWithFormat("|[label]| :: V:|[label]|", views: ["label": label])
+  }
+
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+
+}
 
