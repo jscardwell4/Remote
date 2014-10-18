@@ -25,6 +25,7 @@ class BankItemDetailRow {
 	}
 	var configureCell: (BankItemCell) -> Void
 	var selectionHandler: ((Void) -> Void)?
+  var deletionHandler: ((Void) -> Void)?
 
 	/**
 	initWithIdentifier:isEditable:selectionHandler:configureCell:
@@ -37,11 +38,13 @@ class BankItemDetailRow {
 	init(identifier: BankItemCell.Identifier,
 			 isEditable: Bool = false,
 			 selectionHandler: ((Void) -> Void)? = nil,
+			 deletionHandler: ((Void) -> Void)? = nil,
 			 configureCell: (BankItemCell) -> Void)
 	{
 		self.identifier = identifier
 		self.isEditable = isEditable
 		self.selectionHandler = selectionHandler
+    self.deletionHandler = deletionHandler
 		self.configureCell = configureCell
 	}
 
@@ -52,7 +55,7 @@ class BankItemDetailRow {
 	:param: pushableItem BankDisplayItemModel
 	:param: isEditable Bool = true
 	*/
-	convenience init(pushableItem: BankDisplayItemModel, isEditable: Bool = true) {
+  convenience init(pushableItem: BankDisplayItemModel, isEditable: Bool = true) {
 		self.init(identifier: .List, isEditable: isEditable,
 			selectionHandler: {
 				let controller = pushableItem.detailController()
@@ -60,6 +63,7 @@ class BankItemDetailRow {
 					nav.pushViewController(controller, animated: true)
 				}
 			},
+      deletionHandler: {pushableItem.delete()},
 			configureCell: {
 				(cell: BankItemCell) -> Void in
 					cell.info = pushableItem
@@ -81,6 +85,7 @@ class BankItemDetailRow {
 					}
 				}
 			},
+      deletionHandler: {pushableCategory.delete()},
 			configureCell: {
 				(cell: BankItemCell) -> Void in
 					cell.info = pushableCategory
@@ -103,6 +108,7 @@ class BankItemDetailRow {
 					}
 				}
 			},
+      deletionHandler: {pushableCategory.delete()},
 			configureCell: {
 				(cell: BankItemCell) -> Void in
 					cell.name = label
@@ -148,6 +154,26 @@ class BankItemDetailRow {
 				cell.info = value
 			})
 	}
+
+
+  /**
+  initWithNumber:label:dataType:changeHandler:
+
+  :param: number NSNumber
+  :param: label String
+  :param: dataType BankItemCell.DataType
+  :param: changeHandler (NSObject?) -> Void
+  */
+  convenience init(number: NSNumber, label: String, dataType: BankItemCell.DataType, changeHandler: (NSObject?) -> Void) {
+    self.init(identifier: .TextField, isEditable: true, configureCell: {
+      (cell: BankItemCell) -> Void in
+        cell.name = label
+        cell.info = number
+        cell.infoDataType = dataType
+        cell.shouldUseIntegerKeyboard = true
+        cell.changeHandler = changeHandler
+    })
+  }
 
 }
 

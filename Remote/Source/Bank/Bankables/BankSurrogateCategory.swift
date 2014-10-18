@@ -23,6 +23,10 @@ class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
   let previewableItems:   Bool
   let editableItems:      Bool
 
+  func save() {}
+  func delete() {}
+  func rollback() {}
+
   init(title: String,
        subcategories: [BankDisplayItemCategory] = [],
        items: [BankDisplayItemModel] = [],

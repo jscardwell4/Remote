@@ -33,7 +33,6 @@ class BankItemCell: UITableViewCell {
     case Detail    = "BankItemDetailDetailCell"
     case TextView  = "BankItemDetailTextViewCell"
     case TextField = "BankItemDetailTextFieldCell"
-    case Table     = "BankItemDetailTableCell"
 
     /**
     registerWithTableView:
@@ -51,7 +50,6 @@ class BankItemCell: UITableViewCell {
         case .Detail:    tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
         case .TextView:  tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
         case .TextField: tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
-        case .Table:     tableView.registerClass(BankItemCell.self, forCellReuseIdentifier: self.rawValue)
       }
     }
   }
@@ -62,7 +60,7 @@ class BankItemCell: UITableViewCell {
   :param: tableView UITableView
   */
   class func registerIdentifiersWithTableView(tableView: UITableView) {
-    let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField, .Table]
+    let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper, .Detail, .TextView, .TextField]
     for identifier in identifiers { identifier.registerWithTableView(tableView) }
   }
 
@@ -156,39 +154,6 @@ class BankItemCell: UITableViewCell {
     }
   }
 
-
-  /// MARK: Table settings
-  ////////////////////////////////////////////////////////////////////////////////
-
-
-  private let subcellIdentifier = "Subcell"
-  var tableData:       [NSObject]?
-  var tableSelection:  NSObject?
-  var editableRows = false
-
-  /**
-  selectRowAtPoint:
-
-  :param: point CGPoint
-  */
-  func selectRowAtPoint(point: CGPoint) {
-    if let table = tableℹ {
-      if let indexPath = table.indexPathForRowAtPoint(point) {
-        table.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .None)
-        tableView(table, didSelectRowAtIndexPath: indexPath)
-      }
-    }
-  }
-
-  /**
-  handleTableTap:
-
-  :param: gesture UITapGestureRecognizer
-  */
-  func handleTableTap(gesture: UITapGestureRecognizer) {
-    println("handleTableTap:")
-  }
-
   /// MARK: Stepper settings
   ////////////////////////////////////////////////////////////////////////////////
 
@@ -205,6 +170,8 @@ class BankItemCell: UITableViewCell {
 
   var name: String? { get { return nameLabel?.text } set { nameLabel?.text = newValue } }
 
+
+
   /** A simple enum to specify kinds of data */
   enum DataType {
     case IntData(ClosedInterval<Int32>)
@@ -213,6 +180,39 @@ class BankItemCell: UITableViewCell {
     case FloatData(ClosedInterval<Float>)
     case DoubleData(ClosedInterval<Double>)
     case StringData
+
+    /**
+    objectFromText:
+
+    :param: text String?
+
+    :returns: NSObject?
+    */
+    func objectFromText(text: String?) -> NSObject? {
+      if let t = text {
+        let scanner = NSScanner.localizedScannerWithString(t) as NSScanner
+        switch self {
+          case .IntData(let r):
+            var n: Int32 = 0
+            if scanner.scanInt(&n) && r ∋ n { return NSNumber(int: n) }
+          case .IntegerData(let r):
+            var n: Int = 0
+            if scanner.scanInteger(&n) && r ∋ n { return NSNumber(long: n) }
+          case .LongLongData(let r):
+            var n: Int64 = 0
+            if scanner.scanLongLong(&n) && r ∋ n { return NSNumber(longLong: n) }
+          case .FloatData(let r):
+            var n: Float = 0
+            if scanner.scanFloat(&n) && r ∋ n { return NSNumber(float: n) }
+          case .DoubleData(let r):
+            var n: Double = 0
+            if scanner.scanDouble(&n) && r ∋ n { return NSNumber(double: n) }
+          case .StringData:
+            return t
+        }
+      }
+      return nil
+    }
   }
 
   var infoDataType: DataType = .StringData
@@ -243,52 +243,6 @@ class BankItemCell: UITableViewCell {
 
   }
 
-  /**
-  numberFromText:dataType:
-
-  :param: text String?
-  :param: dataType DataType = .IntegerData(Int.min...Int.max)
-
-  :returns: NSNumber?
-  */
-  func numberFromText(text: String?, dataType: DataType = .IntegerData(Int.min...Int.max)) -> NSNumber? {
-
-    var number: NSNumber?
-
-    if text != nil {
-      switch dataType {
-      case .IntData(let r):
-        let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
-        var n: Int32 = 0
-        if scanner.scanInt(&n) && r ∋ n { number = NSNumber(int: n) }
-      case .IntegerData(let r):
-        let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
-        var n: Int = 0
-        if scanner.scanInteger(&n) && r ∋ n { number = NSNumber(long: n) }
-        if r ∌ n { return false }
-      case .LongLongData(let r):
-        let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
-        var n: Int64 = 0
-        if scanner.scanLongLong(&n) && r ∋ n { number = NSNumber(longLong: n) }
-        if r ∌ n { return false }
-      case .FloatData(let r):
-        let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
-        var n: Float = 0
-        if scanner.scanFloat(&n) && r ∋ n { number = NSNumber(float: n) }
-        if r ∌ n { return false }
-      case .DoubleData(let r):
-        let scanner = NSScanner.localizedScannerWithString(text!) as NSScanner
-        var n: Double = 0
-        if scanner.scanDouble(&n) && r ∋ n { number = NSNumber(double: n) }
-        if r ∌ n { return false }
-      default:
-        break
-      }
-    }
-
-    return number
-  }
-
   var info: AnyObject? {
     get {
       switch identifier {
@@ -297,9 +251,8 @@ class BankItemCell: UITableViewCell {
         case .Image:             return imageℹ?.image
         case .Switch:            return switchℹ?.on
         case .Stepper:           return stepper?.value
-        case .TextView:          return numberFromText(textViewℹ?.text, dataType: infoDataType) ?? textViewℹ?.text
-        case .TextField:         return numberFromText(textFieldℹ?.text, dataType: infoDataType) ?? textFieldℹ?.text
-        case .Table:             return tableData
+        case .TextView:          return infoDataType.objectFromText(textViewℹ?.text)
+        case .TextField:         return infoDataType.objectFromText(textFieldℹ?.text)
       }
     }
     set {
@@ -322,9 +275,6 @@ class BankItemCell: UITableViewCell {
           textViewℹ?.text = textFromObject(newValue)
         case .TextField:
           textFieldℹ?.text = textFromObject(newValue)
-        case .Table:
-          tableData = newValue as? [NSObject]
-          tableℹ?.reloadData()
       }
     }
   }
@@ -334,7 +284,6 @@ class BankItemCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  private weak var tableℹ: UITableView?
   private weak var nameLabel: UILabel?
   private weak var buttonℹ: UIButton?
   private weak var imageℹ: UIImageView?
@@ -517,11 +466,6 @@ class BankItemCell: UITableViewCell {
         contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
                                  views: ["name": addNameLabel(self),
                                          "info": addTextField(self)])
-
-      case .Table:
-        contentView.constrainWithFormat(tableViewInfoConstraints,
-                                 views: ["info": addTableView(self)])
-
     }
 
   }
@@ -548,8 +492,6 @@ class BankItemCell: UITableViewCell {
     stepper?.wraps = true
     textFieldℹ?.text = nil
     textViewℹ?.text = nil
-    tableData = nil
-    tableℹ?.reloadData()
     pickerData = nil
     pickerSelection = nil
   }
@@ -565,7 +507,7 @@ class BankItemCell: UITableViewCell {
   :param: sender UIStepper
   */
   func stepperValueDidChange(sender: UIStepper) {
-    changeHandler?(self)
+    changeHandler?(sender.value)
     labelℹ?.text = textFromObject(sender.value)
   }
 
@@ -607,8 +549,12 @@ class BankItemCell: UITableViewCell {
                 stepperLeading.constant = isEditingState ? -20.0 - (stepper?.bounds.size.width ?? 0.0) : 0.0
               }
             }
-          case .TextView:  textViewℹ?.userInteractionEnabled  = isEditingState
-          case .TextField: textFieldℹ?.userInteractionEnabled = isEditingState
+          case .TextView:
+            textViewℹ!.userInteractionEnabled  = isEditingState
+            if textViewℹ!.isFirstResponder() { textViewℹ!.resignFirstResponder() }
+          case .TextField:
+            textFieldℹ!.userInteractionEnabled = isEditingState
+            if textFieldℹ!.isFirstResponder() { textFieldℹ!.resignFirstResponder() }
           default: break
       }
       if !picker.hidden { hidePickerView() }
@@ -638,7 +584,7 @@ extension BankItemCell: UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField.text != beginStateText { changeHandler?(textField.text) }
+    if textField.text != beginStateText { changeHandler?(infoDataType.objectFromText(textField.text)) }
     if picker != nil && !picker!.hidden { hidePickerView() }
   }
 
@@ -650,36 +596,43 @@ extension BankItemCell: UITextFieldDelegate {
   :returns: Bool
   */
   func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+
+    var shouldEnd = true
+
+    let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
     switch infoDataType {
       case .IntData(let r):
-        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
         var n: Int32 = 0
-        if !scanner.scanInt(&n) { return false }
-        if r ∌ n { return false }
+        if !scanner.scanInt(&n) { shouldEnd = false }
+        else if r ∌ n { shouldEnd = false }
       case .IntegerData(let r):
-        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
         var n: Int = 0
-        if !scanner.scanInteger(&n) { return false }
-        if r ∌ n { return false }
+        if !scanner.scanInteger(&n) { shouldEnd = false }
+        else if r ∌ n { shouldEnd = false }
       case .LongLongData(let r):
-        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
         var n: Int64 = 0
-        if !scanner.scanLongLong(&n) { return false }
-        if r ∌ n { return false }
+        if !scanner.scanLongLong(&n) { shouldEnd = false }
+        else if r ∌ n { shouldEnd = false }
       case .FloatData(let r):
-        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
         var n: Float = 0
-        if !scanner.scanFloat(&n) { return false }
-        if r ∌ n { return false }
+        if !scanner.scanFloat(&n) { shouldEnd = false }
+        else if r ∌ n { shouldEnd = false }
       case .DoubleData(let r):
-        let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
         var n: Double = 0
-        if !scanner.scanDouble(&n) { return false }
-        if r ∌ n { return false }
+        if !scanner.scanDouble(&n) { shouldEnd = false }
+        else if r ∌ n { shouldEnd = false }
        default:
          break
     }
-    return validationHandler?(textField.text) ?? true
+
+    if shouldEnd { shouldEnd = validationHandler?(textField.text) ?? true }
+
+    if !shouldEnd && !isEditingState {
+      textField.text = beginStateText
+      shouldEnd = true
+    }
+
+    return shouldEnd
   }
 
   /**
@@ -812,103 +765,6 @@ extension BankItemCell: UIPickerViewDelegate {
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - UITableViewDataSource
-////////////////////////////////////////////////////////////////////////////////
-extension BankItemCell: UITableViewDataSource {
-
-  /**
-  tableView:commitEditingStyle:forRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: editingStyle UITableViewCellEditingStyle
-  :param: indexPath NSIndexPath
-  */
-  func       tableView(tableView: UITableView,
-    commitEditingStyle editingStyle: UITableViewCellEditingStyle,
-    forRowAtIndexPath indexPath: NSIndexPath)
-  {
-
-  }
-
-  /**
-  tableView:canEditRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
-
-  :returns: Bool
-  */
-  func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return editableRows
-  }
-
-  /**
-  numberOfSectionsInTableView:
-
-  :param: tableView UITableView
-
-  :returns: Int
-  */
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
-
-
-  /**
-  tableView:numberOfRowsInSection:
-
-  :param: tableView UITableView
-  :param: section Int
-
-  :returns: Int
-  */
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return tableData?.count ?? 0 }
-
-  /**
-  tableView:heightForRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
-
-  :returns: CGFloat
-  */
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return BankItemDetailController.defaultRowHeight
-  }
-
-  /**
-  tableView:cellForRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
-
-  :returns: UITableViewCell
-  */
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(subcellIdentifier, forIndexPath: indexPath) as BankItemSubcell
-    cell.title = textFromObject(tableData?[indexPath.row])
-    return cell
-  }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - UITableViewDelegate
-////////////////////////////////////////////////////////////////////////////////
-extension BankItemCell: UITableViewDelegate {
-
-  /**
-  tableView:didSelectRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
-  */
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    rowSelectionHandler?(tableData?[indexPath.row])
-  }
-
-}
-
-
 /// Create some more or less generic constraint strings for use in decorator blocks
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -922,8 +778,6 @@ private let nameAndInfoCenterYConstraints  = "\n".join([
 private let infoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
 
 private let nameAndTextViewInfoConstraints = "V:|-8-[name]-8-[info]-8-| :: |-20-[name]-(>=20)-| :: |-20-[info]-20-|"
-
-private let tableViewInfoConstraints = "|-20-[info]-20-| :: V:|-8-[info]-8-|"
 
 private let nameInfoAndStepperConstraints  = "\n".join([
   "|-20-[name]-8-[info]",
@@ -1117,64 +971,3 @@ private func addTextView(cell: BankItemCell) -> UITextView {
   cell.textViewℹ = view
   return view
 }
-
-/**
-addUITableView:
-
-:param: cell BankItemCell
-
-:returns: UITableView
-*/
-private func addTableView(cell: BankItemCell) -> UITableView {
-  let view = UITableView()
-  addInfoView(view, cell)
-//  view.backgroundColor = UIColor.greenColor()
-  view.separatorStyle = .None
-  view.rowHeight = Bank.defaultRowHeight
-  view.delegate = cell
-  view.dataSource = cell
-  view.addGestureRecognizer(UITapGestureRecognizer(target: cell, action: "handleTableTap:"))
-  view.registerClass(BankItemSubcell.self, forCellReuseIdentifier: cell.subcellIdentifier)
-  cell.tableℹ = view
-  return view
-}
-
-
-/// MARK: - BankItemSubcell
-////////////////////////////////////////////////////////////////////////////////
-
-private class BankItemSubcell: UITableViewCell {
-
-  var label: UILabel!
-  var title: String? {
-    get { return label?.text }
-    set { label?.text = newValue }
-  }
-
-  /**
-  initWithStyle:reuseIdentifier:
-
-  :param: style UITableViewStyle
-  :param: reuseIdentifier String?
-  */
-  override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    selectionStyle = .None
-    label = UILabel()
-    label.setTranslatesAutoresizingMaskIntoConstraints(false)
-    label.font = Bank.infoFont
-    label.textAlignment = .Right
-    label.textColor = Bank.infoColor
-    contentView.addSubview(label)
-    contentView.constrainWithFormat("|[label]| :: V:|[label]|", views: ["label": label])
-  }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
-
-}
-

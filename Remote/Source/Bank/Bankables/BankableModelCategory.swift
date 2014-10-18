@@ -21,6 +21,22 @@ class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
   var previewableItems:   Bool { return BankableModelObject.isPreviewable()   }
   var editableItems:      Bool { return BankableModelObject.isEditable()      }
 
-  
+  func save() {
+    managedObjectContext?.performBlockAndWait {
+      self.managedObjectContext!.processPendingChanges()
+      var error: NSError?
+      self.managedObjectContext!.save(&error)
+      MSHandleError(error, message: "save failed for '\(self.name)'")
+    }
+  }
+
+  func delete() { managedObjectContext?.deleteObject(self) }
+
+  func rollback() {
+    managedObjectContext?.performBlockAndWait {
+      self.managedObjectContext!.processPendingChanges()
+      self.managedObjectContext!.rollback()
+    }
+  }
 
 }

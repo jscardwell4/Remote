@@ -110,27 +110,26 @@ class IRCodeDetailController: BankItemDetailController {
 
       /// Frequency
       ////////////////////////////////////////////////////////////////////////////////
-
-      let frequencyRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Frequency"
-          cell.info = NSNumber(longLong: self.irCode.frequency)
-          cell.infoDataType = .LongLongData(15000...500000)
-          cell.shouldUseIntegerKeyboard = true
-          cell.changeHandler = { if let i = ($0 as? NSNumber)?.longLongValue { self.irCode.frequency = i } }
-      })
+      let frequencyRow = BankItemDetailRow(number: NSNumber(longLong: self.irCode.frequency),
+                                           label: "Frequency",
+                                           dataType: .LongLongData(15000...500000),
+                                           changeHandler: {
+                                            if let i = ($0 as? NSNumber)?.longLongValue {
+                                              self.irCode.frequency = i
+                                            }
+                                           })
 
       /// Repeat
       ////////////////////////////////////////////////////////////////////////////////
 
-      let repeatRow = BankItemDetailRow(identifier: .TextField, isEditable: true, configureCell: {
-        (cell: BankItemCell) -> Void in
-          cell.name = "Repeat"
-          cell.info = NSNumber(short: self.irCode.repeatCount)
-          cell.infoDataType = .IntData(1...50)
-          cell.shouldUseIntegerKeyboard = true
-          cell.changeHandler = { if let i = ($0 as? NSNumber)?.shortValue { self.irCode.repeatCount = i } }
-      })
+      let repeatRow = BankItemDetailRow(number: NSNumber(longLong: self.irCode.frequency),
+                                        label: "Repeat",
+                                        dataType: .IntData(1...50),
+                                        changeHandler: {
+                                         if let i = ($0 as? NSNumber)?.shortValue {
+                                           self.irCode.repeatCount = i
+                                         }
+                                        })
 
       /// Offset
       ////////////////////////////////////////////////////////////////////////////////

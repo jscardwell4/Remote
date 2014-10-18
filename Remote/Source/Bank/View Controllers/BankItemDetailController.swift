@@ -46,7 +46,6 @@ class BankItemDetailController: UITableViewController, BankDetailController {
         switch identifier {
         case .TextView: self.height = BankItemDetailController.textViewRowHeight
         case .Image:    self.height = BankItemDetailController.previewRowHeight
-        case .Table:    self.height = BankItemDetailController.tableRowHeight
         default:        self.height = BankItemDetailController.defaultRowHeight
         }
       }
@@ -281,11 +280,11 @@ extension BankItemDetailController: UITableViewDelegate {
 
   :returns: UITableViewCellEditingStyle
   */
-  override func         tableView(tableView: UITableView,
-    editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
-  {
-    return .None
-  }
+//  override func         tableView(tableView: UITableView,
+//    editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
+//  {
+//    return .None
+//  }
 
   /**
   tableView:willDisplayCell:forRowAtIndexPath:
@@ -410,7 +409,28 @@ extension BankItemDetailController: UITableViewDataSource {
   :returns: Bool
   */
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return false
+    return true
+  }
+
+  /**
+  tableView:commitEditingStyle:forRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: editingStyle UITableViewCellEditingStyle
+  :param: indexPath NSIndexPath
+  */
+  override func tableView(tableView: UITableView,
+       commitEditingStyle editingStyle: UITableViewCellEditingStyle,
+        forRowAtIndexPath indexPath: NSIndexPath)
+  {
+    println("tableView: \(tableView)\neditingStyle: \(editingStyle)\nindexPath: \(indexPath)")
+    if let row = rowForIndexPath(indexPath) {
+      if let handler = row.deletionHandler {
+        handler()
+        sections[indexPath.section].reloadRows()
+        tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+      }
+    }
   }
 
 }
