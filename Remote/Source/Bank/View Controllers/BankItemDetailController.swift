@@ -13,47 +13,6 @@ import MoonKit
 @objc(BankItemDetailController)
 class BankItemDetailController: UITableViewController, BankDetailController {
 
-  struct Section {
-    let title: String?
-    let rows: [Row]
-  }
-
-  struct Row {
-    let identifier: BankItemCell.Identifier
-    let isEditable: Bool
-    let height: CGFloat
-    let configureCell: (BankItemCell) -> Void
-    let selectionHandler: ((Void) -> Void)?
-
-    /**
-    initWithIdentifier:isEditable:height:configureCell:
-
-    :param: identifier BankItemCell.Identifier
-    :param: isEditable Bool = false
-    :param: height CGFloat? = nil
-    :param: configureCell (BankItemCell) -> Void
-    */
-    init(identifier: BankItemCell.Identifier,
-         isEditable: Bool = false,
-         height: CGFloat? = nil,
-         selectionHandler: ((Void) -> Void)? = nil,
-         configureCell: (BankItemCell) -> Void)
-    {
-      self.identifier = identifier
-      self.isEditable = isEditable
-      if let h = height { self.height = max(h, BankItemDetailController.defaultRowHeight) }
-      else {
-        switch identifier {
-        case .TextView: self.height = BankItemDetailController.textViewRowHeight
-        case .Image:    self.height = BankItemDetailController.previewRowHeight
-        default:        self.height = BankItemDetailController.defaultRowHeight
-        }
-      }
-      self.selectionHandler = selectionHandler
-      self.configureCell = configureCell
-    }
-  }
-
   var sections: [BankItemDetailSection] = []
 
   class var defaultRowHeight:  CGFloat { return 38.0  }
@@ -111,7 +70,6 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     tableView?.rowHeight = BankItemDetailController.defaultRowHeight
     tableView?.sectionHeaderHeight = 10.0
     tableView?.sectionFooterHeight = 10.0
-//    tableView?.allowsSelection = false
     tableView?.separatorStyle = .None
     tableView?.delegate = self
     tableView?.dataSource = self
@@ -163,9 +121,6 @@ class BankItemDetailController: UITableViewController, BankDetailController {
       nameTextField.userInteractionEnabled = editing
       navigationItem.rightBarButtonItem?.title = editing ? "Save" : "Edit"
       navigationItem.rightBarButtonItem?.action = editing ? "save" : "edit"
-      for cell in tableView!.visibleCells() as [BankItemCell] {
-        cell.isEditingState = editing
-      }
       super.setEditing(editing, animated: animated)
     }
   }
@@ -423,14 +378,34 @@ extension BankItemDetailController: UITableViewDataSource {
        commitEditingStyle editingStyle: UITableViewCellEditingStyle,
         forRowAtIndexPath indexPath: NSIndexPath)
   {
-    println("tableView: \(tableView)\neditingStyle: \(editingStyle)\nindexPath: \(indexPath)")
-    if let row = rowForIndexPath(indexPath) {
-      if let handler = row.deletionHandler {
-        handler()
-        sections[indexPath.section].reloadRows()
-        tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+    if editingStyle == .Delete {
+      if let row = rowForIndexPath(indexPath) {
+        if row.isDeletable {
+          row.deletionHandler?()
+          if row.deleteRemovesRow {
+            sections[indexPath.section].reloadRows()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+          }
+        }
       }
     }
+  }
+
+  /**
+  tableView:editActionsForRowAtIndexPath:
+
+  :param: tableView UITableView
+  :param: indexPath NSIndexPath
+
+  :returns: [AnyObject]?
+  */
+  override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    let action = UITableViewRowAction(style: .Default, title: "Clear", handler: {
+      (rowAction: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+        println("Clear muthafucka!!!")
+    })
+    return nil // [action]
   }
 
 }

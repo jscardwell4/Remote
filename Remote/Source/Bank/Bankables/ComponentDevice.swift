@@ -15,7 +15,20 @@ class ComponentDevice: BankableModelObject {
 
   @NSManaged var alwaysOn: Bool
   @NSManaged var inputPowersOn: Bool
-  @NSManaged var inputs: NSSet
+  @NSManaged var primitiveInputs: NSSet
+  var inputs: [IRCode] {
+    get {
+      willAccessValueForKey("inputs")
+      let inputs = primitiveInputs.allObjects as? [IRCode]
+      didAccessValueForKey("inputs")
+      return inputs ?? []
+    }
+    set {
+      willChangeValueForKey("inputs")
+      primitiveInputs = NSSet(array: newValue)
+      didChangeValueForKey("inputs")
+    }
+  }
   @NSManaged var port: Int16
   @NSManaged var power: Bool
   @NSManaged var primitiveCodeSet: IRCodeSet?

@@ -75,7 +75,6 @@ class BankItemCell: UITableViewCell {
   var pickerCreateSelectionHandler: ((Void)         -> Void)?
   var buttonActionHandler         : ((Void)         -> Void)?
   var buttonEditingActionHandler  : ((Void)         -> Void)?
-  var rowSelectionHandler         : ((NSObject?)    -> Void)?
   var shouldShowPicker            : ((BankItemCell) -> Bool)?
   var shouldHidePicker            : ((BankItemCell) -> Bool)?
   var didShowPicker               : ((BankItemCell) -> Void)?
@@ -371,11 +370,6 @@ class BankItemCell: UITableViewCell {
     if !picker.hidden { return }                                  		// Make sure picker is actually hidden
     if shouldShowPicker ∅|| shouldShowPicker!(self) {             	// Check if we should show the picker
       picker.selectRow(pickerSelectionIndex, inComponent: 0, animated: false)
-//      if let idx = find(pickerData!, pickerSelection) {         	  	// Check if we have a picker selection set
-//          picker.selectRow(idx + prependedPickerItemCount, inComponent: 0, animated: false)
-//      } else if pickerNilSelectionTitle != nil {                  		// Check if we have a title set for empty selections
-//        picker.selectRow(0, inComponent: 0, animated: false)
-//      }
       picker.hidden = false
       didShowPicker?(self)
     }
@@ -535,6 +529,17 @@ class BankItemCell: UITableViewCell {
 
   /// MARK: UITableViewCell
   ////////////////////////////////////////////////////////////////////////////////
+
+
+  /**
+  Overridden to prevent indented content view
+
+  :param: editing Bool
+  :param: animated Bool
+  */
+  override func setEditing(editing: Bool, animated: Bool) {
+    isEditingState = editing
+  }
 
   var isEditingState: Bool = false {
     didSet {

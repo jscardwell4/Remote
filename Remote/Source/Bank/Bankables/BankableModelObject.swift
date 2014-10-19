@@ -38,22 +38,4 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 
   func detailController() -> UIViewController { return BankItemDetailController(item: self)! }
 
-  func save() {
-    managedObjectContext?.performBlockAndWait {
-      self.managedObjectContext!.processPendingChanges()
-      var error: NSError?
-      self.managedObjectContext!.save(&error)
-      MSHandleError(error, message: "save failed for '\(self.name)'")
-    }
-  }
-
-  func delete() { managedObjectContext?.deleteObject(self) }
-
-  func rollback() {
-    managedObjectContext?.performBlockAndWait {
-      self.managedObjectContext!.processPendingChanges()
-      self.managedObjectContext!.rollback()
-    }
-  }
-
 }

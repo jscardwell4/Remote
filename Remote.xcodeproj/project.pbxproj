@@ -325,6 +325,7 @@
 		C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */; };
 		C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */; };
 		C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */; };
+		C26DD69319F326910087B204 /* NamedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DD69219F326910087B204 /* NamedModelObject.swift */; };
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchCommand.m */; };
 		C277AB7C19D74011008DEE39 /* IRCodeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB7B19D74011008DEE39 /* IRCodeSet.swift */; };
@@ -940,6 +941,7 @@
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
+		C26DD69219F326910087B204 /* NamedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NamedModelObject.swift; sourceTree = "<group>"; };
 		C274832219D06E5D000CB422 /* BankCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionController.swift; sourceTree = "<group>"; };
 		C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateColorSet.h; sourceTree = "<group>"; };
 		C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateImageSet.h; sourceTree = "<group>"; };
@@ -1237,6 +1239,7 @@
 				C2F940EE19BD4C0F007B5CC1 /* ModelKeychainWrapper.h */,
 				C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */,
 				C2879F5D19DBA86F0052DDB7 /* ModelObject.swift */,
+				C26DD69219F326910087B204 /* NamedModelObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2731,6 +2734,7 @@
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
 				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
+				C26DD69319F326910087B204 /* NamedModelObject.swift in Sources */,
 				C277AB7C19D74011008DEE39 /* IRCodeSet.swift in Sources */,
 				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
 				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,

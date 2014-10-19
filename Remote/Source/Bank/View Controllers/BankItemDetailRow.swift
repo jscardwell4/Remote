@@ -13,7 +13,6 @@ import MoonKit
 class BankItemDetailRow {
 
 	let identifier: BankItemCell.Identifier
-	let isEditable: Bool
 	var height: CGFloat {
 		switch identifier {
 			case .TextView: return BankItemDetailController.textViewRowHeight
@@ -23,110 +22,189 @@ class BankItemDetailRow {
 
 		}
 	}
-	var configureCell: (BankItemCell) -> Void
 	var selectionHandler: ((Void) -> Void)?
   var deletionHandler: ((Void) -> Void)?
 
+  var editActions: [UITableViewRowAction]?
+
+  var isDeletable: Bool { return deletionHandler != nil }
+  var deleteRemovesRow = true
+  var isSelectable: Bool { return selectionHandler != nil }
+
+  /// Properties that mirror `BankItemCell` properties
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var name: String?
+  var info: AnyObject?
+  var infoDataType: BankItemCell.DataType = .StringData
+  var changeHandler: ((NSObject?) -> Void)?
+  var validationHandler: ((NSObject?) -> Bool)?
+
+  // picker related properties
+  var enablePicker: Bool { return pickerData != nil }
+  var pickerNilSelectionTitle: String?
+  var pickerCreateSelectionTitle: String?
+  var pickerData: [NSObject]?
+  var pickerSelection: NSObject?
+  var pickerSelectionHandler: ((NSObject?) -> Void)?
+  var pickerCreateSelectionHandler: ((Void) -> Void)?
+
+  // stepper related properties
+  var stepperWraps: Bool = true
+  var stepperMinValue: Double = Double(CGFloat.min)
+  var stepperMaxValue: Double = Double(CGFloat.max)
+  var stepperStepValue: Double = 1.0
+
+  // keyboard related properties
+	var returnKeyType: UIReturnKeyType = .Done
+	var keyboardType: UIKeyboardType = .ASCIICapable
+	var autocapitalizationType: UITextAutocapitalizationType = .None
+	var autocorrectionType: UITextAutocorrectionType = .No
+	var spellCheckingType: UITextSpellCheckingType = .No
+	var enablesReturnKeyAutomatically: Bool = false
+	var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
+	var secureTextEntry: Bool = false
+	var shouldAllowReturnsInTextView: Bool = false
+	var shouldUseIntegerKeyboard: Bool = false
+
+  // button related properties
+  var buttonActionHandler: ((Void) -> Void)?
+  var buttonEditingActionHandler: ((Void) -> Void)?
+
+  /**
+  configure:
+
+  :param: cell BankItemCell
+  */
+  func configureCell(cell: BankItemCell) {
+    cell.name = name
+    cell.info = info
+    cell.infoDataType = infoDataType
+    cell.validationHandler = validationHandler
+    cell.changeHandler = changeHandler
+
+    if enablePicker {
+      cell.pickerNilSelectionTitle = pickerNilSelectionTitle
+      cell.pickerCreateSelectionTitle = pickerCreateSelectionTitle
+      cell.pickerSelectionHandler = pickerSelectionHandler
+      cell.pickerCreateSelectionHandler = pickerCreateSelectionHandler
+      cell.pickerData = pickerData
+      cell.pickerSelection = pickerSelection
+    }
+
+    switch identifier {
+
+      case .Button:
+	      cell.buttonActionHandler = buttonActionHandler
+	      cell.buttonEditingActionHandler = buttonEditingActionHandler
+
+      case .Stepper:
+				cell.stepperWraps = stepperWraps
+				cell.stepperMinValue = stepperMinValue
+				cell.stepperMaxValue = stepperMaxValue
+				cell.stepperStepValue = stepperStepValue
+
+      case .TextView:
+        cell.shouldAllowReturnsInTextView = shouldAllowReturnsInTextView
+        fallthrough
+
+      case .TextField:
+	      cell.returnKeyType = returnKeyType
+				cell.keyboardType = keyboardType
+				cell.autocapitalizationType = autocapitalizationType
+				cell.autocorrectionType = autocorrectionType
+				cell.spellCheckingType = spellCheckingType
+				cell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+				cell.keyboardAppearance = keyboardAppearance
+				cell.secureTextEntry = secureTextEntry
+				cell.shouldUseIntegerKeyboard = shouldUseIntegerKeyboard
+
+			default: break
+
+    }
+  }
+
 	/**
-	initWithIdentifier:isEditable:selectionHandler:configureCell:
+	initWithIdentifier:hasEditingState:selectionHandler:configureCell:
 
 	:param: identifier BankItemCell.Identifier
-	:param: isEditable Bool = false
+	:param: hasEditingState Bool = false
 	:param: selectionHandler ((Void) -> Void
 	:param: configureCell (BankItemCell) -> Void
 	*/
 	init(identifier: BankItemCell.Identifier,
-			 isEditable: Bool = false,
 			 selectionHandler: ((Void) -> Void)? = nil,
-			 deletionHandler: ((Void) -> Void)? = nil,
-			 configureCell: (BankItemCell) -> Void)
+			 deletionHandler: ((Void) -> Void)? = nil)
 	{
 		self.identifier = identifier
-		self.isEditable = isEditable
 		self.selectionHandler = selectionHandler
     self.deletionHandler = deletionHandler
-		self.configureCell = configureCell
 	}
 
 
 	/**
-	initWithPushableItem:isEditable:
+	initWithPushableItem:hasEditingState:
 
 	:param: pushableItem BankDisplayItemModel
-	:param: isEditable Bool = true
 	*/
-  convenience init(pushableItem: BankDisplayItemModel, isEditable: Bool = true) {
-		self.init(identifier: .List, isEditable: isEditable,
-			selectionHandler: {
-				let controller = pushableItem.detailController()
+  convenience init(pushableItem: BankDisplayItemModel) {
+		self.init(identifier: .List)
+    selectionHandler = {
+      let controller = pushableItem.detailController()
+      if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+        nav.pushViewController(controller, animated: true)
+      }
+    }
+    deletionHandler = { pushableItem.delete() }
+    info = pushableItem
+	}
+
+	/**
+	initWithPushableCategory:hasEditingState:
+
+	:param: pushableCategory BankDisplayItemCategory
+	*/
+	convenience init(pushableCategory: BankDisplayItemCategory) {
+		self.init(identifier: .List)
+		selectionHandler = {
+			if let controller = BankCollectionController(category: pushableCategory) {
 				if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
 					nav.pushViewController(controller, animated: true)
 				}
-			},
-      deletionHandler: {pushableItem.delete()},
-			configureCell: {
-				(cell: BankItemCell) -> Void in
-					cell.info = pushableItem
-			})
+			}
+		}
+    deletionHandler = { pushableCategory.delete() }
+    info = pushableCategory
 	}
 
 	/**
-	initWithPushableCategory:isEditable:
-
-	:param: pushableCategory BankDisplayItemCategory
-	:param: isEditable Bool = true
-	*/
-	convenience init(pushableCategory: BankDisplayItemCategory, isEditable: Bool = true) {
-		self.init(identifier: .List, isEditable: isEditable,
-			selectionHandler: {
-				if let controller = BankCollectionController(category: pushableCategory) {
-					if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-						nav.pushViewController(controller, animated: true)
-					}
-				}
-			},
-      deletionHandler: {pushableCategory.delete()},
-			configureCell: {
-				(cell: BankItemCell) -> Void in
-					cell.info = pushableCategory
-			})
-	}
-
-	/**
-	initWithPushableCategory:label:isEditable:
+	initWithPushableCategory:label:hasEditingState:
 
 	:param: pushableCategory BankDisplayItemCategory
 	:param: label String
-	:param: isEditable Bool = true
 	*/
-	convenience init(pushableCategory: BankDisplayItemCategory, label: String, isEditable: Bool = true) {
-		self.init(identifier: .Label, isEditable: isEditable,
-			selectionHandler: {
-				if let controller = BankCollectionController(category: pushableCategory) {
-					if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-						nav.pushViewController(controller, animated: true)
-					}
+	convenience init(pushableCategory: BankDisplayItemCategory, label: String) {
+		self.init(identifier: .Label)
+		selectionHandler = {
+			if let controller = BankCollectionController(category: pushableCategory) {
+				if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+					nav.pushViewController(controller, animated: true)
 				}
-			},
-      deletionHandler: {pushableCategory.delete()},
-			configureCell: {
-				(cell: BankItemCell) -> Void in
-					cell.name = label
-					cell.info = pushableCategory
-			})
+			}
+		}
+    deletionHandler = { pushableCategory.delete() }
+    name = label
+    info = pushableCategory
 	}
 
 	/**
-	initWithNamedItem:isEditable:
+	initWithNamedItem:hasEditingState:
 
 	:param: namedItem NamedModelObject
-	:param: isEditable Bool = true
 	*/
-	convenience init(namedItem: NamedModelObject, isEditable: Bool = true) {
-		self.init(identifier: .List, isEditable: isEditable, configureCell: {
-			(cell: BankItemCell) -> Void in
-				cell.info = namedItem
-		})
+	convenience init(namedItem: NamedModelObject) {
+		self.init(identifier: .List)
+		info = namedItem
 	}
 
 	/**
@@ -135,10 +213,8 @@ class BankItemDetailRow {
 	:param: previewableItem BankDisplayItemModel
 	*/
 	convenience init(previewableItem: BankDisplayItemModel) {
-		self.init(identifier: .Image, configureCell: {
-			(cell: BankItemCell) -> Void in
-				cell.info = previewableItem.preview
-			})
+		self.init(identifier: .Image)
+		info = previewableItem.preview
 	}
 
 	/**
@@ -148,11 +224,9 @@ class BankItemDetailRow {
 	:param: value String
 	*/
 	convenience init(label: String, value: String) {
-		self.init(identifier: .Label, configureCell: {
-			(cell: BankItemCell) -> Void in
-				cell.name = label
-				cell.info = value
-			})
+		self.init(identifier: .Label)
+		name = label
+		info = value
 	}
 
 
@@ -165,14 +239,12 @@ class BankItemDetailRow {
   :param: changeHandler (NSObject?) -> Void
   */
   convenience init(number: NSNumber, label: String, dataType: BankItemCell.DataType, changeHandler: (NSObject?) -> Void) {
-    self.init(identifier: .TextField, isEditable: true, configureCell: {
-      (cell: BankItemCell) -> Void in
-        cell.name = label
-        cell.info = number
-        cell.infoDataType = dataType
-        cell.shouldUseIntegerKeyboard = true
-        cell.changeHandler = changeHandler
-    })
+    self.init(identifier: .TextField)
+    name = label
+    info = number
+    infoDataType = dataType
+    shouldUseIntegerKeyboard = true
+    self.changeHandler = changeHandler
   }
 
 }
