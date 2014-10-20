@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:u="http://www.universal-devices.com/wsdk/isy/upb/1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="udi" targetNamespace="http://www.universal-devices.com/wsdk/isy/upb/1.0">
+	<wsdl:documentation>
+		Copyright 2007-2012 Universal Devices, Inc.
+		All Rights Reserved
+
+		Web Services Flag, Objects, Parameters, Messages, and Bindings for UPB Services
+	</wsdl:documentation>
+
+	<wsdl:types>
+	<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.universal-devices.com/wsdk/isy/upb/1.0">
+
+	<!-- Message Types -->
+	<xsd:complexType name="Empty"/>
+	<xsd:complexType name="UDIDefaultResponse">
+		<xsd:sequence>
+			<xsd:element name="status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="info" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!-- Services -->
+	<xsd:element name="StartAddingSetupModeDevices" type="u:Empty"/>
+	<xsd:element name="StartAddingAllDevicesInNetwork" type="u:Empty"/>
+	<xsd:element name="StopFindingDevices" type="u:Empty"/>
+	<xsd:element name="CancelAddingDevices" type="u:Empty"/>
+	<xsd:element name="UDIDefaultRespnse" type="u:UDIDefaultResponse"/>
+	
+	</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- MESSAGES -->
+	<wsdl:message name="DefaultResponseMessage">
+		<wsdl:part name="response" element="u:UDIDefaultRespnse"/>
+	</wsdl:message>
+
+	<wsdl:message name="StartAddingSetupModeDevicesRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		@TODO: what does this service do?
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<wsdl:part name="StartAddingSetupModeDevices" element="u:StartAddingSetupModeDevices"/>
+	</wsdl:message>
+	
+	<wsdl:message name="StartAddingAllDevicesInNetworkRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		@TODO: what does this service do?
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<wsdl:part name="StartAddingAllDevicesInNetwork" element="u:StartAddingAllDevicesInNetwork"/>
+	</wsdl:message>
+	
+	<wsdl:message name="StopFindingDevicesRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		@TODO: what does this service do?
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<wsdl:part name="StopFindingDevices" element="u:StopFindingDevices"/>
+	</wsdl:message>
+	
+	<wsdl:message name="CancelAddingDevicesRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		@TODO: what does this service do?
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<wsdl:part name="CancelAddingDevices" element="u:CancelAddingDevices"/>
+	</wsdl:message>
+
+	
+	<wsdl:portType name="UDIUPBServices_PortType">
+		<wsdl:operation name="StartAddingSetupModeDevices">
+			<wsdl:input message="u:StartAddingSetupModeDevicesRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="StartAddingAllDevicesInNetwork">
+			<wsdl:input message="u:StartAddingAllDevicesInNetworkRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="StopFindingDevices">
+			<wsdl:input message="u:StopFindingDevicesRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="CancelAddingDevices">
+			<wsdl:input message="u:CancelAddingDevicesRequest"/>
+			<wsdl:output message="u:DefaultResponseMessage"/>
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="UDIUPBServices_Binding" type="u:UDIUPBServices_PortType">
+		<wsdl:documentation>UDI Binding binds the concrete Port (UDI UPB Services) to the Abstract Port Type (UDIUPBServices_PortType)</wsdl:documentation>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="StartAddingSetupModeDevices">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="StartAddingAllDevicesInNetwork">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="StopFindingDevices">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CancelAddingDevices">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+</wsdl:definitions>

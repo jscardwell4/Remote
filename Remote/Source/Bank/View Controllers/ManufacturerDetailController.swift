@@ -29,7 +29,8 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = BankItemDetailSection(sectionNumber: 0, title: "Devices", createRows: {
-      return sortedByName(self.manufacturer.devices).map{BankItemDetailRow(pushableItem: $0)} ?? []
+      return sortedByName(self.manufacturer.devices.allObjects as? [ComponentDevice] ?? [])
+              .map{BankItemDetailRow(pushableItem: $0)} ?? []
     })
 
     // Code Sets
@@ -37,7 +38,8 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = BankItemDetailSection(sectionNumber: 1, title: "Code Sets", createRows: {
-      return sortedByName(self.manufacturer.codeSets).map{BankItemDetailRow(pushableCategory: $0)} ?? []
+      return sortedByName(self.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? [])
+              .map{BankItemDetailRow(pushableCategory: $0)} ?? []
     })
 
     /// Create the sections

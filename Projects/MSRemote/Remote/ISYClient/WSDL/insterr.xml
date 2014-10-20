@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LogInfo>
+<description>
+	This file defines the permissible instances for INSTEON sub errors
+</description>
+<errorMessages>
+	<msg id="-1"><name>FAILED_WRITING_HIGH_WATERMARK</name></msg>
+	<msg id="-2"><name>FAILED_WRITING_PLM_SLAVE_LINK</name></msg>
+	<msg id="-3"><name>FAILED_WRITING_PLM_MASTER_LINK</name></msg>
+	<msg id="-4"><name>FAILED_READING_DEVICE_MEMORY</name></msg>
+	<msg id="-41"><name>FAILED_WRITING_DEVICE_MEMORY</name></msg>
+	<msg id="-5"><name>FAILED_READING_DEVICE_LINK</name></msg>
+	<msg id="-51"><name>FAILED_WRITING_DEVICE_LINK</name></msg>
+	<msg id="-6"><name>FAILED_RESTORING_DEVICE_FROM_FILE</name></msg>
+	<msg id="-7"><name>FAILED_INITIALIZING_NODE_IGNORING</name></msg>
+	<msg id="-8"><name>NOT_ADDED_FAILED_READ_DEVICE_LINKS</name></msg>
+	<msg id="-9"><name>NOT_ADDED_FAILED_REMOVE_DEVICE_LINKS</name></msg>
+	<msg id="-10"><name>NOT_ADDED_FAILED_RESTORING_DEVICE</name></msg>
+	<msg id="-11"><name>REPLACE_DEVICE_INCOMPLETE</name></msg>
+	<msg id="-12"><name>ADD_DEVICE_INCOMPLETE</name></msg>
+	<msg id="-13"><name>REMOVE_DEVICE_INCOMPLETE</name></msg>
+	<msg id="-14"><name>ADD_SCENE_INCOMPLETE</name></msg>
+	<msg id="-15"><name>REMOVE_SCENE_INCOMPLETE</name></msg>
+	<msg id="-16"><name>FAILED_DELETING_PLM_MASTER_LINK</name></msg>
+	<msg id="-17"><name>FAILED_DELETING_PLM_SLAVE_LINK</name></msg>
+	<msg id="-18"><name>FAILED_DELETING_GROUP_LINK</name></msg>
+	<msg id="-19"><name>FAILED_ADDING_DEVICE_TO_SCENE</name></msg>
+	<msg id="-20"><name>ADDING_DEVICE_TO_SCENE_INCOMPLETE</name></msg>
+	<msg id="-21"><name>REMOVING_DEVICE_FROM_SCENE_INCOMPLETE</name></msg>
+	<msg id="-22"><name>REPLACE_FAILED_FILE_RENAME_FAILED</name></msg>
+	<msg id="-23"><name>REPLACE_FAILED_ADDRESS_NULL</name></msg>
+	<msg id="-24"><name>RESTORE_FAILED_INTERNAL_ERROR</name></msg>
+	<msg id="-25"><name>FAILED_REMOVING_REMAINING_LINKS</name></msg>
+	<msg id="-26"><name>NODE_ALREADY_EXISTS</name></msg>
+	<msg id="-27"><name>NODE_DOES_NOT_EXIST</name></msg>
+	<msg id="-28"><name>INCOMPATIBLE_DEVICE_msg_FIRMWARE</name></msg>
+	<msg id="-29"><name>FAILED_TO_FULLY_REPLACE_DEVICE</name></msg>
+	<msg id="-30"><name>PLM_RESET_FAILED</name></msg>
+	<msg id="-31"><name>FAILED_TO_FULLY_RESTORE_DEVICE</name></msg>
+</errorMessages>
+</LogInfo>

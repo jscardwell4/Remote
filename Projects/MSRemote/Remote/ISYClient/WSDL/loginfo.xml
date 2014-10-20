@@ -1,0 +1,397 @@
+<?xml version="1.0" ?>
+<LogInfo>
+<description>
+	This file defines the permissible instances of system wide:
+	Actors
+	Types
+	Messages
+</description>
+<actors>
+	<actor id="0"><name>SYSTEM_ACTOR</name></actor>
+	<actor id="1"><name>DRIVER_ACTOR</name></actor>
+	<actor id="2"><name>WEB_ACTOR</name></actor>
+	<actor id="3"><name>SCHEDULER_ACTOR</name></actor>
+	<actor id="4"><name>PROGRAMS_ACTOR</name></actor>
+	<actor id="5"><name>ELK_ACTOR</name></actor>
+	<actor id="6">
+		<name>SEP_DEVICE_METERING_ACTOR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</actor>
+	<actor id="7">
+		<name>SEP_DEVICE_PRICE_ACTOR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</actor>
+	<actor id="8"> 
+		<name>SEP_DEVICE_MESSAGE_ACTOR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</actor>
+	<actor id="9">
+	 	<name>SEP_DEVICE_DRLC_ACTOR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</actor>
+	<actor id="10">
+		<name>GAS_METER_ACTOR</name>
+		<platforms>
+			<platform id="992"/>
+		</platforms>
+	</actor>
+</actors>
+
+<logEntryTypes>
+	<type id="1"><name>SYSTEM_STARTUP</name></type>
+	<type id="2"><name>SYSTEM_SHUTDOWN</name></type>
+	<type id="3"><name>WARNING</name></type>
+	<type id="4"><name>INFO</name></type>
+	<type id="5"><name>LOG</name></type>
+	<type id="6">
+		<name>UD_SEP_SUBSYS_STARTUP</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</type>
+</logEntryTypes>
+
+<errorMessages>
+	<msg id="-1"><name>REQUEST_FAILED_ERROR</name></msg>
+	<msg id="-2"><name>DEVICE_COMMUNICATION_ERROR</name></msg>
+	<msg id="-3"><name>DEVICE_RETURNED_INVALID_NODE</name></msg>
+	<msg id="-4"><name>DEVICE_RETURNED_INVALID_ADDRESS</name></msg>
+	<msg id="-5"><name>ERROR_LOGGER_STARTUP</name></msg>
+	<msg id="-6"><name>ERROR_DEADLOCK_DETECTED</name></msg>
+	<msg id="-10"><name>ERROR_UNEXPECTED_DEVICE_RESPONSE</name></msg>
+	<msg id="-20"><name>MAIN_LOCAL_DEVICE_BLANK</name></msg>
+	<msg id="-100"><name>SYSTEM_NO_NETWORK_CONNECTION</name></msg>
+	<msg id="-101"><name>SYSTEM_WEBSERVER_SELECT_FAILED</name></msg>
+	<msg id="-1001"><name>HAML_PARSER_ONDATA</name></msg>
+	<msg id="-5004"><name>UPNP_SERVICE_msg_SEARCH_NS</name></msg>
+	<msg id="-5005"><name>UPNP_SUBSCRIPTION_NOT_FOUND_FOR_RENEWAL</name></msg>
+	<msg id="-5006"><name>UPNP_SUBSCRIPTION_NOT_FOUND_FOR_CANCELATION</name></msg>
+	<msg id="-5007"><name>UPNP_INVALID_SUBSCRIPTION_URL</name></msg>
+	<msg id="-5008"><name>UPNP_INVALID_SUBSCRIPTION_CALLBACK</name></msg>
+	<msg id="-5009"><name>UPNP_MAX_SUBSCRIBERS</name></msg>
+	<msg id="-5010"><name>UPNP_SUBSCRIBER_TCP_CONNECT_FAILURE</name></msg>
+	<msg id="-5011"><name>PROCESS_DEVICE_STATE_CHANGE_SID_NOT_FOUND</name></msg>
+	<msg id="-5012"><name>UPNP_SUBSCRIBER_NOREPLY_TO_EVENT_1</name></msg>
+	<msg id="-5013"><name>UPNP_SUBSCRIBER_NOREPLY_TO_EVENT_2</name></msg>
+	<msg id="-5015"><name>UPNP_CONTROL_MALFORMED_SOAP_REQUEST_1</name></msg>
+	<msg id="-5016"><name>UPNP_CONTROL_MALFORMED_SOAP_REQUEST_2</name></msg>
+	<msg id="-5017"><name>UPNP_SUBSCRIBER_TCP_REUSE_FAILURE</name></msg>
+	<msg id="-6000"><name>OS_DUPLICATE_TASK_PRIORITY</name></msg>
+	<msg id="-6001"><name>OS_OPEN_SERIAL_FAILED</name></msg>
+	<msg id="-7003" isDeprecated="true"><name>D2D_MALFORMED_RULE_MISSING_SENSE_TAG</name></msg>
+	<msg id="-7020"><name>D2D_PARSER_ERROR</name></msg>
+	<msg id="-7029"><name>NOTIFICATIONS_MAIL_TO_ADDRESS_REQUIRED</name></msg>
+	<msg id="-7030"><name>NOTIFICATIONS_SEND_MAIL_FAILED</name></msg>
+	<msg id="-7050" isDeprecated="true"><name>D2D_EXPECTED_D2D_TAG</name></msg>
+	<msg id="-7051" isDeprecated="true"><name>D2D_UNEXPECTED_TAG_IN_SENSE</name></msg>
+	<msg id="-7052" isDeprecated="true"><name>D2D_UNEXPECTED_TAG_IN_CONDITION</name></msg>
+	<msg id="-7501" driver="upb"><name>DIAG_PARSER_ERROR</name></msg>
+	<msg id="-7601" driver="upb"><name>LINK_PARSER_ERROR</name></msg>
+	<msg id="-10001"><name>SSL_DECODING_LENGTHS_FAILED</name></msg>
+	<msg id="-10002"><name>SSL_DECODING_PMOD_FAILED</name></msg>
+	<msg id="-10003"><name>SSL_DECODING_PEXP_FAILED</name></msg>
+	<msg id="-10004"><name>SSL_DECODING_PRI_EXP_FAILED</name></msg>
+	<msg id="-10005"><name>SSL_DECODING_PRI_P_FAILED</name></msg>
+	<msg id="-10006"><name>SSL_DECODING_PRI_Q_FAILED</name></msg>
+	<msg id="-10007"><name>SSL_DECODING_PRI_X1_FAILED</name></msg>
+	<msg id="-10008"><name>SSL_DECODING_PRI_X2_FAILED</name></msg>
+	<msg id="-10009"><name>SSL_DECODING_PRI_COEFF_FAILED</name></msg>
+	<msg id="-10010"><name>SSL_DECODING_CERT_FAILED</name></msg>
+	<msg id="-10011"><name>SSL_REQUEST_NOT_AUTHENTICATED</name></msg>
+	<msg id="-10101"><name>AUTHENTICATION_UNSUPPORTED_UID_LEN</name></msg>
+	<msg id="-10102"><name>AUTHENTICATION_UNSUPPORTED_PWD_LEN</name></msg>
+	<msg id="-10103"><name>AUTHENTICATION_USER_ID_DOES_NOT_EXIST</name></msg>
+	<msg id="-10104"><name>AUTHENTICATION_USER_ID_PWD_NOT_PRESENT</name></msg>
+	<msg id="-10105"><name>AUTHENTICATION_WRONG_PASSWORD</name></msg>
+	<msg id="-10106"><name>AUTHENTICATION_FAILED</name></msg>
+	<msg id="-10107"><name>HTTP_AUTH_DECODING_FAILED</name></msg>
+	<msg id="-10108"><name>HTTP_DOS_DETECTED</name></msg>
+	<msg id="-11000"><name>SECURITY_INITIALIZATION_FAILED</name></msg>
+	<msg id="-12000"><name>TIMED_OUT_WAITING_FOR_CRITICAL_SECION</name></msg>
+	<msg id="-12001"><name>ERROR_LEAVING_CRITICAL_SECTION_NOT_OWNED</name></msg>
+	<msg id="-13000"><name>CONTENT_LEN_NOT_EQUAL_TO_HEADER_CONTENT_LEN</name></msg>
+	<msg id="-14001"><name>XML_MALFORMED_TAG</name></msg>
+	<msg id="-14002"><name>XML_MALFORMED_END_TAG</name></msg>
+	<msg id="-14003"><name>XML_NO_START_TAG</name></msg>
+	<msg id="-14004"><name>XML_NO_TAG_NAME</name></msg>
+	<msg id="-14005"><name>XML_START_END_NAME_MISMATCH</name></msg>
+	<msg id="-50000">
+		<name>MAIL_SERVER_CONNECT_ERROR</name>
+		<subDefinitions>
+			<subDefinition id="smtp" file="smtperr.xml"/>
+		</subDefinitions>
+	</msg>
+	<msg id="-50001"><name>SMTP_SERVER_FAILURE</name></msg>
+	<msg id="-50010"><name>MAIL_SERVER_DNS_ERROR</name></msg>
+	<msg id="-50013"><name>MAIL_MAX_TO_LEN</name></msg>
+	<msg id="-60000"><name>NTP_CONFIG_SERVER_NO_HOST_PARAM</name></msg>
+	<msg id="-60001"><name>NTP_CONFIG_SERVER_ADDRESS_RESOLUTION_FAILED</name></msg>
+	<msg id="-60002"><name>NTP_CONFIG_SERVER_NO_INTERVAL_PARAM</name></msg>
+	<msg id="-60006"><name>NTP_SERVER_NOT_RESPONDING</name></msg>
+	<msg id="-60007"><name>NTP_SERVER_CONNECT_ERROR</name></msg>
+	<msg id="-70000"><name>OUT_OF_MEMORY</name></msg>
+	<msg id="-80001"><name>IGD_FAILED_PARSING_DESCRIPTION_URL</name></msg>
+	<msg id="-80002"><name>IGD_FAILED_RETRIEVING_URL_BASE</name></msg>
+	<msg id="-80003"><name>IGD_FAILED_PARSING_URL_BASE</name></msg>
+	<msg id="-80004"><name>IGD_FAILED_RETRIEVING_WAN_CONNECTION_DEVICE</name></msg>
+	<msg id="-80005"><name>IGD_FAILED_RETRIEVING_CONTROL_URL</name></msg>
+	<msg id="-80006"><name>IGD_FAILED_PARSING_CONTROL_URL</name></msg>
+	<msg id="-80007"><name>IGD_FAILED_RETRIEVING_EXTERNAL_IP</name></msg>
+	<msg id="-80008"><name>IGD_NO_RESPONSE_FROM_GATEWAY</name></msg>
+	<msg id="-80009"><name>IGD_FAILED_STRIPPING_HTTP_HEADERS</name></msg>
+	<msg id="-80010"><name>IGD_FAILED_DELETING_PORT_FORWARD_MAP</name></msg>
+	<msg id="-80011"><name>IGD_FAILED_ADDING_PORT_FORWARD_MAP</name></msg>
+	<msg id="-80012"><name>IGD_FAILED_GETTING_SPECIFIC_ENTRY</name></msg>
+	<msg id="-90001" isDeprecated="true"><name>CRC_INVALID_ORDER</name></msg>
+	<msg id="-90002" isDeprecated="true"><name>CRC_INVALID_POLYNOM</name></msg>
+	<msg id="-90003" isDeprecated="true"><name>CRC_INVALID_CRC_INIT</name></msg>
+	<msg id="-90004" isDeprecated="true"><name>CRC_INVALID_CRC_XOR</name></msg>
+	<msg id="-100000"><name>LOGGER_DIRECTORY_CREATION_FAILED</name></msg>
+	<msg id="-100001"><name>LOGGER_SD_IS_NOT_INSTALLED</name></msg>
+	<msg id="-100002"><name>LOGGER_LOG_FILE_OPEN_FAILED</name></msg>
+	<msg id="-110000"><name>FILE_TO_STRING_OPEN_FAILED</name></msg>
+	<msg id="-110001"><name>FILE_TO_STRING_MEM_ALLOC_FAILED</name></msg>
+	<msg id="-110002"><name>SD_DRIVE_FORMAT_FAILED_1</name></msg>
+	<msg id="-110003"><name>SD_DRIVE_FORMAT_FAILED_2_CONFIG</name></msg>
+	<msg id="-110004"><name>SD_DRIVE_MOUNT_FAILED</name></msg>
+	<msg id="-110005"><name>SD_DRIVE_INITIAL_MOUNT_FAILED</name></msg>
+	<msg id="-110006"><name>SEND_FILE_OPEN_FAILED</name></msg>
+	<msg id="-110007"><name>SEND_FILE_READ_FAILED</name></msg>
+	<msg id="-110008"><name>RECEIVE_FILE_WRITE_FAILED</name></msg>
+	<msg id="-110009"><name>RECEIVE_FILE_OPEN_FAILED</name></msg>
+	<msg id="-110010"><name>SD_DRIVE_DIRECTORY_CREATION_FAILED</name></msg>
+	<msg id="-110011"><name>SD_DRIVE_CONFIG_FILE_OPEN_WRITE_FAILED</name></msg>
+	<msg id="-110012"><name>SD_DRIVE_CONFIG_FILE_OPEN_READ_FAILED</name></msg>
+	<msg id="-110013"><name>SD_DRIVE_CONFIG_WRITE_FAILED</name></msg>
+	<msg id="-110014"><name>SD_DRIVE_CONFIG_READ_FAILED</name></msg>
+	<msg id="-110015"><name>STRING_TO_FILE_OPEN_FAILED</name></msg>
+	<msg id="-110016"><name>STRING_TO_FILE_WRITE_FAILED</name></msg>
+	<msg id="-110017"><name>FILE_TO_STRING_READ_FAILED</name></msg>
+	<msg id="-110018"><name>REMOVE_FILE_FAILED</name></msg>
+	<msg id="-110019"><name>REMOVE_DIR_FAILED</name></msg>
+	<msg id="-110020"><name>FLUSH_FILE_FAILED</name></msg>
+	<msg id="-110021"><name>CLOSE_FILE_FAILED</name></msg>
+	<msg id="-110022"><name>OPEN_FILE_FAILED</name></msg>
+	<msg id="-110023"><name>FLUSH_FILE_SYSTEM_FAILED</name></msg>
+	<msg id="-110024"><name>FILESYSTEM_INIT_FAILED</name></msg>
+	<msg id="-110025"><name>FILESYSTEM_CRIT_FAILED</name></msg>
+	<msg id="-110025"><name>FILESYSTEM_SET_FILE_TIMESTAMP_FAILED</name></msg>
+	<msg id="-120000"><name>FIRMWARE_UPDATE_OPEN_FILE_FAILED</name></msg>
+	<msg id="-120001"><name>FIRMWARE_UPDATE_HEADER_READ_FAILED</name></msg>
+	<msg id="-120002"><name>FIRMWARE_UPDATE_CHECKSUM_FAILED</name></msg>
+	<msg id="-120003"><name>FIRMWARE_UPDATE_MALLOC_FAILED</name></msg>
+	<msg id="-120004"><name>FIRMWARE_UPDATE_DATA_READ_FAILED</name></msg>
+	<msg id="-130000"><name>ELK_CONFIG_PARSER_ERROR</name></msg>
+	<msg id="-140000"><name>HTTP_CLIENT_DNS_ERROR</name></msg>
+	<msg id="-140001"><name>HTTP_CLIENT_BASE64_ENCRYPTION_FAILED</name></msg>
+	<msg id="-140002"><name>HTTP_CLIENT_CONNECTION_TIMED_OUT</name></msg>
+	<msg id="-140003"><name>HTTP_CLIENT_WRITE_HEADER_FAILED</name></msg>
+	<msg id="-140004"><name>HTTP_CLIENT_WRITE_BODY_FAILED</name></msg>
+	<msg id="-140005"><name>HTTP_CLIENT_READ_RESPONSE_FAILED</name></msg>
+	<msg id="-140006"><name>HTTP_CLIENT_HEADER_NO_STATUS</name></msg>
+	<msg id="-140007"><name>HTTP_CLIENT_RESOURCE_MOVED</name></msg>
+	<msg id="-140008"><name>HTTP_CLIENT_REQUEST_FAILED</name></msg>
+	<msg id="-140009"><name>HTTP_CLIENT_NO_NETWORK</name></msg>
+	<msg id="-150000"><name>TCP_CLIENT_WRITE_FAILED</name></msg>
+	<msg id="-150100"><name>UDP_CLIENT_DNS_ERROR</name></msg>
+	<msg id="-160000"><name>PROTOCOL_READER_READ_ERROR</name></msg>
+	<msg id="-160001"><name>PROTOCOL_READER_BUFFER_OVERFLOW</name></msg>
+	<msg id="-160002"><name>PROTOCOL_READER_REOPEN_ERROR</name></msg>
+	<msg id="-170000"><name>WEB_MODULE_NO_FREE_SPACE</name></msg>
+	<msg id="-170001"><name>DEBUG_LOG</name></msg>
+	<msg id="-180000">
+		<name>SEP_NETWORK_SCAN_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-180001">
+		<name>SEP_NETWORK_KEY_EST_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-180002">
+		<name>SEP_NETWORK_DISCOVERY_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-180003">
+		<name>SEP_NETWORK_SYNCH_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-180004">
+		<name>SEP_MODULE_RESET_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-180005">
+		<name>SEP_MODULE_INVALID_CALL_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-180006">
+		<name>SEP_MODULE_UNKNOWN_ERROR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>
+	<msg id="-190001"><name>UDERR_ISY_API_NO_SPACE</name></msg>
+	<msg id="-190002"><name>UDERR_ISY_API_INVALID_8_3_FILENAME</name></msg>
+	<msg id="-190003"><name>UDERR_ISY_API_INVALID_PGM_FILENAME</name></msg>
+	<msg id="-190004"><name>UDERR_ISY_API_INCORRECT_PGM_KEY</name></msg>
+	<msg id="-190005"><name>UDERR_ISY_API_INVALID_PGM_URL_SEARCH_STRING</name></msg>
+	<msg id="-200000">
+		<name>DEVICE_DRIVER_ERROR_MSG</name>
+		<subDefinitions>
+			<subDefinition id="insteon" file="insterr.xml"/>
+			<subDefinition id="upb" file="upberr.xml"/>
+		</subDefinitions>
+	</msg>
+	<msg id="-210001"><name>CALL_HOME_PORTAL_NO_SOCKET</name></msg>
+	<msg id="-231001">
+		<name>UDERR_RTUCOL_CANNOT_CREATE_COLLECTOR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-231002">
+		<name>UDERR_RTUCOL_CANNOT_REGISTER_COLLECTOR</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-231003">
+		<name>UDERR_RTUCOL_QUEUE_FULL_EVENT_IGNORED</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-231004">
+		<name>UDERR_RTUCOL_INCOMPLETE_EVENT_DATA</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-231005">
+		<name>UDERR_RTUCOL_CANNOT_WRITE_DATA</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-232001">
+		<name>UDERR_RTUALG_ARRAY_X_OUT_OF_BOUNDS</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-232002">
+		<name>UDERR_RTUALG_ARRAY_XY_OUT_OF_BOUNDS</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-232003">
+		<name>UDERR_RTUALG_ARRAY_XYZ_OUT_OF_BOUNDS</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-232004">
+		<name>UDERR_RTUALG_OFFSET_ARRAY_X_OUT_OF_BOUNDS</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241001">
+		<name>RCS_TSTAT_SCHED_UNEXPECTED_TAG</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241002">
+		<name>RCS_TSTAT_SCHED_INVALID_DAY</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241003">
+		<name>RCS_TSTAT_SCHED_DAY_NOT_SPECIFIED</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241004">
+		<name>RCS_TSTAT_SCHED_INVALID_ENTRY</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241005">
+		<name>RCS_TSTAT_SCHED_INVALID_TIME</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241006">
+		<name>RCS_TSTAT_SCHED_INVALID_MODE</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241007">
+		<name>RCS_TSTAT_SCHED_INVALID_TEMP</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+	<msg id="-241008">
+		<name>RCS_TSTAT_SCHED_NOT_SUPPORTED</name>
+		<platforms>
+			<platform id="994"/>
+			<platform id="994q"/>
+		</platforms>
+	</msg>	
+</errorMessages>
+</LogInfo>

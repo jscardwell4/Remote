@@ -71,14 +71,8 @@ class BankItemCell: UITableViewCell {
 
   var changeHandler               : ((NSObject?)    -> Void)?
   var validationHandler           : ((NSObject?)    -> Bool)?
-  var pickerSelectionHandler      : ((NSObject?)    -> Void)?
-  var pickerCreateSelectionHandler: ((Void)         -> Void)?
   var buttonActionHandler         : ((Void)         -> Void)?
   var buttonEditingActionHandler  : ((Void)         -> Void)?
-  var shouldShowPicker            : ((BankItemCell) -> Bool)?
-  var shouldHidePicker            : ((BankItemCell) -> Bool)?
-  var didShowPicker               : ((BankItemCell) -> Void)?
-  var didHidePicker               : ((BankItemCell) -> Void)?
 
 
   /// MARK: Keyboard settings
@@ -291,7 +285,7 @@ class BankItemCell: UITableViewCell {
   private weak var stepper: UIStepper?
   private weak var textFieldℹ: UITextField?
   private weak var textViewℹ: UITextView?
-  private weak var picker: UIPickerView!
+  private weak var picker: UIPickerView?
 
 
   /// MARK: Miscellaneous properties
@@ -306,28 +300,50 @@ class BankItemCell: UITableViewCell {
 
   class var pickerHeight: CGFloat { return 162.0 }
 
+  var pickerSelectionHandler      : ((NSObject?)    -> Void)?
+  var pickerCreateSelectionHandler: ((Void)         -> Void)?
+  var shouldShowPicker            : ((BankItemCell) -> Bool)?
+  var shouldHidePicker            : ((BankItemCell) -> Bool)?
+  var didShowPicker               : ((BankItemCell) -> Void)?
+  var didHidePicker               : ((BankItemCell) -> Void)?
+
   var pickerData: [NSObject]? {
     didSet {
-      pickerEnabled = pickerData != nil
-      picker.reloadAllComponents()
+      if pickerData != nil {
+        picker = {
+          let view = UIPickerView()
+          view.setTranslatesAutoresizingMaskIntoConstraints(false)
+//          view.backgroundColor = UIColor.yellowColor()
+          view.delegate = self
+          view.dataSource = self
+          view.hidden = true
+          self.addSubview(view)
+          return view
+        }()
+        constrainWithFormat("|[picker]| :: V:[picker(==\(BankItemCell.pickerHeight))]|",
+                      views: ["picker": picker!])
+
+      } else {
+        picker?.removeFromSuperview()
+      }
     }
   }
 
   var pickerSelection: NSObject? {
     didSet {
       info = pickerSelection ?? pickerNilSelectionTitle
-      if picker.hidden == false {
-        picker.selectRow(pickerSelectionIndex, inComponent: 0, animated: true)
-      }
+      picker?.selectRow(pickerSelectionIndex, inComponent: 0, animated: true)
     }
   }
 
   var pickerSelectionIndex: Int {
-    if let idx = find(pickerData!, pickerSelection) {
-      return idx + prependedPickerItemCount
-    } else {
-      return 0
+    precondition(pickerEnabled, "this shouldn't get called unless we are actually using a picker view")
+    if pickerData != nil {
+      if let idx = find(pickerData!, pickerSelection) {
+        return idx + prependedPickerItemCount
+      }
     }
+    return 0
   }
 
   var pickerNilSelectionTitle: String? {
@@ -338,7 +354,7 @@ class BankItemCell: UITableViewCell {
     didSet { appendedPickerItemCount = pickerCreateSelectionTitle != nil ? 1 : 0 }
   }
 
-  var pickerEnabled = false
+  var pickerEnabled: Bool { return picker != nil }
   var prependedPickerItemCount = 0
   var appendedPickerItemCount = 0
 
@@ -362,15 +378,17 @@ class BankItemCell: UITableViewCell {
   }
 
   /** togglePicker */
-  func togglePicker() { if picker.hidden { showPickerView() } else { hidePickerView() } }
+  func togglePicker() {
+    precondition(pickerEnabled, "method should only be called when picker is enabled")
+    if picker!.hidden { showPickerView() } else { hidePickerView() }
+  }
 
   /** showPickerView */
   func showPickerView() {
     precondition(pickerEnabled, "method should only be called when picker is enabled")
-    if !picker.hidden { return }                                  		// Make sure picker is actually hidden
-    if shouldShowPicker ∅|| shouldShowPicker!(self) {             	// Check if we should show the picker
-      picker.selectRow(pickerSelectionIndex, inComponent: 0, animated: false)
-      picker.hidden = false
+    if picker!.hidden && shouldShowPicker ∅|| shouldShowPicker!(self) {
+      picker!.selectRow(pickerSelectionIndex, inComponent: 0, animated: false)
+      picker!.hidden = false
       didShowPicker?(self)
     }
   }
@@ -378,10 +396,9 @@ class BankItemCell: UITableViewCell {
   /** hidePickerView */
   func hidePickerView() {
     precondition(pickerEnabled, "method should only be called when picker is enabled")
-    if picker.hidden { return }                                  		// Make sure picker is actually visible
-    if shouldHidePicker ∅|| shouldHidePicker!(self) {             	// Check if we should hide the picker
-      picker.hidden = true
-      textFieldℹ?.resignFirstResponder()
+    if !picker!.hidden && shouldHidePicker ∅|| shouldHidePicker!(self) {
+      picker!.hidden = true
+      pickerSelectionHandler?(pickerSelection)
       didHidePicker?(self)
     }
   }
@@ -400,21 +417,7 @@ class BankItemCell: UITableViewCell {
   override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
-//    shouldIndentWhileEditing = false
     selectionStyle = .None
-    picker = {
-      let view = UIPickerView()
-      view.setTranslatesAutoresizingMaskIntoConstraints(false)
-//      view.backgroundColor = UIColor.yellowColor()
-      view.delegate = self
-      view.dataSource = self
-      view.hidden = true
-      self.addSubview(view)
-      return view
-      }()
-      constrainWithFormat("|[picker]| :: V:[picker(==\(BankItemCell.pickerHeight))]|",
-                    views: ["picker": picker])
-
     switch identifier {
       case .Label:
         contentView.constrainWithFormat(nameAndInfoCenterYConstraints,
@@ -562,7 +565,7 @@ class BankItemCell: UITableViewCell {
             if textFieldℹ!.isFirstResponder() { textFieldℹ!.resignFirstResponder() }
           default: break
       }
-      if !picker.hidden { hidePickerView() }
+       if !isEditingState && pickerEnabled && !picker!.hidden { hidePickerView() }
     }
   }
 
@@ -580,7 +583,6 @@ extension BankItemCell: UITextFieldDelegate {
   */
   func textFieldDidBeginEditing(textField: UITextField) {
     beginStateText = textField.text
-    if pickerData != nil { showPickerView() }
   }
 
   /**
@@ -590,7 +592,6 @@ extension BankItemCell: UITextFieldDelegate {
   */
   func textFieldDidEndEditing(textField: UITextField) {
     if textField.text != beginStateText { changeHandler?(infoDataType.objectFromText(textField.text)) }
-    if picker != nil && !picker!.hidden { hidePickerView() }
   }
 
   /**
@@ -740,7 +741,7 @@ extension BankItemCell: UIPickerViewDataSource {
   :returns: String?
   */
   func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return textFromObject(pickerDataItemForRow(row))
+    return textFromObject(pickerDataItemForRow(row)) ?? "wtf"
   }
 
 }
@@ -763,8 +764,7 @@ extension BankItemCell: UIPickerViewDelegate {
     else {
       if prependedPickerItemCount > 0 && row == 0 { pickerSelection = nil }
       else { pickerSelection = pickerData?[row - prependedPickerItemCount] }
-      pickerSelectionHandler?(pickerSelection)
-      // hidePickerView()
+//      pickerSelectionHandler?(pickerSelection)
     }
   }
 

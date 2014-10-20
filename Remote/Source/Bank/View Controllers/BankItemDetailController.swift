@@ -24,6 +24,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   let item: BankDisplayItemModel!
   weak var nameTextField: UITextField!
 
+  private weak var cellDisplayingPicker: BankItemCell?
+
   /**
   init:bundle:
 
@@ -155,6 +157,17 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   }
 
   /**
+  reloadRowsAtIndexPaths:animated:
+
+  :param: indexPaths [NSIndexPath]
+  :param: animated Bool = false
+  */
+  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation = .None) {
+    apply(unique(indexPaths.map{$0.section})){self.sections[$0].reloadRows()}
+    tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
+  }
+
+  /**
   rowForIndexPath:
 
   :param: indexPath NSIndexPath
@@ -192,20 +205,26 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
     if let identifier = identifierForIndexPath(indexPath) {
       cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? BankItemCell
-      cell?.shouldShowPicker = {
+       cell?.shouldShowPicker = {
         (c: BankItemCell!) -> Bool in
+          if self.cellDisplayingPicker != nil {
+            self.cellDisplayingPicker!.hidePickerView()
+            return false
+          }
           self.tableView.beginUpdates()
+          self.cellDisplayingPicker = c
           self.expandedRows.append(indexPath)
+          self.tableView.endUpdates()
           return true
       }
       cell?.shouldHidePicker = {
         (c: BankItemCell!) -> Bool in
           self.tableView.beginUpdates()
+          self.cellDisplayingPicker = nil
           self.expandedRows = self.expandedRows.filter{$0 != indexPath}
+          self.tableView.endUpdates()
           return true
       }
-      cell?.didShowPicker = { (c: BankItemCell!) in self.tableView.endUpdates() }
-      cell?.didHidePicker = { (c: BankItemCell!) in self.tableView.endUpdates() }
     }
 
     return cell
@@ -235,11 +254,15 @@ extension BankItemDetailController: UITableViewDelegate {
 
   :returns: UITableViewCellEditingStyle
   */
-//  override func         tableView(tableView: UITableView,
-//    editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
-//  {
-//    return .None
-//  }
+  override func         tableView(tableView: UITableView,
+    editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
+  {
+    if let row = rowForIndexPath(indexPath) {
+      return row.editingStyle
+    } else {
+      return .None
+    }
+  }
 
   /**
   tableView:willDisplayCell:forRowAtIndexPath:
@@ -401,11 +424,7 @@ extension BankItemDetailController: UITableViewDataSource {
   :returns: [AnyObject]?
   */
   override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-    let action = UITableViewRowAction(style: .Default, title: "Clear", handler: {
-      (rowAction: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-        println("Clear muthafucka!!!")
-    })
-    return nil // [action]
+    return rowForIndexPath(indexPath)?.editActions
   }
 
 }

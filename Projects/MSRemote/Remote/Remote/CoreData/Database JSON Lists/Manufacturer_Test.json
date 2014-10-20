@@ -1,0 +1,9 @@
+[
+  <@include Manufacturer_LG.json>,
+  <@include Manufacturer_Toshiba.json>,
+  <@include Manufacturer_Dish.json>,
+  <@include Manufacturer_Sony.json>,
+  <@include Manufacturer_Philips.json>,
+  <@include Manufacturer_Yamaha.json>,
+  <@include Manufacturer_Samsung.json>
+]

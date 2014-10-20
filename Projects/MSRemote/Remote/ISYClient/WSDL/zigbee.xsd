@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			targetNamespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/zigbee"
+			xmlns:udizb="http://www.universal-devices.com/wsdk/isy/3.0/objects/zigbee"
+			elementFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:documentation>
+				Copyright 2007-2013 Universal Devices, Inc.
+				All Rights Reserved
+			
+				Zigbee objects	
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- Zigbee -->
+	<xsd:simpleType name="ZigbeeNetworkStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+				The status of Zigbee Network
+				* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Established"></xsd:enumeration>				<!-- PAN has been establised -->
+			<xsd:enumeration value="Down"></xsd:enumeration>					<!-- No Network -->
+			<xsd:enumeration value="Scanning"></xsd:enumeration>				<!-- Scanning for networks within the channel range -->
+			<xsd:enumeration value="Scan Complete"></xsd:enumeration>			<!-- Scanning is complete. A list of networks can now be retried -->
+			<xsd:enumeration value="Joining"></xsd:enumeration>					<!-- Joining a specific PAN -->
+			<xsd:enumeration value="Discovering Clusters"></xsd:enumeration>	<!-- Discovering clusters -->
+			<xsd:enumeration value="Binding"></xsd:enumeration>					<!-- Binding to an end point -->
+			<xsd:enumeration value="Establishing PAN"></xsd:enumeration>		<!-- Trying to establish a PAN as Coordinator -->
+			<xsd:enumeration value="Key Negotiation"></xsd:enumeration>			<!-- Negotiating Security Keys -->
+			
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	
+	<xsd:simpleType name="ZigbeeNodeMode">
+		<xsd:annotation>
+			<xsd:documentation>
+				The mode of operations for a Zigbee NOde
+				* Applicable only to 994 Series or EMS platforms
+				"N/A", "COO", "FFD", "SED", "MED", "ZED"
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="N/A"></xsd:enumeration>					<!-- We do not know what it is -->
+			<xsd:enumeration value="COO"></xsd:enumeration>					<!-- Coordinator -->
+			<xsd:enumeration value="FFD"></xsd:enumeration>					<!-- Router -->
+			<xsd:enumeration value="MED"></xsd:enumeration>					<!-- Mobile/Sleepy End Device -->
+			<xsd:enumeration value="SED"></xsd:enumeration>					<!-- Sleepy End Device -->
+			<xsd:enumeration value="ZED"></xsd:enumeration>					<!-- End Device -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="ZigbeeCluster">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Identifies a cluster for an endpoint
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeClusters">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		A list of clusters for an endpoint
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cluster" type="udizb:ZigbeeCluster" minOccurs="0" maxOccurs="unbounded"/>	
+		</xsd:sequence>	
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeSignal">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Joined Zigbee Node's signal:
+		 		rssi is in dbm 
+		 		lqi is a number from 0 to 255. The higher the number the better 
+		 		the signal quality
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="rssi" type="xsd:int" use="required"/>
+		<xsd:attribute name="lqi" type="xsd:unsignedByte" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeEndpoint">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Zigbee Node Parameters
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="profileId" type="xsd:string" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="deviceId" type="xsd:string" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="inClusters" type="udizb:ZigbeeClusters" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="outClusters" type="udizb:ZigbeeClusters" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>	
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeEndpoints">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		A list of endpoints for a node
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="endpoint" type="udizb:ZigbeeEndpoint" minOccurs="0" maxOccurs="unbounded"/>	
+		</xsd:sequence>	
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeNode">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Zigbee Node Parameters
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="euid" type="xsd:string" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="signal" type="udizb:ZigbeeSignal" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="nodeId" type="xsd:string" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="parentId" type="xsd:string" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="ZBEndpoints" type="udizb:ZigbeeEndpoints" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="ts" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Last updated timestamp
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>	
+		<xsd:attribute name="isJoined" type="xsd:boolean" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+			 		Whether or not this node has actually joined the PAN
+				</xsd:documentation>
+			</xsd:annotation>	
+		</xsd:attribute>
+		<xsd:attribute name="isUDIRouter" type="xsd:boolean" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+			 		Whether or not this is a UDI brand Zigbee router/extender
+				</xsd:documentation>
+			</xsd:annotation>	
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeNodes">
+		<xsd:annotation>
+			<xsd:documentation>
+				Collection of Zigbee Node Parameters
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ZBNode" type="udizb:ZigbeeNode" minOccurs="0" maxOccurs="unbounded"/>	
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeNetwork">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Zigbee Network parameters (if established)
+		 		This is the reason why all elements are optional
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="url" type="xsd:string" minOccurs="0" maxOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The path for REST.
+						For instance, if the base URL is /rest/emeter and if this elemnet is
+						network, then the REST path to get directly to this object is /rest/emeter/network
+					</xsd:documentation>
+				</xsd:annotation>	
+			</xsd:element>
+			<xsd:element name="euid" type="xsd:string" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="nodeId" type="xsd:string" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="mode" type="udizb:ZigbeeNodeMode" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="panId" type="xsd:string" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="channel" type="xsd:int" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="power" type="xsd:int" minOccurs="0" maxOccurs="1"/>	
+		</xsd:sequence>	
+		<xsd:attribute name="status" type="udizb:ZigbeeNetworkStatus" use="required"/>
+		<xsd:attribute name="commError" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="isSEP" type="xsd:boolean" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeModule">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		The definition of the current module
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nodeId" type="xsd:string" minOccurs="0" maxOccurs="1"/>	
+			<xsd:element name="euid" type="xsd:string" minOccurs="0" maxOccurs="1"/>	
+		</xsd:sequence>	
+	</xsd:complexType>
+	
+	<xsd:complexType name="ZigbeeStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Current Zigbee status complete with network status and 
+		 		joined nodes (if any)
+		 		* Applicable only to 994 Series or EMS platforms
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ZBNetwork" type="udizb:ZigbeeNetwork" minOccurs="1" maxOccurs="1"/>	
+			<xsd:element name="ZBNodes" type="udizb:ZigbeeNodes" minOccurs="1" maxOccurs="unbounded"/>	
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

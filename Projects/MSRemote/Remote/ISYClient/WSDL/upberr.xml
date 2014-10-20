@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LogInfo>
+<description>
+	This file defines the permissible instances for the UPB sub errors
+</description>
+<errorMessages>
+	<msg id="2.1"><name>UPB_ERR_NID_INFO_NOT_SET</name></msg>
+	<msg id="3.1"><name>UPB_ERR_RESTORE_ADDRESS_INCOMPATIBLE_DEVICE_msg</name></msg>
+	<msg id="3.2"><name>UPB_ERR_RESTORE_SETUP_MODE_INCOMPATIBLE_DEVICE_msg</name></msg>
+	<msg id="3.3"><name>UPB_ERR_RESTORE_DEVICE_NOT_FOUND</name></msg>
+	<msg id="3.4"><name>UPB_ERR_RESTORE_DUPLICATE_ADDRESS</name></msg>
+	<msg id="3.5"><name>UPB_ERR_RESTORE_NOT_FULLY_RESTORED</name></msg>
+	<msg id="4.1"><name>UPB_ERR_ADD_DEVICE_UID_IN_USE</name></msg>
+	<msg id="4.2"><name>UPB_ERR_ADD_DEVICE_INVALID_DEVICE_ADDRESS</name></msg>
+	<msg id="4.3"><name>UPB_ERR_ADD_DEVICE_CANNOT_READ_DEVICE_CONTENTS</name></msg>
+	<msg id="4.4"><name>UPB_ERR_ADD_DEVICE_CANNOT_PUT_IN_WRITE_MODE</name></msg>
+	<msg id="4.5"><name>UPB_ERR_ADD_DEVICE_CANNOT_WRITE_NEW_ADDRESS</name></msg>
+	<msg id="4.6"><name>UPB_ERR_ADD_DEVICE_UNSUPPORTED_DEVICE_msg</name></msg>
+	<msg id="5.1"><name>UPB_ERR_SET_PROP_NID_INVALID</name></msg>
+	<msg id="5.2"><name>UPB_ERR_SET_PROP_UID_INVALID</name></msg>
+	<msg id="5.3"><name>UPB_ERR_SET_PROP_UID_CANNOT_CHANGE_IN_BATCH</name></msg>
+	<msg id="5.4"><name>UPB_ERR_SET_PROP_UID_INVALID_NID</name></msg>
+	<msg id="5.5"><name>UPB_ERR_SET_PROP_UID_NODE_EXISTS_AT_ADDRESS</name></msg>
+	<msg id="5.6"><name>UPB_ERR_SET_PROP_UID_CANNOT_READ_DEVICE</name></msg>
+	<msg id="5.7"><name>UPB_ERR_SET_PROP_UID_DEVICE_EXISTS_AT_ADDRESS</name></msg>
+	<msg id="5.8"><name>UPB_ERR_SET_PROP_UID_UNEXPECTED_ERROR</name></msg>
+	<msg id="6.1"><name>UPB_ERR_RESTORE_FROM_DEVICE_NO_SETUP_MODE_DEVICE</name></msg>
+	<msg id="6.2"><name>UPB_ERR_RESTORE_FROM_DEVICE_ALREADY_ADDED</name></msg>
+	<msg id="6.3"><name>UPB_ERR_RESTORE_FROM_DEVICE_DIFFERENT_NID</name></msg>
+	<msg id="6.4"><name>UPB_ERR_RESTORE_FROM_DEVICE_INVALID_UID</name></msg>
+	<msg id="6.5"><name>UPB_ERR_RESTORE_FROM_DEVICE_PRODUCT_MISMATCH</name></msg>
+	<msg id="6.6"><name>UPB_ERR_RESTORE_FROM_DEVICE_CANNOT_READ_DEVICE</name></msg>
+	<msg id="6.7"><name>UPB_ERR_RESTORE_FROM_DEVICE_UNSUPPORTED_PRODUCT</name></msg>
+</errorMessages>
+</LogInfo>

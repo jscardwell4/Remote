@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>App_Icon@2x-ios7</string>
+				<string>App_Icon</string>
+			</array>
+		</dict>
+	</dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Apple Symbols.ttf</string>
+		<string>AdobePiStd.otf</string>
+		<string>Fico.otf</string>
+		<string>modernpics.otf</string>
+		<string>gui_design_icons.otf</string>
+		<string>iconSweets.otf</string>
+		<string>iconic_fill.otf</string>
+		<string>iconic_stroke.otf</string>
+		<string>glyphish.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>Type Dynamic - Elysio Black Italic.otf</string>
+		<string>Type Dynamic - Elysio Black.otf</string>
+		<string>Type Dynamic - Elysio Bold Italic.otf</string>
+		<string>Type Dynamic - Elysio Bold.otf</string>
+		<string>Type Dynamic - Elysio Hairline Italic.otf</string>
+		<string>Type Dynamic - Elysio Hairline.otf</string>
+		<string>Type Dynamic - Elysio Light Italic.otf</string>
+		<string>Type Dynamic - Elysio Light.otf</string>
+		<string>Type Dynamic - Elysio Medium Italic.otf</string>
+		<string>Type Dynamic - Elysio Medium.otf</string>
+		<string>Type Dynamic - Elysio Regular Italic.otf</string>
+		<string>Type Dynamic - Elysio Thin Italic.otf</string>
+		<string>Type Dynamic - Elysio Thin.otf</string>
+		<string>Type Dynamic - Elysio.otf</string>
+	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>UIMainStoryboardFile</key>
+	<string>MainStoryboard</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UIRequiresPersistentWiFi</key>
+	<false/>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>

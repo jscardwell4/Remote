@@ -26,10 +26,13 @@ class BankItemDetailRow {
   var deletionHandler: ((Void) -> Void)?
 
   var editActions: [UITableViewRowAction]?
+  var editingStyle: UITableViewCellEditingStyle { return deletionHandler != nil || editActions != nil ? .Delete : .None }
 
   var isDeletable: Bool { return deletionHandler != nil }
   var deleteRemovesRow = true
   var isSelectable: Bool { return selectionHandler != nil }
+
+  weak var bankItemCell: BankItemCell?
 
   /// Properties that mirror `BankItemCell` properties
   ////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +80,7 @@ class BankItemDetailRow {
   :param: cell BankItemCell
   */
   func configureCell(cell: BankItemCell) {
+    bankItemCell = cell
     cell.name = name
     cell.info = info
     cell.infoDataType = infoDataType
@@ -84,11 +88,11 @@ class BankItemDetailRow {
     cell.changeHandler = changeHandler
 
     if enablePicker {
+      cell.pickerData = pickerData
       cell.pickerNilSelectionTitle = pickerNilSelectionTitle
       cell.pickerCreateSelectionTitle = pickerCreateSelectionTitle
       cell.pickerSelectionHandler = pickerSelectionHandler
       cell.pickerCreateSelectionHandler = pickerCreateSelectionHandler
-      cell.pickerData = pickerData
       cell.pickerSelection = pickerSelection
     }
 
@@ -192,7 +196,6 @@ class BankItemDetailRow {
 				}
 			}
 		}
-    deletionHandler = { pushableCategory.delete() }
     name = label
     info = pushableCategory
 	}

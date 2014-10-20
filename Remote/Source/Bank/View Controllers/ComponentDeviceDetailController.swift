@@ -13,10 +13,10 @@ import MoonKit
 class ComponentDeviceDetailController: BankItemDetailController {
 
   var componentDevice: ComponentDevice { return item as ComponentDevice }
-  var codes: [IRCode]? { didSet { sortByName(&codes) } }
-  var codeSets: [IRCodeSet]? { didSet { sortByName(&codeSets) } }
-  var manufacturers: [Manufacturer]? { didSet { sortByName(&manufacturers) } }
-  var networkDevices: [NetworkDevice]? { didSet { sortByName(&networkDevices) } }
+  // var codes: [IRCode]? { didSet { sortByName(&codes) } }
+  // var codeSets: [IRCodeSet]? { didSet { sortByName(&codeSets) } }
+  // var manufacturers: [Manufacturer]? { didSet { sortByName(&manufacturers) } }
+  // var networkDevices: [NetworkDevice]? { didSet { sortByName(&networkDevices) } }
 
 
   /**
@@ -28,10 +28,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is ComponentDevice, "we should have been given a component device")
 
-    codes = componentDevice.codeSet?.codes?.allObjects as? [IRCode]
-    codeSets = componentDevice.manufacturer?.codeSets
-    manufacturers = Manufacturer.findAllInContext(componentDevice.managedObjectContext!) as? [Manufacturer]
-    networkDevices = NetworkDevice.findAllInContext(componentDevice.managedObjectContext!) as? [NetworkDevice]
+    // codes = componentDevice.codeSet?.codes?.allObjects as? [IRCode]
+    // codeSets = componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet] ?? []
+    // manufacturers = Manufacturer.findAllInContext(componentDevice.managedObjectContext!) as? [Manufacturer]
+    // networkDevices = NetworkDevice.findAllInContext(componentDevice.managedObjectContext!) as? [NetworkDevice]
 
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////
@@ -50,8 +50,13 @@ class ComponentDeviceDetailController: BankItemDetailController {
       manufacturerRow.pickerCreateSelectionTitle = "⨁ New Manufacturer"
       manufacturerRow.pickerSelectionHandler = {
         self.componentDevice.manufacturer = $0 as? Manufacturer
-        self.tableView?.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .None)
+        self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
       }
+      manufacturerRow.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
+        (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+          self.componentDevice.manufacturer = nil
+          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
+      })]
       manufacturerRow.pickerCreateSelectionHandler = {
         let alert = UIAlertController(title: "Create Manufacturer",
           message: "Enter a name for the manufacturer",
@@ -75,14 +80,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
               manufacturer.name = text
               self.componentDevice.manufacturer = manufacturer
               dispatch_async(dispatch_get_main_queue()) {
-                if self.manufacturers != nil {
-                  self.manufacturers!.append(manufacturer)
-                  self.manufacturers!.sort{$0.0.name < $0.1.name}
-                } else {
-                  self.manufacturers = [manufacturer]
-                }
-                manufacturerRow.pickerData = self.manufacturers
-                self.tableView?.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .None)
+                self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
               }
             }
           }
@@ -91,7 +89,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      manufacturerRow.pickerData = self.manufacturers
+      manufacturerRow.pickerData = sortedByName(Manufacturer.findAllInContext(self.componentDevice.managedObjectContext!) as? [Manufacturer])
       manufacturerRow.pickerSelection = self.componentDevice.manufacturer
 
       let codeSetRow = BankItemDetailRow(identifier: .Button,
@@ -104,7 +102,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
       codeSetRow.pickerCreateSelectionTitle = "⨁ New Code Set"
       codeSetRow.pickerSelectionHandler = {
         self.componentDevice.codeSet = $0 as? IRCodeSet
-        self.tableView?.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+        self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
       }
       codeSetRow.pickerCreateSelectionHandler = {
         let alert = UIAlertController(title: "Create Code Set",
@@ -129,15 +127,6 @@ class ComponentDeviceDetailController: BankItemDetailController {
               codeSet.name = text
               codeSet.manufacturer = self.componentDevice.manufacturer
               self.componentDevice.codeSet = codeSet
-              dispatch_async(dispatch_get_main_queue()) {
-                if self.codeSets != nil {
-                  self.codeSets!.append(codeSet)
-                  self.codeSets!.sort{$0.0.name < $0.1.name}
-                } else {
-                  self.codeSets = [codeSet]
-                }
-                codeSetRow.pickerData = self.codeSets
-              }
             }
           }
           self.dismissViewControllerAnimated(true, completion: nil)
@@ -146,7 +135,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         self.presentViewController(alert, animated: true, completion: nil)
       }
       codeSetRow.pickerSelection = self.componentDevice.codeSet
-      codeSetRow.pickerData = self.codeSets
+      codeSetRow.pickerData = sortedByName(self.componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet] ?? [])
 
       return [manufacturerRow, codeSetRow]
     })
@@ -164,9 +153,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
       networkDeviceRow.name = "Network Device"
       networkDeviceRow.info = self.componentDevice.networkDevice
       networkDeviceRow.pickerNilSelectionTitle = "No Network Device"
-      //networkDeviceRow.pickerCreateSelectionTitle = "⨁ New Network Device"
       networkDeviceRow.pickerSelectionHandler = {self.componentDevice.networkDevice = $0 as? NetworkDevice }
-      networkDeviceRow.pickerData = self.networkDevices
+      networkDeviceRow.pickerData = sortedByName(NetworkDevice.findAllInContext(self.componentDevice.managedObjectContext!) as? [NetworkDevice])
       networkDeviceRow.pickerSelection = self.componentDevice.networkDevice
 
       let portRow = BankItemDetailRow(identifier: .Stepper)
@@ -207,7 +195,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
           }
         }
       }
-      powerOnRow.pickerData = self.codes
+      powerOnRow.pickerData = self.componentDevice.codeSet?.codes?.allObjects as? [IRCode]
 
       let powerOffRow = BankItemDetailRow(identifier: .Button)
       powerOffRow.name = "Off"
@@ -231,7 +219,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
           }
         }
       }
-      powerOffRow.pickerData = self.codes
+      powerOffRow.pickerData = self.componentDevice.codeSet?.codes?.allObjects as? [IRCode]
 
       return [powerOnRow, powerOffRow]
     })
@@ -281,12 +269,5 @@ class ComponentDeviceDetailController: BankItemDetailController {
   :param: style UITableViewStyle
   */
   override init?(style: UITableViewStyle) { super.init(style: style) }
-
-  /**
-  viewIRCodes
-  */
-  func viewIRCodes() {
-    //TODO: Fill out stub
-  }
 
 }

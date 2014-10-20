@@ -1,0 +1,154 @@
+{
+  "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
+  "home-remote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
+  "top-toolbar": {
+    "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
+    "name": "Top Toolbar",
+    "role": "toolbar",
+    "shape": "rectangle",
+    "constraints": {
+      "index": {
+        "batteryStatusButton": "8B75639D-9209-4AE8-BB2A-A76262FBA644",
+        "connectionStatusButton": "56157095-5D4A-4A58-971A-2E1B6D214E3B",
+        "editRemoteButton": "586B3D79-3766-42EA-95AE-AC7F4DDEBDF9",
+        "homeButton": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
+        "settingsButton": "7613EC8B-13A5-4836-9715-5931D72E2D72",
+        "topToolbar": "648C5ADA-F9E0-41BF-948A-6E980C657F97"
+      },
+      "format": [
+        "batteryStatusButton.centerY = homeButton.centerY",
+        "batteryStatusButton.left = connectionStatusButton.right + 20",
+        "batteryStatusButton.width = homeButton.width",
+        "connectionStatusButton.centerY = homeButton.centerY",
+        "connectionStatusButton.left = editRemoteButton.right + 20",
+        "connectionStatusButton.width = homeButton.width",
+        "editRemoteButton.centerY = homeButton.centerY",
+        "editRemoteButton.left = settingsButton.right + 20",
+        "editRemoteButton.width = homeButton.width",
+        "homeButton.centerY = topToolbar.centerY",
+        "homeButton.left = topToolbar.left + 4",
+        "settingsButton.centerY = homeButton.centerY",
+        "settingsButton.left = homeButton.right + 20",
+        "settingsButton.width = homeButton.width"
+      ]
+    },
+    "background-color.default": "gray@50%",
+    "subelements": [
+      {
+        "uuid": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
+        "name": "Home Button",
+        "role": "toolbar",
+        "constraints": {
+          "index.homeButton": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
+          "format": "homeButton.width ≥ 44"
+        },
+        "commands.default": {
+          "class": "system",
+          "type": "return-to-launch-screen"
+        },
+        "icons.default": {
+          "normal": {
+            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
+            "color": "white"
+          },
+          "highlighted": {
+            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
+            "color":  "#00AFFFFF"
+          },
+          "disabled": {
+            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
+            "color": "#7F7F7FFF"
+          }
+        }
+      },
+      {
+        "uuid": "7613EC8B-13A5-4836-9715-5931D72E2D72",
+        "name": "Settings Button",
+        "role": "toolbar",
+        "commands.default": {
+          "class": "system",
+          "type": "open-settings"
+        },
+        "icons.default": {
+          "normal": {
+            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
+            "color": "white"
+          },
+          "highlighted": {
+            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
+            "color":  "#00AFFFFF"
+          },
+          "disabled": {
+            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
+            "color": "#7F7F7FFF"
+          }
+        }
+      },
+      {
+        "uuid": "586B3D79-3766-42EA-95AE-AC7F4DDEBDF9",
+        "name": "Edit Remote Button",
+        "role": "toolbar",
+        "commands.default": {
+          "class": "system",
+          "type": "open-editor"
+        },
+        "icons.default": {
+          "normal": {
+            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
+            "color": "white"
+          },
+          "highlighted": {
+            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
+            "color":  "#00AFFFFF"
+          },
+          "disabled": {
+            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
+            "color": "#7F7F7FFF"
+          }
+        }
+      },
+      {
+        "uuid": "8B75639D-9209-4AE8-BB2A-A76262FBA644",
+        "name": "Battery Status Button",
+        "role": "battery-status",
+        "icons.default": {
+          "normal": {
+            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
+            "color": "white"
+          },
+          "highlighted": {
+            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
+            "color":  "#00AFFFFF"
+          },
+          "disabled": {
+            "image.uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384", // 856-gray-lightning-bolt.png
+            "color": "#7F7F7FFF"
+          },
+          "selected": {
+            "image.uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC", // 396-gray-power-plug.png
+            "color": "white"
+          }
+        }
+      },
+      {
+        "uuid": "56157095-5D4A-4A58-971A-2E1B6D214E3B",
+        "name": "Connection Status Button",
+        "role": "connection-status",
+        "icons.default": {
+          "normal": {
+            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
+            "color": "white"
+          },
+          "highlighted": {
+            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
+            "color":  "#00AFFFFF"
+          },
+          "disabled": {
+            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
+            "color": "#7F7F7FFF"
+          }
+        }
+      }
+    ]
+  }
+}

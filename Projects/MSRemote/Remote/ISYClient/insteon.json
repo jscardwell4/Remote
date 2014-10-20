@@ -1,0 +1,126 @@
+{
+  "xsd:schema": {
+    "elementFormDefault": "unqualified",
+    "xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+    "xmlns:uinsteon": "http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon",
+    "targetNamespace": "http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon",
+    "xsd:annotation": {
+      "xsd:documentation": "Copyright 2007-2012 Universal Devices, Inc.\n All Rights Reserved\n\nDefines all INSTEON unique enumerations and elements"
+    },
+    "xsd:simpleType": [
+      {
+        "name": "INSTEONControlTypes",
+        "xsd:annotation": {
+          "xsd:documentation": "All possible values for control.\nINSTEON Only."
+        },
+        "xsd:restriction": {
+          "base": "xsd:string",
+          "xsd:enumeration": [
+            {
+              "value": "DON"
+            },
+            {
+              "value": "DFON"
+            },
+            {
+              "value": "DOF"
+            },
+            {
+              "value": "DFOF"
+            },
+            {
+              "value": "ST"
+            },
+            {
+              "value": "OL"
+            },
+            {
+              "value": "RR"
+            },
+            {
+              "value": "BMAN"
+            },
+            {
+              "value": "SMAN"
+            },
+            {
+              "value": "BRT"
+            },
+            {
+              "value": "DIM"
+            },
+            {
+              "value": "CLISPH"
+            },
+            {
+              "value": "CLISPC"
+            },
+            {
+              "value": "CLIFS"
+            },
+            {
+              "value": "CLIMD"
+            },
+            {
+              "value": "CLIHUM"
+            },
+            {
+              "value": "CLIHCS"
+            },
+            {
+              "value": "CLIEMD"
+            },
+            {
+              "value": "CLISMD"
+            },
+            {
+              "value": "X10"
+            },
+            {
+              "value": "BEEP"
+            },
+            {
+              "value": "RESET"
+            },
+            {
+              "value": "ERR"
+            },
+            {
+              "value": "UOM"
+            },
+            {
+              "value": "TPW"
+            },
+            {
+              "value": "ADRPST"
+            },
+            {
+              "value": "PPW"
+            },
+            {
+              "value": "PF"
+            },
+            {
+              "value": "CC"
+            },
+            {
+              "value": "CV"
+            }
+          ]
+        }
+      },
+      {
+        "name": "INSTEONResponderTypes",
+        "xsd:annotation": {
+          "xsd:documentation": "INSTEON Responder Types -- none have been defined"
+        },
+        "xsd:restriction": {
+          "base": "xsd:string",
+          "xsd:enumeration": {
+            "value": "None"
+          }
+        }
+      }
+    ]
+  }
+}

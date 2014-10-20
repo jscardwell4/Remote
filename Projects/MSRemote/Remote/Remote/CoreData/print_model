@@ -1,0 +1,62 @@
+#!/usr/local/bin/python
+# coding=utf-8
+import sys
+import re
+import xml.etree.ElementTree as etree
+
+
+text = ''.join(sys.stdin.readlines())
+
+root = etree.fromstring(text)
+
+for child in root:
+    if child.tag == 'entity':
+        entity_name = child.attrib["name"]
+        is_abstract = "isAbstract" in child.attrib
+        has_parent = "parentEntity" in child.attrib
+        parent_name = child.attrib["parentEntity"] if has_parent else None
+        entity_string = entity_name
+        if is_abstract:
+            entity_string += "(abstract)"
+        if has_parent:
+            entity_string += " <%s>" % parent_name
+        print(entity_string)
+        for entity_child in child:
+            if entity_child.tag == 'attribute':
+                attr_name = entity_child.attrib["name"]
+                attr_string = "    %s" % attr_name
+                if "optional" in entity_child.attrib:
+                    attr_string += "(optional)"
+                attr_string += ": %s, " % entity_child.attrib["attributeType"]
+                if "minValueString" in entity_child.attrib and "maxValueString" in entity_child.attrib:
+                    attr_string += "%s ≤ " % entity_child.attrib["minValueString"]
+                    attr_string += "value ≤ %s, " % entity_child.attrib["maxValueString"]
+                elif "minValueString" in entity_child.attrib:
+                    attr_string += "%s ≤ value, " % entity_child.attrib["minValueString"]
+                elif "maxValueString" in entity_child.attrib:
+                    attr_string += "value ≤ %s, " % entity_child.attrib["maxValueString"]
+                if "defaultValueString" in entity_child.attrib:
+                    attr_string += "default = %s, " % entity_child.attrib["defaultValueString"]
+                if "regularExpressionString" in entity_child.attrib:
+                    attr_string += "regex=%s, " % entity_child.attrib["regularExpressionString"]
+                attr_string = re.sub(r', $', '', attr_string)
+                print(attr_string)
+            elif entity_child.tag == 'relationship':
+                rel_name = entity_child.attrib["name"]
+                rel_string = "    %s" % rel_name
+                if "optional" in entity_child.attrib:
+                    rel_string += "(optional)"
+                rel_string += ": %s" % entity_child.attrib["destinationEntity"]
+                if "toMany" in entity_child.attrib:
+                    rel_string += "*"
+                rel_string += ", "
+                if "minCount" in entity_child.attrib and "maxCount" in entity_child.attrib:
+                    rel_string += "%s ≤ " % entity_child.attrib["minCount"]
+                    rel_string += "count ≤ %s, " % entity_child.attrib["maxCount"]
+                elif "minCount" in entity_child.attrib:
+                    rel_string += "%s ≤ count, " % entity_child.attrib["minCount"]
+                elif "maxCount" in entity_child.attrib:
+                    rel_string += "count ≤ %s, " % entity_child.attrib["maxCount"]
+                rel_string += "delete=%s, " % entity_child.attrib["deletionRule"]
+                rel_string += "inverse=%s" % entity_child.attrib["inverseName"]
+                print(rel_string)

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:u="http://www.universal-devices.com/wsdk/isy/sep/1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="udi" targetNamespace="http://www.universal-devices.com/wsdk/isy/sep/1.0">
+      <wsdl:documentation>
+    	 Copyright 2007/2012 Universal Devices, Inc.
+    	 All Rights Reserved
+
+   		 Web Services Flag, Objects, Parameters, Messages, and Bindings for ISY 
+    	 WebService Port/Binding for ISY
+      </wsdl:documentation> 
+     <wsdl:import
+     	namespace="http://www.universal-devices.com/wsdk/isy/sep/1.0"
+     	location="udisepws1.wsdl">
+     </wsdl:import>
+     <wsdl:service name="UDISEPServices">
+    	<wsdl:port name="UDISEPServices_Port" binding="u:UDISEPServices_Binding">
+    		<wsdl:documentation>UDIServices defines the Port to which all UDI Services should be POSTED</wsdl:documentation>
+    		<soap:address location="http://192.168.0.195:8080/sepServices" />
+    	</wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

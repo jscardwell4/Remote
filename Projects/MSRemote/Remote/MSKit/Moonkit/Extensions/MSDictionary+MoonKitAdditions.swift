@@ -1,0 +1,94 @@
+//
+//  MSDictionary+MoonKitAdditions.swift
+//  MSKit
+//
+//  Created by Jason Cardwell on 9/18/14.
+//  Copyright (c) 2014 Jason Cardwell. All rights reserved.
+//
+
+import Foundation
+
+extension MSKeyPath: SequenceType {
+  public func generate() -> IndexingGenerator<[String]> {
+    return (keys as [String]!).generate()
+  }
+}
+
+extension MSDictionary: Printable {
+
+  convenience init(orderedDictionary: OrderedDictionary<NSObject,AnyObject>) {
+    self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
+  }
+
+  @objc public func inflate() {
+
+    // First gather a list of keys to inflate
+    let inflatableKeys = allKeys.filter {(key) in
+      if let k = key as? String { if k.numberOfMatchesForRegEx("(?:\\w\\.)+\\w") > 0 { return true } }
+      return false
+    } as [String]
+
+    // Enumerate the list inflating each key
+    for key in inflatableKeys {
+
+      var keypath = MSKeyPath(fromString:key)  // Create a keypath from the inflatable key
+      let first = keypath.popFirst()!          // This will become our key
+      let last = keypath.popLast()!            // This will become the deepest key in our value
+
+
+
+      var value: AnyObject = self[key]!  // Get the value we are embedding
+
+      // If our value is an array, we embed each value in the array and keep our value as an array
+      if let valueArray = value as? [AnyObject] {
+
+        value = NSArray(array: valueArray.map{(obj) in
+
+          var dict = MSDictionary()  // Create a dictionary within which to embed our value
+          var subdict = dict         // This will reference the dictionary to which our value entered
+
+          // If there are stops along the way from first to last, recursively embed in dictionaries
+          if !keypath.isEmpty {
+            for subkey in keypath {
+              subdict[subkey] = MSDictionary()
+              var subsubdict = subdict[subkey] as MSDictionary
+              subdict = subsubdict
+            }
+          }
+
+          subdict[last] = obj
+          return dict
+
+        })
+
+      }
+
+      // Otherwise we embed the value
+      else {
+        
+        var dict = MSDictionary()  // Create a dictionary within which to embed our value
+        var subdict = dict         // This will reference the dictionary to which our value entered
+
+        // If there are stops along the way from first to last, recursively embed in dictionaries
+        if !keypath.isEmpty {
+          for subkey in keypath {
+            subdict[subkey] = MSDictionary()
+            var subsubdict = subdict[subkey] as MSDictionary
+            subdict = subsubdict
+          }
+        }
+
+        subdict[last] = value
+        value = dict
+
+      }
+
+      let keyIndex = indexForKey(key)                      // Get the key's index so we can respect the order of our entries
+      removeObjectForKey(key)                              // Remove the compressed key-value entry
+      insertObject(value, forKey:first, atIndex:keyIndex)  // Insert the inflated key-value entry
+
+    }
+
+  }
+
+}

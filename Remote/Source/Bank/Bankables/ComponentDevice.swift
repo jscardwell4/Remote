@@ -52,6 +52,7 @@ class ComponentDevice: BankableModelObject {
       }
     }
   }
+//  @NSManaged var manufacturer: Manufacturer
   @NSManaged var primitiveManufacturer: Manufacturer?
   var manufacturer: Manufacturer? {
     get {
@@ -62,7 +63,7 @@ class ComponentDevice: BankableModelObject {
     }
     set {
       willChangeValueForKey("manufacturer")
-      primitiveManufacturer = newValue
+      primitiveManufacturer = newValue ?? nil
       didChangeValueForKey("manufacturer")
       if let manufacturer = primitiveManufacturer {
         if let codeSet = primitiveCodeSet {
@@ -70,7 +71,7 @@ class ComponentDevice: BankableModelObject {
             self.codeSet = nil
           }
         }
-      }
+      } else { primitiveCodeSet = nil }
     }
   }
   @NSManaged var networkDevice: NetworkDevice?

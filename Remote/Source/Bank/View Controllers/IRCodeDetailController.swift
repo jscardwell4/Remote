@@ -44,7 +44,7 @@ class IRCodeDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is IRCode, "we should have been given an ircode")
 
-    codeSets = irCode.manufacturer.codeSets
+    codeSets = irCode.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? []
 
       let section = BankItemDetailSection(sectionNumber: 0, createRows: {
 

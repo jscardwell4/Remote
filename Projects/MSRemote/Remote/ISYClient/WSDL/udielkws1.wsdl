@@ -1,0 +1,1708 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+				  xmlns:uelk="http://www.universal-devices.com/wsdk/isy/elk/1.0/objects" 
+				  xmlns:isyelk="http://www.universal-devices.com/wsdk/isy/elk/1.0" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+				  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+				  targetNamespace="http://www.universal-devices.com/wsdk/isy/elk/1.0">
+	<wsdl:documentation>
+		Copyright 2007-2012 Universal Devices, Inc.
+		All Rights Reserved
+
+		Web Services Types, Objects, Parameters, Messages, and Bindings for ELK Security System (ELK) Services
+	</wsdl:documentation>
+
+	<wsdl:types>
+	<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+				xmlns:isyelk="http://www.universal-devices.com/wsdk/isy/elk/1.0" 
+				xmlns:uelk="http://www.universal-devices.com/wsdk/isy/elk/1.0/objects" 
+				targetNamespace="http://www.universal-devices.com/wsdk/isy/elk/1.0" 
+				elementFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.universal-devices.com/wsdk/isy/elk/1.0/objects" schemaLocation="./elkobjs.xsd"/>
+
+	
+	<!-- Parameters used in messages -->
+	<xsd:complexType name="DisarmAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Disarms the specific area
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="area" minOccurs="1" maxOccurs="1" type="uelk:AreaIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be disarmed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="code" minOccurs="0" maxOccurs="1" type="uelk:AccessCode">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be disarmed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="ArmAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Arms the specific area
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="area" minOccurs="1" maxOccurs="1" type="uelk:AreaIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be armed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="armType" minOccurs="1" maxOccurs="1" type="uelk:ArmType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				How to arm (i.e. stay/away/etc.)	
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="code" minOccurs="0" maxOccurs="1" type="uelk:AccessCode">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be disarmed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="BypassAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Bypasses all violated burglar zones	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="area" minOccurs="1" maxOccurs="1" type="uelk:AreaIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be bypassed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="code" minOccurs="0" maxOccurs="1" type="uelk:AccessCode">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be disarmed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UnbypassAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Unbypasses all zones	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="area" minOccurs="1" maxOccurs="1" type="uelk:AreaIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be un-bypassed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="code" minOccurs="0" maxOccurs="1" type="uelk:AccessCode">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be disarmed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="BypassZoneToggleParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Toggles the bypass state of the specified zone              
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="zone" minOccurs="1" maxOccurs="1" type="uelk:ZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Zone number: a number between 1-208	
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="code" minOccurs="0" maxOccurs="1" type="uelk:AccessCode">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area to be disarmed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="QueryZoneVoltageParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries voltage for one or all zones	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="zone" minOccurs="1" maxOccurs="1" type="uelk:ZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Zone number: a number between 1-208	
+		 				If 0, then all zones
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="QueryZoneStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries zone status
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="zone" minOccurs="1" maxOccurs="1" type="uelk:ZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Zone number: a number between 1-208	
+		 				If 0, then all zones
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="QueryZoneTemperatureParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries zone status
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="zone" minOccurs="1" maxOccurs="1" type="uelk:ZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Zone number: a number between 1-208	
+		 				If 0, then all zones
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="GetZoneStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Retrieves zone status
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="zone" minOccurs="1" maxOccurs="1" type="uelk:ZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Zone number: a number between 1-208	
+		 				If 0, then all zones
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>		
+	
+	<xsd:complexType name="KeypadPressFuncKeyParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Simulates physically pressing a function key	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="keypad" minOccurs="1" maxOccurs="1" type="uelk:KeypadType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Keypad id (1-8);
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="funkKey" minOccurs="1" maxOccurs="1" type="uelk:FunctionKeyType">
+				<xsd:annotation>
+					<xsd:documentation>
+						The function key to simulate
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="QueryKeypadTemperatureParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries a keypad temmperature sensor	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="keypad" minOccurs="1" maxOccurs="1" type="uelk:KeypadType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Keypad id (1-8); 0 for all keypads
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetKeypadStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Retrieves the status of a keypad	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="keypad" minOccurs="1" maxOccurs="1" type="uelk:KeypadType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Keypad id (1-8); 0 for all keypads
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+		
+	<xsd:complexType name="DisplayTextOnAreaKeypadsParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Displays text on keypads in an area
+				Constraint: 2 lines, 16 bytes each, separated by \n or ^
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="area" minOccurs="1" maxOccurs="1" type="uelk:AreaIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The unique id which identifies the area for which the keypad is going to show the text. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="text" minOccurs="1" maxOccurs="1" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						The text to display.
+						Constraint: 2 lines, 16 bytes each, separated by \n or ^
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="beep" minOccurs="1" maxOccurs="1" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation>
+						True, then beep when the text is displayed. 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="offTimerSeconds" minOccurs="0" maxOccurs="1" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+						 0: No off timer
+						>0: The number of seconds to display the message
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetOutputStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Retrieves the status of on output:
+				Output: a number from 1-208	
+				0 for all
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="output" minOccurs="1" maxOccurs="1" type="uelk:OutputIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Ouput number: a number between 1-208	
+		 				0 for all
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SetOutputOnParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Turns an output on.
+				Output: a number from 1-208	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="output" minOccurs="1" maxOccurs="1" type="uelk:OutputIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Ouput number: a number between 1-208	
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="offTimerSeconds" minOccurs="0" maxOccurs="1" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+						 0: No off timer
+						>0: The number of seconds the output remains on 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SetOutputOffParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Turns an output of.
+				Output: a number from 1-208	
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="output" minOccurs="1" maxOccurs="1" type="uelk:OutputIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Ouput number: a number between 1-208	
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SpeakWordParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Speaks a word from the list of predefined words
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="uelk:SpeakWordType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				id: the id from the list of predefined words
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SpeakPhraseParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Speaks a word from the list of predefined phrases
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="uelk:SpeakPhraseType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				id: the id from the list of predefined phrases
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AudioCmdParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sends a command to the attached audio equipment
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="audioCmd" minOccurs="1" maxOccurs="1" type="uelk:AudioCommandType">
+				<xsd:annotation>
+					<xsd:documentation>
+						The command to be sent
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="zone" minOccurs="1" maxOccurs="1" type="uelk:AudioZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Audio Zone number: a number between 1-18	
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="source" minOccurs="1" maxOccurs="1" type="uelk:AudioSourceType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Audio Source number: a number between 1-12	
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="val" minOccurs="0" maxOccurs="1" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						The value for the command. 
+						e.g. Volume level for volume command
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ThermostatCmdParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameters for controlling a thermostat
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="uelk:ThermostatIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The id of the thermostat
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+			<xsd:element name="tstatcmd" minOccurs="1" maxOccurs="1" type="uelk:ThermostatCommandType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The command to be issued
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>	
+			<xsd:element name="val" minOccurs="1" maxOccurs="1" type="uelk:ThermostatEventValues">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The value depends on the thermostat. Please review elkobjs.xsd.
+		 				Temperatures: 1-99 (including set points)
+		 				Fan: uelk:ThermostatFanState
+		 				Mode: uelk:ThermostatModeState
+		 				Hold: uelk:ThermostatHoldState
+		 				
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>			
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="QueryThermostatParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameters for querying a thermostat
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="uelk:ThermostatIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The id of the thermostat.
+		 				0 for all 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetThermostatStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameters for querying a thermostat
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" minOccurs="1" maxOccurs="1" type="uelk:ThermostatIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The id of the thermostat.
+		 				0 for all 
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetAreaStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Parameters for getting the status of an area
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="area" minOccurs="1" maxOccurs="1" type="uelk:AreaIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The id of the area. When set to 0, the statuses of all areas
+		 				are returned
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="TriggerZoneParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Momentarily triggers a zone to the physical state of Open.
+				An error will occur if the zone is defined as normally open, or
+				is currently open.
+		 	</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="zoneId" minOccurs="1" maxOccurs="1" type="uelk:ZoneIDType">
+				<xsd:annotation>
+					<xsd:documentation>
+						The id of the zone to be triggered
+		 			</xsd:documentation>
+				</xsd:annotation>				
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="Empty"/>
+	
+	<xsd:complexType name="UDIDefaultResponse">
+		<xsd:sequence>
+			<xsd:element name="status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="info" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+
+	
+	<!-- Elements used in services -->	
+	
+	<xsd:element name="DisarmAreaElement" type="isyelk:DisarmAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Disarms the specific area
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	
+	<xsd:element name="ArmAreaElement" type="isyelk:ArmAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Arms the specific area
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="BypassAreaElement" type="isyelk:BypassAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Bypasses all violated burglar zones	
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="UnbypassAreaElement" type="isyelk:UnbypassAreaParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Unbypasses all zones	
+		 	</xsd:documentation>
+		</xsd:annotation>	
+	</xsd:element>
+	
+	<xsd:element name="BypassZoneToggleElement" type="isyelk:BypassZoneToggleParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Toggles the bypass state of the specified zone              
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="QueryZoneVoltageElement" type="isyelk:QueryZoneVoltageParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries voltage for one or all zones	
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="KeypadPressFuncKeyElement" type="isyelk:KeypadPressFuncKeyParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Simulates physically pressing a function key	
+		 	</xsd:documentation>
+		</xsd:annotation>	
+	</xsd:element>
+	
+	<xsd:element name="QueryKeypadTemperatureElement" type="isyelk:QueryKeypadTemperatureParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries a keypad temperature sensor	
+		 	</xsd:documentation>
+		</xsd:annotation>	
+	</xsd:element>
+	
+	<xsd:element name="GetKeypadStatusElement" type="isyelk:GetKeypadStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Retrieves the status of a keypad(s)
+		 	</xsd:documentation>
+		</xsd:annotation>	
+	</xsd:element>
+	
+	<xsd:element name="DisplayTextOnAreaKeypadsElement" type="isyelk:DisplayTextOnAreaKeypadsParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Displays text on keypads in an area
+				Constraint: 2 lines, 16 bytes each, separated by \n or ^
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="SetOutputOnElement" type="isyelk:SetOutputOnParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Turns an output on.
+				Output: a number from 1-208	
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="SetOutputOffElement" type="isyelk:SetOutputOffParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Turns an output of.
+				Output: a number from 1-208	
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="SpeakWordElement" type="isyelk:SpeakWordParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Speaks a word from the list of predefined words
+		 	</xsd:documentation>
+		</xsd:annotation>	
+	</xsd:element>
+	
+	<xsd:element name="SpeakPhraseElement" type="isyelk:SpeakPhraseParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Speaks a word from the list of predefined phrases
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="AudioCmdElement" type="isyelk:AudioCmdParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sends a command to the attached audio equipment
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="ThermostatCmdElement" type="isyelk:ThermostatCmdParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sends a command to the attached thermostat
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="QueryThermostatElement" type="isyelk:QueryThermostatParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sends a query request to the attached thermostat
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="GetThermostatStatusElement" type="isyelk:GetThermostatStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sends a query request to the attached thermostat
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="GetAreaStatusElement" type="isyelk:GetAreaStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Gets the status of an area. If area is 0, all areas are returned
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="QueryZoneStatusElement" type="isyelk:QueryZoneStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries the status of a zone. If zone is 0, all zone are queried
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetZoneStatusElement" type="isyelk:GetZoneStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Retrieves the status of a zone. If zone is 0, all zone are queried
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="QueryZoneTemperatureElement" type="isyelk:QueryZoneTemperatureParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries the temperatures of a zone. If zone is 0, all zone are queried
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	
+	<xsd:element name="TriggerZoneElement" type="isyelk:TriggerZoneParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Momentarily triggers a zone to the physical state of Open.
+				An error will occur if the zone is defined as normally open, or
+				is currently open
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>			
+	
+	<xsd:element name="GetOutputStatusElement" type="isyelk:GetOutputStatusParam">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries all outputs 
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="QueryOutputsElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries all outputs 
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	
+	<xsd:element name="QueryAllElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries all areas, zones, keypads, and outputs 
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetAllStatusElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Returns status for all areas, zones, keypads and outputs	
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="QueryAreaArmStatusElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries arming status of all areas 
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	 
+	<xsd:element name="QueryAllZoneStatusElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Queries status of all zones (does not query zone voltage) 
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetConfigElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Returns the configuration information such as IP address, 
+				Access Code, etc.
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetTopologyElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Returns the configuration information such as IP address, 
+				Access Code, etc.
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="RefreshTopologyElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Refreshes and returns topology by reading all information
+				from ELK
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetConnectedElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Returns the connection status of the system
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetEnabledElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Returns the enabled status of the system
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="GetSystemStatusElement" type="isyelk:Empty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Returns the system status
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+<!-- Event/Return type related objects -->
+	
+	<xsd:element name="status" type="uelk:ELKAllStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+				The status for the whole system
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="topology" type="uelk:Topology">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of Topology
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="ELK-Config" type="uelk:ELKConfig">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of Topology
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="SystemResponseElement" type="uelk:SystemResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of system connection/enable status
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="AreaResponseTypeElement" type="uelk:AreaResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of area events
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="ZoneResponseElement" type="uelk:ZoneResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of zone events
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="KeypadResponseElement" type="uelk:KeypadResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of Keypad events
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="OutputResponseElement" type="uelk:OutputResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of output events
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="ThermostatResponseElement" type="uelk:ThermostatResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The representation of output events
+		 	</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<!--  Response -->	
+	<xsd:element name="UDIDefaultRespnse" type="isyelk:UDIDefaultResponse"/>
+	
+	</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- MESSAGES -->
+	<wsdl:message name="DefaultResponseMessage">
+		<wsdl:part name="response" element="isyelk:UDIDefaultRespnse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="DisarmAreaRequest">
+		<wsdl:part name="DisarmArea" element="isyelk:DisarmAreaElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ArmAreaRequest">
+		<wsdl:part name="ArmArea" element="isyelk:ArmAreaElement"/>
+	</wsdl:message>
+
+	<wsdl:message name="BypassAreaRequest">
+		<wsdl:part name="BypassArea" element="isyelk:BypassAreaElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnbypassAreaRequest">
+		<wsdl:part name="UnbypassArea" element="isyelk:UnbypassAreaElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="BypassZoneToggleRequest">
+		<wsdl:part name="BypassZoneToggle" element="isyelk:BypassZoneToggleElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryAreaArmStatusRequest">
+		<wsdl:part name="QueryAreaArmStatus" element="isyelk:QueryAreaArmStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryAllZoneStatusRequest">
+		<wsdl:part name="QueryAllZoneStatus" element="isyelk:QueryAllZoneStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryZoneStatusRequest">
+		<wsdl:part name="QueryZoneStatus" element="isyelk:QueryZoneStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetZoneStatusRequest">
+		<wsdl:part name="GetZoneStatus" element="isyelk:GetZoneStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryZoneTemperatureRequest">
+		<wsdl:part name="QueryZoneTemperature" element="isyelk:QueryZoneTemperatureElement"/>
+	</wsdl:message>	
+	
+	<wsdl:message name="QueryZoneVoltageRequest">
+		<wsdl:part name="QueryZoneVoltage" element="isyelk:QueryZoneVoltageElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="TriggerZoneRequest">
+		<wsdl:part name="TriggerZone" element="isyelk:TriggerZoneElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="KeypadPressFuncKeyRequest">
+		<wsdl:part name="KeypadPressFuncKey" element="isyelk:KeypadPressFuncKeyElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryKeypadTemperatureRequest">
+		<wsdl:part name="QueryKeypadTemperature" element="isyelk:QueryKeypadTemperatureElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetKeypadStatusRequest">
+		<wsdl:part name="GetKeypadStatus" element="isyelk:GetKeypadStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="DisplayTextOnAreaKeypadsRequest">
+		<wsdl:part name="DisplayTextOnAreaKeypads" element="isyelk:DisplayTextOnAreaKeypadsElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetOutputStatusRequest">
+		<wsdl:part name="GetOutputStatus" element="isyelk:GetOutputStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryOutputsRequest">
+		<wsdl:part name="QueryOutputs" element="isyelk:QueryOutputsElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetOutputOnRequest">
+		<wsdl:part name="SetOutputOn" element="isyelk:SetOutputOnElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SetOutputOffRequest">
+		<wsdl:part name="SetOutputOff" element="isyelk:SetOutputOffElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SpeakWordRequest">
+		<wsdl:part name="SpeakWord" element="isyelk:SpeakWordElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SpeakPhraseRequest">
+		<wsdl:part name="SpeakPhrase" element="isyelk:SpeakPhraseElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="AudioCmdRequest">
+		<wsdl:part name="AudioCmd" element="isyelk:AudioCmdElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryAllRequest">
+		<wsdl:part name="QueryAll" element="isyelk:QueryAllElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ThermostatCmdRequest">
+		<wsdl:part name="ThermostatCmd" element="isyelk:ThermostatCmdElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="QueryThermostatRequest">
+		<wsdl:part name="QueryThermostat" element="isyelk:QueryThermostatElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetThermostatStatusRequest">
+		<wsdl:part name="GetThermostatStatus" element="isyelk:GetThermostatStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetAllStatusRequest">
+		<wsdl:part name="GetAllStatus" element="isyelk:GetAllStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetAllStatusResponse">
+		<wsdl:part name="status" element="isyelk:status"/>
+	</wsdl:message>
+	 
+	<wsdl:message name="GetConfigRequest">
+		<wsdl:part name="GetConfig" element="isyelk:GetConfigElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetConfigResponse">
+		<wsdl:part name="ELK-Config" element="isyelk:ELK-Config"/>
+	</wsdl:message>
+	 
+	<wsdl:message name="GetTopologyRequest">
+		<wsdl:part name="GetTopology" element="isyelk:GetTopologyElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetTopologyResponse">
+		<wsdl:part name="topology" element="isyelk:topology"/>
+	</wsdl:message>
+	
+	<wsdl:message name="RefreshTopologyRequest">
+		<wsdl:part name="RefreshTopology" element="isyelk:RefreshTopologyElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetConnectedRequest">
+		<wsdl:part name="GetConnected" element="isyelk:GetConnectedElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetEnabledRequest">
+		<wsdl:part name="GetEnabled" element="isyelk:GetEnabledElement"/>
+	</wsdl:message>
+	<wsdl:message name="GetSystemStatusRequest">
+		<wsdl:part name="GetSystemStatus" element="isyelk:GetSystemStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetAreaStatusRequest">
+		<wsdl:part name="GetAreaStatus" element="isyelk:GetAreaStatusElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="SystemStatusResponse">
+		<wsdl:part name="status" element="isyelk:SystemResponseElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="AreaStatusResponse">
+		<wsdl:part name="status" element="isyelk:AreaResponseTypeElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ZoneStatusResponse">
+		<wsdl:part name="status" element="isyelk:ZoneResponseElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="KeypadStatusResponse">
+		<wsdl:part name="status" element="isyelk:KeypadResponseElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="OutputStatusResponse">
+		<wsdl:part name="status" element="isyelk:OutputResponseElement"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ThermostatStatusResponse">
+		<wsdl:part name="status" element="isyelk:ThermostatResponseElement"/>
+	</wsdl:message>
+	
+	
+	<wsdl:portType name="UDIELKWebServices_PortType">
+		<wsdl:operation name="DisarmArea">
+			<wsdl:documentation>Disarms a security area</wsdl:documentation>
+			<wsdl:input message="isyelk:DisarmAreaRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ArmArea">
+			<wsdl:documentation>Arms a security area</wsdl:documentation>
+			<wsdl:input message="isyelk:ArmAreaRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="BypassArea">
+			<wsdl:documentation>Bypasses an area</wsdl:documentation>
+			<wsdl:input message="isyelk:BypassAreaRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UnbypassArea">
+			<wsdl:documentation>Releases the bypass of an area</wsdl:documentation>
+			<wsdl:input message="isyelk:UnbypassAreaRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="BypassZoneToggle">
+			<wsdl:documentation>Toggles the bypass status of a zone</wsdl:documentation>
+			<wsdl:input message="isyelk:BypassZoneToggleRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryAreaArmStatus">
+			<wsdl:documentation>Queries the Arm status of an area. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryAreaArmStatusRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryAllZoneStatus">
+			<wsdl:documentation>Queries the status of all zones. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryAllZoneStatusRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryZoneStatus">
+			<wsdl:documentation>Queries the status of a given zone or all zones. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryZoneStatusRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryZoneTemperature">
+			<wsdl:documentation>Queries the thermostats in a zone or all zones. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryZoneTemperatureRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>		
+		
+		<wsdl:operation name="GetZoneStatus">
+			<wsdl:documentation>Returns the status of a given zone or all zones. Results are returned synchronously.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetZoneStatusRequest"/>
+			<wsdl:output message="isyelk:ZoneStatusResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryZoneVoltage">
+			<wsdl:documentation>Queries the voltages in a zone or all zones. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryZoneVoltageRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="TriggerZone">
+			<wsdl:documentation>
+				Momentarily triggers a zone to the physical state of Open.
+				An error will occur if the zone is defined as normally open, or
+				is currently open.
+			</wsdl:documentation>
+			<wsdl:input message="isyelk:TriggerZoneRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="KeypadPressFuncKey">
+			<wsdl:documentation>Simulates pressing a function key on a keypad. </wsdl:documentation>
+			<wsdl:input message="isyelk:KeypadPressFuncKeyRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryKeypadTemperature">
+			<wsdl:documentation>Queries the temperature sensor on a keypad. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryKeypadTemperatureRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetKeypadStatus">
+			<wsdl:documentation>Returns the status of a keypad or all keypads. Results returned synchronously.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetKeypadStatusRequest"/>
+			<wsdl:output message="isyelk:KeypadStatusResponse"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DisplayTextOnAreaKeypads">
+			<wsdl:documentation>Displays the given text on an area keypad.</wsdl:documentation>
+			<wsdl:input message="isyelk:DisplayTextOnAreaKeypadsRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetOutputStatus">
+			<wsdl:documentation>Returns the status of an output or all outputs. Results returned synchronously.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetOutputStatusRequest"/>
+			<wsdl:output message="isyelk:OutputStatusResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryOutputs">
+			<wsdl:documentation>Queries an output or all outputs. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryOutputsRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetOutputOn">
+			<wsdl:documentation>Turns on an output.</wsdl:documentation>
+			<wsdl:input message="isyelk:SetOutputOnRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetOutputOff">
+			<wsdl:documentation>Turns off an output.</wsdl:documentation>
+			<wsdl:input message="isyelk:SetOutputOffRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="AudioCmd">
+			<wsdl:documentation>Sends a command to an attached A/V equipment.</wsdl:documentation>
+			<wsdl:input message="isyelk:AudioCmdRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ThermostatCmd">
+			<wsdl:documentation>Sends a command to a thermostat.</wsdl:documentation>
+			<wsdl:input message="isyelk:ThermostatCmdRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetThermostatStatus">
+			<wsdl:documentation>Returns the status of a thermostat or all thermostats. Results returned synchronously.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetThermostatStatusRequest"/>
+			<wsdl:output message="isyelk:ThermostatStatusResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryThermostat">
+			<wsdl:documentation>Queries the status of a thermostat or all thermostats. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryThermostatRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SpeakWord">
+			<wsdl:documentation>Causes the system to speak/vocalize the given word.</wsdl:documentation>
+			<wsdl:input message="isyelk:SpeakWordRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SpeakPhrase">
+			<wsdl:documentation>Causes the system to speak/vocalize the given phrase.</wsdl:documentation>
+			<wsdl:input message="isyelk:SpeakPhraseRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryAll">
+			<wsdl:documentation>Queries all system settings. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:QueryAllRequest"/>
+			<wsdl:output message="isyelk:DefaultResponseMessage"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetAllStatus">
+			<wsdl:documentation>Retrieves all system settings. Returns results synchronously .</wsdl:documentation>
+			<wsdl:input message="isyelk:GetAllStatusRequest"/>
+			<wsdl:output message="isyelk:GetAllStatusResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetConfig">
+			<wsdl:documentation>Retrieves ELK/ISY configuration parameters.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetConfigRequest"/>
+			<wsdl:output message="isyelk:GetConfigResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetTopology">
+			<wsdl:documentation>Retrieves ELK configuration. Returns result synchronously.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetTopologyRequest"/>
+			<wsdl:output message="isyelk:GetTopologyResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="RefreshTopology">
+			<wsdl:documentation>Queries ELK configuration. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:RefreshTopologyRequest"/>
+			<wsdl:output message="isyelk:GetTopologyResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetConnected">
+			<wsdl:documentation>Returns whether or not ISY/ELK are connected to one another.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetConnectedRequest"/>
+			<wsdl:output message="isyelk:SystemStatusResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetEnabled">
+			<wsdl:documentation>Returns whether or not ELK Module is enabled.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetEnabledRequest"/>
+			<wsdl:output message="isyelk:SystemStatusResponse"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetAreaStatus">
+			<wsdl:documentation>Retrieves the status for an area or all areas. Returns results synchronously.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetAreaStatusRequest"/>
+			<wsdl:output message="isyelk:AreaStatusResponse"/>
+		</wsdl:operation>		
+		
+		<wsdl:operation name="GetSystemStatus">
+			<wsdl:documentation>Retrieves the system status. Results are published as events.</wsdl:documentation>
+			<wsdl:input message="isyelk:GetSystemStatusRequest"/>
+			<wsdl:output message="isyelk:SystemStatusResponse"/>
+		</wsdl:operation>		
+
+	</wsdl:portType>
+
+	<wsdl:binding name="UDIELKWebServices_Binding" type="isyelk:UDIELKWebServices_PortType">
+		<wsdl:documentation>UDI Binding binds the concrete Port (UDI ELK Web Services) to the Abstract Port Type (UDIELKWebServices_PortType)</wsdl:documentation>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="DisarmArea">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ArmArea">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="BypassArea">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="UnbypassArea">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="BypassZoneToggle">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryAreaArmStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryAllZoneStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryZoneStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetZoneStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		
+		<wsdl:operation name="QueryZoneTemperature">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="QueryZoneVoltage">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="TriggerZone">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="KeypadPressFuncKey">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryKeypadTemperature">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetKeypadStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="DisplayTextOnAreaKeypads">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetOutputStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryOutputs">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetOutputOn">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SetOutputOff">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SpeakWord">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="SpeakPhrase">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="AudioCmd">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ThermostatCmd">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="QueryThermostat">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>			
+		
+		<wsdl:operation name="GetThermostatStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>			
+
+		<wsdl:operation name="QueryAll">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetAllStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetConfig">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetTopology">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="RefreshTopology">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetConnected">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetEnabled">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="GetSystemStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>			
+		
+		<wsdl:operation name="GetAreaStatus">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		
+
+	</wsdl:binding>
+</wsdl:definitions>

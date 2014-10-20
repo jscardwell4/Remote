@@ -14,34 +14,35 @@ import MoonKit
 class Manufacturer: BankableModelObject {
 
   @NSManaged var codes: NSSet
-  @NSManaged var primitiveCodeSets: NSSet
-  var codeSets: [IRCodeSet] {
-    get {
-      willAccessValueForKey("codeSets")
-      let codeSets = primitiveCodeSets.allObjects as? [IRCodeSet]
-      didAccessValueForKey("codeSets")
-      return codeSets ?? []
-    }
-    set {
-      willChangeValueForKey("codeSets")
-      primitiveCodeSets = NSSet(array: newValue)
-      didChangeValueForKey("codeSets")
-    }
-  }
-  @NSManaged var primitiveDevices: NSSet
-  var devices: [ComponentDevice] {
-    get {
-      willAccessValueForKey("devices")
-      let devices = primitiveDevices.allObjects as? [ComponentDevice]
-      didAccessValueForKey("devices")
-      return devices ?? []
-    }
-    set {
-      willChangeValueForKey("devices")
-      primitiveDevices = NSSet(array: newValue)
-      didChangeValueForKey("devices")
-    }
-  }
+  @NSManaged var codeSets: NSSet
+//  var codeSets: [IRCodeSet] {
+//    get {
+//      willAccessValueForKey("codeSets")
+//      let codeSets = primitiveCodeSets.allObjects as? [IRCodeSet]
+//      didAccessValueForKey("codeSets")
+//      return codeSets ?? []
+//    }
+//    set {
+//      willChangeValueForKey("codeSets")
+//      primitiveCodeSets = NSSet(array: newValue)
+//      didChangeValueForKey("codeSets")
+//    }
+//  }
+  @NSManaged var devices: NSSet
+//  @NSManaged var primitiveDevices: NSSet
+//  var devices: [ComponentDevice] {
+//    get {
+//      willAccessValueForKey("devices")
+//      let devices = primitiveDevices.allObjects as? [ComponentDevice]
+//      didAccessValueForKey("devices")
+//      return devices ?? []
+//    }
+//    set {
+//      willChangeValueForKey("devices")
+//      primitiveDevices = NSSet(array: newValue)
+//      didChangeValueForKey("devices")
+//    }
+//  }
 
   class func manufacturerWithName(name: String, context: NSManagedObjectContext) -> Manufacturer {
     var manufacturer: Manufacturer!

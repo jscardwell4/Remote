@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+# coding: utf-8
+import sys
+import argparse
+import glob
+import uuid
+import os
+import re
+
+json_file_string = None
+
+
+def spacer_for_depth(depth):
+    return ' ' * (depth * 4)
+
+
+def add_category(category_dir, depth):
+    global json_file_string
+    depth_spacer = spacer_for_depth(depth)
+    depth_plus_one_spacer = spacer_for_depth(depth + 1)
+    json_file_string += depth_spacer + '{\n' + depth_plus_one_spacer + '"uuid": "' + str(uuid.uuid4()).upper() + '",\n'
+    json_file_string += depth_plus_one_spacer + '"name": "' + os.path.basename(category_dir) + '"'
+    process_directory(category_dir, depth)
+    json_file_string += '\n' + depth_spacer + '}'
+
+
+def subcategories_for_category(category_dir):
+    return [directory for directory in glob.glob(category_dir + '/*') if not directory.endswith('imageset')]
+
+
+def images_for_category(category_dir):
+    return [directory for directory in glob.glob(category_dir + '/*') if directory.endswith('imageset')]
+
+
+def add_image(imageset_dir, depth):
+    global json_file_string
+    depth_spacer = spacer_for_depth(depth)
+    depth_plus_one_spacer = spacer_for_depth(depth + 1)
+    json_file_string += depth_spacer + '{\n' + depth_plus_one_spacer + '"uuid": "' + str(uuid.uuid4()).upper() + '",\n'
+    image_set_name = os.path.basename(imageset_dir[:-9])
+    json_file_string += depth_plus_one_spacer + '"asset-name": ' + '"' + image_set_name + '",\n'
+    image_set_pretty_name = re.sub(r'(?<=[^ ])-(?=[^ ])', ' ', re.sub(r'^[0-9]+-', '', image_set_name)).title()
+    json_file_string += depth_plus_one_spacer + '"name": "' + image_set_pretty_name + '"\n' + depth_spacer + '}'
+
+
+def process_directory(directory, depth):
+    """Process the directory content creating images for 'imageset' directories and subcategories for any other directories"""
+    global json_file_string
+    categories = subcategories_for_category(directory)         # list of imageset directories
+    images = images_for_category(directory)                    # list of subcategory directories
+    depth_spacer = spacer_for_depth(depth)
+    depth_plus_one_spacer = spacer_for_depth(depth + 1)
+    if depth > 0:
+        if len(images):
+            json_file_string += ",\n" + depth_plus_one_spacer + '"images": [\n'
+            for imageset_dir in images:
+                add_image(imageset_dir, depth + 2)
+                json_file_string += ",\n"
+            json_file_string = json_file_string[:-2] + "\n" + depth_plus_one_spacer + "]"
+        if len(categories):
+            json_file_string += ",\n" + depth_plus_one_spacer + '"subcategories": [\n'
+            for category_dir in categories:
+                add_category(category_dir, depth + 2)
+                json_file_string += ",\n"
+            json_file_string = json_file_string[:-2] + "\n" + depth_plus_one_spacer + "]"
+
+    else:
+        for category in categories:
+            add_category(category, depth + 1)                  # add category json at plus one depth
+            json_file_string += ",\n"                          # add comma newline separator
+        json_file_string = json_file_string[:-2]               # remove last comma newline
+
+
+def main(args):
+    """Generate json array with image categories and images derived top down from root of xcassets directory"""
+    global json_file_string
+    json_file_string = '[\n'                  # initialize output string with opening bracket
+    process_directory(args.xcassets, 0)       # recursively build from xcassets root
+    # json_file_string = json_file_string[:-1]  # drop last character
+    json_file_string += '\n]\n'               # add closing bracket and new line
+    print(json_file_string)                   # print json to stdout
+    return 0
+
+# parse args and run main
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('xcassets', help="Path to Xcode assets to fix")
+    args = parser.parse_args()
+    sys.exit(main(args))
