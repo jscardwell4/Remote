@@ -11,7 +11,7 @@ import MoonKit
 
 class ITachDeviceDetailController: BankItemDetailController {
 
-	var iTachDevice: ITachDevice { return item as ITachDevice }
+  var iTachDevice: ITachDevice { return item as ITachDevice }
 
   /**
   initWithItem:editing:
@@ -28,27 +28,27 @@ class ITachDeviceDetailController: BankItemDetailController {
 
     let mainSection = BankItemDetailSection(sectionNumber: 0, createRows: {
 
-			let uniqueIdentifierRow = BankItemDetailRow(label: "Identifier", value: self.iTachDevice.uniqueIdentifier)
-			let makeRow = BankItemDetailRow(label: "Make", value: self.iTachDevice.make)
-			let modelRow = BankItemDetailRow(label: "Model", value: self.iTachDevice.model)
-			let configURLRow = BankItemDetailRow(label: "Config-URL", value: self.iTachDevice.configURL)
-			let revisionRow = BankItemDetailRow(label: "Revision", value: self.iTachDevice.revision)
-			let pcbPNRow = BankItemDetailRow(label: "Pcb_PN", value: self.iTachDevice.pcbPN)
-			let pkgLevelRow = BankItemDetailRow(label: "Pkg_Level", value: self.iTachDevice.pkgLevel)
-			let sDKClassRow = BankItemDetailRow(label: "SDKClass", value: self.iTachDevice.sdkClass)
+      let uniqueIdentifierRow = BankItemDetailRow(label: "Identifier", value: self.iTachDevice.uniqueIdentifier)
+      let makeRow = BankItemDetailRow(label: "Make", value: self.iTachDevice.make)
+      let modelRow = BankItemDetailRow(label: "Model", value: self.iTachDevice.model)
+      let configURLRow = BankItemDetailRow(label: "Config-URL", value: self.iTachDevice.configURL)
+      let revisionRow = BankItemDetailRow(label: "Revision", value: self.iTachDevice.revision)
+      let pcbPNRow = BankItemDetailRow(label: "Pcb_PN", value: self.iTachDevice.pcbPN)
+      let pkgLevelRow = BankItemDetailRow(label: "Pkg_Level", value: self.iTachDevice.pkgLevel)
+      let sDKClassRow = BankItemDetailRow(label: "SDKClass", value: self.iTachDevice.sdkClass)
 
-			return [uniqueIdentifierRow, makeRow, modelRow, configURLRow, revisionRow, pcbPNRow, pkgLevelRow, sDKClassRow]
+      return [uniqueIdentifierRow, makeRow, modelRow, configURLRow, revisionRow, pcbPNRow, pkgLevelRow, sDKClassRow]
 
-		})
+    })
 
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////
 
-		let componentDevicesSection = BankItemDetailSection(sectionNumber: 1, title: "Component Devices", createRows: {
+    let componentDevicesSection = BankItemDetailSection(sectionNumber: 1, title: "Component Devices", createRows: {
       return sortedByName(self.iTachDevice.componentDevices).map{BankItemDetailRow(pushableItem: $0)} ?? []
-		})
+    })
 
-		sections = [mainSection, componentDevicesSection]
+    sections = [mainSection, componentDevicesSection]
 
   }
 
@@ -67,7 +67,7 @@ class ITachDeviceDetailController: BankItemDetailController {
 
   :param: style UITableViewStyle
   */
-  override init?(style: UITableViewStyle) { super.init(style: style) }
+  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   init:

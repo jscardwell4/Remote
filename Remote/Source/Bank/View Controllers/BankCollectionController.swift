@@ -26,6 +26,8 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   private lazy var zoomView: BankCollectionZoom? = BankCollectionZoom(frame: self.view.bounds, delegate: self)
 
+  private var cellShowingDelete: BankCollectionCell?
+
   private var exportAlertAction: UIAlertAction?
   private var existingFiles: [String] = []
 
@@ -46,8 +48,8 @@ class BankCollectionController: UICollectionViewController, BankController {
         exportSelection.removeAll(keepCapacity: false)  // If entering, make sure our export items collection is empty
 
         // And, make sure no cells are selected
-        if let indexPaths = collectionView!.indexPathsForSelectedItems() as? [NSIndexPath] {
-          for indexPath in indexPaths { collectionView!.deselectItemAtIndexPath(indexPath, animated: true) }
+        if let indexPaths = collectionView.indexPathsForSelectedItems() as? [NSIndexPath] {
+          for indexPath in indexPaths { collectionView.deselectItemAtIndexPath(indexPath, animated: true) }
         }
 
         // Set right bar button items
@@ -64,12 +66,12 @@ class BankCollectionController: UICollectionViewController, BankController {
 
       }
 
-      collectionView!.allowsMultipleSelection = exportSelectionMode  // Update selection mode
+      collectionView.allowsMultipleSelection = exportSelectionMode  // Update selection mode
 
       navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
 
       // Update visible cells
-      collectionView?.setValue(cellIndicatorImage, forKeyPath: "visibleCells.indicatorImage")
+      collectionView.setValue(cellIndicatorImage, forKeyPath: "visibleCells.indicatorImage")
 
     }
   }
@@ -97,11 +99,11 @@ class BankCollectionController: UICollectionViewController, BankController {
 
       // Create the collection view
       let collectionView = UICollectionView(frame: UIScreen.mainScreen().bounds, collectionViewLayout: self.layout)
-      collectionView?.backgroundColor = Bank.backgroundColor
+      collectionView.backgroundColor = Bank.backgroundColor
 
       // Register header and cell classes
-      collectionView?.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: CategoryCellIdentifier)
-      collectionView?.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: ItemCellIdentifier)
+      collectionView.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: CategoryCellIdentifier)
+      collectionView.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: ItemCellIdentifier)
       return collectionView
 
     }()
@@ -113,22 +115,20 @@ class BankCollectionController: UICollectionViewController, BankController {
       if self.category.previewableItems {
 
         // Create the segmented control
-        if let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
+        let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
                                                                     UIImage(named: "1073-grid-1-toolbar-selected")!,
                                                                     UIImage(named: "1076-grid-4-toolbar")!,
                                                                     UIImage(named: "1076-grid-4-toolbar-selected")!])
-        {
-          displayOptions.selectedSegmentIndex = 0
-          displayOptions.toggleAction = {[unowned self] control in
-            self.useListView = control.selectedSegmentIndex == 0
-            self.layout.viewingMode = self.useListView ? .List : .Thumbnail
-            self.layout.invalidateLayout()
-          }
-          let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
-
-          // Return the toolbar with segmented control added
-          return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
+        displayOptions.selectedSegmentIndex = 0
+        displayOptions.toggleAction = {[unowned self] control in
+          self.useListView = control.selectedSegmentIndex == 0
+          self.layout.viewingMode = self.useListView ? .List : .Thumbnail
+          self.layout.invalidateLayout()
         }
+        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+
+        // Return the toolbar with segmented control added
+        return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
       }
 
       // Otherwise return the default toolbar items
@@ -272,13 +272,25 @@ class BankCollectionController: UICollectionViewController, BankController {
   /// MARK: - Actions
   ////////////////////////////////////////////////////////////////////////////////
 
-   /**
+  /**
   deleteItem:
 
   :param: item BankDisplayItemModel
   */
   func deleteItem(item: BankDisplayItemModel) {
-    if item.editable { item.delete() }
+    precondition(item.editable, "this method should not be called when item is not editable")
+    println("deleteItem(item: \(item.name))")
+//    item.delete()
+  }
+
+  /**
+  deleteCategory:
+
+  :param: category BankDisplayItemCategory
+  */
+  func deleteCategory(category: BankDisplayItemCategory) {
+    println("deleteCategory(category: \(category.title))")
+//    category.delete()
   }
 
   /**
@@ -450,13 +462,13 @@ extension BankCollectionController {
       exportSelection.removeAll(keepCapacity: false)
 
       // Enumerate the selected index paths
-      for indexPath in collectionView!.indexPathsForSelectedItems() as [NSIndexPath] {
+      for indexPath in collectionView.indexPathsForSelectedItems() as [NSIndexPath] {
 
         // Deselect the cell
-        collectionView!.deselectItemAtIndexPath(indexPath, animated: true)
+        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
 
         // Update the cell image if it is visible
-        if let cell = collectionView!.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
           cell.indicatorImage = IndicatorImage
         }
 
@@ -501,7 +513,9 @@ extension BankCollectionController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CategoryCellIdentifier,
                                                             forIndexPath: indexPath) as BankCollectionCategoryCell
         let subcategory = category.subcategories[indexPath.row]
-        cell.labelText = subcategory.title
+        cell.category = subcategory
+        cell.deleteAction = {self.deleteCategory(subcategory)}
+        cell.showingDeleteChangeHandler = {self.cellShowingDelete?.hideDelete(); self.cellShowingDelete = $0.showingDelete ? $0 : nil}
         return cell
 
       default:
@@ -509,6 +523,8 @@ extension BankCollectionController: UICollectionViewDataSource {
                                                             forIndexPath: indexPath) as BankCollectionItemCell
         let item = category.items[indexPath.row]
         cell.item = item
+        cell.deleteAction = {self.deleteItem(item)}
+        cell.showingDeleteChangeHandler = {self.cellShowingDelete?.hideDelete(); self.cellShowingDelete = $0.showingDelete ? $0 : nil}
         cell.previewActionHandler = {self.zoomItem(item)}
         return cell
     }
@@ -542,12 +558,12 @@ extension BankCollectionController: UICollectionViewDelegate {
                willDisplayCell cell: UICollectionViewCell,
             forItemAtIndexPath indexPath: NSIndexPath)
   {
-
-    if let bankCell = cell as? BankCollectionItemCell {
-      bankCell.indicatorImage = (exportSelectionMode
-                                  ? (contains(exportSelection){bankCell.item!.isEqual($0)} ? IndicatorImageSelected : IndicatorImage)
-                                  : nil)
-    }
+// FIXME: Needs updating since BankCollectionCell refactored
+//    if let bankCell = cell as? BankCollectionCell {
+//      bankCell.indicatorImage = (exportSelectionMode
+//                                  ? (contains(exportSelection){bankCell.item!.isEqual($0)} ? IndicatorImageSelected : IndicatorImage)
+//                                  : nil)
+//    }
   }
 
   /**
@@ -557,17 +573,16 @@ extension BankCollectionController: UICollectionViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-
-    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
-
-      // Check if we are selecting items to export
-      if exportSelectionMode {
-        exportSelection = exportSelection.filter{!cell.item!.isEqual($0)}  // Remove from our collection of items to export
-        cell.indicatorImage = IndicatorImage                               // Change the indicator to normal
-      }
-
-    }
-
+// FIXME: Needs updating since BankCollectionCell refactored
+//    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+//
+//      // Check if we are selecting items to export
+//      if exportSelectionMode {
+//        exportSelection = exportSelection.filter{!cell.item!.isEqual($0)}  // Remove from our collection of items to export
+//        cell.indicatorImage = IndicatorImage                               // Change the indicator to normal
+//      }
+//
+//    }
   }
 
   /**
@@ -578,26 +593,28 @@ extension BankCollectionController: UICollectionViewDelegate {
   */
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
-    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
+  	if cellShowingDelete != nil { cellShowingDelete!.hideDelete() }
+
+  	else if let itemCell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
 
       // Check if we are selecting items to export
       if exportSelectionMode {
-        exportSelection.append(cell.item!)             // Add to our collection of items to export
-        cell.indicatorImage = IndicatorImageSelected  // Change indicator to selected
+        exportSelection.append(itemCell.item!)             // Add to our collection of items to export
+        itemCell.indicatorImage = IndicatorImageSelected   // Change indicator to selected
       }
 
       // Otherwise we push the item's detail view controller
-      else { detailItem(cell.item!) }
+      else { detailItem(itemCell.item!) }
 
-    }
+  	}
 
-    else if indexPath.section == 0 {
+  	else if let categoryCell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCategoryCell {
 
-      let subcategory = category.subcategories[indexPath.row]
-      if let controller = BankCollectionController(category: subcategory) {
+      if let controller = BankCollectionController(category: categoryCell.category!) {
         navigationController?.pushViewController(controller, animated: true)
       }
-    }
+
+  	}
 
   }
 

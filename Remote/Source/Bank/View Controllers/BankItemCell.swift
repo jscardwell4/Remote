@@ -414,7 +414,7 @@ class BankItemCell: UITableViewCell {
   :param: style UITableViewStyle
   :param: reuseIdentifier String
   */
-  override init?(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .None
@@ -535,14 +535,50 @@ class BankItemCell: UITableViewCell {
 
 
   /**
+  intrinsicContentSize
+
+  :returns: CGSize
+  */
+//  override func intrinsicContentSize() -> CGSize {
+   // switch identifier {
+   //   case .Image: return CGSize(width: UIViewNoIntrinsicMetric, height: 291.0)
+   //   case .TextView: return CGSize(width: UIViewNoIntrinsicMetric, height: 140.0)
+   //   case .Switch: return CGSize(width: UIViewNoIntrinsicMetric, height: 48.0)
+   //   default: return CGSize(width: UIViewNoIntrinsicMetric, height: 38.0)
+   // }
+//  }
+
+  /**
+  systemLayoutSizeFittingSize:
+
+  :param: targetSize CGSize
+
+  :returns: CGSize
+  */
+  override func systemLayoutSizeFittingSize(targetSize: CGSize,
+              withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+                    verticalFittingPriority: UILayoutPriority) -> CGSize
+  {
+//    println("systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:")
+    var fittedSize = targetSize
+    switch identifier {
+       case .Image:    fittedSize.height = 291.0
+       case .TextView: fittedSize.height = 140.0
+       case .Switch:   fittedSize.height = 48.0
+       default:        fittedSize.height = 38.0
+    }
+    if pickerEnabled && !picker!.hidden { fittedSize.height += BankItemCell.pickerHeight }
+//    println("fittedSize = \(fittedSize)")
+    return fittedSize
+  }
+
+  /**
   Overridden to prevent indented content view
 
   :param: editing Bool
   :param: animated Bool
   */
-  override func setEditing(editing: Bool, animated: Bool) {
-    isEditingState = editing
-  }
+  override func setEditing(editing: Bool, animated: Bool) { isEditingState = editing }
 
   var isEditingState: Bool = false {
     didSet {

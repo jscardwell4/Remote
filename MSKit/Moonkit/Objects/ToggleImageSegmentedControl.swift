@@ -90,7 +90,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
 
   :param: items [AnyObject]!
   */
-  override public init?(items: [AnyObject]!) {
+  override public init(items: [AnyObject]!) {
     var defaultImages: [UIImage]?
     var selectedImages: [UIImage]?
     if let images = items as? [UIImage] {

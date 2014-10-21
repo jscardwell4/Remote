@@ -20,6 +20,17 @@ public extension String {
   public var length: Int { return countElements(self) }
 
   /**
+  join:
+
+  :param: strings String...
+
+  :returns: String
+  */
+  public func join(strings: String...) -> String {
+    return join(strings)
+  }
+
+  /**
   initWithContentsOfFile:error:
 
   :param: contentsOfFile String

@@ -41,7 +41,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   :param: style UITableViewStyle
   */
-  override init?(style: UITableViewStyle) {
+  override init(style: UITableViewStyle) {
     super.init(style: style)
   }
 
@@ -69,7 +69,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
-    tableView?.rowHeight = BankItemDetailController.defaultRowHeight
+    tableView?.rowHeight = UITableViewAutomaticDimension
+    tableView?.estimatedRowHeight = 38.0
     tableView?.sectionHeaderHeight = 10.0
     tableView?.sectionFooterHeight = 10.0
     tableView?.separatorStyle = .None
@@ -365,18 +366,18 @@ extension BankItemDetailController: UITableViewDataSource {
 
   :returns: CGFloat
   */
-  override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    var height: CGFloat = 0.0
-    if indexPath.section < sections.count {
-      let section = sections[indexPath.section]
-      if indexPath.row < section.rows.count {
-        let row = section.rows[indexPath.row]
-        height = row.height
-      }
-    }
-    if expandedRows ∋ indexPath { height += BankItemCell.pickerHeight }
-    return height
-  }
+//  override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//    var height: CGFloat = 0.0
+//    if indexPath.section < sections.count {
+//      let section = sections[indexPath.section]
+//      if indexPath.row < section.rows.count {
+//        let row = section.rows[indexPath.row]
+//        height = row.height
+//      }
+//    }
+//    if expandedRows ∋ indexPath { height += BankItemCell.pickerHeight }
+//    return height
+//  }
 
   /**
   tableView:canEditRowAtIndexPath:

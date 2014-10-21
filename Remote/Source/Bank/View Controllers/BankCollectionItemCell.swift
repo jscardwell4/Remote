@@ -69,7 +69,8 @@ class BankCollectionItemCell: BankCollectionCell {
 
   private var viewingMode: BankCollectionAttributes.ViewingMode = .List {
     didSet {
-      previewGesture.enabled = (viewingMode == BankCollectionAttributes.ViewingMode.List && previewable)
+      previewGesture.enabled = (viewingMode == .List && previewable)
+      swipeToDelete = (viewingMode == .List)
       setNeedsUpdateConstraints()
     }
   }
@@ -96,10 +97,9 @@ class BankCollectionItemCell: BankCollectionCell {
     removeConstraintsWithIdentifier(listIdentifier)
     removeConstraintsWithIdentifier(thumbnailIdentifier)
 
+//    if contentConstraint != nil { removeConstraint(contentConstraint!) }
+
     super.updateConstraints()
-
-    MSLogDebug("before…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
-
 
     switch viewingMode {
 
@@ -122,9 +122,7 @@ class BankCollectionItemCell: BankCollectionCell {
             "label.left = image.right + 8"
           ]
         } else {
-          formatStrings += [
-            "label.left = indicator.right + 20"
-          ]
+          formatStrings += ["label.left = indicator.right + 20"]
         }
 
         let format = "\n".join(formatStrings)
@@ -146,20 +144,23 @@ class BankCollectionItemCell: BankCollectionCell {
         indicator.hidden    = false
         nameLabel.hidden    = false
         chevron.hidden      = false
+        contentConstraint?.active = true
+//        panGesture.enabled = true
 
 
       case .Thumbnail:
 
-        let format = "\n".join([
+//        contentConstraint?.active = false
+        let format = "\n".join(
           "|[image]|",
           "image.height = image.width",
           "indicator.left = content.left + 8",
           "indicator.top = content.top + 8"
-          ])
+          )
 
         let views = ["image": thumbnailImageView, "content": contentView, "indicator": indicator]
         constrainWithFormat(format, views:views, identifier: thumbnailIdentifier)
-
+//        panGesture.enabled = false
 
         indicator.hidden    = indicatorImage == nil
         chevron.hidden      = true
@@ -169,8 +170,15 @@ class BankCollectionItemCell: BankCollectionCell {
 
     }
 
-    MSLogDebug("after…\n\(prettyConstraintsDescription())\n\(contentView.prettyConstraintsDescription())")
+  }
 
+  /** initializeSubviews */
+  private func initializeSubviews() {
+    contentView.addSubview(nameLabel)
+    contentView.addSubview(chevron)
+    contentView.addSubview(thumbnailImageView)
+    previewGesture.addTarget(self, action: "previewAction")
+    thumbnailImageView.addGestureRecognizer(previewGesture)
   }
 
   /**
@@ -178,29 +186,14 @@ class BankCollectionItemCell: BankCollectionCell {
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    contentView.addSubview(nameLabel)
-    contentView.addSubview(chevron)
-    contentView.addSubview(thumbnailImageView)
-    previewGesture.addTarget(self, action: "previewAction")
-    thumbnailImageView.addGestureRecognizer(previewGesture)
-  }
+  override init(frame: CGRect) { super.init(frame: frame); initializeSubviews() }
 
   /**
   init:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    contentView.addSubview(nameLabel)
-    contentView.addSubview(chevron)
-
-    contentView.addSubview(thumbnailImageView)
-    previewGesture.addTarget(self, action: "previewAction")
-    thumbnailImageView.addGestureRecognizer(previewGesture)
-  }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeSubviews() }
 
   /**
 

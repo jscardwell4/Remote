@@ -12,17 +12,17 @@ import MoonKit
 
 class BankItemDetailRow {
 
-	let identifier: BankItemCell.Identifier
-	var height: CGFloat {
-		switch identifier {
-			case .TextView: return BankItemDetailController.textViewRowHeight
-			case .Image:    return BankItemDetailController.previewRowHeight
-			case .Switch:   return BankItemDetailController.switchRowHeight
-			default:        return BankItemDetailController.defaultRowHeight
+  let identifier: BankItemCell.Identifier
+  var height: CGFloat {
+    switch identifier {
+      case .TextView: return BankItemDetailController.textViewRowHeight
+      case .Image:    return BankItemDetailController.previewRowHeight
+      case .Switch:   return BankItemDetailController.switchRowHeight
+      default:        return BankItemDetailController.defaultRowHeight
 
-		}
-	}
-	var selectionHandler: ((Void) -> Void)?
+    }
+  }
+  var selectionHandler: ((Void) -> Void)?
   var deletionHandler: ((Void) -> Void)?
 
   var editActions: [UITableViewRowAction]?
@@ -59,16 +59,16 @@ class BankItemDetailRow {
   var stepperStepValue: Double = 1.0
 
   // keyboard related properties
-	var returnKeyType: UIReturnKeyType = .Done
-	var keyboardType: UIKeyboardType = .ASCIICapable
-	var autocapitalizationType: UITextAutocapitalizationType = .None
-	var autocorrectionType: UITextAutocorrectionType = .No
-	var spellCheckingType: UITextSpellCheckingType = .No
-	var enablesReturnKeyAutomatically: Bool = false
-	var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
-	var secureTextEntry: Bool = false
-	var shouldAllowReturnsInTextView: Bool = false
-	var shouldUseIntegerKeyboard: Bool = false
+  var returnKeyType: UIReturnKeyType = .Done
+  var keyboardType: UIKeyboardType = .ASCIICapable
+  var autocapitalizationType: UITextAutocapitalizationType = .None
+  var autocorrectionType: UITextAutocorrectionType = .No
+  var spellCheckingType: UITextSpellCheckingType = .No
+  var enablesReturnKeyAutomatically: Bool = false
+  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
+  var secureTextEntry: Bool = false
+  var shouldAllowReturnsInTextView: Bool = false
+  var shouldUseIntegerKeyboard: Bool = false
 
   // button related properties
   var buttonActionHandler: ((Void) -> Void)?
@@ -99,60 +99,60 @@ class BankItemDetailRow {
     switch identifier {
 
       case .Button:
-	      cell.buttonActionHandler = buttonActionHandler
-	      cell.buttonEditingActionHandler = buttonEditingActionHandler
+        cell.buttonActionHandler = buttonActionHandler
+        cell.buttonEditingActionHandler = buttonEditingActionHandler
 
       case .Stepper:
-				cell.stepperWraps = stepperWraps
-				cell.stepperMinValue = stepperMinValue
-				cell.stepperMaxValue = stepperMaxValue
-				cell.stepperStepValue = stepperStepValue
+        cell.stepperWraps = stepperWraps
+        cell.stepperMinValue = stepperMinValue
+        cell.stepperMaxValue = stepperMaxValue
+        cell.stepperStepValue = stepperStepValue
 
       case .TextView:
         cell.shouldAllowReturnsInTextView = shouldAllowReturnsInTextView
         fallthrough
 
       case .TextField:
-	      cell.returnKeyType = returnKeyType
-				cell.keyboardType = keyboardType
-				cell.autocapitalizationType = autocapitalizationType
-				cell.autocorrectionType = autocorrectionType
-				cell.spellCheckingType = spellCheckingType
-				cell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-				cell.keyboardAppearance = keyboardAppearance
-				cell.secureTextEntry = secureTextEntry
-				cell.shouldUseIntegerKeyboard = shouldUseIntegerKeyboard
+        cell.returnKeyType = returnKeyType
+        cell.keyboardType = keyboardType
+        cell.autocapitalizationType = autocapitalizationType
+        cell.autocorrectionType = autocorrectionType
+        cell.spellCheckingType = spellCheckingType
+        cell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+        cell.keyboardAppearance = keyboardAppearance
+        cell.secureTextEntry = secureTextEntry
+        cell.shouldUseIntegerKeyboard = shouldUseIntegerKeyboard
 
-			default: break
+      default: break
 
     }
   }
 
-	/**
-	initWithIdentifier:hasEditingState:selectionHandler:configureCell:
+  /**
+  initWithIdentifier:hasEditingState:selectionHandler:configureCell:
 
-	:param: identifier BankItemCell.Identifier
-	:param: hasEditingState Bool = false
-	:param: selectionHandler ((Void) -> Void
-	:param: configureCell (BankItemCell) -> Void
-	*/
-	init(identifier: BankItemCell.Identifier,
-			 selectionHandler: ((Void) -> Void)? = nil,
-			 deletionHandler: ((Void) -> Void)? = nil)
-	{
-		self.identifier = identifier
-		self.selectionHandler = selectionHandler
+  :param: identifier BankItemCell.Identifier
+  :param: hasEditingState Bool = false
+  :param: selectionHandler ((Void) -> Void
+  :param: configureCell (BankItemCell) -> Void
+  */
+  init(identifier: BankItemCell.Identifier,
+       selectionHandler: ((Void) -> Void)? = nil,
+       deletionHandler: ((Void) -> Void)? = nil)
+  {
+    self.identifier = identifier
+    self.selectionHandler = selectionHandler
     self.deletionHandler = deletionHandler
-	}
+  }
 
 
-	/**
-	initWithPushableItem:hasEditingState:
+  /**
+  initWithPushableItem:hasEditingState:
 
-	:param: pushableItem BankDisplayItemModel
-	*/
+  :param: pushableItem BankDisplayItemModel
+  */
   convenience init(pushableItem: BankDisplayItemModel) {
-		self.init(identifier: .List)
+    self.init(identifier: .List)
     selectionHandler = {
       let controller = pushableItem.detailController()
       if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
@@ -161,76 +161,76 @@ class BankItemDetailRow {
     }
     deletionHandler = { pushableItem.delete() }
     info = pushableItem
-	}
+  }
 
-	/**
-	initWithPushableCategory:hasEditingState:
+  /**
+  initWithPushableCategory:hasEditingState:
 
-	:param: pushableCategory BankDisplayItemCategory
-	*/
-	convenience init(pushableCategory: BankDisplayItemCategory) {
-		self.init(identifier: .List)
-		selectionHandler = {
-			if let controller = BankCollectionController(category: pushableCategory) {
-				if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-					nav.pushViewController(controller, animated: true)
-				}
-			}
-		}
+  :param: pushableCategory BankDisplayItemCategory
+  */
+  convenience init(pushableCategory: BankDisplayItemCategory) {
+    self.init(identifier: .List)
+    selectionHandler = {
+      if let controller = BankCollectionController(category: pushableCategory) {
+        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+          nav.pushViewController(controller, animated: true)
+        }
+      }
+    }
     deletionHandler = { pushableCategory.delete() }
     info = pushableCategory
-	}
+  }
 
-	/**
-	initWithPushableCategory:label:hasEditingState:
+  /**
+  initWithPushableCategory:label:hasEditingState:
 
-	:param: pushableCategory BankDisplayItemCategory
-	:param: label String
-	*/
-	convenience init(pushableCategory: BankDisplayItemCategory, label: String) {
-		self.init(identifier: .Label)
-		selectionHandler = {
-			if let controller = BankCollectionController(category: pushableCategory) {
-				if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-					nav.pushViewController(controller, animated: true)
-				}
-			}
-		}
+  :param: pushableCategory BankDisplayItemCategory
+  :param: label String
+  */
+  convenience init(pushableCategory: BankDisplayItemCategory, label: String) {
+    self.init(identifier: .Label)
+    selectionHandler = {
+      if let controller = BankCollectionController(category: pushableCategory) {
+        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+          nav.pushViewController(controller, animated: true)
+        }
+      }
+    }
     name = label
     info = pushableCategory
-	}
+  }
 
-	/**
-	initWithNamedItem:hasEditingState:
+  /**
+  initWithNamedItem:hasEditingState:
 
-	:param: namedItem NamedModelObject
-	*/
-	convenience init(namedItem: NamedModelObject) {
-		self.init(identifier: .List)
-		info = namedItem
-	}
+  :param: namedItem NamedModelObject
+  */
+  convenience init(namedItem: NamedModelObject) {
+    self.init(identifier: .List)
+    info = namedItem
+  }
 
-	/**
-	initWithPreviewableItem:
+  /**
+  initWithPreviewableItem:
 
-	:param: previewableItem BankDisplayItemModel
-	*/
-	convenience init(previewableItem: BankDisplayItemModel) {
-		self.init(identifier: .Image)
-		info = previewableItem.preview
-	}
+  :param: previewableItem BankDisplayItemModel
+  */
+  convenience init(previewableItem: BankDisplayItemModel) {
+    self.init(identifier: .Image)
+    info = previewableItem.preview
+  }
 
-	/**
-	initWithLabel:value:
+  /**
+  initWithLabel:value:
 
-	:param: label String
-	:param: value String
-	*/
-	convenience init(label: String, value: String) {
-		self.init(identifier: .Label)
-		name = label
-		info = value
-	}
+  :param: label String
+  :param: value String
+  */
+  convenience init(label: String, value: String) {
+    self.init(identifier: .Label)
+    name = label
+    info = value
+  }
 
 
   /**

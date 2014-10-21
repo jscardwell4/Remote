@@ -22,10 +22,10 @@ class BankRootController: UITableViewController, BankController {
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
-      tableView?.backgroundColor = Bank.backgroundColor
-      tableView?.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
-      tableView?.separatorStyle = Bank.separatorStyle
-      tableView?.rowHeight = Bank.defaultRowHeight
+      tableView.backgroundColor = Bank.backgroundColor
+      tableView.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
+      tableView.separatorStyle = Bank.separatorStyle
+      tableView.rowHeight = Bank.defaultRowHeight
       return tableView
     }()
 

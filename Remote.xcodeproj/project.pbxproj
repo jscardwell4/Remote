@@ -14,6 +14,7 @@
 		C21F931819E48CA800E9FF2D /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
+		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */; };
 		C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */; };
 		C230DF3F19DC7164008C2337 /* ITachDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3E19DC7164008C2337 /* ITachDevice.swift */; };
@@ -244,7 +245,6 @@
 		C26BB5B516DC18A90093D5B4 /* iconic_stroke.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BD16DC18A30093D5B4 /* iconic_stroke.otf */; };
 		C26BB5B616DC18A90093D5B4 /* iconSweets.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BE16DC18A30093D5B4 /* iconSweets.otf */; };
 		C26BB5B716DC18A90093D5B4 /* modernpics.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BF16DC18A30093D5B4 /* modernpics.otf */; };
-		C26BBA8816DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */; };
 		C26BBA8D16DC18A90093D5B4 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59816DC18A90093D5B4 /* MainStoryboard.storyboard */; };
 		C26BBAE816DC1B5C0093D5B4 /* 10-arrows-in.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBA9B16DC1B5B0093D5B4 /* 10-arrows-in.png */; };
@@ -2359,7 +2359,6 @@
 				C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */,
 				C2381F0D19A7EE3B00135DAB /* Mint-1536x2048.jpg in Resources */,
 				C27BCC9C1801C16A0002464C /* IntegerKeyboard_5.png in Resources */,
-				C26BBA8816DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard in Resources */,
 				C2E8D9E419BCD5C400E6098E /* udisepws1.wsdl in Resources */,
 				C2E8D9CE19BCD5C400E6098E /* log.xsd in Resources */,
 				C27BCCA31801C16A0002464C /* IntegerKeyboard_7@2x.png in Resources */,
@@ -2410,6 +2409,7 @@
 				C26BBAF416DC1B5C0093D5B4 /* AlignTopEdgeIcon.png in Resources */,
 				C2381F0219A7EE3B00135DAB /* Linen-1024x768-iPad.jpg in Resources */,
 				C2E8D9F019BCD5C400E6098E /* upberr.xml in Resources */,
+				C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */,
 				C26BBAF516DC1B5C0093D5B4 /* AlignTopEdgeIcon@2x.png in Resources */,
 				C2381ED919A7EE3B00135DAB /* Cloth-1024x768-iPad.jpg in Resources */,
 				C26BBAF616DC1B5C0093D5B4 /* AlignVertCenterIcon.png in Resources */,

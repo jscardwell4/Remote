@@ -11,17 +11,19 @@ import MoonKit
 
 class BankCollectionCategoryCell: BankCollectionCell {
 
-  override class func load() {
-    registerLogLevel(LOG_LEVEL_ERROR)
-  }
-
-  var labelText: String? { get { return label.text } set { label.text = newValue } }
+  // var labelText: String? { get { return label.text } set { label.text = newValue } }
 
   private let label: UILabel! = {
     let view = UILabel.newForAutolayout()
     view.font = Bank.infoFont
     return view
   }()
+
+  var category: BankDisplayItemCategory? {
+    didSet {
+      label.text = category?.title
+    }
+  }
 
   private let chevron: UIImageView! = {
     let view = UIImageView.newForAutolayout()

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
-import CocoaLumberjack
+//import CocoaLumberjack
 
 protocol BankCollectionZoomDelegate {
   func didDismissZoomView(BankCollectionZoom)
@@ -22,14 +22,14 @@ class BankCollectionZoom: UIView {
   class var LabelHeight: CGFloat { return 21.0 }
   class var ButtonSize: CGSize { return CGSize(width: 44.0, height: 44.0) }
 
-	var item: BankDisplayItemModel? {
-		didSet {
-			nameLabel.text       = item?.name
+  var item: BankDisplayItemModel? {
+    didSet {
+      nameLabel.text       = item?.name
       image                = item?.preview
-			editButton.enabled   = item?.editable ?? false
-			detailButton.enabled = item != nil
-		}
-	}
+      editButton.enabled   = item?.editable ?? false
+      detailButton.enabled = item != nil
+    }
+  }
 
   var image: UIImage? {
     get { return imageView?.image }
@@ -70,18 +70,18 @@ class BankCollectionZoom: UIView {
     setTranslatesAutoresizingMaskIntoConstraints(false)
 
     backgroundImageView = {
-    	let backgroundImageView = UIImageView.newForAutolayout()
+      let backgroundImageView = UIImageView.newForAutolayout()
       backgroundImageView.opaque = true
       backgroundImageView.contentMode = .Center
-    	self.addSubview(backgroundImageView)
-    	return backgroundImageView
-    	}()
+      self.addSubview(backgroundImageView)
+      return backgroundImageView
+      }()
 
     imageView = {
-    	let imageView = UIImageView.newForAutolayout()
+      let imageView = UIImageView.newForAutolayout()
       imageView.contentMode = .ScaleAspectFit
-    	self.addSubview(imageView)
-    	return imageView
+      self.addSubview(imageView)
+      return imageView
       }()
 
     nameLabel = {
@@ -93,22 +93,22 @@ class BankCollectionZoom: UIView {
     }()
 
     detailButton = {
-    	let detailButton = UIButton.newForAutolayout()
+      let detailButton = UIButton.newForAutolayout()
       detailButton.setImage(UIImage(named: "724-info"), forState: .Normal)
       detailButton.setImage(UIImage(named: "724-info-selected"), forState: .Highlighted)
       detailButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
-    	self.addSubview(detailButton)
-    	return detailButton
-    	}()
+      self.addSubview(detailButton)
+      return detailButton
+      }()
 
     editButton = {
-    	let editButton = UIButton.newForAutolayout()
+      let editButton = UIButton.newForAutolayout()
       editButton.setImage(UIImage(named: "830-pencil"), forState: .Normal)
       editButton.setImage(UIImage(named: "830-pencil-selected"), forState: .Highlighted)
       editButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
-    	self.addSubview(editButton)
-    	return editButton
-    	}()
+      self.addSubview(editButton)
+      return editButton
+      }()
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismiss:"))
 
@@ -133,19 +133,19 @@ class BankCollectionZoom: UIView {
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   private weak var detailButton:          UIButton!
-	private weak var editButton:            UIButton!
-	private weak var nameLabel:             UILabel!
-	private weak var imageView:             UIImageView!
-	private weak var backgroundImageView:   UIImageView!
+  private weak var editButton:            UIButton!
+  private weak var nameLabel:             UILabel!
+  private weak var imageView:             UIImageView!
+  private weak var backgroundImageView:   UIImageView!
   private weak var imageWidthConstraint:  NSLayoutConstraint!
   private weak var imageHeightConstraint: NSLayoutConstraint!
 
-	/**
-	requiresConstraintBasedLayout
+  /**
+  requiresConstraintBasedLayout
 
-	:returns: Bool
-	*/
-	override class func requiresConstraintBasedLayout() -> Bool { return true }
+  :returns: Bool
+  */
+  override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /**
   updateConstraints

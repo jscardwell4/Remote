@@ -98,7 +98,7 @@ class ISYDeviceDetailController: BankItemDetailController {
 
   :param: style UITableViewStyle
   */
-  override init?(style: UITableViewStyle) { super.init(style: style) }
+  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   init:
