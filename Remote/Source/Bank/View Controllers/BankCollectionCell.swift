@@ -70,18 +70,13 @@ class BankCollectionCell: UICollectionViewCell {
     let views = ["delete": deleteButton]
     constrainWithFormat(format, views: views, identifier: identifier)
 
-//    if contentConstraint == nil {
-//      contentConstraint = NSLayoutConstraint(item: contentView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-//      addConstraint(contentConstraint!)
-//    }
-
     super.updateConstraints()
 
 	}
 
   /** deleteButtonAction */
   func deleteButtonAction() {
-    println("deleteButtonAction")
+    deleteAction?()
     UIView.animateWithDuration(animationDurationForDistance(deleteButton.bounds.size.width)){
       self.contentView.transform.tx = 0.0
     }
@@ -95,7 +90,7 @@ class BankCollectionCell: UICollectionViewCell {
     }
   }
 
-  private weak var panGesture: UIPanGestureRecognizer!
+  private weak var panGesture: MSPanGestureRecognizer!
 
   /**
   animationDurationForDistance:
@@ -155,7 +150,9 @@ class BankCollectionCell: UICollectionViewCell {
   /** initializeSubviews */
   private func initializeSubviews() {
     panGesture = {
-      let gesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
+      let gesture = MSPanGestureRecognizer(target: self, action: "handlePan:")
+      gesture.confineToView = true
+//      gesture.cancelsTouchesInView = false
       self.addGestureRecognizer(gesture)
       return gesture
       }()

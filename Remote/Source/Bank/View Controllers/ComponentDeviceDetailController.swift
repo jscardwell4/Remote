@@ -13,11 +13,6 @@ import MoonKit
 class ComponentDeviceDetailController: BankItemDetailController {
 
   var componentDevice: ComponentDevice { return item as ComponentDevice }
-  // var codes: [IRCode]? { didSet { sortByName(&codes) } }
-  // var codeSets: [IRCodeSet]? { didSet { sortByName(&codeSets) } }
-  // var manufacturers: [Manufacturer]? { didSet { sortByName(&manufacturers) } }
-  // var networkDevices: [NetworkDevice]? { didSet { sortByName(&networkDevices) } }
-
 
   /**
   initWithItem:editing:
@@ -28,36 +23,30 @@ class ComponentDeviceDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is ComponentDevice, "we should have been given a component device")
 
-    // codes = componentDevice.codeSet?.codes?.allObjects as? [IRCode]
-    // codeSets = componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet] ?? []
-    // manufacturers = Manufacturer.findAllInContext(componentDevice.managedObjectContext!) as? [Manufacturer]
-    // networkDevices = NetworkDevice.findAllInContext(componentDevice.managedObjectContext!) as? [NetworkDevice]
-
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////
 
-    let manufacturerSection = BankItemDetailSection(sectionNumber: 0, createRows: {
+    let moc = self.componentDevice.managedObjectContext!
 
-      let manufacturerRow = BankItemDetailRow(identifier: .Button,
-        selectionHandler: {
-          if let manufacturer = self.componentDevice.manufacturer {
-            self.navigationController?.pushViewController(manufacturer.detailController(), animated: true)
-          }
-        })
+    let manufacturerSection = BankItemDetailSection(sectionNumber: 0)
 
-      manufacturerRow.name = "Manufacturer"
-      manufacturerRow.pickerNilSelectionTitle = "No Manufacturer"
-      manufacturerRow.pickerCreateSelectionTitle = "⨁ New Manufacturer"
-      manufacturerRow.pickerSelectionHandler = {
-        self.componentDevice.manufacturer = $0 as? Manufacturer
-        self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
+    manufacturerSection.addRow {
+      let row = BankItemDetailButtonRow(pushableItem: self.componentDevice.manufacturer)
+      row.name = "Manufacturer"
+      row.pickerNilSelectionTitle = "No Manufacturer"
+      row.pickerCreateSelectionTitle = "⨁ New Manufacturer"
+      row.didSelectItem = {
+        if !self.didCancel {
+          self.componentDevice.manufacturer = $0 as? Manufacturer
+          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
+        }
       }
-      manufacturerRow.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
+      row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
         (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
           self.componentDevice.manufacturer = nil
           self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
       })]
-      manufacturerRow.pickerCreateSelectionHandler = {
+      row.pickerCreateSelectionHandler = {
         let alert = UIAlertController(title: "Create Manufacturer",
           message: "Enter a name for the manufacturer",
           preferredStyle: .Alert)
@@ -67,44 +56,48 @@ class ComponentDeviceDetailController: BankItemDetailController {
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
           action in
-          manufacturerRow.pickerSelection = self.componentDevice.manufacturer
+          row.pickerSelection = self.componentDevice.manufacturer
           // re-select previous picker selection and dismiss picker
           self.dismissViewControllerAnimated(true, completion: nil)
         })
         alert.addAction(UIAlertAction(title: "Create", style: .Default) {
           action in
-          if let text = (alert.textFields?.first as? UITextField)?.text {
-            let moc = self.componentDevice.managedObjectContext!
-            moc.performBlockAndWait {
-              let manufacturer = Manufacturer.createInContext(moc)
-              manufacturer.name = text
-              self.componentDevice.manufacturer = manufacturer
-              dispatch_async(dispatch_get_main_queue()) {
-                self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
+            if let text = (alert.textFields?.first as? UITextField)?.text {
+              moc.performBlockAndWait {
+                let manufacturer = Manufacturer.createInContext(moc)
+                manufacturer.name = text
+                self.componentDevice.manufacturer = manufacturer
+                dispatch_async(dispatch_get_main_queue()) {
+                  self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
+                }
               }
             }
-          }
-          self.dismissViewControllerAnimated(true, completion: nil)
-          })
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      manufacturerRow.pickerData = sortedByName(Manufacturer.findAllInContext(self.componentDevice.managedObjectContext!) as? [Manufacturer])
-      manufacturerRow.pickerSelection = self.componentDevice.manufacturer
+      row.pickerData = sortedByName(Manufacturer.findAllInContext(moc) as? [Manufacturer])
+      row.pickerSelection = self.componentDevice.manufacturer
+      let manufacturerName = (row.pickerSelection as? Manufacturer)?.name ?? "No Manufacturer"
+      println("row.pickerSelection = \(manufacturerName)")
 
-      let codeSetRow = BankItemDetailRow(identifier: .Button,
-        selectionHandler: {
-          let controller = BankCollectionController(category: self.componentDevice.codeSet!)
-          self.navigationController?.pushViewController(controller!, animated: true)
-        })
-      codeSetRow.name = "Code Set"
-      codeSetRow.pickerNilSelectionTitle = "No Code Set"
-      codeSetRow.pickerCreateSelectionTitle = "⨁ New Code Set"
-      codeSetRow.pickerSelectionHandler = {
-        self.componentDevice.codeSet = $0 as? IRCodeSet
-        self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+      return row
+    }
+
+    manufacturerSection.addRow {
+
+      let row = BankItemDetailButtonRow(pushableCategory: self.componentDevice.codeSet)
+      row.name = "Code Set"
+      row.pickerNilSelectionTitle = "No Code Set"
+      row.pickerCreateSelectionTitle = "⨁ New Code Set"
+      row.didSelectItem = {
+        if !self.didCancel {
+          self.componentDevice.codeSet = $0 as? IRCodeSet
+          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+        }
       }
-      codeSetRow.pickerCreateSelectionHandler = {
+      row.pickerCreateSelectionHandler = {
         let alert = UIAlertController(title: "Create Code Set",
           message: "Enter a name for the code set",
           preferredStyle: .Alert)
@@ -114,14 +107,13 @@ class ComponentDeviceDetailController: BankItemDetailController {
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
           action in
-          codeSetRow.pickerSelection = self.componentDevice.codeSet
+          row.pickerSelection = self.componentDevice.codeSet
           // re-select previous picker selection and dismiss picker
           self.dismissViewControllerAnimated(true, completion: nil)
         })
         alert.addAction(UIAlertAction(title: "Create", style: .Default) {
           action in
           if let text = (alert.textFields?.first as? UITextField)?.text {
-            let moc = self.componentDevice.managedObjectContext!
             moc.performBlockAndWait {
               let codeSet = IRCodeSet.createInContext(moc)
               codeSet.name = text
@@ -134,111 +126,128 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      codeSetRow.pickerSelection = self.componentDevice.codeSet
-      codeSetRow.pickerData = sortedByName(self.componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet] ?? [])
+      row.pickerSelection = self.componentDevice.codeSet
+      row.pickerData = sortedByName(self.componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet] ?? [])
 
-      return [manufacturerRow, codeSetRow]
-    })
+      return row
+    }
+
 
     /// Network Device
     ////////////////////////////////////////////////////////////////////////////////
 
-    let networkDeviceSection = BankItemDetailSection(sectionNumber: 1, title: "Network Device", createRows: {
-      let networkDeviceRow = BankItemDetailRow(identifier: .Button,
-        selectionHandler: {
+    let networkDeviceSection = BankItemDetailSection(sectionNumber: 1, title: "Network Device")
+
+    networkDeviceSection.addRow {
+      let row = BankItemDetailButtonRow()
+      row.selectionHandler = {
           if let networkDevice = self.componentDevice.networkDevice {
             self.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
           }
-        })
-      networkDeviceRow.name = "Network Device"
-      networkDeviceRow.info = self.componentDevice.networkDevice
-      networkDeviceRow.pickerNilSelectionTitle = "No Network Device"
-      networkDeviceRow.pickerSelectionHandler = {self.componentDevice.networkDevice = $0 as? NetworkDevice }
-      networkDeviceRow.pickerData = sortedByName(NetworkDevice.findAllInContext(self.componentDevice.managedObjectContext!) as? [NetworkDevice])
-      networkDeviceRow.pickerSelection = self.componentDevice.networkDevice
+        }
+      row.name = "Network Device"
+      row.info = self.componentDevice.networkDevice
+      row.pickerNilSelectionTitle = "No Network Device"
+      row.didSelectItem = { if !self.didCancel { self.componentDevice.networkDevice = $0 as? NetworkDevice } }
+      row.pickerData = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice])
+      row.pickerSelection = self.componentDevice.networkDevice
 
-      let portRow = BankItemDetailRow(identifier: .Stepper)
-      portRow.name = "Port"
-      portRow.info = Int(self.componentDevice.port)
-      portRow.stepperMinValue = 1
-      portRow.stepperMaxValue = 3
-      portRow.stepperWraps = true
-      portRow.changeHandler = { if let n = $0 as? NSNumber { self.componentDevice.port = n.shortValue } }
+      return row
+    }
 
-      return [networkDeviceRow, portRow]
-    })
+    networkDeviceSection.addRow {
+      let row = BankItemDetailStepperRow(identifier: .Stepper)
+      row.name = "Port"
+      row.info = Int(self.componentDevice.port)
+      row.stepperMinValue = 1
+      row.stepperMaxValue = 3
+      row.stepperWraps = true
+      row.valueDidChange = { if let n = $0 as? NSNumber { self.componentDevice.port = n.shortValue } }
+
+      return row
+    }
 
     /// Power
     ////////////////////////////////////////////////////////////////////////////////
 
-    let powerSection = BankItemDetailSection(sectionNumber: 2, title: "Power", createRows: {
+    let powerSection = BankItemDetailSection(sectionNumber: 2, title: "Power")
 
-      let powerOnRow = BankItemDetailRow(identifier: .Button)
-      powerOnRow.name = "On"
-      powerOnRow.info = self.componentDevice.onCommand
-      powerOnRow.pickerNilSelectionTitle = "No On Command"
-      powerOnRow.pickerSelection = self.componentDevice.onCommand?.code
-      powerOnRow.pickerSelectionHandler = {
+    powerSection.addRow {
+      let row = BankItemDetailButtonRow()
+      row.name = "On"
+      row.info = self.componentDevice.onCommand
+      row.pickerNilSelectionTitle = "No On Command"
+      row.pickerSelection = self.componentDevice.onCommand?.code
+      row.didSelectItem = {
         (selection: NSObject?) -> Void in
-        let moc = self.componentDevice.managedObjectContext!
-        moc.performBlock {
-          if let code = selection as? IRCode {
-            if let command = self.componentDevice.onCommand {
-              command.code = code
-            } else {
-              let command = SendIRCommand(inContext: moc)
-              command.code = code
-              self.componentDevice.onCommand = command
+          if !self.didCancel {
+            moc.performBlock {
+              if let code = selection as? IRCode {
+                if let command = self.componentDevice.onCommand {
+                  command.code = code
+                } else {
+                  let command = SendIRCommand(inContext: moc)
+                  command.code = code
+                  self.componentDevice.onCommand = command
+                }
+              } else {
+                self.componentDevice.onCommand = nil
+              }
             }
-          } else {
-            self.componentDevice.onCommand = nil
           }
-        }
       }
-      powerOnRow.pickerData = self.componentDevice.codeSet?.codes?.allObjects as? [IRCode]
+      row.pickerData = self.componentDevice.codeSet?.codes
 
-      let powerOffRow = BankItemDetailRow(identifier: .Button)
-      powerOffRow.name = "Off"
-      powerOffRow.info = self.componentDevice.offCommand
-      powerOffRow.pickerNilSelectionTitle = "No Off Command"
-      powerOffRow.pickerSelection = self.componentDevice.offCommand?.code
-      powerOffRow.pickerSelectionHandler = {
+      return row
+    }
+
+    powerSection.addRow {
+      let row = BankItemDetailButtonRow()
+      row.name = "Off"
+      row.info = self.componentDevice.offCommand
+      row.pickerNilSelectionTitle = "No Off Command"
+      row.pickerSelection = self.componentDevice.offCommand?.code
+      row.didSelectItem = {
         (selection: NSObject?) -> Void in
-        let moc = self.componentDevice.managedObjectContext!
-        moc.performBlock {
-          if let code = selection as? IRCode {
-            if let command = self.componentDevice.offCommand {
-              command.code = code
-            } else {
-              let command = SendIRCommand(inContext: moc)
-              command.code = code
-              self.componentDevice.offCommand = command
+          if !self.didCancel {
+            moc.performBlock {
+              if let code = selection as? IRCode {
+                if let command = self.componentDevice.offCommand {
+                  command.code = code
+                } else {
+                  let command = SendIRCommand(inContext: moc)
+                  command.code = code
+                  self.componentDevice.offCommand = command
+                }
+              } else {
+                self.componentDevice.offCommand = nil
+              }
             }
-          } else {
-            self.componentDevice.offCommand = nil
           }
-        }
       }
-      powerOffRow.pickerData = self.componentDevice.codeSet?.codes?.allObjects as? [IRCode]
+      row.pickerData = self.componentDevice.codeSet?.codes
 
-      return [powerOnRow, powerOffRow]
-    })
+      return row
+    }
+
 
     // Inputs
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let inputsSection = BankItemDetailSection(sectionNumber: 3, title: "Inputs", createRows: {
+    let inputsSection = BankItemDetailSection(sectionNumber: 3, title: "Inputs")
 
-      let inputPowersOnRow = BankItemDetailRow(identifier: .Switch)
-      inputPowersOnRow.name = "Inputs Power On Device"
-      inputPowersOnRow.info = NSNumber(bool: self.componentDevice.inputPowersOn)
-      inputPowersOnRow.changeHandler = { self.componentDevice.inputPowersOn = $0 as Bool }
+    inputsSection.addRow {
+      let row = BankItemDetailSwitchRow(identifier: .Switch)
+      row.name = "Inputs Power On Device"
+      row.info = NSNumber(bool: self.componentDevice.inputPowersOn)
+      row.valueDidChange = { self.componentDevice.inputPowersOn = $0 as Bool }
 
-      var rows = [inputPowersOnRow]
-      rows += sortedByName(self.componentDevice.inputs).map{BankItemDetailRow(pushableItem: $0)}
+      return row
+    }
 
-      return rows
-    })
+    for input in sortedByName(self.componentDevice.inputs) {
+      inputsSection.addRow { return BankItemDetailListRow(pushableItem: input) }
+    }
 
     /// Create the sections
     ////////////////////////////////////////////////////////////////////////////////

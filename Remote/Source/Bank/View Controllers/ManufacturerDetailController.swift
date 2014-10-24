@@ -28,19 +28,19 @@ class ManufacturerDetailController: BankItemDetailController {
     // section 0 - row 0
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let devicesSection = BankItemDetailSection(sectionNumber: 0, title: "Devices", createRows: {
-      return sortedByName(self.manufacturer.devices.allObjects as? [ComponentDevice] ?? [])
-              .map{BankItemDetailRow(pushableItem: $0)} ?? []
-    })
+    let devicesSection = BankItemDetailSection(sectionNumber: 0, title: "Devices")
+    for device in sortedByName(self.manufacturer.devices.allObjects as? [ComponentDevice] ?? []) {
+      devicesSection.addRow { return BankItemDetailListRow(pushableItem: device) }
+    }
 
     // Code Sets
     // section 1 - row 0
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let codeSetsSection = BankItemDetailSection(sectionNumber: 1, title: "Code Sets", createRows: {
-      return sortedByName(self.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? [])
-              .map{BankItemDetailRow(pushableCategory: $0)} ?? []
-    })
+    let codeSetsSection = BankItemDetailSection(sectionNumber: 1, title: "Code Sets")
+    for codeSet in sortedByName(self.manufacturer.codeSets.allObjects as? [IRCodeSet] ?? []) {
+      codeSetsSection.addRow { return BankItemDetailListRow(pushableCategory: codeSet) }
+    }
 
     /// Create the sections
     ////////////////////////////////////////////////////////////////////////////////

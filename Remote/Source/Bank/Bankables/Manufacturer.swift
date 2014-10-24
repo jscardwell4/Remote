@@ -60,7 +60,7 @@ class Manufacturer: BankableModelObject {
     super.updateWithData(data)
     if let codeSets = IRCodeSet.importObjectsFromData(data["codesets"], context: managedObjectContext) as? [IRCodeSet] {
       mutableSetValueForKey("codeSets").addObjectsFromArray(codeSets)
-      mutableSetValueForKey("codes").addObjectsFromArray(flattened(codeSets.map{$0.codes}‽.map{$0.allObjects as [IRCode]}))
+      mutableSetValueForKey("codes").addObjectsFromArray(flattened(codeSets.map{$0.codes}‽))
     }
     if let devices = ComponentDevice.importObjectsFromData(data["devices"],
                                                    context: managedObjectContext) as? [ComponentDevice]

@@ -13,10 +13,11 @@
 MSSTATIC_KEY(SMAutoListen);
 MSSTATIC_KEY(SMProximitySensor);
 MSSTATIC_KEY(SMStatusBar);
+MSSTATIC_KEY(SMBankViewingMode);
 
-MSNOTIFICATION_DEFINITION(SMAutoListenSettingDidChange);
-MSNOTIFICATION_DEFINITION(SMProximitySensorSettingDidChange);
-MSNOTIFICATION_DEFINITION(SMStatusBarSettingDidChange);
+MSNOTIFICATION_DEFINITION(SMSettingAutoListenDidChange);
+MSNOTIFICATION_DEFINITION(SMSettingProximitySensorDidChange);
+MSNOTIFICATION_DEFINITION(SMSettingStatusBarDidChange);
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -28,12 +29,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   [UserDefaults registerDefaults:@{ SMAutoListenKey      : @YES,
                                     SMProximitySensorKey : @YES,
-                                    SMStatusBarKey       : @YES }];
+                                    SMStatusBarKey       : @YES,
+                                    SMBankViewingModeKey : @0 }];
 
 
   void(^connectionStatusBlock)(NSNotification *) = ^(NSNotification * note) {
     BOOL wifiAvailable = [ConnectionManager isWifiAvailable];
-    BOOL autoListen    = [[SettingsManager valueForSetting:SMAutoListenSetting] boolValue];
+    BOOL autoListen    = [[SettingsManager valueForSetting:SMSettingAutoListen] boolValue];
     if (autoListen && wifiAvailable && ![ConnectionManager isDetectingNetworkDevices])
       [ConnectionManager startDetectingDevices:nil];
   };
@@ -51,43 +53,46 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   NSString * notification = nil;
 
   switch (setting) {
-    case SMAutoListenSetting:
+    case SMSettingAutoListen:
       if ([value isKindOfClass:[NSNumber class]]) {
         key = SMAutoListenKey;
-        notification = SMAutoListenSettingDidChangeNotification;
+        notification = SMSettingAutoListenDidChangeNotification;
       }
       break;
 
-    case SMStatusBarSetting:
+    case SMSettingStatusBar:
       if ([value isKindOfClass:[NSNumber class]]) {
         key = SMStatusBarKey;
-        notification = SMStatusBarSettingDidChangeNotification;
+        notification = SMSettingStatusBarDidChangeNotification;
       }
       break;
 
-    case SMProximitySensorSetting:
+    case SMSettingProximitySensor:
       if ([value isKindOfClass:[NSNumber class]]) {
         key = SMProximitySensorKey;
-        notification = SMProximitySensorSettingDidChangeNotification;
+        notification = SMSettingProximitySensorDidChangeNotification;
       }
       break;
 
+    case SMSettingBankViewingMode:
+      if ([value isKindOfClass:[NSNumber class]]) {
+        key = SMBankViewingModeKey;
+      }
     default:
       break;
   }
 
-  if (key && notification) {
-    UserDefaults[key] = value;
-    [NotificationCenter postNotificationName:notification object:self];
-  }
+  if (key) UserDefaults[key] = value;
+  if (notification)  [NotificationCenter postNotificationName:notification object:self];
 
 }
 
 + (id)valueForSetting:(SMSetting)setting {
   switch (setting) {
-    case SMAutoListenSetting:      return UserDefaults[SMAutoListenKey];
-    case SMProximitySensorSetting: return UserDefaults[SMProximitySensorKey];
-    case SMStatusBarSetting:       return UserDefaults[SMStatusBarKey];
+    case SMSettingAutoListen:      return UserDefaults[SMAutoListenKey];
+    case SMSettingProximitySensor: return UserDefaults[SMProximitySensorKey];
+    case SMSettingStatusBar:       return UserDefaults[SMStatusBarKey];
+    case SMSettingBankViewingMode: return UserDefaults[SMBankViewingModeKey];
     default:                       return nil;
   }
 }

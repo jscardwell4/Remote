@@ -11,7 +11,7 @@ import UIKit
 @objc(BankCollectionAttributes)
 class BankCollectionAttributes: UICollectionViewLayoutAttributes {
 
-  enum ViewingMode { case List, Thumbnail }
+  enum ViewingMode: Int { case List, Thumbnail }
 
   var viewingMode: ViewingMode = .List
 

@@ -82,7 +82,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     setBackgroundImage(image, forState: .Normal, barMetrics: .Default)
-    addTarget(self, action: "toggleImage", forControlEvents: .ValueChanged)
+    addTarget(self, action: "toggleImage:", forControlEvents: .ValueChanged)
   }
 
   /**
@@ -117,7 +117,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     UIGraphicsEndImageContext()
     setBackgroundImage(image, forState: .Normal, barMetrics: .Default)
 
-    addTarget(self, action: "toggleImage", forControlEvents: .ValueChanged)
+    addTarget(self, action: "toggleImage:", forControlEvents: .ValueChanged)
 
   }
 
@@ -144,7 +144,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   }
 
   /** toggleImage */
-  func toggleImage() {
+  func toggleImage(sender: ToggleImageSegmentedControl?) {
     if previouslySelectedSegmentIndex != UISegmentedControlNoSegment {
       super.setImage(defaultImages[previouslySelectedSegmentIndex], forSegmentAtIndex: previouslySelectedSegmentIndex)
     }
@@ -152,7 +152,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     if selectedSegmentIndex != UISegmentedControlNoSegment {
       super.setImage(selectedImages[selectedSegmentIndex], forSegmentAtIndex: selectedSegmentIndex)
     }
-    toggleAction?(self)
+    if sender != nil { toggleAction?(self) }
   }
 
   /**
@@ -172,7 +172,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
 
   override public var selectedSegmentIndex: Int {
     didSet {
-      toggleImage()
+      toggleImage(nil)
     }
   }
 

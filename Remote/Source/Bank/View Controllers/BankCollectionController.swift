@@ -76,12 +76,16 @@ class BankCollectionController: UICollectionViewController, BankController {
     }
   }
 
-  private var useListView = true
+  var viewingMode: BankCollectionAttributes.ViewingMode = .List {
+    didSet { layout.viewingMode = viewingMode; displayOptionsControl?.selectedSegmentIndex = viewingMode.rawValue }
+  }
 
   init?(category: BankDisplayItemCategory) {
     super.init(collectionViewLayout: BankCollectionLayout())
     self.category = category
   }
+
+  private weak var displayOptionsControl: ToggleImageSegmentedControl?
 
   /**
   init:
@@ -116,16 +120,16 @@ class BankCollectionController: UICollectionViewController, BankController {
 
         // Create the segmented control
         let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
-                                                                    UIImage(named: "1073-grid-1-toolbar-selected")!,
-                                                                    UIImage(named: "1076-grid-4-toolbar")!,
-                                                                    UIImage(named: "1076-grid-4-toolbar-selected")!])
-        displayOptions.selectedSegmentIndex = 0
+                                                                 UIImage(named: "1073-grid-1-toolbar-selected")!,
+                                                                 UIImage(named: "1076-grid-4-toolbar")!,
+                                                                 UIImage(named: "1076-grid-4-toolbar-selected")!])
+        displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
         displayOptions.toggleAction = {[unowned self] control in
-          self.useListView = control.selectedSegmentIndex == 0
-          self.layout.viewingMode = self.useListView ? .List : .Thumbnail
-          self.layout.invalidateLayout()
+          self.viewingMode = BankCollectionAttributes.ViewingMode(rawValue: control.selectedSegmentIndex)!
+          SettingsManager.setValue(self.viewingMode.rawValue, forSetting: .BankViewingMode)
         }
         let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+        self.displayOptionsControl = displayOptions
 
         // Return the toolbar with segmented control added
         return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
@@ -145,6 +149,12 @@ class BankCollectionController: UICollectionViewController, BankController {
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
+
+    if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
+      if let mode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) {
+        viewingMode = mode
+      }
+    }
   }
 
   /**
@@ -272,25 +282,26 @@ class BankCollectionController: UICollectionViewController, BankController {
   /// MARK: - Actions
   ////////////////////////////////////////////////////////////////////////////////
 
-  /**
-  deleteItem:
-
-  :param: item BankDisplayItemModel
-  */
-  func deleteItem(item: BankDisplayItemModel) {
-    precondition(item.editable, "this method should not be called when item is not editable")
-    println("deleteItem(item: \(item.name))")
-//    item.delete()
-  }
 
   /**
-  deleteCategory:
+  deleteItemAtIndexPath:
 
-  :param: category BankDisplayItemCategory
+  :param: indexPath NSIndexPath
   */
-  func deleteCategory(category: BankDisplayItemCategory) {
-    println("deleteCategory(category: \(category.title))")
-//    category.delete()
+  func deleteItemAtIndexPath(indexPath: NSIndexPath) {
+    switch indexPath.section {
+      case 0:
+        let subcategory = category.subcategories[indexPath.row]
+        category.subcategories.removeAtIndex(indexPath.row)
+        subcategory.delete()
+
+      default:
+        let item = category.items[indexPath.row]
+        category.items.removeAtIndex(indexPath.row)
+        item.delete()
+
+    }
+    collectionView.deleteItemsAtIndexPaths([indexPath])
   }
 
   /**
@@ -514,8 +525,11 @@ extension BankCollectionController: UICollectionViewDataSource {
                                                             forIndexPath: indexPath) as BankCollectionCategoryCell
         let subcategory = category.subcategories[indexPath.row]
         cell.category = subcategory
-        cell.deleteAction = {self.deleteCategory(subcategory)}
-        cell.showingDeleteChangeHandler = {self.cellShowingDelete?.hideDelete(); self.cellShowingDelete = $0.showingDelete ? $0 : nil}
+        if subcategory.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
+        cell.showingDeleteChangeHandler = {
+          self.cellShowingDelete?.hideDelete()
+          self.cellShowingDelete = $0.showingDelete ? $0 : nil
+        }
         return cell
 
       default:
@@ -523,8 +537,11 @@ extension BankCollectionController: UICollectionViewDataSource {
                                                             forIndexPath: indexPath) as BankCollectionItemCell
         let item = category.items[indexPath.row]
         cell.item = item
-        cell.deleteAction = {self.deleteItem(item)}
-        cell.showingDeleteChangeHandler = {self.cellShowingDelete?.hideDelete(); self.cellShowingDelete = $0.showingDelete ? $0 : nil}
+        if item.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
+        cell.showingDeleteChangeHandler = {
+          self.cellShowingDelete?.hideDelete()
+          self.cellShowingDelete = $0.showingDelete ? $0 : nil
+        }
         cell.previewActionHandler = {self.zoomItem(item)}
         return cell
     }

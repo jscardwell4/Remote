@@ -26,58 +26,51 @@ class ISYDeviceDetailController: BankItemDetailController {
     /// Identification section: Identifier, Base URL
     ////////////////////////////////////////////////////////////////////////////////
 
-    let idSection = BankItemDetailSection(sectionNumber: 0, createRows: {
-
-      let uniqueIdentifierRow = BankItemDetailRow(label: "Identifier", value: self.iSYDevice.uniqueIdentifier)
-      let baseURLRow = BankItemDetailRow(label: "Base URL", value: self.iSYDevice.baseURL)
-
-      return [uniqueIdentifierRow, baseURLRow]
-    })
+    let idSection = BankItemDetailSection(sectionNumber: 0)
+    idSection.addRow { return BankItemDetailLabelRow(label: "Identifier", value: self.iSYDevice.uniqueIdentifier) }
+    idSection.addRow { return BankItemDetailLabelRow(label: "Base URL", value: self.iSYDevice.baseURL) }
 
     /// Model section: Name, Number, Description, Friendly Name
     ////////////////////////////////////////////////////////////////////////////////
 
-    let modelSection = BankItemDetailSection(sectionNumber: 1, title: "Model", createRows: {
+    let modelSection = BankItemDetailSection(sectionNumber: 1, title: "Model")
+    modelSection.addRow { return BankItemDetailLabelRow(label: "Name", value: self.iSYDevice.modelName) }
+    modelSection.addRow { return BankItemDetailLabelRow(label: "Number", value: self.iSYDevice.modelNumber) }
+    modelSection.addRow { return BankItemDetailLabelRow(label: "Description", value: self.iSYDevice.modelDescription) }
+    modelSection.addRow { return BankItemDetailLabelRow(label: "Friendly Name", value: self.iSYDevice.friendlyName) }
 
-      let modelNameRow = BankItemDetailRow(label: "Name", value: self.iSYDevice.modelName)
-      let modelNumberRow = BankItemDetailRow(label: "Number", value: self.iSYDevice.modelNumber)
-      let modelDescriptionRow = BankItemDetailRow(label: "Description", value: self.iSYDevice.modelDescription)
-      let friendlyNameRow = BankItemDetailRow(label: "Friendly Name", value: self.iSYDevice.friendlyName)
-
-      return [modelNameRow, modelNumberRow, modelDescriptionRow, friendlyNameRow]
-    })
 
     /// Manufacturer section: Name, URL
     ////////////////////////////////////////////////////////////////////////////////
 
-    let manufacturerSection = BankItemDetailSection(sectionNumber: 2, title: "Manufacturer", createRows: {
-
-      let manufacturerRow = BankItemDetailRow(label: "Name", value: self.iSYDevice.manufacturer)
-      let manufacturerURLRow = BankItemDetailRow(label: "URL", value: self.iSYDevice.manufacturerURL)
-
-      return [manufacturerRow, manufacturerURLRow]
-    })
+    let manufacturerSection = BankItemDetailSection(sectionNumber: 2, title: "Manufacturer")
+    manufacturerSection.addRow { return BankItemDetailLabelRow(label: "Name", value: self.iSYDevice.manufacturer) }
+    manufacturerSection.addRow { return BankItemDetailLabelRow(label: "URL", value: self.iSYDevice.manufacturerURL) }
 
     /// Nodes section
     ////////////////////////////////////////////////////////////////////////////////
 
-    let nodesSection = BankItemDetailSection(sectionNumber: 3, title: "Nodes", createRows: {
-      return sortedByName(self.iSYDevice.nodes).map{BankItemDetailRow(namedItem: $0)} ?? []
-    })
+    let nodesSection = BankItemDetailSection(sectionNumber: 3, title: "Nodes")
+    for node in sortedByName(self.iSYDevice.nodes) {
+      nodesSection.addRow { return BankItemDetailListRow(namedItem: node) }
+    }
 
     /// Groups section
     ////////////////////////////////////////////////////////////////////////////////
 
-    let groupsSection = BankItemDetailSection(sectionNumber: 4, title: "Groups", createRows: {
-      return sortedByName(self.iSYDevice.groups).map{BankItemDetailRow(namedItem: $0)} ?? []
-    })
+    let groupsSection = BankItemDetailSection(sectionNumber: 4, title: "Groups")
+    for group in sortedByName(self.iSYDevice.groups) {
+      groupsSection.addRow { return BankItemDetailListRow(namedItem: group) }
+    }
+
 
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////
 
-    let componentDevicesSection = BankItemDetailSection(sectionNumber: 5, title: "Component Devices", createRows: {
-      return sortedByName(self.iSYDevice.componentDevices).map{BankItemDetailRow(pushableItem: $0)} ?? []
-    })
+    let componentDevicesSection = BankItemDetailSection(sectionNumber: 5, title: "Component Devices")
+    for device in sortedByName(self.iSYDevice.componentDevices) {
+      componentDevicesSection.addRow { return BankItemDetailListRow(pushableItem: device) }
+    }
 
     sections = [idSection, modelSection, manufacturerSection, nodesSection, groupsSection, componentDevicesSection]
 

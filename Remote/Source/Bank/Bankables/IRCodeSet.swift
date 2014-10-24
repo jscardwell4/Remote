@@ -14,9 +14,26 @@ import MoonKit
 class IRCodeSet: BankableModelCategory {
 
   @NSManaged var devices: NSSet?
-  @NSManaged var codes: NSSet?
+  @NSManaged var primitiveCodes: NSSet?
+  var codes: [IRCode] {
+    get {
+      willAccessValueForKey("codes")
+      let codes = primitiveCodes?.allObjects as? [IRCode]
+      didAccessValueForKey("codes")
+      return codes ?? []
+    }
+    set {
+      willChangeValueForKey("codes")
+      primitiveCodes = NSSet(array: newValue)
+      didChangeValueForKey("codes")
+    }
+  }
   @NSManaged var manufacturer: Manufacturer?
-  override var items: [BankDisplayItemModel] { return ((codes?.allObjects ?? []) as [IRCode]).sorted{$0.0.name < $0.1.name} }
+
+  override var items: [BankDisplayItemModel] {
+    get { return sortedByName(codes) }
+    set { if let newCodes = newValue as? [IRCode] { codes = newCodes } }
+  }
   override var previewableItems:   Bool { return IRCode.isPreviewable()   }
   override var editableItems:      Bool { return IRCode.isEditable()      }
 
@@ -29,7 +46,7 @@ class IRCodeSet: BankableModelCategory {
     super.updateWithData(data)
 
     if let codesData = data["codes"] as? NSArray {
-      if codes == nil { codes = NSSet() }
+      if primitiveCodes == nil { primitiveCodes = NSSet() }
       let mutableCodes = mutableSetValueForKey("codes")
       if let importedCodes = IRCode.importObjectsFromData(codesData, context: managedObjectContext) {
         mutableCodes.addObjectsFromArray(importedCodes)

@@ -31,14 +31,12 @@ class ImageCategory: BankableModelCategory {
   @NSManaged var images: NSSet?
 
   override var subcategories: [BankDisplayItemCategory] {
-    var categories = (subcategoriesSet?.allObjects ?? []) as [ImageCategory]
-    categories.sort{$0.0.title < $0.1.title}
-    return categories
+    get { return ((subcategoriesSet?.allObjects ?? []) as [ImageCategory]).sorted{$0.0.title < $0.1.title} }
+    set { if let newSubcategories = newValue as? [ImageCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
   }
   override var items: [BankDisplayItemModel] {
-    var items = (images?.allObjects ?? []) as [Image]
-    items.sort{$0.0.name < $0.1.name}
-    return items
+    get { return sortedByName((images?.allObjects ?? []) as [Image]) }
+    set { if let newItems = newValue as? [Image] { images = NSSet(array: newItems) } }
   }
   override var previewableItems:   Bool { return Image.isPreviewable()   }
   override var editableItems:      Bool { return Image.isEditable()      }

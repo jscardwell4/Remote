@@ -54,7 +54,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                                           [viewController insertRemoteView:remoteView];
                                         }];
 
-    NSString * name = SMProximitySensorSettingDidChangeNotification;
+    NSString * name = SMSettingProximitySensorDidChangeNotification;
 
     controller.settingsReceptionist =
       [MSNotificationReceptionist receptionistWithObserver:controller
@@ -63,7 +63,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                                                      queue:MainQueue
                                                    handler:^(MSNotificationReceptionist * receptionist) {
                                                      CurrentDevice.proximityMonitoringEnabled =
-                                                       [[SettingsManager valueForSetting:SMProximitySensorSetting] boolValue];
+                                                       [[SettingsManager valueForSetting:SMSettingProximitySensor] boolValue];
                                                    }];
   }
 
@@ -175,7 +175,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 /// @param animated Whether the view is appearing via animation.
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  if ([[SettingsManager valueForSetting:SMProximitySensorSetting] boolValue])
+  if ([[SettingsManager valueForSetting:SMSettingProximitySensor] boolValue])
     CurrentDevice.proximityMonitoringEnabled = YES;
 
 }
@@ -184,7 +184,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 /// @param animated Whether the view is disappearing via animation.
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  if ([[SettingsManager valueForSetting:SMProximitySensorSetting] boolValue])
+  if ([[SettingsManager valueForSetting:SMSettingProximitySensor] boolValue])
     CurrentDevice.proximityMonitoringEnabled = NO;
 }
 

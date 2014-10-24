@@ -14,11 +14,13 @@ import MoonKit
 class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
 
   var title: String { return name ?? "" }
-  var items: [BankDisplayItemModel] { return [] }
-  var subcategories: [BankDisplayItemCategory] { return [] }
-  var parentCategory: BankDisplayItemCategory? { return nil }
+  var items: [BankDisplayItemModel] { get { return [] } set {} }
+  var subcategories: [BankDisplayItemCategory] { get { return [] } set {} }
+  var parentCategory: BankDisplayItemCategory?
 
   var previewableItems:   Bool { return BankableModelObject.isPreviewable()   }
   var editableItems:      Bool { return BankableModelObject.isEditable()      }
+
+  var editable: Bool { return true }
 
 }

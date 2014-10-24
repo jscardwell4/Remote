@@ -23,8 +23,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   let item: BankDisplayItemModel!
   weak var nameTextField: UITextField!
+  private(set) var didCancel: Bool = false
 
-  private weak var cellDisplayingPicker: BankItemCell?
+  private weak var cellDisplayingPicker: BankItemButtonCell?
 
   /**
   init:bundle:
@@ -70,7 +71,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
     tableView?.rowHeight = UITableViewAutomaticDimension
-    tableView?.estimatedRowHeight = 38.0
+    tableView?.estimatedRowHeight = 200.0
     tableView?.sectionHeaderHeight = 10.0
     tableView?.sectionFooterHeight = 10.0
     tableView?.separatorStyle = .None
@@ -97,7 +98,9 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   func updateDisplay() {
     nameTextField.text = item.name
     navigationItem.rightBarButtonItem?.enabled = item?.editable ?? false
-    tableView.reloadData()
+//    tableView.reloadData()
+    didCancel = false
+    configureVisibleCells()
   }
 
   /**
@@ -131,6 +134,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /** cancel */
   func cancel() {
     item.rollback()
+    didCancel = true
+    apply(sections) { $0.reloadRows() }
     setEditing(false, animated: true)
     updateDisplay()
   }
@@ -144,7 +149,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     setEditing(false, animated: true)
   }
 
-  var expandedRows: [NSIndexPath] = []
+//  var expandedRows: [NSIndexPath] = []
 
   /**
   cellForRowAtIndexPath:
@@ -161,11 +166,51 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   reloadRowsAtIndexPaths:animated:
 
   :param: indexPaths [NSIndexPath]
-  :param: animated Bool = false
   */
-  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation = .None) {
-    apply(unique(indexPaths.map{$0.section})){self.sections[$0].reloadRows()}
-    tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
+  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
+    for indexPath in indexPaths {
+      if indexPath.section < sections.count {
+        let section = sections[indexPath.section]
+        if indexPath.row < section.rows.count {
+          section.reloadRowAtIndex(indexPath.row)
+        }
+      }
+    }
+    configureCellsAtIndexPaths(indexPaths)
+  }
+
+
+  /** configureVisibleCells */
+  func configureVisibleCells() {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
+      configureCellsAtIndexPaths(visibleIndexPaths)
+    }
+  }
+
+  /**
+  configureCellsAtIndexPaths:
+
+  :param: indexPaths [NSIndexPath]
+  */
+  func configureCellsAtIndexPaths(indexPaths: [NSIndexPath]) {
+    applyToRowsAtIndexPaths(indexPaths) {
+      (row: BankItemDetailRow) -> Void in
+        if let cell = self.tableView.cellForRowAtIndexPath(row.indexPath) as? BankItemCell {
+          row.configureCell(cell, forTableView: self.tableView)
+        }
+    }
+  }
+
+  /**
+  applyToRowsAtIndexPaths:block:
+
+  :param: indexPaths [NSIndexPath]
+  :param: block (BankItemDetailRow) -> Void
+  */
+  func applyToRowsAtIndexPaths(indexPaths: [NSIndexPath], block: (BankItemDetailRow) -> Void) {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
+      apply(rowsForIndexPaths(indexPaths ∩ visibleIndexPaths), block)
+    }
   }
 
   /**
@@ -181,6 +226,19 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     } else {
       return nil
     }
+  }
+
+  /**
+  rowsForIndexPaths:
+
+  :param: indexPaths [NSIndexPath]
+
+  :returns: [BankItemDetailRow]
+  */
+  private func rowsForIndexPaths(indexPaths: [NSIndexPath]) -> [BankItemDetailRow] {
+    var rows: [BankItemDetailRow] = []
+    for indexPath in indexPaths { if let row = rowForIndexPath(indexPath) { rows.append(row) } }
+    return rows
   }
 
   /**
@@ -206,25 +264,32 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
     if let identifier = identifierForIndexPath(indexPath) {
       cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? BankItemCell
-       cell?.shouldShowPicker = {
-        (c: BankItemCell!) -> Bool in
-          if self.cellDisplayingPicker != nil {
-            self.cellDisplayingPicker!.hidePickerView()
-            return false
-          }
-          self.tableView.beginUpdates()
-          self.cellDisplayingPicker = c
-          self.expandedRows.append(indexPath)
-          self.tableView.endUpdates()
-          return true
-      }
-      cell?.shouldHidePicker = {
-        (c: BankItemCell!) -> Bool in
-          self.tableView.beginUpdates()
-          self.cellDisplayingPicker = nil
-          self.expandedRows = self.expandedRows.filter{$0 != indexPath}
-          self.tableView.endUpdates()
-          return true
+      if let buttonCell = cell as? BankItemButtonCell {
+        buttonCell.didShowPicker = {
+          (c: BankItemButtonCell) -> Void in
+            if self.cellDisplayingPicker != nil {
+              self.cellDisplayingPicker!.hidePickerView()
+            }
+            self.cellDisplayingPicker = c
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+
+        }
+        buttonCell.didHidePicker = {
+          (c: BankItemButtonCell) -> Void in
+            self.cellDisplayingPicker = nil
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+        buttonCell.shouldShowPicker = {
+          (c: BankItemButtonCell) -> Bool in
+            if self.cellDisplayingPicker != nil {
+              self.cellDisplayingPicker!.hidePickerView()
+              return false
+            } else {
+              return true
+            }
+        }
       }
     }
 
@@ -238,7 +303,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   :param: indexPath NSIndexPath
   */
   private func decorateCell(cell: BankItemCell, forIndexPath indexPath: NSIndexPath) {
-    rowForIndexPath(indexPath)?.configureCell(cell)
+    rowForIndexPath(indexPath)?.configureCell(cell, forTableView: tableView)
   }
 
 }

@@ -25,17 +25,13 @@ class PresetDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is Preset, "we should have been given a preset")
 
-    let detailsSection = BankItemDetailSection(sectionNumber: 0, createRows: {
+    let detailsSection = BankItemDetailSection(sectionNumber: 0)
 
-      let categoryRow = BankItemDetailRow(pushableCategory: self.preset.presetCategory!, label: "Category")
-      let typeRow = BankItemDetailRow(label: "Type", value: "FIXME")
+    detailsSection.addRow { return BankItemDetailLabelRow(pushableCategory: self.preset.presetCategory!, label: "Category") }
+    detailsSection.addRow { return BankItemDetailLabelRow(label: "Type", value: "FIXME") }
 
-      return [categoryRow, typeRow]
-    })
-
-    let previewSection = BankItemDetailSection(sectionNumber: 1, createRows: {
-      return [BankItemDetailRow(previewableItem: self.preset)]
-    })
+    let previewSection = BankItemDetailSection(sectionNumber: 1)
+    previewSection.addRow { return BankItemDetailImageRow(previewableItem: self.preset) }
 
     sections = [detailsSection, previewSection]
 

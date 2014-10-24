@@ -181,14 +181,14 @@ static const int msLogContext = 0;
   [mainMenuVC toggleSpinner];
 
   // Apply user defined settings and observe status bar setting changes
-  UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMStatusBarSetting] boolValue];
-  [NotificationCenter addObserverForName:SMStatusBarSettingDidChangeNotification
+  UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMSettingStatusBar] boolValue];
+  [NotificationCenter addObserverForName:SMSettingStatusBarDidChangeNotification
                                   object:[SettingsManager class]
                                    queue:MainQueue
                               usingBlock:^(NSNotification * note)
   {
     
-    UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMStatusBarSetting] boolValue];
+    UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMSettingStatusBar] boolValue];
   }];
 
   // intialize core data statck

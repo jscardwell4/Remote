@@ -295,6 +295,7 @@ Returns true if rhs contains lhs
 :returns: Bool
 */
 public func ∈<T:Equatable>(lhs:T, rhs:[T]) -> Bool { return contains(rhs, lhs) }
+public func ∈<T:Equatable>(lhs:T?, rhs:[T]) -> Bool { return lhs != nil && contains(rhs, lhs!) }
 public func ∈ <T, U where U:IntervalType, T == U.Bound>(lhs:T, rhs:U) -> Bool { return rhs.contains(lhs) }
 
 /**

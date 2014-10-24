@@ -39,17 +39,19 @@ func sortByName<T: NamedModel>(inout array: [T]?) { array?.sort{$0.0.name < $0.1
 
   var title: String { get }
 
-  var items: [BankDisplayItemModel] { get }
+  var items: [BankDisplayItemModel] { get set }
 
   var previewableItems:   Bool { get }
   var editableItems:      Bool { get }
+
+  var editable: Bool { get }
 
   func save()
   func delete()
   func rollback()
 
-  var subcategories:  [BankDisplayItemCategory] { get }
-  var parentCategory: BankDisplayItemCategory?   { get }
+  var subcategories:  [BankDisplayItemCategory] { get set }
+  var parentCategory: BankDisplayItemCategory?   { get set }
 }
 
 func categoryPath(category: BankDisplayItemCategory?) -> String? {

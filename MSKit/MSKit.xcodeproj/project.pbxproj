@@ -12,7 +12,8 @@
 		C217E47B19E83D8900B36983 /* MSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47A19E83D8900B36983 /* MSButton.swift */; };
 		C217E47E19E860DE00B36983 /* MSIntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */; };
 		C21F931B19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */; };
-		C2358F1B19C78D6D00920F8D /* Moonkit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* Moonkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C225879A19F9EF4C006D8B1D /* MSPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */; };
+		C2358F1B19C78D6D00920F8D /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
 		C2358F3319C78E0C00920F8D /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
 		C2358F3419C78E0C00920F8D /* NSAttributedString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888018138CF700555D63 /* NSAttributedString+MSKitAdditions.m */; };
@@ -253,9 +254,10 @@
 		C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
+		C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		C2358F1619C78D6D00920F8D /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2358F1919C78D6D00920F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C2358F1A19C78D6D00920F8D /* Moonkit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Moonkit.h; sourceTree = "<group>"; };
+		C2358F1A19C78D6D00920F8D /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
 		C23592D419C8783E00920F8D /* NSMutableString+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C23592D519C8783E00920F8D /* NSMutableString+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C23592DC19C8E04200920F8D /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -490,7 +492,7 @@
 				C23592ED19C8E04200920F8D /* Functions */,
 				C23592EF19C8E04200920F8D /* Other */,
 				C23592F119C8E04200920F8D /* Parsing */,
-				C2358F1A19C78D6D00920F8D /* Moonkit.h */,
+				C2358F1A19C78D6D00920F8D /* MoonKit.h */,
 				C2358F1819C78D6D00920F8D /* Supporting Files */,
 			);
 			path = Moonkit;
@@ -583,6 +585,7 @@
 				C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */,
 				C217E47A19E83D8900B36983 /* MSButton.swift */,
 				C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */,
+				C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -932,7 +935,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2358F1B19C78D6D00920F8D /* Moonkit.h in Headers */,
+				C2358F1B19C78D6D00920F8D /* MoonKit.h in Headers */,
 				C2358F8A19C78E3F00920F8D /* CALayer+MSKitAdditions.h in Headers */,
 				C2358F8B19C78E3F00920F8D /* NSArray+MSKitAdditions.h in Headers */,
 				C2358F8C19C78E3F00920F8D /* NSAttributedString+MSKitAdditions.h in Headers */,
@@ -1178,6 +1181,7 @@
 				C2358F4319C78E0C00920F8D /* NSSet+MSKitAdditions.m in Sources */,
 				C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */,
 				C2358F4419C78E0C00920F8D /* NSString+MSKitAdditions.m in Sources */,
+				C225879A19F9EF4C006D8B1D /* MSPanGestureRecognizer.swift in Sources */,
 				C2358F4519C78E0C00920F8D /* NSURL+MSKitAdditions.m in Sources */,
 				C2358F4619C78E0C00920F8D /* NSUserDefaults+MSKitAdditions.m in Sources */,
 				C2358F4719C78E0C00920F8D /* NSValue+MSKitAdditions.m in Sources */,
@@ -1341,6 +1345,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1398,6 +1403,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

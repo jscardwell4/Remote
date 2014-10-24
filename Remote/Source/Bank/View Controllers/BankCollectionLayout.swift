@@ -36,6 +36,7 @@ class BankCollectionLayout: UICollectionViewLayout {
         case .Thumbnail: itemSize = itemThumbnailSize
         default: break
       }
+      if oldValue != viewingMode { invalidateLayout() }
     }
   }
 

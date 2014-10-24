@@ -12,14 +12,15 @@
 @import MoonKit;
 #import "MSRemoteMacros.h"
 
-MSEXTERN_NOTIFICATION(SMAutoListenSettingDidChange       );
-MSEXTERN_NOTIFICATION(SMProximitySensorSettingDidChange  );
-MSEXTERN_NOTIFICATION(SMStatusBarSettingDidChange        );
+MSEXTERN_NOTIFICATION(SMSettingAutoListenDidChange       );
+MSEXTERN_NOTIFICATION(SMSettingProximitySensorDidChange  );
+MSEXTERN_NOTIFICATION(SMSettingStatusBarDidChange        );
 
-typedef NS_ENUM(uint8_t, SMSetting) {
-  SMAutoListenSetting,
-  SMProximitySensorSetting,
-  SMStatusBarSetting
+typedef NS_ENUM(NSInteger, SMSetting) {
+  SMSettingAutoListen,
+  SMSettingProximitySensor,
+  SMSettingStatusBar,
+  SMSettingBankViewingMode
 };
 
 @interface SettingsManager : NSObject

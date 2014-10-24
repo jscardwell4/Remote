@@ -10,9 +10,20 @@ import Foundation
 
 extension Array {
 
+  /**
+  replaceAll:
+
+  :param: value Element
+  */
   mutating func replaceAll(value:Element) { for i in 0..<count { self[i] = value } }
 
-  mutating func apply(block:(Element) -> Void) { reduce(Void()){block($0.1)} }
+  /**
+  apply:
+
+  :param: block (Element) -> Void
+  */
+  func apply(block:(Element) -> Void) { reduce(Void()){block($0.1)} }
+
   /**
   findFirst:
 
@@ -24,3 +35,12 @@ extension Array {
 
 }
 
+public extension NSArray {
+
+  func apply(block:(AnyObject) -> Void) {
+    enumerateObjectsUsingBlock { (obj, idx, stop) -> Void in
+      block(obj)
+    }
+  }
+
+}
