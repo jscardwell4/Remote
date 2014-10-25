@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 
 /** Protocol inheriting from `BankDisplayItem` for actual items of interest */
-@objc protocol BankDisplayItemModel: RenameableModel {
+@objc protocol BankDisplayItemModel: RenameableModel, MSJSONExport {
 
   class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
   class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
@@ -35,7 +35,7 @@ func sortByName<T: NamedModel>(inout array: [T]) { array.sort{$0.0.name < $0.1.n
 func sortByName<T: NamedModel>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }
 
 /** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
-@objc protocol BankDisplayItemCategory: class, NSObjectProtocol {
+@objc protocol BankDisplayItemCategory: class, NSObjectProtocol, MSJSONExport {
 
   var title: String { get }
 
@@ -77,6 +77,11 @@ protocol BankController: class {
 
   func exportBankObjects()  // Called from export bar button action
   func importBankObjects()  // Called from import bar button action
+
+}
+
+protocol SearchableBankController: BankController {
+
   func searchBankObjects()  // Called from search bar button action
 
 }
@@ -186,13 +191,29 @@ class Bank {
                                               _ in controller.importBankObjects()
                                             }
     let flex = UIBarButtonItem.flexibleSpace()
-    let searchBarItem = ToggleBarButtonItem(image: BankProperties.searchBarItemImage,
-                                            toggledImage: BankProperties.searchBarItemImageSelected) {
-                                              _ in controller.searchBankObjects()
-                                            }
     var toolbarItems: [UIBarItem] = [spacer, exportBarItem, spacer, importBarItem, spacer, flex]
     if let middleItems = items { toolbarItems += middleItems }
-    toolbarItems += [flex, spacer, searchBarItem, spacer]
+    toolbarItems += [flex, spacer]
+    return  toolbarItems
+  }
+
+  /**
+  toolbarItemsForController:
+
+  :param: controller BankController
+
+  :returns: [UIBarButtonItem]
+  */
+  class func toolbarItemsForController(controller: SearchableBankController,
+                           addingItems items: [UIBarItem]? = nil) -> [UIBarItem]
+  {
+    var toolbarItems = toolbarItemsForController(controller as BankController, addingItems: items)
+    let spacer = UIBarButtonItem.fixedSpace(-10.0)
+    let searchBarItem = ToggleBarButtonItem(image: BankProperties.searchBarItemImage,
+      toggledImage: BankProperties.searchBarItemImageSelected) {
+        _ in controller.searchBankObjects()
+    }
+    toolbarItems += [searchBarItem, spacer]
     return  toolbarItems
   }
 

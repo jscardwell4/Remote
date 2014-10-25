@@ -13,44 +13,38 @@ import MoonKit
 
 class BankCollectionItemCell: BankCollectionCell {
 
-  override class func load() {
-    registerLogLevel(LOG_LEVEL_ERROR)
-  }
-
   weak var item: BankDisplayItemModel? {
     didSet {
-      if let newItem = item {
-        nameLabel.text = newItem.name
-        previewable = newItem.previewable
-      } else {
-        nameLabel.text = nil
-        previewable = false
-      }
+      nameLabel.text = item?.name
+      previewable = item?.previewable ?? false
     }
   }
 
+  override var exportItem: MSJSONExport? { return item }
+
   private let thumbnailImageView: UIImageView = {
-    let view = UIImageView.newForAutolayout()
+    let view = UIImageView()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.contentMode = .ScaleAspectFit
-    view.nametag = "thumbnail"
+    view.userInteractionEnabled = true
     view.constrainWithFormat("self.width ≤ self.height")
     view.tintColor = UIColor.blackColor()
     return view
     }()
 
   private let nameLabel: UILabel = {
-    let label = UILabel.newForAutolayout()
-    label.font = Bank.infoFont
-    label.nametag = "name"
-    return label
+    let view = UILabel()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.font = Bank.infoFont
+    return view
   }()
 
-  private let chevron: UIImageView! = {
-    let view = UIImageView.newForAutolayout()
+  private let chevron: UIImageView = {
+    let view = UIImageView()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.image = UIImage(named: "766-arrow-right")
     view.contentMode = .ScaleAspectFit
     view.constrainWithFormat("self.height = self.width :: self.height = 22")
-    view.nametag = "chevron"
     return view
     }()
 
@@ -97,8 +91,6 @@ class BankCollectionItemCell: BankCollectionCell {
     removeConstraintsWithIdentifier(listIdentifier)
     removeConstraintsWithIdentifier(thumbnailIdentifier)
 
-//    if contentConstraint != nil { removeConstraint(contentConstraint!) }
-
     super.updateConstraints()
 
     switch viewingMode {
@@ -144,13 +136,10 @@ class BankCollectionItemCell: BankCollectionCell {
         indicator.hidden    = false
         nameLabel.hidden    = false
         chevron.hidden      = false
-        contentConstraint?.active = true
-//        panGesture.enabled = true
 
 
       case .Thumbnail:
 
-//        contentConstraint?.active = false
         let format = "\n".join(
           "|[image]|",
           "image.height = image.width",
@@ -160,7 +149,6 @@ class BankCollectionItemCell: BankCollectionCell {
 
         let views = ["image": thumbnailImageView, "content": contentView, "indicator": indicator]
         constrainWithFormat(format, views:views, identifier: thumbnailIdentifier)
-//        panGesture.enabled = false
 
         indicator.hidden    = indicatorImage == nil
         chevron.hidden      = true

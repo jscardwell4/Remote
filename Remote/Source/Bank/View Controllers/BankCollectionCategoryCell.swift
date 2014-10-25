@@ -11,25 +11,27 @@ import MoonKit
 
 class BankCollectionCategoryCell: BankCollectionCell {
 
-  // var labelText: String? { get { return label.text } set { label.text = newValue } }
-
-  private let label: UILabel! = {
-    let view = UILabel.newForAutolayout()
-    view.font = Bank.infoFont
-    return view
-  }()
-
   var category: BankDisplayItemCategory? {
     didSet {
       label.text = category?.title
     }
   }
 
-  private let chevron: UIImageView! = {
-    let view = UIImageView.newForAutolayout()
-    view.constrainWithFormat("self.width = self.height :: self.height = 22")
+  override var exportItem: MSJSONExport? { return category }
+
+  private let label: UILabel = {
+    let view = UILabel()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.font = Bank.infoFont
+    return view
+  }()
+
+  private let chevron: UIImageView = {
+    let view = UIImageView()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.image = UIImage(named: "766-arrow-right")
     view.contentMode = .ScaleAspectFit
+    view.constrainWithFormat("self.width = self.height :: self.height = 22")
     return view
     }()
 
@@ -58,7 +60,12 @@ class BankCollectionCategoryCell: BankCollectionCell {
       "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
     indicatorConstraint = constraintMatching(predicate)
 
+  }
 
+  /** initializeSubviews */
+  private func initializeSubviews() {
+    contentView.addSubview(label)
+    contentView.addSubview(chevron)
   }
 
   /**
@@ -68,8 +75,7 @@ class BankCollectionCategoryCell: BankCollectionCell {
   */
   override init(frame: CGRect) {
     super.init(frame: frame)
-    contentView.addSubview(label)
-    contentView.addSubview(chevron)
+    initializeSubviews()
   }
 
   /**
@@ -79,8 +85,7 @@ class BankCollectionCategoryCell: BankCollectionCell {
   */
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    contentView.addSubview(label)
-    contentView.addSubview(chevron)
+    initializeSubviews()
   }
 
 }

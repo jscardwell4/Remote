@@ -33,12 +33,14 @@ public class MSPanGestureRecognizer: UIPanGestureRecognizer {
     return true
   }
 
-  public override func canBePreventedByGestureRecognizer(preventingGestureRecognizer: UIGestureRecognizer!) -> Bool {
-    return super.canBePreventedByGestureRecognizer(preventingGestureRecognizer)
-  }
+  /**
+  canPreventGestureRecognizer:
 
+  :param: preventedGestureRecognizer UIGestureRecognizer!
+
+  :returns: Bool
+  */
   public override func canPreventGestureRecognizer(preventedGestureRecognizer: UIGestureRecognizer!) -> Bool {
-//    return super.canPreventGestureRecognizer(preventedGestureRecognizer)
     return !(confineToView && preventedGestureRecognizer is UIPanGestureRecognizer)
   }
 

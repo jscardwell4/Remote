@@ -1,5 +1,5 @@
 //
-//  BankCollectionZoom.swift
+//  BankCollectionZoomView.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 9/22/14.
@@ -9,15 +9,14 @@
 import Foundation
 import UIKit
 import MoonKit
-//import CocoaLumberjack
 
-protocol BankCollectionZoomDelegate {
-  func didDismissZoomView(BankCollectionZoom)
-  func didDismissForEditingZoomView(BankCollectionZoom)
-  func didDismissForDetailZoomView(BankCollectionZoom)
+protocol BankCollectionZoomViewDelegate {
+  func didDismissZoomView(BankCollectionZoomView)
+  func didDismissForEditingZoomView(BankCollectionZoomView)
+  func didDismissForDetailZoomView(BankCollectionZoomView)
 }
 
-class BankCollectionZoom: UIView {
+class BankCollectionZoomView: UIView {
 
   class var LabelHeight: CGFloat { return 21.0 }
   class var ButtonSize: CGSize { return CGSize(width: 44.0, height: 44.0) }
@@ -49,14 +48,14 @@ class BankCollectionZoom: UIView {
     set { backgroundImageView?.image = newValue }
   }
 
-  var maxImageWidth: CGFloat { return width - BankCollectionZoom.ButtonSize.width * 3.0 }
+  var maxImageWidth: CGFloat { return width - BankCollectionZoomView.ButtonSize.width * 3.0 }
 
   var maxImageHeight: CGFloat {
-    return height - BankCollectionZoom.ButtonSize.height * 3.0 - BankCollectionZoom.LabelHeight
+    return height - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
   }
   var imageSize: CGSize = CGSizeZero
 
-  var delegate: BankCollectionZoomDelegate?
+  var delegate: BankCollectionZoomViewDelegate?
 
   /**
   initWithFrame:
@@ -118,9 +117,9 @@ class BankCollectionZoom: UIView {
   initWithFrame:delegate:
 
   :param: frame CGRect
-  :param: delegate BankCollectionZoomDelegate
+  :param: delegate BankCollectionZoomViewDelegate
   */
-  convenience init(frame: CGRect, delegate: BankCollectionZoomDelegate) {
+  convenience init(frame: CGRect, delegate: BankCollectionZoomViewDelegate) {
     self.init(frame: frame)
     self.delegate = delegate
   }
@@ -159,7 +158,7 @@ class BankCollectionZoom: UIView {
 
       // Double check that our name label doesn't have our constraint
       if nameLabel.constraintWithIdentifier(identifierPrefix) == nil {
-        nameLabel.constrainWithFormat("self.height = \(BankCollectionZoom.LabelHeight)", identifier: identifierPrefix)
+        nameLabel.constrainWithFormat("self.height = \(BankCollectionZoomView.LabelHeight)", identifier: identifierPrefix)
       }
 
       // Double check that our detail button doesn't have our constraint

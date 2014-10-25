@@ -161,7 +161,6 @@ class BankItemCell: UITableViewCell {
   lazy var infoLabel: UILabel = {
     let label = UILabel()
     label.setTranslatesAutoresizingMaskIntoConstraints(false)
-    label.userInteractionEnabled = false
     label.font = Bank.infoFont
     label.textColor = Bank.infoColor
     label.textAlignment = .Right

@@ -1,5 +1,5 @@
 //
-//  BankCollectionCellCollectionViewCell.swift
+//  BankCollectionCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/7/14.
@@ -30,9 +30,11 @@ class BankCollectionCell: UICollectionViewCell {
 
   var deleteAction: ((Void) -> Void)?
 
-  var showingDeleteChangeHandler: ((BankCollectionCell) -> Void)?
+  var showingDeleteDidChange: ((BankCollectionCell) -> Void)?
 
   var showingDelete: Bool { return contentView.transform.tx == -100.0 }
+
+  var exportItem: MSJSONExport? { return nil }
 
   private(set) var contentSize = CGSizeZero
 
@@ -57,7 +59,6 @@ class BankCollectionCell: UICollectionViewCell {
   }
 
   var indicatorConstraint: NSLayoutConstraint?
-  var contentConstraint: NSLayoutConstraint?
 
   /** updateConstraints */
   override func updateConstraints() {
@@ -107,7 +108,7 @@ class BankCollectionCell: UICollectionViewCell {
   func hideDelete() {
     UIView.animateWithDuration(animationDurationForDistance(abs(contentView.transform.tx)),
       animations: { self.contentView.transform.tx = 0.0 },
-      completion: {(completed: Bool) -> Void in _ = self.showingDeleteChangeHandler?(self) })
+      completion: {(completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
   }
 
   /**
@@ -128,12 +129,12 @@ class BankCollectionCell: UICollectionViewCell {
       case .Ended:
         UIView.animateWithDuration(duration,
           animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
-          completion: { (completed: Bool) -> Void in _ = self.showingDeleteChangeHandler?(self) })
+          completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
 
       case .Possible, .Cancelled, .Failed:
         UIView.animateWithDuration(duration,
           animations: {self.contentView.transform.tx = 0.0},
-          completion: { (completed: Bool) -> Void in _ = self.showingDeleteChangeHandler?(self) })
+          completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
 
     }
 
@@ -152,14 +153,13 @@ class BankCollectionCell: UICollectionViewCell {
     panGesture = {
       let gesture = MSPanGestureRecognizer(target: self, action: "handlePan:")
       gesture.confineToView = true
-//      gesture.cancelsTouchesInView = false
       self.addGestureRecognizer(gesture)
       return gesture
       }()
     insertSubview(deleteButton, belowSubview: contentView)
     deleteButton.addTarget(self, action: "deleteButtonAction", forControlEvents: .TouchUpInside)
     contentView.addSubview(indicator)
-    contentView.backgroundColor = UIColor.whiteColor()
+    contentView.backgroundColor = Bank.backgroundColor
     contentView.nametag = "content"
     setNeedsUpdateConstraints()
     animateIndicator = {

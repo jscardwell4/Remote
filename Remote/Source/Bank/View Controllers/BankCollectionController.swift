@@ -24,16 +24,24 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   var category: BankDisplayItemCategory!
 
-  private lazy var zoomView: BankCollectionZoom? = BankCollectionZoom(frame: self.view.bounds, delegate: self)
-
   private var cellShowingDelete: BankCollectionCell?
 
-  private var exportAlertAction: UIAlertAction?
-  private var existingFiles: [String] = []
+  /**
+  showingDeleteDidChange:
+
+  :param: cell BankCollectionCell
+  */
+  func showingDeleteDidChange(cell: BankCollectionCell) {
+    cellShowingDelete?.hideDelete()
+    cellShowingDelete = cell.showingDelete ? cell : nil
+  }
 
   private var layout: BankCollectionLayout { return collectionViewLayout as BankCollectionLayout }
 
-  private var exportSelection: [BankDisplayItemModel] = []
+  private var exportSelection: [MSJSONExport] = []
+
+  let exportButton = UIBarButtonItem(title: "Export", style: .Done, target: nil, action: "confirmExport:")
+  let selectAllButton = UIBarButtonItem(title: "Select All", style: .Plain, target: nil, action: "selectAll:")
 
   private var exportSelectionMode: Bool = false {
     didSet {
@@ -53,15 +61,14 @@ class BankCollectionController: UICollectionViewController, BankController {
         }
 
         // Set right bar button items
-        rightBarButtonItems = [ UIBarButtonItem(title: "Export", style: .Done, target: self, action: "confirmExport:"),
-                                UIBarButtonItem(title: "Select All", style: .Plain, target: self, action: "selectAll:") ]
+        rightBarButtonItems = [exportButton, selectAllButton]
 
 
-        cellIndicatorImage = IndicatorImage              // Set indicator image
+        cellIndicatorImage = IndicatorImage  // Set indicator image
 
 
       } else {
-        exportAlertAction = nil  // Make sure we don't leave a dangling alert action
+        
         rightBarButtonItems = [ Bank.dismissBarButtonItem ]
 
       }
@@ -80,9 +87,16 @@ class BankCollectionController: UICollectionViewController, BankController {
     didSet { layout.viewingMode = viewingMode; displayOptionsControl?.selectedSegmentIndex = viewingMode.rawValue }
   }
 
+  /**
+  initWithCategory:
+
+  :param: category BankDisplayItemCategory
+  */
   init?(category: BankDisplayItemCategory) {
     super.init(collectionViewLayout: BankCollectionLayout())
     self.category = category
+    exportButton.target = self
+    selectAllButton.target = self
   }
 
   private weak var displayOptionsControl: ToggleImageSegmentedControl?
@@ -137,7 +151,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 
       // Otherwise return the default toolbar items
       return Bank.toolbarItemsForController(self)
-      }()
+    }()
 
   }
 
@@ -148,6 +162,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+    exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
 
     if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
@@ -157,41 +172,11 @@ class BankCollectionController: UICollectionViewController, BankController {
     }
   }
 
-  /**
-  updateViewConstraints
-  */
-  override func updateViewConstraints() {
-    super.updateViewConstraints()
-
-    let identifier = createIdentifier(self, "Internal")
-
-    if view.constraintsWithIdentifier(identifier).count == 0 && zoomView != nil && zoomView!.superview === view {
-      view.constrainWithFormat("zoom.center = self.center", views: ["zoom": zoomView!], identifier: identifier)
-    }
-
-  }
-
 
   ////////////////////////////////////////////////////////////////////////////////
   /// MARK: - Exporting items
   ////////////////////////////////////////////////////////////////////////////////
 
-
-  /** refreshExistingFiles */
-  private func refreshExistingFiles() {
-    let attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_BACKGROUND, -1)
-    let queue = dispatch_queue_create("com.moondeerstudios.background", attr)
-
-    // Create closure since sticking this directly in the dispatch block crashes compiler
-    let updateFiles = {[unowned self] (files: [String]) -> Void in self.existingFiles = files }
-
-    dispatch_async(queue) {
-      var directoryContents = MoonFunctions.documentsDirectoryContents()
-                              .filter{$0.hasSuffix(".json")}
-                                .map{$0[0 ..< ($0.length - 5)]}
-      dispatch_async(dispatch_get_main_queue(), {updateFiles(directoryContents)})
-    }
-  }
 
   /**
   confirmExport:
@@ -199,75 +184,10 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: sender AnyObject
   */
   func confirmExport(sender: AnyObject?) {
-
-    var alert: UIAlertController
-
-    // Check if we actually have any items selected for export
-    if exportSelection.count > 0 {
-
-      // Refresh our list of existing file names for checking during file export
-      refreshExistingFiles()
-
-      // Create the controller with export title and filename message
-      alert = UIAlertController(title:          "Export Selection",
-                                message:        "Enter a name for the exported file",
-                                preferredStyle: .Alert)
-
-      // Add the text field
-      alert.addTextFieldWithConfigurationHandler{ [unowned self] in
-        $0.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-        $0.textColor = TextFieldTextColor
-        $0.delegate = self
-      }
-
-      // Add the cancel button
-      alert.addAction(
-        UIAlertAction(title: "Cancel", style: .Cancel) { [unowned self] (action) in
-          self.exportSelectionMode = false
-          self.dismissViewControllerAnimated(true, completion: nil)
-        })
-
-      // Create the export action
-      exportAlertAction = UIAlertAction(title: "Export", style: .Default){ [unowned self, alert] (action) in
-        let text = (alert.textFields as [UITextField])[0].text
-        precondition(text.length > 0 && text ∉ self.existingFiles, "text field should not be empty or match an existing file")
-        let pathToFile = MoonFunctions.documentsPathToFile(text + ".json")
-        self.exportSelectionToFile(pathToFile!)
+    ImportExportFileManager.confirmExportOfItems(exportSelection) {
+      (success: Bool) -> Void in
         self.exportSelectionMode = false
-        self.dismissViewControllerAnimated(true, completion: nil)
-      }
-
-      alert.addAction(exportAlertAction!)  // Add the action to the controller
-
     }
-
-    // If not, let the user know our dilemma
-    else {
-
-      // Create the controller with export title and error message
-      alert = UIAlertController(title:          "Export Selection",
-                                message:        "No items have been selected, what do you suggest I export…hummmn?",
-                                preferredStyle: .ActionSheet)
-
-      // Add a button to dismiss
-      alert.addAction(
-        UIAlertAction(title: "Alright", style: .Default) { [unowned self] (action) in
-          self.dismissViewControllerAnimated(true, completion: nil)
-        })
-
-    }
-
-    presentViewController(alert, animated: true, completion: nil)  // Present the controller
-
-  }
-
-  /**
-  exportSelectionToFile:
-
-  :param: file String
-  */
-  private func exportSelectionToFile(file: String) {
-    ((exportSelection as NSArray).JSONString as NSString).writeToFile(file as NSString)
   }
 
   /**
@@ -316,12 +236,19 @@ class BankCollectionController: UICollectionViewController, BankController {
   }
 
   /**
-  detailItem:
+  detailItemAtIndexPath:
 
-  :param: item BankDisplayItemModel
+  :param: indexPath NSIndexPath
   */
-  func detailItem(item: BankDisplayItemModel) {
-    navigationController?.pushViewController(item.detailController(), animated: true)
+  func detailItemAtIndexPath(indexPath: NSIndexPath) {
+    switch indexPath.section {
+      case 0:
+        if let controller = BankCollectionController(category: category.subcategories[indexPath.row]) {
+          navigationController?.pushViewController(controller, animated: true)
+        }
+      default:
+        navigationController?.pushViewController(category.items[indexPath.row].detailController(), animated: true)
+    }
   }
 
   /**
@@ -331,79 +258,65 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   func importBankObjects() { MSLogInfo("item import not yet implemented")  }
 
-  /**
-  searchBankObjects:
-
-  :param: sender AnyObject?
-  */
-  func searchBankObjects() { MSLogInfo("item search not yet implemented")  }
-
 
   ////////////////////////////////////////////////////////////////////////////////
   /// MARK: - Zooming a cell's item
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  private var zoomedItem: BankDisplayItemModel?
+  private var zoomedItemIndexPath: NSIndexPath?
 
   /**
-  zoomItem:
+  zoomItemAtIndexPath:
 
-  :param: item BankDisplayItemModel
+  :param: indexPath NSIndexPath
   */
-  func zoomItem(item: BankDisplayItemModel) {
-
-    zoomedItem = item
-
-
-    if let zoom = zoomView {
-
-      zoom.item = item
-      zoom.backgroundImage = view.blurredSnapshot()
-      view.addSubview(zoom)
-      view.setNeedsUpdateConstraints()
-
-    }
-
+  func zoomItemAtIndexPath(indexPath: NSIndexPath) {
+    precondition(indexPath.section == 1, "we should only be zooming actual items")
+    let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
+    zoomView.item = category.items[indexPath.row]
+    zoomView.backgroundImage = view.blurredSnapshot()
+    view.addSubview(zoomView)
+    view.constrainWithFormat("zoom.center = self.center", views: ["zoom": zoomView])
   }
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// MARK: - BankCollectionZoomDelegate
+/// MARK: - BankCollectionZoomViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
-extension BankCollectionController: BankCollectionZoomDelegate {
+extension BankCollectionController: BankCollectionZoomViewDelegate {
 
   /**
   didDismissZoomView:
 
-  :param: zoom BankCollectionZoom
+  :param: zoom BankCollectionZoomView
   */
-  func didDismissZoomView(zoom: BankCollectionZoom) {
-    precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
-    zoom.removeFromSuperview()
+  func didDismissZoomView(zoomView: BankCollectionZoomView) {
+    zoomView.removeFromSuperview()
+    zoomedItemIndexPath = nil
   }
 
   /**
   didDismissForDetailZoomView:
 
-  :param: zoom BankCollectionZoom
+  :param: zoom BankCollectionZoomView
   */
-  func didDismissForDetailZoomView(zoom: BankCollectionZoom) {
-    precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
-    zoom.removeFromSuperview()
-    detailItem(zoom.item!)
+  func didDismissForDetailZoomView(zoomView: BankCollectionZoomView) {
+    zoomView.removeFromSuperview()
+    detailItemAtIndexPath(zoomedItemIndexPath!)
+    zoomedItemIndexPath = nil
   }
 
   /**
   didDismissForEditingZoomView:
 
-  :param: zoom BankCollectionZoom
+  :param: zoom BankCollectionZoomView
   */
-  func didDismissForEditingZoomView(zoom: BankCollectionZoom) {
-    precondition(zoom === zoomView, "exactly who's zoom view is this, anyway?")
-    zoom.removeFromSuperview()
-    editItem(zoom.item!)
+  func didDismissForEditingZoomView(zoomView: BankCollectionZoomView) {
+    zoomView.removeFromSuperview()
+    editItem(zoomView.item!)
+    zoomedItemIndexPath = nil
   }
 
 }
@@ -423,37 +336,24 @@ extension BankCollectionController {
     // Make sure we are in export selection mode
     if exportSelectionMode {
 
-//      if let controller = collectionItemsController {
-//        // Enumerate all the sections
-//        for (sectionNumber, section) in enumerate(controller.sections as [NSFetchedResultsSectionInfo]) {
-//
-//          // Enumerate the items in this section
-//          for row in 0..<section.numberOfObjects {
-//
-//            // Create the index path
-//            let indexPath = NSIndexPath(forRow: row, inSection: sectionNumber)
-//
-//            // Get the corresponding item
-//            let item = controller.objectAtIndexPath(indexPath) as BankDisplayItemModel
-//
-//            // Add the item to our export selection
-//            exportSelection.append(item)
-//
-//            // Select the cell
-//            collectionView!.selectItemAtIndexPath(indexPath, animated: true, scrollPosition: .None)
-//
-//            // Update the cell if it is visible
-//            if let cell = collectionView!.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
-//              cell.indicatorImage = IndicatorImageSelected
-//            }
-//
-//          }
-//
-//        }
-//
-//      }
+      exportSelection.removeAll(keepCapacity: true)
+      exportSelection.reserveCapacity(category.subcategories.count + category.items.count)
 
-      // TODO: Add selection when using `collectionItems`
+      for (i, subcategory) in enumerate(category.subcategories) {
+        exportSelection.append(subcategory)
+        let indexPath = NSIndexPath(forRow: i, inSection: 0)
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+          cell.indicatorImage = IndicatorImageSelected
+        }
+      }
+
+      for (i, item) in enumerate(category.items) {
+        exportSelection.append(item)
+        let indexPath = NSIndexPath(forRow: i, inSection: 1)
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+          cell.indicatorImage = IndicatorImageSelected
+        }
+      }
 
     }
 
@@ -479,7 +379,7 @@ extension BankCollectionController {
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
 
         // Update the cell image if it is visible
-        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
           cell.indicatorImage = IndicatorImage
         }
 
@@ -526,10 +426,7 @@ extension BankCollectionController: UICollectionViewDataSource {
         let subcategory = category.subcategories[indexPath.row]
         cell.category = subcategory
         if subcategory.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
-        cell.showingDeleteChangeHandler = {
-          self.cellShowingDelete?.hideDelete()
-          self.cellShowingDelete = $0.showingDelete ? $0 : nil
-        }
+        cell.showingDeleteDidChange = showingDeleteDidChange
         return cell
 
       default:
@@ -538,11 +435,8 @@ extension BankCollectionController: UICollectionViewDataSource {
         let item = category.items[indexPath.row]
         cell.item = item
         if item.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
-        cell.showingDeleteChangeHandler = {
-          self.cellShowingDelete?.hideDelete()
-          self.cellShowingDelete = $0.showingDelete ? $0 : nil
-        }
-        cell.previewActionHandler = {self.zoomItem(item)}
+        cell.showingDeleteDidChange = showingDeleteDidChange
+        cell.previewActionHandler = {self.zoomItemAtIndexPath(indexPath)}
         return cell
     }
   }
@@ -575,12 +469,10 @@ extension BankCollectionController: UICollectionViewDelegate {
                willDisplayCell cell: UICollectionViewCell,
             forItemAtIndexPath indexPath: NSIndexPath)
   {
-// FIXME: Needs updating since BankCollectionCell refactored
-//    if let bankCell = cell as? BankCollectionCell {
-//      bankCell.indicatorImage = (exportSelectionMode
-//                                  ? (contains(exportSelection){bankCell.item!.isEqual($0)} ? IndicatorImageSelected : IndicatorImage)
-//                                  : nil)
-//    }
+    let isSelected = (collectionView.indexPathsForSelectedItems() as [NSIndexPath]) ∋ indexPath
+    if let bankCell = cell as? BankCollectionCell {
+      bankCell.indicatorImage = exportSelectionMode ? (isSelected ? IndicatorImageSelected : IndicatorImage) : nil
+    }
   }
 
   /**
@@ -590,16 +482,15 @@ extension BankCollectionController: UICollectionViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-// FIXME: Needs updating since BankCollectionCell refactored
-//    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
-//
-//      // Check if we are selecting items to export
-//      if exportSelectionMode {
-//        exportSelection = exportSelection.filter{!cell.item!.isEqual($0)}  // Remove from our collection of items to export
-//        cell.indicatorImage = IndicatorImage                               // Change the indicator to normal
-//      }
-//
-//    }
+    if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+      // Check if we are selecting items to export
+      if exportSelectionMode {
+        // Remove the item and update the cell's indicator image
+        exportSelection.removeAtIndex((exportSelection as NSArray).indexOfObject(cell.exportItem!))
+        cell.indicatorImage = IndicatorImage
+        if exportSelection.count == 0 { exportButton.enabled = false }
+      }
+    }
   }
 
   /**
@@ -609,92 +500,17 @@ extension BankCollectionController: UICollectionViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-
-  	if cellShowingDelete != nil { cellShowingDelete!.hideDelete() }
-
-  	else if let itemCell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionItemCell {
-
-      // Check if we are selecting items to export
+  	if cellShowingDelete != nil {
+      cellShowingDelete!.hideDelete()
+    } else if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
       if exportSelectionMode {
-        exportSelection.append(itemCell.item!)             // Add to our collection of items to export
-        itemCell.indicatorImage = IndicatorImageSelected   // Change indicator to selected
+        exportSelection.append(cell.exportItem!)
+        cell.indicatorImage = IndicatorImageSelected
+        if !exportButton.enabled { exportButton.enabled = true }
+      } else {
+        detailItemAtIndexPath(indexPath)
       }
-
-      // Otherwise we push the item's detail view controller
-      else { detailItem(itemCell.item!) }
-
-  	}
-
-  	else if let categoryCell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCategoryCell {
-
-      if let controller = BankCollectionController(category: categoryCell.category!) {
-        navigationController?.pushViewController(controller, animated: true)
-      }
-
-  	}
-
-  }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - UITextFieldDelegate
-////////////////////////////////////////////////////////////////////////////////
-extension BankCollectionController: UITextFieldDelegate {
-
-  /**
-  textFieldShouldEndEditing:
-
-  :param: textField UITextField
-
-  :returns: Bool
-  */
-  func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-    if existingFiles ∋ textField.text {
-      textField.textColor = UIColor(name:"fire-brick")
-      return false
     }
-    return true
   }
-
-  /**
-  textField:shouldChangeCharactersInRange:replacementString:
-
-  :param: textField UITextField
-  :param: range NSRange
-  :param: string String
-
-  :returns: Bool
-  */
-  func                  textField(textField: UITextField,
-    shouldChangeCharactersInRange range: NSRange,
-                replacementString string: String) -> Bool
-  {
-    let text = (range.length == 0
-                       ? textField.text + string
-                       : (textField.text as NSString).stringByReplacingCharactersInRange(range, withString:string))
-    let nameInvalid = existingFiles ∋ text
-    textField.textColor = nameInvalid ? UIColor(name: "fire-brick") : TextFieldTextColor
-    exportAlertAction?.enabled = !nameInvalid
-    return true
-  }
-
-  /**
-  textFieldShouldReturn:
-
-  :param: textField UITextField
-
-  :returns: Bool
-  */
-  func textFieldShouldReturn(textField: UITextField) -> Bool { return false }
-
-  /**
-  textFieldShouldClear:
-
-  :param: textField UITextField
-
-  :returns: Bool
-  */
-  func textFieldShouldClear(textField: UITextField) -> Bool { return true }
 
 }

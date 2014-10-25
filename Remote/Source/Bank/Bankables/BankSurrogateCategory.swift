@@ -43,3 +43,11 @@ class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
   }
 
 }
+
+extension BankSurrogateCategory: MSJSONExport {
+
+  var JSONObject: AnyObject { return ["subcategories": subcategories, "items": items] }
+
+  var JSONString: String { return (JSONObject as NSDictionary).JSONString }
+
+}

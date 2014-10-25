@@ -298,13 +298,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankCollectionController.swift"
-            timestampString = "435806895.226775"
+            timestampString = "435897770.631585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "deleteItemAtIndexPath(_:)"
-            landmarkType = "5">
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "BankCollectionController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -314,13 +314,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankCollectionController.swift"
-            timestampString = "435806895.226775"
+            timestampString = "435897770.631585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
-            landmarkName = "deleteItemAtIndexPath(_:)"
-            landmarkType = "5">
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "BankCollectionController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -330,13 +330,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankCollectionController.swift"
-            timestampString = "435806895.226775"
+            timestampString = "435897770.631585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "deleteItemAtIndexPath(_:)"
-            landmarkType = "5">
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "BankCollectionController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -361,30 +361,44 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MSKit/Moonkit/Objects/MSPanGestureRecognizer.swift"
-            timestampString = "435858360.822098"
+            filePath = "Remote/Source/Bank/View Controllers/BankCollectionController.swift"
+            timestampString = "435897770.631585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "canBePreventedByGestureRecognizer(_:)"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
+            landmarkName = "confirmExport(_:)"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MSKit/Moonkit/Objects/MSPanGestureRecognizer.swift"
-            timestampString = "435858766.646201"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "canPreventGestureRecognizer(_:)"
-            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.BankCollectionController.confirmExport (Remote.BankCollectionController)(Swift.Optional&lt;Swift.AnyObject&gt;) -&gt; ()"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Bank/View%20Controllers/BankCollectionController.swift"
+                  timestampString = "435897534.838166"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "180"
+                  endingLineNumber = "180"
+                  offsetFromSymbolStart = "27">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.BankCollectionController.(confirmExport (Remote.BankCollectionController) -&gt; (Swift.Optional&lt;Swift.AnyObject&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Bank/View%20Controllers/BankCollectionController.swift"
+                  timestampString = "435897534.838364"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "180"
+                  endingLineNumber = "180"
+                  offsetFromSymbolStart = "35">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

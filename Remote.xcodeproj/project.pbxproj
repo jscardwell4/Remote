@@ -21,6 +21,7 @@
 		C21F931819E48CA800E9FF2D /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
+		C225879F19FB0A70006D8B1D /* ImportExportFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225879E19FB0A70006D8B1D /* ImportExportFileManager.swift */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */; };
 		C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */; };
@@ -163,8 +164,10 @@
 		C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9419DE327600C1870E /* BankableModelCategory.swift */; };
 		C252E4FB19E2191E00DBBBB2 /* BankItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* BankItemCell.swift */; };
 		C252E4FC19E2195B00DBBBB2 /* BankItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */; };
-		C2538FF619EA1E3C005D8A92 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
 		C2538FF819EA1E3C005D8A92 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2538FF719EA1E3C005D8A92 /* CocoaLumberjack.framework */; };
+		C25B12FD19FB4A4C00C5630F /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
+		C25B12FE19FB4A4C00C5630F /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C25B130419FB4F5900C5630F /* DocumentSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25B130319FB4F5900C5630F /* DocumentSelectionController.swift */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
 		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
@@ -238,7 +241,7 @@
 		C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8119D7791C008DEE39 /* BankCollectionCategoryCell.swift */; };
 		C269842519DF8549007E268B /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */; };
 		C269842619DF8562007E268B /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */; };
-		C269842719DF880C007E268B /* BankCollectionZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */; };
+		C269842719DF880C007E268B /* BankCollectionZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */; };
 		C269842819DF884C007E268B /* BankCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */; };
 		C269842919E0452E007E268B /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832219D06E5D000CB422 /* BankCollectionController.swift */; };
 		C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */; };
@@ -559,12 +562,19 @@
 			remoteGlobalIDString = C2358F1619C78D6D00920F8D;
 			remoteInfo = Moonkit;
 		};
-		C235911E19C7ACCA00920F8D /* PBXContainerItemProxy */ = {
+		C25B12F919FB4A1E00C5630F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = Moonkit;
+			remoteInfo = MoonKit;
+		};
+		C25B12FF19FB4A4C00C5630F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
 		};
 		C2AA245719CB15500062CF4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -582,11 +592,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C25B130119FB4A4C00C5630F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C25B12FE19FB4A4C00C5630F /* MoonKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		C2014FB8180DFC1200C31780 /* JSONObjectKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONObjectKeys.h; sourceTree = "<group>"; };
 		C2014FB9180E004E00C31780 /* JSONObjectKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONObjectKeys.m; sourceTree = "<group>"; };
-		C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoom.swift; sourceTree = "<group>"; };
+		C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoomView.swift; sourceTree = "<group>"; };
 		C203BC201726F30D002FD3EA /* RemoteElementLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteElementLayoutConstraint.h; sourceTree = "<group>"; };
 		C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementLayoutConstraint.m; sourceTree = "<group>"; };
 		C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish_Test.json; sourceTree = "<group>"; };
@@ -604,6 +628,7 @@
 		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
 		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
+		C225879E19FB0A70006D8B1D /* ImportExportFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportExportFileManager.swift; path = Bank/ImportExportFileManager.swift; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
 		C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionItemCell.swift; sourceTree = "<group>"; };
 		C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceGroup.swift; sourceTree = "<group>"; };
@@ -745,6 +770,8 @@
 		C24ECC9119DE126D00C1870E /* BankableModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankableModelObject.swift; sourceTree = "<group>"; };
 		C24ECC9419DE327600C1870E /* BankableModelCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankableModelCategory.swift; sourceTree = "<group>"; };
 		C2538FF719EA1E3C005D8A92 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../../../GitHub/CocoaLumberjack/Framework/Desktop/build/Debug-iphoneos/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		C25B130219FB4A6500C5630F /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Remote.entitlements; sourceTree = "<group>"; };
+		C25B130319FB4F5900C5630F /* DocumentSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DocumentSelectionController.swift; path = Bank/DocumentSelectionController.swift; sourceTree = "<group>"; };
 		C25B2713180A167B0078C8D8 /* RemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RemoteController.json; sourceTree = "<group>"; };
 		C25B2715180A185D0078C8D8 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		C25B2716180A185D0078C8D8 /* ButtonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonGroup.h; sourceTree = "<group>"; };
@@ -1077,7 +1104,7 @@
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482C719C9F968002E84A9 /* Remote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Remote_Tests.m; sourceTree = "<group>"; };
-		C2C628D219D7188C00E40176 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
+		C2C628D219D7188C00E40176 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bank.swift; path = Bank/Bank.swift; sourceTree = "<group>"; };
 		C2C6A172182AFFFF0036261E /* Glyphish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish.json; sourceTree = "<group>"; };
 		C2CA766519BA099000ACCD76 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C2CA768F19BA1E1800ACCD76 /* ISYClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ISYClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1218,8 +1245,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C25B12FD19FB4A4C00C5630F /* MoonKit.framework in Frameworks */,
 				C2538FF819EA1E3C005D8A92 /* CocoaLumberjack.framework in Frameworks */,
-				C2538FF619EA1E3C005D8A92 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,7 +1511,7 @@
 				C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */,
 				C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */,
 				C2358F0E19C7843500920F8D /* BankCollectionHeader.swift */,
-				C2037B7419D0F29B001F6AD9 /* BankCollectionZoom.swift */,
+				C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */,
 				C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */,
 				C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */,
 			);
@@ -1566,6 +1593,7 @@
 		C26BAEB316DC10FE0093D5B4 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				C25B130219FB4A6500C5630F /* Remote.entitlements */,
 				C26BAEE716DC16F90093D5B4 /* CoreData */,
 				C26BAEE616DC16C30093D5B4 /* Source */,
 				C26BAEB416DC10FE0093D5B4 /* Supporting Files */,
@@ -2115,6 +2143,9 @@
 		C2E67D201705E92A00AB0392 /* Bank */ = {
 			isa = PBXGroup;
 			children = (
+				C225879E19FB0A70006D8B1D /* ImportExportFileManager.swift */,
+				C25B130319FB4F5900C5630F /* DocumentSelectionController.swift */,
+				C2C628D219D7188C00E40176 /* Bank.swift */,
 				C2F2A46F17EF560900DE2F41 /* View Controllers */,
 				C25B46D016FF69110042B59E /* Bankables */,
 				C2F2A46E17EF55E300DE2F41 /* Other */,
@@ -2173,7 +2204,6 @@
 			isa = PBXGroup;
 			children = (
 				C277AB8219D7791C008DEE39 /* BankCategoryController.swift */,
-				C2C628D219D7188C00E40176 /* Bank.swift */,
 				C2400F9719D4B9B600D9BB13 /* BankRootController.swift */,
 				C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */,
 				C26B8A6A18006BF500912DBB /* Collections */,
@@ -2218,11 +2248,13 @@
 				C26BAEA416DC10FE0093D5B4 /* Sources */,
 				C26BAEA516DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA616DC10FE0093D5B4 /* Resources */,
+				C25B130119FB4A4C00C5630F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C235911F19C7ACCA00920F8D /* PBXTargetDependency */,
+				C25B12FA19FB4A1E00C5630F /* PBXTargetDependency */,
+				C25B130019FB4A4C00C5630F /* PBXTargetDependency */,
 			);
 			name = Remote;
 			productName = Remote;
@@ -2294,6 +2326,11 @@
 				TargetAttributes = {
 					C26BAEA716DC10FE0093D5B4 = {
 						DevelopmentTeam = JT6STF4SHA;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					C2C482C219C9F968002E84A9 = {
 						CreatedOnToolsVersion = 6.0;
@@ -2785,6 +2822,7 @@
 				C277AB7E19D74AD6008DEE39 /* PresetCategory.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
 				C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */,
+				C25B130419FB4F5900C5630F /* DocumentSelectionController.swift in Sources */,
 				C27DE08519E5E67F00CCB725 /* IRCodeDetailController.swift in Sources */,
 				C252E4FC19E2195B00DBBBB2 /* BankItemDetailController.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
@@ -2888,7 +2926,8 @@
 				C230DF4419DCA6F7008C2337 /* IRCode.swift in Sources */,
 				C2328CD319DF449900D292E2 /* BankRootCell.swift in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
-				C269842719DF880C007E268B /* BankCollectionZoom.swift in Sources */,
+				C225879F19FB0A70006D8B1D /* ImportExportFileManager.swift in Sources */,
+				C269842719DF880C007E268B /* BankCollectionZoomView.swift in Sources */,
 				C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
@@ -2940,10 +2979,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C235911F19C7ACCA00920F8D /* PBXTargetDependency */ = {
+		C25B12FA19FB4A1E00C5630F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Moonkit;
-			targetProxy = C235911E19C7ACCA00920F8D /* PBXContainerItemProxy */;
+			name = MoonKit;
+			targetProxy = C25B12F919FB4A1E00C5630F /* PBXContainerItemProxy */;
+		};
+		C25B130019FB4A4C00C5630F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoonKit;
+			targetProxy = C25B12FF19FB4A4C00C5630F /* PBXContainerItemProxy */;
 		};
 		C2C482CA19C9F968002E84A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3020,7 +3064,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3040,6 +3087,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
@@ -3055,7 +3103,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3071,6 +3122,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
@@ -3095,7 +3147,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3114,6 +3169,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
@@ -3280,7 +3336,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3299,6 +3358,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
