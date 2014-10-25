@@ -1,5 +1,5 @@
 //
-//  BarButtonItem.swift
+//  BlockBarButtonItem.swift
 //  MSKit
 //
 //  Created by Jason Cardwell on 10/2/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class BarButtonItem: UIBarButtonItem {
+public class BlockBarButtonItem: UIBarButtonItem {
 
   public var buttonAction: ((Void) -> Void)?
 

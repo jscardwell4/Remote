@@ -11,14 +11,14 @@ import UIKit
 public class ToggleBarButtonItem: UIBarButtonItem {
 
   public var toggleAction: ((ToggleBarButtonItem) -> Void)?
-  public var isToggled: Bool = false
+  public var isToggled: Bool = false { didSet { imageView?.highlighted = isToggled } }
   private weak var imageView: UIImageView?
 
   /** init */
   public override init() {
     super.init()
     super.target = self
-    super.action = "toggle"
+    super.action = "toggle:"
   }
 
   public override var image: UIImage? { get { return (customView as? UIImageView)?.image } set { (customView as? UIImageView)?.image = newValue } }
@@ -39,7 +39,7 @@ public class ToggleBarButtonItem: UIBarButtonItem {
     imageView.userInteractionEnabled = true
     imageView.contentMode = .ScaleAspectFit
     super.init(customView: containingView)
-    imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toggle"))
+    imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toggle:"))
     self.imageView = imageView
     toggleAction = action
   }
@@ -49,7 +49,7 @@ public class ToggleBarButtonItem: UIBarButtonItem {
   public override var target: AnyObject? { get { return super.target } set {} }
 
   /** toggle */
-  public func toggle() { isToggled = !isToggled; imageView?.highlighted = isToggled; toggleAction?(self) }
+  public func toggle(sender: AnyObject?) { isToggled = !isToggled; if sender != nil { toggleAction?(self) } }
 
   /**
   encodeWithCoder:

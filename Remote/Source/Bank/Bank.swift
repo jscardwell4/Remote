@@ -75,6 +75,11 @@ func categoryPath(category: BankDisplayItemCategory?) -> String? {
 /** Protocol for types that want to display Bank toolbars, or other assets */
 protocol BankController: class {
 
+  var exportSelection: [MSJSONExport] { get }
+  var exportSelectionMode: Bool { get set }
+
+  func selectAllExportableItems() // Called from select all bar button action
+  func importFromFile(fileURL: NSURL)
   func exportBankObjects()  // Called from export bar button action
   func importBankObjects()  // Called from import bar button action
 
@@ -119,6 +124,7 @@ class Bank {
     // Fonts
     static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
     static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
+    static let largeBoldLabelFont         = UIFont(name: "Elysio-Bold",   size: 18.0)!
     static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
 
     // Colors
@@ -146,6 +152,7 @@ class Bank {
 
 	class var labelFont                  : UIFont  { return BankProperties.labelFont     }
 	class var boldLabelFont              : UIFont  { return BankProperties.boldLabelFont }
+  class var largeBoldLabelFont         : UIFont  { return BankProperties.largeBoldLabelFont }
 	class var infoFont                   : UIFont  { return BankProperties.infoFont      }
 
   /// Color accessors
@@ -181,19 +188,81 @@ class Bank {
   :returns: [UIBarButtonItem]
   */
   class func toolbarItemsForController(controller: BankController, addingItems items: [UIBarItem]? = nil) -> [UIBarItem] {
-    let exportBarItem = ToggleBarButtonItem(image: BankProperties.exportBarItemImage,
-                                            toggledImage: BankProperties.exportBarItemImageSelected) {
-                                              _ in controller.exportBankObjects()
-                                            }
+
+    let exportBarItem = ToggleBarButtonItem(
+      image: BankProperties.exportBarItemImage,
+      toggledImage: BankProperties.exportBarItemImageSelected) {
+        (item: ToggleBarButtonItem) -> Void in
+          controller.exportSelectionMode = !controller.exportSelectionMode
+    }
+
     let spacer = UIBarButtonItem.fixedSpace(-10.0)
-    let importBarItem = ToggleBarButtonItem(image: BankProperties.importBarItemImage,
-                                            toggledImage: BankProperties.importBarItemImageSelected) {
-                                              _ in controller.importBankObjects()
-                                            }
+
+    let importBarItem = ToggleBarButtonItem(
+      image: BankProperties.importBarItemImage,
+      toggledImage: BankProperties.importBarItemImageSelected) {
+        (item: ToggleBarButtonItem) -> Void in
+
+          struct ImportToggleActionProperties { static var fileController: DocumentSelectionController? }
+
+          var fileController: DocumentSelectionController?
+
+          // Create the file controller and add it
+          if item.isToggled {
+
+            fileController = DocumentSelectionController()
+            ImportToggleActionProperties.fileController = fileController
+            fileController!.didDismiss = {
+              (documentSelectionController: DocumentSelectionController) -> Void in
+                documentSelectionController.willMoveToParentViewController(nil)
+                documentSelectionController.view.removeFromSuperview()
+                documentSelectionController.removeFromParentViewController()
+                item.toggle(nil)
+                ImportToggleActionProperties.fileController = nil
+            }
+            fileController!.didSelectFile = {
+              (documentSelectionController: DocumentSelectionController) -> Void in
+                if let selectedFile = documentSelectionController.selectedFile {
+                  controller.importFromFile(selectedFile)
+                }
+                documentSelectionController.willMoveToParentViewController(nil)
+                documentSelectionController.view.removeFromSuperview()
+                documentSelectionController.removeFromParentViewController()
+                item.toggle(nil)
+                ImportToggleActionProperties.fileController = nil
+            }
+            if var rootViewController =  MSRemoteAppController.sharedAppController().window.rootViewController {
+              println(rootViewController.view.viewTreeDescription())
+              if let navController = rootViewController as? UINavigationController {
+                rootViewController = navController.topViewController!
+              }
+              rootViewController.addChildViewController(fileController!)
+              fileController!.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+              rootViewController.view.addSubview(fileController!.view)
+              rootViewController.view.constrainWithFormat("|[child]| :: V:|[child]|", views: ["child": fileController!.view])
+              println(rootViewController.view.viewTreeDescription())
+            }
+
+          }
+
+          // Or remove the file controller
+          else {
+            fileController = ImportToggleActionProperties.fileController
+            fileController?.willMoveToParentViewController(nil)
+            fileController?.view.removeFromSuperview()
+            fileController?.removeFromParentViewController()
+            ImportToggleActionProperties.fileController = nil
+          }
+
+    }
     let flex = UIBarButtonItem.flexibleSpace()
+
     var toolbarItems: [UIBarItem] = [spacer, exportBarItem, spacer, importBarItem, spacer, flex]
+
     if let middleItems = items { toolbarItems += middleItems }
+
     toolbarItems += [flex, spacer]
+
     return  toolbarItems
   }
 
@@ -217,9 +286,45 @@ class Bank {
     return  toolbarItems
   }
 
-  class var dismissBarButtonItem: BarButtonItem {
-    return BarButtonItem(barButtonSystemItem: .Done, action: { (Void) -> Void in
-      MSRemoteAppController.sharedAppController().showMainMenu()
+
+  /**
+  exportBarButtonItemForController:
+
+  :param: controller BankController
+
+  :returns: BlockBarButtonItem
+  */
+  class func exportBarButtonItemForController(controller: BankController) -> BlockBarButtonItem {
+    return BlockBarButtonItem(title: "Export", style: .Done, action: {
+      () -> Void in
+        let exportSelection = controller.exportSelection
+        if exportSelection.count != 0 {
+          ImportExportFileManager.confirmExportOfItems(controller.exportSelection) {
+            (success: Bool) -> Void in
+              controller.exportSelectionMode = false
+          }
+        }
+    })
+  }
+
+  /**
+  selectAllBarButtonItemForController:
+
+  :param: controller BankController
+
+  :returns: BlockBarButtonItem
+  */
+  class func selectAllBarButtonItemForController(controller: BankController) -> BlockBarButtonItem {
+    return BlockBarButtonItem(title: "Select All", style: .Plain, action: {
+      () -> Void in
+        controller.selectAllExportableItems()
+    })
+  }
+
+  class var dismissBarButtonItem: BlockBarButtonItem {
+    return BlockBarButtonItem(barButtonSystemItem: .Done, action: {
+      () -> Void in
+        MSRemoteAppController.sharedAppController().showMainMenu()
     })
   }
 

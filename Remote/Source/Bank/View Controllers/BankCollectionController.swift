@@ -38,12 +38,12 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   private var layout: BankCollectionLayout { return collectionViewLayout as BankCollectionLayout }
 
-  private var exportSelection: [MSJSONExport] = []
+  private(set) var exportSelection: [MSJSONExport] = []
 
-  let exportButton = UIBarButtonItem(title: "Export", style: .Done, target: nil, action: "confirmExport:")
-  let selectAllButton = UIBarButtonItem(title: "Select All", style: .Plain, target: nil, action: "selectAll:")
+  var exportButton: BlockBarButtonItem!
+  var selectAllButton: BlockBarButtonItem!
 
-  private var exportSelectionMode: Bool = false {
+  var exportSelectionMode: Bool = false {
     didSet {
 
       // Create some variables to hold values for common actions to perform
@@ -95,8 +95,8 @@ class BankCollectionController: UICollectionViewController, BankController {
   init?(category: BankDisplayItemCategory) {
     super.init(collectionViewLayout: BankCollectionLayout())
     self.category = category
-    exportButton.target = self
-    selectAllButton.target = self
+    exportButton = Bank.exportBarButtonItemForController(self)
+    selectAllButton = Bank.selectAllBarButtonItemForController(self)
   }
 
   private weak var displayOptionsControl: ToggleImageSegmentedControl?
@@ -256,8 +256,16 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   :param: sender AnyObject?
   */
-  func importBankObjects() { MSLogInfo("item import not yet implemented")  }
+  func importBankObjects() { presentViewController(DocumentSelectionController(), animated: true, completion: nil)  }
 
+  /**
+  importFromFile:
+
+  :param: fileURL NSURL
+  */
+  func importFromFile(fileURL: NSURL) {
+    println("importFromFile(fileURL: \(fileURL.absoluteString))")
+  }
 
   ////////////////////////////////////////////////////////////////////////////////
   /// MARK: - Zooming a cell's item
@@ -326,12 +334,8 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
 ////////////////////////////////////////////////////////////////////////////////
 extension BankCollectionController {
 
-  /**
-  selectAll:
-
-  :param: sender AnyObject!
-  */
-  override func selectAll(sender: AnyObject!) {
+  /** selectAllExportableItems */
+  func selectAllExportableItems() {
 
     // Make sure we are in export selection mode
     if exportSelectionMode {

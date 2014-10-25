@@ -51,7 +51,7 @@ class ImportExportFileManager {
     */
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
       if _existingFiles ∋ textField.text {
-        textField.textColor = invalidTextColor
+        textField.textColor = _invalidTextColor
         return false
       }
       return true
@@ -116,7 +116,7 @@ class ImportExportFileManager {
     let exportAlertAction = UIAlertAction(title: "Export", style: .Default){
       (action: UIAlertAction!) -> Void in
       let text = (alert.textFields as [UITextField])[0].text
-      precondition(text.length > 0 && text ∉ existingFiles, "text field should not be empty or match an existing file")
+      precondition(text.length > 0 && text ∉ _existingFiles, "text field should not be empty or match an existing file")
       self.exportItems(items, toFile: MoonFunctions.documentsPathToFile(text + ".json")!)
       completion?(true)
       alert.dismissViewControllerAnimated(true, completion: nil)
@@ -128,7 +128,7 @@ class ImportExportFileManager {
     // Add the text field
     alert.addTextFieldWithConfigurationHandler{
       $0.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-      $0.textColor = textColor
+      $0.textColor = _textColor
       $0.delegate = nameValidator
     }
 
@@ -159,6 +159,21 @@ class ImportExportFileManager {
       case 0:  break
       case 1:  items.first?.JSONString.writeToFile(file)
       default: (items as NSArray).JSONString.writeToFile(file)
+    }
+  }
+
+  /**
+  urlForFile:
+
+  :param: named String
+
+  :returns: NSURL
+  */
+  class func urlForFile(named: String) -> NSURL? {
+    if let filePath = MoonFunctions.documentsPathToFile("\(named).json") {
+      return NSURL(fileURLWithPath: filePath)
+    } else {
+      return nil
     }
   }
 

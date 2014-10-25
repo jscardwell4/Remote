@@ -33,6 +33,19 @@ class BankRootController: UITableViewController, BankController {
 
   }
 
+  private(set) var exportSelection: [MSJSONExport] = []
+  var exportSelectionMode: Bool = false
+
+  /** selectAllExportableItems */
+  func selectAllExportableItems() {}
+
+  /**
+  importFromFile:
+
+  :param: fileURL NSURL
+  */
+  func importFromFile(fileURL: NSURL) {}
+
   var rootCategories: [Bank.RootCategory] = []
 
   /**

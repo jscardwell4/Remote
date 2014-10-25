@@ -70,6 +70,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
+//    tableView?.backgroundView = nil
+//    tableView?.backgroundColor = Bank.backgroundColor
     tableView?.rowHeight = UITableViewAutomaticDimension
     tableView?.estimatedRowHeight = 200.0
     tableView?.sectionHeaderHeight = 10.0

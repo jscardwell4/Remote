@@ -204,7 +204,7 @@
 		C2422BD719E5B40600379221 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2422BCD19E5B2FA00379221 /* CocoaLumberjack.framework */; };
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
 		C24D19ED19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */; };
-		C24ECC9019DE085D00C1870E /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC8F19DE085D00C1870E /* BarButtonItem.swift */; };
+		C24ECC9019DE085D00C1870E /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */; };
 		C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */; };
 		C277AB8719D787EA008DEE39 /* ToggleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */; };
 		C28D097819D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28D097719D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift */; };
@@ -276,7 +276,7 @@
 		C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerView.swift; sourceTree = "<group>"; };
 		C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+MoonKitAdditions.swift"; sourceTree = "<group>"; };
-		C24ECC8F19DE085D00C1870E /* BarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
+		C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MoonKitAdditions.swift"; sourceTree = "<group>"; };
@@ -581,7 +581,7 @@
 			isa = PBXGroup;
 			children = (
 				C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */,
-				C24ECC8F19DE085D00C1870E /* BarButtonItem.swift */,
+				C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */,
 				C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */,
 				C217E47A19E83D8900B36983 /* MSButton.swift */,
 				C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */,
@@ -1211,7 +1211,7 @@
 				C217E47B19E83D8900B36983 /* MSButton.swift in Sources */,
 				C23592D719C8785D00920F8D /* NSMutableString+MSKitAdditions.m in Sources */,
 				C2358F5A19C78E0C00920F8D /* MSColorInputButton.m in Sources */,
-				C24ECC9019DE085D00C1870E /* BarButtonItem.swift in Sources */,
+				C24ECC9019DE085D00C1870E /* BlockBarButtonItem.swift in Sources */,
 				C23592F719C8E04200920F8D /* Dictionary+MoonkitExtensions.swift in Sources */,
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,

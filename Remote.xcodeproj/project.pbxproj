@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
+		C204457319FBDD7F005355A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
 		C215C9CC19F7375F000CC6CC /* BankItemButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CB19F7375F000CC6CC /* BankItemButtonCell.swift */; };
 		C215C9CF19F739E5000CC6CC /* BankItemLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CE19F739E5000CC6CC /* BankItemLabelCell.swift */; };
 		C215C9D119F739F6000CC6CC /* BankItemListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D019F739F6000CC6CC /* BankItemListCell.swift */; };
@@ -164,9 +165,6 @@
 		C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9419DE327600C1870E /* BankableModelCategory.swift */; };
 		C252E4FB19E2191E00DBBBB2 /* BankItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* BankItemCell.swift */; };
 		C252E4FC19E2195B00DBBBB2 /* BankItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */; };
-		C2538FF819EA1E3C005D8A92 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2538FF719EA1E3C005D8A92 /* CocoaLumberjack.framework */; };
-		C25B12FD19FB4A4C00C5630F /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
-		C25B12FE19FB4A4C00C5630F /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C25B130419FB4F5900C5630F /* DocumentSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25B130319FB4F5900C5630F /* DocumentSelectionController.swift */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
@@ -555,26 +553,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C204457019FBDD25005355A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
+		};
 		C235911B19C7ACB900920F8D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C2358F1619C78D6D00920F8D;
 			remoteInfo = Moonkit;
-		};
-		C25B12F919FB4A1E00C5630F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C25B12FF19FB4A4C00C5630F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
 		};
 		C2AA245719CB15500062CF4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -591,20 +582,6 @@
 			remoteInfo = Remote;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C25B130119FB4A4C00C5630F /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C25B12FE19FB4A4C00C5630F /* MoonKit.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -1003,7 +980,6 @@
 		C277AB7D19D74AD5008DEE39 /* PresetCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetCategory.swift; sourceTree = "<group>"; };
 		C277AB7F19D74AD6008DEE39 /* ImageCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCategory.swift; sourceTree = "<group>"; };
 		C277AB8119D7791C008DEE39 /* BankCollectionCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionCategoryCell.swift; sourceTree = "<group>"; };
-		C277AB8219D7791C008DEE39 /* BankCategoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCategoryController.swift; sourceTree = "<group>"; };
 		C279E088182179E500C17FB1 /* REFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REFont.h; sourceTree = "<group>"; };
 		C279E089182179E500C17FB1 /* REFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REFont.m; sourceTree = "<group>"; };
 		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
@@ -1245,8 +1221,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C25B12FD19FB4A4C00C5630F /* MoonKit.framework in Frameworks */,
-				C2538FF819EA1E3C005D8A92 /* CocoaLumberjack.framework in Frameworks */,
+				C204457319FBDD7F005355A9 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2203,7 +2178,6 @@
 		C2F2A46F17EF560900DE2F41 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C277AB8219D7791C008DEE39 /* BankCategoryController.swift */,
 				C2400F9719D4B9B600D9BB13 /* BankRootController.swift */,
 				C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */,
 				C26B8A6A18006BF500912DBB /* Collections */,
@@ -2248,13 +2222,11 @@
 				C26BAEA416DC10FE0093D5B4 /* Sources */,
 				C26BAEA516DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA616DC10FE0093D5B4 /* Resources */,
-				C25B130119FB4A4C00C5630F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C25B12FA19FB4A1E00C5630F /* PBXTargetDependency */,
-				C25B130019FB4A4C00C5630F /* PBXTargetDependency */,
+				C204457119FBDD25005355A9 /* PBXTargetDependency */,
 			);
 			name = Remote;
 			productName = Remote;
@@ -2979,15 +2951,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C25B12FA19FB4A1E00C5630F /* PBXTargetDependency */ = {
+		C204457119FBDD25005355A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MoonKit;
-			targetProxy = C25B12F919FB4A1E00C5630F /* PBXContainerItemProxy */;
-		};
-		C25B130019FB4A4C00C5630F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C25B12FF19FB4A4C00C5630F /* PBXContainerItemProxy */;
+			targetProxy = C204457019FBDD25005355A9 /* PBXContainerItemProxy */;
 		};
 		C2C482CA19C9F968002E84A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3067,7 +3034,6 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3106,7 +3072,6 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3150,7 +3115,6 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3339,7 +3303,6 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",

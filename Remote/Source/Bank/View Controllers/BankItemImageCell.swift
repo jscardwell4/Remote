@@ -21,6 +21,9 @@ class BankItemImageCell: BankItemCell {
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     contentView.addSubview(imageℹ)
+    backgroundView = nil
+    backgroundColor = UIColor.clearColor()
+    contentView.backgroundColor = UIColor.clearColor()
     contentView.constrainWithFormat("|-[image]-| :: V:|-[image]-|", views: ["image": imageℹ])
   }
 

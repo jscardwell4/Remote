@@ -10,94 +10,256 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DocumentSelectionController: UITableViewController {
+class DocumentSelectionController: UIViewController {
 
-  private class DocumentCell: UITableViewCell {
+  var didSelectFile: ((DocumentSelectionController) -> Void)?
+  var didDismiss: ((DocumentSelectionController) -> Void)?
 
-    lazy var label: UILabel = {
-      let view = UILabel()
-      view.setTranslatesAutoresizingMaskIntoConstraints(false)
-      view.font = Bank.infoFont
-      view.textColor = Bank.infoColor
-      return view
-    }()
+  private weak var imageView: UIImageView?
 
-    /**
-    initWithStyle:reuseIdentifier:
+  private var image: UIImage? { didSet { imageView?.image = image } }
 
-    :param: style UITableViewStyle
-    :param: reuseIdentifier String
-    */
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-      super.init(style:style, reuseIdentifier: reuseIdentifier)
-      contentView.addSubview(label)
-      contentView.constrainWithFormat("|-[label]-| :: V:|-[label]-|", views: ["label": label])
-    }
-
-    /**
-    init:
-
-    :param: aDecoder NSCoder
-    */
-    required init(coder aDecoder: NSCoder) { identifier = .Label; super.init(coder: aDecoder) }
-
-
-    /// MARK: UITableViewCell
-    ////////////////////////////////////////////////////////////////////////////////
-
-    /**
-    requiresConstraintBasedLayout
-
-    :returns: Bool
-    */
-    override class func requiresConstraintBasedLayout() -> Bool { return true }
-
-  }
-
-  let files = MoonFunctions.documentsDirectoryContents().filter{$0.hasSuffix(".json")}.map{$0[0..<($0.length - 5)]}
+  private(set) var selectedFile: NSURL? { didSet { didSelectFile?(self) } }
 
   /** loadView */
   override func loadView() {
-    tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
-    tableView.rowHeight = UITableViewAutomaticDimension
-    tableView.estimatedRowHeight = 44.0
-    tableView.separatorStyle = .None
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.registerClass(DocumentCell.self, forReuseIdentifier: "Cell")
+    view = UIView(frame: UIScreen.mainScreen().bounds)
+    imageView = {
+      let iv = UIImageView()
+      iv.image = self.image
+      iv.setTranslatesAutoresizingMaskIntoConstraints(false)
+      self.view.addSubview(iv)
+      self.view.constrainWithFormat("|[image]| :: V:|[image]|", views: ["image": iv])
+      return iv
+    }()
+    let fileNameController = FileNameTableViewController()
+    addChildViewController(fileNameController)
+    let childView = fileNameController.view
+    view.addSubview(childView)
+    view.constrainWithFormat("|-[files]-| :: V:|-[files]-|", views: ["files": childView])
   }
 
   /**
-  numberOfSectionsInTableView:
+  willMoveToParentViewController:
 
-  :param: tableView UITableView
-
-  :returns: Int
+  :param: parent UIViewController?
   */
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
+  override func willMoveToParentViewController(parent: UIViewController?) {
+    super.willMoveToParentViewController(parent)
+    image = parent?.view.blurredSnapshot()
+  }
 
   /**
-  tableView:numberOfRowsInSection:
+  viewWillAppear:
 
-  :param: tableView UITableView
-  :param: section Int
-
-  :returns: Int
+  :param: animated Bool
   */
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return files.count }
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    if isBeingPresented() {
+      image = presentingViewController?.view.blurredSnapshot()
+    }
+  }
 
-  /**
-  tableView:cellForRowAtIndexPath:
+  /// MARK: Table view controller class for displaying existing file names for selection
+  //////////////////////////////////////////////////////////////////////////////////////
 
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
+  private class FileNameTableViewController: UITableViewController {
 
-  :returns: UITableViewCell
-  */
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as DocumentCell
-    cell.label.text = files[indexPath.row]
-    return cell
+    // Simple cell subclass for the table view to use
+    private class DocumentCell: UITableViewCell {
+
+      // UILabel subclass because text was getting cutoff
+      private class DocumentCellLabel: UILabel {
+
+        var gutter: CGFloat = 4.0
+
+        /**
+        drawRect:
+
+        :param: rect CGRect
+        */
+        override func drawRect(rect: CGRect) {
+          var newRect = rect
+          newRect.origin.x = rect.origin.x + gutter
+          newRect.origin.y = rect.origin.y + gutter
+          newRect.size.width = rect.size.width - CGFloat(2) * gutter
+          newRect.size.height = rect.size.height - CGFloat(2) * gutter
+          attributedText.drawInRect(newRect)
+        }
+
+        /**
+        alignmentRectInsets
+
+        :returns: UIEdgeInsets
+        */
+        override func alignmentRectInsets() -> UIEdgeInsets {
+          return UIEdgeInsets(top: gutter, left: gutter, bottom: gutter, right: gutter);
+        }
+
+        /**
+        intrinsicContentSize
+
+        :returns: CGSize
+        */
+        override func intrinsicContentSize() -> CGSize {
+          var size = super.intrinsicContentSize()
+          size.width += CGFloat(2) * gutter
+          size.height += CGFloat(2) * gutter
+          return size;
+        }
+      }
+
+      lazy var label: DocumentCellLabel = {
+        let view = DocumentCellLabel()
+        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.font = Bank.boldLabelFont
+        view.textColor = Bank.infoColor
+        view.backgroundColor = UIColor.clearColor()
+        view.opaque = false
+        return view
+      }()
+
+      /**
+      setHighlighted:animated:
+
+      :param: highlighted Bool
+      :param: animated Bool
+      */
+      override func setHighlighted(highlighted: Bool, animated: Bool) {
+        label.font = highlighted || selected ? Bank.boldLabelFont : Bank.labelFont
+        super.setHighlighted(highlighted, animated: animated)
+      }
+
+      /**
+      setSelected:animated:
+
+      :param: selected Bool
+      :param: animated Bool
+      */
+      override func setSelected(selected: Bool, animated: Bool) {
+        label.font = highlighted || selected ? Bank.boldLabelFont : Bank.labelFont
+        super.setSelected(selected, animated: animated)
+      }
+
+      /**
+      initWithStyle:reuseIdentifier:
+
+      :param: style UITableViewStyle
+      :param: reuseIdentifier String
+      */
+      override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style:style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(label)
+        contentView.backgroundColor = UIColor.clearColor()
+        contentView.opaque = false
+        backgroundColor = UIColor.clearColor()
+        opaque = false
+        selectionStyle = .None
+        contentView.constrainWithFormat("|-[label]-| :: V:|-[label]-|", views: ["label": label])
+      }
+
+      /**
+      init:
+
+      :param: aDecoder NSCoder
+      */
+      required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+
+      /**
+      requiresConstraintBasedLayout
+
+      :returns: Bool
+      */
+      override class func requiresConstraintBasedLayout() -> Bool { return true }
+
+    }
+
+    private var documentSelectionController: DocumentSelectionController? {
+      return parentViewController as? DocumentSelectionController
+    }
+
+    let files = MoonFunctions.documentsDirectoryContents().filter{$0.hasSuffix(".json")}.map{$0[0..<($0.length - 5)]}
+
+    /** loadView */
+    override func loadView() {
+      super.loadView()
+      tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+      tableView.opaque = false
+      tableView.backgroundColor = UIColor.clearColor()
+      tableView.clipsToBounds = false
+      tableView.separatorStyle = .None
+      tableView.estimatedRowHeight = 100.0
+      tableView.registerClass(DocumentCell.self, forCellReuseIdentifier: "Cell")
+      tableView.tableHeaderView = {
+        let headerLabel = UILabel()
+        headerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        headerLabel.font = Bank.boldLabelFont
+        headerLabel.textColor = Bank.labelColor
+        headerLabel.backgroundColor = UIColor.clearColor()
+        headerLabel.text = "Select a file to import:"
+        headerLabel.opaque = false
+
+        let view = UIView()
+        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.opaque = false
+        view.backgroundColor = UIColor.clearColor()
+        view.addSubview(headerLabel)
+        view.layoutMargins = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 30.0, right: 8.0)
+        view.constrainWithFormat("|-[label]-| :: V:|-[label]-|", views: ["label": headerLabel])
+        return view
+      }()
+    }
+
+    /**
+    numberOfSectionsInTableView:
+
+    :param: tableView UITableView
+
+    :returns: Int
+    */
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
+
+    /**
+    tableView:numberOfRowsInSection:
+
+    :param: tableView UITableView
+    :param: section Int
+
+    :returns: Int
+    */
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return files.count }
+
+    /**
+    tableView:cellForRowAtIndexPath:
+
+    :param: tableView UITableView
+    :param: indexPath NSIndexPath
+
+    :returns: UITableViewCell
+    */
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+      let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as DocumentCell
+      cell.label.text = files[indexPath.row]
+      var margins = cell.contentView.layoutMargins
+      if indexPath.row == 0 { margins.top = 40.0 }
+      else if indexPath.row == files.count - 1 { margins.bottom = 40.0 }
+      margins.left = 40.0
+      margins.right = 40.0
+      cell.contentView.layoutMargins = margins
+      return cell
+    }
+
+    /**
+    tableView:didSelectRowAtIndexPath:
+
+    :param: tableView UITableView
+    :param: indexPath NSIndexPath
+    */
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+      documentSelectionController?.selectedFile = ImportExportFileManager.urlForFile(files[indexPath.row])
+    }
+
   }
 
 }
