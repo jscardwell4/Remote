@@ -32,11 +32,16 @@ class DocumentSelectionController: UIViewController {
       self.view.constrainWithFormat("|[image]| :: V:|[image]|", views: ["image": iv])
       return iv
     }()
+
+    let wrapper = UIView()
+    wrapper.setTranslatesAutoresizingMaskIntoConstraints(false)
+    wrapper.backgroundColor = UIColor.clearColor()
+    view.addSubview(wrapper)
+    view.constrainWithFormat("|-20-[wrapper]-20-| :: V:|-100-[wrapper]-100-|", views: ["wrapper": wrapper])
+
     let fileNameController = FileNameTableViewController()
     addChildViewController(fileNameController)
-    let childView = fileNameController.view
-    view.addSubview(childView)
-    view.constrainWithFormat("|-[files]-| :: V:|-[files]-|", views: ["files": childView])
+    wrapper.addSubview(fileNameController.view)
   }
 
   /**
@@ -189,26 +194,9 @@ class DocumentSelectionController: UIViewController {
       tableView.backgroundColor = UIColor.clearColor()
       tableView.clipsToBounds = false
       tableView.separatorStyle = .None
-      tableView.estimatedRowHeight = 100.0
+      tableView.estimatedRowHeight = 44
+      tableView.sectionHeaderHeight = 50
       tableView.registerClass(DocumentCell.self, forCellReuseIdentifier: "Cell")
-      tableView.tableHeaderView = {
-        let headerLabel = UILabel()
-        headerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        headerLabel.font = Bank.boldLabelFont
-        headerLabel.textColor = Bank.labelColor
-        headerLabel.backgroundColor = UIColor.clearColor()
-        headerLabel.text = "Select a file to import:"
-        headerLabel.opaque = false
-
-        let view = UIView()
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
-        view.opaque = false
-        view.backgroundColor = UIColor.clearColor()
-        view.addSubview(headerLabel)
-        view.layoutMargins = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 30.0, right: 8.0)
-        view.constrainWithFormat("|-[label]-| :: V:|-[label]-|", views: ["label": headerLabel])
-        return view
-      }()
     }
 
     /**
@@ -219,6 +207,25 @@ class DocumentSelectionController: UIViewController {
     :returns: Int
     */
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
+
+    /**
+    tableView:viewForHeaderInSection:
+
+    :param: tableView UITableView
+    :param: section Int
+
+    :returns: UIView?
+    */
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+      let view = UILabel()
+      view.setTranslatesAutoresizingMaskIntoConstraints(false)
+      view.font = Bank.boldLabelFont
+      view.textColor = Bank.labelColor
+      view.backgroundColor = UIColor.clearColor()
+      view.text = "Select a file to import:"
+      view.opaque = false
+      return view
+    }
 
     /**
     tableView:numberOfRowsInSection:
@@ -241,12 +248,12 @@ class DocumentSelectionController: UIViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as DocumentCell
       cell.label.text = files[indexPath.row]
-      var margins = cell.contentView.layoutMargins
-      if indexPath.row == 0 { margins.top = 40.0 }
-      else if indexPath.row == files.count - 1 { margins.bottom = 40.0 }
-      margins.left = 40.0
-      margins.right = 40.0
-      cell.contentView.layoutMargins = margins
+//      var margins = cell.contentView.layoutMargins
+//      if indexPath.row == 0 { margins.top = 80.0 }
+//      else if indexPath.row == files.count - 1 { margins.bottom = 60.0 }
+//      margins.left = 40.0
+//      margins.right = 40.0
+//      cell.contentView.layoutMargins = margins
       return cell
     }
 

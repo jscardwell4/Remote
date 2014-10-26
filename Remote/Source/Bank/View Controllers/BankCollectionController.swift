@@ -281,6 +281,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   */
   func zoomItemAtIndexPath(indexPath: NSIndexPath) {
     precondition(indexPath.section == 1, "we should only be zooming actual items")
+    zoomedItemIndexPath = indexPath
     let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
     zoomView.item = category.items[indexPath.row]
     zoomView.backgroundImage = view.blurredSnapshot()

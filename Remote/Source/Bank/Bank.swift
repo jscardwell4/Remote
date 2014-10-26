@@ -231,16 +231,16 @@ class Bank {
                 item.toggle(nil)
                 ImportToggleActionProperties.fileController = nil
             }
-            if var rootViewController =  MSRemoteAppController.sharedAppController().window.rootViewController {
-              println(rootViewController.view.viewTreeDescription())
-              if let navController = rootViewController as? UINavigationController {
-                rootViewController = navController.topViewController!
-              }
+            if let rootViewController =  MSRemoteAppController.sharedAppController().window.rootViewController {
+              let rootView = rootViewController.view
               rootViewController.addChildViewController(fileController!)
               fileController!.view.setTranslatesAutoresizingMaskIntoConstraints(false)
-              rootViewController.view.addSubview(fileController!.view)
+              if rootViewController is UINavigationController {
+                rootViewController.view.insertSubview(fileController!.view, atIndex: 1)
+              } else {
+                rootViewController.view.addSubview(fileController!.view)
+              }
               rootViewController.view.constrainWithFormat("|[child]| :: V:|[child]|", views: ["child": fileController!.view])
-              println(rootViewController.view.viewTreeDescription())
             }
 
           }

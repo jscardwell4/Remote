@@ -22,7 +22,19 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   class var tableRowHeight:    CGFloat { return 120.0 }
 
   let item: BankDisplayItemModel!
-  weak var nameTextField: UITextField!
+  lazy var nameTextField: UITextField =  {
+    let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
+    textField.placeholder = "Name"
+    textField.font = Bank.boldLabelFont
+    textField.textColor = Bank.labelColor
+    textField.keyboardAppearance = Bank.keyboardAppearance
+    textField.adjustsFontSizeToFitWidth = true
+    textField.returnKeyType = .Done
+    textField.textAlignment = .Center
+    textField.delegate = self
+    return textField
+    }()
+
   private(set) var didCancel: Bool = false
 
   private weak var cellDisplayingPicker: BankItemButtonCell?
@@ -70,8 +82,6 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
-//    tableView?.backgroundView = nil
-//    tableView?.backgroundColor = Bank.backgroundColor
     tableView?.rowHeight = UITableViewAutomaticDimension
     tableView?.estimatedRowHeight = 200.0
     tableView?.sectionHeaderHeight = 10.0
@@ -80,19 +90,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     tableView?.delegate = self
     tableView?.dataSource = self
     BankItemCell.registerIdentifiersWithTableView(tableView)
-    nameTextField = { [unowned self] in
-      let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
-      textField.placeholder = "Name"
-      textField.font = Bank.boldLabelFont
-      textField.textColor = Bank.labelColor
-      textField.keyboardAppearance = Bank.keyboardAppearance
-      textField.adjustsFontSizeToFitWidth = true
-      textField.returnKeyType = .Done
-      textField.textAlignment = .Center
-      textField.delegate = self
-      self.navigationItem.titleView = textField
-      return textField
-    }()
+    navigationItem.titleView = nameTextField
     navigationItem.rightBarButtonItem = editButtonItem()
   }
 
@@ -100,7 +98,6 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   func updateDisplay() {
     nameTextField.text = item.name
     navigationItem.rightBarButtonItem?.enabled = item?.editable ?? false
-//    tableView.reloadData()
     didCancel = false
     configureVisibleCells()
   }
@@ -127,6 +124,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
                                            ? UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel")
                                            : nil
       nameTextField.userInteractionEnabled = editing
+      if nameTextField.isFirstResponder() { nameTextField.resignFirstResponder() }
       navigationItem.rightBarButtonItem?.title = editing ? "Save" : "Edit"
       navigationItem.rightBarButtonItem?.action = editing ? "save" : "edit"
       super.setEditing(editing, animated: animated)
@@ -150,8 +148,6 @@ class BankItemDetailController: UITableViewController, BankDetailController {
     item.save()
     setEditing(false, animated: true)
   }
-
-//  var expandedRows: [NSIndexPath] = []
 
   /**
   cellForRowAtIndexPath:
@@ -262,6 +258,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   :returns: BankItemCell?
   */
   func dequeueCellForIndexPath(indexPath: NSIndexPath) -> BankItemCell? {
+
     var cell: BankItemCell?
 
     if let identifier = identifierForIndexPath(indexPath) {
@@ -325,11 +322,8 @@ extension BankItemDetailController: UITableViewDelegate {
   override func         tableView(tableView: UITableView,
     editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
   {
-    if let row = rowForIndexPath(indexPath) {
-      return row.editingStyle
-    } else {
-      return .None
-    }
+    if let row = rowForIndexPath(indexPath) { return row.editingStyle }
+    else { return .None }
   }
 
   /**
@@ -396,9 +390,7 @@ extension BankItemDetailController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return sections.count
-  }
+  override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return sections.count }
 
 
   /**
@@ -497,7 +489,23 @@ extension BankItemDetailController: UITableViewDataSource {
 
 }
 
+/// MARK: - UITextFieldDelegate
+////////////////////////////////////////////////////////////////////////////////
+
 extension BankItemDetailController: UITextFieldDelegate {
+
+  /**
+  textFieldShouldReturn:
+
+  :param: textField UITextField
+
+  :returns: Bool
+  */
+  func textFieldShouldReturn(textField: UITextField) -> Bool {
+    precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
+    textField.resignFirstResponder()
+    return false
+  }
 
   /**
   textFieldDidEndEditing:
@@ -505,7 +513,8 @@ extension BankItemDetailController: UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField === nameTextField && textField.text?.length > 0 { item.name = textField.text }
+    precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
+    if textField.text?.length > 0 { item.name = textField.text }
     else { textField.text = item.name }
   }
 

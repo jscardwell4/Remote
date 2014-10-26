@@ -182,6 +182,7 @@ class BankItemCell: UITableViewCell {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .None
+    contentView.layoutMargins = UIEdgeInsets(top: 8.0, left: 20.0, bottom: 8.0, right: 20.0)
   }
 
   /**

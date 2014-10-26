@@ -26,7 +26,7 @@ class BankItemStepperCell: BankItemCell {
     contentView.addSubview(stepper)
     let format = "\n".join(
       "|-[name]-[label]",
-      "label.trailing = stepper.leading - 8",
+      "label.trailing = stepper.leading - \(contentView.layoutMargins.right)",
       "V:|-[name]-| :: V:|-[label]-| :: V:|-[stepper]-|",
       "'stepper leading' stepper.leading = self.trailing"
     )

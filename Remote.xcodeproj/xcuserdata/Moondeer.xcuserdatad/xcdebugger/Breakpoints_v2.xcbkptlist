@@ -30,11 +30,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemDetailController.swift"
-            timestampString = "435967489.521074"
+            timestampString = "435976076.468125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "463"
-            endingLineNumber = "463"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
             landmarkName = "BankItemDetailController"
             landmarkType = "3">
          </BreakpointContent>
@@ -46,11 +46,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemDetailController.swift"
-            timestampString = "435967489.521074"
+            timestampString = "435976076.468125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
             landmarkName = "tableView(_:commitEditingStyle:forRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -76,11 +76,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemDetailController.swift"
-            timestampString = "435967489.521074"
+            timestampString = "435976076.468125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "450"
-            endingLineNumber = "450"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
             landmarkName = "BankItemDetailController"
             landmarkType = "3">
          </BreakpointContent>
@@ -92,11 +92,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemCell.swift"
-            timestampString = "435692343.303153"
+            timestampString = "435974028.500938"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "506"
-            endingLineNumber = "506">
+            startingLineNumber = "507"
+            endingLineNumber = "507">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/BankItemDetailController.swift"
-            timestampString = "435967489.521074"
+            timestampString = "435976076.468125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "updateDisplay()"
             landmarkType = "5">
          </BreakpointContent>
@@ -302,9 +302,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "199"
-            endingLineNumber = "199"
-            landmarkName = "BankCollectionController"
-            landmarkType = "3">
+            endingLineNumber = "199">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -318,9 +316,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "BankCollectionController"
-            landmarkType = "3">
+            endingLineNumber = "204">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -334,9 +330,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "BankCollectionController"
-            landmarkType = "3">
+            endingLineNumber = "207">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -366,9 +360,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "187"
-            endingLineNumber = "187"
-            landmarkName = "confirmExport(_:)"
-            landmarkType = "5">
+            endingLineNumber = "187">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -408,11 +400,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/DocumentSelectionController.swift"
-            timestampString = "435964105.995273"
+            timestampString = "435978931.190456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "loadView()"
             landmarkType = "5">
          </BreakpointContent>
@@ -424,12 +416,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/DocumentSelectionController.swift"
-            timestampString = "435964105.995273"
+            timestampString = "435978931.190456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "init(style:reuseIdentifier:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/BankItemStepperCell.swift"
+            timestampString = "435974594.001105"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "init(style:reuseIdentifier:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/DocumentSelectionController.swift"
+            timestampString = "435981194.452408"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/DocumentSelectionController.swift"
+            timestampString = "435978931.190456"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "setHighlighted(_:animated:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/DocumentSelectionController.swift"
+            timestampString = "435978931.190456"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "setSelected(_:animated:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

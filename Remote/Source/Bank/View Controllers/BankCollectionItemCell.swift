@@ -193,11 +193,7 @@ class BankCollectionItemCell: BankCollectionCell {
     item = nil
   }
 
-  /**
-
-  thumbnailImageViewAction
-
-  */
+  /** previewAction */
   func previewAction() { if let action = previewActionHandler { action() } }
 
 }
