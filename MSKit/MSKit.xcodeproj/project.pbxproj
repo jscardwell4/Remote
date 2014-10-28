@@ -205,6 +205,8 @@
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
 		C24D19ED19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */; };
 		C24ECC9019DE085D00C1870E /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */; };
+		C25E63D919FDBE7100F54626 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D819FDBE7100F54626 /* Geometry.swift */; };
+		C25E63DE19FEC06A00F54626 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63DD19FEC06A00F54626 /* GestureManager.swift */; };
 		C274832619D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */; };
 		C277AB8719D787EA008DEE39 /* ToggleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */; };
 		C28D097819D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28D097719D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift */; };
@@ -277,6 +279,8 @@
 		C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerView.swift; sourceTree = "<group>"; };
 		C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
+		C25E63D819FDBE7100F54626 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		C25E63DD19FEC06A00F54626 /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MoonKitAdditions.swift"; sourceTree = "<group>"; };
@@ -539,6 +543,7 @@
 				C28D097719D8677200DF8100 /* NSRegularExpression+MoonKitAdditions.swift */,
 				C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */,
 				C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */,
+				C25E63D819FDBE7100F54626 /* Geometry.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -586,6 +591,7 @@
 				C217E47A19E83D8900B36983 /* MSButton.swift */,
 				C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */,
 				C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */,
+				C25E63DD19FEC06A00F54626 /* GestureManager.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1157,6 +1163,7 @@
 				C21F931B19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */,
 				C2358F3419C78E0C00920F8D /* NSAttributedString+MSKitAdditions.m in Sources */,
 				C2358F3519C78E0C00920F8D /* NSDictionary+MSKitAdditions.m in Sources */,
+				C25E63DE19FEC06A00F54626 /* GestureManager.swift in Sources */,
 				C2358F3619C78E0C00920F8D /* NSFetchedResultsController+MSKitAdditions.m in Sources */,
 				C2358F3719C78E0C00920F8D /* NSFetchRequest+MSKitAdditions.m in Sources */,
 				C2358F3819C78E0C00920F8D /* NSHashTable+MSKitAdditions.m in Sources */,
@@ -1246,6 +1253,7 @@
 				C2358F7519C78E0C00920F8D /* MSStack.m in Sources */,
 				C2358F7619C78E0C00920F8D /* MSValueTransformers.m in Sources */,
 				C2358F7A19C78E0C00920F8D /* MSNotificationReceptionist.m in Sources */,
+				C25E63D919FDBE7100F54626 /* Geometry.swift in Sources */,
 				C235930319C8E04200920F8D /* FontAwesomeIcon.swift in Sources */,
 				C2358F7B19C78E0C00920F8D /* MSXMLParserDelegate.m in Sources */,
 				C2358F7C19C78E0C00920F8D /* MSKeyPath.m in Sources */,

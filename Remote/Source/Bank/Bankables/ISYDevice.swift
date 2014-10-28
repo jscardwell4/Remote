@@ -73,31 +73,31 @@ class ISYDevice: NetworkDevice {
     @NSManaged var modelDescription: String
     @NSManaged var modelName: String
     @NSManaged var modelNumber: String
-    @NSManaged var primitiveGroups: NSSet
+    @NSManaged var primitiveGroups: NSMutableSet?
     var groups: [ISYDeviceGroup] {
       get {
         willAccessValueForKey("groups")
-        let groups = primitiveGroups.allObjects as? [ISYDeviceGroup]
+        let groups = primitiveGroups?.allObjects as? [ISYDeviceGroup]
         didAccessValueForKey("groups")
         return groups ?? []
       }
       set {
         willChangeValueForKey("groups")
-        primitiveGroups = NSSet(array: newValue)
+        primitiveGroups = NSMutableSet(array: newValue)
         didChangeValueForKey("groups")
       }
     }
-    @NSManaged var primitiveNodes: NSSet
+    @NSManaged var primitiveNodes: NSMutableSet?
     var nodes: [ISYDeviceNode] {
       get {
         willAccessValueForKey("nodes")
-        let nodes = primitiveNodes.allObjects as? [ISYDeviceNode]
+        let nodes = primitiveNodes?.allObjects as? [ISYDeviceNode]
         didAccessValueForKey("nodes")
         return nodes ?? []
       }
       set {
         willChangeValueForKey("nodes")
-        primitiveNodes = NSSet(array: newValue)
+        primitiveNodes = NSMutableSet(array: newValue)
         didChangeValueForKey("nodes")
       }
     }
@@ -114,11 +114,13 @@ class ISYDevice: NetworkDevice {
     baseURL           = data["base-url"]          as? NSString ?? baseURL
 
     if let nodes = ISYDeviceNode.importObjectsFromData(data["nodes"], context: managedObjectContext) as? [ISYDeviceNode] {
-      mutableSetValueForKey("nodes").addObjectsFromArray(nodes)
+      if primitiveNodes == nil { primitiveNodes = NSMutableSet() }
+      primitiveNodes?.addObjectsFromArray(nodes)
     }
 
     if let groups = ISYDeviceGroup.importObjectsFromData(data["groups"], context: managedObjectContext) as? [ISYDeviceGroup] {
-      mutableSetValueForKey("groups").addObjectsFromArray(groups)
+      if primitiveGroups == nil { primitiveGroups = NSMutableSet() }
+      primitiveGroups?.addObjectsFromArray(groups)
     }
   }
 

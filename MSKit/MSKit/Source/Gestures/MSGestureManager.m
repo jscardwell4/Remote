@@ -14,20 +14,16 @@
   NSMapTable * _gestureMap;
 }
 
-+ (MSGestureManager *)gestureManagerForGestures:(NSArray *)gestures {
-  return [self gestureManagerForGestures:gestures blocks:nil];
++ (instancetype)gestureManagerForGestures:(NSArray *)gestures {
+  return [self gestureManagerWithGestures:gestures blocks:nil];
 }
 
-+ (MSGestureManager *)gestureManagerForGestures:(NSArray *)gestures blocks:(NSArray *)blocks {
++ (instancetype)gestureManagerForGestures:(NSArray *)gestures blocks:(NSArray *)blocks {
+  return [self gestureManagerWithGestures:gestures blocks:blocks];
+}
 
-  MSGestureManager * manager = [MSGestureManager new];
-
-  [gestures enumerateObjectsUsingBlock:^(UIGestureRecognizer * obj, NSUInteger idx, BOOL * stop) {
-    [manager addGesture:obj withBlocks:blocks[idx]];
-  }];
-
-  return manager;
-
++ (instancetype)gestureManagerWithGestures:(NSArray *)gestures blocks:(NSArray *)blocks {
+  return [[self alloc] initWithGestures:gestures blocks:blocks];
 }
 
 - (id)init {
@@ -35,6 +31,15 @@
     _gestureMap = [NSMapTable weakToStrongObjectsMapTable];
   }
 
+  return self;
+}
+
+- (instancetype)initWithGestures:(NSArray *)gestures blocks:(NSArray *)blocks {
+  if ((self = [self init])) {
+    [gestures enumerateObjectsUsingBlock:^(UIGestureRecognizer * obj, NSUInteger idx, BOOL * stop) {
+      [self addGesture:obj withBlocks:blocks[idx]];
+    }];
+  }
   return self;
 }
 

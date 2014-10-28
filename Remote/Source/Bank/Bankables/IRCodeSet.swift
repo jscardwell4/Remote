@@ -14,7 +14,7 @@ import MoonKit
 class IRCodeSet: BankableModelCategory {
 
   @NSManaged var devices: NSSet?
-  @NSManaged var primitiveCodes: NSSet?
+  @NSManaged var primitiveCodes: NSMutableSet?
   var codes: [IRCode] {
     get {
       willAccessValueForKey("codes")
@@ -24,7 +24,7 @@ class IRCodeSet: BankableModelCategory {
     }
     set {
       willChangeValueForKey("codes")
-      primitiveCodes = NSSet(array: newValue)
+      primitiveCodes = NSMutableSet(array: newValue)
       didChangeValueForKey("codes")
     }
   }
@@ -46,10 +46,9 @@ class IRCodeSet: BankableModelCategory {
     super.updateWithData(data)
 
     if let codesData = data["codes"] as? NSArray {
-      if primitiveCodes == nil { primitiveCodes = NSSet() }
-      let mutableCodes = mutableSetValueForKey("codes")
+      if primitiveCodes == nil { primitiveCodes = NSMutableSet() }
       if let importedCodes = IRCode.importObjectsFromData(codesData, context: managedObjectContext) {
-        mutableCodes.addObjectsFromArray(importedCodes)
+        primitiveCodes!.addObjectsFromArray(importedCodes)
       }
     }
 

@@ -123,7 +123,7 @@ presentedControlState = _presentedControlState;
   [super viewDidLoad];
     if (ValueIsNotNil(_buttonModel)) {
         self.buttonView                    = (ButtonView *)[ButtonView viewWithModel:_buttonModel];
-        _buttonView.editingMode            = REButtonEditingMode;
+        _buttonView.editingMode            = REEditingModeButton;
         _buttonView.userInteractionEnabled = NO;
         [_touchReporter addSubview:_buttonView];
 

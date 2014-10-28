@@ -252,10 +252,10 @@ static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_C
   self.resizable = (self.editingMode == REEditingModeNotEditing) ? YES : NO;
   self.moveable  = (self.editingMode == REEditingModeNotEditing) ? YES : NO;
 
-  if (self.editingMode == RERemoteEditingMode)
+  if (self.editingMode == REEditingModeRemote)
     self.subelementInteractionEnabled = NO;
 
-  else if (self.editingMode == REButtonGroupEditingMode)
+  else if (self.editingMode == REEditingModeButtonGroup)
     self.subelementInteractionEnabled = YES;
 
 }

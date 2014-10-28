@@ -26,7 +26,7 @@ static int   msLogContext = (LOG_CONTEXT_REMOTE|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 + (Class)elementClass { return [RemoteView class]; }
 
-+ (REEditingMode)editingModeForElement { return RERemoteEditingMode; }
++ (REEditingMode)editingModeForElement { return REEditingModeRemote; }
 
 - (void)setMockParentSize:(CGSize)mockParentSize {}
 

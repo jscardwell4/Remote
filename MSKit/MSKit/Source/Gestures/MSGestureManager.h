@@ -38,7 +38,7 @@ typedef NS_ENUM (NSUInteger, MSGestureManagerResponseType){
  *
  * @return The manager
  */
-+ (MSGestureManager *)gestureManagerForGestures:(NSArray *)gestures;
++ (instancetype)gestureManagerForGestures:(NSArray *)gestures;
 
 /**
  * Creates a new gesture manager for the specified gestures with the specified blocks registered.
@@ -51,7 +51,9 @@ typedef NS_ENUM (NSUInteger, MSGestureManagerResponseType){
  *
  * @return The manager
  */
-+ (MSGestureManager *)gestureManagerForGestures:(NSArray *)gestures blocks:(NSArray *)blocks;
++ (instancetype)gestureManagerForGestures:(NSArray *)gestures blocks:(NSArray *)blocks;
++ (instancetype)gestureManagerWithGestures:(NSArray *)gestures blocks:(NSArray *)blocks;
+- (instancetype)initWithGestures:(NSArray *)gestures blocks:(NSArray *)blocks;
 
 /**
  * Invokes the registered block for the specified gesture and returns the result. Returns `YES` if

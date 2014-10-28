@@ -660,7 +660,7 @@ editorState;
 
     if (_buttonModel) {
         self.buttonView         = (ButtonView *)[ButtonView viewWithModel:_buttonModel];
-        _buttonView.editingMode = REButtonEditingMode;
+        _buttonView.editingMode = REEditingModeButton;
         [self setButtonViewStateFromPresentedState];
         [self.view addSubview:_buttonView];
 

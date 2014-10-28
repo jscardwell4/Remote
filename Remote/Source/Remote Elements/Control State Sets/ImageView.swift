@@ -28,8 +28,18 @@ class ImageView: ModelObject {
   @NSManaged var imageSetSelectedHighlightedDisabled: ControlStateImageSet?
 
 
-  var rawImage: UIImage?
+  var rawImage: UIImage? { return image?.image }
 
-  var colorImage: UIImage?
+  var colorImage: UIImage? {
+    if let img = rawImage {
+      if let imgColor = color {
+        return UIImage(fromAlphaOfImage: img, color: imgColor)
+      } else {
+        return img
+      }
+    } else {
+      return nil
+    }
+  }
 
 }

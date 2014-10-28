@@ -23,7 +23,7 @@ static int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE|LOG_CONTEXT_CON
 
 + (Class)elementClass { return [ButtonGroupView class]; }
 
-+ (REEditingMode)editingModeForElement { return REButtonGroupEditingMode; }
++ (REEditingMode)editingModeForElement { return REEditingModeButtonGroup; }
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - MSPickerInputButtonDelegate methods

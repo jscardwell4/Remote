@@ -168,7 +168,7 @@ static inline NSString *NSStringFromREThemeFlags(REThemeOverrideFlags themeFlags
 ////////////////////////////////////////////////////////////////////////////////
 
 
-typedef NS_OPTIONS (uint8_t, REType) {
+typedef NS_ENUM (uint8_t, REType) {
   RETypeUndefined   = 0b00000000,
   RETypeRemote      = 0b00000001,
   RETypeButtonGroup = 0b00000010,
@@ -189,7 +189,7 @@ static inline NSString *NSStringFromREType(REType type) {
 }
 
 // TODO: incorportate panel assignments into role value
-typedef NS_ENUM (uint8_t, RERole) {
+typedef NS_OPTIONS (uint8_t, RERole) {
   RERoleUndefined                 = 0b00000000,
 
   // button group roles
@@ -463,23 +463,23 @@ static inline BOOL CommandSetTypeIsValid(CommandSetType type) {
 #pragma mark - Editing
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef NS_ENUM (uint64_t, REEditingMode) {
+typedef NS_ENUM (uint8_t, REEditingMode) {
   REEditingModeNotEditing  = RETypeUndefined,
-  RERemoteEditingMode      = RETypeRemote,
-  REButtonGroupEditingMode = RETypeButtonGroup,
-  REButtonEditingMode      = RETypeButton
+  REEditingModeRemote      = RETypeRemote,
+  REEditingModeButtonGroup = RETypeButtonGroup,
+  REEditingModeButton      = RETypeButton
 };
 
 static inline NSString *NSStringFromREEditingMode(REEditingMode mode) {
   NSMutableString * modeString = [NSMutableString string];
 
-  if (mode & RERemoteEditingMode) {
-    [modeString appendString:@"RERemoteEditingMode"];
+  if (mode & REEditingModeRemote) {
+    [modeString appendString:@"REEditingModeRemote"];
 
-    if (mode & REButtonGroupEditingMode) {
-      [modeString appendString:@"|REButtonGroupEditingMode"];
+    if (mode & REEditingModeButtonGroup) {
+      [modeString appendString:@"|REEditingModeButtonGroup"];
 
-      if (mode & REButtonEditingMode) [modeString appendString:@"|REButtonEditingMode"];
+      if (mode & REEditingModeButton) [modeString appendString:@"|REEditingModeButton"];
     }
   } else
     [modeString appendString:@"REEditingModeNotEditing"];
