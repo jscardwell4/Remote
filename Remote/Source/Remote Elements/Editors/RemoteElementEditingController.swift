@@ -58,7 +58,8 @@ class RemoteElementEditingController: UIViewController {
   var currentFrame = CGRectZero
   var longPressPreviousLocation = CGPointZero
   var contentRect = CGRectZero
-  var allowableSourceViewYOffset = MSBoundary(lower: 0.0, upper: 0.0)
+  var startingPanOffset: CGFloat = 0.0
+  var allowableSourceViewYOffset = ClosedInterval<CGFloat>(0, 0)
   var maxSizeCache: [String:CGSize] = [:]
   var minSizeCache: [String:CGSize] = [:]
   var startingOffsets: NSMutableDictionary?
@@ -67,37 +68,46 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Bar button items
   ////////////////////////////////////////////////////////////////////////////////
 
-  var singleSelButtons: NSMutableArray?
-  var anySelButtons: NSMutableArray?
-  var noSelButtons: NSMutableArray?
-  var multiSelButtons: NSMutableArray?
-  var undoButton: MSBarButtonItem?
+  var singleSelButtons: [UIBarButtonItem] = []
+  var anySelButtons: [UIBarButtonItem] = []
+  var noSelButtons: [UIBarButtonItem] = []
+  var multiSelButtons: [UIBarButtonItem] = []
+  var undoButton: MSBarButtonItem!
 
   /// MARK: Toolbars
   ////////////////////////////////////////////////////////////////////////////////
 
   weak var currentToolbar: UIToolbar! {
     didSet {
-      /*
-        if (currentToolbar && _currentToolbar && _currentToolbar != currentToolbar) {
-          currentToolbar.frame = _currentToolbar.frame;
-          [UIView animateWithDuration:0.25
-                           animations:^{
-                             _currentToolbar.hidden = YES;
-                             currentToolbar.hidden  = NO;
-                           }
-
-                           completion:^(BOOL finished) {
-                             if (finished) _currentToolbar = currentToolbar;
-                           }];
-      */
+      if currentToolbar != nil && oldValue != nil && currentToolbar != oldValue {
+        let animations: (Void) -> Void = { self.currentToolbar.hidden = false; oldValue.hidden = true }
+        UIView.animateWithDuration(0.25, animations: animations, completion: nil)
+      }
     }
   }
-  @IBOutlet var topToolbar: UIToolbar!
-  @IBOutlet var emptySelectionToolbar: UIToolbar?
-  @IBOutlet var nonEmptySelectionToolbar: UIToolbar?
-  @IBOutlet var focusSelectionToolbar: UIToolbar?
-  var toolbars: [UIToolbar]!
+  var topToolbar: UIToolbar = {
+    let toolbar = UIToolbar(frame: CGRect(size: CGSize(width: 320, height: 44)))
+    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    return toolbar
+  }()
+  var emptySelectionToolbar: UIToolbar = {
+    let toolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
+    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    return toolbar
+  }()
+  var nonEmptySelectionToolbar: UIToolbar = {
+    let toolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
+    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    toolbar.hidden = true
+    return toolbar
+  }()
+  var focusSelectionToolbar: UIToolbar = {
+    let toolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
+    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    toolbar.hidden = true
+    return toolbar
+  }()
+  var toolbars: [UIToolbar] { return [topToolbar, emptySelectionToolbar, nonEmptySelectionToolbar, focusSelectionToolbar] }
 
   /// MARK: Gestures
   ////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +146,7 @@ class RemoteElementEditingController: UIViewController {
         if sourceView != nil {
           sourceView.editingMode = self.dynamicType.editingModeForElement()
           let barHeight = topToolbar.intrinsicContentSize().height
-          allowableSourceViewYOffset = MSBoundary(lower: -barHeight, upper: barHeight)
+          allowableSourceViewYOffset = ClosedInterval<CGFloat>(-barHeight, barHeight)
           mockParentView = UIView(frame: CGRect(size: mockParentSize))
           sourceViewBoundsObserver = MSKVOReceptionist(
             observer: self,
@@ -186,7 +196,7 @@ class RemoteElementEditingController: UIViewController {
             let centerXIdentifier = createIdentifier(self, "CenterX")
             let centerYIdentifier = createIdentifier(self, "CenterY")
             let format = "\n".join("'\(centerXIdentifier)' source.centerX = self.centerX",
-                                   "'\(centerYIdentifier)' source.centerY = self.centerY + \(allowableSourceViewYOffset.upper)")
+                                   "'\(centerYIdentifier)' source.centerY = self.centerY + \(allowableSourceViewYOffset.end)")
             mockParentView!.constrainWithFormat(format, views: ["source": sourceView])
             sourceViewCenterYConstraint = mockParentView!.constraintWithIdentifier(centerYIdentifier)
           }
@@ -204,7 +214,7 @@ class RemoteElementEditingController: UIViewController {
   var sourceViewBoundsLayer: CAShapeLayer!
   var selectionInProgress: [RemoteElementView] = []
   var deselectionInProgress: [RemoteElementView] = []
-  var sourceViewCenterYConstraint: NSLayoutConstraint?
+  var sourceViewCenterYConstraint: NSLayoutConstraint!
   var mockParentView: UIView?
   var referenceView: UIView?
   var sourceViewBoundsObserver: MSKVOReceptionist?
@@ -638,10 +648,10 @@ class RemoteElementEditingController: UIViewController {
   */
   func handleTap(gesture: UITapGestureRecognizer) {
     if gesture.state == .Ended {
-      if let tappedView = view.hitTest(gesture.locationInView(view), withEvent: nil) {
+      if let tappedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView{
         if self.dynamicType.isSubelementKind(tappedView) {
-          if selectedViews ∌ (tappedView as RemoteElementView) { selectView(tappedView as RemoteElementView)}
-          focusView = (focusView === tappedView ? nil : (tappedView as RemoteElementView))
+          if selectedViews ∌ tappedView { selectView(tappedView)}
+          focusView = (focusView === tappedView ? nil : tappedView)
         }
       }
     }
@@ -653,7 +663,46 @@ class RemoteElementEditingController: UIViewController {
   :param: gesture UILongPressGestureRecognizer
   */
   func handleLongPress(gesture: UILongPressGestureRecognizer) {
-
+    if gesture === longPressGesture {
+      switch gesture.state {
+        case .Began:
+          if let pressedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView {
+            if self.dynamicType.isSubelementKind(pressedView) {
+              if selectedViews ∌ pressedView { selectView(pressedView) }
+              apply(selectedViews){$0.editingState = .Moving}
+              movingSelectedViews = true
+              updateState()
+              longPressPreviousLocation = gesture.locationInView(nil)
+              willTranslateSelectedViews()
+            }
+          }
+        case .Changed:
+          let currentLocation = gesture.locationInView(nil)
+          let translation = CGPointGetDelta(currentLocation, longPressPreviousLocation)
+          longPressPreviousLocation = currentLocation
+          translateSelectedViews(translation)
+        case .Cancelled, .Failed, .Ended:
+          didTranslateSelectedViews()
+        default: break
+      }
+    } else if gesture === toolbarLongPressGesture {
+      switch gesture.state {
+        case .Began:
+          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("repeat"), forState: .Normal)
+          undoButton.button.selected = true
+        case .Changed:
+          if !undoButton.button.pointInside(gesture.locationInView(undoButton.button), withEvent: nil) {
+            undoButton.button.selected = false
+            gesture.enabled = false
+          }
+        case .Ended:
+          redo(nil)
+        default:
+          gesture.enabled = true
+          undoButton.button.selected = false
+          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("undo"), forState: .Normal)
+      }
+    }
   }
 
   /**
@@ -662,7 +711,17 @@ class RemoteElementEditingController: UIViewController {
   :param: gesture UIPinchGestureRecognizer
   */
   func handlePinch(gesture: UIPinchGestureRecognizer) {
-
+    if gesture === pinchGesture {
+      switch gesture.state {
+        case .Began:
+          willScaleSelectedViews()
+        case .Changed:
+          scaleSelectedViews(gesture.scale)
+        case .Cancelled, .Failed, .Ended:
+          didScaleSelectedViews()
+        default: break
+      }
+    }
   }
 
   /**
@@ -671,8 +730,32 @@ class RemoteElementEditingController: UIViewController {
   :param: gesture UIPanGestureRecognizer
   */
   func handlePan(gesture: UIPanGestureRecognizer) {
-
+    if gesture === twoTouchPanGesture {
+      switch gesture.state {
+        case .Began:
+          startingPanOffset = sourceViewCenterYConstraint.constant
+        case .Changed:
+          let translation = gesture.translationInView(view)
+          let adjustedOffset = startingPanOffset + translation.y
+          let isInBounds = allowableSourceViewYOffset.contains(adjustedOffset)
+          let newOffset = (isInBounds
+                           ? adjustedOffset
+                           : (adjustedOffset < allowableSourceViewYOffset.start
+                              ? allowableSourceViewYOffset.start
+                              : allowableSourceViewYOffset.end))
+          if sourceViewCenterYConstraint.constant != newOffset {
+            UIView.animateWithDuration(0.1,
+                                 delay: 0.0,
+                               options: .BeginFromCurrentState,
+                            animations: {self.sourceViewCenterYConstraint.constant = newOffset; self.view.layoutIfNeeded() },
+                            completion: nil)
+          }
+        default: break
+      }
+    }
   }
+
+  // - (IBAction)toggleSelected:(UIButton *)sender { sender.selected = !sender.selected; }
 
   /**
   handleSelection:
@@ -680,6 +763,31 @@ class RemoteElementEditingController: UIViewController {
   :param: gesture MSMultiselectGestureRecognizer
   */
   func handleSelection(gesture: MSMultiselectGestureRecognizer) {
+   if gesture.state == .Ended {
+    let touchLocations = OrderedSet(((gesture.touchLocationsInView(sourceView).allObjects as [NSValue]).map{$0.CGPointValue()}))
+    var touchedSubelementViews = OrderedSet((gesture.touchedSubviewsInView(sourceView, ofKind: self.dynamicType.subelementClass()).allObjects as [RemoteElementView]))
+
+     if touchedSubelementViews.count > 0 {
+
+      let stackedViews = OrderedSet((sourceView.subelementViews as [RemoteElementView]).filter {
+        v in contains(touchLocations, { v.pointInside(v.convertPoint($0, fromView: self.sourceView), withEvent: nil)})
+        })
+
+      if stackedViews.count > 0 {
+
+         touchedSubelementViews ∖= stackedViews
+         displayStackedViewDialogForViews(stackedViews)
+
+         if gesture === multiselectGesture { selectViews(touchedSubelementViews.arrayValue) }
+         else if gesture === anchoredMultiselectGesture { deselectViews(touchedSubelementViews.arrayValue) }
+
+       }
+
+     }
+
+     else if selectedViews.count > 0 { deselectAll() }
+
+   }
 
   }
 
@@ -688,8 +796,31 @@ class RemoteElementEditingController: UIViewController {
 
   :param: stackedViews NSSet
   */
-  func displayStackedViewDialogForViews(stackedViews: NSSet) {
+  func displayStackedViewDialogForViews(stackedViews: OrderedSet<RemoteElementView>) {
+    /*
+    MSLogDebug(@"%@ select stacked views to include: (%@)",
+               ClassTagSelectorString,
+               [[[stackedViews allObjects] valueForKey:@"name"]
+                  componentsJoinedByString:@", "]);
 
+    _flags.menuState = REEditingMenuStateStackedViews;
+
+    MenuController.menuItems = [[stackedViews allObjects]
+                                mapped:
+                                ^UIMenuItem *(RemoteElementView * obj, NSUInteger idx) {
+      SEL action = NSSelectorFromString($(@"menuAction%@:",
+                                          obj.uuid));
+      return MenuItem(obj.name, action);
+    }];
+
+    [MenuController setTargetRect:[self.view.window
+                                   convertRect:[UIView unionFrameForViews:[stackedViews allObjects]]
+                                      fromView:_sourceView]
+                           inView:self.view];
+    MenuController.arrowDirection = UIMenuControllerArrowDefault;
+    [MenuController update];
+    MenuController.menuVisible = YES;
+    */
   }
 
   /** viewDidLoad */
@@ -819,7 +950,7 @@ class RemoteElementEditingController: UIViewController {
     registerForNotifications()
     let sourceHeight = sourceView.bounds.size.height
     let viewHeight = view.bounds.size.height
-    let boundarySize = CGFloat(MSBoundarySizeOfBoundary(allowableSourceViewYOffset))
+    let boundarySize = length(allowableSourceViewYOffset)
     twoTouchPanGesture.enabled = sourceHeight >= (viewHeight - boundarySize)
     updateState()
   }
@@ -881,9 +1012,7 @@ extension RemoteElementEditingController {
 
   :param: view RemoteElementView
   */
-  func selectView(view: RemoteElementView) {
-
-  }
+  func selectView(view: RemoteElementView) { selectViews([view]) }
 
   /**
   selectViews:
@@ -891,7 +1020,12 @@ extension RemoteElementEditingController {
   :param: views [RemoteElementView]
   */
   func selectViews(views: [RemoteElementView]) {
-
+    for v in (views ∖ selectedViews) {
+      v.editingState = .Selected
+      sourceView.bringSubelementViewToFront(v)
+    }
+    selectedViews ∪= views
+    updateState()
   }
 
   /**
@@ -899,9 +1033,7 @@ extension RemoteElementEditingController {
 
   :param: view RemoteElementView
   */
-  func deselectView(view: RemoteElementView) {
-
-  }
+  func deselectView(view: RemoteElementView) { deselectViews([view]) }
 
   /**
   deselectViews:
@@ -909,12 +1041,22 @@ extension RemoteElementEditingController {
   :param: views [RemoteElementView]
   */
   func deselectViews(views: [RemoteElementView]) {
-
+    for v in (views ∩ selectedViews) { if v === focusView { focusView = nil } else { v.editingState = .NotEditing } }
+    selectedViews ∖= views
+    updateState()
   }
 
   /** deselectAll */
-  func deselectAll() {
+  func deselectAll() { focusView = nil; deselectViews(selectedViews) }
 
+  /**
+  toggleSelectionForViews:
+
+  :param: views [RemoteElementView]
+  */
+  func toggleSelectionForViews(views: [RemoteElementView]) {
+    selectViews(views ∖ selectedViews)
+    deselectViews(views ∩ selectedViews)
   }
 
 }
@@ -925,102 +1067,137 @@ extension RemoteElementEditingController {
 
   /** addSubelement */
   @IBAction func addSubelement() {
-
+    let presetVC = REPresetCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout(scrollDirection: .Horizontal))
+    presetVC.context = context
+    addChildViewController(presetVC)
+    let presetView = presetVC.collectionView
+    presetView.constrainWithFormat("'height' self.height = 0")
+    view.addSubview(presetView)
+    view.constrainWithFormat("|[preset]| :: V:[preset]|", views: ["preset": presetView])
+    view.layoutIfNeeded()
+    UIView.transitionWithView(view, duration: 0.25, options: .CurveEaseInOut, animations: {
+      if let c = presetView.constraintWithIdentifier("height") {
+        c.constant = 200.0
+        presetView.layoutIfNeeded()
+      }
+      },
+      completion: {_ in self.presetsActive = true})
   }
 
   /** presets */
-  @IBAction func presets() {
-
-  }
+  @IBAction func presets() {}
 
   /** editBackground */
   @IBAction func editBackground() {
-
+    let bgEditor = StoryboardProxy.backgroundEditingViewController()
+    bgEditor.subject = remoteElement
+    presentViewController(bgEditor, animated: true, completion: nil)
   }
 
   /** editSubelement */
-  @IBAction func editSubelement() {
+  @IBAction func editSubelement() { if let model = selectedViews.first?.model { openSubelementInEditor(model) } }
 
-  }
-
-  /** duplicateSubelements */
-  @IBAction func duplicateSubelements() {
-
-  }
+  /** duplicate */
+  @IBAction func duplicate() {}
 
   /** copyStyle */
-  @IBAction func copyStyle() {
-
-  }
+  @IBAction func copyStyle() {}
 
   /** pasteStyle */
-  @IBAction func pasteStyle() {
+  @IBAction func pasteStyle() {}
 
-  }
-
-  /** toggleBoundsVisibility */
-  @IBAction func toggleBoundsVisibility() {
-
+  /** toggleBounds */
+  @IBAction func toggleBounds() {
+    showSourceBoundary = !showSourceBoundary
+    sourceViewBoundsLayer.hidden = !showSourceBoundary
   }
 
   /** alignVerticalCenters */
   @IBAction func alignVerticalCenters() {
-
+    willAlignSelectedViews()
+    alignSelectedViews(.CenterY)
+    didAlignSelectedViews()
   }
 
   /** alignHorizontalCenters */
   @IBAction func alignHorizontalCenters() {
-
+    willAlignSelectedViews()
+    alignSelectedViews(.CenterX)
+    didAlignSelectedViews()
   }
 
   /** alignTopEdges */
   @IBAction func alignTopEdges() {
-
+    willAlignSelectedViews()
+    alignSelectedViews(.Top)
+    didAlignSelectedViews()
   }
 
   /** alignBottomEdges */
   @IBAction func alignBottomEdges() {
-
+    willAlignSelectedViews()
+    alignSelectedViews(.Bottom)
+    didAlignSelectedViews()
   }
 
   /** alignLeftEdges */
   @IBAction func alignLeftEdges() {
-
+    willAlignSelectedViews()
+    alignSelectedViews(.Left)
+    didAlignSelectedViews()
   }
 
   /** alignRightEdges */
   @IBAction func alignRightEdges() {
-
+    willAlignSelectedViews()
+    alignSelectedViews(.Right)
+    didAlignSelectedViews()
   }
 
   /** resizeFromFocusView */
   @IBAction func resizeFromFocusView() {
-
+    willResizeSelectedViews()
+    resizeSelectedViews(.Width)
+    resizeSelectedViews(.Height)
+    didResizeSelectedViews()
   }
 
   /** resizeHorizontallyFromFocusView */
   @IBAction func resizeHorizontallyFromFocusView() {
-
+    willResizeSelectedViews()
+    resizeSelectedViews(.Width)
+    didResizeSelectedViews()
   }
 
   /** resizeVerticallyFromFocusView */
   @IBAction func resizeVerticallyFromFocusView() {
-
+    willResizeSelectedViews()
+    resizeSelectedViews(.Width)
+    didResizeSelectedViews()
   }
 
   /** saveAction */
   @IBAction func saveAction() {
-
+    var success = false
+    context.performBlockAndWait {
+      var error: NSError?
+      success = self.context.save(&error)
+      MSHandleError(error)
+    }
+    if success {
+      if delegate != nil { delegate!.editorDidSave(self) }
+      else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
+    }
   }
 
   /** resetAction */
-  @IBAction func resetAction() {
-
-  }
+  @IBAction func resetAction() { context.performBlockAndWait { self.context.rollback() } }
 
   /** cancelAction */
   @IBAction func cancelAction() {
-
+    context.performBlockAndWait { self.context.rollback() }
+    if delegate != nil { delegate!.editorDidCancel(self) }
+    else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
   }
 
 }
@@ -1034,36 +1211,28 @@ extension RemoteElementEditingController {
 
   :param: sender AnyObject?
   */
-  func undo(sender: AnyObject?) {
-
-  }
+  func undo(sender: AnyObject?) { context.performBlockAndWait { self.context.undo() } }
 
   /**
   redo:
 
   :param: sender AnyObject?
   */
-  func redo(sender: AnyObject?) {
-
-  }
+  func redo(sender: AnyObject?) { context.performBlockAndWait { self.context.redo() } }
 
   /**
   copy:
 
   :param: sender AnyObject?
   */
-  override func copy(sender: AnyObject?) {
-
-  }
+  override func copy(sender: AnyObject?) {}
 
   /**
   cut:
 
   :param: sender AnyObject?
   */
-  override func cut(sender: AnyObject?) {
-
-  }
+  override func cut(sender: AnyObject?) {}
 
   /**
   delete:
@@ -1071,7 +1240,16 @@ extension RemoteElementEditingController {
   :param: sender AnyObject?
   */
   override func delete(sender: AnyObject?) {
-
+    let elementsToDelete = selectedViews.map{$0.model}
+    apply(selectedViews){$0.removeFromSuperview()}
+    selectedViews.removeAll()
+    focusView = nil
+    context.performBlockAndWait {
+      self.context.deleteObjects(NSSet(array: elementsToDelete))
+      self.context.processPendingChanges()
+    }
+    sourceView.setNeedsUpdateConstraints()
+    sourceView.updateConstraintsIfNeeded()
   }
 
   /**
@@ -1079,54 +1257,42 @@ extension RemoteElementEditingController {
 
   :param: sender AnyObject?
   */
-  override func paste(sender: AnyObject?) {
-
-  }
+  override func paste(sender: AnyObject?) {}
 
   /**
   select:
 
   :param: sender AnyObject?
   */
-  override func select(sender: AnyObject?) {
-
-  }
+  override func select(sender: AnyObject?) {}
 
   /**
   selectAll:
 
   :param: sender AnyObject?
   */
-  override func selectAll(sender: AnyObject?) {
-
-  }
+  override func selectAll(sender: AnyObject?) {}
 
   /**
   toggleBoldface:
 
   :param: sender AnyObject?
   */
-  override func toggleBoldface(sender: AnyObject?) {
-
-  }
+  override func toggleBoldface(sender: AnyObject?) {}
 
   /**
   toggleItalics:
 
   :param: sender AnyObject?
   */
-  override func toggleItalics(sender: AnyObject?) {
-
-  }
+  override func toggleItalics(sender: AnyObject?) {}
 
   /**
   toggleUnderline:
 
   :param: sender AnyObject?
   */
-  override func toggleUnderline(sender: AnyObject?) {
-
-  }
+  override func toggleUnderline(sender: AnyObject?) {}
 
 }
 
@@ -1137,37 +1303,118 @@ extension RemoteElementEditingController {
 
   /** initializeToolbars */
   func initializeToolbars() {
+    view.addSubview(topToolbar)
+    view.addSubview(emptySelectionToolbar)
+    view.addSubview(nonEmptySelectionToolbar)
+    view.addSubview(focusSelectionToolbar)
+    let format = "\n".join("|[top]|",
+                           "|[empty]|",
+                           "|[nonempty]|",
+                           "|[focus]|",
+                           "V:|[top]",
+                           "V:[empty]|",
+                           "V:[nonempty]|",
+                           "V:[focus]|")
+    let views = ["top":      topToolbar,
+                 "empty":    emptySelectionToolbar,
+                 "nonempty": nonEmptySelectionToolbar,
+                 "focus":    focusSelectionToolbar]
+    view.constrainWithFormat(format, views: views)
 
+    populateTopToolbar()
+    populateEmptySelectionToolbar()
+    populateNonEmptySelectionToolbar()
+    populateFocusSelectionToolbar()
+    currentToolbar = emptySelectionToolbar
   }
 
   /** populateTopToolbar */
   func populateTopToolbar() {
-
+    undoButton = ViewDecorator.fontAwesomeBarButtonItemWithName("undo", target: self, selector: "undo:")
+    let cancelButton = ViewDecorator.fontAwesomeBarButtonItemWithName("remove", target: self, selector: "cancelAction:")
+    let saveButton = ViewDecorator.fontAwesomeBarButtonItemWithName("save", target: self, selector: "saveAction:")
+    let flexibleSpace = UIBarButtonItem.flexibleSpace()
+    topToolbar.items = [cancelButton, flexibleSpace, undoButton, flexibleSpace, saveButton]
+    anySelButtons += [undoButton, saveButton]
   }
 
   /** populateEmptySelectionToolbar */
   func populateEmptySelectionToolbar() {
-
+    let plusButton = ViewDecorator.fontAwesomeBarButtonItemWithName("plus", target: self, selector: "addSubelement:")
+    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("picture", target: self, selector: "editBackground:")
+    let boundsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("bounds", target: self, selector: "toggleBounds:")
+    let presetsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("hdd", target: self, selector: "presets:")
+    let flexibleSpace = UIBarButtonItem.flexibleSpace()
+    emptySelectionToolbar.items = join(flexibleSpace, [plusButton, editButton, boundsButton, presetsButton])
+    anySelButtons += [editButton, boundsButton, presetsButton]
   }
 
   /** populateNonEmptySelectionToolbar */
   func populateNonEmptySelectionToolbar() {
-
+    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("edit", target: self, selector: "editSubelement:")
+    let trashButton = ViewDecorator.fontAwesomeBarButtonItemWithName("trash", target: self, selector: "delete:")
+    let duplicateButton = ViewDecorator.fontAwesomeBarButtonItemWithName("th-large", target: self, selector: "duplicate:")
+    let copyButton = ViewDecorator.fontAwesomeBarButtonItemWithName("copy", target: self, selector: "copyStyle:")
+    let pasteButton = ViewDecorator.fontAwesomeBarButtonItemWithName("paste", target: self, selector: "pasteStyle:")
+    let flexibleSpace = UIBarButtonItem.flexibleSpace()
+    nonEmptySelectionToolbar.items = join(flexibleSpace, [editButton, trashButton, duplicateButton, copyButton, pasteButton])
+    anySelButtons += [duplicateButton, pasteButton]
+    singleSelButtons += [editButton, copyButton]
   }
 
   /** populateFocusSelectionToolbar */
   func populateFocusSelectionToolbar() {
-
+    let alignNames = ["align-bottom-edges",
+                 "align-top-edges",
+                 "align-left-edges",
+                 "align-right-edges",
+                 "align-center-y",
+                 "align-center-x"]
+    let alignTitles: [NSAttributedString] = alignNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
+    let alignSelectors: [Selector] = ["alignBottomEdges:",
+                     "alignTopEdges:",
+                     "alignLeftEdges:",
+                     "alignRightEdges:",
+                     "alignVerticalCenters:",
+                     "alignHorizontalCenters:"]
+    let align = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-edges"), style: .Plain, target: nil, action: nil)
+    let textAttributes = [NSFontAttributeName: UIFont(awesomeFontWithSize:32.0)]
+    align.setTitleTextAttributes(textAttributes, forState: .Normal)
+    align.setTitleTextAttributes(textAttributes, forState: .Highlighted)
+    align.delegate = self
+    for i in 0..<alignTitles.count {
+      align.addItemWithAttributedTitle(alignTitles[i], target: self, action: alignSelectors[i])
+    }
+    let resizeNames = ["align-horizontal-size", "align-vertical-size", "align-size-exact"]
+    let resizeTitles: [NSAttributedString] = resizeNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
+    let resizeSelectors: [Selector] = ["resizeHorizontallyFromFocusView:",
+                                       "resizeVerticallyFromFocusView:",
+                                       "resizeFromFocusView:"]
+    let resize = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-size"), style: .Plain, target: nil, action: nil)
+    resize.setTitleTextAttributes(textAttributes, forState: .Normal)
+    resize.setTitleTextAttributes(textAttributes, forState: .Highlighted)
+    resize.delegate = self
+    for i in 0..<resizeTitles.count {
+      resize.addItemWithAttributedTitle(resizeTitles[i], target: self, action: resizeSelectors[i])
+    }
+    let flexibleSpace = UIBarButtonItem.flexibleSpace()
+    focusSelectionToolbar.items = [flexibleSpace, align, flexibleSpace, resize, flexibleSpace]
+    multiSelButtons += [align, resize]
   }
 
   /** updateToolbarDisplayed */
   func updateToolbarDisplayed() {
-
+    if selectionCount > 0 { currentToolbar = focusView != nil ? focusSelectionToolbar : nonEmptySelectionToolbar }
+    else { currentToolbar = emptySelectionToolbar }
   }
 
   /** updateBarButtonItems */
   func updateBarButtonItems() {
-
+    if movingSelectedViews { apply(singleSelButtons + anySelButtons + multiSelButtons){$0.enabled = false}}
+    else { apply(anySelButtons){$0.enabled = true} }
+    let multipleSelections = selectionCount > 1
+    apply(singleSelButtons){$0.enabled = !multipleSelections}
+    apply(multiSelButtons){$0.enabled = multipleSelections}
   }
 
 }

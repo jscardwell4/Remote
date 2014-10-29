@@ -8,6 +8,12 @@
 
 import Foundation
 
+/**
+advance:amount:
+
+:param: range Range<T>
+:param: amount T.Distance
+*/
 public func advance<T: ForwardIndexType>(inout range: Range<T>, amount: T.Distance) {
   let d = distance(range.startIndex, range.endIndex)
   let start: T = advance(range.startIndex, amount)
@@ -15,14 +21,60 @@ public func advance<T: ForwardIndexType>(inout range: Range<T>, amount: T.Distan
   range = Range<T>(start: start, end: end)
 }
 
+/**
+join:elements:
 
+:param: seperator T
+:param: elements [T]
+
+:returns: [T]
+*/
+public func join<T>(seperator: T, elements: [T]) -> [T] {
+  if elements.count > 1 {
+    var joinedElements: [T] = []
+    for element in elements[0..<(elements.count - 1)] {
+      joinedElements.append(element)
+      joinedElements.append(seperator)
+    }
+    joinedElements.append(elements.last!)
+    return joinedElements
+  } else {
+    return elements
+  }
+}
+
+/**
+advance:amount:
+
+:param: range Range<T>
+:param: amount T.Distance
+
+:returns: Range<T>
+*/
 public func advance<T: ForwardIndexType>(range: Range<T>, amount: T.Distance) -> Range<T> {
   return Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
 }
 
+/**
+find:value:
+
+:param: domain C
+:param: value C.Generator.Element?
+
+:returns: C.Index?
+*/
 public func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, value: C.Generator.Element?) -> C.Index? {
   if let v = value { return find(domain, v) } else { return nil }
 }
+
+/**
+length:
+
+:param: interval ClosedInterval<T>
+
+:returns: T.Stride
+*/
+public func length<T:Strideable>(interval: ClosedInterval<T>) -> T.Stride { return interval.start.distanceTo(interval.end) }
 
 prefix operator ∀⦱ {}
 
@@ -30,8 +82,22 @@ postfix operator ‽ {}
 
 public postfix func ‽<T>(lhs: [Optional<T>]) -> [T] { return lhs.filter{$0 != nil}.map{$0!} }
 
+/**
+compressed:
+
+:param: array [Optional<T>]
+
+:returns: [T]
+*/
 public func compressed<T>(array:[Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
 
+/**
+flattened:
+
+:param: array [[T]]
+
+:returns: [T]
+*/
 public func flattened<T>(array:[[T]]) -> [T] { var a: [T] = []; for s in array { a += s}; return a }
 
 /**

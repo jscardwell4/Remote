@@ -1036,8 +1036,7 @@ MSSTATIC_STRING_CONST kParentConstraintNametag  = @"kParentConstraintNametag";
         [self displayStackedViewDialogForViews:stackedViews];
       }
 
-      SuppressPerformSelectorLeakWarning([self performSelector:action
-                                                    withObject:touchedSubelementViews]; )
+      SuppressPerformSelectorLeakWarning([self performSelector:action withObject:touchedSubelementViews]; )
 
     } else if (_selectedViews.count) [self deselectAll];
   }
