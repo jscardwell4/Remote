@@ -35,6 +35,10 @@ static const int msLogContext = 0;
 
 #pragma unused(ddLogLevel, msLogContext)
 
+@interface MSRemoteAppController () <EditingDelegate>
+
+@end
+
 @implementation MSRemoteAppController 
 {
   NSOperationQueue * _workQueue;
@@ -332,14 +336,16 @@ static const int msLogContext = 0;
 
 /// showEditor
 - (void)showEditor {
-  RemoteEditingViewController * editorVC = [StoryboardProxy remoteEditingViewController];
+  RemoteEditingController * editorVC = [RemoteEditingController new];
   editorVC.delegate  = self;
 
   if ([self.window.rootViewController isKindOfClass:[RemoteViewController class]]) {
     editorVC.remoteElement = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
     [self.window.rootViewController presentViewController:editorVC animated:YES completion:nil];
   } else {
-    editorVC.remoteElement = [Remote createInContext:[CoreDataManager defaultContext]];
+    RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
+    Remote * remote = controller.homeRemote;
+    editorVC.remoteElement = remote ?: [Remote createInContext:[CoreDataManager defaultContext]];
     self.window.rootViewController = editorVC;
   }
 }
@@ -353,6 +359,18 @@ static const int msLogContext = 0;
 /// remoteElementEditorDidSave:
 /// @param editor
 - (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)editor {
+  [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+/// editorDidCancel:
+/// @param editor
+- (void)editorDidCancel:(RemoteElementEditingController *)editor {
+  [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+/// editorDidSave:
+/// @param editor
+- (void)editorDidSave:(RemoteElementEditingController *)editor {
   [editor dismissViewControllerAnimated:YES completion:nil];
 }
 

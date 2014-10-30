@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-protocol EditingDelegate: class {
+@objc protocol EditingDelegate: NSObjectProtocol {
   func editorDidCancel(editor: RemoteElementEditingController)
   func editorDidSave(editor: RemoteElementEditingController)
 }
@@ -26,12 +26,12 @@ class RemoteElementEditingController: UIViewController {
 
   var remoteElement: RemoteElement! {
     didSet {
-      if let element = remoteElement {
-        context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: element.managedObjectContext!)
+      if oldValue == nil || (remoteElement != nil && oldValue!.uuid != remoteElement.uuid) {
+        context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: remoteElement!.managedObjectContext!)
         context.nametag = _stdlib_getDemangledTypeName(self)
         context.performBlockAndWait {
-          self.changedModelValues = element.changedValues()
-          self.remoteElement = self.context.existingObjectWithID(element.objectID, error: nil) as? RemoteElement
+          self.changedModelValues = self.remoteElement!.changedValues()
+          self.remoteElement = self.context.existingObjectWithID(self.remoteElement!.objectID, error: nil) as? RemoteElement
         }
       }
     }
@@ -123,7 +123,7 @@ class RemoteElementEditingController: UIViewController {
   // weak var twoTouchTapGesture: UITapGestureRecognizer?
   // weak var panGesture: UIPanGestureRecognizer?
   var gestures: NSPointerArray?
-  var gestureManager: MSGestureManager?
+  var gestureManager: GestureManager!
 
   /// MARK: View-related properties
   ////////////////////////////////////////////////////////////////////////////////
@@ -510,18 +510,12 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Initialization
   ////////////////////////////////////////////////////////////////////////////////
 
-  /** awakeFromNib */
-  override func awakeFromNib() { initializeIVARS() }
-
-  /** initializeIVARS */
-  func initializeIVARS() {}
 
   /** attachGestureRecognizers */
   func attachGestureRecognizers() {
 
     longPressGesture = {
       let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-      gesture.delegate = self
       gesture.nametag = "longPressGesture"
       self.view.addGestureRecognizer(gesture)
       return gesture
@@ -529,7 +523,6 @@ class RemoteElementEditingController: UIViewController {
 
     pinchGesture = {
       let gesture = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
-      gesture.delegate = self
       gesture.nametag = "pinchGesture"
       self.view.addGestureRecognizer(gesture)
       return gesture
@@ -537,7 +530,6 @@ class RemoteElementEditingController: UIViewController {
 
     oneTouchDoubleTapGesture = {
       let gesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-      gesture.delegate = self
       gesture.numberOfTapsRequired = 2
       gesture.nametag = "oneTouchDoubleTapGesture"
       self.view.addGestureRecognizer(gesture)
@@ -546,7 +538,6 @@ class RemoteElementEditingController: UIViewController {
 
     multiselectGesture = {
       let gesture = MSMultiselectGestureRecognizer(target: self, action: "handleSelection:")
-      gesture.delegate = self
       gesture.requireGestureRecognizerToFail(self.oneTouchDoubleTapGesture)
       gesture.nametag = "multiselectGesture"
       self.view.addGestureRecognizer(gesture)
@@ -555,7 +546,6 @@ class RemoteElementEditingController: UIViewController {
 
     anchoredMultiselectGesture = {
       let gesture = MSMultiselectGestureRecognizer(target: self, action: "handleSelection:")
-      gesture.delegate = self
       gesture.numberOfAnchorTouchesRequired = 1
       self.pinchGesture.requireGestureRecognizerToFail(gesture)
       self.multiselectGesture.requireGestureRecognizerToFail(gesture)
@@ -566,7 +556,6 @@ class RemoteElementEditingController: UIViewController {
 
     twoTouchPanGesture = {
       let gesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
-      gesture.delegate = self
       gesture.minimumNumberOfTouches = 2
       gesture.maximumNumberOfTouches = 2
       gesture.requireGestureRecognizerToFail(self.pinchGesture)
@@ -579,22 +568,23 @@ class RemoteElementEditingController: UIViewController {
 
     toolbarLongPressGesture = {
       let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-      gesture.delegate = self
       self.longPressGesture.requireGestureRecognizerToFail(gesture)
       gesture.nametag = "toolbarLongPressGesture"
       self.undoButton?.addGestureRecognizer(gesture)
       return gesture
     }()
+
+    createGestureManager()
   }
 
   /** createGestureManager */
   func createGestureManager() {
-    let gestures = [pinchGesture, longPressGesture, toolbarLongPressGesture, twoTouchPanGesture, oneTouchDoubleTapGesture,
-                    multiselectGesture, anchoredMultiselectGesture]
-    let shouldBegin: ((UIGestureRecognizer) -> Bool) -> MSGestureManagerBlock = { p in {g, _ in p(g)} }
-    let shouldReceiveTouch: ((UIGestureRecognizer, UITouch) -> Bool) -> MSGestureManagerBlock = { p in {p($0, $1 as UITouch)} }
-    let shouldRecognize: ((UIGestureRecognizer, UIGestureRecognizer) -> Bool) -> MSGestureManagerBlock = {
-      p in {p($0, $1 as UIGestureRecognizer)}
+    let shouldBegin: ((UIGestureRecognizer) -> Bool) -> ((UIGestureRecognizer) -> Bool) = { p in {g in p(g)} }
+    let shouldReceiveTouch: ((UIGestureRecognizer, UITouch) -> Bool) -> ((UIGestureRecognizer, UITouch) -> Bool) = {
+      p in {p($0, $1)}
+    }
+    let shouldRecognize: ((UIGestureRecognizer, UIGestureRecognizer) -> Bool) -> ((UIGestureRecognizer, UIGestureRecognizer) -> Bool) = {
+      p in {p($0, $1)}
     }
 
     let noPopovers: (Void) -> Bool = { !(self.popoverActive || self.presetsActive) && self.menuState == .Default }
@@ -602,43 +592,39 @@ class RemoteElementEditingController: UIViewController {
     let notMoving: (Void) -> Bool = { !self.movingSelectedViews }
     let selectableClass: (UITouch) -> Bool = { t in self.dynamicType.isSubelementKind(t.view) }
 
-    let begin = MSGestureManagerResponseType.Begin.rawValue
-    let receiveTouch = MSGestureManagerResponseType.ReceiveTouch.rawValue
-    let recognizeSimultaneously = MSGestureManagerResponseType.RecognizeSimultaneously.rawValue
+    let blocks: [UIGestureRecognizer:[GestureManager.ResponseType:Any]] = [
 
-    let gestureBlocks: [[NSNumber:MSGestureManagerBlock]] = [
+      pinchGesture:
+      [ .Begin: shouldBegin{_ in self.selectionCount > 0},
+        .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)} ],
 
-      // pinch
-      [ begin: shouldBegin{_ in self.selectionCount > 0},
-        receiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)} ],
+      longPressGesture:
+      [ .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t) && selectableClass(t)},
+        .RecognizeSimultaneously: shouldRecognize{_, g in g === self.toolbarLongPressGesture} ],
 
-      // long press
-      [ receiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t) && selectableClass(t)},
-        recognizeSimultaneously: shouldRecognize{_, g in g === self.toolbarLongPressGesture} ],
+      toolbarLongPressGesture:
+      [ .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && t.view.isDescendantOfView(self.topToolbar)},
+        .RecognizeSimultaneously: shouldRecognize{_, g in g === self.longPressGesture} ],
 
-      // toolbar long press
-      [ receiveTouch: shouldReceiveTouch{_, t in noPopovers() && t.view.isDescendantOfView(self.topToolbar)},
-        recognizeSimultaneously: shouldRecognize{_, g in g === self.longPressGesture} ],
+      twoTouchPanGesture:
+      [ .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)} ],
 
-      // two touch pan
-      [ receiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)} ],
+      oneTouchDoubleTapGesture:
+      [ .Begin: shouldBegin{_ in notMoving() },
+        .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)} ],
 
-      // one touch double tap
-      [ begin: shouldBegin{_ in notMoving() },
-        receiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)} ],
+      multiselectGesture:
+      [ .Begin: shouldBegin{_ in notMoving() },
+        .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)},
+        .RecognizeSimultaneously: shouldRecognize{_, g in g === self.anchoredMultiselectGesture} ],
 
-      // multi-select
-      [ begin: shouldBegin{_ in notMoving() },
-        receiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)},
-        recognizeSimultaneously: shouldRecognize{_, g in g === self.anchoredMultiselectGesture} ],
-
-      // anchored multi-select
-      [ begin: shouldBegin{_ in notMoving() },
-        receiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)},
-        recognizeSimultaneously: shouldRecognize{_, g in g === self.multiselectGesture} ]
+      anchoredMultiselectGesture:
+      [ .Begin: shouldBegin{_ in notMoving() },
+        .ReceiveTouch: shouldReceiveTouch{_, t in noPopovers() && noToolbars(t)},
+        .RecognizeSimultaneously: shouldRecognize{_, g in g === self.multiselectGesture} ]
     ]
 
-    gestureManager = MSGestureManager(forGestures: gestures, blocks: gestureBlocks)
+    gestureManager = GestureManager(gestures: blocks)
   }
 
   /**
@@ -773,15 +759,11 @@ class RemoteElementEditingController: UIViewController {
         v in contains(touchLocations, { v.pointInside(v.convertPoint($0, fromView: self.sourceView), withEvent: nil)})
         })
 
-      if stackedViews.count > 0 {
+      if stackedViews.count > touchedSubelementViews.count { displayStackedViewDialogForViews(stackedViews) }
 
-         touchedSubelementViews ∖= stackedViews
-         displayStackedViewDialogForViews(stackedViews)
+      if gesture === multiselectGesture { selectViews(touchedSubelementViews.arrayValue) }
+      else if gesture === anchoredMultiselectGesture { deselectViews(touchedSubelementViews.arrayValue) }
 
-         if gesture === multiselectGesture { selectViews(touchedSubelementViews.arrayValue) }
-         else if gesture === anchoredMultiselectGesture { deselectViews(touchedSubelementViews.arrayValue) }
-
-       }
 
      }
 
@@ -826,6 +808,9 @@ class RemoteElementEditingController: UIViewController {
   /** viewDidLoad */
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    initializeToolbars()
+    attachGestureRecognizers()
 
     sourceViewBoundsLayer = CAShapeLayer()
     sourceViewBoundsLayer.fillColor = UIColor.clearColor().CGColor
@@ -1177,7 +1162,7 @@ extension RemoteElementEditingController {
   }
 
   /** saveAction */
-  @IBAction func saveAction() {
+  func saveAction() {
     var success = false
     context.performBlockAndWait {
       var error: NSError?
@@ -1191,10 +1176,10 @@ extension RemoteElementEditingController {
   }
 
   /** resetAction */
-  @IBAction func resetAction() { context.performBlockAndWait { self.context.rollback() } }
+  func resetAction() { context.performBlockAndWait { self.context.rollback() } }
 
   /** cancelAction */
-  @IBAction func cancelAction() {
+  func cancelAction() {
     context.performBlockAndWait { self.context.rollback() }
     if delegate != nil { delegate!.editorDidCancel(self) }
     else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
@@ -1331,8 +1316,8 @@ extension RemoteElementEditingController {
   /** populateTopToolbar */
   func populateTopToolbar() {
     undoButton = ViewDecorator.fontAwesomeBarButtonItemWithName("undo", target: self, selector: "undo:")
-    let cancelButton = ViewDecorator.fontAwesomeBarButtonItemWithName("remove", target: self, selector: "cancelAction:")
-    let saveButton = ViewDecorator.fontAwesomeBarButtonItemWithName("save", target: self, selector: "saveAction:")
+    let cancelButton = ViewDecorator.fontAwesomeBarButtonItemWithName("remove", target: self, selector: "cancelAction")
+    let saveButton = ViewDecorator.fontAwesomeBarButtonItemWithName("save", target: self, selector: "saveAction")
     let flexibleSpace = UIBarButtonItem.flexibleSpace()
     topToolbar.items = [cancelButton, flexibleSpace, undoButton, flexibleSpace, saveButton]
     anySelButtons += [undoButton, saveButton]
@@ -1340,10 +1325,10 @@ extension RemoteElementEditingController {
 
   /** populateEmptySelectionToolbar */
   func populateEmptySelectionToolbar() {
-    let plusButton = ViewDecorator.fontAwesomeBarButtonItemWithName("plus", target: self, selector: "addSubelement:")
-    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("picture", target: self, selector: "editBackground:")
-    let boundsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("bounds", target: self, selector: "toggleBounds:")
-    let presetsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("hdd", target: self, selector: "presets:")
+    let plusButton = ViewDecorator.fontAwesomeBarButtonItemWithName("plus", target: self, selector: "addSubelement")
+    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("picture", target: self, selector: "editBackground")
+    let boundsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("bounds", target: self, selector: "toggleBounds")
+    let presetsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("hdd", target: self, selector: "presets")
     let flexibleSpace = UIBarButtonItem.flexibleSpace()
     emptySelectionToolbar.items = join(flexibleSpace, [plusButton, editButton, boundsButton, presetsButton])
     anySelButtons += [editButton, boundsButton, presetsButton]
@@ -1351,11 +1336,11 @@ extension RemoteElementEditingController {
 
   /** populateNonEmptySelectionToolbar */
   func populateNonEmptySelectionToolbar() {
-    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("edit", target: self, selector: "editSubelement:")
-    let trashButton = ViewDecorator.fontAwesomeBarButtonItemWithName("trash", target: self, selector: "delete:")
-    let duplicateButton = ViewDecorator.fontAwesomeBarButtonItemWithName("th-large", target: self, selector: "duplicate:")
-    let copyButton = ViewDecorator.fontAwesomeBarButtonItemWithName("copy", target: self, selector: "copyStyle:")
-    let pasteButton = ViewDecorator.fontAwesomeBarButtonItemWithName("paste", target: self, selector: "pasteStyle:")
+    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("edit", target: self, selector: "editSubelement")
+    let trashButton = ViewDecorator.fontAwesomeBarButtonItemWithName("trash", target: self, selector: "delete")
+    let duplicateButton = ViewDecorator.fontAwesomeBarButtonItemWithName("th-large", target: self, selector: "duplicate")
+    let copyButton = ViewDecorator.fontAwesomeBarButtonItemWithName("copy", target: self, selector: "copyStyle")
+    let pasteButton = ViewDecorator.fontAwesomeBarButtonItemWithName("paste", target: self, selector: "pasteStyle")
     let flexibleSpace = UIBarButtonItem.flexibleSpace()
     nonEmptySelectionToolbar.items = join(flexibleSpace, [editButton, trashButton, duplicateButton, copyButton, pasteButton])
     anySelButtons += [duplicateButton, pasteButton]
@@ -1365,18 +1350,18 @@ extension RemoteElementEditingController {
   /** populateFocusSelectionToolbar */
   func populateFocusSelectionToolbar() {
     let alignNames = ["align-bottom-edges",
-                 "align-top-edges",
-                 "align-left-edges",
-                 "align-right-edges",
-                 "align-center-y",
-                 "align-center-x"]
+                      "align-top-edges",
+                      "align-left-edges",
+                      "align-right-edges",
+                      "align-center-y",
+                      "align-center-x"]
     let alignTitles: [NSAttributedString] = alignNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
     let alignSelectors: [Selector] = ["alignBottomEdges:",
-                     "alignTopEdges:",
-                     "alignLeftEdges:",
-                     "alignRightEdges:",
-                     "alignVerticalCenters:",
-                     "alignHorizontalCenters:"]
+                                      "alignTopEdges",
+                                      "alignLeftEdges",
+                                      "alignRightEdges",
+                                      "alignVerticalCenters",
+                                      "alignHorizontalCenters"]
     let align = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-edges"), style: .Plain, target: nil, action: nil)
     let textAttributes = [NSFontAttributeName: UIFont(awesomeFontWithSize:32.0)]
     align.setTitleTextAttributes(textAttributes, forState: .Normal)

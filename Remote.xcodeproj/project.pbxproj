@@ -234,6 +234,7 @@
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
 		C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */; };
+		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
 		C26296801810619900760056 /* CoreDataManager+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = C262967F1810619900760056 /* CoreDataManager+Model.m */; };
 		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
 		C269842319DF8513007E268B /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */; };
@@ -826,6 +827,7 @@
 		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
 		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
 		C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingController.swift; sourceTree = "<group>"; };
+		C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEditingController.swift; sourceTree = "<group>"; };
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
 		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
 		C26296811811F9AE00760056 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
@@ -1480,6 +1482,7 @@
 				C25B465116FF679B0042B59E /* RemoteElementEditingViewController_Private.h */,
 				C25B465316FF679B0042B59E /* RemoteEditingViewController.m */,
 				C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */,
+				C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -2814,6 +2817,7 @@
 				C27DE08819E5E67F00CCB725 /* PresetDetailController.swift in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
 				C215C9CF19F739E5000CC6CC /* BankItemLabelCell.swift in Sources */,
+				C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */,
 				C269842619DF8562007E268B /* BankCollectionLayout.swift in Sources */,
 				C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */,
 				C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */,

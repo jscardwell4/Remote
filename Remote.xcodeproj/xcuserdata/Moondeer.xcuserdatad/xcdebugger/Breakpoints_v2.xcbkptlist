@@ -489,5 +489,535 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436330717.853241"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1294"
+            endingLineNumber = "1294"
+            landmarkName = "initializeToolbars()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436330717.853241"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1183"
+            endingLineNumber = "1183"
+            landmarkName = "cancelAction()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.cancelAction (Remote.RemoteElementEditingController)() -&gt; ()"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436330718.299923"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1183"
+                  endingLineNumber = "1183"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.(cancelAction (Remote.RemoteElementEditingController) -&gt; () -&gt; ()).(closure #1)"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436330718.300066"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1183"
+                  endingLineNumber = "1183"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Singletons/MSRemoteAppController.m"
+            timestampString = "436328750.440099"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
+            landmarkName = "-editorDidCancel:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Singletons/MSRemoteAppController.m"
+            timestampString = "436328753.012037"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "374"
+            endingLineNumber = "374"
+            landmarkName = "-editorDidSave:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436330717.853241"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1166"
+            endingLineNumber = "1166"
+            landmarkName = "saveAction()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328804.856583"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "752"
+            endingLineNumber = "752"
+            landmarkName = "handleSelection(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328807.106396"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "719"
+            endingLineNumber = "719"
+            landmarkName = "handlePan(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328810.792493"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "700"
+            endingLineNumber = "700"
+            landmarkName = "handlePinch(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328814.002336"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "652"
+            endingLineNumber = "652"
+            landmarkName = "handleLongPress(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328817.488435"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "636"
+            endingLineNumber = "636"
+            landmarkName = "handleTap(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328831.718438"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
+            landmarkName = "createGestureManager()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.createGestureManager (Remote.RemoteElementEditingController)() -&gt; ()"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436329318.967211"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "582"
+                  endingLineNumber = "582"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.(createGestureManager (Remote.RemoteElementEditingController) -&gt; () -&gt; ()).(closure #1)"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436329318.967469"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "582"
+                  endingLineNumber = "582"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.(createGestureManager (Remote.RemoteElementEditingController) -&gt; () -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436329318.967659"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "582"
+                  endingLineNumber = "582"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436328841.946054"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "517"
+            endingLineNumber = "517"
+            landmarkName = "attachGestureRecognizers()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.attachGestureRecognizers (Remote.RemoteElementEditingController)() -&gt; ()"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436328916.772388"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "517"
+                  endingLineNumber = "517"
+                  offsetFromSymbolStart = "102">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Remote.RemoteElementEditingController.(attachGestureRecognizers (Remote.RemoteElementEditingController) -&gt; () -&gt; ()).(closure #1)"
+                  moduleName = "Remote"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/Remote/Source/Remote%20Elements/Editors/RemoteElementEditingController.swift"
+                  timestampString = "436328916.772545"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "518"
+                  endingLineNumber = "518"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329251.207075"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "init(gestures:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329253.066199"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "setResponses(_:forGesture:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329265.019827"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "gestureRecognizerShouldBegin(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit.GestureManager.gestureRecognizerShouldBegin (MoonKit.GestureManager)(ObjectiveC.UIGestureRecognizer) -&gt; Swift.Bool"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Objects/GestureManager.swift"
+                  timestampString = "436329265.022121"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "27">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "reabstraction thunk helper from @callee_owned (@owned ObjectiveC.UIGestureRecognizer) -&gt; (@unowned Swift.Bool) to @callee_owned (@in ObjectiveC.UIGestureRecognizer) -&gt; (@out Swift.Bool)"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Objects/GestureManager.swift"
+                  timestampString = "436329265.022276"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "11">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329266.686545"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "gestureRecognizer(_:shouldRecognizeSimultaneouslyWithGestureRecognizer:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit.GestureManager.gestureRecognizer (MoonKit.GestureManager)(ObjectiveC.UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer : ObjectiveC.UIGestureRecognizer) -&gt; Swift.Bool"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Objects/GestureManager.swift"
+                  timestampString = "436329266.68984"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "35">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "reabstraction thunk helper from @callee_owned (@owned ObjectiveC.UIGestureRecognizer, @owned ObjectiveC.UIGestureRecognizer) -&gt; (@unowned Swift.Bool) to @callee_owned (@in (ObjectiveC.UIGestureRecognizer, ObjectiveC.UIGestureRecognizer)) -&gt; (@out Swift.Bool)"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Objects/GestureManager.swift"
+                  timestampString = "436329266.690033"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "11">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329269.366234"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "gestureRecognizer(_:shouldRequireFailureOfGestureRecognizer:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329272.667223"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "gestureRecognizer(_:shouldBeRequiredToFailByGestureRecognizer:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MSKit/Moonkit/Objects/GestureManager.swift"
+            timestampString = "436329275.325522"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
+            landmarkName = "gestureRecognizer(_:shouldReceiveTouch:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MoonKit.GestureManager.gestureRecognizer (MoonKit.GestureManager)(ObjectiveC.UIGestureRecognizer, shouldReceiveTouch : ObjectiveC.UITouch) -&gt; Swift.Bool"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Objects/GestureManager.swift"
+                  timestampString = "436329275.327822"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "155"
+                  endingLineNumber = "155"
+                  offsetFromSymbolStart = "35">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "reabstraction thunk helper from @callee_owned (@owned ObjectiveC.UIGestureRecognizer, @owned ObjectiveC.UITouch) -&gt; (@unowned Swift.Bool) to @callee_owned (@in (ObjectiveC.UIGestureRecognizer, ObjectiveC.UITouch)) -&gt; (@out Swift.Bool)"
+                  moduleName = "MoonKit"
+                  urlString = "file:///Users/Moondeer/Projects/MSRemote/Remote/MSKit/Moonkit/Objects/GestureManager.swift"
+                  timestampString = "436329275.327981"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "155"
+                  endingLineNumber = "155"
+                  offsetFromSymbolStart = "11">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436329367.363909"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "627"
+            endingLineNumber = "627"
+            landmarkName = "createGestureManager()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436330717.853241"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1008"
+            endingLineNumber = "1008"
+            landmarkName = "selectViews(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
