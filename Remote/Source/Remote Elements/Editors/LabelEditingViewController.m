@@ -16,12 +16,13 @@
 #import "RemoteElementView.h"
 #import "Button.h"
 #import "StoryboardProxy.h"
+#import "Remote-Swift.h"
 
 MSSTATIC_STRING_CONST   kEmptyLabelText = @"Add Label";
 static int ddLogLevel      = LOG_LEVEL_DEBUG;
 static NSArray const    * fontNames;
 
-@interface LabelEditingViewController ()
+@interface LabelEditingViewController () <ColorSelectionControllerDelegate>
 @property (strong, nonatomic) IBOutlet UITextView   * titleTextView;
 @property (strong, nonatomic) IBOutlet UIButton     * fontNameButton;
 @property (strong, nonatomic) IBOutlet UILabel      * fontSizeLabel;
@@ -240,8 +241,7 @@ delegate             = _delegate;
 - (IBAction)launchColorSelection:(id)sender {
     if (ValueIsNil(_detailedButtonEditor)) return;
 
-    ColorSelectionViewController * colorSelector =
-        [StoryboardProxy colorSelectionViewController];
+    ColorSelectionController * colorSelector = [StoryboardProxy colorSelectionController];
 
     colorSelector.delegate     = self;
     colorSelector.initialColor = _titleColorButton.backgroundColor;
@@ -356,7 +356,7 @@ delegate             = _delegate;
 
 #pragma mark - ColorSelectionViewControllerDelegate
 
-- (void)colorSelector:(ColorSelectionViewController *)controller
+- (void)colorSelectionController:(ColorSelectionController *)controller
        didSelectColor:(UIColor *)color {
     self.currentColor = color;
     [self restoreCurrentValues:YES];
@@ -364,7 +364,7 @@ delegate             = _delegate;
     if (ValueIsNotNil(_detailedButtonEditor)) [_detailedButtonEditor removeAuxController:controller animated:YES];
 }
 
-- (void)colorSelectorDidCancel:(ColorSelectionViewController *)controller {
+- (void)colorSelectionControllerDidCancel:(ColorSelectionController *)controller {
     if (ValueIsNotNil(_detailedButtonEditor)) [_detailedButtonEditor removeAuxController:controller animated:YES];
 }
 

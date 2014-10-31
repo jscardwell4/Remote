@@ -111,13 +111,13 @@ public func apply<S:SequenceType>(sequence: S, block: (S.Generator.Element) -> V
 /**
 unique<T:Equatable>:
 
-:param: array [T]
+:param: seq S
 
 :returns: [T]
 */
-public func unique<T:Equatable>(array:[T]) -> [T] {
-  var u: [T] = []
-  for e in array { if e ∉ u { u.append(e) } }
+public func unique<S:SequenceType where S.Generator.Element:Equatable>(seq:S) -> [S.Generator.Element] {
+  var u: [S.Generator.Element] = []
+  for e in seq { if e ∉ u { u.append(e) } }
   return u
 }
 
@@ -236,7 +236,13 @@ Union set operator
 :param: rhs [T]
 :returns: [T]
 */
-public func ∪<T>(lhs:[T], rhs:[T]) -> [T] { var u = lhs; u += rhs; return u }
+public func ∪<T, S0:SequenceType, S1:SequenceType where S0.Generator.Element == T, S1.Generator.Element == T>
+  (lhs:S0, rhs:S1) -> [T]
+{
+  var u = Array(lhs)
+  u += Array(rhs)
+  return u
+}
 
 /**
 Minus set operator
@@ -245,7 +251,11 @@ Minus set operator
 :param: rhs [T]
 :returns: [T]
 */
-public func ∖<T:Equatable>(lhs:[T], rhs:[T]) -> [T] { return lhs.filter { $0 ∉ rhs } }
+public func ∖<T:Equatable, S0:SequenceType, S1:SequenceType where S0.Generator.Element == T, S1.Generator.Element == T>
+  (lhs:S0, rhs:S1) -> [T]
+{
+  return filter(lhs) { $0 ∉ rhs }
+}
 
 /**
 Intersection set operator
@@ -254,16 +264,19 @@ Intersection set operator
 :param: rhs [T]
 :returns: [T]
 */
-public func ∩<T:Equatable>(lhs:[T], rhs:[T]) -> [T] { return unique(lhs ∪ rhs).filter {$0 ∈ lhs && $0 ∈ rhs} }
+public func ∩<T:Equatable, S0:SequenceType, S1:SequenceType where S0.Generator.Element == T, S1.Generator.Element == T>
+  (lhs:S0, rhs:S1) -> [T]
+{
+  return filter(unique(lhs ∪ rhs)) {$0 ∈ lhs && $0 ∈ rhs}
+}
 
 /**
 Union set operator which stores result in lhs
 
 :param: lhs [T]
 :param: rhs [T]
-:returns: [T]
 */
-public func ∪=<T>(inout lhs:[T], rhs:[T]) -> [T] { lhs += rhs; return lhs }
+public func ∪=<T>(inout lhs:[T], rhs:[T]) { lhs += rhs }
 
 /**
 Minus set operator which stores result in lhs
@@ -357,11 +370,31 @@ public func ⩢ <T:Equatable>(lhs: T, rhs: T!) -> Bool { return rhs == nil || lh
 Returns true if rhs contains lhs
 
 :param: lhs T
-:param: rhs T
+:param: rhs S
 :returns: Bool
 */
-public func ∈<T:Equatable>(lhs:T, rhs:[T]) -> Bool { return contains(rhs, lhs) }
-public func ∈<T:Equatable>(lhs:T?, rhs:[T]) -> Bool { return lhs != nil && contains(rhs, lhs!) }
+public func ∈<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:T, rhs:S) -> Bool {
+  return contains(rhs, lhs)
+}
+
+/**
+Returns true if rhs contains lhs
+
+:param: lhs T?
+:param: rhs S
+:returns: Bool
+*/
+public func ∈<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:T?, rhs:S) -> Bool {
+  return lhs != nil && contains(rhs, lhs!)
+}
+
+/**
+Returns true if rhs contains lhs
+
+:param: lhs T
+:param: rhs U
+:returns: Bool
+*/
 public func ∈ <T, U where U:IntervalType, T == U.Bound>(lhs:T, rhs:U) -> Bool { return rhs.contains(lhs) }
 
 /**
@@ -371,7 +404,7 @@ Returns true if lhs contains rhs
 :param: rhs T
 :returns: Bool
 */
-public func ∋<T:Equatable>(lhs:[T], rhs:T) -> Bool { return rhs ∈ lhs }
+public func ∋<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:S, rhs:T) -> Bool { return rhs ∈ lhs }
 public func ∋ <T, U where U:IntervalType, T == U.Bound>(lhs:U, rhs:T) -> Bool { return lhs.contains(rhs) }
 
 /**
@@ -381,7 +414,7 @@ Returns true if rhs does not contain lhs
 :param: rhs T
 :returns: Bool
 */
-public func ∉<T:Equatable>(lhs:T, rhs:[T]) -> Bool { return !(lhs ∈ rhs) }
+public func ∉<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:T, rhs:S) -> Bool { return !(lhs ∈ rhs) }
 public func ∉ <T, U where U:IntervalType, T == U.Bound>(lhs:T, rhs:U) -> Bool { return !(lhs ∈ rhs) }
 
 /**
@@ -392,5 +425,5 @@ Returns true if lhs does not contain rhs
 :returns: Bool
 */
 public func ∌ <T, U:IntervalType where T == U.Bound>(lhs:U, rhs:T) -> Bool { return !(lhs ∋ rhs) }
-public func ∌<T:Equatable>(lhs:[T], rhs:T) -> Bool { return !(lhs ∋ rhs) }
+public func ∌<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:S, rhs:T) -> Bool { return !(lhs ∋ rhs) }
 

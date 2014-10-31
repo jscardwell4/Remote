@@ -16,10 +16,10 @@
 
 @interface REBackgroundCollectionViewController : UICollectionViewController
 
-@property (nonatomic, strong) NSManagedObjectContext * context;
-@property (nonatomic, strong) Image      * initialImage;
+@property (nonatomic, strong)   NSManagedObjectContext * context;
+@property (nonatomic, strong)   Image                  * initialImage;
+@property (nonatomic, readonly) Image                  * selectedImage;
 
 - (void)selectBackgroundImage:(Image *)backgroundImage;
-- (Image *)selectedImage;
 
 @end

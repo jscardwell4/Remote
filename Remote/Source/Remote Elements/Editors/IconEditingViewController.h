@@ -26,8 +26,7 @@
 
 @end
 
-@interface IconEditingViewController : AttributeEditingViewController <ColorSelectionDelegate,
-                                                                       IconSelectionDelegate,
+@interface IconEditingViewController : AttributeEditingViewController <IconSelectionDelegate,
                                                                        UITextFieldDelegate>
 
 @property (nonatomic, weak) id <IconEditingDelegate>   delegate;

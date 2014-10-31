@@ -11,38 +11,9 @@ import UIKit
 public class ToggleBarButtonItem: UIBarButtonItem {
 
   public var toggleAction: ((ToggleBarButtonItem) -> Void)?
-  public var isToggled: Bool = false { didSet { imageView?.highlighted = isToggled } }
-  private weak var imageView: UIImageView?
+  public var updateAppearance: ((ToggleBarButtonItem) -> Void)?
 
-  /** init */
-  public override init() {
-    super.init()
-    super.target = self
-    super.action = "toggle:"
-  }
-
-  public override var image: UIImage? { get { return (customView as? UIImageView)?.image } set { (customView as? UIImageView)?.image = newValue } }
-
-  /**
-  initWithImage:toggledImage:action:
-
-  :param: image UIImage
-  :param: toggledImage UIImage
-  :param: action (ToggleBarButtonItem) -> Void
-  */
-  public init(image: UIImage, toggledImage: UIImage, action: (ToggleBarButtonItem) -> Void) {
-    let imageView = UIImageView(image: image, highlightedImage: toggledImage)
-    let containingView = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 44.0, height: 44.0)))
-    imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-    containingView.addSubview(imageView)
-    containingView.constrainWithFormat("imageView.center = self.center :: V:|-(>=8)-[imageView]-(>=8)-|", views: ["imageView": imageView])
-    imageView.userInteractionEnabled = true
-    imageView.contentMode = .ScaleAspectFit
-    super.init(customView: containingView)
-    imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toggle:"))
-    self.imageView = imageView
-    toggleAction = action
-  }
+  public var isToggled: Bool = false { didSet { updateAppearance?(self) } }
 
   public override var action: Selector { get { return super.action } set { } }
 
@@ -57,6 +28,16 @@ public class ToggleBarButtonItem: UIBarButtonItem {
   :param: aCoder NSCoder
   */
   public override func encodeWithCoder(aCoder: NSCoder) { super.encodeWithCoder(aCoder) }
+
+  /** init */
+  public override init() { super.init(); super.target = self; super.action = "toggle:" }
+
+  /**
+  initWithCustomView:
+
+  :param: customView UIView
+  */
+  public override init(customView: UIView) { super.init(customView: customView) }
 
   /**
   init:

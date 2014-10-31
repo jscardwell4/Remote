@@ -35,7 +35,7 @@
     }
 
     UIImage * image = nil;
-    
+
     if (indexPath.row)
     {
         Image * backgroundImage = self.backgrounds[indexPath.row - 1];
@@ -47,7 +47,7 @@
         image = [UIImage imageNamed:@"NoBackground.png"];
 
     UIImageView * imageView = (UIImageView *)[cell viewWithNametag:@"BOBackgroundImage"];
-    
+
     if (!imageView)
     {
         imageView = [[UIImageView alloc] initWithImage:image];
@@ -77,12 +77,10 @@
     if (!_backgrounds && _context)
     {
         __block NSArray * fetchedObjects = nil;
-        [_context performBlockAndWait:
-         ^{
-             NSFetchRequest * request = [NSFetchRequest
-                                         fetchRequestWithEntityName:
-                                             ClassString([Image class])];
-             fetchedObjects = [_context executeFetchRequest:request error:nil];
+        [_context performBlockAndWait:^{
+          fetchedObjects = [[[ImageCategory findFirstByAttribute:@"name"
+                                                       withValue:@"Backgrounds"
+                                                         context: _context] images] allObjects];
          }];
         _backgrounds = fetchedObjects;
     }

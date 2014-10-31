@@ -75,6 +75,18 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   public var arrayValue: [T] { return storage }
 
+  public var NSArrayValue: NSArray? {
+    var elements: [NSObject] = []
+    for element in storage {
+      if let e = element as? NSObject {
+        elements.append(e)
+      }
+    }
+    return elements.count == storage.count ? NSArray(array: elements) : nil
+  }
+
+  public var NSSetValue: NSSet? { if let array = NSArrayValue { return NSSet(array: array) } else { return nil } }
+
   /**
   reserveCapacity:
 
@@ -283,6 +295,17 @@ Minus set operator
 */
 public func ∖<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> OrderedSet<T> {
   return OrderedSet<T>(lhs.filter { $0 ∉ rhs })
+}
+
+/**
+Minus set operator
+
+:param: lhs OrderedSet<T>
+:param: rhs [T]
+:returns: OrderedSet<T>
+*/
+public func ∖<T:Equatable>(lhs: OrderedSet<T>, rhs: [T]) -> OrderedSet<T> {
+  return lhs ∖ OrderedSet(rhs)
 }
 
 /**

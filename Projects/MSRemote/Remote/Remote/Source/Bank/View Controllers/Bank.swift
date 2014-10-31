@@ -174,20 +174,20 @@ class Bank {
   :returns: [UIBarButtonItem]
   */
   class func toolbarItemsForController(controller: BankController, addingItems items: [UIBarItem]? = nil) -> [UIBarItem] {
-    let exportBarItem = ToggleBarButtonItem(image: BankProperties.exportBarItemImage,
-                                            toggledImage: BankProperties.exportBarItemImageSelected) {
-                                              _ in controller.exportBankObjects()
-                                            }
+    let exportBarItem = ToggleImageBarButtonItem(image: BankProperties.exportBarItemImage,
+                                                 toggledImage: BankProperties.exportBarItemImageSelected) {
+                                                   _ in controller.exportBankObjects()
+                                                 }
     let spacer = UIBarButtonItem.fixedSpace(-10.0)
-    let importBarItem = ToggleBarButtonItem(image: BankProperties.importBarItemImage,
-                                            toggledImage: BankProperties.importBarItemImageSelected) {
-                                              _ in controller.importBankObjects()
-                                            }
+    let importBarItem = ToggleImageBarButtonItem(image: BankProperties.importBarItemImage,
+                                                 toggledImage: BankProperties.importBarItemImageSelected) {
+                                                   _ in controller.importBankObjects()
+                                                 }
     let flex = UIBarButtonItem.flexibleSpace()
-    let searchBarItem = ToggleBarButtonItem(image: BankProperties.searchBarItemImage,
-                                            toggledImage: BankProperties.searchBarItemImageSelected) {
-                                              _ in controller.searchBankObjects()
-                                            }
+    let searchBarItem = ToggleImageBarButtonItem(image: BankProperties.searchBarItemImage,
+                                                 toggledImage: BankProperties.searchBarItemImageSelected) {
+                                                   _ in controller.searchBankObjects()
+                                                 }
     var toolbarItems: [UIBarItem] = [spacer, exportBarItem, spacer, importBarItem, spacer, flex]
     if let middleItems = items { toolbarItems += middleItems }
     toolbarItems += [flex, spacer, searchBarItem, spacer]

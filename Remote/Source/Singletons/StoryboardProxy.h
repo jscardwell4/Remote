@@ -12,7 +12,7 @@
 @import MoonKit;
 #import "MSRemoteMacros.h"
 
-@class   ColorSelectionViewController,
+@class   ColorSelectionController,
          LabelEditingViewController,
          ButtonEditingViewController,
          IconEditingViewController,
@@ -33,7 +33,7 @@
 
 + (UIStoryboard *)auxiliaryStoryboard;
 + (UIStoryboard *)mainStoryboard;
-+ (ColorSelectionViewController *)colorSelectionViewController;
++ (ColorSelectionController *)colorSelectionController;
 + (LabelEditingViewController *)labelEditingViewController;
 + (ButtonEditingViewController *)buttonEditingViewController;
 + (IconEditingViewController *)iconEditingViewController;

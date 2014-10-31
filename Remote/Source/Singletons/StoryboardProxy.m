@@ -31,7 +31,7 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
 
 + (UIStoryboard *)mainStoryboard { return mainStoryboard; }
 
-+ (ColorSelectionViewController *)colorSelectionViewController
++ (ColorSelectionController *)colorSelectionController
 {
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Color Selection"];
 }

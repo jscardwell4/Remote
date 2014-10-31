@@ -221,6 +221,8 @@
 		C2C482E519CA0225002E84A9 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E419CA0225002E84A9 /* Stack.swift */; };
 		C2C482E719CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */; };
 		C2C482E919CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E819CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift */; };
+		C2F01E1B1A02E080007F6966 /* MSColorInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */; };
+		C2F01E341A03EDD9007F6966 /* ToggleImageBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -460,6 +462,8 @@
 		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
+		C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MSColorInputView.xib; sourceTree = "<group>"; };
+		C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageBarButtonItem.swift; sourceTree = "<group>"; };
 		C2F4370219BB813F00B60FC3 /* MSKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKeyPath.h; sourceTree = "<group>"; };
 		C2F4370319BB813F00B60FC3 /* MSKeyPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKeyPath.m; sourceTree = "<group>"; };
 		C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
@@ -595,6 +599,7 @@
 				C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */,
 				C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */,
 				C25E63DD19FEC06A00F54626 /* GestureManager.swift */,
+				C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -902,6 +907,7 @@
 		C2CE891718138CF700555D63 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */,
 				C2CE891818138CF700555D63 /* MSCheckboxView.h */,
 				C2CE891918138CF700555D63 /* MSCheckboxView.m */,
 				C2CE891A18138CF700555D63 /* MSColorInputView.h */,
@@ -1142,6 +1148,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F01E1B1A02E080007F6966 /* MSColorInputView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1212,7 @@
 				C2358F4E19C78E0C00920F8D /* UIImage+ImageEffects.m in Sources */,
 				C217E47E19E860DE00B36983 /* MSIntegerInputView.swift in Sources */,
 				C2358F4F19C78E0C00920F8D /* UIImage+MSKitAdditions.m in Sources */,
+				C2F01E341A03EDD9007F6966 /* ToggleImageBarButtonItem.swift in Sources */,
 				C2358F5019C78E0C00920F8D /* UIStoryboard+MSKitAdditions.m in Sources */,
 				C2358F5119C78E0C00920F8D /* UITableView+MSKitAdditions.m in Sources */,
 				C2358F5219C78E0C00920F8D /* UIView+MSKitAdditions.m in Sources */,

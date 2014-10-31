@@ -590,8 +590,8 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
   dumpView = ^(UIView * view, int indent) {
 
-    [outstring appendFormat:@"%@[%2d] %@\n",
-     [NSString stringWithCharacter:'-' count:indent*2], indent, ClassString([view class])];
+    [outstring appendFormat:@"%@[%2d] %@(%p)\n",
+     [NSString stringWithCharacter:'-' count:indent*2], indent, ClassString([view class]), view];
 
     for (UIView * subview in view.subviews) weakDumpView(subview, indent + 1);
 
@@ -643,8 +643,8 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
                             ? [[propertyValues description] stringByReplacingRegEx:@"=[\t ]+" withString:@"= "]
                             : @"");
 
-    [outstring appendFormat:@"[%2d] %@%@%@\n",
-     indent, ClassString([view class]), (propertyValues.count > 0 ? @":" : @""), valueDump];
+    [outstring appendFormat:@"[%2d] %@(%p)%@%@\n",
+     indent, ClassString([view class]), view, (propertyValues.count > 0 ? @":" : @""), valueDump];
 
     for (UIView * subview in view.subviews) weakDumpView(subview, indent + 1);
 
@@ -711,7 +711,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
   UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.0);
 
-  [self drawViewHierarchyInRect:self.frame afterScreenUpdates:NO];
+  [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:NO];
 
   UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
 

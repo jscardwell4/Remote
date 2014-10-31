@@ -189,7 +189,7 @@ class Bank {
   */
   class func toolbarItemsForController(controller: BankController, addingItems items: [UIBarItem]? = nil) -> [UIBarItem] {
 
-    let exportBarItem = ToggleBarButtonItem(
+    let exportBarItem = ToggleImageBarButtonItem(
       image: BankProperties.exportBarItemImage,
       toggledImage: BankProperties.exportBarItemImageSelected) {
         (item: ToggleBarButtonItem) -> Void in
@@ -198,7 +198,7 @@ class Bank {
 
     let spacer = UIBarButtonItem.fixedSpace(-10.0)
 
-    let importBarItem = ToggleBarButtonItem(
+    let importBarItem = ToggleImageBarButtonItem(
       image: BankProperties.importBarItemImage,
       toggledImage: BankProperties.importBarItemImageSelected) {
         (item: ToggleBarButtonItem) -> Void in
@@ -278,7 +278,7 @@ class Bank {
   {
     var toolbarItems = toolbarItemsForController(controller as BankController, addingItems: items)
     let spacer = UIBarButtonItem.fixedSpace(-10.0)
-    let searchBarItem = ToggleBarButtonItem(image: BankProperties.searchBarItemImage,
+    let searchBarItem = ToggleImageBarButtonItem(image: BankProperties.searchBarItemImage,
       toggledImage: BankProperties.searchBarItemImageSelected) {
         _ in controller.searchBankObjects()
     }

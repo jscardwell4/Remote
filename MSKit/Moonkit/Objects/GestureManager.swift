@@ -11,42 +11,39 @@ import UIKit
 
 public class GestureManager: NSObject {
 
-  public enum ResponseType {
-    case Begin, ReceiveTouch, RecognizeSimultaneously, BeRequiredToFail, RequireFailureOf
+	/** A simple structure to hold response blocks for a single gesture */
+	public struct ResponseCollection {
+		var begin: (() -> Bool)?
+		var receiveTouch: ((UITouch) -> Bool)?
+		var recognizeSimultaneously: ((UIGestureRecognizer) -> Bool)?
+		var beRequiredToFail: ((UIGestureRecognizer) -> Bool)?
+		var requireFailureOf: ((UIGestureRecognizer) -> Bool)?
 
-    /**
-    isValidResponse:
+		/**
+		initWithBegin:receiveTouch:recognizeSimultaneously:beRequiredToFail:requireFailureOf:
 
-    :param: response Any
+		:param: begin (() -> Bool)? = nil
+		:param: receiveTouch ((UITouch) -> Bool)? = nil
+		:param: recognizeSimultaneously ((UIGestureRecognizer) -> Bool)? = nil
+		:param: beRequiredToFail ((UIGestureRecognizer) -> Bool)? = nil
+		:param: requireFailureOf ((UIGestureRecognizer) -> Bool)? = nil
+		*/
+		public init(begin: (() -> Bool)? = nil,
+								receiveTouch: ((UITouch) -> Bool)? = nil,
+								recognizeSimultaneously: ((UIGestureRecognizer) -> Bool)? = nil,
+								beRequiredToFail: ((UIGestureRecognizer) -> Bool)? = nil,
+								requireFailureOf: ((UIGestureRecognizer) -> Bool)? = nil)
+		{
+			self.begin = begin
+			self.receiveTouch = receiveTouch
+			self.recognizeSimultaneously = recognizeSimultaneously
+			self.beRequiredToFail = beRequiredToFail
+			self.requireFailureOf = requireFailureOf
+		}
+	}
 
-    :returns: Bool
-    */
-    func isValidResponse(response: Any) -> Bool {
-      switch self {
-        case .Begin: return response is (UIGestureRecognizer) -> Bool
-        case .ReceiveTouch: return response is (UIGestureRecognizer, UITouch) -> Bool
-        default: return response is (UIGestureRecognizer, UIGestureRecognizer) -> Bool
-      }
-    }
-  }
-
-  private var _gestures: [UIGestureRecognizer:[ResponseType:Any]] = [:]
+  private var _gestures: [UIGestureRecognizer:ResponseCollection] = [:]
   public var gestures: [UIGestureRecognizer] { return Array(_gestures.keys) }
-
-  /**
-  filteredResponses:
-
-  :param: responses [ResponseType Any]
-
-  :returns: [ResponseType:Any]
-  */
-  private func filteredResponses(responses: [ResponseType:Any]) -> [ResponseType:Any] {
-    var filteredResponses: [ResponseType:Any] = [:]
-    for (responseType, response) in responses {
-      if responseType.isValidResponse(response) { filteredResponses[responseType] = response }
-    }
-    return filteredResponses
-  }
 
   /** init */
   public override init() { super.init() }
@@ -56,11 +53,9 @@ public class GestureManager: NSObject {
 
   :param: gestures [UIGestureRecognizer [ResponseType Any]]
   */
-  public init(gestures: [UIGestureRecognizer:[ResponseType:Any]]) {
+  public init(gestures: [UIGestureRecognizer:ResponseCollection]) {
     super.init()
-    var filteredGestures: [UIGestureRecognizer:[ResponseType:Any]] = [:]
-    for (gesture, responses) in gestures { gesture.delegate = self; filteredGestures[gesture] = filteredResponses(responses) }
-    _gestures = filteredGestures
+    for (gesture, responseCollection) in gestures { setResponses(responseCollection, forGesture: gesture) }
   }
 
   /**
@@ -69,9 +64,9 @@ public class GestureManager: NSObject {
   :param: responses [ResponseType Any]
   :param: gesture UIGestureRecognizer
   */
-  public func setResponses(responses: [ResponseType:Any], forGesture gesture: UIGestureRecognizer) {
+  public func setResponses(responseCollection: ResponseCollection, forGesture gesture: UIGestureRecognizer) {
     gesture.delegate = self
-    _gestures[gesture] = filteredResponses(responses)
+    _gestures[gesture] = responseCollection
   }
 
 }
@@ -86,10 +81,7 @@ extension GestureManager: UIGestureRecognizerDelegate {
   :returns: Bool
   */
   public func gestureRecognizerShouldBegin(gesture: UIGestureRecognizer) -> Bool {
-    if let block = _gestures[gesture]?[.Begin] as? (UIGestureRecognizer) -> Bool {
-      return block(gesture)
-    }
-    return true
+  	return _gestures[gesture]?.begin?() ?? true
   }
 
   /**
@@ -103,10 +95,7 @@ extension GestureManager: UIGestureRecognizerDelegate {
   public func                       gestureRecognizer(gesture: UIGestureRecognizer,
     shouldRecognizeSimultaneouslyWithGestureRecognizer otherGesture: UIGestureRecognizer) -> Bool
   {
-    if let block = _gestures[gesture]?[.RecognizeSimultaneously] as? (UIGestureRecognizer, UIGestureRecognizer) -> Bool {
-      return block(gesture, otherGesture)
-    }
-    return false
+  	return _gestures[gesture]?.recognizeSimultaneously?(otherGesture) ?? false
   }
 
   /**
@@ -120,10 +109,7 @@ extension GestureManager: UIGestureRecognizerDelegate {
   public func             gestureRecognizer(gesture: UIGestureRecognizer,
     shouldRequireFailureOfGestureRecognizer otherGesture: UIGestureRecognizer) -> Bool
   {
-    if let block = _gestures[gesture]?[.RequireFailureOf] as? (UIGestureRecognizer, UIGestureRecognizer) -> Bool {
-      return block(gesture, otherGesture)
-    }
-    return true
+  	return _gestures[gesture]?.requireFailureOf?(otherGesture) ?? true
   }
 
   /**
@@ -137,10 +123,7 @@ extension GestureManager: UIGestureRecognizerDelegate {
   public func               gestureRecognizer(gesture: UIGestureRecognizer,
     shouldBeRequiredToFailByGestureRecognizer otherGesture: UIGestureRecognizer) -> Bool
   {
-    if let block = _gestures[gesture]?[.BeRequiredToFail] as? (UIGestureRecognizer, UIGestureRecognizer) -> Bool {
-      return block(gesture, otherGesture)
-    }
-    return true
+  	return _gestures[gesture]?.beRequiredToFail?(otherGesture) ?? true
   }
 
   /**
@@ -152,10 +135,7 @@ extension GestureManager: UIGestureRecognizerDelegate {
   :returns: Bool
   */
   public func gestureRecognizer(gesture: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-    if let block = _gestures[gesture]?[.ReceiveTouch] as? (UIGestureRecognizer, UITouch) -> Bool {
-      return block(gesture, touch)
-    }
-    return true
+  	return _gestures[gesture]?.receiveTouch?(touch) ?? true
   }
 
 }

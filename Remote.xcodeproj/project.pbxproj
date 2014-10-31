@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C203BC221726F30D002FD3EA /* RemoteElementLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = C203BC211726F30D002FD3EA /* RemoteElementLayoutConstraint.m */; };
-		C204457319FBDD7F005355A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
 		C215C9CC19F7375F000CC6CC /* BankItemButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CB19F7375F000CC6CC /* BankItemButtonCell.swift */; };
 		C215C9CF19F739E5000CC6CC /* BankItemLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CE19F739E5000CC6CC /* BankItemLabelCell.swift */; };
 		C215C9D119F739F6000CC6CC /* BankItemListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D019F739F6000CC6CC /* BankItemListCell.swift */; };
@@ -229,7 +228,6 @@
 		C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF716DC18530093D5B4 /* SettingsViewController.m */; };
 		C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF916DC18530093D5B4 /* StoryboardProxy.m */; };
 		C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
-		C25BF65F19B179BC0038C724 /* REBackgroundEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25BF65E19B179BC0038C724 /* REBackgroundEditingViewController.m */; };
 		C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */; };
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
@@ -521,6 +519,10 @@
 		C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
+		C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2F01E2F1A030BD6007F6966 /* ColorSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */; };
+		C2F01E311A03D9E3007F6966 /* BackgroundEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */; };
 		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
 		C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */; };
@@ -582,7 +584,43 @@
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
 		};
+		C2F01E201A02FBC6007F6966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
+		};
+		C2F01E291A02FCF7007F6966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DCB3185114EB418E001CFBEE;
+			remoteInfo = CocoaLumberjack;
+		};
+		C2F01E2B1A02FCF7007F6966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DCB318CA14ED6C3B001CFBEE;
+			remoteInfo = FmwkTest;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C2F01E221A02FBC6007F6966 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */,
+				C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -746,7 +784,6 @@
 		C249174719BFBA870049638F /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
 		C24ECC9119DE126D00C1870E /* BankableModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankableModelObject.swift; sourceTree = "<group>"; };
 		C24ECC9419DE327600C1870E /* BankableModelCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankableModelCategory.swift; sourceTree = "<group>"; };
-		C2538FF719EA1E3C005D8A92 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../../../GitHub/CocoaLumberjack/Framework/Desktop/build/Debug-iphoneos/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		C25B130219FB4A6500C5630F /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Remote.entitlements; sourceTree = "<group>"; };
 		C25B130319FB4F5900C5630F /* DocumentSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DocumentSelectionController.swift; path = Bank/DocumentSelectionController.swift; sourceTree = "<group>"; };
 		C25B2713180A167B0078C8D8 /* RemoteController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RemoteController.json; sourceTree = "<group>"; };
@@ -1191,6 +1228,9 @@
 		C2E8DA0419BCE03C00E6098E /* desc.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = desc.json; sourceTree = "<group>"; };
 		C2E8DA0519BCE03C00E6098E /* nodes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = nodes.json; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
+		C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
+		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
+		C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundEditingController.swift; sourceTree = "<group>"; };
 		C2F225481715CB8500D22B5F /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		C2F225491715CB8500D22B5F /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		C2F2254B1715E39600D22B5F /* ModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelObject.h; sourceTree = "<group>"; };
@@ -1223,7 +1263,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C204457319FBDD7F005355A9 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1473,6 +1512,7 @@
 		C25B462D16FF679A0042B59E /* Editors */ = {
 			isa = PBXGroup;
 			children = (
+				C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */,
 				C253B09517E61AC2007CDFE4 /* Auxiallary Editors */,
 				C25B464216FF679B0042B59E /* ButtonEditingViewController.m */,
 				C25B464416FF679B0042B59E /* ButtonGroupEditingViewController.m */,
@@ -1483,6 +1523,7 @@
 				C25B465316FF679B0042B59E /* RemoteEditingViewController.m */,
 				C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */,
 				C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */,
+				C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -1590,7 +1631,7 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C2538FF719EA1E3C005D8A92 /* CocoaLumberjack.framework */,
+				C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
 				C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,
@@ -2200,6 +2241,15 @@
 			path = WSDL;
 			sourceTree = "<group>";
 		};
+		C2F01E251A02FCF7007F6966 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */,
+				C2F01E2C1A02FCF7007F6966 /* FmwkTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C2F2A46E17EF55E300DE2F41 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -2257,11 +2307,13 @@
 				C26BAEA416DC10FE0093D5B4 /* Sources */,
 				C26BAEA516DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA616DC10FE0093D5B4 /* Resources */,
+				C2F01E221A02FBC6007F6966 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				C204457119FBDD25005355A9 /* PBXTargetDependency */,
+				C2F01E211A02FBC6007F6966 /* PBXTargetDependency */,
 			);
 			name = Remote;
 			productName = Remote;
@@ -2358,6 +2410,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = C2F01E251A02FCF7007F6966 /* Products */;
+					ProjectRef = C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */;
+				},
+				{
 					ProductGroup = C2CE8A9C1814231F00555D63 /* Products */;
 					ProjectRef = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
 				},
@@ -2385,6 +2441,20 @@
 			fileType = wrapper.cfbundle;
 			path = "Moonkit Tests.xctest";
 			remoteRef = C2AA245719CB15500062CF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CocoaLumberjack.framework;
+			remoteRef = C2F01E291A02FCF7007F6966 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C2F01E2C1A02FCF7007F6966 /* FmwkTest.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FmwkTest.app;
+			remoteRef = C2F01E2B1A02FCF7007F6966 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2841,6 +2911,7 @@
 				C277AB7C19D74011008DEE39 /* IRCodeSet.swift in Sources */,
 				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
 				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,
+				C2F01E311A03D9E3007F6966 /* BackgroundEditingController.swift in Sources */,
 				C26296801810619900760056 /* CoreDataManager+Model.m in Sources */,
 				C277AB8019D74AD6008DEE39 /* ImageCategory.swift in Sources */,
 				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
@@ -2894,7 +2965,6 @@
 				C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */,
 				C25B478616FF8D5E0042B59E /* Constraint.m in Sources */,
 				C25B478716FF8D5E0042B59E /* RemoteView.m in Sources */,
-				C25BF65F19B179BC0038C724 /* REBackgroundEditingViewController.m in Sources */,
 				C25B478816FF8D5E0042B59E /* RockerView.m in Sources */,
 				C289BB5819F85B64008E92C1 /* BankItemDetailListRow.swift in Sources */,
 				C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */,
@@ -2924,6 +2994,7 @@
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
 				C215C9D319F73A0C000CC6CC /* BankItemTextFieldCell.swift in Sources */,
 				C2879F5C19DBA2CC0052DDB7 /* Image.swift in Sources */,
+				C2F01E2F1A030BD6007F6966 /* ColorSelectionController.swift in Sources */,
 				C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */,
 				C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */,
 				C27DE08619E5E67F00CCB725 /* ManufacturerDetailController.swift in Sources */,
@@ -2996,6 +3067,11 @@
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */;
+		};
+		C2F01E211A02FBC6007F6966 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoonKit;
+			targetProxy = C2F01E201A02FBC6007F6966 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3070,6 +3146,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3079,7 +3156,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -3108,6 +3185,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3115,7 +3193,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -3151,6 +3229,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3160,7 +3239,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -3339,6 +3418,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -3348,7 +3428,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (

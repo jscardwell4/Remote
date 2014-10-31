@@ -330,8 +330,7 @@ static const int msLogContext = 0;
 
 /// showRemote
 - (void)showRemote {
-  RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
-  self.window.rootViewController = controller.viewController;
+  [self showViewController:[RemoteController remoteController:[CoreDataManager defaultContext]].viewController];
 }
 
 /// showEditor
@@ -341,37 +340,37 @@ static const int msLogContext = 0;
 
   if ([self.window.rootViewController isKindOfClass:[RemoteViewController class]]) {
     editorVC.remoteElement = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
-    [self.window.rootViewController presentViewController:editorVC animated:YES completion:nil];
   } else {
     RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
     Remote * remote = controller.homeRemote;
     editorVC.remoteElement = remote ?: [Remote createInContext:[CoreDataManager defaultContext]];
-    self.window.rootViewController = editorVC;
   }
+
+  [self showViewController:editorVC];
 }
 
 /// remoteElementEditorDidCancel:
 /// @param editor
 - (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)editor {
-  [editor dismissViewControllerAnimated:YES completion:nil];
+  [self dismissViewController:editor completion:nil];
 }
 
 /// remoteElementEditorDidSave:
 /// @param editor
 - (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)editor {
-  [editor dismissViewControllerAnimated:YES completion:nil];
+  [self dismissViewController:editor completion:nil];
 }
 
 /// editorDidCancel:
 /// @param editor
 - (void)editorDidCancel:(RemoteElementEditingController *)editor {
-  [editor dismissViewControllerAnimated:YES completion:nil];
+  [self dismissViewController:editor completion:nil];
 }
 
 /// editorDidSave:
 /// @param editor
 - (void)editorDidSave:(RemoteElementEditingController *)editor {
-  [editor dismissViewControllerAnimated:YES completion:nil];
+  [self dismissViewController:editor completion:nil];
 }
 
 /// showMainMenu

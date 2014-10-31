@@ -8,13 +8,9 @@
 #import "MSView.h"
 #import "MSKitMacros.h"
 #import "UIColor+MSKitAdditions.h"
-#import "MSKVOReceptionist.h"
 #import "MSPainter.h"
 
 @implementation MSView
-{
-  MSKVOReceptionist * _kvoReceptionist;
-}
 
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
@@ -22,31 +18,34 @@
     _borderRadii     = CGSizeMake(5, 5);
     _glossColor      = UIColorMake(1, 1, 1, 0.02);
     self.opaque      = NO;
-    [self initializeKVOReceptionist];
   }
 
   return self;
 }
 
-- (void)awakeFromNib {
-  [super awakeFromNib];
-  [self initializeKVOReceptionist];
+- (void)setStyle:(MSViewStyle)style {
+  _style = style;
+  [self setNeedsDisplay];
 }
 
-- (void)initializeKVOReceptionist {
-  _kvoReceptionist = [MSKVOReceptionist
-                      receptionistWithObserver:self
-                                     forObject:self
-                                      keyPaths:@[@"style",
-                                                 @"borderColor",
-                                                 @"glossColor",
-                                                 @"borderThickness",
-                                                 @"borderRadii"]
-                                       options:NSKeyValueObservingOptionNew
-                                         queue:MainQueue
-                                       handler:^(MSKVOReceptionist * receptionist) {
-                                         [(MSView *)receptionist.observer setNeedsDisplay];
-                                       }];
+- (void)setBorderColor:(UIColor *)borderColor {
+  _borderColor = borderColor;
+  [self setNeedsDisplay];
+}
+
+- (void)setGlossColor:(UIColor *)glossColor {
+  _glossColor = glossColor;
+  [self setNeedsDisplay];
+}
+
+- (void)setBorderThickness:(CGFloat)borderThickness {
+  _borderThickness = borderThickness;
+  [self setNeedsDisplay];
+}
+
+- (void)setBorderRadii:(CGSize)borderRadii {
+  _borderRadii = borderRadii;
+  [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect {

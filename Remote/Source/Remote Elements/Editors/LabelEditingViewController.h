@@ -28,8 +28,7 @@
 @interface LabelEditingViewController : AttributeEditingViewController <UIPickerViewDelegate,
                                                                         UIPickerViewDataSource,
                                                                         UITextViewDelegate,
-                                                                        UITextFieldDelegate,
-                                                                        ColorSelectionDelegate>
+                                                                        UITextFieldDelegate>
 
 @property (nonatomic, weak) id <LabelEditingDelegate>   delegate;
 

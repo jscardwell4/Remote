@@ -22,7 +22,7 @@ static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
 #pragma unused(ddLogLevel, msLogContext)
 
-@interface IconEditingViewController ()
+@interface IconEditingViewController () <ColorSelectionControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton    * iconColorButton;
 @property (strong, nonatomic) IBOutlet UITextField * topInsetTextField;
 @property (strong, nonatomic) IBOutlet UITextField * leftInsetTextField;
@@ -203,7 +203,7 @@ delegate             = _delegate;
 - (IBAction)launchColorSection:(id)sender {
     if (ValueIsNil(_detailedButtonEditor)) return;
 
-    ColorSelectionViewController * colorSelector = [StoryboardProxy colorSelectionViewController];
+    ColorSelectionController * colorSelector = [StoryboardProxy colorSelectionController];
 
     colorSelector.delegate     = self;
     colorSelector.initialColor = _iconColorButton.backgroundColor;
@@ -300,7 +300,7 @@ delegate             = _delegate;
 
 #pragma mark - ColorSelectionViewControllerDelegate
 
-- (void)colorSelector:(ColorSelectionViewController *)controller
+- (void)colorSelectionController:(ColorSelectionController *)controller
        didSelectColor:(UIColor *)color {
     self.currentColor = color;
     [self restoreCurrentValues];
@@ -308,7 +308,7 @@ delegate             = _delegate;
     if (ValueIsNotNil(_detailedButtonEditor)) [_detailedButtonEditor removeAuxController:controller animated:YES];
 }
 
-- (void)colorSelectorDidCancel:(ColorSelectionViewController *)controller {
+- (void)colorSelectionControllerDidCancel:(ColorSelectionController *)controller {
     if (ValueIsNotNil(_detailedButtonEditor)) [_detailedButtonEditor removeAuxController:controller animated:YES];
 }
 
