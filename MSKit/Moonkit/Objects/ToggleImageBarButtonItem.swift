@@ -12,6 +12,8 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
 
   private weak var imageView: UIImageView!
 
+  public override var isToggled: Bool { didSet { imageView?.highlighted = isToggled } }
+
   /** override `image` property to utilize the item's custom view */
   public override var image: UIImage? { get { return imageView.image } set { imageView.image = newValue } }
 
@@ -19,18 +21,6 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
   public var highlightedImage: UIImage? {
     get { return imageView.highlightedImage }
     set { imageView.highlightedImage = newValue }
-  }
-
-  /** override `updateAppearance` to wrap provided value inside closure that toggles highlighted property of `imageView` */
-  public override var updateAppearance: ((ToggleBarButtonItem) -> Void)? {
-    get { return super.updateAppearance }
-    set {
-      super.updateAppearance = {
-        (item: ToggleBarButtonItem) -> Void in
-          (item as ToggleImageBarButtonItem).imageView.highlighted = item.isToggled
-          newValue?(item)
-      }
-    }
   }
 
   /** init */

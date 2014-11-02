@@ -19,22 +19,29 @@ import MoonKit
 
 class BackgroundEditingController: UIViewController {
 
-  var subject: EditableBackground? {
-    didSet {
-      collectionVC?.context = subject?.managedObjectContext
-      resetToInitialState()
-    }
-  }
+  var subject: EditableBackground? { didSet { initialImage = subject?.backgroundImage; resetToInitialState() } }
 
   @IBOutlet weak var colorBox: UIButton!
   @IBOutlet weak var bottomToolbar: UIToolbar!
   @IBOutlet weak var colorSelectionContainer: UIView!
   @IBOutlet weak var colorSelectionConstraint: NSLayoutConstraint!
-  
-  private weak var collectionVC: REBackgroundCollectionViewController! {
+  @IBOutlet weak var imageCollectionContainer: UIView!
+
+  private var initialImage: Image?
+  private weak var imageCollectionVC: BankCollectionController!
+  private weak var imageCollectionNav: UINavigationController! {
     didSet {
-      collectionVC?.context = subject?.managedObjectContext
-      resetToInitialState()
+      if imageCollectionNav != nil {
+        let category = ImageCategory.findFirstByAttribute("name",
+                                                withValue: "Backgrounds",
+                                                  context: subject?.managedObjectContext)
+        assert(category != nil, "should have been able to retrieve backgrounds category")
+        if let controller = BankCollectionController(category: category, mode: .Selection) {
+          controller.selectionDelegate = self
+          imageCollectionNav!.showViewController(controller, sender: self)
+          imageCollectionVC = controller
+        }
+      }
     }
   }
 
@@ -48,7 +55,6 @@ class BackgroundEditingController: UIViewController {
   /** resetToInitialState */
   private func resetToInitialState() {
     if subject != nil {
-      collectionVC?.initialImage = subject!.backgroundImage
       colorBox?.backgroundColor = subject!.backgroundColor
       colorSelectionVC?.initialColor = subject!.backgroundColor ?? UIColor.whiteColor()
     }
@@ -63,7 +69,6 @@ class BackgroundEditingController: UIViewController {
   /** saveAction */
   @IBAction func saveAction() {
     subject?.backgroundColor = colorBox.backgroundColor
-    subject?.backgroundImage = collectionVC.selectedImage
     dismissViewControllerAnimated(true, completion: nil)
   }
 
@@ -84,10 +89,10 @@ class BackgroundEditingController: UIViewController {
   :param: sender AnyObject?
   */
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if segue.identifier == "Embed Background Collection" {
-      collectionVC = segue.destinationViewController as REBackgroundCollectionViewController
-    } else if segue.identifier == "Embed Color Selection" {
+    if segue.identifier == "Embed Color Selection" {
       colorSelectionVC = segue.destinationViewController as ColorSelectionController
+    } else if segue.identifier == "Embed Image Collection" {
+      imageCollectionNav = segue.destinationViewController as UINavigationController
     }
   }
 
@@ -113,4 +118,12 @@ extension BackgroundEditingController: ColorSelectionControllerDelegate {
   */
   func colorSelectionControllerDidCancel(controller: ColorSelectionController) { toggleColorSelection() }
 
+}
+
+extension BackgroundEditingController: BankItemSelectionDelegate {
+  func bankController(bankController: BankController, didSelectItem item: BankDisplayItemModel) {
+    if let image = item as? Image {
+      subject?.backgroundImage = image
+    }
+  }
 }

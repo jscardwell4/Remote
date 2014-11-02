@@ -28,6 +28,15 @@ class BankCollectionCell: UICollectionViewCell {
     return button
   }()
 
+  let chevron: UIImageView = {
+    let view = UIImageView()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.image = UIImage(named: "766-arrow-right")
+    view.contentMode = .ScaleAspectFit
+    view.constrainWithFormat("self.width = self.height :: self.height = 22")
+    return view
+  }()
+
   var deleteAction: ((Void) -> Void)?
 
   var showingDeleteDidChange: ((BankCollectionCell) -> Void)?
@@ -46,7 +55,23 @@ class BankCollectionCell: UICollectionViewCell {
     }
   }
 
+  var showChevron: Bool = true { didSet { chevron.hidden = !showChevron } }
+
   var animateIndicator: ((Void) -> Void)?
+
+  private let indicatorImageNormal = UIImage(named:"1040-checkmark-toolbar")!
+  private let indicatorImageSelected = UIImage(named:"1040-checkmark-toolbar-selected")!
+
+  /**
+  showIndicator:selected:
+
+  :param: show Bool
+  :param: selected Bool = false
+  */
+  func showIndicator(show: Bool, selected: Bool = false) {
+    indicatorImage = (show ? (selected ? indicatorImageSelected : indicatorImageNormal) : nil)
+  }
+
 
   /**
   applyLayoutAttributes:
@@ -67,8 +92,12 @@ class BankCollectionCell: UICollectionViewCell {
 
     // Refresh our constraints
     removeConstraintsWithIdentifier(identifier)
-    let format = "\n".join("delete.right = self.right", "delete.top = self.top", "delete.bottom = self.bottom")
-    let views = ["delete": deleteButton]
+    let format = "\n".join("delete.right = self.right",
+                           "delete.top = self.top",
+                           "delete.bottom = self.bottom",
+                           "chevron.centerY = content.centerY",
+                           "H:[chevron]-20-|")
+    let views = ["delete": deleteButton, "chevron": chevron, "content": contentView]
     constrainWithFormat(format, views: views, identifier: identifier)
 
     super.updateConstraints()
@@ -150,6 +179,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   /** initializeSubviews */
   private func initializeSubviews() {
+    contentView.addSubview(chevron)
     panGesture = {
       let gesture = MSPanGestureRecognizer(target: self, action: "handlePan:")
       gesture.confineToView = true

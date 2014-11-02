@@ -11,11 +11,7 @@ import MoonKit
 
 class BankCollectionCategoryCell: BankCollectionCell {
 
-  var category: BankDisplayItemCategory? {
-    didSet {
-      label.text = category?.title
-    }
-  }
+  var category: BankDisplayItemCategory? { didSet { label.text = category?.title } }
 
   override var exportItem: MSJSONExport? { return category }
 
@@ -26,15 +22,6 @@ class BankCollectionCategoryCell: BankCollectionCell {
     return view
   }()
 
-  private let chevron: UIImageView = {
-    let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.image = UIImage(named: "766-arrow-right")
-    view.contentMode = .ScaleAspectFit
-    view.constrainWithFormat("self.width = self.height :: self.height = 22")
-    return view
-    }()
-
   /** updateConstraints */
   override func updateConstraints() {
 
@@ -44,9 +31,8 @@ class BankCollectionCategoryCell: BankCollectionCell {
     super.updateConstraints()
 
     let format = "\n".join([
-      "[indicator]-20-[label]-8-[chevron]-20-|",
+      "[indicator]-20-[label]-8-[chevron]",
       "label.centerY = content.centerY",
-      "chevron.centerY = content.centerY",
       "indicator.centerY = content.centerY",
       "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
       ])
@@ -63,29 +49,20 @@ class BankCollectionCategoryCell: BankCollectionCell {
   }
 
   /** initializeSubviews */
-  private func initializeSubviews() {
-    contentView.addSubview(label)
-    contentView.addSubview(chevron)
-  }
+  private func initializeSubviews() { contentView.addSubview(label) }
 
   /**
   initWithFrame:
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    initializeSubviews()
-  }
+  override init(frame: CGRect) { super.init(frame: frame); initializeSubviews() }
 
   /**
   init:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    initializeSubviews()
-  }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeSubviews() }
 
 }

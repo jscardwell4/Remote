@@ -72,6 +72,10 @@ func categoryPath(category: BankDisplayItemCategory?) -> String? {
 
 }
 
+protocol BankItemSelectionDelegate {
+  func bankController(bankController: BankController, didSelectItem item: BankDisplayItemModel)
+}
+
 /** Protocol for types that want to display Bank toolbars, or other assets */
 protocol BankController: class {
 
@@ -80,8 +84,6 @@ protocol BankController: class {
 
   func selectAllExportableItems() // Called from select all bar button action
   func importFromFile(fileURL: NSURL)
-  func exportBankObjects()  // Called from export bar button action
-  func importBankObjects()  // Called from import bar button action
 
 }
 
@@ -193,7 +195,7 @@ class Bank {
       image: BankProperties.exportBarItemImage,
       toggledImage: BankProperties.exportBarItemImageSelected) {
         (item: ToggleBarButtonItem) -> Void in
-          controller.exportSelectionMode = !controller.exportSelectionMode
+          controller.exportSelectionMode = item.isToggled
     }
 
     let spacer = UIBarButtonItem.fixedSpace(-10.0)

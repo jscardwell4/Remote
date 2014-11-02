@@ -189,7 +189,6 @@ class DocumentSelectionController: UIViewController {
     /** loadView */
     override func loadView() {
       super.loadView()
-      tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
       tableView.opaque = false
       tableView.backgroundColor = UIColor.clearColor()
       tableView.clipsToBounds = false

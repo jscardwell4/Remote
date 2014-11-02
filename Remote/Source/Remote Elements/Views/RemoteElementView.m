@@ -203,7 +203,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   if (![[self constraintsWithNametagPrefix:nametag] count]) {
     NSDictionary * views = NSDictionaryOfVariableBindings(self,
                                                           _backdropView,
-                                                          _backgroundImageView,
+//                                                          _backgroundImageView,
                                                           _contentView,
                                                           _subelementsView,
                                                           _overlayView);
@@ -212,10 +212,10 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
         "'%1$@' _backdropView.height = self.height\n"
         "'%1$@' _backdropView.centerX = self.centerX\n"
         "'%1$@' _backdropView.centerY = self.centerY\n"
-        "'%1$@' _backgroundImageView.width = self.width\n"
-        "'%1$@' _backgroundImageView.height = self.height\n"
-        "'%1$@' _backgroundImageView.centerX = self.centerX\n"
-        "'%1$@' _backgroundImageView.centerY = self.centerY\n"
+//        "'%1$@' _backgroundImageView.width = self.width\n"
+//        "'%1$@' _backgroundImageView.height = self.height\n"
+//        "'%1$@' _backgroundImageView.centerX = self.centerX\n"
+//        "'%1$@' _backgroundImageView.centerY = self.centerY\n"
         "'%1$@' _contentView.width = self.width\n"
         "'%1$@' _contentView.height = self.height\n"
         "'%1$@' _contentView.centerX = self.centerX\n"
@@ -263,8 +263,8 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
   reg[@"backgroundImage"] = ^(MSKVOReceptionist * receptionist) {
     RemoteElementView * view = (RemoteElementView *)receptionist.observer;
-    view.backgroundImageView.image =
-      [(Image *)NilSafe(receptionist.change[NSKeyValueChangeNewKey]) stretchableImage];
+//    view.backgroundImageView.image =
+//      [(Image *)NilSafe(receptionist.change[NSKeyValueChangeNewKey]) stretchableImage];
     [view setNeedsDisplay];
   };
 
@@ -312,9 +312,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 /// Override point for subclasses to update themselves with data from the model.
 - (void)initializeViewFromModel {
   [super setBackgroundColor:[self.model backgroundColor]];
-  self.backgroundImageView.image = (self.model.backgroundImage
-                                    ? [self.model.backgroundImage stretchableImage]
-                                    : nil);
+//  self.backgroundImageView.image = (self.model.backgroundImage
+//                                    ? [self.model.backgroundImage stretchableImage]
+//                                    : nil);
   [self refreshBorderPath];
 
   for (RemoteElement * element in self.model.subelements)
@@ -505,10 +505,10 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   _backdropView = [REViewBackdrop newForAutolayout];
   [self addSubview:_backdropView];
 
-  _backgroundImageView                 = [UIImageView newForAutolayout];
-  _backgroundImageView.contentMode     = UIViewContentModeScaleToFill;
-  _backgroundImageView.opaque          = NO;
-  _backgroundImageView.backgroundColor = ClearColor;
+//  _backgroundImageView                 = [UIImageView newForAutolayout];
+//  _backgroundImageView.contentMode     = UIViewContentModeScaleToFill;
+//  _backgroundImageView.opaque          = NO;
+//  _backgroundImageView.backgroundColor = ClearColor;
   [_backdropView addSubview:_backgroundImageView];
 
   _contentView = [REViewContent newForAutolayout];
@@ -598,6 +598,13 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
     [self.backgroundColor setFill];
     [_borderPath fill];
     UIGraphicsPopContext();
+  }
+  if (self.model.backgroundImage) {
+    UIImage * image = self.model.backgroundImage.image;
+    if (CGSizeLessThanOrEqualToSize(rect.size, image.size))
+      [image drawInRect:rect];
+    else
+      [image drawAsPatternInRect:rect];
   }
 }
 

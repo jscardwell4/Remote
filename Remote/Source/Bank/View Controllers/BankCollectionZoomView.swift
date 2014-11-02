@@ -14,6 +14,7 @@ protocol BankCollectionZoomViewDelegate {
   func didDismissZoomView(BankCollectionZoomView)
   func didDismissForEditingZoomView(BankCollectionZoomView)
   func didDismissForDetailZoomView(BankCollectionZoomView)
+
 }
 
 class BankCollectionZoomView: UIView {
@@ -56,6 +57,10 @@ class BankCollectionZoomView: UIView {
   var imageSize: CGSize = CGSizeZero
 
   var delegate: BankCollectionZoomViewDelegate?
+
+  var showEditButton: Bool { get {  return !editButton.hidden } set { editButton.hidden = !newValue } }
+
+  var showDetailButton: Bool { get {  return !detailButton.hidden } set { detailButton.hidden = !newValue } }
 
   /**
   initWithFrame:

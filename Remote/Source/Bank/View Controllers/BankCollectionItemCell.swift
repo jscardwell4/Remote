@@ -39,15 +39,6 @@ class BankCollectionItemCell: BankCollectionCell {
     return view
   }()
 
-  private let chevron: UIImageView = {
-    let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.image = UIImage(named: "766-arrow-right")
-    view.contentMode = .ScaleAspectFit
-    view.constrainWithFormat("self.height = self.width :: self.height = 22")
-    return view
-    }()
-
   private let previewGesture: UITapGestureRecognizer = UITapGestureRecognizer()
 
   private var previewable: Bool = false {
@@ -100,9 +91,7 @@ class BankCollectionItemCell: BankCollectionCell {
         var formatStrings = [
           "label.centerY = content.centerY",
           "label.height = content.height",
-          "chevron.centerY = content.centerY",
           "chevron.left = label.right + 8",
-          "chevron.right = content.right - 20",
           "indicator.centerY = content.centerY",
           "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
         ]
@@ -135,7 +124,7 @@ class BankCollectionItemCell: BankCollectionCell {
         indicatorConstraint = constraintMatching(predicate)
         indicator.hidden    = false
         nameLabel.hidden    = false
-        chevron.hidden      = false
+        chevron.hidden      = !showChevron
 
 
       case .Thumbnail:
@@ -163,7 +152,6 @@ class BankCollectionItemCell: BankCollectionCell {
   /** initializeSubviews */
   private func initializeSubviews() {
     contentView.addSubview(nameLabel)
-    contentView.addSubview(chevron)
     contentView.addSubview(thumbnailImageView)
     previewGesture.addTarget(self, action: "previewAction")
     thumbnailImageView.addGestureRecognizer(previewGesture)
@@ -188,10 +176,7 @@ class BankCollectionItemCell: BankCollectionCell {
   prepareForReuse
 
   */
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    item = nil
-  }
+  override func prepareForReuse() { super.prepareForReuse(); item = nil }
 
   /** previewAction */
   func previewAction() { if let action = previewActionHandler { action() } }
