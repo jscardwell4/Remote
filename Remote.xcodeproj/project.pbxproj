@@ -35,6 +35,12 @@
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C235930519C9C26200920F8D /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
 		C235930619C9C26600920F8D /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
+		C235A2DE1A06E1AE0067E226 /* ButtonGroupEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2DD1A06E1AE0067E226 /* ButtonGroupEditingController.swift */; };
+		C235A2E31A06E1CB0067E226 /* ButtonEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2E21A06E1CB0067E226 /* ButtonEditingController.swift */; };
+		C235A2E71A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2E41A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift */; };
+		C235A2E81A0819590067E226 /* RemoteElementEditingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2E51A0819590067E226 /* RemoteElementEditingPresentationController.swift */; };
+		C235A2E91A0819590067E226 /* RemoteElementEditingTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2E61A0819590067E226 /* RemoteElementEditingTransitioningDelegate.swift */; };
+		C235A2EB1A095FC40067E226 /* ConstraintManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2EA1A095FC40067E226 /* ConstraintManager.swift */; };
 		C2381EB319A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */; };
 		C2381EB419A7EE3B00135DAB /* AgedPaper-640x960-iPhone@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC219A7EE3B00135DAB /* AgedPaper-640x960-iPhone@2x.jpg */; };
 		C2381EB519A7EE3B00135DAB /* AgedPaper-640x1136-iPhone5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381DC319A7EE3B00135DAB /* AgedPaper-640x1136-iPhone5.jpg */; };
@@ -654,6 +660,12 @@
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
 		C2358F0C19C781DA00920F8D /* BankCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionLayout.swift; sourceTree = "<group>"; };
+		C235A2DD1A06E1AE0067E226 /* ButtonGroupEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonGroupEditingController.swift; sourceTree = "<group>"; };
+		C235A2E21A06E1CB0067E226 /* ButtonEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonEditingController.swift; sourceTree = "<group>"; };
+		C235A2E41A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingAnimatedTransitioning.swift; sourceTree = "<group>"; };
+		C235A2E51A0819590067E226 /* RemoteElementEditingPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingPresentationController.swift; sourceTree = "<group>"; };
+		C235A2E61A0819590067E226 /* RemoteElementEditingTransitioningDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingTransitioningDelegate.swift; sourceTree = "<group>"; };
+		C235A2EA1A095FC40067E226 /* ConstraintManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintManager.swift; sourceTree = "<group>"; };
 		C2381DC119A7EE3B00135DAB /* AgedPaper-320x640-iPhone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "AgedPaper-320x640-iPhone.jpg"; sourceTree = "<group>"; };
 		C2381DC219A7EE3B00135DAB /* AgedPaper-640x960-iPhone@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "AgedPaper-640x960-iPhone@2x.jpg"; sourceTree = "<group>"; };
 		C2381DC319A7EE3B00135DAB /* AgedPaper-640x1136-iPhone5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "AgedPaper-640x1136-iPhone5.jpg"; sourceTree = "<group>"; };
@@ -1462,6 +1474,7 @@
 				C25B457716FF62A00042B59E /* ButtonGroup.m */,
 				C25B2715180A185D0078C8D8 /* Button.h */,
 				C25B457416FF62A00042B59E /* Button.m */,
+				C235A2EA1A095FC40067E226 /* ConstraintManager.swift */,
 			);
 			name = "Remote Element";
 			path = Models;
@@ -1512,6 +1525,9 @@
 		C25B462D16FF679A0042B59E /* Editors */ = {
 			isa = PBXGroup;
 			children = (
+				C235A2E41A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift */,
+				C235A2E51A0819590067E226 /* RemoteElementEditingPresentationController.swift */,
+				C235A2E61A0819590067E226 /* RemoteElementEditingTransitioningDelegate.swift */,
 				C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */,
 				C253B09517E61AC2007CDFE4 /* Auxiallary Editors */,
 				C25B464216FF679B0042B59E /* ButtonEditingViewController.m */,
@@ -1524,6 +1540,8 @@
 				C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */,
 				C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */,
 				C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */,
+				C235A2DD1A06E1AE0067E226 /* ButtonGroupEditingController.swift */,
+				C235A2E21A06E1CB0067E226 /* ButtonEditingController.swift */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -2898,11 +2916,13 @@
 				C215C9D719F73A38000CC6CC /* BankItemSwitchCell.swift in Sources */,
 				C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */,
 				C277AB7E19D74AD6008DEE39 /* PresetCategory.swift in Sources */,
+				C235A2E71A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
 				C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */,
 				C25B130419FB4F5900C5630F /* DocumentSelectionController.swift in Sources */,
 				C27DE08519E5E67F00CCB725 /* IRCodeDetailController.swift in Sources */,
 				C252E4FC19E2195B00DBBBB2 /* BankItemDetailController.swift in Sources */,
+				C235A2DE1A06E1AE0067E226 /* ButtonGroupEditingController.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
 				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C215C9CC19F7375F000CC6CC /* BankItemButtonCell.swift in Sources */,
@@ -2948,8 +2968,10 @@
 				C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */,
 				C27DE08419E5E67F00CCB725 /* ComponentDeviceDetailController.swift in Sources */,
 				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
+				C235A2EB1A095FC40067E226 /* ConstraintManager.swift in Sources */,
 				C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */,
 				C27DE08719E5E67F00CCB725 /* ImageDetailController.swift in Sources */,
+				C235A2E91A0819590067E226 /* RemoteElementEditingTransitioningDelegate.swift in Sources */,
 				C2E163A219F07A0200D1B88E /* BankItemDetailRow.swift in Sources */,
 				C230DF4319DC7164008C2337 /* ISYDeviceNode.swift in Sources */,
 				C2A0026819DF2D6E0082A53C /* ImageView.swift in Sources */,
@@ -2979,6 +3001,7 @@
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
 				C215C9D119F739F6000CC6CC /* BankItemListCell.swift in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
+				C235A2E81A0819590067E226 /* RemoteElementEditingPresentationController.swift in Sources */,
 				C215C9D519F73A21000CC6CC /* BankItemImageCell.swift in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
 				C25B479F16FF8D5E0042B59E /* CommandDetailViewController.m in Sources */,
@@ -2991,6 +3014,7 @@
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C2879F5B19DB78D60052DDB7 /* ComponentDevice.swift in Sources */,
+				C235A2E31A06E1CB0067E226 /* ButtonEditingController.swift in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,
 				C215C9D319F73A0C000CC6CC /* BankItemTextFieldCell.swift in Sources */,
 				C2879F5C19DBA2CC0052DDB7 /* Image.swift in Sources */,

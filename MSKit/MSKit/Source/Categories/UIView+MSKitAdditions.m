@@ -711,7 +711,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
   UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.0);
 
-  [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:NO];
+  [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:false];
 
   UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
 

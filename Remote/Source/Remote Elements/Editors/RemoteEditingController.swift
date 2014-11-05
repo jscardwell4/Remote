@@ -42,6 +42,19 @@ class RemoteEditingController: RemoteElementEditingController {
   */
   override class func editingModeForElement() -> REEditingMode { return .Remote }
 
-  override var mockParentSize: CGSize { get { return UIScreen.mainScreen().bounds.size } set {} }
+  /**
+  Opens the specified subelement in its Class-level editor.
+
+  :param: subelement The element to edit
+  */
+  override func openSubelementInEditor(subelement: RemoteElement) {
+    if let buttonGroup = subelement as? ButtonGroup {
+      let controller = ButtonGroupEditingController(element: buttonGroup)
+      controller.delegate = self
+      transitioningDelegate = editingTransitioningDelegate
+      controller.transitioningDelegate = editingTransitioningDelegate
+      presentViewController(controller, animated: true, completion: nil)
+    }
+  }
 
 }

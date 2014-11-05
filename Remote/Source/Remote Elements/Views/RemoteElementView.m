@@ -50,6 +50,8 @@ CGSize const REMinimumSize = (CGSize) { .width = 44.0f, .height = 44.0f };
 @property (nonatomic, assign) BOOL      showContentBoundary;
 @property (nonatomic, strong) UIColor * boundaryColor;
 
+- (void)refreshBoundary;
+
 @end
 
 
@@ -493,6 +495,9 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
     ((CAShapeLayer *)self.layer.mask).path = [_borderPath CGPath];
   } else
     self.layer.mask = nil;
+
+  [self.overlayView refreshBoundary];
+
 }
 
 @end
@@ -766,20 +771,22 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
 #define PAINT_WITH_STROKE
 
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-  assert(object == _delegate);
+//- (void)observeValueForKeyPath:(NSString *)keyPath
+//                      ofObject:(id)object
+//                        change:(NSDictionary *)change
+//                       context:(void *)context {
+//  assert(object == _delegate);
+//
+//  if ([@"borderPath" isEqualToString:keyPath]) {
+//    __weak REViewOverlay * weakself = self;
+//    [MainQueue addOperationWithBlock:^{ _boundaryOverlay.path = [weakself boundaryPath]; }];
+//  }
+//}
 
-  if ([@"borderPath" isEqualToString:keyPath]) {
-    __weak REViewOverlay * weakself = self;
-    [MainQueue addOperationWithBlock:^{ _boundaryOverlay.path = [weakself boundaryPath]; }];
-  }
-}
+- (void)refreshBoundary { _boundaryOverlay.path = [self boundaryPath]; }
 
 - (CGPathRef)boundaryPath {
-  assert(_boundaryOverlay);
+  if (!_boundaryOverlay) { return NULL; }
 
   UIBezierPath * path = _delegate.borderPath;
 
@@ -825,11 +832,11 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
 
     _boundaryOverlay.hidden = !_showContentBoundary;
 
-    [_delegate
-         addObserver:self
-          forKeyPath:@"borderPath"
-             options:NSKeyValueObservingOptionNew
-             context:NULL];
+//    [_delegate
+//         addObserver:self
+//          forKeyPath:@"borderPath"
+//             options:NSKeyValueObservingOptionNew
+//             context:NULL];
   }
 
   return _boundaryOverlay;

@@ -4,6 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Type Dynamic - Elysio.otf">
+            <string>Elysio-Regular</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Icon Selection View Controller-->
         <scene sceneID="wH5-qy-c3u">
@@ -427,7 +432,7 @@
                                     <segue destination="lqD-aN-Yrk" kind="embed" identifier="Embed Color Selection" id="nUX-ue-Swi"/>
                                 </connections>
                             </containerView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="mR2-9N-5AS">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mR2-9N-5AS">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <items>
                                     <barButtonItem systemItem="cancel" id="a3v-rS-w2m">
@@ -459,17 +464,17 @@
                                             <rect key="frame" x="35" y="5.5" width="250" height="33"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Color:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cni-UA-aU9">
-                                                    <rect key="frame" x="0.0" y="6" width="144.5" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Color:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cni-UA-aU9">
+                                                    <rect key="frame" x="0.0" y="0.0" width="119.5" height="33"/>
+                                                    <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VmL-fL-KCA">
-                                                    <rect key="frame" x="152" y="1" width="97.5" height="31"/>
+                                                    <rect key="frame" x="127.5" y="1" width="122.5" height="31"/>
                                                     <subviews>
                                                         <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCD-Ua-2FV">
-                                                            <rect key="frame" x="1" y="1" width="95.5" height="29"/>
+                                                            <rect key="frame" x="1" y="1" width="120.5" height="29"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <state key="normal">
@@ -492,9 +497,10 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstItem="Cni-UA-aU9" firstAttribute="top" secondItem="LqS-4S-UZD" secondAttribute="top" id="AqZ-X3-QgR"/>
                                                 <constraint firstItem="VmL-fL-KCA" firstAttribute="top" secondItem="LqS-4S-UZD" secondAttribute="top" constant="1" id="Dcd-4V-G6x"/>
-                                                <constraint firstAttribute="centerY" secondItem="Cni-UA-aU9" secondAttribute="centerY" id="RvS-od-9fh"/>
                                                 <constraint firstAttribute="bottom" secondItem="VmL-fL-KCA" secondAttribute="bottom" constant="1" id="aTh-FP-GhS"/>
+                                                <constraint firstAttribute="bottom" secondItem="Cni-UA-aU9" secondAttribute="bottom" id="aXM-Vb-dHc"/>
                                                 <constraint firstItem="Cni-UA-aU9" firstAttribute="leading" secondItem="LqS-4S-UZD" secondAttribute="leading" id="d8S-kK-DhN"/>
                                                 <constraint firstItem="VmL-fL-KCA" firstAttribute="leading" secondItem="Cni-UA-aU9" secondAttribute="trailing" constant="8" id="eK3-Zi-efX"/>
                                                 <constraint firstAttribute="trailing" secondItem="VmL-fL-KCA" secondAttribute="trailing" id="ieQ-h8-myp"/>
@@ -535,44 +541,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iHs-vl-oZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1570" y="-166"/>
-        </scene>
-        <!--Background Collection View Controller-->
-        <scene sceneID="ill-zz-ycg">
-            <objects>
-                <collectionViewController storyboardIdentifier="Background Collection" autoresizesArchivedViewToFullSize="NO" id="bKV-ZT-5FY" customClass="REBackgroundCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="w9N-KP-abd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Nyn-6j-U92">
-                            <size key="itemSize" width="150" height="266"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="Cell" reuseIdentifier="Cell" id="QmP-eS-VCD">
-                                <rect key="frame" x="0.0" y="0.0" width="150" height="266"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="150" height="266"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <size key="customSize" width="150" height="266"/>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="bKV-ZT-5FY" id="T96-PY-Kc1"/>
-                            <outlet property="delegate" destination="bKV-ZT-5FY" id="crc-7M-hjU"/>
-                        </connections>
-                    </collectionView>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="480"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yfm-s8-oiE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1148" y="-122"/>
         </scene>
         <!--Command Editing View Controller-->
         <scene sceneID="01P-hE-Z2l">

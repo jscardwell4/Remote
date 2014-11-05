@@ -335,16 +335,16 @@ static const int msLogContext = 0;
 
 /// showEditor
 - (void)showEditor {
-  RemoteEditingController * editorVC = [RemoteEditingController new];
-  editorVC.delegate  = self;
-
+  Remote * remote = nil;
   if ([self.window.rootViewController isKindOfClass:[RemoteViewController class]]) {
-    editorVC.remoteElement = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
+    remote = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
   } else {
     RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
-    Remote * remote = controller.homeRemote;
-    editorVC.remoteElement = remote ?: [Remote createInContext:[CoreDataManager defaultContext]];
+    remote = controller.homeRemote ?: [Remote createInContext:[CoreDataManager defaultContext]];
   }
+  RemoteEditingController * editorVC = [[RemoteEditingController alloc] initWithElement:remote];
+  editorVC.delegate  = self;
+
 
   [self showViewController:editorVC];
 }

@@ -54,7 +54,7 @@ class BankCollectionZoomView: UIView {
   var maxImageHeight: CGFloat {
     return height - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
   }
-  var imageSize: CGSize = CGSizeZero
+  var imageSize: CGSize = CGSize.zeroSize
 
   var delegate: BankCollectionZoomViewDelegate?
 
@@ -203,7 +203,7 @@ class BankCollectionZoomView: UIView {
     }
 
     // Check if we have a size set for displaying our image
-    if !CGSizeEqualToSize(imageSize, CGSizeZero) {
+    if !CGSizeEqualToSize(imageSize, CGSize.zeroSize) {
 
       // Check if we need to create the image sizing constraints
       if imageWidthConstraint == nil && imageHeightConstraint == nil {

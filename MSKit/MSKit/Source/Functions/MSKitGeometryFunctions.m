@@ -143,6 +143,7 @@ CGFloat DeltaABS(CGFloat a, CGFloat b) { return ABS(a - b); }
 CGFloat CGPointGetDeltaXABS(CGPoint a, CGPoint b) { return DeltaABS(a.x, b.x); }
 CGFloat CGPointGetDeltaYABS(CGPoint a, CGPoint b) { return DeltaABS(a.y, b.y); }
 CGPoint CGPointGetDeltaABS(CGPoint a, CGPoint b) { return (CGPoint) {CGPointGetDeltaXABS(a, b), CGPointGetDeltaYABS(a, b) }; }
+
 CGPoint CGRectGetCenter(CGRect rect) { return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect)); }
 CGPoint CGPointOriginForSizeCenter(CGSize s, CGPoint c) { return (CGPoint){c.x - s.width / 2.0, c.y - s.height / 2.0}; }
 CGRect CGRectReposition(CGRect rect, CGPoint origin) { return (CGRect) {.origin = origin, .size = rect.size }; }
@@ -159,6 +160,7 @@ CGRect CGRectAnchoredResize(CGRect rect, CGSize size) {
 }
 CGRect CGRectWithSizeAndCenter(CGSize s, CGPoint c) { return (CGRect) {CGPointOriginForSizeCenter(s, c), s }; }
 CGRect CGRectCenteredOnPoint(CGRect r, CGPoint p) { return (CGRect) {CGPointOriginForSizeCenter(r.size, p), r.size }; }
+
 CGSize CGSizeAddedToSize(CGSize a, CGSize b) { return (CGSize) {a.width + b.width, a.height + b.height }; }
 CGSize CGSizeApplyScale(CGSize size, CGFloat scale) { return CGSizeMake(size.width * scale, size.height * scale); }
 BOOL CGSizeContainsSize(CGSize a, CGSize b) { return (a.width >= b.width && a.height >= b.height); }

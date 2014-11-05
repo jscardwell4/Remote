@@ -39,7 +39,7 @@ class Image: BankableModelObject {
       willAccessValueForKey("size")
       sizeValue = primitiveValueForKey("size") as? NSValue
       didAccessValueForKey("size")
-      return sizeValue?.CGSizeValue() ?? CGSizeZero
+      return sizeValue?.CGSizeValue() ?? CGSize.zeroSize
     }
     set {
       willChangeValueForKey("size")

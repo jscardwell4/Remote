@@ -45,7 +45,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   var exportItem: MSJSONExport? { return nil }
 
-  private(set) var contentSize = CGSizeZero
+  private(set) var contentSize = CGSize.zeroSize
 
   var indicatorImage: UIImage? {
     didSet {

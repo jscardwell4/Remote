@@ -24,20 +24,10 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Model-related properties
   ////////////////////////////////////////////////////////////////////////////////
 
-  var remoteElement: RemoteElement! {
-    didSet {
-      if oldValue == nil || (remoteElement != nil && oldValue!.uuid != remoteElement.uuid) {
-        context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: remoteElement!.managedObjectContext!)
-        context.nametag = _stdlib_getDemangledTypeName(self)
-        context.performBlockAndWait {
-          self.changedModelValues = self.remoteElement!.changedValues()
-          self.remoteElement = self.context.existingObjectWithID(self.remoteElement!.objectID, error: nil) as? RemoteElement
-        }
-      }
-    }
-  }
-  var context: NSManagedObjectContext!
-  var changedModelValues: [NSObject:AnyObject]?
+  private(set) var remoteElement: RemoteElement!
+  let editingTransitioningDelegate = RemoteElementEditingTransitioningDelegate()
+  private(set) var context: NSManagedObjectContext!
+  private(set) var changedModelValues: [NSObject:AnyObject]!
 
   /// MARK: Flag and state properties
   ////////////////////////////////////////////////////////////////////////////////
@@ -53,16 +43,15 @@ class RemoteElementEditingController: UIViewController {
   ////////////////////////////////////////////////////////////////////////////////
 
   var appliedScale: CGFloat = 1.0
-  var originalFrame = CGRectZero
-  var currentFrame = CGRectZero
-  var longPressPreviousLocation = CGPointZero
-  var contentRect = CGRectZero
+  var originalFrame = CGRect.zeroRect
+  var currentFrame = CGRect.zeroRect
+  var longPressPreviousLocation = CGPoint.zeroPoint
+  var contentRect = CGRect.zeroRect
   var startingPanOffset: CGFloat = 0.0
-  var allowableSourceViewYOffset = ClosedInterval<CGFloat>(0, 0)
+  let allowableSourceViewYOffset = ClosedInterval<CGFloat>(-44, 44)
   var maxSizeCache: [String:CGSize] = [:]
   var minSizeCache: [String:CGSize] = [:]
   var startingOffsets: NSMutableDictionary?
-  var mockParentSize = CGSizeZero
 
   /// MARK: Bar button items
   ////////////////////////////////////////////////////////////////////////////////
@@ -85,39 +74,10 @@ class RemoteElementEditingController: UIViewController {
     }
   }
 
-  var topToolbar: UIToolbar = {
-    let toolbar = UIToolbar(frame: CGRect(size: CGSize(width: 320, height: 44)))
-    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-    toolbar.barStyle = .Black
-    toolbar.translucent = true
-    return toolbar
-  }()
-
-  var emptySelectionToolbar: UIToolbar = {
-    let toolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
-    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-    toolbar.barStyle = .Black
-    toolbar.translucent = true
-    return toolbar
-  }()
-
-  var nonEmptySelectionToolbar: UIToolbar = {
-    let toolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
-    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-    toolbar.barStyle = .Black
-    toolbar.translucent = true
-    toolbar.hidden = true
-    return toolbar
-  }()
-
-  var focusSelectionToolbar: UIToolbar = {
-    let toolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
-    toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-    toolbar.barStyle = .Black
-    toolbar.translucent = true
-    toolbar.hidden = true
-    return toolbar
-  }()
+  var topToolbar: UIToolbar!
+  var emptySelectionToolbar: UIToolbar!
+  var nonEmptySelectionToolbar: UIToolbar!
+  var focusSelectionToolbar: UIToolbar!
 
   var toolbars: [UIToolbar] { return [topToolbar, emptySelectionToolbar, nonEmptySelectionToolbar, focusSelectionToolbar] }
 
@@ -147,89 +107,16 @@ class RemoteElementEditingController: UIViewController {
     }
   }
 
-  var sourceView: RemoteElementView! {
-    didSet {
-      if oldValue != sourceView {
-        if oldValue != nil {
-          oldValue.removeFromSuperview()
-          mockParentView?.removeFromSuperview()
-          mockParentView = nil
-        }
-        if sourceView != nil {
-          sourceView.editingMode = self.dynamicType.editingModeForElement()
-          let barHeight = topToolbar.intrinsicContentSize().height
-          allowableSourceViewYOffset = ClosedInterval<CGFloat>(-barHeight, barHeight)
-          mockParentView = UIView(frame: CGRect(size: mockParentSize))
-          sourceViewBoundsObserver = MSKVOReceptionist(
-            observer: self,
-            forObject: sourceView.layer,
-            keyPath: "bounds",
-            options: NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
-            queue: NSOperationQueue.mainQueue(),
-            handler: {
-              (receptionist: MSKVOReceptionist!) -> Void in
-                if let controller = receptionist.observer as? RemoteElementEditingController {
-                  controller.updateBoundaryLayer()
-                }
-          })
-          mockParentView!.addSubview(sourceView)
-          if let parentElement = remoteElement.parentElement {
-            let parentConstraints = remoteElement.firstItemConstraints.objectsPassingTest {
-              (obj: AnyObject!, stop: UnsafeMutablePointer<ObjCBool>) -> Bool in
-                if let constraint = obj as? Constraint {
-                  return obj.secondItem == parentElement
-                }
-                return false
-            }
-            if let constraints = parentConstraints.allObjects as? [Constraint] {
-              for constraint in constraints {
-                let view1: AnyObject = sourceView
-                let attr1: NSLayoutAttribute = NSLayoutAttribute(rawValue: Int(constraint.firstAttribute))!
-                let relation: NSLayoutRelation = NSLayoutRelation(rawValue: Int(constraint.relation))!
-                let view2: AnyObject? = mockParentView
-                let attr2: NSLayoutAttribute = NSLayoutAttribute(rawValue: Int(constraint.secondAttribute))!
-                let multiplier: CGFloat = CGFloat(constraint.multiplier)
-                let constant: CGFloat = CGFloat(constraint.constant)
-                let c = NSLayoutConstraint(
-                  item: view1,
-                  attribute: attr1,
-                  relatedBy: relation,
-                  toItem: view2,
-                  attribute: attr2,
-                  multiplier: multiplier,
-                  constant: constant
-                )
-                c.priority = constraint.priority
-                c.identifier = createIdentifier(self, "Parent")
-                mockParentView!.addConstraint(c)
-              }
-            }
-          } else {
-            let centerXIdentifier = createIdentifier(self, "CenterX")
-            let centerYIdentifier = createIdentifier(self, "CenterY")
-            let format = "\n".join("'\(centerXIdentifier)' source.centerX = self.centerX",
-                                   "'\(centerYIdentifier)' source.centerY = self.centerY + \(allowableSourceViewYOffset.end)")
-            mockParentView!.constrainWithFormat(format, views: ["source": sourceView])
-            sourceViewCenterYConstraint = mockParentView!.constraintWithIdentifier(centerYIdentifier)
-          }
-          view.insertSubview(mockParentView!, belowSubview: topToolbar)
-          let format = "\n".join("mock.center = self.center",
-                                 "mock.width = \(mockParentSize.width)",
-                                 "mock.height = \(mockParentSize.height)")
-          view.constrainWithFormat(format, views: ["mock": mockParentView!])
-          view.layer.addSublayer(sourceViewBoundsLayer)
-        }
-      }
-    }
-  }
+  var sourceView: RemoteElementView!
+  var sourceViewCenterYConstraint: NSLayoutConstraint!
+  var sourceViewPresentationSize: CGSize?
 
   var selectedViews: OrderedSet<RemoteElementView> = []
+
   var sourceViewBoundsLayer: CAShapeLayer!
+
   var selectionInProgress: [RemoteElementView] = []
   var deselectionInProgress: [RemoteElementView] = []
-  var sourceViewCenterYConstraint: NSLayoutConstraint!
-  var mockParentView: UIView?
-  var referenceView: UIView?
   var sourceViewBoundsObserver: MSKVOReceptionist?
 
   /// Methods
@@ -294,6 +181,11 @@ class RemoteElementEditingController: UIViewController {
     oneTouchDoubleTapGesture.enabled = !movingSelectedViews
     multiselectGesture.enabled = !movingSelectedViews
     anchoredMultiselectGesture.enabled = !movingSelectedViews
+
+    let sourceHeight = sourceView.bounds.size.height
+    let viewHeight = view.bounds.size.height
+    let boundarySize = length(allowableSourceViewYOffset)
+    twoTouchPanGesture.enabled = sourceHeight >= (viewHeight - boundarySize)
   }
 
   /**
@@ -392,11 +284,11 @@ class RemoteElementEditingController: UIViewController {
                                 y: frame.origin.y + deltaSize.height / CGFloat(2),
                                 width: maximumSize.width,
                                 height: maximumSize.height)
-          if !CGRectContainsRect(self.contentRect, maxFrame) {
-            let intersection = CGRectIntersection(self.contentRect, maxFrame)
+          if !self.contentRect.contains(maxFrame) {
+            let intersection = self.contentRect.rectByIntersecting(maxFrame)
             let deltaMin = CGPointGetDeltaABS(frame.origin, intersection.origin)
-            let deltaMax = CGPointGetDeltaABS(CGPoint(x: CGRectGetMaxX(frame), y: CGRectGetMaxY(frame)),
-                                                CGPoint(x: CGRectGetMaxX(intersection), y: CGRectGetMaxY(intersection)))
+            let deltaMax = CGPointGetDeltaABS(CGPoint(x: frame.maxX, y: frame.maxY),
+                                                CGPoint(x: intersection.maxX, y: intersection.maxY))
             max = CGSize(width: (frame.size.width + Swift.min(deltaMin.x, deltaMax.x) * CGFloat(2.0)),
                          height: (frame.size.height + Swift.min(deltaMin.y, deltaMax.y) * CGFloat(2.0)))
             if view.proportionLock {
@@ -424,7 +316,7 @@ class RemoteElementEditingController: UIViewController {
     var scaleRejections: [CGFloat] = []
     for view in selectedViews {
       let scaledSize = CGSizeApplyAffineTransform(view.bounds.size, CGAffineTransformMakeScale(scale, scale))
-      var maxSize = CGSizeZero, minSize = CGSizeZero
+      var maxSize = CGSize.zeroSize, minSize = CGSize.zeroSize
       if !isValid(view, scaledSize, &maxSize, &minSize) {
         let boundedSize = CGSize(square: (scale > CGFloat(1) ? CGSizeMinAxis(maxSize) : CGSizeMaxAxis(minSize)))
         let validScale = boundedSize.width / view.bounds.size.width
@@ -475,7 +367,7 @@ class RemoteElementEditingController: UIViewController {
   :param: translation `CGPoint` value representing the x and y axis translations to be performed on the selected views
   */
   func translateSelectedViews(translation: CGPoint) {
-    if CGPointEqualToPoint(translation, CGPointZero) { return }
+    if CGPointEqualToPoint(translation, CGPoint.zeroPoint) { return }
     let transform = CGAffineTransformMakeTranslation(translation.x, translation.y)
     let translatedFrame = CGRectApplyAffineTransform(currentFrame, transform)
     if shouldTranslateSelectionFrom(currentFrame, to: translatedFrame) {
@@ -502,6 +394,40 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Initialization
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**
+  initWithElement:
+
+  :param: element RemoteElement
+  */
+  required init(element: RemoteElement) {
+    super.init()
+    context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: element.managedObjectContext!)
+    context.performBlockAndWait {
+      self.changedModelValues = element.changedValues()
+      self.remoteElement = self.context.existingObjectWithID(element.objectID, error: nil) as RemoteElement
+    }
+    modalPresentationStyle = .Custom
+  }
+
+  /** init */
+  override init() { super.init() }
+
+  /**
+  init:bundle:
+
+  :param: nibNameOrNil String?
+  :param: nibBundleOrNil NSBundle?
+  */
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
+
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /** attachGestureRecognizers */
   func attachGestureRecognizers() {
@@ -750,7 +676,9 @@ class RemoteElementEditingController: UIViewController {
   func handleSelection(gesture: MSMultiselectGestureRecognizer) {
    if gesture.state == .Ended {
     let touchLocations = OrderedSet(((gesture.touchLocationsInView(sourceView).allObjects as [NSValue]).map{$0.CGPointValue()}))
-    var touchedSubelementViews = OrderedSet((gesture.touchedSubviewsInView(sourceView, ofKind: self.dynamicType.subelementClass()).allObjects as [RemoteElementView]))
+    var touchedSubelementViews = OrderedSet((gesture.touchedSubviewsInView(sourceView,
+                                                                    ofKind: self.dynamicType.subelementClass()).allObjects
+                                  as [RemoteElementView]))
 
      if touchedSubelementViews.count > 0 {
 
@@ -778,7 +706,7 @@ class RemoteElementEditingController: UIViewController {
   :param: stackedViews NSSet
   */
   func displayStackedViewDialogForViews(stackedViews: OrderedSet<RemoteElementView>) {
-     println(__FUNCTION__) 
+     println(__FUNCTION__)
     /*
     MSLogDebug(@"%@ select stacked views to include: (%@)",
                ClassTagSelectorString,
@@ -805,13 +733,12 @@ class RemoteElementEditingController: UIViewController {
     */
   }
 
-  /** viewDidLoad */
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override func loadView() {
 
-    initializeToolbars()
-    attachGestureRecognizers()
+    // Create the root view
+    view = UIView(frame: UIScreen.mainScreen().bounds)
 
+    // Create the bounds layer
     sourceViewBoundsLayer = CAShapeLayer()
     sourceViewBoundsLayer.fillColor = UIColor.clearColor().CGColor
     sourceViewBoundsLayer.lineCap = kCALineCapRound
@@ -819,16 +746,152 @@ class RemoteElementEditingController: UIViewController {
     sourceViewBoundsLayer.lineJoin = kCALineJoinRound
     sourceViewBoundsLayer.lineWidth = 1.0
     sourceViewBoundsLayer.strokeColor = UIColor.whiteColor().CGColor
-    sourceViewBoundsLayer.hidden = true
+    sourceViewBoundsLayer.hidden = !showSourceBoundary
 
-    if CGRectIsEmpty(contentRect) {
-      referenceView = view
-      contentRect = view.frame
-      contentRect.origin.y = topToolbar.bounds.size.height
-      contentRect.size.height -= topToolbar.bounds.size.height + currentToolbar.bounds.size.height
+    // Create the source view
+    sourceView = self.dynamicType.elementClass()(model: remoteElement)
+    sourceView.editingMode = self.dynamicType.editingModeForElement()
+    view.addSubview(sourceView)
+
+    // Create the top toolbar
+    topToolbar =  UIToolbar(frame: CGRect(size: CGSize(width: 320, height: 44)))
+    topToolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    topToolbar.translucent = true
+    undoButton = ViewDecorator.fontAwesomeBarButtonItemWithName("undo", target: self, selector: "undo:")
+    let cancelButton = ViewDecorator.fontAwesomeBarButtonItemWithName("remove", target: self, selector: "cancelAction")
+    let saveButton = ViewDecorator.fontAwesomeBarButtonItemWithName("save", target: self, selector: "saveAction")
+    let flexibleSpace = UIBarButtonItem.flexibleSpace()
+    topToolbar.items = [cancelButton, flexibleSpace, undoButton, flexibleSpace, saveButton]
+    anySelButtons += [undoButton, saveButton]
+    view.addSubview(topToolbar)
+
+    // Create the empty selection toolbar
+    emptySelectionToolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
+    emptySelectionToolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    emptySelectionToolbar.translucent = true
+    let plusButton = ViewDecorator.fontAwesomeBarButtonItemWithName("plus", target: self, selector: "addSubelement")
+    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("picture", target: self, selector: "editBackground")
+    let boundsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("bounds", target: self, selector: "toggleBounds")
+    let presetsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("hdd", target: self, selector: "presets")
+    emptySelectionToolbar.items = join(flexibleSpace, [plusButton, editButton, boundsButton, presetsButton])
+    anySelButtons += [editButton, boundsButton, presetsButton]
+    view.addSubview(emptySelectionToolbar)
+
+    // Create the non-empty selection toolbar
+    nonEmptySelectionToolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
+    nonEmptySelectionToolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    nonEmptySelectionToolbar.translucent = true
+    nonEmptySelectionToolbar.hidden = true
+    let editSubelementButton = ViewDecorator.fontAwesomeBarButtonItemWithName("edit", target: self, selector: "editSubelement")
+    let trashButton = ViewDecorator.fontAwesomeBarButtonItemWithName("trash", target: self, selector: "delete:")
+    let duplicateButton = ViewDecorator.fontAwesomeBarButtonItemWithName("th-large", target: self, selector: "duplicate")
+    let copyButton = ViewDecorator.fontAwesomeBarButtonItemWithName("copy", target: self, selector: "copyStyle")
+    let pasteButton = ViewDecorator.fontAwesomeBarButtonItemWithName("paste", target: self, selector: "pasteStyle")
+    nonEmptySelectionToolbar.items =
+      join(flexibleSpace, [editSubelementButton, trashButton, duplicateButton, copyButton, pasteButton])
+    anySelButtons += [duplicateButton, pasteButton]
+    singleSelButtons += [editSubelementButton, copyButton]
+    view.addSubview(nonEmptySelectionToolbar)
+
+    // Create the focus selection toolbar
+    focusSelectionToolbar = UIToolbar(frame: CGRect(x: 0, y: 436, width: 320, height: 44))
+    focusSelectionToolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+    focusSelectionToolbar.translucent = true
+    focusSelectionToolbar.hidden = true
+    let alignNames = ["align-bottom-edges",
+                      "align-top-edges",
+                      "align-left-edges",
+                      "align-right-edges",
+                      "align-center-y",
+                      "align-center-x"]
+    let alignTitles: [NSAttributedString] = alignNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
+    let alignSelectors: [Selector] = ["alignBottomEdges",
+                                      "alignTopEdges",
+                                      "alignLeftEdges",
+                                      "alignRightEdges",
+                                      "alignVerticalCenters",
+                                      "alignHorizontalCenters"]
+    let align = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-edges"), style: .Plain, target: nil, action: nil)
+    let textAttributes = [NSFontAttributeName: UIFont(awesomeFontWithSize:32.0)]
+    align.setTitleTextAttributes(textAttributes, forState: .Normal)
+    align.setTitleTextAttributes(textAttributes, forState: .Highlighted)
+    align.delegate = self
+    for i in 0..<alignTitles.count {
+      align.addItemWithAttributedTitle(alignTitles[i], target: self, action: alignSelectors[i])
     }
+    let resizeNames = ["align-horizontal-size", "align-vertical-size", "align-size-exact"]
+    let resizeTitles: [NSAttributedString] = resizeNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
+    let resizeSelectors: [Selector] = ["resizeHorizontallyFromFocusView:",
+                                       "resizeVerticallyFromFocusView:",
+                                       "resizeFromFocusView:"]
+    let resize = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-size"), style: .Plain, target: nil, action: nil)
+    resize.setTitleTextAttributes(textAttributes, forState: .Normal)
+    resize.setTitleTextAttributes(textAttributes, forState: .Highlighted)
+    resize.delegate = self
+    for i in 0..<resizeTitles.count {
+      resize.addItemWithAttributedTitle(resizeTitles[i], target: self, action: resizeSelectors[i])
+    }
+    focusSelectionToolbar.items = [flexibleSpace, align, flexibleSpace, resize, flexibleSpace]
+    multiSelButtons += [align, resize]
+    view.addSubview(focusSelectionToolbar)
 
-    if remoteElement != nil { sourceView = self.dynamicType.elementClass()(model: remoteElement!) }
+    // Add some constraints
+    let format = "\n".join("|[top]|",
+                           "|[empty]|",
+                           "|[nonempty]|",
+                           "|[focus]|",
+                           "V:|[top]",
+                           "V:[empty]|",
+                           "V:[nonempty]|",
+                           "V:[focus]|",
+                           "source.center = self.center")
+
+    let views = ["top":      topToolbar,
+                 "empty":    emptySelectionToolbar,
+                 "nonempty": nonEmptySelectionToolbar,
+                 "focus":    focusSelectionToolbar,
+                 "source":   sourceView]
+
+    view.constrainWithFormat(format, views: views)
+
+    // Keep a refrence to the source view center y constraint
+    let predicate = NSPredicate(format: "firstItem == %@" +
+                                        "AND secondItem == %@ " +
+                                        "AND firstAttribute == \(NSLayoutAttribute.CenterY.rawValue)" +
+                                        "AND secondAttribute == \(NSLayoutAttribute.CenterY.rawValue)" +
+                                        "AND relation == \(NSLayoutRelation.Equal.rawValue)", sourceView, view)
+    sourceViewCenterYConstraint = view.constraintMatching(predicate)
+
+
+    // Set the initial current toolbar value
+    currentToolbar = emptySelectionToolbar
+
+  }
+
+  /** viewDidLoad */
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    attachGestureRecognizers()
+
+    contentRect = view.frame
+    contentRect.origin.y = topToolbar.bounds.size.height
+    contentRect.size.height -= topToolbar.bounds.size.height + currentToolbar.bounds.size.height
+
+          sourceViewBoundsObserver = MSKVOReceptionist(
+            observer: self,
+            forObject: sourceView.layer,
+            keyPath: "bounds",
+            options: NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
+            queue: NSOperationQueue.mainQueue(),
+            handler: {
+              (receptionist: MSKVOReceptionist!) -> Void in
+                if let controller = receptionist.observer as? RemoteElementEditingController {
+                  controller.updateBoundaryLayer()
+                }
+          })
+
+//    MSLogDebug(view.framesDescription())
   }
 
   /** didReceiveMemoryWarning */
@@ -838,7 +901,7 @@ class RemoteElementEditingController: UIViewController {
   }
 
   /** viewDidLayoutSubviews */
-  override func viewDidLayoutSubviews() { updateBoundaryLayer() }
+  override func viewDidLayoutSubviews() { updateBoundaryLayer(); MSLogDebug(view.framesDescription()) }
 
   /**
   canBecomeFirstResponder
@@ -881,12 +944,8 @@ class RemoteElementEditingController: UIViewController {
     super.viewDidAppear(animated)
     becomeFirstResponder()
     registerForNotifications()
-    let sourceHeight = sourceView.bounds.size.height
-    let viewHeight = view.bounds.size.height
-    let boundarySize = length(allowableSourceViewYOffset)
-    twoTouchPanGesture.enabled = sourceHeight >= (viewHeight - boundarySize)
     updateState()
-    MSLogDebug("\(view.viewTreeDescription())")
+    MSLogDebug(view.framesDescription())
   }
 
   /**
@@ -924,7 +983,7 @@ extension RemoteElementEditingController {
   :returns: CGRect
   */
   func selectedViewsUnionFrameInSourceView() -> CGRect {
-    var unionRect = CGRectZero
+    var unionRect = CGRect.zeroRect
     for view in selectedViews { unionRect = CGRectUnion(unionRect, view.frame) }
     return unionRect
   }
@@ -1192,107 +1251,6 @@ extension RemoteElementEditingController {
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController {
 
-  /** initializeToolbars */
-  func initializeToolbars() {
-    view.addSubview(topToolbar)
-    view.addSubview(emptySelectionToolbar)
-    view.addSubview(nonEmptySelectionToolbar)
-    view.addSubview(focusSelectionToolbar)
-    let format = "\n".join("|[top]|",
-                           "|[empty]|",
-                           "|[nonempty]|",
-                           "|[focus]|",
-                           "V:|[top]",
-                           "V:[empty]|",
-                           "V:[nonempty]|",
-                           "V:[focus]|")
-    let views = ["top":      topToolbar,
-                 "empty":    emptySelectionToolbar,
-                 "nonempty": nonEmptySelectionToolbar,
-                 "focus":    focusSelectionToolbar]
-    view.constrainWithFormat(format, views: views)
-
-    populateTopToolbar()
-    populateEmptySelectionToolbar()
-    populateNonEmptySelectionToolbar()
-    populateFocusSelectionToolbar()
-    currentToolbar = emptySelectionToolbar
-  }
-
-  /** populateTopToolbar */
-  func populateTopToolbar() {
-    undoButton = ViewDecorator.fontAwesomeBarButtonItemWithName("undo", target: self, selector: "undo:")
-    let cancelButton = ViewDecorator.fontAwesomeBarButtonItemWithName("remove", target: self, selector: "cancelAction")
-    let saveButton = ViewDecorator.fontAwesomeBarButtonItemWithName("save", target: self, selector: "saveAction")
-    let flexibleSpace = UIBarButtonItem.flexibleSpace()
-    topToolbar.items = [cancelButton, flexibleSpace, undoButton, flexibleSpace, saveButton]
-    anySelButtons += [undoButton, saveButton]
-  }
-
-  /** populateEmptySelectionToolbar */
-  func populateEmptySelectionToolbar() {
-    let plusButton = ViewDecorator.fontAwesomeBarButtonItemWithName("plus", target: self, selector: "addSubelement")
-    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("picture", target: self, selector: "editBackground")
-    let boundsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("bounds", target: self, selector: "toggleBounds")
-    let presetsButton = ViewDecorator.fontAwesomeBarButtonItemWithName("hdd", target: self, selector: "presets")
-    let flexibleSpace = UIBarButtonItem.flexibleSpace()
-    emptySelectionToolbar.items = join(flexibleSpace, [plusButton, editButton, boundsButton, presetsButton])
-    anySelButtons += [editButton, boundsButton, presetsButton]
-  }
-
-  /** populateNonEmptySelectionToolbar */
-  func populateNonEmptySelectionToolbar() {
-    let editButton = ViewDecorator.fontAwesomeBarButtonItemWithName("edit", target: self, selector: "editSubelement")
-    let trashButton = ViewDecorator.fontAwesomeBarButtonItemWithName("trash", target: self, selector: "delete:")
-    let duplicateButton = ViewDecorator.fontAwesomeBarButtonItemWithName("th-large", target: self, selector: "duplicate")
-    let copyButton = ViewDecorator.fontAwesomeBarButtonItemWithName("copy", target: self, selector: "copyStyle")
-    let pasteButton = ViewDecorator.fontAwesomeBarButtonItemWithName("paste", target: self, selector: "pasteStyle")
-    let flexibleSpace = UIBarButtonItem.flexibleSpace()
-    nonEmptySelectionToolbar.items = join(flexibleSpace, [editButton, trashButton, duplicateButton, copyButton, pasteButton])
-    anySelButtons += [duplicateButton, pasteButton]
-    singleSelButtons += [editButton, copyButton]
-  }
-
-  /** populateFocusSelectionToolbar */
-  func populateFocusSelectionToolbar() {
-    let alignNames = ["align-bottom-edges",
-                      "align-top-edges",
-                      "align-left-edges",
-                      "align-right-edges",
-                      "align-center-y",
-                      "align-center-x"]
-    let alignTitles: [NSAttributedString] = alignNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
-    let alignSelectors: [Selector] = ["alignBottomEdges:",
-                                      "alignTopEdges",
-                                      "alignLeftEdges",
-                                      "alignRightEdges",
-                                      "alignVerticalCenters",
-                                      "alignHorizontalCenters"]
-    let align = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-edges"), style: .Plain, target: nil, action: nil)
-    let textAttributes = [NSFontAttributeName: UIFont(awesomeFontWithSize:32.0)]
-    align.setTitleTextAttributes(textAttributes, forState: .Normal)
-    align.setTitleTextAttributes(textAttributes, forState: .Highlighted)
-    align.delegate = self
-    for i in 0..<alignTitles.count {
-      align.addItemWithAttributedTitle(alignTitles[i], target: self, action: alignSelectors[i])
-    }
-    let resizeNames = ["align-horizontal-size", "align-vertical-size", "align-size-exact"]
-    let resizeTitles: [NSAttributedString] = resizeNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
-    let resizeSelectors: [Selector] = ["resizeHorizontallyFromFocusView:",
-                                       "resizeVerticallyFromFocusView:",
-                                       "resizeFromFocusView:"]
-    let resize = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-size"), style: .Plain, target: nil, action: nil)
-    resize.setTitleTextAttributes(textAttributes, forState: .Normal)
-    resize.setTitleTextAttributes(textAttributes, forState: .Highlighted)
-    resize.delegate = self
-    for i in 0..<resizeTitles.count {
-      resize.addItemWithAttributedTitle(resizeTitles[i], target: self, action: resizeSelectors[i])
-    }
-    let flexibleSpace = UIBarButtonItem.flexibleSpace()
-    focusSelectionToolbar.items = [flexibleSpace, align, flexibleSpace, resize, flexibleSpace]
-    multiSelButtons += [align, resize]
-  }
-
   /** updateToolbarDisplayed */
   func updateToolbarDisplayed() {
     if selectionCount > 0 { currentToolbar = focusView != nil ? focusSelectionToolbar : nonEmptySelectionToolbar }
@@ -1347,9 +1305,5 @@ extension RemoteElementEditingController: EditingDelegate {
   :param: editor RemoteElementEditingController
   */
   func editorDidSave(editor: RemoteElementEditingController) { dismissViewControllerAnimated(true, completion: nil) }
-
-}
-
-extension RemoteElementEditingController: UIGestureRecognizerDelegate {
 
 }

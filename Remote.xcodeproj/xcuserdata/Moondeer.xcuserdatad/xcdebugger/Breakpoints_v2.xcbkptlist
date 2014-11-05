@@ -504,11 +504,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
-            timestampString = "436396649.093193"
+            timestampString = "436833907.334031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1296"
-            endingLineNumber = "1296"
+            startingLineNumber = "1302"
+            endingLineNumber = "1302"
             landmarkName = "RemoteElementEditingController"
             landmarkType = "3">
          </BreakpointContent>
@@ -520,12 +520,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
-            timestampString = "436328804.856583"
+            timestampString = "436833907.334031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "752"
-            endingLineNumber = "752"
-            landmarkName = "handleSelection(_:)"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
+            landmarkName = "loadView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -536,12 +536,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
-            timestampString = "436328807.106396"
+            timestampString = "436833907.334031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719"
-            landmarkName = "handlePan(_:)"
+            startingLineNumber = "726"
+            endingLineNumber = "726"
+            landmarkName = "displayStackedViewDialogForViews(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -552,13 +552,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
-            timestampString = "436328810.792493"
+            timestampString = "436833907.334031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "700"
-            endingLineNumber = "700"
-            landmarkName = "handlePinch(_:)"
-            landmarkType = "5">
+            startingLineNumber = "707"
+            endingLineNumber = "707"
+            landmarkName = "RemoteElementEditingController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -568,12 +568,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
-            timestampString = "436328831.718438"
+            timestampString = "436833907.334031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "582"
-            endingLineNumber = "582"
-            landmarkName = "createGestureManager()"
+            startingLineNumber = "589"
+            endingLineNumber = "589"
+            landmarkName = "handleLongPress(_:)"
             landmarkType = "5">
             <Locations>
                <Location
@@ -834,9 +834,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "bankController(_:didSelectItem:)"
-            landmarkType = "5">
+            endingLineNumber = "122">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -852,6 +850,54 @@
             startingLineNumber = "522"
             endingLineNumber = "522"
             landmarkName = "collectionView(_:didSelectItemAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingAnimatedTransitioning.swift"
+            timestampString = "436747481.337928"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "animateTransition(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingController.swift"
+            timestampString = "436834151.425141"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "877"
+            endingLineNumber = "877"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Remote Elements/Editors/RemoteElementEditingAnimatedTransitioning.swift"
+            timestampString = "436843569.492952"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "animateForPresentationOfController(_:presentingController:transitionContext:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
