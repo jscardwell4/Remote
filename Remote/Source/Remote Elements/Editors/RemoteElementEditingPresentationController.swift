@@ -12,19 +12,33 @@ import MoonKit
 
 class RemoteElementEditingPresentationController: UIPresentationController {
 
-	/**
-	initWithPresentedViewController:presentingViewController:
+	var presentingEditor: RemoteElementEditingController { return presentingViewController as RemoteElementEditingController }
 
-	:param: presentedViewController UIViewController!
-	:param: presentingViewController UIViewController!
+	var presentedEditor: RemoteElementEditingController { return presentedViewController as RemoteElementEditingController }
+
+
+	/**
+	initWithPresentedEditor:presentingEditor:
+
+	:param: presentedEditor RemoteElementEditingController!
+	:param: presentingEditor RemoteElementEditingController!
 	*/
-	override init(presentedViewController: UIViewController!, presentingViewController: UIViewController!) {
-		super.init(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+	init(presentedEditor: RemoteElementEditingController!, presentingEditor: RemoteElementEditingController!) {
+		super.init(presentedViewController: presentedEditor, presentingViewController: presentingEditor)
 	}
 
 	/** presentationTransitionWillBegin */
 	override func presentationTransitionWillBegin() {
-
+//		precondition(presentingEditor.presentedSubelementView != nil, "why don't we have a subelement view to present?")
+//		if let transitionCoordinator = presentedEditor.transitionCoordinator() {
+//      let maskView = UIView(frame: containerView.bounds)
+//      maskView.alpha = 0.0
+//      let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+//      effectView.frame = containerView.bounds
+//      maskView.addSubview(effectView)
+//      containerView.insertSubview(maskView, atIndex: 0)
+//      transitionCoordinator.animateAlongsideTransition({_ in maskView.alpha = 1.0}, completion: nil)
+//		}
 	}
 
 	/** dismissalTransitionWillBegin */
@@ -40,11 +54,13 @@ class RemoteElementEditingPresentationController: UIPresentationController {
 	/**
 	animationControllerForDismissedController:
 
-	:param: dismissed UIViewController!
+	:param: dismissed RemoteElementEditingController!
 
 	:returns: UIViewControllerAnimatedTransitioning!
 	*/
-	func animationControllerForDismissedController(dismissed: UIViewController!) -> UIViewControllerAnimatedTransitioning! {
+	func animationControllerForDismissedController(dismissed: RemoteElementEditingController!)
+		-> UIViewControllerAnimatedTransitioning!
+	{
 		return RemoteElementEditingAnimatedTransitioning()
 	}
 

@@ -47,14 +47,14 @@ class RemoteEditingController: RemoteElementEditingController {
 
   :param: subelement The element to edit
   */
-  override func openSubelementInEditor(subelement: RemoteElement) {
-    if let buttonGroup = subelement as? ButtonGroup {
-      let controller = ButtonGroupEditingController(element: buttonGroup)
-      controller.delegate = self
-      transitioningDelegate = editingTransitioningDelegate
-      controller.transitioningDelegate = editingTransitioningDelegate
-      presentViewController(controller, animated: true, completion: nil)
-    }
-  }
+  // override func openSubelementInEditor(subelement: RemoteElement) {
+  //   if let buttonGroup = subelement as? ButtonGroup {
+  //     let controller = ButtonGroupEditingController(element: buttonGroup)
+  //     controller.delegate = self
+  //     transitioningDelegate = editingTransitioningDelegate
+  //     controller.transitioningDelegate = editingTransitioningDelegate
+  //     presentViewController(controller, animated: true, completion: nil)
+  //   }
+  // }
 
 }

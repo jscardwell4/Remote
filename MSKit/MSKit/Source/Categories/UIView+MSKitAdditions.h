@@ -26,10 +26,14 @@
 - (NSArray *)subviewsOfKind:(Class)kind;
 - (NSArray *)subviewsOfType:(Class)type;
 
-+ (id)newForAutolayout;
++ (instancetype)newForAutolayout;
 
-- (id)initForAutoLayout;
-- (id)initForAutoLayoutWithFrame:(CGRect)frame;
+- (instancetype)initForAutoLayout;
+- (instancetype)initWithFrame:(CGRect)frame autolayout:(BOOL)autolayout;
+- (instancetype)initWithFrame:(CGRect)frame nametag:(NSString *)nametag autolayout:(BOOL)autolayout;
+- (instancetype)initWithNametag:(NSString *)nametag autolayout:(BOOL)autolayout;
+- (instancetype)initForAutoLayoutWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame nametag:(NSString *)nametag;
 
 @property (nonatomic, strong) NSString * nametag;
 @property (nonatomic, assign, readonly) CGFloat minX;
@@ -103,6 +107,7 @@
 
 - (NSArray *)constraintsOfType:(Class)type;
 - (void)replaceConstraintsOfType:(Class)type withConstraints:(NSArray *)constraints;
+- (void)removeAllConstraints;
 
 - (UIImage *)snapshot;
 - (UIImage *)blurredSnapshot;
@@ -116,6 +121,28 @@
 
 - (void)constrainToSize:(CGSize)size;
 - (void)constrainToSize:(CGSize)size identifier:(NSString *)identifier;
+- (void)horizontallyStretchSubview:(UIView *)subview;
+- (void)verticallyStretchSubview:(UIView *)subview;
+- (void)stretchSubview:(UIView *)subview;
+- (void)horizontallyCenterSubview:(UIView *)subview;
+- (void)horizontallyCenterSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)verticallyCenterSubview:(UIView *)subview;
+- (void)verticallyCenterSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)centerSubview:(UIView *)subview;
+- (void)centerSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)leftAlignSubview:(UIView *)subview;
+- (void)leftAlignSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)rightAlignSubview:(UIView *)subview;
+- (void)rightAlignSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)topAlignSubview:(UIView *)subview;
+- (void)topAlignSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)bottomAlignSubview:(UIView *)subview;
+- (void)bottomAlignSubview:(UIView *)subview offset:(CGFloat)offset;
+- (void)constrainWidth:(CGFloat)width;
+- (void)constrainHeight:(CGFloat)height;
+- (void)constrainAspect:(CGFloat)aspect;
+- (void)alignSubview:(UIView *)subview1 besideSubview:(UIView *)subview2 offset:(CGFloat)offset;
+- (void)alignSubview:(UIView *)subview1 aboveSubview:(UIView *)subview2 offset:(CGFloat)offset;
 
 @end
 

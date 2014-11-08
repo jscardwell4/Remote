@@ -71,6 +71,11 @@ public func ∪(lhs: CGSize, rhs: CGSize) -> CGSize {
   return CGSize(width: max(lhs.width, rhs.width), height: max(lhs.height, rhs.height))
 }
 
+extension UIEdgeInsets {
+  public func insetRect(rect: CGRect) -> CGRect {
+    return UIEdgeInsetsInsetRect(rect, self)
+  }
+}
 
 extension CGRect {
   public init(size: CGSize) { self = CGRect(x: 0, y: 0, width: size.width, height: size.height) }

@@ -21,7 +21,7 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
 /// nametag
 /// @return id
-- (id)nametag { return objc_getAssociatedObject(self, UIViewNametagKey); }
+- (NSString *)nametag { return objc_getAssociatedObject(self, UIViewNametagKey); }
 
 /// setNametag:
 /// @param nametag
@@ -44,24 +44,54 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 }
 
 /// newForAutolayout
-/// @return id
-+ (id)newForAutolayout {
+/// @return instancetype
++ (instancetype)newForAutolayout {
   UIView * view = [self new];
   if (view) view.translatesAutoresizingMaskIntoConstraints = NO;
   return view;
 }
 
 /// initForAutoLayout
-/// @return id
-- (id)initForAutoLayout {
+/// @return instancetype
+- (instancetype)initForAutoLayout {
   if ((self = [self init])) self.translatesAutoresizingMaskIntoConstraints = NO;
   return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame autolayout:(BOOL)autolayout {
+  if ((self = [self initWithFrame:frame]))
+    self.translatesAutoresizingMaskIntoConstraints = autolayout;
+  return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame nametag:(NSString *)nametag autolayout:(BOOL)autolayout {
+  if ((self = [self initWithFrame:frame])) {
+    self.translatesAutoresizingMaskIntoConstraints = autolayout;
+    self.nametag = nametag;
+  }
+  return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame nametag:(NSString *)nametag {
+  if ((self = [self initWithFrame:frame])) {
+    self.nametag = nametag;
+  }
+  return self;
+}
+
+- (instancetype)initWithNametag:(NSString *)nametag autolayout:(BOOL)autolayout {
+  if ((self = [self init])) {
+    self.translatesAutoresizingMaskIntoConstraints = autolayout;
+    self.nametag = nametag;
+  }
+  return self;
+}
+
+
 /// initForAutoLayoutWithFrame:
 /// @param frame
-/// @return id
-- (id)initForAutoLayoutWithFrame:(CGRect)frame {
+/// @return instancetype
+- (instancetype)initForAutoLayoutWithFrame:(CGRect)frame {
   if ((self = [self initWithFrame:frame]))
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -811,5 +841,111 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 - (void)constrainToSize:(CGSize)size identifier:(NSString *)identifier {
   [self constrainWithFormat:$(@"self.width = %@ :: self.height = %@", @(size.width), @(size.height)) identifier: identifier];
 }
+
+- (void)horizontallyStretchSubview:(UIView *)subview {
+  if ([self.subviews containsObject:subview] )
+    [self constrainWithFormat:@"H:|[subview(>=0)]|" views:@{@"subview": subview}];
+}
+
+- (void)verticallyStretchSubview:(UIView *)subview {
+  if ([self.subviews containsObject:subview] )
+    [self constrainWithFormat:@"V:|[subview(>=0)]|" views:@{@"subview": subview}];
+}
+
+- (void)stretchSubview:(UIView *)subview {
+  if ([self.subviews containsObject:subview] )
+    [self constrainWithFormat:@"H:|[subview(>=0)]| :: V:|[subview(>=0)]|" views:@{@"subview": subview}];
+}
+
+- (void)horizontallyCenterSubview:(UIView *)subview { [self horizontallyCenterSubview:subview offset:0.0]; }
+
+- (void)horizontallyCenterSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview] )
+    [self constrainWithFormat:$(@"subview.centerX = self.centerX + %@", @(offset)) views:@{@"subview": subview}];
+}
+
+- (void)verticallyCenterSubview:(UIView *)subview { [self verticallyCenterSubview:subview offset:0.0]; }
+
+- (void)verticallyCenterSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview] )
+    [self constrainWithFormat:$(@"subview.centerY = self.centerY + %@", @(offset)) views:@{@"subview": subview}];
+}
+
+- (void)centerSubview:(UIView *)subview { [self centerSubview:subview offset:0.0]; }
+
+- (void)centerSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview])
+    [self constrainWithFormat:$(@"subview.center = self.center + %@", @(offset)) views:@{@"subview": subview}];
+}
+- (void)leftAlignSubview:(UIView *)subview { [self leftAlignSubview:subview offset:0.0]; }
+
+- (void)leftAlignSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview])
+    [self constrainWithFormat:$(@"subview.left = self.left + %@", @(offset)) views:@{@"subview": subview}];
+}
+- (void)rightAlignSubview:(UIView *)subview { [self rightAlignSubview:subview offset:0.0]; }
+
+- (void)rightAlignSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview])
+    [self constrainWithFormat:$(@"subview.right = self.right + %@", @(offset)) views:@{@"subview": subview}];
+}
+
+- (void)topAlignSubview:(UIView *)subview { [self topAlignSubview:subview offset:0.0]; }
+
+- (void)topAlignSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview])
+    [self constrainWithFormat:$(@"subview.top = self.top + %@", @(offset)) views:@{@"subview": subview}];
+}
+- (void)bottomAlignSubview:(UIView *)subview { [self bottomAlignSubview:subview offset:0.0]; }
+
+- (void)bottomAlignSubview:(UIView *)subview offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview])
+    [self constrainWithFormat:$(@"subview.bottom = self.bottom + %@", @(offset)) views:@{@"subview": subview}];
+}
+
+- (void)constrainWidth:(CGFloat)width {
+  [self addConstraint:
+       [NSLayoutConstraint constraintWithItem:self
+                                    attribute:NSLayoutAttributeWidth
+                                    relatedBy:NSLayoutRelationEqual
+                                       toItem:nil
+                                    attribute:NSLayoutAttributeNotAnAttribute
+                                   multiplier:1.0f
+                                     constant:ABS(width)]];
+}
+
+- (void)constrainHeight:(CGFloat)height {
+  [self addConstraint:
+       [NSLayoutConstraint constraintWithItem:self
+                                    attribute:NSLayoutAttributeHeight
+                                    relatedBy:NSLayoutRelationEqual
+                                       toItem:nil
+                                    attribute:NSLayoutAttributeNotAnAttribute
+                                   multiplier:1.0f
+                                     constant:ABS(height)]];
+}
+
+- (void)constrainAspect:(CGFloat)aspect {
+  [self addConstraint:
+     [NSLayoutConstraint constraintWithItem:self
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeHeight
+                                 multiplier:aspect
+                                   constant:0.0f]];
+}
+
+- (void)alignSubview:(UIView *)subview1 besideSubview:(UIView *)subview2 offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview1] && [self.subviews containsObject:subview2])
+    [self constrainWithFormat:$(@"H:[subview1]-%@-[subview2]", @(offset)) views:@{@"subview1": subview1, @"subview2": subview2}];
+}
+
+- (void)alignSubview:(UIView *)subview1 aboveSubview:(UIView *)subview2 offset:(CGFloat)offset {
+  if ([self.subviews containsObject:subview1] && [self.subviews containsObject:subview2])
+    [self constrainWithFormat:$(@"V:[subview1]-%@-[subview2]", @(offset)) views:@{@"subview1": subview1, @"subview2": subview2}];
+}
+
+- (void)removeAllConstraints { [self removeConstraints: self.constraints]; }
 
 @end

@@ -10,9 +10,48 @@ import Foundation
 import UIKit
 import MoonKit
 
+extension UIView {
+  subscript(nametag: String) -> UIView? {
+    return viewWithNametag(nametag)
+  }
+}
+
 class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
 
   let forDismissal: Bool
+
+  /**
+  snapshotFromRemoteElementView:
+
+  :param: elementView RemoteElementView
+
+  :returns: UIImage
+  */
+  private func snapshotFromRemoteElementView(elementView: RemoteElementView) -> UIImage {
+    let editingState = elementView.editingState
+    elementView.editingState = .NotEditing
+    UIGraphicsBeginImageContextWithOptions(elementView.bounds.size, false, 0.0)
+    elementView.layer.renderInContext(UIGraphicsGetCurrentContext())
+    let layerImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIEdgeInsets
+    UIGraphicsEndImageContext()
+    let rect = CGRect(origin: CGPoint.zeroPoint, size: CGSize.zeroSize)
+    elementView.editingState = editingState
+    return layerImage
+  }
+
+  /**
+  snapshotViewFromRemoteElementView:
+
+  :param: elementView RemoteElementView
+
+  :returns: UIImageView
+  */
+  private func snapshotViewFromRemoteElementView(elementView: RemoteElementView) -> UIImageView {
+    let snapshotView = UIImageView(image: snapshotFromRemoteElementView(elementView))
+    snapshotView.frame = elementView.frame
+    return snapshotView
+  }
 
   /**
   initWithForDismissal:
@@ -28,7 +67,7 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
 
 	:returns: NSTimeInterval
 	*/
-	func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval { return 0.5 }
+	func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval { return 1.0 }
 
 	/**
 	animateTransition:
@@ -37,16 +76,11 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
 	*/
 	func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
 
-		let toController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-			as RemoteElementEditingController
-		let fromController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-			as RemoteElementEditingController
+		let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as RemoteElementEditingController
+		let from = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as RemoteElementEditingController
 
-    if forDismissal {
-      animateForDismissalOfController(fromController, presentingController: toController, transitionContext: transitionContext)
-    } else {
-      animateForPresentationOfController(toController, presentingController: fromController, transitionContext: transitionContext)
-    }
+    if forDismissal { animateForDismissalOfController(from, presentingController: to, transitionContext: transitionContext) }
+    else { animateForPresentationOfController(to, presentingController: from, transitionContext: transitionContext) }
 
 	}
 
@@ -63,11 +97,39 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
   {
 
     let containerView = transitionContext.containerView()
-    println(containerView.framesDescription())
 
-    presentingController.selectedViews.first?.hidden = false
+    let subelementViewSnapshot = snapshotViewFromRemoteElementView(dismissedController.sourceView)
+    containerView.addSubview(subelementViewSnapshot)
+
     dismissedController.view.removeFromSuperview()
-    transitionContext.completeTransition(true)
+
+    UIView.animateWithDuration(transitionDuration(transitionContext) * 0.8,
+      delay: 0.0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 1.0,
+      options: nil,
+      animations: {
+        subelementViewSnapshot.frame = presentingController.presentedSubelementView!.frame
+        containerView["chrome"]?["effectMask"]?.alpha = 0.0
+      }) {
+        (didComplete: Bool) -> Void in
+          _ = presentingController.presentedSubelementView?.hidden = false
+          subelementViewSnapshot.removeFromSuperview()
+          containerView["chrome"]?.removeFromSuperview()
+         transitionContext.completeTransition(didComplete)
+    }
+
+    // UIView.animateWithDuration(transitionDuration(transitionContext) * 0.2,
+    //   delay: transitionDuration(transitionContext) * 0.8,
+    //   usingSpringWithDamping: 1.0,
+    //   initialSpringVelocity: 0.5,
+    //   options: nil,
+    //   animations: {
+    //     _ = containerView["chrome"]?["effectMask"]?.alpha = 0.0
+    //   },
+    //   completion: nil)
+
+
   }
 
   /**
@@ -82,44 +144,55 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
                         transitionContext: UIViewControllerContextTransitioning)
   {
 
+
+    let containerView = transitionContext.containerView()
     let toView = presentedController.view
     let fromView = presentingController.view
 
+    let chrome = UIView(frame: containerView.bounds)
+    chrome.nametag = "chrome"
+    containerView.addSubview(chrome)
+
+    let effectMask = UIView(frame: containerView.bounds, nametag: "effectMask")
+    effectMask.alpha = 0.0
+    chrome.addSubview(effectMask)
+
+    effectMask.addSubview(snapshotViewFromRemoteElementView(presentingController.sourceView))
+
     let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-    effectView.frame = fromView.frame
+    effectView.frame = effectMask.bounds
+    effectMask.addSubview(effectView)
 
-    let presentingElementView = presentingController.selectedViews.first!
-    presentingElementView.hidden = true
-
-    let presentingElementViewStandIn = presentingElementView.snapshotViewAfterScreenUpdates(false)
-    presentingElementViewStandIn.frame = presentingElementView.frame
-
-    let fromViewStandIn = fromView.snapshotViewAfterScreenUpdates(false)
-    fromViewStandIn.frame = fromView.frame
-
-    effectView.contentView.addSubview(fromViewStandIn)
-    effectView.contentView.addSubview(presentingElementViewStandIn)
-
-    let containerView = transitionContext.containerView()
-    containerView.addSubview(effectView)
-    presentedController.sourceView.hidden = true
     containerView.addSubview(toView)
 
-    println(containerView.framesDescription())
+    let subelementViewSnapshot = snapshotViewFromRemoteElementView(presentingController.presentedSubelementView!)
+    containerView.addSubview(subelementViewSnapshot)
 
-    UIView.animateWithDuration(transitionDuration(transitionContext), animations: {
-      () -> Void in
-        presentingElementViewStandIn.frame = presentingElementViewStandIn.frame.rectWithCenter(toView.bounds.center)
-        fromViewStandIn.alpha = 0.0
+    presentedController.sourceView.hidden = true
+
+    // UIView.animateWithDuration(transitionDuration(transitionContext) * 0.2,
+    //   animations: {
+    //     if let view = presentingController.presentedSubelementView {
+    //       view.editingState = .NotEditing
+    //     }
+    //   }) { _ in _ =  presentingController.presentedSubelementView?.hidden = true }
+
+
+    UIView.animateWithDuration(transitionDuration(transitionContext),
+      delay: 0.0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 0.5,
+      options: nil,
+      animations: {
+        effectMask.alpha = 1.0
+        subelementViewSnapshot.frame = subelementViewSnapshot.frame.rectWithCenter(toView.bounds.center)
       }) {
         (didComplete: Bool) -> Void in
-          presentingElementViewStandIn.removeFromSuperview()
-          fromViewStandIn.removeFromSuperview()
           presentedController.sourceView.hidden = false
+          subelementViewSnapshot.removeFromSuperview()
           transitionContext.completeTransition(didComplete)
     }
-
-  }
+ }
 
 	/*
 	func animationEnded(transitionCompleted: Bool) {

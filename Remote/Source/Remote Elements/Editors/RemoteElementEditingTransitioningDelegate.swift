@@ -61,7 +61,11 @@ class RemoteElementEditingTransitioningDelegate: NSObject, UIViewControllerTrans
 	                             presentingViewController presenting: UIViewController!,
 	                                 sourceViewController source: UIViewController) -> UIPresentationController?
 	{
-		return RemoteElementEditingPresentationController(presentedViewController: presented, presentingViewController: presenting)
+    if let to = presented as? RemoteElementEditingController {
+      return RemoteElementEditingPresentationController(presentedEditor: to, presentingEditor: presenting as? RemoteElementEditingController)
+    }
+
+    return nil
 	}
 
 }

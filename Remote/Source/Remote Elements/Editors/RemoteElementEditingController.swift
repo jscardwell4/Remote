@@ -26,6 +26,9 @@ class RemoteElementEditingController: UIViewController {
 
   private(set) var remoteElement: RemoteElement!
   let editingTransitioningDelegate = RemoteElementEditingTransitioningDelegate()
+  private(set) weak var presentedSubelementView: RemoteElementView? {
+    didSet { if presentedSubelementView != nil { deselectView(presentedSubelementView!) } }
+  }
   private(set) var context: NSManagedObjectContext!
   private(set) var changedModelValues: [NSObject:AnyObject]!
 
@@ -203,9 +206,15 @@ class RemoteElementEditingController: UIViewController {
   /**
   Opens the specified subelement in its Class-level editor.
 
-  :param: subelement The element to edit
+  :param: subelement RemoteElement The element to edit
   */
-  func openSubelementInEditor(subelement: RemoteElement) {}
+  func openSubelementInEditor(subelement: RemoteElement) {
+    let controller = RemoteElementEditingController.editingControllerForElement(subelement)
+    controller.delegate = self
+    transitioningDelegate = editingTransitioningDelegate
+    controller.transitioningDelegate = editingTransitioningDelegate
+    presentViewController(controller, animated: true, completion: nil)
+  }
 
   /// MARK: Aligning
   ////////////////////////////////////////////////////////////////////////////////
@@ -393,6 +402,61 @@ class RemoteElementEditingController: UIViewController {
 
   /// MARK: Initialization
   ////////////////////////////////////////////////////////////////////////////////
+
+  /**
+  editingControllerForElement:
+
+  :param: element RemoteElement
+
+  :returns: RemoteElementEditingController
+  */
+  class func editingControllerForElement(element: RemoteElement) -> RemoteElementEditingController {
+    if let remote = element as? Remote {
+      return editingControllerForElement(remote)
+    } else if let buttonGroup = element as? ButtonGroup {
+      return editingControllerForElement(buttonGroup)
+    } else if let button = element as? Button {
+      return editingControllerForElement(button)
+    } else {
+      return RemoteElementEditingController(element: element)
+    }
+  }
+
+  /**
+  editingControllerForElement:
+
+  :param: element Remote
+
+  :returns: RemoteElementEditingController
+  */
+  @objc(editingControllerForRemote:)
+  class func editingControllerForElement(element: Remote) -> RemoteElementEditingController {
+    return RemoteEditingController(element: element)
+  }
+
+  /**
+  editingControllerForElement:
+
+  :param: element ButtonGroup
+
+  :returns: RemoteElementEditingController
+  */
+  @objc(editingControllerForButtonGroup:)
+  class func editingControllerForElement(element: ButtonGroup) -> RemoteElementEditingController {
+    return ButtonGroupEditingController(element: element)
+  }
+
+  /**
+  editingControllerForElement:
+
+  :param: element Button
+
+  :returns: RemoteElementEditingController
+  */
+  @objc(editingControllerForButton:)
+  class func editingControllerForElement(element: Button) -> RemoteElementEditingController {
+    return ButtonEditingController(element: element)
+  }
 
   /**
   initWithElement:
@@ -878,18 +942,18 @@ class RemoteElementEditingController: UIViewController {
     contentRect.origin.y = topToolbar.bounds.size.height
     contentRect.size.height -= topToolbar.bounds.size.height + currentToolbar.bounds.size.height
 
-          sourceViewBoundsObserver = MSKVOReceptionist(
-            observer: self,
-            forObject: sourceView.layer,
-            keyPath: "bounds",
-            options: NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
-            queue: NSOperationQueue.mainQueue(),
-            handler: {
-              (receptionist: MSKVOReceptionist!) -> Void in
-                if let controller = receptionist.observer as? RemoteElementEditingController {
-                  controller.updateBoundaryLayer()
-                }
-          })
+    sourceViewBoundsObserver = MSKVOReceptionist(
+      observer: self,
+      forObject: sourceView.layer,
+      keyPath: "bounds",
+      options: NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
+      queue: NSOperationQueue.mainQueue(),
+      handler: {
+        (receptionist: MSKVOReceptionist!) -> Void in
+          if let controller = receptionist.observer as? RemoteElementEditingController {
+            controller.updateBoundaryLayer()
+          }
+    })
 
 //    MSLogDebug(view.framesDescription())
   }
@@ -1080,7 +1144,12 @@ extension RemoteElementEditingController {
   }
 
   /** editSubelement */
-  func editSubelement() { if let model = selectedViews.first?.model { openSubelementInEditor(model) } }
+  func editSubelement() {
+    if let subelementView = selectedViews.first {
+      presentedSubelementView = subelementView
+      openSubelementInEditor(subelementView.model)
+    }
+  }
 
   /** duplicate */
   func duplicate() { println(__FUNCTION__) }
@@ -1297,13 +1366,17 @@ extension RemoteElementEditingController: EditingDelegate {
 
   :param: editor RemoteElementEditingController
   */
-  func editorDidCancel(editor: RemoteElementEditingController) { dismissViewControllerAnimated(true, completion: nil) }
+  func editorDidCancel(editor: RemoteElementEditingController) {
+    dismissViewControllerAnimated(true, completion: {self.presentedSubelementView = nil})
+  }
 
   /**
   editorDidSave:
 
   :param: editor RemoteElementEditingController
   */
-  func editorDidSave(editor: RemoteElementEditingController) { dismissViewControllerAnimated(true, completion: nil) }
+  func editorDidSave(editor: RemoteElementEditingController) {
+    dismissViewControllerAnimated(true, completion: {self.presentedSubelementView = nil})
+  }
 
 }

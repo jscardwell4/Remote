@@ -827,6 +827,7 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
       _boundaryOverlay.fillRule    = kCAFillRuleEvenOdd;
     #endif
     _boundaryOverlay.path = [self boundaryPath];
+    _boundaryOverlay.opacity = 0.65;
 
     [self.layer addSublayer:_boundaryOverlay];
 
@@ -1332,26 +1333,17 @@ MSSTATIC_STRING_CONST REViewInternalNametag = @"REViewInternal";
   _overlayView.showAlignmentIndicators = (_editingFlags.editingState == REEditingStateMoving ? YES : NO);
   _overlayView.showContentBoundary     = (_editingFlags.editingState ? YES : NO);
 
+  UIColor * color;
+
   switch (editingState) {
-    case REEditingStateSelected:
-      _overlayView.boundaryColor = YellowColor;
-      break;
-
-    case REEditingStateMoving:
-      _overlayView.boundaryColor = BlueColor;
-      break;
-
-    case REEditingStateFocus:
-      _overlayView.boundaryColor = RedColor;
-      break;
-
-    default:
-      _overlayView.boundaryColor = ClearColor;
-      break;
+    case REEditingStateSelected: color = YellowColor; break;
+    case REEditingStateMoving: color = BlueColor; break;
+    case REEditingStateFocus: color = RedColor; break;
+    default: color = ClearColor; break;
   }
 
-  assert((self.subviews)[self.subviews.count - 1] == _overlayView);
   [_overlayView.layer setNeedsDisplay];
+  [UIView animateWithDuration: 0.3 animations:^{ _overlayView.boundaryColor = color; }];
 }
 
 - (void)updateSubelementOrderFromView {
