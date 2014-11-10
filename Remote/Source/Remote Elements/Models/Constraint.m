@@ -8,8 +8,7 @@
 
 #import "Constraint.h"
 #import "ConstraintManager.h"
-#import "RemoteElement_Private.h"
-#import "RemoteElementView_Private.h"
+#import "RemoteElement.h"
 
 @interface Constraint ()
 

@@ -17,6 +17,50 @@ class ButtonView: RemoteElementView {
 	weak var labelView: UILabel!
 	weak var activityIndicator: UIActivityIndicatorView!
 
+  var tapAction: ((Void) -> Void)?
+  var pressAction: ((Void) -> Void)?
+  var button: Button { return model as Button }
+
+  /**
+  viewWithModel:
+
+  :param: model Button
+
+  :returns: ButtonView
+  */
+  @objc(viewWithButton:)
+  override class func viewWithModel(model: Button) -> ButtonView {
+    switch model.role {
+      case RERole.ButtonRoleBatteryStatus:    return BatteryStatusButtonView(model: model)
+      case RERole.ButtonRoleConnectionStatus: return ConnectionStatusButtonView(model: model)
+      default:                                return ButtonView(model: model)
+    }
+  }
+
+  /** init */
+  override init() { super.init() }
+
+  /**
+  initWithFrame:
+
+  :param: frame CGRect
+  */
+  override init(frame: CGRect) { super.init(frame: frame) }
+
+  /**
+  Overridden properties prevent synthesized initializers
+
+  :param: model RemoteElement
+  */
+  required init(model: RemoteElement) { super.init(model: model) }
+
+  /**
+  Overridden properties prevent synthesized initializers
+
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
 	/**
 	addSubelementView:
 
@@ -47,114 +91,103 @@ class ButtonView: RemoteElementView {
 
 	override var subelementViews: [RemoteElementView] { return [] }
 
-/* - (void)executeActionWithOptions:(CommandOptions)options {
+	/**
+	executeActionWithOptions:
 
-  if (!self.editing) {
+	:param: options CommandOptions
+	*/
+	func executeActionWithOptions(options: CommandOptions) {
+		if !isEditing {
+			if button.command.indicator { activityIndicator.startAnimating() }
+			button.executeCommandWithOptions(options) {
+				(success: Bool, error: NSError?) -> Void in
+					if self.activityIndicator.isAnimating() {
+						NSOperationQueue.mainQueue().addOperationWithBlock {
+							self.activityIndicator.stopAnimating()
+						}
+					}
+			}
+		}
+	}
 
-    if (self.model.command.indicator) [_activityIndicator startAnimating];
+	/** attachGestureRecognizers */
+	override func attachGestureRecognizers() {
+		super.attachGestureRecognizers()
 
-    [self.model executeCommandWithOptions:options
-                               completion:^(BOOL success, NSError * error) {
-                                 if ([self.activityIndicator isAnimating])
-                                   MSRunAsyncOnMain(^{ [self.activityIndicator stopAnimating]; });
-                               }];
-  }
+		let longPressGesture = MSLongPressGestureRecognizer(target: self, action: "handleLongPress:")
+		longPressGesture.delaysTouchesBegan = false
+		addGestureRecognizer(longPressGesture)
+		self.longPressGesture = longPressGesture
 
-}
- */
+		let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+		tapGesture.numberOfTapsRequired    = 1
+		tapGesture.numberOfTouchesRequired = 1
+		tapGesture.delaysTouchesBegan      = false
+		addGestureRecognizer(tapGesture)
+		self.tapGesture = tapGesture
+	}
 
-/*
-- (void)attachGestureRecognizers {
-  [super attachGestureRecognizers];
+	/**
+	Single tap action executes the primary button command
 
-  MSLongPressGestureRecognizer * longPressGesture =
-    [MSLongPressGestureRecognizer gestureWithTarget:self action:@selector(handleLongPress:)];
+	:param: gestureRecognizer UITapGestureRecognizer
+	*/
+	func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+		if gestureRecognizer.state == .Ended {
+			button.highlighted = true
+			MSDelayedRunOnMain(1, {self.button.highlighted = true})
+			tapAction?() ?? executeActionWithOptions(.Default)
+		}
+	}
 
-  longPressGesture.delaysTouchesBegan = NO;
-  longPressGesture.delegate           = self;
-  [self addGestureRecognizer:longPressGesture];
-  self.longPressGesture = longPressGesture;
+	/**
+	Long press action executes the secondary button command
 
-  UITapGestureRecognizer * tapGesture =
-    [UITapGestureRecognizer gestureWithTarget:self action:@selector(handleTap:)];
+	:param: gestureRecognizer MSLongPressGestureRecognizer
+	*/
+	func handleLongPress(gestureRecognizer: MSLongPressGestureRecognizer) {
+		if gestureRecognizer.state == .Ended {
+			pressAction?() ?? executeActionWithOptions(.LongPress)
 
-  tapGesture.numberOfTapsRequired    = 1;
-  tapGesture.numberOfTouchesRequired = 1;
-  tapGesture.delaysTouchesBegan      = NO;
-  tapGesture.delegate                = self;
-  [self addGestureRecognizer:tapGesture];
-  self.tapGesture = tapGesture;
-} */
+		} else if gestureRecognizer.state == .Possible {
+			button.highlighted = true
+			setNeedsDisplay()
+		}
+	}
 
-/// Single tap action executes the primary button command
-/* - (void)handleTap:(UITapGestureRecognizer *)gestureRecognizer {
+	/** addInternalSubviews */
+	override func addInternalSubviews() {
+		super.addInternalSubviews()
 
-  if (gestureRecognizer.state == UIGestureRecognizerStateRecognized) {
+		subelementInteractionEnabled = false
+		contentInteractionEnabled    = false
 
-    self.model.highlighted = YES;
+		let labelView = UILabel.newForAutolayout()
+		addViewToContent(labelView)
+		self.labelView = labelView
 
-    __weak ButtonView * weakself = self;
-    MSDelayedRunOnMain(1.0, ^{ weakself.model.highlighted = NO; });
+		let activityIndicator = UIActivityIndicatorView.newForAutolayout()
+		activityIndicator.activityIndicatorViewStyle = .WhiteLarge
+		activityIndicator.color = UIColor.whiteColor()
+		addViewToOverlay(activityIndicator)
+		self.activityIndicator = activityIndicator
+	}
 
-    if (self.tapAction) self.tapAction();
-    else [self executeActionWithOptions:CommandOptionDefault];
-  }
-} */
+	/** updateConstraints */
+	override func updateConstraints() {
+		super.updateConstraints()
 
-/// Long press action executes the secondary button command
-/* - (void)handleLongPress:(MSLongPressGestureRecognizer *)gestureRecognizer {
-
-  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-
-    if (self.pressAction) self.pressAction();
-    else [self executeActionWithOptions:CommandOptionLongPress];
-
-  } else if (gestureRecognizer.state == UIGestureRecognizerStatePossible) {
-    self.model.highlighted = YES;
-    [self setNeedsDisplay];
-  }
-} */
-
-/* - (void)addInternalSubviews {
-  [super addInternalSubviews];
-
-  self.subelementInteractionEnabled = NO;
-  self.contentInteractionEnabled    = NO;
-
-  UILabel * labelView = [UILabel newForAutolayout];
-  [self addViewToContent:labelView];
-  self.labelView = labelView;
-
-  UIActivityIndicatorView * activityIndicator = [UIActivityIndicatorView newForAutolayout];
-  activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-  activityIndicator.color                      = [UIColor whiteColor];
-  [self addViewToOverlay:activityIndicator];
-  self.activityIndicator = activityIndicator;
-} */
-
-/* - (void)updateConstraints {
-  [super updateConstraints];
-
-  NSString * labelNametag    = ClassNametagWithSuffix(@"InternalLabel");
-  NSString * activityNametag = ClassNametagWithSuffix(@"InternalActivity");
-
-  if (![[self constraintsWithNametagPrefix:labelNametag] count]) {
-    UIEdgeInsets titleInsets = self.model.titleEdgeInsets;
-    NSString   * constraints =
-      $(@"'%1$@' label.left = self.left + %3$f @900\n"
-        "'%1$@' label.top = self.top + %4$f @900\n"
-        "'%1$@' label.bottom = self.bottom - %5$f @900\n"
-        "'%1$@' label.right = self.right - %6$f @900\n"
-        "'%2$@' activity.centerX = self.centerX\n"
-        "'%2$@' activity.centerY = self.centerY",
-        labelNametag, activityNametag,
-        titleInsets.left, titleInsets.top, titleInsets.bottom, titleInsets.right);
-
-    NSDictionary * views = @{@"self": self, @"label": self.labelView, @"activity": self.activityIndicator};
-
-    [self addConstraints:[NSLayoutConstraint constraintsByParsingString:constraints views:views]];
-  }
-} */
+    let identifier = createIdentifier(self, ["Button", "Internal"])
+    if constraintsWithIdentifier(identifier).count == 0 {
+      let titleInsets = button.titleEdgeInsets
+      let format = "\n".join("label.left = self.left + \(titleInsets.left) @900",
+                             "label.top = self.top + \(titleInsets.top) @900",
+                             "label.bottom = self.bottom - \(titleInsets.bottom) @900",
+                             "label.right = self.right - \(titleInsets.right) @900",
+                             "activity.center = self.center")
+      constrainWithFormat(format, views: ["label": labelView, "activity": activityIndicator], identifier: identifier)
+    }
+	}
 
 
  /**
@@ -163,62 +196,60 @@ class ButtonView: RemoteElementView {
 	:returns: CGSize
 	*/
 	override func intrinsicContentSize() -> CGSize { return minimumSize }
-/*
-- (CGSize)minimumSize {
 
-  CGRect frame = (CGRect) { .size = REMinimumSize };
-
-  NSMutableSet * titles = [NSMutableSet set];
-
-  for (NSString *mode in self.model.modes) {
-    ControlStateTitleSet * titleSet = [self.model titlesForMode:mode];
-    if (titleSet) [titles addObjectsFromArray:[titleSet allValues]];
-  }
-
-  if ([titles count]) {
-
-    CGFloat maxWidth = 0.0, maxHeight = 0.0;
-
-    for (NSAttributedString * title in [titles valueForKeyPath:@"string"]) {
-
-      CGSize titleSize = [title size];
-      UIEdgeInsets titleInsets = self.model.titleEdgeInsets;
-
-      titleSize.width  += titleInsets.left + titleInsets.right;
-      titleSize.height += titleInsets.top + titleInsets.bottom;
-
-      maxWidth = MAX(titleSize.width, maxWidth);
-      maxHeight = MAX(titleSize.height, maxHeight);
-
+	override var minimumSize: CGSize {
+		var frame = CGRect(size: RemoteElementView.MinimumSize)
+//	  let titleSets = model.modes.map{self.button.titlesForMode($0 as NSString)}
+//	  let titles = titleSets.map{$0.allValues}
+//
+//	  if titles.count > 0 {
+//	  	var maxWidth: CGFloat = 0.0
+//	  	var maxHeight: CGFloat = 0.0
+//
+//	  	for title in (titles.map{$0.string}) {
+//	  		var titleSize = title.size
+//	  		let titleInsets = model.titleEdgeInsets
+//	  		titleSize.width += titleInsets.left + titleInsets.right
+//	  		titleSize.height += titleInsets.top + titleInsets.bottom
+//	  		maxWidth = max(titleSize.width, maxWidth)
+//	  		maxHeight = max(titleSize.height, maxHeight)
+//	  	}
+//
+//	    frame.size.width = max(maxWidth, frame.width)
+//	    frame.size.height = max(maxHeight, frame.height)
+//	  }
+//
+    if let title = button.title {
+      var titleSize = title.size()
+      let titleInsets = button.titleEdgeInsets
+      titleSize.width += titleInsets.left + titleInsets.right
+      titleSize.height += titleInsets.top + titleInsets.bottom
+      frame.size.width = max(titleSize.width, frame.size.width)
+      frame.size.height = max(titleSize.height, frame.size.height)
     }
 
-    frame.size.width = MAX(maxWidth, frame.size.width);
-    frame.size.height = MAX(maxHeight, frame.size.height);
-  }
+	  if model.proportionLock && bounds.size != CGSize.zeroSize {
+	  	let currentSize = bounds.size
 
-  if (self.model.proportionLock && !CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
+	    if currentSize.width > currentSize.height {
+	    	frame.size.height = (frame.size.width * currentSize.height) / currentSize.width
+    	} else {
+    		frame.size.width = (frame.size.height * currentSize.width) / currentSize.height
+    	}
+    }
 
-    CGSize currentSize = self.bounds.size;
+	  return frame.size
+	}
 
-    if (currentSize.width > currentSize.height)
-      frame.size.height = (frame.size.width * currentSize.height) / currentSize.width;
-
-    else
-      frame.size.width = (frame.size.height * currentSize.width) / currentSize.height;
-  }
-
-  return frame.size;
-}
-*/
 	/**
 	kvoRegistration
 
 	:returns: [String:(MSKVOReceptionist) -> Void]
 	*/
-	override func kvoRegistration() -> [String:(MSKVOReceptionist) -> Void] {
-		let registry = super.kvoRegistration()
+	override func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+		var registry = super.kvoRegistration()
 		registry["title"] = {
-			(receptionist: MSKVOReceptionist) -> Void in
+			(receptionist: MSKVOReceptionist!) -> Void in
 				if let v = receptionist.observer as? ButtonView {
 					v.labelView.attributedText = receptionist.change[NSKeyValueChangeNewKey] as? NSAttributedString
 					v.invalidateIntrinsicContentSize()
@@ -226,7 +257,7 @@ class ButtonView: RemoteElementView {
 				}
 		}
 		registry["icon"] = {
-			(receptionist: MSKVOReceptionist) -> Void in
+			(receptionist: MSKVOReceptionist!) -> Void in
 				if let v = receptionist.observer as? ButtonView {
 					v.invalidateIntrinsicContentSize()
 					v.setNeedsDisplay()
@@ -235,19 +266,19 @@ class ButtonView: RemoteElementView {
 		return registry
 	}
 
-	/** intializeViewFromModel */
-	override func intializeViewFromModel() {
-		super.intializeViewFromModel()
-		longPressGesture.enabled = model.longPressCommand != nil
-		labelView.attributedText = model.title
+	/** initializeViewFromModel */
+	override func initializeViewFromModel() {
+		super.initializeViewFromModel()
+		longPressGesture.enabled = button.longPressCommand != nil
+		labelView.attributedText = button.title
 		invalidateIntrinsicContentSize()
 		setNeedsDisplay()
 	}
 
 	override var editingMode: REEditingMode {
 		didSet {
-			tapGesture.enabled = !editing
-			longPressGesture.enabled = !editing
+			tapGesture.enabled = !isEditing
+			longPressGesture.enabled = !isEditing
 		}
 	}
 
@@ -258,15 +289,17 @@ class ButtonView: RemoteElementView {
 	:param: rect CGRect
 	*/
 	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
-		if let icon = model.icon.colorImage {
+		if let icon = button.icon?.colorImage {
 			UIGraphicsPushContext(ctx)
-			let insetRect = model.imageEdgeInsets.insetRect(bounds)
-			let imageSize = insetRect.contains(icon.size) ? icon.size : icon.size.aspectMappedToSize(insetRect.size, true)
+			let insetRect = button.imageEdgeInsets.insetRect(bounds)
+      let imageSize = insetRect.size.contains(icon.size)
+                        ? icon.size
+                        : icon.size.aspectMappedToSize(insetRect.size, binding: true)
 			let imageRect = CGRect(x: insetRect.midX - imageSize.width / 2.0,
-				                     y: insetRect.midY - imageSize.height /2.0,
+				                     y: insetRect.midY - imageSize.height / 2.0,
 				                     width: imageSize.width,
 				                     height: imageSize.height)
-			icon.drawInRect(iamgeRect)
+			icon.drawInRect(imageRect)
 			UIGraphicsPopContext()
 		}
 

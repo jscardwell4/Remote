@@ -7,7 +7,7 @@
 //
 @import Foundation;
 @import UIKit;
-#import "RemoteElementEditingViewController.h"
+//#import "RemoteElementEditingViewController.h"
 
 /**
  * The application delegate and primary controller.
@@ -21,7 +21,7 @@
  * -uitest [YES|NO]		If YES, UI testing will begin after launch completes.
  *
  */
-@interface MSRemoteAppController : NSObject <UIApplicationDelegate, RemoteElementEditingDelegate>
+@interface MSRemoteAppController : NSObject <UIApplicationDelegate>
 
 /**
  * @return The shared instance of MSRemoteAppController

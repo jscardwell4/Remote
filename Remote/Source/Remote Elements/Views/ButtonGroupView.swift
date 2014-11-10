@@ -12,239 +12,286 @@ import MoonKit
 
 class ButtonGroupView: RemoteElementView {
 
-	var label: UILabel!
+  var label: UILabel!
 
-	weak var tuckedConstraint: NSLayoutConstraint?
-	weak var untuckedConstraint: NSLayoutConstraint?
-	weak var tuckGesture: MSSwipeGestureRecognizer?
-	weak var untuckGesture: MSSwipeGestureRecognizer?
+  weak var tuckedConstraint: NSLayoutConstraint?
+  weak var untuckedConstraint: NSLayoutConstraint?
+  weak var tuckGesture: MSSwipeGestureRecognizer?
+  weak var untuckGesture: MSSwipeGestureRecognizer?
+  var tuckDirection: UISwipeGestureRecognizerDirection = .Right
+  var untuckDirection: UISwipeGestureRecognizerDirection = .Left
+  var quadrant: MSSwipeGestureRecognizerQuadrant = .Up
 
+  var buttonGroup: ButtonGroup! { return model as ButtonGroup }
 
+  /**
+  viewWithModel:
 
-	/** tuck */
-	func tuck() {
-		if model.isPanel && tuckedConstraint != nil && untuckedConstraint != nil {
-			UIView.animateWithDuration(0.25, animations: {
-				self.untuckedConstraint.priority = 1
-				self.tuckedConstraint.priority = 999
-				self.window.setNeedsUpdateConstraints()
-				self.setNeedsLayout()
-				self.layoutIfNeeded()
-				},
-				completion: {
-					(finished: Bool) -> Void in
-						self.tuckGesture.enabled = false
-						self.untuckGesture.enabled = true
-				})
-		}
-	}
+  :param: model ButtonGroup
 
-	/** untuck */
-	func untuck() {
-		if model.isPanel && tuckedConstraint != nil && untuckedConstraint != nil {
-			UIView.animateWithDuration(0.25, animations: {
-				self.untuckedConstraint.priority = 999
-				self.tuckedConstraint.priority = 1
-				self.window.setNeedsUpdateConstraints()
-				self.setNeedsLayout()
-				self.layoutIfNeeded()
-				},
-				completion: {
-					(finished: Bool) -> Void in
-						self.tuckGesture.enabled = true
-						self.untuckGesture.enabled = false
-				})
-		}
-	}
+  :returns: ButtonGroupView
+  */
+  @objc(viewWithButtonGroup:)
+  override class func viewWithModel(model: ButtonGroup) -> ButtonGroupView {
+    switch model.role {
+      case RERole.ButtonGroupRoleRocker:         return RockerView(model: model)
+      case RERole.ButtonGroupRoleSelectionPanel: return ModeSelectionView(model: model)
+      default:                                   return ButtonGroupView(model: model)
+    }
+  }
 
-	/** updateConstraints */
-	override func updateConstraints() {
-		removeAllConstraints()
-		super.updateConstraints()
-		stretchSubview(label)
-	}
+  /** init */
+  override init() { super.init() }
 
-	/**
-	handleSwipe:
+  /**
+  initWithFrame:
 
-	:param: gesture UISwipeGestureRecognizer
-	*/
-	func handleSwipe(gesture: UISwipeGestureRecognizer) {
-		if gesture.state == .Ended {
-			if gesture === tuckGesture { tuck() }
-			else if gesture === untuckGesture { untuck() }
-		}
-	}
+  :param: frame CGRect
+  */
+  override init(frame: CGRect) { super.init(frame: frame) }
 
-	/** attachTuckGestures */
-	func attachTuckGestures() {
-		let tuckGesture = MSSwipeGestureRecognizer(target: self, action: "handleSwipe:")
-		tuckGesture.nametag = "'\(name)'-tuck"
-		tuckGesture.enabled = false
-		tuckGesture.direction = tuckDirection
-		tuckGesture.quadrant = quadrant
-		window?.addGestureRecognizer(tuckGesture)
-		self.tuckGesture = tuckGesture
+  /**
+  Overridden properties prevent synthesized initializers
 
-		let untuckGesture = MSSwipeGestureRecognizer(target: self, action: "handleSwipe:")
-		untuckGesture.nametag = "'\(name)'-untuck"
-		untuckGesture.enabled = false
-		untuckGesture.direction = untuckDirection
-		untuckGesture.quadrant = quadrant
-		window?.addGestureRecognizer(untuckGesture)
-		self.untuckGesture = untuckGesture
-	}
+  :param: model RemoteElement
+  */
+  required init(model: RemoteElement) {
+    super.init(model: model)
+  }
 
-	/** didMoveToWindow */
-	override func didMoveToWindow() {
-		if model.isPanel && !editing && window != nil { attachTuckGestures() }
-		super.didMoveToWindow()
-	}
+  /**
+  Overridden properties prevent synthesized initializers
 
-	/**
-	kvoRegistration
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+  }
 
-	:returns: [String:(MSKVOReceptionist) -> Void]
-	*/
-	override func kvoRegistration() -> [String:(MSKVOReceptionist) -> Void] {
-		let registry = super.kvoRegistration()
-		registry["label"] = {
-			(receptionist: MSKVOReceptionist) -> Void in
-				if let v = receptionist.observer as? ButtonGroupView {
-					if let text = receptionist.change[NSKeyValueChangeNewKey] as? NSAttributedString { v.label.attributedText = text }
-					else { v.label.attributedText = nil }
-				}
-		}
-		return registry
-	}
+  /** tuck */
+  func tuck() {
+    if buttonGroup.isPanel() && tuckedConstraint != nil && untuckedConstraint != nil {
+      UIView.animateWithDuration(0.25, animations: {
+        self.untuckedConstraint?.priority = 1
+        self.tuckedConstraint?.priority = 999
+        self.window?.setNeedsUpdateConstraints()
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+        },
+        completion: {
+          (finished: Bool) -> Void in
+            self.tuckGesture?.enabled = false
+            self.untuckGesture?.enabled = true
+        })
+    }
+  }
 
-	/** initializeIVARs */
-	override func initializeIVARs() {
-		super.initializeIVARs()
-		shrinkwrap = true
-		resizable = true
-		moveable = true
-		if model.role & REButtonGroupRoleToolbar == REButtonGroupRoleToolbar {
-			setContentCompressionResistancePriority(.Required, forAxis: .Horizontal)
-			setContentCompressionResistancePriority(.Required, forAxis: .Vertical)
-		}
-	}
+  /** untuck */
+  func untuck() {
+    if buttonGroup.isPanel() && tuckedConstraint != nil && untuckedConstraint != nil {
+      UIView.animateWithDuration(0.25, animations: {
+        self.untuckedConstraint?.priority = 999
+        self.tuckedConstraint?.priority = 1
+        self.window?.setNeedsUpdateConstraints()
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+        },
+        completion: {
+          (finished: Bool) -> Void in
+            self.tuckGesture?.enabled = true
+            self.untuckGesture?.enabled = false
+        })
+    }
+  }
 
-	/** didMoveToSuperview */
-	override func didMoveToSuperview() {
-		super.didMoveToSuperview()
-		if superview != nil && model.isPanel && !editing {
-			var attribute1 = NSLayoutAttribute.NotAnAttribute
-			var attribute2 = attribute1
-			switch model.panelLocation {
-				case .Top:
-					attribute1 = .Bottom
-					attribute2 = .Top
-					tuckDirection = .Up
-					untuckDirection = .Down
-					quadrant = .Up
+  /** updateConstraints */
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    stretchSubview(label)
+  }
 
-				case .Bottom:
-					attribute1 = .Top
-					attribute2 = .Bottom
-					tuckDirection = .Down
-					untuckDirection = .Up
-					quadrant = .Down
+  /**
+  handleSwipe:
 
-				case .Left:
-					attribute1 = .Right
-					attribute2 = .Left
-					tuckDirection = .Left
-					untuckDirection = .Right
-					quadrant = .Left
+  :param: gesture UISwipeGestureRecognizer
+  */
+  func handleSwipe(gesture: UISwipeGestureRecognizer) {
+    if gesture.state == .Ended {
+      if gesture === tuckGesture { tuck() }
+      else if gesture === untuckGesture { untuck() }
+    }
+  }
 
-				case .Right:
-					attribute1 = .Left
-					attribute2 = .Right
-					tuckDirection = .Right
-					untuckDirection = .Left
-					quadrant = .Right
+  /** attachTuckGestures */
+  func attachTuckGestures() {
+    let tuckGesture = MSSwipeGestureRecognizer(target: self, action: "handleSwipe:")
+    tuckGesture.nametag = "'\(name)'-tuck"
+    tuckGesture.enabled = false
+    tuckGesture.direction = tuckDirection
+    tuckGesture.quadrant = quadrant
+    window?.addGestureRecognizer(tuckGesture)
+    self.tuckGesture = tuckGesture
 
-				default:
-					break
-			}
+    let untuckGesture = MSSwipeGestureRecognizer(target: self, action: "handleSwipe:")
+    untuckGesture.nametag = "'\(name)'-untuck"
+    untuckGesture.enabled = false
+    untuckGesture.direction = untuckDirection
+    untuckGesture.quadrant = quadrant
+    window?.addGestureRecognizer(untuckGesture)
+    self.untuckGesture = untuckGesture
+  }
 
-			let tuckedConstraint = NSLayoutConstraint(item: self,
-				                                        attribute: attribute1,
-				                                        relatedBy: .Equal,
-				                                        toItem: superview,
-				                                        attribute: attribute2,
-				                                        multiplier: 1.0,
-				                                        constant: 0.0)
-			tuckedConstraint.priority = 999
-			self.tuckedConstraint = tuckedConstraint
+  /** didMoveToWindow */
+  override func didMoveToWindow() {
+    if buttonGroup.isPanel() && !isEditing && window != nil { attachTuckGestures() }
+    super.didMoveToWindow()
+  }
 
-			let untuckedConstraint = NSLayoutConstraint(item: self,
-				                                        attribute: attribute2,
-				                                        relatedBy: .Equal,
-				                                        toItem: superview,
-				                                        attribute: attribute1,
-				                                        multiplier: 1.0,
-				                                        constant: 0.0)
-			untuckedConstraint.priority = 1
-			self.untuckedConstraint = untuckedConstraint
+  /**
+  kvoRegistration
 
-			superview.addConstraints([tuckedConstraint, untuckedConstraint])
-		}
-	}
+  :returns: [String:(MSKVOReceptionist) -> Void]
+  */
+  override func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+    var registry = super.kvoRegistration()
+    registry["label"] = {
+      (receptionist: MSKVOReceptionist!) -> Void in
+        if let v = receptionist.observer as? ButtonGroupView {
+          if let text = receptionist.change[NSKeyValueChangeNewKey] as? NSAttributedString { v.label.attributedText = text }
+          else { v.label.attributedText = nil }
+        }
+    }
+    return registry
+  }
 
-	/**
-	addSubelementView:
+  /** initializeIVARs */
+  override func initializeIVARs() {
+    super.initializeIVARs()
+    shrinkwrap = true
+    resizable = true
+    moveable = true
+    if buttonGroup.role & RERole.ButtonGroupRoleToolbar == RERole.ButtonGroupRoleToolbar {
+      setContentCompressionResistancePriority(1000.0, forAxis: .Horizontal)
+      setContentCompressionResistancePriority(1000.0, forAxis: .Vertical)
+    }
+  }
 
-	:param: view RemoteElementView
-	*/
-	override func addSubelementView(view: RemoteElementView) {
-		if locked {
-			view.resizable = false
-			view.moveable = false
-		}
-		if let buttonView = view as? ButtonView {
-			if buttonView.role == REButtonRoleTuck {
-				buttonView.tapAction = {self.tuck()}
-			}
-		}
-		super.addSubelementView(view)
-	}
+  /** didMoveToSuperview */
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    if superview != nil && buttonGroup.isPanel() && !isEditing {
+      var attribute1 = NSLayoutAttribute.NotAnAttribute
+      var attribute2 = attribute1
+      switch buttonGroup.panelLocation {
+        case .Top:
+          attribute1 = .Bottom
+          attribute2 = .Top
+          tuckDirection = .Up
+          untuckDirection = .Down
+          quadrant = .Up
 
-	/** addInternalSubviews */
-	override func addInternalSubviews() {
-		super.addInternalSubviews()
-		let label = UILabel.newForAutolayout()
-		label.backgroundColor = UIColor.clearColor()
-		addViewToContent(label)
-		self.label = label
-	}
+        case .Bottom:
+          attribute1 = .Top
+          attribute2 = .Bottom
+          tuckDirection = .Down
+          untuckDirection = .Up
+          quadrant = .Down
 
-	override var editingMode: REEditingMode {
-		didSet {
-			resizable = editingMode == .NotEditing
-			moveable = editingMode == .NotEditing
-			subelementInteractionEnabled = editingMode != .Remote
-		}
-	}
+        case .Left:
+          attribute1 = .Right
+          attribute2 = .Left
+          tuckDirection = .Left
+          untuckDirection = .Right
+          quadrant = .Left
 
-	/**
-	intrinsicContentSize
+        case .Right:
+          attribute1 = .Left
+          attribute2 = .Right
+          tuckDirection = .Right
+          untuckDirection = .Left
+          quadrant = .Right
 
-	:returns: CGSize
-	*/
-	override func intrinsicContentSize() -> CGSize {
-		if model.role == .Toolbar { return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0) }
-		else { return CGSize(square: UIViewNoIntrinsicMetric) }
-	}
+        default:
+          break
+      }
 
-	/**
-	buttonViewDidExecute:
+      let tuckedConstraint = NSLayoutConstraint(item: self,
+                                                attribute: attribute1,
+                                                relatedBy: .Equal,
+                                                toItem: superview,
+                                                attribute: attribute2,
+                                                multiplier: 1.0,
+                                                constant: 0.0)
+      tuckedConstraint.priority = 999
+      self.tuckedConstraint = tuckedConstraint
 
-	:param: buttonView ButtonView
-	*/
-	func buttonViewDidExecute(buttonView: ButtonView) {
-		if model.autohide { dispatch_after(when: 1.0, queue: dispatch_get_main_queue()) { self.tuck() } }
-	}
+      let untuckedConstraint = NSLayoutConstraint(item: self,
+                                                attribute: attribute2,
+                                                relatedBy: .Equal,
+                                                toItem: superview,
+                                                attribute: attribute1,
+                                                multiplier: 1.0,
+                                                constant: 0.0)
+      untuckedConstraint.priority = 1
+      self.untuckedConstraint = untuckedConstraint
+
+      superview?.addConstraints([tuckedConstraint, untuckedConstraint])
+    }
+  }
+
+  /**
+  addSubelementView:
+
+  :param: view RemoteElementView
+  */
+  override func addSubelementView(view: RemoteElementView) {
+    if locked {
+      view.resizable = false
+      view.moveable = false
+    }
+    if let buttonView = view as? ButtonView {
+      if buttonView.model.role == .ButtonRoleTuck {
+        buttonView.tapAction = {self.tuck()}
+      }
+    }
+    super.addSubelementView(view)
+  }
+
+  /** addInternalSubviews */
+  override func addInternalSubviews() {
+    super.addInternalSubviews()
+    let label = UILabel.newForAutolayout()
+    label.backgroundColor = UIColor.clearColor()
+    addViewToContent(label)
+    self.label = label
+  }
+
+  override var editingMode: REEditingMode {
+    didSet {
+      resizable = editingMode == .NotEditing
+      moveable = editingMode == .NotEditing
+      subelementInteractionEnabled = editingMode != .Remote
+    }
+  }
+
+  /**
+  intrinsicContentSize
+
+  :returns: CGSize
+  */
+  override func intrinsicContentSize() -> CGSize {
+    if buttonGroup.role == .ButtonGroupRoleToolbar { return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0) }
+    else { return CGSize(square: UIViewNoIntrinsicMetric) }
+  }
+
+  /**
+  buttonViewDidExecute:
+
+  :param: buttonView ButtonView
+  */
+  func buttonViewDidExecute(buttonView: ButtonView) {
+    if buttonGroup.autohide { MSRunAsyncOnMain{self.tuck()} }
+  }
 
 }

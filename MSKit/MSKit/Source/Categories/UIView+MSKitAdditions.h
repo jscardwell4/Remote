@@ -83,6 +83,7 @@
 - (NSLayoutConstraint *)constraintWithIdentifierPrefix:(NSString *)prefix;
 - (NSLayoutConstraint *)constraintWithIdentifierSuffix:(NSString *)suffix;
 - (NSLayoutConstraint *)constraintMatching:(NSPredicate *)predicate;
+// - (NSLayoutConstraint *)constraintWithAttributes:(NSDictionary *)attributes;
 
 - (NSArray *)constraintsWithNametag:(NSString *)nametag;
 - (NSArray *)constraintsWithNametagPrefix:(NSString *)prefix;

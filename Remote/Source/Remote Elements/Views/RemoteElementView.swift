@@ -10,31 +10,46 @@ import Foundation
 import UIKit
 import MoonKit
 
+
 class RemoteElementView: UIView {
 
   private class InternalView: UIView {
 
-    var delegate: RemoteElementView! { return superview as? RemoteElementView ?? nil }
+    weak var delegate: RemoteElementView!
+
 
     /** init */
-    override init() {
-      super.init()
-      userInteractionEnabled = false
+    override init() { super.init() }
+
+    /**
+    initWithFrame:
+
+    :param: frame CGRect
+    */
+    override init(frame: CGRect) { super.init(frame: frame) }
+
+    init(delegate: RemoteElementView) {
+      super.init(frame: delegate.bounds)
+      self.delegate = delegate
+      userInteractionEnabled = self is SubelementsView
+      setTranslatesAutoresizingMaskIntoConstraints(false)
       backgroundColor = UIColor.clearColor()
       clipsToBounds = false
       opaque = false
       contentMode = .Redraw
       autoresizesSubviews = false
     }
+
+    /**
+    init:
+
+    :param: aDecoder NSCoder
+    */
+    required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
   }
 
   private class SubelementsView: InternalView {
-
-    /** init */
-    override init() {
-      super.init()
-      userInteractionEnabled = true
-    }
 
     /**
     addSubview:
@@ -43,13 +58,12 @@ class RemoteElementView: UIView {
     */
     override func addSubview(subview: UIView) {
       if let elementView = subview as? RemoteElementView {
-        if let parentElement = elementView.model.parentElement {
-          if parentElement == delegate.model {
-            super.addSubview(subview)
-          }
+        if elementView.model.parentElement == delegate!.model {
+          super.addSubview(elementView)
         }
       }
     }
+
   }
 
   private class ContentView: InternalView {
@@ -76,10 +90,11 @@ class RemoteElementView: UIView {
 
   private class OverlayView: InternalView {
 
-    var boundaryColor = UIColor.clearColor() {
+    var boundaryColor: UIColor = UIColor.clearColor() {
       didSet {
         boundaryOverlay.strokeColor = boundaryColor.CGColor
-        boundarOverlay.setNeedsDisplay()
+        boundaryOverlay.setNeedsDisplay()
+        boundaryOverlay.displayIfNeeded()
       }
     }
 
@@ -89,7 +104,12 @@ class RemoteElementView: UIView {
         renderAlignmentOverlayIfNeeded()
       }
     }
-    var showContentBoundary: Bool = false { didSet { boundaryOverlay.hidden = !showContentBoundary } }
+    var showContentBoundary: Bool = false {
+      didSet {
+        refreshBoundary()
+        boundaryOverlay.hidden = !showContentBoundary
+      }
+    }
 
     lazy var boundaryOverlay: CAShapeLayer = {
         let overlay = CAShapeLayer()
@@ -113,11 +133,27 @@ class RemoteElementView: UIView {
     var lineWidth: CGFloat = 2.0
 
     /** init */
-    override init() {
-      super.init()
-      self.layer.addSublayer(boundaryOverlay)
-      self.layer.addSublayer(alignmentOverlay)
+    override init() { super.init() }
+
+    /**
+    initWithFrame:
+
+    :param: frame CGRect
+    */
+    override init(frame: CGRect) { super.init(frame: frame) }
+
+    /**
+    initWithDelegate:
+
+    :param: delegate RemoteElementView
+    */
+    override init(delegate: RemoteElementView) {
+      super.init(delegate: delegate)
+      layer.addSublayer(boundaryOverlay)
+      layer.addSublayer(alignmentOverlay)
     }
+
+    required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     /**
     drawRect:
@@ -129,11 +165,13 @@ class RemoteElementView: UIView {
     func refreshBoundary() { boundaryOverlay.path = boundaryPath }
 
     var boundaryPath: CGPathRef {
-      let path = delegate.borderPath ?? UIBezierPath(rect: bounds)
-      let w = bounds.size.width
-      let h = bounds.size.height
-      path.applyTransform(CGAffineTransformMakeScale((w - lineWidth) / w, (h - lineWidth) / h))
-      path.applyTransform(CGAffineTransformMakeTranslation(lineWidth / 2.0, lineWidth / 2.0))
+      let path = delegate?.borderPath ?? UIBezierPath(rect: bounds)
+      // if !bounds.isEmpty {
+      //   let w = bounds.size.width
+      //   let h = bounds.size.height
+      //   path.applyTransform(CGAffineTransformMakeScale((w - lineWidth) / w, (h - lineWidth) / h))
+      //   path.applyTransform(CGAffineTransformMakeTranslation(lineWidth / 2.0, lineWidth / 2.0))
+      // }
       return path.CGPath
     }
 
@@ -142,50 +180,49 @@ class RemoteElementView: UIView {
 
       if showAlignmentIndicators {
 
-        let manager = delegate.model.constraintManager
+        if let manager = delegate?.model.constraintManager {
 
-        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
+          UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
 
-        let context = UIGraphicsGetCurrentContext()
+          let context = UIGraphicsGetCurrentContext()
 
-        let gentleHighlight = UIColor(red:1, green:1, blue:1, alpha:0.25)
-        let parent          = UIColor(red:0.899, green:0.287, blue:0.238, alpha:1)
-        let sibling         = UIColor(red:0.186, green:0.686, blue:0.661, alpha:1)
-        let intrinsic       = UIColor(red:0.686, green:0.186, blue:0.899, alpha:1)
-        let colors          = [gentleHighlight, parent, sibling, intrinsic]
+          let gentleHighlight = UIColor(red:1, green:1, blue:1, alpha:0.25)
+          let parent          = UIColor(red:0.899, green:0.287, blue:0.238, alpha:1)
+          let sibling         = UIColor(red:0.186, green:0.686, blue:0.661, alpha:1)
+          let intrinsic       = UIColor(red:0.686, green:0.186, blue:0.899, alpha:1)
+          let colors          = [gentleHighlight, parent, sibling, intrinsic]
 
-        let outerOffset = CGSize(width: 0.1, height: -0.1)
-        let outerRadius: CGFloat = 2.5
-        let innerRadius: CGFloat = 0.5
-        let frame = bounds.rectByInsetting(3.0, 3.0)
-        let cornerRadius: CGFloat = 1.0
+          let outerOffset = CGSize(width: 0.1, height: -0.1)
+          let outerRadius: CGFloat = 2.5
+          let innerRadius: CGFloat = 0.5
+          let frame = bounds.rectByInsetting(dx: 3.0, dy: 3.0)
+          let cornerRadius: CGFloat = 1.0
 
-        if manager[NSLayoutAttributeLeft.rawValue] {
+          if manager[NSLayoutAttribute.Left].boolValue {
 
-          // Left Bar Drawing
-          let rect = CGRect(x: frame.minX + 1.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
-          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-          let offset = CGSize(width: -1.1, height: -0.1)
+            // Left Bar Drawing
+            let rect = CGRect(x: frame.minX + 1.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
+            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+            let offset = CGSize(width: -1.1, height: -0.1)
 
-          CGContextSaveGState(context)
-          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-          colors[manager.dependencyTypeForAttribute(NSLayoutAttributeLeft)].setFill()
-          barPath.fill()
+            CGContextSaveGState(context)
+            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Left).rawValue].setFill()
+            barPath.fill()
 
-          // Left Bar Inner Shadow
-          var borderRect = barPath.bounds.rectByInsetting(-innerRadius, -innerRadius)
+            // Left Bar Inner Shadow
+            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
 
-          borderRect.offset(-offset.width, -offset.height)
-          borderRect.union(barPath.bounds)
-          borderRect.inset(-1, -1)
+            borderRect.offset(dx: -offset.width, dy: -offset.height)
+            borderRect.union(barPath.bounds)
+            borderRect.inset(dx: -1, dy: -1)
 
-          let negativePath = UIBezierPath(rect:borderRect)
+            let negativePath = UIBezierPath(rect:borderRect)
 
-          negativePath.appendPath(barPath)
-          negativePath.usesEvenOddFillRule = true
+            negativePath.appendPath(barPath)
+            negativePath.usesEvenOddFillRule = true
 
-          CGContextSaveGState(context)
-          {
+            CGContextSaveGState(context)
             let xOffset = offset.width + round(borderRect.size.width)
             let yOffset = offset.height
 
@@ -203,37 +240,174 @@ class RemoteElementView: UIView {
             negativePath.fill()
           }
 
-          CGContextRestoreGState(context)
+            CGContextRestoreGState(context)
 
-          CGContextRestoreGState(context)
-        }
+            CGContextRestoreGState(context)
 
-        if manager[NSLayoutAttributeRight.rawValue] {
+          if manager[NSLayoutAttribute.Right].boolValue {
 
-          // Right Bar Drawing
-          let rect = CGRect(x: frame.minX + frame.width - 3.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
-          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-          let offset = CGSize(width: 1.1, height: -0.1)
+            // Right Bar Drawing
+            let rect = CGRect(x: frame.minX + frame.width - 3.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
+            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+            let offset = CGSize(width: 1.1, height: -0.1)
 
-          CGContextSaveGState(context)
-          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-          colors[manager.dependencyTypeForAttribute(NSLayoutAttributeRight)].setFill()
-          barPath.fill()
+            CGContextSaveGState(context)
+            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Right).rawValue].setFill()
+            barPath.fill()
 
-          // Right Bar Inner Shadow
-          var borderRect = barPath.bounds.rectByInsetting(-innerRadius, -innerRadius)
+            // Right Bar Inner Shadow
+            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
 
-          borderRect.offset(-offset.width, -offset.height)
-          borderRect.union(barPath.bounds)
-          borderRect.inset(-1, -1)
+            borderRect.offset(dx: -offset.width, dy: -offset.height)
+            borderRect.union(barPath.bounds)
+            borderRect.inset(dx: -1, dy: -1)
 
-          let negativePath = UIBezierPath(rect:borderRect)
+            let negativePath = UIBezierPath(rect:borderRect)
 
-          negativePath.appendPath(barPath)
-          negativePath.usesEvenOddFillRule = true
+            negativePath.appendPath(barPath)
+            negativePath.usesEvenOddFillRule = true
 
-          CGContextSaveGState(context)
-          {
+            CGContextSaveGState(context)
+            let xOffset = offset.width + round(borderRect.size.width)
+            let yOffset = offset.height
+
+            CGContextSetShadowWithColor(context,
+              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+              innerRadius,
+              gentleHighlight.CGColor)
+
+            barPath.addClip()
+
+            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+            negativePath.applyTransform(transform)
+            UIColor.grayColor().setFill()
+            negativePath.fill()
+
+            CGContextRestoreGState(context)
+
+            CGContextRestoreGState(context)
+          }
+
+          if manager[NSLayoutAttribute.Top].boolValue {
+
+            // Top Bar Drawing
+            let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + 1.0, width: frame.width - 8.0, height: 2.0)
+            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+            let offset = CGSize(width: 0.1, height: -1.1)
+
+            CGContextSaveGState(context)
+            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Top).rawValue].setFill()
+            barPath.fill()
+
+            // Top Bar Inner Shadow
+            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+            borderRect.offset(dx: -offset.width, dy: -offset.height)
+            borderRect.union(barPath.bounds)
+            borderRect.inset(dx: -1, dy: -1)
+
+            let negativePath = UIBezierPath(rect:borderRect)
+
+            negativePath.appendPath(barPath)
+            negativePath.usesEvenOddFillRule = true
+
+            CGContextSaveGState(context)
+            let xOffset = offset.width + round(borderRect.size.width)
+            let yOffset = offset.height
+
+            CGContextSetShadowWithColor(context,
+              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+              innerRadius,
+              gentleHighlight.CGColor)
+
+            barPath.addClip()
+
+            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+            negativePath.applyTransform(transform)
+            UIColor.grayColor().setFill()
+            negativePath.fill()
+
+            CGContextRestoreGState(context)
+
+            CGContextRestoreGState(context)
+          }
+
+          if manager[NSLayoutAttribute.Bottom].boolValue {
+
+            // Bottom Bar Drawing
+            let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + frame.height - 3.0, width: frame.width - 8.0, height: 2.0)
+            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+            let offset = CGSize(width: 0.1, height: 1.1)
+
+            CGContextSaveGState(context)
+            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Bottom).rawValue].setFill()
+            barPath.fill()
+
+            // Bottom Bar Inner Shadow
+            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+            borderRect.offset(dx: -offset.width, dy: -offset.height)
+            borderRect.union(barPath.bounds)
+            borderRect.inset(dx: -1, dy: -1)
+
+            let negativePath = UIBezierPath(rect:borderRect)
+
+            negativePath.appendPath(barPath)
+            negativePath.usesEvenOddFillRule = true
+
+            CGContextSaveGState(context)
+            let xOffset = offset.width + round(borderRect.size.width)
+            let yOffset = offset.height
+
+            CGContextSetShadowWithColor(context,
+              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+              innerRadius,
+              gentleHighlight.CGColor)
+
+            barPath.addClip()
+
+            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+            negativePath.applyTransform(transform)
+            UIColor.grayColor().setFill()
+            negativePath.fill()
+
+            CGContextRestoreGState(context)
+
+            CGContextRestoreGState(context)
+          }
+
+          if manager[NSLayoutAttribute.CenterX].boolValue {
+
+            // CenterX Bar Drawing
+            let rect = CGRect(x: frame.minX + floor((frame.width - 2.0) * 0.5) + 0.5, y: frame.minY + 4.0,
+              width: 2.0, height: frame.height - 7.0)
+            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+            let offset = CGSize(width: 0.1, height: -0.1)
+
+            CGContextSaveGState(context)
+            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.CenterX).rawValue].setFill()
+            barPath.fill()
+
+            // CenterX Bar Inner Shadow
+            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+            borderRect.offset(dx: -offset.width, dy: -offset.height)
+            borderRect.union(barPath.bounds)
+            borderRect.inset(dx: -1, dy: -1)
+
+            let negativePath = UIBezierPath(rect:borderRect)
+
+            negativePath.appendPath(barPath)
+            negativePath.usesEvenOddFillRule = true
+
+            CGContextSaveGState(context)
             let xOffset = offset.width + round(borderRect.size.width)
             let yOffset = offset.height
 
@@ -254,34 +428,33 @@ class RemoteElementView: UIView {
           CGContextRestoreGState(context)
 
           CGContextRestoreGState(context)
-        }
 
-        if manager[NSLayoutAttributeTop.rawValue] {
+          if manager[NSLayoutAttribute.CenterY].boolValue {
 
-          // Top Bar Drawing
-          let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + 1.0, width: frame.width - 8.0, height: 2.0)
-          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-          let offset = CGSize(width: 0.1, height: -1.1)
+            // CenterY Bar Drawing
+            let rect = CGRect(x: frame.minX + 3.5, y: frame.minY + floor(frame.height - 2.0) * 0.5 + 0.5,
+                              width: frame.width - 8.0, height: 2.0)
+            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+            let offset = CGSize(width: 0.1, height: -0.1)
 
-          CGContextSaveGState(context)
-          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-          colors[manager.dependencyTypeForAttribute(NSLayoutAttributeTop)].setFill()
-          barPath.fill()
+            CGContextSaveGState(context)
+            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.CenterY).rawValue].setFill()
+            barPath.fill()
 
-          // Top Bar Inner Shadow
-          var borderRect = barPath.bounds.rectByInsetting(-innerRadius, -innerRadius)
+            // CenterY Bar Inner Shadow
+            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
 
-          borderRect.offset(-offset.width, -offset.height)
-          borderRect.union(barPath.bounds)
-          borderRect.inset(-1, -1)
+            borderRect.offset(dx: -offset.width, dy: -offset.height)
+            borderRect.union(barPath.bounds)
+            borderRect.inset(dx: -1, dy: -1)
 
-          let negativePath = UIBezierPath(rect:borderRect)
+            let negativePath = UIBezierPath(rect:borderRect)
 
-          negativePath.appendPath(barPath)
-          negativePath.usesEvenOddFillRule = true
+            negativePath.appendPath(barPath)
+            negativePath.usesEvenOddFillRule = true
 
-          CGContextSaveGState(context)
-          {
+            CGContextSaveGState(context)
             let xOffset = offset.width + round(borderRect.size.width)
             let yOffset = offset.height
 
@@ -297,162 +470,17 @@ class RemoteElementView: UIView {
             negativePath.applyTransform(transform)
             UIColor.grayColor().setFill()
             negativePath.fill()
+
+            CGContextRestoreGState(context)
+
+            CGContextRestoreGState(context)
           }
 
-          CGContextRestoreGState(context)
+          let image = UIGraphicsGetImageFromCurrentImageContext()
+          alignmentOverlay.contents = image.CGImage
+          UIGraphicsEndImageContext()
 
-          CGContextRestoreGState(context)
         }
-
-        if manager[NSLayoutAttributeBottom.rawValue] {
-
-          // Bottom Bar Drawing
-          let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + frame.height - 3.0, width: frame.width - 8.0, height: 2.0)
-          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-          let offset = CGSize(width: 0.1, height: 1.1)
-
-          CGContextSaveGState(context)
-          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-          colors[manager.dependencyTypeForAttribute(NSLayoutAttributeBottom)].setFill()
-          barPath.fill()
-
-          // Bottom Bar Inner Shadow
-          var borderRect = barPath.bounds.rectByInsetting(-innerRadius, -innerRadius)
-
-          borderRect.offset(-offset.width, -offset.height)
-          borderRect.union(barPath.bounds)
-          borderRect.inset(-1, -1)
-
-          let negativePath = UIBezierPath(rect:borderRect)
-
-          negativePath.appendPath(barPath)
-          negativePath.usesEvenOddFillRule = true
-
-          CGContextSaveGState(context)
-          {
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-          }
-
-          CGContextRestoreGState(context)
-
-          CGContextRestoreGState(context)
-        }
-
-        if manager[NSLayoutAttributeCenterX.rawValue] {
-
-          // CenterX Bar Drawing
-          let rect = CGRect(x: frame.minX + floor((frame.width - 2.0) * 0.5) + 0.5, y: frame.minY + 4.0,
-            width: 2.0, height: frame.height - 7.0)
-          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-          let offset = CGSize(width: 0.1, height: -0.1)
-
-          CGContextSaveGState(context)
-          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-          colors[manager.dependencyTypeForAttribute(NSLayoutAttributeCenterX)].setFill()
-          barPath.fill()
-
-          // CenterX Bar Inner Shadow
-          var borderRect = barPath.bounds.rectByInsetting(-innerRadius, -innerRadius)
-
-          borderRect.offset(-offset.width, -offset.height)
-          borderRect.union(barPath.bounds)
-          borderRect.inset(-1, -1)
-
-          let negativePath = UIBezierPath(rect:borderRect)
-
-          negativePath.appendPath(barPath)
-          negativePath.usesEvenOddFillRule = true
-
-          CGContextSaveGState(context)
-          {
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-          }
-
-          CGContextRestoreGState(context)
-
-          CGContextRestoreGState(context)
-        }
-
-        if manager[NSLayoutAttributeCenterY.rawValue] {
-
-          // CenterY Bar Drawing
-          let rect = CGRect(x: frame.minX + 3.5, y: frame.minY + floor(frame.height - 2.0) * 0.5 + 0.5),
-                            width: frame.width - 8.0, height: 2.0)
-          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-          let offset = CGSize(width: 0.1, height: -0.1)
-
-          CGContextSaveGState(context)
-          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-          colors[manager.dependencyTypeForAttribute(NSLayoutAttributeCenterY)].setFill()
-          barPath.fill()
-
-          // CenterY Bar Inner Shadow
-          var borderRect = barPath.bounds.rectByInsetting(-innerRadius, -innerRadius)
-
-          borderRect.offset(-offset.width, -offset.height)
-          borderRect.union(barPath.bounds)
-          borderRect.inset(-1, -1)
-
-          let negativePath = UIBezierPath(rect:borderRect)
-
-          negativePath.appendPath(barPath)
-          negativePath.usesEvenOddFillRule = true
-
-          CGContextSaveGState(context)
-          {
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-          }
-
-          CGContextRestoreGState(context)
-
-          CGContextRestoreGState(context)
-        }
-
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        alignmentOverlay.contents = image.CGImage
-        UIGraphicsEndImageContext()
 
       }
 
@@ -460,7 +488,7 @@ class RemoteElementView: UIView {
 
   }
 
-  class var minimumSize: CGSize { return CGSize(square: 44.0) }
+  class var MinimumSize: CGSize { return CGSize(square: 44.0) }
 
   /**
   viewWithModel:
@@ -470,10 +498,10 @@ class RemoteElementView: UIView {
   :returns: RemoteElementView
   */
   class func viewWithModel(model: RemoteElement) -> RemoteElementView {
-    if let remote = model as? Remote { return viewWithModel(remote) }
+    if let remote = model as? Remote                { return viewWithModel(remote) }
     else if let buttonGroup = model as? ButtonGroup { return viewWithModel(buttonGroup) }
-    else if let button = model as? Button { return viewWithModel(button) }
-    else { return RemoteElementView(model: model) }
+    else if let button = model as? Button           { return viewWithModel(button) }
+    else                                            { return RemoteElementView(model: model) }
   }
 
   /**
@@ -481,113 +509,99 @@ class RemoteElementView: UIView {
 
   :param: model Remote
 
-  :returns: RemoteElementView
+  :returns: RemoteView
   */
   @objc(viewWithRemote:)
-  class func viewWithModel(model: Remote) -> RemoteElementView {
-    return RemoteView(model: model)
-  }
+  class func viewWithModel(model: Remote) -> RemoteView { return RemoteView(model: model) }
 
   /**
   viewWithModel:
 
   :param: model ButtonGroup
 
-  :returns: RemoteElementView
+  :returns: ButtonGroupView
   */
   @objc(viewWithButtonGroup:)
-  class func viewWithModel(model: ButtonGroup) -> RemoteElementView {
-    switch model.role {
-      case .Rocker: return RockerView(model: model)
-      case .SelectionPanel: return ModeSelectionView(model: model)
-      default: return ButtonGroupView(model: model)
-    }
-  }
+  class func viewWithModel(model: ButtonGroup) -> ButtonGroupView { return ButtonGroupView.viewWithModel(model) }
 
   /**
   viewWithModel:
 
   :param: model Button
 
-  :returns: RemoteElementView
+  :returns: ButtonView
   */
   @objc(viewWithButton:)
-  class func viewWithModel(model: Button) -> RemoteElementView {
-    switch model.role {
-      case .BatteryStatus: return BatteryStatusButtonView(model: model)
-      case .ConnectionStatus: return ConnectionStatusButtonView(model: model)
-      default: return ButtonView(model: model)
-    }
-  }
+  class func viewWithModel(model: Button) -> ButtonView { return ButtonView.viewWithModel(model) }
+
+
+  /** init */
+  override init() { super.init() }
+
+  /**
+  initWithFrame:
+
+  :param: frame CGRect
+  */
+  override init(frame: CGRect) { super.init(frame: frame) }
 
   /**
   initWithModel:
 
   :param: model RemoteElement
   */
-  init(model: RemoteElement) {
+  required init(model: RemoteElement) {
     super.init()
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.model = model
+    self.model.refresh()
     registerForChangeNotification()
     initializeIVARs()
   }
 
-  deinit { kvoReceptionists = nil }
+  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   /** updateConstraints */
   override func updateConstraints() {
-    removeAllConstraints()
-    constrainWithFormat("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
-                  views: ["b": backdropView, "c": contentView, "s": subelementsView, "o": overlayView])
-    if let modelConstraints = model.constraints?.allObjects as? [Constraint] {
-      addConstraints(modelConstraints.map{RemoteElementLayoutConstraint(model: $0, forView: self)})
-    }
 
+    var identifier = createIdentifier(self, ["Internal", "Base"])
+    if constraintsWithIdentifier(identifier).count == 0 {
+      constrainWithFormat("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
+                    views: ["b": backdropView, "c": contentView, "s": subelementsView, "o": overlayView],
+               identifier: identifier)
+    }
+    identifier = createIdentifier(self, ["Internal", "Model"])
+    if constraintsWithIdentifier(identifier).count == 0 {
+      if let modelConstraints = model.constraints?.allObjects as? [Constraint] {
+        addConstraints(modelConstraints.map{
+          let c = RemoteElementLayoutConstraint(model: $0, forView: self)
+          c.identifier = identifier
+          return c
+        })
+      }
+    }
     super.updateConstraints()
   }
 
-  /**
-  forwardingTargetForSelector:
+  override class func requiresConstraintBasedLayout() -> Bool { return true }
 
-  :param: aSelector Selector
+  private lazy var subelementsView: SubelementsView = SubelementsView(delegate: self)
+  private lazy var contentView: ContentView = ContentView(delegate: self)
+  private lazy var backdropView: BackdropView = BackdropView(delegate: self)
+  private lazy var overlayView: OverlayView = OverlayView(delegate: self)
 
-  :returns: NSObject?
-  */
-  override func forwardingTargetForSelector(aSelector: Selector) -> NSObject? {
-    return model ?? super.forwardingTargetForSelector(aSelector)
-  }
-
-  /**
-  valueForUndefinedKey:
-
-  :param: key String
-
-  :returns: AnyObject?
-  */
-  override func valueForUndefinedKey(key: String) -> AnyObject? {
-    return model != nil ? model.valueForKey(key) : super.valueForUndefinedKey(key)
-  }
-
-  override class var requiresConstraintBasedLayout: Bool { return true }
-
-  private var subelementsView = SubelementsView.newForAutolayout()
-  private var contentView = ContentView.newForAutolayout()
-  private var backdropView = BackdropView.newForAutolayout()
-  private var overlayView = OverlayView.newForAutolayout()
-
-  var viewFrames: [String:CGRect] {
-    var frames = [uuid: frame]
+  var viewFrames: [NSObject:AnyObject] {
+    var frames: [NSObject:AnyObject] = [uuid: NSValue(CGRect: frame)]
     if parentElementView != nil {
-      frames[parentElementView!.uuid] = parentElementView!.frame
+      frames[parentElementView!.uuid] = NSValue(CGRect: parentElementView!.frame)
     }
-    for subelementView in subelementViews { frames[subelementView.uuid] = subelementView.frame }
+    for subelementView in subelementViews { frames[subelementView.uuid] = NSValue(CGRect: subelementView.frame) }
     return frames
   }
 
   var minimumSize: CGSize {
 
-    var size = RemoteElementView.minimumSize
+    var size = RemoteElementView.MinimumSize
 
     if subelementViews.count > 0 {
 
@@ -607,7 +621,7 @@ class RemoteElementView: UIView {
       var tmpAxisIntervals: [HalfOpenInterval<CGFloat>] = []
       for interval in xAxisIntervals {
         if overlaps(tmpInterval, interval) {
-          tmpInterval.end = interval.end
+          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
         } else {
           tmpAxisIntervals.append(tmpInterval)
           tmpInterval = interval
@@ -620,7 +634,7 @@ class RemoteElementView: UIView {
       tmpAxisIntervals.removeAll()
       for interval in yAxisIntervals {
         if overlaps(tmpInterval, interval) {
-          tmpInterval.end = interval.end
+          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
         } else {
           tmpAxisIntervals.append(tmpInterval)
           tmpInterval = interval
@@ -632,7 +646,7 @@ class RemoteElementView: UIView {
       size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
       size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
 
-      if proportionLock { size = bounds.size.aspectMappedToSize(size, false) }
+      if proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
 
     }
 
@@ -640,12 +654,15 @@ class RemoteElementView: UIView {
   }
 
   var maximumSize: CGSize {
-    var size = superview.bounds.size
-    if proportionLock { size = bounds.size.aspectMappedToSize(size, true) }
+    var size = superview?.bounds.size ?? CGSize.zeroSize
+    if proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
     return size
   }
 
-  override var backgroundColor: UIColor? { return super.backgroundColor ?? model?.backgroundColor }
+  override var backgroundColor: UIColor? {
+    get { return super.backgroundColor ?? model?.backgroundColor }
+    set { super.backgroundColor = newValue }
+  }
 
   override func setNeedsDisplay() {
     super.setNeedsDisplay()
@@ -661,7 +678,7 @@ class RemoteElementView: UIView {
   var key: String? { return model.key }
   var name: String? { return model.name }
   var proportionLock: Bool { return model.proportionLock }
-  var currentMode: String { return modle.currentMode }
+  var currentMode: String { return model.currentMode }
 
   /**
   subscript:
@@ -670,9 +687,9 @@ class RemoteElementView: UIView {
 
   :returns: RemoteElementView?
   */
-  subscript(key: String) -> RemoteElementView? {
+  override subscript(key: String) -> RemoteElementView? {
     if model.isIdentifiedByString(key) { return self }
-    else { return subelementViews.filter{$0.model.isIdentifiedByString()}.first }
+    else { return subelementViews.filter{$0.model.isIdentifiedByString(key)}.first }
   }
 
   /**
@@ -689,7 +706,7 @@ class RemoteElementView: UIView {
   var parentElementView: RemoteElementView? { return (superview as? SubelementsView)?.superview as? RemoteElementView }
 
   var model: RemoteElement!
-  var subelementViews: [RemoteElementView] { return subelementsView.subviews }
+  var subelementViews: [RemoteElementView] { return subelementsView.subviews as? [RemoteElementView] ?? [] }
 
   /**
   addSubelementViews:
@@ -757,7 +774,7 @@ class RemoteElementView: UIView {
   :param: index Int
   */
   func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
-    subelementsView.insertSubview(subelementView atIndex: index)
+    subelementsView.insertSubview(subelementView, atIndex: index)
   }
 
   /**
@@ -770,9 +787,9 @@ class RemoteElementView: UIView {
     subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
   }
 
-  var locked = false { didSet { apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked} } }
+  var locked: Bool = false { didSet { apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked} } }
   var editingMode: REEditingMode = .NotEditing { didSet { apply(subelementViews){$0.editingMode = self.editingMode} } }
-  var isEditing: Bool { return model.elementType & editingMode == editingMode }
+  var isEditing: Bool { return model.elementType.rawValue & editingMode.rawValue == editingMode.rawValue }
   var editingState: REEditingState = .NotEditing {
     didSet {
       overlayView.showAlignmentIndicators = editingState == .Moving
@@ -784,10 +801,11 @@ class RemoteElementView: UIView {
         case .Focus: color = UIColor.redColor()
         default: color = UIColor.clearColor()
       }
+      overlayView.refreshBoundary()
       UIView.animateWithDuration(1.0) {
         self.overlayView.boundaryColor = color
-        overlayView.setNeedsDisplay()
-        overlayView.displayIfNeeded()
+        self.overlayView.layer.setNeedsDisplay()
+        self.overlayView.layer.displayIfNeeded()
       }
     }
   }
@@ -806,9 +824,9 @@ class RemoteElementView: UIView {
   :param: translation CGPoint
   */
   func translateSubelements(subelementViews: NSSet, translation: CGPoint) {
-    model.constraintManager.translateSubelements((subelementViews.allObjects as [RemoteElementView]).map{$0.model},
+    model.constraintManager.translateSubelements(NSSet(array: (subelementViews.allObjects as [AnyObject]).map{($0 as RemoteElementView).model}),
                                      translation: translation,
-                                         metrics: viewFrames)
+                                         metrics: viewFrames as [NSObject:AnyObject])
     if shrinkwrap { model.constraintManager.shrinkWrapSubelements(viewFrames) }
     apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
@@ -821,7 +839,7 @@ class RemoteElementView: UIView {
   :param: scale CGFloat
   */
   func scaleSubelement(subelementViews: NSSet, scale: CGFloat) {
-    for subelementView in subelementViews {
+    for subelementView in subelementViews.allObjects as [RemoteElementView] {
       let maxSize = subelementView.maximumSize
       let minSize = subelementView.minimumSize
       let scaledSize = subelementsView.bounds.size * scale
@@ -844,7 +862,7 @@ class RemoteElementView: UIView {
   :param: attribute NSLayoutAttribute
   */
   func alignSubelements(subelementViews: NSSet, toSibling siblingView: RemoteElementView, attribute: NSLayoutAttribute) {
-    model.constraintManager.alignSubelements((subelementViews.allObjects as [RemoteElementView]).map{$0.model},
+    model.constraintManager.alignSubelements(NSSet(array: (subelementViews.allObjects as [AnyObject]).map{($0 as RemoteElementView).model}),
                                   toSibling: siblingView.model,
                                   attribute: attribute,
                                     metrics: viewFrames)
@@ -862,7 +880,7 @@ class RemoteElementView: UIView {
   :param: attribute NSLayoutAttribute
   */
   func resizeSubelements(subelementViews: NSSet, toSibling siblingView: RemoteElementView, attribute: NSLayoutAttribute) {
-    model.constraintManager.resizeSubelements((subelementViews.allObjects as [RemoteElementView]).map{$0.model},
+    model.constraintManager.resizeSubelements(NSSet(array: (subelementViews.allObjects as [AnyObject]).map{($0 as RemoteElementView).model}),
                                     toSibling: siblingView.model,
                                     attribute: attribute,
                                       metrics: viewFrames)
@@ -871,60 +889,30 @@ class RemoteElementView: UIView {
     setNeedsUpdateConstraints()
   }
 
-  func scale(scale: CGFloat) {
-    //TODO: Fill out stub
-  }
+ /**
+ scale:
 
-  var appearanceDescriptionDictionary: MSDictionary {
-    let element = model.faultedObject
-    let appearanceDictionary = MSDictionary()
-    appearanceDictionary.setValue(NSStringFromREShape(element.shape), forKey:"shape")
-    appearanceDictionary.setValue(NSStringFromREStyle(element.style), forKey:"style")
-    appearanceDictionary.setValue(namedModelObjectDescription(element.backgroundImage), forKey:"backgroundImage")
-    appearanceDictionary.setValue("\(element.backgroundImageAlpha)", forKey:"backgroundImageAlpha")
-    appearanceDictionary.setValue(NSStringFromUIColor(element.backgroundColor), forKey:"backgroundColor")
-    appearanceDictionary.setValue("\(element.proportionLock)", forKey:"proportionLock")
-    return (MSDictionary *)appearanceDictionary;
-  }
-
-  var appearanceDescription: String {
-    //TODO: Fill out stub
-    return ""
-  }
-  var framesDescription: String {
-    //TODO: Fill out stub
-    return ""
-  }
-  var constraintsDescription: String {
-    //TODO: Fill out stub
-    return ""
-  }
-  var viewConstraintsDescription: String {
-    //TODO: Fill out stub
-    return ""
-  }
-  var modelConstraintsDescription: String {
-    //TODO: Fill out stub
-    return ""
-  }
-
-  // func prettyRemoteElementConstraint(constraint: NSLayoutConstraint) -> String { return "" }
+ :param: scale CGFloat
+ */
+ func scale(scale: CGFloat) {
+   model.constraintManager.resizeElement(model,
+                               fromSize: bounds.size,
+                                 toSize: bounds.size * (scale / appliedScale),
+                                metrics: viewFrames)
+   appliedScale = scale
+   setNeedsUpdateConstraints()
+ }
 
   /** attachGestureRecognizers */
   func attachGestureRecognizers() {}
 
   /** registerForChangeNotification */
   func registerForChangeNotification() {
-    if model != nil {
-      kvoReceptionists = [:]
-      for (keyPath, block) in kvoRegistration() {
-        kvoReceptionists[keyPath] = MSKVOReceptionist(observer: self,
-                                                      forObject: model,
-                                                      keyPath: keyPath,
-                                                      options: NSKeyValueObservingOptionNew,
-                                                      queue: NSOperationQueue.mainQueue(),
-                                                      handler: block)
-      }
+    precondition(model != nil, "why are we calling this without a valid model object?")
+    kvoReceptionists = map(kvoRegistration()) {
+      (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
+        MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
+                                             queue: NSOperationQueue.mainQueue(), handler: value)
     }
   }
 
@@ -943,21 +931,21 @@ class RemoteElementView: UIView {
   func initializeViewFromModel() {
     super.backgroundColor = model.backgroundColor
     refreshBorderPath()
-    for element in model.subelements { addSubelementView(RemoteElementView.viewWithModel(element)) }
+    for element in model.subelements.array as [RemoteElement] { addSubelementView(self.dynamicType.viewWithModel(element)) }
   }
 
-  var kvoReceptionists: [String:MSKVOReceptionist] = []
+  var kvoReceptionists: [String:MSKVOReceptionist] = [:]
 
-  func kvoRegistration() -> [String:(MSKVOReceptionist) -> Void] {
-    var registry: [String:(MSKVOReceptionist) -> Void] = [:]
+  func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+    var registry: [String:(MSKVOReceptionist!) -> Void] = [:]
     registry["constraints"] = {
-      (receptionist: MSKVOReceptionist) -> Void in
+      (receptionist: MSKVOReceptionist!) -> Void in
         if let v = receptionist.observer as? RemoteElementView {
           v.setNeedsUpdateConstraints()
         }
     }
     registry["backgroundColor"] = {
-      (receptionist: MSKVOReceptionist) -> Void in
+      (receptionist: MSKVOReceptionist!) -> Void in
         if let v = receptionist.observer as? RemoteElementView {
           if let color = receptionist.change[NSKeyValueChangeNewKey] as? UIColor {
             v.backgroundColor = color
@@ -967,19 +955,19 @@ class RemoteElementView: UIView {
         }
     }
     registry["backgroundImage"] = {
-      (receptionist: MSKVOReceptionist) -> Void in
+      (receptionist: MSKVOReceptionist!) -> Void in
         if let v = receptionist.observer as? RemoteElementView {
           v.setNeedsDisplay()
         }
     }
     registry["style"] = {
-      (receptionist: MSKVOReceptionist) -> Void in
+      (receptionist: MSKVOReceptionist!) -> Void in
         if let v = receptionist.observer as? RemoteElementView {
           v.setNeedsDisplay()
         }
     }
     registry["shape"] = {
-      (receptionist: MSKVOReceptionist) -> Void in
+      (receptionist: MSKVOReceptionist!) -> Void in
         if let v = receptionist.observer as? RemoteElementView {
           v.refreshBorderPath()
         }
@@ -1012,16 +1000,17 @@ class RemoteElementView: UIView {
       UIGraphicsPopContext()
     } else if borderPath != nil {
       UIGraphicsPushContext(ctx)
-      backgroundColor.setFill()
+      backgroundColor?.setFill()
       borderPath!.fill()
       UIGraphicsPopContext()
     }
     if model.backgroundImage != nil {
-      let image = model.backgroundImage!.image
-      if rect.size <= image.size {
-        image.drawInRect(rect)
-      } else {
-        image.drawAsPatternInRect(rect)
+      if let image = model.backgroundImage!.image {
+        if rect.size <= image.size {
+          image.drawInRect(rect)
+        } else {
+          image.drawAsPatternInRect(rect)
+        }
       }
     }
   }
@@ -1036,19 +1025,19 @@ class RemoteElementView: UIView {
     let path = borderPath != nil ? UIBezierPath(CGPath: borderPath!.CGPath) : UIBezierPath(rect: rect)
     UIGraphicsPushContext(ctx)
     path.addClip()
-    let style = model.style & REStyle.ApplyGloss
+    let style = model.style & REStyle.StyleApplyGloss
     switch style {
-      case REStyle.GlossStyle1:
+      case REStyle.StyleGlossStyle1:
         MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: 0.0)
-      case REStyle.GlossStyle2:
+      case REStyle.StyleGlossStyle2:
         MSPainter.drawRoundedRectButtonOverlayInContext(ctx, shineColor: nil, frame: rect)
-      case REStyle.GlossStyle3:
+      case REStyle.StyleGlossStyle3:
         MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: 0.8)
-      case REStyle.GlossStyle4:
+      case REStyle.StyleGlossStyle4:
         MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: -0.8)
       default: break
     }
-    if model.style & REStyle.DrawBorder != 0 {
+    if (model.style & REStyle.StyleDrawBorder).rawValue != 0 {
       path.lineWidth = 3.0
       path.lineJoinStyle = kCGLineJoinRound
       UIColor.blackColor().setStroke()
@@ -1160,61 +1149,5 @@ class RemoteElementView: UIView {
     set { overlayView.clipsToBounds = newValue }
   }
 
-  /**
-  willResizeViews:
-
-  :param: views NSSet
-  */
-  func willResizeViews(views: NSSet) {}
-
-  /**
-  didResizeViews:
-
-  :param: views NSSet
-  */
-  func didResizeViews(views: NSSet) {}
-
-  /**
-  willScaleViews:
-
-  :param: views NSSet
-  */
-  func willScaleViews(views: NSSet) {}
-
-  /**
-  didScaleViews:
-
-  :param: views NSSet
-  */
-  func didScaleViews(views: NSSet) {}
-
-  /**
-  willAlignViews:
-
-  :param: views NSSet
-  */
-  func willAlignViews(views: NSSet) {}
-
-  /**
-  didAlignViews:
-
-  :param: views NSSet
-  */
-  func didAlignViews(views: NSSet) {}
-
-  /**
-  willTranslateViews:
-
-  :param: views NSSet
-  */
-  func willTranslateViews(views: NSSet) {}
-
-  /**
-  didTranslateViews:
-
-  :param: views NSSet
-  */
-  func didTranslateViews(views: NSSet) {}
-
-
 }
+

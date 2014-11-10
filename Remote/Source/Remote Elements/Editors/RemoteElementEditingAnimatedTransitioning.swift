@@ -10,12 +10,6 @@ import Foundation
 import UIKit
 import MoonKit
 
-extension UIView {
-  subscript(nametag: String) -> UIView? {
-    return viewWithNametag(nametag)
-  }
-}
-
 class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
 
   let forDismissal: Bool
@@ -30,27 +24,71 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
   private func snapshotFromRemoteElementView(elementView: RemoteElementView) -> UIImage {
     let editingState = elementView.editingState
     elementView.editingState = .NotEditing
-    UIGraphicsBeginImageContextWithOptions(elementView.bounds.size, false, 0.0)
-    elementView.layer.renderInContext(UIGraphicsGetCurrentContext())
-    let layerImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIEdgeInsets
-    UIGraphicsEndImageContext()
-    let rect = CGRect(origin: CGPoint.zeroPoint, size: CGSize.zeroSize)
+    let image = snapshotFromView(elementView)
     elementView.editingState = editingState
-    return layerImage
+    return image
   }
 
   /**
-  snapshotViewFromRemoteElementView:
+  snapshotFromView:
+
+  :param: view UIView
+
+  :returns: UIImage
+  */
+  private func snapshotFromView(view: UIView) -> UIImage {
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0.0)
+    view.layer.renderInContext(UIGraphicsGetCurrentContext())
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+  }
+
+  /**
+  snapshotViewFromRemoteElementView:frame:excludingSubview:
 
   :param: elementView RemoteElementView
+  :param: frame CGRect? = nil
+  :param: subview RemoteElementView? = nil
 
   :returns: UIImageView
   */
-  private func snapshotViewFromRemoteElementView(elementView: RemoteElementView) -> UIImageView {
-    let snapshotView = UIImageView(image: snapshotFromRemoteElementView(elementView))
-    snapshotView.frame = elementView.frame
+  private func snapshotViewFromRemoteElementView(elementView: RemoteElementView,
+                                           frame: CGRect? = nil,
+                                excludingSubview subview: RemoteElementView? = nil) -> UIImageView
+  {
+
+    var image: UIImage
+
+    if subview == nil {
+      image = snapshotFromRemoteElementView(elementView)
+    } else {
+      let backdropImage = snapshotFromView(elementView.subviews[0] as UIView)
+      let contentImage = snapshotFromView(elementView.subviews[1] as UIView)
+      var subelementImages: [(UIImage, CGRect)?] = []
+      for subelementView in elementView.subelementViews {
+        if subelementView == subview! { subelementImages.append(nil) }
+        else { subelementImages.append((snapshotFromRemoteElementView(subelementView), subelementView.frame)) }
+      }
+      let overlayImage = snapshotFromView(elementView.subviews[3] as UIView)
+      UIGraphicsBeginImageContextWithOptions(elementView.bounds.size, false, 0.0)
+      backdropImage.drawInRect(elementView.bounds)
+      contentImage.drawInRect(elementView.bounds)
+      for subelementImage in subelementImages {
+        if let (img, rect) = subelementImage {
+          img.drawInRect(rect)
+        }
+      }
+      image = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+    }
+
+
+    let snapshotView = UIImageView(image: image)
+    snapshotView.frame = frame ?? elementView.frame
+
     return snapshotView
+
   }
 
   /**
@@ -97,38 +135,41 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
   {
 
     let containerView = transitionContext.containerView()
+    let dismissedSourceView = dismissedController.sourceView
+    let subelementView = presentingController.presentedSubelementView!
+    let presentingSourceView = presentingController.sourceView
 
-    let subelementViewSnapshot = snapshotViewFromRemoteElementView(dismissedController.sourceView)
+    let subelementViewSnapshot = snapshotViewFromRemoteElementView(dismissedSourceView)
     containerView.addSubview(subelementViewSnapshot)
+
+    var finalFrame = subelementView.frame
+    finalFrame.origin += presentingSourceView.frame.origin
 
     dismissedController.view.removeFromSuperview()
 
-    UIView.animateWithDuration(transitionDuration(transitionContext) * 0.8,
-      delay: 0.0,
-      usingSpringWithDamping: 1.0,
-      initialSpringVelocity: 1.0,
+    UIView.animateWithDuration(transitionDuration(transitionContext) * 0.2,
+      delay: transitionDuration(transitionContext) * 0.2,
       options: nil,
       animations: {
-        subelementViewSnapshot.frame = presentingController.presentedSubelementView!.frame
-        containerView["chrome"]?["effectMask"]?.alpha = 0.0
+        _ = containerView["chrome"]?["effectMask"]?.alpha = 0.0
+      },
+      completion: nil)
+
+    UIView.animateWithDuration(transitionDuration(transitionContext),
+      delay: 0.0,
+      usingSpringWithDamping: 0.5,
+      initialSpringVelocity: 0.5,
+      options: nil,
+      animations: {
+        subelementViewSnapshot.frame = finalFrame
       }) {
         (didComplete: Bool) -> Void in
           _ = presentingController.presentedSubelementView?.hidden = false
           subelementViewSnapshot.removeFromSuperview()
           containerView["chrome"]?.removeFromSuperview()
-         transitionContext.completeTransition(didComplete)
+          subelementView.hidden = false
+          transitionContext.completeTransition(didComplete)
     }
-
-    // UIView.animateWithDuration(transitionDuration(transitionContext) * 0.2,
-    //   delay: transitionDuration(transitionContext) * 0.8,
-    //   usingSpringWithDamping: 1.0,
-    //   initialSpringVelocity: 0.5,
-    //   options: nil,
-    //   animations: {
-    //     _ = containerView["chrome"]?["effectMask"]?.alpha = 0.0
-    //   },
-    //   completion: nil)
-
 
   }
 
@@ -144,53 +185,78 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
                         transitionContext: UIViewControllerContextTransitioning)
   {
 
-
+    // Get the containing view for the presentation
     let containerView = transitionContext.containerView()
+
+    // Get the view to present
     let toView = presentedController.view
+
+    // Get the view being presented over
     let fromView = presentingController.view
 
+    // Get the view for the remote element being presented over
+    let sourceView = presentingController.sourceView
+
+    // Get the presenting controller's view for the subelement being presented
+    let subelementView = presentingController.presentedSubelementView!
+
+    // Create a view to serve as a blurry backdrop beneath the presented view
     let chrome = UIView(frame: containerView.bounds)
     chrome.nametag = "chrome"
     containerView.addSubview(chrome)
 
+    // Create a view to add to the backdrop for wrapping an effect view so we can control the opacity
     let effectMask = UIView(frame: containerView.bounds, nametag: "effectMask")
-    effectMask.alpha = 0.0
+    effectMask.alpha = 0.0  // Hide effect initially
     chrome.addSubview(effectMask)
 
-    effectMask.addSubview(snapshotViewFromRemoteElementView(presentingController.sourceView))
+    // Create a snapshot of the source view minus the subelement to present and add to backdrop
+    let sourceViewSnapshot = snapshotViewFromRemoteElementView(sourceView, excludingSubview: subelementView)
+    effectMask.addSubview(sourceViewSnapshot)
 
+    // Create an effect view to blur the source view snapshot
     let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
     effectView.frame = effectMask.bounds
     effectMask.addSubview(effectView)
 
+    // Add the view being presented to the container
     containerView.addSubview(toView)
 
-    let subelementViewSnapshot = snapshotViewFromRemoteElementView(presentingController.presentedSubelementView!)
-    containerView.addSubview(subelementViewSnapshot)
+    // Calculate the initial frame for a subelement view standin
+    var initialFrame = subelementView.frame
+    initialFrame.origin += sourceView.frame.origin
 
+    // Calculate the final from for the subelement view standin
+    let finalFrame = initialFrame.rectWithCenter(toView.bounds.center)
+
+    // Hide the presented subelement's view in the presented controller
     presentedController.sourceView.hidden = true
 
-    // UIView.animateWithDuration(transitionDuration(transitionContext) * 0.2,
-    //   animations: {
-    //     if let view = presentingController.presentedSubelementView {
-    //       view.editingState = .NotEditing
-    //     }
-    //   }) { _ in _ =  presentingController.presentedSubelementView?.hidden = true }
+    // Create a snapshot of the presented subelement to animate and add to container
+    let subelementViewSnapshot = snapshotViewFromRemoteElementView(subelementView, frame: initialFrame)
+    containerView.addSubview(subelementViewSnapshot)
 
+    // Hide the presented subelement in the presenting controller
+    subelementView.hidden = true
+
+    // Animate
+    UIView.animateWithDuration(transitionDuration(transitionContext) * 0.2,
+      animations: {
+        effectMask.alpha = 1.0  // Fade in backdrop
+      })
 
     UIView.animateWithDuration(transitionDuration(transitionContext),
       delay: 0.0,
-      usingSpringWithDamping: 1.0,
+      usingSpringWithDamping: 0.5,
       initialSpringVelocity: 0.5,
       options: nil,
       animations: {
-        effectMask.alpha = 1.0
-        subelementViewSnapshot.frame = subelementViewSnapshot.frame.rectWithCenter(toView.bounds.center)
+        subelementViewSnapshot.frame = finalFrame // Translate subelement view standin
       }) {
         (didComplete: Bool) -> Void in
-          presentedController.sourceView.hidden = false
-          subelementViewSnapshot.removeFromSuperview()
-          transitionContext.completeTransition(didComplete)
+          presentedController.sourceView.hidden = false // Reveal subelement view in presented controller
+          subelementViewSnapshot.removeFromSuperview()  // Remove the subelement view standin
+          transitionContext.completeTransition(didComplete)  // Complete transition
     }
  }
 

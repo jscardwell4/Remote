@@ -8,6 +8,12 @@
 
 import Foundation
 
+public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
+  var result: [K:U] = [:]
+  for (key, value) in dict { result[key] = block(key, value) }
+  return result
+}
+
 /**
 advance:amount:
 

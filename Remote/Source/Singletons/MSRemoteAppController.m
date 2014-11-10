@@ -349,18 +349,6 @@ static const int msLogContext = 0;
   [self showViewController:editorVC];
 }
 
-/// remoteElementEditorDidCancel:
-/// @param editor
-- (void)remoteElementEditorDidCancel:(RemoteElementEditingViewController *)editor {
-  [self dismissViewController:editor completion:nil];
-}
-
-/// remoteElementEditorDidSave:
-/// @param editor
-- (void)remoteElementEditorDidSave:(RemoteElementEditingViewController *)editor {
-  [self dismissViewController:editor completion:nil];
-}
-
 /// editorDidCancel:
 /// @param editor
 - (void)editorDidCancel:(RemoteElementEditingController *)editor {

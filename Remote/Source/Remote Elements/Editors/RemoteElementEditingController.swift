@@ -112,7 +112,7 @@ class RemoteElementEditingController: UIViewController {
 
   var sourceView: RemoteElementView!
   var sourceViewCenterYConstraint: NSLayoutConstraint!
-  var sourceViewPresentationSize: CGSize?
+  var sourceViewSize: CGSize?
 
   var selectedViews: OrderedSet<RemoteElementView> = []
 
@@ -208,13 +208,13 @@ class RemoteElementEditingController: UIViewController {
 
   :param: subelement RemoteElement The element to edit
   */
-  func openSubelementInEditor(subelement: RemoteElement) {
-    let controller = RemoteElementEditingController.editingControllerForElement(subelement)
-    controller.delegate = self
-    transitioningDelegate = editingTransitioningDelegate
-    controller.transitioningDelegate = editingTransitioningDelegate
-    presentViewController(controller, animated: true, completion: nil)
-  }
+  // func openSubelementInEditor(subelement: RemoteElement) {
+  //   let controller = RemoteElementEditingController.editingControllerForElement(subelement)
+  //   controller.delegate = self
+  //   transitioningDelegate = editingTransitioningDelegate
+  //   controller.transitioningDelegate = editingTransitioningDelegate
+  //   presentViewController(controller, animated: true, completion: nil)
+  // }
 
   /// MARK: Aligning
   ////////////////////////////////////////////////////////////////////////////////
@@ -410,16 +410,28 @@ class RemoteElementEditingController: UIViewController {
 
   :returns: RemoteElementEditingController
   */
-  class func editingControllerForElement(element: RemoteElement) -> RemoteElementEditingController {
+  class func editingControllerForElement(element: RemoteElement, size: CGSize? = nil) -> RemoteElementEditingController {
     if let remote = element as? Remote {
-      return editingControllerForElement(remote)
+      return editingControllerForElement(remote, size: size)
     } else if let buttonGroup = element as? ButtonGroup {
-      return editingControllerForElement(buttonGroup)
+      return editingControllerForElement(buttonGroup, size: size)
     } else if let button = element as? Button {
-      return editingControllerForElement(button)
+      return editingControllerForElement(button, size: size)
     } else {
-      return RemoteElementEditingController(element: element)
+      return RemoteElementEditingController(element: element, size: nil)
     }
+  }
+
+  /**
+  editingControllerForElement:size:
+
+  :param: element Remote
+  :param: size CGSize? = nil
+
+  :returns: RemoteElementEditingController
+  */
+  class func editingControllerForElement(element: Remote, size: CGSize? = nil) -> RemoteElementEditingController {
+    return RemoteEditingController(element: element, size: size)
   }
 
   /**
@@ -431,7 +443,19 @@ class RemoteElementEditingController: UIViewController {
   */
   @objc(editingControllerForRemote:)
   class func editingControllerForElement(element: Remote) -> RemoteElementEditingController {
-    return RemoteEditingController(element: element)
+    return RemoteEditingController(element: element, size: nil)
+  }
+
+  /**
+  editingControllerForElement:size:
+
+  :param: element ButtonGroup
+  :param: size CGSize? = nil
+
+  :returns: RemoteElementEditingController
+  */
+  class func editingControllerForElement(element: ButtonGroup, size: CGSize? = nil) -> RemoteElementEditingController {
+    return ButtonGroupEditingController(element: element, size: size)
   }
 
   /**
@@ -443,7 +467,19 @@ class RemoteElementEditingController: UIViewController {
   */
   @objc(editingControllerForButtonGroup:)
   class func editingControllerForElement(element: ButtonGroup) -> RemoteElementEditingController {
-    return ButtonGroupEditingController(element: element)
+    return ButtonGroupEditingController(element: element, size: nil)
+  }
+
+  /**
+  editingControllerForElement:size:
+
+  :param: element Button
+  :param: size CGSize? = nil
+
+  :returns: RemoteElementEditingController
+  */
+  class func editingControllerForElement(element: Button, size: CGSize? = nil) -> RemoteElementEditingController {
+    return ButtonEditingController(element: element, size: size)
   }
 
   /**
@@ -455,7 +491,7 @@ class RemoteElementEditingController: UIViewController {
   */
   @objc(editingControllerForButton:)
   class func editingControllerForElement(element: Button) -> RemoteElementEditingController {
-    return ButtonEditingController(element: element)
+    return ButtonEditingController(element: element, size: nil)
   }
 
   /**
@@ -463,8 +499,17 @@ class RemoteElementEditingController: UIViewController {
 
   :param: element RemoteElement
   */
-  required init(element: RemoteElement) {
+  convenience init(element: RemoteElement) { self.init(element: element, size: nil) }
+
+  /**
+  initWithElement:size:
+
+  :param: element RemoteElement
+  :param: size CGSize? = nil
+  */
+  required init(element: RemoteElement, size: CGSize? = nil) {
     super.init()
+    sourceViewSize = size
     context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: element.managedObjectContext!)
     context.performBlockAndWait {
       self.changedModelValues = element.changedValues()
@@ -730,8 +775,6 @@ class RemoteElementEditingController: UIViewController {
     }
   }
 
-  // - (IBAction)toggleSelected:(UIButton *)sender { sender.selected = !sender.selected; }
-
   /**
   handleSelection:
 
@@ -814,6 +857,7 @@ class RemoteElementEditingController: UIViewController {
 
     // Create the source view
     sourceView = self.dynamicType.elementClass()(model: remoteElement)
+    if let size = sourceViewSize { sourceView.constrainToSize(size) }
     sourceView.editingMode = self.dynamicType.editingModeForElement()
     view.addSubview(sourceView)
 
@@ -965,7 +1009,7 @@ class RemoteElementEditingController: UIViewController {
   }
 
   /** viewDidLayoutSubviews */
-  override func viewDidLayoutSubviews() { updateBoundaryLayer(); MSLogDebug(view.framesDescription()) }
+  override func viewDidLayoutSubviews() { updateBoundaryLayer() }
 
   /**
   canBecomeFirstResponder
@@ -1138,16 +1182,22 @@ extension RemoteElementEditingController {
 
   /** editBackground */
   func editBackground() {
-    let bgEditor = StoryboardProxy.backgroundEditingViewController()
-    bgEditor.subject = remoteElement
-    presentViewController(bgEditor, animated: true, completion: nil)
+//    let bgEditor = StoryboardProxy.backgroundEditingViewController()
+//    bgEditor.subject = remoteElement
+//    presentViewController(bgEditor, animated: true, completion: nil)
   }
 
   /** editSubelement */
   func editSubelement() {
     if let subelementView = selectedViews.first {
       presentedSubelementView = subelementView
-      openSubelementInEditor(subelementView.model)
+      let model = subelementView.model
+      let size = subelementView.bounds.size
+      let controller = RemoteElementEditingController.editingControllerForElement(model, size: size)
+      controller.delegate = self
+      transitioningDelegate = editingTransitioningDelegate
+      controller.transitioningDelegate = editingTransitioningDelegate
+      presentViewController(controller, animated: true, completion: nil)
     }
   }
 

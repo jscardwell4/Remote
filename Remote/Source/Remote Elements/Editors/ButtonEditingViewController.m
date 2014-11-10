@@ -7,7 +7,7 @@
 //
 #import "RemoteElementEditingViewController_Private.h"
 #import "Button.h"
-#import "RemoteElementView.h"
+//#import "RemoteElementView.h"
 #import "StoryboardProxy.h"
 #import "Remote-Swift.h"
 
@@ -160,17 +160,17 @@ presentedControlState = _presentedControlState;
     UIControlState   toggledState;
 
     if (checkbox == self.selectedStateCheckbox) {
-        self.buttonView.model.selected = checked;
+        ((Button *)self.buttonView.model).selected = checked;
         toggledState = UIControlStateSelected;
         if (checked) _presentedControlState |= toggledState;
         else _presentedControlState &= ~toggledState;
     } else if (checkbox == self.highlightedStateCheckbox) {
-        self.buttonView.model.highlighted = checked;
+        ((Button *)self.buttonView.model).highlighted = checked;
         toggledState = UIControlStateHighlighted;
         if (checked) _presentedControlState |= toggledState;
         else _presentedControlState &= ~toggledState;
     } else if (checkbox == self.disabledStateCheckbox) {
-        self.buttonView.model.enabled = !checked;
+        ((Button *)self.buttonView.model).enabled = !checked;
         toggledState = UIControlStateDisabled;
         if (checked) _presentedControlState |= toggledState;
         else _presentedControlState &= ~toggledState;

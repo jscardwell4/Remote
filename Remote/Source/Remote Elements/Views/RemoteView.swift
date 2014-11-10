@@ -24,10 +24,10 @@ class RemoteView: RemoteElementView {
 
 	/** initializeIVARs */
 	override func initializeIVARs() {
-		setContentCompressionResistancePriority(.Required, forAxis: .Horizontal)
-		setContentCompressionResistancePriority(.Required, forAxis: .Vertical)
-		setContentHuggingPriority(.Required, forAxis: .Horizontal)
-		setContentHuggingPriority(.Required, forAxis: .Vertical)
+		setContentCompressionResistancePriority(1000.0, forAxis: .Horizontal)
+		setContentCompressionResistancePriority(1000.0, forAxis: .Vertical)
+		setContentHuggingPriority(1000.0, forAxis: .Horizontal)
+		setContentHuggingPriority(1000.0, forAxis: .Vertical)
 		super.initializeIVARs()
 	}
 

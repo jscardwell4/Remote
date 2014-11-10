@@ -18,7 +18,6 @@ MSEXTERN CGSize const REMinimumSize;
 
 @class REViewSubelements, REViewContent, REViewBackdrop, REViewOverlay, RELabelView;
 
-
 #pragma mark Additional/modified properties
 ////////////////////////////////////////////////////////////////////////////////
 

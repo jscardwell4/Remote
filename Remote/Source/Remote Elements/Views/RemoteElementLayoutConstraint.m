@@ -7,7 +7,8 @@
 //
 #import "RemoteElementLayoutConstraint.h"
 #import "Constraint.h"
-#import "RemoteElementView.h"
+//#import "RemoteElementView.h"
+#import "Remote-Swift.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - RELayoutConstraint Implementation

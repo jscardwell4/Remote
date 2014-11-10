@@ -7,7 +7,7 @@
 //
 #import "NamedModelObject.h"
 #import "RETypedefs.h"
-#import "REBackgroundEditingViewController.h"
+//#import "REBackgroundEditingViewController.h"
 //#import "Constraint.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@
 MSEXTERN_STRING REDefaultMode;
 
 
-@interface RemoteElement : NamedModelObject <REEditableBackground>
+@interface RemoteElement : NamedModelObject
 
 // model backed properties
 @property (nonatomic, assign, readwrite) NSNumber              * tag;

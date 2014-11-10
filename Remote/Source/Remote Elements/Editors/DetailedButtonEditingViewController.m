@@ -8,7 +8,7 @@
 //
 #import "RemoteElementEditingViewController_Private.h"
 #import "Button.h"
-#import "RemoteElementView.h"
+//#import "RemoteElementView.h"
 #import "SelectionViewController.h"
 #import "IconEditingViewController.h"
 #import "StoryboardProxy.h"
@@ -82,9 +82,9 @@ editorState;
 }
 
 - (void)setButtonViewStateFromPresentedState {
-    _buttonView.model.highlighted = _editorState.presentedState & UIControlStateHighlighted;
-    _buttonView.model.selected    = _editorState.presentedState & UIControlStateSelected;
-    _buttonView.model.enabled     = !(_editorState.presentedState & UIControlStateDisabled);
+    ((Button *)_buttonView.model).highlighted = _editorState.presentedState & UIControlStateHighlighted;
+    ((Button *)_buttonView.model).selected    = _editorState.presentedState & UIControlStateSelected;
+    ((Button *)_buttonView.model).enabled     = !(_editorState.presentedState & UIControlStateDisabled);
 }
 
 - (IBAction)cancelAction:(id)sender {

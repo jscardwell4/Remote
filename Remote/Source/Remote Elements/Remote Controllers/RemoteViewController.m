@@ -7,7 +7,7 @@
 //
 
 #import "RemoteViewController.h"
-#import "RemoteElementView.h"
+//#import "RemoteElementView.h"
 #import "RemoteController.h"
 #import "SettingsManager.h"
 #import "ButtonGroup.h"
@@ -15,6 +15,7 @@
 #import "CoreDataManager.h"
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_CONSOLE);
@@ -48,7 +49,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
                                         handler:^(MSKVOReceptionist * receptionist) {
                                           Remote * remote = (Remote *)receptionist.change[NSKeyValueChangeNewKey];
                                           assert(remote && [remote isKindOfClass:[Remote class]]);
-                                          RemoteView * remoteView = [RemoteView viewWithModel:remote];
+                                          RemoteView * remoteView = [[RemoteView alloc] initWithModel:remote];
                                           RemoteViewController * viewController =
                                             (RemoteViewController *)receptionist.observer;
                                           [viewController insertRemoteView:remoteView];
@@ -90,7 +91,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
   [self initializeTopToolbar];
 
-  [self insertRemoteView:[RemoteView viewWithModel:self.remoteController.currentRemote]];
+  [self insertRemoteView:[[RemoteView alloc] initWithModel:self.remoteController.currentRemote]];
 
 }
 
@@ -231,7 +232,7 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
   ButtonGroup * topToolbar = self.remoteController.topToolbar;
   assert(topToolbar);
 
-  ButtonGroupView * topToolbarView = [ButtonGroupView viewWithModel:topToolbar];
+  ButtonGroupView * topToolbarView = [[ButtonGroupView alloc] initWithModel:topToolbar];
   assert(topToolbarView);
 
   [self.view addSubview:topToolbarView];

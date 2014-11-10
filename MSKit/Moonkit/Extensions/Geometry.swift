@@ -19,6 +19,9 @@ extension CGPoint {
 }
 
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y) }
+public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y) }
+public func -=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs - rhs }
+public func +=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs + rhs }
 
 extension CGSize {
   public init(square: CGFloat) { self = CGSize(width: square, height: square) }
@@ -92,6 +95,12 @@ extension CGRect {
   	if anchored { rect.offset(dx: midX - rect.midX, dy: midY - rect.midY) }
   	return rect
   }
+  public mutating func transform(transform: CGAffineTransform) {
+    self = rectByApplyingTransform(transform)
+  }
+  public func rectByApplyingTransform(transform: CGAffineTransform) -> CGRect {
+    return CGRectApplyAffineTransform(self, transform)
+  }
   public func rectWithHeight(height: CGFloat) -> CGRect {
   	return CGRect(origin: origin, size: CGSize(width: size.width, height: height))
   }
@@ -121,6 +130,14 @@ extension CGRect {
                   height: min(size.height + pushY + pullY, size.height))
   }
 }
+
+public func ∪(lhs: CGRect, rhs: CGRect) -> CGRect { return lhs.rectByUnion(rhs) }
+
+public func ∩(lhs: CGRect, rhs: CGRect) -> CGRect { return lhs.rectByIntersecting(rhs) }
+
+public func ∪=(inout lhs: CGRect, rhs: CGRect) { lhs.union(rhs) }
+
+public func ∩=(inout lhs: CGRect, rhs: CGRect) { lhs.intersect(rhs) }
 
 public func -(lhs: UIOffset, rhs: UIOffset) -> UIOffset {
 	return UIOffset(horizontal: lhs.horizontal - rhs.horizontal, vertical: lhs.vertical - rhs.vertical)

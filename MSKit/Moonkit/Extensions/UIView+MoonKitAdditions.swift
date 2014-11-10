@@ -41,4 +41,14 @@ public extension UIView {
   public func descriptionTree(properties: String ...) -> String {
   	return self.viewTreeDescriptionWithProperties(properties)
   }
+
+  /**
+  subscript:
+
+  :param: nametag String
+
+  :returns: UIView?
+  */
+  public subscript(nametag: String) -> UIView? { return viewWithNametag(nametag) }
+
 }

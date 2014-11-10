@@ -569,7 +569,7 @@ static inline NSString *NSStringFromRELayoutConstraintAffiliation(RELayoutConstr
   return [affiliations componentsJoinedByString:@"|"];
 }
 
-typedef NS_ENUM (uint8_t, RELayoutConfigurationDependencyType) {
+typedef NS_ENUM (NSInteger, RELayoutConfigurationDependencyType) {
   RELayoutConfigurationUnspecifiedDependency = REUnspecifiedRelation,
   RELayoutConfigurationParentDependency      = REChildRelationship,
   RELayoutConfigurationSiblingDependency     = RESiblingRelationship,

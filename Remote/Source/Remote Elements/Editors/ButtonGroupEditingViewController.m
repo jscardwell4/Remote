@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
-#import "RemoteElementView.h"
+//#import "RemoteElementView.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int   msLogContext = (LOG_CONTEXT_EDITOR|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
