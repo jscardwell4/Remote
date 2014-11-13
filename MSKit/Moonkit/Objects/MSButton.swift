@@ -13,6 +13,11 @@ public class MSButton: UIButton {
 
   private var backgroundColors: [UInt:UIColor?] = [0:nil, 1:nil, 2:nil, 3:nil, 4:nil, 5:nil, 6:nil, 7:nil]
 
+  public override init() { super.init() }
+
+  public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+
+
   /**
   setBackgroundColor:forState:
 
@@ -20,7 +25,7 @@ public class MSButton: UIButton {
   :param: state UIControlState
   */
   public func setBackgroundColor(color: UIColor?, forState state: UIControlState) {
-    if 0...7 ∋ state.rawValue {
+    if (0...7).contains(state.rawValue) {
       backgroundColors[state.rawValue] = color
       if state == self.state { backgroundColor = color }
     }

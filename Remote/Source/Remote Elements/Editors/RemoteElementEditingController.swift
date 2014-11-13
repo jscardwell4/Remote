@@ -8,12 +8,28 @@
 
 import Foundation
 import UIKit
+import CoreImage
 import MoonKit
 
 @objc protocol EditingDelegate: NSObjectProtocol {
   func editorDidCancel(editor: RemoteElementEditingController)
   func editorDidSave(editor: RemoteElementEditingController)
 }
+
+extension UIGestureRecognizerState: Printable {
+  public var description: String {
+    switch self {
+      case .Began: return "Began"
+      case .Possible: return "Possible"
+      case .Changed: return "Changed"
+      case .Ended: return "Ended"
+      case .Cancelled: return "Cancelled"
+      case .Failed: return "Failed"
+    }
+  }
+}
+
+extension RemoteElement: EditableBackground {}
 
 class RemoteElementEditingController: UIViewController {
 
@@ -35,9 +51,13 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Flag and state properties
   ////////////////////////////////////////////////////////////////////////////////
 
-  var movingSelectedViews = false
-  var snapToEnabled = false
-  var showSourceBoundary: Bool = true { didSet { sourceViewBoundsLayer.hidden = !showSourceBoundary } }
+  var movingSelectedViews: Bool = false {
+    didSet {
+      let editingState: REEditingState = movingSelectedViews ? .Moving : .Selected
+      apply(selectedViews){$0.editingState = editingState}
+      updateState()
+    }
+  }
   var popoverActive = false
   var presetsActive = false
   var menuState: MenuState = .Default
@@ -45,16 +65,14 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Geometry
   ////////////////////////////////////////////////////////////////////////////////
 
+  var appliedTranslation = CGPoint.zeroPoint
   var appliedScale: CGFloat = 1.0
-  var originalFrame = CGRect.zeroRect
-  var currentFrame = CGRect.zeroRect
   var longPressPreviousLocation = CGPoint.zeroPoint
   var contentRect = CGRect.zeroRect
   var startingPanOffset: CGFloat = 0.0
   let allowableSourceViewYOffset = ClosedInterval<CGFloat>(-44, 44)
   var maxSizeCache: [String:CGSize] = [:]
   var minSizeCache: [String:CGSize] = [:]
-  var startingOffsets: NSMutableDictionary?
 
   /// MARK: Bar button items
   ////////////////////////////////////////////////////////////////////////////////
@@ -90,8 +108,8 @@ class RemoteElementEditingController: UIViewController {
   weak var longPressGesture: UILongPressGestureRecognizer!
   weak var pinchGesture: UIPinchGestureRecognizer!
   weak var oneTouchDoubleTapGesture: UITapGestureRecognizer!
-  weak var multiselectGesture: MSMultiselectGestureRecognizer!
-  weak var anchoredMultiselectGesture: MSMultiselectGestureRecognizer!
+  weak var multiselectGesture: MultiselectGestureRecognizer!
+  weak var anchoredMultiselectGesture: MultiselectGestureRecognizer!
   weak var twoTouchPanGesture: UIPanGestureRecognizer!
   weak var toolbarLongPressGesture: UILongPressGestureRecognizer!
   // weak var oneTouchTapGesture: UITapGestureRecognizer?
@@ -112,15 +130,24 @@ class RemoteElementEditingController: UIViewController {
 
   var sourceView: RemoteElementView!
   var sourceViewCenterYConstraint: NSLayoutConstraint!
-  var sourceViewSize: CGSize?
-
+  weak var sourceViewWidthConstraint: NSLayoutConstraint?
+  weak var sourceViewHeightConstraint: NSLayoutConstraint?
+  var sourceViewSize: CGSize? {
+    didSet {
+      if sourceViewSize == nil {
+        if let c = sourceViewWidthConstraint {
+          sourceView.removeConstraint(c)
+          sourceViewWidthConstraint = nil
+        }
+        if let c = sourceViewHeightConstraint {
+          sourceView.removeConstraint(c)
+          sourceViewHeightConstraint = nil
+        }
+      }
+      // TODO: Handle updating this value for dynamic subelement movement
+    }
+  }
   var selectedViews: OrderedSet<RemoteElementView> = []
-
-  var sourceViewBoundsLayer: CAShapeLayer!
-
-  var selectionInProgress: [RemoteElementView] = []
-  var deselectionInProgress: [RemoteElementView] = []
-  var sourceViewBoundsObserver: MSKVOReceptionist?
 
   /// Methods
   ////////////////////////////////////////////////////////////////////////////////
@@ -159,37 +186,9 @@ class RemoteElementEditingController: UIViewController {
   Convenience method that calls the following additional methods:
   - `updateBarButtonItems`
   - `updateToolbarDisplayed`
-  - `updateBoundaryLayer`
   - `updateGesturesEnabled`
   */
-  func updateState() {
-    updateBarButtonItems()
-    updateToolbarDisplayed()
-    updateBoundaryLayer()
-    updateGesturesEnabled()
-  }
-
-  /** Updates whether `sourceViewBoundsLayer` is hidden and sets its `path` from `sourceView.frame`. */
-  func updateBoundaryLayer() {
-    sourceViewBoundsLayer.path = UIBezierPath(rect: sourceView.frame).CGPath
-    sourceViewBoundsLayer.hidden = !showSourceBoundary
-  }
-
-  /** updateGesturesEnabled */
-  func updateGesturesEnabled() {
-    let focused = focusView != nil
-    let selection = selectionCount > 0
-    longPressGesture.enabled = !focused
-    pinchGesture.enabled = selection
-    oneTouchDoubleTapGesture.enabled = !movingSelectedViews
-    multiselectGesture.enabled = !movingSelectedViews
-    anchoredMultiselectGesture.enabled = !movingSelectedViews
-
-    let sourceHeight = sourceView.bounds.size.height
-    let viewHeight = view.bounds.size.height
-    let boundarySize = length(allowableSourceViewYOffset)
-    twoTouchPanGesture.enabled = sourceHeight >= (viewHeight - boundarySize)
-  }
+  func updateState() { MSLogDebug(""); updateBarButtonItems(); updateToolbarDisplayed(); updateGesturesEnabled() }
 
   /**
   clearCacheForViews:
@@ -203,202 +202,6 @@ class RemoteElementEditingController: UIViewController {
     }
   }
 
-  /**
-  Opens the specified subelement in its Class-level editor.
-
-  :param: subelement RemoteElement The element to edit
-  */
-  // func openSubelementInEditor(subelement: RemoteElement) {
-  //   let controller = RemoteElementEditingController.editingControllerForElement(subelement)
-  //   controller.delegate = self
-  //   transitioningDelegate = editingTransitioningDelegate
-  //   controller.transitioningDelegate = editingTransitioningDelegate
-  //   presentViewController(controller, animated: true, completion: nil)
-  // }
-
-  /// MARK: Aligning
-  ////////////////////////////////////////////////////////////////////////////////
-
-  /** Override point for subclasses to perform additional work pre-alignment. */
-  func willAlignSelectedViews() {}
-
-  /**
-  Sends `alignSubelements:toSibling:attribute:` to the `sourceView` to perform actual alignment
-
-  :param: alignment `NSLayoutAttribute` to use when aligning the `selectedViews` to the `focusView`
-  */
-  func alignSelectedViews(alignment: NSLayoutAttribute) {
-    precondition(focusView != nil, "there must be a view to align to")
-    if let subelements = (selectedViews ∖ [focusView!]).NSSetValue {
-      willAlignSelectedViews()
-      sourceView.alignSubelements(subelements, toSibling: focusView!, attribute: alignment)
-      didAlignSelectedViews()
-    }
-  }
-
-  /** Override point for subclasses to perform additional work post-alignment. */
-  func didAlignSelectedViews() { clearCacheForViews(selectedViews) }
-
-  /// MARK: Resizing
-  ////////////////////////////////////////////////////////////////////////////////
-
-  /** Override point for subclasses to perform additional work pre-sizing. */
-  func willResizeSelectedViews() {}
-
-  /**
-  Sends `resizeSubelements:toSibling:attribute:` to the `sourceView` to perform actual resizing.
-
-  :param: axis `NSLayoutAttribute` specifying whether resizing should involve width or height
-  */
-  func resizeSelectedViews(axis: NSLayoutAttribute) {
-    precondition(focusView != nil, "there must be a view to resize to")
-    if let subelements = (selectedViews ∖ [focusView!]).NSSetValue {
-      willResizeSelectedViews()
-      sourceView.resizeSubelements(subelements, toSibling: focusView!, attribute: axis)
-      didResizeSelectedViews()
-    }
-  }
-
-  /** Override point for subclasses to perform additional work pre-sizing. */
-  func didResizeSelectedViews() {}
-
-  /// MARK: Scaling
-  ////////////////////////////////////////////////////////////////////////////////
-
-  /** Override point for subclasses to perform additional work pre-scaling. */
-  func willScaleSelectedViews() {}
-
-  /**
-  Performs a sanity check on the scale to be applied and then sends `scaleSubelements:scale:` to the `sourceView`
-  to perform actual scaling.
-
-  :param: scale CGFloat The scale to apply to the current selection
-
-  :returns: CGFloat The actual scale value applied to the current selection
-  */
-  func scaleSelectedViews(scale: CGFloat) -> CGFloat {
-
-    let isValid =  {
-      (view: RemoteElementView, size: CGSize, inout max: CGSize, inout min: CGSize) -> Bool in
-        let frame = view.convertRect(view.frame, toView: nil)
-        let cachedMax = self.maxSizeCache[view.uuid]
-        let cachedMin = self.minSizeCache[view.uuid]
-        if cachedMax != nil && cachedMin != nil {
-          max = cachedMax!
-          min = cachedMin!
-        } else {
-          let deltaSize = CGSizeGetDelta(frame.size, view.maximumSize)
-          let maximumSize = view.maximumSize
-          let maxFrame = CGRect(x: frame.origin.x + deltaSize.width / CGFloat(2),
-                                y: frame.origin.y + deltaSize.height / CGFloat(2),
-                                width: maximumSize.width,
-                                height: maximumSize.height)
-          if !self.contentRect.contains(maxFrame) {
-            let intersection = self.contentRect.rectByIntersecting(maxFrame)
-            let deltaMin = CGPointGetDeltaABS(frame.origin, intersection.origin)
-            let deltaMax = CGPointGetDeltaABS(CGPoint(x: frame.maxX, y: frame.maxY),
-                                                CGPoint(x: intersection.maxX, y: intersection.maxY))
-            max = CGSize(width: (frame.size.width + Swift.min(deltaMin.x, deltaMax.x) * CGFloat(2.0)),
-                         height: (frame.size.height + Swift.min(deltaMin.y, deltaMax.y) * CGFloat(2.0)))
-            if view.proportionLock {
-              if max.width < max.height {
-                max.height = frame.size.height / frame.size.width * max.width
-              } else {
-                max.width = frame.size.width / frame.size.height * max.height
-              }
-            }
-          } else {
-            max = view.maximumSize
-          }
-          min = view.minimumSize
-
-          self.maxSizeCache[view.uuid] = max
-          self.minSizeCache[view.uuid] = min
-
-        }
-        return (   size.width <= max.width
-                && size.height <= max.height
-                && size.width >= min.width
-                && size.height >= min.height)
-    }
-
-    var scaleRejections: [CGFloat] = []
-    for view in selectedViews {
-      let scaledSize = CGSizeApplyAffineTransform(view.bounds.size, CGAffineTransformMakeScale(scale, scale))
-      var maxSize = CGSize.zeroSize, minSize = CGSize.zeroSize
-      if !isValid(view, scaledSize, &maxSize, &minSize) {
-        let boundedSize = CGSize(square: (scale > CGFloat(1) ? CGSizeMinAxis(maxSize) : CGSizeMaxAxis(minSize)))
-        let validScale = boundedSize.width / view.bounds.size.width
-        scaleRejections.append(validScale)
-      }
-    }
-
-    appliedScale = (scaleRejections.count > 0
-                        ? (scale > CGFloat(1) ? minElement(scaleRejections) : maxElement(scaleRejections))
-                        : scale)
-    willScaleSelectedViews()
-    for view in selectedViews { view.scale(appliedScale) }
-    didScaleSelectedViews()
-
-    return appliedScale
-  }
-
-  /** Override point for subclasses to perform additional work post-scaling. */
-  func didScaleSelectedViews() {}
-
-  /// MARK: Translating
-  ////////////////////////////////////////////////////////////////////////////////
-
-  /**
-  Sanity check for ensuring selected views can only be moved to reasonable locations.
-
-  :param: fromUnion `CGRect` representing the current union of the `frame` properties of the current selection
-  :param: toUnion `CGRect` representing the resulting union of the `frame` properties of the current selection when moved
-
-  :returns: Whether the views should be moved
-  */
-  func shouldTranslateSelectionFrom(fromUnion: CGRect, to toUnion: CGRect) -> Bool {
-    return CGRectContainsRect(contentRect, toUnion)
-  }
-
-  /**
-  Captures the original union frame for the selected views before any translation and acts as an override point for subclasses
-  to perform additional work pre-movement.
-  */
-  func willTranslateSelectedViews() {
-    originalFrame = selectedViewsUnionFrameInView(view)
-    currentFrame = originalFrame
-  }
-
-  /**
-  Updates the `frame` property of the selected views to affect the specified translation.
-
-  :param: translation `CGPoint` value representing the x and y axis translations to be performed on the selected views
-  */
-  func translateSelectedViews(translation: CGPoint) {
-    if CGPointEqualToPoint(translation, CGPoint.zeroPoint) { return }
-    let transform = CGAffineTransformMakeTranslation(translation.x, translation.y)
-    let translatedFrame = CGRectApplyAffineTransform(currentFrame, transform)
-    if shouldTranslateSelectionFrom(currentFrame, to: translatedFrame) {
-      currentFrame = translatedFrame
-      for view in selectedViews { view.frame = CGRectApplyAffineTransform(view.frame, transform) }
-    }
-  }
-
-  /**
-  Sends `translateSublements:translation:` to the `sourceView` to perform model-level translation and acts as an override point
-  for subclasses to perform additional work post-movement.
-   */
-  func didTranslateSelectedViews() {
-    clearCacheForViews(selectedViews)
-    if let views = selectedViews.NSSetValue {
-      let translation = CGPointGetDelta(currentFrame.origin, originalFrame.origin)
-      sourceView.translateSubelements(views, translation: translation)
-      views.setValue(NSNumber(unsignedChar: REEditingState.Selected.rawValue), forKeyPath: "editingState")
-      movingSelectedViews = false
-      updateState()
-    }
-  }
 
   /// MARK: Initialization
   ////////////////////////////////////////////////////////////////////////////////
@@ -410,88 +213,27 @@ class RemoteElementEditingController: UIViewController {
 
   :returns: RemoteElementEditingController
   */
+  class func editingControllerForElement(element: RemoteElement) -> RemoteElementEditingController {
+    return editingControllerForElement(element, size: nil)
+  }
+
+  /**
+  editingControllerForElement:
+
+  :param: element RemoteElement
+
+  :returns: RemoteElementEditingController
+  */
   class func editingControllerForElement(element: RemoteElement, size: CGSize? = nil) -> RemoteElementEditingController {
     if let remote = element as? Remote {
-      return editingControllerForElement(remote, size: size)
+      return RemoteEditingController(element: remote, size: size)
     } else if let buttonGroup = element as? ButtonGroup {
-      return editingControllerForElement(buttonGroup, size: size)
+      return ButtonGroupEditingController(element: buttonGroup, size: size)
     } else if let button = element as? Button {
-      return editingControllerForElement(button, size: size)
+      return ButtonEditingController(element: button, size: size)
     } else {
       return RemoteElementEditingController(element: element, size: nil)
     }
-  }
-
-  /**
-  editingControllerForElement:size:
-
-  :param: element Remote
-  :param: size CGSize? = nil
-
-  :returns: RemoteElementEditingController
-  */
-  class func editingControllerForElement(element: Remote, size: CGSize? = nil) -> RemoteElementEditingController {
-    return RemoteEditingController(element: element, size: size)
-  }
-
-  /**
-  editingControllerForElement:
-
-  :param: element Remote
-
-  :returns: RemoteElementEditingController
-  */
-  @objc(editingControllerForRemote:)
-  class func editingControllerForElement(element: Remote) -> RemoteElementEditingController {
-    return RemoteEditingController(element: element, size: nil)
-  }
-
-  /**
-  editingControllerForElement:size:
-
-  :param: element ButtonGroup
-  :param: size CGSize? = nil
-
-  :returns: RemoteElementEditingController
-  */
-  class func editingControllerForElement(element: ButtonGroup, size: CGSize? = nil) -> RemoteElementEditingController {
-    return ButtonGroupEditingController(element: element, size: size)
-  }
-
-  /**
-  editingControllerForElement:
-
-  :param: element ButtonGroup
-
-  :returns: RemoteElementEditingController
-  */
-  @objc(editingControllerForButtonGroup:)
-  class func editingControllerForElement(element: ButtonGroup) -> RemoteElementEditingController {
-    return ButtonGroupEditingController(element: element, size: nil)
-  }
-
-  /**
-  editingControllerForElement:size:
-
-  :param: element Button
-  :param: size CGSize? = nil
-
-  :returns: RemoteElementEditingController
-  */
-  class func editingControllerForElement(element: Button, size: CGSize? = nil) -> RemoteElementEditingController {
-    return ButtonEditingController(element: element, size: size)
-  }
-
-  /**
-  editingControllerForElement:
-
-  :param: element Button
-
-  :returns: RemoteElementEditingController
-  */
-  @objc(editingControllerForButton:)
-  class func editingControllerForElement(element: Button) -> RemoteElementEditingController {
-    return ButtonEditingController(element: element, size: nil)
   }
 
   /**
@@ -538,326 +280,20 @@ class RemoteElementEditingController: UIViewController {
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
-  /** attachGestureRecognizers */
-  func attachGestureRecognizers() {
 
-    longPressGesture = {
-      let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-      gesture.nametag = "longPressGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    pinchGesture = {
-      let gesture = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
-      gesture.nametag = "pinchGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    oneTouchDoubleTapGesture = {
-      let gesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-      gesture.numberOfTapsRequired = 2
-      gesture.nametag = "oneTouchDoubleTapGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    multiselectGesture = {
-      let gesture = MSMultiselectGestureRecognizer(target: self, action: "handleSelection:")
-      gesture.requireGestureRecognizerToFail(self.oneTouchDoubleTapGesture)
-      gesture.nametag = "multiselectGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    anchoredMultiselectGesture = {
-      let gesture = MSMultiselectGestureRecognizer(target: self, action: "handleSelection:")
-      gesture.numberOfAnchorTouchesRequired = 1
-      self.pinchGesture.requireGestureRecognizerToFail(gesture)
-      self.multiselectGesture.requireGestureRecognizerToFail(gesture)
-      gesture.nametag = "anchoredMultiselectGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    twoTouchPanGesture = {
-      let gesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
-      gesture.minimumNumberOfTouches = 2
-      gesture.maximumNumberOfTouches = 2
-      gesture.requireGestureRecognizerToFail(self.pinchGesture)
-      self.multiselectGesture.requireGestureRecognizerToFail(gesture)
-      gesture.enabled = false
-      gesture.nametag = "twoTouchPanGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    toolbarLongPressGesture = {
-      let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-      self.longPressGesture.requireGestureRecognizerToFail(gesture)
-      gesture.nametag = "toolbarLongPressGesture"
-      self.undoButton?.addGestureRecognizer(gesture)
-      return gesture
-    }()
-
-    createGestureManager()
-  }
-
-  /** createGestureManager */
-  func createGestureManager() {
-
-    let noPopovers: (Void) -> Bool = {
-      [unowned self] in !(self.popoverActive || self.presetsActive) && self.menuState == .Default
-    }
-    let noToolbars: (UITouch) -> Bool = {
-      [unowned self] t in self.toolbars.filter{t.view.isDescendantOfView($0)}.count == 0
-    }
-    let noPopoversOrToolbars: (UITouch) -> Bool = {touch in noPopovers() && noToolbars(touch)}
-
-    let notMoving: (Void) -> Bool = {
-      [unowned self] in !self.movingSelectedViews
-    }
-    let selectableClass: (UITouch) -> Bool = {
-      [unowned self] touch in self.dynamicType.isSubelementKind(touch.view)
-    }
-
-    gestureManager = GestureManager(gestures: [
-      pinchGesture:
-        GestureManager.ResponseCollection(
-          begin: {[unowned self] in self.selectionCount > 0},
-          receiveTouch: noPopoversOrToolbars
-        ),
-      longPressGesture:
-        GestureManager.ResponseCollection(
-          receiveTouch: {touch in noPopoversOrToolbars(touch) && selectableClass(touch)},
-          recognizeSimultaneously: {[unowned self] gesture in gesture === self.toolbarLongPressGesture}
-        ),
-      toolbarLongPressGesture:
-        GestureManager.ResponseCollection(
-          receiveTouch: {[unowned self] touch in noPopovers() && touch.view.isDescendantOfView(self.topToolbar)}
-        ),
-      twoTouchPanGesture:
-        GestureManager.ResponseCollection(
-          receiveTouch: noPopoversOrToolbars
-        ),
-      oneTouchDoubleTapGesture:
-        GestureManager.ResponseCollection(
-          begin: notMoving,
-          receiveTouch: noPopoversOrToolbars
-        ),
-      multiselectGesture:
-        GestureManager.ResponseCollection(
-          begin: notMoving,
-          receiveTouch: noPopoversOrToolbars,
-          recognizeSimultaneously: {[unowned self] gesture in gesture === self.anchoredMultiselectGesture}
-        ),
-      anchoredMultiselectGesture:
-        GestureManager.ResponseCollection(
-          begin: notMoving,
-          receiveTouch: noPopoversOrToolbars,
-          recognizeSimultaneously: {[unowned self] gesture in gesture === self.multiselectGesture}
-        )
-      ])
-  }
-
-  /**
-  handleTap:
-
-  :param: gesture UITapGestureRecognizer
-  */
-  func handleTap(gesture: UITapGestureRecognizer) {
-    if gesture.state == .Ended {
-      if let tappedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView{
-        if self.dynamicType.isSubelementKind(tappedView) {
-          if selectedViews ∌ tappedView { selectView(tappedView)}
-          focusView = (focusView === tappedView ? nil : tappedView)
-        }
-      }
-    }
-  }
-
-  /**
-  handleLongPress:
-
-  :param: gesture UILongPressGestureRecognizer
-  */
-  func handleLongPress(gesture: UILongPressGestureRecognizer) {
-    if gesture === longPressGesture {
-      switch gesture.state {
-        case .Began:
-          if let pressedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView {
-            if self.dynamicType.isSubelementKind(pressedView) {
-              if selectedViews ∌ pressedView { selectView(pressedView) }
-              apply(selectedViews){$0.editingState = .Moving}
-              movingSelectedViews = true
-              updateState()
-              longPressPreviousLocation = gesture.locationInView(nil)
-              willTranslateSelectedViews()
-            }
-          }
-        case .Changed:
-          let currentLocation = gesture.locationInView(nil)
-          let translation = CGPointGetDelta(currentLocation, longPressPreviousLocation)
-          longPressPreviousLocation = currentLocation
-          translateSelectedViews(translation)
-        case .Cancelled, .Failed, .Ended:
-          didTranslateSelectedViews()
-        default: break
-      }
-    } else if gesture === toolbarLongPressGesture {
-      switch gesture.state {
-        case .Began:
-          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("repeat"), forState: .Normal)
-          undoButton.button.selected = true
-        case .Changed:
-          if !undoButton.button.pointInside(gesture.locationInView(undoButton.button), withEvent: nil) {
-            undoButton.button.selected = false
-            gesture.enabled = false
-          }
-        case .Ended:
-          redo(nil)
-        default:
-          gesture.enabled = true
-          undoButton.button.selected = false
-          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("undo"), forState: .Normal)
-      }
-    }
-  }
-
-  /**
-  handlePinch:
-
-  :param: gesture UIPinchGestureRecognizer
-  */
-  func handlePinch(gesture: UIPinchGestureRecognizer) {
-    if gesture === pinchGesture {
-      switch gesture.state {
-        case .Began:
-          willScaleSelectedViews()
-        case .Changed:
-          scaleSelectedViews(gesture.scale)
-        case .Cancelled, .Failed, .Ended:
-          didScaleSelectedViews()
-        default: break
-      }
-    }
-  }
-
-  /**
-  handlePan:
-
-  :param: gesture UIPanGestureRecognizer
-  */
-  func handlePan(gesture: UIPanGestureRecognizer) {
-    if gesture === twoTouchPanGesture {
-      switch gesture.state {
-        case .Began:
-          startingPanOffset = sourceViewCenterYConstraint.constant
-        case .Changed:
-          let translation = gesture.translationInView(view)
-          let adjustedOffset = startingPanOffset + translation.y
-          let isInBounds = allowableSourceViewYOffset.contains(adjustedOffset)
-          let newOffset = (isInBounds
-                           ? adjustedOffset
-                           : (adjustedOffset < allowableSourceViewYOffset.start
-                              ? allowableSourceViewYOffset.start
-                              : allowableSourceViewYOffset.end))
-          if sourceViewCenterYConstraint.constant != newOffset {
-            UIView.animateWithDuration(0.1,
-                                 delay: 0.0,
-                               options: .BeginFromCurrentState,
-                            animations: {self.sourceViewCenterYConstraint.constant = newOffset; self.view.layoutIfNeeded() },
-                            completion: nil)
-          }
-        default: break
-      }
-    }
-  }
-
-  /**
-  handleSelection:
-
-  :param: gesture MSMultiselectGestureRecognizer
-  */
-  func handleSelection(gesture: MSMultiselectGestureRecognizer) {
-   if gesture.state == .Ended {
-    let touchLocations = OrderedSet(((gesture.touchLocationsInView(sourceView).allObjects as [NSValue]).map{$0.CGPointValue()}))
-    var touchedSubelementViews = OrderedSet((gesture.touchedSubviewsInView(sourceView,
-                                                                    ofKind: self.dynamicType.subelementClass()).allObjects
-                                  as [RemoteElementView]))
-
-     if touchedSubelementViews.count > 0 {
-
-      let stackedViews = OrderedSet((sourceView.subelementViews as [RemoteElementView]).filter {
-        v in contains(touchLocations, { v.pointInside(v.convertPoint($0, fromView: self.sourceView), withEvent: nil)})
-        })
-
-      if stackedViews.count > touchedSubelementViews.count { displayStackedViewDialogForViews(stackedViews) }
-
-      if gesture === multiselectGesture { selectViews(touchedSubelementViews) }
-      else if gesture === anchoredMultiselectGesture { deselectViews(touchedSubelementViews) }
-
-
-     }
-
-     else if selectedViews.count > 0 { deselectAll() }
-
-   }
-
-  }
-
-  /**
-  displayStackedViewDialogForViews:
-
-  :param: stackedViews NSSet
-  */
-  func displayStackedViewDialogForViews(stackedViews: OrderedSet<RemoteElementView>) {
-     println(__FUNCTION__)
-    /*
-    MSLogDebug(@"%@ select stacked views to include: (%@)",
-               ClassTagSelectorString,
-               [[[stackedViews allObjects] valueForKey:@"name"]
-                  componentsJoinedByString:@", "]);
-
-    _flags.menuState = REEditingMenuStateStackedViews;
-
-    MenuController.menuItems = [[stackedViews allObjects]
-                                mapped:
-                                ^UIMenuItem *(RemoteElementView * obj, NSUInteger idx) {
-      SEL action = NSSelectorFromString($(@"menuAction%@:",
-                                          obj.uuid));
-      return MenuItem(obj.name, action);
-    }];
-
-    [MenuController setTargetRect:[self.view.window
-                                   convertRect:[UIView unionFrameForViews:[stackedViews allObjects]]
-                                      fromView:_sourceView]
-                           inView:self.view];
-    MenuController.arrowDirection = UIMenuControllerArrowDefault;
-    [MenuController update];
-    MenuController.menuVisible = YES;
-    */
-  }
-
+  /** loadView */
   override func loadView() {
 
     // Create the root view
     view = UIView(frame: UIScreen.mainScreen().bounds)
 
-    // Create the bounds layer
-    sourceViewBoundsLayer = CAShapeLayer()
-    sourceViewBoundsLayer.fillColor = UIColor.clearColor().CGColor
-    sourceViewBoundsLayer.lineCap = kCALineCapRound
-    sourceViewBoundsLayer.lineDashPattern = [1, 1]
-    sourceViewBoundsLayer.lineJoin = kCALineJoinRound
-    sourceViewBoundsLayer.lineWidth = 1.0
-    sourceViewBoundsLayer.strokeColor = UIColor.whiteColor().CGColor
-    sourceViewBoundsLayer.hidden = !showSourceBoundary
-
     // Create the source view
     sourceView = self.dynamicType.elementClass()(model: remoteElement)
-    if let size = sourceViewSize { sourceView.constrainToSize(size) }
+    if let size = sourceViewSize {
+      let (widthConstraint, heightConstraint) = sourceView.constrainSize(size)
+      sourceViewWidthConstraint = widthConstraint
+      sourceViewHeightConstraint = heightConstraint
+    }
     sourceView.editingMode = self.dynamicType.editingModeForElement()
     view.addSubview(sourceView)
 
@@ -979,37 +415,9 @@ class RemoteElementEditingController: UIViewController {
   /** viewDidLoad */
   override func viewDidLoad() {
     super.viewDidLoad()
-
     attachGestureRecognizers()
-
-    contentRect = view.frame
-    contentRect.origin.y = topToolbar.bounds.size.height
-    contentRect.size.height -= topToolbar.bounds.size.height + currentToolbar.bounds.size.height
-
-    sourceViewBoundsObserver = MSKVOReceptionist(
-      observer: self,
-      forObject: sourceView.layer,
-      keyPath: "bounds",
-      options: NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
-      queue: NSOperationQueue.mainQueue(),
-      handler: {
-        (receptionist: MSKVOReceptionist!) -> Void in
-          if let controller = receptionist.observer as? RemoteElementEditingController {
-            controller.updateBoundaryLayer()
-          }
-    })
-
-//    MSLogDebug(view.framesDescription())
+    contentRect = view.frame.rectByInsetting(dx: 0.0, dy: topToolbar.bounds.height)
   }
-
-  /** didReceiveMemoryWarning */
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-
-  /** viewDidLayoutSubviews */
-  override func viewDidLayoutSubviews() { updateBoundaryLayer() }
 
   /**
   canBecomeFirstResponder
@@ -1070,33 +478,9 @@ class RemoteElementEditingController: UIViewController {
 
 }
 
-/// MARK: Selection
+/// MARK: - Selecting subelements
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController {
-
-  /**
-  selectedViewsUnionFrameInView:
-
-  :param: view UIView
-
-  :returns: CGRect
-  */
-  func selectedViewsUnionFrameInView(view: UIView) -> CGRect {
-    return view.convertRect(selectedViewsUnionFrameInSourceView(), fromView: sourceView)
-  }
-
-  /**
-  selectedViewsUnionFrameInSourceView
-
-  :returns: CGRect
-  */
-  func selectedViewsUnionFrameInSourceView() -> CGRect {
-    var unionRect = CGRect.zeroRect
-    for view in selectedViews { unionRect = CGRectUnion(unionRect, view.frame) }
-    return unionRect
-  }
-
-  var selectionCount: Int { return selectedViews.count }
 
   /**
   selectView:
@@ -1150,9 +534,595 @@ extension RemoteElementEditingController {
     deselectViews(views ∩ selectedViews)
   }
 
+  /** toggleBounds */
+  func toggleBounds() {  }
+
+  /**
+  displayStackedViewDialogForViews:
+
+  :param: stackedViews NSSet
+  */
+  func displayStackedViewDialogForViews(stackedViews: OrderedSet<RemoteElementView>) {
+     println(__FUNCTION__)
+    /*
+    MSLogDebug(@"%@ select stacked views to include: (%@)",
+               ClassTagSelectorString,
+               [[[stackedViews allObjects] valueForKey:@"name"]
+                  componentsJoinedByString:@", "]);
+
+    _flags.menuState = REEditingMenuStateStackedViews;
+
+    MenuController.menuItems = [[stackedViews allObjects]
+                                mapped:
+                                ^UIMenuItem *(RemoteElementView * obj, NSUInteger idx) {
+      SEL action = NSSelectorFromString($(@"menuAction%@:",
+                                          obj.uuid));
+      return MenuItem(obj.name, action);
+    }];
+
+    [MenuController setTargetRect:[self.view.window
+                                   convertRect:[UIView unionFrameForViews:[stackedViews allObjects]]
+                                      fromView:_sourceView]
+                           inView:self.view];
+    MenuController.arrowDirection = UIMenuControllerArrowDefault;
+    [MenuController update];
+    MenuController.menuVisible = YES;
+    */
+  }
+
 }
 
-/// MARK: IBActions
+/// MARK: - Exit actions
+////////////////////////////////////////////////////////////////////////////////
+extension RemoteElementEditingController {
+
+  /** saveAction */
+  func saveAction() {
+    var success = false
+    context.performBlockAndWait {
+      var error: NSError?
+      success = self.context.save(&error)
+      MSHandleError(error)
+    }
+    if success {
+      if delegate != nil { delegate!.editorDidSave(self) }
+      else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
+    }
+  }
+
+  /** resetAction */
+  func resetAction() { context.performBlockAndWait { self.context.rollback() } }
+
+  /** cancelAction */
+  func cancelAction() {
+    context.performBlockAndWait { self.context.rollback() }
+    if delegate != nil { delegate!.editorDidCancel(self) }
+    else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
+  }
+
+}
+
+/// MARK: - Aligning subelements
+////////////////////////////////////////////////////////////////////////////////
+extension RemoteElementEditingController {
+
+  /** alignVerticalCenters */
+  func alignVerticalCenters() { willAlignSelectedViews(); alignSelectedViews(.CenterY); didAlignSelectedViews() }
+
+  /** alignHorizontalCenters */
+  func alignHorizontalCenters() { willAlignSelectedViews(); alignSelectedViews(.CenterX); didAlignSelectedViews() }
+
+  /** alignTopEdges */
+  func alignTopEdges() { willAlignSelectedViews(); alignSelectedViews(.Top); didAlignSelectedViews() }
+
+  /** alignBottomEdges */
+  func alignBottomEdges() { willAlignSelectedViews(); alignSelectedViews(.Bottom); didAlignSelectedViews() }
+
+  /** alignLeftEdges */
+  func alignLeftEdges() { willAlignSelectedViews(); alignSelectedViews(.Left); didAlignSelectedViews() }
+
+  /** alignRightEdges */
+  func alignRightEdges() { willAlignSelectedViews(); alignSelectedViews(.Right); didAlignSelectedViews() }
+
+  /** Override point for subclasses to perform additional work pre-alignment. */
+  func willAlignSelectedViews() {}
+
+  /**
+  Sends `alignSubelements:toSibling:attribute:` to the `sourceView` to perform actual alignment
+
+  :param: alignment `NSLayoutAttribute` to use when aligning the `selectedViews` to the `focusView`
+  */
+  func alignSelectedViews(alignment: NSLayoutAttribute) {
+    precondition(focusView != nil, "there must be a view to align to")
+    if let subelements = (selectedViews ∖ [focusView!]).NSSetValue {
+      willAlignSelectedViews()
+      sourceView.alignSubelements(subelements, toSibling: focusView!, attribute: alignment)
+      didAlignSelectedViews()
+    }
+  }
+
+  /** Override point for subclasses to perform additional work post-alignment. */
+  func didAlignSelectedViews() { clearCacheForViews(selectedViews) }
+
+}
+
+/// MARK: - Resizing subelements
+////////////////////////////////////////////////////////////////////////////////
+extension RemoteElementEditingController {
+
+  /** resizeFromFocusView */
+  func resizeFromFocusView() {
+    willResizeSelectedViews()
+    resizeSelectedViews(.Width)
+    resizeSelectedViews(.Height)
+    didResizeSelectedViews()
+  }
+
+  /** resizeHorizontallyFromFocusView */
+  func resizeHorizontallyFromFocusView() { willResizeSelectedViews(); resizeSelectedViews(.Width); didResizeSelectedViews() }
+
+  /** resizeVerticallyFromFocusView */
+  func resizeVerticallyFromFocusView() { willResizeSelectedViews(); resizeSelectedViews(.Width); didResizeSelectedViews() }
+
+  /** Override point for subclasses to perform additional work pre-sizing. */
+  func willResizeSelectedViews() {}
+
+  /**
+  Sends `resizeSubelements:toSibling:attribute:` to the `sourceView` to perform actual resizing.
+
+  :param: axis `NSLayoutAttribute` specifying whether resizing should involve width or height
+  */
+  func resizeSelectedViews(axis: NSLayoutAttribute) {
+    precondition(focusView != nil, "there must be a view to resize to")
+    if let subelements = (selectedViews ∖ [focusView!]).NSSetValue {
+      willResizeSelectedViews()
+      sourceView.resizeSubelements(subelements, toSibling: focusView!, attribute: axis)
+      didResizeSelectedViews()
+    }
+  }
+
+  /** Override point for subclasses to perform additional work pre-sizing. */
+  func didResizeSelectedViews() {}
+
+  /** Override point for subclasses to perform additional work pre-scaling. */
+  func willScaleSelectedViews() {}
+
+  /**
+  Performs a sanity check on the scale to be applied and then sends `scaleSubelements:scale:` to the `sourceView`
+  to perform actual scaling.
+
+  :param: scale CGFloat The scale to apply to the current selection
+
+  :returns: CGFloat The actual scale value applied to the current selection
+  */
+  func scaleSelectedViews(scale: CGFloat) -> CGFloat {
+
+    let isValid =  {
+      (view: RemoteElementView, size: CGSize, inout max: CGSize, inout min: CGSize) -> Bool in
+        let frame = view.convertRect(view.frame, toView: nil)
+        let cachedMax = self.maxSizeCache[view.uuid]
+        let cachedMin = self.minSizeCache[view.uuid]
+        if cachedMax != nil && cachedMin != nil {
+          max = cachedMax!
+          min = cachedMin!
+        } else {
+          let deltaSize = CGSizeGetDelta(frame.size, view.maximumSize)
+          let maximumSize = view.maximumSize
+          let maxFrame = CGRect(x: frame.origin.x + deltaSize.width / CGFloat(2),
+                                y: frame.origin.y + deltaSize.height / CGFloat(2),
+                                width: maximumSize.width,
+                                height: maximumSize.height)
+          if !self.contentRect.contains(maxFrame) {
+            let intersection = self.contentRect.rectByIntersecting(maxFrame)
+            let deltaMin = CGPointGetDeltaABS(frame.origin, intersection.origin)
+            let deltaMax = CGPointGetDeltaABS(CGPoint(x: frame.maxX, y: frame.maxY),
+                                                CGPoint(x: intersection.maxX, y: intersection.maxY))
+            max = CGSize(width: (frame.size.width + Swift.min(deltaMin.x, deltaMax.x) * CGFloat(2.0)),
+                         height: (frame.size.height + Swift.min(deltaMin.y, deltaMax.y) * CGFloat(2.0)))
+            if view.proportionLock {
+              if max.width < max.height {
+                max.height = frame.size.height / frame.size.width * max.width
+              } else {
+                max.width = frame.size.width / frame.size.height * max.height
+              }
+            }
+          } else {
+            max = view.maximumSize
+          }
+          min = view.minimumSize
+
+          self.maxSizeCache[view.uuid] = max
+          self.minSizeCache[view.uuid] = min
+
+        }
+        return (   size.width <= max.width
+                && size.height <= max.height
+                && size.width >= min.width
+                && size.height >= min.height)
+    }
+
+    var scaleRejections: [CGFloat] = []
+    for view in selectedViews {
+      let scaledSize = view.bounds.size.sizeByApplyingTransform(CGAffineTransform(sx: scale, sy: scale))
+      var maxSize = CGSize.zeroSize, minSize = CGSize.zeroSize
+      if !isValid(view, scaledSize, &maxSize, &minSize) {
+        let boundedSize = CGSize(square: (scale > CGFloat(1) ? maxSize.minAxis : minSize.maxAxis))
+        let validScale = boundedSize.width / view.bounds.width
+        scaleRejections.append(validScale)
+      }
+    }
+
+    appliedScale = (scaleRejections.count > 0
+                        ? (scale > CGFloat(1) ? minElement(scaleRejections) : maxElement(scaleRejections))
+                        : scale)
+    willScaleSelectedViews()
+    for view in selectedViews { view.scale(appliedScale) }
+    didScaleSelectedViews()
+
+    return appliedScale
+  }
+
+  /** Override point for subclasses to perform additional work post-scaling. */
+  func didScaleSelectedViews() {}
+
+}
+
+/// MARK: - Gesture-related methods
+////////////////////////////////////////////////////////////////////////////////
+extension RemoteElementEditingController {
+
+  /** updateGesturesEnabled */
+  func updateGesturesEnabled() {
+    longPressGesture.enabled = focusView == nil
+    pinchGesture.enabled = selectedViews.count > 0
+    oneTouchDoubleTapGesture.enabled = !movingSelectedViews
+    multiselectGesture.enabled = !movingSelectedViews
+    anchoredMultiselectGesture.enabled = !movingSelectedViews
+    twoTouchPanGesture.enabled = sourceView.bounds.height >= (view.bounds.height - length(allowableSourceViewYOffset))
+
+    let enabledGestures = ", ".join((view.gestureRecognizers as [UIGestureRecognizer]).filter{$0.enabled && $0.nametag != nil}.map{$0.nametag})
+    let disabledGestures = ", ".join((view.gestureRecognizers as [UIGestureRecognizer]).filter{!$0.enabled && $0.nametag != nil}.map{$0.nametag})
+    MSLogDebug("enabled gestures: \(enabledGestures)\ndisabled gestures: \(disabledGestures)")
+
+  }
+
+  /** attachGestureRecognizers */
+  func attachGestureRecognizers() {
+
+    longPressGesture = {
+      let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+      gesture.nametag = "longPressGesture"
+      self.view.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    pinchGesture = {
+      let gesture = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
+      gesture.nametag = "pinchGesture"
+      self.view.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    oneTouchDoubleTapGesture = {
+      let gesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+      gesture.numberOfTapsRequired = 2
+      gesture.nametag = "oneTouchDoubleTapGesture"
+      self.view.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    multiselectGesture = {
+      let gesture = MultiselectGestureRecognizer(target: self, action: "handleSelection:")
+      gesture.requireGestureRecognizerToFail(self.oneTouchDoubleTapGesture)
+      gesture.requireGestureRecognizerToFail(self.longPressGesture)
+      gesture.nametag = "multiselectGesture"
+      self.view.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    anchoredMultiselectGesture = {
+      let gesture = MultiselectGestureRecognizer(target: self, action: "handleSelection:")
+      gesture.numberOfAnchorTouchesRequired = 1
+      self.pinchGesture.requireGestureRecognizerToFail(gesture)
+      self.multiselectGesture.requireGestureRecognizerToFail(gesture)
+      gesture.requireGestureRecognizerToFail(self.longPressGesture)
+      gesture.nametag = "anchoredMultiselectGesture"
+      self.view.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    twoTouchPanGesture = {
+      let gesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
+      gesture.minimumNumberOfTouches = 2
+      gesture.maximumNumberOfTouches = 2
+      gesture.requireGestureRecognizerToFail(self.pinchGesture)
+      self.multiselectGesture.requireGestureRecognizerToFail(gesture)
+      gesture.enabled = false
+      gesture.nametag = "twoTouchPanGesture"
+      self.view.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    toolbarLongPressGesture = {
+      let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+      self.longPressGesture.requireGestureRecognizerToFail(gesture)
+      gesture.nametag = "toolbarLongPressGesture"
+      self.undoButton?.addGestureRecognizer(gesture)
+      return gesture
+    }()
+
+    createGestureManager()
+  }
+
+  /** createGestureManager */
+  func createGestureManager() {
+
+    let noPopovers: (Void) -> Bool = {
+      [unowned self] in !(self.popoverActive || self.presetsActive) && self.menuState == .Default
+    }
+    let noToolbars: (UITouch) -> Bool = {
+      [unowned self] t in self.toolbars.filter{t.view.isDescendantOfView($0)}.count == 0
+    }
+    let noPopoversOrToolbars: (UITouch) -> Bool = {touch in noPopovers() && noToolbars(touch)}
+
+    let notMoving: (Void) -> Bool = {
+      [unowned self] in !self.movingSelectedViews
+    }
+    let selectableClass: (UITouch) -> Bool = {
+      [unowned self] touch in self.dynamicType.isSubelementKind(touch.view)
+    }
+
+    gestureManager = GestureManager(gestures: [
+      pinchGesture:
+        GestureManager.ResponseCollection(
+          begin: {[unowned self] in self.selectedViews.count > 0},
+          receiveTouch: noPopoversOrToolbars
+        ),
+      longPressGesture:
+        GestureManager.ResponseCollection(
+          receiveTouch: {touch in noPopoversOrToolbars(touch) && selectableClass(touch)},
+          recognizeSimultaneously: {gesture in true} //{[unowned self] gesture in gesture === self.toolbarLongPressGesture}
+        ),
+      toolbarLongPressGesture:
+        GestureManager.ResponseCollection(
+          receiveTouch: {[unowned self] touch in noPopovers() && touch.view.isDescendantOfView(self.topToolbar)}
+        ),
+      twoTouchPanGesture:
+        GestureManager.ResponseCollection(
+          receiveTouch: noPopoversOrToolbars
+        ),
+      oneTouchDoubleTapGesture:
+        GestureManager.ResponseCollection(
+          begin: notMoving,
+          receiveTouch: noPopoversOrToolbars
+        ),
+      multiselectGesture:
+        GestureManager.ResponseCollection(
+          begin: notMoving,
+          receiveTouch: noPopoversOrToolbars,
+          recognizeSimultaneously: {[unowned self] gesture in gesture === self.anchoredMultiselectGesture}
+        ),
+      anchoredMultiselectGesture:
+        GestureManager.ResponseCollection(
+          begin: notMoving,
+          receiveTouch: noPopoversOrToolbars,
+          recognizeSimultaneously: {[unowned self] gesture in gesture === self.multiselectGesture}
+        )
+      ])
+  }
+
+
+  /**
+  handleTap:
+
+  :param: gesture UITapGestureRecognizer
+  */
+  func handleTap(gesture: UITapGestureRecognizer) {
+    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
+    if gesture.state == .Ended {
+      if let tappedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView{
+        if self.dynamicType.isSubelementKind(tappedView) {
+          if selectedViews ∌ tappedView { selectView(tappedView)}
+          focusView = (focusView === tappedView ? nil : tappedView)
+        }
+      }
+    }
+  }
+
+  /**
+  handleLongPress:
+
+  :param: gesture UILongPressGestureRecognizer
+  */
+  func handleLongPress(gesture: UILongPressGestureRecognizer) {
+    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
+    if gesture === longPressGesture {
+      switch gesture.state {
+        case .Began:
+          if let pressedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView {
+            if self.dynamicType.isSubelementKind(pressedView) {
+              if selectedViews ∌ pressedView { selectView(pressedView) }
+              movingSelectedViews = true
+              longPressPreviousLocation = gesture.locationInView(nil)
+              willTranslateSelectedViews()
+            }
+          }
+        case .Changed:
+          let currentLocation = gesture.locationInView(nil)
+          let translation = currentLocation - longPressPreviousLocation
+          longPressPreviousLocation = currentLocation
+          translateSelectedViews(translation)
+        case .Cancelled, .Failed, .Ended:
+          didTranslateSelectedViews()
+        default: break
+      }
+    } else if gesture === toolbarLongPressGesture {
+      switch gesture.state {
+        case .Began:
+          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("repeat"), forState: .Normal)
+          undoButton.button.selected = true
+        case .Changed:
+          if !undoButton.button.pointInside(gesture.locationInView(undoButton.button), withEvent: nil) {
+            undoButton.button.selected = false
+            gesture.enabled = false
+          }
+        case .Ended:
+          redo(nil)
+        default:
+          gesture.enabled = true
+          undoButton.button.selected = false
+          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("undo"), forState: .Normal)
+      }
+    }
+  }
+
+  /**
+  handlePinch:
+
+  :param: gesture UIPinchGestureRecognizer
+  */
+  func handlePinch(gesture: UIPinchGestureRecognizer) {
+    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
+    if gesture === pinchGesture {
+      switch gesture.state {
+        case .Began: willScaleSelectedViews()
+        case .Changed: scaleSelectedViews(gesture.scale)
+        case .Cancelled, .Failed, .Ended: didScaleSelectedViews()
+        default: break
+      }
+    }
+  }
+
+  /**
+  handlePan:
+
+  :param: gesture UIPanGestureRecognizer
+  */
+  func handlePan(gesture: UIPanGestureRecognizer) {
+    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
+    if gesture === twoTouchPanGesture {
+      switch gesture.state {
+        case .Began:
+          startingPanOffset = sourceViewCenterYConstraint.constant
+        case .Changed:
+          let translation = gesture.translationInView(view)
+          let adjustedOffset = startingPanOffset + translation.y
+          let isInBounds = allowableSourceViewYOffset.contains(adjustedOffset)
+          let newOffset = (isInBounds
+                           ? adjustedOffset
+                           : (adjustedOffset < allowableSourceViewYOffset.start
+                              ? allowableSourceViewYOffset.start
+                              : allowableSourceViewYOffset.end))
+          if sourceViewCenterYConstraint.constant != newOffset {
+            UIView.animateWithDuration(0.1,
+                                 delay: 0.0,
+                               options: .BeginFromCurrentState,
+                            animations: { self.sourceViewCenterYConstraint.constant = newOffset; self.view.layoutIfNeeded() },
+                            completion: nil)
+          }
+        default: break
+      }
+    }
+  }
+
+  /**
+  handleSelection:
+
+  :param: gesture MultiselectGestureRecognizer
+  */
+  func handleSelection(gesture: MultiselectGestureRecognizer) {
+    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
+   if gesture.state == .Ended {
+    let touchLocations = gesture.touchLocationsInView(sourceView)
+    let touchedSubelementViews = gesture.touchedSubviewsInView(sourceView){self.dynamicType.isSubelementKind($0)}
+    if touchedSubelementViews.count > 0 {
+
+      let stackedViews = OrderedSet((sourceView.subelementViews as [RemoteElementView]).filter {
+        v in contains(touchLocations, { v.pointInside(v.convertPoint($0, fromView: self.sourceView), withEvent: nil)})
+        })
+
+      if stackedViews.count > touchedSubelementViews.count { displayStackedViewDialogForViews(stackedViews) }
+
+      if gesture === multiselectGesture { selectViews(OrderedSet(touchedSubelementViews.array as [RemoteElementView])) }
+      else if gesture === anchoredMultiselectGesture { deselectViews(OrderedSet(touchedSubelementViews.array as [RemoteElementView])) }
+
+
+     }
+
+     else if selectedViews.count > 0 { deselectAll() }
+
+   }
+
+  }
+
+}
+
+/// MARK: - Translating subelements
+////////////////////////////////////////////////////////////////////////////////
+extension RemoteElementEditingController {
+
+  /**
+  Sanity check for ensuring selected views can only be moved to reasonable locations.
+
+  :param: fromUnion `CGRect` representing the current union of the `frame` properties of the current selection
+  :param: toUnion `CGRect` representing the resulting union of the `frame` properties of the current selection when moved
+
+  :returns: Whether the views should be moved
+  */
+  func shouldTranslateSelectionFrom(fromUnion: CGRect, to toUnion: CGRect) -> Bool { return contentRect.contains(toUnion) }
+
+  /**
+  Captures the original union frame for the selected views before any translation and acts as an override point for subclasses
+  to perform additional work pre-movement.
+  */
+  func willTranslateSelectedViews() { appliedTranslation = CGPoint.zeroPoint }
+
+  /**
+  Updates the `frame` property of the selected views to affect the specified translation.
+
+  :param: translation `CGPoint` value representing the x and y axis translations to be performed on the selected views
+  */
+  func translateSelectedViews(translation: CGPoint) {
+    if translation == CGPoint.zeroPoint { return }
+    let transform = CGAffineTransform(tx: translation.x, ty: translation.y)
+    let fromUnion = reduce(selectedViews, CGRect.nullRect){$0 ∪ $1.frame}
+    let fromUnionInWindow = sourceView.convertRect(fromUnion, toView: nil)
+    let toUnion = fromUnion.rectByApplyingTransform(transform)
+    let toUnionInWindow = sourceView.convertRect(toUnion, toView: nil)
+    let shouldTranslate = shouldTranslateSelectionFrom(fromUnionInWindow, to: toUnionInWindow)
+
+    MSLogDebug("\n".join("translation = \(translation)",
+                          "from union = \(fromUnion)",
+                          "from union in window = \(fromUnionInWindow)",
+                          "to union = \(toUnion)",
+                          "to union in window = \(toUnionInWindow)",
+                          "content rect = \(contentRect)",
+                          "should translate? \(shouldTranslate)"))
+
+    if shouldTranslate {
+      UIView.animateWithDuration(0.1,
+        delay: 0.0,
+        options: .BeginFromCurrentState,
+        animations: { for view in self.selectedViews { view.frame.transform(transform) } },
+        completion: nil)
+
+      appliedTranslation += translation
+    }
+  }
+
+  /**
+  Sends `translateSublements:translation:` to the `sourceView` to perform model-level translation and acts as an override point
+  for subclasses to perform additional work post-movement.
+   */
+  func didTranslateSelectedViews() {
+    MSLogDebug("")
+    if appliedTranslation != CGPoint.zeroPoint { sourceView.translateSubelements(selectedViews, translation: appliedTranslation) }
+    movingSelectedViews = false
+  }
+
+}
+
+/// MARK: - Editing and adding subelements
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController {
 
@@ -1182,9 +1152,9 @@ extension RemoteElementEditingController {
 
   /** editBackground */
   func editBackground() {
-//    let bgEditor = StoryboardProxy.backgroundEditingViewController()
-//    bgEditor.subject = remoteElement
-//    presentViewController(bgEditor, animated: true, completion: nil)
+     let bgEditor = BackgroundEditingController()
+     bgEditor.subject = remoteElement
+     presentViewController(bgEditor, animated: true, completion: nil)
   }
 
   /** editSubelement */
@@ -1210,68 +1180,10 @@ extension RemoteElementEditingController {
   /** pasteStyle */
   func pasteStyle() { println(__FUNCTION__) }
 
-  /** toggleBounds */
-  func toggleBounds() { showSourceBoundary = !showSourceBoundary }
-
-  /** alignVerticalCenters */
-  func alignVerticalCenters() { willAlignSelectedViews(); alignSelectedViews(.CenterY); didAlignSelectedViews() }
-
-  /** alignHorizontalCenters */
-  func alignHorizontalCenters() { willAlignSelectedViews(); alignSelectedViews(.CenterX); didAlignSelectedViews() }
-
-  /** alignTopEdges */
-  func alignTopEdges() { willAlignSelectedViews(); alignSelectedViews(.Top); didAlignSelectedViews() }
-
-  /** alignBottomEdges */
-  func alignBottomEdges() { willAlignSelectedViews(); alignSelectedViews(.Bottom); didAlignSelectedViews() }
-
-  /** alignLeftEdges */
-  func alignLeftEdges() { willAlignSelectedViews(); alignSelectedViews(.Left); didAlignSelectedViews() }
-
-  /** alignRightEdges */
-  func alignRightEdges() { willAlignSelectedViews(); alignSelectedViews(.Right); didAlignSelectedViews() }
-
-  /** resizeFromFocusView */
-  func resizeFromFocusView() {
-    willResizeSelectedViews()
-    resizeSelectedViews(.Width)
-    resizeSelectedViews(.Height)
-    didResizeSelectedViews()
-  }
-
-  /** resizeHorizontallyFromFocusView */
-  func resizeHorizontallyFromFocusView() { willResizeSelectedViews(); resizeSelectedViews(.Width); didResizeSelectedViews() }
-
-  /** resizeVerticallyFromFocusView */
-  func resizeVerticallyFromFocusView() { willResizeSelectedViews(); resizeSelectedViews(.Width); didResizeSelectedViews() }
-
-  /** saveAction */
-  func saveAction() {
-    var success = false
-    context.performBlockAndWait {
-      var error: NSError?
-      success = self.context.save(&error)
-      MSHandleError(error)
-    }
-    if success {
-      if delegate != nil { delegate!.editorDidSave(self) }
-      else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
-    }
-  }
-
-  /** resetAction */
-  func resetAction() { context.performBlockAndWait { self.context.rollback() } }
-
-  /** cancelAction */
-  func cancelAction() {
-    context.performBlockAndWait { self.context.rollback() }
-    if delegate != nil { delegate!.editorDidCancel(self) }
-    else { MSRemoteAppController.sharedAppController().dismissViewController(self, completion: nil) }
-  }
 
 }
 
-/// MARK: UIResponderStandardEditActions
+/// MARK: - UIResponderStandardEditActions
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController {
 
@@ -1366,13 +1278,13 @@ extension RemoteElementEditingController {
 }
 
 
-/// MARK: Toolbars
+/// MARK: - Toolbars
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController {
 
   /** updateToolbarDisplayed */
   func updateToolbarDisplayed() {
-    if selectionCount > 0 { currentToolbar = focusView != nil ? focusSelectionToolbar : nonEmptySelectionToolbar }
+    if selectedViews.count > 0 { currentToolbar = focusView != nil ? focusSelectionToolbar : nonEmptySelectionToolbar }
     else { currentToolbar = emptySelectionToolbar }
   }
 
@@ -1380,14 +1292,14 @@ extension RemoteElementEditingController {
   func updateBarButtonItems() {
     if movingSelectedViews { apply(singleSelButtons + anySelButtons + multiSelButtons){$0.enabled = false}}
     else { apply(anySelButtons){$0.enabled = true} }
-    let multipleSelections = selectionCount > 1
+    let multipleSelections = selectedViews.count > 1
     apply(singleSelButtons){$0.enabled = !multipleSelections}
     apply(multiSelButtons){$0.enabled = multipleSelections}
   }
 
 }
 
-/// MARK: MSPopupBarButtonDelegate
+/// MARK: - MSPopupBarButtonDelegate
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController: MSPopupBarButtonDelegate {
 
@@ -1407,7 +1319,7 @@ extension RemoteElementEditingController: MSPopupBarButtonDelegate {
 
 }
 
-/// MARK: EditingDelegate
+/// MARK: - EditingDelegate
 ////////////////////////////////////////////////////////////////////////////////
 extension RemoteElementEditingController: EditingDelegate {
 

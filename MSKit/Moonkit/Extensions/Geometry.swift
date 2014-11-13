@@ -16,6 +16,12 @@ extension CGPoint {
 	public func absXDelta(point: CGPoint) -> CGFloat { return abs(x - point.x) }
 	public func absYDelta(point: CGPoint) -> CGFloat { return abs(y - point.y) }
 	public func absDelta(point: CGPoint) -> CGPoint { return CGPoint(x: absXDelta(point), y: absYDelta(point)) }
+  public mutating func transform(transform: CGAffineTransform) {
+    self = pointByApplyingTransform(transform)
+  }
+  public func pointByApplyingTransform(transform: CGAffineTransform) -> CGPoint {
+    return CGPointApplyAffineTransform(self, transform)
+  }
 }
 
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y) }
@@ -50,6 +56,12 @@ extension CGSize {
   	let heightMapped = aspectMappedToHeight(size.height)
   	return binding ? min(widthMapped, heightMapped) : max(widthMapped, heightMapped)
   }
+  public mutating func transform(transform: CGAffineTransform) {
+    self = sizeByApplyingTransform(transform)
+  }
+  public func sizeByApplyingTransform(transform: CGAffineTransform) -> CGSize {
+    return CGSizeApplyAffineTransform(self, transform)
+  }
 }
 
 public func max(s1: CGSize, s2: CGSize) -> CGSize { return s1 > s2 ? s1 : s2 }
@@ -79,6 +91,25 @@ extension UIEdgeInsets {
     return UIEdgeInsetsInsetRect(rect, self)
   }
 }
+
+extension CGAffineTransform {
+  public init(tx: CGFloat, ty: CGFloat) { self = CGAffineTransformMakeTranslation(tx, ty) }
+  public init(sx: CGFloat, sy: CGFloat) { self = CGAffineTransformMakeScale(sx, sy) }
+  public init(angle: CGFloat) { self = CGAffineTransformMakeRotation(angle) }
+  public func isIdentity() -> Bool { return CGAffineTransformIsIdentity(self) }
+  public mutating func translate(tx: CGFloat, ty: CGFloat) { self = translated(tx, ty) }
+  public func translated(tx: CGFloat, _ ty: CGFloat) -> CGAffineTransform { return CGAffineTransformTranslate(self, tx, ty) }
+  public mutating func scale(sx: CGFloat, sy: CGFloat) { self = scaled(sx, sy) }
+  public func scaled(sx: CGFloat, _ sy: CGFloat) -> CGAffineTransform { return CGAffineTransformScale(self, sx, sy) }
+  public mutating func rotate(angle: CGFloat) { self = rotated(angle) }
+  public func rotated(angle: CGFloat) -> CGAffineTransform { return CGAffineTransformRotate(self, angle) }
+  public mutating func invert() { self = inverted() }
+  public func inverted() -> CGAffineTransform { return CGAffineTransformInvert(self) }
+  public static var identityTransform: CGAffineTransform { return CGAffineTransformIdentity }
+}
+
+public func +(lhs: CGAffineTransform, rhs: CGAffineTransform) -> CGAffineTransform { return CGAffineTransformConcat(lhs, rhs) }
+public func ==(lhs: CGAffineTransform, rhs: CGAffineTransform) -> Bool { return CGAffineTransformEqualToTransform(lhs, rhs) }
 
 extension CGRect {
   public init(size: CGSize) { self = CGRect(x: 0, y: 0, width: size.width, height: size.height) }

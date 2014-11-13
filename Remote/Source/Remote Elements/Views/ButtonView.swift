@@ -135,7 +135,7 @@ class ButtonView: RemoteElementView {
 	func handleTap(gestureRecognizer: UITapGestureRecognizer) {
 		if gestureRecognizer.state == .Ended {
 			button.highlighted = true
-			MSDelayedRunOnMain(1, {self.button.highlighted = true})
+			MSDelayedRunOnMain(1, {self.button.highlighted = false})
 			tapAction?() ?? executeActionWithOptions(.Default)
 		}
 	}

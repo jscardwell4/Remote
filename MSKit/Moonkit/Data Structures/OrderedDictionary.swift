@@ -94,13 +94,13 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   ////////////////////////////////////////////////////////////////////////////////
 
   mutating func setValue(value: ValueType, forKey key: KeyType) {
-    if indexKeys ∌ key { indexKeys.append(key) }
+    if !contains(indexKeys, key) { indexKeys.append(key) }
     storage[key] = value
   }
 
   mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
-    let currentValue: ValueType? = indexKeys ∋ key ? storage[key] : nil
-    if indexKeys ∌ key { indexKeys.append(key) }
+    let currentValue: ValueType? = contains(indexKeys, key) ? storage[key] : nil
+    if !contains(indexKeys, key) { indexKeys.append(key) }
     storage[key] = value
     return currentValue
   }

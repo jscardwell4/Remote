@@ -78,7 +78,7 @@ private let fileManager = NSFileManager.defaultManager()
   @objc public class func documentsDirectoryContents() -> [String] {
     var error: NSError? = nil
     let directoryContents = fileManager.contentsOfDirectoryAtPath(documentsPath(), error: &error) as? [String]
-    MSHandleError(error, message: "failed to get directory contents")
+//    MSHandleError(error, message: "failed to get directory contents")
     return directoryContents ?? []
   }
 

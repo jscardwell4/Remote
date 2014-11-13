@@ -94,8 +94,10 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     var defaultImages: [UIImage]?
     var selectedImages: [UIImage]?
     if let images = items as? [UIImage] {
-      defaultImages = collectFrom(images, stride(from: 0, to: items.count, by: 2))
-      selectedImages = collectFrom(images, stride(from: 1, to: items.count, by: 2))
+      defaultImages = []
+      for idx in stride(from: 0, to: items.count, by: 2) { defaultImages!.append(images[idx]) }
+      selectedImages = []
+      for idx in stride(from: 1, to: items.count, by: 2) { selectedImages!.append(images[idx]) }
     }
 
     if defaultImages == nil || selectedImages == nil || defaultImages!.count != selectedImages!.count {

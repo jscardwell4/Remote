@@ -10,7 +10,13 @@ import Foundation
 
 public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
-  private var storage: [T] { didSet { unique(&storage) } }
+  private var storage: [T] {
+    didSet {
+      var s: [T] = []
+      for e in storage { if !contains(s, e) { s.append(e) } }
+      storage = s
+    }
+  }
 
   public typealias Element = T
 
@@ -58,8 +64,6 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   /** init */
   public init() { storage = [] }
 
-  public init(array: [T]) { storage = array }
-
   /**
   init:
 
@@ -67,13 +71,12 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   */
   public init<S : SequenceType where S.Generator.Element == T>(_ s: S) { storage = [T](s) }
 
-  public var count: Int { return storage.count }
-  public var capacity: Int { return storage.capacity }
-  public var isEmpty: Bool { return storage.isEmpty }
-  public var first: T? { return storage.first }
-  public var last: T? { return storage.last }
-
-  public var arrayValue: [T] { return storage }
+  public var count: Int      { return storage.count    }
+  public var capacity: Int   { return storage.capacity }
+  public var isEmpty: Bool   { return storage.isEmpty  }
+  public var first: T?       { return storage.first    }
+  public var last: T?        { return storage.last     }
+  public var array: [T]      { return storage          }
 
   public var NSArrayValue: NSArray? {
     var elements: [NSObject] = []
@@ -99,7 +102,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :param: newElement T
   */
-  public mutating func append(newElement: T) { if storage ∌ newElement { storage.append(newElement) } }
+  public mutating func append(newElement: T) { if !contains(storage, newElement) { storage.append(newElement) } }
 
   /**
   extend:
@@ -107,7 +110,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   :param: elements S
   */
   public mutating func extend<S : SequenceType where S.Generator.Element == T>(elements: S) {
-    storage.extend(elements.generate()⭆.filter { self.storage ∌ $0 })
+    storage.extend(Array(elements).filter { !contains(self.storage, $0) })
   }
 
   /**
@@ -124,7 +127,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   :param: i Int
   */
   public mutating func insert(newElement: T, atIndex i: Int) {
-    if storage ∌ newElement { storage.insert(newElement, atIndex: i) }
+    if !contains(storage, newElement) { storage.insert(newElement, atIndex: i) }
   }
 
   /**
@@ -160,18 +163,14 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: U
   */
-  public func reduce<U>(initial: U, combine: (U, T) -> U) -> U {
-    return storage.reduce(initial, combine: combine)
-  }
+  public func reduce<U>(initial: U, combine: (U, T) -> U) -> U { return storage.reduce(initial, combine: combine) }
 
   /**
   sort:
 
   :param: isOrderedBefore  (T, T) -> Bool
   */
-  public mutating func sort(isOrderedBefore:  (T, T) -> Bool) {
-    storage.sort(isOrderedBefore)
-  }
+  public mutating func sort(isOrderedBefore:  (T, T) -> Bool) { storage.sort(isOrderedBefore) }
 
   /**
   sorted:
@@ -180,9 +179,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: [T]
   */
-  public func sorted(isOrderedBefore: (T, T) -> Bool) -> [T] {
-    return storage.sorted(isOrderedBefore)
-  }
+  public func sorted(isOrderedBefore: (T, T) -> Bool) -> [T] { return storage.sorted(isOrderedBefore) }
 
   /**
   map:
@@ -216,8 +213,9 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   :param: elements C
   */
   public mutating func replaceRange<C : CollectionType where C.Generator.Element == T>(subRange: Range<Int>, with elements: C) {
-    storage.replaceRange(subRange, with: elements)
-    unique(&storage)
+    var s = storage
+    s.replaceRange(subRange, with: elements)
+    storage = s
   }
 
   /**
@@ -227,8 +225,9 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   :param: i Int
   */
   public mutating func splice<S : CollectionType where S.Generator.Element == T>(elements: S, atIndex i: Int) {
-    storage.splice(elements, atIndex: i)
-    unique(&storage)
+    var s = storage
+    s.splice(elements, atIndex: i)
+    storage = s
   }
 
   /**
@@ -261,21 +260,23 @@ extension OrderedSet : Printable, DebugPrintable {
 subscript:rhs:
 
 :param: lhs OrderedSet<T>
-:param: rhs OrderedSet<T>
+:param: rhs S
 
 :returns: OrderedSet<T>
 */
-public func +<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> OrderedSet<T> {
-  return OrderedSet<T>(lhs.storage + rhs.storage)
+public func +<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> {
+  var orderedSet = lhs
+  orderedSet.extend(rhs)
+  return orderedSet
 }
 
 /**
 subscript:rhs:
 
 :param: lhs OrderedSet<T>
-:param: rhs OrderedSet<T>
+:param: rhs S
 */
-public func +=<T:Equatable>(inout lhs: OrderedSet<T>, rhs: OrderedSet<T>) { lhs.extend(rhs.storage) }
+public func +=<T:Equatable, S:SequenceType where S.Generator.Element == T>(inout lhs: OrderedSet<T>, rhs: S) { lhs.extend(rhs) }
 
 /**
 Union set operator
@@ -284,7 +285,17 @@ Union set operator
 :param: rhs OrderedSet<T>
 :returns: OrderedSet<T>
 */
-public func ∪<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> OrderedSet<T> { var u = lhs; u += rhs; return u }
+public func ∪<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> {
+  return lhs + rhs
+}
+
+/**
+Union set operator which stores result in lhs
+
+:param: lhs OrderedSet<T>
+:param: rhs OrderedSet<T>
+*/
+public func ∪=<T:Equatable, S:SequenceType where S.Generator.Element == T>(inout lhs: OrderedSet<T>, rhs: S) { lhs += rhs }
 
 /**
 Minus set operator
@@ -293,19 +304,18 @@ Minus set operator
 :param: rhs OrderedSet<T>
 :returns: OrderedSet<T>
 */
-public func ∖<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> OrderedSet<T> {
+public func ∖<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> {
   return OrderedSet<T>(lhs.filter { $0 ∉ rhs })
 }
 
 /**
-Minus set operator
+Minus set operator which stores result in lhs
 
 :param: lhs OrderedSet<T>
-:param: rhs [T]
-:returns: OrderedSet<T>
+:param: rhs OrderedSet<T>
 */
-public func ∖<T:Equatable>(lhs: OrderedSet<T>, rhs: [T]) -> OrderedSet<T> {
-  return lhs ∖ OrderedSet(rhs)
+public func ∖=<T:Equatable, S:SequenceType where S.Generator.Element == T>(inout lhs: OrderedSet<T>, rhs: S) {
+  lhs = lhs.filter { $0 ∉ rhs }
 }
 
 /**
@@ -315,25 +325,10 @@ Intersection set operator
 :param: rhs OrderedSet<T>
 :returns: OrderedSet<T>
 */
-public func ∩<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> OrderedSet<T> {
+public func ∩<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> {
   return (lhs ∪ rhs).filter{$0 ∈ lhs && $0 ∈ rhs}
 }
 
-/**
-Union set operator which stores result in lhs
-
-:param: lhs OrderedSet<T>
-:param: rhs OrderedSet<T>
-*/
-public func ∪=<T:Equatable>(inout lhs: OrderedSet<T>, rhs: OrderedSet<T>) { lhs += rhs }
-
-/**
-Minus set operator which stores result in lhs
-
-:param: lhs OrderedSet<T>
-:param: rhs OrderedSet<T>
-*/
-public func ∖=<T:Equatable>(inout lhs: OrderedSet<T>, rhs: OrderedSet<T>) { lhs = lhs.filter { $0 ∉ rhs } }
 
 /**
 Intersection set operator which stores result in lhs
@@ -341,7 +336,7 @@ Intersection set operator which stores result in lhs
 :param: lhs OrderedSet<T>
 :param: rhs OrderedSet<T>
 */
-public func ∩=<T:Equatable>(inout lhs: OrderedSet<T>, rhs: OrderedSet<T>) { lhs = (lhs ∪ rhs).filter {$0 ∈ lhs && $0 ∈ rhs} }
+public func ∩=<T:Equatable, S:SequenceType where S.Generator.Element == T>(inout lhs: OrderedSet<T>, rhs: S) { lhs = lhs ∩ rhs }
 
 /**
 Returns true if lhs is a subset of rhs
@@ -350,7 +345,7 @@ Returns true if lhs is a subset of rhs
 :param: rhs OrderedSet<T>
 :returns: Bool
 */
-public func ⊂<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool { return lhs.filter {$0 ∉ rhs}.isEmpty }
+public func ⊂<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> Bool { return lhs.filter {$0 ∉ rhs}.isEmpty }
 
 /**
 Returns true if lhs is not a subset of rhs
@@ -359,7 +354,7 @@ Returns true if lhs is not a subset of rhs
 :param: rhs OrderedSet<T>
 :returns: Bool
 */
-public func ⊄<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool { return !(lhs ⊂ rhs) }
+public func ⊄<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> Bool { return !(lhs ⊂ rhs) }
 
 /**
 Returns true if rhs is a subset of lhs
@@ -368,7 +363,7 @@ Returns true if rhs is a subset of lhs
 :param: rhs OrderedSet<T>
 :returns: Bool
 */
-public func ⊃<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool { return rhs ⊂ lhs }
+public func ⊃<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> Bool { return Array(rhs) ⊂ lhs.array }
 
 /**
 Returns true if rhs is not a subset of lhs
@@ -377,7 +372,7 @@ Returns true if rhs is not a subset of lhs
 :param: rhs OrderedSet<T>
 :returns: Bool
 */
-public func ⊅<T:Equatable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool { return !(lhs ⊃ rhs) }
+public func ⊅<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs: OrderedSet<T>, rhs: S) -> Bool { return !(lhs ⊃ rhs) }
 
 /**
 Returns true if rhs contains lhs

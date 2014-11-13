@@ -150,7 +150,7 @@ public class JSONSerialization: NSObject {
     var localError: NSError?
     let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
 
-    if MSHandleError(localError, message: "failed to create string from file") || string == nil {
+    if localError != nil /*MSHandleError(localError, message: "failed to create string from file")*/ || string == nil {
       if error != nil { error.memory = localError }
     }
 
@@ -224,7 +224,8 @@ public class JSONSerialization: NSObject {
           dict.inflate()
         }
         if var dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] {
-          dicts.apply{$0.inflate()}
+          for dict in dicts { dict.inflate() }
+//          dicts.apply{$0.inflate()}
         }
       }
     }
@@ -261,8 +262,8 @@ public class JSONSerialization: NSObject {
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 
     // Create a block for logging local errors and setting error pointer
-    let handleError: (String) -> Bool = {
-      if MSHandleError(localError, message: $0) {
+    let handleError: (String) -> Bool = { s in
+      if localError != nil /*MSHandleError(localError, message: $0)*/ {
         if error != nil { error.memory = localError }
         return true
       } else { return false }

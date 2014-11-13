@@ -58,12 +58,14 @@ public class InlinePickerView: UIView {
   */
   override public init(frame: CGRect) {
     super.init(frame: frame)
-    toolbar = UIToolbar(autolayout: true)
+    toolbar = UIToolbar.newForAutolayout()
     cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelAction")
     selectBarButtonItem = UIBarButtonItem(title: "Select", style: .Done, target: self, action: "selectAction")
-    toolbar.items = [cancelBarButtonItem!, UIBarButtonItem.flexibleSpace(), selectBarButtonItem!]
+    toolbar.items = [cancelBarButtonItem!,
+                     UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
+                     selectBarButtonItem!]
     addSubview(toolbar)
-    picker = UIPickerView(autolayout: true)
+    picker = UIPickerView.newForAutolayout()
     picker.delegate = self
     picker.dataSource = self
     addSubview(picker)

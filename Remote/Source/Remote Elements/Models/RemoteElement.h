@@ -17,7 +17,6 @@
 
 MSEXTERN_STRING REDefaultMode;
 
-
 @interface RemoteElement : NamedModelObject
 
 // model backed properties

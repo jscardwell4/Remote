@@ -21,7 +21,6 @@ static const int msLogContext = (LOG_CONTEXT_CONSOLE);
 
 MSSTRING_CONST REDefaultMode = @"default";
 
-
 @implementation RemoteElement
 
 @synthesize constraintManager = __constraintManager, currentMode = _currentMode;

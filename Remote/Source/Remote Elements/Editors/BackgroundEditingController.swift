@@ -12,9 +12,9 @@ import CoreData
 import MoonKit
 
 @objc protocol EditableBackground {
-  var backgroundColor: UIColor? { get set }
-  var backgroundImage: Image? { get set }
-  var managedObjectContext: NSManagedObjectContext { get }
+  var backgroundColor: UIColor! { get set }
+  var backgroundImage: Image! { get set }
+  var managedObjectContext: NSManagedObjectContext? { get }
 }
 
 class BackgroundEditingController: UIViewController {

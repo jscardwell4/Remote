@@ -17,53 +17,80 @@ public class MSIntegerInputView: UIInputView {
   :param: frame CGRect
   :param: target UIResponder
   */
-  public init?(frame: CGRect, target: UIResponder) {
+  public required init(frame: CGRect, target: UIResponder) {
     super.init(frame: frame, inputViewStyle: .Keyboard)
-    let index = [0: "1",      1: "2",  2: "3",
-                 3: "4",      4: "5",  5: "6",
-                 6: "7",      7: "8",  8: "9",
-                 9: "Erase", 10: "0", 11: "Done"]
 
-    for i in 0...11 {
-      let b = MSButton.newForAutolayout()
-      if i == 11 {
-        b.setBackgroundColor(UIColor(r: 0, g: 122, b: 255, a: 255), forState: .Normal)
-        b.setBackgroundColor(UIColor.clearColor(), forState: .Highlighted)
-        b.setTitle("Done", forState: .Normal)
-      } else if i == 9 {
-        b.setBackgroundColor(UIColor.clearColor(), forState: .Normal)
-        b.setBackgroundColor(UIColor(r: 135, g: 135, b: 135, a: 255), forState: .Highlighted)
-        let image = eraseButtonImage()
-        b.setImage(image, forState: .Normal)
-        b.setImage(image, forState: .Highlighted)
-      } else {
-        b.setBackgroundColor(UIColor(r: 135, g: 135, b: 135, a: 255), forState: .Normal)
-        b.setBackgroundColor(UIColor.clearColor(), forState: .Highlighted)
-        b.setTitle(index[i], forState: .Normal)
-        b.titleLabel?.font = UIFont.systemFontOfSize(36.0)
-      }
+//    let index: [Int:String] = [0: "1",      1: "2",  2: "3",
+//                               3: "4",      4: "5",  5: "6",
+//                               6: "7",      7: "8",  8: "9",
+//                               9: "Erase", 10: "0", 11: "Done"]
+    let names: [String] = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "erase", "zero", "done"]
 
-      var actionBlock: (Void) -> Void
+    var views: [String: MSButton] = [:]
+
+    for i: Int in 0...11 {
+
+      var b = MSButton()
+      b.setTranslatesAutoresizingMaskIntoConstraints(false)
+
       switch i {
-        case  9: actionBlock = {_ = (target as? UIKeyInput)?.deleteBackward()}
-        case 11: actionBlock = {_ = target.resignFirstResponder()}
-        default: actionBlock = {_ = (target as? UIKeyInput)?.insertText(index[i]!)}
+        case  9:
+          b.setBackgroundColor(UIColor.clearColor(), forState: .Normal)
+          b.setBackgroundColor(UIColor(r: 135, g: 135, b: 135, a: 255), forState: UIControlState.Highlighted)
+          let image = eraseButtonImage()
+          b.setImage(image, forState: UIControlState.Normal)
+          b.setImage(image, forState: UIControlState.Highlighted)
+          let actionBlock: (Void) -> Void = {
+            () -> Void in
+              if let t = target as? UIKeyInput {
+                t.deleteBackward()
+              }
+          }
+          b.addActionBlock(actionBlock, forControlEvents: UIControlEvents.TouchUpInside)
+
+        case 11:
+          b.setBackgroundColor(UIColor(r: 0, g: 122, b: 255, a: 255), forState: UIControlState.Normal)
+          b.setBackgroundColor(UIColor.clearColor(), forState: UIControlState.Highlighted)
+          b.setTitle("Done", forState: UIControlState.Normal)
+          let actionBlock: (Void) -> Void = {
+            () -> Void in
+              if target.isFirstResponder() {
+                target.resignFirstResponder()
+              }
+          }
+          b.addActionBlock(actionBlock, forControlEvents: UIControlEvents.TouchUpInside)
+
+        default:
+          b.setBackgroundColor(UIColor(r: 135, g: 135, b: 135, a: 255), forState: UIControlState.Normal)
+          b.setBackgroundColor(UIColor.clearColor(), forState: UIControlState.Highlighted)
+          let txt = "\(i)"
+          b.setTitle(txt, forState: UIControlState.Normal)
+          b.titleLabel?.font = UIFont.systemFontOfSize(36.0)
+          let actionBlock: (Void) -> Void = {
+            () -> Void in
+              if let t = target as? UIKeyInput {
+                t.insertText(txt)
+              }
+          }
+          b.addActionBlock(actionBlock, forControlEvents: UIControlEvents.TouchUpInside)
       }
-      b.addActionBlock(actionBlock, forControlEvents: .TouchUpInside)
-      b.constrainWithFormat("self.height = \((frame.size.height - 1.5) * 0.25) :: self.width = \((frame.size.width - 1.0) / 3.0)")
+
       addSubview(b)
 
-      if i < 3                 { constrainWithFormat("b.top = self.top", views: ["b": b]) }
-      else if i > 8            { constrainWithFormat("b.bottom = self.bottom", views: ["b": b]) }
+      views[names[i]] = b
 
-      if i % 3 == 0            { constrainWithFormat("b.left = self.left", views: ["b": b]) }
-      else if (i + 1) % 3 == 0 { constrainWithFormat("b.right = self.right", views: ["b": b]) }
-      else                     { constrainWithFormat("b.centerX = self.centerX", views: ["b": b]) }
-
-      if 3...5 ∋ i      { constrainWithFormat("b.bottom = self.centerY - 0.25", views: ["b": b]) }
-      else if 6...8 ∋ i { constrainWithFormat("b.top = self.centerY + 0.25", views: ["b": b]) }
     }
 
+    let format = "\n".join(
+      "|[one][two][three]|",
+      "|[four][five][six]|",
+      "|[seven][eight][nine]|",
+      "|[erase][zero][done]|",
+      "V:|[one][four][seven][erase]|",
+      "V:|[two][five][eight][zero]|",
+      "V:|[three][six][nine][done]|"
+    )
+    constrainWithFormat(format, views: views)
   }
 
   /**

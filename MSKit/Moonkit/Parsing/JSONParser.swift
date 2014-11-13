@@ -244,12 +244,12 @@ public class JSONParser: NSObject {
         if scannedString.hasPrefix("//") {
 
           scanFor(.UpToCharactersFromSet(NSCharacterSet.newlineCharacterSet()),
-             into: &scannedObject, discardingComments: false, skipping: NSCharacterSet.emptyCharacterSet)
+            into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
 
         }
 
         else if scanFor(.CharactersFromSet(Token.PunctuationToken.Asterisk.characterSet),
-                   into: &scannedObject, discardingComments: false, skipping: NSCharacterSet.emptyCharacterSet)
+          into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
         {
           if !scanFor(.UpToText("*/"), into: &scannedObject, discardingComments: false) {
             setSyntaxError(error, "open-ended multi-line comment")
@@ -301,7 +301,7 @@ public class JSONParser: NSObject {
       else {
 
         while !success && scanFor(.UpToCharactersFromSet(Token.PunctuationToken.Quotation.characterSet),
-                             into: &scannedObject, skipping: NSCharacterSet.emptyCharacterSet)
+          into: &scannedObject, skipping: NSCharacterSet(charactersInString: ""))
         {
           // Make sure we scanned something and that we didn't scan up to an escaped quotation mark
           if let s = scannedObject as? String {
@@ -317,7 +317,7 @@ public class JSONParser: NSObject {
 
         // At this point, to be valid syntax we must have scanned an opening quotation mark,
         // some text, and be sitting on an unescaped quotation mark
-        if !(success && scanFor(.Text("\""), into: &scannedObject, skipping: NSCharacterSet.emptyCharacterSet)) {
+        if !(success && scanFor(.Text("\""), into: &scannedObject, skipping: NSCharacterSet(charactersInString: ""))) {
 
           success = false
           setSyntaxError(error, "unmatched double quote")
@@ -699,7 +699,7 @@ public class JSONParser: NSObject {
 
     }
 
-    MSLogVerbose("parsed object…\n\(object)")
+//    MSLogVerbose("parsed object…\n\(object)")
 
     return object
 
@@ -745,15 +745,15 @@ private enum Token {
       }
     }
 
-    static var LeftCurlyBracketCharacterSet   = NSCharacterSet(character: "{" )
-    static var RightCurlyBracketCharacterSet  = NSCharacterSet(character: "}" )
-    static var LeftSquareBracketCharacterSet  = NSCharacterSet(character: "[" )
-    static var RightSquareBracketCharacterSet = NSCharacterSet(character: "]" )
-    static var ColonCharacterSet              = NSCharacterSet(character: ":" )
-    static var CommaCharacterSet              = NSCharacterSet(character: "," )
-    static var QuotationCharacterSet          = NSCharacterSet(character: "\"")
-    static var SolidusCharacterSet            = NSCharacterSet(character: "/" )
-    static var AsteriskCharacterSet           = NSCharacterSet(character: "*" )
+    static var LeftCurlyBracketCharacterSet   = NSCharacterSet(charactersInString: "{" )
+    static var RightCurlyBracketCharacterSet  = NSCharacterSet(charactersInString: "}" )
+    static var LeftSquareBracketCharacterSet  = NSCharacterSet(charactersInString: "[" )
+    static var RightSquareBracketCharacterSet = NSCharacterSet(charactersInString: "]" )
+    static var ColonCharacterSet              = NSCharacterSet(charactersInString: ":" )
+    static var CommaCharacterSet              = NSCharacterSet(charactersInString: "," )
+    static var QuotationCharacterSet          = NSCharacterSet(charactersInString: "\"")
+    static var SolidusCharacterSet            = NSCharacterSet(charactersInString: "/" )
+    static var AsteriskCharacterSet           = NSCharacterSet(charactersInString: "*" )
   }
 
   /// Generalized enumeration for value type tokens that are not collections of other tokens

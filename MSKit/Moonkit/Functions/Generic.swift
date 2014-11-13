@@ -82,10 +82,6 @@ length:
 */
 public func length<T:Strideable>(interval: ClosedInterval<T>) -> T.Stride { return interval.start.distanceTo(interval.end) }
 
-prefix operator ∀⦱ {}
-
-postfix operator ‽ {}
-
 public postfix func ‽<T>(lhs: [Optional<T>]) -> [T] { return lhs.filter{$0 != nil}.map{$0!} }
 
 /**
@@ -134,11 +130,6 @@ unique<T:Equatable>:
 */
 public func unique<T:Equatable>(inout array:[T]) { array = unique(array) }
 
-infix operator ∅|| {
-associativity right
-precedence 130
-}
-
 
 /**
 Returns true if `lhs` is nil or `rhs` evaluates to true
@@ -152,72 +143,6 @@ public func ∅||<T>(lhs: Optional<T>, rhs: @autoclosure () -> Bool) -> Bool {
   return lhs == nil || rhs()
 }
 
-infix operator ⩢ {}
-infix operator ∈ 	{  // element of
-associativity none
-precedence 130
-}
-infix operator ∉ 	{  // not an element of
-associativity none
-precedence 130
-}
-infix operator ∋ 	{  // has as member
-associativity none
-precedence 130
-}
-infix operator ∌ 	{  // does not have as member
-associativity none
-precedence 130
-}
-infix operator ∖ 	{  // minus
-associativity none
-precedence 130
-}
-infix operator ∪ 	{  // union
-associativity none
-precedence 130
-}
-infix operator ∩ 	{  // intersection
-associativity none
-precedence 130
-}
-infix operator ∖= 	{  // minus equals
-associativity right
-precedence 90
-}
-infix operator ∪= 	{  // union equals
-associativity right
-precedence 90
-assignment
-}
-infix operator ∩= 	{  // intersection equals
-associativity right
-precedence 90
-assignment
-}
-infix operator ⊂ 	{  // subset of
-associativity none
-precedence 130
-}
-infix operator ⊄ 	{  // not a subset of
-associativity none
-precedence 130
-}
-infix operator ⊃ 	{  // superset of
-associativity none
-precedence 130
-}
-infix operator ⊅ 	{  // not a superset of
-associativity none
-precedence 130
-}
-postfix operator ⭆ {}
-
-infix operator ⥢ {
-associativity right
-precedence 90
-}
-prefix operator ⇇ {}
 
 /**
 Prefix operator that extracts the first two elements of an array and returns as a tuple

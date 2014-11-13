@@ -14,7 +14,7 @@ extension UIFont {
   class func fontFamilyAvailable(family:String) -> Bool {
     let families = UIFont.familyNames() as? [String]
     if families == nil { fatalError("could not downcast family names") }
-    return families! ∋ family
+    return contains(families!, family)
   }
 
 }

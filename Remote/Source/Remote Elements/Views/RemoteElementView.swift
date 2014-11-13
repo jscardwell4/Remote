@@ -153,6 +153,11 @@ class RemoteElementView: UIView {
       layer.addSublayer(alignmentOverlay)
     }
 
+    /**
+    init:
+
+    :param: aDecoder NSCoder
+    */
     required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     /**
@@ -162,18 +167,14 @@ class RemoteElementView: UIView {
     */
     override func drawRect(rect: CGRect) { delegate?.drawOverlayInContext(UIGraphicsGetCurrentContext(), inRect: rect) }
 
-    func refreshBoundary() { boundaryOverlay.path = boundaryPath }
-
-    var boundaryPath: CGPathRef {
-      let path = delegate?.borderPath ?? UIBezierPath(rect: bounds)
-      // if !bounds.isEmpty {
-      //   let w = bounds.size.width
-      //   let h = bounds.size.height
-      //   path.applyTransform(CGAffineTransformMakeScale((w - lineWidth) / w, (h - lineWidth) / h))
-      //   path.applyTransform(CGAffineTransformMakeTranslation(lineWidth / 2.0, lineWidth / 2.0))
-      // }
-      return path.CGPath
+    /** refreshBoundary */
+    func refreshBoundary() {
+      boundaryOverlay.path = boundaryPath
+      boundaryOverlay.setNeedsDisplay()
+      boundaryOverlay.displayIfNeeded()
     }
+
+    var boundaryPath: CGPathRef { return (delegate?.borderPath ?? UIBezierPath(rect: bounds)).CGPath }
 
     /** renderAlignmentOverlayIfNeeded */
     func renderAlignmentOverlayIfNeeded() {
@@ -198,7 +199,7 @@ class RemoteElementView: UIView {
           let frame = bounds.rectByInsetting(dx: 3.0, dy: 3.0)
           let cornerRadius: CGFloat = 1.0
 
-          if manager[NSLayoutAttribute.Left].boolValue {
+          if manager[NSLayoutAttribute.Left] != nil {
 
             // Left Bar Drawing
             let rect = CGRect(x: frame.minX + 1.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
@@ -238,13 +239,13 @@ class RemoteElementView: UIView {
             negativePath.applyTransform(transform)
             UIColor.grayColor().setFill()
             negativePath.fill()
+
+            CGContextRestoreGState(context)
+
+            CGContextRestoreGState(context)
           }
 
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-
-          if manager[NSLayoutAttribute.Right].boolValue {
+          if manager[NSLayoutAttribute.Right] != nil {
 
             // Right Bar Drawing
             let rect = CGRect(x: frame.minX + frame.width - 3.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
@@ -290,7 +291,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.Top].boolValue {
+          if manager[NSLayoutAttribute.Top] != nil {
 
             // Top Bar Drawing
             let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + 1.0, width: frame.width - 8.0, height: 2.0)
@@ -336,7 +337,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.Bottom].boolValue {
+          if manager[NSLayoutAttribute.Bottom] != nil {
 
             // Bottom Bar Drawing
             let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + frame.height - 3.0, width: frame.width - 8.0, height: 2.0)
@@ -382,7 +383,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.CenterX].boolValue {
+          if manager[NSLayoutAttribute.CenterX] != nil {
 
             // CenterX Bar Drawing
             let rect = CGRect(x: frame.minX + floor((frame.width - 2.0) * 0.5) + 0.5, y: frame.minY + 4.0,
@@ -423,13 +424,13 @@ class RemoteElementView: UIView {
             negativePath.applyTransform(transform)
             UIColor.grayColor().setFill()
             negativePath.fill()
+
+            CGContextRestoreGState(context)
+
+            CGContextRestoreGState(context)
           }
 
-          CGContextRestoreGState(context)
-
-          CGContextRestoreGState(context)
-
-          if manager[NSLayoutAttribute.CenterY].boolValue {
+          if manager[NSLayoutAttribute.CenterY] != nil {
 
             // CenterY Bar Drawing
             let rect = CGRect(x: frame.minX + 3.5, y: frame.minY + floor(frame.height - 2.0) * 0.5 + 0.5,
@@ -802,11 +803,9 @@ class RemoteElementView: UIView {
         default: color = UIColor.clearColor()
       }
       overlayView.refreshBoundary()
-      UIView.animateWithDuration(1.0) {
-        self.overlayView.boundaryColor = color
-        self.overlayView.layer.setNeedsDisplay()
-        self.overlayView.layer.displayIfNeeded()
-      }
+      overlayView.boundaryColor = color
+      overlayView.layer.setNeedsDisplay()
+      overlayView.layer.displayIfNeeded()
     }
   }
   var resizable = false
@@ -823,12 +822,14 @@ class RemoteElementView: UIView {
   :param: subelementViews NSSet
   :param: translation CGPoint
   */
-  func translateSubelements(subelementViews: NSSet, translation: CGPoint) {
-    model.constraintManager.translateSubelements(NSSet(array: (subelementViews.allObjects as [AnyObject]).map{($0 as RemoteElementView).model}),
+  func translateSubelements(subelementViews: OrderedSet<RemoteElementView>, translation: CGPoint) {
+
+    model.constraintManager.translateSubelements(NSSet(array: subelementViews.map{$0.model}),
                                      translation: translation,
                                          metrics: viewFrames as [NSObject:AnyObject])
     if shrinkwrap { model.constraintManager.shrinkWrapSubelements(viewFrames) }
-    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
+
+//    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
   }
 
@@ -912,7 +913,7 @@ class RemoteElementView: UIView {
     kvoReceptionists = map(kvoRegistration()) {
       (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
         MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
-                                             queue: NSOperationQueue.mainQueue(), handler: value)
+                          queue: NSOperationQueue.mainQueue(), handler: value)
     }
   }
 
