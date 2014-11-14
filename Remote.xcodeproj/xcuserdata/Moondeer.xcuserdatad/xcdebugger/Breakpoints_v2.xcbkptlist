@@ -901,8 +901,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "505"
             endingLineNumber = "505"
-            landmarkName = "viewWithModel(_:)"
-            landmarkType = "5">
+            landmarkName = "RemoteElementView"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

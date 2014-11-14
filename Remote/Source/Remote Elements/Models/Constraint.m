@@ -7,9 +7,9 @@
 //
 
 #import "Constraint.h"
-#import "ConstraintManager.h"
+//#import "ConstraintManager.h"
 #import "RemoteElement.h"
-
+#import "Remote-Swift.h"
 @interface Constraint ()
 
 @property (nonatomic, assign, readwrite) int16_t         firstAttribute;

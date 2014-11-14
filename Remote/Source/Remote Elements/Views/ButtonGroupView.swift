@@ -126,7 +126,7 @@ class ButtonGroupView: RemoteElementView {
   /** attachTuckGestures */
   func attachTuckGestures() {
     let tuckGesture = MSSwipeGestureRecognizer(target: self, action: "handleSwipe:")
-    tuckGesture.nametag = "'\(name)'-tuck"
+    tuckGesture.nametag = "'\(model.name)'-tuck"
     tuckGesture.enabled = false
     tuckGesture.direction = tuckDirection
     tuckGesture.quadrant = quadrant
@@ -134,7 +134,7 @@ class ButtonGroupView: RemoteElementView {
     self.tuckGesture = tuckGesture
 
     let untuckGesture = MSSwipeGestureRecognizer(target: self, action: "handleSwipe:")
-    untuckGesture.nametag = "'\(name)'-untuck"
+    untuckGesture.nametag = "'\(model.name)'-untuck"
     untuckGesture.enabled = false
     untuckGesture.direction = untuckDirection
     untuckGesture.quadrant = quadrant

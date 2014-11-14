@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElement_Private.h"
-#import "ConstraintManager.h"
+//#import "ConstraintManager.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 #import "ButtonGroup.h"
@@ -64,7 +64,7 @@ MSSTRING_CONST REDefaultMode = @"default";
 
 - (ConstraintManager *)constraintManager {
   if (!__constraintManager)
-    self.constraintManager = [ConstraintManager constraintManagerForRemoteElement:self];
+    self.constraintManager = [[ConstraintManager alloc] initWithElement:self];
 
   return __constraintManager;
 }
@@ -309,11 +309,11 @@ MSSTRING_CONST REDefaultMode = @"default";
 }
 
 - (BOOL)proportionLock                 { return self.constraintManager.proportionLock;              }
-- (NSSet *)subelementConstraints       { return self.constraintManager.subelementConstraints;       }
-- (NSSet *)dependentConstraints        { return self.constraintManager.dependentConstraints;        }
-- (NSSet *)dependentChildConstraints   { return self.constraintManager.dependentChildConstraints;   }
-- (NSSet *)dependentSiblingConstraints { return self.constraintManager.dependentSiblingConstraints; }
-- (NSSet *)intrinsicConstraints        { return self.constraintManager.intrinsicConstraints;        }
+- (NSSet *)subelementConstraints       { return [NSSet setWithArray:self.constraintManager.subelementConstraints];       }
+- (NSSet *)dependentConstraints        { return [NSSet setWithArray:self.constraintManager.dependentConstraints];        }
+- (NSSet *)dependentChildConstraints   { return [NSSet setWithArray:self.constraintManager.dependentChildConstraints];   }
+- (NSSet *)dependentSiblingConstraints { return [NSSet setWithArray:self.constraintManager.dependentSiblingConstraints]; }
+- (NSSet *)intrinsicConstraints        { return [NSSet setWithArray:self.constraintManager.intrinsicConstraints];        }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - Configurations
@@ -418,7 +418,7 @@ MSSTRING_CONST REDefaultMode = @"default";
                                         return namedModelObjectDescription(subelement);
                                       }] componentsJoinedByString:@"\n"]
                                   : @"nil");
-  NSString * layoutString      = [element.constraintManager layoutDescription];
+//  NSString * layoutString      = [element.constraintManager layoutDescription];
   NSString * proportionString  = BOOLString(element.proportionLock);
   NSString * constraintsString = [[element constraintsDescription]
                                   stringByTrimmingLeadingWhitespace];
@@ -437,7 +437,7 @@ MSSTRING_CONST REDefaultMode = @"default";
   dd[@"tag"]         = (tagString ?: @"nil");
   dd[@"parentElement"]        = (parentString ?: @"nil");
   dd[@"subelements"]          = (subelementsString ?: @"nil");
-  dd[@"layout"]               = (layoutString ?: @"nil");
+//  dd[@"layout"]               = (layoutString ?: @"nil");
   dd[@"proportionLock"]       = (proportionString ?: @"nil");
   dd[@"constraints"]          = (constraintsString ?: @"nil");
   dd[@"shape"]                = (shapeString ?: @"nil");

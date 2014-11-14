@@ -130,7 +130,7 @@ MSEXTERN_STRING   REConstraintsDidChangeNotification;
  * Modifies `remoteElement` constraints to avoid unsatisfiable conditions when adding the
  * specified constraint.
  *
- * @param constraint `REConstraint` whose addition may require conflict resolution
+ * @param constraint `Constraint` whose addition may require conflict resolution
  *
  * @param metrics Dictionary of element frames keyed by their `identifier` property
  */

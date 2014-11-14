@@ -152,7 +152,8 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
 - (void)resizeSubelements:(NSSet *)subelements
                 toSibling:(RemoteElement *)sibling
                 attribute:(NSLayoutAttribute)attribute
-                  metrics:(NSDictionary *)metrics {
+                  metrics:(NSDictionary *)metrics
+{
 
   NSSet * attributes = (attribute == NSLayoutAttributeWidth
                         ? [kAttributeDependenciesHorizontal
@@ -200,7 +201,8 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
 
 - (void)translateSubelements:(NSSet *)subelements
                  translation:(CGPoint)translation
-                     metrics:(NSDictionary *)metrics {
+                     metrics:(NSDictionary *)metrics
+{
   [_context performBlockAndWait:
    ^{   // wrap method in managed object context block
     for (RemoteElement * subelement in subelements) {
@@ -240,7 +242,8 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
 - (void)alignSubelements:(NSSet *)subelements
                toSibling:(RemoteElement *)sibling
                attribute:(NSLayoutAttribute)attribute
-                 metrics:(NSDictionary *)metrics {
+                 metrics:(NSDictionary *)metrics
+{
   [_context performBlockAndWait:
    ^{   // wrap method in managed object context block
 
@@ -297,7 +300,8 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
 - (void)resizeElement:(RemoteElement *)element
              fromSize:(CGSize)currentSize
                toSize:(CGSize)newSize
-              metrics:(NSDictionary *)metrics {
+              metrics:(NSDictionary *)metrics
+{
   [_context performBlockAndWait:
    ^{   // wrap method in managed object context block
     if (  element.constraintManager.proportionLock
@@ -499,8 +503,7 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
   }];
 }
 
-- (void)removeProportionLockForElement:(RemoteElement *)element
-                           currentSize:(CGSize)currentSize {
+- (void)removeProportionLockForElement:(RemoteElement *)element currentSize:(CGSize)currentSize {
   [_context performBlockAndWait:
    ^{   // wrap method in managed object context block
     if (element.constraintManager.proportionLock) {
@@ -607,7 +610,8 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
 
 - (void)freezeConstraints:(NSSet *)constraints
             forAttributes:(NSSet *)attributes
-                  metrics:(NSDictionary *)metrics {
+                  metrics:(NSDictionary *)metrics
+{
   [_context performBlockAndWait:
    ^{   // wrap method in managed object context block
     for (Constraint * constraint in constraints) {
@@ -699,7 +703,8 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
 
 - (void)freezeSize:(CGSize)size
      forSubelement:(RemoteElement *)subelement
-         attribute:(NSLayoutAttribute)attribute {
+         attribute:(NSLayoutAttribute)attribute
+{
 
   UILayoutConstraintAxis axis = UILayoutConstraintAxisForAttribute(attribute);
   CGFloat                constant;
@@ -818,8 +823,7 @@ MSSTATIC_STRING_CONST REConstant        = @"constant";
   }];
 }
 
-- (void)resolveConflictsForConstraint:(Constraint *)constraint
-                              metrics:(NSDictionary *)metrics {
+- (void)resolveConflictsForConstraint:(Constraint *)constraint metrics:(NSDictionary *)metrics {
   [_context performBlockAndWait:
    ^{   // wrap method in managed object context block
     NSArray * additions = nil;

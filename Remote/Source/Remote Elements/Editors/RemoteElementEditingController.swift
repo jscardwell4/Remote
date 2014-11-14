@@ -196,7 +196,7 @@ class RemoteElementEditingController: UIViewController {
   :param: views [RemoteElementView]
   */
   func clearCacheForViews(views: OrderedSet<RemoteElementView>) {
-    for identifier in (views.map{$0.uuid}) {
+    for identifier in (views.map{$0.model.uuid}) {
       maxSizeCache.removeValueForKey(identifier)
       minSizeCache.removeValueForKey(identifier)
     }
@@ -634,11 +634,9 @@ extension RemoteElementEditingController {
   */
   func alignSelectedViews(alignment: NSLayoutAttribute) {
     precondition(focusView != nil, "there must be a view to align to")
-    if let subelements = (selectedViews ∖ [focusView!]).NSSetValue {
-      willAlignSelectedViews()
-      sourceView.alignSubelements(subelements, toSibling: focusView!, attribute: alignment)
-      didAlignSelectedViews()
-    }
+    willAlignSelectedViews()
+    sourceView.alignSubelements(selectedViews ∖ [focusView!], toSibling: focusView!, attribute: alignment)
+    didAlignSelectedViews()
   }
 
   /** Override point for subclasses to perform additional work post-alignment. */
@@ -674,11 +672,9 @@ extension RemoteElementEditingController {
   */
   func resizeSelectedViews(axis: NSLayoutAttribute) {
     precondition(focusView != nil, "there must be a view to resize to")
-    if let subelements = (selectedViews ∖ [focusView!]).NSSetValue {
-      willResizeSelectedViews()
-      sourceView.resizeSubelements(subelements, toSibling: focusView!, attribute: axis)
-      didResizeSelectedViews()
-    }
+    willResizeSelectedViews()
+    sourceView.resizeSubelements(selectedViews ∖ [focusView!], toSibling: focusView!, attribute: axis)
+    didResizeSelectedViews()
   }
 
   /** Override point for subclasses to perform additional work pre-sizing. */
@@ -700,8 +696,8 @@ extension RemoteElementEditingController {
     let isValid =  {
       (view: RemoteElementView, size: CGSize, inout max: CGSize, inout min: CGSize) -> Bool in
         let frame = view.convertRect(view.frame, toView: nil)
-        let cachedMax = self.maxSizeCache[view.uuid]
-        let cachedMin = self.minSizeCache[view.uuid]
+        let cachedMax = self.maxSizeCache[view.model.uuid]
+        let cachedMin = self.minSizeCache[view.model.uuid]
         if cachedMax != nil && cachedMin != nil {
           max = cachedMax!
           min = cachedMin!
@@ -719,7 +715,7 @@ extension RemoteElementEditingController {
                                                 CGPoint(x: intersection.maxX, y: intersection.maxY))
             max = CGSize(width: (frame.size.width + Swift.min(deltaMin.x, deltaMax.x) * CGFloat(2.0)),
                          height: (frame.size.height + Swift.min(deltaMin.y, deltaMax.y) * CGFloat(2.0)))
-            if view.proportionLock {
+            if view.model.proportionLock {
               if max.width < max.height {
                 max.height = frame.size.height / frame.size.width * max.width
               } else {
@@ -731,8 +727,8 @@ extension RemoteElementEditingController {
           }
           min = view.minimumSize
 
-          self.maxSizeCache[view.uuid] = max
-          self.minSizeCache[view.uuid] = min
+          self.maxSizeCache[view.model.uuid] = max
+          self.minSizeCache[view.model.uuid] = min
 
         }
         return (   size.width <= max.width

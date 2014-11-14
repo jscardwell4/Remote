@@ -28,6 +28,11 @@ class RemoteElementView: UIView {
     */
     override init(frame: CGRect) { super.init(frame: frame) }
 
+    /**
+    initWithDelegate:
+
+    :param: delegate RemoteElementView
+    */
     init(delegate: RemoteElementView) {
       super.init(frame: delegate.bounds)
       self.delegate = delegate
@@ -90,13 +95,7 @@ class RemoteElementView: UIView {
 
   private class OverlayView: InternalView {
 
-    var boundaryColor: UIColor = UIColor.clearColor() {
-      didSet {
-        boundaryOverlay.strokeColor = boundaryColor.CGColor
-        boundaryOverlay.setNeedsDisplay()
-        boundaryOverlay.displayIfNeeded()
-      }
-    }
+    var boundaryColor: UIColor = UIColor.clearColor() { didSet { boundaryOverlay.strokeColor = boundaryColor.CGColor } }
 
     var showAlignmentIndicators: Bool = false {
       didSet {
@@ -130,7 +129,7 @@ class RemoteElementView: UIView {
         return overlay
       }()
 
-    var lineWidth: CGFloat = 2.0
+    var lineWidth: CGFloat = 2.0 { didSet { boundaryOverlay.lineWidth = lineWidth } }
 
     /** init */
     override init() { super.init() }
@@ -168,11 +167,7 @@ class RemoteElementView: UIView {
     override func drawRect(rect: CGRect) { delegate?.drawOverlayInContext(UIGraphicsGetCurrentContext(), inRect: rect) }
 
     /** refreshBoundary */
-    func refreshBoundary() {
-      boundaryOverlay.path = boundaryPath
-      boundaryOverlay.setNeedsDisplay()
-      boundaryOverlay.displayIfNeeded()
-    }
+    func refreshBoundary() { boundaryOverlay.path = boundaryPath }
 
     var boundaryPath: CGPathRef { return (delegate?.borderPath ?? UIBezierPath(rect: bounds)).CGPath }
 
@@ -199,7 +194,7 @@ class RemoteElementView: UIView {
           let frame = bounds.rectByInsetting(dx: 3.0, dy: 3.0)
           let cornerRadius: CGFloat = 1.0
 
-          if manager[NSLayoutAttribute.Left] != nil {
+          if manager[NSLayoutAttribute.Left.rawValue] {
 
             // Left Bar Drawing
             let rect = CGRect(x: frame.minX + 1.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
@@ -208,7 +203,7 @@ class RemoteElementView: UIView {
 
             CGContextSaveGState(context)
             CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Left).rawValue].setFill()
+            colors[manager.dependencyForAttribute(NSLayoutAttribute.Left).rawValue].setFill()
             barPath.fill()
 
             // Left Bar Inner Shadow
@@ -245,7 +240,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.Right] != nil {
+          if manager[NSLayoutAttribute.Right.rawValue] {
 
             // Right Bar Drawing
             let rect = CGRect(x: frame.minX + frame.width - 3.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
@@ -254,7 +249,7 @@ class RemoteElementView: UIView {
 
             CGContextSaveGState(context)
             CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Right).rawValue].setFill()
+            colors[manager.dependencyForAttribute(NSLayoutAttribute.Right).rawValue].setFill()
             barPath.fill()
 
             // Right Bar Inner Shadow
@@ -291,7 +286,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.Top] != nil {
+          if manager[NSLayoutAttribute.Top.rawValue] {
 
             // Top Bar Drawing
             let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + 1.0, width: frame.width - 8.0, height: 2.0)
@@ -300,7 +295,7 @@ class RemoteElementView: UIView {
 
             CGContextSaveGState(context)
             CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Top).rawValue].setFill()
+            colors[manager.dependencyForAttribute(NSLayoutAttribute.Top).rawValue].setFill()
             barPath.fill()
 
             // Top Bar Inner Shadow
@@ -337,7 +332,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.Bottom] != nil {
+          if manager[NSLayoutAttribute.Bottom.rawValue] {
 
             // Bottom Bar Drawing
             let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + frame.height - 3.0, width: frame.width - 8.0, height: 2.0)
@@ -346,7 +341,7 @@ class RemoteElementView: UIView {
 
             CGContextSaveGState(context)
             CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.Bottom).rawValue].setFill()
+            colors[manager.dependencyForAttribute(NSLayoutAttribute.Bottom).rawValue].setFill()
             barPath.fill()
 
             // Bottom Bar Inner Shadow
@@ -383,7 +378,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.CenterX] != nil {
+          if manager[NSLayoutAttribute.CenterX.rawValue] {
 
             // CenterX Bar Drawing
             let rect = CGRect(x: frame.minX + floor((frame.width - 2.0) * 0.5) + 0.5, y: frame.minY + 4.0,
@@ -393,7 +388,7 @@ class RemoteElementView: UIView {
 
             CGContextSaveGState(context)
             CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.CenterX).rawValue].setFill()
+            colors[manager.dependencyForAttribute(NSLayoutAttribute.CenterX).rawValue].setFill()
             barPath.fill()
 
             // CenterX Bar Inner Shadow
@@ -430,7 +425,7 @@ class RemoteElementView: UIView {
             CGContextRestoreGState(context)
           }
 
-          if manager[NSLayoutAttribute.CenterY] != nil {
+          if manager[NSLayoutAttribute.CenterY.rawValue] {
 
             // CenterY Bar Drawing
             let rect = CGRect(x: frame.minX + 3.5, y: frame.minY + floor(frame.height - 2.0) * 0.5 + 0.5,
@@ -440,7 +435,7 @@ class RemoteElementView: UIView {
 
             CGContextSaveGState(context)
             CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyTypeForAttribute(NSLayoutAttribute.CenterY).rawValue].setFill()
+            colors[manager.dependencyForAttribute(NSLayoutAttribute.CenterY).rawValue].setFill()
             barPath.fill()
 
             // CenterY Bar Inner Shadow
@@ -564,7 +559,7 @@ class RemoteElementView: UIView {
 
   /** updateConstraints */
   override func updateConstraints() {
-
+    //TODO: Modify to use model constraint uuids to update only where necessary
     var identifier = createIdentifier(self, ["Internal", "Base"])
     if constraintsWithIdentifier(identifier).count == 0 {
       constrainWithFormat("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
@@ -591,12 +586,12 @@ class RemoteElementView: UIView {
   private lazy var backdropView: BackdropView = BackdropView(delegate: self)
   private lazy var overlayView: OverlayView = OverlayView(delegate: self)
 
-  var viewFrames: [NSObject:AnyObject] {
-    var frames: [NSObject:AnyObject] = [uuid: NSValue(CGRect: frame)]
+  var viewFrames: [String:CGRect] {
+    var frames = [model.uuid: frame]
     if parentElementView != nil {
-      frames[parentElementView!.uuid] = NSValue(CGRect: parentElementView!.frame)
+      frames[parentElementView!.model.uuid] = parentElementView!.frame
     }
-    for subelementView in subelementViews { frames[subelementView.uuid] = NSValue(CGRect: subelementView.frame) }
+    for subelementView in subelementViews { frames[subelementView.model.uuid] = subelementView.frame }
     return frames
   }
 
@@ -647,7 +642,7 @@ class RemoteElementView: UIView {
       size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
       size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
 
-      if proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
+      if model.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
 
     }
 
@@ -656,7 +651,7 @@ class RemoteElementView: UIView {
 
   var maximumSize: CGSize {
     var size = superview?.bounds.size ?? CGSize.zeroSize
-    if proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
+    if model.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
     return size
   }
 
@@ -665,21 +660,15 @@ class RemoteElementView: UIView {
     set { super.backgroundColor = newValue }
   }
 
-  override func setNeedsDisplay() {
-    super.setNeedsDisplay()
-    backdropView.setNeedsDisplay()
-    contentView.setNeedsDisplay()
-    subelementsView.setNeedsDisplay()
-    overlayView.setNeedsDisplay()
-  }
+//  override func setNeedsDisplay() {
+//    super.setNeedsDisplay()
+//    backdropView.setNeedsDisplay()
+//    contentView.setNeedsDisplay()
+//    subelementsView.setNeedsDisplay()
+//    overlayView.setNeedsDisplay()
+//  }
 
   override var bounds: CGRect { didSet { refreshBorderPath() } }
-
-  var uuid: String { return model.uuid }
-  var key: String? { return model.key }
-  var name: String? { return model.name }
-  var proportionLock: Bool { return model.proportionLock }
-  var currentMode: String { return model.currentMode }
 
   /**
   subscript:
@@ -788,9 +777,20 @@ class RemoteElementView: UIView {
     subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
   }
 
-  var locked: Bool = false { didSet { apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked} } }
-  var editingMode: REEditingMode = .NotEditing { didSet { apply(subelementViews){$0.editingMode = self.editingMode} } }
+  var locked: Bool = false {
+    didSet {
+      apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked}
+    }
+  }
+
+  var editingMode: REEditingMode = .NotEditing {
+    didSet {
+      apply(subelementViews){$0.editingMode = self.editingMode}
+    }
+  }
+
   var isEditing: Bool { return model.elementType.rawValue & editingMode.rawValue == editingMode.rawValue }
+
   var editingState: REEditingState = .NotEditing {
     didSet {
       overlayView.showAlignmentIndicators = editingState == .Moving
@@ -824,10 +824,10 @@ class RemoteElementView: UIView {
   */
   func translateSubelements(subelementViews: OrderedSet<RemoteElementView>, translation: CGPoint) {
 
-    model.constraintManager.translateSubelements(NSSet(array: subelementViews.map{$0.model}),
+    model.constraintManager.translateSubelements(subelementViews.map{$0.model},
                                      translation: translation,
-                                         metrics: viewFrames as [NSObject:AnyObject])
-    if shrinkwrap { model.constraintManager.shrinkWrapSubelements(viewFrames) }
+                                         metrics: viewFrames)
+    if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
 
 //    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
@@ -839,8 +839,8 @@ class RemoteElementView: UIView {
   :param: subelementViews NSSet
   :param: scale CGFloat
   */
-  func scaleSubelement(subelementViews: NSSet, scale: CGFloat) {
-    for subelementView in subelementViews.allObjects as [RemoteElementView] {
+  func scaleSubelement(subelementViews: OrderedSet<RemoteElementView>, scale: CGFloat) {
+    for subelementView in subelementViews {
       let maxSize = subelementView.maximumSize
       let minSize = subelementView.minimumSize
       let scaledSize = subelementsView.bounds.size * scale
@@ -850,8 +850,8 @@ class RemoteElementView: UIView {
                                      toSize: newSize,
                                     metrics: viewFrames)
     }
-    if shrinkwrap { model.constraintManager.shrinkWrapSubelements(viewFrames) }
-    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
+    if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
+    apply(subelementViews){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
   }
 
@@ -862,13 +862,16 @@ class RemoteElementView: UIView {
   :param: siblingView RemoteElementView
   :param: attribute NSLayoutAttribute
   */
-  func alignSubelements(subelementViews: NSSet, toSibling siblingView: RemoteElementView, attribute: NSLayoutAttribute) {
-    model.constraintManager.alignSubelements(NSSet(array: (subelementViews.allObjects as [AnyObject]).map{($0 as RemoteElementView).model}),
+  func alignSubelements(subelementViews: OrderedSet<RemoteElementView>,
+              toSibling siblingView: RemoteElementView,
+              attribute: NSLayoutAttribute)
+  {
+    model.constraintManager.alignSubelements(subelementViews.map{$0.model},
                                   toSibling: siblingView.model,
                                   attribute: attribute,
                                     metrics: viewFrames)
-    if shrinkwrap { model.constraintManager.shrinkWrapSubelements(viewFrames) }
-    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
+    if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
+    apply(subelementViews){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
 
   }
@@ -880,13 +883,16 @@ class RemoteElementView: UIView {
   :param: siblingView RemoteElementView
   :param: attribute NSLayoutAttribute
   */
-  func resizeSubelements(subelementViews: NSSet, toSibling siblingView: RemoteElementView, attribute: NSLayoutAttribute) {
-    model.constraintManager.resizeSubelements(NSSet(array: (subelementViews.allObjects as [AnyObject]).map{($0 as RemoteElementView).model}),
+  func resizeSubelements(subelementViews: OrderedSet<RemoteElementView>,
+               toSibling siblingView: RemoteElementView,
+               attribute: NSLayoutAttribute)
+  {
+    model.constraintManager.resizeSubelements(subelementViews.map{$0.model},
                                     toSibling: siblingView.model,
                                     attribute: attribute,
                                       metrics: viewFrames)
-    if shrinkwrap { model.constraintManager.shrinkWrapSubelements(viewFrames) }
-    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
+    if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
+    apply(subelementViews){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
   }
 

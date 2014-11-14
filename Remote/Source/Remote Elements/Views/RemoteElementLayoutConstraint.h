@@ -19,7 +19,7 @@
  */
 @interface RemoteElementLayoutConstraint:NSLayoutConstraint
 
-@property (nonatomic, strong) Constraint                       * modelConstraint;
+@property (nonatomic, strong) Constraint                       * model;
 @property (readonly, weak)    RemoteElementView                * firstItem;
 @property (readonly, weak)    RemoteElementView                * secondItem;
 @property (nonatomic, weak)   RemoteElementView                * owner;
@@ -35,7 +35,7 @@
  *
  * @return Newly created constraint for the specified view
  */
-+ (RemoteElementLayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
++ (RemoteElementLayoutConstraint *)constraintWithModel:(Constraint *)model
                                                forView:(RemoteElementView *)view;
 
 @end

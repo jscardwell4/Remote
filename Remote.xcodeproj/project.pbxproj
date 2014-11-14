@@ -206,7 +206,6 @@
 		C25B476D16FF8D5E0042B59E /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45B916FF66FE0042B59E /* Command.m */; };
 		C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45BC16FF66FE0042B59E /* CommandContainer.m */; };
 		C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C016FF66FE0042B59E /* CommandSet.m */; };
-		C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46C416FF68900042B59E /* ConstraintManager.m */; };
 		C25B477B16FF8D5E0042B59E /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457416FF62A00042B59E /* Button.m */; };
 		C25B477C16FF8D5E0042B59E /* ButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457716FF62A00042B59E /* ButtonGroup.m */; };
 		C25B477F16FF8D5E0042B59E /* RemoteElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B457B16FF62A00042B59E /* RemoteElement.m */; };
@@ -2943,7 +2942,6 @@
 				C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */,
 				C235A2FA1A0E96B10067E226 /* ButtonGroupView.swift in Sources */,
 				C27DE08419E5E67F00CCB725 /* ComponentDeviceDetailController.swift in Sources */,
-				C25B477516FF8D5E0042B59E /* ConstraintManager.m in Sources */,
 				C235A2EB1A095FC40067E226 /* ConstraintManager.swift in Sources */,
 				C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */,
 				C27DE08719E5E67F00CCB725 /* ImageDetailController.swift in Sources */,

@@ -24,46 +24,46 @@
 
 @implementation RemoteElementLayoutConstraint
 
-+ (RemoteElementLayoutConstraint *)constraintWithModel:(Constraint *)modelConstraint
++ (RemoteElementLayoutConstraint *)constraintWithModel:(Constraint *)model
                                                forView:(RemoteElementView *)view {
-  if (!modelConstraint || modelConstraint.owner != view.model) return nil;
+  if (!model || model.owner != view.model) return nil;
 
-  RemoteElementView * firstItem  = view[modelConstraint.firstItem.uuid];
-  RemoteElementView * secondItem = ([modelConstraint isStaticConstraint]
+  RemoteElementView * firstItem  = view[model.firstItem.uuid];
+  RemoteElementView * secondItem = ([model isStaticConstraint]
                                     ? nil
-                                    : view[modelConstraint.secondItem.uuid]);
+                                    : view[model.secondItem.uuid]);
 
   RemoteElementLayoutConstraint * constraint = [RemoteElementLayoutConstraint
                                                 constraintWithItem:firstItem
-                                                         attribute:modelConstraint.firstAttribute
-                                                         relatedBy:modelConstraint.relation
+                                                         attribute:model.firstAttribute
+                                                         relatedBy:model.relation
                                                             toItem:secondItem
-                                                         attribute:modelConstraint.secondAttribute
-                                                        multiplier:modelConstraint.multiplier
-                                                          constant:modelConstraint.constant];
+                                                         attribute:model.secondAttribute
+                                                        multiplier:model.multiplier
+                                                          constant:model.constant];
 
   assert(constraint);
 
-  constraint.priority        = modelConstraint.priority;
-  constraint.tag             = modelConstraint.tag;
-  constraint.nametag         = modelConstraint.key;
+  constraint.priority        = model.priority;
+  constraint.tag             = model.tag;
+  constraint.nametag         = model.key;
   constraint.owner           = view;
   constraint.valid           = YES;
-  constraint.modelConstraint = modelConstraint;
+  constraint.model = model;
 
 
   return constraint;
 }
 
-- (void)setModelConstraint:(Constraint *)modelConstraint {
+- (void)setModel:(Constraint *)model {
 
-  _modelConstraint = modelConstraint;
+  _model = model;
 
   __weak RemoteElementLayoutConstraint * weakself = self;
 
   _contextReceptionist = [MSContextChangeReceptionist
                           receptionistWithObserver:self
-                          forObject:_modelConstraint
+                          forObject:_model
                                notificationName:NSManagedObjectContextObjectsDidChangeNotification
                                   updateHandler:^(MSContextChangeReceptionist * receptionist) {
 
@@ -87,7 +87,7 @@
 
   _kvoReceptionist = [MSKVOReceptionist
                       receptionistWithObserver:self
-                      forObject:_modelConstraint
+                      forObject:_model
                                     keyPath:@"constant"
                                     options:NSKeyValueObservingOptionNew
                                       queue:MainQueue
@@ -107,13 +107,13 @@
   }
 }
 
-- (NSString *)uuid { return _modelConstraint.uuid; }
+- (NSString *)uuid { return _model.uuid; }
 
 - (NSString *)description {
   static NSString *(^itemNameForView)(UIView *) = ^(UIView * view) {
     return (view
             ? ([view isKindOfClass:[RemoteElementView class]]
-               ? [((RemoteElementView *)view).name camelCase]
+               ? [((RemoteElementView *)view).model.name camelCase]
                : (view.accessibilityIdentifier
                   ?: $(@"<%@:%p>", ClassString([view class]), view)
                )

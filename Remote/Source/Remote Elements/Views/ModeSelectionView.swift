@@ -33,11 +33,11 @@ class ModeSelectionView: ButtonGroupView {
   :param: newSelection ButtonView
   */
   func selectButton(newSelection: ButtonView) {
-    if selectedButton != newSelection && newSelection.key != nil && !newSelection.key!.isEmpty {
+    if selectedButton != newSelection && newSelection.model.key != nil && !newSelection.model.key!.isEmpty {
       (selectedButton?.model as Button).selected = false
       (newSelection.model as Button).selected = true
       selectedButton = newSelection
-      RemoteController(model.managedObjectContext).currentRemote?.currentMode = newSelection.key
+      RemoteController(model.managedObjectContext).currentRemote?.currentMode = newSelection.model.key
     }
   }
 
