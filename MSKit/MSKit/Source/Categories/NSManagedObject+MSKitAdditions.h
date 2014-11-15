@@ -22,6 +22,7 @@ MSEXTERN_STRING MSDefaultValueForSubentityKey;
 - (NSURL *)permanentURI;
 
 + (instancetype)createInContext:(NSManagedObjectContext *)moc;
+- (instancetype)initWithContext:(NSManagedObjectContext *)moc;
 + (instancetype)objectForURI:(NSURL *)uri context:(NSManagedObjectContext *)moc;
 
 + (instancetype)findFirstInContext:(NSManagedObjectContext *)moc;

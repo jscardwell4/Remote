@@ -10,11 +10,12 @@
 #import "RemoteViewController.h"
 #import "Activity.h"
 #import "RemoteElement_Private.h"
-#import "Constraint.h"
+//#import "Constraint.h"
 #import "Command.h"
 #import "ButtonGroup.h"
 #import "Remote.h"
 #import "CoreDataManager.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);

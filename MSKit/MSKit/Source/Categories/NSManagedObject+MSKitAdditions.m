@@ -36,6 +36,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return nil;
 }
 
+- (instancetype)initWithContext:(NSManagedObjectContext *)moc {
+  if (!moc)
+    ThrowInvalidNilArgument(moc);
+  NSEntityDescription * entity = [NSEntityDescription entityForName:NSStringFromClass([self class])
+                                             inManagedObjectContext:moc];
+
+  if (entity)
+    self = [self initWithEntity:entity insertIntoManagedObjectContext:moc];
+
+  return self;
+}
+
 + (instancetype)findFirstInContext:(NSManagedObjectContext *)moc {
   if (!moc) return nil;
 

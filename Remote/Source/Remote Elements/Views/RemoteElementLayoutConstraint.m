@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementLayoutConstraint.h"
-#import "Constraint.h"
+//#import "Constraint.h"
 //#import "RemoteElementView.h"
 #import "Remote-Swift.h"
 
@@ -29,7 +29,7 @@
   if (!model || model.owner != view.model) return nil;
 
   RemoteElementView * firstItem  = view[model.firstItem.uuid];
-  RemoteElementView * secondItem = ([model isStaticConstraint]
+  RemoteElementView * secondItem = ([model staticConstraint]
                                     ? nil
                                     : view[model.secondItem.uuid]);
 

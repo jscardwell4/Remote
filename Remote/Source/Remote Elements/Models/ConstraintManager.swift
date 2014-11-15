@@ -13,19 +13,37 @@ import MoonKit
 
 class ConstraintManager: NSObject {
 
+  typealias Metrics = [String:CGRect]
+
   weak var remoteElement: RemoteElement!
   var proportionLock: Bool = false
-  var subelementConstraints: [Constraint] { return [] }
-  var dependentConstraints: [Constraint] { return [] }
-  var dependentChildConstraints: [Constraint] { return [] }
-  var dependentSiblingConstraints: [Constraint] { return [] }
-  var intrinsicConstraints: [Constraint] { return [] }
+
+  var receptionist: MSContextChangeReceptionist?
+
+  var subelementConstraints: [Constraint] { return remoteElement.ownedConstraints ∖ intrinsicConstraints }
+
+  var dependentConstraints: [Constraint] { return remoteElement.secondOrderConstraints ∖ intrinsicConstraints }
+
+  var dependentChildConstraints: [Constraint] {
+    return dependentConstraints.filter{(self.remoteElement.subelements.array as [RemoteElement]) ∋ $0.firstItem}
+  }
+
+  var dependentSiblingConstraints: [Constraint] { return dependentConstraints ∖ dependentChildConstraints }
+
+  var intrinsicConstraints: [Constraint] {
+    return (remoteElement.constraints.allObjects as [Constraint]).filter{
+      $0.firstItem == self.remoteElement && ($0.secondItem == nil || $0.secondItem == self.remoteElement)
+    }
+  }
+
   var horizontalConstraints: [Constraint] { return constraintsAffectingAxis(.Horizontal, ofOrder: .First) }
+
   var verticalConstraints: [Constraint] { return constraintsAffectingAxis(.Vertical, ofOrder: .First) }
 
   var shrinkwrap: Bool = false
 
   private var layoutBits = BitArray(storage: 0, count: 8)
+  private var relationships = [Relationship](count: 8, repeatedValue: .None)
 
   /**
   initWithElement:
@@ -93,7 +111,7 @@ class ConstraintManager: NSObject {
   */
   func freezeSize(size: CGSize, forSubelement subelement: RemoteElement, attribute: NSLayoutAttribute) {
 
-    let axis = UILayoutConstraintAxisForAttribute(attribute)
+    let axis = ConstraintManager.UILayoutConstraintAxisForAttribute(attribute)
     let  constant = axis == .Horizontal ? size.width : size.height
     var firstAttribute: NSLayoutAttribute = axis == .Horizontal ? .Width : .Height
     remoteElement.managedObjectContext?.performBlockAndWait {
@@ -156,15 +174,15 @@ class ConstraintManager: NSObject {
 
  :param: constraints [Constraint] Constraints to freeze
  :param: attributes [NSLayoutAttribute] `NSLayoutAttributes` used to filter whether a constraint is frozen
- :param: metrics [String:CGRect] Dictionary of element frames keyed by their `identifier` property
+ :param: metrics Metrics Dictionary of element frames keyed by their `identifier` property
  */
-  func freezeConstraints(constraints: [Constraint], attributes: [NSLayoutAttribute], metrics: [String:CGRect]) {
+  func freezeConstraints(constraints: [Constraint], attributes: [NSLayoutAttribute], metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
       for constraint in constraints {
-        if !contains(attributes, NSLayoutAttribute(rawValue: Int(constraint.firstAttribute))!) { continue }
-        var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList())
+        if !contains(attributes, constraint.firstAttribute) { continue }
+        var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as [String:AnyObject]
         constraint.owner.removeConstraint(constraint)
         let bounds = CGRect(origin: CGPoint.zeroPoint, size: metrics[self.remoteElement.uuid]!.size)
         let frame = metrics[constraint.firstItem.uuid]!
@@ -207,7 +225,7 @@ class ConstraintManager: NSObject {
           default: continue
         }
         let owner = constraintValues["owner"] as RemoteElement
-        owner.addConstraint(Constraint(attributeValues: constraintValues))
+        if let c = Constraint.constraintWithValues(constraintValues) { owner.addConstraint(c) }
       }
       self.remoteElement.managedObjectContext?.processPendingChanges()
     }
@@ -219,12 +237,10 @@ class ConstraintManager: NSObject {
   :param: subelements [RemoteElement]
   :param: sibling RemoteElement
   :param: attribute NSLayoutAttribute
-  :param: metrics [String:CGRect]
+  :param: metrics Metrics
   */
-  func resizeSubelements(subelements: [RemoteElement],
-               toSibling sibling: RemoteElement,
-               attribute: NSLayoutAttribute,
-                 metrics: [String:CGRect])
+  func resizeSubelements(subelements: [RemoteElement], toSibling sibling: RemoteElement, attribute: NSLayoutAttribute,
+                 metrics: Metrics)
   {
     let attributes: [NSLayoutAttribute] = attribute == .Width ? [.Left, .Right, .Width] : [.Top, .Bottom, .Right]
     remoteElement.managedObjectContext?.performBlockAndWait {
@@ -256,9 +272,9 @@ class ConstraintManager: NSObject {
   :param: element RemoteElement
   :param: fromSize CGSize
   :param: toSize CGSize
-  :param: metrics [String:CGRect]
+  :param: metrics Metrics
   */
-  func resizeElement(element: RemoteElement, fromSize: CGSize, toSize: CGSize, metrics: [String:CGRect]) {
+  func resizeElement(element: RemoteElement, fromSize: CGSize, toSize: CGSize, metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
@@ -267,20 +283,19 @@ class ConstraintManager: NSObject {
       }
 
       let deltaSize = fromSize - toSize
-      for constraint in element.firstItemConstraints.allObjects as [Constraint] {
-        let attribute = NSLayoutAttribute(rawValue: Int(constraint.firstAttribute)) ?? NSLayoutAttribute.NotAnAttribute
-        switch attribute {
-          case .Left, .Leading, .Right, .Trailing: constraint.constant -= Float(deltaSize.width / CGFloat(2.0))
+      for constraint in element.firstOrderConstraints {
+        switch constraint.firstAttribute {
+          case .Left, .Leading, .Right, .Trailing: constraint.constant -= deltaSize.width / CGFloat(2.0)
           case .Width:
             if fromSize.width != toSize.width {
-              if constraint.staticConstraint { constraint.constant = Float(toSize.width) }
-              else if constraint.firstItem != constraint.secondItem { constraint.constant -= Float(deltaSize.width) }
+              if constraint.staticConstraint { constraint.constant = toSize.width }
+              else if constraint.firstItem != constraint.secondItem { constraint.constant -= deltaSize.width }
             }
-          case .Baseline, .Bottom, .Top: constraint.constant -= Float(deltaSize.height / CGFloat(2.0))
+          case .Baseline, .Bottom, .Top: constraint.constant -= deltaSize.height / CGFloat(2.0)
           case .Height:
             if fromSize.height != toSize.height {
-              if constraint.staticConstraint { constraint.constant = Float(toSize.height) }
-              else if constraint.firstItem != constraint.secondItem { constraint.constant -= Float(deltaSize.height) }
+              if constraint.staticConstraint { constraint.constant = toSize.height }
+              else if constraint.firstItem != constraint.secondItem { constraint.constant -= deltaSize.height }
             }
           default: break
         }
@@ -294,14 +309,14 @@ class ConstraintManager: NSObject {
   :param: subelements [RemoteElement]
   :param: sibling RemoteElement
   :param: attribute NSLayoutAttribute
-  :param: metrics [String:CGRect]
+  :param: metrics Metrics
   */
   func alignSubelements(subelements: [RemoteElement],
               toSibling sibling: RemoteElement,
               attribute: NSLayoutAttribute,
-                metrics: [String:CGRect])
+                metrics: Metrics)
   {
-    let axis = UILayoutConstraintAxisForAttribute(attribute)
+    let axis = ConstraintManager.UILayoutConstraintAxisForAttribute(attribute)
     let attributes: [NSLayoutAttribute] = axis == .Horizontal ? [.Left, .Right, .CenterX] : [.Top, .Bottom, .CenterY]
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
@@ -331,7 +346,7 @@ class ConstraintManager: NSObject {
 
   :param: metrics [String CGRect]
   */
-  func shrinkwrapSubelementsUsingMetrics(metrics: [String:CGRect]) {
+  func shrinkwrapSubelementsUsingMetrics(metrics: Metrics) {
 
   }
 
@@ -340,9 +355,9 @@ class ConstraintManager: NSObject {
 
   :param: subelements [RemoteElement] elements to be translated
   :param: translation CGPoint Amount by which s will be translated
-  :param: metrics [String:CGRect] Dictionary of element frames keyed by their `identifier` property
+  :param: metrics Metrics Dictionary of element frames keyed by their `identifier` property
   */
-  func translateSubelements(subelements: [RemoteElement], translation: CGPoint, metrics: [String:CGRect]) {
+  func translateSubelements(subelements: [RemoteElement], translation: CGPoint, metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
@@ -350,11 +365,10 @@ class ConstraintManager: NSObject {
         self.freezeConstraints(subelement.constraintManager.dependentSiblingConstraints,
                  attributes: [.Left, .Right, .Top, .Bottom, .CenterX, .CenterY],
                        metrics: metrics)
-        for constraint in subelement.firstItemConstraints.allObjects as [Constraint] {
-          let attribute = NSLayoutAttribute(rawValue: Int(constraint.firstAttribute)) ?? NSLayoutAttribute.NotAnAttribute
-          switch attribute {
-            case .Baseline, .Bottom, .Top, .CenterY: constraint.constant += Float(translation.y)
-            case .Left, .Leading, .Right, .Trailing, .CenterX: constraint.constant += Float(translation.x)
+        for constraint in subelement.firstOrderConstraints {
+          switch constraint.firstAttribute {
+            case .Baseline, .Bottom, .Top, .CenterY: constraint.constant += translation.y
+            case .Left, .Leading, .Right, .Trailing, .CenterX: constraint.constant += translation.x
             default: break
           }
         }
@@ -368,19 +382,18 @@ class ConstraintManager: NSObject {
 
   :param: metrics [String CGRect]
   */
-  func removeMultipliersUsingMetrics(metrics: [String:CGRect]) {
+  func removeMultipliersUsingMetrics(metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
       for constraint in self.dependentChildConstraints {
         if constraint.multiplier != 1.0 {
-          var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList())
+          var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as [String:AnyObject]
           constraintValues["multiplier"] = 1.0
           self.remoteElement.removeConstraint(constraint)
           let frame = metrics[constraint.firstItem.uuid]!
           let bounds = CGRect(origin: CGPoint.zeroPoint, size: metrics[self.remoteElement.uuid]!.size)
-          let attribute = NSLayoutAttribute(rawValue: Int(constraint.firstAttribute)) ?? NSLayoutAttribute.NotAnAttribute
-          switch attribute {
+          switch constraint.firstAttribute {
             case .Baseline, .Bottom: constraintValues["constant"] = frame.maxY - bounds.height
             case .Top:               constraintValues["constant"] = frame.minY
             case .CenterY:           constraintValues["constant"] = frame.midY - bounds.height / 2.0
@@ -391,7 +404,7 @@ class ConstraintManager: NSObject {
             case .Height:            constraintValues["constant"] = frame.height - bounds.height
             default: break
           }
-          self.remoteElement.addConstraint(Constraint(attributeValues: constraintValues))
+          if let c = Constraint.constraintWithValues(constraintValues) { self.remoteElement.addConstraint(c) }
         }
       }
       self.remoteElement.managedObjectContext?.processPendingChanges()
@@ -410,7 +423,7 @@ class ConstraintManager: NSObject {
 
       if element.constraintManager.proportionLock {
         if let c = element.constraintManager.intrinsicConstraints.filter({$0.secondItem == element}).first {
-          let firstAttribute = NSLayoutAttribute(rawValue: Int(c.firstAttribute))!
+          let firstAttribute = c.firstAttribute
           element.removeConstraint(c)
           element.addConstraint(Constraint(item: element,
                                            attribute: firstAttribute,
@@ -429,14 +442,65 @@ class ConstraintManager: NSObject {
   Modifies `remoteElement` constraints to avoid unsatisfiable conditions when adding the specified constraint.
 
   :param: constraint Constraint `Constraint` whose addition may require conflict resolution
-  :param: metrics [String:CGRect] Dictionary of element frames keyed by their `identifier` property
+  :param: metrics Metrics Dictionary of element frames keyed by their `identifier` property
   */
-  func resolveConflictsForConstraint(constraint: Constraint, metrics: [String:CGRect]) {
+  func resolveConflictsForConstraint(constraint: Constraint, metrics: Metrics) {
+
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
-      // let (replacements, additions) = constraint.manager.replacementCandidatesForAddingAttribute(constraint.firstAttribute)
+      let (replacements, additions) = constraint.manager.replacementCandidatesForAddingAttribute(constraint.firstAttribute)
+      apply(constraint.firstItem.firstOrderConstraints.filter{replacements ∋ $0.firstAttribute}){$0.owner.removeConstraint($0)}
+
+      let frame = metrics[constraint.firstItem.uuid]!
+      let bounds = frame.rectWithOrigin(CGPoint.zeroPoint)
+
+      for firstAttribute in additions {
+
+        var constant: CGFloat = 0.0
+        var owner = self.remoteElement
+        let firstItem = constraint.firstItem
+        var secondItem: RemoteElement?
+        var secondAttribute: NSLayoutAttribute = .NotAnAttribute
+
+        switch firstAttribute {
+
+          case .CenterX:
+            secondItem = self.remoteElement
+            secondAttribute = .CenterX
+            constant = frame.midX - bounds.midX
+
+          case .CenterY:
+            secondItem = self.remoteElement
+            secondAttribute = .CenterY
+            constant = frame.midY - bounds.midY
+
+          case .Width:
+            owner = firstItem
+            constant = frame.width
+
+          case .Height:
+            owner = firstItem
+            constant = frame.height
+
+          default: continue
+
+        }
+
+        owner.addConstraint(Constraint(item: firstItem,
+                                       attribute: firstAttribute,
+                                       relatedBy: .Equal,
+                                       toItem: secondItem,
+                                       attribute: secondAttribute,
+                                       multiplier: 1.0,
+                                       constant: constant))
+
+      }
+
+      self.remoteElement.managedObjectContext?.processPendingChanges()
+
     }
+
   }
 
   /**
@@ -475,7 +539,7 @@ class ConstraintManager: NSObject {
   enum Relationship { case None, Parent, Child, Sibling, Intrinsic }
   enum Dimension { case XAxis, YAxis, Width, Height }
   enum Order { case None, First, Second }
-  enum Affiliation { case None, FirstItem, SecondItem, Owner }
+  typealias Affiliation = (firstItem: Bool, secondItem: Bool, owner: Bool)
 
   enum Attribute: Int {
 
@@ -530,7 +594,15 @@ class ConstraintManager: NSObject {
   :returns: Dependency
   */
   func dependencyForAttribute(attribute: NSLayoutAttribute) -> Dependency {
-    return .None
+    if !self[attribute.rawValue] { return .None }
+    else {
+      switch relationships[Attribute(attribute)!.rawValue] {
+        case .Parent:    return .Parent
+        case .Sibling:   return .Sibling
+        case .Intrinsic: return .Intrinsic
+        default:         return .None
+      }
+    }
   }
 
   /**
@@ -541,7 +613,94 @@ class ConstraintManager: NSObject {
   :returns: ([NSLayoutAttribute], [NSLayoutAttribute])
   */
   func replacementCandidatesForAddingAttribute(attribute: NSLayoutAttribute) -> ([NSLayoutAttribute], [NSLayoutAttribute]) {
-    return ([],[])
+    switch attribute {
+      case .Baseline, .Bottom:
+        if self["height"] { return self["centerY"] ? ([.CenterY], []) : ([.Top], []) }
+        else { return ([.CenterY, .Top], [.Height]) }
+
+      case .Top:
+        if self["height"] { return self["centerY"] ? ([.CenterY], []) : ([.Bottom], []) }
+        else { return ([.CenterY, .Bottom], [.Height]) }
+
+      case .Left, .Leading:
+        if self["width"] { return self["centerX"] ? ([.CenterX], []) : ([.Right], []) }
+        else { return ([.CenterX, .Right], [.Width]) }
+
+      case .Right, .Trailing:
+        if self["width"] { return self["centerX"] ? ([.CenterX], []) : ([.Left], []) }
+        else { return ([.CenterX, .Left], [.Width]) }
+
+      case .CenterX:
+        if self["width"] { return self["top"] ? ([.Left], []) : ([.Right], []) }
+        else { return ([.Left, .Right], [.Width]) }
+
+      case .CenterY:
+        if self["height"] { return self["centerY"] ? ([.Top], []) : ([.Bottom], []) }
+        else { return ([.Top, .Bottom], [.Height]) }
+
+      case .Width:
+        if self["centerX"] { return self["left"] ? ([.Left], []) : ([.Right], []) }
+        else { return ([.Left, .Right], [.CenterX]) }
+
+      case .Height:
+        if self["centerY"] { return self["top"] ? ([.Top], []) : ([.Bottom], []) }
+        else { return ([.Top, .Bottom], [.CenterY]) }
+
+      default: return ([],[])
+    }
+  }
+
+  func refreshConfig() {
+    proportionLock = false
+    layoutBits.unsetAllBits()
+    for constraint in remoteElement.firstOrderConstraints {
+      if let attribute = Attribute(constraint.firstAttribute) {
+        self[constraint.firstAttribute.rawValue] = true
+        var firstItem: RemoteElement!
+        var secondItem: RemoteElement?
+        var owner: RemoteElement!
+        if constraint.deleted {
+          let deletedValues = constraint.committedValuesForKeys(["firstItem", "secondItem", "owner"])
+          if let item = deletedValues["firstItem"] as? RemoteElement { firstItem = item }
+          if let item = deletedValues["secondItem"] as? RemoteElement { secondItem = item }
+          if let item = deletedValues["owner"] as? RemoteElement { owner = item }
+        } else {
+          firstItem = constraint.firstItem
+          secondItem = constraint.secondItem
+          owner = constraint.owner
+        }
+
+        let affiliation: Affiliation = (first: firstItem == remoteElement, second: secondItem == remoteElement, owner: owner == remoteElement)
+        var relationship: Relationship = .None
+        if affiliation.first && (secondItem == nil || affiliation.second) { relationship = .Intrinsic }
+        else if affiliation.first && firstItem.parentElement == secondItem { relationship = .Child }
+        else if affiliation.second && firstItem.parentElement == secondItem { relationship = .Parent }
+        else if secondItem != nil && firstItem.parentElement == secondItem!.parentElement { relationship = .Sibling }
+
+        relationships[attribute.rawValue] = relationship
+
+        if firstItem == secondItem && (constraint.firstAttribute == .Width || constraint.firstAttribute == .Height) {
+          proportionLock = true
+        }
+      }
+    }
+    if receptionist == nil {
+      receptionist = MSContextChangeReceptionist(
+        observer: self,
+        forObject: remoteElement,
+        notificationName: NSManagedObjectContextObjectsDidChangeNotification,
+        updateHandler: {
+          (rec: MSContextChangeReceptionist!) -> Void in
+            if let obj = rec.object as? RemoteElement {
+              if obj.hasChangesForKey("firstItemConstraints") {
+                if let m = rec.observer as? ConstraintManager {
+                  m.refreshConfig()
+                }
+              }
+            }
+          },
+          deleteHandler: nil)
+    }
   }
 
   /**
@@ -553,7 +712,10 @@ class ConstraintManager: NSObject {
   :returns: [Constraint]
   */
   func constraintsForAttribute(attribute: NSLayoutAttribute, ofOrder order: Order = .None) -> [Constraint] {
-    return []
+    switch order {
+      case .None, .First:  return remoteElement.firstOrderConstraints.filter { $0.firstAttribute == attribute }
+      case .Second:        return remoteElement.secondOrderConstraints.filter { $0.secondAttribute == attribute }
+    }
   }
 
   /**
@@ -564,7 +726,7 @@ class ConstraintManager: NSObject {
   :returns: Constraint?
   */
   func constraintWithValues(values: [String:AnyObject]) -> Constraint? {
-    return nil
+    return remoteElement.firstOrderConstraints.filter{$0.hasAttributeValues(values)}.first
   }
 
   /**
@@ -576,7 +738,16 @@ class ConstraintManager: NSObject {
   :returns: [Constraint]
   */
   func constraintsAffectingAxis(axis: UILayoutConstraintAxis, ofOrder order: Order = .None) -> [Constraint] {
-    return []
+    switch order {
+      case .None, .First:
+        return remoteElement.firstOrderConstraints.filter {
+          axis == ConstraintManager.UILayoutConstraintAxisForAttribute($0.firstAttribute)
+        }
+      case .Second:
+        return remoteElement.secondOrderConstraints.filter {
+          axis == ConstraintManager.UILayoutConstraintAxisForAttribute($0.secondAttribute)
+        }
+    }
   }
 
   /**
@@ -586,7 +757,7 @@ class ConstraintManager: NSObject {
 
   :returns: UILayoutConstraintAxis
   */
-  func UILayoutConstraintAxisForAttribute(attribute: NSLayoutAttribute) -> UILayoutConstraintAxis {
+  class func UILayoutConstraintAxisForAttribute(attribute: NSLayoutAttribute) -> UILayoutConstraintAxis {
     switch attribute {
       case .Width, .Left, .Leading, .Right, .Trailing, .CenterX: return .Horizontal
       default: return .Vertical
