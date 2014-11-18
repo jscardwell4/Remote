@@ -555,6 +555,11 @@ class RemoteElementView: UIView {
     initializeIVARs()
   }
 
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
   required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   /** updateConstraints */
@@ -562,20 +567,24 @@ class RemoteElementView: UIView {
     //TODO: Modify to use model constraint uuids to update only where necessary
     var identifier = createIdentifier(self, ["Internal", "Base"])
     if constraintsWithIdentifier(identifier).count == 0 {
-      constrainWithFormat("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
+      constrain("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
                     views: ["b": backdropView, "c": contentView, "s": subelementsView, "o": overlayView],
                identifier: identifier)
     }
-    identifier = createIdentifier(self, ["Internal", "Model"])
-    if constraintsWithIdentifier(identifier).count == 0 {
-      if let modelConstraints = model.constraints?.allObjects as? [Constraint] {
-        addConstraints(modelConstraints.map{
-          let c = RemoteElementLayoutConstraint(model: $0, forView: self)
-          c.identifier = identifier
-          return c
-        })
+
+    let modelConstraints: [Constraint] = model.ownedConstraints
+    let modeledConstraints = self.modeledConstraints
+
+    if modelConstraints.count > modeledConstraints.count {
+      removeConstraints(modeledConstraints)
+      for modelConstraint in modelConstraints {
+        if let constraint = RemoteElementViewConstraint.constraintWithModel(modelConstraint, owningView: self) {
+          constraint.identifier = identifier
+          addConstraint(constraint)
+        }
       }
     }
+
     super.updateConstraints()
   }
 
@@ -642,7 +651,7 @@ class RemoteElementView: UIView {
       size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
       size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
 
-      if model.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
+      if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
 
     }
 
@@ -651,7 +660,7 @@ class RemoteElementView: UIView {
 
   var maximumSize: CGSize {
     var size = superview?.bounds.size ?? CGSize.zeroSize
-    if model.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
+    if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
     return size
   }
 
@@ -696,6 +705,7 @@ class RemoteElementView: UIView {
   var parentElementView: RemoteElementView? { return (superview as? SubelementsView)?.superview as? RemoteElementView }
 
   var model: RemoteElement!
+  var modeledConstraints: [RemoteElementViewConstraint] { return constraints().filter{$0 is RemoteElementViewConstraint} as [RemoteElementViewConstraint] }
   var subelementViews: [RemoteElementView] { return subelementsView.subviews as? [RemoteElementView] ?? [] }
 
   /**
@@ -783,13 +793,13 @@ class RemoteElementView: UIView {
     }
   }
 
-  var editingMode: REEditingMode = .NotEditing {
+  var editingMode: RemoteElement.BaseType = .Undefined {
     didSet {
       apply(subelementViews){$0.editingMode = self.editingMode}
     }
   }
 
-  var isEditing: Bool { return model.elementType.rawValue & editingMode.rawValue == editingMode.rawValue }
+  var isEditing: Bool { return model.elementType() == editingMode }
 
   var editingState: REEditingState = .NotEditing {
     didSet {
@@ -814,7 +824,7 @@ class RemoteElementView: UIView {
   var appliedScale: CGFloat = 1.0
 
   /** updateSubelementOrderFromView */
-  func updateSubelementOrderFromView() { model.subelements = NSOrderedSet(array: subelementViews.map{$0.model}) }
+  func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
 
   /**
   translateSubelements:translation:
@@ -866,11 +876,14 @@ class RemoteElementView: UIView {
               toSibling siblingView: RemoteElementView,
               attribute: NSLayoutAttribute)
   {
+    MSLogDebug("model constraints before alignment…\n\(modeledConstraintsDescription)")
     model.constraintManager.alignSubelements(subelementViews.map{$0.model},
                                   toSibling: siblingView.model,
                                   attribute: attribute,
                                     metrics: viewFrames)
+    MSLogDebug("model constraints after alignment and before shrinkwrap…\n\(modeledConstraintsDescription)")
     if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
+    MSLogDebug("model constraints after shrinkwrap\n\(modeledConstraintsDescription)")
     apply(subelementViews){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
 
@@ -938,11 +951,16 @@ class RemoteElementView: UIView {
   func initializeViewFromModel() {
     super.backgroundColor = model.backgroundColor
     refreshBorderPath()
-    for element in model.subelements.array as [RemoteElement] { addSubelementView(self.dynamicType.viewWithModel(element)) }
+    for element in model.subelements { addSubelementView(self.dynamicType.viewWithModel(element)) }
   }
 
   var kvoReceptionists: [String:MSKVOReceptionist] = [:]
 
+  /**
+  kvoRegistration
+
+  :returns: [String:(MSKVOReceptionist!) -> Void]
+  */
   func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
     var registry: [String:(MSKVOReceptionist!) -> Void] = [:]
     registry["constraints"] = {
@@ -1032,19 +1050,19 @@ class RemoteElementView: UIView {
     let path = borderPath != nil ? UIBezierPath(CGPath: borderPath!.CGPath) : UIBezierPath(rect: rect)
     UIGraphicsPushContext(ctx)
     path.addClip()
-    let style = model.style & REStyle.StyleApplyGloss
+    let style = model.style & RemoteElement.Style.GlossStyleMask
     switch style {
-      case REStyle.StyleGlossStyle1:
+      case RemoteElement.Style.GlossStyle1:
         MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: 0.0)
-      case REStyle.StyleGlossStyle2:
+      case RemoteElement.Style.GlossStyle2:
         MSPainter.drawRoundedRectButtonOverlayInContext(ctx, shineColor: nil, frame: rect)
-      case REStyle.StyleGlossStyle3:
+      case RemoteElement.Style.GlossStyle3:
         MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: 0.8)
-      case REStyle.StyleGlossStyle4:
+      case RemoteElement.Style.GlossStyle4:
         MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: -0.8)
       default: break
     }
-    if (model.style & REStyle.StyleDrawBorder).rawValue != 0 {
+    if model.style & RemoteElement.Style.DrawBorder != nil {
       path.lineWidth = 3.0
       path.lineJoinStyle = kCGLineJoinRound
       UIColor.blackColor().setStroke()
@@ -1156,5 +1174,6 @@ class RemoteElementView: UIView {
     set { overlayView.clipsToBounds = newValue }
   }
 
-}
+  var modeledConstraintsDescription: String { return "\n".join(modeledConstraints.map{$0.description}) }
 
+}

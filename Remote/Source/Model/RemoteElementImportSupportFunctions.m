@@ -6,37 +6,38 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementImportSupportFunctions.h"
-#import "RemoteElement.h"
+//#import "RemoteElement.h"
 #import "JSONObjectKeys.h"
 #import "ControlStateImageSet.h"
 #import "ControlStateTitleSet.h"
 #import "ControlStateColorSet.h"
 #import "RemoteElementKeys.h"
 
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Types
 ////////////////////////////////////////////////////////////////////////////////
 
-Class remoteElementClassForImportKey(NSString * importKey) {
-  return classForREType(remoteElementTypeFromImportKey(importKey));
-}
+//Class remoteElementClassForImportKey(NSString * importKey) {
+//  return classForREType(remoteElementTypeFromImportKey(importKey));
+//}
 
-REType remoteElementTypeFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ RETypeRemoteJSONKey      : @(RETypeRemote),
-               RETypeButtonGroupJSONKey : @(RETypeButtonGroup),
-               RETypeButtonJSONKey      : @(RETypeButton),
-               RETypeUndefinedJSONKey   : @(RETypeUndefined) };
-  });
-
-  NSNumber * typeValue = (importKey ? index[importKey] : nil);
-
-  return (typeValue ? [typeValue unsignedShortValue] : RETypeUndefined);
-}
+//REType remoteElementTypeFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index = nil;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ RETypeRemoteJSONKey      : @(RETypeRemote),
+//               RETypeButtonGroupJSONKey : @(RETypeButtonGroup),
+//               RETypeButtonJSONKey      : @(RETypeButton),
+//               RETypeUndefinedJSONKey   : @(RETypeUndefined) };
+//  });
+//
+//  NSNumber * typeValue = (importKey ? index[importKey] : nil);
+//
+//  return (typeValue ? [typeValue unsignedShortValue] : RETypeUndefined);
+//}
 
 RERole remoteElementRoleFromImportKey(NSString * importKey) {
   static NSDictionary const * index = nil;
@@ -113,155 +114,155 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-REState buttonStateFromImportKey(NSString * importKey) {
-
-  // TODO: This should be updated to allow for state other than default
-  return REStateDefault;
-}
+//REState buttonStateFromImportKey(NSString * importKey) {
+//
+//  // TODO: This should be updated to allow for state other than default
+//  return REStateDefault;
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style, & Theme
 ////////////////////////////////////////////////////////////////////////////////
 
-REShape remoteElementShapeFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
+//REShape remoteElementShapeFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index = nil;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ REShapeUndefinedJSONKey        : @(REShapeUndefined),
+//               REShapeRoundedRectangleJSONKey : @(REShapeRoundedRectangle),
+//               REShapeRectangleJSONKey        : @(REShapeRectangle),
+//               REShapeDiamondJSONKey          : @(REShapeDiamond),
+//               REShapeTriangleJSONKey         : @(REShapeTriangle),
+//               REShapeOvalJSONKey             : @(REShapeOval) };
+//  });
+//
+//  NSNumber * shapeValue = index[importKey];
+//
+//  return (shapeValue ? [shapeValue unsignedShortValue] : REShapeUndefined);
+//}
 
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ REShapeUndefinedJSONKey        : @(REShapeUndefined),
-               REShapeRoundedRectangleJSONKey : @(REShapeRoundedRectangle),
-               REShapeRectangleJSONKey        : @(REShapeRectangle),
-               REShapeDiamondJSONKey          : @(REShapeDiamond),
-               REShapeTriangleJSONKey         : @(REShapeTriangle),
-               REShapeOvalJSONKey             : @(REShapeOval) };
-  });
+//REStyle remoteElementStyleFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index = nil;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ REStyleUndefinedJSONKey   : @(REStyleUndefined),
+//               REStyleDrawBorderJSONKey  : @(REStyleDrawBorder),
+//               REStyleStretchableJSONKey : @(REStyleStretchable),
+//               REStyleApplyGlossJSONKey  : @(REStyleApplyGloss),
+//               REStyleGlossStyle1JSONKey : @(REStyleGlossStyle1),
+//               REStyleGlossStyle2JSONKey : @(REStyleGlossStyle2),
+//               REStyleGlossStyle3JSONKey : @(REStyleGlossStyle3),
+//               REStyleGlossStyle4JSONKey : @(REStyleGlossStyle4) };
+//  });
+//
+//  REStyle style = REStyleUndefined;
+//
+//  for (NSString * key in [importKey componentsSeparatedByString:@" "]) {
+//    NSNumber * styleValue = index[key];
+//
+//    if (styleValue) style |= [styleValue unsignedShortValue];
+//  }
+//
+//  return style;
+//}
 
-  NSNumber * shapeValue = index[importKey];
-
-  return (shapeValue ? [shapeValue unsignedShortValue] : REShapeUndefined);
-}
-
-REStyle remoteElementStyleFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ REStyleUndefinedJSONKey   : @(REStyleUndefined),
-               REStyleDrawBorderJSONKey  : @(REStyleDrawBorder),
-               REStyleStretchableJSONKey : @(REStyleStretchable),
-               REStyleApplyGlossJSONKey  : @(REStyleApplyGloss),
-               REStyleGlossStyle1JSONKey : @(REStyleGlossStyle1),
-               REStyleGlossStyle2JSONKey : @(REStyleGlossStyle2),
-               REStyleGlossStyle3JSONKey : @(REStyleGlossStyle3),
-               REStyleGlossStyle4JSONKey : @(REStyleGlossStyle4) };
-  });
-
-  REStyle style = REStyleUndefined;
-
-  for (NSString * key in [importKey componentsSeparatedByString:@" "]) {
-    NSNumber * styleValue = index[key];
-
-    if (styleValue) style |= [styleValue unsignedShortValue];
-  }
-
-  return style;
-}
-
-REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken, ^{
-    index = @{ REThemeNoneJSONKey                            : @(REThemeNone),
-               REThemeNoBackgroundImageJSONKey               : @(REThemeNoBackgroundImage),
-               REThemeNoBackgroundImageAlphaJSONKey          : @(REThemeNoBackgroundImageAlpha),
-               REThemeNoBackgroundColorAttributeJSONKey      : @(REThemeNoBackgroundColorAttribute),
-               REThemeNoBorderJSONKey                        : @(REThemeNoBorder),
-               REThemeNoGlossJSONKey                         : @(REThemeNoGloss),
-               REThemeNoStretchableJSONKey                   : @(REThemeNoStretchable),
-               REThemeNoIconImageJSONKey                     : @(REThemeNoIconImage),
-               REThemeNoIconColorAttributeJSONKey            : @(REThemeNoIconColorAttribute),
-               REThemeNoIconInsetsJSONKey                    : @(REThemeNoIconInsets),
-               REThemeNoTitleForegroundColorAttributeJSONKey : @(REThemeNoTitleForegroundColorAttribute),
-               REThemeNoTitleBackgroundColorAttributeJSONKey : @(REThemeNoTitleBackgroundColorAttribute),
-               REThemeNoTitleShadowColorAttributeJSONKey     : @(REThemeNoTitleShadowColorAttribute),
-               REThemeNoTitleStrokeColorAttributeJSONKey     : @(REThemeNoTitleStrokeColorAttribute),
-               REThemeNoFontNameJSONKey                      : @(REThemeNoFontName),
-               REThemeNoFontSizeJSONKey                      : @(REThemeNoFontSize),
-               REThemeNoStrokeWidthJSONKey                   : @(REThemeNoStrokeWidth),
-               REThemeNoStrikethroughJSONKey                 : @(REThemeNoStrikethrough),
-               REThemeNoUnderlineJSONKey                     : @(REThemeNoUnderline),
-               REThemeNoLigatureJSONKey                      : @(REThemeNoLigature),
-               REThemeNoKernJSONKey                          : @(REThemeNoKern),
-               REThemeNoParagraphStyleJSONKey                : @(REThemeNoParagraphStyle),
-               REThemeNoTitleInsetsJSONKey                   : @(REThemeNoTitleInsets),
-               REThemeNoTitleTextJSONKey                     : @(REThemeNoTitleText),
-               REThemeNoContentInsetsJSONKey                 : @(REThemeNoContentInsets),
-               REThemeNoShapeJSONKey                         : @(REThemeNoShape),
-               REThemeAllJSONKey                             : @(REThemeAll) };
-  });
-
-  REThemeOverrideFlags flags = REThemeNone;
-
-  if (importKey) {
-
-    BOOL invert = NO;
-
-    if ([importKey[0] isEqualToNumber:@('-')]) {
-      invert    = YES;
-      importKey = [importKey substringFromIndex:1];
-    }
-
-    NSMutableSet * flagsToSet  = [[[index allKeys] set] mutableCopy];
-    NSSet        * parsedFlags = [[importKey componentsSeparatedByString:@" "] set];
-
-    if (invert) [flagsToSet minusSet:parsedFlags];
-    else [flagsToSet intersectSet:parsedFlags];
-
-
-    if ([parsedFlags count]) {
-      NSMutableArray * flagValues = [[index objectsForKeys:[flagsToSet allObjects]
-                                            notFoundMarker:NullObject] mutableCopy];
-
-      [flagValues compact];
-
-      for (NSNumber * f  in flagValues)
-        flags |= [f unsignedShortValue];
-    }
-  }
-
-  return flags;
-}
+//REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index = nil;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken, ^{
+//    index = @{ REThemeNoneJSONKey                            : @(REThemeNone),
+//               REThemeNoBackgroundImageJSONKey               : @(REThemeNoBackgroundImage),
+//               REThemeNoBackgroundImageAlphaJSONKey          : @(REThemeNoBackgroundImageAlpha),
+//               REThemeNoBackgroundColorAttributeJSONKey      : @(REThemeNoBackgroundColorAttribute),
+//               REThemeNoBorderJSONKey                        : @(REThemeNoBorder),
+//               REThemeNoGlossJSONKey                         : @(REThemeNoGloss),
+//               REThemeNoStretchableJSONKey                   : @(REThemeNoStretchable),
+//               REThemeNoIconImageJSONKey                     : @(REThemeNoIconImage),
+//               REThemeNoIconColorAttributeJSONKey            : @(REThemeNoIconColorAttribute),
+//               REThemeNoIconInsetsJSONKey                    : @(REThemeNoIconInsets),
+//               REThemeNoTitleForegroundColorAttributeJSONKey : @(REThemeNoTitleForegroundColorAttribute),
+//               REThemeNoTitleBackgroundColorAttributeJSONKey : @(REThemeNoTitleBackgroundColorAttribute),
+//               REThemeNoTitleShadowColorAttributeJSONKey     : @(REThemeNoTitleShadowColorAttribute),
+//               REThemeNoTitleStrokeColorAttributeJSONKey     : @(REThemeNoTitleStrokeColorAttribute),
+//               REThemeNoFontNameJSONKey                      : @(REThemeNoFontName),
+//               REThemeNoFontSizeJSONKey                      : @(REThemeNoFontSize),
+//               REThemeNoStrokeWidthJSONKey                   : @(REThemeNoStrokeWidth),
+//               REThemeNoStrikethroughJSONKey                 : @(REThemeNoStrikethrough),
+//               REThemeNoUnderlineJSONKey                     : @(REThemeNoUnderline),
+//               REThemeNoLigatureJSONKey                      : @(REThemeNoLigature),
+//               REThemeNoKernJSONKey                          : @(REThemeNoKern),
+//               REThemeNoParagraphStyleJSONKey                : @(REThemeNoParagraphStyle),
+//               REThemeNoTitleInsetsJSONKey                   : @(REThemeNoTitleInsets),
+//               REThemeNoTitleTextJSONKey                     : @(REThemeNoTitleText),
+//               REThemeNoContentInsetsJSONKey                 : @(REThemeNoContentInsets),
+//               REThemeNoShapeJSONKey                         : @(REThemeNoShape),
+//               REThemeAllJSONKey                             : @(REThemeAll) };
+//  });
+//
+//  REThemeOverrideFlags flags = REThemeNone;
+//
+//  if (importKey) {
+//
+//    BOOL invert = NO;
+//
+//    if ([importKey[0] isEqualToNumber:@('-')]) {
+//      invert    = YES;
+//      importKey = [importKey substringFromIndex:1];
+//    }
+//
+//    NSMutableSet * flagsToSet  = [[[index allKeys] set] mutableCopy];
+//    NSSet        * parsedFlags = [[importKey componentsSeparatedByString:@" "] set];
+//
+//    if (invert) [flagsToSet minusSet:parsedFlags];
+//    else [flagsToSet intersectSet:parsedFlags];
+//
+//
+//    if ([parsedFlags count]) {
+//      NSMutableArray * flagValues = [[index objectsForKeys:[flagsToSet allObjects]
+//                                            notFoundMarker:NullObject] mutableCopy];
+//
+//      [flagValues compact];
+//
+//      for (NSNumber * f  in flagValues)
+//        flags |= [f unsignedShortValue];
+//    }
+//  }
+//
+//  return flags;
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote
 ////////////////////////////////////////////////////////////////////////////////
 
-REPanelAssignment panelAssignmentFromImportKey(NSString * importKey) {
-  static NSDictionary const * locationIndex, * triggerIndex;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken,
-                ^{
-    locationIndex = @{ REPanelLocationTopJSONKey    : @(REPanelLocationTop),
-                       REPanelLocationBottomJSONKey : @(REPanelLocationBottom),
-                       REPanelLocationLeftJSONKey   : @(REPanelLocationLeft),
-                       REPanelLocationRightJSONKey  : @(REPanelLocationRight) };
-
-    triggerIndex = @{ REPanelTrigger1JSONKey : @(REPanelTrigger1),
-                      REPanelTrigger2JSONKey : @(REPanelTrigger2),
-                      REPanelTrigger3JSONKey : @(REPanelTrigger3) };
-  });
-  NSString        * locationString = [importKey substringToIndex:[importKey length] - 1];
-  NSString        * triggerString  = [importKey substringFromIndex:[importKey length] - 1];
-  REPanelLocation   location       = [locationIndex[locationString] unsignedShortValue];
-  REPanelTrigger    trigger        = [triggerIndex[triggerString] unsignedShortValue];
-  REPanelAssignment assignment     = location | trigger;
-
-  return assignment;
-}
+//REPanelAssignment panelAssignmentFromImportKey(NSString * importKey) {
+//  static NSDictionary const * locationIndex, * triggerIndex;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    locationIndex = @{ REPanelLocationTopJSONKey    : @(REPanelLocationTop),
+//                       REPanelLocationBottomJSONKey : @(REPanelLocationBottom),
+//                       REPanelLocationLeftJSONKey   : @(REPanelLocationLeft),
+//                       REPanelLocationRightJSONKey  : @(REPanelLocationRight) };
+//
+//    triggerIndex = @{ REPanelTrigger1JSONKey : @(REPanelTrigger1),
+//                      REPanelTrigger2JSONKey : @(REPanelTrigger2),
+//                      REPanelTrigger3JSONKey : @(REPanelTrigger3) };
+//  });
+//  NSString        * locationString = [importKey substringToIndex:[importKey length] - 1];
+//  NSString        * triggerString  = [importKey substringFromIndex:[importKey length] - 1];
+//  REPanelLocation   location       = [locationIndex[locationString] unsignedShortValue];
+//  REPanelTrigger    trigger        = [triggerIndex[triggerString] unsignedShortValue];
+//  REPanelAssignment assignment     = location | trigger;
+//
+//  return assignment;
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands

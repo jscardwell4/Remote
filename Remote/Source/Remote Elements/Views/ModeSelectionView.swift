@@ -37,7 +37,7 @@ class ModeSelectionView: ButtonGroupView {
       (selectedButton?.model as Button).selected = false
       (newSelection.model as Button).selected = true
       selectedButton = newSelection
-      RemoteController(model.managedObjectContext).currentRemote?.currentMode = newSelection.model.key
+      RemoteController(model.managedObjectContext).currentRemote?.currentMode = newSelection.model.key!
     }
   }
 
@@ -60,14 +60,17 @@ class ModeSelectionView: ButtonGroupView {
   override func drawBackdropInContext(ctx: CGContextRef, inRect: CGRect) {
     let panelLocation = (model as ButtonGroup).panelLocation
     CGContextClearRect(ctx, bounds)
-    let roundedCorners = panelLocation == REPanelLocation.Right
-                           ? UIRectCorner.TopLeft | UIRectCorner.BottomLeft
-                           : (panelLocation == REPanelLocation.Left ? UIRectCorner.TopRight | UIRectCorner.BottomRight : UIRectCorner(0))
+    var roundedCorners: UIRectCorner
+    switch panelLocation {
+      case .Right: roundedCorners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft
+      case .Left: roundedCorners = UIRectCorner.TopRight | UIRectCorner.BottomRight
+      default: roundedCorners = UIRectCorner(0)
+    }
     var path = UIBezierPath(roundedRect: bounds, byRoundingCorners: roundedCorners, cornerRadii: CGSize(square: 15))
     borderPath = path
     UIColor.darkTextColor().setFill()
     path.fillWithBlendMode(kCGBlendModeNormal, alpha: 0.9)
-    let dx: CGFloat = panelLocation == REPanelLocation.Right ? 3 : -3
+    let dx: CGFloat = panelLocation == .Right ? 3 : -3
     let insetRect = bounds.rectByInsetting(dx: 0, dy: 3).rectByApplyingTransform(CGAffineTransformMakeTranslation(dx, 0))
     path = UIBezierPath(roundedRect: insetRect, byRoundingCorners: roundedCorners, cornerRadii: CGSize(square: 12))
     path.lineWidth = 2.0

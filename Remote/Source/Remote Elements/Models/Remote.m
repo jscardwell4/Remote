@@ -8,10 +8,10 @@
 
 #import "Remote.h"
 #import "RemoteElement_Private.h"
-#import "ButtonGroup.h"
+//#import "ButtonGroup.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
-
+#import "Remote-Swift.h"
 static int       ddLogLevel   = LOG_LEVEL_WARN;
 static const int msLogContext = LOG_CONTEXT_REMOTE;
 #pragma unused(ddLogLevel, msLogContext)
@@ -40,7 +40,7 @@ static const int msLogContext = LOG_CONTEXT_REMOTE;
   NSMutableDictionary * panels = [self.panels mutableCopy];
   panels[@(assignment)]       = CollectionSafe(buttonGroup.uuid);
   self.panels                 = panels;
-  buttonGroup.panelAssignment = assignment;
+//  buttonGroup.panelAssignment = assignment;
 }
 
 - (ButtonGroup *)buttonGroupForAssignment:(REPanelAssignment)assignment {

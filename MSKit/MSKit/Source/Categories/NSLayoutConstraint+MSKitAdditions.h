@@ -92,7 +92,7 @@ MSEXTERN_STRING MSExtendedVisualFormatConstantOperatorName;
 ////////////////////////////////////////////////////////////////////////////////
 
 @property (nonatomic, copy) NSString * nametag;
-@property (nonatomic, assign) NSUInteger tag;
+@property (nonatomic, assign) NSInteger tag;
 
 - (NSString *)prettyDescription;
 

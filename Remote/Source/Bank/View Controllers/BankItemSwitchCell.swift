@@ -24,7 +24,7 @@ class BankItemSwitchCell: BankItemCell {
     contentView.addSubview(nameLabel)
     contentView.addSubview(switchℹ)
     let format = "|-[name]-[switch]-| :: V:|-[name]-| :: V:|-[switch]-|"
-    contentView.constrainWithFormat(format, views: ["name": nameLabel, "switch": switchℹ])
+    contentView.constrain(format, views: ["name": nameLabel, "switch": switchℹ])
   }
 
   /**

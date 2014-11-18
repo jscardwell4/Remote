@@ -9,7 +9,7 @@
 #import "CommandEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
 #import "Command.h"
-#import "Button.h"
+//#import "Button.h"
 #import "RemoteController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CommandDetailViewController.h"
@@ -20,6 +20,7 @@
 #import "MacroCommandEditingViewController.h"
 #import "PowerCommandEditingViewController.h"
 #import "ViewDecorator.h"
+#import "Remote-Swift.h"
 
 #define kCommandDetailsViewFrame CGRectMake(0, 40, 320, 232)
 

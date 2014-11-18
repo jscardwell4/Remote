@@ -22,7 +22,7 @@ class BankRootCell: UITableViewCell {
 
   private let icon: UIImageView = {
     let view = UIImageView.newForAutolayout()
-    view.constrainWithFormat("self.width = self.height")
+    view.constrainAspect(1.0)
     view.contentMode = .ScaleAspectFit
     return view
   }()
@@ -35,7 +35,7 @@ class BankRootCell: UITableViewCell {
 
   private let chevron: UIImageView! = {
     let view = UIImageView.newForAutolayout()
-    view.constrainWithFormat("self.width = self.height")
+    view.constrainAspect(1.0)
     view.image = UIImage(named: "766-arrow-right")
     view.contentMode = .ScaleAspectFit
     return view
@@ -49,7 +49,7 @@ class BankRootCell: UITableViewCell {
     if constraintsWithIdentifier(identifier).count == 0 {
       let format = "|-20-[icon]-20-[label]-8-[chevron]-20-| :: V:|-8-[icon]-8-| :: V:|[label]| :: V:|-8-[chevron]-8-|"
       let views = ["icon": icon, "label": label, "chevron": chevron, "content": contentView]
-      constrainWithFormat(format, views: views, identifier: identifier)
+      constrain(format, views: views, identifier: identifier)
     }
     super.updateConstraints()
   }

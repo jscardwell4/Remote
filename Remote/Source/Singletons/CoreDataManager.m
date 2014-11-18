@@ -128,7 +128,10 @@ MSSTATIC_STRING_CONST kCoreDataManagerSQLiteName = @"Remote.sqlite";
     kPersistentStore = [kPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                                  configuration:nil
                                                                            URL:[self databaseStoreURL]
-                                                                       options:nil
+                                                                       options:@{NSMigratePersistentStoresAutomaticallyOption:
+                                                                                   @YES,
+                                                                                 NSInferMappingModelAutomaticallyOption:
+                                                                                   @YES}
                                                                          error:&error];
 
     if (error) { MSHandleErrors(error); }

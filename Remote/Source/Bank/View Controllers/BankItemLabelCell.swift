@@ -23,7 +23,7 @@ class BankItemLabelCell: BankItemCell {
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
     let format = "|-[name]-[label]-| :: V:|-[name]-| :: V:|-[label]-|"
-    contentView.constrainWithFormat(format, views: ["name": nameLabel, "label": infoLabel])
+    contentView.constrain(format, views: ["name": nameLabel, "label": infoLabel])
   }
 
   /**

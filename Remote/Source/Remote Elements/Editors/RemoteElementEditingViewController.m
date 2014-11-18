@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
-#import "Remote.h"
+//#import "Remote.h"
 #import "MSRemoteAppController.h"
 #import "REPresetCollectionViewController.h"
 #import "ViewDecorator.h"

@@ -13,7 +13,7 @@
 #import "MSRemoteMacros.h"
 
 #import "AttributeEditingViewController.h"
-#import "RemoteElement.h"
+//#import "RemoteElement.h"
 
 @class DetailedButtonEditingViewController, Button;
 

@@ -31,8 +31,8 @@ class ButtonView: RemoteElementView {
   @objc(viewWithButton:)
   override class func viewWithModel(model: Button) -> ButtonView {
     switch model.role {
-      case RERole.ButtonRoleBatteryStatus:    return BatteryStatusButtonView(model: model)
-      case RERole.ButtonRoleConnectionStatus: return ConnectionStatusButtonView(model: model)
+      case RemoteElement.Role.BatteryStatus:    return BatteryStatusButtonView(model: model)
+      case RemoteElement.Role.ConnectionStatus: return ConnectionStatusButtonView(model: model)
       default:                                return ButtonView(model: model)
     }
   }
@@ -98,7 +98,7 @@ class ButtonView: RemoteElementView {
 	*/
 	func executeActionWithOptions(options: CommandOptions) {
 		if !isEditing {
-			if button.command.indicator { activityIndicator.startAnimating() }
+			if button.command != nil && button.command!.indicator { activityIndicator.startAnimating() }
 			button.executeCommandWithOptions(options) {
 				(success: Bool, error: NSError?) -> Void in
 					if self.activityIndicator.isAnimating() {
@@ -185,7 +185,7 @@ class ButtonView: RemoteElementView {
                              "label.bottom = self.bottom - \(titleInsets.bottom) @900",
                              "label.right = self.right - \(titleInsets.right) @900",
                              "activity.center = self.center")
-      constrainWithFormat(format, views: ["label": labelView, "activity": activityIndicator], identifier: identifier)
+      constrain(format, views: ["label": labelView, "activity": activityIndicator], identifier: identifier)
     }
 	}
 
@@ -228,7 +228,7 @@ class ButtonView: RemoteElementView {
       frame.size.height = max(titleSize.height, frame.size.height)
     }
 
-	  if model.proportionLock && bounds.size != CGSize.zeroSize {
+	  if model.constraintManager.proportionLock && bounds.size != CGSize.zeroSize {
 	  	let currentSize = bounds.size
 
 	    if currentSize.width > currentSize.height {
@@ -275,7 +275,7 @@ class ButtonView: RemoteElementView {
 		setNeedsDisplay()
 	}
 
-	override var editingMode: REEditingMode {
+	override var editingMode: RemoteElement.BaseType {
 		didSet {
 			tapGesture.enabled = !isEditing
 			longPressGesture.enabled = !isEditing

@@ -8,10 +8,11 @@
 #import "Activity.h"
 #import "Command.h"
 #import "RemoteController.h"
-#import "RemoteElement.h"
-#import "Remote.h"
+//#import "RemoteElement.h"
+//#import "Remote.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "CoreDataManager.h"
+#import "Remote-Swift.h"
 
 @interface Activity (CoreDataGenerateAccessors)
 

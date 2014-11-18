@@ -9,7 +9,8 @@
 #import "CommandSet.h"
 #import "CommandContainer_Private.h"
 #import "Command.h"
-#import "ButtonGroup.h"
+//#import "ButtonGroup.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = DefaultDDLogLevel;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE);

@@ -36,7 +36,7 @@ MSEXTERN_STRING ModelObjectInitializingContextName;
 + (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc;
 
 - (id)objectForKeyedSubscript:(NSString *)uuid;
-- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+//- (id)objectAtIndexedSubscript:(NSUInteger)idx;
 
 @end
 

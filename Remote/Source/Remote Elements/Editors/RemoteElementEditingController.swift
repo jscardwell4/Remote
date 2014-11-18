@@ -176,13 +176,6 @@ class RemoteElementEditingController: UIViewController {
   class func elementClass() -> RemoteElementView.Type { return RemoteElementView.self }
 
   /**
-  editingModeForElement
-
-  :returns: REEditingMode
-  */
-  class func editingModeForElement() -> REEditingMode { return .NotEditing }
-
-  /**
   Convenience method that calls the following additional methods:
   - `updateBarButtonItems`
   - `updateToolbarDisplayed`
@@ -294,14 +287,14 @@ class RemoteElementEditingController: UIViewController {
       sourceViewWidthConstraint = widthConstraint
       sourceViewHeightConstraint = heightConstraint
     }
-    sourceView.editingMode = self.dynamicType.editingModeForElement()
+    sourceView.editingMode = sourceView.model.elementType()
     view.addSubview(sourceView)
 
     // Create the top toolbar
     topToolbar =  UIToolbar(frame: CGRect(size: CGSize(width: 320, height: 44)))
     topToolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
     topToolbar.translucent = true
-    undoButton = ViewDecorator.fontAwesomeBarButtonItemWithName("undo", target: self, selector: "undo:")
+    undoButton = ViewDecorator.fontAwesomeBarButtonItemWithName("undo", target: self, selector: "resetAction")
     let cancelButton = ViewDecorator.fontAwesomeBarButtonItemWithName("remove", target: self, selector: "cancelAction")
     let saveButton = ViewDecorator.fontAwesomeBarButtonItemWithName("save", target: self, selector: "saveAction")
     let flexibleSpace = UIBarButtonItem.flexibleSpace()
@@ -365,9 +358,9 @@ class RemoteElementEditingController: UIViewController {
     }
     let resizeNames = ["align-horizontal-size", "align-vertical-size", "align-size-exact"]
     let resizeTitles: [NSAttributedString] = resizeNames.map{ViewDecorator.fontAwesomeTitleWithName($0, size: 48.0)}
-    let resizeSelectors: [Selector] = ["resizeHorizontallyFromFocusView:",
-                                       "resizeVerticallyFromFocusView:",
-                                       "resizeFromFocusView:"]
+    let resizeSelectors: [Selector] = ["resizeHorizontallyFromFocusView",
+                                       "resizeVerticallyFromFocusView",
+                                       "resizeFromFocusView"]
     let resize = MSPopupBarButton(title: UIFont.fontAwesomeIconForName("align-size"), style: .Plain, target: nil, action: nil)
     resize.setTitleTextAttributes(textAttributes, forState: .Normal)
     resize.setTitleTextAttributes(textAttributes, forState: .Highlighted)
@@ -396,7 +389,7 @@ class RemoteElementEditingController: UIViewController {
                  "focus":    focusSelectionToolbar,
                  "source":   sourceView]
 
-    view.constrainWithFormat(format, views: views)
+    view.constrain(format, views: views)
 
     // Keep a refrence to the source view center y constraint
     let predicate = NSPredicate(format: "firstItem == %@" +
@@ -715,7 +708,7 @@ extension RemoteElementEditingController {
                                                 CGPoint(x: intersection.maxX, y: intersection.maxY))
             max = CGSize(width: (frame.size.width + Swift.min(deltaMin.x, deltaMax.x) * CGFloat(2.0)),
                          height: (frame.size.height + Swift.min(deltaMin.y, deltaMax.y) * CGFloat(2.0)))
-            if view.model.proportionLock {
+            if view.model.constraintManager.proportionLock {
               if max.width < max.height {
                 max.height = frame.size.height / frame.size.width * max.width
               } else {
@@ -995,6 +988,7 @@ extension RemoteElementEditingController {
   :param: gesture UIPanGestureRecognizer
   */
   func handlePan(gesture: UIPanGestureRecognizer) {
+    //TODO: Get pan working with non-empty selection
     MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
     if gesture === twoTouchPanGesture {
       switch gesture.state {
@@ -1129,9 +1123,9 @@ extension RemoteElementEditingController {
     presetVC.context = context
     addChildViewController(presetVC)
     let presetView = presetVC.collectionView
-    presetView.constrainWithFormat("'height' self.height = 0")
+    presetView.constrain("'height' self.height = 0")
     view.addSubview(presetView)
-    view.constrainWithFormat("|[preset]| :: V:[preset]|", views: ["preset": presetView])
+    view.constrain("|[preset]| :: V:[preset]|", views: ["preset": presetView])
     view.layoutIfNeeded()
     UIView.transitionWithView(view, duration: 0.25, options: .CurveEaseInOut,
       animations: {

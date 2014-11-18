@@ -10,7 +10,29 @@ import Foundation
 import CoreData
 import MoonKit
 
+@objc(Button)
 class Button: RemoteElement {
+
+  struct State: RawOptionSetType {
+
+    private(set) var rawValue: Int
+    init(rawValue: Int) { self.rawValue = rawValue & 0b0111 }
+    init(nilLiteral:()) { rawValue = 0 }
+
+    static var Default:     State = State(rawValue: 0b0000)
+    static var Normal:      State = State.Default
+    static var Highilghted: State = State(rawValue: 0b0001)
+    static var Disabled:    State = State(rawValue: 0b0010)
+    static var Selected:    State = State(rawValue: 0b0100)
+
+  }
+
+  /**
+  elementType
+
+  :returns: BaseType
+  */
+   override func elementType() -> BaseType { return .Button }
 
   @NSManaged var title:            NSAttributedString?
   @NSManaged var icon:             ImageView?
@@ -23,16 +45,16 @@ class Button: RemoteElement {
   @NSManaged var longPressCommand: Command?
 
   @NSManaged var primitiveState: NSNumber
-  var state: REState {
+  var state: State {
     get {
       willAccessValueForKey("state")
       let state = primitiveState
       didAccessValueForKey("state")
-      return REState(rawValue: state.shortValue)!
+      return State(rawValue: state.integerValue)
     }
     set {
       willChangeValueForKey("state")
-      primitiveState = NSNumber(short: newValue.rawValue)
+      primitiveState = newValue.rawValue
       didChangeValueForKey("state")
     }
   }
@@ -40,13 +62,13 @@ class Button: RemoteElement {
   var selected: Bool {
     get {
       willAccessValueForKey("selected")
-      let selected = state & REState.Selected != nil
+      let selected = state & State.Selected != nil
       didAccessValueForKey("selected")
       return selected
     }
     set {
       willChangeValueForKey("selected")
-      if newValue { state |= REState.Selected } else { state &= ~REState.Selected }
+      if newValue { state |= State.Selected } else { state &= ~State.Selected }
       didChangeValueForKey("selected")
     }
   }
@@ -54,13 +76,13 @@ class Button: RemoteElement {
   var highlighted: Bool {
     get {
       willAccessValueForKey("highlighted")
-      let highlighted = state & REState.Highilghted != nil
+      let highlighted = state & State.Highilghted != nil
       didAccessValueForKey("highlighted")
       return highlighted
     }
     set {
       willChangeValueForKey("highlighted")
-      if newValue { state |= REState.Highilghted } else { state &= ~REState.Highilghted }
+      if newValue { state |= State.Highilghted } else { state &= ~State.Highilghted }
       didChangeValueForKey("highlighted")
     }
   }
@@ -68,13 +90,13 @@ class Button: RemoteElement {
   var enabled: Bool {
     get {
       willAccessValueForKey("enabled")
-      let enabled = state & REState.Disabled == nil
+      let enabled = state & State.Disabled == nil
       didAccessValueForKey("enabled")
       return enabled
     }
     set {
       willChangeValueForKey("enabled")
-      if !newValue { state |= REState.Disabled } else { state &= ~REState.Disabled }
+      if !newValue { state |= State.Disabled } else { state &= ~State.Disabled }
       didChangeValueForKey("enabled")
     }
   }
@@ -85,7 +107,7 @@ class Button: RemoteElement {
       willAccessValueForKey("titleEdgeInsets")
       let insets = primitiveTitleEdgeInsets
       didAccessValueForKey("titleEdgeInsets")
-      return insets
+      return insets.UIEdgeInsetsValue()
     }
     set {
       willChangeValueForKey("titleEdgeInsets")
@@ -100,7 +122,7 @@ class Button: RemoteElement {
       willAccessValueForKey("imageEdgeInsets")
       let insets = primitiveImageEdgeInsets
       didAccessValueForKey("imageEdgeInsets")
-      return insets
+      return insets.UIEdgeInsetsValue()
     }
     set {
       willChangeValueForKey("imageEdgeInsets")
@@ -115,7 +137,7 @@ class Button: RemoteElement {
       willAccessValueForKey("contentEdgeInsets")
       let insets = primitiveContentEdgeInsets
       didAccessValueForKey("contentEdgeInsets")
-      return insets
+      return insets.UIEdgeInsetsValue()
     }
     set {
       willChangeValueForKey("contentEdgeInsets")
@@ -134,11 +156,11 @@ class Button: RemoteElement {
      var c: Command?
 
      switch options {
-       case .CommandOptionDefault:   c = command
-       case .CommandOptionLongPress: c = longPressCommand
+       case .Default:   c = command
+       case .LongPress: c = longPressCommand
      }
 
-     if c != nil { c!.execute(completion: completion) } else { completion?(true, nil) }
+     if c != nil { c!.execute(completion) } else { completion?(true, nil) }
    }
 
   /**
@@ -148,7 +170,7 @@ class Button: RemoteElement {
   :param: mode String
   */
   func setCommand(command: Command?, forMode mode: String) {
-    self[configurationKey(mode, "command")] = command?.permanentURI
+    setURIForObject(command, forKey: "command", forMode: mode)
   }
 
   /**
@@ -158,7 +180,7 @@ class Button: RemoteElement {
   :param: mode String
   */
   func setLongPressCommand(command: Command?, forMode mode: String) {
-    self[configurationKey(mode, "longPressCommand")] = command?.permanentURI
+    setURIForObject(command, forKey: "longPressCommand", forMode: mode)
   }
 
   /**
@@ -168,7 +190,7 @@ class Button: RemoteElement {
   :param: mode String
   */
   func setTitles(titleSet: ControlStateTitleSet?, forMode mode: String) {
-    self[configurationKey(mode, "titles")] = titleSet?.permanentURI
+    setURIForObject(titleSet, forKey: "titles", forMode: mode)
   }
 
   /**
@@ -178,7 +200,7 @@ class Button: RemoteElement {
   :param: mode String
   */
   func setBackgroundColors(colorSet: ControlStateColorSet?, forMode mode: String) {
-    self[configurationKey(mode, "backgroundColors")] = colorSet?.permanentURI
+    setURIForObject(colorSet, forKey: "backgroundColors", forMode: mode)
   }
 
   /**
@@ -188,7 +210,7 @@ class Button: RemoteElement {
   :param: mode String
   */
   func setIcons(imageSet: ControlStateImageSet?, forMode mode: String) {
-    self[configurationKey(mode, "icons")] = imageSet?.permanentURI
+    setURIForObject(imageSet, forKey: "icons", forMode: mode)
   }
 
   /**
@@ -198,7 +220,7 @@ class Button: RemoteElement {
   :param: mode String
   */
   func setImages(imageSet: ControlStateImageSet?, forMode mode: String) {
-    self[configurationKey(mode, "images")] = imageSet?.permanentURI
+    setURIForObject(imageSet, forKey: "images", forMode: mode)
   }
 
   /**
@@ -209,8 +231,7 @@ class Button: RemoteElement {
   :returns: Command?
   */
   func commandForMode(mode: String) -> Command? {
-    return managedObjectContext?.objectForURI(self[configurationKey(mode, "command")])?.faultedObject()
-      as? Command
+    return faultedObjectForKey("command", forMode: mode) as? Command
   }
 
   /**
@@ -221,8 +242,7 @@ class Button: RemoteElement {
   :returns: Command?
   */
   func longPressCommandForMode(mode: String) -> Command? {
-    return managedObjectContext?.objectForURI(self[configurationKey(mode, "longPressCommand")])?.faultedObject()
-      as? Command
+    return faultedObjectForKey("longPressCommand", forMode: mode) as? Command
   }
 
   /**
@@ -233,8 +253,7 @@ class Button: RemoteElement {
   :returns: ControlStateTitleSet?
   */
   func titlesForMode(mode: String) -> ControlStateTitleSet? {
-    return managedObjectContext?.objectForURI(self[configurationKey(mode, "titles")])?.faultedObject()
-      as? ControlStateTitleSet
+    return faultedObjectForKey("titles", forMode: mode) as? ControlStateTitleSet
   }
 
   /**
@@ -245,8 +264,7 @@ class Button: RemoteElement {
   :returns: ControlStateColorSet?
   */
   func backgroundColorsForMode(mode: String) -> ControlStateColorSet? {
-    return managedObjectContext?.objectForURI(self[configurationKey(mode, "backgroundColors")])?.faultedObject()
-      as? ControlStateColorSet
+    return faultedObjectForKey("backgroundColors", forMode: mode) as? ControlStateColorSet
   }
 
   /**
@@ -257,8 +275,7 @@ class Button: RemoteElement {
   :returns: ControlStateImageSet?
   */
   func iconsForMode(mode: String) -> ControlStateImageSet? {
-    return managedObjectContext?.objectForURI(self[configurationKey(mode, "icons")])?.faultedObject()
-      as? ControlStateImageSet
+    return faultedObjectForKey("icons", forMode: mode) as? ControlStateImageSet
   }
 
   /**
@@ -269,17 +286,16 @@ class Button: RemoteElement {
   :returns: ControlStateImageSet?
   */
   func imagesForMode(mode: String) -> ControlStateImageSet? {
-    return managedObjectContext?.objectForURI(self[configurationKey(mode, "images")])?.faultedObject()
-      as? ControlStateImageSet
+    return faultedObjectForKey("images", forMode: mode) as? ControlStateImageSet
   }
 
   /** updateButtonForState */
   func updateButtonForState() {
-    let state = self.state
-    title = titles[state]
-    icon = icons[state]
-    image = images[state]
-    backgroundColor = backgroundColors[state]
+    let idx = UInt(state.rawValue)
+    title = titles?[idx] as? NSAttributedString
+    icon = icons?[idx] as? ImageView
+    image = images?[idx] as? ImageView
+    backgroundColor = backgroundColors?[idx] as? UIColor
   }
 
   /**
@@ -289,12 +305,12 @@ class Button: RemoteElement {
   */
   override func updateForMode(mode: String) {
     super.updateForMode(mode)
-    command          = commandForMode(mode)          ?? commandForMode(REDefaultMode)
-    longPressCommand = longPressCommandForMode(mode) ?? longPressCommandForMode(REDefaultMode)
-    titles           = titlesForMode(mode)           ?? titlesForMode(REDefaultMode)
-    icons            = iconsForMode(mode)            ?? iconsForMode(REDefaultMode)
-    images           = imagesForMode(mode)           ?? imagesForMode(REDefaultMode)
-    backgroundColors = backgroundColorsForMode(mode) ?? backgroundColorsForMode(REDefaultMode)
+    command          = commandForMode(mode)          ?? commandForMode(RemoteElement.DefaultMode)
+    longPressCommand = longPressCommandForMode(mode) ?? longPressCommandForMode(RemoteElement.DefaultMode)
+    titles           = titlesForMode(mode)           ?? titlesForMode(RemoteElement.DefaultMode)
+    icons            = iconsForMode(mode)            ?? iconsForMode(RemoteElement.DefaultMode)
+    images           = imagesForMode(mode)           ?? imagesForMode(RemoteElement.DefaultMode)
+    backgroundColors = backgroundColorsForMode(mode) ?? backgroundColorsForMode(RemoteElement.DefaultMode)
 
     updateButtonForState()
   }
@@ -307,95 +323,57 @@ class Button: RemoteElement {
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
 
-    state = buttonStateFromImportKey(data["state"])
+    if let moc = managedObjectContext {
 
-
-    let titles:            NSDictionary = data["titles"]
-    let commands:          NSDictionary = data["commands"]
-    let longPressCommands: NSDictionary = data["long-press-commands"]
-    let icons:             NSDictionary = data["icons"]
-    let images:            NSDictionary = data["images"]
-    let backgroundColors:  NSDictionary = data["background-colors"]
-    let titleEdgeInsets:   NSString     = data["title-edge-insets"]
-    let contentEdgeInsets: NSString     = data["content-edge-insets"]
-    let imageEdgeInsets:   NSString     = data["image-edge-insets"]
-    let moc = managedObjectContext!
-
-    if let titles = data["titles"] as? [String:AnyObject] {
-      for mode in titles {
-        if let titleSet = moc.objectForURI(configurations[mode]["titles"]) {
-          moc.deleteObject(titleSet)
-          self.titleSet = nil
-        }
-        if let titleSet = ControlStateTitleSet.importObjectFromData(titles[mode], context: moc) {
-          setTitles(titleSet, forMode: mode)
+      if let titles = data["titles"] as? [String:[String:AnyObject]] {
+        for (mode, values) in titles {
+          setTitles(ControlStateTitleSet.importObjectFromData(values, context: moc), forMode: mode)
         }
       }
-    }
 
-    if let icons = data["icons"] as? [String:[String:AnyObject]] {
-      for mode in icons {
-        if let iconSet = moc.objectForURI(configurations[mode]["icons"]) {
-          moc.deleteObject(iconSet)
-          self.iconSet = nil
-        }
-        if let iconSet = ControlStateImageSet.importObjectFromData(icons[mode], context: moc) {
-          setIcons(iconSet, forMode: mode)
+      if let icons = data["icons"] as? [String:[String:AnyObject]] {
+        for (mode, values) in icons {
+          setIcons(ControlStateImageSet.importObjectFromData(values, context: moc), forMode: mode)
         }
       }
-    }
 
-    if let images = data["images"] as? [String:[String:AnyObject]] {
-      for mode in images {
-        if let imageSet = moc.objectForURI(configurations[mode]["images"]) {
-          moc.deleteObject(imageSet)
-          self.imageSet = nil
-        }
-        if let imageSet = ControlStateImageSet.importObjectFromData(images[mode], context: moc) {
-          setImages(imageSet, forMode: mode)
+      if let images = data["images"] as? [String:[String:AnyObject]] {
+        for (mode, values) in images {
+          setImages(ControlStateImageSet.importObjectFromData(values, context: moc), forMode: mode)
         }
       }
-    }
 
-    if let backgroundColors = data["background-colors"] as? [String:[String:AnyObject]] {
-      for mode in backgroundColors {
-        if let colorSet = moc.objectForURI(configurations[mode]["backgroundColors"]) {
-          moc.deleteObject(colorSet)
-          self.colorSet = nil
-        }
-        if let colorSet = ControlStateColorSet.importObjectFromData(backgroundColors[mode], context: moc) {
-          setBackgroundColors(colorSet, forMode: mode)
+      if let backgroundColors = data["background-colors"] as? [String:[String:AnyObject]] {
+        for (mode, values) in backgroundColors {
+          setBackgroundColors(ControlStateColorSet.importObjectFromData(values, context: moc), forMode: mode)
         }
       }
-    }
 
-    if let commands = data["commands"] as? [String:[String:AnyObject]] {
-      for mode in commands {
-        if let command = moc.objectForURI(configurations[mode]["command"]) {
-          moc.deleteObject(command)
-          self.command = nil
-        }
-        if let command = Command.importObjectFromData(commands[mode], context: moc) {
-          setCommand(command, forMode: mode)
+      if let commands = data["commands"] as? [String:[String:AnyObject]] {
+        for (mode, values) in commands {
+          setCommand(Command.importObjectFromData(values, context: moc), forMode: mode)
         }
       }
-    }
 
-    if let longPressCommands = data["long-press-commands"] as? [String:[String:AnyObject]] {
-      for mode in longPressCommands {
-        if let longPressCommand = moc.objectForURI(configurations[mode]["longPressCommand"]) {
-          moc.deleteObject(longPressCommand)
-          self.longPressCommand = nil
-        }
-        if let longPressCommand = Command.importObjectFromData(longPressCommands[mode], context: moc) {
-          setCommand(longPressCommand, forMode: mode)
+      if let longPressCommands = data["long-press-commands"] as? [String:[String:AnyObject]] {
+        for (mode, values) in longPressCommands {
+          setCommand(Command.importObjectFromData(values, context: moc), forMode: mode)
         }
       }
-    }
 
-    if (titleEdgeInsets)   self.titleEdgeInsets   = UIEdgeInsetsFromString(titleEdgeInsets)
-    if (contentEdgeInsets) self.contentEdgeInsets = UIEdgeInsetsFromString(contentEdgeInsets)
-    if (imageEdgeInsets)   self.imageEdgeInsets   = UIEdgeInsetsFromString(imageEdgeInsets)
+      if let titleEdgeInsets = data["title-edge-insets"] as? String {
+        self.titleEdgeInsets = UIEdgeInsetsFromString(titleEdgeInsets)
+      }
+
+      if let contentEdgeInsets = data["content-edge-insets"] as? String {
+        self.contentEdgeInsets = UIEdgeInsetsFromString(contentEdgeInsets)
+      }
+
+      if let imageEdgeInsets = data["image-edge-insets"] as? String {
+        self.imageEdgeInsets = UIEdgeInsetsFromString(imageEdgeInsets)
+      }
+
+    }
 
   }
 
@@ -408,12 +386,13 @@ class Button: RemoteElement {
     let dictionary = super.JSONDictionary()
     dictionary["background-color"] = NSNull()
 
-    let setValueForKeyIfNotDefault: (value: @autoclosure () -> NSObject?, key: String) = {
-      [unowned self] (value, key) in
-        if value != nil && !self.attributeValueIsDefault(key) { dictionary[key.camelCaseToDashCase()] = value! }
+    func ifNotDefaultSetValue(value: @autoclosure () -> NSObject?, forKey key: String) {
+      if let v = value() {
+        if !attributeValueIsDefault(key) {
+          dictionary[key.camelCaseToDashCase()] = v
+        }
+      }
     }
-
-    setValueForKeyIfNotDefault(stateJSONValueForButton(self), "state")
 
     let titles            = MSDictionary()
     let backgroundColors  = MSDictionary()
@@ -422,7 +401,7 @@ class Button: RemoteElement {
     let commands          = MSDictionary()
     let longPressCommands = MSDictionary()
 
-    for mode in modes {
+    for mode in modes as [String] {
       if let modeTitles = titlesForMode(mode)?.JSONDictionary() { titles[mode] = modeTitles }
       if let modeBackgroundColors = backgroundColorsForMode(mode)?.JSONDictionary() {
         backgroundColors[mode] = modeBackgroundColors
@@ -441,9 +420,9 @@ class Button: RemoteElement {
     dictionary["background-colors"]  = backgroundColors
     dictionary["images"]             = images
 
-    setValueForKeyIfNotDefault(NSStringFromUIEdgeInsets(titleEdgeInsets),   "titleEdgeInsets")
-    setValueForKeyIfNotDefault(NSStringFromUIEdgeInsets(imageEdgeInsets),   "imageEdgeInsets")
-    setValueForKeyIfNotDefault(NSStringFromUIEdgeInsets(contentEdgeInsets), "contentEdgeInsets")
+    ifNotDefaultSetValue(NSStringFromUIEdgeInsets(titleEdgeInsets),   forKey: "titleEdgeInsets")
+    ifNotDefaultSetValue(NSStringFromUIEdgeInsets(imageEdgeInsets),   forKey: "imageEdgeInsets")
+    ifNotDefaultSetValue(NSStringFromUIEdgeInsets(contentEdgeInsets), forKey: "contentEdgeInsets")
 
     dictionary.compact()
     dictionary.compress()
@@ -466,18 +445,35 @@ class Button: RemoteElement {
 
     let dd = super.deepDescriptionDictionary()
 
-    dd["titles"]            = stringFromDescription(element.titles.deepDescription())
-    dd["icons"]             = stringFromDescription(element.icons.deepDescription())
-    dd["backgroundColors"]  = stringFromDescription(element.backgroundColors.deepDescription())
-    dd["images"]            = stringFromDescription(element.images.deepDescription())
-    dd["command"]           = stringFromDescription(element.command.deepDescription())
-    dd["longPressCommand"]  = stringFromDescription(element.longPressCommand.deepDescription())
-    dd["titleEdgeInsets"]   = UIEdgeInsetsString(element.titleEdgeInsets)
-    dd["imageEdgeInsets"]   = UIEdgeInsetsString(element.imageEdgeInsets)
-    dd["contentEdgeInsets"] = UIEdgeInsetsString(element.contentEdgeInsets)
+    dd["titles"]            = stringFromDescription(element.titles?.deepDescription())
+    dd["icons"]             = stringFromDescription(element.icons?.deepDescription())
+    dd["backgroundColors"]  = stringFromDescription(element.backgroundColors?.deepDescription())
+    dd["images"]            = stringFromDescription(element.images?.deepDescription())
+    dd["command"]           = stringFromDescription(element.command?.deepDescription())
+    dd["longPressCommand"]  = stringFromDescription(element.longPressCommand?.deepDescription())
+    dd["titleEdgeInsets"]   = "\(element.titleEdgeInsets)"
+    dd["imageEdgeInsets"]   = "\(element.imageEdgeInsets)"
+    dd["contentEdgeInsets"] = "\(element.contentEdgeInsets)"
 
 
     return dd
   }
 
 }
+
+extension Button.State: Equatable {}
+func ==(lhs: Button.State, rhs: Button.State) -> Bool { return lhs.rawValue == rhs.rawValue }
+
+extension Button.State: BitwiseOperationsType {
+  static var allZeros: Button.State { return self(rawValue: 0) }
+}
+func &(lhs: Button.State, rhs: Button.State) -> Button.State {
+  return Button.State(rawValue: (lhs.rawValue & rhs.rawValue))
+}
+func |(lhs: Button.State, rhs: Button.State) -> Button.State {
+  return Button.State(rawValue: (lhs.rawValue | rhs.rawValue))
+}
+func ^(lhs: Button.State, rhs: Button.State) -> Button.State {
+  return Button.State(rawValue: (lhs.rawValue ^ rhs.rawValue))
+}
+prefix func ~(x: Button.State) -> Button.State { return Button.State(rawValue: ~(x.rawValue)) }

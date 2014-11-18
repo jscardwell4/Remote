@@ -35,13 +35,6 @@ class ButtonGroupEditingController: RemoteElementEditingController {
   */
   override class func elementClass() -> RemoteElementView.Type { return ButtonGroupView.self }
 
-  /**
-  editingModeForElement
-
-  :returns: REEditingMode
-  */
-  override class func editingModeForElement() -> REEditingMode { return .ButtonGroup }
-
   /** willTranslateSelectedViews */
   override func willTranslateSelectedViews() { super.willTranslateSelectedViews(); sourceView.locked = false }
 

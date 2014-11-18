@@ -112,6 +112,11 @@ static const char * kNSMOCChildContextsKey = "kNSMMOCChildContextsKey";
     return (objectID ? [self objectWithID:objectID] : nil);
 }
 
+- (void)deleteObjectForURI:(NSURL *)uri {
+  NSManagedObject * object = [self objectForURI:uri];
+  if (object) [self deleteObject:object];
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Wrappers for MagicalRecord Save Actions
 ////////////////////////////////////////////////////////////////////////////////

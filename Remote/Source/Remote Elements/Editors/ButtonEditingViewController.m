@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementEditingViewController_Private.h"
-#import "Button.h"
+//#import "Button.h"
 //#import "RemoteElementView.h"
 #import "StoryboardProxy.h"
 #import "Remote-Swift.h"

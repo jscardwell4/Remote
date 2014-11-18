@@ -242,7 +242,7 @@ class Bank {
               } else {
                 rootViewController.view.addSubview(fileController!.view)
               }
-              rootViewController.view.constrainWithFormat("|[child]| :: V:|[child]|", views: ["child": fileController!.view])
+              rootViewController.view.stretchSubview(fileController!.view) //.constrain("|[child]| :: V:|[child]|", views: ["child": fileController!.view])
             }
 
           }

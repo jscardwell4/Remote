@@ -34,8 +34,8 @@ class ButtonGroupView: RemoteElementView {
   @objc(viewWithButtonGroup:)
   override class func viewWithModel(model: ButtonGroup) -> ButtonGroupView {
     switch model.role {
-      case RERole.ButtonGroupRoleRocker:         return RockerView(model: model)
-      case RERole.ButtonGroupRoleSelectionPanel: return ModeSelectionView(model: model)
+      case RemoteElement.Role.Rocker:         return RockerView(model: model)
+      case RemoteElement.Role.SelectionPanel: return ModeSelectionView(model: model)
       default:                                   return ButtonGroupView(model: model)
     }
   }
@@ -70,7 +70,7 @@ class ButtonGroupView: RemoteElementView {
 
   /** tuck */
   func tuck() {
-    if buttonGroup.isPanel() && tuckedConstraint != nil && untuckedConstraint != nil {
+    if buttonGroup.isPanel && tuckedConstraint != nil && untuckedConstraint != nil {
       UIView.animateWithDuration(0.25, animations: {
         self.untuckedConstraint?.priority = 1
         self.tuckedConstraint?.priority = 999
@@ -88,7 +88,7 @@ class ButtonGroupView: RemoteElementView {
 
   /** untuck */
   func untuck() {
-    if buttonGroup.isPanel() && tuckedConstraint != nil && untuckedConstraint != nil {
+    if buttonGroup.isPanel && tuckedConstraint != nil && untuckedConstraint != nil {
       UIView.animateWithDuration(0.25, animations: {
         self.untuckedConstraint?.priority = 999
         self.tuckedConstraint?.priority = 1
@@ -144,7 +144,7 @@ class ButtonGroupView: RemoteElementView {
 
   /** didMoveToWindow */
   override func didMoveToWindow() {
-    if buttonGroup.isPanel() && !isEditing && window != nil { attachTuckGestures() }
+    if buttonGroup.isPanel && !isEditing && window != nil { attachTuckGestures() }
     super.didMoveToWindow()
   }
 
@@ -171,7 +171,7 @@ class ButtonGroupView: RemoteElementView {
     shrinkwrap = true
     resizable = true
     moveable = true
-    if buttonGroup.role & RERole.ButtonGroupRoleToolbar == RERole.ButtonGroupRoleToolbar {
+    if buttonGroup.role & RemoteElement.Role.Toolbar != nil {
       setContentCompressionResistancePriority(1000.0, forAxis: .Horizontal)
       setContentCompressionResistancePriority(1000.0, forAxis: .Vertical)
     }
@@ -180,7 +180,7 @@ class ButtonGroupView: RemoteElementView {
   /** didMoveToSuperview */
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    if superview != nil && buttonGroup.isPanel() && !isEditing {
+    if superview != nil && buttonGroup.isPanel && !isEditing {
       var attribute1 = NSLayoutAttribute.NotAnAttribute
       var attribute2 = attribute1
       switch buttonGroup.panelLocation {
@@ -251,7 +251,7 @@ class ButtonGroupView: RemoteElementView {
       view.moveable = false
     }
     if let buttonView = view as? ButtonView {
-      if buttonView.model.role == .ButtonRoleTuck {
+      if buttonView.model.role == .Tuck {
         buttonView.tapAction = {self.tuck()}
       }
     }
@@ -267,10 +267,10 @@ class ButtonGroupView: RemoteElementView {
     self.label = label
   }
 
-  override var editingMode: REEditingMode {
+  override var editingMode: RemoteElement.BaseType {
     didSet {
-      resizable = editingMode == .NotEditing
-      moveable = editingMode == .NotEditing
+      resizable = editingMode == .Undefined
+      moveable = editingMode == .Undefined
       subelementInteractionEnabled = editingMode != .Remote
     }
   }
@@ -281,7 +281,7 @@ class ButtonGroupView: RemoteElementView {
   :returns: CGSize
   */
   override func intrinsicContentSize() -> CGSize {
-    if buttonGroup.role == .ButtonGroupRoleToolbar { return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0) }
+    if buttonGroup.role == RemoteElement.Role.Toolbar { return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0) }
     else { return CGSize(square: UIViewNoIntrinsicMetric) }
   }
 

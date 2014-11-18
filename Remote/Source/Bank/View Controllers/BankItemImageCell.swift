@@ -24,7 +24,7 @@ class BankItemImageCell: BankItemCell {
     backgroundView = nil
     backgroundColor = UIColor.clearColor()
     contentView.backgroundColor = UIColor.clearColor()
-    contentView.constrainWithFormat("|-[image]-| :: V:|-[image]-|", views: ["image": imageℹ])
+    contentView.constrain("|-[image]-| :: V:|-[image]-|", views: ["image": imageℹ])
   }
 
   /**

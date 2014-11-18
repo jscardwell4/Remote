@@ -37,7 +37,7 @@ class BankCollectionCategoryCell: BankCollectionCell {
       "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
       ])
     let views = ["label": label, "indicator": indicator, "chevron": chevron, "content": contentView]
-    constrainWithFormat(format, views: views, identifier: identifier)
+    constrain(format, views: views, identifier: identifier)
 
     let predicate = NSPredicate(format: "firstItem == %@" +
       "AND secondItem == %@ " +

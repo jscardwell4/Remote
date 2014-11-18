@@ -50,6 +50,8 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
   return __queue;
 }
 
+- (id)objectAtIndexedSubscript:(NSUInteger)idx { return memberOfCollectionAtIndex([self indexedCollection], idx); }
+
 - (void)execute:(void (^)(BOOL success, NSError * error))completion {
   if (self.commands.count) {
     _operations = [[self.commands valueForKey:@"operation"] array];

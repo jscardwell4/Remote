@@ -11,9 +11,10 @@ import UIKit
 import CoreData
 import MoonKit
 
+@objc(Constraint)
 class Constraint: ModelObject {
 
-  @NSManaged var primitiveTag: NSNumber!
+  @NSManaged var primitiveTag: NSNumber
   var tag: Int {
     get {
       willAccessValueForKey("tag")
@@ -30,7 +31,7 @@ class Constraint: ModelObject {
 
   @NSManaged var key: String?
 
-  @NSManaged var primitiveFirstAttribute: NSNumber!
+  @NSManaged var primitiveFirstAttribute: NSNumber
   var firstAttribute: NSLayoutAttribute {
     get {
       willAccessValueForKey("firstAttribute")
@@ -45,7 +46,7 @@ class Constraint: ModelObject {
     }
   }
 
-  @NSManaged var primitiveSecondAttribute: NSNumber!
+  @NSManaged var primitiveSecondAttribute: NSNumber
   var secondAttribute: NSLayoutAttribute {
     get {
       willAccessValueForKey("secondAttribute")
@@ -60,7 +61,7 @@ class Constraint: ModelObject {
     }
   }
 
-  @NSManaged var primitiveRelation: NSNumber!
+  @NSManaged var primitiveRelation: NSNumber
   var relation: NSLayoutRelation {
     get {
       willAccessValueForKey("relation")
@@ -75,7 +76,7 @@ class Constraint: ModelObject {
     }
   }
 
-  @NSManaged var primitiveMultiplier: NSNumber!
+  @NSManaged var primitiveMultiplier: NSNumber
   var multiplier: CGFloat {
     get {
       willAccessValueForKey("multiplier")
@@ -90,7 +91,7 @@ class Constraint: ModelObject {
     }
   }
 
-  @NSManaged var primitiveConstant: NSNumber!
+  @NSManaged var primitiveConstant: NSNumber
   var constant: CGFloat {
     get {
       willAccessValueForKey("constant")
@@ -107,7 +108,7 @@ class Constraint: ModelObject {
 
   @NSManaged var firstItem: RemoteElement!
   @NSManaged var secondItem: RemoteElement?
-  @NSManaged var owner: RemoteElement!
+  @NSManaged var owner: RemoteElement?
 
   @NSManaged var primitivePriority: NSNumber!
   var priority: UILayoutPriority {
@@ -217,10 +218,87 @@ class Constraint: ModelObject {
       if p.floatValue != Float(priority) { return false }
     }
     if let o: AnyObject = values["owner"] {
-      if o is RemoteElement && (o as RemoteElement) != owner { return false }
-      else if o is String && (o as String) != owner.uuid { return false }
+      if owner == nil { return false }
+      else if o is RemoteElement && (o as RemoteElement) != owner! { return false }
+      else if o is String && (o as String) != owner!.uuid { return false }
     }
     return true
+  }
+
+  /**
+  constraintFromFormat:index:
+
+  :param: format String
+  :param: index [String String]
+
+  :returns: Constraint?
+  */
+  class func constraintFromFormat(format: String, index: [String:String], context: NSManagedObjectContext) -> Constraint? {
+    var constraint: Constraint?
+
+    let regex: String = {
+      let name = "[a-zA-Z_][-_a-zA-Z0-9]*"
+      let attribute = "[a-z]+[A-Z]?"
+      let priority = "[0-9]{1,4}"
+      let metric = "(?:\(name))|(?:[-0-9]+\\.?[0-9]*)"
+      return ("(?:'([^']+)'[ ]+)?" +                   // identifier
+              "(\(name))\\.(\(attribute))" +           // first item and attribute
+              "[ ]+([=≤≥]+)" +                         // relation
+              "(?:[ ]+(\(name))\\.(\(attribute)))?" +  // second item and attribute
+              "(?:[ ]+[x*][ ]+(\(metric)))?" +         // multiplier if present
+              "(?:[ ]+([+-])?[ ]*(\(metric)))?" +      // constant if present
+              "(?:[ ]+@(\(priority)))?")               // priority if present
+    }()
+    let keys = ["identifier",
+                "firstItem",
+                "firstAttribute",
+                "relation",
+                "secondItem",
+                "secondAttribute",
+                "multiplier",
+                "constantOperator",
+                "constant",
+                "priority"]
+    let result = format.dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex(regex, keys: keys)
+    var captures: [String:NSString] = [:]
+    for (key, value) in result {
+      if let k = key as? String {
+        if let v = value as? NSString {
+          captures[k] = v
+        }
+      }
+    }
+
+    let multiplier = CGFloat(captures["multiplier"]?.doubleValue ?? 1.0)
+    var constant = CGFloat(captures["constant"]?.doubleValue ?? 0.0)
+    if let op = captures["constantOperator"] { if op == "-" { constant = -constant } }
+    let priority = UILayoutPriority(captures["priority"]?.floatValue ?? 1000.0)
+    let firstAttribute = NSLayoutAttribute(pseudoname: captures["firstAttribute"])
+    let secondAttribute = NSLayoutAttribute(pseudoname: captures["secondAttribute"])
+    let relation = NSLayoutRelation(pseudoname: captures["relation"])
+
+    if let firstItemIndex = captures["firstItem"] {
+      if let firstItemUUID = index[firstItemIndex] {
+        if let firstItem = RemoteElement.findFirstByAttribute("uuid", withValue: firstItemUUID, context: context) {
+          var secondItem: RemoteElement?
+          if let secondItemIndex = captures["secondItem"] {
+            if let secondItemUUID = index[secondItemIndex] {
+              secondItem = RemoteElement.findFirstByAttribute("uuid", withValue: secondItemUUID, context: context)
+            }
+          }
+          constraint = Constraint(item: firstItem,
+                                  attribute: firstAttribute,
+                                  relatedBy: relation,
+                                  toItem: secondItem,
+                                  attribute: secondAttribute,
+                                  multiplier: multiplier,
+                                  constant: constant)
+          constraint?.priority = priority
+        }
+      }
+    }
+
+    return constraint
   }
 
   /**
@@ -239,54 +317,7 @@ class Constraint: ModelObject {
           if formatData is String || formatData is [String] {
             let formatStrings: [String] = formatData is String ? [(formatData as String)] : (formatData as [String])
             for format in formatStrings {
-              if let constraintDictionary = NSLayoutConstraint.dictionaryFromExtendedVisualFormat(format) {
-                var multiplier: CGFloat = 1.0
-                if let m = constraintDictionary[MSExtendedVisualFormatMultiplierName] as? NSNumber {
-                  multiplier = CGFloat(m.doubleValue)
-                }
-                var constant: CGFloat = 0.0
-                if let c = constraintDictionary[MSExtendedVisualFormatConstantName] as? NSNumber {
-                  constant = CGFloat(c.doubleValue)
-                  if let o = constraintDictionary[MSExtendedVisualFormatConstantOperatorName] as? String {
-                    if o == "-" { constant = -constant }
-                  }
-                }
-                var priority: UILayoutPriority = 1000.0
-                if let p = constraintDictionary[MSExtendedVisualFormatPriorityName] as? NSNumber {
-                  priority = p.floatValue
-                }
-                if let attribute = constraintDictionary[MSExtendedVisualFormatAttribute1Name] as? String {
-                  let firstAttribute = NSLayoutConstraint.attributeForPseudoName(attribute)
-                  var secondAttribute = NSLayoutAttribute.NotAnAttribute
-                  if let attribute = constraintDictionary[MSExtendedVisualFormatAttribute2Name] as? String {
-                    secondAttribute = NSLayoutConstraint.attributeForPseudoName(attribute)
-                  }
-                  if let r = constraintDictionary[MSExtendedVisualFormatRelationName] as? String {
-                    let relation = NSLayoutConstraint.relationForPseudoName(r)
-                    if let firstItemIndex = constraintDictionary[MSExtendedVisualFormatItem1Name] as? String {
-                      if let firstItemUUID = index[firstItemIndex] {
-                        if let firstItem = RemoteElement.findFirstByAttribute("uuid", withValue: firstItemUUID, context: context) {
-                          var secondItem: RemoteElement?
-                          if let secondItemIndex = constraintDictionary[MSExtendedVisualFormatItem2Name] as? String {
-                            if let secondItemUUID = index[secondItemIndex] {
-                              secondItem = RemoteElement.findFirstByAttribute("uuid", withValue: secondItemUUID, context: context)
-                            }
-                          }
-                          let constraint = Constraint(item: firstItem,
-                                                      attribute: firstAttribute,
-                                                      relatedBy: relation,
-                                                      toItem: secondItem,
-                                                      attribute: secondAttribute,
-                                                      multiplier: multiplier,
-                                                      constant: constant)
-                          constraint.priority = priority
-                          constraints.append(constraint)
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+              if let constraint = constraintFromFormat(format, index: index, context: context) { constraints.append(constraint) }
             }
           }
         }
@@ -312,7 +343,7 @@ class Constraint: ModelObject {
     dictionary["priority"] = primitivePriority
     dictionary["first-item.uuid"] = firstItem.uuid
     if secondItem != nil { dictionary["second-item.uuid"] = secondItem!.uuid }
-    dictionary["owner.uuid"] = owner.uuid
+    if owner != nil { dictionary["owner.uuid"] = owner!.uuid }
     return dictionary
   }
 

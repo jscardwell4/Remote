@@ -32,7 +32,7 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
     contentView.addSubview(nameLabel)
     contentView.addSubview(textFieldℹ)
     let format = "|-[name]-[text]-| :: V:|-[name]-| :: V:|-[text]-|"
-    contentView.constrainWithFormat(format, views: ["name": nameLabel, "text": textFieldℹ])
+    contentView.constrain(format, views: ["name": nameLabel, "text": textFieldℹ])
   }
 
   /**

@@ -28,12 +28,6 @@ class ButtonEditingController: RemoteElementEditingController {
   */
   override class func elementClass() -> RemoteElementView.Type { return ButtonView.self }
 
-  /**
-  editingModeForElement
-
-  :returns: REEditingMode
-  */
-  override class func editingModeForElement() -> REEditingMode { return .Button }
 
   /**
   openSubelementInEditor:

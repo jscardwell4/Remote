@@ -20,7 +20,7 @@
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
 #import "RemoteController.h"
-#import "Remote.h"
+//#import "Remote.h"
 #import "SettingsViewController.h"
 #import "Remote-Swift.h"
 @import CoreImage;

@@ -19,22 +19,22 @@
 #pragma mark - Remote Element Types, Subtypes and Roles
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * typeJSONValueForRemoteElement(RemoteElement * element);
-NSString * roleJSONValueForRemoteElement(RemoteElement * element);
+//NSString * typeJSONValueForRemoteElement(RemoteElement * element);
+//NSString * roleJSONValueForRemoteElement(RemoteElement * element);
 NSString * roleJSONValueForRERole(RERole role);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * stateJSONValueForButton(Button * element);
+//NSString * stateJSONValueForButton(Button * element);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style & Theme
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * shapeJSONValueForRemoteElement(RemoteElement * element);
-NSString * styleJSONValueForRemoteElement(RemoteElement * element);
+//NSString * shapeJSONValueForRemoteElement(RemoteElement * element);
+//NSString * styleJSONValueForRemoteElement(RemoteElement * element);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands
@@ -49,7 +49,7 @@ NSString * classJSONValueForCommand(Command * command);
 #pragma mark - Remote
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString * panelKeyForPanelAssignment(REPanelAssignment assignment);
+//NSString * panelKeyForPanelAssignment(REPanelAssignment assignment);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Control state sets

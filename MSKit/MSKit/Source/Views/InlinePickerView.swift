@@ -69,7 +69,7 @@ public class InlinePickerView: UIView {
     picker.delegate = self
     picker.dataSource = self
     addSubview(picker)
-    constrainWithFormat("|[toolbar]| :: |[picker]| :: V:|[toolbar][picker]|", views: ["toolbar": toolbar, "picker": picker])
+    constrain("|[toolbar]| :: |[picker]| :: V:|[toolbar][picker]|", views: ["toolbar": toolbar, "picker": picker])
   }
 
   /**

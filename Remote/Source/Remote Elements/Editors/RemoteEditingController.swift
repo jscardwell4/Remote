@@ -36,13 +36,6 @@ class RemoteEditingController: RemoteElementEditingController {
   override class func elementClass() -> RemoteElementView.Type { return RemoteView.self }
 
   /**
-  editingModeForElement
-
-  :returns: REEditingMode
-  */
-  override class func editingModeForElement() -> REEditingMode { return .Remote }
-
-  /**
   Opens the specified subelement in its Class-level editor.
 
   :param: subelement The element to edit

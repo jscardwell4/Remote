@@ -27,7 +27,7 @@ class BankCollectionItemCell: BankCollectionCell {
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.contentMode = .ScaleAspectFit
     view.userInteractionEnabled = true
-    view.constrainWithFormat("self.width ≤ self.height")
+    view.constrain("self.width ≤ self.height")
     view.tintColor = UIColor.blackColor()
     return view
     }()
@@ -114,7 +114,7 @@ class BankCollectionItemCell: BankCollectionCell {
                       "chevron"  : chevron,
                       "content"  : contentView]
 
-        constrainWithFormat(format, views: views, identifier: listIdentifier)
+        constrain(format, views: views, identifier: listIdentifier)
 
         let predicate = NSPredicate(format: "firstItem == %@" +
                                             "AND secondItem == %@ " +
@@ -137,7 +137,7 @@ class BankCollectionItemCell: BankCollectionCell {
           )
 
         let views = ["image": thumbnailImageView, "content": contentView, "indicator": indicator]
-        constrainWithFormat(format, views:views, identifier: thumbnailIdentifier)
+        constrain(format, views:views, identifier: thumbnailIdentifier)
 
         indicator.hidden    = indicatorImage == nil
         chevron.hidden      = true

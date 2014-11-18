@@ -306,7 +306,17 @@ NSString *NSStringFromUIColor(UIColor * color) {
   return [self colorByDarkeningToRed:r green:g blue:b alpha:1.0f];
 }
 
-- (NSString *)string { return [self.components componentsJoinedByString:@" "]; }
+- (NSString *)string {
+  NSString * colorName = [self colorName];
+  if (colorName) {
+    CGFloat a = self.alpha;
+    return (a == 1.0 ? colorName : [colorName stringByAppendingFormat:@"@%@%%", @(a * 100.0f)]);
+  } else if (self.isRGBCompatible) {
+    return self.rgbaHexString;
+  } else {
+    return nil;
+  }
+}
 
 - (NSString *)rgbHexString { return [NSString stringWithFormat:@"#%.6X", self.rgbHex]; }
 
@@ -321,6 +331,39 @@ NSString *NSStringFromUIColor(UIColor * color) {
                          green:(CGFloat)RAND_MAX / random()
                           blue:(CGFloat)RAND_MAX / random()
                          alpha:1.0f];
+}
+
++ (UIColor *)colorWithString:(NSString *)string {
+  UIColor * color = [UIColor colorWithWhite:0.0 alpha:0.0];
+
+  if (string) {
+    color = [self colorWithName:string];
+    if (!color && [string hasSubstring:@"@.*%"]) {
+      NSArray * baseAndAlpha = [string componentsSeparatedByString:@"@"];
+      if ([baseAndAlpha count] == 2) {
+        NSString * base    = baseAndAlpha[0];
+        NSString * percent = [baseAndAlpha[1] substringToIndex:[baseAndAlpha[1] length] - 1];
+        color = [[UIColor colorWithName:base] colorWithAlphaComponent:[percent floatValue] / 100.0f];
+      }
+    } else if (!color && [string hasPrefix:@"#"]) {
+      color = ([string length] < 8 ? [UIColor colorWithRGBHexString:string] : [UIColor colorWithRGBAHexString:string]);
+    } else if (!color) {
+      NSArray * components = [string componentsSeparatedByString:@" "];
+      if ([components count] == 3) {
+      color = [UIColor colorWithRed:[(NSString *)components[0] floatValue]
+                              green:[(NSString *)components[1] floatValue]
+                               blue:[(NSString *)components[2] floatValue]
+                              alpha:1.0];
+      } else if ([components count] == 4) {
+        color = [UIColor colorWithRed:[(NSString *)components[0] floatValue]
+                                green:[(NSString *)components[1] floatValue]
+                                 blue:[(NSString *)components[2] floatValue]
+                                alpha:[(NSString *)components[3] floatValue]];
+      }
+    }
+  }
+
+  return color;
 }
 
 + (UIColor *)colorWithR:(uint8_t)r G:(uint8_t)g B:(uint8_t)b A:(uint8_t)a {

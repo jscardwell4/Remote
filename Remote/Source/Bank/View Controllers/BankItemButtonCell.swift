@@ -23,9 +23,9 @@ class BankItemButtonCell: BankItemCell {
     buttonℹ.addTarget(self, action:"buttonUpAction", forControlEvents:.TouchUpInside)
     wrapper.addSubview(nameLabel)
     wrapper.addSubview(buttonℹ)
-    wrapper.constrainWithFormat("|[name]-[button]| :: V:|[name]| :: V:|[button]|", views: ["name": nameLabel, "button": buttonℹ])
+    wrapper.constrain("|[name]-[button]| :: V:|[name]| :: V:|[button]|", views: ["name": nameLabel, "button": buttonℹ])
     contentView.addSubview(wrapper)
-    contentView.constrainWithFormat("|-[wrapper]-| :: V:|-[wrapper]-(>=0)-|",
+    contentView.constrain("|-[wrapper]-| :: V:|-[wrapper]-(>=0)-|",
                               views: ["wrapper": wrapper],
                          identifier: createIdentifier(self, "Wrapper"))
   }
@@ -70,7 +70,7 @@ class BankItemButtonCell: BankItemCell {
     view.userInteractionEnabled = false
     view.titleLabel?.font = Bank.infoFont;
     view.titleLabel?.textAlignment = .Right;
-    view.constrainWithFormat("|[title]| :: V:|[title]|", views: ["title": view.titleLabel!])
+    view.constrain("|[title]| :: V:|[title]|", views: ["title": view.titleLabel!])
     view.setTitleColor(Bank.infoColor, forState:.Normal)
     return view
   }()
@@ -157,7 +157,7 @@ class BankItemButtonCell: BankItemCell {
         self.contentView.addSubview(pickerView)
         let identifier = createIdentifier(self, "Wrapper")
         self.contentView.removeConstraintsWithIdentifier(identifier)
-        self.contentView.constrainWithFormat("|-[wrapper]-| :: |[picker]| :: V:|-[wrapper]-(<=0,>=0)-[picker]|",
+        self.contentView.constrain("|-[wrapper]-| :: |[picker]| :: V:|-[wrapper]-(<=0,>=0)-[picker]|",
                                        views: ["wrapper": self.wrapper, "picker": pickerView],
                                   identifier: identifier)
         return pickerView
@@ -174,7 +174,7 @@ class BankItemButtonCell: BankItemCell {
       picker = nil
       let identifier = createIdentifier(self, "Wrapper")
       contentView.removeConstraintsWithIdentifier(identifier)
-      contentView.constrainWithFormat("|-[wrapper]-| :: V:|-[wrapper]-(>=0)-|",
+      contentView.constrain("|-[wrapper]-| :: V:|-[wrapper]-(>=0)-|",
                                 views: ["wrapper": wrapper],
                            identifier: identifier)
       didSelectItem?(pickerSelection)

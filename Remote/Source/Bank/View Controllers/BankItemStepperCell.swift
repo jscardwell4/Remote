@@ -30,7 +30,7 @@ class BankItemStepperCell: BankItemCell {
       "V:|-[name]-| :: V:|-[label]-| :: V:|-[stepper]-|",
       "'stepper leading' stepper.leading = self.trailing"
     )
-    contentView.constrainWithFormat(format, views: ["name": nameLabel, "label": infoLabel, "stepper": stepper])
+    contentView.constrain(format, views: ["name": nameLabel, "label": infoLabel, "stepper": stepper])
   }
 
 

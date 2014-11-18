@@ -21,7 +21,7 @@ class BankItemListCell: BankItemCell {
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     contentView.addSubview(infoLabel)
-    contentView.constrainWithFormat("|-[label]-| :: V:|-[label]-|", views: ["label": infoLabel])
+    contentView.constrain("|-[label]-| :: V:|-[label]-|", views: ["label": infoLabel])
   }
 
   /**

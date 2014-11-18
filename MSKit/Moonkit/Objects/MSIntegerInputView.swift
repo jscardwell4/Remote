@@ -90,7 +90,7 @@ public class MSIntegerInputView: UIInputView {
       "V:|[two][five][eight][zero]|",
       "V:|[three][six][nine][done]|"
     )
-    constrainWithFormat(format, views: views)
+    constrain(format, views: views)
   }
 
   /**

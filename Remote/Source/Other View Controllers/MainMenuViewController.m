@@ -8,7 +8,7 @@
 #import "MainMenuViewController.h"
 #import "RemoteViewController.h"
 #import "CoreDataManager.h"
-#import "RemoteElement.h"
+//#import "RemoteElement.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
 @import MoonKit;

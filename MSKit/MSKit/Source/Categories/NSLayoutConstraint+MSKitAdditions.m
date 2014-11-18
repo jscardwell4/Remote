@@ -539,14 +539,14 @@ static const void * MSNSLayoutConstraintTagKey = &MSNSLayoutConstraintTagKey;
 
 /// tag
 /// @return NSUInteger
-- (NSUInteger)tag {
+- (NSInteger)tag {
   NSNumber * tagObj = objc_getAssociatedObject(self,MSNSLayoutConstraintTagKey);
   return (tagObj ? tagObj.integerValue : 0);
 }
 
 /// setTag:
 /// @param tag
-- (void)setTag:(NSUInteger)tag {
+- (void)setTag:(NSInteger)tag {
   objc_setAssociatedObject(self, MSNSLayoutConstraintTagKey, @(tag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

@@ -163,17 +163,17 @@ class BankCollectionZoomView: UIView {
 
       // Double check that our name label doesn't have our constraint
       if nameLabel.constraintWithIdentifier(identifierPrefix) == nil {
-        nameLabel.constrainWithFormat("self.height = \(BankCollectionZoomView.LabelHeight)", identifier: identifierPrefix)
+        nameLabel.constrain("self.height = \(BankCollectionZoomView.LabelHeight)", identifier: identifierPrefix)
       }
 
       // Double check that our detail button doesn't have our constraint
       if detailButton.constraintWithIdentifier(identifierPrefix) == nil {
-        detailButton.constrainWithFormat("self.width = self.height", identifier: identifierPrefix)
+        detailButton.constrain("self.width = self.height", identifier: identifierPrefix)
       }
 
       // Double check that our edit button doesn't have our constraint
       if editButton.constraintWithIdentifier(identifierPrefix) == nil {
-        editButton.constrainWithFormat("self.width = self.height", identifier: identifierPrefix)
+        editButton.constrain("self.width = self.height", identifier: identifierPrefix)
       }
 
       // Create the format string for our constraints
@@ -199,7 +199,7 @@ class BankCollectionZoomView: UIView {
                     "detail"    : detailButton ]
 
       // Create and add our constraints
-      constrainWithFormat(format, views: views, identifier: identifierPrefix)
+      constrain(format, views: views, identifier: identifierPrefix)
     }
 
     // Check if we have a size set for displaying our image

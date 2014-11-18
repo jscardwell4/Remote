@@ -11,9 +11,10 @@
 #import "CommandSetCollection.h"
 #import "CommandSet.h"
 #import "JSONObjectKeys.h"
-#import "Button.h"
+//#import "Button.h"
 #import "Command.h"
 #import "TitleAttributes.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);

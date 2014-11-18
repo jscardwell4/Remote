@@ -132,7 +132,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 - (instancetype)dictionaryByRemovingEntriesForKeys:(NSArray *)keys {
   NSMutableDictionary * dictionary = [self mutableCopy];
   [dictionary removeObjectsForKeys:keys];
-  return [[self class] dictionaryWithDictionary:dictionary];
+  return dictionary;
 }
 
 /// dictionaryByRemovingEntryForKey:

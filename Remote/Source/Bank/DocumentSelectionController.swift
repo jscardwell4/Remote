@@ -29,7 +29,7 @@ class DocumentSelectionController: UIViewController {
       iv.image = self.image
       iv.setTranslatesAutoresizingMaskIntoConstraints(false)
       self.view.addSubview(iv)
-      self.view.constrainWithFormat("|[image]| :: V:|[image]|", views: ["image": iv])
+      self.view.stretchSubview(iv)
       return iv
     }()
 
@@ -37,7 +37,7 @@ class DocumentSelectionController: UIViewController {
     wrapper.setTranslatesAutoresizingMaskIntoConstraints(false)
     wrapper.backgroundColor = UIColor.clearColor()
     view.addSubview(wrapper)
-    view.constrainWithFormat("|-20-[wrapper]-20-| :: V:|-100-[wrapper]-100-|", views: ["wrapper": wrapper])
+    view.constrain("|-20-[wrapper]-20-| :: V:|-100-[wrapper]-100-|", views: ["wrapper": wrapper])
 
     let fileNameController = FileNameTableViewController()
     addChildViewController(fileNameController)
@@ -161,7 +161,7 @@ class DocumentSelectionController: UIViewController {
         backgroundColor = UIColor.clearColor()
         opaque = false
         selectionStyle = .None
-        contentView.constrainWithFormat("|-[label]-| :: V:|-[label]-|", views: ["label": label])
+        contentView.constrain("|-[label]-| :: V:|-[label]-|", views: ["label": label])
       }
 
       /**

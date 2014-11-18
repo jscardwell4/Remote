@@ -112,6 +112,8 @@
 - (void)replaceObjectInCommandsAtIndex:(NSUInteger)idx withObject:(Command *)command;
 - (void)replaceCommandsAtIndexes:(NSIndexSet *)indexes withCommands:(NSArray *)commands;
 
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
 /**
  * Adds a new command to the collection of commands executed.
  * @param command The command to be added.

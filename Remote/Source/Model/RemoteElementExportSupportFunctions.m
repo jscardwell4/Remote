@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementExportSupportFunctions.h"
-#import "RemoteElement.h"
-#import "Remote.h"
-#import "ButtonGroup.h"
-#import "Button.h"
+//#import "RemoteElement.h"
+//#import "Remote.h"
+//#import "ButtonGroup.h"
+//#import "Button.h"
 #import "Command.h"
 #import "CommandContainer.h"
 #import "CommandSet.h"
@@ -20,6 +20,7 @@
 #import "ControlStateColorSet.h"
 #import "RemoteElementKeys.h"
 #import "JSONObjectKeys.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -29,18 +30,18 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma mark - Remote Element Types, Subtypes and Roles
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString *typeJSONValueForRemoteElement(RemoteElement * element) {
-  static NSDictionary const * index;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ @(RETypeRemote)      : RETypeRemoteJSONKey,
-               @(RETypeButtonGroup) : RETypeButtonGroupJSONKey,
-               @(RETypeButton)      : RETypeButtonJSONKey };
-  });
-
-  return (element ? index[@(element.elementType)] : nil);
-}
+//NSString *typeJSONValueForRemoteElement(RemoteElement * element) {
+//  static NSDictionary const * index;
+//  static dispatch_once_t      onceToken;
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ @(RETypeRemote)      : RETypeRemoteJSONKey,
+//               @(RETypeButtonGroup) : RETypeButtonGroupJSONKey,
+//               @(RETypeButton)      : RETypeButtonJSONKey };
+//  });
+//
+//  return (element ? index[@(element.elementType)] : nil);
+//}
 
 /*
 NSString *subtypeJSONValueForRemoteElement(RemoteElement * element) {
@@ -71,9 +72,9 @@ NSString *subtypeJSONValueForRemoteElement(RemoteElement * element) {
 }
 */
 
-NSString *roleJSONValueForRemoteElement(RemoteElement * element) {
-  return (element ? roleJSONValueForRERole(element.role) : nil);
-}
+//NSString *roleJSONValueForRemoteElement(RemoteElement * element) {
+//  return (element ? roleJSONValueForRERole(element.role) : nil);
+//}
 
 NSString *roleJSONValueForRERole(RERole role) {
   static NSDictionary const * index;
@@ -145,81 +146,81 @@ NSString *roleJSONValueForRERole(RERole role) {
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString *stateJSONValueForButton(Button * element) {
-  static NSDictionary const * index;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ @(REStateNormal)      : REStateNormalJSONKey,
-               @(REStateDisabled)    : REStateDisabledJSONKey,
-               @(REStateHighlighted) : REStateHighlightedJSONKey,
-               @(REStateSelected)    : REStateSelectedJSONKey };
-  });
-
-  NSMutableArray * stateArray = [@[] mutableCopy];
-
-  REState state = element.state;
-
-  if (state & REStateDisabled) [stateArray addObject:index[@(REStateDisabled)]];
-
-  if (state & REStateHighlighted) [stateArray addObject:index[@(REStateHighlighted)]];
-
-  if (state & REStateSelected) [stateArray addObject:index[@(REStateSelected)]];
-
-  return ([stateArray count] ? [stateArray componentsJoinedByString:@" "] : nil);
-}
+//NSString *stateJSONValueForButton(Button * element) {
+//  static NSDictionary const * index;
+//  static dispatch_once_t      onceToken;
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ @(REStateNormal)      : REStateNormalJSONKey,
+//               @(REStateDisabled)    : REStateDisabledJSONKey,
+//               @(REStateHighlighted) : REStateHighlightedJSONKey,
+//               @(REStateSelected)    : REStateSelectedJSONKey };
+//  });
+//
+//  NSMutableArray * stateArray = [@[] mutableCopy];
+//
+//  REState state = element.state;
+//
+//  if (state & REStateDisabled) [stateArray addObject:index[@(REStateDisabled)]];
+//
+//  if (state & REStateHighlighted) [stateArray addObject:index[@(REStateHighlighted)]];
+//
+//  if (state & REStateSelected) [stateArray addObject:index[@(REStateSelected)]];
+//
+//  return ([stateArray count] ? [stateArray componentsJoinedByString:@" "] : nil);
+//}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape, Style, & Theme
 ////////////////////////////////////////////////////////////////////////////////
 
-NSString *shapeJSONValueForRemoteElement(RemoteElement * element) {
-  static NSDictionary const * index;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ @(REShapeUndefined)        : REShapeUndefinedJSONKey,
-               @(REShapeRoundedRectangle) : REShapeRoundedRectangleJSONKey,
-               @(REShapeRectangle)        : REShapeRectangleJSONKey,
-               @(REShapeDiamond)          : REShapeDiamondJSONKey,
-               @(REShapeTriangle)         : REShapeTriangleJSONKey,
-               @(REShapeOval)             : REShapeOvalJSONKey };
-  });
+//NSString *shapeJSONValueForRemoteElement(RemoteElement * element) {
+//  static NSDictionary const * index;
+//  static dispatch_once_t      onceToken;
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ @(REShapeUndefined)        : REShapeUndefinedJSONKey,
+//               @(REShapeRoundedRectangle) : REShapeRoundedRectangleJSONKey,
+//               @(REShapeRectangle)        : REShapeRectangleJSONKey,
+//               @(REShapeDiamond)          : REShapeDiamondJSONKey,
+//               @(REShapeTriangle)         : REShapeTriangleJSONKey,
+//               @(REShapeOval)             : REShapeOvalJSONKey };
+//  });
+//
+//  return (element ? index[@(element.shape)] : nil);
+//}
 
-  return (element ? index[@(element.shape)] : nil);
-}
-
-NSString *styleJSONValueForRemoteElement(RemoteElement * element) {
-  static NSDictionary const * index;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ @(REStyleUndefined)   : REStyleUndefinedJSONKey,
-               @(REStyleDrawBorder)  : REStyleDrawBorderJSONKey,
-               @(REStyleStretchable) : REStyleStretchableJSONKey,
-               @(REStyleApplyGloss)  : REStyleGlossStyle1JSONKey,
-               @(REStyleGlossStyle2) : REStyleGlossStyle2JSONKey,
-               @(REStyleGlossStyle3) : REStyleGlossStyle3JSONKey,
-               @(REStyleGlossStyle4) : REStyleGlossStyle4JSONKey };
-  });
-
-  if (!element) return nil;
-
-  REStyle style = element.style;
-
-  NSMutableArray * stringsArray = [@[] mutableCopy];
-
-  if (style & REStyleDrawBorder) [stringsArray addObject:index[@(REStyleDrawBorder)]];
-
-  if (style & REStyleStretchable) [stringsArray addObject:index[@(REStyleStretchable)]];
-
-  REStyle glossStyle = (style & REGlossStyleMask);
-
-  if (glossStyle) [stringsArray addObject:index[@(glossStyle)]];
-
-  return ([stringsArray count] ? [stringsArray componentsJoinedByString:@" "] : nil);
-}
+//NSString *styleJSONValueForRemoteElement(RemoteElement * element) {
+//  static NSDictionary const * index;
+//  static dispatch_once_t      onceToken;
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ @(REStyleUndefined)   : REStyleUndefinedJSONKey,
+//               @(REStyleDrawBorder)  : REStyleDrawBorderJSONKey,
+//               @(REStyleStretchable) : REStyleStretchableJSONKey,
+//               @(REStyleApplyGloss)  : REStyleGlossStyle1JSONKey,
+//               @(REStyleGlossStyle2) : REStyleGlossStyle2JSONKey,
+//               @(REStyleGlossStyle3) : REStyleGlossStyle3JSONKey,
+//               @(REStyleGlossStyle4) : REStyleGlossStyle4JSONKey };
+//  });
+//
+//  if (!element) return nil;
+//
+//  REStyle style = element.style;
+//
+//  NSMutableArray * stringsArray = [@[] mutableCopy];
+//
+//  if (style & REStyleDrawBorder) [stringsArray addObject:index[@(REStyleDrawBorder)]];
+//
+//  if (style & REStyleStretchable) [stringsArray addObject:index[@(REStyleStretchable)]];
+//
+//  REStyle glossStyle = (style & REGlossStyleMask);
+//
+//  if (glossStyle) [stringsArray addObject:index[@(glossStyle)]];
+//
+//  return ([stringsArray count] ? [stringsArray componentsJoinedByString:@" "] : nil);
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands

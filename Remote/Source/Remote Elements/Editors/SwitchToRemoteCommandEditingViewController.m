@@ -8,9 +8,11 @@
 
 #import "SwitchToRemoteCommandEditingViewController.h"
 #import "RemoteController.h"
-#import "RemoteElement.h"
+//#import "RemoteElement.h"
 #import "ViewDecorator.h"
-#import "Remote.h"
+//#import "Remote.h"
+#import "Remote-Swift.h"
+
 @interface SwitchToRemoteCommandEditingViewController ()
 
 @property (strong, nonatomic) IBOutlet MSPickerInputButton * pickerInputButton;

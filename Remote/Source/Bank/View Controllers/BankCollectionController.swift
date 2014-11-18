@@ -290,7 +290,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     zoomView.showEditButton = mode == .Default
     zoomView.showDetailButton = mode == .Default
     view.addSubview(zoomView)
-    view.constrainWithFormat("zoom.center = self.center", views: ["zoom": zoomView])
+    view.constrain("zoom.center = self.center", views: ["zoom": zoomView])
   }
 
 }

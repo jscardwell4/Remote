@@ -30,7 +30,7 @@ class RockerView: ButtonGroupView {
       let format = "\n".join("labelContainer.centerY = self.centerY",
                              "labelContainer.height = self.height * 0.34",
                              "labelContainer.left = self.left")
-      constrainWithFormat(format, views: ["labelContainer": labelContainer], identifier: identifier)
+      constrain(format, views: ["labelContainer": labelContainer], identifier: identifier)
       let predicate = NSPredicate(format: "firstItem == %@" +
                                           "AND secondItem == %@ " +
                                           "AND firstAttribute == \(NSLayoutAttribute.Left.rawValue)" +
@@ -42,7 +42,7 @@ class RockerView: ButtonGroupView {
     labelContainer.removeAllConstraints()
 
     if let labels = labelContainer.subviewsOfKind(UILabel.self) as? [UILabel] {
-      labelContainer.constrainWithFormat("self.width = \(bounds.width * CGFloat(labels.count))")
+      labelContainer.constrain("self.width = \(bounds.width * CGFloat(labels.count))")
       apply(labels){$0.removeAllConstraints()}
       if var prevLabel = labels.first {
         labelContainer.verticallyStretchSubview(prevLabel)
@@ -79,7 +79,7 @@ class RockerView: ButtonGroupView {
       (receptionist: MSKVOReceptionist!) -> Void in
         if let v = receptionist.observer as? RockerView {
           v.labelIndex = 0
-          v.buttonGroup.selectCommandSetAtIndex(0)
+          v.buttonGroup.commandSetIndex = 0
           v.buildLabels()
         }
     }
@@ -100,7 +100,7 @@ class RockerView: ButtonGroupView {
   override func initializeViewFromModel() {
     super.initializeViewFromModel()
     buildLabels()
-    buttonGroup.selectCommandSetAtIndex(UInt(labelIndex))
+    buttonGroup.commandSetIndex = labelIndex
   }
 
   /** attachGestureRecognizers */
@@ -138,7 +138,7 @@ class RockerView: ButtonGroupView {
       completion: {
         (finished: Bool) -> Void in
           if finished {
-            self.buttonGroup.selectCommandSetAtIndex(UInt(idx))
+            self.buttonGroup.commandSetIndex = idx
           }
       })
   }
@@ -153,7 +153,7 @@ class RockerView: ButtonGroupView {
       labelCount = Int(collection.count)
       if labelCount > 0 {
         for i in 0 ..< labelCount {
-          if let title = buttonGroup.labelForCommandSetAtIndex(UInt(i)) {
+          if let title = buttonGroup.labelForCommandSetAtIndex(i) {
             let label = UILabel.newForAutolayout()
             label.attributedText = title
             label.backgroundColor = UIColor.clearColor()

@@ -87,7 +87,7 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 /// objectAtIndexedSubscript:
 /// @param idx
 /// @return id
-- (id)objectAtIndexedSubscript:(NSUInteger)idx { return memberOfCollectionAtIndex([self indexedCollection], idx); }
+//- (id)objectAtIndexedSubscript:(NSUInteger)idx { return memberOfCollectionAtIndex([self indexedCollection], idx); }
 
 ModelObject *memberOfCollectionWithUUID(id collection, NSString * uuid) {
 

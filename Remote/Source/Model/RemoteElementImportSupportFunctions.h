@@ -17,29 +17,29 @@
 #pragma mark - Remote Element Types
 ////////////////////////////////////////////////////////////////////////////////
 
-Class remoteElementClassForImportKey(NSString * importKey);
-REType remoteElementTypeFromImportKey(NSString * importKey);
+//Class remoteElementClassForImportKey(NSString * importKey);
+//REType remoteElementTypeFromImportKey(NSString * importKey);
 RERole remoteElementRoleFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element State
 ////////////////////////////////////////////////////////////////////////////////
 
-REState   buttonStateFromImportKey(NSString * importKey);
+//REState   buttonStateFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote Element Shape & Style
 ////////////////////////////////////////////////////////////////////////////////
 
-REShape remoteElementShapeFromImportKey(NSString * importKey);
-REStyle remoteElementStyleFromImportKey(NSString * importKey);
-REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey);
+//REShape remoteElementShapeFromImportKey(NSString * importKey);
+//REStyle remoteElementStyleFromImportKey(NSString * importKey);
+//REThemeOverrideFlags remoteElementThemeFlagsFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Remote
 ////////////////////////////////////////////////////////////////////////////////
 
-REPanelAssignment panelAssignmentFromImportKey(NSString * importKey);
+//REPanelAssignment panelAssignmentFromImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Commands

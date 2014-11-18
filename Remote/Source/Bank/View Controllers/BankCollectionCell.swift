@@ -15,7 +15,7 @@ class BankCollectionCell: UICollectionViewCell {
   let indicator: UIImageView = {
     let view = UIImageView.newForAutolayout()
     view.nametag = "indicator"
-    view.constrainWithFormat("self.width ≤ self.height :: self.height = 22")
+    view.constrain("self.width ≤ self.height :: self.height = 22")
     return view
   }()
 
@@ -24,7 +24,7 @@ class BankCollectionCell: UICollectionViewCell {
     button.setTranslatesAutoresizingMaskIntoConstraints(false)
     button.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.75)
     button.setTitle("Delete", forState: .Normal)
-    button.constrainWithFormat("self.width = 100")
+    button.constrain("self.width = 100")
     return button
   }()
 
@@ -33,7 +33,7 @@ class BankCollectionCell: UICollectionViewCell {
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.image = UIImage(named: "766-arrow-right")
     view.contentMode = .ScaleAspectFit
-    view.constrainWithFormat("self.width = self.height :: self.height = 22")
+    view.constrain("self.width = self.height :: self.height = 22")
     return view
   }()
 
@@ -98,7 +98,7 @@ class BankCollectionCell: UICollectionViewCell {
                            "chevron.centerY = content.centerY",
                            "H:[chevron]-20-|")
     let views = ["delete": deleteButton, "chevron": chevron, "content": contentView]
-    constrainWithFormat(format, views: views, identifier: identifier)
+    constrain(format, views: views, identifier: identifier)
 
     super.updateConstraints()
 

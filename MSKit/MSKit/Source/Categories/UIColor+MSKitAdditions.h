@@ -86,7 +86,7 @@ NSString * NSStringFromUIColor(UIColor * color);
 + (UIColor *)colorWithName:(NSString *)name;
 + (NSArray *)colorNames;
 + (NSString *)nameForColor:(UIColor *)color ignoreAlpha:(BOOL)ignoreAlpha;
-
++ (UIColor *)colorWithString:(NSString *)string;
 + (UIColor *)randomColor;
 
 
