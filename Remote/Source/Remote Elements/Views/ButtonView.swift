@@ -13,29 +13,13 @@ import MoonKit
 class ButtonView: RemoteElementView {
 
 	weak var tapGesture :UITapGestureRecognizer!
-	weak var longPressGesture: MSLongPressGestureRecognizer!
+	weak var longPressGesture: UILongPressGestureRecognizer!
 	weak var labelView: UILabel!
 	weak var activityIndicator: UIActivityIndicatorView!
 
   var tapAction: ((Void) -> Void)?
   var pressAction: ((Void) -> Void)?
   var button: Button { return model as Button }
-
-  /**
-  viewWithModel:
-
-  :param: model Button
-
-  :returns: ButtonView
-  */
-  @objc(viewWithButton:)
-  override class func viewWithModel(model: Button) -> ButtonView {
-    switch model.role {
-      case RemoteElement.Role.BatteryStatus:    return BatteryStatusButtonView(model: model)
-      case RemoteElement.Role.ConnectionStatus: return ConnectionStatusButtonView(model: model)
-      default:                                return ButtonView(model: model)
-    }
-  }
 
   /** init */
   override init() { super.init() }
@@ -114,7 +98,7 @@ class ButtonView: RemoteElementView {
 	override func attachGestureRecognizers() {
 		super.attachGestureRecognizers()
 
-		let longPressGesture = MSLongPressGestureRecognizer(target: self, action: "handleLongPress:")
+		let longPressGesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
 		longPressGesture.delaysTouchesBegan = false
 		addGestureRecognizer(longPressGesture)
 		self.longPressGesture = longPressGesture
@@ -143,9 +127,9 @@ class ButtonView: RemoteElementView {
 	/**
 	Long press action executes the secondary button command
 
-	:param: gestureRecognizer MSLongPressGestureRecognizer
+	:param: gestureRecognizer UILongPressGestureRecognizer
 	*/
-	func handleLongPress(gestureRecognizer: MSLongPressGestureRecognizer) {
+	func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
 		if gestureRecognizer.state == .Ended {
 			pressAction?() ?? executeActionWithOptions(.LongPress)
 

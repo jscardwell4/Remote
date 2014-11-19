@@ -173,15 +173,15 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                                                               @"Button"]
                                              notFoundMarker:NullObject]
                          attribute:@"configurations"
-                         className:@"NSMutableDictionary"
-                      defaultValue:[@{} mutableCopy]
+                         className:@"NSDictionary"
+                      defaultValue:@{}
                               info:nil];
 
   // panels for RERemote
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Remote"] notFoundMarker:NullObject]
                          attribute:@"panels"
-                         className:@"NSMutableDictionary"
-                      defaultValue:[@{} mutableCopy]
+                         className:@"NSDictionary"
+                      defaultValue:@{}
                               info:nil];
 
   // label attribute on button groups

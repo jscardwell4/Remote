@@ -1,5 +1,5 @@
 //
-//  MSIntegerInputView.swift
+//  IntegerInputView.swift
 //  MSKit
 //
 //  Created by Jason Cardwell on 10/10/14.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class MSIntegerInputView: UIInputView {
+public class IntegerInputView: UIInputView {
 
   /**
   initWithFrame:target:

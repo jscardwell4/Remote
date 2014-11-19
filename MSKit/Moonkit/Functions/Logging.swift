@@ -9,13 +9,26 @@
 import Foundation
 import CocoaLumberjack
 
-private var msLogLevel: Int32 = 0b1111
+private var msLogLevel: Int32 = LOG_LEVEL_DEBUG
 private var registeredLogLevels: [String:Int32] = [:]
 
 public func registerLogLevel(level: Int32, forFile file: String = __FILE__) {
   registeredLogLevels[file] = level
 }
 
+/**
+setLogLevel:
+
+:param: level Int32
+*/
+public func setLogLevel(level: Int32) { msLogLevel = level }
+
+/**
+currentLogLevel
+
+:returns: Int32
+*/
+public func currentLogLevel() -> Int32 { return msLogLevel }
 
 /**
 MSLogMessage:flag:function:line:level:context:

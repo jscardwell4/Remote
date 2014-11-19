@@ -76,6 +76,8 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   */
   override public func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
 
+    // ???: Why aren't we setting state to .Began?
+
     let beginningTouches = OrderedSet(touches.allObjects as [UITouch])
     registeredTouches ∪= beginningTouches
 

@@ -24,22 +24,6 @@ class ButtonGroupView: RemoteElementView {
 
   var buttonGroup: ButtonGroup! { return model as ButtonGroup }
 
-  /**
-  viewWithModel:
-
-  :param: model ButtonGroup
-
-  :returns: ButtonGroupView
-  */
-  @objc(viewWithButtonGroup:)
-  override class func viewWithModel(model: ButtonGroup) -> ButtonGroupView {
-    switch model.role {
-      case RemoteElement.Role.Rocker:         return RockerView(model: model)
-      case RemoteElement.Role.SelectionPanel: return ModeSelectionView(model: model)
-      default:                                   return ButtonGroupView(model: model)
-    }
-  }
-
   /** init */
   override init() { super.init() }
 

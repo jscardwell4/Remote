@@ -72,12 +72,7 @@ class ButtonGroup: RemoteElement {
 
   }
 
-  /**
-  elementType
-
-  :returns: BaseType
-  */
-   override func elementType() -> BaseType { return .ButtonGroup }
+  override var elementType: BaseType { return .ButtonGroup }
 
   @NSManaged var commandContainer: CommandContainer?
   @NSManaged var autohide: Bool
@@ -184,7 +179,7 @@ class ButtonGroup: RemoteElement {
     }
     commandSet = commandSet?.faultedObject()
     if commandSet != nil {
-      for button in subelements as [Button] {
+      for button in childElements as [Button] {
          if button.role == RemoteElement.Role.Tuck { continue }
          button.command = commandSet![button.role.rawValue]
          button.enabled = button.command != nil

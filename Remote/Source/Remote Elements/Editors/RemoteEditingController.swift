@@ -17,7 +17,7 @@ class RemoteEditingController: RemoteElementEditingController {
 
   :returns: RemoteElementView.Type
   */
-  override class func subelementClass() -> RemoteElementView.Type { return ButtonGroupView.self }
+//  override class func subelementClass() -> RemoteElementView.Type { return ButtonGroupView.self }
 
   /**
   isSubelementKind:
@@ -26,14 +26,14 @@ class RemoteEditingController: RemoteElementEditingController {
 
   :returns: Bool
   */
-  override class func isSubelementKind(obj: AnyObject) -> Bool { return obj is ButtonGroupView }
+//  override class func isSubelementKind(obj: AnyObject) -> Bool { return obj is ButtonGroupView }
 
   /**
   elementClass
 
   :returns: RemoteElementView.Type
   */
-  override class func elementClass() -> RemoteElementView.Type { return RemoteView.self }
+//  override class func elementClass() -> RemoteElementView.Type { return RemoteView.self }
 
   /**
   Opens the specified subelement in its Class-level editor.

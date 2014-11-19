@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */; };
+		C205852B1A1BA22A00212759 /* LongPressGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C205852A1A1BA22A00212759 /* LongPressGesture.swift */; };
+		C205852D1A1BEC2000212759 /* BlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C205852C1A1BEC2000212759 /* BlockActionGesture.swift */; };
 		C2064FF81A13BF8100342FDE /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
 		C2064FFA1A13C05900342FDE /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2064FF91A13C05900342FDE /* Operators.swift */; };
 		C2064FFB1A13C6F000342FDE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DC19C8E04200920F8D /* Helpers.swift */; };
@@ -206,13 +208,13 @@
 		C2422BD719E5B40600379221 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2422BCD19E5B2FA00379221 /* CocoaLumberjack.framework */; };
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
 		C25E63E11A00427100F54626 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E01A00427100F54626 /* OrderedSet.swift */; };
-		C28E50921A13CA2F00DF3206 /* MSPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */; };
+		C28E50921A13CA2F00DF3206 /* PanGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225879919F9EF4C006D8B1D /* PanGesture.swift */; };
 		C28E50931A13CA5000DF3206 /* MSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47A19E83D8900B36983 /* MSButton.swift */; };
 		C28E50941A13CA6400DF3206 /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */; };
 		C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */; };
 		C28E50961A13CA7E00DF3206 /* ToggleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */; };
 		C28E50971A13CA8F00DF3206 /* ToggleImageBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */; };
-		C28E50991A13CB1E00DF3206 /* MSIntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */; };
+		C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* IntegerInputView.swift */; };
 		C28E509B1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
@@ -243,16 +245,18 @@
 
 /* Begin PBXFileReference section */
 		C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKitGeometryFunctions.m; sourceTree = "<group>"; };
+		C205852A1A1BA22A00212759 /* LongPressGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressGesture.swift; sourceTree = "<group>"; };
+		C205852C1A1BEC2000212759 /* BlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockActionGesture.swift; sourceTree = "<group>"; };
 		C2064FF91A13C05900342FDE /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C216E73F19CBAE0A0052E98A /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C217E47A19E83D8900B36983 /* MSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButton.swift; sourceTree = "<group>"; };
-		C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSIntegerInputView.swift; sourceTree = "<group>"; };
+		C217E47D19E860DE00B36983 /* IntegerInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegerInputView.swift; sourceTree = "<group>"; };
 		C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
-		C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSPanGestureRecognizer.swift; sourceTree = "<group>"; };
+		C225879919F9EF4C006D8B1D /* PanGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGesture.swift; sourceTree = "<group>"; };
 		C2358F1619C78D6D00920F8D /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2358F1919C78D6D00920F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2358F1A19C78D6D00920F8D /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
@@ -581,14 +585,16 @@
 			isa = PBXGroup;
 			children = (
 				C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */,
+				C205852C1A1BEC2000212759 /* BlockActionGesture.swift */,
 				C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */,
 				C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */,
 				C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */,
 				C217E47A19E83D8900B36983 /* MSButton.swift */,
-				C217E47D19E860DE00B36983 /* MSIntegerInputView.swift */,
-				C225879919F9EF4C006D8B1D /* MSPanGestureRecognizer.swift */,
+				C217E47D19E860DE00B36983 /* IntegerInputView.swift */,
+				C225879919F9EF4C006D8B1D /* PanGesture.swift */,
 				C25E63DD19FEC06A00F54626 /* GestureManager.swift */,
 				C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */,
+				C205852A1A1BA22A00212759 /* LongPressGesture.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1177,6 +1183,7 @@
 				C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */,
 				C2358F4319C78E0C00920F8D /* NSSet+MSKitAdditions.m in Sources */,
 				C20650071A13C99500342FDE /* GestureManager.swift in Sources */,
+				C205852D1A1BEC2000212759 /* BlockActionGesture.swift in Sources */,
 				C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */,
 				C2358F4419C78E0C00920F8D /* NSString+MSKitAdditions.m in Sources */,
 				C2358F4519C78E0C00920F8D /* NSURL+MSKitAdditions.m in Sources */,
@@ -1193,8 +1200,9 @@
 				C2358F4E19C78E0C00920F8D /* UIImage+ImageEffects.m in Sources */,
 				C2358F4F19C78E0C00920F8D /* UIImage+MSKitAdditions.m in Sources */,
 				C20650061A13C90A00342FDE /* FontAwesomeIcon.swift in Sources */,
+				C205852B1A1BA22A00212759 /* LongPressGesture.swift in Sources */,
 				C2358F5019C78E0C00920F8D /* UIStoryboard+MSKitAdditions.m in Sources */,
-				C28E50921A13CA2F00DF3206 /* MSPanGestureRecognizer.swift in Sources */,
+				C28E50921A13CA2F00DF3206 /* PanGesture.swift in Sources */,
 				C2358F5119C78E0C00920F8D /* UITableView+MSKitAdditions.m in Sources */,
 				C2358F5219C78E0C00920F8D /* UIView+MSKitAdditions.m in Sources */,
 				C2358F5319C78E0C00920F8D /* UIViewController+MSKitAdditions.m in Sources */,
@@ -1214,7 +1222,7 @@
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,
 				C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */,
-				C28E50991A13CB1E00DF3206 /* MSIntegerInputView.swift in Sources */,
+				C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */,
 				C2358F5D19C78E0C00920F8D /* MSPopupBarButtonItem.m in Sources */,
 				C2358F5E19C78E0C00920F8D /* MSScrollWheel.m in Sources */,
 				C2358F5F19C78E0C00920F8D /* MSKitLoggingFunctions.m in Sources */,

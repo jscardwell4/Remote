@@ -19,14 +19,14 @@ class ButtonEditingController: RemoteElementEditingController {
 
   :returns: Bool
   */
-  override class func isSubelementKind(obj: AnyObject) -> Bool { return false }
+//  override class func isSubelementKind(obj: AnyObject) -> Bool { return false }
 
   /**
   elementClass
 
   :returns: RemoteElementView.Type
   */
-  override class func elementClass() -> RemoteElementView.Type { return ButtonView.self }
+//  override class func elementClass() -> RemoteElementView.Type { return ButtonView.self }
 
 
   /**

@@ -13,3 +13,16 @@ public protocol JSONValueConvertible {
   var JSONValue: JSONValueType { get }
   init(JSONValue: JSONValueType)
 }
+
+public protocol Divisible {
+  func /(lhs: Self, rhs: Self) -> Self
+}
+
+// causes ambiguity
+public protocol IntegerDivisible {
+  func /(lhs: Self, rhs:Int) -> Self
+}
+
+public protocol Summable {
+  func +(lhs: Self, rhs: Self) -> Self
+}

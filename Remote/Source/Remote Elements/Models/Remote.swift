@@ -13,29 +13,15 @@ import MoonKit
 @objc(Remote)
 class Remote: RemoteElement {
 
-  /**
-  elementType
-
-  :returns: BaseType
-  */
-   override func elementType() -> BaseType { return .Remote }
+  override var elementType: BaseType { return .Remote }
 
   @NSManaged var topBarHidden: Bool
   @NSManaged var activity: Activity?
 
-  @NSManaged var primitivePanels: NSDictionary
+  @NSManaged var panels: NSDictionary
   var panelAssignments: [NSNumber:String] {
-    get {
-      willAccessValueForKey("panels")
-      let panels = primitivePanels as? [NSNumber:String]
-      didAccessValueForKey("panels")
-      return panels ?? [:]
-    }
-    set {
-      willChangeValueForKey("panels")
-      primitivePanels = newValue
-      didChangeValueForKey("panels")
-    }
+    get { return panels as? [NSNumber:String] ?? [:] }
+    set { panels = newValue }
   }
 
   override var parentElement: RemoteElement? { get { return nil } set {} }
@@ -47,9 +33,9 @@ class Remote: RemoteElement {
   :param: assignment ButtonGroup.PanelAssignment
   */
   func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: ButtonGroup.PanelAssignment) {
-    var panels = panelAssignments
-    if assignment != ButtonGroup.PanelAssignment.Unassigned { panels[assignment.rawValue] = buttonGroup?.uuid }
-    panelAssignments = panels
+    var assignments = panelAssignments
+    if assignment != ButtonGroup.PanelAssignment.Unassigned { assignments[assignment.rawValue] = buttonGroup?.uuid }
+    panelAssignments = assignments
   }
 
   /**

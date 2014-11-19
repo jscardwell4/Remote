@@ -17,7 +17,7 @@ class ButtonGroupEditingController: RemoteElementEditingController {
 
   :returns: RemoteElementView.Type
   */
-  override class func subelementClass() -> RemoteElementView.Type { return ButtonView.self }
+//  override class func subelementClass() -> RemoteElementView.Type { return ButtonView.self }
 
   /**
   isSubelementKind:
@@ -26,14 +26,14 @@ class ButtonGroupEditingController: RemoteElementEditingController {
 
   :returns: Bool
   */
-  override class func isSubelementKind(obj: AnyObject) -> Bool { return obj is ButtonView }
+//  override class func isSubelementKind(obj: AnyObject) -> Bool { return obj is ButtonView }
 
   /**
   elementClass
 
   :returns: RemoteElementView.Type
   */
-  override class func elementClass() -> RemoteElementView.Type { return ButtonGroupView.self }
+//  override class func elementClass() -> RemoteElementView.Type { return ButtonGroupView.self }
 
   /** willTranslateSelectedViews */
   override func willTranslateSelectedViews() { super.willTranslateSelectedViews(); sourceView.locked = false }

@@ -120,7 +120,7 @@ class BankCollectionCell: UICollectionViewCell {
     }
   }
 
-  private weak var panGesture: MSPanGestureRecognizer!
+  private weak var panGesture: PanGesture!
 
   /**
   animationDurationForDistance:
@@ -143,9 +143,9 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   handlePan:
 
-  :param: gesture UIPanGestureRecognizer
+  :param: gesture PanGesture
   */
-  func handlePan(gesture: UIPanGestureRecognizer) {
+  func handlePan(gesture: PanGesture) {
 
     let x = gesture.translationInView(self).x
     let duration = animationDurationForDistance(abs(x))
@@ -181,7 +181,7 @@ class BankCollectionCell: UICollectionViewCell {
   private func initializeSubviews() {
     contentView.addSubview(chevron)
     panGesture = {
-      let gesture = MSPanGestureRecognizer(target: self, action: "handlePan:")
+      let gesture = PanGesture(handler: {[unowned self] in self.handlePan(self.panGesture)})
       gesture.confineToView = true
       self.addGestureRecognizer(gesture)
       return gesture

@@ -53,7 +53,7 @@ class RemoteElementEditingController: UIViewController {
 
   var movingSelectedViews: Bool = false {
     didSet {
-      let editingState: REEditingState = movingSelectedViews ? .Moving : .Selected
+      let editingState: RemoteElementView.EditingState = movingSelectedViews ? .Moving : .Selected
       apply(selectedViews){$0.editingState = editingState}
       updateState()
     }
@@ -105,13 +105,13 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Gestures
   ////////////////////////////////////////////////////////////////////////////////
 
-  weak var longPressGesture: UILongPressGestureRecognizer!
+  weak var longPressGesture: LongPressGesture!
   weak var pinchGesture: UIPinchGestureRecognizer!
   weak var oneTouchDoubleTapGesture: UITapGestureRecognizer!
   weak var multiselectGesture: MultiselectGestureRecognizer!
   weak var anchoredMultiselectGesture: MultiselectGestureRecognizer!
-  weak var twoTouchPanGesture: UIPanGestureRecognizer!
-  weak var toolbarLongPressGesture: UILongPressGestureRecognizer!
+  weak var twoTouchPanGesture: PanGesture!
+  weak var toolbarLongPressGesture: LongPressGesture!
   // weak var oneTouchTapGesture: UITapGestureRecognizer?
   // weak var twoTouchTapGesture: UITapGestureRecognizer?
   // weak var panGesture: UIPanGestureRecognizer?
@@ -157,7 +157,7 @@ class RemoteElementEditingController: UIViewController {
 
   :returns: RemoteElementView.Type
   */
-  class func subelementClass() -> RemoteElementView.Type { return RemoteElementView.self }
+//  class func subelementClass() -> RemoteElementView.Type { return RemoteElementView.self }
 
   /**
   isSubelementKind:
@@ -166,7 +166,7 @@ class RemoteElementEditingController: UIViewController {
 
   :returns: Bool
   */
-  class func isSubelementKind(obj: AnyObject) -> Bool { return obj is RemoteElementView }
+//  class func isSubelementKind(obj: AnyObject) -> Bool { return obj is RemoteElementView }
 
   /**
   elementClass
@@ -281,13 +281,13 @@ class RemoteElementEditingController: UIViewController {
     view = UIView(frame: UIScreen.mainScreen().bounds)
 
     // Create the source view
-    sourceView = self.dynamicType.elementClass()(model: remoteElement)
+    sourceView = RemoteElementView.viewWithModel(remoteElement) //self.dynamicType.elementClass()(model: remoteElement)
     if let size = sourceViewSize {
       let (widthConstraint, heightConstraint) = sourceView.constrainSize(size)
       sourceViewWidthConstraint = widthConstraint
       sourceViewHeightConstraint = heightConstraint
     }
-    sourceView.editingMode = sourceView.model.elementType()
+    sourceView.editingMode = sourceView.model.elementType
     view.addSubview(sourceView)
 
     // Create the top toolbar
@@ -509,7 +509,7 @@ extension RemoteElementEditingController {
   :param: views [RemoteElementView]
   */
   func deselectViews(views: OrderedSet<RemoteElementView>) {
-    for v in (views ∩ selectedViews) { if v === focusView { focusView = nil } else { v.editingState = .NotEditing } }
+    for v in (views ∩ selectedViews) { if v === focusView { focusView = nil } else { v.editingState = .None } }
     selectedViews ∖= views
     updateState()
   }
@@ -779,7 +779,7 @@ extension RemoteElementEditingController {
   func attachGestureRecognizers() {
 
     longPressGesture = {
-      let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+      let gesture = LongPressGesture(handler: {[unowned self] in self.handleLongPress(self.longPressGesture)})
       gesture.nametag = "longPressGesture"
       self.view.addGestureRecognizer(gesture)
       return gesture
@@ -821,7 +821,7 @@ extension RemoteElementEditingController {
     }()
 
     twoTouchPanGesture = {
-      let gesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
+      let gesture = PanGesture(handler: {[unowned self] in self.handlePan(self.twoTouchPanGesture)})
       gesture.minimumNumberOfTouches = 2
       gesture.maximumNumberOfTouches = 2
       gesture.requireGestureRecognizerToFail(self.pinchGesture)
@@ -833,7 +833,7 @@ extension RemoteElementEditingController {
     }()
 
     toolbarLongPressGesture = {
-      let gesture = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+      let gesture = LongPressGesture(handler: {[unowned self] in self.handleLongPress(self.toolbarLongPressGesture)})
       self.longPressGesture.requireGestureRecognizerToFail(gesture)
       gesture.nametag = "toolbarLongPressGesture"
       self.undoButton?.addGestureRecognizer(gesture)
@@ -858,7 +858,7 @@ extension RemoteElementEditingController {
       [unowned self] in !self.movingSelectedViews
     }
     let selectableClass: (UITouch) -> Bool = {
-      [unowned self] touch in self.dynamicType.isSubelementKind(touch.view)
+      [unowned self] touch in self.sourceView.objectIsSubelementKind(touch.view)
     }
 
     gestureManager = GestureManager(gestures: [
@@ -910,7 +910,7 @@ extension RemoteElementEditingController {
     MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
     if gesture.state == .Ended {
       if let tappedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView{
-        if self.dynamicType.isSubelementKind(tappedView) {
+        if sourceView.objectIsSubelementKind(tappedView) {
           if selectedViews ∌ tappedView { selectView(tappedView)}
           focusView = (focusView === tappedView ? nil : tappedView)
         }
@@ -921,15 +921,15 @@ extension RemoteElementEditingController {
   /**
   handleLongPress:
 
-  :param: gesture UILongPressGestureRecognizer
+  :param: gesture LongPressGesture
   */
-  func handleLongPress(gesture: UILongPressGestureRecognizer) {
+  func handleLongPress(gesture: LongPressGesture) {
     MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
     if gesture === longPressGesture {
       switch gesture.state {
         case .Began:
           if let pressedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView {
-            if self.dynamicType.isSubelementKind(pressedView) {
+            if sourceView.objectIsSubelementKind(pressedView) {
               if selectedViews ∌ pressedView { selectView(pressedView) }
               movingSelectedViews = true
               longPressPreviousLocation = gesture.locationInView(nil)
@@ -987,7 +987,7 @@ extension RemoteElementEditingController {
 
   :param: gesture UIPanGestureRecognizer
   */
-  func handlePan(gesture: UIPanGestureRecognizer) {
+  func handlePan(gesture: PanGesture) {
     //TODO: Get pan working with non-empty selection
     MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
     if gesture === twoTouchPanGesture {
@@ -1024,7 +1024,7 @@ extension RemoteElementEditingController {
     MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
    if gesture.state == .Ended {
     let touchLocations = gesture.touchLocationsInView(sourceView)
-    let touchedSubelementViews = gesture.touchedSubviewsInView(sourceView){self.dynamicType.isSubelementKind($0)}
+    let touchedSubelementViews = gesture.touchedSubviewsInView(sourceView){self.sourceView.objectIsSubelementKind($0)}
     if touchedSubelementViews.count > 0 {
 
       let stackedViews = OrderedSet((sourceView.subelementViews as [RemoteElementView]).filter {

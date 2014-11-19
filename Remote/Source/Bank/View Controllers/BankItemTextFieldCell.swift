@@ -108,7 +108,7 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
   var shouldUseIntegerKeyboard: Bool = false {
     didSet {
       textFieldℹ.inputView = shouldUseIntegerKeyboard
-                               ? MSIntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textFieldℹ)
+                               ? IntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textFieldℹ)
                                : nil
     }
   }

@@ -27,12 +27,7 @@ class Button: RemoteElement {
 
   }
 
-  /**
-  elementType
-
-  :returns: BaseType
-  */
-   override func elementType() -> BaseType { return .Button }
+  override var elementType: BaseType { return .Button }
 
   @NSManaged var title:            NSAttributedString?
   @NSManaged var icon:             ImageView?

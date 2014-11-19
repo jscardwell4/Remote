@@ -10,24 +10,72 @@ import Foundation
 import UIKit
 
 extension CGPoint {
-	public func xDelta(point: CGPoint) -> CGFloat { return x - point.x }
-	public func yDelta(point: CGPoint) -> CGFloat { return y - point.y }
-	public func delta(point: CGPoint) -> CGPoint { return CGPoint(x: xDelta(point), y: yDelta(point)) }
-	public func absXDelta(point: CGPoint) -> CGFloat { return abs(x - point.x) }
-	public func absYDelta(point: CGPoint) -> CGFloat { return abs(y - point.y) }
-	public func absDelta(point: CGPoint) -> CGPoint { return CGPoint(x: absXDelta(point), y: absYDelta(point)) }
-  public mutating func transform(transform: CGAffineTransform) {
-    self = pointByApplyingTransform(transform)
-  }
+  public static var nullPoint: CGPoint = CGPoint(x: CGFloat.NaN, y: CGFloat.NaN)
+  public var isNull: Bool { return self == CGPoint.nullPoint }
+  public func xDelta(point: CGPoint) -> CGFloat { return point.isNull ? x : x - point.x }
+  public func yDelta(point: CGPoint) -> CGFloat { return point.isNull ? y : y - point.y }
+  public func delta(point: CGPoint) -> CGPoint { return self - point }
+  public func absXDelta(point: CGPoint) -> CGFloat { return abs(xDelta(point)) }
+  public func absYDelta(point: CGPoint) -> CGFloat { return abs(yDelta(point)) }
+  public func absDelta(point: CGPoint) -> CGPoint { return (self - point).absolute }
+  public mutating func transform(transform: CGAffineTransform) { self = pointByApplyingTransform(transform) }
+  public var absolute: CGPoint { return self.isNull ? self :  CGPoint(x: abs(x), y: abs(y)) }
   public func pointByApplyingTransform(transform: CGAffineTransform) -> CGPoint {
     return CGPointApplyAffineTransform(self, transform)
   }
+  public init(_ vector: CGVector) { x = vector.dx; y = vector.dy }
 }
 
-public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y) }
-public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y) }
+extension CGPoint: NilLiteralConvertible {
+  public init(nilLiteral: ()) { self = CGPoint.nullPoint }
+}
+
+public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+  return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
+}
+public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+  return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y))
+}
 public func -=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs - rhs }
 public func +=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs + rhs }
+public func /(lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x / rhs, y: lhs.y / rhs) }
+public func /=(inout lhs: CGPoint, rhs: CGFloat) { lhs = lhs / rhs }
+public func *(lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x * rhs, y: lhs.y * rhs) }
+public func *=(inout lhs: CGPoint, rhs: CGFloat) { lhs = lhs * rhs }
+
+extension CGVector {
+  public static var nullVector: CGVector = CGVector(dx: CGFloat.NaN, dy: CGFloat.NaN)
+  public var isNull: Bool { return self == CGVector.nullVector }
+  public func dxDelta(vector: CGVector) -> CGFloat { return vector.isNull ? dx : dx - vector.dx }
+  public func dyDelta(vector: CGVector) -> CGFloat { return vector.isNull ? dy : dy - vector.dy }
+  public func delta(vector: CGVector) -> CGVector { return self - vector }
+  public func absDXDelta(vector: CGVector) -> CGFloat { return abs(dxDelta(vector)) }
+  public func absDYDelta(vector: CGVector) -> CGFloat { return abs(dyDelta(vector)) }
+  public func absDelta(vector: CGVector) -> CGVector { return (self - vector).absolute }
+  public var absolute: CGVector { return isNull ? self : CGVector(dx: abs(dx), dy: abs(dy)) }
+  public init(_ point: CGPoint) { dx = point.x; dy = point.y }
+}
+
+extension CGVector: NilLiteralConvertible {
+  public init(nilLiteral: ()) { self = CGVector.nullVector }
+}
+
+extension CGVector: Printable {
+  public var description: String { return "(\(dx), \(dy))"}
+}
+
+public func -(lhs: CGVector, rhs: CGVector) -> CGVector {
+  return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGVector(dx: lhs.dx - rhs.dx, dy: lhs.dy - rhs.dy))
+}
+public func +(lhs: CGVector, rhs: CGVector) -> CGVector {
+  return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGVector(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy))
+}
+public func -=(inout lhs: CGVector, rhs: CGVector) { lhs = lhs - rhs }
+public func +=(inout lhs: CGVector, rhs: CGVector) { lhs = lhs + rhs }
+public func /(lhs: CGVector, rhs: CGFloat) -> CGVector { return CGVector(dx: lhs.dx / rhs, dy: lhs.dy / rhs) }
+public func /=(inout lhs: CGVector, rhs: CGFloat) { lhs = lhs / rhs }
+public func *(lhs: CGVector, rhs: CGFloat) -> CGVector { return CGVector(dx: lhs.dx * rhs, dy: lhs.dy * rhs) }
+public func *=(inout lhs: CGVector, rhs: CGFloat) { lhs = lhs * rhs }
 
 extension CGSize {
   public init(square: CGFloat) { self = CGSize(width: square, height: square) }

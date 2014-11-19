@@ -39,19 +39,11 @@ class RemoteElement: NamedModelObject {
   @NSManaged var backgroundColor: UIColor?
   @NSManaged var backgroundImage: Image?
 
-  @NSManaged var primitiveSubelements: NSOrderedSet
-  var subelements: [RemoteElement] {
-    get {
-      willAccessValueForKey("subelements")
-      let subelements = primitiveSubelements.array as? [RemoteElement]
-      didAccessValueForKey("subelements")
-      return subelements ?? []
-    }
-    set {
-      willChangeValueForKey("subelements")
-      primitiveSubelements = NSOrderedSet(array: newValue)
-      didChangeValueForKey("subelements")
-    }
+  @NSManaged var subelements: NSOrderedSet
+
+  var childElements: [RemoteElement] {
+    get { return subelements.array as? [RemoteElement] ?? [] }
+    set { subelements = NSOrderedSet(array: newValue) }
   }
 
   lazy var constraintManager: ConstraintManager = ConstraintManager(element: self)
@@ -66,7 +58,7 @@ class RemoteElement: NamedModelObject {
     didSet {
       if !hasMode(currentMode) { addMode(currentMode) }
       updateForMode(currentMode)
-      apply(subelements){$0.currentMode = self.currentMode}
+      apply(childElements){$0.currentMode = self.currentMode}
     }
   }
 
@@ -179,10 +171,10 @@ class RemoteElement: NamedModelObject {
       }
 
       if let subelementsJSON = data["subelements"] as? [[NSObject:AnyObject]] {
-        if elementType() == .Remote {
-          subelements = subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)}
-        } else if elementType() == .ButtonGroup {
-          subelements = subelementsJSON.map{Button.importObjectFromData($0,  context: moc)}
+        if elementType == .Remote {
+          childElements = subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)}
+        } else if elementType == .ButtonGroup {
+          childElements = subelementsJSON.map{Button.importObjectFromData($0,  context: moc)}
         }
       }
 
@@ -232,7 +224,7 @@ class RemoteElement: NamedModelObject {
     if backgroundImages.count > 0      { dictionary["background-image"]       = backgroundImages      }
     if backgroundImageAlphas.count > 0 { dictionary["background-image-alpha"] = backgroundImageAlphas }
 
-    let subelementDictionaries = subelements.map{$0.JSONDictionary()}
+    let subelementDictionaries = childElements.map{$0.JSONDictionary()}
     if subelementDictionaries.count > 0 { dictionary["subelements"] = subelementDictionaries}
 
     let constraints = ownedConstraints
@@ -242,7 +234,7 @@ class RemoteElement: NamedModelObject {
       let secondItemUUIDs = OrderedSet<String>(constraints.filter{$0.secondItem != nil}.map{$0.secondItem!.uuid})
       let uuids = firstItemUUIDs + secondItemUUIDs
       var uuidIndex: [String:String] = [name.camelCase(): uuid]
-      let subelements = self.subelements
+      let subelements = childElements
       for uuid in uuids {
         if uuid == self.uuid { continue }
         if let element = memberOfCollectionWithUUID(subelements, uuid) as? RemoteElement {
@@ -349,7 +341,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: BaseType
   */
-  func elementType() -> BaseType { return .Undefined }
+  var elementType: BaseType { return .Undefined }
 
   /** autoGenerateName */
   func autoGenerateName() {
@@ -383,22 +375,22 @@ class RemoteElement: NamedModelObject {
   */
   subscript(idx: Int) -> RemoteElement? {
     get {
-      let elements = subelements
+      let elements = childElements
       return contains(0 ..< elements.count, idx) ? elements[idx] : nil
     }
     set {
-      var elements = subelements
+      var elements = childElements
       if idx == elements.count && newValue != nil {
         elements.append(newValue!)
-        subelements = elements
+        childElements = elements
       }
       else if contains(0 ..< elements.count, idx) {
         if newValue == nil {
           elements.removeAtIndex(idx)
-          subelements = elements
+          childElements = elements
         } else {
           elements.insert(newValue!, atIndex: idx)
-          subelements = elements
+          childElements = elements
         }
       }
     }
@@ -419,7 +411,7 @@ class RemoteElement: NamedModelObject {
         let property = keypath.last!
         return hasMode(mode) ? configurations[mode]?[property] : configurations[RemoteElement.DefaultMode]?[property]
       } else {
-        return subelements.filter{$0.isIdentifiedByString(key)}.first
+        return childElements.filter{$0.isIdentifiedByString(key)}.first
       }
     }
     set {

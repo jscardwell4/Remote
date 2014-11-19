@@ -23,7 +23,7 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
   */
   private func snapshotFromRemoteElementView(elementView: RemoteElementView) -> UIImage {
     let editingState = elementView.editingState
-    elementView.editingState = .NotEditing
+    elementView.editingState = .None
     let image = snapshotFromView(elementView)
     elementView.editingState = editingState
     return image

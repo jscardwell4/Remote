@@ -25,7 +25,7 @@ class ConstraintManager: NSObject {
   var dependentConstraints: [Constraint] { return remoteElement.secondOrderConstraints ∖ intrinsicConstraints }
 
   var dependentChildConstraints: [Constraint] {
-    return dependentConstraints.filter{self.remoteElement.subelements ∋ $0.firstItem}
+    return dependentConstraints.filter{self.remoteElement.childElements ∋ $0.firstItem}
   }
 
   var dependentSiblingConstraints: [Constraint] { return dependentConstraints ∖ dependentChildConstraints }
@@ -66,7 +66,7 @@ class ConstraintManager: NSObject {
         self.remoteElement.managedObjectContext?.deleteObjects(self.remoteElement.constraints)
       }
       var directory = [self.remoteElement.identifier: self.remoteElement]
-      for subelement in self.remoteElement.subelements { directory[subelement.identifier] = subelement }
+      for subelement in self.remoteElement.childElements { directory[subelement.identifier] = subelement }
       for dictionary in NSLayoutConstraint.constraintDictionariesByParsingString(format) {
         if let element1ID = dictionary[MSExtendedVisualFormatItem1Name] as? String {
           if let element1 = directory[element1ID] {
