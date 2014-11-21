@@ -8,67 +8,10 @@
 
 import Foundation
 
-// extension Float: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Float, rhs: Int) -> Float { return lhs / Float(rhs)}
-// extension Double: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Double, rhs: Int) -> Double { return lhs / Double(rhs)}
-// extension CGFloat: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: CGFloat, rhs: Int) -> CGFloat { return lhs / CGFloat(rhs)}
-// extension Int: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Int, rhs: Int) -> Int { return lhs / Int(rhs)}
-// extension Int8: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Int8, rhs: Int) -> Int8 { return lhs / Int8(rhs)}
-// extension Int16: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Int16, rhs: Int) -> Int16 { return lhs / Int16(rhs)}
-// extension Int32: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Int32, rhs: Int) -> Int32 { return lhs / Int32(rhs)}
-// extension Int64: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: Int64, rhs: Int) -> Int64 { return lhs / Int64(rhs)}
-// extension UInt: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: UInt, rhs: Int) -> UInt { return lhs / UInt(rhs)}
-// extension UInt8: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: UInt8, rhs: Int) -> UInt8 { return lhs / UInt8(rhs)}
-// extension UInt16: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: UInt16, rhs: Int) -> UInt16 { return lhs / UInt16(rhs)}
-// extension UInt32: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: UInt32, rhs: Int) -> UInt32 { return lhs / UInt32(rhs)}
-// extension UInt64: Divisible, IntegerDivisible, Summable {}
-// public func /(lhs: UInt64, rhs: Int) -> UInt64 { return lhs / UInt64(rhs)}
-
-/**
-sum:
-
-:param: items [T]
-
-:returns: T?
-*/
-public func sum<T:Summable>(items: [T]) -> T? {
-  if items.count == 0 { return nil }
-  var result = items.first!
-  if items.count > 1 {
-    for item in items[1..<items.count] {
-      result = result + item
-    }
-  }
-  return result
-}
-
-/**
-average:
-
-:param: items [T]
-
-:returns: T?
-*/
-public func average<T:Summable where T:IntegerDivisible>(items: [T]) -> T? {
-  if items.count == 0 { return nil }
-  else if items.count == 1 { return items.first }
-  else if let s = sum(items) {
-    return s / items.count
-  } else {
-    return nil
-  }
-}
+@inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
+@inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
+@inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
+@inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
 
 public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
   var result: [K:U] = [:]

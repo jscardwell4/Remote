@@ -41,9 +41,9 @@ class RemoteElement: NamedModelObject {
 
   @NSManaged var subelements: NSOrderedSet
 
-  var childElements: [RemoteElement] {
-    get { return subelements.array as? [RemoteElement] ?? [] }
-    set { subelements = NSOrderedSet(array: newValue) }
+  var childElements: OrderedSet<RemoteElement> {
+    get { return OrderedSet(subelements.array as? [RemoteElement] ?? []) }
+    set { subelements = NSOrderedSet(array: newValue.array) }
   }
 
   lazy var constraintManager: ConstraintManager = ConstraintManager(element: self)
@@ -172,9 +172,9 @@ class RemoteElement: NamedModelObject {
 
       if let subelementsJSON = data["subelements"] as? [[NSObject:AnyObject]] {
         if elementType == .Remote {
-          childElements = subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)}
+          childElements = OrderedSet(subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)})
         } else if elementType == .ButtonGroup {
-          childElements = subelementsJSON.map{Button.importObjectFromData($0,  context: moc)}
+          childElements = OrderedSet(subelementsJSON.map{Button.importObjectFromData($0,  context: moc)})
         }
       }
 
@@ -224,7 +224,7 @@ class RemoteElement: NamedModelObject {
     if backgroundImages.count > 0      { dictionary["background-image"]       = backgroundImages      }
     if backgroundImageAlphas.count > 0 { dictionary["background-image-alpha"] = backgroundImageAlphas }
 
-    let subelementDictionaries = childElements.map{$0.JSONDictionary()}
+    let subelementDictionaries = childElements.map{$0.JSONDictionary()}.array
     if subelementDictionaries.count > 0 { dictionary["subelements"] = subelementDictionaries}
 
     let constraints = ownedConstraints
@@ -234,7 +234,7 @@ class RemoteElement: NamedModelObject {
       let secondItemUUIDs = OrderedSet<String>(constraints.filter{$0.secondItem != nil}.map{$0.secondItem!.uuid})
       let uuids = firstItemUUIDs + secondItemUUIDs
       var uuidIndex: [String:String] = [name.camelCase(): uuid]
-      let subelements = childElements
+      let subelements = childElements.array
       for uuid in uuids {
         if uuid == self.uuid { continue }
         if let element = memberOfCollectionWithUUID(subelements, uuid) as? RemoteElement {
@@ -517,7 +517,7 @@ class RemoteElement: NamedModelObject {
     private(set) var rawValue: Int
     init(rawValue: Int) { self.rawValue = rawValue & 0b0011_1111 }
     init(nilLiteral:()) { rawValue = 0 }
-
+    static var allZeros:       Style { return Style.Undefined }
     static var Undefined:      Style = Style(rawValue: 0b0000_0000)
     static var ApplyGloss:     Style = Style(rawValue: 0b0000_0001)
     static var DrawBorder:     Style = Style(rawValue: 0b0000_0010)
@@ -535,6 +535,7 @@ class RemoteElement: NamedModelObject {
     private(set) var rawValue: Int
     init(rawValue: Int) { self.rawValue = rawValue & 0b1111_1111 }
     init(nilLiteral:()) { rawValue = 0 }
+    static var allZeros: Role { return Role.Undefined }
 
     static var Undefined:            Role = Role(rawValue: 0b0000_0000)
 
@@ -646,7 +647,7 @@ extension RemoteElement.Shape: JSONValueConvertible {
       case RemoteElement.Shape.Rectangle.JSONValue:        self = .Rectangle
       case RemoteElement.Shape.Triangle.JSONValue:         self = .Triangle
       case RemoteElement.Shape.Diamond.JSONValue:          self = .Diamond
-      default:                             self = .Undefined
+      default:                                             self = .Undefined
     }
   }
 
@@ -687,23 +688,6 @@ extension RemoteElement.Style: JSONValueConvertible {
   }
 
 }
-
-extension RemoteElement.Style: Equatable {}
-func ==(lhs: RemoteElement.Style, rhs: RemoteElement.Style) -> Bool { return lhs.rawValue == rhs.rawValue }
-
-extension RemoteElement.Style: BitwiseOperationsType {
-  static var allZeros: RemoteElement.Style { return self(rawValue: 0) }
-}
-func &(lhs: RemoteElement.Style, rhs: RemoteElement.Style) -> RemoteElement.Style {
-  return RemoteElement.Style(rawValue: (lhs.rawValue & rhs.rawValue))
-}
-func |(lhs: RemoteElement.Style, rhs: RemoteElement.Style) -> RemoteElement.Style {
-  return RemoteElement.Style(rawValue: (lhs.rawValue | rhs.rawValue))
-}
-func ^(lhs: RemoteElement.Style, rhs: RemoteElement.Style) -> RemoteElement.Style {
-  return RemoteElement.Style(rawValue: (lhs.rawValue ^ rhs.rawValue))
-}
-prefix func ~(x: RemoteElement.Style) -> RemoteElement.Style { return RemoteElement.Style(rawValue: ~(x.rawValue)) }
 
 extension RemoteElement.Role: JSONValueConvertible {
 
@@ -752,7 +736,7 @@ extension RemoteElement.Role: JSONValueConvertible {
       case RemoteElement.Role.FF:                   return "fast-forward"
       case RemoteElement.Role.Rewind:               return "rewind"
       case RemoteElement.Role.Record:               return "record"
-      default:                        return "undefined"
+      default:                                      return "undefined"
     }
   }
 
@@ -805,20 +789,3 @@ extension RemoteElement.Role: JSONValueConvertible {
     }
   }
 }
-
-extension RemoteElement.Role: Equatable {}
-func ==(lhs: RemoteElement.Role, rhs: RemoteElement.Role) -> Bool { return lhs.rawValue == rhs.rawValue }
-
-extension RemoteElement.Role: BitwiseOperationsType {
-  static var allZeros: RemoteElement.Role { return self(rawValue: 0) }
-}
-func &(lhs: RemoteElement.Role, rhs: RemoteElement.Role) -> RemoteElement.Role {
-  return RemoteElement.Role(rawValue: (lhs.rawValue & rhs.rawValue))
-}
-func |(lhs: RemoteElement.Role, rhs: RemoteElement.Role) -> RemoteElement.Role {
-  return RemoteElement.Role(rawValue: (lhs.rawValue | rhs.rawValue))
-}
-func ^(lhs: RemoteElement.Role, rhs: RemoteElement.Role) -> RemoteElement.Role {
-  return RemoteElement.Role(rawValue: (lhs.rawValue ^ rhs.rawValue))
-}
-prefix func ~(x: RemoteElement.Role) -> RemoteElement.Role { return RemoteElement.Role(rawValue: ~(x.rawValue)) }

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import MoonKit
 
-
 class RemoteElementView: UIView {
 
 
@@ -235,7 +234,9 @@ class RemoteElementView: UIView {
   var modeledConstraints: [RemoteElementViewConstraint] {
     return constraints().filter{$0 is RemoteElementViewConstraint} as [RemoteElementViewConstraint]
   }
-  var subelementViews: [RemoteElementView] { return subelementsView.subviews as? [RemoteElementView] ?? [] }
+  var subelementViews: OrderedSet<RemoteElementView> {
+    return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])
+  }
 
   /**
   addSubelementViews:
@@ -368,7 +369,7 @@ class RemoteElementView: UIView {
   */
   func translateSubelements(subelementViews: OrderedSet<RemoteElementView>, translation: CGPoint) {
 
-    model.constraintManager.translateSubelements(subelementViews.map{$0.model},
+    model.constraintManager.translateSubelements(subelementViews.array.map{$0.model},
                                      translation: translation,
                                          metrics: viewFrames)
     if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
@@ -411,7 +412,7 @@ class RemoteElementView: UIView {
               attribute: NSLayoutAttribute)
   {
     MSLogDebug("model constraints before alignment…\n\(modeledConstraintsDescription)")
-    model.constraintManager.alignSubelements(subelementViews.map{$0.model},
+    model.constraintManager.alignSubelements(subelementViews.array.map{$0.model},
                                   toSibling: siblingView.model,
                                   attribute: attribute,
                                     metrics: viewFrames)
@@ -434,7 +435,7 @@ class RemoteElementView: UIView {
                toSibling siblingView: RemoteElementView,
                attribute: NSLayoutAttribute)
   {
-    model.constraintManager.resizeSubelements(subelementViews.map{$0.model},
+    model.constraintManager.resizeSubelements(subelementViews.array.map{$0.model},
                                     toSibling: siblingView.model,
                                     attribute: attribute,
                                       metrics: viewFrames)

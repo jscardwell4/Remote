@@ -147,7 +147,7 @@ class BankCollectionCell: UICollectionViewCell {
   */
   func handlePan(gesture: PanGesture) {
 
-    let x = gesture.translationInView(self).x
+    let x = gesture.translationInView(view: self).x
     let duration = animationDurationForDistance(abs(x))
 
     switch gesture.state {
@@ -160,11 +160,12 @@ class BankCollectionCell: UICollectionViewCell {
           animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
           completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
 
-      case .Possible, .Cancelled, .Failed:
+      case .Cancelled, .Failed:
         UIView.animateWithDuration(duration,
           animations: {self.contentView.transform.tx = 0.0},
           completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
 
+      default: break
     }
 
   }
@@ -181,7 +182,38 @@ class BankCollectionCell: UICollectionViewCell {
   private func initializeSubviews() {
     contentView.addSubview(chevron)
     panGesture = {
-      let gesture = PanGesture(handler: {[unowned self] in self.handlePan(self.panGesture)})
+      var previousState: UIGestureRecognizerState = .Possible
+
+      let gesture = PanGesture(handler: {
+        [unowned self] gesture -> Void in
+
+        let pan = gesture as PanGesture
+
+        let x = pan.translationInView(view: self).x
+
+        switch pan.state {
+
+          case .Began, .Changed:
+            if x < 0 { self.contentView.transform.tx = x }
+
+          case .Ended:
+            if previousState == .Changed {
+              UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
+                animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
+                completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+            }
+
+          case .Cancelled, .Failed:
+            UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
+              animations: {self.contentView.transform.tx = 0.0},
+              completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+            
+          default: break
+
+        }
+
+        previousState = pan.state
+      })
       gesture.confineToView = true
       self.addGestureRecognizer(gesture)
       return gesture

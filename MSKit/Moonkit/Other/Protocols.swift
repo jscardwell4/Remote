@@ -26,3 +26,4 @@ public protocol IntegerDivisible {
 public protocol Summable {
   func +(lhs: Self, rhs: Self) -> Self
 }
+

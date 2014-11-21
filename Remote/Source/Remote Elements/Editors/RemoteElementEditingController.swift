@@ -19,12 +19,12 @@ import MoonKit
 extension UIGestureRecognizerState: Printable {
   public var description: String {
     switch self {
-      case .Began: return "Began"
-      case .Possible: return "Possible"
-      case .Changed: return "Changed"
-      case .Ended: return "Ended"
+      case .Began:     return "Began"
+      case .Possible:  return "Possible"
+      case .Changed:   return "Changed"
+      case .Ended:     return "Ended"
       case .Cancelled: return "Cancelled"
-      case .Failed: return "Failed"
+      case .Failed:    return "Failed"
     }
   }
 }
@@ -65,9 +65,7 @@ class RemoteElementEditingController: UIViewController {
   /// MARK: Geometry
   ////////////////////////////////////////////////////////////////////////////////
 
-  var appliedTranslation = CGPoint.zeroPoint
   var appliedScale: CGFloat = 1.0
-  var longPressPreviousLocation = CGPoint.zeroPoint
   var contentRect = CGRect.zeroRect
   var startingPanOffset: CGFloat = 0.0
   let allowableSourceViewYOffset = ClosedInterval<CGFloat>(-44, 44)
@@ -108,8 +106,8 @@ class RemoteElementEditingController: UIViewController {
   weak var longPressGesture: LongPressGesture!
   weak var pinchGesture: UIPinchGestureRecognizer!
   weak var oneTouchDoubleTapGesture: UITapGestureRecognizer!
-  weak var multiselectGesture: MultiselectGestureRecognizer!
-  weak var anchoredMultiselectGesture: MultiselectGestureRecognizer!
+  weak var selectGesture: TouchTrackingGesture!
+  weak var anchoredSelectGesture: TouchTrackingGesture!
   weak var twoTouchPanGesture: PanGesture!
   weak var toolbarLongPressGesture: LongPressGesture!
   // weak var oneTouchTapGesture: UITapGestureRecognizer?
@@ -153,22 +151,6 @@ class RemoteElementEditingController: UIViewController {
   ////////////////////////////////////////////////////////////////////////////////
 
   /**
-  subelementClass
-
-  :returns: RemoteElementView.Type
-  */
-//  class func subelementClass() -> RemoteElementView.Type { return RemoteElementView.self }
-
-  /**
-  isSubelementKind:
-
-  :param: obj AnyObject
-
-  :returns: Bool
-  */
-//  class func isSubelementKind(obj: AnyObject) -> Bool { return obj is RemoteElementView }
-
-  /**
   elementClass
 
   :returns: RemoteElementView.Type
@@ -181,7 +163,7 @@ class RemoteElementEditingController: UIViewController {
   - `updateToolbarDisplayed`
   - `updateGesturesEnabled`
   */
-  func updateState() { MSLogDebug(""); updateBarButtonItems(); updateToolbarDisplayed(); updateGesturesEnabled() }
+  func updateState() { updateBarButtonItems(); updateToolbarDisplayed(); updateGesturesEnabled() }
 
   /**
   clearCacheForViews:
@@ -251,6 +233,7 @@ class RemoteElementEditingController: UIViewController {
       self.remoteElement = self.context.existingObjectWithID(element.objectID, error: nil) as RemoteElement
     }
     modalPresentationStyle = .Custom
+    LogManager.setLogLevel(.Debug)
   }
 
   /** init */
@@ -765,24 +748,100 @@ extension RemoteElementEditingController {
     longPressGesture.enabled = focusView == nil
     pinchGesture.enabled = selectedViews.count > 0
     oneTouchDoubleTapGesture.enabled = !movingSelectedViews
-    multiselectGesture.enabled = !movingSelectedViews
-    anchoredMultiselectGesture.enabled = !movingSelectedViews
+    selectGesture.enabled = !movingSelectedViews
+    anchoredSelectGesture.enabled = !movingSelectedViews
     twoTouchPanGesture.enabled = sourceView.bounds.height >= (view.bounds.height - length(allowableSourceViewYOffset))
-
-    let enabledGestures = ", ".join((view.gestureRecognizers as [UIGestureRecognizer]).filter{$0.enabled && $0.nametag != nil}.map{$0.nametag})
-    let disabledGestures = ", ".join((view.gestureRecognizers as [UIGestureRecognizer]).filter{!$0.enabled && $0.nametag != nil}.map{$0.nametag})
-    MSLogDebug("enabled gestures: \(enabledGestures)\ndisabled gestures: \(disabledGestures)")
-
   }
 
   /** attachGestureRecognizers */
   func attachGestureRecognizers() {
 
-    longPressGesture = {
-      let gesture = LongPressGesture(handler: {[unowned self] in self.handleLongPress(self.longPressGesture)})
-      gesture.nametag = "longPressGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
+    // create the long press gesture recognizer
+    longPressGesture = { [unowned self] in
+      var previousLocation = CGPoint.nullPoint
+      var appliedTranslation = CGPoint.zeroPoint
+      var reverseTranslation = CGAffineTransform.identityTransform
+      let longPress = LongPressGesture(handler: {
+        [unowned self] gesture -> Void in
+
+        let pressGesture = gesture as LongPressGesture
+
+        switch pressGesture.state {
+          case .Began:
+            if let pressedView = self.touchedSubelementViewForGesture(pressGesture) {
+              if pressGesture.pressRecognized {
+                if self.selectedViews ∌ pressedView { self.selectView(pressedView) }
+                previousLocation = pressGesture.locationInView(nil)
+                appliedTranslation = CGPoint.zeroPoint
+                self.movingSelectedViews = true
+                MSLogDebug("press recognized: \n\tpreviousLocation: \(previousLocation)\n\tmoving? \(self.movingSelectedViews)")
+                self.willTranslateSelectedViews()
+              }
+            }
+
+          case .Changed:
+            if self.movingSelectedViews {
+              let currentLocation = pressGesture.locationInView(nil)
+              let translation = currentLocation - previousLocation
+              var didApplyTranslation = false
+              var transform = CGAffineTransform.identityTransform
+              if translation != CGPoint.zeroPoint && !translation.isNull {
+                transform = CGAffineTransform(translation: translation)
+                let fromUnion = reduce(self.selectedViews, CGRect.nullRect){$0 ∪ $1.frame}
+                let fromUnionInWindow = self.sourceView.convertRect(fromUnion, toView: nil)
+                let toUnion = fromUnion.rectByApplyingTransform(transform)
+                let toUnionInWindow = self.sourceView.convertRect(toUnion, toView: nil)
+                let shouldTranslate = self.shouldTranslateSelectionFrom(fromUnionInWindow, to: toUnionInWindow)
+                if shouldTranslate {
+                  let animation = {() -> Void in apply(self.selectedViews){$0.frame.transform(transform)} }
+                  let options: UIViewAnimationOptions = .BeginFromCurrentState
+                  UIView.animateWithDuration(0.1, delay: 0.0, options: options, animations: animation, completion: nil)
+                  didApplyTranslation = true
+                }
+
+                MSLogDebug("\n\t".join("press changed:",
+                                       "currentLocation: \(currentLocation)",
+                                       "translation: \(translation)",
+                                       "applied? \(didApplyTranslation)"))
+                if didApplyTranslation {
+                  appliedTranslation += translation
+                  reverseTranslation += transform.inverted
+                  previousLocation = currentLocation
+                }
+              }
+            }
+
+          case .Cancelled:
+            if self.movingSelectedViews {
+              self.movingSelectedViews = false
+              if !reverseTranslation.isIdentity {
+                  let animation = {() -> Void in apply(self.selectedViews){$0.frame.transform(reverseTranslation)} }
+                  UIView.animateWithDuration(0.1, delay: 0.0, options: nil, animations: animation, completion: nil)
+              }
+            }
+            fallthrough
+
+          case .Ended:
+            if self.movingSelectedViews {
+              self.movingSelectedViews = false
+              if appliedTranslation != CGPoint.zeroPoint {
+                self.sourceView.translateSubelements(self.selectedViews, translation: appliedTranslation)
+              }
+              self.didTranslateSelectedViews()
+            }
+            fallthrough
+
+          case .Failed:
+            previousLocation = CGPoint.nullPoint
+            appliedTranslation = CGPoint.zeroPoint
+            reverseTranslation = CGAffineTransform.identityTransform
+            assert(!self.movingSelectedViews)
+          default: break
+        }
+      })
+      longPress.nametag = "longPress"
+      self.view.addGestureRecognizer(longPress)
+      return longPress
     }()
 
     pinchGesture = {
@@ -800,45 +859,134 @@ extension RemoteElementEditingController {
       return gesture
     }()
 
-    multiselectGesture = {
-      let gesture = MultiselectGestureRecognizer(target: self, action: "handleSelection:")
+    selectGesture = {
+      var previousState: UIGestureRecognizerState = .Possible
+      let gesture = TouchTrackingGesture(handler: {
+        [unowned self] gesture -> Void in
+          let trackingGesture = gesture as TouchTrackingGesture
+          MSLogDebug("state: \(trackingGesture.state)")
+          switch trackingGesture.state {
+            case .Ended:
+              if previousState != .Ended {
+                let touchedSubelementViews = OrderedSet(trackingGesture.touchedSubviewsInView(self.sourceView, includeView: {
+                  self.sourceView.objectIsSubelementKind($0)
+                }).array as [RemoteElementView])
+                if touchedSubelementViews.count > 0 { self.selectViews(touchedSubelementViews) }
+                else { self.deselectAll() }
+              }
+            default: break
+          }
+          previousState = trackingGesture.state
+        })
       gesture.requireGestureRecognizerToFail(self.oneTouchDoubleTapGesture)
       gesture.requireGestureRecognizerToFail(self.longPressGesture)
-      gesture.nametag = "multiselectGesture"
+      gesture.nametag = "selectGesture"
       self.view.addGestureRecognizer(gesture)
       return gesture
     }()
 
-    anchoredMultiselectGesture = {
-      let gesture = MultiselectGestureRecognizer(target: self, action: "handleSelection:")
-      gesture.numberOfAnchorTouchesRequired = 1
+    anchoredSelectGesture = {
+      let gesture = TouchTrackingGesture(handler: {
+        [unowned self] gesture -> Void in
+          let trackingGesture = gesture as TouchTrackingGesture
+          switch trackingGesture.state {
+            case .Ended:
+              let touchedSubelementViews = OrderedSet(trackingGesture.touchedSubviewsInView(self.sourceView, includeView: {
+                self.sourceView.objectIsSubelementKind($0)
+              }).array as [RemoteElementView])
+              if touchedSubelementViews.count > 0 { self.deselectViews(touchedSubelementViews) }
+            default: break
+          }
+        })
+      gesture.numberOfAnchoringTouches = 1
       self.pinchGesture.requireGestureRecognizerToFail(gesture)
-      self.multiselectGesture.requireGestureRecognizerToFail(gesture)
+      self.selectGesture.requireGestureRecognizerToFail(gesture)
       gesture.requireGestureRecognizerToFail(self.longPressGesture)
-      gesture.nametag = "anchoredMultiselectGesture"
+      gesture.nametag = "anchoredSelectGesture"
       self.view.addGestureRecognizer(gesture)
       return gesture
     }()
 
-    twoTouchPanGesture = {
-      let gesture = PanGesture(handler: {[unowned self] in self.handlePan(self.twoTouchPanGesture)})
-      gesture.minimumNumberOfTouches = 2
-      gesture.maximumNumberOfTouches = 2
-      gesture.requireGestureRecognizerToFail(self.pinchGesture)
-      self.multiselectGesture.requireGestureRecognizerToFail(gesture)
-      gesture.enabled = false
-      gesture.nametag = "twoTouchPanGesture"
-      self.view.addGestureRecognizer(gesture)
-      return gesture
+    twoTouchPanGesture = { [unowned self] in
+
+      var startingPanOffset: CGFloat = 0.0
+
+      let panGesture = PanGesture(handler: {
+        [unowned self] gesture -> Void in
+
+        let pan = gesture as PanGesture
+        switch pan.state {
+          case .Began: startingPanOffset = self.sourceViewCenterYConstraint.constant
+          case .Changed:
+            let adjustedOffset = startingPanOffset + pan.translationInView(view: self.view).y
+            let isInBounds = self.allowableSourceViewYOffset.contains(adjustedOffset)
+            let newOffset = (isInBounds
+                             ? adjustedOffset
+                             : (adjustedOffset < self.allowableSourceViewYOffset.start
+                                ? self.allowableSourceViewYOffset.start
+                                : self.allowableSourceViewYOffset.end))
+            if self.sourceViewCenterYConstraint.constant != newOffset {
+              UIView.animateWithDuration(0.1,
+                                   delay: 0.0,
+                                 options: .BeginFromCurrentState,
+                              animations: { self.sourceViewCenterYConstraint.constant = newOffset; self.view.layoutIfNeeded() },
+                              completion: nil)
+            }
+          default: break
+        }
+      })
+      panGesture.minimumNumberOfTouches = 2
+      panGesture.maximumNumberOfTouches = 2
+      panGesture.requireGestureRecognizerToFail(self.pinchGesture)
+      self.selectGesture.requireGestureRecognizerToFail(panGesture)
+      panGesture.enabled = false
+      panGesture.nametag = "twoTouchPanGesture"
+      self.view.addGestureRecognizer(panGesture)
+      return panGesture
+      }()
+
+    // twoTouchPanGesture = {
+    //   let gesture = PanGesture(handler: {[unowned self] gesture in self.handlePan(gesture as PanGesture)})
+    //   gesture.minimumNumberOfTouches = 2
+    //   gesture.maximumNumberOfTouches = 2
+    //   gesture.requireGestureRecognizerToFail(self.pinchGesture)
+    //   self.selectGesture.requireGestureRecognizerToFail(gesture)
+    //   gesture.enabled = false
+    //   gesture.nametag = "twoTouchPanGesture"
+    //   self.view.addGestureRecognizer(gesture)
+    //   return gesture
+    // }();
+
+    // create long press gesture for undo button
+    toolbarLongPressGesture = { [unowned self] in
+
+      let longPress = LongPressGesture(handler: {
+        [unowned self] gesture -> Void in
+
+          let pressGesture = gesture as LongPressGesture
+          switch pressGesture.state {
+            case .Began:
+              if pressGesture.pressRecognized {
+                self.undoButton.button.setTitle(UIFont.fontAwesomeIconForName("repeat"), forState: .Normal)
+                self.undoButton.button.selected = true
+              }
+
+            case .Ended:
+              if pressGesture.pressRecognized { self.redo(nil) }
+              fallthrough
+
+            default:
+              self.undoButton.button.selected = false
+              self.undoButton.button.setTitle(UIFont.fontAwesomeIconForName("undo"), forState: .Normal)
+          }
+        })
+      longPress.confineToView = true
+      longPress.nametag = "toolbarLongPressGesture"
+      self.longPressGesture.requireGestureRecognizerToFail(longPress)
+      self.undoButton?.addGestureRecognizer(longPress)
+      return longPress
     }()
 
-    toolbarLongPressGesture = {
-      let gesture = LongPressGesture(handler: {[unowned self] in self.handleLongPress(self.toolbarLongPressGesture)})
-      self.longPressGesture.requireGestureRecognizerToFail(gesture)
-      gesture.nametag = "toolbarLongPressGesture"
-      self.undoButton?.addGestureRecognizer(gesture)
-      return gesture
-    }()
 
     createGestureManager()
   }
@@ -885,21 +1033,57 @@ extension RemoteElementEditingController {
           begin: notMoving,
           receiveTouch: noPopoversOrToolbars
         ),
-      multiselectGesture:
+      selectGesture:
         GestureManager.ResponseCollection(
           begin: notMoving,
           receiveTouch: noPopoversOrToolbars,
-          recognizeSimultaneously: {[unowned self] gesture in gesture === self.anchoredMultiselectGesture}
+          recognizeSimultaneously: {[unowned self] gesture in gesture === self.anchoredSelectGesture}
         ),
-      anchoredMultiselectGesture:
+      anchoredSelectGesture:
         GestureManager.ResponseCollection(
           begin: notMoving,
           receiveTouch: noPopoversOrToolbars,
-          recognizeSimultaneously: {[unowned self] gesture in gesture === self.multiselectGesture}
+          recognizeSimultaneously: {[unowned self] gesture in gesture === self.selectGesture}
         )
       ])
   }
 
+  /**
+  touchedSubelementViewForGesture:
+
+  :param: gesture UIGestureRecognizer
+
+  :returns: RemoteElementView?
+  */
+  func touchedSubelementViewForGesture(gesture: UIGestureRecognizer) -> RemoteElementView? {
+    var subelementView: RemoteElementView?
+    if let touchedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView {
+      if sourceView.objectIsSubelementKind(touchedView) { subelementView = touchedView }
+    }
+    return subelementView
+  }
+
+  /**
+  subelementViewsForLocation:
+
+  :param: location CGPoint
+
+  :returns: OrderedSet<RemoteElementView>
+  */
+  func subelementViewsForLocation(location: CGPoint) -> OrderedSet<RemoteElementView> {
+    return sourceView.subelementViews.filter{$0.pointInside(location, withEvent: nil)}
+  }
+
+  /**
+  subelementViewsForLocations:
+
+  :param: locations OrderedSet<CGPoint>
+
+  :returns: OrderedSet<RemoteElementView>
+  */
+  func subelementViewsForLocations(locations: OrderedSet<CGPoint>) -> OrderedSet<OrderedSet<RemoteElementView>> {
+    return locations.map{self.subelementViewsForLocation($0)}
+  }
 
   /**
   handleTap:
@@ -914,53 +1098,6 @@ extension RemoteElementEditingController {
           if selectedViews ∌ tappedView { selectView(tappedView)}
           focusView = (focusView === tappedView ? nil : tappedView)
         }
-      }
-    }
-  }
-
-  /**
-  handleLongPress:
-
-  :param: gesture LongPressGesture
-  */
-  func handleLongPress(gesture: LongPressGesture) {
-    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
-    if gesture === longPressGesture {
-      switch gesture.state {
-        case .Began:
-          if let pressedView = view.hitTest(gesture.locationInView(view), withEvent: nil) as? RemoteElementView {
-            if sourceView.objectIsSubelementKind(pressedView) {
-              if selectedViews ∌ pressedView { selectView(pressedView) }
-              movingSelectedViews = true
-              longPressPreviousLocation = gesture.locationInView(nil)
-              willTranslateSelectedViews()
-            }
-          }
-        case .Changed:
-          let currentLocation = gesture.locationInView(nil)
-          let translation = currentLocation - longPressPreviousLocation
-          longPressPreviousLocation = currentLocation
-          translateSelectedViews(translation)
-        case .Cancelled, .Failed, .Ended:
-          didTranslateSelectedViews()
-        default: break
-      }
-    } else if gesture === toolbarLongPressGesture {
-      switch gesture.state {
-        case .Began:
-          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("repeat"), forState: .Normal)
-          undoButton.button.selected = true
-        case .Changed:
-          if !undoButton.button.pointInside(gesture.locationInView(undoButton.button), withEvent: nil) {
-            undoButton.button.selected = false
-            gesture.enabled = false
-          }
-        case .Ended:
-          redo(nil)
-        default:
-          gesture.enabled = true
-          undoButton.button.selected = false
-          undoButton.button.setTitle(UIFont.fontAwesomeIconForName("undo"), forState: .Normal)
       }
     }
   }
@@ -988,14 +1125,13 @@ extension RemoteElementEditingController {
   :param: gesture UIPanGestureRecognizer
   */
   func handlePan(gesture: PanGesture) {
-    //TODO: Get pan working with non-empty selection
     MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
     if gesture === twoTouchPanGesture {
       switch gesture.state {
         case .Began:
           startingPanOffset = sourceViewCenterYConstraint.constant
         case .Changed:
-          let translation = gesture.translationInView(view)
+          let translation = gesture.translationInView(view: view)
           let adjustedOffset = startingPanOffset + translation.y
           let isInBounds = allowableSourceViewYOffset.contains(adjustedOffset)
           let newOffset = (isInBounds
@@ -1020,30 +1156,30 @@ extension RemoteElementEditingController {
 
   :param: gesture MultiselectGestureRecognizer
   */
-  func handleSelection(gesture: MultiselectGestureRecognizer) {
-    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
-   if gesture.state == .Ended {
-    let touchLocations = gesture.touchLocationsInView(sourceView)
-    let touchedSubelementViews = gesture.touchedSubviewsInView(sourceView){self.sourceView.objectIsSubelementKind($0)}
-    if touchedSubelementViews.count > 0 {
-
-      let stackedViews = OrderedSet((sourceView.subelementViews as [RemoteElementView]).filter {
-        v in contains(touchLocations, { v.pointInside(v.convertPoint($0, fromView: self.sourceView), withEvent: nil)})
-        })
-
-      if stackedViews.count > touchedSubelementViews.count { displayStackedViewDialogForViews(stackedViews) }
-
-      if gesture === multiselectGesture { selectViews(OrderedSet(touchedSubelementViews.array as [RemoteElementView])) }
-      else if gesture === anchoredMultiselectGesture { deselectViews(OrderedSet(touchedSubelementViews.array as [RemoteElementView])) }
-
-
-     }
-
-     else if selectedViews.count > 0 { deselectAll() }
-
-   }
-
-  }
+//  func handleSelection(gesture: MultiselectGestureRecognizer) {
+//    MSLogDebug("gesture: \(gesture.nametag), state: \(gesture.state)")
+//   if gesture.state == .Ended {
+//    let touchedSubelementViews = gesture.touchedSubviewsInView(sourceView){self.sourceView.objectIsSubelementKind($0)}
+//    if touchedSubelementViews.count > 0 {
+//      let touchLocations = gesture.touchLocationsInView(sourceView)
+//
+//      let stackedViews = OrderedSet((sourceView.subelementViews as [RemoteElementView]).filter {
+//        v in contains(touchLocations, { v.pointInside(v.convertPoint($0, fromView: self.sourceView), withEvent: nil)})
+//        })
+//
+//      if stackedViews.count > touchedSubelementViews.count { displayStackedViewDialogForViews(stackedViews) }
+//
+//      if gesture === selectGesture { selectViews(OrderedSet(touchedSubelementViews.array as [RemoteElementView])) }
+//      else if gesture === anchoredSelectGesture { deselectViews(OrderedSet(touchedSubelementViews.array as [RemoteElementView])) }
+//
+//
+//     }
+//
+//     else if selectedViews.count > 0 { deselectAll() }
+//
+//   }
+//
+//  }
 
 }
 
@@ -1061,54 +1197,11 @@ extension RemoteElementEditingController {
   */
   func shouldTranslateSelectionFrom(fromUnion: CGRect, to toUnion: CGRect) -> Bool { return contentRect.contains(toUnion) }
 
-  /**
-  Captures the original union frame for the selected views before any translation and acts as an override point for subclasses
-  to perform additional work pre-movement.
-  */
-  func willTranslateSelectedViews() { appliedTranslation = CGPoint.zeroPoint }
+  /** willTranslateSelectedViews */
+  func willTranslateSelectedViews() { }
 
-  /**
-  Updates the `frame` property of the selected views to affect the specified translation.
-
-  :param: translation `CGPoint` value representing the x and y axis translations to be performed on the selected views
-  */
-  func translateSelectedViews(translation: CGPoint) {
-    if translation == CGPoint.zeroPoint { return }
-    let transform = CGAffineTransform(tx: translation.x, ty: translation.y)
-    let fromUnion = reduce(selectedViews, CGRect.nullRect){$0 ∪ $1.frame}
-    let fromUnionInWindow = sourceView.convertRect(fromUnion, toView: nil)
-    let toUnion = fromUnion.rectByApplyingTransform(transform)
-    let toUnionInWindow = sourceView.convertRect(toUnion, toView: nil)
-    let shouldTranslate = shouldTranslateSelectionFrom(fromUnionInWindow, to: toUnionInWindow)
-
-    MSLogDebug("\n".join("translation = \(translation)",
-                          "from union = \(fromUnion)",
-                          "from union in window = \(fromUnionInWindow)",
-                          "to union = \(toUnion)",
-                          "to union in window = \(toUnionInWindow)",
-                          "content rect = \(contentRect)",
-                          "should translate? \(shouldTranslate)"))
-
-    if shouldTranslate {
-      UIView.animateWithDuration(0.1,
-        delay: 0.0,
-        options: .BeginFromCurrentState,
-        animations: { for view in self.selectedViews { view.frame.transform(transform) } },
-        completion: nil)
-
-      appliedTranslation += translation
-    }
-  }
-
-  /**
-  Sends `translateSublements:translation:` to the `sourceView` to perform model-level translation and acts as an override point
-  for subclasses to perform additional work post-movement.
-   */
-  func didTranslateSelectedViews() {
-    MSLogDebug("")
-    if appliedTranslation != CGPoint.zeroPoint { sourceView.translateSubelements(selectedViews, translation: appliedTranslation) }
-    movingSelectedViews = false
-  }
+  /** didTranslateSelectedViews */
+  func didTranslateSelectedViews() {}
 
 }
 
@@ -1216,7 +1309,7 @@ extension RemoteElementEditingController {
     selectedViews.removeAll()
     focusView = nil
     context.performBlockAndWait {
-      self.context.deleteObjects(NSSet(array: elementsToDelete))
+      self.context.deleteObjects(NSSet(array: elementsToDelete.array))
       self.context.processPendingChanges()
     }
     sourceView.setNeedsUpdateConstraints()

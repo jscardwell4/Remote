@@ -73,7 +73,7 @@ class ButtonView: RemoteElementView {
 	*/
 	override func removeSubelementViews(views: NSSet) {}
 
-	override var subelementViews: [RemoteElementView] { return [] }
+	override var subelementViews: OrderedSet<RemoteElementView> { return [] }
 
 	/**
 	executeActionWithOptions:

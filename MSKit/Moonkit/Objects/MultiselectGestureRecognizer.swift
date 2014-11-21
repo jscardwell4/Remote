@@ -56,7 +56,7 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
 
   :returns: [CGPoint]
   */
-  public func touchLocationsInView(view: UIView) -> [CGPoint] { return touchLocations.map{view.convertPoint($0, fromView: nil)} }
+  public func touchLocationsInView(view: UIView) -> [CGPoint] { return touchLocations.array.map{view.convertPoint($0, fromView: nil)} }
 
   /** reset */
   public override func reset() {

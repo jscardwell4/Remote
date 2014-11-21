@@ -179,7 +179,7 @@ class ButtonGroup: RemoteElement {
     }
     commandSet = commandSet?.faultedObject()
     if commandSet != nil {
-      for button in childElements as [Button] {
+      for button in childElements.array as [Button] {
          if button.role == RemoteElement.Role.Tuck { continue }
          button.command = commandSet![button.role.rawValue]
          button.enabled = button.command != nil

@@ -12,9 +12,8 @@ import UIKit.UIGestureRecognizerSubclass
 
 public class BlockActionGesture: UIGestureRecognizer {
 
-  var handler: (() -> Void)?
+  public var handler: ((BlockActionGesture) -> Void)?
   private var handlerTimestamp: dispatch_time_t = 0
-  private var dispatchDelta: Double { return secondsBetween(dispatch_time(DISPATCH_TIME_NOW, 0), and: handlerTimestamp) }
 
   /**
   secondsBetween:and:
@@ -26,6 +25,17 @@ public class BlockActionGesture: UIGestureRecognizer {
   */
   internal func secondsBetween(stamp1: dispatch_time_t, and stamp2: dispatch_time_t) -> Double {
     return (Double(stamp1) - Double(stamp2)) * Double(NSEC_PER_SEC)
+  }
+
+  /**
+  secondsSince:
+
+  :param: stamp dispatch_time_t
+
+  :returns: Double
+  */
+  internal func secondsSince(stamp: dispatch_time_t) -> Double {
+    return secondsBetween(dispatch_time(DISPATCH_TIME_NOW, 0), and: stamp)
   }
 
   /**
@@ -56,13 +66,16 @@ public class BlockActionGesture: UIGestureRecognizer {
 
   :param: handler (LongPressGesture) -> Void
   */
-  public init(handler: () -> Void) {
+  public init(handler: (BlockActionGesture) -> Void) {
     super.init()
     addTarget(self, action: "dispatchHandler")
     self.handler = handler
   }
 
   public override var state: UIGestureRecognizerState { didSet { dispatchHandler() } }
+
+  /** init */
+  public override init() { super.init(); addTarget(self, action: "dispatchHandler") }
 
   /**
   initWithTarget:action:
@@ -77,8 +90,10 @@ public class BlockActionGesture: UIGestureRecognizer {
 
   /** dispatchHandler */
   func dispatchHandler() {
-    let delta = dispatchDelta
-    if delta > 0.1 { handlerTimestamp = dispatch_time(DISPATCH_TIME_NOW, 0); handler?() }
+    if secondsSince(handlerTimestamp) > 0.1 {
+      handlerTimestamp = dispatch_time(DISPATCH_TIME_NOW, 0)
+      handler?(self)
+    }
   }
 
 }

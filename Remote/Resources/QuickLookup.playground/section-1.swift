@@ -64,3 +64,12 @@ BaseType.init(JSONValue: "button")?.JSONKey ?? "wtf"
 
 let huh = split("what the fuck"){$0 == " "}
 huh
+
+let bits: UInt = ~4350
+var bitsString = ""
+for i in 0 ..< (sizeof(bits.dynamicType) * 8) {
+  let bit = (bits >> numericCast(i)) & numericCast(1)
+  bitsString += "\(bit)"
+}
+bitsString
+

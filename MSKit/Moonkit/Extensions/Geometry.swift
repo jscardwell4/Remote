@@ -23,6 +23,8 @@ extension CGPoint {
   public func pointByApplyingTransform(transform: CGAffineTransform) -> CGPoint {
     return CGPointApplyAffineTransform(self, transform)
   }
+  public var max: CGFloat { return y > x ? y : x }
+  public var min: CGFloat { return y < x ? y : x }
   public init(_ vector: CGVector) { x = vector.dx; y = vector.dy }
 }
 
@@ -142,21 +144,23 @@ extension UIEdgeInsets {
 
 extension CGAffineTransform {
   public init(tx: CGFloat, ty: CGFloat) { self = CGAffineTransformMakeTranslation(tx, ty) }
+  public init(translation: CGPoint) { self = CGAffineTransform(tx: translation.x, ty: translation.y) }
   public init(sx: CGFloat, sy: CGFloat) { self = CGAffineTransformMakeScale(sx, sy) }
   public init(angle: CGFloat) { self = CGAffineTransformMakeRotation(angle) }
-  public func isIdentity() -> Bool { return CGAffineTransformIsIdentity(self) }
+  public var isIdentity: Bool { return CGAffineTransformIsIdentity(self) }
   public mutating func translate(tx: CGFloat, ty: CGFloat) { self = translated(tx, ty) }
   public func translated(tx: CGFloat, _ ty: CGFloat) -> CGAffineTransform { return CGAffineTransformTranslate(self, tx, ty) }
   public mutating func scale(sx: CGFloat, sy: CGFloat) { self = scaled(sx, sy) }
   public func scaled(sx: CGFloat, _ sy: CGFloat) -> CGAffineTransform { return CGAffineTransformScale(self, sx, sy) }
   public mutating func rotate(angle: CGFloat) { self = rotated(angle) }
   public func rotated(angle: CGFloat) -> CGAffineTransform { return CGAffineTransformRotate(self, angle) }
-  public mutating func invert() { self = inverted() }
-  public func inverted() -> CGAffineTransform { return CGAffineTransformInvert(self) }
+  public mutating func invert() { self = inverted }
+  public var inverted: CGAffineTransform { return CGAffineTransformInvert(self) }
   public static var identityTransform: CGAffineTransform { return CGAffineTransformIdentity }
 }
 
 public func +(lhs: CGAffineTransform, rhs: CGAffineTransform) -> CGAffineTransform { return CGAffineTransformConcat(lhs, rhs) }
+public func +=(inout lhs: CGAffineTransform, rhs: CGAffineTransform) { lhs = lhs + rhs }
 public func ==(lhs: CGAffineTransform, rhs: CGAffineTransform) -> Bool { return CGAffineTransformEqualToTransform(lhs, rhs) }
 
 extension CGRect {

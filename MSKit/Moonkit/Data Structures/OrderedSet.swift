@@ -77,7 +77,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   public var first: T?       { return storage.first    }
   public var last: T?        { return storage.last     }
   public var array: [T]      { return storage          }
-
+  public var bridgedValue: NSOrderedSet? { return NSOrderedSet(array: storage._bridgeToObjectiveC()) }
   public var NSArrayValue: NSArray? {
     var elements: [NSObject] = []
     for element in storage {
@@ -179,7 +179,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: [T]
   */
-  public func sorted(isOrderedBefore: (T, T) -> Bool) -> [T] { return storage.sorted(isOrderedBefore) }
+  public func sorted(isOrderedBefore: (T, T) -> Bool) -> OrderedSet<T> { return OrderedSet(storage.sorted(isOrderedBefore)) }
 
   /**
   map:
@@ -188,14 +188,14 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: [U]
   */
-  public func map<U>(transform: (T) -> U) -> [U] { return storage.map(transform) }
+  public func map<U: Equatable>(transform: (T) -> U) -> OrderedSet<U> { return OrderedSet<U>(storage.map(transform)) }
 
   /**
   reverse
 
   :returns: [T]
   */
-  public func reverse() -> [T] { return storage.reverse() }
+  public func reverse() -> OrderedSet<T> { return OrderedSet(storage.reverse()) }
 
   /**
   filter:
@@ -204,7 +204,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: [T]
   */
-  public func filter(includeElement: (T) -> Bool) -> OrderedSet<T>{ return OrderedSet<T>(storage.filter(includeElement)) }
+  public func filter(includeElement: (T) -> Bool) -> OrderedSet<T> { return OrderedSet<T>(storage.filter(includeElement)) }
 
   /**
   replaceRange:with:
@@ -255,6 +255,18 @@ extension OrderedSet : Printable, DebugPrintable {
   public var description: String { return storage.description }
   public var debugDescription: String { return storage.debugDescription }
 }
+
+extension OrderedSet : Equatable {}
+
+/**
+subscript:rhs:
+
+:param: lhs OrderedSet<T>
+:param: rhs OrderedSet<T>
+
+:returns: Bool
+*/
+public func ==<T>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool { return lhs.storage == rhs.storage }
 
 /**
 subscript:rhs:

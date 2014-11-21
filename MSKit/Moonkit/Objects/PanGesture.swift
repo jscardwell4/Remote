@@ -11,7 +11,7 @@ import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
 
-public class PanGesture: BlockActionGesture {
+public class PanGesture: ConfiningBlockActionGesture {
 
   /// MARK: - Mimicking UIPanGestureRecognizer
   ////////////////////////////////////////////////////////////////////////////////
@@ -41,21 +41,20 @@ public class PanGesture: BlockActionGesture {
   was reported. Apply the translation value to the state of the view when the gesture is first recognized—do not concatenate the
   value each time the handler is called.
 
-  :param: view UIView The view in whose coordinate system the translation of the pan gesture should be computed. If you want to
+  :param: view UIView? The view in whose coordinate system the translation of the pan gesture should be computed. If you want to
   adjust a view's location to keep it under the user's finger, request the translation in that view's superview's coordinate
   system.
 
   :returns: CGPoint A point identifying the new location of a view in the coordinate system of its designated superview.
   */
-  public func translationInView(view: UIView) -> CGPoint {
+  public func translationInView(view: UIView? = nil) -> CGPoint {
     var s = initialPoint
     var c = centroidForTouches(panningTouches.array)
-    if view != self.view {
-      s = view.convertPoint(s, fromView: self.view)
-      c = view.convertPoint(c, fromView: self.view)
+    if view != self.view && view != nil {
+      s = view!.convertPoint(s, fromView: self.view)
+      c = view!.convertPoint(c, fromView: self.view)
     }
     let translation = c - s
-    MSLogDebug("translation: \(translation)")
     return translation
   }
 
@@ -82,6 +81,10 @@ public class PanGesture: BlockActionGesture {
   public func velocityInView(view: UIView) -> CGPoint { return CGPoint(finalVelocity.isNull ? currentVelocity : finalVelocity) }
 
   /// MARK: -
+
+  private(set) var panRecognized: Bool = false
+
+  public var requiredMovement: CGFloat = 10.0
 
   private var panningTouches: OrderedSet<UITouch> = [] {
     didSet {
@@ -116,7 +119,7 @@ public class PanGesture: BlockActionGesture {
     if !previousVelocity.isNull {
       let deltaTime = time - previousTime
       if deltaTime != 0.0 {
-        finalVelocity = ((currentVelocity - previousVelocity) / deltaTime) * time //(currentTimestamp - initialTimestamp)
+        finalVelocity = ((currentVelocity - previousVelocity) / deltaTime) * time
       }
     }
     MSLogDebug("\n".join("currentTimestamp: \(currentTimestamp)",
@@ -124,21 +127,6 @@ public class PanGesture: BlockActionGesture {
                          "time: \(time)",
                          "currentVelocity: \(currentVelocity)",
                          "finalVelocity: \(finalVelocity)"))
-  }
-
-  public var confineToView: Bool = false
-
-  /**
-  validateTouchLocations:withEvent:
-
-  :param: touches [UITouch]
-  :param: event UIEvent
-
-  :returns: Bool
-  */
-  private func validateTouchLocations(touches: [UITouch], withEvent event: UIEvent) -> Bool {
-    return !confineToView
-           || (touches.filter{self.view!.pointInside($0.locationInView(self.view!), withEvent: event)}).count == touches.count
   }
 
   /// MARK: - UIGestureRecognizer
@@ -153,17 +141,7 @@ public class PanGesture: BlockActionGesture {
     currentVelocity = CGVector.nullVector
     finalVelocity = CGVector.nullVector
     time = 0.0
-  }
-
-  /**
-  canPreventGestureRecognizer:
-
-  :param: preventedGestureRecognizer UIGestureRecognizer!
-
-  :returns: Bool
-  */
-  public override func canPreventGestureRecognizer(preventedGestureRecognizer: UIGestureRecognizer!) -> Bool {
-    return !(confineToView && preventedGestureRecognizer is UIPanGestureRecognizer)
+    panRecognized = false
   }
 
   /**
@@ -178,12 +156,11 @@ public class PanGesture: BlockActionGesture {
       if contains(minimumNumberOfTouches ... maximumNumberOfTouches, beginningTouches.count) {
         if validateTouchLocations(beginningTouches, withEvent: event) {
           panningTouches = OrderedSet(beginningTouches)
-          state = .Began
         }
       }
     }
 
-    if state != .Began { state = .Failed }
+    if panningTouches.count == 0 { state = .Failed }
   }
 
   /**
@@ -195,8 +172,13 @@ public class PanGesture: BlockActionGesture {
   public override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
     if validateTouchLocations(touches.allObjects as [UITouch], withEvent: event) {
       updateVelocity()
-      state = .Changed
-    } else { state = .Failed }
+      if panRecognized {
+        state = .Changed
+      } else if translationInView().absolute.max >= requiredMovement {
+        panRecognized = true
+        state = .Began
+      }
+    }
   }
 
   /**
@@ -206,8 +188,9 @@ public class PanGesture: BlockActionGesture {
   :param: event UIEvent
   */
   public override func touchesCancelled(touches: NSSet, withEvent event: UIEvent) {
-    if panningTouches ⊃ (touches.allObjects as [UITouch]) { state = .Cancelled }
-    else { assertionFailure("received touches should be members of panningTouches set") }
+    if panningTouches ⊃ (touches.allObjects as [UITouch]) {
+      state = .Cancelled
+    }
   }
 
   /**
@@ -217,7 +200,13 @@ public class PanGesture: BlockActionGesture {
   :param: event UIEvent
   */
   public override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    if panningTouches ⊃ (touches.allObjects as [UITouch]) { updateVelocity(); state = .Ended }
-    else { assertionFailure("received touches should be members of panningTouches set") }
+    let endedTouches = touches.allObjects as [UITouch]
+    if panningTouches ⊃ endedTouches {
+      if !(panRecognized && validateTouchLocations(endedTouches, withEvent: event)) { state = .Failed }
+      else {
+        updateVelocity()
+        state = .Ended
+      }
+    }
   }
 }

@@ -11,7 +11,7 @@ import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
 
-public class LongPressGesture: BlockActionGesture {
+public class LongPressGesture: ConfiningBlockActionGesture {
 
   /// MARK: - Mimicking UILongPressGestureRecognizer
   ////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public class LongPressGesture: BlockActionGesture {
   public override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
     if pressingTouches.count == 0 {
       let beginningTouches = touches.allObjects as [UITouch]
-      if beginningTouches.count == numberOfTouchesRequired {
+      if validateTouchLocations(beginningTouches, withEvent: event) && beginningTouches.count == numberOfTouchesRequired {
         if (beginningTouches.filter{$0.tapCount >= self.numberOfTapsRequired}).count == beginningTouches.count {
           pressingTouches = OrderedSet(beginningTouches)
           pressTimestamp = pressingTouches.reduce(0.0, combine: {$0 + $1.timestamp}) / Double(pressingTouches.count)
@@ -89,16 +89,17 @@ public class LongPressGesture: BlockActionGesture {
   :param: event UIEvent
   */
   public override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-    if pressingTouches ⊃ (touches.allObjects as [UITouch]) {
-      if !pressRecognized {
+    let movedTouches = (touches.allObjects as [UITouch])
+    if pressingTouches ⊃ movedTouches {
+      if !validateTouchLocations(movedTouches, withEvent: event) { state = pressRecognized ? .Cancelled : .Failed }
+      else if !pressRecognized {
         assert(centroid != CGPoint.nullPoint, "why haven't we calculated a centroid for the beginning state?")
         let currentCentroid = centroidForTouches(pressingTouches.array)
         let delta = (currentCentroid - centroid).absolute
         let movement = max(delta.x, delta.y)
         if movement > allowableMovement { state = .Failed }
         else { state = .Changed }
-      }
-      else { state = .Changed }
+      } else { state = .Changed }
     } else { assertionFailure("received touches should be members of pressingTouches set") }
   }
 
@@ -121,8 +122,9 @@ public class LongPressGesture: BlockActionGesture {
   :param: event UIEvent
   */
   public override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    if pressingTouches ⊃ (touches.allObjects as [UITouch]) {
-      state = pressRecognized ? .Ended : .Failed
+    let endedTouches = (touches.allObjects as [UITouch])
+    if pressingTouches ⊃ endedTouches {
+      state = validateTouchLocations(endedTouches, withEvent: event) && pressRecognized ? .Ended : .Failed
     } else { assertionFailure("received touches should be members of pressingTouches set") }
   }
 
