@@ -289,6 +289,14 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 }
 
++ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate {
+  return [self findAllMatchingPredicate:predicate].firstObject;
+}
+
++ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
+  return [self findAllMatchingPredicate:predicate context:moc].firstObject;
+}
+
 /// findAllMatchingPredicate:
 /// @param predicate
 /// @return NSArray *

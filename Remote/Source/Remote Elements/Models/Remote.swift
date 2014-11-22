@@ -71,25 +71,9 @@ class Remote: RemoteElement {
       if let panels = data["panels"] as? [String:String] {
         for (key, uuid) in panels {
           if let buttonGroup = memberOfCollectionWithUUID(subelements, uuid) as? ButtonGroup {
-            let n = countElements(key)
-            if n > 4 {
-              let location = key[0 ..< (n - 1)]
-              let trigger = key[(n - 1) ..< n]
-              var assignment = ButtonGroup.PanelAssignment.Unassigned
-              switch location {
-                case "top":    assignment.location = .Top
-                case "bottom": assignment.location = .Bottom
-                case "left":   assignment.location = .Left
-                case "right":  assignment.location = .Right
-                default: break
-              }
-              switch trigger {
-                case "1": assignment.trigger = .OneFinger
-                case "2": assignment.trigger = .TwoFinger
-                case "3": assignment.trigger = .ThreeFinger
-                default: break
-              }
-              if assignment != .Unassigned { setButtonGroup(buttonGroup, forPanelAssignment: assignment) }
+            let assignment = ButtonGroup.PanelAssignment(JSONValue: key)
+            if assignment != ButtonGroup.PanelAssignment.Unassigned {
+              setButtonGroup(buttonGroup, forPanelAssignment: assignment)
             }
           }
         }
@@ -112,7 +96,7 @@ class Remote: RemoteElement {
     for (number, uuid) in panelAssignments {
       let assignment = ButtonGroup.PanelAssignment(rawValue: number.integerValue)
       if let commentedUUID = buttonGroupForPanelAssignment(assignment)?.commentedUUID {
-        panels[assignment.JSONKey] = commentedUUID
+        panels[assignment.JSONValue] = commentedUUID
       }
     }
 

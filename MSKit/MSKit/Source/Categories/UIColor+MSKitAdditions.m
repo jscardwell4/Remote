@@ -333,6 +333,9 @@ NSString *NSStringFromUIColor(UIColor * color) {
                          alpha:1.0f];
 }
 
++ (UIColor *)colorWithJSONValue:(NSString *)string {
+  return [self colorWithString:string];
+}
 + (UIColor *)colorWithString:(NSString *)string {
   UIColor * color = [UIColor colorWithWhite:0.0 alpha:0.0];
 

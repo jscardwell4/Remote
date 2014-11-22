@@ -19,6 +19,10 @@ static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
+@interface NSObject ()
+@property (nonatomic, readonly) id         JSONValue;
+@end
+
 @implementation NSDictionary (MSKitAdditions)
 
 /// isEmpty
@@ -62,7 +66,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
           MSLogDebug(@"object of type %@ returned invalid JSON object",
                      ClassTagStringForInstance(obj));
       } else if ([obj respondsToSelector:@selector(JSONValue)])   {
-        id jsonValue = [obj JSONValue];
+        id jsonValue = [obj valueForKey:@"JSONValue"];
 
         if ([MSJSONSerialization isValidJSONValue:jsonValue])
           dictionary[keyString] = jsonValue;

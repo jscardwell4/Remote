@@ -192,10 +192,23 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                               info:nil];
 
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"Button"] notFoundMarker:NullObject]
-                         attribute:@"Title"
+                         attribute:@"title"
                          className:@"NSAttributedString"
                       defaultValue:nil
                               info:nil];
+
+  // settings attribute on Preset
+  [self modifyAttributesForEntity:entities[@"Preset"]
+                         attributes:@[@"settings"]
+                         className:@"NSDictionary"
+                      defaultValue:@{}
+                              info:nil];
+
+  [self modifyAttributesForEntity:entities[@"Preset"]
+                       attributes:@[@"subelementSettings"]
+                        className:@"NSDictionary"
+                     defaultValue:@{}
+                             info:nil];
 
   // index attribute on command containers
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"CommandContainer", @"CommandSet", @"CommandSetCollection"]
@@ -286,7 +299,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
         [d formattedDescriptionWithOptions:0
                                levelIndent:2]];
      }
-     
+
      [modelDescription appendString:@"}\n\n"];
    }];
 

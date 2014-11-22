@@ -53,7 +53,7 @@ class ConstraintManager: NSObject {
   init(element: RemoteElement) { super.init(); remoteElement = element; refreshConfig() }
 
   /**
-  Creates and adds new `REConstraint` objects for the managed element.
+  Creates and adds new `Constraint` objects for the managed element.
 
   :param: format String Extended visual format string from which the constraints should be parsed.
   */

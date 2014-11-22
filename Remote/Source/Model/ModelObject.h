@@ -92,6 +92,8 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject);
 + (NSArray *)findAll;
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate;
++ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
++ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate;
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc;
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending;
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value context:(NSManagedObjectContext *)moc;

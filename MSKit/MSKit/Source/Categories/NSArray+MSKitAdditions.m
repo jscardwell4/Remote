@@ -147,7 +147,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
           MSLogDebug(@"object of type %@ returned invalid JSON object",
                      ClassTagStringForInstance(obj));
       } else if ([obj respondsToSelector:@selector(JSONValue)]) {
-        id jsonValue = [obj JSONValue];
+        id jsonValue = [obj valueForKey:@"JSONValue"];
 
         if ([MSJSONSerialization isValidJSONValue:jsonValue])
           array[idx] = jsonValue;

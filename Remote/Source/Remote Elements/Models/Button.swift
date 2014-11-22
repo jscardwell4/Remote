@@ -456,6 +456,52 @@ class Button: RemoteElement {
 
 }
 
+/// MARK: - Presets
+////////////////////////////////////////////////////////////////////////////////
+// extension Button {
+
+//   protocol ButtonPreset: Preset {
+//     var titles:            ControlStateTitleSet? { get set }
+//     var icons:             ControlStateImageSet? { get set }
+//     var backgroundColors:  ControlStateColorSet? { get set }
+//     var images:            ControlStateImageSet? { get set }
+//     var titleEdgeInsets:   UIEdgeInsets?         { get set }
+//     var imageEdgeInsets:   UIEdgeInsets?         { get set }
+//     var contentEdgeInsets: UIEdgeInsets?         { get set }
+//   }
+
+//   enum PresetType {
+//     case None
+//     case ConnectionStatus, BatteryStatus                                         // Toolbar
+//     case Top, Bottom                                                             // Rocker
+//     case Tuck, SelectionPanel                                                    // Panel
+//     case Up, Down, Left, Right, Center                                           // DPad
+//     case One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Zero, Aux1, Aux2  // Numberpad
+//     case Play, Stop, Pause, Skip, Replay, FF, Rewind, Record                     // Transport
+
+
+//   }
+
+//   /**
+//   initWithPresetType:context:
+
+//   :param: presetType PresetType
+//   :param: context NSManagedObjectContext
+//   */
+//   convenience init(presetType: PresetType, context: NSManagedObjectContext) {
+//     self.init(context: context)
+//     switch presetType {
+//       case .ConnectionStatus, .BatteryStatus:
+//       case .Top, .Bottom:
+//       case .Up, .Down, .Left, .Right, .Center:
+//       case .One, .Two, .Three, .Four, .Five, .Six, .Seven, .Eight, .Nine, .Zero, .Aux1, .Aux2:
+//       case .Play, .Stop, .Pause, .Skip, .Replay, .FF, .Rewind, .Record:
+//       default: break
+//     }
+//   }
+
+// }
+
 extension Button.State: Equatable {}
 func ==(lhs: Button.State, rhs: Button.State) -> Bool { return lhs.rawValue == rhs.rawValue }
 

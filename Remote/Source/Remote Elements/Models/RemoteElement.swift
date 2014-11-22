@@ -13,6 +13,53 @@ import MoonKit
 @objc(RemoteElement)
 class RemoteElement: NamedModelObject {
 
+  /**
+  remoteElementFromPreset:context:
+
+  :param: attributes PresetAttributes
+  :param: context NSManagedObjectContext
+
+  :returns: RemoteElement?
+  */
+  class func remoteElementFromPreset(attributes: PresetAttributes, context: NSManagedObjectContext) -> RemoteElement? {
+    var element: RemoteElement?
+
+    switch attributes.baseType {
+      case .Remote:      element = Remote(attributes: attributes, context: context)
+      case .ButtonGroup: element = ButtonGroup(attributes: attributes, context: context)
+      case .Button:      element = Button(attributes: attributes, context: context)
+      default: break
+    }
+
+    return element
+  }
+
+  /**
+  initWithAttributes:context:
+
+  :param: attributes PresetAttributes
+  :param: context NSManagedObjectContext
+  */
+  convenience init(attributes: PresetAttributes, context: NSManagedObjectContext) {
+    self.init(context: context)
+    role = attributes.role
+    if let shape = attributes.shape { self.shape = shape }
+    if let style = attributes.style { self.style = style }
+    setBackgroundColor(attributes.backgroundColor, forMode: RemoteElement.DefaultMode)
+    setBackgroundImage(attributes.backgroundImage, forMode: RemoteElement.DefaultMode)
+    setBackgroundImageAlpha(attributes.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
+    var elements: OrderedSet<RemoteElement> = []
+    if let elementsData = attributes.subelements {
+      for subelementAttributes in elementsData {
+        if let element = RemoteElement.remoteElementFromPreset(subelementAttributes, context: context) { elements.append(element) }
+      }
+    }
+    childElements = elements
+    if let constraints = attributes.constraints {
+      constraintManager.setConstraintsFromString(constraints)
+    }
+  }
+
   @NSManaged var tag: NSNumber
   @NSManaged var key: String?
   var identifier: String { return "_" + filter(uuid){$0 != "-"} }
@@ -506,10 +553,32 @@ class RemoteElement: NamedModelObject {
     self["\(mode).\(key)"] = object
   }
 
-  enum BaseType: Int  { case Undefined, Remote, ButtonGroup, Button }
+  enum BaseType: Int  {
+    case Undefined, Remote, ButtonGroup, Button
+    init(rawValue: Int) {
+      switch rawValue {
+        case 1:  self = .Remote
+        case 2:  self = .ButtonGroup
+        case 3:  self = .Button
+        default: self = .Undefined
+      }
+    }
+  }
 
 
-  enum Shape: Int { case Undefined, RoundedRectangle, Oval, Rectangle, Triangle, Diamond }
+  enum Shape: Int {
+    case Undefined, RoundedRectangle, Oval, Rectangle, Triangle, Diamond
+    init(rawValue: Int) {
+      switch rawValue {
+        case 1: self = .RoundedRectangle
+        case 2: self = .Oval
+        case 3: self = .Rectangle
+        case 4: self = .Triangle
+        case 5: self = .Diamond
+        default: self = .Undefined
+      }
+    }
+  }
 
 
   struct Style: RawOptionSetType {
@@ -604,6 +673,15 @@ class RemoteElement: NamedModelObject {
     static var TransportButtonMask:  Role = Role(rawValue: 0b0000_1000)
 
   }
+
+  // protocol Preset {
+  //   var role: Role { get set }
+  //   var shape: Shape { get set }
+  //   var style: Style { get set }
+  //   var backgroundImage: Image? { get set }
+  //   var backgroundImageAlpha: NSNumber? { get set }
+  //   var backgroundColor: UIColor? { get set }
+  // }
 
 }
 

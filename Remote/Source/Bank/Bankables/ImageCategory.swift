@@ -30,6 +30,32 @@ class ImageCategory: BankableModelCategory {
   }
   @NSManaged var images: NSSet?
 
+  /**
+  imageForPath:context:
+
+  :param: path String
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  class func imageForPath(path: String?, context: NSManagedObjectContext?) -> Image? {
+    var image: Image?
+    if path != nil && context != nil {
+      var components = split(path!){$0 == "/"}
+      if components.count > 1 {
+        components = components.reverse()
+        var categoryName = components.removeLast()
+        var category: ImageCategory? = findFirstMatchingPredicate(∀"parentCategory == nil AND name == \"\(categoryName)\"",
+                                                          context: context!)
+        if category != nil {
+          components = components.reverse()
+          image = itemForCategory(category!, atPath: "/".join(components)) as? Image
+        }
+      }
+    }
+    return image
+  }
+
   override var subcategories: [BankDisplayItemCategory] {
     get { return ((subcategoriesSet?.allObjects ?? []) as [ImageCategory]).sorted{$0.0.title < $0.1.title} }
     set { if let newSubcategories = newValue as? [ImageCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }

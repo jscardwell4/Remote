@@ -332,6 +332,7 @@
 		C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */; };
 		C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */; };
 		C26DD69319F326910087B204 /* NamedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DD69219F326910087B204 /* NamedModelObject.swift */; };
+		C27372871A2001ED0079624D /* PresetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27372861A2001ED0079624D /* PresetAttributes.swift */; };
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchCommand.m */; };
 		C277AB7C19D74011008DEE39 /* IRCodeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB7B19D74011008DEE39 /* IRCodeSet.swift */; };
@@ -1002,6 +1003,8 @@
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
 		C26DD69219F326910087B204 /* NamedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NamedModelObject.swift; sourceTree = "<group>"; };
+		C27372811A1FB77B0079624D /* Remote.base 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 20.xcdatamodel"; sourceTree = "<group>"; };
+		C27372861A2001ED0079624D /* PresetAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetAttributes.swift; sourceTree = "<group>"; };
 		C274832219D06E5D000CB422 /* BankCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionController.swift; sourceTree = "<group>"; };
 		C275A0DC181F4DF900C9D446 /* ControlStateColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateColorSet.h; sourceTree = "<group>"; };
 		C275A0DD181F4DF900C9D446 /* ControlStateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlStateImageSet.h; sourceTree = "<group>"; };
@@ -1439,6 +1442,7 @@
 		C25B457116FF629F0042B59E /* Remote Element */ = {
 			isa = PBXGroup;
 			children = (
+				C27372861A2001ED0079624D /* PresetAttributes.swift */,
 				C231C6401A1970C9003D2587 /* Remote.swift */,
 				C231C63E1A192FD0003D2587 /* ButtonGroup.swift */,
 				C23D58911A190FCA009DE593 /* Button.swift */,
@@ -2916,6 +2920,7 @@
 				C235A3001A0E96B10067E226 /* RockerView.swift in Sources */,
 				C25B476616FF8D5E0042B59E /* DelayCommand.m in Sources */,
 				C25B476716FF8D5E0042B59E /* HTTPCommand.m in Sources */,
+				C27372871A2001ED0079624D /* PresetAttributes.swift in Sources */,
 				C25B476816FF8D5E0042B59E /* MacroCommand.m in Sources */,
 				C25B476916FF8D5E0042B59E /* PowerCommand.m in Sources */,
 				C25B476A16FF8D5E0042B59E /* SendIRCommand.m in Sources */,
@@ -3894,6 +3899,7 @@
 		C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C27372811A1FB77B0079624D /* Remote.base 20.xcdatamodel */,
 				C203CC331A17BB750064D4CB /* Remote.base 19.xcdatamodel */,
 				C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */,
 				C29F23DB178505AA00CD782B /* Remote.base 11.xcdatamodel */,
@@ -3914,7 +3920,7 @@
 				C29F23EA178505AA00CD782B /* Remote.base 9.xcdatamodel */,
 				C29F23EB178505AA00CD782B /* Remote.base.xcdatamodel */,
 			);
-			currentVersion = C203CC331A17BB750064D4CB /* Remote.base 19.xcdatamodel */;
+			currentVersion = C27372811A1FB77B0079624D /* Remote.base 20.xcdatamodel */;
 			path = Remote.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

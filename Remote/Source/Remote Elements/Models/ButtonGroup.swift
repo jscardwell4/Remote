@@ -19,34 +19,51 @@ use an instance of the `ButtonGroup` class to govern their style, behavior, etc.
 @objc(ButtonGroup)
 class ButtonGroup: RemoteElement {
 
-  struct PanelAssignment: RawOptionSetType {
+  struct PanelAssignment: RawOptionSetType, JSONValueConvertible {
 
     private(set) var rawValue: Int
     init(rawValue: Int) { self.rawValue = rawValue & 0b0001_1111 }
     init(nilLiteral:()) { rawValue = 0 }
 
-    enum Location: Int {
+    enum Location: Int, JSONValueConvertible {
       case Undefined, Top, Bottom, Left, Right
-      var JSONKey: String {
+      var JSONValue: String {
         switch self {
           case .Undefined: return "undefined"
-          case .Top: return "top"
-          case .Bottom: return "bottom"
-          case .Left: return "left"
-          case .Right: return "right"
+          case .Top:       return "top"
+          case .Bottom:    return "bottom"
+          case .Left:      return "left"
+          case .Right:     return "right"
+        }
+      }
+      init(JSONValue: String) {
+        switch JSONValue {
+          case "top":    self = .Top
+          case "bottom": self = .Bottom
+          case "left":   self = .Left
+          case "right":  self = .Right
+          default:       self = .Undefined
         }
       }
     }
-    enum Trigger: Int  {
+    enum Trigger: Int, JSONValueConvertible  {
       case Undefined, OneFinger, TwoFinger, ThreeFinger
-      var JSONKey: String {
+      var JSONValue: String {
         switch self {
-          case .Undefined: return "undefined"
-          case .OneFinger: return "1"
-          case .TwoFinger: return "2"
+          case .Undefined:   return "undefined"
+          case .OneFinger:   return "1"
+          case .TwoFinger:   return "2"
           case .ThreeFinger: return "3"
         }
       }
+     init(JSONValue: String) {
+       switch JSONValue {
+         case "1": self = .OneFinger
+         case "2": self = .TwoFinger
+         case "3": self = .ThreeFinger
+         default:  self = .Undefined
+       }
+    }
     }
 
     var location: Location {
@@ -68,7 +85,15 @@ class ButtonGroup: RemoteElement {
 
     static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
 
-    var JSONKey: String { return "\(location.JSONKey)\(trigger.JSONKey)"}
+    init(JSONValue: String) {
+      rawValue = 0
+      let length = countElements(JSONValue)
+      if length > 3 {
+        location = Location(JSONValue: String(JSONValue[0 ..< (length - 1)]))
+        trigger = Trigger(JSONValue: String(JSONValue[(length - 1) ..< length]))
+      }
+    }
+    var JSONValue: String { return "\(location.JSONValue)\(trigger.JSONValue)"}
 
   }
 
@@ -275,6 +300,61 @@ class ButtonGroup: RemoteElement {
   }
 
 }
+
+/// MARK: - Presets
+////////////////////////////////////////////////////////////////////////////////
+// extension ButtonGroup {
+
+//   protocol ButtonGroupPreset: Preset {
+//     var label: NSAttributedString? { get set }
+//     var labelAttributes: TitleAttributes? { get set }
+//   }
+
+//   enum PresetType { case None, SelectionPanel, Toolbar, DPad, Numberpad, Transport, Rocker }
+
+//   /**
+//   initWithPresetType:context:
+
+//   :param: presetType PresetType
+//   :param: context NSManagedObjectContext
+//   */
+//   convenience init(presetType: PresetType, context: NSManagedObjectContext) {
+//     self.init(context: context)
+
+//     switch presetType {
+
+//       case SelectionPanel:
+//         role = Role.SelectionPanel
+
+//       case Toolbar:
+//         role = Role.Toolbar
+
+//       case DPad:
+//         role = Role.DPad
+
+//       case Numberpad:
+//         role = Role.Numberpad
+
+//       case Transport:
+//         role = Role.Transport
+
+//       case Rocker:
+//         role = Role.Rocker
+//         style = Style.DrawBorder | Style.GlossStyle1
+//         shape = Shape.RoundedRectangle
+//         setBackgroundColor(UIColor.blackColor(), forMode: RemoteElement.DefaultMode)
+//         let titleAttributes = TitleAttributes(context: context)
+//         titleAttributes.foregroundColor = UIColor.whiteColor()
+//         titleAttributes.strokeColor = UIColor(white: 1.0, alpha: 0.5)
+//         titleAttributes.strokeWidth = -2
+//         titleAttributes.alignment = NSTextAlignment.Center.rawValue
+//         labelAttributes = titleAttributes
+
+//       default: break
+//     }
+//   }
+
+// }
 
 extension ButtonGroup.PanelAssignment: Equatable {}
 func ==(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> Bool { return lhs.rawValue == rhs.rawValue }

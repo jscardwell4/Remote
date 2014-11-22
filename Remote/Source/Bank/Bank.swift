@@ -54,6 +54,13 @@ func sortByName<T: NamedModel>(inout array: [T]?) { array?.sort{$0.0.name < $0.1
   var parentCategory: BankDisplayItemCategory?   { get set }
 }
 
+/**
+categoryPath:
+
+:param: category BankDisplayItemCategory?
+
+:returns: String?
+*/
 func categoryPath(category: BankDisplayItemCategory?) -> String? {
   if category == nil { return nil }
   var path: [String] = [category!.title]
@@ -63,6 +70,33 @@ func categoryPath(category: BankDisplayItemCategory?) -> String? {
     tempCategory = tempCategory!.parentCategory
   }
   return "/".join(path.reverse())
+}
+
+/**
+itemForCategory:atPath:
+
+:param: category BankDisplayItemCategory
+:param: path String
+
+:returns: BankDisplayItemModel?
+*/
+func itemForCategory(category: BankDisplayItemCategory, atPath path: String) -> BankDisplayItemModel? {
+  var item: BankDisplayItemModel?
+  var components = split(path){$0 == "/"}
+  let itemName = components.removeLast()
+  var currentCategory: BankDisplayItemCategory? = category
+  if components.count > 0 {
+    components = components.reverse()
+    var categoryName: String
+    while currentCategory != nil && components.count > 0 {
+      categoryName = components.removeLast()
+      currentCategory = currentCategory?.subcategories.filter{$0.title == categoryName}.first
+    }
+  }
+  if currentCategory != nil && components.count == 0 {
+    item = currentCategory?.items.filter{$0.name == itemName}.first
+  }
+  return item
 }
 
 /** Protocol for types that wish to display Bank item details */
