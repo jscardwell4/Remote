@@ -48,6 +48,6 @@
 @property (nonatomic) id highlighted;
 @property (nonatomic) id highlightedDisabled;
 @property (nonatomic) id highlightedSelected;
-@property (nonatomic) id selectedHighlightedDisabled;
-@property (nonatomic) id disabledSelected;
+@property (nonatomic) id highlightedSelectedDisabled;
+@property (nonatomic) id selectedDisabled;
 @end

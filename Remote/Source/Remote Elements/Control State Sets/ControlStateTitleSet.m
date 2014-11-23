@@ -12,7 +12,7 @@
 #import "JSONObjectKeys.h"
 #import "RemoteElementKeys.h"
 #import "REFont.h"
-#import "TitleAttributes.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -25,16 +25,16 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 @property (nonatomic) TitleAttributes * highlighted;
 @property (nonatomic) TitleAttributes * highlightedDisabled;
 @property (nonatomic) TitleAttributes * highlightedSelected;
-@property (nonatomic) TitleAttributes * selectedHighlightedDisabled;
-@property (nonatomic) TitleAttributes * disabledSelected;
+@property (nonatomic) TitleAttributes * highlightedSelectedDisabled;
+@property (nonatomic) TitleAttributes * selectedDisabled;
 @end
 
 @implementation ControlStateTitleSet
 
 @dynamic normal;
-@dynamic disabled, selected, disabledSelected;
+@dynamic disabled, selected, selectedDisabled;
 @dynamic highlighted, highlightedDisabled, highlightedSelected;
-@dynamic selectedHighlightedDisabled;
+@dynamic highlightedSelectedDisabled;
 
 // @synthesize suppressNormalStateAttributes = _suppressNormalStateAttributes;
 
@@ -55,17 +55,19 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   switch ([keys count]) {
     case 2:     // return an attribute value from the attributes of the specified state
     {
-      NSString * stateKey = keys[0];
-
-      if ([ControlStateSet validState:stateKey]) {
-        TitleAttributes * titleAttributes = [self valueForKey:stateKey];
-
-        NSString * attributeKey = keys[1];
-
-        if ([[TitleAttributes propertyKeys] containsObject:attributeKey])
-          return [titleAttributes valueForKey:attributeKey];
-
-      }
+      assert(NO);
+      return nil;
+//      NSString * stateKey = keys[0];
+//
+//      if ([ControlStateSet validState:stateKey]) {
+//        TitleAttributes * titleAttributes = [self valueForKey:stateKey];
+//
+//        NSString * attributeKey = keys[1];
+//
+//        if ([[TitleAttributes propertyKeys] containsObject:attributeKey])
+//          return [titleAttributes valueForKey:attributeKey];
+//
+//      }
 
     }  break;
 
@@ -85,26 +87,11 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 - (NSAttributedString *)objectAtIndexedSubscript:(NSUInteger)state {
 
-  NSAttributedString * string     = nil;
-  MSDictionary       * attributes = self.normal.attributes;
+  NSAttributedString * string = nil;
 
-  if (state) {
-    TitleAttributes * overrides = [super objectAtIndexedSubscript:state];
-    if (attributes && overrides)
-      [attributes setValuesForKeysWithDictionary:overrides.attributes];
-  }
-
+  TitleAttributes * attributes = [super objectAtIndexedSubscript:state];
   if (attributes) {
-
-    NSString * text = attributes[RETitleTextAttributeKey];
-
-    if (text) {
-
-      [attributes removeObjectForKey:RETitleTextAttributeKey];
-      string = [NSAttributedString attributedStringWithString:text attributes:attributes];
-
-    }
-
+    string = (state ? [attributes stringWithFillers:self.normal.attributes] : attributes.string);
   }
 
   return string;

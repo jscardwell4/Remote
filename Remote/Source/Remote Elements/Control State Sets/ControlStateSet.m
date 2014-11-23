@@ -36,8 +36,8 @@
                       @"highlightedDisabled",
                       @"selected",
                       @"highlightedSelected",
-                      @"disabledSelected",
-                      @"selectedHighlightedDisabled"] set];
+                      @"selectedDisabled",
+                      @"highlightedSelectedDisabled"] set];
   });
 
   return (isNumberKind(state)
@@ -67,8 +67,8 @@
                 @3 : @"highlightedDisabled",
                 @4 : @"selected",
                 @5 : @"highlightedSelected",
-                @6 : @"disabledSelected",
-                @7 : @"selectedHighlightedDisabled" };
+                @6 : @"selectedDisabled",
+                @7 : @"highlightedSelectedDisabled" };
   });
 
   return states[state];
@@ -85,8 +85,8 @@
                     @"highlightedDisabled"         : @3,
                     @"selected"                    : @4,
                     @"highlightedSelected"         : @5,
-                    @"disabledSelected"            : @6,
-                    @"selectedHighlightedDisabled" : @7 };
+                    @"selectedDisabled"            : @6,
+                    @"highlightedSelectedDisabled" : @7 };
   });
   NSNumber * state = properties[property];
 
@@ -104,8 +104,8 @@
                          @"highlightedDisabled",
                          @"selected",
                          @"highlightedSelected",
-                         @"disabledSelected",
-                         @"selectedHighlightedDisabled"] set];
+                         @"selectedDisabled",
+                         @"highlightedSelectedDisabled"] set];
   });
 
   return (NSSet *)validProperties;
@@ -119,8 +119,8 @@
     case '3': return self.highlightedDisabled;
     case '4': return self.selected;
     case '5': return self.highlightedSelected;
-    case '6': return self.disabledSelected;
-    case '7': return self.selectedHighlightedDisabled;
+    case '6': return self.selectedDisabled;
+    case '7': return self.highlightedSelectedDisabled;
     default: return [super valueForUndefinedKey:key];
   }
 }

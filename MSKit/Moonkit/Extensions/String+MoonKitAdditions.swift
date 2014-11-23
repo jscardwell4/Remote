@@ -113,11 +113,10 @@ public extension String {
   public func matchFirst(regex: NSRegularExpression) -> [String?] {
     let r = NSRange(location: 0, length: length)
   	let match: NSTextCheckingResult? = regex.firstMatchInString(self, options: nil, range: r)
-  	var captures: [String?] = [String?](count: regex.numberOfCaptureGroups + 1, repeatedValue: nil)
-  	for i in 0...regex.numberOfCaptureGroups {
-      if let range = match?.rangeAtIndex(i) {
-        if range.location != NSNotFound { captures[i] = self[range] }
-      }
+  	var captures: [String?] = []
+  	for i in 1...regex.numberOfCaptureGroups {
+      if let range = match?.rangeAtIndex(i) { captures.append(range.location != NSNotFound ? self[range] : nil) }
+      else { captures.append(nil) }
   	}
 
     return captures
@@ -248,7 +247,7 @@ public func /…≈(lhs: NSRegularExpression, rhs: (String, Int)) -> [Range<Int>
 public func /~(lhs: (String, Int), rhs: NSRegularExpression) -> String? { return rhs /~ lhs }
 public func /~(lhs: NSRegularExpression, rhs: (String, Int)) -> String? {
   let captures = rhs.0.matchFirst(lhs)
-  return rhs.1 >= 0 && rhs.1 <= lhs.numberOfCaptureGroups ? captures[rhs.1] : nil
+  return rhs.1 >= 0 && rhs.1 <= lhs.numberOfCaptureGroups ? captures[rhs.1 - 1] : nil
 }
 
 /** func for an operator that creates a string by repeating a string multiple times */

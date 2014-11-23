@@ -14,6 +14,8 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 
 	@NSManaged var user: Bool
 
+  override class func requiresUniqueNaming() -> Bool { return true }
+
 	override func updateWithData(data: [NSObject : AnyObject]!) {
 		super.updateWithData(data)
 		user = (data?["user"] as? NSNumber)?.boolValue ?? user

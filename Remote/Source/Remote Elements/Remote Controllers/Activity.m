@@ -49,9 +49,9 @@
 
 }
 
-+ (BOOL)isNameAvailable:(NSString *)name {
-  return ([Activity countOfObjectsWithPredicate:NSPredicateMake(@"name EQUALS %@", name)] == 0);
-}
++ (BOOL)requiresUniqueNaming { return true; }
+
++ (BOOL)isNameAvailable:(NSString *)name { return StringIsNotEmpty(name) && ![self objectExistsWithName:name]; }
 
 - (void)launchActivity:(void (^)(BOOL, NSError *))completion {
 

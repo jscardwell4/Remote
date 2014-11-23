@@ -210,6 +210,12 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
                      defaultValue:@{}
                              info:nil];
 
+  [self modifyAttributesForEntity:entities[@"DictionaryStorage"]
+                       attributes:@[@"dictionary"]
+                        className:@"NSDictionary"
+                     defaultValue:@{}
+                             info:nil];
+
   // index attribute on command containers
   [self modifyAttributeForEntities:[entities objectsForKeys:@[@"CommandContainer", @"CommandSet", @"CommandSetCollection"]
                                              notFoundMarker:NullObject]
@@ -228,13 +234,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   // color attributes on control state color set
   [self modifyAttributesForEntity:entities[@"ControlStateColorSet"]
                        attributes:@[@"disabled",
-                                    @"disabledSelected",
+                                    @"selectedDisabled",
                                     @"highlighted",
                                     @"highlightedDisabled",
                                     @"highlightedSelected",
                                     @"normal",
                                     @"selected",
-                                    @"selectedHighlightedDisabled"]
+                                    @"highlightedSelectedDisabled"]
                         className:@"UIColor"
                      defaultValue:nil
                              info:nil];

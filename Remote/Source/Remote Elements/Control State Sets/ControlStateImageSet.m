@@ -23,16 +23,16 @@ static const int msLogContext = (LOG_CONTEXT_REMOTE | LOG_CONTEXT_FILE | LOG_CON
 @property (nonatomic) ImageView * highlighted;
 @property (nonatomic) ImageView * highlightedDisabled;
 @property (nonatomic) ImageView * highlightedSelected;
-@property (nonatomic) ImageView * selectedHighlightedDisabled;
-@property (nonatomic) ImageView * disabledSelected;
+@property (nonatomic) ImageView * highlightedSelectedDisabled;
+@property (nonatomic) ImageView * selectedDisabled;
 @end
 
 @implementation ControlStateImageSet
 
 @dynamic normal;
-@dynamic disabled, selected, disabledSelected;
+@dynamic disabled, selected, selectedDisabled;
 @dynamic highlighted, highlightedDisabled, highlightedSelected;
-@dynamic selectedHighlightedDisabled;
+@dynamic highlightedSelectedDisabled;
 
 
 - (ImageView *)objectAtIndexedSubscript:(NSUInteger)state {

@@ -17,16 +17,16 @@
 @property (nonatomic) UIColor * highlighted;
 @property (nonatomic) UIColor * highlightedDisabled;
 @property (nonatomic) UIColor * highlightedSelected;
-@property (nonatomic) UIColor * selectedHighlightedDisabled;
-@property (nonatomic) UIColor * disabledSelected;
+@property (nonatomic) UIColor * highlightedSelectedDisabled;
+@property (nonatomic) UIColor * selectedDisabled;
 @end
 
 @implementation ControlStateColorSet
 
 @dynamic normal;
-@dynamic disabled, selected, disabledSelected;
+@dynamic disabled, selected, selectedDisabled;
 @dynamic highlighted, highlightedDisabled, highlightedSelected;
-@dynamic selectedHighlightedDisabled;
+@dynamic highlightedSelectedDisabled;
 
 - (void)updateWithData:(NSDictionary *)data {
 
@@ -63,8 +63,8 @@
            "disabled:%@\n"
            "highlightedSelected:%@\n"
            "highlightedDisabled:%@\n"
-           "disabledSelected:%@\n"
-           "selectedHighlightedDisabled:%@",
+           "selectedDisabled:%@\n"
+           "highlightedSelectedDisabled:%@",
            NSStringFromUIColor(self[0]),
            NSStringFromUIColor(self[4]),
            NSStringFromUIColor(self[1]),

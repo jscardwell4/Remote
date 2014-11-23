@@ -44,7 +44,7 @@ public class LogManager {
 
   private struct LogManagerGlobals {
 
-    static var logLevel: LogLevel = .Warn
+    static var logLevel: LogLevel = .Debug
     static var registeredLogLevels: [String:LogLevel] = [:]
 
   }

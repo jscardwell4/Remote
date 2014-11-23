@@ -11,7 +11,7 @@ import Foundation
 public protocol JSONValueConvertible {
   typealias JSONValueType
   var JSONValue: JSONValueType { get }
-  init(JSONValue: JSONValueType)
+  init?(JSONValue: JSONValueType)
 }
 
 public protocol Divisible {

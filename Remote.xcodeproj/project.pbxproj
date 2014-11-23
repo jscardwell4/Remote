@@ -229,7 +229,6 @@
 		C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
 		C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */; };
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
-		C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25C44DE19ABCA2A005594ED /* TitleAttributes.m */; };
 		C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */; };
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
 		C26296801810619900760056 /* CoreDataManager+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = C262967F1810619900760056 /* CoreDataManager+Model.m */; };
@@ -332,6 +331,7 @@
 		C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */; };
 		C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */; };
 		C26DD69319F326910087B204 /* NamedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DD69219F326910087B204 /* NamedModelObject.swift */; };
+		C27267431A21555800EA0C7A /* StateMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27267421A21555800EA0C7A /* StateMap.swift */; };
 		C27372871A2001ED0079624D /* PresetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27372861A2001ED0079624D /* PresetAttributes.swift */; };
 		C275D86317A03130004E0BE5 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C275D86217A03130004E0BE5 /* Glyphish.xcassets */; };
 		C27734401701365C00E85F8D /* SwitchCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C277343F1701365C00E85F8D /* SwitchCommand.m */; };
@@ -436,6 +436,9 @@
 		C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
 		C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
+		C2DCAA2B1A20E87400F1B51A /* DictionaryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DCAA2A1A20E87400F1B51A /* DictionaryStorage.swift */; };
+		C2DCAA2F1A20F6BB00F1B51A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DCAA2E1A20F6BB00F1B51A /* Font.swift */; };
+		C2DCAA311A211A8D00F1B51A /* TitleAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DCAA301A211A8D00F1B51A /* TitleAttributes.swift */; };
 		C2E1639F19F079F300D1B88E /* BankItemDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E1639E19F079F300D1B88E /* BankItemDetailSection.swift */; };
 		C2E163A219F07A0200D1B88E /* BankItemDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E163A119F07A0200D1B88E /* BankItemDetailRow.swift */; };
 		C2E164C619C6392700F0E526 /* Glyphish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C6A172182AFFFF0036261E /* Glyphish.json */; };
@@ -860,8 +863,6 @@
 		C25BF65E19B179BC0038C724 /* REBackgroundEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundEditingViewController.m; sourceTree = "<group>"; };
 		C25C272F19DDF45700D90B0B /* BankSurrogateCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankSurrogateCategory.swift; sourceTree = "<group>"; };
 		C25C44DB19ABB3E2005594ED /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
-		C25C44DD19ABCA2A005594ED /* TitleAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleAttributes.h; sourceTree = "<group>"; };
-		C25C44DE19ABCA2A005594ED /* TitleAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleAttributes.m; sourceTree = "<group>"; };
 		C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingController.swift; sourceTree = "<group>"; };
 		C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEditingController.swift; sourceTree = "<group>"; };
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
@@ -1003,6 +1004,8 @@
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
 		C26DD69219F326910087B204 /* NamedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NamedModelObject.swift; sourceTree = "<group>"; };
+		C272673F1A2154A200EA0C7A /* Remote.base 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 21.xcdatamodel"; sourceTree = "<group>"; };
+		C27267421A21555800EA0C7A /* StateMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMap.swift; sourceTree = "<group>"; };
 		C27372811A1FB77B0079624D /* Remote.base 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 20.xcdatamodel"; sourceTree = "<group>"; };
 		C27372861A2001ED0079624D /* PresetAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetAttributes.swift; sourceTree = "<group>"; };
 		C274832219D06E5D000CB422 /* BankCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionController.swift; sourceTree = "<group>"; };
@@ -1147,6 +1150,9 @@
 		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
 		C2D635B81805D9B400960B10 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
+		C2DCAA2A1A20E87400F1B51A /* DictionaryStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryStorage.swift; sourceTree = "<group>"; };
+		C2DCAA2E1A20F6BB00F1B51A /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		C2DCAA301A211A8D00F1B51A /* TitleAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAttributes.swift; sourceTree = "<group>"; };
 		C2E1639E19F079F300D1B88E /* BankItemDetailSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailSection.swift; sourceTree = "<group>"; };
 		C2E163A119F07A0200D1B88E /* BankItemDetailRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailRow.swift; sourceTree = "<group>"; };
 		C2E75BF819B13798006CEA86 /* Remote_Demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote_Demo.json; sourceTree = "<group>"; };
@@ -1295,6 +1301,9 @@
 		C201149A180EDD8700C31B9F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C2DCAA301A211A8D00F1B51A /* TitleAttributes.swift */,
+				C2DCAA2E1A20F6BB00F1B51A /* Font.swift */,
+				C2DCAA2A1A20E87400F1B51A /* DictionaryStorage.swift */,
 				C2F2254B1715E39600D22B5F /* ModelObject.h */,
 				C2F2254C1715E39600D22B5F /* ModelObject.m */,
 				C29F8F8B18269E150073EF09 /* NamedModelObject.h */,
@@ -1305,12 +1314,11 @@
 				C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */,
 				C2014FB8180DFC1200C31780 /* JSONObjectKeys.h */,
 				C2014FB9180E004E00C31780 /* JSONObjectKeys.m */,
-				C25C44DD19ABCA2A005594ED /* TitleAttributes.h */,
-				C25C44DE19ABCA2A005594ED /* TitleAttributes.m */,
 				C2F940EE19BD4C0F007B5CC1 /* ModelKeychainWrapper.h */,
 				C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */,
 				C2879F5D19DBA86F0052DDB7 /* ModelObject.swift */,
 				C26DD69219F326910087B204 /* NamedModelObject.swift */,
+				C27267421A21555800EA0C7A /* StateMap.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2863,12 +2871,12 @@
 				C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */,
 				C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */,
 				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,
-				C25C44DF19ABCA2A005594ED /* TitleAttributes.m in Sources */,
 				C269842919E0452E007E268B /* BankCollectionController.swift in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
 				C2C628D319D7188C00E40176 /* Bank.swift in Sources */,
 				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
 				C235A2FF1A0E96B10067E226 /* RemoteView.swift in Sources */,
+				C27267431A21555800EA0C7A /* StateMap.swift in Sources */,
 				C289BB5C19F85B64008E92C1 /* BankItemDetailTextInputRow.swift in Sources */,
 				C27DE08819E5E67F00CCB725 /* PresetDetailController.swift in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
@@ -2893,6 +2901,7 @@
 				C252E4FC19E2195B00DBBBB2 /* BankItemDetailController.swift in Sources */,
 				C235A2DE1A06E1AE0067E226 /* ButtonGroupEditingController.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
+				C2DCAA2B1A20E87400F1B51A /* DictionaryStorage.swift in Sources */,
 				C25B475116FF8D5E0042B59E /* ControlStateTitleSet.m in Sources */,
 				C215C9CC19F7375F000CC6CC /* BankItemButtonCell.swift in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
@@ -2972,6 +2981,7 @@
 				C250CED81A16DC36006D36CF /* Constraint.swift in Sources */,
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
+				C2DCAA2F1A20F6BB00F1B51A /* Font.swift in Sources */,
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C2879F5B19DB78D60052DDB7 /* ComponentDevice.swift in Sources */,
 				C235A2E31A06E1CB0067E226 /* ButtonEditingController.swift in Sources */,
@@ -2993,6 +3003,7 @@
 				C269842719DF880C007E268B /* BankCollectionZoomView.swift in Sources */,
 				C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,
+				C2DCAA311A211A8D00F1B51A /* TitleAttributes.swift in Sources */,
 				C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
 				C231C63F1A192FD0003D2587 /* ButtonGroup.swift in Sources */,
@@ -3899,6 +3910,7 @@
 		C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C272673F1A2154A200EA0C7A /* Remote.base 21.xcdatamodel */,
 				C27372811A1FB77B0079624D /* Remote.base 20.xcdatamodel */,
 				C203CC331A17BB750064D4CB /* Remote.base 19.xcdatamodel */,
 				C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */,
@@ -3920,7 +3932,7 @@
 				C29F23EA178505AA00CD782B /* Remote.base 9.xcdatamodel */,
 				C29F23EB178505AA00CD782B /* Remote.base.xcdatamodel */,
 			);
-			currentVersion = C27372811A1FB77B0079624D /* Remote.base 20.xcdatamodel */;
+			currentVersion = C272673F1A2154A200EA0C7A /* Remote.base 21.xcdatamodel */;
 			path = Remote.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

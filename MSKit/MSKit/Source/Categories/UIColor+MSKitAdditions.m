@@ -337,7 +337,7 @@ NSString *NSStringFromUIColor(UIColor * color) {
   return [self colorWithString:string];
 }
 + (UIColor *)colorWithString:(NSString *)string {
-  UIColor * color = [UIColor colorWithWhite:0.0 alpha:0.0];
+  UIColor * color = nil;
 
   if (string) {
     color = [self colorWithName:string];

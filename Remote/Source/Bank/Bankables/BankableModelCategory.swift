@@ -13,6 +13,8 @@ import MoonKit
 
 class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
 
+  override class func requiresUniqueNaming() -> Bool { return true }
+
   var title: String { return name ?? "" }
   var items: [BankDisplayItemModel] { get { return [] } set {} }
   var subcategories: [BankDisplayItemCategory] { get { return [] } set {} }
