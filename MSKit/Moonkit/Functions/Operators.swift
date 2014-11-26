@@ -84,6 +84,11 @@ associativity right
 precedence 130
 }
 
+prefix operator ‽∪ {}
+prefix operator ‽ {}
+prefix operator !? {}
+prefix operator ∑ {}
+prefix operator ∪ {}
 prefix operator ⨳ {}
 prefix operator % {}
 prefix operator ⁂ {}

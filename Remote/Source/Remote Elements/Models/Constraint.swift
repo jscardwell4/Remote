@@ -14,6 +14,20 @@ import MoonKit
 @objc(Constraint)
 class Constraint: ModelObject {
 
+  var pseudoConstraint: NSLayoutPseudoConstraint {
+    var pseudo = NSLayoutPseudoConstraint()
+    pseudo.firstItem = firstItem.identifier
+    pseudo.firstAttribute = firstAttribute.pseudoName
+    pseudo.relation = relation.pseudoName
+    pseudo.secondItem = secondItem?.identifier
+    pseudo.secondAttribute = secondAttribute.pseudoName
+    pseudo.multiplier = "\(multiplier)"
+    pseudo.constant = "\(abs(constant))"
+    pseudo.constantOperator = constant < 0.0 ? "-" : "+"
+    pseudo.priority = "\(priority)"
+    return pseudo
+  }
+
   @NSManaged var primitiveTag: NSNumber
   var tag: Int {
     get {
@@ -137,12 +151,12 @@ class Constraint: ModelObject {
   :param: constant CGFloat
   */
   convenience init(item firstItem: RemoteElement,
-                  attribute firstAttribute: NSLayoutAttribute,
-                  relatedBy relation: NSLayoutRelation,
-                  toItem seconditem: RemoteElement?,
-                  attribute secondAttribute: NSLayoutAttribute,
-                  multiplier: CGFloat,
-                  constant: CGFloat)
+                   attribute firstAttribute: NSLayoutAttribute,
+                   relatedBy relation: NSLayoutRelation,
+                   toItem seconditem: RemoteElement?,
+                   attribute secondAttribute: NSLayoutAttribute,
+                   multiplier: CGFloat,
+                   constant: CGFloat)
   {
     assert(firstItem.managedObjectContext != nil)
     self.init(context: firstItem.managedObjectContext!)
@@ -181,6 +195,23 @@ class Constraint: ModelObject {
   var manager: ConstraintManager { return firstItem.constraintManager }
 
   var staticConstraint: Bool { return secondItem == nil }
+
+  override var description: String {
+    let item1 = firstItem.identifier //name.camelCase()
+    let attr1 = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute)
+    let relatedBy = NSLayoutConstraint.pseudoNameForRelation(relation)
+    let item2 = secondItem?.identifier //name.camelCase()
+    let attr2 = secondAttribute == .NotAnAttribute
+                                ? nil
+                                : NSLayoutConstraint.pseudoNameForAttribute(secondAttribute)
+    let operatorString = constant < 0.0 ? "-" : "+"
+    var string = "\(item1).\(attr1) \(relatedBy) "
+    if item2 != nil && attr2 != nil { string += "\(item2!).\(attr2!) " }
+    if multiplier != 1.0 { string += "* \(multiplier) " }
+    if constant != 0.0 { string += "\(operatorString) \(abs(constant)) "}
+    string += "@\(priority)"
+    return string
+  }
 
   /**
   hasAttributeValues:
@@ -273,9 +304,9 @@ class Constraint: ModelObject {
     var constant = CGFloat(captures["constant"]?.doubleValue ?? 0.0)
     if let op = captures["constantOperator"] { if op == "-" { constant = -constant } }
     let priority = UILayoutPriority(captures["priority"]?.floatValue ?? 1000.0)
-    let firstAttribute = NSLayoutAttribute(pseudoname: captures["firstAttribute"])
-    let secondAttribute = NSLayoutAttribute(pseudoname: captures["secondAttribute"])
-    let relation = NSLayoutRelation(pseudoname: captures["relation"])
+    let firstAttribute = NSLayoutAttribute(pseudoName: captures["firstAttribute"] ?? "")
+    let secondAttribute = NSLayoutAttribute(pseudoName: captures["secondAttribute"] ?? "")
+    let relation = NSLayoutRelation(pseudoName: captures["relation"] ?? "")
 
     if let firstItemIndex = captures["firstItem"] {
       if let firstItemUUID = index[firstItemIndex] {

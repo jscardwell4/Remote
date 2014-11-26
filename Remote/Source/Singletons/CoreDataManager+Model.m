@@ -199,16 +199,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   // settings attribute on Preset
   [self modifyAttributesForEntity:entities[@"Preset"]
-                         attributes:@[@"settings"]
+                         attributes:@[@"attributes"]
                          className:@"NSDictionary"
                       defaultValue:@{}
                               info:nil];
-
-  [self modifyAttributesForEntity:entities[@"Preset"]
-                       attributes:@[@"subelementSettings"]
-                        className:@"NSDictionary"
-                     defaultValue:@{}
-                             info:nil];
 
   [self modifyAttributesForEntity:entities[@"DictionaryStorage"]
                        attributes:@[@"dictionary"]

@@ -1,0 +1,107 @@
+{
+  "name": "Dpad",
+  "base-type": "button-group",
+  "role": "dpad",
+  "shape": "oval",
+  "style": "gloss2",
+  "constraints": [
+    "$0.height = 280 :: $0.width = $0.height",
+    "$1.centerX = $0.centerX :: $1.centerY = $0.centerY :: $1.width = $0.width * 0.3",
+    "$2.bottom = $1.top :: $2.left = $4.right :: $2.right = $5.left :: $2.top = $0.top",
+    "$3.bottom = $0.bottom :: $3.left = $4.right :: $3.right = $5.left :: $3.top = $1.bottom",
+    "$4.bottom = $3.top :: $4.left = $0.left :: $4.right = $1.left :: $4.top = $2.bottom",
+    "$5.bottom = $3.top :: $5.left = $1.right :: $5.right = $0.right :: $5.top = $2.bottom"
+  ],
+  "background-color": "black",
+  "subelements": [
+    {
+      "base-type": "button",
+      "role": "center",
+      "constraints": "$0.width = $0.height",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@28",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "OK"
+        },
+        "highlighted.foreground-color": "#00AFFFFF"
+      },
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "role": "up",
+      "icons": {
+        "normal": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Up",
+          "color": "white"
+        },
+        "highlighted": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Up",
+          "color": "#00AFFFFF"
+        },
+        "disabled": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Up",
+          "color": "#7F7F7FFF"
+        }
+      }
+    },
+    {
+      "base-type": "button",
+      "role": "down",
+      "icons": {
+        "normal": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Down",
+          "color": "white"
+        },
+        "highlighted": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Down",
+          "color": "#00AFFFFF"
+        },
+        "disabled": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Down",
+          "color": "#7F7F7FFF"
+        }
+      }
+    },
+    {
+      "base-type": "button",
+      "role": "left",
+      "icons": {
+        "normal": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Left",
+          "color": "white"
+        },
+        "highlighted": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Left",
+          "color": "#00AFFFFF"
+        },
+        "disabled": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Left",
+          "color": "#7F7F7FFF"
+        }
+      }
+    },
+    {
+      "base-type": "button",
+      "role": "right",
+      "icons": {
+        "normal": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Right",
+          "color": "white"
+        },
+        "highlighted": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Right",
+          "color": "#00AFFFFF"
+        },
+        "disabled": {
+          "image": "Icons/Glyphish 6/Large/Normal/Arrow Right",
+          "color": "#7F7F7FFF"
+        }
+      }
+    }
+  ]
+}

@@ -272,57 +272,58 @@ public class JSONSerialization: NSObject {
     // Get the contents of the file to parse
     if var string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError) as? String {
 
-    // If no error than we look for any "@include" statements
-    if !handleError("failed to get file content for '\(filePath)") {
+      // If no error than we look for any "@include" statements
+      if !handleError("failed to get file content for '\(filePath)") {
 
-	    // Look for include entries in the file-loaded string
-	    let pattern = ~/"<@include ([^>]+)>"
+        // Look for include entries in the file-loaded string
+        let pattern = ~/"<@include ([^>]+)>"
 
-      // Get the path to the provided file's directory so we can use it when looking for include files
-      let directory = filePath.stringByDeletingLastPathComponent
+        // Get the path to the provided file's directory so we can use it when looking for include files
+        let directory = filePath.stringByDeletingLastPathComponent
 
-      var offset = 0 // Holds the over/under from making substitutions in string
+        var offset = 0 // Holds the over/under from making substitutions in string
 
-      // Iterate through matches for pattern
-      for match in pattern /…≈ string {
+        // Iterate through matches for pattern
+        for match in pattern /…≈ string {
 
-        // Make sure we have a valid range
-        if var range = match {
+          // Make sure we have a valid range
+          if var range = match {
 
-          // Advance our range by the offset
-          let 𝘥 = distance(range.startIndex, range.endIndex)
-          let end = advance(range.startIndex, offset + 𝘥)
-          let start = advance(range.startIndex, offset)
+            // Advance our range by the offset
+            let 𝘥 = distance(range.startIndex, range.endIndex)
+            let end = advance(range.startIndex, offset + 𝘥)
+            let start = advance(range.startIndex, offset)
 
-          range.endIndex = end
-          range.startIndex = start
-          let s = String.Space
-          let r = NSRange(location: range.startIndex, length: distance(range.startIndex, range.endIndex))
+            range.endIndex = end
+            range.startIndex = start
+            let s = String.Space
+            let r = NSRange(location: range.startIndex, length: distance(range.startIndex, range.endIndex))
 
-          // Get the name of the file to include
-          let substring = (string as NSString).substringWithRange(r)
-          if let includeFile = pattern /~ (substring, 1) {
+            // Get the name of the file to include
+            let substring = (string as NSString).substringWithRange(r)
+            if let includeFile = pattern /~ (substring, 1) {
 
-            // Create the file path by combining the directory with the name
-            let includePath = "\(directory)/\(includeFile)"
-            let includeText = NSString(contentsOfFile: includePath, encoding: NSUTF8StringEncoding, error: &localError) as? String
+              // Create the file path by combining the directory with the name
+              let includePath = "\(directory)/\(includeFile)"
+              let includeText = NSString(contentsOfFile: includePath, encoding: NSUTF8StringEncoding, error: &localError) as? String
 
-            // Move on to next if error
-            if handleError("failed to get file content for include directive '\(includePath)'") || includeText == nil { continue }
+              // Move on to next if error
+              if handleError("failed to get file content for include directive '\(includePath)'") || includeText == nil { continue }
 
-            // Replace include directive with the text
-            string.replaceRange(string.indexRangeFromIntRange(range), with: includeText!)
+              // Replace include directive with the text
+              string.replaceRange(string.indexRangeFromIntRange(range), with: includeText!)
 
-            // Update `offset`
-            offset += includeText!.length - countElements(range)
+              // Update `offset`
+              offset += includeText!.length - countElements(range)
+
+            }
 
           }
 
         }
 
       }
-      }
-
+      
       returnObject = objectByParsingString(string, options: options, error: error)
 
     }

@@ -1,0 +1,24 @@
+{
+  "name": "Round (Small)",
+  "base-type": "button",
+  "shape": "oval",
+  "style": "gloss1",
+  "constraints": "self.height = self.width :: self.width = 50",
+  "background-colors.normal": "#060606FF"
+},
+{
+  "name": "Round (Medium)",
+  "base-type": "button",
+  "shape": "oval",
+  "style": "gloss1",
+  "constraints": "self.height = self.width :: self.width = 75",
+  "background-colors.normal": "#060606FF"
+},
+{
+  "name": "Round (Large)",
+  "base-type": "button",
+  "shape": "oval",
+  "style": "gloss1",
+  "constraints": "self.height = self.width :: self.width = 100",
+  "background-colors.normal": "#060606FF"
+}

@@ -15,36 +15,6 @@ class Preset: BankableModelObject {
 
   @NSManaged var presetCategory: PresetCategory?
 
-  @NSManaged var primitiveBaseType: NSNumber
-  var baseType: RemoteElement.BaseType {
-    get {
-      willAccessValueForKey("baseType")
-      let baseType = RemoteElement.BaseType(rawValue: primitiveBaseType.integerValue)
-      didAccessValueForKey("baseType")
-      return baseType
-    }
-    set {
-      willChangeValueForKey("baseType")
-      primitiveBaseType = newValue.rawValue
-      didChangeValueForKey("baseType")
-    }
-  }
-
-  @NSManaged var primitiveRole: NSNumber
-  var role: RemoteElement.Role {
-    get {
-      willAccessValueForKey("role")
-      let role = RemoteElement.Role(rawValue: primitiveRole.integerValue)
-      didAccessValueForKey("role")
-      return role
-    }
-    set {
-      willChangeValueForKey("role")
-      primitiveRole = newValue.rawValue
-      didChangeValueForKey("role")
-    }
-  }
-
   @NSManaged var primitiveAttributes: NSDictionary
   var attributes: PresetAttributes {
     get {
@@ -61,14 +31,23 @@ class Preset: BankableModelObject {
   }
 
   override var editable: Bool { return user }
-  override class func isEditable()      -> Bool { return true }
-  override class func isPreviewable()   -> Bool { return true }
+  override class func isEditable() -> Bool { return true }
+  override class func isPreviewable() -> Bool { return true }
 
+  /**
+  detailController
+
+  :returns: UIViewController
+  */
   override func detailController() -> UIViewController { return PresetDetailController(item: self)! }
 
   class var rootCategory: Bank.RootCategory {
+    var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil") as [PresetCategory]
+    categories.sort{$0.0.title < $0.1.title}
+
     return Bank.RootCategory(label: "Presets",
                              icon: UIImage(named: "1059-sliders")!,
+                             subcategories: categories,
                              editableItems: true,
                              previewableItems: true)
   }
@@ -79,7 +58,35 @@ class Preset: BankableModelObject {
   :returns: RemoteElement?
   */
   func generateElement() -> RemoteElement? {
-    return managedObjectContext != nil ? RemoteElement.remoteElementFromPreset(attributes, context: managedObjectContext!) : nil
+    return managedObjectContext != nil
+             ? RemoteElement.remoteElementFromPreset(attributes, context: managedObjectContext!)
+             : nil
   }
+
+  /**
+  updateWithData:
+
+  :param: data [NSObject AnyObject]!
+  */
+  override func updateWithData(data: [NSObject:AnyObject]) {
+    super.updateWithData(data)
+
+    if let jsonData = data as? [String:AnyObject] {
+      attributes = PresetAttributes(storage:jsonData, context: managedObjectContext)
+    }
+
+  }
+
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary
+  */
+  override func JSONDictionary() -> MSDictionary {
+    let dictionary = super.JSONDictionary()
+    dictionary.setValuesForKeysWithDictionary(attributes.dictionaryValue)
+    return dictionary
+  }
+
 
 }

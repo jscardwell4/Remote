@@ -1,0 +1,149 @@
+{
+  "name": "Overlay Panel",
+  "base-type": "button-group",
+  "role": "panel",
+  "constraints": [
+    "$0.width = 150",
+    "$1.left = $0.left + 4 :: $1.right = $0.right - 4 :: $1.top = $0.top + 4",
+    "$2.height = $1.height :: $2.left = $0.left + 4 :: $2.right = $0.right - 4 :: $2.top = $1.bottom + 4",
+    "$3.height = $1.height :: $3.left = $0.left + 4 :: $3.right = $0.right - 4 :: $3.top = $2.bottom + 4",
+    "$4.height = $1.height :: $4.left = $0.left + 4 :: $4.right = $0.right - 4 :: $4.top = $3.bottom + 4",
+    "$5.height = $1.height :: $5.left = $0.left + 4 :: $5.right = $0.right - 4 :: $5.top = $4.bottom + 4",
+    "$6.height = $1.height :: $6.left = $0.left + 4 :: $6.right = $0.right - 4 :: $6.top = $5.bottom + 4",
+    "$7.height = $1.height :: $7.left = $0.left + 4 :: $7.right = $0.right - 4 :: $7.top = $6.bottom + 4",
+    "$8.bottom = $0.bottom - 4 :: $8.height = $1.height :: $8.left = $0.left + 4 :: $8.right = $0.right - 4 :: $8.top = $7.bottom + 4"
+  ],
+  "background-color": "white@75%",
+  "subelements": [
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 1"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 2"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 3"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 4"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 5"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 6"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@18",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 7"
+        }
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
+      "role": "tuck",
+      "titles.normal": {
+        "font": "FontAwesome@24",
+        "foreground-color": "gray@75%",
+        "text-effect": "letter-press",
+        "icon-name": "chevron-left"
+      },
+      "title-edge-insets": "{20, 20, 20, 20}"
+    }
+  ]
+}

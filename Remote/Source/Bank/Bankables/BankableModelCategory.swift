@@ -20,6 +20,8 @@ class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
   var subcategories: [BankDisplayItemCategory] { get { return [] } set {} }
   var parentCategory: BankDisplayItemCategory?
 
+  var totalItemCount: Int { return recursiveItemCountForCategory(self) }
+
   var previewableItems:   Bool { return BankableModelObject.isPreviewable()   }
   var editableItems:      Bool { return BankableModelObject.isEditable()      }
 

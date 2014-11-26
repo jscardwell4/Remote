@@ -20,6 +20,32 @@ public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
 }
 
 /**
+createIdentifier:suffix:
+
+:param: object Any
+:param: suffix String? = nil
+
+:returns: String
+*/
+public func createIdentifier(object: Any, _ suffix: String? = nil) -> String {
+  return createIdentifier(object, suffix == nil ? nil : [suffix!])
+}
+
+/**
+createIdentifier:suffix:
+
+:param: object Any
+:param: suffix [String]? = nil
+
+:returns: String
+*/
+public func createIdentifier(object: Any, _ suffix: [String]? = nil) -> String {
+  let identifier = _stdlib_getDemangledTypeName(object)
+  return suffix == nil ? identifier : "-".join([identifier] + suffix!)
+}
+
+
+/**
 advance:amount:
 
 :param: range Range<T>
@@ -52,6 +78,22 @@ public func join<T>(seperator: T, elements: [T]) -> [T] {
   } else {
     return elements
   }
+}
+
+/**
+function for recursively reducing a property of an element that contains child elements of its kind
+
+:param: initial U The initial value for the reduction
+:param: subitems (T) -> [T] Closure for producing child elements of the item
+:param: combine (U, T) -> Closure for producing the reduction for the item without recursing
+:param: item T The initial item
+
+:returns: U The result of the reduction
+*/
+public func recursiveReduce<T, U>(initial: U, subitems: (T) -> [T], combine: (U, T) -> U, item: T) -> U {
+  var body: ((U, (T) -> [T], (U,T) -> U, T) -> U)!
+  body = { (i: U, s: (T) -> [T], c: (U,T) -> U, x: T) -> U in reduce(s(x), c(i, x)){body($0.0, s, c, $0.1)} }
+  return body(initial, subitems, combine, item)
 }
 
 /**
@@ -96,7 +138,8 @@ compressed:
 
 :returns: [T]
 */
-public func compressed<T>(array:[Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
+public func compressed<T>(array: [Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
+public prefix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
 
 /**
 flattened:
@@ -106,6 +149,10 @@ flattened:
 :returns: [T]
 */
 public func flattened<T>(array:[[T]]) -> [T] { var a: [T] = []; for s in array { a += s}; return a }
+public prefix func ∪<T>(array: [[T]]) -> [T] { return flattened(array) }
+
+public prefix func ‽∪<T>(array:[Optional<[T]>]) -> [T] { return flattened(compressed(array)) }
+
 
 /**
 The function is a simple wrapper around `reduce` that ignores the actual reduction as a way to visit every element

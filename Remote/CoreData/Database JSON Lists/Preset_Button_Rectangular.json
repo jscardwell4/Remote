@@ -1,0 +1,60 @@
+{
+  "name": "Rectangular (Small)",
+  "base-type": "button",
+  "shape": "rectangle",
+  "style": "gloss2",
+  "constraints": "self.width = self.height * 2 :: self.height = 50",
+  "titles": {
+    "normal": {
+      "font": "Helvetica Neue@20",
+      "foreground-color": "white",
+      "stroke-color": "white@50%",
+      "stroke-width": -2,
+      "alignment": "center",
+      "text": "Rectangular Button"
+    },
+    "highlighted.foreground-color": "#00AFFFFF"
+  },
+  "background-colors.normal": "#060606FF",
+  "title-edge-insets": "{20, 20, 20, 20}"
+},
+{
+  "name": "Rectangular (Medium)",
+  "base-type": "button",
+  "shape": "rectangle",
+  "style": "gloss2",
+  "constraints": "self.width = self.height * 2 :: self.height = 75",
+  "titles": {
+    "normal": {
+      "font": "Helvetica Neue@20",
+      "foreground-color": "white",
+      "stroke-color": "white@50%",
+      "stroke-width": -2,
+      "alignment": "center",
+      "text": "Rectangular Button"
+    },
+    "highlighted.foreground-color": "#00AFFFFF"
+  },
+  "background-colors.normal": "#060606FF",
+  "title-edge-insets": "{20, 20, 20, 20}"
+},
+{
+  "name": "Rectangular (Large)",
+  "base-type": "button",
+  "shape": "rectangle",
+  "style": "gloss2",
+  "constraints": "self.width = self.height * 2 :: self.height = 100",
+  "titles": {
+    "normal": {
+      "font": "Helvetica Neue@20",
+      "foreground-color": "white",
+      "stroke-color": "white@50%",
+      "stroke-width": -2,
+      "alignment": "center",
+      "text": "Rectangular Button"
+    },
+    "highlighted.foreground-color": "#00AFFFFF"
+  },
+  "background-colors.normal": "#060606FF",
+  "title-edge-insets": "{20, 20, 20, 20}"
+}

@@ -14,7 +14,7 @@
 #import "NSMutableString+MSKitAdditions.h"
 
 // keys used in dictionary entries for extended visual format syntax
-MSSTRING_CONST MSExtendedVisualFormatNametagName          = @"MSExtendedVisualFormatNametagName";
+MSSTRING_CONST MSExtendedVisualFormatIdentifierName       = @"MSExtendedVisualFormatIdentifierName";
 MSSTRING_CONST MSExtendedVisualFormatItem1Name            = @"MSExtendedVisualFormatItem1Name";
 MSSTRING_CONST MSExtendedVisualFormatAttribute1Name       = @"MSExtendedVisualFormatAttribute1Name";
 MSSTRING_CONST MSExtendedVisualFormatRelationName         = @"MSExtendedVisualFormatRelationName";
@@ -103,6 +103,12 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
   return pseudoNames[@(relation)];
 }
 
++ (NSString *)filterExtendedVisualFormatString:(NSString *)string {
+  NSMutableString * filteredString = [string mutableCopy];
+  [filteredString replaceRegEx:@"\\s*⏎\\s*|\\s*::\\s*|\\s*;\\s*" withString:@"\n"];
+  return filteredString;
+}
+
 /**
 
    Parses a string with 'extended' visual format into single statements from which constraints can
@@ -118,9 +124,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 
   NSMutableArray * constraintObjects = [@[] mutableCopy];
 
-  NSMutableString * filteredString = [string mutableCopy];
-  [filteredString replaceRegEx:@"\\s*⏎\\s*|\\s*::\\s*|\\s*;\\s*" withString:@"\n"];
-  [filteredString enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
+  [[self filterExtendedVisualFormatString:string] enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
     if (line.length > 0) {
 
       if ([line numberOfMatchesForRegEx:@"\\.center "] > 0) {
@@ -215,7 +219,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 
   NSDictionary * dictionary =
   [format dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex:regex
-                                                                 keys:@[MSExtendedVisualFormatNametagName,
+                                                                 keys:@[MSExtendedVisualFormatIdentifierName,
                                                                         MSExtendedVisualFormatItem1Name,
                                                                         MSExtendedVisualFormatAttribute1Name,
                                                                         MSExtendedVisualFormatRelationName,
@@ -234,7 +238,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 + (NSArray *)constraintDictionariesByParsingString:(NSString *)string {
   NSMutableArray * dictionaries = [@[] mutableCopy];
 
-  [string enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
+  [[self filterExtendedVisualFormatString:string] enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
     if (line.length > 0) {
       NSDictionary * dictionary = [self dictionaryFromExtendedVisualFormat:line];
       if (dictionary) [dictionaries addObject:dictionary];
@@ -311,7 +315,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 
     if (obj == [NSNull null])  return;
 
-    else if (key == MSExtendedVisualFormatNametagName) newDictionary[key] = dictionary[key];
+    else if (key == MSExtendedVisualFormatIdentifierName) newDictionary[key] = dictionary[key];
 
     else if (key == MSExtendedVisualFormatItem1Name || key == MSExtendedVisualFormatItem2Name) {
       if (!views[(NSString *)obj]) ThrowInvalidInternalInconsistency("missing view");
@@ -364,7 +368,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
 + (NSLayoutConstraint *)constraintFromDictionary:(NSDictionary *)dictionary {
   if (!dictionary) ThrowInvalidNilArgument(dictionary);
 
-  NSString        * nametag    = dictionary[MSExtendedVisualFormatNametagName];
+  NSString        * nametag    = dictionary[MSExtendedVisualFormatIdentifierName];
   UIView          * item1      = dictionary[MSExtendedVisualFormatItem1Name];
   NSLayoutAttribute attribute1 = [dictionary[MSExtendedVisualFormatAttribute1Name] integerValue];
   NSLayoutRelation  relatedBy  = [dictionary[MSExtendedVisualFormatRelationName] integerValue];
@@ -410,7 +414,7 @@ MSSTRING_CONST MSExtendedVisualFormatConstantOperatorName = @"MSExtendedVisualFo
   dictionary[MSExtendedVisualFormatMultiplierName] = @(constraint.multiplier);
   dictionary[MSExtendedVisualFormatConstantName]   = @(constraint.constant);
   dictionary[MSExtendedVisualFormatPriorityName]   = @(constraint.priority);
-  dictionary[MSExtendedVisualFormatNametagName]    = NilSafe(constraint.nametag);
+  dictionary[MSExtendedVisualFormatIdentifierName]    = NilSafe(constraint.nametag);
 
   return dictionary;
 }

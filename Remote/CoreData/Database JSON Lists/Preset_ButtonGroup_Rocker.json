@@ -1,0 +1,51 @@
+{
+  "name": "Rocker",
+  "base-type": "button-group",
+  "role": "rocker",
+  "shape": "rounded-rectangle",
+  "style": "border gloss1",
+  "constraints": [
+    "$0.height ≥ 150 :: $0.width = 70",
+    "$1.height = $0.height * 0.5 :: $1.left = $0.left :: $1.right = $0.right :: $1.top = $0.top",
+    "$2.height = $1.height :: $2.left = $0.left :: $2.right = $0.right :: $2.top = $1.bottom"
+  ],
+  "background-color": "black",
+  "subelements": [
+    {
+      "base-type": "button",
+      "role": "top",
+      "icons": {
+        "normal": {
+          "image": "Icons/Glyphish 4/Plus",
+          "color": "white"
+        },
+        "highlighted": {
+          "image": "Icons/Glyphish 4/Plus",
+          "color": "#00AFFFFF"
+        },
+        "disabled": {
+          "image": "Icons/Glyphish 4/Plus",
+          "color": "#7F7F7FFF"
+        }
+      }
+    },
+    {
+      "base-type": "button",
+      "role": "bottom",
+      "icons": {
+        "normal": {
+          "image": "Icons/Glyphish 4/Minus",
+          "color": "white"
+        },
+        "highlighted": {
+          "image": "Icons/Glyphish 4/Minus",
+          "color": "#00AFFFFF"
+        },
+        "disabled": {
+          "image": "Icons/Glyphish 4/Minus",
+          "color": "#7F7F7FFF"
+        }
+      }
+    }
+  ]
+}

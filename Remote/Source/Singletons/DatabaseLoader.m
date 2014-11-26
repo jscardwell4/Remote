@@ -29,6 +29,7 @@
 
 #define REMOTECONTROLLER_LOG_FLAG 2
 #define REMOTE_LOG_FLAG           2
+#define PRESET_LOG_FLAG           7
 #define IMAGES_LOG_FLAG           2
 #define POWERCOMMANDS_LOG_FLAG    2
 #define MANUFACTURERS_LOG_FLAG    2
@@ -68,6 +69,10 @@ void logImportedObject(id importedObject, int flag) {
 /// @return BOOL
 + (BOOL)loadData {
   MSLogDebug(@"beginning data load...");
+
+  [CoreDataManager saveWithBlockAndWait:^(NSManagedObjectContext *context) {
+    @autoreleasepool { [self loadPresets:context]; }
+  }];
 
   [CoreDataManager saveWithBlockAndWait:^(NSManagedObjectContext * context) {
     @autoreleasepool { [self loadImages:context]; }
@@ -162,6 +167,42 @@ void logImportedObject(id importedObject, int flag) {
   MSLogDebug(@"remote controller imported? %@", BOOLString((remoteController != nil)));
 
   logImportedObject(remoteController, REMOTECONTROLLER_LOG_FLAG);
+}
+
+
+/// loadPresets:
+/// @param context
++ (void)loadPresets:(NSManagedObjectContext *)context {
+  MSLogDebug(@"loading presets...");
+
+  NSString * fileName = @"Preset";
+  NSString * filePath = [MainBundle pathForResource:fileName ofType:@"json"];
+
+  NSError        * error = nil;
+  NSStringEncoding encoding;
+  NSString       * fileContent = [NSString stringWithContentsOfFile:filePath
+                                                       usedEncoding:&encoding
+                                                              error:&error];
+  assert(fileContent);
+
+  if (MSHandleErrors(error)) return;
+
+  logImportFile(fileName, fileContent, PRESET_LOG_FLAG);
+  NSArray * importObjects = [JSONSerialization objectByParsingFile:filePath options:1 error:&error];
+
+  if (MSHandleErrors(error)) return;
+
+  logParsedImportFile(fileName, importObjects, PRESET_LOG_FLAG);
+  if (PARSE_ONLY) return;
+
+  NSArray * presets = [PresetCategory importObjectsFromData:importObjects context:context];
+  MSLogDebug(@"%@ presets imported", [presets valueForKeyPath:@"@sum.totalItemCount"]);
+
+  error = nil;
+  [context save:&error];
+  MSHandleErrors(error);
+
+  logImportedObject(presets, PRESET_LOG_FLAG);
 }
 
 /// loadActivities:
@@ -327,7 +368,7 @@ void logImportedObject(id importedObject, int flag) {
   if (PARSE_ONLY) return;
 
   NSArray * images = [ImageCategory importObjectsFromData:importObjects context:context];
-  MSLogDebug(@"%lu images imported", (unsigned long)[images count]);
+  MSLogDebug(@"%@ images imported", [images valueForKeyPath:@"@sum.totalItemCount"]);
 
   logImportedObject(images, IMAGES_LOG_FLAG);
 }

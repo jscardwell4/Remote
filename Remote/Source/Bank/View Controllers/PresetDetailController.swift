@@ -25,6 +25,9 @@ class PresetDetailController: BankItemDetailController {
     super.init(item: item)
     precondition(item is Preset, "we should have been given a preset")
 
+    let element = (item as Preset).generateElement()
+    if element != nil { println("\(element!.JSONDictionary())") }
+    else { println("failed to create element from preset") }
     let detailsSection = BankItemDetailSection(sectionNumber: 0)
 
     detailsSection.addRow { return BankItemDetailLabelRow(pushableCategory: self.preset.presetCategory!, label: "Category") }

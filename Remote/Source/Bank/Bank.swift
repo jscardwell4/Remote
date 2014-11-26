@@ -54,6 +54,18 @@ func sortByName<T: NamedModel>(inout array: [T]?) { array?.sort{$0.0.name < $0.1
   var parentCategory: BankDisplayItemCategory?   { get set }
 }
 
+
+/**
+recursiveItemCountForCategory:
+
+:param: category BankDisplayItemCategory
+
+:returns: Int
+*/
+func recursiveItemCountForCategory(category: BankDisplayItemCategory) -> Int {
+  return recursiveReduce(0, {$0.subcategories}, {$0.0 + $0.1.items.count}, category)
+}
+
 /**
 categoryPath:
 

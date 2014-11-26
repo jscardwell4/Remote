@@ -1,0 +1,67 @@
+{
+  "name": "1 x 3",
+  "base-type": "button-group",
+  "constraints": [
+    "$0.height ≥ 150",
+    "$0.width ≥ 132",
+    "$1.left = $0.left :: $1.right = $0.right :: $1.top = $0.top",
+    "$2.height = $1.height :: $2.left = $0.left :: $2.right = $0.right :: $2.top = $1.bottom + 4",
+    "$3.bottom = $0.bottom :: $3.height = $1.height :: $3.left = $0.left :: $3.right = $0.right :: $3.top = $2.bottom + 4"
+  ],
+  "subelements": [
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@20",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 1"
+        },
+        "highlighted.foreground-color": "#00AFFFFF"
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@20",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 2"
+        },
+        "highlighted.foreground-color": "#00AFFFFF"
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "base-type": "button",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@20",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Button 3"
+        },
+        "highlighted.foreground-color": "#00AFFFFF"
+      },
+      "background-colors.normal": "#060606FF",
+      "title-edge-insets": "{20, 20, 20, 20}"
+    }
+  ]
+}

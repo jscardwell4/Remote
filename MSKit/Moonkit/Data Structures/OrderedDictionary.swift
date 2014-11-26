@@ -8,12 +8,11 @@
 
 import Foundation
 
-public
-struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
-  typealias KeyType = Key
-  typealias ValueType = Value
-  typealias Element = (KeyType, ValueType)
-  typealias Index = DictionaryIndex<KeyType, ValueType>
+public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
+  public typealias KeyType = Key
+  public typealias ValueType = Value
+  public typealias Element = (KeyType, ValueType)
+  public typealias Index = DictionaryIndex<KeyType, ValueType>
 
   private var storage: [KeyType:ValueType]
   private var indexKeys: [KeyType]
@@ -93,25 +92,25 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /// MARK: - Updating and removing values
   ////////////////////////////////////////////////////////////////////////////////
 
-  mutating func setValue(value: ValueType, forKey key: KeyType) {
+  public mutating func setValue(value: ValueType, forKey key: KeyType) {
     if !contains(indexKeys, key) { indexKeys.append(key) }
     storage[key] = value
   }
 
-  mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
+  public mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
     let currentValue: ValueType? = contains(indexKeys, key) ? storage[key] : nil
     if !contains(indexKeys, key) { indexKeys.append(key) }
     storage[key] = value
     return currentValue
   }
 
-  mutating func removeAtIndex(index: DictionaryIndex<KeyType, ValueType>) {
+  public mutating func removeAtIndex(index: DictionaryIndex<KeyType, ValueType>) {
     let (k, _) = self[index]
     indexKeys.removeAtIndex(find(indexKeys, k)!)
     storage.removeAtIndex(index)
   }
 
-  mutating func removeValueForKey(key: KeyType) -> ValueType? {
+  public mutating func removeValueForKey(key: KeyType) -> ValueType? {
     if let idx = find(indexKeys, key) {
       indexKeys.removeAtIndex(idx)
       return storage.removeValueForKey(key)
@@ -120,13 +119,13 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     }
   }
 
-  mutating func removeAll(keepCapacity: Bool = false) {
+  public mutating func removeAll(keepCapacity: Bool = false) {
     indexKeys.removeAll(keepCapacity: keepCapacity)
     storage.removeAll(keepCapacity: keepCapacity)
   }
 
 
-  func filter(includeElement: (Element) -> Bool) -> OrderedDictionary<KeyType, ValueType> {
+  public func filter(includeElement: (Element) -> Bool) -> OrderedDictionary<KeyType, ValueType> {
     var result: OrderedDictionary<KeyType, ValueType> = [:]
     for (k, v) in self { if includeElement((k, v)) { result.setValue(v, forKey: k) } }
     return result
@@ -139,7 +138,7 @@ struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
 /// MARK: - Descriptions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum ColonFormatOption {
+public enum ColonFormatOption {
   case Follow (leftPadding: Int, rightPadding: Int)
   case Align (leftPadding: Int, rightPadding: Int)
   var leftPadding: Int {
@@ -166,7 +165,7 @@ extension  OrderedDictionary: Printable, DebugPrintable {
   //  one    :  1
   //  two    :  2
   //  three  :  3
-  func formattedDescription(indent:Int = 0, colonFormat:ColonFormatOption? = nil) -> String {
+  public func formattedDescription(indent:Int = 0, colonFormat:ColonFormatOption? = nil) -> String {
     var descriptionComponents = [String]()
     let keyDescriptions = indexKeys.map { "\($0)" }
     let maxKeyLength = keyDescriptions.reduce(0) { max($0, countElements($1)) }
@@ -256,7 +255,7 @@ public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType 
 /// MARK: - Operations
 ////////////////////////////////////////////////////////////////////////////////
 
-func +<K,V>(lhs: OrderedDictionary<K,V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K,V> {
+public func +<K,V>(lhs: OrderedDictionary<K,V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K,V> {
   let keys: [K] = lhs.keys + rhs.keys
   let values: [V] = lhs.values + rhs.values
   return OrderedDictionary<K,V>(keys: keys, values: values)

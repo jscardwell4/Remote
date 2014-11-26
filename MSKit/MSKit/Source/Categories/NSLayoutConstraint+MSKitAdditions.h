@@ -9,7 +9,7 @@
 @import UIKit;
 #import "MSKitDefines.h"
 
-MSEXTERN_STRING MSExtendedVisualFormatNametagName;
+MSEXTERN_STRING MSExtendedVisualFormatIdentifierName;
 MSEXTERN_STRING MSExtendedVisualFormatItem1Name;
 MSEXTERN_STRING MSExtendedVisualFormatAttribute1Name;
 MSEXTERN_STRING MSExtendedVisualFormatRelationName;

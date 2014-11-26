@@ -52,6 +52,105 @@ class ConstraintManager: NSObject {
   */
   init(element: RemoteElement) { super.init(); remoteElement = element; refreshConfig() }
 
+
+  /**
+  replacementFormatForString:
+
+  :param: format String
+
+  :returns: String
+  */
+  func replacementFormatForString(format: String) -> String {
+
+    let identifiers = self.remoteElement.childElements.map{$0.identifier}
+    if identifiers.count == 0 { return format }
+
+
+
+    let regex = ~/"\\$([0-9]+)"
+
+    var replacementFormat = format
+    let matchingRanges = regex /…≈ format
+    var removeCount = 0
+    var insertCount = 0
+    for r in matchingRanges {
+      if let matchRange = r {
+        let matchedSubstring = format[matchRange]
+        let i = dropFirst(matchedSubstring).toInt()!
+        let replacement = identifiers[i]
+        let start = advance(replacementFormat.startIndex, matchRange.startIndex + insertCount - removeCount)
+        let end = advance(replacementFormat.startIndex, matchRange.endIndex + insertCount - removeCount)
+        let indexRange = Range<String.Index>(start: start, end: end)
+
+        replacementFormat.replaceRange(indexRange, with: identifiers[i])
+        removeCount += countElements(matchedSubstring)
+        insertCount += countElements(replacement)
+      }
+    }
+    let result = replacementFormat.stringByReplacingOccurrencesOfString("self", withString: remoteElement.identifier)
+    return result
+  }
+
+  /**
+  elementFromDirectory:RemoteElement>:forString:
+
+  :param: directory OrderedDictionary<String
+  :param: RemoteElement>
+  :param: string String
+
+  :returns: RemoteElement?
+  */
+  class func elementFromDirectory(directory: OrderedDictionary<String, RemoteElement>,
+                         forString string: String) -> RemoteElement?
+  {
+    var element: RemoteElement?
+    if string.hasPrefix("$") {
+      let i = dropFirst(string).toInt()!
+      if contains(0..<directory.count, i) { element = directory.values[i] }
+    }
+    else { element = directory[string] }
+    return element
+  }
+
+  /**
+  constraintFromPseudoConstraint:
+
+  :param: pseudo NSLayoutPseudoConstraint
+
+  :returns: Constraint?
+  */
+  class func constraintFromPseudoConstraint(pseudo: NSLayoutPseudoConstraint,
+                             usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
+  {
+    var constraint: Constraint?
+    if let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
+      var secondElement: RemoteElement?
+      if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
+      let secondAttribute = NSLayoutAttribute(pseudoName: pseudo.secondAttribute)
+      if secondAttribute == .NotAnAttribute || secondElement != nil {
+        let firstAttribute = NSLayoutAttribute(pseudoName: pseudo.firstAttribute)
+        let relation = NSLayoutRelation(pseudoName: pseudo.relation)
+        var multiplier: CGFloat = 1.0
+        if let m = pseudo.multiplier { multiplier = CGFloat((m as NSString).floatValue) }
+        var constant: CGFloat = 0.0
+        if let c = pseudo.constant { constant = CGFloat((c as NSString).floatValue) }
+        if pseudo.constantOperator != nil && pseudo.constantOperator! == "-" { constant = -constant }
+        constraint = Constraint(item: firstElement,
+                                attribute: firstAttribute,
+                                relatedBy: relation,
+                                toItem: secondElement,
+                                attribute: secondAttribute,
+                                multiplier: multiplier,
+                                constant: constant)
+        var priority: Float = 1000.0
+        if let p = pseudo.priority { priority = (p as NSString).floatValue }
+        constraint?.priority = priority
+      }
+    }
+
+    return constraint
+  }
+
   /**
   Creates and adds new `Constraint` objects for the managed element.
 
@@ -59,47 +158,28 @@ class ConstraintManager: NSObject {
   */
   func setConstraintsFromString(format: String) {
 
+
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
+
+      let pseudoConstraints = NSLayoutPseudoConstraint.pseudoConstraintsByParsingFormat(format)
 
       if self.remoteElement.ownedConstraints.count > 0 {
         self.remoteElement.managedObjectContext?.deleteObjects(self.remoteElement.constraints)
       }
-      var directory = [self.remoteElement.identifier: self.remoteElement]
-      for subelement in self.remoteElement.childElements { directory[subelement.identifier] = subelement }
-      for dictionary in NSLayoutConstraint.constraintDictionariesByParsingString(format) {
-        if let element1ID = dictionary[MSExtendedVisualFormatItem1Name] as? String {
-          if let element1 = directory[element1ID] {
-            let element2ID: String? = dictionary[MSExtendedVisualFormatItem2Name] as? String
-            let element2: RemoteElement? = element2ID != nil ? directory[element2ID!] : nil
-            var multiplier: CGFloat = 1.0
-            if let m = dictionary[MSExtendedVisualFormatMultiplierName] { multiplier = CGFloat(m.floatValue) }
-            var constant: CGFloat = 0.0
-            if let c = dictionary[MSExtendedVisualFormatConstantName] { constant = CGFloat(c.floatValue) }
-            if let sign = dictionary[MSExtendedVisualFormatConstantOperatorName] as? String {
-              if sign == "-" { constant = -constant }
-            }
-            if let attr1Pseudo = dictionary[MSExtendedVisualFormatAttribute1Name] as? String {
-              let attr1 = NSLayoutConstraint.attributeForPseudoName(attr1Pseudo)
-              if let attr2Pseudo = dictionary[MSExtendedVisualFormatAttribute2Name] as? String {
-                let attr2 = NSLayoutConstraint.attributeForPseudoName(attr2Pseudo)
-                if let relationPseudo = dictionary[MSExtendedVisualFormatRelationName] as? String {
-                  let relation = NSLayoutConstraint.relationForPseudoName(relationPseudo)
-                  let constraint = Constraint(item: element1,
-                                              attribute: attr1,
-                                              relatedBy: relation,
-                                              toItem: element2,
-                                              attribute: attr2,
-                                              multiplier: multiplier,
-                                              constant: constant)
-                  if let priority = dictionary[MSExtendedVisualFormatPriorityName] {constraint.priority = priority.floatValue }
-                  constraint.owner = self.remoteElement
-                }
-              }
-            }
-          }
+
+      var directory: OrderedDictionary<String, RemoteElement> = [self.remoteElement.identifier: self.remoteElement]
+      apply(self.remoteElement.childElements){directory.setValue($0, forKey: $0.identifier)}
+
+      var constraints: [Constraint] = []
+      apply(pseudoConstraints){
+        if let c = ConstraintManager.constraintFromPseudoConstraint($0, usingDirectory: directory) {
+          constraints.append(c)
         }
       }
+
+      self.remoteElement.ownedConstraints = constraints
+
     }
 
   }

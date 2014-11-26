@@ -1,0 +1,51 @@
+{
+  "name": "Mode Selection",
+  "base-type": "button-group",
+  "role": "selection-panel",
+  "shape": "rounded-rectangle",
+  "autohide": true,
+  "constraints": [
+    "$0.height ≥ 240 :: $0.width = 150",
+    "$1.bottom = $2.top :: $1.centerX = $0.centerX :: $1.top = $0.top :: $1.width = $0.width",
+    "$2.bottom = $0.bottom :: $2.centerX = $1.centerX :: $2.height = $1.height :: $2.width = $1.width"
+  ],
+  "background-color": "white@75%",
+  "subelements": [
+    {
+      "key": "default",
+      "base-type": "button",
+      "role": "selection-panel",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@32",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Default"
+        },
+        "selected.foreground-color": "yellow",
+        "highlighted.foreground-color": "yellow"
+      },
+      "title-edge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "key": "other",
+      "base-type": "button",
+      "role": "selection-panel",
+      "titles": {
+        "normal": {
+          "font": "Helvetica Neue@32",
+          "foreground-color": "white",
+          "stroke-color": "white@50%",
+          "stroke-width": -2,
+          "alignment": "center",
+          "text": "Other"
+        },
+        "selected.foreground-color": "yellow",
+        "highlighted.foreground-color": "yellow"
+      },
+      "title-edge-insets": "{20, 20, 20, 20}"
+    }
+  ]
+}
