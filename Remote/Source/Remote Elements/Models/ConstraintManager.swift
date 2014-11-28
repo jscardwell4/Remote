@@ -62,10 +62,8 @@ class ConstraintManager: NSObject {
   */
   func replacementFormatForString(format: String) -> String {
 
-    let identifiers = self.remoteElement.childElements.map{$0.identifier}
-    if identifiers.count == 0 { return format }
-
-
+    var identifiers = [remoteElement.identifier]
+    identifiers.extend(remoteElement.childElements.map{$0.identifier})
 
     let regex = ~/"\\$([0-9]+)"
 
@@ -92,66 +90,6 @@ class ConstraintManager: NSObject {
   }
 
   /**
-  elementFromDirectory:RemoteElement>:forString:
-
-  :param: directory OrderedDictionary<String
-  :param: RemoteElement>
-  :param: string String
-
-  :returns: RemoteElement?
-  */
-  class func elementFromDirectory(directory: OrderedDictionary<String, RemoteElement>,
-                         forString string: String) -> RemoteElement?
-  {
-    var element: RemoteElement?
-    if string.hasPrefix("$") {
-      let i = dropFirst(string).toInt()!
-      if contains(0..<directory.count, i) { element = directory.values[i] }
-    }
-    else { element = directory[string] }
-    return element
-  }
-
-  /**
-  constraintFromPseudoConstraint:
-
-  :param: pseudo NSLayoutPseudoConstraint
-
-  :returns: Constraint?
-  */
-  class func constraintFromPseudoConstraint(pseudo: NSLayoutPseudoConstraint,
-                             usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
-  {
-    var constraint: Constraint?
-    if let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
-      var secondElement: RemoteElement?
-      if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
-      let secondAttribute = NSLayoutAttribute(pseudoName: pseudo.secondAttribute)
-      if secondAttribute == .NotAnAttribute || secondElement != nil {
-        let firstAttribute = NSLayoutAttribute(pseudoName: pseudo.firstAttribute)
-        let relation = NSLayoutRelation(pseudoName: pseudo.relation)
-        var multiplier: CGFloat = 1.0
-        if let m = pseudo.multiplier { multiplier = CGFloat((m as NSString).floatValue) }
-        var constant: CGFloat = 0.0
-        if let c = pseudo.constant { constant = CGFloat((c as NSString).floatValue) }
-        if pseudo.constantOperator != nil && pseudo.constantOperator! == "-" { constant = -constant }
-        constraint = Constraint(item: firstElement,
-                                attribute: firstAttribute,
-                                relatedBy: relation,
-                                toItem: secondElement,
-                                attribute: secondAttribute,
-                                multiplier: multiplier,
-                                constant: constant)
-        var priority: Float = 1000.0
-        if let p = pseudo.priority { priority = (p as NSString).floatValue }
-        constraint?.priority = priority
-      }
-    }
-
-    return constraint
-  }
-
-  /**
   Creates and adds new `Constraint` objects for the managed element.
 
   :param: format String Extended visual format string from which the constraints should be parsed.
@@ -173,7 +111,7 @@ class ConstraintManager: NSObject {
 
       var constraints: [Constraint] = []
       apply(pseudoConstraints){
-        if let c = ConstraintManager.constraintFromPseudoConstraint($0, usingDirectory: directory) {
+        if let c = Constraint.constraintFromPseudoConstraint($0, usingDirectory: directory) {
           constraints.append(c)
         }
       }

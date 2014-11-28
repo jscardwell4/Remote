@@ -76,7 +76,7 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Remote Editor"];
 }
 
-+ (REBackgroundEditingViewController *)backgroundEditingViewController
++ (BackgroundEditingController *)backgroundEditingController
 {
     return [auxiliaryStoryboard instantiateViewControllerWithIdentifier:@"Background Editor"];
 }

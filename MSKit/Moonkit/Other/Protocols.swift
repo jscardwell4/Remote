@@ -14,8 +14,16 @@ public protocol JSONValueConvertible {
   init?(JSONValue: JSONValueType)
 }
 
+public protocol Presentable {
+  var title: String { get }
+}
+
 public protocol Divisible {
   func /(lhs: Self, rhs: Self) -> Self
+}
+
+public protocol EnumerableType {
+  class func enumerate(block: (Self) -> Void)
 }
 
 // causes ambiguity

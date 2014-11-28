@@ -394,7 +394,7 @@ class TitleAttributes: ModelObject {
     set { storage[propertyKey.rawValue] = newValue }
   }
 
-  enum PropertyKey: String, JSONValueConvertible {
+  enum PropertyKey: String, JSONValueConvertible, EnumerableType {
     case Text                   = "text"
     case IconName               = "iconName"
     case Font                   = "font"
@@ -453,11 +453,11 @@ class TitleAttributes: ModelObject {
     }
 
     /**
-    enumeratePropertyKeys:
+    enumerate:
 
     :param: block (PropertyKey) -> Void
     */
-    static func enumeratePropertyKeys(block: (PropertyKey) -> Void) {
+    static func enumerate(block: (PropertyKey) -> Void) {
       let propertyKeys: [PropertyKey] = [.Font,
                                          .ForegroundColor,
                                          .BackgroundColor,
@@ -557,7 +557,7 @@ class TitleAttributes: ModelObject {
     super.updateWithData(data)
 
     if let jsonData = data as? [String:AnyObject] {
-      PropertyKey.enumeratePropertyKeys {
+      PropertyKey.enumerate {
         (propertyKey: PropertyKey) -> Void in
 
         var storedValue: AnyObject?
@@ -629,7 +629,7 @@ class TitleAttributes: ModelObject {
   */
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    PropertyKey.enumeratePropertyKeys { if let value: AnyObject = self[$0] { dictionary[$0.JSONValue] = value } }
+    PropertyKey.enumerate { if let value: AnyObject = self[$0] { dictionary[$0.JSONValue] = value } }
     return dictionary
   }
 

@@ -19,6 +19,62 @@ public extension String {
 
   public var length: Int { return countElements(self) }
 
+  public var dashcaseString: String {
+    if isDashcase { return self }
+    else if isCamelcase {
+      var s = String(self[startIndex])
+      for c in String(dropFirst(self)).unicodeScalars {
+        switch c.value {
+          case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
+          default: s.append(c)
+        }
+      }
+      return s
+    } else { return String(map(self){$0 == " " ? "-" : $0}).lowercaseString }
+  }
+  public var titlecaseString: String {
+    if isTitlecase { return self }
+    else if isDashcase { return String(map(self){$0 == "-" ? " " : $0}).capitalizedString }
+    else if isCamelcase {
+      var s = String(self[startIndex]).uppercaseString
+      for c in String(dropFirst(self)).unicodeScalars {
+        switch c.value {
+          case 65...90: s += " "; s.append(c)
+          default: s.append(c)
+        }
+      }
+      return s
+    } else {
+      return capitalizedString
+    }
+  }
+  public var camelcaseString: String {
+    if isCamelcase { return self }
+    else if isTitlecase { return String(self[startIndex]).lowercaseString + String(filter(dropFirst(self)){$0 != " "}) }
+    else if isDashcase {
+      var s = String(self[startIndex]).lowercaseString
+      var previousCharacterWasDash = false
+      for c in String(dropFirst(self)).unicodeScalars {
+        switch c.value {
+          case 45: previousCharacterWasDash = true
+          default:
+            if previousCharacterWasDash {
+              s += String(c).uppercaseString
+              previousCharacterWasDash = false
+            } else {
+              s += String(c).lowercaseString
+            }
+        }
+      }
+      return s
+    } else {
+      return capitalizedString
+    }
+  }
+  public var isCamelcase: Bool { return ~/"^\\p{Ll}+(\\p{Lu}+\\p{Ll}*)*$" ~= self }
+  public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
+  public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
+
   /**
   join:
 

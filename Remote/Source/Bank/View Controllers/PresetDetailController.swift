@@ -14,6 +14,7 @@ import MoonKit
 class PresetDetailController: BankItemDetailController {
 
   var preset: Preset { return item as Preset }
+  let element: RemoteElement!
 
   /**
   initWithItem:editing:
@@ -23,20 +24,48 @@ class PresetDetailController: BankItemDetailController {
   */
   required init?(item: BankDisplayItemModel) {
     super.init(item: item)
-    precondition(item is Preset, "we should have been given a preset")
 
-    let element = (item as Preset).generateElement()
-    if element != nil { println("\(element!.JSONDictionary())") }
-    else { println("failed to create element from preset") }
-    let detailsSection = BankItemDetailSection(sectionNumber: 0)
+    if let preset = self.item as? Preset {
+      assert(preset.managedObjectContext != nil && preset.managedObjectContext! == context)
 
-    detailsSection.addRow { return BankItemDetailLabelRow(pushableCategory: self.preset.presetCategory!, label: "Category") }
-    detailsSection.addRow { return BankItemDetailLabelRow(label: "Type", value: "FIXME") }
+      if let element = preset.generateElement() {
+        self.element = element
+        let detailsSection = BankItemDetailSection(sectionNumber: 0)
 
-    let previewSection = BankItemDetailSection(sectionNumber: 1)
-    previewSection.addRow { return BankItemDetailImageRow(previewableItem: self.preset) }
+        detailsSection.addRow { return BankItemDetailLabelRow(pushableCategory: preset.presetCategory!, label: "Category") }
+        detailsSection.addRow { return BankItemDetailLabelRow(label: "Base Type", value: preset.attributes.baseType.title) }
+        detailsSection.addRow {
+          let row = BankItemDetailButtonRow()
+          row.name = "Role"
+          row.info = preset.attributes.role.JSONValue.titlecaseString
+          row.didSelectItem = {
+            if !self.didCancel {
+              var attributes = self.preset.attributes
+              attributes.role = RemoteElement.Role(JSONValue: ($0 as String).dashcaseString)
+              self.preset.attributes = attributes
+            }
+          }
 
-    sections = [detailsSection, previewSection]
+          return row
+        }
+
+        // TODO: shape
+        // TODO: style
+        // TODO: backgroundImage
+        // TODO: backgroundImageAlpha
+        // TODO: backgroundColor
+        // TODO: subelements
+        // TODO: constraints
+
+
+        let previewSection = BankItemDetailSection(sectionNumber: 1)
+        previewSection.addRow { return BankItemDetailImageRow(previewableItem: preset) }
+
+        sections = [detailsSection, previewSection]
+
+      } else { return nil }
+
+    } else { return nil }
 
   }
 

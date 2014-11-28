@@ -28,5 +28,7 @@ class BankItemDetailTextViewRow: BankItemDetailTextInputRow {
     }
   }
 
+  /** init */
+  convenience init() { self.init(identifier: .TextView) }
 
 }

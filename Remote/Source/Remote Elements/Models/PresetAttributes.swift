@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class PresetAttributes {
+struct PresetAttributes {
 
   private var storage: [String:AnyObject]
   var dictionaryValue: NSDictionary { return storage as NSDictionary }
@@ -34,14 +34,14 @@ class PresetAttributes {
     set { storage["role"] = newValue.JSONValue }
   }
 
-  var shape: RemoteElement.Shape? {
+  var shape: RemoteElement.Shape {
     get { return RemoteElement.Shape(JSONValue: storage["shape"] as? String ?? "undefined") }
-    set { storage["shape"] = newValue?.JSONValue }
+    set { storage["shape"] = newValue.JSONValue }
   }
 
-  var style: RemoteElement.Style? {
+  var style: RemoteElement.Style {
     get { return RemoteElement.Style(JSONValue: storage["style"] as? String ?? "undefined") }
-    set { storage["style"] = newValue?.JSONValue }
+    set { storage["style"] = newValue.JSONValue }
   }
 
   var backgroundImage: Image? {

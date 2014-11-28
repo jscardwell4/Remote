@@ -33,5 +33,7 @@ class BankItemDetailStepperRow: BankItemDetailRow {
       stepperCell.stepperStepValue = stepperStepValue
   	}
   }
+  /** init */
+  convenience init() { self.init(identifier: .Stepper) }
 
 }

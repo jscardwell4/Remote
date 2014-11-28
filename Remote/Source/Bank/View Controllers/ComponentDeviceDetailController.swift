@@ -127,7 +127,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         self.presentViewController(alert, animated: true, completion: nil)
       }
       row.pickerSelection = self.componentDevice.codeSet
-      row.pickerData = sortedByName(self.componentDevice.manufacturer?.codeSets.allObjects as? [IRCodeSet] ?? [])
+      row.pickerData = sortedByName(self.componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
 
       return row
     }
@@ -196,7 +196,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
             }
           }
       }
-      row.pickerData = self.componentDevice.codeSet?.codes
+      row.pickerData = self.componentDevice.codeSet?.items as? [IRCode]
 
       return row
     }
@@ -225,7 +225,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
             }
           }
       }
-      row.pickerData = self.componentDevice.codeSet?.codes
+      row.pickerData = self.componentDevice.codeSet?.items as? [IRCode]
 
       return row
     }

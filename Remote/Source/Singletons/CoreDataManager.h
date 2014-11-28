@@ -35,6 +35,10 @@
 + (void)saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block
            completion:(void(^)(BOOL success, NSError *error))completion;
 + (void)saveWithBlockAndWait:(void(^)(NSManagedObjectContext *localContext))block;
++ (void)backgroundSaveWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
++ (void)backgroundSaveWithBlock:(void(^)(NSManagedObjectContext *localContext))block
+                     completion:(void(^)(BOOL success, NSError *error))completion;
++ (void)backgroundSaveWithBlockAndWait:(void(^)(NSManagedObjectContext *localContext))block;
 
 @end
 

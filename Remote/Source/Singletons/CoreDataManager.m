@@ -337,4 +337,74 @@ MSSTATIC_STRING_CONST kCoreDataManagerSQLiteName = @"Remote.sqlite";
   }];
 }
 
++ (void)backgroundSaveWithBlock:(void (^)(NSManagedObjectContext * localContext))block {
+  NSManagedObjectContext * childContext = [self childContextOfType:NSPrivateQueueConcurrencyType];
+  childContext.undoManager = nil;
+  [childContext performBlock:^{
+    if (block) block(childContext);
+    NSError * error = nil;
+    if ([childContext hasChanges]) {
+      [childContext save:&error];
+      MSHandleErrors(error);
+    }
+    if (!error && [kDefaultContext hasChanges])
+      [kDefaultContext performBlock:^{
+        NSError * error = nil;
+        [kDefaultContext save:&error];
+        MSHandleErrors(error);
+      }];
+  }];
+}
+
++ (void)backgroundSaveWithBlock:(void (^)(NSManagedObjectContext * localContext))block
+                     completion:(void (^)(BOOL success, NSError * error))completion {
+  if (!completion)
+    ThrowInvalidNilArgument("completion block is nil, perhaps you should be using +[saveWithBlock:]?");
+
+  NSManagedObjectContext * childContext = [self childContextOfType:NSPrivateQueueConcurrencyType];
+  childContext.undoManager = nil;
+  [childContext performBlock:^{
+
+    if (block) block(childContext);
+    __block BOOL success = YES;
+    __block NSError * error = nil;
+    if ([childContext hasChanges]) {
+      success = [childContext save:&error];
+      MSHandleErrors(error);
+    }
+    if (success) {
+      if (!error && [kDefaultContext hasChanges])
+        [kDefaultContext performBlock:^{
+          NSError * error = nil;
+          success = [kDefaultContext save:&error];
+          MSHandleErrors(error);
+          completion(success, error);
+        }];
+
+    } else { completion(success, error); }
+
+  }];
+}
+
++ (void)backgroundSaveWithBlockAndWait:(void (^)(NSManagedObjectContext * localContext))block {
+  NSManagedObjectContext * childContext = [self childContextOfType:NSPrivateQueueConcurrencyType];
+  childContext.undoManager = nil;
+  __block NSError * error = nil;
+  __block BOOL success = true;
+
+  [childContext performBlockAndWait:^{
+    if (block) block(childContext);
+    if ([childContext hasChanges]) {
+      success = [childContext save:&error];
+      MSHandleErrors(error);
+    }
+  }];
+
+  if (success && [kDefaultContext hasChanges])
+    [kDefaultContext performBlockAndWait:^{
+      success = [kDefaultContext save:&error];
+      MSHandleErrors(error);
+    }];
+}
+
 @end

@@ -65,6 +65,11 @@ class Image: BankableModelObject {
   var image: UIImage? { return UIImage(named: assetName) }
   override var commentedUUID: String { var uuidCopy: NSString = uuid!; uuidCopy.comment = " // \(assetName)"; return uuidCopy }
 
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
   override func JSONDictionary() -> MSDictionary! {
     let dictionary = super.JSONDictionary()
     safeSetValueForKeyPath("imageCategory.commentedUUID", forKey: "category", inDictionary: dictionary)

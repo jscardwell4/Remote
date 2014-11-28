@@ -12,7 +12,7 @@ import CoreData
 import MoonKit
 
 @objc(Constraint)
-class Constraint: ModelObject {
+class Constraint: ModelObject, Printable, DebugPrintable {
 
   var pseudoConstraint: NSLayoutPseudoConstraint {
     var pseudo = NSLayoutPseudoConstraint()
@@ -22,28 +22,19 @@ class Constraint: ModelObject {
     pseudo.secondItem = secondItem?.identifier
     pseudo.secondAttribute = secondAttribute.pseudoName
     pseudo.multiplier = "\(multiplier)"
-    pseudo.constant = "\(abs(constant))"
-    pseudo.constantOperator = constant < 0.0 ? "-" : "+"
+    pseudo.constant = (constant < 0.0 ? "-" : "+") + "\(abs(constant))"
     pseudo.priority = "\(priority)"
+    pseudo.identifier = identifier
     return pseudo
   }
 
+  @NSManaged var identifier: String?
+
   @NSManaged var primitiveTag: NSNumber
   var tag: Int {
-    get {
-      willAccessValueForKey("tag")
-      let tag = primitiveTag.integerValue
-      didAccessValueForKey("tag")
-      return tag
-    }
-    set {
-      willChangeValueForKey("tag")
-      primitiveTag = newValue
-      didChangeValueForKey("tag")
-    }
+    get { willAccessValueForKey("tag"); let tag = primitiveTag.integerValue; didAccessValueForKey("tag"); return tag }
+    set { willChangeValueForKey("tag"); primitiveTag = newValue; didChangeValueForKey("tag") }
   }
-
-  @NSManaged var key: String?
 
   @NSManaged var primitiveFirstAttribute: NSNumber
   var firstAttribute: NSLayoutAttribute {
@@ -192,25 +183,88 @@ class Constraint: ModelObject {
                              constant: CGFloat(constant?.doubleValue ?? 0.0)) }
   }
 
+  /**
+  elementFromDirectory:RemoteElement>:forString:
+
+  :param: directory OrderedDictionary<String
+  :param: RemoteElement>
+  :param: string String
+
+  :returns: RemoteElement?
+  */
+  class func elementFromDirectory(directory: OrderedDictionary<String, RemoteElement>,
+                        forString string: String) -> RemoteElement?
+  {
+    var element: RemoteElement?
+    if string.hasPrefix("$") {
+      let i = dropFirst(string).toInt()!
+      if contains(0..<directory.count, i) { element = directory.values[i] }
+    }
+    else { element = directory[string] }
+    return element
+  }
+
+  /**
+  constraintFromPseudoConstraint:
+
+  :param: pseudo NSLayoutPseudoConstraint
+
+  :returns: Constraint?
+  */
+  class func constraintFromPseudoConstraint(pseudo: NSLayoutPseudoConstraint,
+                              usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
+  {
+    var constraint: Constraint?
+    if let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
+      var secondElement: RemoteElement?
+      if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
+      let secondAttribute = NSLayoutAttribute(pseudoName: pseudo.secondAttribute)
+      if secondAttribute == .NotAnAttribute || secondElement != nil {
+        let firstAttribute = NSLayoutAttribute(pseudoName: pseudo.firstAttribute)
+        let relation = NSLayoutRelation(pseudoName: pseudo.relation)
+        var multiplier: CGFloat = 1.0
+        if let m = pseudo.multiplier { multiplier = CGFloat((m as NSString).floatValue) }
+        var constant: CGFloat = 0.0
+        if let c = pseudo.constant { constant = CGFloat((c as NSString).floatValue) }
+        constraint = Constraint(item: firstElement,
+                                attribute: firstAttribute,
+                                relatedBy: relation,
+                                toItem: secondElement,
+                                attribute: secondAttribute,
+                                multiplier: multiplier,
+                                constant: constant)
+        var priority: Float = 1000.0
+        if let p = pseudo.priority { priority = (p as NSString).floatValue }
+        constraint?.priority = priority
+        constraint?.identifier = pseudo.identifier
+      }
+    }
+
+    return constraint
+  }
+
   var manager: ConstraintManager { return firstItem.constraintManager }
 
   var staticConstraint: Bool { return secondItem == nil }
 
   override var description: String {
-    let item1 = firstItem.identifier //name.camelCase()
-    let attr1 = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute)
-    let relatedBy = NSLayoutConstraint.pseudoNameForRelation(relation)
-    let item2 = secondItem?.identifier //name.camelCase()
-    let attr2 = secondAttribute == .NotAnAttribute
-                                ? nil
-                                : NSLayoutConstraint.pseudoNameForAttribute(secondAttribute)
-    let operatorString = constant < 0.0 ? "-" : "+"
-    var string = "\(item1).\(attr1) \(relatedBy) "
-    if item2 != nil && attr2 != nil { string += "\(item2!).\(attr2!) " }
-    if multiplier != 1.0 { string += "* \(multiplier) " }
-    if constant != 0.0 { string += "\(operatorString) \(abs(constant)) "}
-    string += "@\(priority)"
-    return string
+    var pseudo = pseudoConstraint
+    pseudo.firstItem = firstItem.name!.camelCase()
+    pseudo.secondItem = secondItem?.name!.camelCase()
+    return pseudo.description
+  }
+
+  override var debugDescription: String {
+    return "\n".join(description,
+      "firstItem: \(firstItem)",
+      "secondItem: \(secondItem)",
+      "firstAttribute: \(firstAttribute)",
+      "secondAttribute: \(secondAttribute)",
+      "multiplier: \(multiplier)",
+      "constant: \(constant)",
+      "identifier: \(identifier)",
+      "priority: \(priority)",
+      "owner: \(owner)")
   }
 
   /**
@@ -224,6 +278,9 @@ class Constraint: ModelObject {
     if let item: AnyObject = values["firstItem"] {
       if item is RemoteElement && (item as RemoteElement) != firstItem { return false }
       else if item is String && (item as String) != firstItem.uuid { return false }
+    }
+    if let identifier = values["identifier"] as? String {
+      if self.identifier == nil || self.identifier! != identifier { return false }
     }
     if let attribute = values["firstAttribute"] as? NSNumber {
       if attribute.integerValue != firstAttribute.rawValue { return false }
@@ -260,75 +317,32 @@ class Constraint: ModelObject {
   constraintFromFormat:index:
 
   :param: format String
-  :param: index [String String]
+  :param: index [String:String] Dictionary with entries in the format ["placeholder":"uuid"]
 
   :returns: Constraint?
   */
   class func constraintFromFormat(format: String, index: [String:String], context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
-
-    let regex: String = {
-      let name = "[a-zA-Z_][-_a-zA-Z0-9]*"
-      let attribute = "[a-z]+[A-Z]?"
-      let priority = "[0-9]{1,4}"
-      let metric = "(?:\(name))|(?:[-0-9]+\\.?[0-9]*)"
-      return ("(?:'([^']+)'[ ]+)?" +                   // identifier
-              "(\(name))\\.(\(attribute))" +           // first item and attribute
-              "[ ]+([=≤≥]+)" +                         // relation
-              "(?:[ ]+(\(name))\\.(\(attribute)))?" +  // second item and attribute
-              "(?:[ ]+[x*][ ]+(\(metric)))?" +         // multiplier if present
-              "(?:[ ]+([+-])?[ ]*(\(metric)))?" +      // constant if present
-              "(?:[ ]+@(\(priority)))?")               // priority if present
-    }()
-    let keys = ["identifier",
-                "firstItem",
-                "firstAttribute",
-                "relation",
-                "secondItem",
-                "secondAttribute",
-                "multiplier",
-                "constantOperator",
-                "constant",
-                "priority"]
-    let result = format.dictionaryOfCapturedStringsByMatchingFirstOccurrenceOfRegex(regex, keys: keys)
-    var captures: [String:NSString] = [:]
-    for (key, value) in result {
-      if let k = key as? String {
-        if let v = value as? NSString {
-          captures[k] = v
-        }
-      }
-    }
-
-    let multiplier = CGFloat(captures["multiplier"]?.doubleValue ?? 1.0)
-    var constant = CGFloat(captures["constant"]?.doubleValue ?? 0.0)
-    if let op = captures["constantOperator"] { if op == "-" { constant = -constant } }
-    let priority = UILayoutPriority(captures["priority"]?.floatValue ?? 1000.0)
-    let firstAttribute = NSLayoutAttribute(pseudoName: captures["firstAttribute"] ?? "")
-    let secondAttribute = NSLayoutAttribute(pseudoName: captures["secondAttribute"] ?? "")
-    let relation = NSLayoutRelation(pseudoName: captures["relation"] ?? "")
-
-    if let firstItemIndex = captures["firstItem"] {
+    if let pseudo = NSLayoutPseudoConstraint(format: format) {
+      let firstItemIndex = pseudo.firstItem
       if let firstItemUUID = index[firstItemIndex] {
         if let firstItem = RemoteElement.findFirstByAttribute("uuid", withValue: firstItemUUID, context: context) {
           var secondItem: RemoteElement?
-          if let secondItemIndex = captures["secondItem"] {
+          if let secondItemIndex = pseudo.secondItem {
             if let secondItemUUID = index[secondItemIndex] {
               secondItem = RemoteElement.findFirstByAttribute("uuid", withValue: secondItemUUID, context: context)
             }
           }
-          constraint = Constraint(item: firstItem,
-                                  attribute: firstAttribute,
-                                  relatedBy: relation,
-                                  toItem: secondItem,
-                                  attribute: secondAttribute,
-                                  multiplier: multiplier,
-                                  constant: constant)
-          constraint?.priority = priority
+
+          var directory: OrderedDictionary<String,RemoteElement> = [firstItem.identifier: firstItem]
+          if secondItem != nil { directory.setValue(secondItem!, forKey: secondItem!.identifier) }
+          var updatedPseudo = pseudo
+          updatedPseudo.firstItem = firstItem.identifier
+          updatedPseudo.secondItem = secondItem?.identifier
+          constraint = Constraint.constraintFromPseudoConstraint(updatedPseudo, usingDirectory: directory)
         }
       }
     }
-
     return constraint
   }
 
@@ -365,7 +379,7 @@ class Constraint: ModelObject {
   override func JSONDictionary() -> MSDictionary {
     var dictionary = super.JSONDictionary()
     dictionary["tag"] = primitiveTag
-    if key != nil { dictionary["key"] = key }
+    if identifier != nil { dictionary["identifier"] = identifier! }
     dictionary["first-attribute"] = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute)
     dictionary["second-attribute"] = NSLayoutConstraint.pseudoNameForAttribute(secondAttribute)
     dictionary["relation"] = NSLayoutConstraint.pseudoNameForRelation(relation)

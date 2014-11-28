@@ -195,13 +195,14 @@ class RemoteElementView: UIView {
     set { super.backgroundColor = newValue }
   }
 
-//  override func setNeedsDisplay() {
-//    super.setNeedsDisplay()
-//    backdropView.setNeedsDisplay()
-//    contentView.setNeedsDisplay()
-//    subelementsView.setNeedsDisplay()
-//    overlayView.setNeedsDisplay()
-//  }
+ /** setNeedsDisplay */
+ override func setNeedsDisplay() {
+   super.setNeedsDisplay()
+   backdropView.setNeedsDisplay()
+   contentView.setNeedsDisplay()
+   subelementsView.setNeedsDisplay()
+   overlayView.setNeedsDisplay()
+ }
 
   override var bounds: CGRect { didSet { refreshBorderPath() } }
 

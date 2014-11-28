@@ -92,12 +92,7 @@ extension NSLayoutConstraint {
           let m = (multiplierString as NSString).floatValue
           if m != 0.0 { multiplier = CGFloat(m) }
         }
-        if let constantString = pseudoConstraint.constant {
-          constant = CGFloat((constantString as NSString).floatValue)
-          if let constantOperatorString = pseudoConstraint.constantOperator {
-            if constantOperatorString == "-" { constant = -constant }
-          }
-        }
+        if let constantString = pseudoConstraint.constant { constant = CGFloat((constantString as NSString).floatValue) }
         if pseudoConstraint.secondItem != nil || (secondAttribute == NSLayoutAttribute.NotAnAttribute && constant != 0.0) {
           let constraint = NSLayoutConstraint(item: firstItem,
                                               attribute: firstAttribute,

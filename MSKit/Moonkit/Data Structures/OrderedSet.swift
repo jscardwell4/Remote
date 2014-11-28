@@ -58,7 +58,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :param: buffer _ArrayBuffer<T>
   */
-  public init(_ buffer: _ArrayBuffer<T>) { storage = [T](buffer) }
+  public init(_ buffer: _ArrayBuffer<T>) { storage = uniqued([T](buffer)) }
 
 
   /** init */
@@ -69,7 +69,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :param: s S
   */
-  public init<S : SequenceType where S.Generator.Element == T>(_ s: S) { storage = [T](s) }
+  public init<S : SequenceType where S.Generator.Element == T>(_ s: S) { storage = uniqued([T](s)) }
 
   public var count: Int      { return storage.count    }
   public var capacity: Int   { return storage.capacity }

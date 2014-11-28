@@ -29,8 +29,8 @@ class BankItemDetailLabelRow: BankItemDetailRow {
   :param: pushableCategory BankDisplayItemCategory
   :param: label String
   */
-  init(pushableCategory: BankDisplayItemCategory, label: String) {
-    super.init(identifier: .Label)
+  convenience init(pushableCategory: BankDisplayItemCategory, label: String) {
+    self.init()
     selectionHandler = {
       if let controller = BankCollectionController(category: pushableCategory) {
         if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
@@ -48,10 +48,13 @@ class BankItemDetailLabelRow: BankItemDetailRow {
   :param: label String
   :param: value String
   */
-  init(label: String, value: String) {
-    super.init(identifier: .Label)
+  convenience init(label: String, value: String) {
+    self.init()
     name = label
     info = value
   }
+
+  /** init */
+  convenience init() { self.init(identifier: .Label) }
 
 }

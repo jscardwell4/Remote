@@ -24,7 +24,7 @@
          RemoteEditingViewController,
          SettingsViewController,
          MainMenuViewController,
-         REBackgroundEditingViewController,
+         BackgroundEditingController,
          BankTableViewController,
          BankCollectionController,
          BankViewController;
@@ -42,7 +42,7 @@
 + (CommandEditingViewController *)commandEditingViewController;
 + (ButtonGroupEditingViewController *)buttonGroupEditingViewController;
 + (RemoteEditingViewController *)remoteEditingViewController;
-+ (REBackgroundEditingViewController *)backgroundEditingViewController;
++ (BackgroundEditingController *)backgroundEditingController;
 //+ (UINavigationController *)bankIndexViewController;
 //+ (BankTableViewController *)bankItemViewController;
 //+ (BankCollectionController *)bankCollectionViewController;

@@ -369,13 +369,25 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 ////////////////////////////////////////////////////////////////////////////////
 @implementation ModelObject (Counting)
 
++ (NSUInteger)countOfObjects { return [self countOfObjectsInContext:[CoreDataManager defaultContext]]; }
+
++ (NSUInteger)countOfObjectsInContext:(NSManagedObjectContext *)moc {
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
+  NSError        * error   = nil;
+  NSUInteger       result  = [moc countForFetchRequest:request error:&error];
+
+  MSHandleErrors(error);
+
+  return result;
+}
+
 /// countOfObjectsWithPredicate:context:
 /// @param predicate
 /// @param moc
 /// @return NSUInteger
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
 
-  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)
                                                               predicate:predicate];
   NSError        * error   = nil;
   NSUInteger       result  = [moc countForFetchRequest:request error:&error];
@@ -434,7 +446,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
                                          sortedBy:(NSString *)sortBy
                                         ascending:(BOOL)ascending
                                         context:(NSManagedObjectContext *)moc {
-  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString([self class])
+  NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)
                                                               predicate:predicate];
   if (sortBy)
     request.sortDescriptors = [[sortBy componentsSeparatedByString:@","]

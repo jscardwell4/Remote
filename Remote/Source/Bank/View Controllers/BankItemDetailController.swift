@@ -22,6 +22,8 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   class var tableRowHeight:    CGFloat { return 120.0 }
 
   let item: BankDisplayItemModel!
+  let context: NSManagedObjectContext!
+
   lazy var nameTextField: UITextField =  {
     let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
     textField.placeholder = "Name"
@@ -54,18 +56,14 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   :param: style UITableViewStyle
   */
-  override init(style: UITableViewStyle) {
-    super.init(style: style)
-  }
+  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   initWithCoder:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-  }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 
   /**
@@ -75,7 +73,12 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   */
   required init?(item: BankDisplayItemModel) {
     super.init(style: .Grouped)
-    self.item = item
+    if let moc = (item as? BankableModelObject)?.managedObjectContext {
+      context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: moc)
+      if let objectID = (item as? BankableModelObject)?.objectID {
+        self.item = context.existingObjectWithID(objectID, error: nil) as? BankableModelObject
+      } else { return nil }
+    } else { return nil }
     hidesBottomBarWhenPushed = true
   }
 
@@ -107,10 +110,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
 
   :param: animated Bool
   */
-  override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
-    updateDisplay()
-  }
+  override func viewWillAppear(animated: Bool) { super.viewWillAppear(animated); updateDisplay() }
 
   /**
   setEditing:animated:
@@ -144,10 +144,7 @@ class BankItemDetailController: UITableViewController, BankDetailController {
   func edit() { if !editing { setEditing(true, animated: true) } }
 
   /** save */
-  func save() {
-    item.save()
-    setEditing(false, animated: true)
-  }
+  func save() { item.save(); setEditing(false, animated: true) }
 
   /**
   cellForRowAtIndexPath:

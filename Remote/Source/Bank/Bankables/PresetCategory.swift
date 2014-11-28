@@ -71,4 +71,31 @@ class PresetCategory: BankableModelCategory {
 
   }
 
+
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
+  override func JSONDictionary() -> MSDictionary! {
+    let dictionary = super.JSONDictionary()
+
+    if let presetDictionaries = sortedByName(presets?.allObjects as? [Preset])?.map({$0.JSONDictionary()}) {
+      if presetDictionaries.count > 0 {
+        apply(presetDictionaries){$0.removeObjectForKey("category")}
+        dictionary["presets"] = presetDictionaries
+      }
+    }
+
+    if let subcategoryDictionaries = sortedByName(subcategoriesSet?.allObjects as? [ImageCategory])?.map({$0.JSONDictionary()}) {
+      if subcategoryDictionaries.count > 0 {
+        dictionary["subcategories"] = subcategoryDictionaries
+      }
+    }
+
+    return dictionary
+  }
+  
+
+  
 }

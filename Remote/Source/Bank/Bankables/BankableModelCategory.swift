@@ -27,4 +27,12 @@ class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
 
   var editable: Bool { return true }
 
+
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
+  override func JSONDictionary() -> MSDictionary! { return super.JSONDictionary() }
+
 }

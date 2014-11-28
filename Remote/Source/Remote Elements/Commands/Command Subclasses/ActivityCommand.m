@@ -7,6 +7,7 @@
 //
 #import "Command_Private.h"
 #import "Activity.h"
+#import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);

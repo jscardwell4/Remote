@@ -1235,7 +1235,7 @@ extension RemoteElementEditingController {
 
   /** editBackground */
   func editBackground() {
-     let bgEditor = BackgroundEditingController()
+     let bgEditor = StoryboardProxy.backgroundEditingController()
      bgEditor.subject = remoteElement
      presentViewController(bgEditor, animated: true, completion: nil)
   }

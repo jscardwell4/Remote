@@ -186,7 +186,6 @@
 		C25B130419FB4F5900C5630F /* DocumentSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25B130319FB4F5900C5630F /* DocumentSelectionController.swift */; };
 		C25B2714180A167B0078C8D8 /* RemoteController.json in Resources */ = {isa = PBXBuildFile; fileRef = C25B2713180A167B0078C8D8 /* RemoteController.json */; };
 		C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B2719180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m */; };
-		C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46F116FF69110042B59E /* BankObjectPreview.m */; };
 		C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A216FF67D00042B59E /* RemoteController.m */; };
 		C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B46A416FF67D00042B59E /* RemoteViewController.m */; };
 		C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B468216FF67AF0042B59E /* ControlStateColorSet.m */; };
@@ -423,6 +422,9 @@
 		C2B6A8B01A22B0DE00D98F28 /* Preset_ButtonGroup_Rocker.json in Resources */ = {isa = PBXBuildFile; fileRef = C2B6A8A41A22B0DE00D98F28 /* Preset_ButtonGroup_Rocker.json */; };
 		C2B6A8B11A22B0DE00D98F28 /* Preset_ButtonGroup_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C2B6A8A51A22B0DE00D98F28 /* Preset_ButtonGroup_Toolbar.json */; };
 		C2B6A8B21A22B0DE00D98F28 /* Preset_ButtonGroup_Transport.json in Resources */ = {isa = PBXBuildFile; fileRef = C2B6A8A61A22B0DE00D98F28 /* Preset_ButtonGroup_Transport.json */; };
+		C2B84B0E1A27E56D000D699C /* ButtonGroupPresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B0B1A27E56D000D699C /* ButtonGroupPresetDetailController.swift */; };
+		C2B84B0F1A27E56D000D699C /* ButtonPresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B0C1A27E56D000D699C /* ButtonPresetDetailController.swift */; };
+		C2B84B101A27E56D000D699C /* RemotePresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B0D1A27E56D000D699C /* RemotePresetDetailController.swift */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
 		C2C628D319D7188C00E40176 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C628D219D7188C00E40176 /* Bank.swift */; };
 		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
@@ -1135,6 +1137,9 @@
 		C2B6A8A41A22B0DE00D98F28 /* Preset_ButtonGroup_Rocker.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Rocker.json; sourceTree = "<group>"; };
 		C2B6A8A51A22B0DE00D98F28 /* Preset_ButtonGroup_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Toolbar.json; sourceTree = "<group>"; };
 		C2B6A8A61A22B0DE00D98F28 /* Preset_ButtonGroup_Transport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Transport.json; sourceTree = "<group>"; };
+		C2B84B0B1A27E56D000D699C /* ButtonGroupPresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonGroupPresetDetailController.swift; sourceTree = "<group>"; };
+		C2B84B0C1A27E56D000D699C /* ButtonPresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPresetDetailController.swift; sourceTree = "<group>"; };
+		C2B84B0D1A27E56D000D699C /* RemotePresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePresetDetailController.swift; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
 		C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionAttributes.swift; sourceTree = "<group>"; };
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1384,6 +1389,9 @@
 		C22BECC219FC72C200898B79 /* BankItemDetailController */ = {
 			isa = PBXGroup;
 			children = (
+				C2B84B0B1A27E56D000D699C /* ButtonGroupPresetDetailController.swift */,
+				C2B84B0C1A27E56D000D699C /* ButtonPresetDetailController.swift */,
+				C2B84B0D1A27E56D000D699C /* RemotePresetDetailController.swift */,
 				C2E8126519D5B7FA00FD80C4 /* BankItemDetailController.swift */,
 				C2E8126719D5CDF300FD80C4 /* ComponentDeviceDetailController.swift */,
 				C2E8126919D5CE2300FD80C4 /* IRCodeDetailController.swift */,
@@ -2925,12 +2933,12 @@
 				C269842919E0452E007E268B /* BankCollectionController.swift in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
 				C2C628D319D7188C00E40176 /* Bank.swift in Sources */,
-				C25B473F16FF8D0A0042B59E /* BankObjectPreview.m in Sources */,
 				C235A2FF1A0E96B10067E226 /* RemoteView.swift in Sources */,
 				C27267431A21555800EA0C7A /* StateMap.swift in Sources */,
 				C289BB5C19F85B64008E92C1 /* BankItemDetailTextInputRow.swift in Sources */,
 				C27DE08819E5E67F00CCB725 /* PresetDetailController.swift in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
+				C2B84B101A27E56D000D699C /* RemotePresetDetailController.swift in Sources */,
 				C215C9CF19F739E5000CC6CC /* BankItemLabelCell.swift in Sources */,
 				C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */,
 				C269842619DF8562007E268B /* BankCollectionLayout.swift in Sources */,
@@ -3019,6 +3027,7 @@
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
 				C215C9D119F739F6000CC6CC /* BankItemListCell.swift in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
+				C2B84B0F1A27E56D000D699C /* ButtonPresetDetailController.swift in Sources */,
 				C235A2E81A0819590067E226 /* RemoteElementEditingPresentationController.swift in Sources */,
 				C215C9D519F73A21000CC6CC /* BankItemImageCell.swift in Sources */,
 				C25B271A180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.m in Sources */,
@@ -3067,6 +3076,7 @@
 				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
 				C2F2254A1715CB8500D22B5F /* Activity.m in Sources */,
 				C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */,
+				C2B84B0E1A27E56D000D699C /* ButtonGroupPresetDetailController.swift in Sources */,
 				C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */,
 				C269842519DF8549007E268B /* BankCollectionAttributes.swift in Sources */,
 				C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */,

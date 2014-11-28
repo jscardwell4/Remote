@@ -28,6 +28,9 @@ class BankItemDetailTextFieldRow: BankItemDetailTextInputRow {
     }
   }
 
+  /** init */
+  convenience init() { self.init(identifier: .TextField) }
+
   /**
   initWithNumber:label:dataType:valueDidChange:
 
@@ -36,8 +39,8 @@ class BankItemDetailTextFieldRow: BankItemDetailTextInputRow {
   :param: dataType BankItemCell.DataType
   :param: valueDidChange (NSObject?) -> Void
   */
-  init(number: NSNumber, label: String, dataType: BankItemCell.DataType, valueDidChange: (NSObject?) -> Void) {
-    super.init(identifier: .TextField)
+  convenience init(number: NSNumber, label: String, dataType: BankItemCell.DataType, valueDidChange: (NSObject?) -> Void) {
+    self.init(identifier: .TextField)
     name = label
     info = number
     infoDataType = dataType

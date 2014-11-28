@@ -60,10 +60,12 @@ class ImageCategory: BankableModelCategory {
     get { return ((subcategoriesSet?.allObjects ?? []) as [ImageCategory]).sorted{$0.0.title < $0.1.title} }
     set { if let newSubcategories = newValue as? [ImageCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
   }
+
   override var items: [BankDisplayItemModel] {
     get { return sortedByName((images?.allObjects ?? []) as [Image]) }
     set { if let newItems = newValue as? [Image] { images = NSSet(array: newItems) } }
   }
+
   override var previewableItems:   Bool { return Image.isPreviewable()   }
   override var editableItems:      Bool { return Image.isEditable()      }
 
@@ -94,5 +96,32 @@ class ImageCategory: BankableModelCategory {
     }
 
   }
+
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
+  override func JSONDictionary() -> MSDictionary! {
+    let dictionary = super.JSONDictionary()
+
+    if let imageDictionaries = sortedByName(images?.allObjects as? [Image])?.map({$0.JSONDictionary()}) {
+      if imageDictionaries.count > 0 {
+        apply(imageDictionaries){$0.removeObjectForKey("category")}
+        dictionary["images"] = imageDictionaries
+      }
+    }
+
+    if let subcategoryDictionaries = sortedByName(subcategoriesSet?.allObjects as? [ImageCategory])?.map({$0.JSONDictionary()}) {
+      if subcategoryDictionaries.count > 0 {
+        dictionary["subcategories"] = subcategoryDictionaries
+      }
+    }
+
+    return dictionary
+  }
+
+
+
 
 }

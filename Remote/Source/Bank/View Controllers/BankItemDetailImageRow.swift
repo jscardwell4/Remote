@@ -27,9 +27,12 @@ class BankItemDetailImageRow: BankItemDetailRow {
 
   :param: previewableItem BankDisplayItemModel
   */
-  init(previewableItem: BankDisplayItemModel) {
-    super.init(identifier: .Image)
+  convenience init(previewableItem: BankDisplayItemModel) {
+    self.init()
     info = previewableItem.preview
   }
+
+  /** init */
+  convenience init() { self.init(identifier: .Image) }
 
 }

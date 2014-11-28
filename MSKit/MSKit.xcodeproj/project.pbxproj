@@ -220,6 +220,7 @@
 		C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* IntegerInputView.swift */; };
 		C28E509B1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
+		C2B84B0A1A27890A000D699C /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B091A27890A000D699C /* Set.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
 		C2C482DE19C9FA73002E84A9 /* Moonkit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */; };
 		C2C482E219C9FF61002E84A9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = C2C482E019C9FF61002E84A9 /* test.json */; };
@@ -297,6 +298,7 @@
 		C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageSegmentedControl.swift; sourceTree = "<group>"; };
 		C29692A919CE53D400992240 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerialization.swift; path = Moonkit/Parsing/JSONSerialization.swift; sourceTree = SOURCE_ROOT; };
 		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2B84B091A27890A000D699C /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		C2C482D219C9F98A002E84A9 /* Moonkit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Moonkit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482D519C9F98A002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Moonkit_Tests.m; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 		C23592DD19C8E04200920F8D /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
+				C2B84B091A27890A000D699C /* Set.swift */,
 				C23592DE19C8E04200920F8D /* BitArray.swift */,
 				C23592DF19C8E04200920F8D /* OrderedDictionary.swift */,
 				C2C482E419CA0225002E84A9 /* Stack.swift */,
@@ -1238,6 +1241,7 @@
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,
 				C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */,
+				C2B84B0A1A27890A000D699C /* Set.swift in Sources */,
 				C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */,
 				C2358F5D19C78E0C00920F8D /* MSPopupBarButtonItem.m in Sources */,
 				C2358F5E19C78E0C00920F8D /* MSScrollWheel.m in Sources */,

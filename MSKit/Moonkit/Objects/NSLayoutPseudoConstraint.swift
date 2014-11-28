@@ -9,17 +9,20 @@
 import Foundation
 import UIKit
 
-public struct NSLayoutPseudoConstraint: Equatable, Printable {
+public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
   public var firstItem: String = ""
   public var firstAttribute: String = ""
   public var relation: String = "="
   public var secondItem: String?
   public var secondAttribute: String = ""
   public var constant: String?
-  public var constantOperator: String?
   public var multiplier: String?
   public var priority: String?
   public var identifier: String?
+
+  public var constantValue: CGFloat? { return constant == nil ? nil : CGFloat((constant! as NSString).floatValue) }
+  public var multiplierValue: CGFloat? { return multiplier == nil ? nil : CGFloat((multiplier! as NSString).floatValue) }
+  public var priorityValue: Float? { return priority == nil ? nil : (priority! as NSString).floatValue }
 
   public var expanded: [NSLayoutPseudoConstraint] {
     switch (firstAttribute, secondAttribute) {
@@ -44,11 +47,23 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable {
     s += "\(firstItem).\(firstAttribute) \(relation)"
     if secondItem != nil && !secondAttribute.isEmpty {
       s += " \(secondItem!).\(secondAttribute)"
-      if multiplier != nil { s += " * \(multiplier!)" }
+      if multiplier != nil && multiplierValue! != 1.0 { s += " * \(multiplier!)" }
     }
-    if constantOperator != nil && constant != nil { s += " \(constantOperator!) \(constant!)"}
-    if priority != nil { s += " @\(priority!)" }
+    if constant != nil && constantValue! != 0.0 { s += " \(constant![0]) \(constant![1..<constant!.characterCount])" }
+    if priority != nil && priorityValue! != 1000.0 { s += " @\(priority!)" }
     return s
+  }
+
+  public var debugDescription: String {
+    return "\n".join(description,
+      "firstItem: \(firstItem)",
+      "secondItem: \(secondItem)",
+      "firstAttribute: \(firstAttribute)",
+      "secondAttribute: \(secondAttribute)",
+      "multiplier: \(multiplier)",
+      "constant: \(constant)",
+      "identifier: \(identifier)",
+      "priority: \(priority)")
   }
 
   /** init */
@@ -65,36 +80,37 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable {
     relation = ""
     secondAttribute = ""
 
-    let name = "([a-zA-Z_][-_a-zA-Z0-9]*)"
-    let attribute = "(" + "|".join("(?:left|right|leading|trailing)(?:Margin)?",
-                                   "(?:top|bottom)(?:Margin)?",
-                                   "width",
-                                   "height",
-                                   "size",
-                                   "(?:center[XY]?)(?:WithinMargins)?",
-                                   "(?:firstB|b)aseline") + ")"
-    let number = "([0-9]+\\.?[0-9]*)"
-    let pattern = " *".join(
-      "(?:'([^']+)' )?",
-      "\(name)\\.\(attribute) ",
-      "([=≥≤])",
-      "(?:\(name)\\.\(attribute)(?: +[x*] +\(number))?)?",
-      "(?:([+-])? *\(number))?",
-      "(?:@\(number))?"
+    let name = "([\\p{L}$_][\\w]*)"
+    let attributes = "|".join(
+      "(?:left|right|leading|trailing)(?:Margin)?",
+      "(?:top|bottom)(?:Margin)?",
+      "width",
+      "height",
+      "size",
+      "(?:center[XY]?)(?:WithinMargins)?",
+      "(?:firstB|b)aseline"
     )
-    let captures = format.matchFirst(pattern)
-    assert(captures.count == 10, "number of capture groups not as expected")
+    let attribute = "(\(attributes))"
+    let item = "\(name)\\.\(attribute)"
+    let number = "((?:[-+] *)?\\p{N}+(?:\\.\\p{N}+)?)"
+    let multiplier = "(?: *[x*] *\(number))"
+    let relatedBy = " *([=≥≤]) *"
+    let priority = "(?:@ *\(number))"
+    let identifier = "(?:'([\\w ]+)' *)"
+    let pattern = "^ *\(identifier)?\(item)\(relatedBy)(?:\(item)\(multiplier)?)? *\(number)? *\(priority)? *$"
 
-    if let identifier       = captures[0] { self.identifier       = identifier       }
-    if let firstItem        = captures[1] { self.firstItem        = firstItem        }
-    if let firstAttribute   = captures[2] { self.firstAttribute   = firstAttribute   }
-    if let relation         = captures[3] { self.relation         = relation         }
-    if let secondItem       = captures[4] { self.secondItem       = secondItem       }
-    if let secondAttribute  = captures[5] { self.secondAttribute  = secondAttribute  }
-    if let multiplier       = captures[6] { self.multiplier       = multiplier       }
-    if let constantOperator = captures[7] { self.constantOperator = constantOperator }
-    if let constant         = captures[8] { self.constant         = constant         }
-    if let priority         = captures[9] { self.priority         = priority         }
+    let captures = format.matchFirst(pattern)
+    assert(captures.count == 9, "number of capture groups not as expected")
+
+    if let identifier       = captures[0] { self.identifier       = identifier                          }
+    if let firstItem        = captures[1] { self.firstItem        = firstItem                           }
+    if let firstAttribute   = captures[2] { self.firstAttribute   = firstAttribute                      }
+    if let relation         = captures[3] { self.relation         = relation                            }
+    if let secondItem       = captures[4] { self.secondItem       = secondItem                          }
+    if let secondAttribute  = captures[5] { self.secondAttribute  = secondAttribute                     }
+    if let multiplier       = captures[6] { self.multiplier       = multiplier                          }
+    if let constant         = captures[7] { self.constant         = String(filter(constant){$0 != " "}) }
+    if let priority         = captures[8] { self.priority         = priority                            }
 
     if firstItem.isEmpty || firstAttribute.isEmpty || relation.isEmpty || (secondItem == nil && constant == nil) { return nil }
 
@@ -118,8 +134,7 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable {
     secondAttribute = constraint.secondAttribute.pseudoName
     multiplier = "\(constraint.multiplier)"
     let c = constraint.constant
-    constantOperator = c < 0.0 ? "-" : "+"
-    constant = "\(abs(c))"
+    constant = (c < 0.0 ? "-" : "+") + "\(abs(c))"
     priority = "\(constraint.priority)"
   }
 

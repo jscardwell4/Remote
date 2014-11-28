@@ -4,34 +4,62 @@ import Foundation
 import UIKit
 import MoonKit
 
-let id = "'([^']+)'"
-let name = "([a-zA-Z_][-_a-zA-Z0-9]*)"
-let attribute = "([a-z]+[a-zA-Z]*)"
-let number = "([0-9]+\\.?[0-9]*)"
-let relation = "([=≥≤])"
-let pattern = " *".join(
-  "(?:\(id) )?",
-  "\(name)\\.\(attribute) ",
-  "\(relation)",
-  "(?:\(name)\\.\(attribute)(?: +[x*] +\(number))?)?",
-  "(?:([+-])? *\(number))?",
-  "(?:@\(number))?"
-)
+let u = UnicodeScalar("h")
+u.description
+u.debugDescription
+u.escape(asASCII: false)
+u.escape(asASCII: true)
+//
+//var utf8 = UTF8()
+//var wtf = "wtf"
+//var wtfGenerator = IndexingGenerator(wtf.utf8)
+//var result: UnicodeDecodingResult = .EmptyInput
+//outer: do {
+// result = utf8.decode(&wtfGenerator)
+//switch result {
+//  case .Result(let u): println(u.description)
+//  default: break outer
+//  }
+//} while true
 
-"'id' item1.width = item2.width * 0.5 + 93 @250".matchFirst(pattern)
-"'id' item1.width = 93 @250".matchFirst(pattern)
-"'id' item1.width = item2.width".matchFirst(pattern)
-"item1.width = item2.height - 93".matchFirst(pattern)
-"item1.width = item2.width * 0.5".matchFirst(pattern)
+//for c in "abcdefghijklmnopqrstuvwxyz".unicodeScalars {
+//
+//  println(c.value, c)
+//  let C = UnicodeScalar(c.value - 32)
+//  println(C.value, C)
+//}
 
-var pseudo = NSLayoutPseudoConstraint(format: "'id' item1.width = item2.width * 0.5 + 93 @250")
-pseudo?.description
+//let s = "what the fuck hoppuse?"
+//compressed(s.rangesForCapture(1, byMatching: "(\\b\\w+\\b)"))
+//var camelS = s
+//for r in compressed(s.rangesForCapture(1, byMatching: "(\\b\\w+\\b)")) {
+//  let segment = s[r]
+//
+//  let u = String(segment[segment.startIndex]).uppercaseString
+//  let theRest = String(dropFirst(segment)).lowercaseString
+//  let replacement = u + theRest
+//  let index: String.Index = advance(camelS.startIndex, r.startIndex)
+//  let index2: String.Index = advance(index, r.endIndex - r.startIndex)
+//  camelS.replaceRange(index..<index2, with: replacement)
+//}
+//camelS
+//
 
-let view1 = UIView()
-let view2 = UIView()
-let parentView = UIView()
-parentView.addSubview(view1)
-parentView.addSubview(view2)
+//~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= "A Fucking Table"
+//UnicodeScalar("-")
 
-let constraint = NSLayoutConstraint.constraintFromNSLayoutPseudoConstraint(pseudo!, views: ["item1": view1, "item2": view2])
-constraint?.description
+let camel = "camelCaseString"
+let dash = "dash-case-string"
+let title = "Title Case String"
+
+camel.dashcaseString
+camel.camelcaseString
+camel.titlecaseString
+
+dash.camelcaseString
+dash.dashcaseString
+dash.titlecaseString
+
+title.camelcaseString
+title.dashcaseString
+title.titlecaseString

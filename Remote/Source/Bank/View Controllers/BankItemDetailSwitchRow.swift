@@ -23,4 +23,7 @@ class BankItemDetailSwitchRow: BankItemDetailRow {
     cell.name = name
 	}
 
+  /** init */
+  convenience init() { self.init(identifier: .Switch) }
+
 }

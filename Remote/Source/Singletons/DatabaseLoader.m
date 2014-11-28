@@ -27,15 +27,15 @@
 
 #define PARSE_ONLY NO
 
-#define REMOTECONTROLLER_LOG_FLAG 2
-#define REMOTE_LOG_FLAG           2
-#define PRESET_LOG_FLAG           7
-#define IMAGES_LOG_FLAG           2
-#define POWERCOMMANDS_LOG_FLAG    2
-#define MANUFACTURERS_LOG_FLAG    2
-#define COMPONENTDEVICES_LOG_FLAG 2
-#define NETWORKDEVICES_LOG_FLAG   2
-#define IRCODES_LOG_FLAG          2
+#define REMOTECONTROLLER_LOG_FLAG 0
+#define REMOTE_LOG_FLAG           0
+#define PRESET_LOG_FLAG           0
+#define IMAGES_LOG_FLAG           0
+#define POWERCOMMANDS_LOG_FLAG    0
+#define MANUFACTURERS_LOG_FLAG    0
+#define COMPONENTDEVICES_LOG_FLAG 0
+#define NETWORKDEVICES_LOG_FLAG   0
+#define IRCODES_LOG_FLAG          0
 
 static int       ddLogLevel       = LOG_LEVEL_DEBUG;
 static const int msLogContext     = (LOG_CONTEXT_BUILDING | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
@@ -70,15 +70,15 @@ void logImportedObject(id importedObject, int flag) {
 + (BOOL)loadData {
   MSLogDebug(@"beginning data load...");
 
-  [CoreDataManager saveWithBlockAndWait:^(NSManagedObjectContext *context) {
+  [CoreDataManager backgroundSaveWithBlockAndWait:^(NSManagedObjectContext *context) {
     @autoreleasepool { [self loadPresets:context]; }
   }];
 
-  [CoreDataManager saveWithBlockAndWait:^(NSManagedObjectContext * context) {
+  [CoreDataManager backgroundSaveWithBlockAndWait:^(NSManagedObjectContext * context) {
     @autoreleasepool { [self loadImages:context]; }
   }];
 
-  [CoreDataManager saveWithBlockAndWait:^(NSManagedObjectContext * context) {
+  [CoreDataManager backgroundSaveWithBlockAndWait:^(NSManagedObjectContext * context) {
     @autoreleasepool { [self loadManufacturers:context]; }
   }];
 
@@ -89,7 +89,7 @@ void logImportedObject(id importedObject, int flag) {
     }
   }];
 
-  [CoreDataManager saveWithBlockAndWait:^(NSManagedObjectContext * context) {
+  [CoreDataManager backgroundSaveWithBlockAndWait:^(NSManagedObjectContext * context) {
     @autoreleasepool {
       [self loadRemoteController:context];
       [self loadActivities:context];

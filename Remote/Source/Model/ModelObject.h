@@ -105,6 +105,8 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject);
 
 @interface ModelObject (Counting)
 
++ (NSUInteger)countOfObjects;
++ (NSUInteger)countOfObjectsInContext:(NSManagedObjectContext *)moc;
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate;
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
 

@@ -169,7 +169,7 @@ unique<T:Equatable>:
 
 :returns: [T]
 */
-public func unique<S:SequenceType where S.Generator.Element:Equatable>(seq:S) -> [S.Generator.Element] {
+public func uniqued<S:SequenceType where S.Generator.Element:Equatable>(seq:S) -> [S.Generator.Element] {
   var u: [S.Generator.Element] = []
   for e in seq { if e ∉ u { u.append(e) } }
   return u
@@ -180,7 +180,7 @@ unique<T:Equatable>:
 
 :param: array [T]
 */
-public func unique<T:Equatable>(inout array:[T]) { array = unique(array) }
+public func unique<T:Equatable>(inout array:[T]) { array = uniqued(array) }
 
 
 /**
@@ -250,7 +250,7 @@ Intersection set operator
 public func ∩<T:Equatable, S0:SequenceType, S1:SequenceType where S0.Generator.Element == T, S1.Generator.Element == T>
   (lhs:S0, rhs:S1) -> [T]
 {
-  return filter(unique(lhs ∪ rhs)) {$0 ∈ lhs && $0 ∈ rhs}
+  return filter(uniqued(lhs ∪ rhs)) {$0 ∈ lhs && $0 ∈ rhs}
 }
 
 /**
@@ -277,7 +277,7 @@ Intersection set operator which stores result in lhs
 :param: rhs [T]
 :returns: [T]
 */
-public func ∩=<T:Equatable>(inout lhs:[T], rhs:[T]) { lhs = unique(lhs ∪ rhs).filter {$0 ∈ lhs && $0 ∈ rhs} }
+public func ∩=<T:Equatable>(inout lhs:[T], rhs:[T]) { lhs = uniqued(lhs ∪ rhs).filter {$0 ∈ lhs && $0 ∈ rhs} }
 
 /**
 Returns true if lhs is a subset of rhs
