@@ -16,11 +16,21 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 
   override class func requiresUniqueNaming() -> Bool { return true }
 
+	/**
+	updateWithData:
+
+	:param: data [NSObject AnyObject]!
+	*/
 	override func updateWithData(data: [NSObject : AnyObject]!) {
 		super.updateWithData(data)
 		user = (data?["user"] as? NSNumber)?.boolValue ?? user
 	}
 
+	/**
+	JSONDictionary
+
+	:returns: MSDictionary!
+	*/
 	override func JSONDictionary() -> MSDictionary! {
 		let dictionary = super.JSONDictionary()
 		setIfNotDefault("user", inDictionary: dictionary)
@@ -29,15 +39,13 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 		return dictionary
 	}
 
-  var preview:   UIImage? { return nil }
-  var thumbnail: UIImage? { return nil }
+  var editable: Bool { return user }
 
-  class func isPreviewable()   -> Bool { return false }
-  class func isEditable()      -> Bool { return false }
+  /**
+  detailController
 
-  var previewable:   Bool { return self.dynamicType.isPreviewable() }
-  var editable:      Bool { return self.dynamicType.isEditable() }
-
-  func detailController() -> UIViewController { return BankItemDetailController(item: self)! }
+  :returns: UIViewController
+  */
+  func detailController() -> UIViewController { return BankItemDetailController(model: self) }
 
 }

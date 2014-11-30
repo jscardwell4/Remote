@@ -81,10 +81,7 @@ class IRCode: BankableModelObject {
                              editableItems: true)
   }
 
-  override class func isPreviewable()   -> Bool { return false }
-  override class func isEditable()      -> Bool { return true }
-
-  override func detailController() -> UIViewController { return IRCodeDetailController(item: self)! }
+  override func detailController() -> UIViewController { return IRCodeDetailController(model: self) }
 
 }
 

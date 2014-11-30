@@ -16,36 +16,37 @@ class ButtonGroupPresetDetailController: PresetDetailController {
   /**
   initWithItem:editing:
 
-  :param: item BankableModelObject
+  :param: model BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel) {
-    super.init(item: item)
-    if let detailsSection = sections.first {
+  override init(model: BankableModelObject) {
+    super.init(model: model)
 
-      detailsSection.addRow {
-        let row = BankItemDetailSwitchRow()
-        row.name = "Autohide"
-        row.info = NSNumber(bool: self.preset.attributes.autohide ?? false)
-        row.valueDidChange = { self.preset.attributes.autohide = ($0 as? NSNumber)?.boolValue }
+    let buttonGroupAttributesSection = DetailSection(sectionNumber: 1, title: "Button Group Attributes")
 
-        return row
-      }
+    buttonGroupAttributesSection.addRow {
+      let row = DetailSwitchRow()
+      row.name = "Autohide"
+      row.info = NSNumber(bool: self.preset.attributes.autohide ?? false)
+      row.valueDidChange = { self.preset.attributes.autohide = ($0 as? NSNumber)?.boolValue }
 
-      detailsSection.addRow {
-        let row = BankItemDetailTextFieldRow()
-        row.name = "Label"
-        row.info =  self.preset.attributes.label?.string
-        row.valueDidChange = { if let s = $0 as? String { self.preset.attributes.label = NSAttributedString(string: s) } }
-
-        return row
-      }
-
-      // TODO: labelAttributes
-      // TODO: labelConstraints
-      // TODO: panelAssignment
-
+      return row
     }
+
+    // buttonGroupAttributesSection.addRow {
+    //   let row = DetailTextFieldRow()
+    //   row.name = "Label"
+    //   row.info =  self.preset.attributes.label?.string
+    //   row.valueDidChange = { if let s = $0 as? String { self.preset.attributes.label = NSAttributedString(string: s) } }
+
+    //   return row
+    // }
+
+    // TODO: labelAttributes
+    // TODO: labelConstraints
+    // TODO: panelAssignment
+
+    sections.append(buttonGroupAttributesSection)
   }
 
   /**

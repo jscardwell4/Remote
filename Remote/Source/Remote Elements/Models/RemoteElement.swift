@@ -575,6 +575,8 @@ class RemoteElement: NamedModelObject {
         default: self = .Undefined
       }
     }
+    static var allShapes: [Shape] { return [.Undefined, .RoundedRectangle, .Oval, .Rectangle, .Triangle, .Diamond] }
+
   }
 
 
@@ -669,6 +671,12 @@ class RemoteElement: NamedModelObject {
     static var Record:               Role = Role(rawValue: 0b1001_1000)
     static var TransportButtonMask:  Role = Role(rawValue: 0b0000_1000)
 
+    static var buttonGroupRoles: [Role] { return [.SelectionPanel, .Toolbar, .DPad, .Numberpad, .Transport, .Rocker] }
+    static var buttonRoles: [Role] {
+      return [.ConnectionStatus, .BatteryStatus, .Top, .Bottom, .Tuck, .SelectionPanelButton, .Up, .Down, .Left, .Right,
+        .Center, .One, .Two, .Three, .Four, .Five, .Six, .Seven, .Eight, .Nine, .Zero, .Aux1, .Aux2, .Play, .Stop,
+        .Pause, .Skip, .Replay, .FF, .Rewind, .Record]
+    }
   }
 
 }
@@ -676,7 +684,7 @@ class RemoteElement: NamedModelObject {
 extension RemoteElement.BaseType: JSONValueConvertible {
   var JSONValue: String {
     switch self {
-      case .Undefined:   return "undefined"
+      case .Undefined:   return ""
       case .Remote:      return "remote"
       case .ButtonGroup: return "button-group"
       case .Button:      return "button"
@@ -694,14 +702,11 @@ extension RemoteElement.BaseType: JSONValueConvertible {
   }
 }
 
-extension RemoteElement.BaseType: Presentable {
-  var title: String { return String(map(JSONValue){$0 == "-" ? " " : $0}).capitalizedString }
-}
 
 extension RemoteElement.Shape: JSONValueConvertible {
   var JSONValue: String {
     switch self {
-      case .Undefined:        return "undefined"
+      case .Undefined:        return ""
       case .RoundedRectangle: return "rounded-rectangle"
       case .Oval:             return "oval"
       case .Rectangle:        return "rectangle"
@@ -723,10 +728,6 @@ extension RemoteElement.Shape: JSONValueConvertible {
 
 }
 
-extension RemoteElement.Shape: Presentable {
-  var title: String { return String(map(JSONValue){$0 == "-" ? " " : $0}).capitalizedString }
-}
-
 extension RemoteElement.Style: JSONValueConvertible {
 
   var JSONValue: String {
@@ -740,7 +741,6 @@ extension RemoteElement.Style: JSONValueConvertible {
     }
     if self & RemoteElement.Style.DrawBorder != nil { segments.append("border") }
     if self & RemoteElement.Style.Stretchable != nil { segments.append("stretchable") }
-    if segments.count == 0 { segments.append("undefined") }
     return " ".join(segments)
   }
 
@@ -761,10 +761,6 @@ extension RemoteElement.Style: JSONValueConvertible {
     self = style
   }
 
-}
-
-extension RemoteElement.Style: Presentable {
-  var title: String { return String(map(JSONValue){$0 == "-" ? " " : $0}).capitalizedString }
 }
 
 extension RemoteElement.Role: JSONValueConvertible {
@@ -814,7 +810,7 @@ extension RemoteElement.Role: JSONValueConvertible {
       case RemoteElement.Role.FF:                   return "fast-forward"
       case RemoteElement.Role.Rewind:               return "rewind"
       case RemoteElement.Role.Record:               return "record"
-      default:                                      return "undefined"
+      default:                                      return ""
     }
   }
 
@@ -866,8 +862,4 @@ extension RemoteElement.Role: JSONValueConvertible {
       default:                                                self = RemoteElement.Role.Undefined
     }
   }
-}
-
-extension RemoteElement.Role: Presentable {
-  var title: String { return String(map(JSONValue){$0 == "-" ? " " : $0}).capitalizedString }
 }

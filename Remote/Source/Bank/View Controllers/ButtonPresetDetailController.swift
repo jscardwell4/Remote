@@ -16,23 +16,71 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   initWithItem:editing:
 
-  :param: item BankableModelObject
+  :param: model BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel) {
-    super.init(item: item)
-    if let detailsSection = sections.first {
+  override init(model: BankableModelObject) {
+    super.init(model: model)
 
-      // TODO: titles
-      // TODO: icons
-      // TODO: images
-      // TODO: backgroundColors
-      // TODO: titleEdgeInsets
-      // TODO: contentEdgeInsets
-      // TODO: imageEdgeInsets
-      // TODO: command
+    let titlesSection = DetailSection(sectionNumber: 1, title: "Titles")
 
+    if let titles = preset.attributes.titles {
+      var attributesByState: [String: TitleAttributes] = [:]
+      for (state, values) in titles { attributesByState[state] = TitleAttributes(storage: values) }
+
+      var fillerAttributes: MSDictionary?
+      let backgroundColor = UIColor(white: 0.35, alpha: 0.75)
+
+      var normalAttributes: TitleAttributes? = attributesByState["normal"]
+      if normalAttributes != nil {
+        titlesSection.addRow {
+          let row = DetailAttributedLabelRow(label: "Normal", value: normalAttributes!.string)
+          row.backgroundColor = backgroundColor
+          row.selectionHandler = {
+            let controller = TitleAttributesDetailController(attributes: normalAttributes!)
+            if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+              nav.pushViewController(controller, animated: true)
+            }
+          }
+          return row
+        }
+        fillerAttributes = normalAttributes!.attributes
+        attributesByState["normal"] = nil
+      }
+
+      for (state, attributes) in attributesByState {
+        titlesSection.addRow {
+          let row = DetailAttributedLabelRow()
+          row.name = state.titlecaseString
+          row.info = attributes.stringWithFillers(fillerAttributes)
+          row.backgroundColor = backgroundColor
+          row.selectionHandler = {
+            let attrs = attributes.copy
+            attrs.mergeWithTitleAttributes(normalAttributes)
+            let controller = TitleAttributesDetailController(attributes: attrs)
+            if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+              nav.pushViewController(controller, animated: true)
+            }
+          }
+          return row
+        }
+
+        // for generatedRow in generateRowsForTitleAttributes(attributes, indentationLevel: 1) {
+        //   titlesSection.addRow { generatedRow }
+        // }
+
+      }
     }
+
+    sections.append(titlesSection)
+    // TODO: icons
+    // TODO: images
+    // TODO: backgroundColors
+    // TODO: titleEdgeInsets
+    // TODO: contentEdgeInsets
+    // TODO: imageEdgeInsets
+    // TODO: command
+
   }
 
   /**

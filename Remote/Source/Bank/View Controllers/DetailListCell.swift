@@ -1,5 +1,5 @@
 //
-//  BankItemLabelCell.swift
+//  DetailListCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/21/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemLabelCell: BankItemCell {
+class DetailListCell: DetailCell {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -20,10 +20,8 @@ class BankItemLabelCell: BankItemCell {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
-    let format = "|-[name]-[label]-| :: V:|-[name]-| :: V:|-[label]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "label": infoLabel])
+    contentView.constrain("|-[label]-| :: V:|-[label]-|", views: ["label": infoLabel])
   }
 
   /**
@@ -36,7 +34,6 @@ class BankItemLabelCell: BankItemCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    nameLabel.text = nil
     infoLabel.text = nil
   }
 

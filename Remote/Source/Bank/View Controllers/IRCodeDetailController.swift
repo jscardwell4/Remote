@@ -28,7 +28,7 @@ where…
 @objc(IRCodeDetailController)
 class IRCodeDetailController: BankItemDetailController {
 
-  var irCode: IRCode { return item as IRCode }
+  var irCode: IRCode { return model as IRCode }
 
   lazy var manufacturers: [Manufacturer] = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] ?? []
 
@@ -37,27 +37,27 @@ class IRCodeDetailController: BankItemDetailController {
   /**
   initWithItem:editing:
 
-  :param: item BankableModelObject
+  :param: model BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel) {
-    super.init(item: item)
-    precondition(item is IRCode, "we should have been given an ircode")
+  override init(model: BankableModelObject) {
+    super.init(model: model)
+    precondition(model is IRCode, "we should have been given an ircode")
 
     codeSets = irCode.manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? []
 
-    let section = BankItemDetailSection(sectionNumber: 0)
+    let section = DetailSection(sectionNumber: 0)
 
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////
 
     section.addRow {
-      let row = BankItemDetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Manufacturer"
       row.info = self.irCode.manufacturer
       row.pickerNilSelectionTitle = "No Manufacturer"
       row.valueDidChange = {
-        (item: NSObject?) -> Void in
+        (item: AnyObject?) -> Void in
         let moc = self.irCode.managedObjectContext!
         moc.performBlock {
           var newManufacturer: Manufacturer?
@@ -92,7 +92,7 @@ class IRCodeDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     section.addRow {
-      let row = BankItemDetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Code Set"
       row.info = self.irCode.codeSet ?? "No Code Set"
       row.valueIsValid = {($0 as? NSString)?.length > 0}
@@ -118,14 +118,14 @@ class IRCodeDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     section.addRow {
-      let row = BankItemDetailTextFieldRow(number: NSNumber(longLong: self.irCode.frequency),
-                                           label: "Frequency",
-                                           dataType: .LongLongData(15000...500000),
-                                           valueDidChange: {
-                                            if let i = ($0 as? NSNumber)?.longLongValue {
-                                              self.irCode.frequency = i
-                                            }
-                                           })
+      let row = DetailTextFieldRow(number: NSNumber(longLong: self.irCode.frequency),
+                                   label: "Frequency",
+                                   dataType: .LongLongData(15000...500000),
+                                   valueDidChange: {
+                                    if let i = ($0 as? NSNumber)?.longLongValue {
+                                      self.irCode.frequency = i
+                                    }
+                                   })
       return row
     }
 
@@ -133,14 +133,14 @@ class IRCodeDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     section.addRow {
-      let row = BankItemDetailTextFieldRow(number: NSNumber(longLong: self.irCode.frequency),
-                                        label: "Repeat",
-                                        dataType: .IntData(1...50),
-                                        valueDidChange: {
-                                         if let i = ($0 as? NSNumber)?.shortValue {
-                                           self.irCode.repeatCount = i
-                                         }
-                                        })
+      let row = DetailTextFieldRow(number: NSNumber(longLong: self.irCode.frequency),
+                                   label: "Repeat",
+                                   dataType: .IntData(1...50),
+                                   valueDidChange: {
+                                    if let i = ($0 as? NSNumber)?.shortValue {
+                                      self.irCode.repeatCount = i
+                                    }
+                                   })
       return row
     }
 
@@ -148,7 +148,7 @@ class IRCodeDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     section.addRow {
-      let row = BankItemDetailStepperRow(identifier: .Stepper)
+      let row = DetailStepperRow(identifier: .Stepper)
       row.name = "Offset"
       row.stepperMinValue = 1
       row.stepperMaxValue = 383
@@ -165,7 +165,7 @@ class IRCodeDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     section.addRow {
-      let row = BankItemDetailTextViewRow(identifier: .TextView)
+      let row = DetailTextViewRow(identifier: .TextView)
       row.name = "On-Off Pattern"
       row.info = self.irCode.onOffPattern
       row.valueIsValid = {

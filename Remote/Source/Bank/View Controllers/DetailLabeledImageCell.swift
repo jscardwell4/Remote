@@ -1,8 +1,8 @@
 //
-//  BankItemImageCell.swift
+//  DetailLabeledImageCell.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 10/21/14.
+//  Created by Jason Cardwell on 11/28/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemImageCell: BankItemCell {
+class DetailLabeledImageCell: DetailCell {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -20,11 +20,9 @@ class BankItemImageCell: BankItemCell {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    contentView.addSubview(imageℹ)
-    backgroundView = nil
-    backgroundColor = UIColor.clearColor()
-    contentView.backgroundColor = UIColor.clearColor()
-    contentView.constrain("|-[image]-| :: V:|-[image]-|", views: ["image": imageℹ])
+    contentView.addSubview(nameLabel)
+    contentView.addSubview(preview)
+    contentView.constrain("|-[name]-[image]-| :: V:|-[name]-| :: V:|-[image]-|", views: ["name": nameLabel, "image": preview])
   }
 
   /**
@@ -37,21 +35,24 @@ class BankItemImageCell: BankItemCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    imageℹ.image = nil
-    imageℹ.contentMode = .ScaleAspectFit
+    nameLabel.text = nil
+    preview.image = nil
+    preview.contentMode = .ScaleAspectFit
   }
 
   override var info: AnyObject? {
-    get { return imageℹ.image }
-    set {
-      imageℹ.image = newValue as? UIImage
-      if let imageSize = (newValue as? UIImage)?.size {
-        imageℹ.contentMode = CGSizeContainsSize(bounds.size, imageSize) ? .Center : .ScaleAspectFit
-      }
+    didSet {
+      if info != nil {
+        if let previewableItem = info as? PreviewableItem {
+          let previewImage = previewableItem.preview
+          preview.image = previewImage
+          preview.contentMode = bounds.size.contains(previewImage.size) ? .Center : .ScaleAspectFit
+        } else { preview.image = nil; info = nil }
+      } else { preview.image = nil }
     }
   }
 
-  private let imageℹ: UIImageView = {
+  private let preview: UIImageView = {
     let view = UIImageView()
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.userInteractionEnabled = false

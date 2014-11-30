@@ -51,7 +51,7 @@ struct PresetAttributes {
 
   var backgroundImageAlpha: NSNumber? {
     get { return storage["background-image-alpha"] as? NSNumber }
-    set { storage["background-image0-alpha"] = newValue }
+    set { storage["background-image-alpha"] = newValue }
   }
 
   var backgroundColor: UIColor? {

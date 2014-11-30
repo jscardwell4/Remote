@@ -1,5 +1,5 @@
 //
-//  BankItemDetailImageRow.swift
+//  DetailImageRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,15 +10,15 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailImageRow: BankItemDetailRow {
+class DetailImageRow: DetailRow {
 
 	/**
 	configureCell:forTableView:
 
-	:param: cell BankItemCell
+	:param: cell DetailCell
 	:param: tableView UITableView
 	*/
-	override func configureCell(cell: BankItemCell, forTableView tableView: UITableView) {
+	override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
 		super.configureCell(cell, forTableView: tableView)
 	}
 
@@ -27,9 +27,9 @@ class BankItemDetailImageRow: BankItemDetailRow {
 
   :param: previewableItem BankDisplayItemModel
   */
-  convenience init(previewableItem: BankDisplayItemModel) {
+  convenience init(previewableItem: PreviewableItem?) {
     self.init()
-    info = previewableItem.preview
+    info = previewableItem?.preview
   }
 
   /** init */

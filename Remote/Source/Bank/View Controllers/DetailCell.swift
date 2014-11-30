@@ -1,5 +1,5 @@
 //
-//  BankItemCell.swift
+//  DetailCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 9/26/14.
@@ -13,7 +13,7 @@ import MoonKit
 // TODO: Add creation row option for table style cells as well as ability to delete member rows
 // TODO: Create a specific cell type for the cells of a table style cell
 
-class BankItemCell: UITableViewCell {
+class DetailCell: UITableViewCell {
 
 
   /// MARK: Identifiers
@@ -23,33 +23,62 @@ class BankItemCell: UITableViewCell {
   private let identifier: Identifier
 
   /** A simple string-based enum to establish valid reuse identifiers for use with styling the cell */
-  enum Identifier: String {
-    case Label     = "BankItemDetailLabelCell"
-    case List      = "BankItemDetailListCell"
-    case Button    = "BankItemDetailButtonCell"
-    case Image     = "BankItemDetailImageCell"
-    case Switch    = "BankItemDetailSwitchCell"
-    case Stepper   = "BankItemDetailStepperCell"
-    case TextView  = "BankItemDetailTextViewCell"
-    case TextField = "BankItemDetailTextFieldCell"
+  enum Identifier: String, EnumerableType {
+    case AttributedLabel = "DetailAttributedLabelCell"
+    case Label           = "DetailLabelCell"
+    case List            = "DetailListCell"
+    case Button          = "DetailButtonCell"
+    case Image           = "DetailImageCell"
+    case LabeledImage    = "DetailLabeledImageCell"
+    case Switch          = "DetailSwitchCell"
+    case Color           = "DetailColorCell"
+    case Slider          = "DetailSliderCell"
+    case Stepper         = "DetailStepperCell"
+    case TextView        = "DetailTextViewCell"
+    case TextField       = "DetailTextFieldCell"
+
+    static var all: [Identifier] {
+      return [.AttributedLabel, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
+              .Color, .Slider, .Stepper, .TextView, .TextField]
+    }
+
+    var cellType: DetailCell.Type {
+      switch self {
+        case .AttributedLabel: return DetailAttributedLabelCell.self
+        case .Label:           return DetailLabelCell.self
+        case .List:            return DetailListCell.self
+        case .Button:          return DetailButtonCell.self
+        case .LabeledImage:    return DetailLabeledImageCell.self
+        case .Image:           return DetailImageCell.self
+        case .Color:           return DetailColorCell.self
+        case .Slider:          return DetailSliderCell.self
+        case .Switch:          return DetailSwitchCell.self
+        case .Stepper:         return DetailStepperCell.self
+        case .TextField:       return DetailTextFieldCell.self
+        case .TextView:        return DetailTextViewCell.self
+      }
+    }
+
+    /**
+    enumerate:
+
+    :param: block (Identifier) -> Void
+    */
+    static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
 
     /**
     registerWithTableView:
 
     :param: tableView UITableView
     */
-    func registerWithTableView(tableView: UITableView) {
-      switch self {
-        case .Label:     tableView.registerClass(BankItemLabelCell.self,     forCellReuseIdentifier: self.rawValue)
-        case .List:      tableView.registerClass(BankItemListCell.self,      forCellReuseIdentifier: self.rawValue)
-        case .Button:    tableView.registerClass(BankItemButtonCell.self,    forCellReuseIdentifier: self.rawValue)
-        case .Image:     tableView.registerClass(BankItemImageCell.self,     forCellReuseIdentifier: self.rawValue)
-        case .Switch:    tableView.registerClass(BankItemSwitchCell.self,    forCellReuseIdentifier: self.rawValue)
-        case .Stepper:   tableView.registerClass(BankItemStepperCell.self,   forCellReuseIdentifier: self.rawValue)
-        case .TextField: tableView.registerClass(BankItemTextFieldCell.self, forCellReuseIdentifier: self.rawValue)
-        case .TextView:  tableView.registerClass(BankItemTextViewCell.self,  forCellReuseIdentifier: self.rawValue)
-      }
-    }
+    func registerWithTableView(tableView: UITableView) { tableView.registerClass(cellType, forCellReuseIdentifier: rawValue) }
+
+    /**
+    registerAllWithTableView:
+
+    :param: tableView UITableView
+    */
+    static func registerAllWithTableView(tableView: UITableView) { enumerate { $0.registerWithTableView(tableView) } }
   }
 
   /**
@@ -57,19 +86,16 @@ class BankItemCell: UITableViewCell {
 
   :param: tableView UITableView
   */
-  class func registerIdentifiersWithTableView(tableView: UITableView) {
-    let identifiers: [Identifier] = [.Label, .List, .Button, .Image, .Switch, .Stepper,.TextField, .TextView]
-    for identifier in identifiers { identifier.registerWithTableView(tableView) }
-  }
+  class func registerIdentifiersWithTableView(tableView: UITableView) { Identifier.registerAllWithTableView(tableView) }
 
 
   /// MARK: Handlers
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var valueDidChange: ((NSObject?) -> Void)?
-  var valueIsValid: ((NSObject?) -> Bool)?
-  var sizeDidChange: ((BankItemCell) -> Void)?
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var sizeDidChange: ((DetailCell) -> Void)?
 
 
   /// MARK: Name and info properties
@@ -88,15 +114,16 @@ class BankItemCell: UITableViewCell {
     case FloatData(ClosedInterval<Float>)
     case DoubleData(ClosedInterval<Double>)
     case StringData
+    case AttributedStringData
 
     /**
     objectFromText:
 
     :param: text String?
 
-    :returns: NSObject?
+    :returns: AnyObject?
     */
-    func objectFromText(text: String?) -> NSObject? {
+    func objectFromText(text: String?) -> AnyObject? {
       if let t = text {
         let scanner = NSScanner.localizedScannerWithString(t) as NSScanner
         switch self {
@@ -115,12 +142,51 @@ class BankItemCell: UITableViewCell {
           case .DoubleData(let r):
             var n: Double = 0
             if scanner.scanDouble(&n) && r ∋ n { return NSNumber(double: n) }
+          case .AttributedStringData:
+            fallthrough
           case .StringData:
             return t
         }
       }
       return nil
     }
+
+    /**
+    objectFromText:
+
+    :param: text NSAttributedString?
+
+    :returns: AnyObject?
+    */
+    func objectFromAttributedText(text: NSAttributedString?) -> AnyObject? {
+      if let t = text {
+        let scanner = NSScanner.localizedScannerWithString(t.string) as NSScanner
+        switch self {
+          case .IntData(let r):
+            var n: Int32 = 0
+            if scanner.scanInt(&n) && r ∋ n { return NSNumber(int: n) }
+          case .IntegerData(let r):
+            var n: Int = 0
+            if scanner.scanInteger(&n) && r ∋ n { return NSNumber(long: n) }
+          case .LongLongData(let r):
+            var n: Int64 = 0
+            if scanner.scanLongLong(&n) && r ∋ n { return NSNumber(longLong: n) }
+          case .FloatData(let r):
+            var n: Float = 0
+            if scanner.scanFloat(&n) && r ∋ n { return NSNumber(float: n) }
+          case .DoubleData(let r):
+            var n: Double = 0
+            if scanner.scanDouble(&n) && r ∋ n { return NSNumber(double: n) }
+          case .AttributedStringData:
+            return t
+          case .StringData:
+            return t.string
+        }
+      }
+      return nil
+    }
+
+
   }
 
   var infoDataType: DataType = .StringData
@@ -214,3 +280,25 @@ class BankItemCell: UITableViewCell {
   var isEditingState: Bool = false
 
 }
+
+/**
+subscript:rhs:
+
+:param: lhs DetailCell.DataType
+:param: rhs DetailCell.DataType
+
+:returns: Bool
+*/
+func ==(lhs: DetailCell.DataType, rhs: DetailCell.DataType) -> Bool {
+  switch (lhs, rhs) {
+    case (.IntData, .IntData),
+         (.IntegerData, .IntegerData),
+         (.LongLongData, .LongLongData),
+         (.FloatData, .FloatData),
+         (.DoubleData, .DoubleData),
+         (.StringData, .StringData),
+         (.AttributedStringData, .AttributedStringData): return true
+    default: return false
+  }
+}
+

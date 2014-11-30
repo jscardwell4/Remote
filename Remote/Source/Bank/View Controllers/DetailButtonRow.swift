@@ -1,5 +1,5 @@
 //
-//  BankItemDetailButtonRow.swift
+//  DetailButtonRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailButtonRow: BankItemDetailRow {
+class DetailButtonRow: DetailRow {
 
   var pickerNilSelectionTitle: String?
   var pickerCreateSelectionTitle: String?
@@ -22,13 +22,13 @@ class BankItemDetailButtonRow: BankItemDetailRow {
   /**
   configureCell:forTableView:
 
-  :param: cell BankItemCell
+  :param: cell DetailCell
   :param: tableView UITableView
   */
-  override func configureCell(cell: BankItemCell, forTableView tableView: UITableView) {
+  override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
   	super.configureCell(cell, forTableView: tableView)
     cell.name = name
-  	if let buttonCell = cell as? BankItemButtonCell {
+  	if let buttonCell = cell as? DetailButtonCell {
       buttonCell.pickerData = pickerData
       buttonCell.pickerNilSelectionTitle = pickerNilSelectionTitle
       buttonCell.pickerCreateSelectionTitle = pickerCreateSelectionTitle

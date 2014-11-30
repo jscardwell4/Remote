@@ -1,5 +1,5 @@
 //
-//  BankItemDetailStepperRow.swift
+//  DetailStepperRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailStepperRow: BankItemDetailRow {
+class DetailStepperRow: DetailRow {
 
   var stepperWraps: Bool = true
   var stepperMinValue: Double = Double(CGFloat.min)
@@ -20,13 +20,13 @@ class BankItemDetailStepperRow: BankItemDetailRow {
   /**
   configureCell:forTableView:
 
-  :param: cell BankItemCell
+  :param: cell DetailCell
   :param: tableView UITableView
   */
-  override func configureCell(cell: BankItemCell, forTableView tableView: UITableView) {
+  override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
   	super.configureCell(cell, forTableView: tableView)
     cell.name = name
-  	if let stepperCell = cell as? BankItemStepperCell {
+  	if let stepperCell = cell as? DetailStepperCell {
       stepperCell.stepperWraps = stepperWraps
       stepperCell.stepperMinValue = stepperMinValue
       stepperCell.stepperMaxValue = stepperMaxValue

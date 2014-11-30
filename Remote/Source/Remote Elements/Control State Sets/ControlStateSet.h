@@ -40,14 +40,3 @@
 //- (void)copyObjectsFromSet:(ControlStateSet *)set;
 
 @end
-
-@interface ControlStateSet (Abstract)
-@property (nonatomic) id normal;
-@property (nonatomic) id disabled;
-@property (nonatomic) id selected;
-@property (nonatomic) id highlighted;
-@property (nonatomic) id highlightedDisabled;
-@property (nonatomic) id highlightedSelected;
-@property (nonatomic) id highlightedSelectedDisabled;
-@property (nonatomic) id selectedDisabled;
-@end

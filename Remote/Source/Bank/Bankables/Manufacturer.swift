@@ -64,12 +64,12 @@ class Manufacturer: BankableModelObject {
                              editableItems: true)
   }
 
-  override class func isEditable()      -> Bool { return true  }
-  override class func isPreviewable()   -> Bool { return false }
+  /**
+  detailController
 
-  override func detailController() -> UIViewController {
-    return ManufacturerDetailController(item: self)!
-  }
+  :returns: UIViewController
+  */
+  override func detailController() -> UIViewController { return ManufacturerDetailController(model: self) }
 
 }
 

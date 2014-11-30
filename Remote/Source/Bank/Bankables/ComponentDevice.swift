@@ -147,27 +147,11 @@ class ComponentDevice: BankableModelObject {
   }
 
   /**
-  isEditable
-
-  :returns: Bool
-  */
-  override class func isEditable() -> Bool { return true  }
-
-  /**
-  isPreviewable
-
-  :returns: Bool
-  */
-  override class func isPreviewable() -> Bool { return false }
-
-  /**
   detailController
 
   :returns: UIViewController
   */
-  override func detailController() -> UIViewController {
-    return ComponentDeviceDetailController(item: self)!
-  }
+  override func detailController() -> UIViewController { return ComponentDeviceDetailController(model: self) }
 
 }
 

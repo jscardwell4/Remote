@@ -1,5 +1,5 @@
 //
-//  BankItemButtonCell.swift
+//  DetailButtonCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/21/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemButtonCell: BankItemCell {
+class DetailButtonCell: DetailCell {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -89,10 +89,10 @@ class BankItemButtonCell: BankItemCell {
   class var pickerHeight: CGFloat { return 162.0 }
 
   var pickerCreateSelectionHandler: ((Void) -> Void)?
-  var shouldShowPicker: ((BankItemButtonCell) -> Bool)?
-  var shouldHidePicker: ((BankItemButtonCell) -> Bool)?
-  var didShowPicker: ((BankItemButtonCell) -> Void)?
-  var didHidePicker: ((BankItemButtonCell) -> Void)?
+  var shouldShowPicker: ((DetailButtonCell) -> Bool)?
+  var shouldHidePicker: ((DetailButtonCell) -> Bool)?
+  var didShowPicker: ((DetailButtonCell) -> Void)?
+  var didHidePicker: ((DetailButtonCell) -> Void)?
   var didSelectItem: ((NSObject?) -> Void)?
 
   var pickerData: [NSObject]?
@@ -195,7 +195,7 @@ class BankItemButtonCell: BankItemCell {
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - UIPickerViewDataSource
 ////////////////////////////////////////////////////////////////////////////////
-extension BankItemButtonCell: UIPickerViewDataSource {
+extension DetailButtonCell: UIPickerViewDataSource {
 
 
   /**
@@ -237,7 +237,7 @@ extension BankItemButtonCell: UIPickerViewDataSource {
 ////////////////////////////////////////////////////////////////////////////////
 /// MARK: - UIPickerViewDelegate
 ////////////////////////////////////////////////////////////////////////////////
-extension BankItemButtonCell: UIPickerViewDelegate {
+extension DetailButtonCell: UIPickerViewDelegate {
 
   /**
   Handles selection of `nil`, `create`, or `pickerData` row

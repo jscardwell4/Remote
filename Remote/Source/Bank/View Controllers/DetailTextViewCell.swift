@@ -1,5 +1,5 @@
 //
-//  BankItemTextViewCell.swift
+//  DetailTextViewCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemTextViewCell: BankItemCell, UITextViewDelegate {
+class DetailTextViewCell: DetailCell, UITextViewDelegate {
 
   /**
   initWithStyle:reuseIdentifier:

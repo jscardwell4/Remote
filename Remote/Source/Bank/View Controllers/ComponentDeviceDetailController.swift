@@ -12,26 +12,26 @@ import MoonKit
 
 class ComponentDeviceDetailController: BankItemDetailController {
 
-  var componentDevice: ComponentDevice { return item as ComponentDevice }
+  var componentDevice: ComponentDevice { return model as ComponentDevice }
 
   /**
   initWithItem:editing:
 
-  :param: item BankableModelObject
+  :param: model BankableModelObject
   */
-  required init?(item: BankDisplayItemModel) {
-    super.init(item: item)
-    precondition(item is ComponentDevice, "we should have been given a component device")
+  override init(model: BankableModelObject) {
+    super.init(model: model)
+    precondition(model is ComponentDevice, "we should have been given a component device")
 
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////
 
     let moc = self.componentDevice.managedObjectContext!
 
-    let manufacturerSection = BankItemDetailSection(sectionNumber: 0)
+    let manufacturerSection = DetailSection(sectionNumber: 0)
 
     manufacturerSection.addRow {
-      let row = BankItemDetailButtonRow(pushableItem: self.componentDevice.manufacturer)
+      let row = DetailButtonRow(pushableItem: self.componentDevice.manufacturer)
       row.name = "Manufacturer"
       row.pickerNilSelectionTitle = "No Manufacturer"
       row.pickerCreateSelectionTitle = "⨁ New Manufacturer"
@@ -87,7 +87,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow {
 
-      let row = BankItemDetailButtonRow(pushableCategory: self.componentDevice.codeSet)
+      let row = DetailButtonRow(pushableCategory: self.componentDevice.codeSet)
       row.name = "Code Set"
       row.pickerNilSelectionTitle = "No Code Set"
       row.pickerCreateSelectionTitle = "⨁ New Code Set"
@@ -136,10 +136,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
     /// Network Device
     ////////////////////////////////////////////////////////////////////////////////
 
-    let networkDeviceSection = BankItemDetailSection(sectionNumber: 1, title: "Network Device")
+    let networkDeviceSection = DetailSection(sectionNumber: 1, title: "Network Device")
 
     networkDeviceSection.addRow {
-      let row = BankItemDetailButtonRow()
+      let row = DetailButtonRow()
       row.selectionHandler = {
           if let networkDevice = self.componentDevice.networkDevice {
             self.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
@@ -156,7 +156,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     }
 
     networkDeviceSection.addRow {
-      let row = BankItemDetailStepperRow(identifier: .Stepper)
+      let row = DetailStepperRow(identifier: .Stepper)
       row.name = "Port"
       row.info = Int(self.componentDevice.port)
       row.stepperMinValue = 1
@@ -170,10 +170,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
     /// Power
     ////////////////////////////////////////////////////////////////////////////////
 
-    let powerSection = BankItemDetailSection(sectionNumber: 2, title: "Power")
+    let powerSection = DetailSection(sectionNumber: 2, title: "Power")
 
     powerSection.addRow {
-      let row = BankItemDetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "On"
       row.info = self.componentDevice.onCommand
       row.pickerNilSelectionTitle = "No On Command"
@@ -202,7 +202,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     }
 
     powerSection.addRow {
-      let row = BankItemDetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Off"
       row.info = self.componentDevice.offCommand
       row.pickerNilSelectionTitle = "No Off Command"
@@ -234,10 +234,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
     // Inputs
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let inputsSection = BankItemDetailSection(sectionNumber: 3, title: "Inputs")
+    let inputsSection = DetailSection(sectionNumber: 3, title: "Inputs")
 
     inputsSection.addRow {
-      let row = BankItemDetailSwitchRow(identifier: .Switch)
+      let row = DetailSwitchRow()
       row.name = "Inputs Power On Device"
       row.info = NSNumber(bool: self.componentDevice.inputPowersOn)
       row.valueDidChange = { self.componentDevice.inputPowersOn = $0 as Bool }
@@ -246,7 +246,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     }
 
     for input in sortedByName(self.componentDevice.inputs) {
-      inputsSection.addRow { return BankItemDetailListRow(pushableItem: input) }
+      inputsSection.addRow { return DetailListRow(pushableItem: input) }
     }
 
     /// Create the sections

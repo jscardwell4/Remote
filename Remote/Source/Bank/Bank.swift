@@ -11,22 +11,7 @@ import UIKit
 import MoonKit
 
 /** Protocol inheriting from `BankDisplayItem` for actual items of interest */
-@objc protocol BankDisplayItemModel: RenameableModel, MSJSONExport {
-
-  class func isPreviewable()   -> Bool  // Whether items of the conforming type may be previewed
-  class func isEditable()      -> Bool  // Whether items of the conforming type may be edited in a detail controller
-
-  var previewable:   Bool { get }
-  var editable:      Bool { get }
-
-  var preview: UIImage? { get }
-  var thumbnail: UIImage? { get }
-  func save()
-  func delete()
-  func rollback()
-
-  func detailController() -> UIViewController
-
+@objc protocol BankDisplayItemModel: class, NSObjectProtocol, RenameableModel, MSJSONExport, EditableItem {
 }
 
 func sortedByName<T: NamedModel>(array: [T]) -> [T] { return array.sorted{$0.0.name < $0.1.name} }
@@ -109,13 +94,6 @@ func itemForCategory(category: BankDisplayItemCategory, atPath path: String) -> 
     item = currentCategory?.items.filter{$0.name == itemName}.first
   }
   return item
-}
-
-/** Protocol for types that wish to display Bank item details */
-@objc protocol BankDetailController: class, NSObjectProtocol {
-
-  init?(item: BankDisplayItemModel)
-
 }
 
 protocol BankItemSelectionDelegate {

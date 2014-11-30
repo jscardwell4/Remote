@@ -33,7 +33,7 @@
         <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
         <attribute name="panelAssignment" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="commandContainer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CommandContainer" inverseName="buttonGroup" inverseEntity="CommandContainer" syncable="YES"/>
-        <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="buttonGroupLabel" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForButtonGroupLabelAttributes" inverseEntity="DictionaryStorage" syncable="YES"/>
         <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteController" inverseName="topToolbar" inverseEntity="RemoteController" syncable="YES"/>
     </entity>
     <entity name="Command" representedClassName="Command" isAbstract="YES" syncable="YES">
@@ -123,14 +123,14 @@
     <entity name="ControlStateTitleSet" representedClassName="ControlStateTitleSet" syncable="YES">
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="button" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="titles" inverseEntity="Button" syncable="YES"/>
-        <relationship name="disabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetDisabled" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="highlighted" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetHighlighted" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="highlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetHighlightedDisabled" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="highlightedSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetHighlightedSelected" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="highlightedSelectedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetSelectedHighlightedDisabled" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="normal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetNormal" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="selected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetSelected" inverseEntity="TitleAttributes" syncable="YES"/>
-        <relationship name="selectedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TitleAttributes" inverseName="titleSetDisabledSelected" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="disabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetDisabled" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="highlighted" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetHighlighted" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="highlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetHighlightedDisabled" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="highlightedSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetHighlightedSelected" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="highlightedSelectedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetHighlightedSelectedDisabled" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="normal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetNormal" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="selected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetSelected" inverseEntity="DictionaryStorage" syncable="YES"/>
+        <relationship name="selectedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DictionaryStorage" inverseName="storageForTitleSetSelectedDisabled" inverseEntity="DictionaryStorage" syncable="YES"/>
     </entity>
     <entity name="DelayCommand" representedClassName="DelayCommand" parentEntity="Command" syncable="YES">
         <attribute name="duration" attributeType="Float" defaultValueString="0.25">
@@ -139,8 +139,16 @@
     </entity>
     <entity name="DictionaryStorage" representedClassName="DictionaryStorage" syncable="YES">
         <attribute name="dictionary" attributeType="Transformable" syncable="YES"/>
+        <relationship name="storageForButtonGroupLabelAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
         <relationship name="storageForPreset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="storage" inverseEntity="Preset" syncable="YES"/>
-        <relationship name="storageForTitleAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TitleAttributes" inverseName="storage" inverseEntity="TitleAttributes" syncable="YES"/>
+        <relationship name="storageForTitleSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="disabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetHighlighted" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlighted" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetHighlightedSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedSelected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetHighlightedSelectedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedSelectedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetNormal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="normal" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="selected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="storageForTitleSetSelectedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="selectedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
     </entity>
     <entity name="HTTPCommand" representedClassName="HTTPCommand" parentEntity="Command" syncable="YES">
         <attribute name="url" attributeType="Transformable" syncable="YES"/>
@@ -343,24 +351,11 @@
     <entity name="SystemCommand" representedClassName="SystemCommand" parentEntity="Command" syncable="YES">
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="TitleAttributes" representedClassName="TitleAttributes" syncable="YES">
-        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
-        <relationship name="buttonGroupLabel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
-        <relationship name="storage" maxCount="1" deletionRule="Nullify" destinationEntity="DictionaryStorage" inverseName="storageForTitleAttributes" inverseEntity="DictionaryStorage" syncable="YES"/>
-        <relationship name="titleSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="disabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetDisabledSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="selectedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetHighlighted" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlighted" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetHighlightedSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedSelected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetNormal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="normal" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="selected" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-        <relationship name="titleSetSelectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlightedSelectedDisabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
-    </entity>
     <elements>
         <element name="Activity" positionX="0" positionY="0" width="128" height="165"/>
         <element name="ActivityCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Button" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="133"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="165"/>
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandSet" positionX="0" positionY="0" width="128" height="90"/>
@@ -369,9 +364,9 @@
         <element name="Constraint" positionX="0" positionY="0" width="128" height="225"/>
         <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="193"/>
         <element name="DelayCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="DictionaryStorage" positionX="36" positionY="153" width="128" height="88"/>
+        <element name="DictionaryStorage" positionX="36" positionY="153" width="128" height="208"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Image" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ImageCategory" positionX="36" positionY="180" width="128" height="135"/>
@@ -394,6 +389,5 @@
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="118"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="TitleAttributes" positionX="0" positionY="0" width="128" height="208"/>
     </elements>
 </model>

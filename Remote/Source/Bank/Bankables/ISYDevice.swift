@@ -102,6 +102,11 @@ class ISYDevice: NetworkDevice {
       }
     }
 
+  /**
+  updateWithData:
+
+  :param: data [NSObject AnyObject]!
+  */
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
     modelNumber       = data["model-number"]      as? NSString ?? modelNumber
@@ -124,14 +129,22 @@ class ISYDevice: NetworkDevice {
     }
   }
 
-  override func detailController() -> UIViewController {
-    return ISYDeviceDetailController(item: self)!
-  }
+  /**
+  detailController
+
+  :returns: UIViewController
+  */
+  override func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
 
 }
 
 extension ISYDevice: MSJSONExport {
 
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
   override func JSONDictionary() -> MSDictionary! {
     let dictionary = super.JSONDictionary()
       safeSetValue(modelNumber,      forKey: "model-number",      inDictionary: dictionary)

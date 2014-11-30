@@ -102,7 +102,24 @@ class ButtonGroup: RemoteElement {
   @NSManaged var commandContainer: CommandContainer?
   @NSManaged var autohide: Bool
   // @NSManaged var label: NSAttributedString?
-  @NSManaged var labelAttributes: TitleAttributes?
+  @NSManaged var primitiveLabelAttributes: DictionaryStorage?
+  var labelAttributes: TitleAttributes? {
+    get {
+      willAccessValueForKey("labelAttributes")
+      let storage = primitiveLabelAttributes?.dictionary
+      didAccessValueForKey("labelAttributes")
+      return storage == nil ? nil : TitleAttributes(storage: storage! as [String:AnyObject])
+    }
+    set {
+      willChangeValueForKey("labelAttributes")
+      if newValue == nil { primitiveLabelAttributes = nil }
+      else {
+        if primitiveLabelAttributes == nil { primitiveLabelAttributes = DictionaryStorage(context: managedObjectContext) }
+        primitiveLabelAttributes?.dictionary = newValue!.dictionaryValue
+      }
+      didChangeValueForKey("labelAttributes")
+    }
+  }
   @NSManaged var labelConstraints: String?
 
   var isPanel: Bool { return panelLocation != .Undefined && panelTrigger != .Undefined }
@@ -258,8 +275,8 @@ class ButtonGroup: RemoteElement {
 
       labelConstraints = data["label-constraints"] as? String
 
-      if let labelAttributesData = data["label-attributes"] as? [String:[String:AnyObject]] {
-        labelAttributes = TitleAttributes.importObjectFromData(labelAttributesData, context: moc)
+      if let labelAttributesData = data["label-attributes"] as? [String:AnyObject] {
+        labelAttributes = TitleAttributes(JSONValue: labelAttributesData)
       }
 
     }
@@ -291,7 +308,7 @@ class ButtonGroup: RemoteElement {
     if commandSets.count > 0 { dictionary["command-set"] = commandSets }
     if labels.count > 0 { dictionary["label"] = labels }
     if let constraints = labelConstraints { dictionary["label-constraints"] = constraints }
-    if let attributes = labelAttributes { dictionary["label-attributes"] = attributes.JSONDictionary() }
+    if let attributes = labelAttributes { dictionary["label-attributes"] = attributes.JSONValue }
 
     dictionary.compact()
     dictionary.compress()

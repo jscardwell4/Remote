@@ -16,15 +16,15 @@ class RemotePresetDetailController: PresetDetailController {
   /**
   initWithItem:editing:
 
-  :param: item BankableModelObject
+  :param: model BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel) {
-    super.init(item: item)
+  override init(model: BankableModelObject) {
+    super.init(model: model)
     if let detailsSection = sections.first {
 
       detailsSection.addRow {
-        let row = BankItemDetailSwitchRow(identifier: .Switch)
+        let row = DetailSwitchRow(identifier: .Switch)
         row.name = "Top Bar Hidden"
         row.info = NSNumber(bool: self.preset.attributes.topBarHidden ?? false)
         row.valueDidChange = { self.preset.attributes.topBarHidden = ($0 as? NSNumber)?.boolValue }

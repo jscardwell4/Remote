@@ -8,6 +8,17 @@
 #import "ControlStateSet.h"
 #import "CoreDataManager.h"
 
+@interface ControlStateSet (Abstract)
+@property (nonatomic) id normal;
+@property (nonatomic) id disabled;
+@property (nonatomic) id selected;
+@property (nonatomic) id highlighted;
+@property (nonatomic) id highlightedDisabled;
+@property (nonatomic) id highlightedSelected;
+@property (nonatomic) id highlightedSelectedDisabled;
+@property (nonatomic) id selectedDisabled;
+@end
+
 @implementation ControlStateSet
 
 
@@ -220,8 +231,8 @@
 
   [moc performBlockAndWait:^{
     controlStateSet = [controlStateSetClass createInContext:moc];
-    [controlStateSet setValuesForKeysWithDictionary
-     :[sourceSet dictionaryWithValuesForKeys:[[ControlStateSet validProperties] allObjects]]];
+    [controlStateSet setValuesForKeysWithDictionary:
+     [sourceSet dictionaryWithValuesForKeys:[[ControlStateSet validProperties] allObjects]]];
   }];
 
   return controlStateSet;

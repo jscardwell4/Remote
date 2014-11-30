@@ -1,5 +1,5 @@
 //
-//  BankItemDetailRow.swift
+//  DetailRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/16/14.
@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailRow {
+class DetailRow {
 
-  let identifier: BankItemCell.Identifier
+  let identifier: DetailCell.Identifier
   var indexPath: NSIndexPath!
   var selectionHandler: ((Void) -> Void)?
   var deletionHandler: ((Void) -> Void)?
@@ -24,40 +24,46 @@ class BankItemDetailRow {
   var deleteRemovesRow = true
   var isSelectable: Bool { return selectionHandler != nil }
 
-  private(set) weak var bankItemCell: BankItemCell?
+  private(set) weak var bankItemCell: DetailCell?
 
-  /// Properties that mirror `BankItemCell` properties
+  /// Properties that mirror `DetailCell` properties
   ////////////////////////////////////////////////////////////////////////////////
 
   var name: String?
   var info: AnyObject?
-  var infoDataType: BankItemCell.DataType = .StringData
-  var valueDidChange: ((NSObject?) -> Void)?
-  var valueIsValid: ((NSObject?) -> Bool)?
+  var infoDataType: DetailCell.DataType = .StringData
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var indentationLevel: Int = 0
+  var indentationWidth: CGFloat = 8.0
+  var backgroundColor: UIColor?
 
   /**
   configure:
 
-  :param: cell BankItemCell
+  :param: cell DetailCell
   */
-  func configureCell(cell: BankItemCell, forTableView tableView: UITableView) {
+  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
     bankItemCell = cell
+    if let color = backgroundColor { cell.backgroundColor = color }
+    cell.indentationLevel = indentationLevel
+    cell.indentationWidth = indentationWidth
     cell.info = info
     cell.infoDataType = infoDataType
     cell.valueIsValid = valueIsValid
     cell.valueDidChange = valueDidChange
-    cell.sizeDidChange = {(cell: BankItemCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
+    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
   }
 
   /**
   initWithIdentifier:hasEditingState:selectionHandler:configureCell:
 
-  :param: identifier BankItemCell.Identifier
+  :param: identifier DetailCell.Identifier
   :param: hasEditingState Bool = false
   :param: selectionHandler ((Void) -> Void
-  :param: configureCell (BankItemCell) -> Void
+  :param: configureCell (DetailCell) -> Void
   */
-  init(identifier: BankItemCell.Identifier,
+  init(identifier: DetailCell.Identifier,
        selectionHandler: ((Void) -> Void)? = nil,
        deletionHandler: ((Void) -> Void)? = nil)
   {

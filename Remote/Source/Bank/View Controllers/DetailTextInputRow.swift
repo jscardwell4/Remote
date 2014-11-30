@@ -1,5 +1,5 @@
 //
-//  BankItemDetailTextInputRow.swift
+//  DetailTextInputRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailTextInputRow: BankItemDetailRow {
+class DetailTextInputRow: DetailRow {
 
   var returnKeyType: UIReturnKeyType = .Done
   var keyboardType: UIKeyboardType = .ASCIICapable
@@ -24,13 +24,13 @@ class BankItemDetailTextInputRow: BankItemDetailRow {
   /**
   configureCell:forTableView:
 
-  :param: cell BankItemCell
+  :param: cell DetailCell
   :param: tableView UITableView
   */
-  override func configureCell(cell: BankItemCell, forTableView tableView: UITableView) {
+  override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
   	super.configureCell(cell, forTableView: tableView)
     cell.name = name
-  	if let textFieldCell = cell as? BankItemTextFieldCell {
+  	if let textFieldCell = cell as? DetailTextFieldCell {
       textFieldCell.returnKeyType = returnKeyType
       textFieldCell.keyboardType = keyboardType
       textFieldCell.autocapitalizationType = autocapitalizationType
@@ -39,7 +39,7 @@ class BankItemDetailTextInputRow: BankItemDetailRow {
       textFieldCell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
       textFieldCell.keyboardAppearance = keyboardAppearance
       textFieldCell.secureTextEntry = secureTextEntry
-    } else if let textViewCell = cell as? BankItemTextViewCell {
+    } else if let textViewCell = cell as? DetailTextViewCell {
       textViewCell.returnKeyType = returnKeyType
       textViewCell.keyboardType = keyboardType
       textViewCell.autocapitalizationType = autocapitalizationType

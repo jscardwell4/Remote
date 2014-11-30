@@ -410,3 +410,50 @@ Returns true if lhs does not contain rhs
 public func ∌ <T, U:IntervalType where T == U.Bound>(lhs:U, rhs:T) -> Bool { return !(lhs ∋ rhs) }
 public func ∌<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:S, rhs:T) -> Bool { return !(lhs ∋ rhs) }
 
+/**
+setOption:s:
+
+:param: o T
+:param: s T
+
+:returns: T
+*/
+public func setOption<T:RawOptionSetType>(o: T, s: T) -> T { return o | s }
+
+/**
+unsetOption:s:
+
+:param: o T
+:param: s T
+
+:returns: T
+*/
+public func unsetOption<T:RawOptionSetType>(o: T, s: T) -> T { return s & ~o }
+
+/**
+isOptionSet:s:
+
+:param: o T
+:param: s T
+
+:returns: Bool
+*/
+public func isOptionSet<T:RawOptionSetType>(o: T, s: T) -> Bool { return o & s != nil }
+
+/**
+toggleOption:s:
+
+:param: o T
+:param: s T
+
+:returns: T
+*/
+public func toggleOption<T:RawOptionSetType>(o: T, s: T) -> T { return isOptionSet(o, s) ? unsetOption(o, s) : setOption(o, s) }
+
+
+public func ∪<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return setOption(rhs, lhs) }
+public func ∪=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∪ rhs }
+
+
+public func ∖<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return unsetOption(rhs, lhs) }
+public func ∖=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∖ rhs }

@@ -13,19 +13,19 @@ import MoonKit
 @objc(Button)
 class Button: RemoteElement {
 
-  struct State: RawOptionSetType {
-
-    private(set) var rawValue: Int
-    init(rawValue: Int) { self.rawValue = rawValue & 0b0111 }
-    init(nilLiteral:()) { rawValue = 0 }
-
-    static var Default:     State = State(rawValue: 0b0000)
-    static var Normal:      State = State.Default
-    static var Highilghted: State = State(rawValue: 0b0001)
-    static var Disabled:    State = State(rawValue: 0b0010)
-    static var Selected:    State = State(rawValue: 0b0100)
-
-  }
+//  struct State: RawOptionSetType {
+//
+//    private(set) var rawValue: Int
+//    init(rawValue: Int) { self.rawValue = rawValue & 0b0111 }
+//    init(nilLiteral:()) { rawValue = 0 }
+//
+//    static var Default:     State = State(rawValue: 0b0000)
+//    static var Normal:      State = State.Default
+//    static var Highilghted: State = State(rawValue: 0b0001)
+//    static var Disabled:    State = State(rawValue: 0b0010)
+//    static var Selected:    State = State(rawValue: 0b0100)
+//
+//  }
 
   override var elementType: BaseType { return .Button }
 
@@ -40,12 +40,12 @@ class Button: RemoteElement {
   @NSManaged var longPressCommand: Command?
 
   @NSManaged var primitiveState: NSNumber
-  var state: State {
+  var state: UIControlState {
     get {
       willAccessValueForKey("state")
       let state = primitiveState
       didAccessValueForKey("state")
-      return State(rawValue: state.integerValue)
+      return UIControlState(rawValue: UInt(state.integerValue))
     }
     set {
       willChangeValueForKey("state")
@@ -57,13 +57,13 @@ class Button: RemoteElement {
   var selected: Bool {
     get {
       willAccessValueForKey("selected")
-      let selected = state & State.Selected != nil
+      let selected = state & UIControlState.Selected != nil
       didAccessValueForKey("selected")
       return selected
     }
     set {
       willChangeValueForKey("selected")
-      if newValue { state |= State.Selected } else { state &= ~State.Selected }
+      if newValue { state |= UIControlState.Selected } else { state &= ~UIControlState.Selected }
       didChangeValueForKey("selected")
     }
   }
@@ -71,13 +71,13 @@ class Button: RemoteElement {
   var highlighted: Bool {
     get {
       willAccessValueForKey("highlighted")
-      let highlighted = state & State.Highilghted != nil
+      let highlighted = state & UIControlState.Highlighted != nil
       didAccessValueForKey("highlighted")
       return highlighted
     }
     set {
       willChangeValueForKey("highlighted")
-      if newValue { state |= State.Highilghted } else { state &= ~State.Highilghted }
+      if newValue { state |= UIControlState.Highlighted } else { state &= ~UIControlState.Highlighted }
       didChangeValueForKey("highlighted")
     }
   }
@@ -85,13 +85,13 @@ class Button: RemoteElement {
   var enabled: Bool {
     get {
       willAccessValueForKey("enabled")
-      let enabled = state & State.Disabled == nil
+      let enabled = state & UIControlState.Disabled == nil
       didAccessValueForKey("enabled")
       return enabled
     }
     set {
       willChangeValueForKey("enabled")
-      if !newValue { state |= State.Disabled } else { state &= ~State.Disabled }
+      if !newValue { state |= UIControlState.Disabled } else { state &= ~UIControlState.Disabled }
       didChangeValueForKey("enabled")
     }
   }
@@ -286,8 +286,8 @@ class Button: RemoteElement {
 
   /** updateButtonForState */
   func updateButtonForState() {
-    let idx = UInt(state.rawValue)
-    title = titles?[idx] as? NSAttributedString
+    let idx = state.rawValue
+    title = titles?.attributedStringForState(state)
     icon = icons?[idx] as? ImageView
     image = images?[idx] as? ImageView
     backgroundColor = backgroundColors?[idx] as? UIColor
@@ -322,7 +322,8 @@ class Button: RemoteElement {
 
       if let titles = data["titles"] as? [String:[String:AnyObject]] {
         for (mode, values) in titles {
-          setTitles(ControlStateTitleSet.importObjectFromData(values, context: moc), forMode: mode)
+          let titleSet = ControlStateTitleSet.importObjectFromData(values, context: moc)
+          if titleSet != nil { setTitles(titleSet, forMode: mode) }
         }
       }
 
@@ -502,19 +503,19 @@ class Button: RemoteElement {
 
 // }
 
-extension Button.State: Equatable {}
-func ==(lhs: Button.State, rhs: Button.State) -> Bool { return lhs.rawValue == rhs.rawValue }
-
-extension Button.State: BitwiseOperationsType {
-  static var allZeros: Button.State { return self(rawValue: 0) }
-}
-func &(lhs: Button.State, rhs: Button.State) -> Button.State {
-  return Button.State(rawValue: (lhs.rawValue & rhs.rawValue))
-}
-func |(lhs: Button.State, rhs: Button.State) -> Button.State {
-  return Button.State(rawValue: (lhs.rawValue | rhs.rawValue))
-}
-func ^(lhs: Button.State, rhs: Button.State) -> Button.State {
-  return Button.State(rawValue: (lhs.rawValue ^ rhs.rawValue))
-}
-prefix func ~(x: Button.State) -> Button.State { return Button.State(rawValue: ~(x.rawValue)) }
+//extension Button.State: Equatable {}
+//func ==(lhs: Button.State, rhs: Button.State) -> Bool { return lhs.rawValue == rhs.rawValue }
+//
+//extension Button.State: BitwiseOperationsType {
+//  static var allZeros: Button.State { return self(rawValue: 0) }
+//}
+//func &(lhs: Button.State, rhs: Button.State) -> Button.State {
+//  return Button.State(rawValue: (lhs.rawValue & rhs.rawValue))
+//}
+//func |(lhs: Button.State, rhs: Button.State) -> Button.State {
+//  return Button.State(rawValue: (lhs.rawValue | rhs.rawValue))
+//}
+//func ^(lhs: Button.State, rhs: Button.State) -> Button.State {
+//  return Button.State(rawValue: (lhs.rawValue ^ rhs.rawValue))
+//}
+//prefix func ~(x: Button.State) -> Button.State { return Button.State(rawValue: ~(x.rawValue)) }

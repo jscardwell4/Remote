@@ -11,9 +11,12 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-class Preset: BankableModelObject {
+class Preset: BankableModelObject, PreviewableItem {
 
   @NSManaged var presetCategory: PresetCategory?
+
+  var preview: UIImage { return UIImage() }
+  var thumbnail: UIImage { return preview }
 
   var attributes: PresetAttributes {
     get {
@@ -31,10 +34,6 @@ class Preset: BankableModelObject {
 
   @NSManaged var storage: DictionaryStorage
 
-  override var editable: Bool { return user }
-  override class func isEditable() -> Bool { return true }
-  override class func isPreviewable() -> Bool { return true }
-
   /** awakeFromInsert */
   override func awakeFromInsert() {
     super.awakeFromInsert()
@@ -48,10 +47,10 @@ class Preset: BankableModelObject {
   */
   override func detailController() -> UIViewController {
     switch attributes.baseType {
-      case .Remote:      return RemotePresetDetailController(item: self)!
-      case .ButtonGroup: return ButtonGroupPresetDetailController(item: self)!
-      case .Button:      return ButtonPresetDetailController(item: self)!
-      case .Undefined:   return PresetDetailController(item: self)!
+      case .Remote:      return RemotePresetDetailController(model: self)
+      case .ButtonGroup: return ButtonGroupPresetDetailController(model: self)
+      case .Button:      return ButtonPresetDetailController(model: self)
+      case .Undefined:   return PresetDetailController(model: self)
     }
   }
 

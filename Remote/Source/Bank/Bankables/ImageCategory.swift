@@ -13,6 +13,8 @@ import MoonKit
 @objc(ImageCategory)
 class ImageCategory: BankableModelCategory {
 
+  override class func itemType() -> BankableModelObject.Type { return Image.self }
+
   @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var primitiveParentCategory: ImageCategory?
   override var parentCategory: BankDisplayItemCategory? {
@@ -66,8 +68,8 @@ class ImageCategory: BankableModelCategory {
     set { if let newItems = newValue as? [Image] { images = NSSet(array: newItems) } }
   }
 
-  override var previewableItems:   Bool { return Image.isPreviewable()   }
-  override var editableItems:      Bool { return Image.isEditable()      }
+  override var previewableItems:   Bool { return true }
+  override var editableItems:      Bool { return true }
 
   /**
   updateWithData:

@@ -27,6 +27,7 @@
 
 + (void)resetDefaultContext;
 
++ (void)saveContext:(NSManagedObjectContext *)moc propagate:(BOOL)propagate;
 + (void)makeContext:(NSManagedObjectContext *)moc performBlock:(void (^)(void))block;
 
 + (void)makeContext:(NSManagedObjectContext *)moc performBlockAndWait:(void (^)(void))block;

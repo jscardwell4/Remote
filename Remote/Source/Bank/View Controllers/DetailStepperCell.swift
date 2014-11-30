@@ -1,5 +1,5 @@
 //
-//  BankItemStepperCell.swift
+//  DetailStepperCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/21/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemStepperCell: BankItemCell {
+class DetailStepperCell: DetailCell {
 
   /**
   initWithStyle:reuseIdentifier:

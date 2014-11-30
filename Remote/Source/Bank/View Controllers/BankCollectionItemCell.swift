@@ -16,7 +16,7 @@ class BankCollectionItemCell: BankCollectionCell {
   weak var item: BankDisplayItemModel? {
     didSet {
       nameLabel.text = item?.name
-      previewable = item?.previewable ?? false
+      previewable = item != nil && item! is PreviewableItem
     }
   }
 
@@ -43,9 +43,13 @@ class BankCollectionItemCell: BankCollectionCell {
 
   private var previewable: Bool = false {
     didSet {
-      thumbnailImageView.image = item?.preview
-      if let imageSize = thumbnailImageView.image?.size {
-        thumbnailImageView.contentMode = CGSizeContainsSize(contentSize, imageSize) ? .Center : .ScaleAspectFit
+      if previewable {
+        if let previewImage = (item as? PreviewableItem)?.thumbnail {
+          thumbnailImageView.image = previewImage
+          thumbnailImageView.contentMode = contentSize.contains(previewImage.size) ? .Center : .ScaleAspectFit
+        } else {
+          thumbnailImageView.image = nil
+        }
       }
       thumbnailImageView.hidden = !previewable
       previewGesture.enabled = previewable && viewingMode == .List

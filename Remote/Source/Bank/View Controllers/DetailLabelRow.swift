@@ -1,5 +1,5 @@
 //
-//  BankItemDetailLabelRow.swift
+//  DetailLabelRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,15 +10,15 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailLabelRow: BankItemDetailRow {
+class DetailLabelRow: DetailRow {
 
 	/**
 	configureCell:forTableView:
 
-	:param: cell BankItemCell
+	:param: cell DetailCell
 	:param: tableView UITableView
 	*/
-	override func configureCell(cell: BankItemCell, forTableView tableView: UITableView) {
+	override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
 		super.configureCell(cell, forTableView: tableView)
     cell.name = name
 	}
@@ -48,7 +48,7 @@ class BankItemDetailLabelRow: BankItemDetailRow {
   :param: label String
   :param: value String
   */
-  convenience init(label: String, value: String) {
+  convenience init(label: String, value: String?) {
     self.init()
     name = label
     info = value

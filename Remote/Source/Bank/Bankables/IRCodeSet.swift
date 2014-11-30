@@ -13,6 +13,8 @@ import MoonKit
 @objc(IRCodeSet)
 class IRCodeSet: BankableModelCategory {
 
+  override class func itemType() -> BankableModelObject.Type { return IRCode.self }
+
   @NSManaged var devices: NSSet?
   @NSManaged var codes: NSSet?
   @NSManaged var manufacturer: Manufacturer?
@@ -21,8 +23,8 @@ class IRCodeSet: BankableModelCategory {
     get { return sortedByName((codes?.allObjects as? [IRCode]) ?? []) }
     set { if let newCodes = newValue as? [IRCode] { codes = NSSet(array: newCodes) } }
   }
-  override var previewableItems:   Bool { return IRCode.isPreviewable()   }
-  override var editableItems:      Bool { return IRCode.isEditable()      }
+  override var previewableItems:   Bool { return false }
+  override var editableItems:      Bool { return true }
 
   /**
   updateWithData:

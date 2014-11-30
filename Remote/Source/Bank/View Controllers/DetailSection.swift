@@ -1,5 +1,5 @@
 //
-//  BankItemDetailSection.swift
+//  DetailSection.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/16/14.
@@ -10,20 +10,18 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailSection {
+class DetailSection {
 
   var title: String?
-  private var _rows: [BankItemDetailRow] = []
-  var rows: [BankItemDetailRow] {
+  private var _rows: [DetailRow] = []
+  var rows: [DetailRow] {
     if _rows.count == 0 { _rows = createRows() }
     return _rows
   }
   let sectionNumber: Int
 
   /** reloadRows */
-  func reloadRows() {
-    _rows = createRows()
-  }
+  func reloadRows() { _rows = createRows() }
 
   /**
   reloadRowAtIndex:
@@ -38,20 +36,18 @@ class BankItemDetailSection {
     }
   }
 
-  private var rowCreationBlocks: [(Void) -> BankItemDetailRow] = []
+  private var rowCreationBlocks: [(Void) -> DetailRow] = []
 
   /**
   addRow:
 
-  :param: createRow (Void) -> BankItemDetailRow
+  :param: createRow (Void) -> DetailRow
   */
-  func addRow(createRow: (Void) -> BankItemDetailRow) {
-    rowCreationBlocks.append(createRow)
-  }
+  func addRow(createRow: (Void) -> DetailRow) { rowCreationBlocks.append(createRow) }
 
   /** createRows */
-  func createRows() -> [BankItemDetailRow] {
-    var createdRows: [BankItemDetailRow] = []
+  func createRows() -> [DetailRow] {
+    var createdRows: [DetailRow] = []
     for i in 0 ..< rowCreationBlocks.count {
       let row = rowCreationBlocks[i]()
       row.indexPath = NSIndexPath(forRow: i, inSection: sectionNumber)
@@ -65,10 +61,7 @@ class BankItemDetailSection {
 
   :param: sectionNumber Int
   :param: title String? = nil
-  :param: createRows (Void) -> [BankItemDetailRow]
+  :param: createRows (Void) -> [DetailRow]
   */
-  init(sectionNumber: Int, title: String? = nil) {
-    self.sectionNumber = sectionNumber
-    self.title = title
-  }
+  init(sectionNumber: Int, title: String? = nil) { self.sectionNumber = sectionNumber; self.title = title }
 }

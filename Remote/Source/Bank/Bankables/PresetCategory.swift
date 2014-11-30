@@ -13,6 +13,8 @@ import MoonKit
 @objc(PresetCategory)
 class PresetCategory: BankableModelCategory {
 
+  override class func itemType() -> BankableModelObject.Type { return Preset.self }
+
   @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var primitiveParentCategory: PresetCategory?
   override var parentCategory: BankDisplayItemCategory? {
@@ -39,9 +41,6 @@ class PresetCategory: BankableModelCategory {
     get { return (presets?.allObjects ?? []) as [Preset] }
     set { if let newItems = newValue as? [Preset] { presets = NSSet(array: newItems) } }
   }
-
-  override var previewableItems:   Bool { return Preset.isPreviewable()   }
-  override var editableItems:      Bool { return Preset.isEditable()      }
 
   /**
   updateWithData:

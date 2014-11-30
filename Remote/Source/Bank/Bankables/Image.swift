@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-class Image: BankableModelObject {
+class Image: BankableModelObject, PreviewableItem {
 
   var assetName: String {
     get {
@@ -94,11 +94,8 @@ class Image: BankableModelObject {
                              previewableItems: true)
   }
 
-  override class func isEditable()      -> Bool { return true }
-  override class func isPreviewable()   -> Bool { return true }
-
-  override func detailController() -> UIViewController { return ImageDetailController(item: self)! }
-  override var preview: UIImage? { return image }
-  override var thumbnail: UIImage? { return image }
+  override func detailController() -> UIViewController { return ImageDetailController(model: self) }
+  var preview: UIImage { return image ?? UIImage() }
+  var thumbnail: UIImage { return preview }
 
 }

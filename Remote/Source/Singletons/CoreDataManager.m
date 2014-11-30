@@ -300,9 +300,30 @@ MSSTATIC_STRING_CONST kCoreDataManagerSQLiteName = @"Remote.sqlite";
   return success;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-#pragma mark MagicalRecord wrappers
-////////////////////////////////////////////////////////////////////////////////
++ (void)saveContext:(NSManagedObjectContext *)moc propagate:(BOOL)propagate {
+
+  __block BOOL success = NO;
+  __block NSError * error = nil;
+
+  [moc performBlockAndWait:^{
+    [moc processPendingChanges];
+    if ([moc hasChanges]) {
+      success = [moc save:&error];
+      MSHandleErrors(error);
+    } else { success = YES; }
+  }];
+
+  if (success && !error && propagate && moc.parentContext) {
+    [moc.parentContext performBlockAndWait:^{
+      [moc.parentContext processPendingChanges];
+      if ([moc.parentContext hasChanges]) {
+        success = [moc.parentContext save:&error];
+        MSHandleErrors(error);
+      }
+    }];
+  }
+
+}
 
 + (void)saveWithBlock:(void (^)(NSManagedObjectContext * localContext))block {
   [kDefaultContext performBlock:^{
@@ -318,7 +339,7 @@ MSSTATIC_STRING_CONST kCoreDataManagerSQLiteName = @"Remote.sqlite";
   if (!completion)
     ThrowInvalidNilArgument("completion block is nil, perhaps you should be using +[saveWithBlock:]?");
 
-  __block BOOL      success = false;
+  __block BOOL      success = NO;
   __block NSError * error   = nil;
 
   [kDefaultContext performBlock:^{

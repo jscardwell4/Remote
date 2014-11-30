@@ -75,9 +75,6 @@ class NetworkDevice: BankableModelObject {
                              editableItems: true)
   }
 
-  override class func isEditable()      -> Bool { return true  }
-  override class func isPreviewable()   -> Bool { return false }
-
 }
 
 extension NetworkDevice: MSJSONExport {

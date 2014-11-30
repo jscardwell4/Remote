@@ -12,7 +12,7 @@ import CoreData
 import MoonKit
 
 extension UIControlState: JSONValueConvertible {
-  var JSONValue: String {
+  public var JSONValue: String {
     var flags: [String] = []
     if self & UIControlState.Highlighted != nil { flags.append("highlighted") }
     if self & UIControlState.Selected    != nil { flags.append("selected")    }
@@ -20,7 +20,7 @@ extension UIControlState: JSONValueConvertible {
     if flags.count == 0 { flags.append("normal") }
     return " ".join(flags)
   }
-  init?(JSONValue: String) {
+  public init?(JSONValue: String) {
     let flags = split(JSONValue){$0 == " "}
     if !contains(1...3, flags.count) { return nil }
     var state = UIControlState.Normal
@@ -37,16 +37,26 @@ extension UIControlState: JSONValueConvertible {
   }
 }
 
+extension UIControlState: EnumerableType {
+  public static var all: [UIControlState] {
+    return [.Normal, .Highlighted, .Selected, .Disabled,
+      .Highlighted | .Selected, .Highlighted | .Disabled,
+      .Highlighted | .Selected | .Disabled]
+  }
+  public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
+}
+
+@objc(ControlStateTitleSet)
 class ControlStateTitleSet: ControlStateSet {
 
-  @NSManaged var disabled:                    TitleAttributes?
-  @NSManaged var selectedDisabled:            TitleAttributes?
-  @NSManaged var highlighted:                 TitleAttributes?
-  @NSManaged var highlightedDisabled:         TitleAttributes?
-  @NSManaged var highlightedSelected:         TitleAttributes?
-  @NSManaged var normal:                      TitleAttributes?
-  @NSManaged var selected:                    TitleAttributes?
-  @NSManaged var highlightedSelectedDisabled: TitleAttributes?
+  @NSManaged var disabled:                    DictionaryStorage?
+  @NSManaged var selectedDisabled:            DictionaryStorage?
+  @NSManaged var highlighted:                 DictionaryStorage?
+  @NSManaged var highlightedDisabled:         DictionaryStorage?
+  @NSManaged var highlightedSelected:         DictionaryStorage?
+  @NSManaged var normal:                      DictionaryStorage?
+  @NSManaged var selected:                    DictionaryStorage?
+  @NSManaged var highlightedSelectedDisabled: DictionaryStorage?
 
   /**
   setTitleAttributes:forState:
@@ -55,17 +65,33 @@ class ControlStateTitleSet: ControlStateSet {
   :param: state UIControlState
   */
   func setTitleAttributes(attributes: TitleAttributes?, forState state: UIControlState) {
+    var property: String?
     switch state {
-      case UIControlState.Normal:                                                      normal                      = newValue
-      case UIControlState.Highlighted:                                                 highlighted                 = newValue
-      case UIControlState.Selected:                                                    selected                    = newValue
-      case UIControlState.Disabled:                                                    disabled                    = newValue
-      case UIControlState.Highlighted|UIControlState.Selected:                         highlightedSelected         = newValue
-      case UIControlState.Highlighted|UIControlState.Disabled:                         highlightedDisabled         = newValue
-      case UIControlState.Selected|UIControlState.Disabled:                            selectedDisabled            = newValue
-      case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: highlightedSelectedDisabled = newValue
+      case UIControlState.Normal:                                                      property = "normal"
+      case UIControlState.Highlighted:                                                 property = "highlighted"
+      case UIControlState.Selected:                                                    property = "selected"
+      case UIControlState.Disabled:                                                    property = "disabled"
+      case UIControlState.Highlighted|UIControlState.Selected:                         property = "highlightedSelected"
+      case UIControlState.Highlighted|UIControlState.Disabled:                         property = "highlightedDisabled"
+      case UIControlState.Selected|UIControlState.Disabled:                            property = "selectedDisabled"
+      case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: property = "highlightedSelectedDisabled"
       default:                                                                         break
     }
+
+    var storage: DictionaryStorage?
+    if property != nil {
+      if attributes == nil { setValue(nil, forKey: property!) }
+      else {
+        storage = valueForKey(property!) as? DictionaryStorage
+        if storage == nil {
+          storage = DictionaryStorage(context: managedObjectContext)
+          setValue(storage, forKey: property!)
+        }
+        assert(storage != nil, "what happened? we should have created storage if it didn't exist")
+        storage?.dictionary = attributes!.dictionaryValue
+      }
+    }
+
   }
 
   /**
@@ -76,24 +102,36 @@ class ControlStateTitleSet: ControlStateSet {
   :returns: TitleAttributes?
   */
   func titleAttributesForState(state: UIControlState) -> TitleAttributes? {
+    var property: String?
     switch state {
-      case UIControlState.Normal:                                                      return normal
-      case UIControlState.Highlighted:                                                 return highlighted
-      case UIControlState.Selected:                                                    return selected
-      case UIControlState.Disabled:                                                    return disabled
-      case UIControlState.Highlighted|UIControlState.Selected:                         return highlightedSelected
-      case UIControlState.Highlighted|UIControlState.Disabled:                         return highlightedDisabled
-      case UIControlState.Selected|UIControlState.Disabled:                            return selectedDisabled
-      case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: return highlightedSelectedDisabled
-      default:                                                                         return nil
+      case UIControlState.Normal:                                                      property = "normal"
+      case UIControlState.Highlighted:                                                 property = "highlighted"
+      case UIControlState.Selected:                                                    property = "selected"
+      case UIControlState.Disabled:                                                    property = "disabled"
+      case UIControlState.Highlighted|UIControlState.Selected:                         property = "highlightedSelected"
+      case UIControlState.Highlighted|UIControlState.Disabled:                         property = "highlightedDisabled"
+      case UIControlState.Selected|UIControlState.Disabled:                            property = "selectedDisabled"
+      case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: property = "highlightedSelectedDisabled"
+      default:                                                                         break
     }
+    var storage: DictionaryStorage?
+    if property != nil { storage = valueForKey(property!) as? DictionaryStorage }
+    return storage == nil ? nil : TitleAttributes(storage: storage!.dictionary as [String:AnyObject])
   }
 
-  func attributedStringForState(state: UIControlState) -> NSAttributedString {
-    let defaultAttributes = normal?.attributes ?? MSDictionary()
-    if let attributes = titleAttributesForState(state) {
-
+  func attributedStringForState(state: UIControlState) -> NSAttributedString? {
+    var string: NSAttributedString?
+    if let indexedAttributes = self[state.rawValue] as? DictionaryStorage {
+      let attributes = TitleAttributes(storage: indexedAttributes.dictionary as [String:AnyObject])
+      if state == UIControlState.Normal {
+        string = attributes.string
+      } else {
+        var normalAttributes: TitleAttributes?
+        if normal != nil { normalAttributes = TitleAttributes(storage: normal!.dictionary as [String:AnyObject]) }
+        string = normalAttributes == nil ? attributes.string : attributes.stringWithFillers(normalAttributes!.attributes)
+      }
     }
+    return string
   }
 
   /**
@@ -107,7 +145,7 @@ class ControlStateTitleSet: ControlStateSet {
     if let jsonData = data as? [String:[String:AnyObject]] {
       for (stateKey, dictionary) in jsonData {
         if let controlState = UIControlState(JSONValue: stateKey) {
-          setTitleAttributes(TitleAttributes.importObjectFromData(dictionary)), forState: controlState)
+          setTitleAttributes(TitleAttributes(JSONValue: dictionary), forState: controlState)
         }
       }
     }
@@ -120,10 +158,9 @@ class ControlStateTitleSet: ControlStateSet {
   */
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    dictionary.removeObjectsForKeys((0...7).map{UIControlState(rawValue: UInt($0))!.JSONValue})
-    for i in 0...7 {
-      let state = UIControlState(rawValue: UInt(i))!
-      if let attributes = titleAttributesForState(state) { dictionary[state.JSONValue] = attributes.JSONDictionary() }
+    UIControlState.enumerate {
+      if let attributes = self.titleAttributesForState($0) { dictionary[$0.JSONValue] = attributes.JSONValue }
+      else { dictionary.removeObjectForKey($0.JSONValue) }
     }
     return dictionary
   }

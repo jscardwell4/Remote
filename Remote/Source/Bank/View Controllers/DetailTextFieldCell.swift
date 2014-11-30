@@ -1,5 +1,5 @@
 //
-//  BankItemTextFieldCell.swift
+//  DetailTextFieldCell.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/21/14.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
+class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -20,19 +20,19 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    textFieldℹ.delegate = self
-    textFieldℹ.returnKeyType = returnKeyType
-    textFieldℹ.keyboardType = keyboardType
-    textFieldℹ.autocapitalizationType = autocapitalizationType
-    textFieldℹ.autocorrectionType = autocorrectionType
-    textFieldℹ.spellCheckingType = spellCheckingType
-    textFieldℹ.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    textFieldℹ.keyboardAppearance = keyboardAppearance
-    textFieldℹ.secureTextEntry = secureTextEntry
+    textFieldView.delegate = self
+    textFieldView.returnKeyType = returnKeyType
+    textFieldView.keyboardType = keyboardType
+    textFieldView.autocapitalizationType = autocapitalizationType
+    textFieldView.autocorrectionType = autocorrectionType
+    textFieldView.spellCheckingType = spellCheckingType
+    textFieldView.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+    textFieldView.keyboardAppearance = keyboardAppearance
+    textFieldView.secureTextEntry = secureTextEntry
     contentView.addSubview(nameLabel)
-    contentView.addSubview(textFieldℹ)
+    contentView.addSubview(textFieldView)
     let format = "|-[name]-[text]-| :: V:|-[name]-| :: V:|-[text]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "text": textFieldℹ])
+    contentView.constrain(format, views: ["name": nameLabel, "text": textFieldView])
   }
 
   /**
@@ -45,23 +45,25 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    textFieldℹ.text = nil
+    textFieldView.text = nil
     nameLabel.text = nil
   }
 
   override var info: AnyObject? {
-    get { return infoDataType.objectFromText(textFieldℹ.text) }
-    set { textFieldℹ.text = textFromObject(newValue) }
+    get { if infoDataType == .AttributedStringData { return infoDataType.objectFromAttributedText(textFieldView.attributedText) }
+          else { return infoDataType.objectFromText(textFieldView.text) } }
+    set { if infoDataType == .AttributedStringData { textFieldView.attributedText = newValue as? NSAttributedString }
+          else { textFieldView.text = textFromObject(newValue) } }
   }
 
   override var isEditingState: Bool {
     didSet {
-      textFieldℹ.userInteractionEnabled = isEditingState
-       if textFieldℹ.isFirstResponder() { textFieldℹ.resignFirstResponder() }
+      textFieldView.userInteractionEnabled = isEditingState
+       if textFieldView.isFirstResponder() { textFieldView.resignFirstResponder() }
     }
   }
 
-  private let textFieldℹ: UITextField = {
+  private let textFieldView: UITextField = {
     let view = UITextField(frame: CGRect(x: 0, y: 0, width: 200, height: 38))
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.userInteractionEnabled = false
@@ -71,44 +73,45 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
     return view
   }()
 
+  private var beginStateAttributedText: NSAttributedString?
   private var beginStateText: String?  // Stores pre-edited text field/view content
 
   /// MARK: Keyboard settings
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var returnKeyType: UIReturnKeyType = .Done { didSet { textFieldℹ.returnKeyType = returnKeyType } }
+  var returnKeyType: UIReturnKeyType = .Done { didSet { textFieldView.returnKeyType = returnKeyType } }
 
-  var keyboardType: UIKeyboardType = .ASCIICapable { didSet { textFieldℹ.keyboardType = keyboardType } }
+  var keyboardType: UIKeyboardType = .ASCIICapable { didSet { textFieldView.keyboardType = keyboardType } }
 
   var autocapitalizationType: UITextAutocapitalizationType = .None {
     didSet {
-      textFieldℹ.autocapitalizationType = autocapitalizationType
+      textFieldView.autocapitalizationType = autocapitalizationType
     }
   }
 
-  var autocorrectionType: UITextAutocorrectionType = .No { didSet { textFieldℹ.autocorrectionType = autocorrectionType } }
+  var autocorrectionType: UITextAutocorrectionType = .No { didSet { textFieldView.autocorrectionType = autocorrectionType } }
 
-  var spellCheckingType: UITextSpellCheckingType = .No { didSet { textFieldℹ.spellCheckingType = spellCheckingType } }
+  var spellCheckingType: UITextSpellCheckingType = .No { didSet { textFieldView.spellCheckingType = spellCheckingType } }
 
   var enablesReturnKeyAutomatically: Bool = false {
     didSet {
-      textFieldℹ.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+      textFieldView.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
     }
   }
 
   var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance {
     didSet {
-      textFieldℹ.keyboardAppearance = keyboardAppearance
+      textFieldView.keyboardAppearance = keyboardAppearance
      }
    }
 
-  var secureTextEntry: Bool = false { didSet { textFieldℹ.secureTextEntry = secureTextEntry } }
+  var secureTextEntry: Bool = false { didSet { textFieldView.secureTextEntry = secureTextEntry } }
 
   var shouldUseIntegerKeyboard: Bool = false {
     didSet {
-      textFieldℹ.inputView = shouldUseIntegerKeyboard
-                               ? IntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textFieldℹ)
+      textFieldView.inputView = shouldUseIntegerKeyboard
+                               ? IntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textFieldView)
                                : nil
     }
   }
@@ -122,6 +125,7 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidBeginEditing(textField: UITextField) {
+    beginStateAttributedText = textField.attributedText
     beginStateText = textField.text
   }
 
@@ -131,7 +135,12 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField.text != beginStateText { valueDidChange?(infoDataType.objectFromText(textField.text)) }
+    if textField.text != beginStateText {
+      var value: AnyObject?
+      if infoDataType == .AttributedStringData { value = textField.attributedText }
+      else { value = infoDataType.objectFromText(textField.text) }
+      valueDidChange?(value)
+    }
   }
 
   /**
@@ -174,7 +183,8 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
     if shouldEnd { shouldEnd = valueIsValid?(textField.text) ?? true }
 
     if !shouldEnd && !isEditingState {
-      textField.text = beginStateText
+      if infoDataType == .AttributedStringData { textField.attributedText = beginStateAttributedText }
+      else { textField.text = beginStateText }
       shouldEnd = true
     }
 
@@ -188,9 +198,6 @@ class BankItemTextFieldCell: BankItemCell, UITextFieldDelegate {
 
   :returns: Bool
   */
-  func textFieldShouldReturn(textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return false
-  }
+  func textFieldShouldReturn(textField: UITextField) -> Bool { textField.resignFirstResponder(); return false }
 
 }

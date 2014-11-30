@@ -75,6 +75,11 @@ class ITachDevice: NetworkDevice {
   @NSManaged var sdkClass: String
   @NSManaged var status: String
 
+  /**
+  updateWithData:
+
+  :param: data [NSObject AnyObject]!
+  */
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
     pcbPN     = data["pcb-pn"]     as? NSString ?? pcbPN
@@ -87,9 +92,12 @@ class ITachDevice: NetworkDevice {
     revision  = data["revision"]   as? NSString ?? revision
   }
 
-  override func detailController() -> UIViewController {
-    return ITachDeviceDetailController(item: self)!
-  }
+  /**
+  detailController
+
+  :returns: UIViewController
+  */
+  override func detailController() -> UIViewController { return ITachDeviceDetailController(model: self) }
 
 }
 

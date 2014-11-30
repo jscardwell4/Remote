@@ -12,26 +12,26 @@ import MoonKit
 @objc(ImageDetailController)
 class ImageDetailController: BankItemDetailController {
 
-  var image: Image { return item as Image }
+  var image: Image { return model as Image }
 
   /**
   initWithItem:editing:
 
-  :param: item BankableModelObject
+  :param: model BankableModelObject
   :param: editing Bool
   */
-  required init?(item: BankDisplayItemModel) {
-    super.init(item: item)
-    precondition(item is Image, "we should have been given a image")
+  override init(model: BankableModelObject) {
+    super.init(model: model)
+    precondition(model is Image, "we should have been given a image")
 
-    let detailsSection = BankItemDetailSection(sectionNumber: 0)
+    let detailsSection = DetailSection(sectionNumber: 0)
 
-    detailsSection.addRow { return BankItemDetailLabelRow(pushableCategory: self.image.imageCategory, label: "Category") }
-    detailsSection.addRow { return BankItemDetailLabelRow(label: "Asset", value: self.image.assetName) }
-    detailsSection.addRow { return BankItemDetailLabelRow(label: "Size", value: PrettySize(self.image.size)) }
+    detailsSection.addRow { return DetailLabelRow(pushableCategory: self.image.imageCategory, label: "Category") }
+    detailsSection.addRow { return DetailLabelRow(label: "Asset", value: self.image.assetName) }
+    detailsSection.addRow { return DetailLabelRow(label: "Size", value: PrettySize(self.image.size)) }
 
-    let previewSection = BankItemDetailSection(sectionNumber: 1)
-    previewSection.addRow { return BankItemDetailImageRow(previewableItem: self.image) }
+    let previewSection = DetailSection(sectionNumber: 1)
+    previewSection.addRow { return DetailImageRow(previewableItem: self.image) }
 
     sections = [detailsSection, previewSection]
 

@@ -214,12 +214,12 @@ class BankCollectionController: UICollectionViewController, BankController {
   	if mode == .Default {
 	    switch indexPath.section {
 	      case 0:
-	        let subcategory = category.subcategories[indexPath.row]
+	        let subcategory = category.subcategories[indexPath.row] as BankDisplayItemCategory
 	        category.subcategories.removeAtIndex(indexPath.row)
 	        subcategory.delete()
 
 	      default:
-	        let item = category.items[indexPath.row]
+	        let item = category.items[indexPath.row] as BankDisplayItemModel
 	        category.items.removeAtIndex(indexPath.row)
 	        item.delete()
 
@@ -231,9 +231,9 @@ class BankCollectionController: UICollectionViewController, BankController {
   /**
   editItem:
 
-  :param: item BankDisplayItemModel
+  :param: item EditableItem
   */
-  func editItem(item: BankDisplayItemModel) {
+  func editItem(item: EditableItem) {
   	if mode == .Default {
 	    let detailController = item.detailController()
 	    detailController.editing = true
@@ -285,7 +285,9 @@ class BankCollectionController: UICollectionViewController, BankController {
     precondition(indexPath.section == 1, "we should only be zooming actual items")
     zoomedItemIndexPath = indexPath
     let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
-    zoomView.item = category.items[indexPath.row]
+    if let previewableItem = category.items[indexPath.row] as? PreviewableItem {
+      zoomView.item = previewableItem
+    }
     zoomView.backgroundImage = view.blurredSnapshot()
     zoomView.showEditButton = mode == .Default
     zoomView.showDetailButton = mode == .Default
@@ -328,7 +330,9 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
   */
   func didDismissForEditingZoomView(zoomView: BankCollectionZoomView) {
     zoomView.removeFromSuperview()
-    if mode == .Default { editItem(zoomView.item!) }
+    if mode == .Default {
+      if let editableItem = zoomView.item as? EditableItem { editItem(editableItem) }
+    }
     zoomedItemIndexPath = nil
   }
 
