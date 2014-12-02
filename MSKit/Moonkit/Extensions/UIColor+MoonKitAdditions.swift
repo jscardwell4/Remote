@@ -13,3 +13,304 @@ extension UIColor: JSONValueConvertible {
   typealias JSONValueType = String!
   public var JSONValue: String! { return string }
 }
+
+extension UIColor {
+
+  public var rgba: (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)? {
+    var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    return getRed(&r, green: &g, blue: &b, alpha: &a) ? (r: r, g: g, b: b, a: a) : nil
+  }
+
+  public var hsba: (h: CGFloat, s: CGFloat, b: CGFloat, a: CGFloat)? {
+    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    return getHue(&h, saturation: &s, brightness: &b, alpha: &a) ? (h: h, s: s, b: b, a: a) : nil
+  }
+  public var red: CGFloat? { return rgba?.r }
+  public var green: CGFloat? { return rgba?.g }
+  public var blue: CGFloat? { return rgba?.b }
+
+  public var hue: CGFloat? { return hsba?.h }
+  public var saturation: CGFloat? { return hsba?.s }
+  public var brightness: CGFloat? { return hsba?.b }
+
+  public var white: CGFloat? { var w: CGFloat = 0, a: CGFloat = 0; return getWhite(&w, alpha: &a) ? w : nil }
+
+  public var alpha: CGFloat? { return rgba?.a }
+
+  public var inverted: UIColor? {
+    if let rgba = self.rgba {
+      return UIColor(red: 1 - rgba.r, green: 1 - rgba.g, blue: 1 - rgba.b, alpha: 1 - rgba.a)
+    } else {
+      return nil
+    }
+  }
+
+  public var luminanceMapped: UIColor? {
+    if let rgba = self.rgba {
+      return UIColor(white: rgba.r * 0.2126 + rgba.g * 0.7152 + rgba.b * 0.0722, alpha: rgba.a)
+    } else {
+      return nil
+    }
+  }
+
+  public var rgbaHexString: String? {
+    if let hex = rgbaHex {
+      var hexString = String(hex, radix: 16, uppercase: true)
+      while hexString.characterCount < 8 { hexString = "0" + hexString }
+      return "#\(hexString)"
+    } else {
+      return nil
+    }
+  }
+
+  public var rgbHexString: String? {
+    if let hex = rgbHex {
+      var hexString = String(hex, radix: 16, uppercase: true)
+      while hexString.characterCount < 6 { hexString = "0" + hexString }
+      return "#\(hexString)"
+    } else {
+      return nil
+    }
+  }
+
+  public var string: String? {
+    if let name = colorName {
+      let a = alpha ?? 1.0
+      return a == 1.0 ? name : "\(name)@\(a * 100.0)%"
+    } else if rgba != nil {
+      return rgbaHexString
+    } else {
+      return nil
+    }
+  }
+
+  public var rgbHexValue: NSNumber? { if let hex = rgbHex { return NSNumber(unsignedInt: hex) } else { return nil } }
+  public var rgbaHexValue: NSNumber? { if let hex = rgbaHex { return NSNumber(unsignedInt: hex) } else { return nil } }
+  public var rgbHex: UInt32? { if let hex = rgbaHex { return hex >> 8 } else { return nil } }
+  public var rgbaHex: UInt32? {
+    if let rgba = self.rgba {
+      let rHex: UInt32 = UInt32(rgba.r * 255.0) << 24
+      let gHex: UInt32 = UInt32(rgba.g * 255.0) << 16
+      let bHex: UInt32 = UInt32(rgba.b * 255.0) << 8
+      let aHex: UInt32 = UInt32(rgba.a * 255.0) << 0
+      return rHex | gHex | bHex | aHex
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  randomColor
+
+  :returns: UIColor
+  */
+  public class func randomColor() -> UIColor {
+    let max = Int(RAND_MAX)
+    let red   = CGFloat(max / random())
+    let green = CGFloat(max / random())
+    let blue  = CGFloat(max / random())
+    let alpha = CGFloat(max / random())
+    return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+  }
+
+  public var colorSpaceModel: CGColorSpaceModel { return CGColorSpaceGetModel(CGColorGetColorSpace(CGColor)) }
+  public var isPatternBased: Bool { return colorSpaceModel.value == kCGColorSpaceModelPattern.value }
+
+  public var isRGBCompatible: Bool {
+    switch colorSpaceModel.value {
+      case kCGColorSpaceModelRGB.value, kCGColorSpaceModelMonochrome.value: return true
+      default: return false
+    }
+  }
+
+  public var rgbColor: UIColor? {
+
+    switch colorSpaceModel.value {
+      case kCGColorSpaceModelRGB.value:
+        return self
+      default:
+        if let rgba = self.rgba {
+          return UIColor(red: rgba.r, green: rgba.g, blue: rgba.b, alpha: rgba.a)
+        } else {
+          return nil
+        }
+    }
+  }
+
+  /**
+  lightenedToRed:green:blue:alpha:
+
+  :param: r CGFloat
+  :param: g CGFloat
+  :param: b CGFloat
+  :param: a CGFloat
+
+  :returns: UIColor?
+  */
+  public func lightenedToRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
+    if let rgba = self.rgba {
+      return UIColor(red: max(rgba.r, r), green: max(rgba.g, g), blue: max(rgba.b, b), alpha: max(rgba.a, a))
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  lightenedTo:
+
+  :param: value CGFloat
+
+  :returns: UIColor?
+  */
+  public func lightenedTo(value: CGFloat) -> UIColor? { return lightenedToRed(value, green: value, blue: value, alpha: value) }
+
+  /**
+  lightenedToColor:
+
+  :param: color UIColor
+
+  :returns: UIColor?
+  */
+  public func lightenedToColor(color: UIColor) -> UIColor? {
+    if let rgba = color.rgba {
+      return lightenedToRed(rgba.r, green: rgba.g, blue: rgba.b, alpha: rgba.a)
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  darkenedToRed:green:blue:alpha:
+
+  :param: r CGFloat
+  :param: g CGFloat
+  :param: b CGFloat
+  :param: a CGFloat
+
+  :returns: UIColor?
+  */
+  public func darkenedToRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
+    if let rgba = self.rgba {
+      return UIColor(red: min(rgba.r, r), green: min(rgba.g, g), blue: min(rgba.b, b), alpha: min(rgba.a, a))
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  darkenedTo:
+
+  :param: value CGFloat
+
+  :returns: UIColor?
+  */
+  public func darkenedTo(value: CGFloat) -> UIColor? { return darkenedToRed(value, green: value, blue: value, alpha: value) }
+
+  /**
+  darkenedToColor:
+
+  :param: color UIColor
+
+  :returns: UIColor?
+  */
+  public func darkenedToColor(color: UIColor) -> UIColor? {
+    if let rgba = color.rgba {
+      return darkenedToRed(rgba.r, green: rgba.g, blue: rgba.b, alpha: rgba.a)
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  addedWithRed:green:blue:alpha:
+
+  :param: r CGFloat
+  :param: g CGFloat
+  :param: b CGFloat
+  :param: a CGFloat
+
+  :returns: UIColor?
+  */
+  public func addedWithRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
+    if let rgba = self.rgba {
+      let red = max(0.0, min(1.0, rgba.r + r))
+      let green = max(0.0, min(1.0, rgba.g + g))
+      let blue = max(0.0, min(1.0, rgba.b + b))
+      let alpha = max(0.0, min(1.0, rgba.a + a))
+      return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  addedWith:
+
+  :param: value CGFloat
+
+  :returns: UIColor?
+  */
+  public func addedWith(value: CGFloat) -> UIColor? { return addedWithRed(value, green: value, blue: value, alpha: value) }
+
+  /**
+  addedWithColor:
+
+  :param: color UIColor
+
+  :returns: UIColor?
+  */
+  public func addedWithColor(color: UIColor) -> UIColor? {
+    if let rgba = color.rgba {
+      return addedWithRed(rgba.r, green: rgba.g, blue: rgba.b, alpha: rgba.a)
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  multipliedBy:
+
+  :param: value CGFloat
+
+  :returns: UIColor
+  */
+  public func multipliedBy(value: CGFloat) -> UIColor? { return multipliedByRed(value, green: value, blue: value, alpha: value) }
+
+  /**
+  multipliedByRed:green:blue:alpha:
+
+  :param: r CGFloat
+  :param: g CGFloat
+  :param: b CGFloat
+  :param: a CGFloat
+
+  :returns: UIColor?
+  */
+  public func multipliedByRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
+    if let rgba = self.rgba {
+      let red = max(0.0, min(1.0, rgba.r * r))
+      let green = max(0.0, min(1.0, rgba.g * g))
+      let blue = max(0.0, min(1.0, rgba.b * b))
+      let alpha = max(0.0, min(1.0, rgba.a * a))
+      return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    } else {
+      return nil
+    }
+  }
+
+  /**
+  multipliedByColor:
+
+  :param: color UIColor
+
+  :returns: UIColor?
+  */
+  public func multipliedByColor(color: UIColor) -> UIColor? {
+    if let rgba = color.rgba {
+      return multipliedByRed(rgba.r, green: rgba.g, blue: rgba.b, alpha: rgba.a)
+    } else {
+      return nil
+    }
+  }
+
+}

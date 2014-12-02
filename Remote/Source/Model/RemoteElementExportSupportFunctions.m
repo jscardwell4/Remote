@@ -507,10 +507,10 @@ NSString *underlineStrikethroughStyleJSONValueForStyle(NSUnderlineStyle style) {
 
 NSString *normalizedColorJSONValueForColor(UIColor * color) {
   NSString * value = color.colorName;
-  if (value && color.alpha != 1.0)
-      value = [value stringByAppendingFormat:@"@%@%%", [@(color.alpha * 100.0f) stringValue]];
-
-  if (!value && color.isRGBCompatible) value = color.rgbaHexString;
+//  if (value && color.alphaValue.floatValue != 1.0)
+//      value = [value stringByAppendingFormat:@"@%@%%", [@(color.alphaValue.floatValue * 100.0f) stringValue]];
+//
+//  if (!value && color.isRGBCompatible) value = color.rgbaHexString;
 
   return value;
 }

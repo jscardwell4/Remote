@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 import MoonKit
 
+// protocol DetailButtonCellDelegate {
+//   func insertPickerRow(pickerRow: DetailPickerRow, forDetailButtonCell buttonCell: DetailButtonCell)
+//   func removePickerRowForDetailButtonCell(buttonCell: DetailButtonCell)
+// }
+
 class DetailButtonCell: DetailCell {
 
   /**
@@ -20,14 +25,10 @@ class DetailButtonCell: DetailCell {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    buttonℹ.addTarget(self, action:"buttonUpAction", forControlEvents:.TouchUpInside)
-    wrapper.addSubview(nameLabel)
-    wrapper.addSubview(buttonℹ)
-    wrapper.constrain("|[name]-[button]| :: V:|[name]| :: V:|[button]|", views: ["name": nameLabel, "button": buttonℹ])
-    contentView.addSubview(wrapper)
-    contentView.constrain("|-[wrapper]-| :: V:|-[wrapper]-(>=0)-|",
-                              views: ["wrapper": wrapper],
-                         identifier: createIdentifier(self, "Wrapper"))
+    buttonView.addTarget(self, action:"buttonUpAction", forControlEvents:.TouchUpInside)
+    contentView.addSubview(nameLabel)
+    contentView.addSubview(buttonView)
+    contentView.constrain("|-[n]-[b]-| :: V:|-[n]-| :: V:|-[b]-|", views: ["n": nameLabel, "b": buttonView])
   }
 
   /**
@@ -40,9 +41,11 @@ class DetailButtonCell: DetailCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    buttonℹ.setTitle(nil, forState: .Normal)
-    pickerData = nil
-    pickerSelection = nil
+    buttonView.setTitle(nil, forState: .Normal)
+    showPickerRow = nil
+    hidePickerRow = nil
+    detailPickerRow = nil
+    if showingPicker { hidePickerView() }
   }
 
   /**
@@ -52,21 +55,14 @@ class DetailButtonCell: DetailCell {
   */
   func buttonUpAction() {
     // If we have a picker view already, remove it
-    if picker != nil { hidePickerView() }
+    if showingPicker { hidePickerView() }
 
     // Otherwise, check editing state and picker availability before showing
-    else if isEditingState && pickerEnabled { showPickerView() }
+    else if isEditingState { showPickerView() }
   }
 
-  private let wrapper: UIView = {
-    let view = UIView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    return view
-  }()
-
-  private let buttonℹ: UIButton =  {
-    let view = UIButton()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+  private let buttonView: UIButton =  {
+    let view = UIButton(autolayout: true)
     view.userInteractionEnabled = false
     view.titleLabel?.font = Bank.infoFont;
     view.titleLabel?.textAlignment = .Right;
@@ -76,181 +72,42 @@ class DetailButtonCell: DetailCell {
   }()
 
   override var info: AnyObject? {
-    get { return buttonℹ.titleForState(.Normal) }
-    set { buttonℹ.setTitle(textFromObject(newValue), forState:.Normal) }
+    didSet {
+      if infoDataType == .AttributedStringData {
+        buttonView.setAttributedTitle(info as? NSAttributedString, forState: .Normal)
+      } else {
+        buttonView.setTitle(textFromObject(info), forState:.Normal)
+      }
+    }
   }
-
-
-  private weak var picker: UIPickerView?
 
   /// MARK: Picker settings
   ////////////////////////////////////////////////////////////////////////////////
 
-  class var pickerHeight: CGFloat { return 162.0 }
+  var showPickerRow: ((DetailButtonCell) -> Bool)?
+  var hidePickerRow: ((DetailButtonCell) -> Bool)?
+  var detailPickerRow: DetailPickerRow?
 
-  var pickerCreateSelectionHandler: ((Void) -> Void)?
-  var shouldShowPicker: ((DetailButtonCell) -> Bool)?
-  var shouldHidePicker: ((DetailButtonCell) -> Bool)?
-  var didShowPicker: ((DetailButtonCell) -> Void)?
-  var didHidePicker: ((DetailButtonCell) -> Void)?
-  var didSelectItem: ((NSObject?) -> Void)?
-
-  var pickerData: [NSObject]?
-
-  var pickerSelection: NSObject? {
-    didSet {
-      info = pickerSelection ?? pickerNilSelectionTitle
-      picker?.selectRow(pickerSelectionIndex, inComponent: 0, animated: true)
-    }
-  }
-
-  var pickerSelectionIndex: Int {
-    precondition(pickerEnabled, "this shouldn't get called unless we are actually using a picker view")
-    if let idx = find(pickerData!, pickerSelection) {
-      return idx + prependedPickerItemCount
-    }
-    return 0
-  }
-
-  var pickerNilSelectionTitle: String? {
-    didSet { prependedPickerItemCount = pickerNilSelectionTitle != nil ? 1 : 0 }
-  }
-
-  var pickerCreateSelectionTitle: String? {
-    didSet { appendedPickerItemCount = pickerCreateSelectionTitle != nil ? 1 : 0 }
-  }
-
-  var pickerEnabled: Bool { return pickerData != nil }
-
-  var prependedPickerItemCount = 0
-  var appendedPickerItemCount = 0
-
-  var pickerItemCount: Int {
-    var count = prependedPickerItemCount + appendedPickerItemCount
-    if pickerData != nil { count += pickerData!.count }
-    return count
-  }
-
-  /**
-  pickerDataItemForRow:
-
-  :param: row Int
-
-  :returns: NSObject?
-  */
-  func pickerDataItemForRow(row: Int) -> NSObject? {
-    if prependedPickerItemCount > 0 && row == 0 { return pickerNilSelectionTitle }
-    else if appendedPickerItemCount > 0 && row == pickerItemCount - 1 { return pickerCreateSelectionTitle }
-    else { return pickerData?[row - prependedPickerItemCount] }
-  }
+  private var showingPicker: Bool = false
 
   /** showPickerView */
   func showPickerView() {
-    precondition(pickerEnabled, "method should only be called when picker is enabled")
-    if picker == nil && shouldShowPicker ∅|| shouldShowPicker!(self) {
-      picker = {
-        let pickerView = UIPickerView()
-        pickerView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        pickerView.selectRow(self.pickerSelectionIndex, inComponent: 0, animated: false)
-        self.contentView.addSubview(pickerView)
-        let identifier = createIdentifier(self, "Wrapper")
-        self.contentView.removeConstraintsWithIdentifier(identifier)
-        self.contentView.constrain("|-[wrapper]-| :: |[picker]| :: V:|-[wrapper]-(<=0,>=0)-[picker]|",
-                                       views: ["wrapper": self.wrapper, "picker": pickerView],
-                                  identifier: identifier)
-        return pickerView
-      }()
-      didShowPicker?(self)
-    }
+    if showingPicker || detailPickerRow == nil { return }
+
+    showingPicker = showPickerRow?(self) == true
   }
 
   /** hidePickerView */
   func hidePickerView() {
-    precondition(pickerEnabled, "method should only be called when picker is enabled")
-    if picker != nil && shouldHidePicker ∅|| shouldHidePicker!(self) {
-      picker!.removeFromSuperview()
-      picker = nil
-      let identifier = createIdentifier(self, "Wrapper")
-      contentView.removeConstraintsWithIdentifier(identifier)
-      contentView.constrain("|-[wrapper]-| :: V:|-[wrapper]-(>=0)-|",
-                                views: ["wrapper": wrapper],
-                           identifier: identifier)
-      didSelectItem?(pickerSelection)
-      didHidePicker?(self)
-    }
+    if !showingPicker { return }
+
+    showingPicker = !(hidePickerRow?(self) == true)
   }
 
   override var isEditingState: Bool {
     didSet {
-      buttonℹ.userInteractionEnabled = isEditingState
-      if !isEditingState && pickerEnabled && picker != nil { hidePickerView() }
-    }
-  }
-
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - UIPickerViewDataSource
-////////////////////////////////////////////////////////////////////////////////
-extension DetailButtonCell: UIPickerViewDataSource {
-
-
-  /**
-  numberOfComponentsInPickerView:
-
-  :param: pickerView UIPickerView
-
-  :returns: Int
-  */
-  func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int { return 1 }
-
-  /**
-  pickerView:numberOfRowsInComponent:
-
-  :param: pickerView UIPickerView
-  :param: component Int
-
-  :returns: Int
-  */
-  func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return pickerItemCount
-  }
-
-  /**
-  pickerView:titleForRow:forComponent:
-
-  :param: pickerView UIPickerView
-  :param: row Int
-  :param: component Int
-
-  :returns: String?
-  */
-  func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return textFromObject(pickerDataItemForRow(row)) ?? ""
-  }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - UIPickerViewDelegate
-////////////////////////////////////////////////////////////////////////////////
-extension DetailButtonCell: UIPickerViewDelegate {
-
-  /**
-  Handles selection of `nil`, `create`, or `pickerData` row
-
-  :param: pickerView UIPickerView
-  :param: row Int
-  :param: component Int
-  */
-  func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-
-    if appendedPickerItemCount > 0 && row == pickerItemCount - 1 { pickerCreateSelectionHandler?() }
-    else {
-      pickerSelection = row - prependedPickerItemCount >= 0 ? pickerData![row - prependedPickerItemCount] : nil
+      buttonView.userInteractionEnabled = isEditingState
+      if !isEditingState && showingPicker { hidePickerView() }
     }
   }
 

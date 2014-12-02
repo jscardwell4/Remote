@@ -10,17 +10,52 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailListRow: DetailRow {
+struct DetailListRow: DetailRow {
 
-	/**
-	configureCell:forTableView:
+  let identifier: DetailCell.Identifier = .List
+  var indexPath: NSIndexPath?
+  var select: ((Void) -> Void)?
+  var delete: ((Void) -> Void)?
 
-	:param: cell DetailCell
-	:param: tableView UITableView
-	*/
-	override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-		super.configureCell(cell, forTableView: tableView)
-	}
+  var editActions: [UITableViewRowAction]?
+  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
+
+  var deleteRemovesRow = true
+
+  /// Properties that mirror `DetailCell` properties
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var name: String? { get { return nil } set {} }
+  var info: AnyObject?
+  var infoDataType: DetailCell.DataType = .StringData
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var indentationLevel: Int = 0
+  var indentationWidth: CGFloat = 8.0
+  var backgroundColor: UIColor?
+
+  /**
+  configure:
+
+  :param: cell DetailCell
+  */
+  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
+    if !(cell is DetailListCell) { return }
+    if let color = backgroundColor { cell.backgroundColor = color }
+    cell.indentationLevel = indentationLevel
+    cell.indentationWidth = indentationWidth
+    cell.name = name
+    cell.info = info
+    cell.infoDataType = infoDataType
+    cell.valueIsValid = valueIsValid
+    cell.valueDidChange = valueDidChange
+    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
+    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+  }
+
+  /** init */
+  init() {}
 
   /**
   initWithPushableItem:hasEditingState:
@@ -28,14 +63,13 @@ class DetailListRow: DetailRow {
   :param: pushableItem BankDisplayItemModel
   */
   init(pushableItem: BankDisplayItemModel) {
-    super.init(identifier: .List)
-    selectionHandler = {
+    select = {
       let controller = pushableItem.detailController()
       if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
         nav.pushViewController(controller, animated: true)
       }
     }
-    deletionHandler = { pushableItem.delete() }
+    delete = { pushableItem.delete() }
     info = pushableItem
   }
 
@@ -45,15 +79,14 @@ class DetailListRow: DetailRow {
   :param: pushableCategory BankDisplayItemCategory
   */
   init(pushableCategory: BankDisplayItemCategory) {
-    super.init(identifier: .List)
-    selectionHandler = {
+    select = {
       if let controller = BankCollectionController(category: pushableCategory) {
         if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
           nav.pushViewController(controller, animated: true)
         }
       }
     }
-    deletionHandler = { pushableCategory.delete() }
+    delete = { pushableCategory.delete() }
     info = pushableCategory
   }
 
@@ -63,7 +96,6 @@ class DetailListRow: DetailRow {
   :param: namedItem NamedModelObject
   */
   init(namedItem: NamedModelObject) {
-    super.init(identifier: .List)
     info = namedItem
   }
 

@@ -21,10 +21,10 @@ class RemotePresetDetailController: PresetDetailController {
   */
   override init(model: BankableModelObject) {
     super.init(model: model)
-    if let detailsSection = sections.first {
+    if var detailsSection = sections.first {
 
       detailsSection.addRow {
-        let row = DetailSwitchRow(identifier: .Switch)
+        var row = DetailSwitchRow()
         row.name = "Top Bar Hidden"
         row.info = NSNumber(bool: self.preset.attributes.topBarHidden ?? false)
         row.valueDidChange = { self.preset.attributes.topBarHidden = ($0 as? NSNumber)?.boolValue }

@@ -33,13 +33,14 @@ class DetailCell: UITableViewCell {
     case Switch          = "DetailSwitchCell"
     case Color           = "DetailColorCell"
     case Slider          = "DetailSliderCell"
+    case Picker          = "DetailPickerCell"
     case Stepper         = "DetailStepperCell"
     case TextView        = "DetailTextViewCell"
     case TextField       = "DetailTextFieldCell"
 
     static var all: [Identifier] {
       return [.AttributedLabel, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
-              .Color, .Slider, .Stepper, .TextView, .TextField]
+              .Color, .Slider, .Picker, .Stepper, .TextView, .TextField]
     }
 
     var cellType: DetailCell.Type {
@@ -53,6 +54,7 @@ class DetailCell: UITableViewCell {
         case .Color:           return DetailColorCell.self
         case .Slider:          return DetailSliderCell.self
         case .Switch:          return DetailSwitchCell.self
+        case .Picker:          return DetailPickerCell.self
         case .Stepper:         return DetailStepperCell.self
         case .TextField:       return DetailTextFieldCell.self
         case .TextView:        return DetailTextViewCell.self
@@ -93,6 +95,7 @@ class DetailCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
   var valueDidChange: ((AnyObject?) -> Void)?
   var valueIsValid: ((AnyObject?) -> Bool)?
   var sizeDidChange: ((DetailCell) -> Void)?
@@ -202,10 +205,9 @@ class DetailCell: UITableViewCell {
   func textFromObject(object: AnyObject?) -> String? {
     var text: String?
     if let string = object as? String { text = string }
-    else if let obj: AnyObject = object {
-      if obj.respondsToSelector("name") { text = obj.valueForKey("name") as? String }
-      else { text = "\(obj)"}
-    }
+    else if object?.respondsToSelector("name") == true { text = object!.valueForKey("name") as? String }
+    else if object?.respondsToSelector("title") == true { text = object!.valueForKey("title") as? String }
+    else if object != nil { text = "\(object!)" }
     return text
   }
 

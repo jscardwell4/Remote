@@ -92,15 +92,11 @@
 }
 
 - (void)setColor:(UIColor *)color {
-        
-    NSArray * colorComponents = color.components;
-    if (!colorComponents) {
-        NSNumber * n = @0;
-        colorComponents = @[n, n, n, n];
-    }
-        
-    for (int i = 0; i < 4; i++) 
-        [self updateControlsForComponent:i withValue:[colorComponents[i] floatValue]];
+  CGFloat r = 0, g = 0, b = 0, a = 0;
+  [color getRed:&r green:&g blue:&b alpha:&a];
+  NSArray * colorComponents = @[@(r), @(g), @(b), @(a)];
+
+    for (int i = 0; i < 4; i++)  [self updateControlsForComponent:i withValue:[colorComponents[i] floatValue]];
     
     _colorPreview.backgroundColor = color;
     

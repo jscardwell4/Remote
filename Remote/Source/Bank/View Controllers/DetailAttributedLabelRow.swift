@@ -10,32 +10,51 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailAttributedLabelRow: DetailRow {
+struct DetailAttributedLabelRow: DetailRow {
 
-  /**
-  configureCell:forTableView:
+  let identifier: DetailCell.Identifier = .AttributedLabel
+  var indexPath: NSIndexPath?
+  var select: ((Void) -> Void)?
+  var delete: ((Void) -> Void)?
 
-  :param: cell DetailCell
-  :param: tableView UITableView
-  */
-  override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    super.configureCell(cell, forTableView: tableView)
-    cell.name = name
-  }
+  var editActions: [UITableViewRowAction]?
+  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
 
-  /**
-  initWithLabel:value:
+  var deleteRemovesRow = true
 
-  :param: label String
-  :param: value String
-  */
-  convenience init(label: String, value: NSAttributedString?) {
-    self.init()
-    name = label
-    info = value
-  }
+  /// Properties that mirror `DetailCell` properties
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var name: String?
+  var info: AnyObject?
+  var infoDataType: DetailCell.DataType = .AttributedStringData
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var indentationLevel: Int = 0
+  var indentationWidth: CGFloat = 8.0
+  var backgroundColor: UIColor?
 
   /** init */
-  convenience init() { self.init(identifier: .AttributedLabel) }
+  init() {}
+
+  /**
+  configure:
+
+  :param: cell DetailCell
+  */
+  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
+    if !(cell is DetailAttributedLabelCell) { return }
+    if let color = backgroundColor { cell.backgroundColor = color }
+    cell.indentationLevel = indentationLevel
+    cell.indentationWidth = indentationWidth
+    cell.name = name
+    cell.info = info
+    cell.infoDataType = infoDataType
+    cell.valueIsValid = valueIsValid
+    cell.valueDidChange = valueDidChange
+    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
+    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+  }
 
 }

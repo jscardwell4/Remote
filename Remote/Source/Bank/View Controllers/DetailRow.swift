@@ -10,67 +10,26 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailRow {
+protocol DetailRow {
 
-  let identifier: DetailCell.Identifier
-  var indexPath: NSIndexPath!
-  var selectionHandler: ((Void) -> Void)?
-  var deletionHandler: ((Void) -> Void)?
+  var name: String? { get set }
+  var info: AnyObject? { get set }
+  var identifier: DetailCell.Identifier { get }
+  var indexPath: NSIndexPath? { get set }
+  var select: ((Void) -> Void)? { get set }
+  var delete: ((Void) -> Void)? { get set }
+  var editActions: [UITableViewRowAction]? { get set }
+  var editingStyle: UITableViewCellEditingStyle { get }
+  var deleteRemovesRow: Bool { get set }
+  var infoDataType: DetailCell.DataType { get set }
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)? { get set }
+  var valueDidChange: ((AnyObject?) -> Void)? { get set }
+  var valueIsValid: ((AnyObject?) -> Bool)? { get set }
+  var indentationLevel: Int { get set }
+  var indentationWidth: CGFloat { get set }
+  var backgroundColor: UIColor? { get set }
 
-  var editActions: [UITableViewRowAction]?
-  var editingStyle: UITableViewCellEditingStyle { return deletionHandler != nil || editActions != nil ? .Delete : .None }
-
-  var isDeletable: Bool { return deletionHandler != nil }
-  var deleteRemovesRow = true
-  var isSelectable: Bool { return selectionHandler != nil }
-
-  private(set) weak var bankItemCell: DetailCell?
-
-  /// Properties that mirror `DetailCell` properties
-  ////////////////////////////////////////////////////////////////////////////////
-
-  var name: String?
-  var info: AnyObject?
-  var infoDataType: DetailCell.DataType = .StringData
-  var valueDidChange: ((AnyObject?) -> Void)?
-  var valueIsValid: ((AnyObject?) -> Bool)?
-  var indentationLevel: Int = 0
-  var indentationWidth: CGFloat = 8.0
-  var backgroundColor: UIColor?
-
-  /**
-  configure:
-
-  :param: cell DetailCell
-  */
-  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    bankItemCell = cell
-    if let color = backgroundColor { cell.backgroundColor = color }
-    cell.indentationLevel = indentationLevel
-    cell.indentationWidth = indentationWidth
-    cell.info = info
-    cell.infoDataType = infoDataType
-    cell.valueIsValid = valueIsValid
-    cell.valueDidChange = valueDidChange
-    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
-  }
-
-  /**
-  initWithIdentifier:hasEditingState:selectionHandler:configureCell:
-
-  :param: identifier DetailCell.Identifier
-  :param: hasEditingState Bool = false
-  :param: selectionHandler ((Void) -> Void
-  :param: configureCell (DetailCell) -> Void
-  */
-  init(identifier: DetailCell.Identifier,
-       selectionHandler: ((Void) -> Void)? = nil,
-       deletionHandler: ((Void) -> Void)? = nil)
-  {
-    self.identifier = identifier
-    self.selectionHandler = selectionHandler
-    self.deletionHandler = deletionHandler
-  }
+  func configureCell(cell: DetailCell, forTableView tableView: UITableView)
 
 }
 

@@ -116,8 +116,29 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
     }
   }
 
+  var allowableCharacters = ~NSCharacterSet.emptyCharacterSet
+  var allowEmptyString = true
+  var placeholderText: String? { didSet { textFieldView.placeholder = placeholderText } }
+
   /// UITextFieldDelegate
   ////////////////////////////////////////////////////////////////////////////////
+
+  var shouldBeginEditing: ((UITextField) -> Bool)?
+  var shouldEndEditing: ((UITextField) -> Bool)?
+  var didBeginEditing: ((UITextField) -> Void)?
+  var didEndEditing: ((UITextField) -> Void)?
+  var shouldChangeCharacters: ((UITextField, NSRange, String) -> Bool)?
+  var shouldClear: ((UITextField) -> Bool)?
+  var shouldReturn: ((UITextField) -> Bool)?
+
+  /**
+  textFieldShouldBeginEditing:
+
+  :param: textField UITextField
+
+  :returns: Bool
+  */
+  func textFieldShouldBeginEditing(textField: UITextField) -> Bool { return shouldBeginEditing?(textField) ?? true }
 
   /**
   textFieldDidBeginEditing:
@@ -127,6 +148,79 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
   func textFieldDidBeginEditing(textField: UITextField) {
     beginStateAttributedText = textField.attributedText
     beginStateText = textField.text
+    didBeginEditing?(textField)
+  }
+
+  /**
+  textField:shouldChangeCharactersInRange:replacementString:
+
+  :param: textField UITextField
+  :param: range NSRange
+  :param: string String
+
+  :returns: Bool
+  */
+  func                  textField(textField: UITextField,
+    shouldChangeCharactersInRange range: NSRange,
+                replacementString string: String) -> Bool
+  {
+    var shouldChange = allowableCharacters ⊃ NSCharacterSet(charactersInString: string)
+    if shouldChange && shouldChangeCharacters != nil { shouldChange = shouldChangeCharacters!(textField, range, string) }
+    return shouldChange
+  }
+
+  /**
+  textFieldShouldEndEditing:
+
+  :param: textField UITextField
+
+  :returns: Bool
+  */
+  func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+
+    var shouldEnd = true
+
+    if textField.text.isEmpty { shouldEnd = allowEmptyString }
+    else {
+      let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+      switch infoDataType {
+        case .IntData(let r):
+          var n: Int32 = 0
+          if !scanner.scanInt(&n) { shouldEnd = false }
+          else if r ∌ n { shouldEnd = false }
+        case .IntegerData(let r):
+          var n: Int = 0
+          if !scanner.scanInteger(&n) { shouldEnd = false }
+          else if r ∌ n { shouldEnd = false }
+        case .LongLongData(let r):
+          var n: Int64 = 0
+          if !scanner.scanLongLong(&n) { shouldEnd = false }
+          else if r ∌ n { shouldEnd = false }
+        case .FloatData(let r):
+          var n: Float = 0
+          if !scanner.scanFloat(&n) { shouldEnd = false }
+          else if r ∌ n { shouldEnd = false }
+        case .DoubleData(let r):
+          var n: Double = 0
+          if !scanner.scanDouble(&n) { shouldEnd = false }
+          else if r ∌ n { shouldEnd = false }
+         default:
+           break
+      }
+    }
+
+    if !shouldEnd && shouldAllowNonDataTypeValue != nil { shouldEnd = shouldAllowNonDataTypeValue!(textField.text) }
+    if shouldEnd { shouldEnd = valueIsValid?(textField.text) ?? true }
+
+    if !shouldEnd && !isEditingState {
+      if infoDataType == .AttributedStringData { textField.attributedText = beginStateAttributedText }
+      else { textField.text = beginStateText }
+      shouldEnd = true
+    }
+
+    if shouldEnd && shouldEndEditing != nil { shouldEnd = shouldEndEditing!(textField) }
+
+    return shouldEnd
   }
 
   /**
@@ -141,55 +235,17 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
       else { value = infoDataType.objectFromText(textField.text) }
       valueDidChange?(value)
     }
+    didEndEditing?(textField)
   }
 
   /**
-  textFieldShouldEndEditing:
+  textFieldShouldClear:
 
   :param: textField UITextField
 
   :returns: Bool
   */
-  func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-
-    var shouldEnd = true
-
-    let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
-    switch infoDataType {
-      case .IntData(let r):
-        var n: Int32 = 0
-        if !scanner.scanInt(&n) { shouldEnd = false }
-        else if r ∌ n { shouldEnd = false }
-      case .IntegerData(let r):
-        var n: Int = 0
-        if !scanner.scanInteger(&n) { shouldEnd = false }
-        else if r ∌ n { shouldEnd = false }
-      case .LongLongData(let r):
-        var n: Int64 = 0
-        if !scanner.scanLongLong(&n) { shouldEnd = false }
-        else if r ∌ n { shouldEnd = false }
-      case .FloatData(let r):
-        var n: Float = 0
-        if !scanner.scanFloat(&n) { shouldEnd = false }
-        else if r ∌ n { shouldEnd = false }
-      case .DoubleData(let r):
-        var n: Double = 0
-        if !scanner.scanDouble(&n) { shouldEnd = false }
-        else if r ∌ n { shouldEnd = false }
-       default:
-         break
-    }
-
-    if shouldEnd { shouldEnd = valueIsValid?(textField.text) ?? true }
-
-    if !shouldEnd && !isEditingState {
-      if infoDataType == .AttributedStringData { textField.attributedText = beginStateAttributedText }
-      else { textField.text = beginStateText }
-      shouldEnd = true
-    }
-
-    return shouldEnd
-  }
+  func textFieldShouldClear(textField: UITextField) -> Bool { return shouldClear?(textField) ?? true }
 
   /**
   textFieldShouldReturn:
@@ -198,6 +254,9 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
 
   :returns: Bool
   */
-  func textFieldShouldReturn(textField: UITextField) -> Bool { textField.resignFirstResponder(); return false }
+  func textFieldShouldReturn(textField: UITextField) -> Bool {
+    if shouldReturn != nil && shouldReturn!(textField) { return true }
+    else { textField.resignFirstResponder(); return false }
+  }
 
 }

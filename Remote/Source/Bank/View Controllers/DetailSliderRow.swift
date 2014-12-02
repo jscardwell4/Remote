@@ -10,28 +10,56 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailSliderRow: DetailRow {
+struct DetailSliderRow: DetailRow {
 
   var sliderMinValue: Float = 0.0
   var sliderMaxValue: Float = 1.0
 
+  let identifier: DetailCell.Identifier = .Slider
+  var indexPath: NSIndexPath?
+  var select: ((Void) -> Void)?
+  var delete: ((Void) -> Void)?
+
+  var editActions: [UITableViewRowAction]?
+  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
+
+  var deleteRemovesRow = true
+
+  /// Properties that mirror `DetailCell` properties
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var name: String?
+  var info: AnyObject?
+  var infoDataType: DetailCell.DataType = .StringData
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var indentationLevel: Int = 0
+  var indentationWidth: CGFloat = 8.0
+  var backgroundColor: UIColor?
 
   /**
-  configureCell:forTableView:
+  configure:
 
   :param: cell DetailCell
-  :param: tableView UITableView
   */
-  override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    super.configureCell(cell, forTableView: tableView)
+  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
+    if !(cell is DetailSliderCell) { return }
+    if let color = backgroundColor { cell.backgroundColor = color }
+    cell.indentationLevel = indentationLevel
+    cell.indentationWidth = indentationWidth
     cell.name = name
-    if let sliderCell = cell as? DetailSliderCell {
-      sliderCell.sliderMinValue = sliderMinValue
-      sliderCell.sliderMaxValue = sliderMaxValue
-    }
+    cell.info = info
+    cell.infoDataType = infoDataType
+    cell.valueIsValid = valueIsValid
+    cell.valueDidChange = valueDidChange
+    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
+    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+    (cell as DetailSliderCell).sliderMinValue = sliderMinValue
+    (cell as DetailSliderCell).sliderMaxValue = sliderMaxValue
   }
 
   /** init */
-  convenience init() { self.init(identifier: .Slider) }
+  init() {}
 
 }

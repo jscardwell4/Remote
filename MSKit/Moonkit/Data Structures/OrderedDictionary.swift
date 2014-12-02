@@ -30,12 +30,22 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   ////////////////////////////////////////////////////////////////////////////////
 
 
+  /**
+  initWithMinimumCapacity:
+
+  :param: minimumCapacity Int = 4
+  */
   public init(minimumCapacity: Int = 4) {
     storage = [KeyType:ValueType](minimumCapacity: minimumCapacity)
     indexKeys = [KeyType]()
     indexKeys.reserveCapacity(minimumCapacity)
   }
 
+  /**
+  initWithMinimumCapacity:
+
+  :param: minimumCapacity Int = 4
+  */
   public init<K,V where K:Printable>(minimumCapacity: Int = 4) {
     storage = [KeyType:ValueType](minimumCapacity: minimumCapacity)
     indexKeys = [KeyType]()
@@ -43,16 +53,30 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     printableKeys = true
   }
 
-  public init(_ dict: NSDictionary) {
-    self.init(dict as [NSObject:AnyObject])
-  }
+  /**
+  init:
 
+  :param: dict NSDictionary
+  */
+  public init(_ dict: NSDictionary) { self.init(dict as [NSObject:AnyObject]) }
+
+  /**
+  init:
+
+  :param: dict [KeyType
+  */
   public init(_ dict:[KeyType:ValueType]) {
     storage = dict
     indexKeys = Array(dict.keys)
     printableKeys = true
   }
 
+  /**
+  initWithKeys:values:
+
+  :param: keys [KeyType]
+  :param: values [ValueType]
+  */
   public init(keys:[KeyType], values:[ValueType]) {
     self.init(minimumCapacity: keys.count)
     if keys.count == values.count {
@@ -61,6 +85,13 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     }
   }
 
+  /**
+  fromMSDictionary:
+
+  :param: msdict MSDictionary
+
+  :returns: OrderedDictionary<NSObject, AnyObject>
+  */
   public static func fromMSDictionary(msdict: MSDictionary) -> OrderedDictionary<NSObject, AnyObject> {
     var orderedDict = OrderedDictionary<NSObject,AnyObject>(minimumCapacity: 4)
 
@@ -83,8 +114,33 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
 
   public var startIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys[0])! }
   public var endIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys.last!)! }
+
+  /**
+  indexForKey:
+
+  :param: key KeyType
+
+  :returns: DictionaryIndex<KeyType, ValueType>?
+  */
   public func indexForKey(key: KeyType) -> DictionaryIndex<KeyType, ValueType>? { return storage.indexForKey(key) }
-  public subscript (key: KeyType) -> ValueType? { return storage[key] }
+
+  /**
+  subscript:
+
+  :param: key KeyType
+
+  :returns: ValueType?
+  */
+  public subscript (key: KeyType) -> ValueType? { get { return storage[key] } set { setValue(newValue, forKey: key) } }
+
+  /**
+  subscript:ValueType>:
+
+  :param: i DictionaryIndex<KeyType
+  :param: ValueType>
+
+  :returns: (KeyType, ValueType)
+  */
   public subscript (i: DictionaryIndex<KeyType, ValueType>) -> (KeyType, ValueType) { return storage[i] }
 
 
@@ -92,11 +148,30 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /// MARK: - Updating and removing values
   ////////////////////////////////////////////////////////////////////////////////
 
-  public mutating func setValue(value: ValueType, forKey key: KeyType) {
-    if !contains(indexKeys, key) { indexKeys.append(key) }
-    storage[key] = value
+  /**
+  setValue:forKey:
+
+  :param: value ValueType
+  :param: key KeyType
+  */
+  public mutating func setValue(value: ValueType?, forKey key: KeyType) {
+    if let v = value {
+      if !contains(indexKeys, key) { indexKeys.append(key) }
+      storage[key] = value
+    } else {
+      if let idx = find(indexKeys, key) { indexKeys.removeAtIndex(idx) }
+      storage[key] = nil
+    }
   }
 
+  /**
+  updateValue:forKey:
+
+  :param: value ValueType
+  :param: key KeyType
+
+  :returns: ValueType?
+  */
   public mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
     let currentValue: ValueType? = contains(indexKeys, key) ? storage[key] : nil
     if !contains(indexKeys, key) { indexKeys.append(key) }
@@ -104,12 +179,25 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     return currentValue
   }
 
+  /**
+  removeAtIndex:ValueType>:
+
+  :param: index DictionaryIndex<KeyType
+  :param: ValueType>
+  */
   public mutating func removeAtIndex(index: DictionaryIndex<KeyType, ValueType>) {
     let (k, _) = self[index]
     indexKeys.removeAtIndex(find(indexKeys, k)!)
     storage.removeAtIndex(index)
   }
 
+  /**
+  removeValueForKey:
+
+  :param: key KeyType
+
+  :returns: ValueType?
+  */
   public mutating func removeValueForKey(key: KeyType) -> ValueType? {
     if let idx = find(indexKeys, key) {
       indexKeys.removeAtIndex(idx)
@@ -119,12 +207,41 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     }
   }
 
+  /**
+  removeAll:
+
+  :param: keepCapacity Bool = false
+  */
   public mutating func removeAll(keepCapacity: Bool = false) {
     indexKeys.removeAll(keepCapacity: keepCapacity)
     storage.removeAll(keepCapacity: keepCapacity)
   }
 
+  /**
+  sort:
 
+  :param: isOrderedBefore (KeyType, KeyType) -> Bool
+  */
+  public mutating func sort(isOrderedBefore: (KeyType, KeyType) -> Bool) { indexKeys.sort(isOrderedBefore) }
+
+  /**
+  reverse
+
+  :returns: OrderedDictionary<KeyType, ValueType>
+  */
+  public mutating func reverse() -> OrderedDictionary<KeyType, ValueType> {
+    var result = self
+    result.indexKeys = result.indexKeys.reverse()
+    return result
+  }
+
+  /**
+  filter:
+
+  :param: includeElement (Element) -> Bool
+
+  :returns: OrderedDictionary<KeyType, ValueType>
+  */
   public func filter(includeElement: (Element) -> Bool) -> OrderedDictionary<KeyType, ValueType> {
     var result: OrderedDictionary<KeyType, ValueType> = [:]
     for (k, v) in self { if includeElement((k, v)) { result.setValue(v, forKey: k) } }
@@ -161,10 +278,19 @@ extension  OrderedDictionary: Printable, DebugPrintable {
   public var description: String { return storage.description }
   public var debugDescription: String { return storage.debugDescription }
 
-  //  i.e. with dictionary ["one": 1, "two": 2, "three": 3] and default values will output:
-  //  one    :  1
-  //  two    :  2
-  //  three  :  3
+  /**
+  formattedDescription:colonFormat:
+
+  i.e. with dictionary ["one": 1, "two": 2, "three": 3] and default values will output:
+    one    :  1
+    two    :  2
+    three  :  3
+
+  :param: indent Int = 0
+  :param: colonFormat ColonFormatOption? = nil
+
+  :returns: String
+  */
   public func formattedDescription(indent:Int = 0, colonFormat:ColonFormatOption? = nil) -> String {
     var descriptionComponents = [String]()
     let keyDescriptions = indexKeys.map { "\($0)" }
@@ -198,7 +324,6 @@ extension  OrderedDictionary: Printable, DebugPrintable {
     return join("\n", descriptionComponents)
   }
 
-
 }
 
 
@@ -208,6 +333,13 @@ extension  OrderedDictionary: Printable, DebugPrintable {
 
 
 extension  OrderedDictionary: DictionaryLiteralConvertible {
+
+  /**
+  init:Value)...:
+
+  :param: elements (Key
+  :param: Value)...
+  */
   public init(dictionaryLiteral elements: (Key, Value)...) {
     var orderedDict = OrderedDictionary(minimumCapacity: elements.count)
     for (key, value) in elements {
@@ -216,6 +348,7 @@ extension  OrderedDictionary: DictionaryLiteralConvertible {
     }
     self = orderedDict
   }
+
 }
 
 
@@ -227,6 +360,11 @@ extension  OrderedDictionary: DictionaryLiteralConvertible {
 extension  OrderedDictionary: SequenceType  {
 
 
+  /**
+  generate
+
+  :returns: OrderedDictionaryGenerator<Key, Value>
+  */
   public func generate() -> OrderedDictionaryGenerator<Key, Value> {
     return OrderedDictionaryGenerator(value: self)
   }
@@ -239,8 +377,19 @@ public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType 
   let values: [Value]
   var keyIndex = 0
 
+  /**
+  initWithValue:Value>:
+
+  :param: value OrderedDictionary<Key
+  :param: Value>
+  */
   init(value:OrderedDictionary<Key,Value>) { keys = value.keys; values = value.values }
 
+  /**
+  next
+
+  :returns: (Key, Value)?
+  */
   public mutating func next() -> (Key, Value)? {
     if keyIndex < keys.count {
       let keyValue = (keys[keyIndex], values[keyIndex])
@@ -255,6 +404,14 @@ public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType 
 /// MARK: - Operations
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+Function for creating an `OrderedDictionary` by appending rhs to lhs
+
+:param: lhs OrderedDictionary<K,V>
+:param: rhs OrderedDictionary<K,V>
+
+:returns: OrderedDictionary<K,V>
+*/
 public func +<K,V>(lhs: OrderedDictionary<K,V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K,V> {
   let keys: [K] = lhs.keys + rhs.keys
   let values: [V] = lhs.values + rhs.values

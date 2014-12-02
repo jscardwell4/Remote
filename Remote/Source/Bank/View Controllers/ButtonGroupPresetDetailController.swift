@@ -25,7 +25,7 @@ class ButtonGroupPresetDetailController: PresetDetailController {
     let buttonGroupAttributesSection = DetailSection(sectionNumber: 1, title: "Button Group Attributes")
 
     buttonGroupAttributesSection.addRow {
-      let row = DetailSwitchRow()
+      var row = DetailSwitchRow()
       row.name = "Autohide"
       row.info = NSNumber(bool: self.preset.attributes.autohide ?? false)
       row.valueDidChange = { self.preset.attributes.autohide = ($0 as? NSNumber)?.boolValue }

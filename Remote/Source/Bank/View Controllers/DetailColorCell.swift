@@ -23,9 +23,13 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
     textFieldView.delegate = self
     contentView.addSubview(nameLabel)
     contentView.addSubview(textFieldView)
-    contentView.addSubview(colorBox)
+
+    colorBoxWrapper.addSubview(colorBox)
+    colorBoxWrapper.constrain("|-2-[color]-2-| :: V:|-2-[color]-2-|", views: ["color": colorBox])
+    contentView.addSubview(colorBoxWrapper)
+
     let format = "|-[name]-[text]-[color]-| :: V:|-[color]-| :: V:|-[name]-| :: V:|-[text]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "text": textFieldView, "color": colorBox])
+    contentView.constrain(format, views: ["name": nameLabel, "text": textFieldView, "color": colorBoxWrapper])
   }
 
   /**
@@ -56,6 +60,19 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
     }
   }
 
+  private let colorBoxWrapper: UIView = {
+    let view = UIView()
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.userInteractionEnabled = false
+    view.constrainAspect(1.0)
+    view.layer.cornerRadius = 5.0
+    view.layer.shadowOpacity = 0.5
+    view.layer.shadowRadius = 2.5
+    view.layer.shadowOffset = CGSize(width: 0.0, height: -1.25)
+    view.backgroundColor = UIColor.whiteColor()
+    return view
+  }()
+
   private let colorBox: UIView =  {
     let view = UIView()
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -85,12 +102,15 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
     view.keyboardAppearance = Bank.keyboardAppearance
     view.secureTextEntry = false
     view.font = Bank.infoFont
+    view.placeholder = "None"
     view.textColor = Bank.infoColor
     view.textAlignment = .Right
     return view
   }()
 
   private var beginStateText: String?  // Stores pre-edited text field/view content
+  var placeholderText: String = "None" { didSet { textFieldView.placeholder = placeholderText } }
+  var placeholderColor: UIColor = UIColor.clearColor()
 
   /// UITextFieldDelegate
   ////////////////////////////////////////////////////////////////////////////////
@@ -129,9 +149,9 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
   */
   func textFieldDidEndEditing(textField: UITextField) {
     if textField.text != beginStateText {
-      let color = textField.text == nil ? UIColor.clearColor() : UIColor(string: textField.text!)
+      let color = textField.text == nil ? placeholderColor : UIColor(string: textField.text!)
       colorBox.backgroundColor = color
-      valueDidChange?(color)
+      valueDidChange?(textField.text == nil ? nil : color)
     }
   }
 

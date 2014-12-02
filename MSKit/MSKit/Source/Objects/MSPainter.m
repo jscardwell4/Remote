@@ -16,7 +16,7 @@
 #import "NSValue+MSKitAdditions.h"
 #import "UIColor+MSKitAdditions.h"
 #import "MSLog.h"
-
+#import <MoonKit/Moonkit-swift.h>
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static const int msLogContext = (LOG_CONTEXT_MSKIT|LOG_CONTEXT_FILE);

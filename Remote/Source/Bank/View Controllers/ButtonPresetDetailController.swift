@@ -25,49 +25,32 @@ class ButtonPresetDetailController: PresetDetailController {
     let titlesSection = DetailSection(sectionNumber: 1, title: "Titles")
 
     if let titles = preset.attributes.titles {
-      var attributesByState: [String: TitleAttributes] = [:]
+      var attributesByState: OrderedDictionary<String, TitleAttributes> = [:]
       for (state, values) in titles { attributesByState[state] = TitleAttributes(storage: values) }
-
+      attributesByState.sort { $0 == "normal" ? true : ($1 == "normal" ? false : $0 < $1) }
       var fillerAttributes: MSDictionary?
       let backgroundColor = UIColor(white: 0.35, alpha: 0.75)
 
       var normalAttributes: TitleAttributes? = attributesByState["normal"]
-      if normalAttributes != nil {
-        titlesSection.addRow {
-          let row = DetailAttributedLabelRow(label: "Normal", value: normalAttributes!.string)
-          row.backgroundColor = backgroundColor
-          row.selectionHandler = {
-            let controller = TitleAttributesDetailController(attributes: normalAttributes!)
-            if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-              nav.pushViewController(controller, animated: true)
-            }
-          }
-          return row
-        }
-        fillerAttributes = normalAttributes!.attributes
-        attributesByState["normal"] = nil
-      }
+      if normalAttributes != nil { fillerAttributes = normalAttributes!.attributes }
 
       for (state, attributes) in attributesByState {
         titlesSection.addRow {
-          let row = DetailAttributedLabelRow()
+          var row = DetailAttributedLabelRow()
           row.name = state.titlecaseString
           row.info = attributes.stringWithFillers(fillerAttributes)
           row.backgroundColor = backgroundColor
-          row.selectionHandler = {
-            let attrs = attributes.copy
+          row.select = {
+            var attrs = attributes
             attrs.mergeWithTitleAttributes(normalAttributes)
-            let controller = TitleAttributesDetailController(attributes: attrs)
+            let controller = TitleAttributesDetailController(attributesDelegate: TitleAttributesDelegate(titleAttributes: attrs))
+            controller.title = state.titlecaseString
             if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
               nav.pushViewController(controller, animated: true)
             }
           }
           return row
         }
-
-        // for generatedRow in generateRowsForTitleAttributes(attributes, indentationLevel: 1) {
-        //   titlesSection.addRow { generatedRow }
-        // }
 
       }
     }

@@ -43,22 +43,9 @@ class DetailController: UITableViewController {
 
   let item: DetailableItem!
 
-  // lazy var nameTextField: UITextField =  {
-  //   let textField = UITextField(frame: CGRect(x: 70, y: 70, width: 180, height: 30))
-  //   textField.placeholder = "Name"
-  //   textField.font = Bank.boldLabelFont
-  //   textField.textColor = Bank.labelColor
-  //   textField.keyboardAppearance = Bank.keyboardAppearance
-  //   textField.adjustsFontSizeToFitWidth = true
-  //   textField.returnKeyType = .Done
-  //   textField.textAlignment = .Center
-  //   textField.delegate = self
-  //   return textField
-  //   }()
-
   private(set) var didCancel: Bool = false
 
-  private weak var cellDisplayingPicker: DetailButtonCell?
+  private weak var cellDisplayingPicker: DetailButtonCell? { didSet { if oldValue != nil { oldValue!.hidePickerView() } } }
 
   /**
   init:bundle:
@@ -107,7 +94,6 @@ class DetailController: UITableViewController {
     tableView?.delegate = self
     tableView?.dataSource = self
     DetailCell.registerIdentifiersWithTableView(tableView)
-    // navigationItem.titleView = nameTextField
     navigationItem.rightBarButtonItem = editButtonItem()
   }
 
@@ -141,8 +127,6 @@ class DetailController: UITableViewController {
       navigationItem.leftBarButtonItem = editing
                                            ? UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel")
                                            : nil
-      // nameTextField.userInteractionEnabled = editing
-      // if nameTextField.isFirstResponder() { nameTextField.resignFirstResponder() }
       navigationItem.rightBarButtonItem?.title = editing ? "Save" : "Edit"
       navigationItem.rightBarButtonItem?.action = editing ? "save" : "edit"
       super.setEditing(editing, animated: animated)
@@ -165,15 +149,32 @@ class DetailController: UITableViewController {
   func save() { (item as? EditableItem)?.save(); setEditing(false, animated: true) }
 
   /**
-  cellForRowAtIndexPath:
+  subscript:
 
   :param: indexPath NSIndexPath
 
-  :returns: DetailCell
+  :returns: DetailRow?
   */
-  func cellForRowAtIndexPath(indexPath: NSIndexPath) -> DetailCell! {
-    return tableView?.cellForRowAtIndexPath(indexPath) as? DetailCell
-  }
+  subscript(indexPath: NSIndexPath) -> DetailRow? { return self[indexPath.row, indexPath.section] }
+
+  /**
+  subscript:
+
+  :param: section Int
+
+  :returns: DetailSection?
+  */
+  subscript(section: Int) -> DetailSection? { return section < sections.count ? sections[section] : nil }
+
+  /**
+  subscript:section:
+
+  :param: row Int
+  :param: section Int
+
+  :returns: DetailRow?
+  */
+  subscript(row: Int, section: Int) -> DetailRow? { return self[section]?[row] }
 
   /**
   reloadRowsAtIndexPaths:animated:
@@ -183,7 +184,7 @@ class DetailController: UITableViewController {
   func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
     for indexPath in indexPaths {
       if indexPath.section < sections.count {
-        let section = sections[indexPath.section]
+        var section = sections[indexPath.section]
         if indexPath.row < section.rows.count {
           section.reloadRowAtIndex(indexPath.row)
         }
@@ -207,10 +208,9 @@ class DetailController: UITableViewController {
   */
   func configureCellsAtIndexPaths(indexPaths: [NSIndexPath]) {
     applyToRowsAtIndexPaths(indexPaths) {
-      (row: DetailRow) -> Void in
-        if let cell = self.tableView.cellForRowAtIndexPath(row.indexPath) as? DetailCell {
-          row.configureCell(cell, forTableView: self.tableView)
-        }
+      if let cell = self.tableView.cellForRowAtIndexPath($0.indexPath!) as? DetailCell {
+        $0.configureCell(cell, forTableView: self.tableView)
+      }
     }
   }
 
@@ -222,47 +222,8 @@ class DetailController: UITableViewController {
   */
   func applyToRowsAtIndexPaths(indexPaths: [NSIndexPath], block: (DetailRow) -> Void) {
     if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
-      apply(rowsForIndexPaths(indexPaths ∩ visibleIndexPaths), block)
+      apply(compressed((indexPaths ∩ visibleIndexPaths).map({self[$0]})), block)
     }
-  }
-
-  /**
-  rowForIndexPath:
-
-  :param: indexPath NSIndexPath
-
-  :returns: Row?
-  */
-  private func rowForIndexPath(indexPath: NSIndexPath) -> DetailRow? {
-    if indexPath.section < sections.count && indexPath.row < sections[indexPath.section].rows.count {
-      return sections[indexPath.section].rows[indexPath.row]
-    } else {
-      return nil
-    }
-  }
-
-  /**
-  rowsForIndexPaths:
-
-  :param: indexPaths [NSIndexPath]
-
-  :returns: [DetailRow]
-  */
-  private func rowsForIndexPaths(indexPaths: [NSIndexPath]) -> [DetailRow] {
-    var rows: [DetailRow] = []
-    for indexPath in indexPaths { if let row = rowForIndexPath(indexPath) { rows.append(row) } }
-    return rows
-  }
-
-  /**
-  identifierForIndexPath:
-
-  :param: indexPath NSIndexPath
-
-  :returns: String?
-  */
-  private func identifierForIndexPath(indexPath: NSIndexPath) -> DetailCell.Identifier? {
-    return rowForIndexPath(indexPath)?.identifier
   }
 
   /**
@@ -276,48 +237,38 @@ class DetailController: UITableViewController {
 
     var cell: DetailCell?
 
-    if let identifier = identifierForIndexPath(indexPath) {
-      cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? DetailCell
-      if let buttonCell = cell as? DetailButtonCell {
-        buttonCell.didShowPicker = {
-          (c: DetailButtonCell) -> Void in
-            if self.cellDisplayingPicker != nil {
-              self.cellDisplayingPicker!.hidePickerView()
-            }
-            self.cellDisplayingPicker = c
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
+    if let identifier = self[indexPath]?.identifier {
 
+      cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? DetailCell
+
+      if let buttonCell = cell as? DetailButtonCell {
+        let pickerIndexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
+        buttonCell.showPickerRow = {
+          if let pickerRow = $0.detailPickerRow {
+            self.sections[pickerIndexPath.section].insertRow(pickerRow, atIndex: pickerIndexPath.row)
+            self.tableView.insertRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .Automatic)
+            return true
+          } else {
+            return false
+          }
         }
-        buttonCell.didHidePicker = {
-          (c: DetailButtonCell) -> Void in
-            self.cellDisplayingPicker = nil
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
+
+        buttonCell.hidePickerRow = {
+          _ in
+          if self[pickerIndexPath] is DetailPickerRow {
+            self[pickerIndexPath.section]?.removeRowAtIndex(pickerIndexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .Automatic)
+            return true
+          } else {
+            return false
+          }
         }
-        buttonCell.shouldShowPicker = {
-          (c: DetailButtonCell) -> Bool in
-            if self.cellDisplayingPicker != nil {
-              self.cellDisplayingPicker!.hidePickerView()
-              return false
-            } else {
-              return true
-            }
-        }
+
       }
+
     }
 
     return cell
-  }
-
-  /**
-  decorateCell:forIndexPath:
-
-  :param: cell DetailCell
-  :param: indexPath NSIndexPath
-  */
-  private func decorateCell(cell: DetailCell, forIndexPath indexPath: NSIndexPath) {
-    rowForIndexPath(indexPath)?.configureCell(cell, forTableView: tableView)
   }
 
 }
@@ -337,8 +288,7 @@ extension DetailController: UITableViewDelegate {
   override func         tableView(tableView: UITableView,
     editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
   {
-    if let row = rowForIndexPath(indexPath) { return row.editingStyle }
-    else { return .None }
+    return self[indexPath]?.editingStyle ?? .None
   }
 
   /**
@@ -352,20 +302,8 @@ extension DetailController: UITableViewDelegate {
           willDisplayCell cell: UITableViewCell,
         forRowAtIndexPath indexPath: NSIndexPath)
   {
-    (cell as DetailCell).isEditingState = editing
+    (cell as? DetailCell)?.isEditingState = editing
   }
-
-  /**
-  tableView:willSelectRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
-
-  :returns: NSIndexPath?
-  */
-//  override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-//    return rowForIndexPath(indexPath)?.selectionHandler != nil ? indexPath : nil
-//  }
 
   /**
   tableView:didSelectRowAtIndexPath:
@@ -374,7 +312,7 @@ extension DetailController: UITableViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    rowForIndexPath(indexPath)?.selectionHandler?()
+    self[indexPath]?.select?()
   }
 
 }
@@ -394,7 +332,7 @@ extension DetailController: UITableViewDataSource {
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = dequeueCellForIndexPath(indexPath)
     precondition(cell != nil, "we should have been able to dequeue a valid cell")
-    decorateCell(cell!, forIndexPath: indexPath)
+    self[indexPath]?.configureCell(cell!, forTableView: tableView)
     return cell!
   }
 
@@ -405,7 +343,9 @@ extension DetailController: UITableViewDataSource {
 
   :returns: Int
   */
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return sections.count }
+  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return sections.count
+  }
 
 
   /**
@@ -417,7 +357,7 @@ extension DetailController: UITableViewDataSource {
   :returns: Int
   */
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return section < sections.count ? sections[section].rows.count : 0
+    return self[section]?.count ?? 0
   }
 
   /**
@@ -429,29 +369,8 @@ extension DetailController: UITableViewDataSource {
   :returns: String?
   */
   override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return section < sections.count ? sections[section].title : nil
+    return self[section]?.title
   }
-
-  /**
-  tableView:heightForRowAtIndexPath:
-
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
-
-  :returns: CGFloat
-  */
-//  override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//    var height: CGFloat = 0.0
-//    if indexPath.section < sections.count {
-//      let section = sections[indexPath.section]
-//      if indexPath.row < section.rows.count {
-//        let row = section.rows[indexPath.row]
-//        height = row.height
-//      }
-//    }
-//    if expandedRows ∋ indexPath { height += DetailCell.pickerHeight }
-//    return height
-//  }
 
   /**
   tableView:canEditRowAtIndexPath:
@@ -461,9 +380,7 @@ extension DetailController: UITableViewDataSource {
 
   :returns: Bool
   */
-  override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return true
-  }
+  override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool { return true }
 
   /**
   tableView:commitEditingStyle:forRowAtIndexPath:
@@ -477,14 +394,11 @@ extension DetailController: UITableViewDataSource {
         forRowAtIndexPath indexPath: NSIndexPath)
   {
     if editingStyle == .Delete {
-      if let row = rowForIndexPath(indexPath) {
-        if row.isDeletable {
-          row.deletionHandler?()
-          if row.deleteRemovesRow {
-            sections[indexPath.section].reloadRows()
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
-          }
+      if self[indexPath]?.delete?() != nil {
+        if self[indexPath]?.deleteRemovesRow == true {
+          sections[indexPath.section].reloadRows()
+          tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+          tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
         }
       }
     }
@@ -499,38 +413,7 @@ extension DetailController: UITableViewDataSource {
   :returns: [AnyObject]?
   */
   override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-    return rowForIndexPath(indexPath)?.editActions
+    return self[indexPath]?.editActions
   }
 
 }
-
-// /// MARK: - UITextFieldDelegate
-// ////////////////////////////////////////////////////////////////////////////////
-
-// extension DetailController: UITextFieldDelegate {
-
-//   /**
-//   textFieldShouldReturn:
-
-//   :param: textField UITextField
-
-//   :returns: Bool
-//   */
-//   func textFieldShouldReturn(textField: UITextField) -> Bool {
-//     precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
-//     textField.resignFirstResponder()
-//     return false
-//   }
-
-//   /**
-//   textFieldDidEndEditing:
-
-//   :param: textField UITextField
-//   */
-//   func textFieldDidEndEditing(textField: UITextField) {
-//     precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
-//     if textField.text?.length > 0 { (item as? EditableItem)?.name = textField.text }
-//     else { textField.text = item.name }
-//   }
-
-// }

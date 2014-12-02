@@ -555,6 +555,9 @@
 		C2F2254A1715CB8500D22B5F /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F225491715CB8500D22B5F /* Activity.m */; };
 		C2F2254D1715E39600D22B5F /* ModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2254C1715E39600D22B5F /* ModelObject.m */; };
 		C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */; };
+		C2F853F71A2CE28700F478C3 /* DetailPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */; };
+		C2F853F91A2D2AEC00F478C3 /* DetailPickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */; };
+		C2F90DF31A2AF52000D574D1 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F90DF21A2AF52000D574D1 /* TitleAttributesDelegate.swift */; };
 		C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */; };
 		C2F940F819BE5E90007B5CC1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
 		C2F940F919BE5E90007B5CC1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
@@ -1286,6 +1289,9 @@
 		C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceConnection.m; sourceTree = "<group>"; };
 		C2F4370719BBAB3500B60FC3 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		C2F4370819BBAB3500B60FC3 /* nodes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = nodes.xml; sourceTree = "<group>"; };
+		C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailPickerCell.swift; sourceTree = "<group>"; };
+		C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailPickerRow.swift; sourceTree = "<group>"; };
+		C2F90DF21A2AF52000D574D1 /* TitleAttributesDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAttributesDelegate.swift; sourceTree = "<group>"; };
 		C2F940EE19BD4C0F007B5CC1 /* ModelKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelKeychainWrapper.h; sourceTree = "<group>"; };
 		C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelKeychainWrapper.m; sourceTree = "<group>"; };
 		C2F940F719BE5E90007B5CC1 /* iTachClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTachClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1348,6 +1354,7 @@
 		C201149A180EDD8700C31B9F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C2F90DF21A2AF52000D574D1 /* TitleAttributesDelegate.swift */,
 				C2DCAA301A211A8D00F1B51A /* TitleAttributes.swift */,
 				C2DCAA2E1A20F6BB00F1B51A /* Font.swift */,
 				C2DCAA2A1A20E87400F1B51A /* DictionaryStorage.swift */,
@@ -1381,6 +1388,7 @@
 		C22BECBF19FC729500898B79 /* DetailCell */ = {
 			isa = PBXGroup;
 			children = (
+				C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */,
 				C22033C11A29447200372BCE /* DetailAttributedLabelCell.swift */,
 				C22033BB1A28F3C200372BCE /* DetailColorCell.swift */,
 				C22033B51A28D36A00372BCE /* DetailLabeledImageCell.swift */,
@@ -1401,6 +1409,7 @@
 		C22BECC119FC72AE00898B79 /* DetailRow */ = {
 			isa = PBXGroup;
 			children = (
+				C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */,
 				C22033BF1A29446800372BCE /* DetailAttributedLabelRow.swift */,
 				C22033B91A28F3B500372BCE /* DetailColorRow.swift */,
 				C22033AF1A28D35D00372BCE /* DetailLabeledImageRow.swift */,
@@ -2978,6 +2987,7 @@
 				C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */,
 				C23D58921A190FCA009DE593 /* Button.swift in Sources */,
 				C27DE08919E5E67F00CCB725 /* ISYDeviceDetailController.swift in Sources */,
+				C2F853F91A2D2AEC00F478C3 /* DetailPickerRow.swift in Sources */,
 				C25B474B16FF8D5E0042B59E /* RemoteViewController.m in Sources */,
 				C289BB5619F85B64008E92C1 /* DetailImageRow.swift in Sources */,
 				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
@@ -3074,6 +3084,7 @@
 				C230DF3F19DC7164008C2337 /* ITachDevice.swift in Sources */,
 				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
 				C250CED81A16DC36006D36CF /* Constraint.swift in Sources */,
+				C2F853F71A2CE28700F478C3 /* DetailPickerCell.swift in Sources */,
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
 				C2DCAA2F1A20F6BB00F1B51A /* Font.swift in Sources */,
@@ -3097,6 +3108,7 @@
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
 				C22033BC1A28F3C200372BCE /* DetailColorCell.swift in Sources */,
 				C225879F19FB0A70006D8B1D /* ImportExportFileManager.swift in Sources */,
+				C2F90DF31A2AF52000D574D1 /* TitleAttributesDelegate.swift in Sources */,
 				C269842719DF880C007E268B /* BankCollectionZoomView.swift in Sources */,
 				C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */,
 				C27734401701365C00E85F8D /* SwitchCommand.m in Sources */,

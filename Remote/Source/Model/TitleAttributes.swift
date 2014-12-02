@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
+// TODO: This should probably be an option set, create workaround?
 extension NSUnderlineStyle: JSONValueConvertible, EnumerableType {
   public var JSONValue: String {
     switch self {
@@ -103,16 +104,9 @@ extension NSTextAlignment: JSONValueConvertible, EnumerableType {
   public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
 }
 
-class TitleAttributes: JSONValueConvertible, DetailableItem {
+struct TitleAttributes: JSONValueConvertible {
 
-  /**
-  detailController
-
-  :returns: UIViewController
-  */
-  func detailController() -> UIViewController { return TitleAttributesDetailController(attributes: self) }
-
-  enum IconTextOrderSpecification: JSONValueConvertible {
+  enum IconTextOrderSpecification: JSONValueConvertible, EnumerableType {
     case IconText, TextIcon
     var JSONValue: String {
       switch self {
@@ -126,6 +120,9 @@ class TitleAttributes: JSONValueConvertible, DetailableItem {
         default:          self = .IconText
       }
     }
+
+    static var all: [IconTextOrderSpecification] { return [.IconText, .TextIcon] }
+    static func enumerate(block: (IconTextOrderSpecification) -> Void) { apply(all, block) }
 
   }
 
@@ -441,7 +438,7 @@ class TitleAttributes: JSONValueConvertible, DetailableItem {
   :param: titleAttributes TitleAttributes
   :param: mergeKind MergeKind = .CopyIfNilExisting
   */
-  func mergeWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) {
+  mutating func mergeWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) {
     if titleAttributes != nil {
       PropertyKey.enumerate {
         let existingValue: AnyObject? = self[$0]
@@ -627,7 +624,7 @@ class TitleAttributes: JSONValueConvertible, DetailableItem {
 
   :param: JSONValue [String AnyObject]
   */
-  required init(JSONValue: [String:AnyObject]) {
+  init(JSONValue: [String:AnyObject]) {
     storage = [:]
 
     PropertyKey.enumerate {
@@ -696,20 +693,5 @@ class TitleAttributes: JSONValueConvertible, DetailableItem {
     PropertyKey.enumerate { if let value: AnyObject = self[$0] { dictionary[$0.JSONValue] = value } }
     return dictionary
   }
-
-}
-
-extension TitleAttributes: NSCopying {
-
-  var copy: TitleAttributes { return TitleAttributes(JSONValue: JSONValue) }
-
-  /**
-  copyWithZone:
-
-  :param: zone NSZone
-
-  :returns: TitleAttributes
-  */
-  func copyWithZone(zone: NSZone) -> AnyObject { return TitleAttributes(JSONValue: JSONValue) }
 
 }

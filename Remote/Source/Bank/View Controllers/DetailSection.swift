@@ -14,14 +14,30 @@ class DetailSection {
 
   var title: String?
   private var _rows: [DetailRow] = []
-  var rows: [DetailRow] {
-    if _rows.count == 0 { _rows = createRows() }
-    return _rows
-  }
+  var rows: [DetailRow] { if _rows.count == 0 { createRows() }; return _rows }
   let sectionNumber: Int
 
+  var count: Int { return rows.count }
+
   /** reloadRows */
-  func reloadRows() { _rows = createRows() }
+  func reloadRows() { createRows() }
+
+  /** updateIndexPaths */
+  private func updateIndexPaths() {
+    for (i, var row) in enumerate(_rows) {
+      row.indexPath = NSIndexPath(forRow: i, inSection: sectionNumber)
+      _rows[i] = row
+    }
+  }
+
+  /**
+  subscript:
+
+  :param: row Int
+
+  :returns: DetailRow?
+  */
+  subscript(row: Int) -> DetailRow? { return row < rows.count ? rows[row] : nil }
 
   /**
   reloadRowAtIndex:
@@ -30,9 +46,36 @@ class DetailSection {
   */
   func reloadRowAtIndex(index: Int) {
     if index < _rows.count {
-      let row = rowCreationBlocks[index]()
+      var row = rowCreationBlocks[index]()
       row.indexPath = NSIndexPath(forRow: index, inSection: sectionNumber)
       _rows[index] = row
+    }
+  }
+
+  /**
+  insertRow:atIndex:
+
+  :param: row DetailRow
+  :param: idx Int
+  */
+  func insertRow(row: DetailRow, atIndex idx: Int) {
+    if idx < rowCreationBlocks.count {
+      rowCreationBlocks.insert({row}, atIndex: idx)
+      _rows.insert(row, atIndex: idx)
+      updateIndexPaths()
+    }
+  }
+
+  /**
+  removeRowAtIndex:
+
+  :param: idx Int
+  */
+  func removeRowAtIndex(idx: Int) {
+    if idx < rowCreationBlocks.count {
+      _ = rowCreationBlocks.removeAtIndex(idx)
+      _rows.removeAtIndex(idx)
+      updateIndexPaths()
     }
   }
 
@@ -43,17 +86,13 @@ class DetailSection {
 
   :param: createRow (Void) -> DetailRow
   */
-  func addRow(createRow: (Void) -> DetailRow) { rowCreationBlocks.append(createRow) }
+  func addRow(createRow: (Void) -> DetailRow) { rowCreationBlocks.append(createRow); updateIndexPaths() }
 
   /** createRows */
-  func createRows() -> [DetailRow] {
-    var createdRows: [DetailRow] = []
-    for i in 0 ..< rowCreationBlocks.count {
-      let row = rowCreationBlocks[i]()
-      row.indexPath = NSIndexPath(forRow: i, inSection: sectionNumber)
-      createdRows.append(row)
-    }
-    return createdRows
+  private func createRows() {
+    _rows.removeAll(keepCapacity: true)
+    for i in 0 ..< rowCreationBlocks.count { _rows.append(rowCreationBlocks[i]()) }
+    updateIndexPaths()
   }
 
   /**

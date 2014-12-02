@@ -3,63 +3,33 @@
 import Foundation
 import UIKit
 import MoonKit
+import XCPlayground
 
-let u = UnicodeScalar("h")
-u.description
-u.debugDescription
-u.escape(asASCII: false)
-u.escape(asASCII: true)
-//
-//var utf8 = UTF8()
-//var wtf = "wtf"
-//var wtfGenerator = IndexingGenerator(wtf.utf8)
-//var result: UnicodeDecodingResult = .EmptyInput
-//outer: do {
-// result = utf8.decode(&wtfGenerator)
-//switch result {
-//  case .Result(let u): println(u.description)
-//  default: break outer
-//  }
-//} while true
+let view = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+view.backgroundColor = UIColor.lightGrayColor()
+view
 
-//for c in "abcdefghijklmnopqrstuvwxyz".unicodeScalars {
-//
-//  println(c.value, c)
-//  let C = UnicodeScalar(c.value - 32)
-//  println(C.value, C)
-//}
+let view2 = UIView(frame: CGRect(x: 75, y: 75, width: 150, height: 150))
+view2.backgroundColor = UIColor.whiteColor()
+view.addSubview(view2)
+//view2.layer.borderWidth = 3.0
+view2.layer.cornerRadius = 5.0
+view2.layer.shadowOpacity = 0.5
+view
+XCPShowView("testView", view)
 
-//let s = "what the fuck hoppuse?"
-//compressed(s.rangesForCapture(1, byMatching: "(\\b\\w+\\b)"))
-//var camelS = s
-//for r in compressed(s.rangesForCapture(1, byMatching: "(\\b\\w+\\b)")) {
-//  let segment = s[r]
-//
-//  let u = String(segment[segment.startIndex]).uppercaseString
-//  let theRest = String(dropFirst(segment)).lowercaseString
-//  let replacement = u + theRest
-//  let index: String.Index = advance(camelS.startIndex, r.startIndex)
-//  let index2: String.Index = advance(index, r.endIndex - r.startIndex)
-//  camelS.replaceRange(index..<index2, with: replacement)
-//}
-//camelS
-//
+let labelView = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+labelView.font = UIFont.boldSystemFontOfSize(72.0)
+labelView.text = "WTF?"
 
-//~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= "A Fucking Table"
-//UnicodeScalar("-")
+let radii = (M_1_PI * 245.0) / 180.0
 
-let camel = "camelCaseString"
-let dash = "dash-case-string"
-let title = "Title Case String"
-
-camel.dashcaseString
-camel.camelcaseString
-camel.titlecaseString
-
-dash.camelcaseString
-dash.dashcaseString
-dash.titlecaseString
-
-title.camelcaseString
-title.dashcaseString
-title.titlecaseString
+let cosTheta = CGFloat(cos(radii))
+let sinTheta = CGFloat(sin(radii))
+let matrix = CATransform3D(
+  m11: cosTheta, m12: -sinTheta, m13: 0, m14: 0,
+  m21: sinTheta, m22: cosTheta,  m23: 0, m24: 0,
+  m31: 0,        m32: 0,         m33: 1, m34: 0,
+  m41: 0,        m42: 0,         m43: 0, m44: 1)
+labelView.layer.transform = matrix
+XCPShowView("labelView2", labelView)

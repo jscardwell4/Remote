@@ -37,45 +37,45 @@
 
 NSString * NSStringFromCGColorSpaceModel(CGColorSpaceModel model);
 NSString * NSStringFromCGColorRenderingIntent(CGColorRenderingIntent intent);
-NSString * NSStringFromUIColor(UIColor * color);
+//NSString * NSStringFromUIColor(UIColor * color);
 
 @interface UIColor (MSKitAdditions)
 
-@property (nonatomic, readonly) CGColorSpaceModel colorSpaceModel;
-@property (nonatomic, readonly) BOOL              isRGBCompatible;
-@property (nonatomic, readonly) CGFloat           red;
-@property (nonatomic, readonly) CGFloat           green;
-@property (nonatomic, readonly) CGFloat           blue;
-@property (nonatomic, readonly) CGFloat           white;
-@property (nonatomic, readonly) CGFloat           alpha;
-@property (nonatomic, readonly) NSArray         * components;
-@property (nonatomic, readonly) uint32_t          rgbHex;
-@property (nonatomic, readonly) uint32_t          rgbaHex;
-@property (nonatomic, readonly) UIColor         * rgbColor;
-@property (nonatomic, readonly) UIColor         * invertedColor;
-@property (nonatomic, readonly) UIColor         * luminanceMappedColor;
+//@property (nonatomic, readonly) CGColorSpaceModel colorSpaceModel;
+//@property (nonatomic, readonly) BOOL              isRGBCompatible;
+//@property (nonatomic, readonly) CGFloat           red;
+//@property (nonatomic, readonly) CGFloat           green;
+//@property (nonatomic, readonly) CGFloat           blue;
+//@property (nonatomic, readonly) CGFloat           white;
+//@property (nonatomic, readonly) CGFloat           alpha;
+//@property (nonatomic, readonly) NSArray         * components;
+//@property (nonatomic, readonly) uint32_t          rgbHex;
+//@property (nonatomic, readonly) uint32_t          rgbaHex;
+//@property (nonatomic, readonly) UIColor         * rgbColor;
+//@property (nonatomic, readonly) UIColor         * invertedColor;
+//@property (nonatomic, readonly) UIColor         * luminanceMappedColor;
 @property (nonatomic, readonly) NSString        * colorName;
-@property (nonatomic, readonly) NSString        * rgbHexString;
-@property (nonatomic, readonly) NSString        * rgbaHexString;
-@property (nonatomic, readonly) NSString        * string;
+//@property (nonatomic, readonly) NSString        * rgbHexString;
+//@property (nonatomic, readonly) NSString        * rgbaHexString;
+//@property (nonatomic, readonly) NSString        * string;
 
-- (BOOL)isPatternBased;
+//- (BOOL)isPatternBased;
 
-- (UIColor *)colorByMultiplyingByRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
-- (UIColor *)colorByMultiplyingBy:(CGFloat)f;
-- (UIColor *)colorByMultiplyingByColor:(UIColor *)color;
+//- (UIColor *)colorByMultiplyingByRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
+//- (UIColor *)colorByMultiplyingBy:(CGFloat)f;
+//- (UIColor *)colorByMultiplyingByColor:(UIColor *)color;
 
-- (UIColor *)colorByAddingRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
-- (UIColor *)colorByAdding:(CGFloat)f;
-- (UIColor *)colorByAddingColor:(UIColor *)color;
+//- (UIColor *)colorByAddingRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
+//- (UIColor *)colorByAdding:(CGFloat)f;
+//- (UIColor *)colorByAddingColor:(UIColor *)color;
 
-- (UIColor *)colorByLighteningToRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
-- (UIColor *)colorByLighteningTo:(CGFloat)f;
-- (UIColor *)colorByLighteningToColor:(UIColor *)color;
+//- (UIColor *)colorByLighteningToRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
+//- (UIColor *)colorByLighteningTo:(CGFloat)f;
+//- (UIColor *)colorByLighteningToColor:(UIColor *)color;
 
-- (UIColor *)colorByDarkeningToRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
-- (UIColor *)colorByDarkeningTo:(CGFloat)f;
-- (UIColor *)colorByDarkeningToColor:(UIColor *)color;
+//- (UIColor *)colorByDarkeningToRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
+//- (UIColor *)colorByDarkeningTo:(CGFloat)f;
+//- (UIColor *)colorByDarkeningToColor:(UIColor *)color;
 
 + (UIColor *)colorWithRGBHex:(uint32_t)hex;
 + (UIColor *)colorWithRGBAHex:(uint32_t)hex;
@@ -89,7 +89,7 @@ NSString * NSStringFromUIColor(UIColor * color);
 + (UIColor *)colorWithString:(NSString *)string;
 + (UIColor *)colorWithJSONValue:(NSString *)string;
 
-+ (UIColor *)randomColor;
+//+ (UIColor *)randomColor;
 
 
 @end

@@ -65,14 +65,14 @@
            "highlightedDisabled:%@\n"
            "selectedDisabled:%@\n"
            "highlightedSelectedDisabled:%@",
-           NSStringFromUIColor(self[0]),
-           NSStringFromUIColor(self[4]),
-           NSStringFromUIColor(self[1]),
-           NSStringFromUIColor(self[2]),
-           NSStringFromUIColor(self[5]),
-           NSStringFromUIColor(self[3]),
-           NSStringFromUIColor(self[6]),
-           NSStringFromUIColor(self[7]));
+           ((UIColor *)self[0]).string,
+           ((UIColor *)self[4]).string,
+           ((UIColor *)self[1]).string,
+           ((UIColor *)self[2]).string,
+           ((UIColor *)self[5]).string,
+           ((UIColor *)self[3]).string,
+           ((UIColor *)self[6]).string,
+           ((UIColor *)self[7]).string);
 }
 
 @end

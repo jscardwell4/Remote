@@ -22,8 +22,7 @@ class DetailLabelCell: DetailCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
-    let format = "|-[name]-[label]-| :: V:|-[name]-| :: V:|-[label]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "label": infoLabel])
+    contentView.constrain("|-[n]-[l]-| :: V:|-[n]-| :: V:|-[l]-|", views: ["n": nameLabel, "l": infoLabel])
   }
 
   /**

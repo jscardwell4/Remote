@@ -10,50 +10,72 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailButtonRow: DetailRow {
+struct DetailButtonRow: DetailRow {
 
-  var pickerNilSelectionTitle: String?
-  var pickerCreateSelectionTitle: String?
-  var pickerData: [NSObject]?
-  var pickerSelection: NSObject?
-  var didSelectItem: ((NSObject?) -> Void)?
-  var pickerCreateSelectionHandler: ((Void) -> Void)?
+  let identifier: DetailCell.Identifier = .Button
+  var indexPath: NSIndexPath?
+  var select: ((Void) -> Void)?
+  var delete: ((Void) -> Void)?
+
+  var editActions: [UITableViewRowAction]?
+  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
+
+  var deleteRemovesRow = true
+
+  /// Properties that mirror `DetailCell` properties
+  ////////////////////////////////////////////////////////////////////////////////
+
+  var name: String?
+  var info: AnyObject?
+  var infoDataType: DetailCell.DataType = .StringData
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var indentationLevel: Int = 0
+  var indentationWidth: CGFloat = 8.0
+  var backgroundColor: UIColor?
+
+  var showPickerRow: ((DetailButtonCell) -> Bool)?
+  var hidePickerRow: ((DetailButtonCell) -> Bool)?
+  var detailPickerRow: DetailPickerRow?
 
   /**
-  configureCell:forTableView:
+  configure:
 
   :param: cell DetailCell
-  :param: tableView UITableView
   */
-  override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-  	super.configureCell(cell, forTableView: tableView)
+  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
+    if !(cell is DetailButtonCell) { return }
+    if let color = backgroundColor { cell.backgroundColor = color }
+    cell.indentationLevel = indentationLevel
+    cell.indentationWidth = indentationWidth
     cell.name = name
-  	if let buttonCell = cell as? DetailButtonCell {
-      buttonCell.pickerData = pickerData
-      buttonCell.pickerNilSelectionTitle = pickerNilSelectionTitle
-      buttonCell.pickerCreateSelectionTitle = pickerCreateSelectionTitle
-      buttonCell.didSelectItem = didSelectItem
-      buttonCell.pickerCreateSelectionHandler = pickerCreateSelectionHandler
-      buttonCell.pickerSelection = pickerSelection
-      if info == nil { buttonCell.info = pickerSelection ?? pickerNilSelectionTitle }
-  	}
+    cell.info = info
+    cell.infoDataType = infoDataType
+    cell.valueIsValid = valueIsValid
+    cell.valueDidChange = valueDidChange
+    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
+    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+    if showPickerRow != nil { (cell as DetailButtonCell).showPickerRow = showPickerRow }
+    if hidePickerRow != nil { (cell as DetailButtonCell).hidePickerRow = hidePickerRow }
+    (cell as DetailButtonCell).detailPickerRow = detailPickerRow
   }
 
+
   /** init */
-  init() { super.init(identifier: .Button) }
+  init() {}
 
   /**
   initWithPushableCategory:
 
   :param: pushableCategory BankDisplayItemCategory
   */
-  convenience init(pushableCategory: BankDisplayItemCategory?) {
-    self.init()
+  init(pushableCategory: BankDisplayItemCategory?) {
     info = pushableCategory
-    selectionHandler = {
+    select = {
       if let category = pushableCategory {
         if let controller = BankCollectionController(category: category) {
-          if let nav = self.bankItemCell?.window?.rootViewController as? UINavigationController {
+          if let nav = MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
             nav.pushViewController(controller, animated: true)
           }
         }
@@ -61,15 +83,20 @@ class DetailButtonRow: DetailRow {
     }
   }
 
-  convenience init(pushableItem: BankDisplayItemModel?) {
-    self.init()
+  /**
+  initWithPushableItem:
+
+  :param: pushableItem BankDisplayItemModel?
+  */
+  init(pushableItem: BankDisplayItemModel?) {
     info = pushableItem
-    selectionHandler = {
+    select = {
       if let item = pushableItem {
-        if let nav = self.bankItemCell?.window?.rootViewController as? UINavigationController {
+        if let nav =  MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
           nav.pushViewController(item.detailController(), animated: true)
         }
       }
     }
   }
+
 }

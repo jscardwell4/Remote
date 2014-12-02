@@ -20,7 +20,7 @@
 
 
 uint8_t floatToRGB8(CGFloat f) {
-    return (uint8_t)(f*255); 
+  return (uint8_t)(f*255);
 }
 
 @interface MSColorInputViewController ()
@@ -61,7 +61,7 @@ uint8_t floatToRGB8(CGFloat f) {
 @end
 
 @implementation MSColorInputViewController {
-    __weak UIView * tappedView;
+  __weak UIView * tappedView;
 }
 
 @synthesize delegate = _delegate;
@@ -83,125 +83,123 @@ uint8_t floatToRGB8(CGFloat f) {
 @synthesize numberPad = _numberPad;
 
 + (MSColorInputViewController *)colorInputViewControllerWithInitialColor:(UIColor *)initialColor {
-    MSColorInputViewController * colorInputViewController = 
-        [[MSColorInputViewController alloc] initWithNibName:@"MSColorInputView" bundle:nil];
-    colorInputViewController.initialColor = initialColor;
-    return colorInputViewController;
+  MSColorInputViewController * colorInputViewController =
+  [[MSColorInputViewController alloc] initWithNibName:@"MSColorInputView" bundle:nil];
+  colorInputViewController.initialColor = initialColor;
+  return colorInputViewController;
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [self setColor:_initialColor];
-    self.scrollWheel = [MSScrollWheel scrollWheel];
-    _scrollWheel.center = CGRectGetCenter(_scrollWheelContainer.bounds);
-    _scrollWheel.labelTextGenerator = (ValueToLabelTextConverter)^(CGFloat value) {
-                                        return [NSString stringWithFormat:@"%hhu",floatToRGB8(value)];
-                                    };
-    [_scrollWheel addTarget:self
-                     action:@selector(scrollWheelValueChanged:)
-           forControlEvents:UIControlEventValueChanged];
-    [self.scrollWheelContainer addSubview:_scrollWheel];
-    _scrollWheelContainer.exclusiveTouch = YES;
-    
-    if (DISABLE_LABEL_INTERACTION)
-        [self.labels setValue:@NO forKey:@"userInteractionEnabled"];
+  [super viewDidLoad];
+  // Do any additional setup after loading the view.
+  [self setColor:_initialColor];
+  self.scrollWheel = [MSScrollWheel scrollWheel];
+  _scrollWheel.center = CGRectGetCenter(_scrollWheelContainer.bounds);
+  _scrollWheel.labelTextGenerator = (ValueToLabelTextConverter)^(CGFloat value) {
+    return [NSString stringWithFormat:@"%hhu",floatToRGB8(value)];
+  };
+  [_scrollWheel addTarget:self
+                   action:@selector(scrollWheelValueChanged:)
+         forControlEvents:UIControlEventValueChanged];
+  [self.scrollWheelContainer addSubview:_scrollWheel];
+  _scrollWheelContainer.exclusiveTouch = YES;
+
+  if (DISABLE_LABEL_INTERACTION)
+    [self.labels setValue:@NO forKey:@"userInteractionEnabled"];
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    [self setSliderContainer:nil];
-    [self setToolbar:nil];
-    [self setRedSlider:nil];
-    [self setRedLabel:nil];
-    [self setBlueSlider:nil];
-    [self setBlueLabel:nil];
-    [self setGreenSlider:nil];
-    [self setGreenLabel:nil];
-    [self setAlphaSlider:nil];
-    [self setAlphaLabel:nil];
-    [self setColorPreview:nil];
-    [self setScrollWheel:nil];
-    [self setScrollWheelContainer:nil];
-    [self setLabels:nil];
-    [self setNumberPad:nil];
-    if ([self isViewLoaded] && self.view.window == nil) self.view = nil;
+  [super didReceiveMemoryWarning];
+  [self setSliderContainer:nil];
+  [self setToolbar:nil];
+  [self setRedSlider:nil];
+  [self setRedLabel:nil];
+  [self setBlueSlider:nil];
+  [self setBlueLabel:nil];
+  [self setGreenSlider:nil];
+  [self setGreenLabel:nil];
+  [self setAlphaSlider:nil];
+  [self setAlphaLabel:nil];
+  [self setColorPreview:nil];
+  [self setScrollWheel:nil];
+  [self setScrollWheelContainer:nil];
+  [self setLabels:nil];
+  [self setNumberPad:nil];
+  if ([self isViewLoaded] && self.view.window == nil) self.view = nil;
 }
 
 - (UIColor *)color {
-    return [UIColor colorWithRed:_redSlider.value 
-                           green:_greenSlider.value 
-                            blue:_blueSlider.value 
-                           alpha:_alphaSlider.value];
+  return [UIColor colorWithRed:_redSlider.value
+                         green:_greenSlider.value
+                          blue:_blueSlider.value
+                         alpha:_alphaSlider.value];
 }
 
 - (void)setColor:(UIColor *)color {
-    
-    NSArray * colorComponents = color.components;
-    if (!colorComponents)  colorComponents = @[@0, @0, @0, @0];
+  CGFloat r = 0, g = 0, b = 0, a = 0;
+  [color getRed:&r green:&g blue:&b alpha:&a];
+  NSArray * colorComponents = @[@(a), @(g), @(b), @(a)];
+  for (int i = 0; i < 4; i++) [self updateControlsForComponent:i withValue:[colorComponents[i] floatValue]];
 
-    for (int i = 0; i < 4; i++) 
-        [self updateControlsForComponent:i withValue:[colorComponents[i] floatValue]];
-    
-    _colorPreview.backgroundColor = color;
-    
+  _colorPreview.backgroundColor = color;
+
 }
 
 - (void)updateControlsForComponent:(NSUInteger)component withValue:(CGFloat)value {
-    
-    NSString * valueString = [NSString stringWithFormat:@"%hhu", floatToRGB8(value)];
-    
-    switch (component) {
-        case 0:
-            _redSlider.value = value;
-            _redLabel.text = valueString;
-            break;
-            
-        case 1:
-            _greenSlider.value = value;
-            _greenLabel.text = valueString;
-            break;
-            
-        case 2:
-            _blueSlider.value = value;
-            _blueLabel.text = valueString;
-            break;
-            
-        case 3:
-            _alphaSlider.value = value;
-            _alphaLabel.text = valueString;
-            break;
-            
-        default:
-            NSAssert(NO,@"Invalid component index received");
-            break;
-    }
-    
+
+  NSString * valueString = [NSString stringWithFormat:@"%hhu", floatToRGB8(value)];
+
+  switch (component) {
+    case 0:
+      _redSlider.value = value;
+      _redLabel.text = valueString;
+      break;
+
+    case 1:
+      _greenSlider.value = value;
+      _greenLabel.text = valueString;
+      break;
+
+    case 2:
+      _blueSlider.value = value;
+      _blueLabel.text = valueString;
+      break;
+
+    case 3:
+      _alphaSlider.value = value;
+      _alphaLabel.text = valueString;
+      break;
+
+    default:
+      NSAssert(NO,@"Invalid component index received");
+      break;
+  }
+
 }
 
 - (void)updateColor {
-    
-    UIColor * color = [self color];
-    
-    _colorPreview.backgroundColor = color;
-    
-    if ([_delegate respondsToSelector:@selector(colorValueDidChange:)])
-        [_delegate colorValueDidChange:color];
-    
+
+  UIColor * color = [self color];
+
+  _colorPreview.backgroundColor = color;
+
+  if ([_delegate respondsToSelector:@selector(colorValueDidChange:)])
+    [_delegate colorValueDidChange:color];
+
 }
 
 
 - (IBAction)cancel:(id)sender {
-    
-    UIView * firstResponder = [UIView firstResponderInView:self.view];
-    if (firstResponder)
-        [firstResponder resignFirstResponder];
-    
-    [_delegate colorSelectionDidCancel];
+
+  UIView * firstResponder = [UIView firstResponderInView:self.view];
+  if (firstResponder)
+    [firstResponder resignFirstResponder];
+
+  [_delegate colorSelectionDidCancel];
 }
 
 - (IBAction)reset:(id)sender {
-    [self setColor:_initialColor];
+  [self setColor:_initialColor];
 }
 
 - (IBAction)presets:(id)sender {
@@ -209,104 +207,104 @@ uint8_t floatToRGB8(CGFloat f) {
 
 - (IBAction)done:(id)sender {
 
-    UIView * firstResponder = [UIView firstResponderInView:self.view];
-    if (firstResponder)
-        [firstResponder resignFirstResponder];
+  UIView * firstResponder = [UIView firstResponderInView:self.view];
+  if (firstResponder)
+    [firstResponder resignFirstResponder];
 
-    [_delegate colorSelected:self.color];
+  [_delegate colorSelected:self.color];
 }
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
-    [self updateControlsForComponent:sender.tag withValue:sender.value];
-    [self updateColor];
+  [self updateControlsForComponent:sender.tag withValue:sender.value];
+  [self updateColor];
 }
 
 - (IBAction)handleTap:(UITapGestureRecognizer *)sender {
-    // NSLog(@"%@", ClassTagSelectorString);
-    
-    
-    if (LABEL_INTERACTION_USES_SCROLL_WHEEL) {
+  // NSLog(@"%@", ClassTagSelectorString);
 
-        tappedView = sender.view;
-        _scrollWheelContainer.hidden = NO;
 
-    } else if (LABEL_INTERACTION_USES_ALERT_VIEW) {
+  if (LABEL_INTERACTION_USES_SCROLL_WHEEL) {
 
-        NSInteger tag = sender.view.tag;
-        NSString * component;
-        switch (tag) {
-            case 0:
-                component = @"Red";
-                break;
-                
-            case 1:
-                component = @"Green";
-                break;
-                
-            case 2:
-                component = @"Blue";
-                break;
-                
-            case 3:
-                component = @"Alpha";
-                break;
-                
-            default:
-                NSAssert(NO, @"Invalid tag");
-                break;
-        }
-        
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ component value", component] 
-                                                         message:@"Enter a value between 0 and 255."
-                                                        delegate:self 
-                                               cancelButtonTitle:@"Cancel"
-                                               otherButtonTitles:@"Enter", nil];
-        
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        alert.tag = tag;
-        UITextField * textField = [alert textFieldAtIndex:0];
-        textField.placeholder = [(UILabel *)sender.view text];
-        textField.keyboardType = UIKeyboardTypeDecimalPad;
-        textField.enablesReturnKeyAutomatically = YES;
-        [alert show];
-        
-    } else {
-        
-//        self.numberPad.hidden = NO;
-        
+    tappedView = sender.view;
+    _scrollWheelContainer.hidden = NO;
+
+  } else if (LABEL_INTERACTION_USES_ALERT_VIEW) {
+
+    NSInteger tag = sender.view.tag;
+    NSString * component;
+    switch (tag) {
+      case 0:
+        component = @"Red";
+        break;
+
+      case 1:
+        component = @"Green";
+        break;
+
+      case 2:
+        component = @"Blue";
+        break;
+
+      case 3:
+        component = @"Alpha";
+        break;
+
+      default:
+        NSAssert(NO, @"Invalid tag");
+        break;
     }
-    
+
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ component value", component]
+                                                     message:@"Enter a value between 0 and 255."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Enter", nil];
+
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = tag;
+    UITextField * textField = [alert textFieldAtIndex:0];
+    textField.placeholder = [(UILabel *)sender.view text];
+    textField.keyboardType = UIKeyboardTypeDecimalPad;
+    textField.enablesReturnKeyAutomatically = YES;
+    [alert show];
+
+  } else {
+
+    //        self.numberPad.hidden = NO;
+
+  }
+
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex > 0) {
-        
-        UITextField * textField = [alertView textFieldAtIndex:0];
-        if (StringIsNotEmpty(textField.text)) {
-            // NSLog(@"%@ textField.text:%@", ClassTagSelectorString, textField.text);
-        
-            NSInteger value = [textField.text integerValue];
+  if (buttonIndex > 0) {
 
-            if (value >= 0 && value <= 255) {
-                
-                [self updateControlsForComponent:alertView.tag 
-                                       withValue:value/255.0];
-                [self updateColor];
-                
-            }
-        
-        }
-        
+    UITextField * textField = [alertView textFieldAtIndex:0];
+    if (StringIsNotEmpty(textField.text)) {
+      // NSLog(@"%@ textField.text:%@", ClassTagSelectorString, textField.text);
+
+      NSInteger value = [textField.text integerValue];
+
+      if (value >= 0 && value <= 255) {
+
+        [self updateControlsForComponent:alertView.tag
+                               withValue:value/255.0];
+        [self updateColor];
+
+      }
+
     }
+
+  }
 }
 
 - (IBAction)handleKeyPress:(UIButton *)sender {
-    // NSLog(@"%@ tag:%i", ClassTagSelectorString, sender.tag);
+  // NSLog(@"%@ tag:%i", ClassTagSelectorString, sender.tag);
 }
 
 - (IBAction)scrollWheelValueChanged:(MSScrollWheel *)sender {
-    // NSLog(@"%@ scroll wheel value:%@", ClassTagSelectorString, PrettyFloat(sender.value));
-    [self updateControlsForComponent:tappedView.tag withValue:sender.value];
+  // NSLog(@"%@ scroll wheel value:%@", ClassTagSelectorString, PrettyFloat(sender.value));
+  [self updateControlsForComponent:tappedView.tag withValue:sender.value];
 }
 
 @end

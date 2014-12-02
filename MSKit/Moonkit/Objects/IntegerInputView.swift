@@ -63,7 +63,7 @@ public class IntegerInputView: UIInputView {
         default:
           b.setBackgroundColor(UIColor(r: 135, g: 135, b: 135, a: 255), forState: UIControlState.Normal)
           b.setBackgroundColor(UIColor.clearColor(), forState: UIControlState.Highlighted)
-          let txt = "\(i)"
+          let txt = "\(i < 9 ? i + 1 : 0)"
           b.setTitle(txt, forState: UIControlState.Normal)
           b.titleLabel?.font = UIFont.systemFontOfSize(36.0)
           let actionBlock: (Void) -> Void = {
@@ -82,13 +82,13 @@ public class IntegerInputView: UIInputView {
     }
 
     let format = "\n".join(
-      "|[one][two][three]|",
-      "|[four][five][six]|",
-      "|[seven][eight][nine]|",
-      "|[erase][zero][done]|",
-      "V:|[one][four][seven][erase]|",
-      "V:|[two][five][eight][zero]|",
-      "V:|[three][six][nine][done]|"
+      "|[one][two(==one)][three(==one)]|",
+      "|[four(==one)][five(==one)][six(==one)]|",
+      "|[seven(==one)][eight(==one)][nine(==one)]|",
+      "|[erase(==one)][zero(==one)][done(==one)]|",
+      "V:|[one(==one)][four(==one)][seven(==one)][erase(==one)]|",
+      "V:|[two(==one)][five(==one)][eight(==one)][zero(==one)]|",
+      "V:|[three(==one)][six(==one)][nine(==one)][done(==one)]|"
     )
     constrain(format, views: views)
   }
