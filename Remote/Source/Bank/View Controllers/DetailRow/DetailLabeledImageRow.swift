@@ -1,5 +1,5 @@
 //
-//  DetailColorRow.swift
+//  DetailLabeledImageRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 11/28/14.
@@ -10,12 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailColorRow: DetailRow {
+class DetailLabeledImageRow: DetailRow {
 
-  var placeholderText: String?
-  var placeholderColor: UIColor?
-
-  let identifier: DetailCell.Identifier = .Color
+  let identifier: DetailCell.Identifier = .LabeledImage
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -38,13 +35,16 @@ struct DetailColorRow: DetailRow {
   var indentationWidth: CGFloat = 8.0
   var backgroundColor: UIColor?
 
+  /** init */
+  init() {}
+
   /**
   configure:
 
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailColorCell) { return }
+    if !(cell is DetailLabeledImageCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -55,11 +55,17 @@ struct DetailColorRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    if placeholderText != nil { (cell as DetailColorCell).placeholderText = placeholderText! }
-    if placeholderColor != nil { (cell as DetailColorCell).placeholderColor = placeholderColor! }
   }
 
-  /** init */
-  init() {}
+  /**
+  initWithLabel:previewableItem:
+
+  :param: label String
+  :param: previewableItem PreviewableItem?
+  */
+  init(label: String, previewableItem: PreviewableItem?) {
+    name = label
+    info = previewableItem?.preview
+  }
 
 }

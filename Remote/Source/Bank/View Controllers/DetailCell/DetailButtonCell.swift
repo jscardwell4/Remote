@@ -76,7 +76,10 @@ class DetailButtonCell: DetailCell {
       if infoDataType == .AttributedStringData {
         buttonView.setAttributedTitle(info as? NSAttributedString, forState: .Normal)
       } else {
-        buttonView.setTitle(textFromObject(info), forState:.Normal)
+        var title: String?
+        if info == nil && detailPickerRow?.nilItemTitle != nil { title = detailPickerRow?.nilItemTitle }
+        else { title = textFromObject(info) }
+        buttonView.setTitle(title, forState:.Normal)
       }
     }
   }

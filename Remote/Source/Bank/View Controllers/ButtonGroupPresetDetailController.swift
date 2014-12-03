@@ -22,7 +22,7 @@ class ButtonGroupPresetDetailController: PresetDetailController {
   override init(model: BankableModelObject) {
     super.init(model: model)
 
-    let buttonGroupAttributesSection = DetailSection(sectionNumber: 1, title: "Button Group Attributes")
+    let buttonGroupAttributesSection = DetailSection(section: 1, title: "Button Group Attributes")
 
     buttonGroupAttributesSection.addRow {
       var row = DetailSwitchRow()

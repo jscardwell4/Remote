@@ -153,6 +153,29 @@ public prefix func ∪<T>(array: [[T]]) -> [T] { return flattened(array) }
 
 public prefix func ‽∪<T>(array:[Optional<[T]>]) -> [T] { return flattened(compressed(array)) }
 
+/**
+spliced:newElements:atIndex:
+
+:param: x C
+:param: newElements S
+:param: i C.Index
+
+:returns: C
+*/
+public func spliced<C : RangeReplaceableCollectionType, S : CollectionType
+                   where C.Generator.Element == S.Generator.Element>(x: C, newElements: S, atIndex i: C.Index) -> C
+{
+  var xPrime = x
+  splice(&xPrime, newElements, atIndex: i)
+  return xPrime
+}
+
+public func removedAtIndex<C : RangeReplaceableCollectionType>(x: C, index: C.Index) -> C {
+  var xPrime = x
+  removeAtIndex(&xPrime, index)
+  return xPrime
+}
+
 
 /**
 The function is a simple wrapper around `reduce` that ignores the actual reduction as a way to visit every element

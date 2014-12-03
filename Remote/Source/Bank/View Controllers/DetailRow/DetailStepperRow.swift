@@ -1,5 +1,5 @@
 //
-//  DetailLabelRow.swift
+//  DetailStepperRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,9 +10,14 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailLabelRow: DetailRow {
+class DetailStepperRow: DetailRow {
 
-  let identifier: DetailCell.Identifier = .Label
+  var stepperWraps: Bool = true
+  var stepperMinValue: Double = Double(CGFloat.min)
+  var stepperMaxValue: Double = Double(CGFloat.max)
+  var stepperStepValue: Double = 1.0
+
+  let identifier: DetailCell.Identifier = .Stepper
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -41,7 +46,7 @@ struct DetailLabelRow: DetailRow {
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailLabelCell) { return }
+    if !(cell is DetailStepperCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -52,38 +57,13 @@ struct DetailLabelRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+    (cell as DetailStepperCell).stepperWraps = stepperWraps
+    (cell as DetailStepperCell).stepperMinValue = stepperMinValue
+    (cell as DetailStepperCell).stepperMaxValue = stepperMaxValue
+    (cell as DetailStepperCell).stepperStepValue = stepperStepValue
   }
 
   /** init */
   init() {}
-
-  /**
-  initWithLabel:value:
-
-  :param: label String
-  :param: value String?
-  */
-  init(label: String, value: String?) {
-    name = label
-    info = value
-  }
-
-  /**
-  initWithPushableCategory:label:hasEditingState:
-
-  :param: pushableCategory BankDisplayItemCategory
-  :param: label String
-  */
-  init(pushableCategory: BankDisplayItemCategory, label: String) {
-    select = {
-      if let controller = BankCollectionController(category: pushableCategory) {
-        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-          nav.pushViewController(controller, animated: true)
-        }
-      }
-    }
-    name = label
-    info = pushableCategory
-  }
 
 }

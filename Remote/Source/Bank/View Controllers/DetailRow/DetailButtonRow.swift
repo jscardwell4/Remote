@@ -1,5 +1,5 @@
 //
-//  DetailListRow.swift
+//  DetailButtonRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailListRow: DetailRow {
+class DetailButtonRow: DetailRow {
 
-  let identifier: DetailCell.Identifier = .List
+  let identifier: DetailCell.Identifier = .Button
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -25,7 +25,7 @@ struct DetailListRow: DetailRow {
   /// Properties that mirror `DetailCell` properties
   ////////////////////////////////////////////////////////////////////////////////
 
-  var name: String? { get { return nil } set {} }
+  var name: String?
   var info: AnyObject?
   var infoDataType: DetailCell.DataType = .StringData
   var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
@@ -35,13 +35,18 @@ struct DetailListRow: DetailRow {
   var indentationWidth: CGFloat = 8.0
   var backgroundColor: UIColor?
 
+  var showPickerRow: ((DetailButtonCell) -> Bool)?
+  var hidePickerRow: ((DetailButtonCell) -> Bool)?
+  var detailPickerRow: DetailPickerRow?
+
   /**
   configure:
 
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailListCell) { return }
+    if !(cell is DetailButtonCell) { return }
+    (cell as DetailButtonCell).detailPickerRow = detailPickerRow
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -52,51 +57,46 @@ struct DetailListRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+    if showPickerRow != nil { (cell as DetailButtonCell).showPickerRow = showPickerRow }
+    if hidePickerRow != nil { (cell as DetailButtonCell).hidePickerRow = hidePickerRow }
   }
+
 
   /** init */
   init() {}
 
   /**
-  initWithPushableItem:hasEditingState:
-
-  :param: pushableItem BankDisplayItemModel
-  */
-  init(pushableItem: BankDisplayItemModel) {
-    select = {
-      let controller = pushableItem.detailController()
-      if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-        nav.pushViewController(controller, animated: true)
-      }
-    }
-    delete = { pushableItem.delete() }
-    info = pushableItem
-  }
-
-  /**
-  initWithPushableCategory:hasEditingState:
+  initWithPushableCategory:
 
   :param: pushableCategory BankDisplayItemCategory
   */
-  init(pushableCategory: BankDisplayItemCategory) {
+  init(pushableCategory: BankDisplayItemCategory?) {
+    info = pushableCategory
     select = {
-      if let controller = BankCollectionController(category: pushableCategory) {
-        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-          nav.pushViewController(controller, animated: true)
+      if let category = pushableCategory {
+        if let controller = BankCollectionController(category: category) {
+          if let nav = MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
+            nav.pushViewController(controller, animated: true)
+          }
         }
       }
     }
-    delete = { pushableCategory.delete() }
-    info = pushableCategory
   }
 
   /**
-  initWithNamedItem:hasEditingState:
+  initWithPushableItem:
 
-  :param: namedItem NamedModelObject
+  :param: pushableItem BankDisplayItemModel?
   */
-  init(namedItem: NamedModelObject) {
-    info = namedItem
+  init(pushableItem: BankDisplayItemModel?) {
+    info = pushableItem
+    select = {
+      if let item = pushableItem {
+        if let nav =  MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
+          nav.pushViewController(item.detailController(), animated: true)
+        }
+      }
+    }
   }
 
 }

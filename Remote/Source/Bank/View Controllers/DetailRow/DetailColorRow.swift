@@ -1,8 +1,8 @@
 //
-//  DetailTextViewRow.swift
+//  DetailColorRow.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 10/22/14.
+//  Created by Jason Cardwell on 11/28/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,9 +10,12 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailTextViewRow: DetailRow {
+class DetailColorRow: DetailRow {
 
-  let identifier: DetailCell.Identifier = .TextView
+  var placeholderText: String?
+  var placeholderColor: UIColor?
+
+  let identifier: DetailCell.Identifier = .Color
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -35,23 +38,13 @@ struct DetailTextViewRow: DetailRow {
   var indentationWidth: CGFloat = 8.0
   var backgroundColor: UIColor?
 
-  var returnKeyType: UIReturnKeyType = .Done
-  var keyboardType: UIKeyboardType = .ASCIICapable
-  var autocapitalizationType: UITextAutocapitalizationType = .None
-  var autocorrectionType: UITextAutocorrectionType = .No
-  var spellCheckingType: UITextSpellCheckingType = .No
-  var enablesReturnKeyAutomatically: Bool = false
-  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
-  var secureTextEntry: Bool = false
-  var shouldAllowReturnsInTextView: Bool = false
-
   /**
   configure:
 
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailTextViewCell) { return }
+    if !(cell is DetailColorCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -62,15 +55,8 @@ struct DetailTextViewRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    (cell as DetailTextViewCell).returnKeyType = returnKeyType
-    (cell as DetailTextViewCell).keyboardType = keyboardType
-    (cell as DetailTextViewCell).autocapitalizationType = autocapitalizationType
-    (cell as DetailTextViewCell).autocorrectionType = autocorrectionType
-    (cell as DetailTextViewCell).spellCheckingType = spellCheckingType
-    (cell as DetailTextViewCell).enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    (cell as DetailTextViewCell).keyboardAppearance = keyboardAppearance
-    (cell as DetailTextViewCell).secureTextEntry = secureTextEntry
-    (cell as DetailTextViewCell).shouldAllowReturnsInTextView = shouldAllowReturnsInTextView
+    if placeholderText != nil { (cell as DetailColorCell).placeholderText = placeholderText! }
+    if placeholderColor != nil { (cell as DetailColorCell).placeholderColor = placeholderColor! }
   }
 
   /** init */

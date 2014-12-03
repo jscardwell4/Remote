@@ -13,22 +13,23 @@ import MoonKit
 class DetailSection {
 
   var title: String?
-  private var _rows: [DetailRow] = []
-  var rows: [DetailRow] { if _rows.count == 0 { createRows() }; return _rows }
-  let sectionNumber: Int
+  let section: Int
 
-  var count: Int { return rows.count }
+  var count: Int { return blocks.count }
 
-  /** reloadRows */
-  func reloadRows() { createRows() }
+  var rows: LazyRandomAccessCollection<MapCollectionView<[(index: Int, element: () -> DetailRow)], DetailRow>> {
+    let enumeratedBlocks = Array(enumerate(blocks))
+    let lazyEnumeratedBlocks = lazy(enumeratedBlocks)
+    return lazyEnumeratedBlocks.map {
+      (index: Int, element: (Void) -> DetailRow) -> DetailRow in
 
-  /** updateIndexPaths */
-  private func updateIndexPaths() {
-    for (i, var row) in enumerate(_rows) {
-      row.indexPath = NSIndexPath(forRow: i, inSection: sectionNumber)
-      _rows[i] = row
+      var row = element()
+      row.indexPath = NSIndexPath(forRow: index, inSection: self.section)
+      return row
     }
   }
+
+  private var blocks: [() -> DetailRow] = []
 
   /**
   subscript:
@@ -37,20 +38,7 @@ class DetailSection {
 
   :returns: DetailRow?
   */
-  subscript(row: Int) -> DetailRow? { return row < rows.count ? rows[row] : nil }
-
-  /**
-  reloadRowAtIndex:
-
-  :param: index Int
-  */
-  func reloadRowAtIndex(index: Int) {
-    if index < _rows.count {
-      var row = rowCreationBlocks[index]()
-      row.indexPath = NSIndexPath(forRow: index, inSection: sectionNumber)
-      _rows[index] = row
-    }
-  }
+  subscript(row: Int) -> DetailRow { assert(row < count); return rows[row] }
 
   /**
   insertRow:atIndex:
@@ -58,49 +46,27 @@ class DetailSection {
   :param: row DetailRow
   :param: idx Int
   */
-  func insertRow(row: DetailRow, atIndex idx: Int) {
-    if idx < rowCreationBlocks.count {
-      rowCreationBlocks.insert({row}, atIndex: idx)
-      _rows.insert(row, atIndex: idx)
-      updateIndexPaths()
-    }
-  }
+  func insertRow(row: DetailRow, atIndex idx: Int) { assert(idx < count); blocks.insert({row}, atIndex: idx) }
 
   /**
   removeRowAtIndex:
 
   :param: idx Int
   */
-  func removeRowAtIndex(idx: Int) {
-    if idx < rowCreationBlocks.count {
-      _ = rowCreationBlocks.removeAtIndex(idx)
-      _rows.removeAtIndex(idx)
-      updateIndexPaths()
-    }
-  }
-
-  private var rowCreationBlocks: [(Void) -> DetailRow] = []
+  func removeRowAtIndex(idx: Int) { assert(idx < count); _ = blocks.removeAtIndex(idx) }
 
   /**
   addRow:
 
   :param: createRow (Void) -> DetailRow
   */
-  func addRow(createRow: (Void) -> DetailRow) { rowCreationBlocks.append(createRow); updateIndexPaths() }
-
-  /** createRows */
-  private func createRows() {
-    _rows.removeAll(keepCapacity: true)
-    for i in 0 ..< rowCreationBlocks.count { _rows.append(rowCreationBlocks[i]()) }
-    updateIndexPaths()
-  }
+  func addRow(createRow: (Void) -> DetailRow) { blocks.append(createRow) }
 
   /**
-  initWithSectionNumber:title:createRows:
+  initWithSectionNumber:title:
 
-  :param: sectionNumber Int
+  :param: section Int
   :param: title String? = nil
-  :param: createRows (Void) -> [DetailRow]
   */
-  init(sectionNumber: Int, title: String? = nil) { self.sectionNumber = sectionNumber; self.title = title }
+  init(section: Int, title: String? = nil) { self.section = section; self.title = title }
 }

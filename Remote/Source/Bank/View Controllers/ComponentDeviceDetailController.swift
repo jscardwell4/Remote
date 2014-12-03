@@ -28,63 +28,64 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     let moc = self.componentDevice.managedObjectContext!
 
-    let manufacturerSection = DetailSection(sectionNumber: 0)
+    let manufacturerSection = DetailSection(section: 0)
 
     manufacturerSection.addRow {
       var row = DetailButtonRow(pushableItem: self.componentDevice.manufacturer)
       row.name = "Manufacturer"
       row.info = self.componentDevice.manufacturer
-      // row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
-      //   (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-      //     self.componentDevice.manufacturer = nil
-      //     self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
-      // })]
+      row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
+        (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+          self.componentDevice.manufacturer = nil
+          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
+      })]
 
-      // let pickerRow = DetailPickerRow()
-      // pickerRow.nilItemTitle = "No Manufacturer"
-      // pickerRow.createItemTitle = "⨁ New Manufacturer"
-      // pickerRow.didSelectItem = {
-      //   if !self.didCancel {
-      //     self.componentDevice.manufacturer = $0 as? Manufacturer
-      //     self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
-      //   }
-      // }
+      var pickerRow = DetailPickerRow()
+      pickerRow.nilItemTitle = "No Manufacturer"
+      pickerRow.createItemTitle = "⨁ New Manufacturer"
+      pickerRow.didSelectItem = {
+        if !self.didCancel {
+          self.componentDevice.manufacturer = $0 as? Manufacturer
+          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
+          self.cellDisplayingPicker?.info = $0
+          pickerRow.info = $0
+        }
+      }
+      pickerRow.createItem = {
+        let alert = UIAlertController(title: "Create Manufacturer",
+          message: "Enter a name for the manufacturer",
+          preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler {
+          $0.font = Bank.infoFont
+          $0.textColor = Bank.infoColor
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
+          action in
+          row.info = self.componentDevice.manufacturer
+          // re-select previous picker selection and dismiss picker
+          self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        alert.addAction(UIAlertAction(title: "Create", style: .Default) {
+          action in
+            if let text = (alert.textFields?.first as? UITextField)?.text {
+              moc.performBlockAndWait {
+                let manufacturer = Manufacturer.createInContext(moc)
+                manufacturer.name = text
+                self.componentDevice.manufacturer = manufacturer
+                dispatch_async(dispatch_get_main_queue()) {
+                  self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
+                }
+              }
+            }
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
 
-      // pickerRow.createItem = {
-      //   let alert = UIAlertController(title: "Create Manufacturer",
-      //     message: "Enter a name for the manufacturer",
-      //     preferredStyle: .Alert)
-      //   alert.addTextFieldWithConfigurationHandler {
-      //     $0.font = Bank.infoFont
-      //     $0.textColor = Bank.infoColor
-      //   }
-      //   alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
-      //     action in
-      //     row.info = self.componentDevice.manufacturer
-      //     // re-select previous picker selection and dismiss picker
-      //     self.dismissViewControllerAnimated(true, completion: nil)
-      //   })
-      //   alert.addAction(UIAlertAction(title: "Create", style: .Default) {
-      //     action in
-      //       if let text = (alert.textFields?.first as? UITextField)?.text {
-      //         moc.performBlockAndWait {
-      //           let manufacturer = Manufacturer.createInContext(moc)
-      //           manufacturer.name = text
-      //           self.componentDevice.manufacturer = manufacturer
-      //           dispatch_async(dispatch_get_main_queue()) {
-      //             self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
-      //           }
-      //         }
-      //       }
-      //       self.dismissViewControllerAnimated(true, completion: nil)
-      //   })
+        self.presentViewController(alert, animated: true, completion: nil)
+      }
+      pickerRow.data = sortedByName(Manufacturer.findAllInContext(moc) as? [Manufacturer] ?? [])
+      pickerRow.info = self.componentDevice.manufacturer
 
-      //   self.presentViewController(alert, animated: true, completion: nil)
-      // }
-      // pickerRow.data = sortedByName(Manufacturer.findAllInContext(moc) as? [Manufacturer])
-      // pickerRow.info = self.componentDevice.manufacturer
-
-      // row.detailPickerRow = pickerRow
+      row.detailPickerRow = pickerRow
 
       return row
     }
@@ -95,48 +96,50 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.name = "Code Set"
       row.info = self.componentDevice.codeSet
 
-      // let pickerRow = DetailPickerRow()
-      // pickerRow.nilItemTitle = "No Code Set"
-      // pickerRow.createItemTitle = "⨁ New Code Set"
-      // pickerRow.didSelectItem = {
-      //   if !self.didCancel {
-      //     self.componentDevice.codeSet = $0 as? IRCodeSet
-      //     self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
-      //   }
-      // }
-      // pickerRow.createItem = {
-      //   let alert = UIAlertController(title: "Create Code Set",
-      //     message: "Enter a name for the code set",
-      //     preferredStyle: .Alert)
-      //   alert.addTextFieldWithConfigurationHandler {
-      //     $0.font = Bank.infoFont
-      //     $0.textColor = Bank.infoColor
-      //   }
-      //   alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
-      //     action in
-      //     row.info = self.componentDevice.codeSet
-      //     // re-select previous picker selection and dismiss picker
-      //     self.dismissViewControllerAnimated(true, completion: nil)
-      //   })
-      //   alert.addAction(UIAlertAction(title: "Create", style: .Default) {
-      //     action in
-      //     if let text = (alert.textFields?.first as? UITextField)?.text {
-      //       moc.performBlockAndWait {
-      //         let codeSet = IRCodeSet.createInContext(moc)
-      //         codeSet.name = text
-      //         codeSet.manufacturer = self.componentDevice.manufacturer
-      //         self.componentDevice.codeSet = codeSet
-      //       }
-      //     }
-      //     self.dismissViewControllerAnimated(true, completion: nil)
-      //     })
+      var pickerRow = DetailPickerRow()
+      pickerRow.nilItemTitle = "No Code Set"
+      pickerRow.createItemTitle = "⨁ New Code Set"
+      pickerRow.didSelectItem = {
+        if !self.didCancel {
+          self.componentDevice.codeSet = $0 as? IRCodeSet
+          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+          self.cellDisplayingPicker?.info = $0
+          pickerRow.info = $0
+        }
+      }
+      pickerRow.createItem = {
+        let alert = UIAlertController(title: "Create Code Set",
+          message: "Enter a name for the code set",
+          preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler {
+          $0.font = Bank.infoFont
+          $0.textColor = Bank.infoColor
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
+          action in
+          row.info = self.componentDevice.codeSet
+          // re-select previous picker selection and dismiss picker
+          self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        alert.addAction(UIAlertAction(title: "Create", style: .Default) {
+          action in
+          if let text = (alert.textFields?.first as? UITextField)?.text {
+            moc.performBlockAndWait {
+              let codeSet = IRCodeSet.createInContext(moc)
+              codeSet.name = text
+              codeSet.manufacturer = self.componentDevice.manufacturer
+              self.componentDevice.codeSet = codeSet
+            }
+          }
+          self.dismissViewControllerAnimated(true, completion: nil)
+          })
 
-      //   self.presentViewController(alert, animated: true, completion: nil)
-      // }
-      // pickerRow.data = sortedByName(self.componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
-      // pickerRow.info = self.componentDevice.codeSet
+        self.presentViewController(alert, animated: true, completion: nil)
+      }
+      pickerRow.data = sortedByName(self.componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
+      pickerRow.info = self.componentDevice.codeSet
 
-      // row.detailPickerRow = pickerRow
+      row.detailPickerRow = pickerRow
 
       return row
     }
@@ -145,26 +148,31 @@ class ComponentDeviceDetailController: BankItemDetailController {
     /// Network Device
     ////////////////////////////////////////////////////////////////////////////////
 
-    let networkDeviceSection = DetailSection(sectionNumber: 1, title: "Network Device")
+    let networkDeviceSection = DetailSection(section: 1, title: "Network Device")
 
     networkDeviceSection.addRow {
       var row = DetailButtonRow()
       row.info = self.componentDevice.networkDevice
       row.name = "Network Device"
-      // row.select = {
-      //     if let networkDevice = self.componentDevice.networkDevice {
-      //       self.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
-      //     }
-      //   }
+      row.select = {
+          if let networkDevice = self.componentDevice.networkDevice {
+            self.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
+          }
+        }
 
-      // let pickerRow = DetailPickerRow()
+      var pickerRow = DetailPickerRow()
+      pickerRow.nilItemTitle = "No Network Device"
+      pickerRow.didSelectItem = {
+        if !self.didCancel {
+          self.componentDevice.networkDevice = $0 as? NetworkDevice
+          self.cellDisplayingPicker?.info = $0
+          pickerRow.info = $0
+        }
+      }
+      pickerRow.data = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice] ?? [])
+      pickerRow.info = self.componentDevice.networkDevice
 
-      // pickerRow.nilItemTitle = "No Network Device"
-      // pickerRow.didSelectItem = { if !self.didCancel { self.componentDevice.networkDevice = $0 as? NetworkDevice } }
-      // pickerRow.data = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice])
-      // pickerRow.info = self.componentDevice.networkDevice
-
-      // row.detailPickerRow = pickerRow
+      row.detailPickerRow = pickerRow
 
       return row
     }
@@ -184,33 +192,39 @@ class ComponentDeviceDetailController: BankItemDetailController {
     /// Power
     ////////////////////////////////////////////////////////////////////////////////
 
-    let powerSection = DetailSection(sectionNumber: 2, title: "Power")
+    let powerSection = DetailSection(section: 2, title: "Power")
 
     powerSection.addRow {
       var row = DetailButtonRow()
       row.name = "On"
       row.info = self.componentDevice.onCommand
-      // row.nilItemTitle = "No On Command"
-      // row.info = self.componentDevice.onCommand?.code
-      // row.didSelectItem = {
-      //   (selection: AnyObject?) -> Void in
-      //     if !self.didCancel {
-      //       moc.performBlock {
-      //         if let code = selection as? IRCode {
-      //           if let command = self.componentDevice.onCommand {
-      //             command.code = code
-      //           } else {
-      //             let command = SendIRCommand(inContext: moc)
-      //             command.code = code
-      //             self.componentDevice.onCommand = command
-      //           }
-      //         } else {
-      //           self.componentDevice.onCommand = nil
-      //         }
-      //       }
-      //     }
-      // }
-      // row.data = self.componentDevice.codeSet?.items as? [IRCode]
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.nilItemTitle = "No On Command"
+      pickerRow.didSelectItem = {
+        (selection: AnyObject?) -> Void in
+          if !self.didCancel {
+            moc.performBlock {
+              if let code = selection as? IRCode {
+                if let command = self.componentDevice.onCommand {
+                  command.code = code
+                } else {
+                  let command = SendIRCommand(inContext: moc)
+                  command.code = code
+                  self.componentDevice.onCommand = command
+                }
+              } else {
+                self.componentDevice.onCommand = nil
+              }
+            }
+            self.cellDisplayingPicker?.info = selection
+            pickerRow.info = selection
+          }
+      }
+      pickerRow.data = sortedByName(self.componentDevice.codeSet?.items as? [IRCode] ?? [])
+      pickerRow.info = self.componentDevice.onCommand?.code
+
+      row.detailPickerRow = pickerRow
 
       return row
     }
@@ -219,27 +233,33 @@ class ComponentDeviceDetailController: BankItemDetailController {
       var row = DetailButtonRow()
       row.name = "Off"
       row.info = self.componentDevice.offCommand
-      // row.nilItemTitle = "No Off Command"
-      // row.info = self.componentDevice.offCommand?.code
-      // row.didSelectItem = {
-      //   (selection: AnyObject?) -> Void in
-      //     if !self.didCancel {
-      //       moc.performBlock {
-      //         if let code = selection as? IRCode {
-      //           if let command = self.componentDevice.offCommand {
-      //             command.code = code
-      //           } else {
-      //             let command = SendIRCommand(inContext: moc)
-      //             command.code = code
-      //             self.componentDevice.offCommand = command
-      //           }
-      //         } else {
-      //           self.componentDevice.offCommand = nil
-      //         }
-      //       }
-      //     }
-      // }
-      // row.data = self.componentDevice.codeSet?.items as? [IRCode]
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.nilItemTitle = "No Off Command"
+      pickerRow.didSelectItem = {
+        (selection: AnyObject?) -> Void in
+          if !self.didCancel {
+            moc.performBlock {
+              if let code = selection as? IRCode {
+                if let command = self.componentDevice.offCommand {
+                  command.code = code
+                } else {
+                  let command = SendIRCommand(inContext: moc)
+                  command.code = code
+                  self.componentDevice.offCommand = command
+                }
+              } else {
+                self.componentDevice.offCommand = nil
+              }
+            }
+            self.cellDisplayingPicker?.info = selection
+            pickerRow.info = selection
+          }
+      }
+      pickerRow.data = sortedByName(self.componentDevice.codeSet?.items as? [IRCode] ?? [])
+      pickerRow.info = self.componentDevice.offCommand?.code
+
+      row.detailPickerRow = pickerRow
 
       return row
     }
@@ -248,7 +268,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     // Inputs
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let inputsSection = DetailSection(sectionNumber: 3, title: "Inputs")
+    let inputsSection = DetailSection(section: 3, title: "Inputs")
 
     inputsSection.addRow {
       var row = DetailSwitchRow()

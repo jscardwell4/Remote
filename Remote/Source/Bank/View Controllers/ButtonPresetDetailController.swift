@@ -22,7 +22,7 @@ class ButtonPresetDetailController: PresetDetailController {
   override init(model: BankableModelObject) {
     super.init(model: model)
 
-    let titlesSection = DetailSection(sectionNumber: 1, title: "Titles")
+    let titlesSection = DetailSection(section: 1, title: "Titles")
 
     if let titles = preset.attributes.titles {
       var attributesByState: OrderedDictionary<String, TitleAttributes> = [:]

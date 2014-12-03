@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailImageRow: DetailRow {
+class DetailImageRow: DetailRow {
 
   let identifier: DetailCell.Identifier = .Image
   var indexPath: NSIndexPath?

@@ -30,7 +30,7 @@ class PresetDetailController: BankItemDetailController {
 
     if let element = preset.generateElement() {
       self.element = element
-      var detailsSection = DetailSection(sectionNumber: 0, title: "Common Attributes")
+      var detailsSection = DetailSection(section: 0, title: "Common Attributes")
 
       detailsSection.addRow { DetailLabelRow(pushableCategory: preset.presetCategory!, label: "Category") }
 
@@ -48,16 +48,23 @@ class PresetDetailController: BankItemDetailController {
           var row = DetailButtonRow()
           row.name = "Role"
           row.info = preset.attributes.role.JSONValue.titlecaseString
-          // row.didSelectItem = {
-          //   if !self.didCancel {
-          //     var attributes = preset.attributes
-          //     attributes.role = RemoteElement.Role(JSONValue: ($0 as String).dashcaseString)
-          //     preset.attributes = attributes
-          //   }
-          // }
-          // let roles = baseType == .ButtonGroup ? RemoteElement.Role.buttonGroupRoles : RemoteElement.Role.buttonRoles
-          // row.pickerData = roles.map{$0.JSONValue.titlecaseString}
-          // row.pickerSelection = preset.attributes.role.JSONValue.titlecaseString
+
+          let roles = baseType == .ButtonGroup ? RemoteElement.Role.buttonGroupRoles : RemoteElement.Role.buttonRoles
+          var pickerRow = DetailPickerRow()
+          pickerRow.titleForInfo =  {($0 as String).titlecaseString}
+          pickerRow.data = roles.map{$0.JSONValue}
+          pickerRow.info = preset.attributes.role.JSONValue
+          pickerRow.didSelectItem = {
+            if !self.didCancel {
+              var attributes = preset.attributes
+              attributes.role = RemoteElement.Role(JSONValue: $0 as String)
+              preset.attributes = attributes
+              self.cellDisplayingPicker?.info = ($0 as String).titlecaseString
+              pickerRow.info = $0
+            }
+          }
+
+          row.detailPickerRow = pickerRow
 
           return row
         }
@@ -68,13 +75,15 @@ class PresetDetailController: BankItemDetailController {
           row.info = preset.attributes.shape.JSONValue.titlecaseString
 
           var pickerRow = DetailPickerRow()
-          // pickerRow.didSelectItem = {
-          //   if !self.didCancel {
-          //     var attributes = preset.attributes
-          //     attributes.shape = RemoteElement.Shape(JSONValue: ($0 as String).dashcaseString)
-          //     preset.attributes = attributes
-          //   }
-          // }
+          pickerRow.didSelectItem = {
+            if !self.didCancel {
+              var attributes = preset.attributes
+              attributes.shape = RemoteElement.Shape(JSONValue: $0 as String)
+              preset.attributes = attributes
+              self.cellDisplayingPicker?.info = ($0 as String).titlecaseString
+              pickerRow.info = $0
+            }
+          }
           pickerRow.titleForInfo = {($0 as String).titlecaseString}
           pickerRow.data = RemoteElement.Shape.allShapes.map{$0.JSONValue}
           pickerRow.info = preset.attributes.shape.JSONValue
@@ -131,7 +140,7 @@ class PresetDetailController: BankItemDetailController {
       // TODO: constraints
 
 
-      var previewSection = DetailSection(sectionNumber: 1)
+      var previewSection = DetailSection(section: 1)
       previewSection.addRow { return DetailImageRow(previewableItem: preset) }
 
       sections = [detailsSection, previewSection]

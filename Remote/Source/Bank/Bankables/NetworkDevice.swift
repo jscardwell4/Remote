@@ -14,20 +14,7 @@ import MoonKit
 class NetworkDevice: BankableModelObject {
 
   @NSManaged var uniqueIdentifier: String!
-  @NSManaged var primitiveComponentDevices: NSSet
-  var componentDevices: [ComponentDevice] {
-    get {
-      willAccessValueForKey("componentDevices")
-      let componentDevices = primitiveComponentDevices.allObjects as? [ComponentDevice]
-      didAccessValueForKey("componentDevices")
-      return componentDevices ?? []
-    }
-    set {
-      willChangeValueForKey("componentDevices")
-      primitiveComponentDevices = NSSet(array: newValue)
-      didChangeValueForKey("componentDevices")
-    }
-  }
+  @NSManaged var componentDevices: NSSet?
 
   class func deviceExistsWithIdentifier(identifier: String) -> Bool {
     return countOfObjectsWithPredicate(NSPredicate(format: "uniqueIdentifier == %@", identifier)) > 0

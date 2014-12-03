@@ -46,7 +46,7 @@ class IRCodeDetailController: BankItemDetailController {
 
     codeSets = irCode.manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? []
 
-    var section = DetailSection(sectionNumber: 0)
+    var section = DetailSection(section: 0)
 
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////

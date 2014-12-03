@@ -1,8 +1,8 @@
 //
-//  DetailPickerRow.swift
+//  DetailSwitchRow.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 12/01/14.
+//  Created by Jason Cardwell on 10/22/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,23 +10,22 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailPickerRow: DetailRow {
+class DetailSwitchRow: DetailRow {
 
-
-  let identifier: DetailCell.Identifier = .Picker
+  let identifier: DetailCell.Identifier = .Switch
   var indexPath: NSIndexPath?
-  var select: ((Void) -> Void)? { get { return nil } set {} }
-  var delete: ((Void) -> Void)? { get { return nil } set {} }
+  var select: ((Void) -> Void)?
+  var delete: ((Void) -> Void)?
 
   var editActions: [UITableViewRowAction]?
-  var editingStyle: UITableViewCellEditingStyle { return .None }
+  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
 
-  var deleteRemovesRow = false
+  var deleteRemovesRow = true
 
   /// Properties that mirror `DetailCell` properties
   ////////////////////////////////////////////////////////////////////////////////
 
-  var name: String? { get { return nil } set {} }
+  var name: String?
   var info: AnyObject?
   var infoDataType: DetailCell.DataType = .StringData
   var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
@@ -36,35 +35,23 @@ struct DetailPickerRow: DetailRow {
   var indentationWidth: CGFloat = 8.0
   var backgroundColor: UIColor?
 
-  var nilItemTitle: String?
-  var createItemTitle: String?
-  var createItem: ((Void) -> Void)?
-  var didSelectItem: ((AnyObject?) -> Void)?
-  var titleForInfo: ((AnyObject?) -> String)?
-  var data: [AnyObject] = []
-
-
   /**
   configure:
 
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailPickerCell) { return }
+    if !(cell is DetailSwitchCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
+    cell.name = name
+    cell.info = info
     cell.infoDataType = infoDataType
     cell.valueIsValid = valueIsValid
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    (cell as DetailPickerCell).data = data
-    (cell as DetailPickerCell).nilItemTitle = nilItemTitle
-    (cell as DetailPickerCell).createItemTitle = createItemTitle
-    (cell as DetailPickerCell).didSelectItem = didSelectItem
-    (cell as DetailPickerCell).createItem = createItem
-    (cell as DetailPickerCell).info = info
   }
 
   /** init */

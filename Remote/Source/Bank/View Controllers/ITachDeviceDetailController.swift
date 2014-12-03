@@ -26,7 +26,7 @@ class ITachDeviceDetailController: BankItemDetailController {
     /// Main section: Identifier, Make, Model, Config-URL, Revision, Pcb_PN, Pkg_Level, SDKClass
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    let mainSection = DetailSection(sectionNumber: 0)
+    let mainSection = DetailSection(section: 0)
 
     mainSection.addRow { return DetailLabelRow(label: "Identifier", value: self.iTachDevice.uniqueIdentifier)}
     mainSection.addRow { return DetailLabelRow(label: "Make", value: self.iTachDevice.make)}
@@ -40,8 +40,8 @@ class ITachDeviceDetailController: BankItemDetailController {
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////
 
-    let componentDevicesSection = DetailSection(sectionNumber: 1, title: "Component Devices")
-    for device in sortedByName(self.iTachDevice.componentDevices) {
+    let componentDevicesSection = DetailSection(section: 1, title: "Component Devices")
+    for device in sortedByName(self.iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? []) {
       componentDevicesSection.addRow { return DetailListRow(pushableItem: device) }
     }
 

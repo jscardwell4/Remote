@@ -24,13 +24,13 @@ class ImageDetailController: BankItemDetailController {
     super.init(model: model)
     precondition(model is Image, "we should have been given a image")
 
-    let detailsSection = DetailSection(sectionNumber: 0)
+    let detailsSection = DetailSection(section: 0)
 
     detailsSection.addRow { return DetailLabelRow(pushableCategory: self.image.imageCategory, label: "Category") }
     detailsSection.addRow { return DetailLabelRow(label: "Asset", value: self.image.assetName) }
     detailsSection.addRow { return DetailLabelRow(label: "Size", value: PrettySize(self.image.size)) }
 
-    let previewSection = DetailSection(sectionNumber: 1)
+    let previewSection = DetailSection(section: 1)
     previewSection.addRow { return DetailImageRow(previewableItem: self.image) }
 
     sections = [detailsSection, previewSection]

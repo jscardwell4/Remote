@@ -28,7 +28,7 @@ class ManufacturerDetailController: BankItemDetailController {
     // section 0 - row 0
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let devicesSection = DetailSection(sectionNumber: 0, title: "Devices")
+    let devicesSection = DetailSection(section: 0, title: "Devices")
     for device in sortedByName(self.manufacturer.devices?.allObjects as? [ComponentDevice] ?? []) {
       devicesSection.addRow { return DetailListRow(pushableItem: device) }
     }
@@ -37,7 +37,7 @@ class ManufacturerDetailController: BankItemDetailController {
     // section 1 - row 0
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let codeSetsSection = DetailSection(sectionNumber: 1, title: "Code Sets")
+    let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
     for codeSet in sortedByName(self.manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? []) {
       codeSetsSection.addRow { return DetailListRow(pushableCategory: codeSet) }
     }

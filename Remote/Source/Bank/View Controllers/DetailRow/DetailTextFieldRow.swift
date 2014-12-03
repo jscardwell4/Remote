@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailTextFieldRow: DetailRow {
+class DetailTextFieldRow: DetailRow {
 
   let identifier: DetailCell.Identifier = .TextField
   var indexPath: NSIndexPath?

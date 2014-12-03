@@ -1403,7 +1403,7 @@
 				C215C9D819F73A4A000CC6CC /* DetailStepperCell.swift */,
 				C289BB4719F80A29008E92C1 /* DetailTextViewCell.swift */,
 			);
-			name = DetailCell;
+			path = DetailCell;
 			sourceTree = "<group>";
 		};
 		C22BECC119FC72AE00898B79 /* DetailRow */ = {
@@ -1425,7 +1425,7 @@
 				C289BB5419F85B64008E92C1 /* DetailTextViewRow.swift */,
 				C2E163A119F07A0200D1B88E /* DetailRow.swift */,
 			);
-			name = DetailRow;
+			path = DetailRow;
 			sourceTree = "<group>";
 		};
 		C22BECC219FC72C200898B79 /* BankItemDetailController */ = {

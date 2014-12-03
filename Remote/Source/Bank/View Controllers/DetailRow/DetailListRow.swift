@@ -1,8 +1,8 @@
 //
-//  DetailSliderRow.swift
+//  DetailListRow.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 11/28/14.
+//  Created by Jason Cardwell on 10/22/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,12 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailSliderRow: DetailRow {
+class DetailListRow: DetailRow {
 
-  var sliderMinValue: Float = 0.0
-  var sliderMaxValue: Float = 1.0
-
-  let identifier: DetailCell.Identifier = .Slider
+  let identifier: DetailCell.Identifier = .List
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -28,7 +25,7 @@ struct DetailSliderRow: DetailRow {
   /// Properties that mirror `DetailCell` properties
   ////////////////////////////////////////////////////////////////////////////////
 
-  var name: String?
+  var name: String? { get { return nil } set {} }
   var info: AnyObject?
   var infoDataType: DetailCell.DataType = .StringData
   var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
@@ -44,7 +41,7 @@ struct DetailSliderRow: DetailRow {
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailSliderCell) { return }
+    if !(cell is DetailListCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -55,11 +52,51 @@ struct DetailSliderRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    (cell as DetailSliderCell).sliderMinValue = sliderMinValue
-    (cell as DetailSliderCell).sliderMaxValue = sliderMaxValue
   }
 
   /** init */
   init() {}
+
+  /**
+  initWithPushableItem:hasEditingState:
+
+  :param: pushableItem BankDisplayItemModel
+  */
+  init(pushableItem: BankDisplayItemModel) {
+    select = {
+      let controller = pushableItem.detailController()
+      if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+        nav.pushViewController(controller, animated: true)
+      }
+    }
+    delete = { pushableItem.delete() }
+    info = pushableItem
+  }
+
+  /**
+  initWithPushableCategory:hasEditingState:
+
+  :param: pushableCategory BankDisplayItemCategory
+  */
+  init(pushableCategory: BankDisplayItemCategory) {
+    select = {
+      if let controller = BankCollectionController(category: pushableCategory) {
+        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+          nav.pushViewController(controller, animated: true)
+        }
+      }
+    }
+    delete = { pushableCategory.delete() }
+    info = pushableCategory
+  }
+
+  /**
+  initWithNamedItem:hasEditingState:
+
+  :param: namedItem NamedModelObject
+  */
+  init(namedItem: NamedModelObject) {
+    info = namedItem
+  }
 
 }

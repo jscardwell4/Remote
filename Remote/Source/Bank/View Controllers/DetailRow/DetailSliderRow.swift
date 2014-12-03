@@ -1,8 +1,8 @@
 //
-//  DetailSwitchRow.swift
+//  DetailSliderRow.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 10/22/14.
+//  Created by Jason Cardwell on 11/28/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,9 +10,12 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailSwitchRow: DetailRow {
+class DetailSliderRow: DetailRow {
 
-  let identifier: DetailCell.Identifier = .Switch
+  var sliderMinValue: Float = 0.0
+  var sliderMaxValue: Float = 1.0
+
+  let identifier: DetailCell.Identifier = .Slider
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -41,7 +44,7 @@ struct DetailSwitchRow: DetailRow {
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailSwitchCell) { return }
+    if !(cell is DetailSliderCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -52,6 +55,8 @@ struct DetailSwitchRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+    (cell as DetailSliderCell).sliderMinValue = sliderMinValue
+    (cell as DetailSliderCell).sliderMaxValue = sliderMaxValue
   }
 
   /** init */

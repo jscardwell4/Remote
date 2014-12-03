@@ -35,17 +35,11 @@ class DetailController: UITableViewController {
 
   var sections: [DetailSection] = []
 
-  class var defaultRowHeight:  CGFloat { return 38.0  }
-  class var previewRowHeight:  CGFloat { return 291.0 }
-  class var textViewRowHeight: CGFloat { return 140.0 }
-  class var switchRowHeight:   CGFloat { return 48.0  }
-  class var tableRowHeight:    CGFloat { return 120.0 }
-
   let item: DetailableItem!
 
   private(set) var didCancel: Bool = false
 
-  private weak var cellDisplayingPicker: DetailButtonCell? { didSet { if oldValue != nil { oldValue!.hidePickerView() } } }
+  private(set) weak var cellDisplayingPicker: DetailButtonCell?
 
   /**
   init:bundle:
@@ -137,7 +131,6 @@ class DetailController: UITableViewController {
   func cancel() {
     (item as? EditableItem)?.rollback()
     didCancel = true
-    apply(sections) { $0.reloadRows() }
     setEditing(false, animated: true)
     updateDisplay()
   }
@@ -181,17 +174,7 @@ class DetailController: UITableViewController {
 
   :param: indexPaths [NSIndexPath]
   */
-  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-    for indexPath in indexPaths {
-      if indexPath.section < sections.count {
-        var section = sections[indexPath.section]
-        if indexPath.row < section.rows.count {
-          section.reloadRowAtIndex(indexPath.row)
-        }
-      }
-    }
-    configureCellsAtIndexPaths(indexPaths)
-  }
+  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) { configureCellsAtIndexPaths(indexPaths) }
 
 
   /** configureVisibleCells */
@@ -241,32 +224,63 @@ class DetailController: UITableViewController {
 
       cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? DetailCell
 
+      // Set picker related handlers if the cell is a button cell
       if let buttonCell = cell as? DetailButtonCell {
-        let pickerIndexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
+
+        // Create an index path for the row after the button cell's row
+        let pickerPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
+
+        // Set handler for showing picker row for this button cell
         buttonCell.showPickerRow = {
-          if let pickerRow = $0.detailPickerRow {
-            self.sections[pickerIndexPath.section].insertRow(pickerRow, atIndex: pickerIndexPath.row)
-            self.tableView.insertRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .Automatic)
-            return true
-          } else {
-            return false
+
+          // Check if we are already showing a picker row
+          if let cell = self.cellDisplayingPicker {
+
+            // Remove existing picker row
+            cell.hidePickerView()
+
+            // Return false if this handler was invoked by the same cell
+            if cell === $0 { return false }
+
           }
+
+          // Ensure we actually have a picker row to insert
+          if $0.detailPickerRow == nil { return false }
+
+            // Insert row into our section
+            self.sections[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row)
+
+            // Insert row into our table
+            self.tableView.insertRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+
+            // Update reference to cell displaying picker row
+            self.cellDisplayingPicker = $0
+
+            return true
         }
 
+        // Set handler for hiding picker row for this button cell
         buttonCell.hidePickerRow = {
-          _ in
-          if self[pickerIndexPath] is DetailPickerRow {
-            self[pickerIndexPath.section]?.removeRowAtIndex(pickerIndexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .Automatic)
-            return true
-          } else {
-            return false
-          }
+
+          // Check if the cell invoking this handler is actually the cell whose picker we are showing
+          if self.cellDisplayingPicker !== $0 || !(self[pickerPath] is DetailPickerRow) { return false }
+
+          // Remove the row from our section
+          self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
+
+          // Remove the row from our table
+          self.tableView.deleteRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+
+          // Update reference to cell displaying picker row
+          self.cellDisplayingPicker = nil
+
+          return true
+
         }
 
-      }
+      } // end if
 
-    }
+    } // end if
 
     return cell
   }
@@ -396,7 +410,6 @@ extension DetailController: UITableViewDataSource {
     if editingStyle == .Delete {
       if self[indexPath]?.delete?() != nil {
         if self[indexPath]?.deleteRemovesRow == true {
-          sections[indexPath.section].reloadRows()
           tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
           tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
         }

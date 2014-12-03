@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-
+// TODO: Viewing mode changes need to respect whether category items are `previewable`
 
 class BankCollectionController: UICollectionViewController, BankController {
 

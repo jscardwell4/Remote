@@ -1,8 +1,8 @@
 //
-//  DetailStepperRow.swift
+//  DetailAttributedLabelRow.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 10/22/14.
+//  Created by Jason Cardwell on 11/28/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,14 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailStepperRow: DetailRow {
+class DetailAttributedLabelRow: DetailRow {
 
-  var stepperWraps: Bool = true
-  var stepperMinValue: Double = Double(CGFloat.min)
-  var stepperMaxValue: Double = Double(CGFloat.max)
-  var stepperStepValue: Double = 1.0
-
-  let identifier: DetailCell.Identifier = .Stepper
+  let identifier: DetailCell.Identifier = .AttributedLabel
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -32,7 +27,7 @@ struct DetailStepperRow: DetailRow {
 
   var name: String?
   var info: AnyObject?
-  var infoDataType: DetailCell.DataType = .StringData
+  var infoDataType: DetailCell.DataType = .AttributedStringData
   var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
   var valueDidChange: ((AnyObject?) -> Void)?
   var valueIsValid: ((AnyObject?) -> Bool)?
@@ -40,13 +35,16 @@ struct DetailStepperRow: DetailRow {
   var indentationWidth: CGFloat = 8.0
   var backgroundColor: UIColor?
 
+  /** init */
+  init() {}
+
   /**
   configure:
 
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailStepperCell) { return }
+    if !(cell is DetailAttributedLabelCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -57,13 +55,6 @@ struct DetailStepperRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    (cell as DetailStepperCell).stepperWraps = stepperWraps
-    (cell as DetailStepperCell).stepperMinValue = stepperMinValue
-    (cell as DetailStepperCell).stepperMaxValue = stepperMaxValue
-    (cell as DetailStepperCell).stepperStepValue = stepperStepValue
   }
-
-  /** init */
-  init() {}
 
 }

@@ -26,14 +26,14 @@ class ISYDeviceDetailController: BankItemDetailController {
     /// Identification section: Identifier, Base URL
     ////////////////////////////////////////////////////////////////////////////////
 
-    var idSection = DetailSection(sectionNumber: 0)
+    var idSection = DetailSection(section: 0)
     idSection.addRow { return DetailLabelRow(label: "Identifier", value: self.iSYDevice.uniqueIdentifier) }
     idSection.addRow { return DetailLabelRow(label: "Base URL", value: self.iSYDevice.baseURL) }
 
     /// Model section: Name, Number, Description, Friendly Name
     ////////////////////////////////////////////////////////////////////////////////
 
-    var modelSection = DetailSection(sectionNumber: 1, title: "Model")
+    var modelSection = DetailSection(section: 1, title: "Model")
     modelSection.addRow { return DetailLabelRow(label: "Name", value: self.iSYDevice.modelName) }
     modelSection.addRow { return DetailLabelRow(label: "Number", value: self.iSYDevice.modelNumber) }
     modelSection.addRow { return DetailLabelRow(label: "Description", value: self.iSYDevice.modelDescription) }
@@ -43,14 +43,14 @@ class ISYDeviceDetailController: BankItemDetailController {
     /// Manufacturer section: Name, URL
     ////////////////////////////////////////////////////////////////////////////////
 
-    var manufacturerSection = DetailSection(sectionNumber: 2, title: "Manufacturer")
+    var manufacturerSection = DetailSection(section: 2, title: "Manufacturer")
     manufacturerSection.addRow { return DetailLabelRow(label: "Name", value: self.iSYDevice.manufacturer) }
     manufacturerSection.addRow { return DetailLabelRow(label: "URL", value: self.iSYDevice.manufacturerURL) }
 
     /// Nodes section
     ////////////////////////////////////////////////////////////////////////////////
 
-    var nodesSection = DetailSection(sectionNumber: 3, title: "Nodes")
+    var nodesSection = DetailSection(section: 3, title: "Nodes")
     for node in sortedByName(self.iSYDevice.nodes) {
       nodesSection.addRow { return DetailListRow(namedItem: node) }
     }
@@ -58,7 +58,7 @@ class ISYDeviceDetailController: BankItemDetailController {
     /// Groups section
     ////////////////////////////////////////////////////////////////////////////////
 
-    var groupsSection = DetailSection(sectionNumber: 4, title: "Groups")
+    var groupsSection = DetailSection(section: 4, title: "Groups")
     for group in sortedByName(self.iSYDevice.groups) {
       groupsSection.addRow { return DetailListRow(namedItem: group) }
     }
@@ -67,8 +67,8 @@ class ISYDeviceDetailController: BankItemDetailController {
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////
 
-    var componentDevicesSection = DetailSection(sectionNumber: 5, title: "Component Devices")
-    for device in sortedByName(self.iSYDevice.componentDevices) {
+    var componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
+    for device in sortedByName(self.iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? []) {
       componentDevicesSection.addRow { return DetailListRow(pushableItem: device) }
     }
 

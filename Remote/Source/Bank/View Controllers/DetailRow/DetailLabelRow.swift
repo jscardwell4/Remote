@@ -1,5 +1,5 @@
 //
-//  DetailButtonRow.swift
+//  DetailLabelRow.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 10/22/14.
@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct DetailButtonRow: DetailRow {
+class DetailLabelRow: DetailRow {
 
-  let identifier: DetailCell.Identifier = .Button
+  let identifier: DetailCell.Identifier = .Label
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
@@ -35,17 +35,13 @@ struct DetailButtonRow: DetailRow {
   var indentationWidth: CGFloat = 8.0
   var backgroundColor: UIColor?
 
-  var showPickerRow: ((DetailButtonCell) -> Bool)?
-  var hidePickerRow: ((DetailButtonCell) -> Bool)?
-  var detailPickerRow: DetailPickerRow?
-
   /**
   configure:
 
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailButtonCell) { return }
+    if !(cell is DetailLabelCell) { return }
     if let color = backgroundColor { cell.backgroundColor = color }
     cell.indentationLevel = indentationLevel
     cell.indentationWidth = indentationWidth
@@ -56,47 +52,38 @@ struct DetailButtonRow: DetailRow {
     cell.valueDidChange = valueDidChange
     cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
     cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    if showPickerRow != nil { (cell as DetailButtonCell).showPickerRow = showPickerRow }
-    if hidePickerRow != nil { (cell as DetailButtonCell).hidePickerRow = hidePickerRow }
-    (cell as DetailButtonCell).detailPickerRow = detailPickerRow
   }
-
 
   /** init */
   init() {}
 
   /**
-  initWithPushableCategory:
+  initWithLabel:value:
 
-  :param: pushableCategory BankDisplayItemCategory
+  :param: label String
+  :param: value String?
   */
-  init(pushableCategory: BankDisplayItemCategory?) {
-    info = pushableCategory
-    select = {
-      if let category = pushableCategory {
-        if let controller = BankCollectionController(category: category) {
-          if let nav = MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
-            nav.pushViewController(controller, animated: true)
-          }
-        }
-      }
-    }
+  init(label: String, value: String?) {
+    name = label
+    info = value
   }
 
   /**
-  initWithPushableItem:
+  initWithPushableCategory:label:hasEditingState:
 
-  :param: pushableItem BankDisplayItemModel?
+  :param: pushableCategory BankDisplayItemCategory
+  :param: label String
   */
-  init(pushableItem: BankDisplayItemModel?) {
-    info = pushableItem
+  init(pushableCategory: BankDisplayItemCategory, label: String) {
     select = {
-      if let item = pushableItem {
-        if let nav =  MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
-          nav.pushViewController(item.detailController(), animated: true)
+      if let controller = BankCollectionController(category: pushableCategory) {
+        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+          nav.pushViewController(controller, animated: true)
         }
       }
     }
+    name = label
+    info = pushableCategory
   }
 
 }

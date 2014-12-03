@@ -54,7 +54,10 @@ class DetailPickerCell: DetailCell {
       var searchIndex: Index = newValue == nil
                                  ? .NilItem(title: nilItemTitle ?? "")
                                  : .DataItem(object: newValue!, title: titleForInfo?(newValue!) ?? "")
-      if let idx = find(_data, searchIndex) { picker.selectRow(idx, inComponent: 0, animated: false) }
+      if let idx = find(_data, searchIndex) {
+        selection = _data[idx]
+        picker.selectRow(idx, inComponent: 0, animated: false)
+      }
     }
   }
 
@@ -105,16 +108,7 @@ class DetailPickerCell: DetailCell {
     }
   }
 
-  private var selection: Index = .None {
-    didSet {
-      switch selection {
-        case .None:                 break
-        case .NilItem:              didSelectItem?(nil)
-        case .CreateItem:           createItem?()
-        case .DataItem(let obj, _): didSelectItem?(obj)
-      }
-    }
-  }
+  private var selection: Index = .None
 
   var nilItemTitle: String?
   var createItemTitle: String?
@@ -133,7 +127,9 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
 
   :returns: Int
   */
-  func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int { return 1 }
+  func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    return 1
+  }
 
   /**
   pickerView:numberOfRowsInComponent:
@@ -143,7 +139,9 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
 
   :returns: Int
   */
-  func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { return _data.count }
+  func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return _data.count
+  }
 
   /**
   pickerView:titleForRow:forComponent:
@@ -167,6 +165,12 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
   */
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     selection = _data[row]
+    switch selection {
+      case .None:                 break
+      case .NilItem:              didSelectItem?(nil)
+      case .CreateItem:           createItem?()
+      case .DataItem(let obj, _): didSelectItem?(obj)
+    }
   }
 
 }

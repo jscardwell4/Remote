@@ -671,11 +671,17 @@ class RemoteElement: NamedModelObject {
     static var Record:               Role = Role(rawValue: 0b1001_1000)
     static var TransportButtonMask:  Role = Role(rawValue: 0b0000_1000)
 
-    static var buttonGroupRoles: [Role] { return [.SelectionPanel, .Toolbar, .DPad, .Numberpad, .Transport, .Rocker] }
+    static var buttonGroupRoles: [Role] {
+      return [.Undefined, .SelectionPanel, .Toolbar, .DPad, .Numberpad, .Transport, .Rocker]
+    }
     static var buttonRoles: [Role] {
-      return [.ConnectionStatus, .BatteryStatus, .Top, .Bottom, .Tuck, .SelectionPanelButton, .Up, .Down, .Left, .Right,
-        .Center, .One, .Two, .Three, .Four, .Five, .Six, .Seven, .Eight, .Nine, .Zero, .Aux1, .Aux2, .Play, .Stop,
-        .Pause, .Skip, .Replay, .FF, .Rewind, .Record]
+      return [.Undefined,
+              .ConnectionStatus, .BatteryStatus,
+              .Top, .Bottom,
+              .Tuck, .SelectionPanelButton,
+              .Up, .Down, .Left, .Right, .Center,
+              .One, .Two, .Three, .Four, .Five, .Six, .Seven, .Eight, .Nine, .Zero, .Aux1, .Aux2,
+              .Play, .Stop, .Pause, .Skip, .Replay, .FF, .Rewind, .Record]
     }
   }
 
@@ -684,7 +690,7 @@ class RemoteElement: NamedModelObject {
 extension RemoteElement.BaseType: JSONValueConvertible {
   var JSONValue: String {
     switch self {
-      case .Undefined:   return ""
+      case .Undefined:   return "undefined"
       case .Remote:      return "remote"
       case .ButtonGroup: return "button-group"
       case .Button:      return "button"
@@ -697,7 +703,7 @@ extension RemoteElement.BaseType: JSONValueConvertible {
       case RemoteElement.BaseType.Remote.JSONValue:      self = .Remote
       case RemoteElement.BaseType.ButtonGroup.JSONValue: self = .ButtonGroup
       case RemoteElement.BaseType.Button.JSONValue:      self = .Button
-      default:                           self = .Undefined
+      default:                                           self = .Undefined
     }
   }
 }
@@ -706,7 +712,7 @@ extension RemoteElement.BaseType: JSONValueConvertible {
 extension RemoteElement.Shape: JSONValueConvertible {
   var JSONValue: String {
     switch self {
-      case .Undefined:        return ""
+      case .Undefined:        return "undefined"
       case .RoundedRectangle: return "rounded-rectangle"
       case .Oval:             return "oval"
       case .Rectangle:        return "rectangle"
@@ -810,7 +816,7 @@ extension RemoteElement.Role: JSONValueConvertible {
       case RemoteElement.Role.FF:                   return "fast-forward"
       case RemoteElement.Role.Rewind:               return "rewind"
       case RemoteElement.Role.Record:               return "record"
-      default:                                      return ""
+      default:                                      return "undefined"
     }
   }
 

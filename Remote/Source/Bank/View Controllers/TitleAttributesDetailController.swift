@@ -47,7 +47,7 @@ class TitleAttributesDetailController: DetailController {
   init(attributesDelegate: TitleAttributesDelegate) {
     super.init(item: attributesDelegate)
 
-    let contentSection = DetailSection(sectionNumber: 0, title: "Content")
+    let contentSection = DetailSection(section: 0, title: "Content")
 
     // text
     contentSection.addRow {
@@ -92,7 +92,7 @@ class TitleAttributesDetailController: DetailController {
       return row
     }
 
-    let characterAttributesSection = DetailSection(sectionNumber: 1, title: "Character Attributes")
+    let characterAttributesSection = DetailSection(section: 1, title: "Character Attributes")
 
 
     // Font
