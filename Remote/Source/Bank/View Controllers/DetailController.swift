@@ -30,7 +30,6 @@ import MoonKit
 
 }
 
-@objc(DetailController)
 class DetailController: UITableViewController {
 
   var sections: [DetailSection] = []
@@ -77,6 +76,9 @@ class DetailController: UITableViewController {
     hidesBottomBarWhenPushed = true
   }
 
+  /** loadSections */
+  func loadSections() { sections.removeAll(keepCapacity: true) }
+
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
@@ -89,6 +91,7 @@ class DetailController: UITableViewController {
     tableView?.dataSource = self
     DetailCell.registerIdentifiersWithTableView(tableView)
     navigationItem.rightBarButtonItem = editButtonItem()
+    loadSections()
   }
 
   /** updateDisplay */
@@ -192,7 +195,7 @@ class DetailController: UITableViewController {
   func configureCellsAtIndexPaths(indexPaths: [NSIndexPath]) {
     applyToRowsAtIndexPaths(indexPaths) {
       if let cell = self.tableView.cellForRowAtIndexPath($0.indexPath!) as? DetailCell {
-        $0.configureCell(cell, forTableView: self.tableView)
+        $0.configureCell(cell)
       }
     }
   }
@@ -346,7 +349,7 @@ extension DetailController: UITableViewDataSource {
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = dequeueCellForIndexPath(indexPath)
     precondition(cell != nil, "we should have been able to dequeue a valid cell")
-    self[indexPath]?.configureCell(cell!, forTableView: tableView)
+    self[indexPath]?.configureCell(cell!)
     return cell!
   }
 

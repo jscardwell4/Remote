@@ -58,8 +58,8 @@ class BankCollectionController: UICollectionViewController, BankController {
         exportSelection.removeAll(keepCapacity: false)  // If entering, make sure our export items collection is empty
 
         // And, make sure no cells are selected
-        if let indexPaths = collectionView.indexPathsForSelectedItems() as? [NSIndexPath] {
-          for indexPath in indexPaths { collectionView.deselectItemAtIndexPath(indexPath, animated: true) }
+        if let indexPaths = collectionView?.indexPathsForSelectedItems() as? [NSIndexPath] {
+          for indexPath in indexPaths { collectionView?.deselectItemAtIndexPath(indexPath, animated: true) }
         }
 
         // Set right bar button items
@@ -74,12 +74,12 @@ class BankCollectionController: UICollectionViewController, BankController {
 
       }
 
-      collectionView.allowsMultipleSelection = exportSelectionMode  // Update selection mode
+      collectionView?.allowsMultipleSelection = exportSelectionMode  // Update selection mode
 
       navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
 
       // Update visible cells
-      for cell in collectionView.visibleCells() as [BankCollectionCell] {
+      for cell in collectionView?.visibleCells() as [BankCollectionCell] {
       	cell.showIndicator(showIndicator)
       }
 
@@ -174,10 +174,9 @@ class BankCollectionController: UICollectionViewController, BankController {
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
 
-    if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
-      if let mode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) {
-        viewingMode = mode
-      }
+    if !category.previewableItems { viewingMode = .List }
+    else if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
+      viewingMode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) ?? .List
     }
   }
 
@@ -224,7 +223,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 	        item.delete()
 
 	    }
-	    collectionView.deleteItemsAtIndexPaths([indexPath])
+	    collectionView?.deleteItemsAtIndexPaths([indexPath])
 	  }
   }
 
@@ -354,14 +353,14 @@ extension BankCollectionController {
 
       for (i, subcategory) in enumerate(category.subcategories) {
         exportSelection.append(subcategory)
-        if let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
+        if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
         	cell.showIndicator(true, selected: true)
         }
       }
 
       for (i, item) in enumerate(category.items) {
         exportSelection.append(item)
-        if let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
+        if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
         	cell.showIndicator(true, selected: true)
         }
       }
@@ -384,13 +383,13 @@ extension BankCollectionController {
       exportSelection.removeAll(keepCapacity: false)
 
       // Enumerate the selected index paths
-      for indexPath in collectionView.indexPathsForSelectedItems() as [NSIndexPath] {
+      for indexPath in collectionView?.indexPathsForSelectedItems() as [NSIndexPath] {
 
         // Deselect the cell
-        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+        collectionView?.deselectItemAtIndexPath(indexPath, animated: true)
 
         // Update the cell image if it is visible
-        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+        if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
         	cell.showIndicator(true)
         }
 

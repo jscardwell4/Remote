@@ -159,7 +159,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
             endingLineNumber = "81"
-            landmarkName = "init(model:)"
+            landmarkName = "loadSections()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -207,8 +207,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "212"
             endingLineNumber = "212"
-            landmarkName = "BankCollectionController"
-            landmarkType = "3">
+            landmarkName = "deleteItemAtIndexPath(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2267,7 +2267,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
             endingLineNumber = "80"
-            landmarkName = "init(model:)"
+            landmarkName = "loadSections()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2283,7 +2283,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "74"
             endingLineNumber = "74"
-            landmarkName = "init(model:)"
+            landmarkName = "loadSections()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2299,7 +2299,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "167"
             endingLineNumber = "167"
-            landmarkName = "init(model:)"
+            landmarkName = "loadSections()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

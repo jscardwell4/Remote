@@ -9,56 +9,27 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(ImageDetailController)
 class ImageDetailController: BankItemDetailController {
 
-  var image: Image { return model as Image }
+  /** loadSections */
+  override func loadSections() {
+    super.loadSections()
 
-  /**
-  initWithItem:editing:
-
-  :param: model BankableModelObject
-  :param: editing Bool
-  */
-  override init(model: BankableModelObject) {
-    super.init(model: model)
     precondition(model is Image, "we should have been given a image")
+
+    let image = model as Image
 
     let detailsSection = DetailSection(section: 0)
 
-    detailsSection.addRow { return DetailLabelRow(pushableCategory: self.image.imageCategory, label: "Category") }
-    detailsSection.addRow { return DetailLabelRow(label: "Asset", value: self.image.assetName) }
-    detailsSection.addRow { return DetailLabelRow(label: "Size", value: PrettySize(self.image.size)) }
+    detailsSection.addRow { DetailLabelRow(pushableCategory: image.imageCategory, label: "Category") }
+    detailsSection.addRow { DetailLabelRow(label: "Asset", value: image.assetName) }
+    detailsSection.addRow { DetailLabelRow(label: "Size", value: PrettySize(image.size)) }
 
     let previewSection = DetailSection(section: 1)
-    previewSection.addRow { return DetailImageRow(previewableItem: self.image) }
+    previewSection.addRow { DetailImageRow(previewableItem: image) }
 
     sections = [detailsSection, previewSection]
 
   }
-
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) { super.init(style: style) }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 }

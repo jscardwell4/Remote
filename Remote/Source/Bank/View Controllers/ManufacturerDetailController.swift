@@ -12,25 +12,20 @@ import MoonKit
 @objc(ManufacturerDetailController)
 class ManufacturerDetailController: BankItemDetailController {
 
-  var manufacturer: Manufacturer { return model as Manufacturer }
-
-  /**
-  initWithItem:editing:
-
-  :param: model BankableModelObject
-  :param: editing Bool
-  */
-  override init(model: BankableModelObject) {
-    super.init(model: model)
+  /** loadSections */
+  override func loadSections() {
+    super.loadSections()
     precondition(model is Manufacturer, "we should have been given a manufacturer")
+
+    let manufacturer = model as Manufacturer
 
     // Devices
     // section 0 - row 0
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
-    for device in sortedByName(self.manufacturer.devices?.allObjects as? [ComponentDevice] ?? []) {
-      devicesSection.addRow { return DetailListRow(pushableItem: device) }
+    for device in sortedByName(manufacturer.devices?.allObjects as? [ComponentDevice] ?? []) {
+      devicesSection.addRow { DetailListRow(pushableItem: device) }
     }
 
     // Code Sets
@@ -38,8 +33,8 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
-    for codeSet in sortedByName(self.manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? []) {
-      codeSetsSection.addRow { return DetailListRow(pushableCategory: codeSet) }
+    for codeSet in sortedByName(manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? []) {
+      codeSetsSection.addRow { DetailListRow(pushableCategory: codeSet) }
     }
 
     /// Create the sections
@@ -48,29 +43,5 @@ class ManufacturerDetailController: BankItemDetailController {
     sections = [devicesSection, codeSetsSection]
 
   }
-
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) { super.init(style: style) }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 }

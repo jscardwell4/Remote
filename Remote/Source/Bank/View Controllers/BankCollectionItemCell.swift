@@ -74,6 +74,9 @@ class BankCollectionItemCell: BankCollectionCell {
   override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
     super.applyLayoutAttributes(layoutAttributes)
     if let attributes = layoutAttributes as? BankCollectionAttributes { viewingMode = attributes.viewingMode }
+    if let previewImage = thumbnailImageView.image {
+      thumbnailImageView.contentMode = contentSize.contains(previewImage.size) ? .Center : .ScaleAspectFit
+    }
   }
 
 

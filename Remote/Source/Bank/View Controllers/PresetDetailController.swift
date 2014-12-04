@@ -10,64 +10,57 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(PresetDetailController)
 class PresetDetailController: BankItemDetailController {
 
-  var preset: Preset { return model as Preset }
-  let element: RemoteElement!
+  /** loadSections() */
+  override func loadSections() {
+    super.loadSections()
 
-  /**
-  initWithItem:editing:
+    precondition(model is Preset, "we should have been given a preset")
 
-  :param: model BankableModelObject
-  :param: editing Bool
-  */
-  override init(model: BankableModelObject) {
-    super.init(model: model)
+    let preset = model as Preset
 
-    assert(model is Preset)
-    let preset = self.preset
+    var detailsSection = DetailSection(section: 0, title: "Common Attributes")
 
-    if let element = preset.generateElement() {
-      self.element = element
-      var detailsSection = DetailSection(section: 0, title: "Common Attributes")
+    detailsSection.addRow { DetailLabelRow(pushableCategory: preset.presetCategory!, label: "Category") }
 
-      detailsSection.addRow { DetailLabelRow(pushableCategory: preset.presetCategory!, label: "Category") }
+    let baseType = preset.attributes.baseType
 
-      detailsSection.addRow {
-        var row = DetailLabelRow()
-        row.name = "Base Type"
-        row.info = preset.attributes.baseType.JSONValue.titlecaseString
-        return row
+    detailsSection.addRow { DetailLabelRow(label: "Base Type", value: baseType.JSONValue.titlecaseString) }
+
+    var roles: [RemoteElement.Role]
+
+    switch baseType {
+      case .Button: roles = RemoteElement.Role.buttonRoles
+      case .ButtonGroup: roles = RemoteElement.Role.buttonGroupRoles
+      default: roles = [.Undefined]
+    }
+
+    detailsSection.addRow {
+      var row = DetailButtonRow()
+      row.name = "Role"
+      row.info = preset.attributes.role.JSONValue.titlecaseString
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.titleForInfo =  {($0 as String).titlecaseString}
+      pickerRow.data = roles.map{$0.JSONValue}
+      pickerRow.info = preset.attributes.role.JSONValue
+      pickerRow.didSelectItem = {
+        if !self.didCancel {
+          var attributes = preset.attributes
+          attributes.role = RemoteElement.Role(JSONValue: $0 as String)
+          preset.attributes = attributes
+          self.cellDisplayingPicker?.info = ($0 as String).titlecaseString
+          pickerRow.info = $0
+        }
       }
 
-      let baseType = preset.attributes.baseType
+      row.detailPickerRow = pickerRow
 
-      if [.ButtonGroup, .Button] ∋ baseType {
-        detailsSection.addRow {
-          var row = DetailButtonRow()
-          row.name = "Role"
-          row.info = preset.attributes.role.JSONValue.titlecaseString
+      return row
+    }
 
-          let roles = baseType == .ButtonGroup ? RemoteElement.Role.buttonGroupRoles : RemoteElement.Role.buttonRoles
-          var pickerRow = DetailPickerRow()
-          pickerRow.titleForInfo =  {($0 as String).titlecaseString}
-          pickerRow.data = roles.map{$0.JSONValue}
-          pickerRow.info = preset.attributes.role.JSONValue
-          pickerRow.didSelectItem = {
-            if !self.didCancel {
-              var attributes = preset.attributes
-              attributes.role = RemoteElement.Role(JSONValue: $0 as String)
-              preset.attributes = attributes
-              self.cellDisplayingPicker?.info = ($0 as String).titlecaseString
-              pickerRow.info = $0
-            }
-          }
-
-          row.detailPickerRow = pickerRow
-
-          return row
-        }
+    if [.ButtonGroup, .Button] ∋ baseType {
 
         detailsSection.addRow {
           var row = DetailButtonRow()
@@ -97,6 +90,7 @@ class PresetDetailController: BankItemDetailController {
           var row = DetailTextFieldRow()
           row.name = "Style"
           row.info = preset.attributes.style.JSONValue.capitalizedString
+          row.placeholderText = "None"
           row.valueDidChange = {
             var attributes = preset.attributes
             attributes.style = RemoteElement.Style(JSONValue: ($0 as String).lowercaseString)
@@ -105,72 +99,48 @@ class PresetDetailController: BankItemDetailController {
 
           return row
         }
-      }
-
-      detailsSection.addRow {
-        return DetailLabeledImageRow(label: "Background Image",
-                                             previewableItem: preset.attributes.backgroundImage)
-      }
-
-      detailsSection.addRow {
-        var row = DetailSliderRow()
-        row.name = "Background Image Alpha"
-        row.info = preset.attributes.backgroundImageAlpha
-        row.valueDidChange = {
-          var attributes = preset.attributes
-          attributes.backgroundImageAlpha = CGFloat(($0 as NSNumber).floatValue)
-          preset.attributes = attributes
-        }
-        return row
-      }
-
-      detailsSection.addRow {
-        var row = DetailColorRow()
-        row.name = "Background Color"
-        row.info = preset.attributes.backgroundColor
-        row.valueDidChange = {
-          var attributes = preset.attributes
-          attributes.backgroundColor = $0 as? UIColor
-          preset.attributes = attributes
-        }
-        return row
-      }
-
-      // TODO: subelements
-      // TODO: constraints
-
-
-      var previewSection = DetailSection(section: 1)
-      previewSection.addRow { return DetailImageRow(previewableItem: preset) }
-
-      sections = [detailsSection, previewSection]
-
     }
 
+    detailsSection.addRow {
+      var row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.attributes.backgroundImage)
+      row.placeholderImage = RemoteStyleKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 50.0)),
+                                                           color: UIColor.lightGrayColor())
+      return row
+    }
+
+    detailsSection.addRow {
+      var row = DetailSliderRow()
+      row.name = "Background Image Alpha"
+      row.info = preset.attributes.backgroundImageAlpha
+      row.valueDidChange = {
+        var attributes = preset.attributes
+        attributes.backgroundImageAlpha = CGFloat(($0 as NSNumber).floatValue)
+        preset.attributes = attributes
+      }
+      return row
+    }
+
+    detailsSection.addRow {
+      var row = DetailColorRow()
+      row.name = "Background Color"
+      row.info = preset.attributes.backgroundColor
+      row.valueDidChange = {
+        var attributes = preset.attributes
+        attributes.backgroundColor = $0 as? UIColor
+        preset.attributes = attributes
+      }
+      return row
+    }
+
+    // TODO: subelements
+    // TODO: constraints
+
+
+    var previewSection = DetailSection(section: 1)
+    previewSection.addRow { DetailImageRow(previewableItem: preset) }
+
+    sections = [detailsSection, previewSection]
+
   }
-
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) { super.init(style: style) }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 }

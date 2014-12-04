@@ -24,6 +24,7 @@ class DetailCell: UITableViewCell {
 
   /** A simple string-based enum to establish valid reuse identifiers for use with styling the cell */
   enum Identifier: String, EnumerableType {
+    case Cell            = "DetailCell"
     case AttributedLabel = "DetailAttributedLabelCell"
     case Label           = "DetailLabelCell"
     case List            = "DetailListCell"
@@ -40,11 +41,12 @@ class DetailCell: UITableViewCell {
 
     static var all: [Identifier] {
       return [.AttributedLabel, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
-              .Color, .Slider, .Picker, .Stepper, .TextView, .TextField]
+              .Color, .Slider, .Picker, .Stepper, .TextView, .TextField, .Cell]
     }
 
     var cellType: DetailCell.Type {
       switch self {
+        case .Cell:            return DetailCell.self
         case .AttributedLabel: return DetailAttributedLabelCell.self
         case .Label:           return DetailLabelCell.self
         case .List:            return DetailListCell.self

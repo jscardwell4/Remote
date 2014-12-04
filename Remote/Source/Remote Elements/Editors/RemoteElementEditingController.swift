@@ -1215,7 +1215,7 @@ extension RemoteElementEditingController {
     let presetVC = REPresetCollectionViewController(collectionViewLayout: layout)
     presetVC.context = context
     addChildViewController(presetVC)
-    let presetView = presetVC.collectionView
+    let presetView = presetVC.collectionView!
     presetView.constrain("'height' self.height = 0")
     view.addSubview(presetView)
     view.constrain("|[preset]| :: V:[preset]|", views: ["preset": presetView])

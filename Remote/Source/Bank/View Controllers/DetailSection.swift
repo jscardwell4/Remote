@@ -46,7 +46,7 @@ class DetailSection {
   :param: row DetailRow
   :param: idx Int
   */
-  func insertRow(row: DetailRow, atIndex idx: Int) { assert(idx < count); blocks.insert({row}, atIndex: idx) }
+  func insertRow(row: DetailRow, atIndex idx: Int) { assert(idx <= count); blocks.insert({row}, atIndex: idx) }
 
   /**
   removeRowAtIndex:

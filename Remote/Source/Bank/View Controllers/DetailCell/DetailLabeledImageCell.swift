@@ -12,6 +12,8 @@ import MoonKit
 
 class DetailLabeledImageCell: DetailCell {
 
+  var placeholderImage: UIImage?
+
   /**
   initWithStyle:reuseIdentifier:
 
@@ -42,13 +44,15 @@ class DetailLabeledImageCell: DetailCell {
 
   override var info: AnyObject? {
     didSet {
-      if info != nil {
-        if let previewableItem = info as? PreviewableItem {
-          let previewImage = previewableItem.preview
-          preview.image = previewImage
-          preview.contentMode = bounds.size.contains(previewImage.size) ? .Center : .ScaleAspectFit
-        } else { preview.image = nil; info = nil }
-      } else { preview.image = nil }
+      var previewImage = (info as? PreviewableItem)?.preview ?? info as? UIImage ?? placeholderImage
+
+      if previewImage != nil {
+        preview.image = previewImage
+        preview.contentMode = bounds.size.contains(previewImage!.size) ? .Center : .ScaleAspectFit
+      } else {
+        preview.image = nil
+        info = nil
+      }
     }
   }
 

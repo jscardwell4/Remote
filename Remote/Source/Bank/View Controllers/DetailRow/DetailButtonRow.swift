@@ -12,28 +12,7 @@ import MoonKit
 
 class DetailButtonRow: DetailRow {
 
-  let identifier: DetailCell.Identifier = .Button
-  var indexPath: NSIndexPath?
-  var select: ((Void) -> Void)?
-  var delete: ((Void) -> Void)?
-
-  var editActions: [UITableViewRowAction]?
-  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
-
-  var deleteRemovesRow = true
-
-  /// Properties that mirror `DetailCell` properties
-  ////////////////////////////////////////////////////////////////////////////////
-
-  var name: String?
-  var info: AnyObject?
-  var infoDataType: DetailCell.DataType = .StringData
-  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
-  var valueDidChange: ((AnyObject?) -> Void)?
-  var valueIsValid: ((AnyObject?) -> Bool)?
-  var indentationLevel: Int = 0
-  var indentationWidth: CGFloat = 8.0
-  var backgroundColor: UIColor?
+  override var identifier: DetailCell.Identifier { return .Button }
 
   var showPickerRow: ((DetailButtonCell) -> Bool)?
   var hidePickerRow: ((DetailButtonCell) -> Bool)?
@@ -44,33 +23,23 @@ class DetailButtonRow: DetailRow {
 
   :param: cell DetailCell
   */
-  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailButtonCell) { return }
-    (cell as DetailButtonCell).detailPickerRow = detailPickerRow
-    if let color = backgroundColor { cell.backgroundColor = color }
-    cell.indentationLevel = indentationLevel
-    cell.indentationWidth = indentationWidth
-    cell.name = name
-    cell.info = info
-    cell.infoDataType = infoDataType
-    cell.valueIsValid = valueIsValid
-    cell.valueDidChange = valueDidChange
-    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
-    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    if showPickerRow != nil { (cell as DetailButtonCell).showPickerRow = showPickerRow }
-    if hidePickerRow != nil { (cell as DetailButtonCell).hidePickerRow = hidePickerRow }
+  override func configureCell(cell: DetailCell) {
+    (cell as? DetailButtonCell)?.detailPickerRow = detailPickerRow
+    super.configureCell(cell)
+    if showPickerRow != nil { (cell as? DetailButtonCell)?.showPickerRow = showPickerRow }
+    if hidePickerRow != nil { (cell as? DetailButtonCell)?.hidePickerRow = hidePickerRow }
   }
 
-
   /** init */
-  init() {}
+  override init() { super.init() }
 
   /**
   initWithPushableCategory:
 
   :param: pushableCategory BankDisplayItemCategory
   */
-  init(pushableCategory: BankDisplayItemCategory?) {
+  convenience init(pushableCategory: BankDisplayItemCategory?) {
+    self.init()
     info = pushableCategory
     select = {
       if let category = pushableCategory {
@@ -88,7 +57,8 @@ class DetailButtonRow: DetailRow {
 
   :param: pushableItem BankDisplayItemModel?
   */
-  init(pushableItem: BankDisplayItemModel?) {
+  convenience init(pushableItem: BankDisplayItemModel?) {
+    self.init()
     info = pushableItem
     select = {
       if let item = pushableItem {

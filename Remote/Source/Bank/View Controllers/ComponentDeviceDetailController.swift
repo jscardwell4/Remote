@@ -12,31 +12,31 @@ import MoonKit
 
 class ComponentDeviceDetailController: BankItemDetailController {
 
-  var componentDevice: ComponentDevice { return model as ComponentDevice }
+  /** loadSections */
+  override func loadSections() {
+    super.loadSections()
 
-  /**
-  initWithItem:editing:
-
-  :param: model BankableModelObject
-  */
-  override init(model: BankableModelObject) {
-    super.init(model: model)
     precondition(model is ComponentDevice, "we should have been given a component device")
+
+    let componentDevice = model as ComponentDevice
+
+    if componentDevice.managedObjectContext == nil { return }
+
+    let moc = componentDevice.managedObjectContext!
 
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////
 
-    let moc = self.componentDevice.managedObjectContext!
 
     let manufacturerSection = DetailSection(section: 0)
 
     manufacturerSection.addRow {
-      var row = DetailButtonRow(pushableItem: self.componentDevice.manufacturer)
+      var row = DetailButtonRow(pushableItem: componentDevice.manufacturer)
       row.name = "Manufacturer"
-      row.info = self.componentDevice.manufacturer
+      row.info = componentDevice.manufacturer
       row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
         (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-          self.componentDevice.manufacturer = nil
+          componentDevice.manufacturer = nil
           self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
       })]
 
@@ -45,7 +45,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
       pickerRow.createItemTitle = "⨁ New Manufacturer"
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          self.componentDevice.manufacturer = $0 as? Manufacturer
+          componentDevice.manufacturer = $0 as? Manufacturer
           self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
           self.cellDisplayingPicker?.info = $0
           pickerRow.info = $0
@@ -61,7 +61,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
           action in
-          row.info = self.componentDevice.manufacturer
+          row.info = componentDevice.manufacturer
           // re-select previous picker selection and dismiss picker
           self.dismissViewControllerAnimated(true, completion: nil)
         })
@@ -71,7 +71,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
               moc.performBlockAndWait {
                 let manufacturer = Manufacturer.createInContext(moc)
                 manufacturer.name = text
-                self.componentDevice.manufacturer = manufacturer
+                componentDevice.manufacturer = manufacturer
                 dispatch_async(dispatch_get_main_queue()) {
                   self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
                 }
@@ -83,7 +83,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         self.presentViewController(alert, animated: true, completion: nil)
       }
       pickerRow.data = sortedByName(Manufacturer.findAllInContext(moc) as? [Manufacturer] ?? [])
-      pickerRow.info = self.componentDevice.manufacturer
+      pickerRow.info = componentDevice.manufacturer
 
       row.detailPickerRow = pickerRow
 
@@ -92,16 +92,16 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow {
 
-      var row = DetailButtonRow(pushableCategory: self.componentDevice.codeSet)
+      var row = DetailButtonRow(pushableCategory: componentDevice.codeSet)
       row.name = "Code Set"
-      row.info = self.componentDevice.codeSet
+      row.info = componentDevice.codeSet
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Code Set"
       pickerRow.createItemTitle = "⨁ New Code Set"
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          self.componentDevice.codeSet = $0 as? IRCodeSet
+          componentDevice.codeSet = $0 as? IRCodeSet
           self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
           self.cellDisplayingPicker?.info = $0
           pickerRow.info = $0
@@ -117,7 +117,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
           action in
-          row.info = self.componentDevice.codeSet
+          row.info = componentDevice.codeSet
           // re-select previous picker selection and dismiss picker
           self.dismissViewControllerAnimated(true, completion: nil)
         })
@@ -127,8 +127,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
             moc.performBlockAndWait {
               let codeSet = IRCodeSet.createInContext(moc)
               codeSet.name = text
-              codeSet.manufacturer = self.componentDevice.manufacturer
-              self.componentDevice.codeSet = codeSet
+              codeSet.manufacturer = componentDevice.manufacturer
+              componentDevice.codeSet = codeSet
             }
           }
           self.dismissViewControllerAnimated(true, completion: nil)
@@ -136,8 +136,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      pickerRow.data = sortedByName(self.componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
-      pickerRow.info = self.componentDevice.codeSet
+      pickerRow.data = sortedByName(componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
+      pickerRow.info = componentDevice.codeSet
 
       row.detailPickerRow = pickerRow
 
@@ -152,10 +152,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     networkDeviceSection.addRow {
       var row = DetailButtonRow()
-      row.info = self.componentDevice.networkDevice
+      row.info = componentDevice.networkDevice
       row.name = "Network Device"
       row.select = {
-          if let networkDevice = self.componentDevice.networkDevice {
+          if let networkDevice = componentDevice.networkDevice {
             self.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
           }
         }
@@ -164,13 +164,13 @@ class ComponentDeviceDetailController: BankItemDetailController {
       pickerRow.nilItemTitle = "No Network Device"
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          self.componentDevice.networkDevice = $0 as? NetworkDevice
+          componentDevice.networkDevice = $0 as? NetworkDevice
           self.cellDisplayingPicker?.info = $0
           pickerRow.info = $0
         }
       }
       pickerRow.data = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice] ?? [])
-      pickerRow.info = self.componentDevice.networkDevice
+      pickerRow.info = componentDevice.networkDevice
 
       row.detailPickerRow = pickerRow
 
@@ -180,11 +180,11 @@ class ComponentDeviceDetailController: BankItemDetailController {
     networkDeviceSection.addRow {
       var row = DetailStepperRow()
       row.name = "Port"
-      row.info = Int(self.componentDevice.port)
+      row.info = Int(componentDevice.port)
       row.stepperMinValue = 1
       row.stepperMaxValue = 3
       row.stepperWraps = true
-      row.valueDidChange = { if let n = $0 as? NSNumber { self.componentDevice.port = n.shortValue } }
+      row.valueDidChange = { if let n = $0 as? NSNumber { componentDevice.port = n.shortValue } }
 
       return row
     }
@@ -197,7 +197,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     powerSection.addRow {
       var row = DetailButtonRow()
       row.name = "On"
-      row.info = self.componentDevice.onCommand
+      row.info = componentDevice.onCommand
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No On Command"
@@ -206,23 +206,23 @@ class ComponentDeviceDetailController: BankItemDetailController {
           if !self.didCancel {
             moc.performBlock {
               if let code = selection as? IRCode {
-                if let command = self.componentDevice.onCommand {
+                if let command = componentDevice.onCommand {
                   command.code = code
                 } else {
                   let command = SendIRCommand(inContext: moc)
                   command.code = code
-                  self.componentDevice.onCommand = command
+                  componentDevice.onCommand = command
                 }
               } else {
-                self.componentDevice.onCommand = nil
+                componentDevice.onCommand = nil
               }
             }
             self.cellDisplayingPicker?.info = selection
             pickerRow.info = selection
           }
       }
-      pickerRow.data = sortedByName(self.componentDevice.codeSet?.items as? [IRCode] ?? [])
-      pickerRow.info = self.componentDevice.onCommand?.code
+      pickerRow.data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      pickerRow.info = componentDevice.onCommand?.code
 
       row.detailPickerRow = pickerRow
 
@@ -232,7 +232,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     powerSection.addRow {
       var row = DetailButtonRow()
       row.name = "Off"
-      row.info = self.componentDevice.offCommand
+      row.info = componentDevice.offCommand
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Off Command"
@@ -241,23 +241,23 @@ class ComponentDeviceDetailController: BankItemDetailController {
           if !self.didCancel {
             moc.performBlock {
               if let code = selection as? IRCode {
-                if let command = self.componentDevice.offCommand {
+                if let command = componentDevice.offCommand {
                   command.code = code
                 } else {
                   let command = SendIRCommand(inContext: moc)
                   command.code = code
-                  self.componentDevice.offCommand = command
+                  componentDevice.offCommand = command
                 }
               } else {
-                self.componentDevice.offCommand = nil
+                componentDevice.offCommand = nil
               }
             }
             self.cellDisplayingPicker?.info = selection
             pickerRow.info = selection
           }
       }
-      pickerRow.data = sortedByName(self.componentDevice.codeSet?.items as? [IRCode] ?? [])
-      pickerRow.info = self.componentDevice.offCommand?.code
+      pickerRow.data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      pickerRow.info = componentDevice.offCommand?.code
 
       row.detailPickerRow = pickerRow
 
@@ -273,13 +273,13 @@ class ComponentDeviceDetailController: BankItemDetailController {
     inputsSection.addRow {
       var row = DetailSwitchRow()
       row.name = "Inputs Power On Device"
-      row.info = NSNumber(bool: self.componentDevice.inputPowersOn)
-      row.valueDidChange = { self.componentDevice.inputPowersOn = $0 as Bool }
+      row.info = NSNumber(bool: componentDevice.inputPowersOn)
+      row.valueDidChange = { componentDevice.inputPowersOn = $0 as Bool }
 
       return row
     }
 
-    for input in sortedByName(self.componentDevice.inputs) {
+    for input in sortedByName(componentDevice.inputs) {
       inputsSection.addRow { return DetailListRow(pushableItem: input) }
     }
 
@@ -288,29 +288,5 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     sections = [manufacturerSection, networkDeviceSection, powerSection, inputsSection]
   }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
-
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) { super.init(style: style) }
 
 }

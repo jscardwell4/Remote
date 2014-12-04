@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankItemDetailController: DetailController {
+class BankItemDetailController: NamedItemDetailController {
 
 
   var model: BankDisplayItemModel! { return item as? BankDisplayItemModel }
@@ -50,7 +50,7 @@ class BankItemDetailController: DetailController {
     context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: model.managedObjectContext!)
     let objectID = model.objectID
     let item = context.existingObjectWithID(objectID, error: nil) as BankableModelObject
-    super.init(item: item)
+    super.init(namedItem: item)
   }
 
 }

@@ -136,7 +136,7 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
                 replacementString string: String) -> Bool
   {
     switch (range.location, range.length) {
-      case let (loc, len) where loc == 0 && len <= 9: return ~/"^#[0-9a-fA-F]{\(len - 1)}$" ~= string
+      case let (loc, len) where loc == 0 && len <= 9: return ~/"^#[0-9a-fA-F]{\(min(0, len - 1))}$" ~= string
       case let (loc, len) where (1...8).contains(loc) && len <= 9 - loc: return ~/"^[0-9a-fA-F]{\(len)}$" ~= string
       default: return false
     }

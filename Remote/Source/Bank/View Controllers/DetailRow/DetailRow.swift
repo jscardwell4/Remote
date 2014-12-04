@@ -10,26 +10,42 @@ import Foundation
 import UIKit
 import MoonKit
 
-protocol DetailRow {
+class DetailRow {
 
-  var name: String? { get set }
-  var info: AnyObject? { get set }
-  var identifier: DetailCell.Identifier { get }
-  var indexPath: NSIndexPath? { get set }
-  var select: ((Void) -> Void)? { get set }
-  var delete: ((Void) -> Void)? { get set }
-  var editActions: [UITableViewRowAction]? { get set }
-  var editingStyle: UITableViewCellEditingStyle { get }
-  var deleteRemovesRow: Bool { get set }
-  var infoDataType: DetailCell.DataType { get set }
-  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)? { get set }
-  var valueDidChange: ((AnyObject?) -> Void)? { get set }
-  var valueIsValid: ((AnyObject?) -> Bool)? { get set }
-  var indentationLevel: Int { get set }
-  var indentationWidth: CGFloat { get set }
-  var backgroundColor: UIColor? { get set }
+  var name: String?
+  var info: AnyObject?
+  var indexPath: NSIndexPath?
+  var select: ((Void) -> Void)?
+  var delete: ((Void) -> Void)?
+  var editActions: [UITableViewRowAction]?
+  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
+  var deleteRemovesRow: Bool = true
+  var infoDataType: DetailCell.DataType = .StringData
+  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
+  var valueDidChange: ((AnyObject?) -> Void)?
+  var valueIsValid: ((AnyObject?) -> Bool)?
+  var indentationLevel: Int = 0
+  var indentationWidth: CGFloat = 8.0
+  var backgroundColor: UIColor?
+  var identifier: DetailCell.Identifier { return .Cell }
 
-  func configureCell(cell: DetailCell, forTableView tableView: UITableView)
+  /**
+  super.configureCell:
 
+  :param: cell DetailCell
+  */
+  func configureCell(cell: DetailCell) {
+    if let color = backgroundColor { cell.backgroundColor = color }
+    cell.indentationLevel = indentationLevel
+    cell.indentationWidth = indentationWidth
+    cell.name = name
+    cell.info = info
+    cell.infoDataType = infoDataType
+    cell.valueIsValid = valueIsValid
+    cell.valueDidChange = valueDidChange
+    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
+  }
+
+  /** init */
+  init(){}
 }
-

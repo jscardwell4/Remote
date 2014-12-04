@@ -11,66 +11,38 @@ import MoonKit
 
 class ITachDeviceDetailController: BankItemDetailController {
 
-  var iTachDevice: ITachDevice { return model as ITachDevice }
+  /** loadSections() */
+  override func loadSections() {
+    super.loadSections()
 
-  /**
-  initWithItem:editing:
-
-  :param: model BankableModelObject
-  :param: editing Bool
-  */
-  override init(model: BankableModelObject) {
-    super.init(model: model)
     precondition(model is ITachDevice, "we should have been given an itach device")
 
     /// Main section: Identifier, Make, Model, Config-URL, Revision, Pcb_PN, Pkg_Level, SDKClass
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    let iTachDevice = model as ITachDevice
+
     let mainSection = DetailSection(section: 0)
 
-    mainSection.addRow { return DetailLabelRow(label: "Identifier", value: self.iTachDevice.uniqueIdentifier)}
-    mainSection.addRow { return DetailLabelRow(label: "Make", value: self.iTachDevice.make)}
-    mainSection.addRow { return DetailLabelRow(label: "Model", value: self.iTachDevice.model)}
-    mainSection.addRow { return DetailLabelRow(label: "Config-URL", value: self.iTachDevice.configURL)}
-    mainSection.addRow { return DetailLabelRow(label: "Revision", value: self.iTachDevice.revision)}
-    mainSection.addRow { return DetailLabelRow(label: "Pcb_PN", value: self.iTachDevice.pcbPN)}
-    mainSection.addRow { return DetailLabelRow(label: "Pkg_Level", value: self.iTachDevice.pkgLevel)}
-    mainSection.addRow { return DetailLabelRow(label: "SDKClass", value: self.iTachDevice.sdkClass)}
+    mainSection.addRow { DetailLabelRow(label: "Identifier", value: iTachDevice.uniqueIdentifier)}
+    mainSection.addRow { DetailLabelRow(label: "Make", value: iTachDevice.make)}
+    mainSection.addRow { DetailLabelRow(label: "Model", value: iTachDevice.model)}
+    mainSection.addRow { DetailLabelRow(label: "Config-URL", value: iTachDevice.configURL)}
+    mainSection.addRow { DetailLabelRow(label: "Revision", value: iTachDevice.revision)}
+    mainSection.addRow { DetailLabelRow(label: "Pcb_PN", value: iTachDevice.pcbPN)}
+    mainSection.addRow { DetailLabelRow(label: "Pkg_Level", value: iTachDevice.pkgLevel)}
+    mainSection.addRow { DetailLabelRow(label: "SDKClass", value: iTachDevice.sdkClass)}
 
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////
 
     let componentDevicesSection = DetailSection(section: 1, title: "Component Devices")
-    for device in sortedByName(self.iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? []) {
-      componentDevicesSection.addRow { return DetailListRow(pushableItem: device) }
+    for device in sortedByName(iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? []) {
+      componentDevicesSection.addRow { DetailListRow(pushableItem: device) }
     }
 
     sections = [mainSection, componentDevicesSection]
 
   }
-
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) { super.init(style: style) }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 }

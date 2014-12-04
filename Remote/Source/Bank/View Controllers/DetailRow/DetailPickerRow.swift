@@ -13,28 +13,7 @@ import MoonKit
 class DetailPickerRow: DetailRow {
 
 
-  let identifier: DetailCell.Identifier = .Picker
-  var indexPath: NSIndexPath?
-  var select: ((Void) -> Void)? { get { return nil } set {} }
-  var delete: ((Void) -> Void)? { get { return nil } set {} }
-
-  var editActions: [UITableViewRowAction]?
-  var editingStyle: UITableViewCellEditingStyle { return .None }
-
-  var deleteRemovesRow = false
-
-  /// Properties that mirror `DetailCell` properties
-  ////////////////////////////////////////////////////////////////////////////////
-
-  var name: String? { get { return nil } set {} }
-  var info: AnyObject?
-  var infoDataType: DetailCell.DataType = .StringData
-  var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
-  var valueDidChange: ((AnyObject?) -> Void)?
-  var valueIsValid: ((AnyObject?) -> Bool)?
-  var indentationLevel: Int = 0
-  var indentationWidth: CGFloat = 8.0
-  var backgroundColor: UIColor?
+  override var identifier: DetailCell.Identifier { return .Picker }
 
   var nilItemTitle: String?
   var createItemTitle: String?
@@ -49,26 +28,17 @@ class DetailPickerRow: DetailRow {
 
   :param: cell DetailCell
   */
-  func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-    if !(cell is DetailPickerCell) { return }
-    if let color = backgroundColor { cell.backgroundColor = color }
-    cell.indentationLevel = indentationLevel
-    cell.indentationWidth = indentationWidth
-    cell.infoDataType = infoDataType
-    cell.valueIsValid = valueIsValid
-    cell.valueDidChange = valueDidChange
-    cell.sizeDidChange = {(cell: DetailCell) -> Void in tableView.beginUpdates(); tableView.endUpdates()}
-    cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue
-    (cell as DetailPickerCell).titleForInfo = titleForInfo
-    (cell as DetailPickerCell).nilItemTitle = nilItemTitle
-    (cell as DetailPickerCell).createItemTitle = createItemTitle
-    (cell as DetailPickerCell).didSelectItem = didSelectItem
-    (cell as DetailPickerCell).createItem = createItem
-    (cell as DetailPickerCell).data = data
-    (cell as DetailPickerCell).info = info
+  override func configureCell(cell: DetailCell) {
+    (cell as? DetailPickerCell)?.titleForInfo = titleForInfo
+    (cell as? DetailPickerCell)?.nilItemTitle = nilItemTitle
+    (cell as? DetailPickerCell)?.createItemTitle = createItemTitle
+    (cell as? DetailPickerCell)?.didSelectItem = didSelectItem
+    (cell as? DetailPickerCell)?.createItem = createItem
+    (cell as? DetailPickerCell)?.data = data
+    super.configureCell(cell)
   }
 
   /** init */
-  init() {}
+  override init() { super.init() }
 
 }
