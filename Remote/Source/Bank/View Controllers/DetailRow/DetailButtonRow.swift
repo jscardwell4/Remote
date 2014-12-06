@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailButtonRow: DetailRow {
+final class DetailButtonRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .Button }
 
@@ -24,7 +24,7 @@ class DetailButtonRow: DetailRow {
   :param: cell DetailCell
   */
   override func configureCell(cell: DetailCell) {
-    (cell as? DetailButtonCell)?.detailPickerRow = detailPickerRow
+    if detailPickerRow != nil { (cell as? DetailButtonCell)?.detailPickerRow = detailPickerRow }
     super.configureCell(cell)
     if showPickerRow != nil { (cell as? DetailButtonCell)?.showPickerRow = showPickerRow }
     if hidePickerRow != nil { (cell as? DetailButtonCell)?.hidePickerRow = hidePickerRow }

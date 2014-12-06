@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailStepperRow: DetailRow {
+final class DetailStepperRow: DetailRow {
 
-  var stepperWraps: Bool = true
-  var stepperMinValue: Double = Double(CGFloat.min)
-  var stepperMaxValue: Double = Double(CGFloat.max)
-  var stepperStepValue: Double = 1.0
+  var stepperWraps: Bool?
+  var stepperMinValue: Double?
+  var stepperMaxValue: Double?
+  var stepperStepValue: Double?
 
   override var identifier: DetailCell.Identifier { return .Stepper }
 
@@ -26,10 +26,10 @@ class DetailStepperRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    (cell as? DetailStepperCell)?.stepperWraps = stepperWraps
-    (cell as? DetailStepperCell)?.stepperMinValue = stepperMinValue
-    (cell as? DetailStepperCell)?.stepperMaxValue = stepperMaxValue
-    (cell as? DetailStepperCell)?.stepperStepValue = stepperStepValue
+    if stepperWraps != nil     { (cell as? DetailStepperCell)?.stepperWraps = stepperWraps!         }
+    if stepperMinValue != nil  { (cell as? DetailStepperCell)?.stepperMinValue = stepperMinValue!   }
+    if stepperMaxValue != nil  { (cell as? DetailStepperCell)?.stepperMaxValue = stepperMaxValue!   }
+    if stepperStepValue != nil { (cell as? DetailStepperCell)?.stepperStepValue = stepperStepValue! }
   }
 
   /** init */

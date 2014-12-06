@@ -63,7 +63,7 @@ class DetailStepperCell: DetailCell {
     get { return stepper.value }
     set {
       stepper.value = newValue as? Double ?? 0.0
-      infoLabel.text = textFromObject(newValue)
+      infoLabel.text = infoDataType.textualRepresentationForObject(newValue) as? String
     }
   }
 
@@ -82,7 +82,7 @@ class DetailStepperCell: DetailCell {
   */
   func stepperValueDidChange(sender: UIStepper) {
     valueDidChange?(sender.value)
-    infoLabel.text = textFromObject(sender.value)
+    infoLabel.text = infoDataType.textualRepresentationForObject(sender.value) as? String
   }
 
    /// MARK: Stepper settings

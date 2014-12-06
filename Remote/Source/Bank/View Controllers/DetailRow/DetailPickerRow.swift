@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailPickerRow: DetailRow {
+final class DetailPickerRow: DetailRow {
 
 
   override var identifier: DetailCell.Identifier { return .Picker }
@@ -20,7 +20,7 @@ class DetailPickerRow: DetailRow {
   var createItem: ((Void) -> Void)?
   var didSelectItem: ((AnyObject?) -> Void)?
   var titleForInfo: ((AnyObject?) -> String)?
-  var data: [AnyObject] = []
+  var data: [AnyObject]?
 
 
   /**
@@ -29,12 +29,12 @@ class DetailPickerRow: DetailRow {
   :param: cell DetailCell
   */
   override func configureCell(cell: DetailCell) {
-    (cell as? DetailPickerCell)?.titleForInfo = titleForInfo
-    (cell as? DetailPickerCell)?.nilItemTitle = nilItemTitle
-    (cell as? DetailPickerCell)?.createItemTitle = createItemTitle
-    (cell as? DetailPickerCell)?.didSelectItem = didSelectItem
-    (cell as? DetailPickerCell)?.createItem = createItem
-    (cell as? DetailPickerCell)?.data = data
+    if titleForInfo != nil    { (cell as? DetailPickerCell)?.titleForInfo = titleForInfo!       }
+    if nilItemTitle != nil    { (cell as? DetailPickerCell)?.nilItemTitle = nilItemTitle!       }
+    if createItemTitle != nil { (cell as? DetailPickerCell)?.createItemTitle = createItemTitle! }
+    if didSelectItem != nil   { (cell as? DetailPickerCell)?.didSelectItem = didSelectItem!     }
+    if createItem != nil      { (cell as? DetailPickerCell)?.createItem = createItem!           }
+    if data != nil            { (cell as? DetailPickerCell)?.data = data!                       }
     super.configureCell(cell)
   }
 

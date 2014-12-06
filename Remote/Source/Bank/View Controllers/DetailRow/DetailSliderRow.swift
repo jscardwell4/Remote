@@ -10,11 +10,12 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailSliderRow: DetailRow {
+final class DetailSliderRow: DetailRow {
 
-  var sliderMinValue: Float = 0.0
-  var sliderMaxValue: Float = 1.0
-
+  var minValue: Float?
+  var maxValue: Float?
+//  var drawThumbImage: ((Slider) -> UIImage)?
+  var generateThumbImage: ((Slider) -> UIImage)?
   override var identifier: DetailCell.Identifier { return .Slider }
 
   /**
@@ -24,8 +25,9 @@ class DetailSliderRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    (cell as? DetailSliderCell)?.sliderMinValue = sliderMinValue
-    (cell as? DetailSliderCell)?.sliderMaxValue = sliderMaxValue
+    if minValue != nil { (cell as? DetailSliderCell)?.minValue = minValue! }
+    if maxValue != nil { (cell as? DetailSliderCell)?.maxValue = maxValue! }
+    if generateThumbImage != nil { (cell as? DetailSliderCell)?.generateThumbImage = generateThumbImage!}
   }
 
   /** init */

@@ -105,7 +105,7 @@ class IRCodeDetailController: BankItemDetailController {
       row.name = "Frequency"
       row.info = NSNumber(longLong: irCode.frequency)
       row.infoDataType = .LongLongData(15000...500000)
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .Integer
       row.valueDidChange = { if let i = ($0 as? NSNumber)?.longLongValue { irCode.frequency = i } }
       return row
     }
@@ -118,7 +118,7 @@ class IRCodeDetailController: BankItemDetailController {
       row.name = "Repeat"
       row.info = NSNumber(longLong: irCode.frequency)
       row.infoDataType = .IntData(1...50)
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .Integer
       row.valueDidChange = { if let i = ($0 as? NSNumber)?.shortValue { irCode.repeatCount = i } }
       return row
     }

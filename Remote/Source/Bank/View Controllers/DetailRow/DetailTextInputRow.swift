@@ -10,45 +10,33 @@ import Foundation
 import UIKit
 import MoonKit
 
-// class DetailTextInputRow: DetailRow {
+class DetailTextInputRow: DetailRow {
 
-//   var returnKeyType: UIReturnKeyType = .Done
-//   var keyboardType: UIKeyboardType = .ASCIICapable
-//   var autocapitalizationType: UITextAutocapitalizationType = .None
-//   var autocorrectionType: UITextAutocorrectionType = .No
-//   var spellCheckingType: UITextSpellCheckingType = .No
-//   var enablesReturnKeyAutomatically: Bool = false
-//   var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
-//   var secureTextEntry: Bool = false
+  var returnKeyType: UIReturnKeyType?
+  var keyboardType: UIKeyboardType?
+  var autocapitalizationType: UITextAutocapitalizationType?
+  var autocorrectionType: UITextAutocorrectionType?
+  var spellCheckingType: UITextSpellCheckingType?
+  var enablesReturnKeyAutomatically: Bool?
+  var keyboardAppearance: UIKeyboardAppearance?
+  var secureTextEntry: Bool?
 
-//   /**
-//   configureCell:forTableView:
+  /**
+  configureCell:forTableView:
 
-//   :param: cell DetailCell
-//   :param: tableView UITableView
-//   */
-//   override func configureCell(cell: DetailCell, forTableView tableView: UITableView) {
-//   	super.configureCell(cell, forTableView: tableView)
-//     cell.name = name
-//   	if let textFieldCell = cell as? DetailTextFieldCell {
-//       textFieldCell.returnKeyType = returnKeyType
-//       textFieldCell.keyboardType = keyboardType
-//       textFieldCell.autocapitalizationType = autocapitalizationType
-//       textFieldCell.autocorrectionType = autocorrectionType
-//       textFieldCell.spellCheckingType = spellCheckingType
-//       textFieldCell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-//       textFieldCell.keyboardAppearance = keyboardAppearance
-//       textFieldCell.secureTextEntry = secureTextEntry
-//     } else if let textViewCell = cell as? DetailTextViewCell {
-//       textViewCell.returnKeyType = returnKeyType
-//       textViewCell.keyboardType = keyboardType
-//       textViewCell.autocapitalizationType = autocapitalizationType
-//       textViewCell.autocorrectionType = autocorrectionType
-//       textViewCell.spellCheckingType = spellCheckingType
-//       textViewCell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-//       textViewCell.keyboardAppearance = keyboardAppearance
-//       textViewCell.secureTextEntry = secureTextEntry
-//     }
-//   }
+  :param: cell DetailCell
+  :param: tableView UITableView
+  */
+  override func configureCell(cell: DetailCell) {
+  	super.configureCell(cell)
+    if returnKeyType != nil                 { (cell as? DetailTextInputCell)?.returnKeyType = returnKeyType!                                 }
+    if keyboardType != nil                  { (cell as? DetailTextInputCell)?.keyboardType = keyboardType!                                   }
+    if autocapitalizationType != nil        { (cell as? DetailTextInputCell)?.autocapitalizationType = autocapitalizationType!               }
+    if autocorrectionType != nil            { (cell as? DetailTextInputCell)?.autocorrectionType = autocorrectionType!                       }
+    if spellCheckingType != nil             { (cell as? DetailTextInputCell)?.spellCheckingType = spellCheckingType!                         }
+    if enablesReturnKeyAutomatically != nil { (cell as? DetailTextInputCell)?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically! }
+    if keyboardAppearance != nil            { (cell as? DetailTextInputCell)?.keyboardAppearance = keyboardAppearance!                       }
+    if secureTextEntry != nil               { (cell as? DetailTextInputCell)?.secureTextEntry = secureTextEntry!                             }
+  }
 
-// }
+}

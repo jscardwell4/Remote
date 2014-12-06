@@ -42,7 +42,7 @@ class PresetDetailController: BankItemDetailController {
       row.info = preset.attributes.role.JSONValue.titlecaseString
 
       var pickerRow = DetailPickerRow()
-      pickerRow.titleForInfo =  {($0 as String).titlecaseString}
+      pickerRow.titleForInfo = {($0 as String).titlecaseString}
       pickerRow.data = roles.map{$0.JSONValue}
       pickerRow.info = preset.attributes.role.JSONValue
       pickerRow.didSelectItem = {
@@ -103,7 +103,7 @@ class PresetDetailController: BankItemDetailController {
 
     detailsSection.addRow {
       var row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.attributes.backgroundImage)
-      row.placeholderImage = RemoteStyleKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 50.0)),
+      row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)),
                                                            color: UIColor.lightGrayColor())
       return row
     }
@@ -111,7 +111,18 @@ class PresetDetailController: BankItemDetailController {
     detailsSection.addRow {
       var row = DetailSliderRow()
       row.name = "Background Image Alpha"
+      row.minValue = 0.0
+      row.maxValue = 1.0
       row.info = preset.attributes.backgroundImageAlpha
+      row.generateThumbImage = {
+        (slider: Slider) -> UIImage in
+
+        let bounds = slider.bounds
+        let trackRect = slider.trackRectForBounds(bounds)
+        let value = slider.value
+        let thumbRect = CGRect(size: slider.currentThumbSize)
+        return DrawingKit.imageOfOpacityThumb(frame: thumbRect, opacity: CGFloat(value))
+      }
       row.valueDidChange = {
         var attributes = preset.attributes
         attributes.backgroundImageAlpha = CGFloat(($0 as NSNumber).floatValue)
@@ -139,7 +150,7 @@ class PresetDetailController: BankItemDetailController {
     var previewSection = DetailSection(section: 1)
     previewSection.addRow { DetailImageRow(previewableItem: preset) }
 
-    sections = [detailsSection, previewSection]
+    sections = [detailsSection]
 
   }
 

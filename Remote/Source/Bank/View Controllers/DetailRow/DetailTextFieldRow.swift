@@ -10,20 +10,11 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailTextFieldRow: DetailRow {
+final class DetailTextFieldRow: DetailTextInputRow {
 
   override var identifier: DetailCell.Identifier { return .TextField }
 
-  var returnKeyType: UIReturnKeyType = .Done
-  var keyboardType: UIKeyboardType = .ASCIICapable
-  var autocapitalizationType: UITextAutocapitalizationType = .None
-  var autocorrectionType: UITextAutocorrectionType = .No
-  var spellCheckingType: UITextSpellCheckingType = .No
-  var enablesReturnKeyAutomatically: Bool = false
-  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
-  var secureTextEntry: Bool = false
-
-  var shouldUseIntegerKeyboard: Bool = false
+  var inputType: DetailTextFieldCell.InputType?
   var shouldBeginEditing: ((UITextField) -> Bool)?
   var shouldEndEditing: ((UITextField) -> Bool)?
   var didBeginEditing: ((UITextField) -> Void)?
@@ -31,9 +22,10 @@ class DetailTextFieldRow: DetailRow {
   var shouldChangeCharacters: ((UITextField, NSRange, String) -> Bool)?
   var shouldClear: ((UITextField) -> Bool)?
   var shouldReturn: ((UITextField) -> Bool)?
-  var allowEmptyString: Bool = true
-  var allowableCharacters: NSCharacterSet = ~NSCharacterSet.emptyCharacterSet
+  var allowEmptyString: Bool?
+  var allowableCharacters: NSCharacterSet?
   var placeholderText: String?
+  var placeholderAttributedText: NSAttributedString?
 
   /**
   configure:
@@ -42,25 +34,18 @@ class DetailTextFieldRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    (cell as? DetailTextFieldCell)?.returnKeyType = returnKeyType
-    (cell as? DetailTextFieldCell)?.keyboardType = keyboardType
-    (cell as? DetailTextFieldCell)?.autocapitalizationType = autocapitalizationType
-    (cell as? DetailTextFieldCell)?.autocorrectionType = autocorrectionType
-    (cell as? DetailTextFieldCell)?.spellCheckingType = spellCheckingType
-    (cell as? DetailTextFieldCell)?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    (cell as? DetailTextFieldCell)?.keyboardAppearance = keyboardAppearance
-    (cell as? DetailTextFieldCell)?.secureTextEntry = secureTextEntry
-    (cell as? DetailTextFieldCell)?.shouldUseIntegerKeyboard = shouldUseIntegerKeyboard
-    (cell as? DetailTextFieldCell)?.shouldBeginEditing = shouldBeginEditing
-    (cell as? DetailTextFieldCell)?.shouldEndEditing = shouldEndEditing
-    (cell as? DetailTextFieldCell)?.didBeginEditing = didBeginEditing
-    (cell as? DetailTextFieldCell)?.didEndEditing = didEndEditing
-    (cell as? DetailTextFieldCell)?.shouldChangeCharacters = shouldChangeCharacters
-    (cell as? DetailTextFieldCell)?.shouldClear = shouldClear
-    (cell as? DetailTextFieldCell)?.shouldReturn = shouldReturn
-    (cell as? DetailTextFieldCell)?.allowableCharacters = allowableCharacters
-    (cell as? DetailTextFieldCell)?.allowEmptyString = allowEmptyString
-    (cell as? DetailTextFieldCell)?.placeholderText = placeholderText
+    if inputType != nil                 { (cell as? DetailTextFieldCell)?.inputType = inputType!                                }
+    if shouldBeginEditing != nil        { (cell as? DetailTextFieldCell)?.shouldBeginEditing = shouldBeginEditing               }
+    if shouldEndEditing != nil          { (cell as? DetailTextFieldCell)?.shouldEndEditing = shouldEndEditing                   }
+    if didBeginEditing != nil           { (cell as? DetailTextFieldCell)?.didBeginEditing = didBeginEditing                     }
+    if didEndEditing != nil             { (cell as? DetailTextFieldCell)?.didEndEditing = didEndEditing                         }
+    if shouldChangeCharacters != nil    { (cell as? DetailTextFieldCell)?.shouldChangeCharacters = shouldChangeCharacters       }
+    if shouldClear != nil               { (cell as? DetailTextFieldCell)?.shouldClear = shouldClear                             }
+    if shouldReturn != nil              { (cell as? DetailTextFieldCell)?.shouldReturn = shouldReturn                           }
+    if allowableCharacters != nil       { (cell as? DetailTextFieldCell)?.allowableCharacters = allowableCharacters!            }
+    if allowEmptyString != nil          { (cell as? DetailTextFieldCell)?.allowEmptyString = allowEmptyString!                  }
+    if placeholderText != nil           { (cell as? DetailTextFieldCell)?.placeholderText = placeholderText                     }
+    if placeholderAttributedText != nil { (cell as? DetailTextFieldCell)?.placeholderAttributedText = placeholderAttributedText }
   }
 
   /** init */

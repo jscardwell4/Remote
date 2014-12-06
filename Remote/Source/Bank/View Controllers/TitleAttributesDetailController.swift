@@ -10,42 +10,17 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(TitleAttributesDetailController)
 class TitleAttributesDetailController: DetailController {
 
   var attributesDelegate: TitleAttributesDelegate! { return item as? TitleAttributesDelegate }
 
-  /**
-  init:bundle:
+  /** loadSections */
+  override func loadSections() {
+    super.loadSections()
 
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
+    precondition(item is TitleAttributesDelegate, "we should have been given a title attributes delegate")
 
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-  override init(style: UITableViewStyle) { super.init(style: style) }
-
-  /**
-  initWithCoder:
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
-
-  /**
-  initWithAttributes:
-
-  :param: attributes TitleAttributesDelegate
-  */
-  init(attributesDelegate: TitleAttributesDelegate) {
-    super.init(item: attributesDelegate)
+    let attributesDelegate = item as TitleAttributesDelegate
 
     let contentSection = DetailSection(section: 0, title: "Content")
 
@@ -53,30 +28,38 @@ class TitleAttributesDetailController: DetailController {
     contentSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Text"
-      row.info = self.attributesDelegate.text
+      row.info = attributesDelegate.text
+      row.placeholderText = "No Text"
+      row.valueDidChange = { attributesDelegate.text = $0 as? String }
       return row
     }
 
     // iconName
-
-    let font = UIFont(awesomeFontWithSize: UIFont.labelFontSize())
-
-    // Icon
     contentSection.addRow {
       var row = DetailButtonRow()
       row.name = "Icon"
-//      row.infoForPickerSelection = {
-//        var info: NSAttributedString?
-//        if let iconName = $0 as? String {
-//          NSAttributedString(string: UIFont.fontAwesomeIconForName(iconName), attributes: [NSFontAttributeName: font])
-//        }
-//        return info
-//      }
-//      row.infoDataType = .AttributedStringData
-//      row.pickerNilSelectionTitle = "No Icon"
-//      row.pickerData = (UIFont.fontAwesomeIconNames().allObjects as [String]).sorted(<)
-//      row.pickerSelection = self.attributesDelegate.iconName
-//      row.didSelectItem = { self.attributesDelegate.iconName = $0 as? String }
+      row.infoDataType = .AttributedStringData
+      row.info = UIFont.attributedFontAwesomeIconForName(attributesDelegate.iconName) ?? "No Icon"
+      var pickerRow = DetailPickerRow()
+
+      pickerRow.nilItemTitle = "No Icon"
+      pickerRow.data = (UIFont.fontAwesomeIconNames().allObjects as [String]).sorted(<)
+      pickerRow.info = attributesDelegate.iconName
+      pickerRow.didSelectItem = { [unowned pickerRow] in
+        if !self.didCancel {
+          if let iconName = $0 as? String {
+            attributesDelegate.iconName = iconName
+            self.cellDisplayingPicker?.info = UIFont.attributedFontAwesomeIconForName(iconName)
+          } else {
+            attributesDelegate.iconName = nil
+            self.cellDisplayingPicker?.info = "No Icon"
+          }
+          pickerRow.info = $0
+        }
+      }
+
+      row.detailPickerRow = pickerRow
+
       return row
     }
 
@@ -84,11 +67,22 @@ class TitleAttributesDetailController: DetailController {
     contentSection.addRow {
       var row = DetailButtonRow()
       row.name = "Order"
-//      row.pickerData = TitleAttributes.IconTextOrderSpecification.all.map{$0.JSONValue.capitalizedString}
-//      row.pickerSelection = self.attributesDelegate.iconTextOrder.JSONValue.capitalizedString
-//      row.didSelectItem = {
-//        self.attributesDelegate.iconTextOrder = TitleAttributes.IconTextOrderSpecification(JSONValue: ($0 as String).lowercaseString)
-//      }
+      row.info = attributesDelegate.iconTextOrder.JSONValue.capitalizedString
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.data = TitleAttributes.IconTextOrderSpecification.all.map{$0.JSONValue}
+      pickerRow.info = attributesDelegate.iconTextOrder.JSONValue
+      pickerRow.titleForInfo = {($0 as String).capitalizedString}
+      pickerRow.didSelectItem = {
+        if !self.didCancel {
+          attributesDelegate.iconTextOrder = TitleAttributes.IconTextOrderSpecification(JSONValue: ($0 as String))
+          self.cellDisplayingPicker?.info = attributesDelegate.iconTextOrder.JSONValue.capitalizedString
+          pickerRow.info = attributesDelegate.iconTextOrder.JSONValue
+        }
+      }
+
+      row.detailPickerRow = pickerRow
+
       return row
     }
 
@@ -96,10 +90,11 @@ class TitleAttributesDetailController: DetailController {
 
 
     // Font
+    // TODO: Make font an editable field
     characterAttributesSection.addRow {
       var row = DetailLabelRow()
       row.name = "Font"
-      row.info = self.attributesDelegate.font?.fontDescriptor().postscriptName
+      row.info = attributesDelegate.font?.fontDescriptor().postscriptName
       return row
     }
 
@@ -107,10 +102,10 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailColorRow()
       row.name = "Foreground Color"
-      row.info = self.attributesDelegate.foregroundColor
+      row.info = attributesDelegate.foregroundColor
       row.placeholderColor = UIColor.blackColor()
       row.placeholderText = row.placeholderColor!.rgbaHexString
-      row.valueDidChange = { self.attributesDelegate.foregroundColor = $0 as? UIColor }
+      row.valueDidChange = { attributesDelegate.foregroundColor = $0 as? UIColor }
       return row
     }
 
@@ -118,8 +113,8 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailColorRow()
       row.name = "Background Color"
-      row.info = self.attributesDelegate.backgroundColor
-      row.valueDidChange = { self.attributesDelegate.backgroundColor = $0 as? UIColor }
+      row.info = attributesDelegate.backgroundColor
+      row.valueDidChange = { attributesDelegate.backgroundColor = $0 as? UIColor }
       return row
     }
 
@@ -127,8 +122,8 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailSwitchRow()
       row.name = "Ligature"
-      row.info = Bool(self.attributesDelegate.ligature != nil && self.attributesDelegate.ligature! == 1)
-      row.valueDidChange = { self.attributesDelegate.ligature = ($0 as NSNumber).boolValue ? 1 : 0 }
+      row.info = Bool(attributesDelegate.ligature != nil && attributesDelegate.ligature! == 1)
+      row.valueDidChange = { attributesDelegate.ligature = ($0 as NSNumber).boolValue ? 1 : 0 }
       return row
     }
 
@@ -138,13 +133,13 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Expansion"
-      row.info = self.attributesDelegate.expansion
+      row.info = attributesDelegate.expansion
       row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .FloatingPoint
       row.placeholderText = "No Expansion"
       row.valueDidChange = {
-        if let expansion = ($0 as? NSNumber)?.floatValue { self.attributesDelegate.expansion = expansion }
-        else { self.attributesDelegate.expansion = nil }
+        if let expansion = ($0 as? NSNumber)?.floatValue { attributesDelegate.expansion = expansion }
+        else { attributesDelegate.expansion = nil }
       }
       return row
    }
@@ -153,13 +148,13 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Obliqueness"
-      row.info = self.attributesDelegate.obliqueness
+      row.info = attributesDelegate.obliqueness
       row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .FloatingPoint
       row.placeholderText = "No Skew"
       row.valueDidChange = {
-        if let obliqueness = ($0 as? NSNumber)?.floatValue { self.attributesDelegate.obliqueness = obliqueness }
-        else { self.attributesDelegate.obliqueness = nil }
+        if let obliqueness = ($0 as? NSNumber)?.floatValue { attributesDelegate.obliqueness = obliqueness }
+        else { attributesDelegate.obliqueness = nil }
       }
       return row
    }
@@ -168,10 +163,10 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailColorRow()
       row.name = "Strikethrough Color"
-      row.info = self.attributesDelegate.strikethroughColor
-      row.placeholderColor = self.attributesDelegate.foregroundColor
+      row.info = attributesDelegate.strikethroughColor
+      row.placeholderColor = attributesDelegate.foregroundColor
       row.placeholderText = "Same as Foreground"
-      row.valueDidChange = { self.attributesDelegate.strikethroughColor = $0 as? UIColor }
+      row.valueDidChange = { attributesDelegate.strikethroughColor = $0 as? UIColor }
       return row
     }
 
@@ -179,10 +174,10 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailColorRow()
       row.name = "Underline Color"
-      row.info = self.attributesDelegate.underlineColor
-      row.placeholderColor = self.attributesDelegate.foregroundColor
+      row.info = attributesDelegate.underlineColor
+      row.placeholderColor = attributesDelegate.foregroundColor
       row.placeholderText = "Same as Foreground"
-      row.valueDidChange = { self.attributesDelegate.underlineColor = $0 as? UIColor }
+      row.valueDidChange = { attributesDelegate.underlineColor = $0 as? UIColor }
       return row
     }
 
@@ -190,13 +185,13 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Baseline Offset"
-      row.info = self.attributesDelegate.baselineOffset
+      row.info = attributesDelegate.baselineOffset
       row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .FloatingPoint
       row.placeholderText = "0"
       row.valueDidChange = {
-        if let baselineOffset = ($0 as? NSNumber)?.floatValue { self.attributesDelegate.baselineOffset = baselineOffset }
-        else { self.attributesDelegate.baselineOffset = nil }
+        if let baselineOffset = ($0 as? NSNumber)?.floatValue { attributesDelegate.baselineOffset = baselineOffset }
+        else { attributesDelegate.baselineOffset = nil }
       }
       return row
    }
@@ -205,8 +200,8 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailSwitchRow()
       row.name = "Letterpress Effect"
-      row.info = Bool(self.attributesDelegate.textEffect != nil)
-      row.valueDidChange = { self.attributesDelegate.textEffect = ($0 as NSNumber).boolValue ? "letterpress" : nil }
+      row.info = Bool(attributesDelegate.textEffect != nil)
+      row.valueDidChange = { attributesDelegate.textEffect = ($0 as NSNumber).boolValue ? "letterpress" : nil }
       return row
     }
 
@@ -214,13 +209,13 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Stroke Width"
-      row.info = self.attributesDelegate.strokeWidth
+      row.info = attributesDelegate.strokeWidth
       row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
       row.placeholderText = "No Change"
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .FloatingPoint
       row.valueDidChange = {
-        if let strokeWidth = ($0 as? NSNumber)?.floatValue { self.attributesDelegate.strokeWidth = strokeWidth }
-        else { self.attributesDelegate.strokeWidth = nil }
+        if let strokeWidth = ($0 as? NSNumber)?.floatValue { attributesDelegate.strokeWidth = strokeWidth }
+        else { attributesDelegate.strokeWidth = nil }
       }
       return row
    }
@@ -229,10 +224,10 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailColorRow()
       row.name = "Stroke Color"
-      row.info = self.attributesDelegate.strokeColor
-      row.placeholderColor = self.attributesDelegate.foregroundColor
+      row.info = attributesDelegate.strokeColor
+      row.placeholderColor = attributesDelegate.foregroundColor
       row.placeholderText = "Same as Foreground"
-      row.valueDidChange = { self.attributesDelegate.strokeColor = $0 as? UIColor }
+      row.valueDidChange = { attributesDelegate.strokeColor = $0 as? UIColor }
       return row
     }
 
@@ -240,15 +235,21 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailButtonRow()
       row.name = "Underline Style"
-//      row.pickerData = NSUnderlineStyle.all.map{$0.JSONValue.titlecaseString}
-//      row.pickerSelection = self.attributesDelegate.underlineStyle?.JSONValue.titlecaseString
-//      row.valueDidChange = {
-//        if let titlecaseValue = $0 as? String {
-//          if let style = NSUnderlineStyle(JSONValue: titlecaseValue.dashcaseString) {
-//            self.attributesDelegate.underlineStyle = style
-//          }
-//        }
-//      }
+      row.info = attributesDelegate.underlineStyle?.JSONValue.titlecaseString ?? "None"
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.data = NSUnderlineStyle.all.map{$0.JSONValue}
+      pickerRow.info = attributesDelegate.underlineStyle?.JSONValue.titlecaseString
+      pickerRow.didSelectItem = { [unowned pickerRow] in
+        if !self.didCancel {
+          attributesDelegate.underlineStyle = NSUnderlineStyle(JSONValue: $0 as? String ?? "")
+          self.cellDisplayingPicker?.info = attributesDelegate.underlineStyle?.JSONValue ?? "None"
+          pickerRow.info = $0
+        }
+      }
+
+      row.detailPickerRow = pickerRow
+
       return row
     }
 
@@ -256,15 +257,21 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailButtonRow()
       row.name = "Strikethrough Style"
-//      row.pickerData = NSUnderlineStyle.all.map{$0.JSONValue.titlecaseString}
-//      row.pickerSelection = self.attributesDelegate.strikethroughStyle?.JSONValue.titlecaseString
-//      row.valueDidChange = {
-//        if let titlecaseValue = $0 as? String {
-//          if let style = NSUnderlineStyle(JSONValue: titlecaseValue.dashcaseString) {
-//            self.attributesDelegate.strikethroughStyle = style
-//          }
-//        }
-//      }
+      row.info = attributesDelegate.strikethroughStyle?.JSONValue.titlecaseString ?? "None"
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.data = NSUnderlineStyle.all.map{$0.JSONValue}
+      pickerRow.info = attributesDelegate.strikethroughStyle?.JSONValue.titlecaseString
+      pickerRow.didSelectItem = { [unowned pickerRow] in
+        if !self.didCancel {
+          attributesDelegate.strikethroughStyle = NSUnderlineStyle(JSONValue: $0 as? String ?? "")
+          self.cellDisplayingPicker?.info = attributesDelegate.strikethroughStyle?.JSONValue ?? "None"
+          pickerRow.info = $0
+        }
+      }
+
+      row.detailPickerRow = pickerRow
+
       return row
     }
 
@@ -273,13 +280,13 @@ class TitleAttributesDetailController: DetailController {
     characterAttributesSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Kern"
-      row.info = self.attributesDelegate.kern
+      row.info = attributesDelegate.kern
       row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.shouldUseIntegerKeyboard = true
+      row.inputType = .FloatingPoint
       row.placeholderText = "Auto"
       row.valueDidChange = {
-        if let kern = ($0 as? NSNumber)?.floatValue { self.attributesDelegate.kern = kern }
-        else { self.attributesDelegate.kern = nil }
+        if let kern = ($0 as? NSNumber)?.floatValue { attributesDelegate.kern = kern }
+        else { attributesDelegate.kern = nil }
       }
       return row
     }

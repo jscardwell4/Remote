@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailListRow: DetailRow {
+final class DetailListRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .List }
 
@@ -19,9 +19,9 @@ class DetailListRow: DetailRow {
 
   :param: cell DetailCell
   */
-  override func configureCell(cell: DetailCell) {
-    super.configureCell(cell)
-  }
+  // override func configureCell(cell: DetailCell) {
+  //   super.configureCell(cell)
+  // }
 
   /**
   initWithPushableItem:hasEditingState:

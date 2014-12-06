@@ -18,6 +18,8 @@
 
 + (NSString *)fontAwesomeIconForName:(NSString *)name;
 
++ (NSAttributedString *)attributedFontAwesomeIconForName:(NSString *)name;
+
 + (NSString *)fontAwesomeNameForIcon:(NSString *)icon;
 
 @end

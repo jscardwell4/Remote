@@ -73,13 +73,10 @@ class DetailButtonCell: DetailCell {
 
   override var info: AnyObject? {
     didSet {
-      if infoDataType == .AttributedStringData {
-        buttonView.setAttributedTitle(info as? NSAttributedString, forState: .Normal)
-      } else {
-        var title: String?
-        if info == nil && detailPickerRow?.nilItemTitle != nil { title = detailPickerRow?.nilItemTitle }
-        else { title = textFromObject(info) }
-        buttonView.setTitle(title, forState:.Normal)
+      switch infoDataType.textualRepresentationForObject(info) {
+        case let text as NSAttributedString: buttonView.setAttributedTitle(text, forState: .Normal)
+        case let text as String:             buttonView.setTitle(text, forState: .Normal)
+        default:                             buttonView.setTitle(detailPickerRow?.nilItemTitle, forState: .Normal)
       }
     }
   }

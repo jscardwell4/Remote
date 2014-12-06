@@ -36,3 +36,6 @@ public protocol Summable {
   func +(lhs: Self, rhs: Self) -> Self
 }
 
+public protocol OptionalSubscriptingCollectionType: CollectionType {
+  subscript (position: Optional<Self.Index>) -> Self.Generator.Element? { get }
+}

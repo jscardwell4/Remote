@@ -4,29 +4,53 @@ import Foundation
 import UIKit
 import MoonKit
 
-var i = 3
-var blocks: [(Void) -> Int] = [{i + 1}, {i + 2}, {i + 3}]
-blocks
+var textField = UITextField(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
+textField.text = "what the fuck"
+textField.backgroundColor = UIColor.lightGrayColor()
+textField
 
-var a = Array(enumerate([{i + 1}, {i + 2}, {i + 3}]))
-var lazyBlocks = lazy(a)
+class TextField: UITextField {
+  var gutter: CGFloat = 4.0
 
-countElements(lazyBlocks.array)
+  /**
+  drawRect:
 
-var mappedLazyBlocks = lazyBlocks.map { (index, element) -> Int in
-  return index
+  :param: rect CGRect
+  */
+  override func drawTextInRect(rect: CGRect) {
+    var newRect = rect
+    newRect.origin.x = rect.origin.x + gutter
+    newRect.origin.y = rect.origin.y + gutter
+    newRect.size.width = rect.size.width - CGFloat(2) * gutter
+    newRect.size.height = rect.size.height - CGFloat(2) * gutter
+    attributedText?.drawInRect(newRect)
+  }
+
+  /**
+  alignmentRectInsets
+
+  :returns: UIEdgeInsets
+  */
+  override func alignmentRectInsets() -> UIEdgeInsets {
+    return UIEdgeInsets(top: gutter, left: gutter, bottom: gutter, right: gutter);
+  }
+
+  /**
+  intrinsicContentSize
+
+  :returns: CGSize
+  */
+  override func intrinsicContentSize() -> CGSize {
+    var size = super.intrinsicContentSize()
+    size.width += CGFloat(2) * gutter
+    size.height += CGFloat(2) * gutter
+    return size;
+  }
+
 }
 
-mappedLazyBlocks.array
-
-i = 12
-
-countElements(mappedLazyBlocks.array)
-
-mappedLazyBlocks.array
-
-mappedLazyBlocks[2]
-
-blocks.append({i - 12})
-
-mappedLazyBlocks.array
+var textField2 = TextField(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
+textField2.text = "what the fuck"
+textField2.backgroundColor = UIColor.lightGrayColor()
+textField2.subviews
+textField2

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailLabeledImageRow: DetailRow {
+final class DetailLabeledImageRow: DetailRow {
 
   var placeholderImage: UIImage?
 
@@ -22,8 +22,8 @@ class DetailLabeledImageRow: DetailRow {
   :param: cell DetailCell
   */
   override func configureCell(cell: DetailCell) {
-    (cell as? DetailLabeledImageCell)?.placeholderImage = placeholderImage
     super.configureCell(cell)
+    if placeholderImage != nil { (cell as? DetailLabeledImageCell)?.placeholderImage = placeholderImage! }
   }
 
   /**

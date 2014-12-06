@@ -35,11 +35,18 @@ class DetailListCell: DetailCell {
   override func prepareForReuse() {
     super.prepareForReuse()
     infoLabel.text = nil
+    infoLabel.attributedText = nil
   }
 
   override var info: AnyObject? {
-    get { return infoLabel.text }
-    set { infoLabel.text = textFromObject(newValue) }
+    get { return infoDataType.objectFromText(infoLabel.text, attributedText: infoLabel.attributedText) }
+    set {
+      switch infoDataType.textualRepresentationForObject(info) {
+        case let text as NSAttributedString: infoLabel.attributedText = text
+        case let text as String:             infoLabel.text = text
+        default:                             infoLabel.text = nil
+      }
+    }
   }
 
 }

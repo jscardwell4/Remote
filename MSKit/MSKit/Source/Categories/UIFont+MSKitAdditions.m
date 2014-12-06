@@ -331,6 +331,16 @@ static NSDictionary const * kFontAwesomeIconNameToUnicharIndex;
     return name;
 }
 
-+ (NSString *)fontAwesomeIconForName:(NSString *)name {return kFontAwesomeIconNameToUnicharIndex[name];}
++ (NSString *)fontAwesomeIconForName:(NSString *)name { return name ? kFontAwesomeIconNameToUnicharIndex[name] : nil; }
+
++ (NSAttributedString *)attributedFontAwesomeIconForName:(NSString *)name {
+  NSString * iconForName = [self fontAwesomeIconForName:name];
+  NSAttributedString * icon = nil;
+  if (iconForName) {
+    UIFont * font = [self fontAwesomeFontWithSize:[UIFont labelFontSize]];
+    icon = [[NSAttributedString alloc] initWithString:iconForName attributes:@{NSFontAttributeName:font}];
+  }
+  return icon;
+}
 
 @end

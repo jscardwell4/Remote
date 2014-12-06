@@ -121,6 +121,56 @@ class DetailCell: UITableViewCell {
     case StringData
     case AttributedStringData
 
+
+    /**
+    textualRepresentationForObject:
+
+    :param: object AnyObject?
+
+    :returns: AnyObject?
+    */
+    func textualRepresentationForObject(object: AnyObject?) -> AnyObject? {
+      var text: AnyObject?
+
+      if let string = object as? String { text = string }
+      else if object?.respondsToSelector("name") == true { text = object!.valueForKey("name") as? String }
+      else if object?.respondsToSelector("title") == true { text = object!.valueForKey("title") as? String }
+      else if object != nil { text = "\(object!)" }
+      switch self {
+        case .IntData, .IntegerData, .LongLongData:
+          if let number = object as? NSNumber { text = "\(number)" }
+        case .FloatData:
+          if let number = object as? NSNumber { text = String(format: "%.2f", number.floatValue) }
+        case .DoubleData:
+          if let number = object as? NSNumber { text = String(format: "%.2f", number.doubleValue) }
+        case .AttributedStringData:
+          if object is NSAttributedString? { text = object }
+        case .StringData:
+          if object != nil {
+            if object! is String { text = object }
+            else if object!.respondsToSelector("name") { text = object!.valueForKey("name") }
+            else if object!.respondsToSelector("title") { text = object!.valueForKey("title") }
+          }
+      }
+
+      return text
+    }
+
+    /**
+    objectFromText:attributedText:
+
+    :param: text String?
+    :param: attributedText NSAttributedString?
+
+    :returns: AnyObject?
+    */
+    func objectFromText(text: String?, attributedText: NSAttributedString?) -> AnyObject? {
+      switch self {
+        case .AttributedStringData: return objectFromAttributedText(attributedText)
+        default:                    return objectFromText(text)
+      }
+    }
+
     /**
     objectFromText:
 
@@ -219,17 +269,15 @@ class DetailCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  lazy var nameLabel: UILabel = {
-    let label = UILabel()
-    label.setTranslatesAutoresizingMaskIntoConstraints(false)
+  lazy var nameLabel: Label = {
+    let label = Label(autolayout: true)
     label.font      = Bank.labelFont
     label.textColor = Bank.labelColor
     return label
   }()
 
-  lazy var infoLabel: UILabel = {
-    let label = UILabel()
-    label.setTranslatesAutoresizingMaskIntoConstraints(false)
+  lazy var infoLabel: Label = {
+    let label = Label(autolayout: true)
     label.font = Bank.infoFont
     label.textColor = Bank.infoColor
     label.textAlignment = .Right
@@ -281,6 +329,20 @@ class DetailCell: UITableViewCell {
   override func setEditing(editing: Bool, animated: Bool) { isEditingState = editing }
 
   var isEditingState: Bool = false
+
+  /** prepareForReuse */
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    info = nil
+    infoDataType = .StringData
+    shouldAllowNonDataTypeValue = nil
+    valueDidChange = nil
+    valueIsValid = nil
+    sizeDidChange = nil
+    backgroundColor = UIColor.whiteColor()
+    indentationLevel = 0
+    indentationWidth = 8.0
+  }
 
 }
 

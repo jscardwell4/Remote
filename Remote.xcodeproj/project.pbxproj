@@ -460,6 +460,7 @@
 		C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
 		C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */; };
 		C2CEFF1C1A2F8FF400F3BE24 /* RemoteStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */; };
+		C2CEFF201A30BD9800F3BE24 /* DetailTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF1F1A30BD9800F3BE24 /* DetailTextInputCell.swift */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
 		C2DCAA2B1A20E87400F1B51A /* DictionaryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DCAA2A1A20E87400F1B51A /* DictionaryStorage.swift */; };
 		C2DCAA2F1A20F6BB00F1B51A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DCAA2E1A20F6BB00F1B51A /* Font.swift */; };
@@ -1198,6 +1199,7 @@
 		C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
 		C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
 		C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteStyleKit.swift; sourceTree = "<group>"; };
+		C2CEFF1F1A30BD9800F3BE24 /* DetailTextInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTextInputCell.swift; sourceTree = "<group>"; };
 		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
 		C2D635B81805D9B400960B10 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
@@ -1390,6 +1392,7 @@
 		C22BECBF19FC729500898B79 /* DetailCell */ = {
 			isa = PBXGroup;
 			children = (
+				C2CEFF1F1A30BD9800F3BE24 /* DetailTextInputCell.swift */,
 				C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */,
 				C22033C11A29447200372BCE /* DetailAttributedLabelCell.swift */,
 				C22033BB1A28F3C200372BCE /* DetailColorCell.swift */,
@@ -3092,6 +3095,7 @@
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
 				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
 				C2DCAA2F1A20F6BB00F1B51A /* Font.swift in Sources */,
+				C2CEFF201A30BD9800F3BE24 /* DetailTextInputCell.swift in Sources */,
 				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C2879F5B19DB78D60052DDB7 /* ComponentDevice.swift in Sources */,
 				C235A2E31A06E1CB0067E226 /* ButtonEditingController.swift in Sources */,

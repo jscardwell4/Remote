@@ -24,7 +24,7 @@ class DetailSliderCell: DetailCell {
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
     contentView.addSubview(sliderView)
-    let format = "|-[name]-[slider]-[label]-| :: V:|-[label]-| :: V:|-[name]-| :: V:|-[slider]-|"
+    let format = "|-[name]-[slider]-[label(==28)]-| :: V:|-[label]-| :: V:|-[name]-| :: V:|-[slider]-|"
     contentView.constrain(format, views: ["name": nameLabel, "label": infoLabel, "slider": sliderView])
   }
 
@@ -35,9 +35,10 @@ class DetailSliderCell: DetailCell {
   */
   func sliderValueDidChange(sender: UISlider) {
     valueDidChange?(sender.value)
-    infoLabel.text = textFromObject(sender.value)
+    infoLabel.text = infoDataType.textualRepresentationForObject(sender.value) as? String
   }
 
+  override var infoDataType: DataType { get { return .FloatData(minValue...maxValue)} set {} }
 
   /**
   init:
@@ -65,25 +66,34 @@ class DetailSliderCell: DetailCell {
     get { return sliderView.value }
     set {
       sliderView.value = (newValue as? NSNumber)?.floatValue ?? sliderView.minimumValue
-      infoLabel.text = textFromObject(sliderView.value)
+      infoLabel.text = infoDataType.textualRepresentationForObject(sliderView.value) as? String
     }
   }
 
-  private let sliderView: UISlider = {
-    let view = UISlider()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+  private let sliderView: Slider = {
+    let view = Slider(autolayout: true)
     view.userInteractionEnabled = false
     return view
   }()
 
-  var sliderMinValue:  Float? {
+  var minValue:  Float {
     get { return sliderView.minimumValue }
     set { sliderView.minimumValue = newValue ?? 0.0 }
   }
 
-  var sliderMaxValue:  Float? {
+  var maxValue:  Float {
     get { return sliderView.maximumValue }
     set { sliderView.maximumValue = newValue ?? 1.0 }
   }
+
+  var generateThumbImage: ((Slider) -> UIImage)? {
+    get { return sliderView.generateThumbImage }
+    set { sliderView.generateThumbImage = newValue }
+  }
+
+//  var drawThumbImage: ((Slider) -> UIImage)? {
+//    get { return sliderView.drawThumbImage }
+//    set { sliderView.drawThumbImage = newValue }
+//  }
 
 }

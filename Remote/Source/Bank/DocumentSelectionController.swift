@@ -74,50 +74,8 @@ class DocumentSelectionController: UIViewController {
     // Simple cell subclass for the table view to use
     private class DocumentCell: UITableViewCell {
 
-      // UILabel subclass because text was getting cutoff
-      private class DocumentCellLabel: UILabel {
-
-        var gutter: CGFloat = 4.0
-
-        /**
-        drawRect:
-
-        :param: rect CGRect
-        */
-        override func drawRect(rect: CGRect) {
-          var newRect = rect
-          newRect.origin.x = rect.origin.x + gutter
-          newRect.origin.y = rect.origin.y + gutter
-          newRect.size.width = rect.size.width - CGFloat(2) * gutter
-          newRect.size.height = rect.size.height - CGFloat(2) * gutter
-          attributedText.drawInRect(newRect)
-        }
-
-        /**
-        alignmentRectInsets
-
-        :returns: UIEdgeInsets
-        */
-        override func alignmentRectInsets() -> UIEdgeInsets {
-          return UIEdgeInsets(top: gutter, left: gutter, bottom: gutter, right: gutter);
-        }
-
-        /**
-        intrinsicContentSize
-
-        :returns: CGSize
-        */
-        override func intrinsicContentSize() -> CGSize {
-          var size = super.intrinsicContentSize()
-          size.width += CGFloat(2) * gutter
-          size.height += CGFloat(2) * gutter
-          return size;
-        }
-      }
-
-      lazy var label: DocumentCellLabel = {
-        let view = DocumentCellLabel()
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+      lazy var label: Label = {
+        let view = Label(autolayout: true)
         view.font = Bank.boldLabelFont
         view.textColor = Bank.infoColor
         view.backgroundColor = UIColor.clearColor()

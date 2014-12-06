@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailTextViewCell: DetailCell, UITextViewDelegate {
+final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -20,19 +20,22 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    textViewℹ.delegate = self
-    textViewℹ.returnKeyType = returnKeyType
-    textViewℹ.keyboardType = keyboardType
-    textViewℹ.autocapitalizationType = autocapitalizationType
-    textViewℹ.autocorrectionType = autocorrectionType
-    textViewℹ.spellCheckingType = spellCheckingType
-    textViewℹ.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    textViewℹ.keyboardAppearance = keyboardAppearance
-    textViewℹ.secureTextEntry = secureTextEntry
+
     contentView.addSubview(nameLabel)
-    contentView.addSubview(textViewℹ)
+
+    let textView = UITextView(autolayout: true)
+    textView.userInteractionEnabled = false
+    textView.scrollEnabled = false
+    textView.font = Bank.infoFont
+    textView.textColor = Bank.infoColor
+    textView.textContainer.widthTracksTextView = true
+    textView.delegate = self
+    contentView.addSubview(textView)
+
     let format = "|-[name]-| :: |-[text]-| :: V:|-[name]-[text]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "text": textViewℹ])
+    contentView.constrain(format, views: ["name": nameLabel, "text": textView])
+
+    textInput = textView
   }
 
   /**
@@ -42,73 +45,28 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
-  /** prepareForReuse */
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    textViewℹ.text = nil
-    nameLabel.text = nil
-  }
-
-  override var info: AnyObject? {
-    get { return infoDataType.objectFromText(textViewℹ.text) }
-    set { textViewℹ.text = textFromObject(newValue); textViewDidChange(textViewℹ) }
-  }
-
-  override var isEditingState: Bool {
-    didSet {
-      textViewℹ.userInteractionEnabled = isEditingState
-       if textViewℹ.isFirstResponder() { textViewℹ.resignFirstResponder() }
-    }
-  }
-  private let textViewℹ: UITextView = {
-    let view = UITextView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.userInteractionEnabled = false
-    view.scrollEnabled = false
-    view.font = Bank.infoFont
-    view.textColor = Bank.infoColor
-    view.textContainer.widthTracksTextView = true
-    return view
-    }()
-
-  private var beginStateText: String?  // Stores pre-edited text field/view content
+  /// Storing pre-edited text field/view content
+  private var beginStateAttributedText: NSAttributedString?
+  private var beginStateText: String?
 
   var shouldAllowReturnsInTextView: Bool = false
-
-  /// MARK: Keyboard settings
-  ////////////////////////////////////////////////////////////////////////////////
-
-  var returnKeyType: UIReturnKeyType = .Done { didSet { textViewℹ.returnKeyType = returnKeyType } }
-
-  var keyboardType: UIKeyboardType = .ASCIICapable { didSet { textViewℹ.keyboardType = keyboardType } }
-
-  var autocapitalizationType: UITextAutocapitalizationType = .None {
-    didSet {
-      textViewℹ.autocapitalizationType = autocapitalizationType
-    }
-  }
-
-  var autocorrectionType: UITextAutocorrectionType = .No { didSet { textViewℹ.autocorrectionType = autocorrectionType } }
-
-  var spellCheckingType: UITextSpellCheckingType = .No { didSet { textViewℹ.spellCheckingType = spellCheckingType } }
-
-  var enablesReturnKeyAutomatically: Bool = false {
-    didSet {
-      textViewℹ.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    }
-  }
-
-  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance {
-    didSet {
-      textViewℹ.keyboardAppearance = keyboardAppearance
-     }
-   }
-
-  var secureTextEntry: Bool = false { didSet { textViewℹ.secureTextEntry = secureTextEntry } }
-
+  var shouldBeginEditing: ((UITextView) -> Bool)?
+  var shouldEndEditing: ((UITextView) -> Bool)?
+  var didBeginEditing: ((UITextView) -> Void)?
+  var didEndEditing: ((UITextView) -> Void)?
+  var shouldChangeText: ((UITextView, NSRange, String?) -> Bool)?
 
   /// UITextViewDelegate
   ////////////////////////////////////////////////////////////////////////////////
+
+  /**
+  textViewShouldBeginEditing:
+
+  :param: textView UITextView
+
+  :returns: Bool
+  */
+  func textViewShouldBeginEditing(textView: UITextView) -> Bool { return shouldBeginEditing?(textView) ?? true }
 
   /**
   textViewDidBeginEditing:
@@ -117,6 +75,8 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   */
   func textViewDidBeginEditing(textView: UITextView) {
     beginStateText = textView.text
+    beginStateAttributedText = textView.attributedText
+    didBeginEditing?(textView)
   }
 
   /**
@@ -126,8 +86,9 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   */
   func textViewDidEndEditing(textView: UITextView) {
     if textView.text != beginStateText {
-      valueDidChange?(textView.text)
+      valueDidChange?(infoDataType.objectFromText(textView.text, attributedText: textView.attributedText))
     }
+    didEndEditing?(textView)
   }
 
   /**
@@ -138,9 +99,7 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   :returns: Bool
   */
   func textViewShouldEndEditing(textView: UITextView) -> Bool {
-    if !(valueIsValid ∅|| valueIsValid!(textView.text)) {
-      textView.text = beginStateText
-    }
+    if valueIsValid?(textView.text) == false { textView.text = beginStateText }
     return true
   }
 
@@ -154,13 +113,12 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   :returns: Bool
   */
   func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String?) -> Bool {
-    if let currentText = textView.text {
-      if (currentText as NSString).containsString("\n") && !shouldAllowReturnsInTextView {
-        textView.resignFirstResponder()
-        return false
-      }
+    if Array(text ?? "") ∋ Character("\n") && !shouldAllowReturnsInTextView {
+      textView.resignFirstResponder()
+      return false
+    } else {
+      return shouldChangeText?(textView, range, text) ??  true
     }
-    return true
   }
 
   /**
@@ -169,14 +127,15 @@ class DetailTextViewCell: DetailCell, UITextViewDelegate {
   :param: textView UITextView
   */
   func textViewDidChange(textView: UITextView) {
-    let height = textView.bounds.size.height
-    textView.sizeToFit()
-    let isFirstResponder = textView.isFirstResponder()
-    if textView.bounds.size.height != height {
-      sizeDidChange?(self)
-      if isFirstResponder {
-        textView.becomeFirstResponder()
-      }
-    }
+    MSLogDebug("")
+    // let height = textView.bounds.size.height
+    // textView.sizeToFit()
+    // let isFirstResponder = textView.isFirstResponder()
+    // if textView.bounds.size.height != height {
+    //   sizeDidChange?(self)
+    //   if isFirstResponder {
+    //     textView.becomeFirstResponder()
+    //   }
+    // }
   }
 }

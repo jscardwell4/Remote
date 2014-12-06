@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailImageRow: DetailRow {
+final class DetailImageRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .Image }
 
@@ -19,7 +19,7 @@ class DetailImageRow: DetailRow {
 
   :param: cell DetailCell
   */
-  override func configureCell(cell: DetailCell) { super.configureCell(cell) }
+  // override func configureCell(cell: DetailCell) { super.configureCell(cell) }
 
   /**
   initWithPreviewableItem:

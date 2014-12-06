@@ -44,7 +44,7 @@ class TitleAttributesDelegate: EditableItem {
 
   :returns: UIViewController
   */
-  func detailController() -> UIViewController { return TitleAttributesDetailController(attributesDelegate: self) }
+  func detailController() -> UIViewController { return TitleAttributesDetailController(item: self) }
 
   /**
   defaultSuppliedForProperty:

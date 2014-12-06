@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailLabelRow: DetailRow {
+final class DetailLabelRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .Label }
 
@@ -19,9 +19,9 @@ class DetailLabelRow: DetailRow {
 
   :param: cell DetailCell
   */
-  override func configureCell(cell: DetailCell) {
-    super.configureCell(cell)
-  }
+  // override func configureCell(cell: DetailCell) {
+  //   super.configureCell(cell)
+  // }
 
   /**
   initWithLabel:value:

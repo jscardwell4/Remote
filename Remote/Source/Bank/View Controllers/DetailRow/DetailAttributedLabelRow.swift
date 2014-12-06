@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailAttributedLabelRow: DetailRow {
+final class DetailAttributedLabelRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .AttributedLabel }
 

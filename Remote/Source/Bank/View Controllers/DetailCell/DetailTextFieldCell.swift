@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
+final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
+
+  enum InputType { case Default, Integer, HexInteger, FloatingPoint }
 
   /**
   initWithStyle:reuseIdentifier:
@@ -20,19 +22,21 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    textFieldView.delegate = self
-    textFieldView.returnKeyType = returnKeyType
-    textFieldView.keyboardType = keyboardType
-    textFieldView.autocapitalizationType = autocapitalizationType
-    textFieldView.autocorrectionType = autocorrectionType
-    textFieldView.spellCheckingType = spellCheckingType
-    textFieldView.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    textFieldView.keyboardAppearance = keyboardAppearance
-    textFieldView.secureTextEntry = secureTextEntry
+
     contentView.addSubview(nameLabel)
-    contentView.addSubview(textFieldView)
+
+    let field = UITextField(autolayout: true)
+    field.userInteractionEnabled = false
+    field.font = Bank.infoFont
+    field.textColor = Bank.infoColor
+    field.textAlignment = .Right
+    field.delegate = self
+    contentView.addSubview(field)
+
     let format = "|-[name]-[text]-| :: V:|-[name]-| :: V:|-[text]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "text": textFieldView])
+    contentView.constrain(format, views: ["name": nameLabel, "text": field])
+
+    textInput = field
   }
 
   /**
@@ -45,80 +49,62 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    textFieldView.text = nil
-    nameLabel.text = nil
+    name = nil
+    placeholderText = nil
+    placeholderAttributedText = nil
+    beginStateAttributedText = nil
+    beginStateText = nil
+    inputType = .Default
+    allowableCharacters = ~NSCharacterSet.emptyCharacterSet
+    allowEmptyString = true
+    shouldBeginEditing = nil
+    shouldEndEditing = nil
+    didBeginEditing = nil
+    didEndEditing = nil
+    shouldChangeCharacters = nil
+    shouldClear = nil
+    shouldReturn = nil
   }
 
-  override var info: AnyObject? {
-    get { if infoDataType == .AttributedStringData { return infoDataType.objectFromAttributedText(textFieldView.attributedText) }
-          else { return infoDataType.objectFromText(textFieldView.text) } }
-    set { if infoDataType == .AttributedStringData { textFieldView.attributedText = newValue as? NSAttributedString }
-          else { textFieldView.text = textFromObject(newValue) } }
-  }
-
-  override var isEditingState: Bool {
-    didSet {
-      textFieldView.userInteractionEnabled = isEditingState
-       if textFieldView.isFirstResponder() { textFieldView.resignFirstResponder() }
-    }
-  }
-
-  private let textFieldView: UITextField = {
-    let view = UITextField(frame: CGRect(x: 0, y: 0, width: 200, height: 38))
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.userInteractionEnabled = false
-    view.font = Bank.infoFont
-    view.textColor = Bank.infoColor
-    view.textAlignment = .Right
-    return view
-  }()
-
+  /// Storing pre-edited text field/view content
   private var beginStateAttributedText: NSAttributedString?
-  private var beginStateText: String?  // Stores pre-edited text field/view content
+  private var beginStateText: String?
 
-  /// MARK: Keyboard settings
-  ////////////////////////////////////////////////////////////////////////////////
-
-
-  var returnKeyType: UIReturnKeyType = .Done { didSet { textFieldView.returnKeyType = returnKeyType } }
-
-  var keyboardType: UIKeyboardType = .ASCIICapable { didSet { textFieldView.keyboardType = keyboardType } }
-
-  var autocapitalizationType: UITextAutocapitalizationType = .None {
+  var inputType: InputType = .Default {
     didSet {
-      textFieldView.autocapitalizationType = autocapitalizationType
-    }
-  }
-
-  var autocorrectionType: UITextAutocorrectionType = .No { didSet { textFieldView.autocorrectionType = autocorrectionType } }
-
-  var spellCheckingType: UITextSpellCheckingType = .No { didSet { textFieldView.spellCheckingType = spellCheckingType } }
-
-  var enablesReturnKeyAutomatically: Bool = false {
-    didSet {
-      textFieldView.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    }
-  }
-
-  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance {
-    didSet {
-      textFieldView.keyboardAppearance = keyboardAppearance
-     }
-   }
-
-  var secureTextEntry: Bool = false { didSet { textFieldView.secureTextEntry = secureTextEntry } }
-
-  var shouldUseIntegerKeyboard: Bool = false {
-    didSet {
-      textFieldView.inputView = shouldUseIntegerKeyboard
-                               ? IntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textFieldView)
-                               : nil
+      if let textField = textInput as? UITextField {
+        switch inputType {
+          case .Integer:
+            textField.inputView = IntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textField)
+          case .HexInteger:
+            textField.inputView = HexIntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 324), target: textField)
+          case .FloatingPoint:
+            textField.inputView = FloatInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 216), target: textField)
+          case .Default:
+            textField.inputView = nil
+        }
+      }
     }
   }
 
   var allowableCharacters = ~NSCharacterSet.emptyCharacterSet
   var allowEmptyString = true
-  var placeholderText: String? { didSet { textFieldView.placeholder = placeholderText } }
+
+  /// Placeholders for nil info value
+  var placeholderText: String? {
+    didSet {
+      if let textField = textInput? as? UITextField {
+        textField.placeholder = placeholderText
+      }
+    }
+  }
+  var placeholderAttributedText: NSAttributedString? {
+    didSet {
+      if let textField = textInput? as? UITextField {
+        textField.attributedPlaceholder = placeholderAttributedText
+      }
+    }
+  }
 
   /// UITextFieldDelegate
   ////////////////////////////////////////////////////////////////////////////////
@@ -213,8 +199,8 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
     if shouldEnd { shouldEnd = valueIsValid?(textField.text) ?? true }
 
     if !shouldEnd && !isEditingState {
-      if infoDataType == .AttributedStringData { textField.attributedText = beginStateAttributedText }
-      else { textField.text = beginStateText }
+      textField.text = beginStateText
+      textField.attributedText = beginStateAttributedText
       shouldEnd = true
     }
 
@@ -230,10 +216,7 @@ class DetailTextFieldCell: DetailCell, UITextFieldDelegate {
   */
   func textFieldDidEndEditing(textField: UITextField) {
     if textField.text != beginStateText {
-      var value: AnyObject?
-      if infoDataType == .AttributedStringData { value = textField.attributedText }
-      else { value = infoDataType.objectFromText(textField.text) }
-      valueDidChange?(value)
+      valueDidChange?(infoDataType.objectFromText(textField.text, attributedText: textField.attributedText))
     }
     didEndEditing?(textField)
   }

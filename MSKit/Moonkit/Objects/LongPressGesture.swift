@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-
 public class LongPressGesture: ConfiningBlockActionGesture {
 
   /// MARK: - Mimicking UILongPressGestureRecognizer

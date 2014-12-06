@@ -28,7 +28,7 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
     colorBoxWrapper.constrain("|-2-[color]-2-| :: V:|-2-[color]-2-|", views: ["color": colorBox])
     contentView.addSubview(colorBoxWrapper)
 
-    let format = "|-[name]-[text]-[color]-| :: V:|-[color]-| :: V:|-[name]-| :: V:|-[text]-|"
+    let format = "|-[name]-[text(>=90)]-[color]-| :: V:|-[color]-| :: V:|-[name]-| :: V:|-[text]-|"
     contentView.constrain(format, views: ["name": nameLabel, "text": textFieldView, "color": colorBoxWrapper])
   }
 
@@ -105,6 +105,7 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
     view.placeholder = "None"
     view.textColor = Bank.infoColor
     view.textAlignment = .Right
+    view.inputView = HexIntegerInputView(frame: CGRect(x: 0, y: 0, width: 320, height: 324), target: view)
     return view
   }()
 
@@ -120,7 +121,12 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
 
   :param: textField UITextField
   */
-  func textFieldDidBeginEditing(textField: UITextField) { beginStateText = textField.text }
+  func textFieldDidBeginEditing(textField: UITextField) {
+    var currentText = textField.text
+    beginStateText = currentText
+    if currentText?.hasPrefix("#") == true { currentText?.removeAtIndex(currentText.startIndex) }
+    textField.text = currentText
+  }
 
   /**
   textField:shouldChangeCharactersInRange:replacementString:
@@ -131,15 +137,9 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
 
   :returns: Bool
   */
-  func                  textField(textField: UITextField,
-    shouldChangeCharactersInRange range: NSRange,
-                replacementString string: String) -> Bool
+  func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
   {
-    switch (range.location, range.length) {
-      case let (loc, len) where loc == 0 && len <= 9: return ~/"^#[0-9a-fA-F]{\(min(0, len - 1))}$" ~= string
-      case let (loc, len) where (1...8).contains(loc) && len <= 9 - loc: return ~/"^[0-9a-fA-F]{\(len)}$" ~= string
-      default: return false
-    }
+    return (textField.text.characterCount - range.length + string.characterCount) <= 8
   }
 
   /**
@@ -148,11 +148,15 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
   :param: textField UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField.text != beginStateText {
-      let color = textField.text == nil ? placeholderColor : UIColor(string: textField.text!)
-      colorBox.backgroundColor = color
-      valueDidChange?(textField.text == nil ? nil : color)
+    var currentText = textField.text
+    if currentText?.isEmpty == true { currentText = nil }
+    else { currentText?.insert("#", atIndex: currentText!.startIndex) }
+
+    if currentText != beginStateText {
+      colorBox.backgroundColor = currentText == nil ? placeholderColor : UIColor(string: currentText!)
+      valueDidChange?(colorBox.backgroundColor)
     }
+    textField.text = currentText
   }
 
   /**
@@ -164,8 +168,8 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
   */
   func textFieldShouldEndEditing(textField: UITextField) -> Bool {
     var shouldEnd = true
-    if textField.text != nil && !(~/"(?:^$)|(?:^#[0-9a-fA-F]{8}$)" ~= textField.text!) { shouldEnd = false }
-    if shouldEnd { shouldEnd = valueIsValid?(textField.text) ?? true }
+    if textField.text != nil && !(~/"(?:^$)|(?:^[0-9A-F]{1,8}$)" ~= textField.text!) { shouldEnd = false }
+    if shouldEnd { shouldEnd = valueIsValid?("#" + textField.text) ?? true }
     if !shouldEnd && !isEditingState { textField.text = beginStateText; shouldEnd = true }
     return shouldEnd
   }

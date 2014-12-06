@@ -42,7 +42,7 @@ class ButtonPresetDetailController: PresetDetailController {
           row.select = {
             var attrs = attributes
             attrs.mergeWithTitleAttributes(normalAttributes)
-            let controller = TitleAttributesDetailController(attributesDelegate: TitleAttributesDelegate(titleAttributes: attrs))
+            let controller = TitleAttributesDetailController(item: TitleAttributesDelegate(titleAttributes: attrs))
             controller.title = state.titlecaseString
             if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
               nav.pushViewController(controller, animated: true)

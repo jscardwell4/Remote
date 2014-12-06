@@ -10,18 +10,15 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailTextViewRow: DetailRow {
+final class DetailTextViewRow: DetailTextInputRow {
 
   override var identifier: DetailCell.Identifier { return .TextView }
-  var returnKeyType: UIReturnKeyType = .Done
-  var keyboardType: UIKeyboardType = .ASCIICapable
-  var autocapitalizationType: UITextAutocapitalizationType = .None
-  var autocorrectionType: UITextAutocorrectionType = .No
-  var spellCheckingType: UITextSpellCheckingType = .No
-  var enablesReturnKeyAutomatically: Bool = false
-  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance
-  var secureTextEntry: Bool = false
-  var shouldAllowReturnsInTextView: Bool = false
+  var shouldAllowReturnsInTextView: Bool?
+  var shouldBeginEditing: ((UITextView) -> Bool)?
+  var shouldEndEditing: ((UITextView) -> Bool)?
+  var didBeginEditing: ((UITextView) -> Void)?
+  var didEndEditing: ((UITextView) -> Void)?
+  var shouldChangeText: ((UITextView, NSRange, String?) -> Bool)?
 
   /**
   configure:
@@ -30,15 +27,14 @@ class DetailTextViewRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    (cell as? DetailTextViewCell)?.returnKeyType = returnKeyType
-    (cell as? DetailTextViewCell)?.keyboardType = keyboardType
-    (cell as? DetailTextViewCell)?.autocapitalizationType = autocapitalizationType
-    (cell as? DetailTextViewCell)?.autocorrectionType = autocorrectionType
-    (cell as? DetailTextViewCell)?.spellCheckingType = spellCheckingType
-    (cell as? DetailTextViewCell)?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
-    (cell as? DetailTextViewCell)?.keyboardAppearance = keyboardAppearance
-    (cell as? DetailTextViewCell)?.secureTextEntry = secureTextEntry
-    (cell as? DetailTextViewCell)?.shouldAllowReturnsInTextView = shouldAllowReturnsInTextView
+    if shouldAllowReturnsInTextView != nil {
+      (cell as? DetailTextViewCell)?.shouldAllowReturnsInTextView = shouldAllowReturnsInTextView!
+    }
+    if shouldBeginEditing != nil { (cell as? DetailTextViewCell)?.shouldBeginEditing = shouldBeginEditing! }
+    if shouldEndEditing != nil   { (cell as? DetailTextViewCell)?.shouldEndEditing = shouldEndEditing!     }
+    if didBeginEditing != nil    { (cell as? DetailTextViewCell)?.didBeginEditing = didBeginEditing!       }
+    if didEndEditing != nil      { (cell as? DetailTextViewCell)?.didEndEditing = didEndEditing!           }
+    if shouldChangeText != nil   { (cell as? DetailTextViewCell)?.shouldChangeText = shouldChangeText!     }
   }
 
   /** init */

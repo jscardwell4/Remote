@@ -37,11 +37,18 @@ class DetailLabelCell: DetailCell {
     super.prepareForReuse()
     nameLabel.text = nil
     infoLabel.text = nil
+    infoLabel.attributedText = nil
   }
 
   override var info: AnyObject? {
-    get { return infoLabel.text }
-    set { infoLabel.text = textFromObject(newValue) }
+    get { return infoDataType.objectFromText(infoLabel.text, attributedText: infoLabel.attributedText) }
+    set {
+      switch infoDataType.textualRepresentationForObject(newValue) {
+        case let text as NSAttributedString: infoLabel.attributedText = text
+        case let text as String:             infoLabel.text = text
+        default:                             infoLabel.text = nil
+      }
+    }
   }
 
 }

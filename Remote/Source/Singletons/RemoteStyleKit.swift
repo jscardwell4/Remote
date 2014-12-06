@@ -10,7 +10,7 @@
 
 import UIKit
 
-public class RemoteStyleKit : NSObject {
+final public class RemoteStyleKit : NSObject {
 
   //// Drawing Methods
 
@@ -23,8 +23,12 @@ public class RemoteStyleKit : NSObject {
   public class func drawNoImage(#frame: CGRect, color: UIColor) {
 
 
+
     //// Subframes
-    let group: CGRect = CGRectMake(frame.minX + 15, frame.minY + 15, frame.width - 30, frame.height - 30)
+    let group: CGRect = CGRect(x: frame.minX + floor(frame.width * 0.00000 + 0.5),
+                               y: frame.minY + floor(frame.height * 0.00000 + 0.5),
+                               width: floor(frame.width * 1.00000 + 0.5) - floor(frame.width * 0.00000 + 0.5),
+                               height: floor(frame.height * 1.00000 + 0.5) - floor(frame.height * 0.00000 + 0.5))
 
 
     //// Group
@@ -166,6 +170,7 @@ public class RemoteStyleKit : NSObject {
     circlePath.closePath()
     color.setFill()
     circlePath.fill()
+
   }
 
   /**

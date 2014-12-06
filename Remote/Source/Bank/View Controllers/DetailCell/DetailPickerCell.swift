@@ -100,8 +100,11 @@ class DetailPickerCell: DetailCell {
       _data.removeAll(keepCapacity: true)
       if nilItemTitle != nil { _data.append(.NilItem(title: nilItemTitle!)) }
       for object in newValue {
-        if let title = titleForInfo?(object) { _data.append(.DataItem(object: object, title: title)) }
-        else if let title = textFromObject(object) { _data.append(.DataItem(object: object, title: title)) }
+        if let title = titleForInfo?(object) {
+          _data.append(.DataItem(object: object, title: title))
+        } else if let title = infoDataType.textualRepresentationForObject(object) as? String {
+          _data.append(.DataItem(object: object, title: title))
+        }
       }
       if createItemTitle != nil { _data.append(.CreateItem(title: createItemTitle!)) }
       picker.reloadAllComponents()

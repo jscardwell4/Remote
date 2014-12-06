@@ -230,9 +230,6 @@ class DetailController: UITableViewController {
       // Set picker related handlers if the cell is a button cell
       if let buttonCell = cell as? DetailButtonCell {
 
-        // Create an index path for the row after the button cell's row
-        let pickerPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
-
         // Set handler for showing picker row for this button cell
         buttonCell.showPickerRow = {
 
@@ -250,6 +247,12 @@ class DetailController: UITableViewController {
           // Ensure we actually have a picker row to insert
           if $0.detailPickerRow == nil { return false }
 
+          if let cellIndexPath = self.tableView.indexPathForCell($0) {
+
+            // Create an index path for the row after the button cell's row
+            let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
+
+
             // Insert row into our section
             self.sections[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row)
 
@@ -260,25 +263,37 @@ class DetailController: UITableViewController {
             self.cellDisplayingPicker = $0
 
             return true
+          }
+
+          return false
         }
 
         // Set handler for hiding picker row for this button cell
         buttonCell.hidePickerRow = {
 
           // Check if the cell invoking this handler is actually the cell whose picker we are showing
-          if self.cellDisplayingPicker !== $0 || !(self[pickerPath] is DetailPickerRow) { return false }
+          if self.cellDisplayingPicker !== $0 { return false }
 
-          // Remove the row from our section
-          self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
+          if let cellIndexPath = self.tableView.indexPathForCell($0) {
 
-          // Remove the row from our table
-          self.tableView.deleteRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+            // Create an index path for the row after the button cell's row
+            let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
 
-          // Update reference to cell displaying picker row
-          self.cellDisplayingPicker = nil
+            if !(self[pickerPath] is DetailPickerRow) { return false }
 
-          return true
+            // Remove the row from our section
+            self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
 
+            // Remove the row from our table
+            self.tableView.deleteRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+
+            // Update reference to cell displaying picker row
+            self.cellDisplayingPicker = nil
+            
+            return true
+          }
+
+          return false
         }
 
       } // end if

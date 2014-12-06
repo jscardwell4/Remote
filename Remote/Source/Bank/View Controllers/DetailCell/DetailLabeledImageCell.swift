@@ -10,9 +10,23 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailLabeledImageCell: DetailCell {
+final class DetailLabeledImageCell: DetailCell {
 
-  var placeholderImage: UIImage?
+  var placeholderImage: UIImage? {
+    didSet { if preview.image == nil && placeholderImage != nil { setPreviewImage(placeholderImage) } }
+  }
+
+  /**
+  setPreviewImage:
+
+  :param: image UIImage?
+  */
+  private func setPreviewImage(image: UIImage?) {
+    preview.image = image
+    if image != nil {
+      preview.contentMode = bounds.size.contains(image!.size) ? .Center : .ScaleAspectFit
+    }
+  }
 
   /**
   initWithStyle:reuseIdentifier:
@@ -43,17 +57,7 @@ class DetailLabeledImageCell: DetailCell {
   }
 
   override var info: AnyObject? {
-    didSet {
-      var previewImage = (info as? PreviewableItem)?.preview ?? info as? UIImage ?? placeholderImage
-
-      if previewImage != nil {
-        preview.image = previewImage
-        preview.contentMode = bounds.size.contains(previewImage!.size) ? .Center : .ScaleAspectFit
-      } else {
-        preview.image = nil
-        info = nil
-      }
-    }
+    didSet { setPreviewImage((info as? PreviewableItem)?.preview ?? info as? UIImage ?? placeholderImage) }
   }
 
   private let preview: UIImageView = {

@@ -10,18 +10,18 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailSwitchRow: DetailRow {
+final class DetailSwitchRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .Switch }
 
-  /**
-  configure:
+  // /**
+  // configure:
 
-  :param: cell DetailCell
-  */
-  override func configureCell(cell: DetailCell) { super.configureCell(cell) }
+  // :param: cell DetailCell
+  // */
+  // override func configureCell(cell: DetailCell) { super.configureCell(cell) }
 
-  /** init */
-  override init() { super.init() }
+  // /** init */
+  // override init() { super.init() }
 
 }

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-
 public class PanGesture: ConfiningBlockActionGesture {
 
   /// MARK: - Mimicking UIPanGestureRecognizer
