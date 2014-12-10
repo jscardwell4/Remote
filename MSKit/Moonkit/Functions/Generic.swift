@@ -13,6 +13,14 @@ import Foundation
 @inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
 @inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
 
+public func sequence<T>(v: (T,T)) -> [T] { return [v.0, v.1] }
+public func sequence<T>(v: (T,T,T)) -> [T] { return [v.0, v.1, v.2] }
+public func sequence<T>(v: (T,T,T,T)) -> [T] { return [v.0, v.1, v.2, v.3] }
+
+public func disperse2<T>(v: [T]) -> (T,T) { return (v[0], v[1]) }
+public func disperse3<T>(v: [T]) -> (T,T,T) { return (v[0], v[1], v[2]) }
+public func disperse4<T>(v: [T]) -> (T,T,T,T) { return (v[0], v[1], v[2], v[3]) }
+
 public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
   var result: [K:U] = [:]
   for (key, value) in dict { result[key] = block(key, value) }

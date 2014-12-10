@@ -1,8 +1,8 @@
 //
-//  DetailSliderCell.swift
+//  DetailTwoToneSliderCell.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 11/28/14.
+//  Created by Jason Cardwell on 12/08/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailSliderCell: DetailCell {
+class DetailTwoToneSliderCell: DetailCell {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -35,7 +35,7 @@ class DetailSliderCell: DetailCell {
   */
   func sliderValueDidChange(sender: UISlider) { valueDidChange?(sender.value) }
 
-  override var infoDataType: DataType { get { return .FloatData(minValue...maxValue)} set {} }
+  override var infoDataType: DataType { get { return .FloatData(0.0...1.0)} set {} }
 
   /**
   init:
@@ -45,7 +45,7 @@ class DetailSliderCell: DetailCell {
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /** prepareForReuse */
-  override func prepareForReuse() { super.prepareForReuse(); nameLabel.text = nil; minValue = 0.0; maxValue = 1.0 }
+  override func prepareForReuse() { super.prepareForReuse(); nameLabel.text = nil }
 
   override var isEditingState: Bool { didSet { sliderView.userInteractionEnabled = isEditingState } }
 
@@ -54,21 +54,21 @@ class DetailSliderCell: DetailCell {
     set { sliderView.value = (newValue as? NSNumber)?.floatValue ?? sliderView.minimumValue }
   }
 
-  private let sliderView: Slider = Slider(autolayout: true)
+  private let sliderView = TwoToneSlider(type: .Custom, autolayout: true)
 
-  var minValue:  Float {
-    get { return sliderView.minimumValue }
-    set { sliderView.minimumValue = newValue }
+  var generatedColorType: TwoToneSlider.GeneratedColorType {
+    get { return sliderView.generatedColorType }
+    set { sliderView.generatedColorType = newValue }
   }
 
-  var maxValue:  Float {
-    get { return sliderView.maximumValue }
-    set { sliderView.maximumValue = newValue }
+  var lowerColor: (TwoToneSlider) -> UIColor {
+    get { return sliderView.lowerColor }
+    set { sliderView.lowerColor = newValue }
   }
 
-  var sliderStyle: Slider.SliderStyle {
-    get { return sliderView.sliderStyle }
-    set { sliderView.sliderStyle = newValue }
+  var upperColor: (TwoToneSlider) -> UIColor {
+    get { return sliderView.upperColor }
+    set { sliderView.upperColor = newValue }
   }
 
 }

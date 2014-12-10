@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class IntegerInputView: InputView {
+public class IntegerInputView: TextInputView {
 
   /**
   initWithFrame:target:

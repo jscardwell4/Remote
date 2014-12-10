@@ -559,6 +559,8 @@
 		C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */; };
 		C2F853F71A2CE28700F478C3 /* DetailPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */; };
 		C2F853F91A2D2AEC00F478C3 /* DetailPickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */; };
+		C2F8C3111A361769004229FE /* DetailTwoToneSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F8C3101A361769004229FE /* DetailTwoToneSliderCell.swift */; };
+		C2F8C3151A361775004229FE /* DetailTwoToneSliderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F8C3141A361775004229FE /* DetailTwoToneSliderRow.swift */; };
 		C2F90DF31A2AF52000D574D1 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F90DF21A2AF52000D574D1 /* TitleAttributesDelegate.swift */; };
 		C2F940F019BD4C0F007B5CC1 /* ModelKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */; };
 		C2F940F819BE5E90007B5CC1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
@@ -1295,6 +1297,8 @@
 		C2F4370819BBAB3500B60FC3 /* nodes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = nodes.xml; sourceTree = "<group>"; };
 		C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailPickerCell.swift; sourceTree = "<group>"; };
 		C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailPickerRow.swift; sourceTree = "<group>"; };
+		C2F8C3101A361769004229FE /* DetailTwoToneSliderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTwoToneSliderCell.swift; sourceTree = "<group>"; };
+		C2F8C3141A361775004229FE /* DetailTwoToneSliderRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTwoToneSliderRow.swift; sourceTree = "<group>"; };
 		C2F90DF21A2AF52000D574D1 /* TitleAttributesDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAttributesDelegate.swift; sourceTree = "<group>"; };
 		C2F940EE19BD4C0F007B5CC1 /* ModelKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelKeychainWrapper.h; sourceTree = "<group>"; };
 		C2F940EF19BD4C0F007B5CC1 /* ModelKeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelKeychainWrapper.m; sourceTree = "<group>"; };
@@ -1392,6 +1396,7 @@
 		C22BECBF19FC729500898B79 /* DetailCell */ = {
 			isa = PBXGroup;
 			children = (
+				C2F8C3101A361769004229FE /* DetailTwoToneSliderCell.swift */,
 				C2CEFF1F1A30BD9800F3BE24 /* DetailTextInputCell.swift */,
 				C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */,
 				C22033C11A29447200372BCE /* DetailAttributedLabelCell.swift */,
@@ -1414,6 +1419,7 @@
 		C22BECC119FC72AE00898B79 /* DetailRow */ = {
 			isa = PBXGroup;
 			children = (
+				C2F8C3141A361775004229FE /* DetailTwoToneSliderRow.swift */,
 				C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */,
 				C22033BF1A29446800372BCE /* DetailAttributedLabelRow.swift */,
 				C22033B91A28F3B500372BCE /* DetailColorRow.swift */,
@@ -3057,6 +3063,7 @@
 				C235A2EB1A095FC40067E226 /* ConstraintManager.swift in Sources */,
 				C230DF4119DC7164008C2337 /* ISYDevice.swift in Sources */,
 				C250CEDA1A17047C006D36CF /* RemoteElement.swift in Sources */,
+				C2F8C3151A361775004229FE /* DetailTwoToneSliderRow.swift in Sources */,
 				C27DE08719E5E67F00CCB725 /* ImageDetailController.swift in Sources */,
 				C231C6411A1970C9003D2587 /* Remote.swift in Sources */,
 				C235A2E91A0819590067E226 /* RemoteElementEditingTransitioningDelegate.swift in Sources */,
@@ -3071,6 +3078,7 @@
 				C2E1639F19F079F300D1B88E /* DetailSection.swift in Sources */,
 				C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */,
 				C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */,
+				C2F8C3111A361769004229FE /* DetailTwoToneSliderCell.swift in Sources */,
 				C22033B81A28D36A00372BCE /* DetailSliderCell.swift in Sources */,
 				C289BB5819F85B64008E92C1 /* DetailListRow.swift in Sources */,
 				C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */,

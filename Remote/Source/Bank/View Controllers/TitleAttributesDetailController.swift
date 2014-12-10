@@ -22,6 +22,10 @@ class TitleAttributesDetailController: DetailController {
 
     let attributesDelegate = item as TitleAttributesDelegate
 
+    /*********************************************************************************
+      Content Section
+    *********************************************************************************/
+
     let contentSection = DetailSection(section: 0, title: "Content")
 
     // text
@@ -86,12 +90,16 @@ class TitleAttributesDetailController: DetailController {
       return row
     }
 
-    let characterAttributesSection = DetailSection(section: 1, title: "Character Attributes")
+    /*********************************************************************************
+      Font Section
+    *********************************************************************************/
+
+    let fontSection = DetailSection(section: 1, title: "Font")
 
 
     // Font
     // TODO: Make font an editable field
-    characterAttributesSection.addRow {
+    fontSection.addRow {
       var row = DetailLabelRow()
       row.name = "Font"
       row.info = attributesDelegate.font?.fontDescriptor().postscriptName
@@ -99,18 +107,17 @@ class TitleAttributesDetailController: DetailController {
     }
 
     // Foreground color
-    characterAttributesSection.addRow {
+    fontSection.addRow {
       var row = DetailColorRow()
       row.name = "Foreground Color"
       row.info = attributesDelegate.foregroundColor
       row.placeholderColor = UIColor.blackColor()
-      row.placeholderText = row.placeholderColor!.rgbaHexString
       row.valueDidChange = { attributesDelegate.foregroundColor = $0 as? UIColor }
       return row
     }
 
     // Background color
-    characterAttributesSection.addRow {
+    fontSection.addRow {
       var row = DetailColorRow()
       row.name = "Background Color"
       row.info = attributesDelegate.backgroundColor
@@ -118,8 +125,57 @@ class TitleAttributesDetailController: DetailController {
       return row
     }
 
+    /*********************************************************************************
+      Stroke Section
+    *********************************************************************************/
+
+    let strokeSection = DetailSection(section: 2, title: "Stroke")
+
+    // Stroke width - 0 = no change, positive float = stroke width, negative float = stroke and fill text
+    strokeSection.addRow {
+      var row = DetailTextFieldRow()
+      row.name = "Width"
+      if let width = attributesDelegate.strokeWidth { row.info = abs(width) }
+      row.infoDataType = .FloatData(0.0...Float.infinity)
+      row.placeholderText = "No Change"
+      row.inputType = .FloatingPoint
+      row.valueDidChange = {
+        if let strokeWidth = ($0 as? NSNumber)?.floatValue {
+          attributesDelegate.strokeWidth = attributesDelegate.strokeWidth?.isSignMinus == true ? -strokeWidth : strokeWidth
+        } else {
+          attributesDelegate.strokeWidth = nil
+        }
+      }
+      return row
+   }
+
+   strokeSection.addRow {
+     var row = DetailSwitchRow()
+     row.name = "Fill"
+     row.info = attributesDelegate.strokeFill
+     row.valueDidChange = { attributesDelegate.strokeFill = ($0 as NSNumber).boolValue }
+     return row
+   }
+
+    // Stroke color
+    strokeSection.addRow {
+      var row = DetailColorRow()
+      row.name = "Color"
+      row.info = attributesDelegate.strokeColor
+      row.placeholderColor = attributesDelegate.foregroundColor
+      row.valueDidChange = { attributesDelegate.strokeColor = $0 as? UIColor }
+      return row
+    }
+
+
+    /*********************************************************************************
+       Spacing Section
+    *********************************************************************************/
+
+    let spacingSection = DetailSection(section: 3, title: "Spacing")
+
     // Ligature
-    characterAttributesSection.addRow {
+    spacingSection.addRow {
       var row = DetailSwitchRow()
       row.name = "Ligature"
       row.info = Bool(attributesDelegate.ligature != nil && attributesDelegate.ligature! == 1)
@@ -127,10 +183,8 @@ class TitleAttributesDetailController: DetailController {
       return row
     }
 
-    // shadow
-
     // Expansion
-    characterAttributesSection.addRow {
+    spacingSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Expansion"
       row.info = attributesDelegate.expansion
@@ -144,45 +198,8 @@ class TitleAttributesDetailController: DetailController {
       return row
    }
 
-    // Obliqueness
-    characterAttributesSection.addRow {
-      var row = DetailTextFieldRow()
-      row.name = "Obliqueness"
-      row.info = attributesDelegate.obliqueness
-      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.inputType = .FloatingPoint
-      row.placeholderText = "No Skew"
-      row.valueDidChange = {
-        if let obliqueness = ($0 as? NSNumber)?.floatValue { attributesDelegate.obliqueness = obliqueness }
-        else { attributesDelegate.obliqueness = nil }
-      }
-      return row
-   }
-
-    // Strikethrough color
-    characterAttributesSection.addRow {
-      var row = DetailColorRow()
-      row.name = "Strikethrough Color"
-      row.info = attributesDelegate.strikethroughColor
-      row.placeholderColor = attributesDelegate.foregroundColor
-      row.placeholderText = "Same as Foreground"
-      row.valueDidChange = { attributesDelegate.strikethroughColor = $0 as? UIColor }
-      return row
-    }
-
-    // Underline color
-    characterAttributesSection.addRow {
-      var row = DetailColorRow()
-      row.name = "Underline Color"
-      row.info = attributesDelegate.underlineColor
-      row.placeholderColor = attributesDelegate.foregroundColor
-      row.placeholderText = "Same as Foreground"
-      row.valueDidChange = { attributesDelegate.underlineColor = $0 as? UIColor }
-      return row
-    }
-
-    // Baseline offset
-    characterAttributesSection.addRow {
+   // Baseline offset
+    spacingSection.addRow {
       var row = DetailTextFieldRow()
       row.name = "Baseline Offset"
       row.info = attributesDelegate.baselineOffset
@@ -196,45 +213,61 @@ class TitleAttributesDetailController: DetailController {
       return row
    }
 
+    // Kern
+    spacingSection.addRow {
+      var row = DetailTextFieldRow()
+      row.name = "Kern"
+      row.info = attributesDelegate.kern
+      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
+      row.inputType = .FloatingPoint
+      row.placeholderText = "Auto"
+      row.valueDidChange = {
+        if let kern = ($0 as? NSNumber)?.floatValue { attributesDelegate.kern = kern }
+        else { attributesDelegate.kern = nil }
+      }
+      return row
+    }
+
+    /*********************************************************************************
+      Style Section
+    *********************************************************************************/
+
+    let styleSection = DetailSection(section: 4, title: "Style")
+
+     // Obliqueness
+    styleSection.addRow {
+      var row = DetailTextFieldRow()
+      row.name = "Obliqueness"
+      row.info = attributesDelegate.obliqueness
+      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
+      row.inputType = .FloatingPoint
+      row.placeholderText = "No Skew"
+      row.valueDidChange = {
+        if let obliqueness = ($0 as? NSNumber)?.floatValue { attributesDelegate.obliqueness = obliqueness }
+        else { attributesDelegate.obliqueness = nil }
+      }
+      return row
+   }
+
     // Text effect
-    characterAttributesSection.addRow {
+    styleSection.addRow {
       var row = DetailSwitchRow()
-      row.name = "Letterpress Effect"
+      row.name = "Letterpress"
       row.info = Bool(attributesDelegate.textEffect != nil)
       row.valueDidChange = { attributesDelegate.textEffect = ($0 as NSNumber).boolValue ? "letterpress" : nil }
       return row
     }
 
-    // Stroke width - 0 = no change, positive float = stroke width, negative float = stroke and fill text
-    characterAttributesSection.addRow {
-      var row = DetailTextFieldRow()
-      row.name = "Stroke Width"
-      row.info = attributesDelegate.strokeWidth
-      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.placeholderText = "No Change"
-      row.inputType = .FloatingPoint
-      row.valueDidChange = {
-        if let strokeWidth = ($0 as? NSNumber)?.floatValue { attributesDelegate.strokeWidth = strokeWidth }
-        else { attributesDelegate.strokeWidth = nil }
-      }
-      return row
-   }
+    /*********************************************************************************
+      Underline Section
+    *********************************************************************************/
 
-    // Stroke color
-    characterAttributesSection.addRow {
-      var row = DetailColorRow()
-      row.name = "Stroke Color"
-      row.info = attributesDelegate.strokeColor
-      row.placeholderColor = attributesDelegate.foregroundColor
-      row.placeholderText = "Same as Foreground"
-      row.valueDidChange = { attributesDelegate.strokeColor = $0 as? UIColor }
-      return row
-    }
+    let underlineSection = DetailSection(section: 5, title: "Underline")
 
     // underlineStyle
-    characterAttributesSection.addRow {
+    underlineSection.addRow {
       var row = DetailButtonRow()
-      row.name = "Underline Style"
+      row.name = "Style"
       row.info = attributesDelegate.underlineStyle?.JSONValue.titlecaseString ?? "None"
 
       var pickerRow = DetailPickerRow()
@@ -253,10 +286,26 @@ class TitleAttributesDetailController: DetailController {
       return row
     }
 
+    // Underline color
+    underlineSection.addRow {
+      var row = DetailColorRow()
+      row.name = "Color"
+      row.info = attributesDelegate.underlineColor
+      row.placeholderColor = attributesDelegate.foregroundColor
+      row.valueDidChange = { attributesDelegate.underlineColor = $0 as? UIColor }
+      return row
+    }
+
+    /*********************************************************************************
+      Strikethrough Section
+    *********************************************************************************/
+
+    let strikethroughSection = DetailSection(section: 6, title: "Strikethrough")
+
     // strikethroughStyle
-    characterAttributesSection.addRow {
+    strikethroughSection.addRow {
       var row = DetailButtonRow()
-      row.name = "Strikethrough Style"
+      row.name = "Style"
       row.info = attributesDelegate.strikethroughStyle?.JSONValue.titlecaseString ?? "None"
 
       var pickerRow = DetailPickerRow()
@@ -275,19 +324,13 @@ class TitleAttributesDetailController: DetailController {
       return row
     }
 
-
-    // Kern
-    characterAttributesSection.addRow {
-      var row = DetailTextFieldRow()
-      row.name = "Kern"
-      row.info = attributesDelegate.kern
-      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.inputType = .FloatingPoint
-      row.placeholderText = "Auto"
-      row.valueDidChange = {
-        if let kern = ($0 as? NSNumber)?.floatValue { attributesDelegate.kern = kern }
-        else { attributesDelegate.kern = nil }
-      }
+    // Strikethrough color
+    strikethroughSection.addRow {
+      var row = DetailColorRow()
+      row.name = "Color"
+      row.info = attributesDelegate.strikethroughColor
+      row.placeholderColor = attributesDelegate.foregroundColor
+      row.valueDidChange = { attributesDelegate.strikethroughColor = $0 as? UIColor }
       return row
     }
 
@@ -306,7 +349,7 @@ class TitleAttributesDetailController: DetailController {
     // hyphenationFactor        TextField
     // lineBreakMode            Button
 
-    sections = [contentSection, characterAttributesSection]
+    sections = [contentSection, fontSection, strokeSection, spacingSection, styleSection, underlineSection, strikethroughSection]
   }
 
 }

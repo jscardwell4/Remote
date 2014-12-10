@@ -12,7 +12,6 @@ import MoonKit
 
 final class DetailColorRow: DetailRow {
 
-  var placeholderText: String?
   var placeholderColor: UIColor?
 
   override var identifier: DetailCell.Identifier { return .Color }
@@ -24,7 +23,6 @@ final class DetailColorRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if placeholderText != nil  { (cell as? DetailColorCell)?.placeholderText = placeholderText!   }
     if placeholderColor != nil { (cell as? DetailColorCell)?.placeholderColor = placeholderColor! }
   }
 

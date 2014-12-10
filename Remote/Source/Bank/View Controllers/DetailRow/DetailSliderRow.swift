@@ -14,8 +14,7 @@ final class DetailSliderRow: DetailRow {
 
   var minValue: Float?
   var maxValue: Float?
-//  var drawThumbImage: ((Slider) -> UIImage)?
-  var generateThumbImage: ((Slider) -> UIImage)?
+  var sliderStyle: Slider.SliderStyle?
   override var identifier: DetailCell.Identifier { return .Slider }
 
   /**
@@ -25,9 +24,9 @@ final class DetailSliderRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if minValue != nil { (cell as? DetailSliderCell)?.minValue = minValue! }
-    if maxValue != nil { (cell as? DetailSliderCell)?.maxValue = maxValue! }
-    if generateThumbImage != nil { (cell as? DetailSliderCell)?.generateThumbImage = generateThumbImage!}
+    if minValue != nil           { (cell as? DetailSliderCell)?.minValue = minValue!                    }
+    if maxValue != nil           { (cell as? DetailSliderCell)?.maxValue = maxValue!                    }
+    if sliderStyle != nil { (cell as? DetailSliderCell)?.sliderStyle = sliderStyle!}
   }
 
   /** init */

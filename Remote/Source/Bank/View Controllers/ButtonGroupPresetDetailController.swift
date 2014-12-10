@@ -26,8 +26,8 @@ class ButtonGroupPresetDetailController: PresetDetailController {
     buttonGroupAttributesSection.addRow {
       var row = DetailSwitchRow()
       row.name = "Autohide"
-      row.info = NSNumber(bool: preset.attributes.autohide ?? false)
-      row.valueDidChange = { preset.attributes.autohide = ($0 as? NSNumber)?.boolValue }
+      row.info = NSNumber(bool: preset.autohide ?? false)
+      row.valueDidChange = { preset.autohide = ($0 as? NSNumber)?.boolValue }
 
       return row
     }
@@ -35,8 +35,8 @@ class ButtonGroupPresetDetailController: PresetDetailController {
     // buttonGroupAttributesSection.addRow {
     //   let row = DetailTextFieldRow()
     //   row.name = "Label"
-    //   row.info =  self.preset.attributes.label?.string
-    //   row.valueDidChange = { if let s = $0 as? String { self.preset.attributes.label = NSAttributedString(string: s) } }
+    //   row.info =  self.preset.label?.string
+    //   row.valueDidChange = { if let s = $0 as? String { self.preset.label = NSAttributedString(string: s) } }
 
     //   return row
     // }

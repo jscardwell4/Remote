@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class FloatInputView: InputView {
+public class FloatInputView: TextInputView {
 
   /**
   initWithFrame:target:

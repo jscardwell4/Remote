@@ -19,15 +19,15 @@ class RemotePresetDetailController: PresetDetailController {
     precondition(model is Preset, "we should have been given a preset")
 
     let preset = model as Preset
-    
+
 
     if let detailsSection = sections.first {
 
       detailsSection.addRow {
         var row = DetailSwitchRow()
         row.name = "Top Bar Hidden"
-        row.info = NSNumber(bool: preset.attributes.topBarHidden ?? false)
-        row.valueDidChange = { preset.attributes.topBarHidden = ($0 as? NSNumber)?.boolValue }
+        row.info = NSNumber(bool: preset.topBarHidden ?? false)
+        row.valueDidChange = { preset.topBarHidden = ($0 as? NSNumber)?.boolValue }
 
         return row
       }

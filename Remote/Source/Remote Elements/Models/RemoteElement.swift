@@ -16,18 +16,18 @@ class RemoteElement: NamedModelObject {
   /**
   remoteElementFromPreset:context:
 
-  :param: attributes PresetAttributes
+  :param: preset Preset
   :param: context NSManagedObjectContext
 
   :returns: RemoteElement?
   */
-  class func remoteElementFromPreset(attributes: PresetAttributes, context: NSManagedObjectContext) -> RemoteElement? {
+  class func remoteElementFromPreset(preset: Preset, context: NSManagedObjectContext) -> RemoteElement? {
     var element: RemoteElement?
 
-    switch attributes.baseType {
-      case .Remote:      element = Remote(attributes: attributes, context: context)
-      case .ButtonGroup: element = ButtonGroup(attributes: attributes, context: context)
-      case .Button:      element = Button(attributes: attributes, context: context)
+    switch preset.baseType {
+      case .Remote:      element = Remote(preset: preset, context: context)
+      case .ButtonGroup: element = ButtonGroup(preset: preset, context: context)
+      case .Button:      element = Button(preset: preset, context: context)
       default: break
     }
 
@@ -37,25 +37,25 @@ class RemoteElement: NamedModelObject {
   /**
   initWithAttributes:context:
 
-  :param: attributes PresetAttributes
+  :param: preset Preset
   :param: context NSManagedObjectContext
   */
-  convenience init(attributes: PresetAttributes, context: NSManagedObjectContext) {
+  convenience init(preset: Preset, context: NSManagedObjectContext) {
     self.init(context: context)
-    role = attributes.role
-    shape = attributes.shape
-    style = attributes.style
-    setBackgroundColor(attributes.backgroundColor, forMode: RemoteElement.DefaultMode)
-    setBackgroundImage(attributes.backgroundImage, forMode: RemoteElement.DefaultMode)
-    setBackgroundImageAlpha(attributes.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
+    role = preset.role
+    shape = preset.shape
+    style = preset.style
+    setBackgroundColor(preset.backgroundColor, forMode: RemoteElement.DefaultMode)
+    setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
+    setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
     var elements: OrderedSet<RemoteElement> = []
-    if let elementsData = attributes.subelements {
-      for subelementAttributes in elementsData {
-        if let element = RemoteElement.remoteElementFromPreset(subelementAttributes, context: context) { elements.append(element) }
-      }
+    if let elementsData = preset.subelements {
+//      for subelementAttributes in elementsData {
+//        if let element = RemoteElement.remoteElementFromPreset(subelementAttributes, context: context) { elements.append(element) }
+//      }
     }
     childElements = elements
-    if let constraints = attributes.constraints {
+    if let constraints = preset.constraints {
       constraintManager.setConstraintsFromString(constraints)
     }
   }

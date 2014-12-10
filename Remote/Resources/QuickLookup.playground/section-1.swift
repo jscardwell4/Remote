@@ -4,53 +4,32 @@ import Foundation
 import UIKit
 import MoonKit
 
-var textField = UITextField(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
-textField.text = "what the fuck"
-textField.backgroundColor = UIColor.lightGrayColor()
-textField
+let wtf = (1, 2, 3, 4)
 
-class TextField: UITextField {
-  var gutter: CGFloat = 4.0
+func sequence<T>(v: (T,T)) -> [T] { return [v.0, v.1] }
+func sequence<T>(v: (T,T,T)) -> [T] { return [v.0, v.1, v.2] }
+func sequence<T>(v: (T,T,T,T)) -> [T] { return [v.0, v.1, v.2, v.3] }
 
-  /**
-  drawRect:
 
-  :param: rect CGRect
-  */
-  override func drawTextInRect(rect: CGRect) {
-    var newRect = rect
-    newRect.origin.x = rect.origin.x + gutter
-    newRect.origin.y = rect.origin.y + gutter
-    newRect.size.width = rect.size.width - CGFloat(2) * gutter
-    newRect.size.height = rect.size.height - CGFloat(2) * gutter
-    attributedText?.drawInRect(newRect)
+
+let wtfArray = sequence(wtf)
+
+wtfArray
+wtfArray.count
+
+func iterate<C,R>(t:C, block:(String,Any)->R) {
+  let mirror = reflect(t)
+  for i in 0..<mirror.count {
+    block(mirror[i].0, mirror[i].1.value)
   }
-
-  /**
-  alignmentRectInsets
-
-  :returns: UIEdgeInsets
-  */
-  override func alignmentRectInsets() -> UIEdgeInsets {
-    return UIEdgeInsets(top: gutter, left: gutter, bottom: gutter, right: gutter);
-  }
-
-  /**
-  intrinsicContentSize
-
-  :returns: CGSize
-  */
-  override func intrinsicContentSize() -> CGSize {
-    var size = super.intrinsicContentSize()
-    size.width += CGFloat(2) * gutter
-    size.height += CGFloat(2) * gutter
-    return size;
-  }
-
 }
 
-var textField2 = TextField(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
-textField2.text = "what the fuck"
-textField2.backgroundColor = UIColor.lightGrayColor()
-textField2.subviews
-textField2
+iterate(wtf) { println("\($0) => \($1)") }
+
+let mirror = reflect(wtf)
+
+mirror.count
+
+mirror[0].1.value is Int
+
+

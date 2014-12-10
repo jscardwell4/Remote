@@ -313,4 +313,40 @@ extension UIColor {
     }
   }
 
+  /**
+  colorWithRed:
+
+  :param: red CGFloat
+
+  :returns: UIColor
+  */
+  public func colorWithRed(red: CGFloat) -> UIColor {
+    if let rgba = self.rgba { return UIColor(red: red, green: rgba.g, blue: rgba.b, alpha: rgba.a) }
+    else { return UIColor(red: red, green: 0.0, blue: 0.0, alpha: 1.0) }
+  }
+
+  /**
+  colorWithGreen:
+
+  :param: green CGFloat
+
+  :returns: UIColor
+  */
+  public func colorWithGreen(green: CGFloat) -> UIColor {
+    if let rgba = self.rgba { return UIColor(red: rgba.r, green: green, blue: rgba.b, alpha: rgba.a) }
+    else { return UIColor(red: 0.0, green: green, blue: 0.0, alpha: 1.0) }
+  }
+
+  /**
+  colorWithBlue:
+
+  :param: blue CGFloat
+
+  :returns: UIColor
+  */
+  public func colorWithBlue(blue: CGFloat) -> UIColor {
+    if let rgba = self.rgba { return UIColor(red: rgba.r, green: rgba.g, blue: blue, alpha: rgba.a) }
+    else { return UIColor(red: 0.0, green: 0.0, blue: blue, alpha: 1.0) }
+  }
+
 }

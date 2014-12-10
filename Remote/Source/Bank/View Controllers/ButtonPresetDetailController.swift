@@ -10,7 +10,13 @@ import Foundation
 import UIKit
 import MoonKit
 
+
+// TODO: Swipe to delete title rows
 class ButtonPresetDetailController: PresetDetailController {
+
+  private var pushedTitleAttributesKey: String?
+  private var pushedTitleAttributesRow: DetailRow?
+
 
   /** loadSections */
   override func loadSections() {
@@ -23,38 +29,55 @@ class ButtonPresetDetailController: PresetDetailController {
 
     let titlesSection = DetailSection(section: 1, title: "Titles")
 
-    if let titles = preset.attributes.titles {
-      var attributesByState: OrderedDictionary<String, TitleAttributes> = [:]
-      for (state, values) in titles { attributesByState[state] = TitleAttributes(storage: values) }
-      attributesByState.sort { $0 == "normal" ? true : ($1 == "normal" ? false : $0 < $1) }
-      var fillerAttributes: MSDictionary?
+    if let titles = preset.titles {
+
       let backgroundColor = UIColor(white: 0.35, alpha: 0.75)
 
-      var normalAttributes: TitleAttributes? = attributesByState["normal"]
-      if normalAttributes != nil { fillerAttributes = normalAttributes!.attributes }
+      var attributesByState = OrderedDictionary(titles).map{TitleAttributes(storage: $1)}
+      attributesByState.sort{$0 == "normal" ? true : ($1 == "normal" ? false : $0 < $1)}
 
       for (state, attributes) in attributesByState {
+
         titlesSection.addRow {
+
           var row = DetailAttributedLabelRow()
           row.name = state.titlecaseString
-          row.info = attributes.stringWithFillers(fillerAttributes)
+          row.info = attributes.stringWithFillers(attributesByState["normal"]?.attributes)
           row.backgroundColor = backgroundColor
+
           row.select = {
-            var attrs = attributes
-            attrs.mergeWithTitleAttributes(normalAttributes)
-            let controller = TitleAttributesDetailController(item: TitleAttributesDelegate(titleAttributes: attrs))
+
+            let attributesDelegate = TitleAttributesDelegate(titleAttributes: attributes)
+            attributesDelegate.observer = self
+
+            self.pushedTitleAttributesKey = state
+            self.pushedTitleAttributesRow = row
+
+            let controller = TitleAttributesDetailController(item: attributesDelegate)
             controller.title = state.titlecaseString
+
             if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
               nav.pushViewController(controller, animated: true)
             }
+
           }
+
+          row.delete = {
+            var titles = preset.titles!
+            titles[state] = nil
+            preset.titles = titles
+          }
+          round(2.0)
           return row
+
         }
 
       }
+
     }
 
     sections.append(titlesSection)
+
     // TODO: icons
     // TODO: images
     // TODO: backgroundColors
@@ -63,6 +86,56 @@ class ButtonPresetDetailController: PresetDetailController {
     // TODO: imageEdgeInsets
     // TODO: command
 
+  }
+
+}
+
+extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
+
+  /**
+  saveInvokedForTitleAttributesDelegate:
+
+  :param: titleAttributesDelegate TitleAttributesDelegate
+  */
+  func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
+    assert(pushedTitleAttributesKey != nil)
+    let preset = model as Preset
+    var presetAttributes = preset
+    if var titles = presetAttributes.titles {
+      titles[pushedTitleAttributesKey!] = titleAttributesDelegate.titleAttributes.JSONValue
+      presetAttributes.titles = titles
+    }
+    preset.save()
+    reloadRowsAtIndexPaths([pushedTitleAttributesRow!.indexPath!])
+  }
+
+  /**
+  deleteInvokedForTitleAttributesDelegate:
+
+  :param: titleAttributesDelegate TitleAttributesDelegate
+  */
+  func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
+    assert(pushedTitleAttributesKey != nil)
+    let preset = model as Preset
+    var presetAttributes = preset
+    if var titles = presetAttributes.titles {
+      titles[pushedTitleAttributesKey!] = nil
+      presetAttributes.titles = titles
+    }
+    preset.save()
+
+    let indexPath = pushedTitleAttributesRow!.indexPath!
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+  }
+
+  /**
+  rollbackInvokedForTitleAttributesDelegate:
+
+  :param: titleAttributesDelegate TitleAttributesDelegate
+  */
+  func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
+    // TODO: Double check we don't need to rollback the preset here
   }
 
 }

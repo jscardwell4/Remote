@@ -9,20 +9,18 @@
 import Foundation
 
 public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
-  public typealias KeyType = Key
-  public typealias ValueType = Value
-  public typealias Element = (KeyType, ValueType)
-  public typealias Index = DictionaryIndex<KeyType, ValueType>
 
-  private var storage: [KeyType:ValueType]
-  private var indexKeys: [KeyType]
+  public typealias Index = DictionaryIndex<Key, Value>
+
+  private var storage: [Key:Value]
+  private var indexKeys: [Key]
   private var printableKeys = false
 
   public var userInfo: [String:AnyObject]?
   public var count: Int { return indexKeys.count }
   public var isEmpty: Bool { return indexKeys.isEmpty }
-  public var keys: [KeyType] { return indexKeys }
-  public var values: [ValueType] { return indexKeys.map { self.storage[$0]! } }
+  public var keys: [Key] { return indexKeys }
+  public var values: [Value] { return indexKeys.map { self.storage[$0]! } }
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -36,8 +34,8 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   :param: minimumCapacity Int = 4
   */
   public init(minimumCapacity: Int = 4) {
-    storage = [KeyType:ValueType](minimumCapacity: minimumCapacity)
-    indexKeys = [KeyType]()
+    storage = [Key:Value](minimumCapacity: minimumCapacity)
+    indexKeys = [Key]()
     indexKeys.reserveCapacity(minimumCapacity)
   }
 
@@ -47,8 +45,8 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   :param: minimumCapacity Int = 4
   */
   public init<K,V where K:Printable>(minimumCapacity: Int = 4) {
-    storage = [KeyType:ValueType](minimumCapacity: minimumCapacity)
-    indexKeys = [KeyType]()
+    storage = [Key:Value](minimumCapacity: minimumCapacity)
+    indexKeys = [Key]()
     indexKeys.reserveCapacity(minimumCapacity)
     printableKeys = true
   }
@@ -63,9 +61,9 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   init:
 
-  :param: dict [KeyType
+  :param: dict [Key
   */
-  public init(_ dict:[KeyType:ValueType]) {
+  public init(_ dict:[Key:Value]) {
     storage = dict
     indexKeys = Array(dict.keys)
     printableKeys = true
@@ -74,10 +72,10 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   initWithKeys:values:
 
-  :param: keys [KeyType]
-  :param: values [ValueType]
+  :param: keys [Key]
+  :param: values [Value]
   */
-  public init(keys:[KeyType], values:[ValueType]) {
+  public init(keys:[Key], values:[Value]) {
     self.init(minimumCapacity: keys.count)
     if keys.count == values.count {
       indexKeys += keys
@@ -112,36 +110,36 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  public var startIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys[0])! }
-  public var endIndex: DictionaryIndex<KeyType, ValueType> { return storage.indexForKey(indexKeys.last!)! }
+  public var startIndex: DictionaryIndex<Key, Value> { return storage.indexForKey(indexKeys[0])! }
+  public var endIndex: DictionaryIndex<Key, Value> { return storage.indexForKey(indexKeys.last!)! }
 
   /**
   indexForKey:
 
-  :param: key KeyType
+  :param: key Key
 
-  :returns: DictionaryIndex<KeyType, ValueType>?
+  :returns: DictionaryIndex<Key, Value>?
   */
-  public func indexForKey(key: KeyType) -> DictionaryIndex<KeyType, ValueType>? { return storage.indexForKey(key) }
+  public func indexForKey(key: Key) -> DictionaryIndex<Key, Value>? { return storage.indexForKey(key) }
 
   /**
   subscript:
 
-  :param: key KeyType
+  :param: key Key
 
-  :returns: ValueType?
+  :returns: Value?
   */
-  public subscript (key: KeyType) -> ValueType? { get { return storage[key] } set { setValue(newValue, forKey: key) } }
+  public subscript (key: Key) -> Value? { get { return storage[key] } set { setValue(newValue, forKey: key) } }
 
   /**
-  subscript:ValueType>:
+  subscript:Value>:
 
-  :param: i DictionaryIndex<KeyType
-  :param: ValueType>
+  :param: i DictionaryIndex<Key
+  :param: Value>
 
-  :returns: (KeyType, ValueType)
+  :returns: (Key, Value)
   */
-  public subscript (i: DictionaryIndex<KeyType, ValueType>) -> (KeyType, ValueType) { return storage[i] }
+  public subscript (i: DictionaryIndex<Key, Value>) -> (Key, Value) { return storage[i] }
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -151,10 +149,10 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   setValue:forKey:
 
-  :param: value ValueType
-  :param: key KeyType
+  :param: value Value
+  :param: key Key
   */
-  public mutating func setValue(value: ValueType?, forKey key: KeyType) {
+  public mutating func setValue(value: Value?, forKey key: Key) {
     if let v = value {
       if !contains(indexKeys, key) { indexKeys.append(key) }
       storage[key] = value
@@ -167,25 +165,25 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   updateValue:forKey:
 
-  :param: value ValueType
-  :param: key KeyType
+  :param: value Value
+  :param: key Key
 
-  :returns: ValueType?
+  :returns: Value?
   */
-  public mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
-    let currentValue: ValueType? = contains(indexKeys, key) ? storage[key] : nil
+  public mutating func updateValue(value: Value, forKey key: Key) -> Value? {
+    let currentValue: Value? = contains(indexKeys, key) ? storage[key] : nil
     if !contains(indexKeys, key) { indexKeys.append(key) }
     storage[key] = value
     return currentValue
   }
 
   /**
-  removeAtIndex:ValueType>:
+  removeAtIndex:Value>:
 
-  :param: index DictionaryIndex<KeyType
-  :param: ValueType>
+  :param: index DictionaryIndex<Key
+  :param: Value>
   */
-  public mutating func removeAtIndex(index: DictionaryIndex<KeyType, ValueType>) {
+  public mutating func removeAtIndex(index: DictionaryIndex<Key, Value>) {
     let (k, _) = self[index]
     indexKeys.removeAtIndex(find(indexKeys, k)!)
     storage.removeAtIndex(index)
@@ -194,11 +192,11 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   removeValueForKey:
 
-  :param: key KeyType
+  :param: key Key
 
-  :returns: ValueType?
+  :returns: Value?
   */
-  public mutating func removeValueForKey(key: KeyType) -> ValueType? {
+  public mutating func removeValueForKey(key: Key) -> Value? {
     if let idx = find(indexKeys, key) {
       indexKeys.removeAtIndex(idx)
       return storage.removeValueForKey(key)
@@ -220,16 +218,16 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   sort:
 
-  :param: isOrderedBefore (KeyType, KeyType) -> Bool
+  :param: isOrderedBefore (Key, Key) -> Bool
   */
-  public mutating func sort(isOrderedBefore: (KeyType, KeyType) -> Bool) { indexKeys.sort(isOrderedBefore) }
+  public mutating func sort(isOrderedBefore: (Key, Key) -> Bool) { indexKeys.sort(isOrderedBefore) }
 
   /**
   reverse
 
-  :returns: OrderedDictionary<KeyType, ValueType>
+  :returns: OrderedDictionary<Key, Value>
   */
-  public mutating func reverse() -> OrderedDictionary<KeyType, ValueType> {
+  public mutating func reverse() -> OrderedDictionary<Key, Value> {
     var result = self
     result.indexKeys = result.indexKeys.reverse()
     return result
@@ -238,13 +236,26 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   /**
   filter:
 
-  :param: includeElement (Element) -> Bool
+  :param: includeElement (Key, Value) -> Bool
 
-  :returns: OrderedDictionary<KeyType, ValueType>
+  :returns: OrderedDictionary<Key, Value>
   */
-  public func filter(includeElement: (Element) -> Bool) -> OrderedDictionary<KeyType, ValueType> {
-    var result: OrderedDictionary<KeyType, ValueType> = [:]
+  public func filter(includeElement: (Key, Value) -> Bool) -> OrderedDictionary<Key, Value> {
+    var result: OrderedDictionary<Key, Value> = [:]
     for (k, v) in self { if includeElement((k, v)) { result.setValue(v, forKey: k) } }
+    return result
+  }
+
+  /**
+  map:
+
+  :param: transform (Key, Value) -> U
+
+  :returns: OrderedDictionary<Key, U>
+  */
+  public func map<U>(transform: (Key, Value) -> U) -> OrderedDictionary<Key, U> {
+    var result: OrderedDictionary<Key, U> = [:]
+    for (k, v) in self { result[k] = transform(k, v) }
     return result
   }
 

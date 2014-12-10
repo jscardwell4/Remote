@@ -104,6 +104,21 @@ extension NSTextAlignment: JSONValueConvertible, EnumerableType {
   public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
 }
 
+extension NSShadow {
+  public var JSONValue: [String:AnyObject] {
+    var dict: [String:AnyObject] = ["offset": NSStringFromCGSize(shadowOffset), "radius": shadowBlurRadius]
+    if shadowColor != nil { dict["color"] = (shadowColor as UIColor).JSONValue }
+    return dict
+  }
+
+  public convenience init(JSONValue: [String:AnyObject]) {
+    self.init()
+    if let offset = JSONValue["offset"] as? String { shadowOffset = CGSizeFromString(offset) }
+    if let radius = JSONValue["radius"] as? NSNumber { shadowBlurRadius = CGFloat(radius.floatValue) }
+    if let color = JSONValue["color"] as? String { shadowColor = UIColor(JSONValue: color) }
+  }
+}
+
 struct TitleAttributes: JSONValueConvertible {
 
   enum IconTextOrderSpecification: JSONValueConvertible, EnumerableType {
@@ -170,8 +185,8 @@ struct TitleAttributes: JSONValueConvertible {
   }
 
   var shadow: NSShadow? {
-    get { return nil }
-    set {  }
+    get { if let d = self[.Shadow] as? [String:AnyObject] { return NSShadow(JSONValue: d) } else { return nil } }
+    set { self[.Shadow] = newValue?.JSONValue }
   }
 
   var expansion: Float? {
@@ -207,6 +222,11 @@ struct TitleAttributes: JSONValueConvertible {
   var strokeWidth: Float? {
     get { return self[.StrokeWidth] as? Float }
     set { self[.StrokeWidth] = newValue }
+  }
+
+  var strokeFill: Bool? {
+    get { return self[.StrokeFill] as? Bool }
+    set { self[.StrokeFill] = newValue }
   }
 
   var strokeColor: UIColor? {
@@ -404,22 +424,39 @@ struct TitleAttributes: JSONValueConvertible {
       if self[propertyKey] != nil {
         if let attributeName = propertyKey.attributeKey {
           switch propertyKey {
-            case .Font:               attrs[attributeName] = self.font!
-            case .ForegroundColor:    attrs[attributeName] = self.foregroundColor!
-            case .BackgroundColor:    attrs[attributeName] = self.backgroundColor!
-            case .Ligature:           attrs[attributeName] = self.ligature!
-            case .Shadow:             attrs[attributeName] = self.shadow!
-            case .Expansion:          attrs[attributeName] = self.expansion!
-            case .Obliqueness:        attrs[attributeName] = self.obliqueness!
-            case .StrikethroughColor: attrs[attributeName] = self.strikethroughColor!
-            case .UnderlineColor:     attrs[attributeName] = self.underlineColor!
-            case .BaselineOffset:     attrs[attributeName] = self.baselineOffset!
-            case .StrokeWidth:        attrs[attributeName] = self.strokeWidth!
-            case .StrokeColor:        attrs[attributeName] = self.strokeColor!
-            case .Kern:               attrs[attributeName] = self.kern!
-            case .TextEffect:         attrs[attributeName] = NSTextEffectLetterpressStyle
-            case .UnderlineStyle:     attrs[attributeName] = self.underlineStyle!.rawValue
-            case .StrikethroughStyle: attrs[attributeName] = self.strikethroughStyle!.rawValue
+            case .Font:
+              attrs[attributeName] = self.font!
+            case .ForegroundColor:
+              attrs[attributeName] = self.foregroundColor!
+            case .BackgroundColor:
+              attrs[attributeName] = self.backgroundColor!
+            case .Ligature:
+              attrs[attributeName] = self.ligature!
+            case .Shadow:
+              attrs[attributeName] = self.shadow!
+            case .Expansion:
+              attrs[attributeName] = self.expansion!
+            case .Obliqueness:
+              attrs[attributeName] = self.obliqueness!
+            case .StrikethroughColor:
+              attrs[attributeName] = self.strikethroughColor!
+            case .UnderlineColor:
+              attrs[attributeName] = self.underlineColor!
+            case .BaselineOffset:
+              attrs[attributeName] = self.baselineOffset!
+            case .StrokeWidth:
+              if let fill = self.strokeFill { attrs[attributeName] = fill ? -self.strokeWidth! : self.strokeWidth! }
+              else { attrs[attributeName] = self.strokeWidth! }
+            case .StrokeColor:
+              attrs[attributeName] = self.strokeColor!
+            case .Kern:
+              attrs[attributeName] = self.kern!
+            case .TextEffect:
+              attrs[attributeName] = NSTextEffectLetterpressStyle
+            case .UnderlineStyle:
+              attrs[attributeName] = self.underlineStyle!.rawValue
+            case .StrikethroughStyle:
+              attrs[attributeName] = self.strikethroughStyle!.rawValue
             default:                  break
           }
         }
@@ -472,6 +509,7 @@ struct TitleAttributes: JSONValueConvertible {
     case BaselineOffset         = "baseline-offset"
     case TextEffect             = "text-effect"
     case StrokeWidth            = "stroke-width"
+    case StrokeFill             = "stroke-fill"
     case StrokeColor            = "stroke-color"
     case UnderlineStyle         = "underline-style"
     case StrikethroughStyle     = "strikethrough-style"
@@ -653,12 +691,15 @@ struct TitleAttributes: JSONValueConvertible {
             else if value.respondsToSelector("stringValue") { storedValue = value.valueForKey("stringValue") }
 
           case .Shadow:
-            MSLogWarn("shadow net yet supported")
+            if let d = value as? [String:AnyObject] { storedValue = d }
 
-          case .StrokeWidth, .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
+          case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
                .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing, .LineSpacing, .TailIndent,
                .HeadIndent, .FirstLineHeadIndent:
             if let n = value as? NSNumber { storedValue = n }
+
+          case .StrokeWidth:
+            if let n = value as? NSNumber { self[.StrokeFill] = n.floatValue.isSignMinus; storedValue = abs(n.floatValue) }
 
           case .TextEffect:
             if let e = value as? String { if e == "letterpress" { storedValue = e } }
@@ -678,6 +719,7 @@ struct TitleAttributes: JSONValueConvertible {
           case .IconTextOrder:
             if let s = value as? String { storedValue = IconTextOrderSpecification(JSONValue: s).JSONValue }
 
+          default: break
         }
 
         if storedValue != nil { self[propertyKey] = storedValue }
@@ -690,7 +732,14 @@ struct TitleAttributes: JSONValueConvertible {
 
   var JSONValue: [String:AnyObject] {
     var dictionary: [String:AnyObject] = [:]
-    PropertyKey.enumerate { if let value: AnyObject = self[$0] { dictionary[$0.JSONValue] = value } }
+    PropertyKey.enumerate {
+      if let value: AnyObject = self[$0] {
+        switch $0 {
+          case .StrokeWidth: dictionary[$0.JSONValue] = self.strokeFill != nil && self.strokeFill! ? -value.floatValue : value
+          default: dictionary[$0.JSONValue] = value
+        }
+      }
+    }
     return dictionary
   }
 

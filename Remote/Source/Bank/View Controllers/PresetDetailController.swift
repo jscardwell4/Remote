@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import MoonKit
 
+// TODO: Cancel needs to reset any changed color values
+
 class PresetDetailController: BankItemDetailController {
 
   /** loadSections() */
@@ -24,7 +26,7 @@ class PresetDetailController: BankItemDetailController {
 
     detailsSection.addRow { DetailLabelRow(pushableCategory: preset.presetCategory!, label: "Category") }
 
-    let baseType = preset.attributes.baseType
+    let baseType = preset.baseType
 
     detailsSection.addRow { DetailLabelRow(label: "Base Type", value: baseType.JSONValue.titlecaseString) }
 
@@ -39,17 +41,15 @@ class PresetDetailController: BankItemDetailController {
     detailsSection.addRow {
       var row = DetailButtonRow()
       row.name = "Role"
-      row.info = preset.attributes.role.JSONValue.titlecaseString
+      row.info = preset.role.JSONValue.titlecaseString
 
       var pickerRow = DetailPickerRow()
       pickerRow.titleForInfo = {($0 as String).titlecaseString}
       pickerRow.data = roles.map{$0.JSONValue}
-      pickerRow.info = preset.attributes.role.JSONValue
+      pickerRow.info = preset.role.JSONValue
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          var attributes = preset.attributes
-          attributes.role = RemoteElement.Role(JSONValue: $0 as String)
-          preset.attributes = attributes
+          preset.role = RemoteElement.Role(JSONValue: $0 as String)
           self.cellDisplayingPicker?.info = ($0 as String).titlecaseString
           pickerRow.info = $0
         }
@@ -65,21 +65,19 @@ class PresetDetailController: BankItemDetailController {
         detailsSection.addRow {
           var row = DetailButtonRow()
           row.name = "Shape"
-          row.info = preset.attributes.shape.JSONValue.titlecaseString
+          row.info = preset.shape.JSONValue.titlecaseString
 
           var pickerRow = DetailPickerRow()
           pickerRow.didSelectItem = {
             if !self.didCancel {
-              var attributes = preset.attributes
-              attributes.shape = RemoteElement.Shape(JSONValue: $0 as String)
-              preset.attributes = attributes
+              preset.shape = RemoteElement.Shape(JSONValue: $0 as String)
               self.cellDisplayingPicker?.info = ($0 as String).titlecaseString
               pickerRow.info = $0
             }
           }
           pickerRow.titleForInfo = {($0 as String).titlecaseString}
           pickerRow.data = RemoteElement.Shape.allShapes.map{$0.JSONValue}
-          pickerRow.info = preset.attributes.shape.JSONValue
+          pickerRow.info = preset.shape.JSONValue
 
           row.detailPickerRow = pickerRow
 
@@ -89,20 +87,16 @@ class PresetDetailController: BankItemDetailController {
         detailsSection.addRow {
           var row = DetailTextFieldRow()
           row.name = "Style"
-          row.info = preset.attributes.style.JSONValue.capitalizedString
+          row.info = preset.style.JSONValue.capitalizedString
           row.placeholderText = "None"
-          row.valueDidChange = {
-            var attributes = preset.attributes
-            attributes.style = RemoteElement.Style(JSONValue: ($0 as String).lowercaseString)
-            preset.attributes = attributes
-          }
+          row.valueDidChange = { preset.style = RemoteElement.Style(JSONValue: ($0 as String).lowercaseString) }
 
           return row
         }
     }
 
     detailsSection.addRow {
-      var row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.attributes.backgroundImage)
+      var row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.backgroundImage)
       row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)),
                                                            color: UIColor.lightGrayColor())
       return row
@@ -111,35 +105,17 @@ class PresetDetailController: BankItemDetailController {
     detailsSection.addRow {
       var row = DetailSliderRow()
       row.name = "Background Image Alpha"
-      row.minValue = 0.0
-      row.maxValue = 1.0
-      row.info = preset.attributes.backgroundImageAlpha
-      row.generateThumbImage = {
-        (slider: Slider) -> UIImage in
-
-        let bounds = slider.bounds
-        let trackRect = slider.trackRectForBounds(bounds)
-        let value = slider.value
-        let thumbRect = CGRect(size: slider.currentThumbSize)
-        return DrawingKit.imageOfOpacityThumb(frame: thumbRect, opacity: CGFloat(value))
-      }
-      row.valueDidChange = {
-        var attributes = preset.attributes
-        attributes.backgroundImageAlpha = CGFloat(($0 as NSNumber).floatValue)
-        preset.attributes = attributes
-      }
+      row.info = preset.backgroundImageAlpha
+      row.sliderStyle = .Gradient(.Alpha)
+      row.valueDidChange = { preset.backgroundImageAlpha = CGFloat(($0 as NSNumber).floatValue) }
       return row
     }
 
     detailsSection.addRow {
       var row = DetailColorRow()
       row.name = "Background Color"
-      row.info = preset.attributes.backgroundColor
-      row.valueDidChange = {
-        var attributes = preset.attributes
-        attributes.backgroundColor = $0 as? UIColor
-        preset.attributes = attributes
-      }
+      row.info = preset.backgroundColor
+      row.valueDidChange = { preset.backgroundColor = $0 as? UIColor }
       return row
     }
 

@@ -1,5 +1,5 @@
 //
-//  InputView.swift
+//  TextInputView.swift
 //  MSKit
 //
 //  Created by Jason Cardwell on 12/5/14.
@@ -9,11 +9,24 @@
 import Foundation
 import UIKit
 
-public class InputView: UIInputView {
+public class TextInputView: UIInputView {
 
   var insertText: ((String) -> Bool)!
   var deleteBackward: ((Void) -> Bool)!
   var done: ((Void) -> Bool)!
+
+  let target: UITextInput!
+
+  var currentText: String {
+    get {
+      let range = target.textRangeFromPosition(target.beginningOfDocument, toPosition: target.endOfDocument)
+      return target.textInRange(range)
+    }
+    set {
+      let range = target.textRangeFromPosition(target.beginningOfDocument, toPosition: target.endOfDocument)
+      target.replaceRange(range, withText: newValue)
+    }
+  }
 
   /**
   initWithFrame:target:
@@ -22,6 +35,7 @@ public class InputView: UIInputView {
   :param: target UIResponder
   */
   public required init(frame: CGRect, target: UITextInput) {
+    self.target = target
     super.init(frame: frame, inputViewStyle: .Keyboard)
 
     if let field = target as? UITextField {

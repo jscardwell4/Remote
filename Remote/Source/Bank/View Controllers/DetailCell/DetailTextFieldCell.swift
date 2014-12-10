@@ -31,6 +31,7 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
     field.textColor = Bank.infoColor
     field.textAlignment = .Right
     field.delegate = self
+    field.clipsToBounds = false
     contentView.addSubview(field)
 
     let format = "|-[name]-[text]-| :: V:|-[name]-| :: V:|-[text]-|"
@@ -90,6 +91,26 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
   var allowableCharacters = ~NSCharacterSet.emptyCharacterSet
   var allowEmptyString = true
 
+  var leftView: UIView? {
+    get { return (textInput as? UITextField)?.leftView }
+    set { (textInput as? UITextField)?.leftView = newValue }
+  }
+
+  var leftViewMode: UITextFieldViewMode? {
+    get { return (textInput as? UITextField)?.leftViewMode }
+    set { (textInput as? UITextField)?.leftViewMode = newValue ?? .Never }
+  }
+
+  var rightViewMode: UITextFieldViewMode? {
+    get { return (textInput as? UITextField)?.rightViewMode }
+    set { (textInput as? UITextField)?.rightViewMode = newValue ?? .Never }
+  }
+
+  var rightView: UIView? {
+    get { return (textInput as? UITextField)?.rightView }
+    set { (textInput as? UITextField)?.rightView = newValue }
+  }
+
   /// Placeholders for nil info value
   var placeholderText: String? {
     didSet {
@@ -98,6 +119,7 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
       }
     }
   }
+
   var placeholderAttributedText: NSAttributedString? {
     didSet {
       if let textField = textInput? as? UITextField {

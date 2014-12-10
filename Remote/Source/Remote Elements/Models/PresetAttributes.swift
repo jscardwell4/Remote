@@ -10,10 +10,13 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct PresetAttributes {
+class PresetAttributes {
 
-  private var storage: [String:AnyObject]
-  var dictionaryValue: NSDictionary { return storage as NSDictionary }
+  // private var storage: [String:AnyObject]
+  // var dictionaryValue: NSDictionary { return storage as NSDictionary }
+
+  private let storage: DictionaryStorage
+  var dictionaryValue: NSDictionary { return storage.dictionary }
 
   let context: NSManagedObjectContext?
 
@@ -22,7 +25,10 @@ struct PresetAttributes {
 
   :param: storage [String String]
   */
-  init(storage: [String:AnyObject], context: NSManagedObjectContext?) { self.storage = storage; self.context = context }
+  // init(storage: [String:AnyObject], context: NSManagedObjectContext?) { self.storage = storage; self.context = context }
+
+
+  init(storage: DictionaryStorage) { self.storage = storage; self.context = storage.managedObjectContext }
 
   var baseType: RemoteElement.BaseType {
     get { return RemoteElement.BaseType(JSONValue: storage["base-type"] as? String ?? "undefined") }
@@ -60,8 +66,8 @@ struct PresetAttributes {
   }
 
   var subelements: [PresetAttributes]? {
-    get { return (storage["subelements"] as? [[String:AnyObject]])?.map{PresetAttributes(storage: $0, context: self.context)} }
-    set { storage["subelements"] = newValue?.map{$0.storage} }
+    get { return nil } // return (storage["subelements"] as? [[String:AnyObject]])?.map{PresetAttributes(storage: $0, context: self.context)} }
+    set { } //storage["subelements"] = newValue?.map{$0.storage} }
   }
 
   var constraints: String? {

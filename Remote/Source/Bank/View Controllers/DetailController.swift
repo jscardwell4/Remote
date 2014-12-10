@@ -91,8 +91,9 @@ class DetailController: UITableViewController {
     tableView?.dataSource = self
     DetailCell.registerIdentifiersWithTableView(tableView)
     navigationItem.rightBarButtonItem = editButtonItem()
-    loadSections()
   }
+
+
 
   /** updateDisplay */
   func updateDisplay() {
@@ -104,7 +105,8 @@ class DetailController: UITableViewController {
     }
     didCancel = false
     configureVisibleCells()
-  }
+    loadSections()
+ }
 
   /**
   viewWillAppear:
@@ -289,7 +291,7 @@ class DetailController: UITableViewController {
 
             // Update reference to cell displaying picker row
             self.cellDisplayingPicker = nil
-            
+
             return true
           }
 

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class HexIntegerInputView: InputView {
+public class HexIntegerInputView: TextInputView {
 
   /**
   initWithFrame:target:

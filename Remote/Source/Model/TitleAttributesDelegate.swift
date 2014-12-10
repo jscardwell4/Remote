@@ -135,6 +135,11 @@ class TitleAttributesDelegate: EditableItem {
     set { titleAttributes.strokeWidth = newValue}
   }
 
+  var strokeFill: Bool? {
+    get { return titleAttributes.strokeFill }
+    set { titleAttributes.strokeFill = newValue }
+  }
+
   var strokeColor: UIColor? {
     get { return titleAttributes.strokeColor }
     set { titleAttributes.strokeColor = newValue}

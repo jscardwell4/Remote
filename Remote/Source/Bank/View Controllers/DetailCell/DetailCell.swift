@@ -34,6 +34,7 @@ class DetailCell: UITableViewCell {
     case Switch          = "DetailSwitchCell"
     case Color           = "DetailColorCell"
     case Slider          = "DetailSliderCell"
+    case TwoToneSlider   = "DetailTwoToneSliderCell"
     case Picker          = "DetailPickerCell"
     case Stepper         = "DetailStepperCell"
     case TextView        = "DetailTextViewCell"
@@ -41,7 +42,7 @@ class DetailCell: UITableViewCell {
 
     static var all: [Identifier] {
       return [.AttributedLabel, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
-              .Color, .Slider, .Picker, .Stepper, .TextView, .TextField, .Cell]
+              .Color, .Slider, .TwoToneSlider, .Picker, .Stepper, .TextView, .TextField, .Cell]
     }
 
     var cellType: DetailCell.Type {
@@ -55,6 +56,7 @@ class DetailCell: UITableViewCell {
         case .Image:           return DetailImageCell.self
         case .Color:           return DetailColorCell.self
         case .Slider:          return DetailSliderCell.self
+        case .TwoToneSlider:   return DetailTwoToneSliderCell.self
         case .Switch:          return DetailSwitchCell.self
         case .Picker:          return DetailPickerCell.self
         case .Stepper:         return DetailStepperCell.self
@@ -299,6 +301,8 @@ class DetailCell: UITableViewCell {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
     super.init(style:style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .None
+    clipsToBounds = false
+    contentView.clipsToBounds = false
     contentView.layoutMargins = UIEdgeInsets(top: 8.0, left: 20.0, bottom: 8.0, right: 20.0)
   }
 
