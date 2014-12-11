@@ -32,7 +32,64 @@ import MoonKit
 
 class DetailController: UITableViewController {
 
-  var sections: [DetailSection] = []
+  /// A private structure to encapsulate constant class properties
+  ////////////////////////////////////////////////////////////////////////////////
+  private struct DetailControllerProperties {
+
+    // Fonts
+    static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
+    static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
+    static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
+    static let actionFont                 = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
+
+    // Colors
+    static let labelColor                 = UIColor(r: 59 , g: 60,  b: 64,  a: 255)!
+    static let infoColor                  = UIColor(r: 159, g: 160, b: 164, a: 255)!
+    static let actionColor                = UIColor(r: 0,   g: 175, b: 255, a: 255)!
+    static let backgroundColor            = UIColor.whiteColor()
+
+    static let defaultRowHeight: CGFloat = 38.0
+    static let separatorStyle: UITableViewCellSeparatorStyle = .None
+    static let keyboardAppearance: UIKeyboardAppearance = .Dark
+
+    static let titleTextAttributes = [ NSFontAttributeName:            DetailControllerProperties.boldLabelFont,
+                                       NSForegroundColorAttributeName: DetailControllerProperties.labelColor ]
+  }
+
+  /// Font accessors
+  ////////////////////////////////////////////////////////////////////////////////
+
+  class var labelFont                  : UIFont  { return DetailControllerProperties.labelFont     }
+  class var boldLabelFont              : UIFont  { return DetailControllerProperties.boldLabelFont }
+  class var infoFont                   : UIFont  { return DetailControllerProperties.infoFont      }
+  class var actionFont                 : UIFont  { return DetailControllerProperties.actionFont    }
+
+  /// Color accessors
+  ////////////////////////////////////////////////////////////////////////////////
+
+  class var labelColor                 : UIColor { return DetailControllerProperties.labelColor      }
+  class var infoColor                  : UIColor { return DetailControllerProperties.infoColor       }
+  class var actionColor                : UIColor { return DetailControllerProperties.actionColor     }
+  class var backgroundColor            : UIColor { return DetailControllerProperties.backgroundColor }
+
+  /// Keyboard
+  ////////////////////////////////////////////////////////////////////////////////
+
+  class var keyboardAppearance: UIKeyboardAppearance { return DetailControllerProperties.keyboardAppearance }
+
+  /// Metrics
+  ////////////////////////////////////////////////////////////////////////////////
+
+  class var defaultRowHeight: CGFloat { return DetailControllerProperties.defaultRowHeight }
+
+  /// Styles
+  ////////////////////////////////////////////////////////////////////////////////
+
+  class var separatorStyle: UITableViewCellSeparatorStyle { return DetailControllerProperties.separatorStyle }
+
+  class var titleTextAttributes: [NSString : NSObject] { return DetailControllerProperties.titleTextAttributes }
+
+  var sections: OrderedDictionary<String, DetailSection> = [:]
 
   let item: DetailableItem!
 
@@ -83,13 +140,15 @@ class DetailController: UITableViewController {
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
     tableView?.rowHeight = UITableViewAutomaticDimension
-    tableView?.estimatedRowHeight = 200.0
-    tableView?.sectionHeaderHeight = 10.0
+    tableView?.estimatedRowHeight = 44.0
+    tableView?.sectionHeaderHeight = UITableViewAutomaticDimension
+    tableView?.estimatedSectionHeaderHeight = 34.0
     tableView?.sectionFooterHeight = 10.0
     tableView?.separatorStyle = .None
     tableView?.delegate = self
     tableView?.dataSource = self
     DetailCell.registerIdentifiersWithTableView(tableView)
+    tableView?.registerClass(DetailSectionHeader.self, forHeaderFooterViewReuseIdentifier: "DetailSectionHeader")
     navigationItem.rightBarButtonItem = editButtonItem()
   }
 
@@ -162,7 +221,7 @@ class DetailController: UITableViewController {
 
   :returns: DetailSection?
   */
-  subscript(section: Int) -> DetailSection? { return section < sections.count ? sections[section] : nil }
+  subscript(section: Int) -> DetailSection? { return section < sections.count ? sections.values[section] : nil }
 
   /**
   subscript:section:
@@ -256,10 +315,13 @@ class DetailController: UITableViewController {
 
 
             // Insert row into our section
-            self.sections[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row)
+            self.sections.values[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row)
 
             // Insert row into our table
             self.tableView.insertRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+
+            // Scroll to the inserted row
+            self.tableView.scrollToRowAtIndexPath(pickerPath, atScrollPosition: .Middle, animated: true)
 
             // Update reference to cell displaying picker row
             self.cellDisplayingPicker = $0
@@ -347,6 +409,7 @@ extension DetailController: UITableViewDelegate {
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     self[indexPath]?.select?()
+    sqrt(4.0)
   }
 
 }
@@ -402,8 +465,24 @@ extension DetailController: UITableViewDataSource {
 
   :returns: String?
   */
-  override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return self[section]?.title
+  // override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  //   return self[section]?.title
+  // }
+
+  /**
+  tableView:viewForHeaderInSection:
+
+  :param: tableView UITableView
+  :param: section Int
+
+  :returns: UIView?
+  */
+  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("DetailSectionHeader") as DetailSectionHeader
+    let detailSection = sections.values[section]
+    header.title = detailSection.title
+    header.action = detailSection.action
+    return header
   }
 
   /**
@@ -447,6 +526,23 @@ extension DetailController: UITableViewDataSource {
   */
   override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
     return self[indexPath]?.editActions
+  }
+
+}
+
+/// MARK: - Utility functions
+////////////////////////////////////////////////////////////////////////////////
+
+extension DetailController {
+
+  /**
+  pushController:
+
+  :param: controller UIViewController
+  */
+  func pushController(controller: UIViewController) {
+    (MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController)?
+      .pushViewController(controller, animated: true)
   }
 
 }

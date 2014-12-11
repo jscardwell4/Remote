@@ -126,7 +126,7 @@ class PresetDetailController: BankItemDetailController {
     var previewSection = DetailSection(section: 1)
     previewSection.addRow { DetailImageRow(previewableItem: preset) }
 
-    sections = [detailsSection]
+    sections = ["Detail": detailsSection]
 
   }
 

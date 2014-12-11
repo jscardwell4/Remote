@@ -15,7 +15,6 @@ import MoonKit
 
 class DetailCell: UITableViewCell {
 
-
   /// MARK: Identifiers
   ////////////////////////////////////////////////////////////////////////////////
 
@@ -25,7 +24,7 @@ class DetailCell: UITableViewCell {
   /** A simple string-based enum to establish valid reuse identifiers for use with styling the cell */
   enum Identifier: String, EnumerableType {
     case Cell            = "DetailCell"
-    case AttributedLabel = "DetailAttributedLabelCell"
+    case AttributedText  = "DetailAttributedTextCell"
     case Label           = "DetailLabelCell"
     case List            = "DetailListCell"
     case Button          = "DetailButtonCell"
@@ -41,16 +40,16 @@ class DetailCell: UITableViewCell {
     case TextField       = "DetailTextFieldCell"
 
     static var all: [Identifier] {
-      return [.AttributedLabel, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
+      return [.AttributedText, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
               .Color, .Slider, .TwoToneSlider, .Picker, .Stepper, .TextView, .TextField, .Cell]
     }
 
     var cellType: DetailCell.Type {
       switch self {
         case .Cell:            return DetailCell.self
-        case .AttributedLabel: return DetailAttributedLabelCell.self
+        case .AttributedText:  return DetailAttributedTextCell.self
         case .Label:           return DetailLabelCell.self
-        case .List:            return DetailListCell.self
+        case .List:            return DetailLabelCell.self
         case .Button:          return DetailButtonCell.self
         case .LabeledImage:    return DetailLabeledImageCell.self
         case .Image:           return DetailImageCell.self
@@ -134,10 +133,6 @@ class DetailCell: UITableViewCell {
     func textualRepresentationForObject(object: AnyObject?) -> AnyObject? {
       var text: AnyObject?
 
-      if let string = object as? String { text = string }
-      else if object?.respondsToSelector("name") == true { text = object!.valueForKey("name") as? String }
-      else if object?.respondsToSelector("title") == true { text = object!.valueForKey("title") as? String }
-      else if object != nil { text = "\(object!)" }
       switch self {
         case .IntData, .IntegerData, .LongLongData:
           if let number = object as? NSNumber { text = "\(number)" }
@@ -146,9 +141,10 @@ class DetailCell: UITableViewCell {
         case .DoubleData:
           if let number = object as? NSNumber { text = String(format: "%.2f", number.doubleValue) }
         case .AttributedStringData:
-          if object is NSAttributedString? { text = object }
+          if object is NSAttributedString { text = object }
         case .StringData:
           if object != nil {
+            assert(!(object is NSAttributedString))
             if object! is String { text = object }
             else if object!.respondsToSelector("name") { text = object!.valueForKey("name") }
             else if object!.respondsToSelector("title") { text = object!.valueForKey("title") }
@@ -273,15 +269,15 @@ class DetailCell: UITableViewCell {
 
   lazy var nameLabel: Label = {
     let label = Label(autolayout: true)
-    label.font      = Bank.labelFont
-    label.textColor = Bank.labelColor
+    label.font      = DetailController.labelFont
+    label.textColor = DetailController.labelColor
     return label
   }()
 
   lazy var infoLabel: Label = {
     let label = Label(autolayout: true)
-    label.font = Bank.infoFont
-    label.textColor = Bank.infoColor
+    label.font = DetailController.infoFont
+    label.textColor = DetailController.infoColor
     label.textAlignment = .Right
     return label
   }()

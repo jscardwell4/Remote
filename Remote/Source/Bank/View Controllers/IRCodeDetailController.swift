@@ -164,7 +164,7 @@ class IRCodeDetailController: BankItemDetailController {
       return row
     }
 
-    sections = [section]
+    sections = ["Section": section]
   }
 
 }

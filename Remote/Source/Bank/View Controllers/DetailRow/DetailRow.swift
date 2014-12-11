@@ -36,12 +36,12 @@ class DetailRow {
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell) {
+    if infoDataType != nil                { cell.infoDataType = infoDataType!                               }
     if backgroundColor != nil             { cell.backgroundColor = backgroundColor!                         }
     if indentationLevel != nil            { cell.indentationLevel = indentationLevel!                       }
     if indentationWidth != nil            { cell.indentationWidth = indentationWidth!                       }
     if name != nil                        { cell.name = name!                                               }
     if info != nil                        { cell.info = info!                                               }
-    if infoDataType != nil                { cell.infoDataType = infoDataType!                               }
     if shouldAllowNonDataTypeValue != nil { cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue! }
     if valueIsValid != nil                { cell.valueIsValid = valueIsValid!                               }
     if valueDidChange != nil              { cell.valueDidChange = valueDidChange!                           }

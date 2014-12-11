@@ -45,7 +45,7 @@ class ButtonGroupPresetDetailController: PresetDetailController {
     // TODO: labelConstraints
     // TODO: panelAssignment
 
-    sections.append(buttonGroupAttributesSection)
+    sections["Button Group Attributes"] = buttonGroupAttributesSection
   }
 
 }

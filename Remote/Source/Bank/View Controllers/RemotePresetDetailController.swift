@@ -21,7 +21,7 @@ class RemotePresetDetailController: PresetDetailController {
     let preset = model as Preset
 
 
-    if let detailsSection = sections.first {
+    if let detailsSection = sections.values.first {
 
       detailsSection.addRow {
         var row = DetailSwitchRow()

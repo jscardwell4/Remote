@@ -64,7 +64,12 @@ class ISYDeviceDetailController: BankItemDetailController {
       componentDevicesSection.addRow { DetailListRow(pushableItem: device) }
     }
 
-    sections = [idSection, modelSection, manufacturerSection, nodesSection, groupsSection, componentDevicesSection]
+    sections = ["ID": idSection,
+                "Model": modelSection,
+                "Manufacturer": manufacturerSection,
+                "Nodes": nodesSection,
+                "Groups": groupsSection,
+                "Component Device": componentDevicesSection]
 
   }
 

@@ -152,7 +152,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     networkDeviceSection.addRow {
       var row = DetailButtonRow()
-      row.info = componentDevice.networkDevice
+      row.info = componentDevice.networkDevice ?? "No Network Device"
       row.name = "Network Device"
       row.select = {
           if let networkDevice = componentDevice.networkDevice {
@@ -197,7 +197,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     powerSection.addRow {
       var row = DetailButtonRow()
       row.name = "On"
-      row.info = componentDevice.onCommand
+      row.info = componentDevice.onCommand ?? "No On Command"
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No On Command"
@@ -232,7 +232,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     powerSection.addRow {
       var row = DetailButtonRow()
       row.name = "Off"
-      row.info = componentDevice.offCommand
+      row.info = componentDevice.offCommand ?? "No Off Command"
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Off Command"
@@ -286,7 +286,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
     /// Create the sections
     ////////////////////////////////////////////////////////////////////////////////
 
-    sections = [manufacturerSection, networkDeviceSection, powerSection, inputsSection]
+    sections = ["Manufacturer": manufacturerSection,
+                "Network Device": networkDeviceSection,
+                "Power": powerSection,
+                "Inputs": inputsSection]
   }
 
 }

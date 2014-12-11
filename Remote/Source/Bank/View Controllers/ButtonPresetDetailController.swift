@@ -24,10 +24,31 @@ class ButtonPresetDetailController: PresetDetailController {
 
     precondition(model is Preset, "we should have been given a preset")
 
+    loadTitlesSection()
+
+    // TODO: icons
+    // TODO: images
+    // TODO: backgroundColors
+    // TODO: titleEdgeInsets
+    // TODO: contentEdgeInsets
+    // TODO: imageEdgeInsets
+    // TODO: command
+
+  }
+
+
+  /** loadTitlesSection */
+  func loadTitlesSection() {
+
+    var titlesSection = sections["Titles"]
+    if titlesSection == nil {
+      titlesSection = DetailSection(section: 1, title: "Titles")
+      sections["Titles"] = titlesSection!
+    } else {
+      titlesSection!.removeAllRows(keepCapacity: true)
+    }
+
     let preset = model as Preset
-
-
-    let titlesSection = DetailSection(section: 1, title: "Titles")
 
     if let titles = preset.titles {
 
@@ -38,12 +59,11 @@ class ButtonPresetDetailController: PresetDetailController {
 
       for (state, attributes) in attributesByState {
 
-        titlesSection.addRow {
+        titlesSection!.addRow {
 
-          var row = DetailAttributedLabelRow()
+          var row = DetailAttributedTextRow()
           row.name = state.titlecaseString
           row.info = attributes.stringWithFillers(attributesByState["normal"]?.attributes)
-          row.backgroundColor = backgroundColor
 
           row.select = {
 
@@ -55,38 +75,55 @@ class ButtonPresetDetailController: PresetDetailController {
 
             let controller = TitleAttributesDetailController(item: attributesDelegate)
             controller.title = state.titlecaseString
+            self.pushController(controller)
 
-            if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
-              nav.pushViewController(controller, animated: true)
-            }
-
-          }
+          } // end .select
 
           row.delete = {
+
             var titles = preset.titles!
             titles[state] = nil
             preset.titles = titles
-          }
-          round(2.0)
+
+          } // end .delete
+
           return row
 
-        }
+        } // end .addRow
 
+      } // end for (state, attributes)
+
+      let allStates = UIControlState.all
+
+      if titles.count < allStates.count {
+        let existingStates = compressed(attributesByState.keys.map{UIControlState(JSONValue: $0)})
+        let availableStates = allStates ∖ existingStates
+
+        titlesSection!.addRow {
+          var row = DetailListRow()
+          row.infoDataType = .AttributedStringData
+          var attributes = [NSFontAttributeName: UIFont(awesomeFontWithSize: 15),
+                            NSForegroundColorAttributeName: DetailController.actionColor,
+                            NSParagraphStyleAttributeName: NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)]
+          let attributedString = NSMutableAttributedString(string: UIFont.fontAwesomeIconForName("plus"), attributes: attributes)
+          attributes[NSFontAttributeName] = DetailController.actionFont
+          let textString = NSAttributedString(string: " Add Title For Button State…", attributes: attributes)
+          attributedString.appendAttributedString(textString)
+          row.info = attributedString
+
+          // row.info = UIFont.attributedFontAwesomeIconForName("plus")
+
+          row.select = {
+            println("now we should prompt user for state of title to add…")
+          }
+
+          return row
+        }
       }
 
-    }
+    } // end if let titles
 
-    sections.append(titlesSection)
-
-    // TODO: icons
-    // TODO: images
-    // TODO: backgroundColors
-    // TODO: titleEdgeInsets
-    // TODO: contentEdgeInsets
-    // TODO: imageEdgeInsets
-    // TODO: command
-
-  }
+  } // end loadTitlesSection()
 
 }
 
@@ -100,13 +137,12 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     assert(pushedTitleAttributesKey != nil)
     let preset = model as Preset
-    var presetAttributes = preset
-    if var titles = presetAttributes.titles {
+    if var titles = preset.titles {
       titles[pushedTitleAttributesKey!] = titleAttributesDelegate.titleAttributes.JSONValue
-      presetAttributes.titles = titles
+      preset.titles = titles
     }
     preset.save()
-    reloadRowsAtIndexPaths([pushedTitleAttributesRow!.indexPath!])
+    loadTitlesSection()
   }
 
   /**
@@ -117,13 +153,12 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     assert(pushedTitleAttributesKey != nil)
     let preset = model as Preset
-    var presetAttributes = preset
-    if var titles = presetAttributes.titles {
+    if var titles = preset.titles {
       titles[pushedTitleAttributesKey!] = nil
-      presetAttributes.titles = titles
+      preset.titles = titles
     }
     preset.save()
-
+    loadTitlesSection()
     let indexPath = pushedTitleAttributesRow!.indexPath!
     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)

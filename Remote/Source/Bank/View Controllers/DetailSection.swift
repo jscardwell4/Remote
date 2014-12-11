@@ -13,6 +13,7 @@ import MoonKit
 class DetailSection {
 
   var title: String?
+  var action: DetailSectionHeader.Action?
   let section: Int
 
   var count: Int { return blocks.count }
@@ -54,6 +55,13 @@ class DetailSection {
   :param: idx Int
   */
   func removeRowAtIndex(idx: Int) { assert(idx < count); _ = blocks.removeAtIndex(idx) }
+
+  /**
+  removeAllRows:
+
+  :param: keepCapacity Bool = false
+  */
+  func removeAllRows(keepCapacity: Bool = false) { blocks.removeAll(keepCapacity: keepCapacity) }
 
   /**
   addRow:

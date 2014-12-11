@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailCell.swift"
-            timestampString = "439793311.092524"
+            timestampString = "440035878.323066"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "512"
-            endingLineNumber = "512">
+            startingLineNumber = "508"
+            endingLineNumber = "508">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -111,24 +111,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "87"
             endingLineNumber = "87"
-            landmarkName = "loadView()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Remote/Source/Bank/View Controllers/DetailRow/DetailRow.swift"
-            timestampString = "435784143.910627"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "configureCell(_:)"
-            landmarkType = "5">
+            landmarkName = "DetailController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2125,8 +2109,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "240"
             endingLineNumber = "240"
-            landmarkName = "dequeueCellForIndexPath(_:)"
-            landmarkType = "5">
+            landmarkName = "DetailController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2203,8 +2187,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "225"
             endingLineNumber = "225"
-            landmarkName = "dequeueCellForIndexPath(_:)"
-            landmarkType = "5">
+            landmarkName = "DetailController"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -2388,11 +2372,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/TitleAttributesDetailController.swift"
-            timestampString = "439706238.943533"
+            timestampString = "439949275.268679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "loadSections()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2452,13 +2436,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailColorCell.swift"
-            timestampString = "439520884.414137"
+            timestampString = "439949275.268679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "DetailColorCell"
-            landmarkType = "3">
+            startingLineNumber = "144"
+            endingLineNumber = "144">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2468,13 +2450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailColorCell.swift"
-            timestampString = "439520884.414137"
+            timestampString = "439949275.268679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
-            landmarkName = "DetailColorCell"
-            landmarkType = "3">
+            startingLineNumber = "186"
+            endingLineNumber = "186">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2489,7 +2469,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "245"
             endingLineNumber = "245"
-            landmarkName = "drawTwoToneCircle(frame:upperColor:lowerColor:)"
+            landmarkName = "drawTwoToneCircle(upperColor:lowerColor:)"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2530,7 +2510,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "274"
             endingLineNumber = "274"
-            landmarkName = "drawTwoToneCircle(frame:upperColor:lowerColor:)"
+            landmarkName = "drawTwoToneCircle(upperColor:lowerColor:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2541,11 +2521,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/TitleAttributesDetailController.swift"
-            timestampString = "439706238.943533"
+            timestampString = "439949275.268679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "loadSections()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2574,13 +2554,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Remote/Source/Bank/View Controllers/ButtonPresetDetailController.swift"
-            timestampString = "439661777.459589"
+            timestampString = "439949140.052415"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "ButtonPresetDetailController"
-            landmarkType = "3">
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "loadTitlesSection()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2674,9 +2654,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "ColorSwatch"
-            landmarkType = "3">
+            endingLineNumber = "16">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2756,6 +2734,198 @@
             startingLineNumber = "65"
             endingLineNumber = "65"
             landmarkName = "generateElement()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/TitleAttributesDetailController.swift"
+            timestampString = "439948793.553645"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "loadSections()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailColorCell.swift"
+            timestampString = "439952047.542354"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "colorSwatchDidEndEditing(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Model/TitleAttributesDelegate.swift"
+            timestampString = "439949227.463363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "TitleAttributesDelegate"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Model/TitleAttributesDelegate.swift"
+            timestampString = "439949231.793563"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "TitleAttributesDelegate"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailAttributedTextCell.swift"
+            timestampString = "440052725.269032"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "AttributedTextDisplay"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/ButtonPresetDetailController.swift"
+            timestampString = "440033101.021748"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "loadTitlesSection()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailLabelCell.swift"
+            timestampString = "440035329.04838"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "DetailLabelCell"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailLabelCell.swift"
+            timestampString = "440035423.015271"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "DetailLabelCell"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailCell.swift"
+            timestampString = "440035878.323066"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "textualRepresentationForObject(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailAttributedTextCell.swift"
+            timestampString = "440052725.269032"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "drawRect(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailAttributedTextCell.swift"
+            timestampString = "440052725.269032"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "drawRect(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Remote/Source/Bank/View Controllers/DetailCell/DetailAttributedTextCell.swift"
+            timestampString = "440052725.269032"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "drawRect(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

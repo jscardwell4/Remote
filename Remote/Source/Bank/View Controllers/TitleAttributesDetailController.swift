@@ -112,7 +112,9 @@ class TitleAttributesDetailController: DetailController {
       row.name = "Foreground Color"
       row.info = attributesDelegate.foregroundColor
       row.placeholderColor = UIColor.blackColor()
-      row.valueDidChange = { attributesDelegate.foregroundColor = $0 as? UIColor }
+      row.valueDidChange = {
+        attributesDelegate.foregroundColor = $0 as? UIColor
+      }
       return row
     }
 
@@ -291,7 +293,6 @@ class TitleAttributesDetailController: DetailController {
       var row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.underlineColor
-      row.placeholderColor = attributesDelegate.foregroundColor
       row.valueDidChange = { attributesDelegate.underlineColor = $0 as? UIColor }
       return row
     }
@@ -329,7 +330,6 @@ class TitleAttributesDetailController: DetailController {
       var row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.strikethroughColor
-      row.placeholderColor = attributesDelegate.foregroundColor
       row.valueDidChange = { attributesDelegate.strikethroughColor = $0 as? UIColor }
       return row
     }
@@ -349,7 +349,13 @@ class TitleAttributesDetailController: DetailController {
     // hyphenationFactor        TextField
     // lineBreakMode            Button
 
-    sections = [contentSection, fontSection, strokeSection, spacingSection, styleSection, underlineSection, strikethroughSection]
+    sections = ["Content": contentSection,
+                "Font": fontSection,
+                "Stroke": strokeSection,
+                "Spacing": spacingSection,
+                "Style": styleSection,
+                "Underline": underlineSection,
+                "Strikethrough": strikethroughSection]
   }
 
 }

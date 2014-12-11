@@ -28,7 +28,7 @@ class ImageDetailController: BankItemDetailController {
     let previewSection = DetailSection(section: 1)
     previewSection.addRow { DetailImageRow(previewableItem: image) }
 
-    sections = [detailsSection, previewSection]
+    sections = ["Details": detailsSection, "Preview": previewSection]
 
   }
 

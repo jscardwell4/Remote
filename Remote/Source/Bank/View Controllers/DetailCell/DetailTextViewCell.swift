@@ -26,8 +26,8 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
     let textView = UITextView(autolayout: true)
     textView.userInteractionEnabled = false
     textView.scrollEnabled = false
-    textView.font = Bank.infoFont
-    textView.textColor = Bank.infoColor
+    textView.font = DetailController.infoFont
+    textView.textColor = DetailController.infoColor
     textView.textContainer.widthTracksTextView = true
     textView.delegate = self
     contentView.addSubview(textView)

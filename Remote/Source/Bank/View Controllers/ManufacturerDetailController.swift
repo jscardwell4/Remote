@@ -40,7 +40,7 @@ class ManufacturerDetailController: BankItemDetailController {
     /// Create the sections
     ////////////////////////////////////////////////////////////////////////////////
 
-    sections = [devicesSection, codeSetsSection]
+    sections = ["Devices": devicesSection, "Code Sets": codeSetsSection]
 
   }
 

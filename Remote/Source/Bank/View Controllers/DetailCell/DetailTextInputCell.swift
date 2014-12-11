@@ -115,7 +115,7 @@ class DetailTextInputCell: DetailCell {
     }
   }
 
-  var keyboardAppearance: UIKeyboardAppearance = Bank.keyboardAppearance {
+  var keyboardAppearance: UIKeyboardAppearance = DetailController.keyboardAppearance {
     didSet {
       (textInput as? AnyObject)?.setValue(keyboardAppearance.rawValue, forKey: "keyboardAppearance")
      }

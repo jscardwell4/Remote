@@ -41,7 +41,7 @@ class ITachDeviceDetailController: BankItemDetailController {
       componentDevicesSection.addRow { DetailListRow(pushableItem: device) }
     }
 
-    sections = [mainSection, componentDevicesSection]
+    sections = ["Main": mainSection, "Component Devices": componentDevicesSection]
 
   }
 

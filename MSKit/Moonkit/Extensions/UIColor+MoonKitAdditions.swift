@@ -33,6 +33,17 @@ extension UIColor {
   public var saturation: CGFloat? { return hsba?.s }
   public var brightness: CGFloat? { return hsba?.b }
 
+  public var perceivedBrightness: CGFloat? {
+    var value: CGFloat?
+    if let rgba = self.rgba {
+      let r = pow(rgba.r * rgba.a, 2)
+      let g = pow(rgba.g * rgba.a, 2)
+      let b = pow(rgba.b * rgba.a, 2)
+      value = sqrt(0.241 * r + 0.691 * g + 0.068 * b)
+    }
+    return value
+  }
+
   public var white: CGFloat? { var w: CGFloat = 0, a: CGFloat = 0; return getWhite(&w, alpha: &a) ? w : nil }
 
   public var alpha: CGFloat? { return rgba?.a }
@@ -274,7 +285,9 @@ extension UIColor {
 
   :returns: UIColor
   */
-  public func multipliedBy(value: CGFloat) -> UIColor? { return multipliedByRed(value, green: value, blue: value, alpha: value) }
+  public func multipliedBy(value: CGFloat) -> UIColor? {
+    return multipliedByRed(value, green: value, blue: value, alpha: value)
+  }
 
   /**
   multipliedByRed:green:blue:alpha:
@@ -322,7 +335,7 @@ extension UIColor {
   */
   public func colorWithRed(red: CGFloat) -> UIColor {
     if let rgba = self.rgba { return UIColor(red: red, green: rgba.g, blue: rgba.b, alpha: rgba.a) }
-    else { return UIColor(red: red, green: 0.0, blue: 0.0, alpha: 1.0) }
+    else { return UIColor(red: red, green: 1, blue: 1, alpha: 1) }
   }
 
   /**
@@ -334,7 +347,7 @@ extension UIColor {
   */
   public func colorWithGreen(green: CGFloat) -> UIColor {
     if let rgba = self.rgba { return UIColor(red: rgba.r, green: green, blue: rgba.b, alpha: rgba.a) }
-    else { return UIColor(red: 0.0, green: green, blue: 0.0, alpha: 1.0) }
+    else { return UIColor(red: 1, green: green, blue: 1, alpha: 1) }
   }
 
   /**
@@ -346,7 +359,88 @@ extension UIColor {
   */
   public func colorWithBlue(blue: CGFloat) -> UIColor {
     if let rgba = self.rgba { return UIColor(red: rgba.r, green: rgba.g, blue: blue, alpha: rgba.a) }
-    else { return UIColor(red: 0.0, green: 0.0, blue: blue, alpha: 1.0) }
+    else { return UIColor(red: 1, green: 1, blue: blue, alpha: 1) }
+  }
+
+  /**
+  colorWithHue:
+
+  :param: hue CGFloat
+
+  :returns: UIColor
+  */
+   public func colorWithHue(hue: CGFloat) -> UIColor {
+     if let hsba = self.hsba { return UIColor(hue: hue, saturation: hsba.s, brightness: hsba.b, alpha: hsba.a) }
+     else { return UIColor(hue: hue, saturation: 1, brightness: 1, alpha: 1) }
+   }
+
+  /**
+  colorWithSaturation:
+
+  :param: saturation CGFloat
+
+  :returns: UIColor
+  */
+   public func colorWithSaturation(saturation: CGFloat) -> UIColor {
+     if let hsba = self.hsba { return UIColor(hue: hsba.h, saturation: saturation, brightness: hsba.b, alpha: hsba.a) }
+     else { return UIColor(hue: 1, saturation: saturation, brightness: 1, alpha: 1) }
+   }
+
+  /**
+  colorWithBrightness:
+
+  :param: brightness CGFloat
+
+  :returns: UIColor
+  */
+   public func colorWithBrightness(brightness: CGFloat) -> UIColor {
+     if let hsba = self.hsba { return UIColor(hue: hsba.h, saturation: hsba.s, brightness: brightness, alpha: hsba.a) }
+     else { return UIColor(hue: 1, saturation: 1, brightness: brightness, alpha: 1) }
+   }
+
+  /**
+  colorWithAlpha:
+
+  :param: alpha CGFloat
+
+  :returns: UIColor
+  */
+  public func colorWithAlpha(alpha: CGFloat) -> UIColor { return colorWithAlphaComponent(alpha) }
+
+  /**
+  colorWithHighlight:
+
+  :param: highlight CGFloat
+
+  :returns: UIColor
+  */
+  public func colorWithHighlight(highlight: CGFloat) -> UIColor {
+    if let rgba = self.rgba {
+      return UIColor(red:   rgba.r * (1 - highlight) + highlight,
+                     green: rgba.g * (1 - highlight) + highlight,
+                     blue:  rgba.b * (1 - highlight) + highlight,
+                     alpha: rgba.a * (1 - highlight) + highlight)
+    } else {
+      return self
+    }
+  }
+
+  /**
+  colorWithShadow:
+
+  :param: shadow CGFloat
+
+  :returns: UIColor
+  */
+  public func colorWithShadow(shadow: CGFloat) -> UIColor {
+    if let rgba = self.rgba {
+      return UIColor(red:   rgba.r * (1 - shadow),
+                     green: rgba.g * (1 - shadow),
+                     blue:  rgba.b * (1 - shadow),
+                     alpha: rgba.a * (1 - shadow) + shadow)
+    } else {
+      return self
+    }
   }
 
 }

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DetailColorCell: DetailCell, UITextFieldDelegate {
+class DetailColorCell: DetailCell {
 
   /**
   initWithStyle:reuseIdentifier:
@@ -20,7 +20,10 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+
     contentView.addSubview(nameLabel)
+
+    colorSwatch.delegate = self
     contentView.addSubview(colorSwatch)
 
     let format = "|-[name]-[color]-| :: V:|-[color]-| :: V:|-[name]-|"
@@ -38,13 +41,13 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
   override func prepareForReuse() {
     super.prepareForReuse()
     nameLabel.text = nil
-    placeholderColor = UIColor.clearColor()
-    colorSwatch.color = placeholderColor
+    placeholderColor = nil
+    colorSwatch.color = nil
   }
 
   override var info: AnyObject? {
     get { return colorSwatch.color }
-    set { if let color = newValue as? UIColor { colorSwatch.color = color } else { colorSwatch.color = placeholderColor } }
+    set { colorSwatch.color =  newValue as? UIColor ?? placeholderColor }
   }
 
   private let colorSwatch: ColorSwatch = ColorSwatch(autolayout: true)
@@ -56,6 +59,17 @@ class DetailColorCell: DetailCell, UITextFieldDelegate {
     }
   }
 
-  var placeholderColor: UIColor = UIColor.clearColor()
+  var placeholderColor: UIColor?
 
+}
+
+extension DetailColorCell: ColorSwatchDelegate {
+  /**
+  colorSwatchDidEndEditing:
+
+  :param: colorSwatch ColorSwatch
+  */
+  func colorSwatchDidEndEditing(colorSwatch: ColorSwatch) {
+    valueDidChange?(colorSwatch.color)
+  }
 }

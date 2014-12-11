@@ -12,6 +12,25 @@ import MoonKit
 
 class DetailLabelCell: DetailCell {
 
+  private enum LabelStyle {
+    case Default, List
+
+    /**
+    initWithIdentifier:
+
+    :param: identifier Identifier
+    */
+    init(identifier: Identifier) {
+      switch identifier {
+        case .List:  self = .List
+        default: self = .Default
+      }
+    }
+
+   }
+
+  private var labelStyle: LabelStyle = .Default
+
   /**
   initWithStyle:reuseIdentifier:
 
@@ -20,9 +39,18 @@ class DetailLabelCell: DetailCell {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    contentView.addSubview(nameLabel)
-    contentView.addSubview(infoLabel)
-    contentView.constrain("|-[n]-[l]-| :: V:|-[n]-| :: V:|-[l]-|", views: ["n": nameLabel, "l": infoLabel])
+
+    labelStyle = LabelStyle(identifier: Identifier(rawValue: reuseIdentifier ?? "") ?? .Label)
+    switch labelStyle {
+      case .Default:
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(infoLabel)
+        contentView.constrain("|-[n]-[l]-| :: V:|-[n]-| :: V:|-[l]-|", views: ["n": nameLabel, "l": infoLabel])
+      case .List:
+        contentView.addSubview(infoLabel)
+        contentView.constrain("|-[label]-| :: V:|-[label]-|", views: ["label": infoLabel])
+    }
+
   }
 
   /**
@@ -35,18 +63,26 @@ class DetailLabelCell: DetailCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    nameLabel.text = nil
-    infoLabel.text = nil
-    infoLabel.attributedText = nil
+    switch labelStyle {
+      case .Default:
+        nameLabel.text = nil
+        fallthrough
+      case .List:
+        infoLabel.text = nil
+        infoLabel.attributedText = nil
+    }
   }
 
   override var info: AnyObject? {
     get { return infoDataType.objectFromText(infoLabel.text, attributedText: infoLabel.attributedText) }
     set {
       switch infoDataType.textualRepresentationForObject(newValue) {
-        case let text as NSAttributedString: infoLabel.attributedText = text
-        case let text as String:             infoLabel.text = text
-        default:                             infoLabel.text = nil
+        case let text as NSAttributedString:
+          infoLabel.attributedText = text
+        case let text as String:
+          infoLabel.text = text
+        default:
+          infoLabel.text = nil
       }
     }
   }

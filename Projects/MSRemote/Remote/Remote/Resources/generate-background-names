@@ -1,3 +1,0 @@
-#!/bin/bash
-
-find Glyphish.xcassets/ -regex ".*/[^0-9/]*\.imageset" | sed -e "s/.*\/\([^0-9.\/]*[^.]*\)\.imageset/\1/" > Glyphish\ Backgrounds.txt

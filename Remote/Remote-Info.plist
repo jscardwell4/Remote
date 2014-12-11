@@ -48,7 +48,7 @@
 		<string>iconic_fill.otf</string>
 		<string>iconic_stroke.otf</string>
 		<string>glyphish.ttf</string>
-		<string>FontAwesome.ttf</string>
+		<string>Frameworks/MoonKit.framework/FontAwesome.otf</string>
 		<string>Type Dynamic - Elysio Black Italic.otf</string>
 		<string>Type Dynamic - Elysio Black.otf</string>
 		<string>Type Dynamic - Elysio Bold Italic.otf</string>

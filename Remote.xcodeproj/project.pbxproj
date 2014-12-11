@@ -11,7 +11,6 @@
 		C203CC371A17DA1E0064D4CB /* RemoteElementViewConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */; };
 		C215C9CC19F7375F000CC6CC /* DetailButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CB19F7375F000CC6CC /* DetailButtonCell.swift */; };
 		C215C9CF19F739E5000CC6CC /* DetailLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CE19F739E5000CC6CC /* DetailLabelCell.swift */; };
-		C215C9D119F739F6000CC6CC /* DetailListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D019F739F6000CC6CC /* DetailListCell.swift */; };
 		C215C9D319F73A0C000CC6CC /* DetailTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D219F73A0C000CC6CC /* DetailTextFieldCell.swift */; };
 		C215C9D519F73A21000CC6CC /* DetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D419F73A21000CC6CC /* DetailImageCell.swift */; };
 		C215C9D719F73A38000CC6CC /* DetailSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D619F73A38000CC6CC /* DetailSwitchCell.swift */; };
@@ -26,8 +25,8 @@
 		C22033BA1A28F3B500372BCE /* DetailColorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033B91A28F3B500372BCE /* DetailColorRow.swift */; };
 		C22033BC1A28F3C200372BCE /* DetailColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033BB1A28F3C200372BCE /* DetailColorCell.swift */; };
 		C22033BE1A292F9E00372BCE /* ControlStateTitleSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033BD1A292F9E00372BCE /* ControlStateTitleSet.swift */; };
-		C22033C01A29446800372BCE /* DetailAttributedLabelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033BF1A29446800372BCE /* DetailAttributedLabelRow.swift */; };
-		C22033C21A29447200372BCE /* DetailAttributedLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033C11A29447200372BCE /* DetailAttributedLabelCell.swift */; };
+		C22033C01A29446800372BCE /* DetailAttributedTextRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033BF1A29446800372BCE /* DetailAttributedTextRow.swift */; };
+		C22033C21A29447200372BCE /* DetailAttributedTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033C11A29447200372BCE /* DetailAttributedTextCell.swift */; };
 		C22033C51A29717E00372BCE /* TitleAttributesDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033C41A29717E00372BCE /* TitleAttributesDetailController.swift */; };
 		C22033C71A297A8300372BCE /* BankItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033C61A297A8300372BCE /* BankItemDetailController.swift */; };
 		C2208B5017165BCF00AC0364 /* ActivityCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C2208B4F17165BCF00AC0364 /* ActivityCommand.m */; };
@@ -253,7 +252,6 @@
 		C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEB916DC10FE0093D5B4 /* main.m */; };
 		C26BB5AF16DC18A90093D5B4 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */; };
 		C26BB5B016DC18A90093D5B4 /* Fico.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0B816DC18A30093D5B4 /* Fico.otf */; };
-		C26BB5B116DC18A90093D5B4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0B916DC18A30093D5B4 /* FontAwesome.ttf */; };
 		C26BB5B216DC18A90093D5B4 /* glyphish.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BA16DC18A30093D5B4 /* glyphish.ttf */; };
 		C26BB5B316DC18A90093D5B4 /* gui_design_icons.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BB16DC18A30093D5B4 /* gui_design_icons.otf */; };
 		C26BB5B416DC18A90093D5B4 /* iconic_fill.otf in Resources */ = {isa = PBXBuildFile; fileRef = C26BB0BC16DC18A30093D5B4 /* iconic_fill.otf */; };
@@ -413,6 +411,7 @@
 		C28D098619D8747F00DF8100 /* Manufacturer_Yamaha.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097F19D8747F00DF8100 /* Manufacturer_Yamaha.json */; };
 		C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */; };
 		C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */; };
+		C29C22E21A37EAF600B0101F /* DetailSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C22E11A37EAF600B0101F /* DetailSectionHeader.swift */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
 		C2A0026819DF2D6E0082A53C /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0026719DF2D6E0082A53C /* ImageView.swift */; };
@@ -677,8 +676,8 @@
 		C22033B91A28F3B500372BCE /* DetailColorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailColorRow.swift; sourceTree = "<group>"; };
 		C22033BB1A28F3C200372BCE /* DetailColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailColorCell.swift; sourceTree = "<group>"; };
 		C22033BD1A292F9E00372BCE /* ControlStateTitleSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlStateTitleSet.swift; sourceTree = "<group>"; };
-		C22033BF1A29446800372BCE /* DetailAttributedLabelRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailAttributedLabelRow.swift; sourceTree = "<group>"; };
-		C22033C11A29447200372BCE /* DetailAttributedLabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailAttributedLabelCell.swift; sourceTree = "<group>"; };
+		C22033BF1A29446800372BCE /* DetailAttributedTextRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailAttributedTextRow.swift; sourceTree = "<group>"; };
+		C22033C11A29447200372BCE /* DetailAttributedTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailAttributedTextCell.swift; sourceTree = "<group>"; };
 		C22033C41A29717E00372BCE /* TitleAttributesDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAttributesDetailController.swift; sourceTree = "<group>"; };
 		C22033C61A297A8300372BCE /* BankItemDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailController.swift; sourceTree = "<group>"; };
 		C2208B4F17165BCF00AC0364 /* ActivityCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCommand.m; sourceTree = "<group>"; };
@@ -954,7 +953,6 @@
 		C26BB00216DC18530093D5B4 /* MSRemoteTypeDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteTypeDefinitions.h; sourceTree = "<group>"; };
 		C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Apple Symbols.ttf"; sourceTree = "<group>"; };
 		C26BB0B816DC18A30093D5B4 /* Fico.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fico.otf; sourceTree = "<group>"; };
-		C26BB0B916DC18A30093D5B4 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		C26BB0BA16DC18A30093D5B4 /* glyphish.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = glyphish.ttf; sourceTree = "<group>"; };
 		C26BB0BB16DC18A30093D5B4 /* gui_design_icons.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gui_design_icons.otf; sourceTree = "<group>"; };
 		C26BB0BC16DC18A30093D5B4 /* iconic_fill.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconic_fill.otf; sourceTree = "<group>"; };
@@ -1122,6 +1120,7 @@
 		C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementImportSupportFunctions.m; sourceTree = "<group>"; };
 		C28FAF7E173014D8002902D9 /* RemoteElementImportSupportFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementImportSupportFunctions.h; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C29C22E11A37EAF600B0101F /* DetailSectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailSectionHeader.swift; sourceTree = "<group>"; };
 		C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23DB178505AA00CD782B /* Remote.base 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 11.xcdatamodel"; sourceTree = "<group>"; };
 		C29F23DC178505AA00CD782B /* Remote.base 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -1399,7 +1398,7 @@
 				C2F8C3101A361769004229FE /* DetailTwoToneSliderCell.swift */,
 				C2CEFF1F1A30BD9800F3BE24 /* DetailTextInputCell.swift */,
 				C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */,
-				C22033C11A29447200372BCE /* DetailAttributedLabelCell.swift */,
+				C22033C11A29447200372BCE /* DetailAttributedTextCell.swift */,
 				C22033BB1A28F3C200372BCE /* DetailColorCell.swift */,
 				C22033B51A28D36A00372BCE /* DetailLabeledImageCell.swift */,
 				C22033B61A28D36A00372BCE /* DetailSliderCell.swift */,
@@ -1421,7 +1420,7 @@
 			children = (
 				C2F8C3141A361775004229FE /* DetailTwoToneSliderRow.swift */,
 				C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */,
-				C22033BF1A29446800372BCE /* DetailAttributedLabelRow.swift */,
+				C22033BF1A29446800372BCE /* DetailAttributedTextRow.swift */,
 				C22033B91A28F3B500372BCE /* DetailColorRow.swift */,
 				C22033AF1A28D35D00372BCE /* DetailLabeledImageRow.swift */,
 				C22033B01A28D35D00372BCE /* DetailSliderRow.swift */,
@@ -1683,6 +1682,7 @@
 				C22BECBF19FC729500898B79 /* DetailCell */,
 				C22BECC219FC72C200898B79 /* BankItemDetailController */,
 				C2E1639E19F079F300D1B88E /* DetailSection.swift */,
+				C29C22E11A37EAF600B0101F /* DetailSectionHeader.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -1864,7 +1864,6 @@
 				C2E8125519D4DC4600FD80C4 /* Type Dynamic - Elysio.otf */,
 				C26BB0B716DC18A30093D5B4 /* Apple Symbols.ttf */,
 				C26BB0B816DC18A30093D5B4 /* Fico.otf */,
-				C26BB0B916DC18A30093D5B4 /* FontAwesome.ttf */,
 				C26BB0BA16DC18A30093D5B4 /* glyphish.ttf */,
 				C26BB0BB16DC18A30093D5B4 /* gui_design_icons.otf */,
 				C26BB0BC16DC18A30093D5B4 /* iconic_fill.otf */,
@@ -2567,7 +2566,6 @@
 				C2381ED319A7EE3B00135DAB /* Chroma-640x1136.jpg in Resources */,
 				C2400F9519D4B87000D9BB13 /* Remote.xcassets in Resources */,
 				C2E8D9D619BCD5C400E6098E /* smtperr.xml in Resources */,
-				C26BB5B116DC18A90093D5B4 /* FontAwesome.ttf in Resources */,
 				C2381EDA19A7EE3B00135DAB /* Cloth-2048x1536-iPad@2x.jpg in Resources */,
 				C2381ECB19A7EE3B00135DAB /* Cardboard-2048x1536-iPad@2x.jpg in Resources */,
 				C2381EC619A7EE3B00135DAB /* Blueprint-2048x1536-iPad@2x.jpg in Resources */,
@@ -3028,11 +3026,12 @@
 				C203CC371A17DA1E0064D4CB /* RemoteElementViewConstraint.swift in Sources */,
 				C277AB8019D74AD6008DEE39 /* ImageCategory.swift in Sources */,
 				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
+				C29C22E21A37EAF600B0101F /* DetailSectionHeader.swift in Sources */,
 				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
 				C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */,
 				C215C9D919F73A4A000CC6CC /* DetailStepperCell.swift in Sources */,
-				C22033C01A29446800372BCE /* DetailAttributedLabelRow.swift in Sources */,
+				C22033C01A29446800372BCE /* DetailAttributedTextRow.swift in Sources */,
 				C27DE08A19E5E67F00CCB725 /* ITachDeviceDetailController.swift in Sources */,
 				C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */,
 				C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */,
@@ -3086,7 +3085,6 @@
 				C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */,
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
-				C215C9D119F739F6000CC6CC /* DetailListCell.swift in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
 				C2B84B0F1A27E56D000D699C /* ButtonPresetDetailController.swift in Sources */,
 				C235A2E81A0819590067E226 /* RemoteElementEditingPresentationController.swift in Sources */,
@@ -3117,7 +3115,7 @@
 				C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */,
 				C289BB5519F85B64008E92C1 /* DetailButtonRow.swift in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
-				C22033C21A29447200372BCE /* DetailAttributedLabelCell.swift in Sources */,
+				C22033C21A29447200372BCE /* DetailAttributedTextCell.swift in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
 				C230DF4419DCA6F7008C2337 /* IRCode.swift in Sources */,
 				C2328CD319DF449900D292E2 /* BankRootCell.swift in Sources */,
@@ -3272,6 +3270,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3293,7 +3292,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
@@ -3310,6 +3308,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3328,7 +3327,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
@@ -3354,6 +3352,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3374,7 +3373,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
@@ -3542,6 +3540,7 @@
 				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3562,7 +3561,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";

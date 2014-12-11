@@ -27,8 +27,8 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
 
     let field = UITextField(autolayout: true)
     field.userInteractionEnabled = false
-    field.font = Bank.infoFont
-    field.textColor = Bank.infoColor
+    field.font = DetailController.infoFont
+    field.textColor = DetailController.infoColor
     field.textAlignment = .Right
     field.delegate = self
     field.clipsToBounds = false

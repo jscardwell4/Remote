@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 
+
+
 extension UIFont {
 
-  class func fontFamilyAvailable(family:String) -> Bool {
+  public class func fontFamilyAvailable(family:String) -> Bool {
     let families = UIFont.familyNames() as? [String]
     if families == nil { fatalError("could not downcast family names") }
     return contains(families!, family)
