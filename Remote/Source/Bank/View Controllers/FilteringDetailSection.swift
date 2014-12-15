@@ -14,24 +14,59 @@ class FilteringDetailSection: DetailSection {
 
   override var identifier: DetailSectionHeader.Identifier { return .FilteringHeader }
 
-  struct Predicate {
+  class Predicate {
     let name: String
     let includeRow: (DetailRow) -> Bool
+    var active: Bool
+
+    init(name: String, includeRow: (DetailRow) -> Bool, active: Bool = false) {
+      self.name = name
+      self.includeRow = includeRow
+      self.active = active
+    }
   }
+
+  var defaultRow: DetailRow?
 
   var predicates: [Predicate] = []
 
-  private var activePredicates: [Int] = []
+  var activePredicatesDidChange: ((FilteringDetailSection) -> Void)?
 
   var filteredRows: LazySequence<FilterSequenceView<MapCollectionView<[(index: Int, element: () -> DetailRow)], DetailRow>>> {
     return rows.filter {
       (row: DetailRow) -> Bool in
-        for idx in self.activePredicates { if !self.predicates[idx].includeRow(row) { return false } }
-        return true
+
+      for predicate in self.predicates {
+        let isSatisfied = predicate.includeRow(row)
+        if predicate.active && !isSatisfied { return false }
+        else if isSatisfied && !predicate.active { return false }
+      }
+
+      return true
      }
   }
 
-  override var count: Int { return filteredRows.array.count }
+  override var count: Int {
+    let filteredRowsCount = filteredRows.array.count
+    return filteredRowsCount > 0 ? filteredRowsCount : (defaultRow != nil ? 1 : 0)
+  }
+
+  /**
+  subscript:
+
+  :param: row Int
+
+  :returns: DetailRow?
+  */
+  override subscript(row: Int) -> DetailRow {
+    assert(row < count)
+    let filteredRowsArray = filteredRows.array
+    if row < filteredRowsArray.count { return filteredRowsArray[row] }
+    else {
+      assert(row == 0 && defaultRow != nil)
+      return defaultRow!
+    }
+  }
 
   /**
   configureHeader:
@@ -41,7 +76,11 @@ class FilteringDetailSection: DetailSection {
   override func configureHeader(header: DetailSectionHeader) {
     super.configureHeader(header)
 
-    (header as? FilteringDetailSectionHeader)?.labels = predicates.map{$0.name}
+    (header as? FilteringDetailSectionHeader)?.predicates = predicates
+    (header as? FilteringDetailSectionHeader)?.activePredicatesDidChange = {
+      self.activePredicatesDidChange?(self)
+      self.controller?.reloadSection(self, withRowAnimation: .Fade)
+   }
   }
 
 }

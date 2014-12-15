@@ -89,7 +89,7 @@ class DetailController: UITableViewController {
 
   class var titleTextAttributes: [NSString : NSObject] { return DetailControllerProperties.titleTextAttributes }
 
-  var sections: OrderedDictionary<String, DetailSection> = [:]
+  var sections: OrderedDictionary<String, DetailSection> = [:] { didSet { apply(sections.values){$0.controller = self} } }
 
   let item: DetailableItem!
 
@@ -142,7 +142,7 @@ class DetailController: UITableViewController {
     tableView?.rowHeight = UITableViewAutomaticDimension
     tableView?.estimatedRowHeight = 44.0
     tableView?.sectionHeaderHeight = UITableViewAutomaticDimension
-    tableView?.estimatedSectionHeaderHeight = 34.0
+    tableView?.estimatedSectionHeaderHeight = 44.0
     tableView?.sectionFooterHeight = 10.0
     tableView?.separatorStyle = .None
     tableView?.delegate = self
@@ -153,10 +153,8 @@ class DetailController: UITableViewController {
   }
 
 
-
   /** updateDisplay */
   func updateDisplay() {
-    // nameTextField.text = item.name
     if let editableItem = item as? EditableItem {
       navigationItem.rightBarButtonItem?.enabled = editableItem.editable
     } else {
@@ -165,6 +163,7 @@ class DetailController: UITableViewController {
     didCancel = false
     configureVisibleCells()
     loadSections()
+    tableView.reloadData()
  }
 
   /**
@@ -224,6 +223,29 @@ class DetailController: UITableViewController {
   subscript(section: Int) -> DetailSection? { return section < sections.count ? sections.values[section] : nil }
 
   /**
+  reloadSection:
+
+  :param: section Int
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadSection(section: Int, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    // TODO: reload individual `DetailSection` objects
+    tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /**
+  reloadSection:
+
+  :param: section DetailSection
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadSection(section: DetailSection, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    reloadSection(section.section, withRowAnimation: animation)
+  }
+
+  /**
   subscript:section:
 
   :param: row Int
@@ -240,6 +262,42 @@ class DetailController: UITableViewController {
   */
   func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) { configureCellsAtIndexPaths(indexPaths) }
 
+  /**
+  removeRowAtIndexPath:withRowAnimation:
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func removeRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /**
+  insertRowAtIndexPath:withRowAnimation:
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func insertRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /**
+  replaceRowAtIndexPath:withRowAnimation:
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func replaceRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    removeRowAtIndexPath(indexPath, withRowAnimation: animation)
+    insertRowAtIndexPath(indexPath, withRowAnimation: animation)
+    tableView.endUpdates()
+  }
 
   /** configureVisibleCells */
   func configureVisibleCells() {
@@ -317,8 +375,7 @@ class DetailController: UITableViewController {
             // Insert row into our section
             self.sections.values[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row)
 
-            // Insert row into our table
-            self.tableView.insertRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+            self.insertRowAtIndexPath(pickerPath)
 
             // Scroll to the inserted row
             self.tableView.scrollToRowAtIndexPath(pickerPath, atScrollPosition: .Middle, animated: true)
@@ -348,8 +405,7 @@ class DetailController: UITableViewController {
             // Remove the row from our section
             self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
 
-            // Remove the row from our table
-            self.tableView.deleteRowsAtIndexPaths([pickerPath], withRowAnimation: .Automatic)
+            self.removeRowAtIndexPath(pickerPath)
 
             // Update reference to cell displaying picker row
             self.cellDisplayingPicker = nil
@@ -496,10 +552,12 @@ extension DetailController: UITableViewDataSource {
   {
     if editingStyle == .Delete {
       if self[indexPath]?.delete?() != nil {
+        tableView.beginUpdates()
         if self[indexPath]?.deleteRemovesRow == true {
-          tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-          tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+          removeRowAtIndexPath(indexPath)
+          reloadSection(indexPath.section)
         }
+        tableView.endUpdates()
       }
     }
   }

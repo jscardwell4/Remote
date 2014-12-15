@@ -15,7 +15,14 @@ final class DetailAttributedTextCell: DetailCell {
 
   private class AttributedTextDisplay: UIView {
 
-    var attributedText: NSAttributedString? { didSet { if attributedText != oldValue { setNeedsDisplay() } } }
+    var attributedText: NSAttributedString? {
+      didSet {
+        if attributedText != oldValue {
+          invalidateIntrinsicContentSize()
+          setNeedsDisplay()
+        }
+      }
+    }
 
     var usePerceivedBrightness: Bool = true { didSet { if usePerceivedBrightness != oldValue { setNeedsDisplay() } } }
 
@@ -73,7 +80,15 @@ final class DetailAttributedTextCell: DetailCell {
 
     :returns: CGSize
     */
-    override func intrinsicContentSize() -> CGSize { return CGSize(width: UIViewNoIntrinsicMetric, height: 24.0) }
+    override func intrinsicContentSize() -> CGSize {
+      if let text = attributedText {
+        return text.boundingRectWithSize(CGSize(square: CGFloat.infinity),
+                                 options: .UsesLineFragmentOrigin,
+                                 context: nil).size + 8.0
+      } else {
+        return CGSize(square: UIViewNoIntrinsicMetric)
+      }
+    }
 
     /**
     drawRect:
@@ -154,6 +169,24 @@ final class DetailAttributedTextCell: DetailCell {
 
   }
 
+  /** updateConstraints */
+  override func updateConstraints() {
+    super.updateConstraints()
+
+    let id = createIdentifier(self, ["Internal"])
+    contentView.removeConstraintsWithIdentifier(id)
+    if name != nil {
+      let format = "|-[name]-[text(==name)]-| :: V:|-[name]-| :: V:|-[text(==name)]-|"
+      contentView.constrain(format, views: ["name": nameLabel, "text": attributedTextDisplay], identifier: id)
+    } else {
+      let format = "|[text]| :: V:|[text]|"
+      contentView.constrain(format, views: ["text": attributedTextDisplay], identifier: id)
+
+    }
+  }
+
+  override var name: String? { didSet { setNeedsUpdateConstraints() } }
+
   /**
   initWithStyle:reuseIdentifier:
 
@@ -165,8 +198,6 @@ final class DetailAttributedTextCell: DetailCell {
 
     contentView.addSubview(nameLabel)
     contentView.addSubview(attributedTextDisplay)
-    let format = "|-[name]-[text(==name)]-| :: V:|-[name]-| :: V:|-[text(==name)]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "text": attributedTextDisplay])
   }
 
   private let attributedTextDisplay = AttributedTextDisplay(autolayout: true)

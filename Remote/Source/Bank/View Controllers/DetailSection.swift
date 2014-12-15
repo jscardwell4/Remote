@@ -12,6 +12,7 @@ import MoonKit
 
 class DetailSection {
 
+  weak var controller: DetailController?
   var title: String?
   var identifier: DetailSectionHeader.Identifier { return .Header }
   let section: Int
@@ -56,14 +57,33 @@ class DetailSection {
   :param: row DetailRow
   :param: idx Int
   */
-  func insertRow(row: DetailRow, atIndex idx: Int) { assert(idx <= count); blocks.insert({row}, atIndex: idx) }
+  func insertRow(row: DetailRow, atIndex idx: Int) { insertRow({row}, atIndex: idx) }
+
+  /**
+  insertRow:atIndex:
+
+  :param: createRow (Void) -> DetailRow
+  :param: idx Int
+  */
+  func insertRow(createRow: (Void) -> DetailRow, atIndex idx: Int) {
+    assert(idx <= blocks.count)
+    blocks.insert(createRow, atIndex: idx)
+  }
 
   /**
   removeRowAtIndex:
 
   :param: idx Int
   */
-  func removeRowAtIndex(idx: Int) { assert(idx < count); _ = blocks.removeAtIndex(idx) }
+  func removeRowAtIndex(idx: Int) { assert(idx < blocks.count); _ = blocks.removeAtIndex(idx) }
+
+  /**
+  replaceRowAtIndex:withRow:
+
+  :param: idx Int
+  :param: row (Void) -> DetailRow
+  */
+  func replaceRowAtIndex(idx: Int, withRow row: (Void) -> DetailRow) { assert(idx < blocks.count); blocks[idx] = row }
 
   /**
   removeAllRows:
@@ -84,6 +104,11 @@ class DetailSection {
 
   :param: section Int
   :param: title String? = nil
+  :param: controller DetailController? = nil
   */
-  init(section: Int, title: String? = nil) { self.section = section; self.title = title }
+  init(section: Int, title: String? = nil, controller: DetailController? = nil) {
+    self.section = section
+    self.title = title
+    self.controller = controller
+  }
 }

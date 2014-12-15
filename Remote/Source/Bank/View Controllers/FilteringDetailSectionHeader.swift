@@ -23,19 +23,26 @@ class FilteringDetailSectionHeader: DetailSectionHeader {
     super.init(reuseIdentifier: reuseIdentifier)
     contentView.addSubview(checkBoxContainer)
     contentView.constrain("[container]-| :: container.centerY = self.centerY + 3", views: ["container": checkBoxContainer])
-
   }
 
-  var labels: [String]? {
+  var activePredicatesDidChange: ((Void) -> Void)?
+
+  var predicates: [FilteringDetailSection.Predicate]? {
     didSet {
-      if labels == nil { apply(checkBoxContainer.subviews){$0.removeFromSuperview()} }
+      if predicates == nil { apply(checkBoxContainer.subviews){$0.removeFromSuperview()} }
       else {
         let font = UIFont(name: "Elysio-Medium", size: 12)!
         let color = UIColor(red: 0.937, green: 0.937, blue: 0.957, alpha: 1.000)
-        let labeledCheckboxes: [LabeledCheckbox] = labels!.map{
-          let view = LabeledCheckbox(title: $0, font: font, autolayout: true)
+        let labeledCheckboxes: [LabeledCheckbox] = predicates!.map{
+          predicate in
+          let view = LabeledCheckbox(title: predicate.name, font: font, autolayout: true)
           view.titleColor = color
           view.checkboxColor = color
+          view.checked = predicate.active
+          view.addActionBlock({
+            predicate.active = view.checked
+            _ = self.activePredicatesDidChange?()
+          }, forControlEvents: .TouchUpInside)
           return view
         }
         apply(labeledCheckboxes){self.checkBoxContainer.addSubview($0)}
@@ -62,6 +69,6 @@ class FilteringDetailSectionHeader: DetailSectionHeader {
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /** prepareForReuse */
-  override func prepareForReuse() { labels = nil; super.prepareForReuse() }
+  override func prepareForReuse() { predicates = nil; super.prepareForReuse() }
 
 }

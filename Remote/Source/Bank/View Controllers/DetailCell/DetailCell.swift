@@ -108,9 +108,7 @@ class DetailCell: UITableViewCell {
   ////////////////////////////////////////////////////////////////////////////////
 
 
-  var name: String? { get { return nameLabel.text } set { nameLabel.text = newValue } }
-
-
+  var name: String? { didSet { nameLabel.text = name } }
 
   /** A simple enum to specify kinds of data */
   enum DataType {

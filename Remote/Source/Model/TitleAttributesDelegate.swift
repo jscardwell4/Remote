@@ -37,7 +37,11 @@ class TitleAttributesDelegate: EditableItem {
 
   :param: titleAttributes TitleAttributes
   */
-  init(titleAttributes: TitleAttributes) { initialAttributes = titleAttributes; self.titleAttributes = titleAttributes }
+  init(titleAttributes: TitleAttributes, observer: TitleAttributesDelegateObserver? = nil) {
+    initialAttributes = titleAttributes
+    self.titleAttributes = titleAttributes
+    self.observer = observer
+  }
 
   /**
   detailController

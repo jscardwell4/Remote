@@ -12,6 +12,9 @@ import MoonKit
 
 class DetailRow {
 
+  var tag: Any?
+  weak var cell: DetailCell?
+
   var identifier: DetailCell.Identifier { return .Cell }
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
@@ -36,6 +39,7 @@ class DetailRow {
   :param: cell DetailCell
   */
   func configureCell(cell: DetailCell) {
+    self.cell = cell
     if infoDataType != nil                { cell.infoDataType = infoDataType!                               }
     if backgroundColor != nil             { cell.backgroundColor = backgroundColor!                         }
     if indentationLevel != nil            { cell.indentationLevel = indentationLevel!                       }
@@ -46,6 +50,8 @@ class DetailRow {
     if valueIsValid != nil                { cell.valueIsValid = valueIsValid!                               }
     if valueDidChange != nil              { cell.valueDidChange = valueDidChange!                           }
   }
+
+  var load: (DetailRow) -> Void = {_ in }
 
   /** init */
   init(){}
