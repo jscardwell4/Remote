@@ -411,6 +411,8 @@
 		C28D098619D8747F00DF8100 /* Manufacturer_Yamaha.json in Resources */ = {isa = PBXBuildFile; fileRef = C28D097F19D8747F00DF8100 /* Manufacturer_Yamaha.json */; };
 		C28F7E3018037AFB00E007B5 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */; };
 		C28FAF7C173014B4002902D9 /* RemoteElementImportSupportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */; };
+		C290D3EB1A3B93AD00223230 /* FilteringDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C290D3EA1A3B93AD00223230 /* FilteringDetailSection.swift */; };
+		C290D3EF1A3BA47E00223230 /* FilteringDetailSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C290D3EE1A3BA47E00223230 /* FilteringDetailSectionHeader.swift */; };
 		C29C22E21A37EAF600B0101F /* DetailSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C22E11A37EAF600B0101F /* DetailSectionHeader.swift */; };
 		C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C29F23D9178505AA00CD782B /* Remote.xcdatamodeld */; };
 		C29F8F8D18269E150073EF09 /* NamedModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F8F8C18269E150073EF09 /* NamedModelObject.m */; };
@@ -1119,6 +1121,8 @@
 		C28F7E2F18037AFB00E007B5 /* ComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ComponentDevice.json; sourceTree = "<group>"; };
 		C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementImportSupportFunctions.m; sourceTree = "<group>"; };
 		C28FAF7E173014D8002902D9 /* RemoteElementImportSupportFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementImportSupportFunctions.h; sourceTree = "<group>"; };
+		C290D3EA1A3B93AD00223230 /* FilteringDetailSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteringDetailSection.swift; sourceTree = "<group>"; };
+		C290D3EE1A3BA47E00223230 /* FilteringDetailSectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteringDetailSectionHeader.swift; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C29C22E11A37EAF600B0101F /* DetailSectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailSectionHeader.swift; sourceTree = "<group>"; };
 		C29F23DA178505AA00CD782B /* Remote.base 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 10.xcdatamodel"; sourceTree = "<group>"; };
@@ -1678,6 +1682,8 @@
 		C26B8A6B18006C1D00912DBB /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				C290D3EE1A3BA47E00223230 /* FilteringDetailSectionHeader.swift */,
+				C290D3EA1A3B93AD00223230 /* FilteringDetailSection.swift */,
 				C22BECC119FC72AE00898B79 /* DetailRow */,
 				C22BECBF19FC729500898B79 /* DetailCell */,
 				C22BECC219FC72C200898B79 /* BankItemDetailController */,
@@ -3008,6 +3014,7 @@
 				C235A2E71A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
 				C25C273019DDF45700D90B0B /* BankSurrogateCategory.swift in Sources */,
+				C290D3EB1A3B93AD00223230 /* FilteringDetailSection.swift in Sources */,
 				C25B130419FB4F5900C5630F /* DocumentSelectionController.swift in Sources */,
 				C27DE08519E5E67F00CCB725 /* IRCodeDetailController.swift in Sources */,
 				C252E4FC19E2195B00DBBBB2 /* DetailController.swift in Sources */,
@@ -3137,6 +3144,7 @@
 				C23F1E5D1705064E0084718A /* SendCommand.m in Sources */,
 				C22033B11A28D35D00372BCE /* DetailLabeledImageRow.swift in Sources */,
 				C2B54E731A0EF195005281B4 /* RemoteElementView.swift in Sources */,
+				C290D3EF1A3BA47E00223230 /* FilteringDetailSectionHeader.swift in Sources */,
 				C289BB5B19F85B64008E92C1 /* DetailTextFieldRow.swift in Sources */,
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
 				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,

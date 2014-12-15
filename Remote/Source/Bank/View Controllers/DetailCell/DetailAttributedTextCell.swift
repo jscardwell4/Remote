@@ -31,7 +31,7 @@ final class DetailAttributedTextCell: DetailCell {
     }
 
     var foregroundColor: UIColor {
-      let color = attributedText?.foregroundColor?
+      let color = attributedText?.foregroundColor
       return color?.isRGBCompatible == true ? color! : UIColor.blackColor()
     }
 

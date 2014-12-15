@@ -60,7 +60,7 @@ class TitleAttributesDelegate: EditableItem {
     set { titleAttributes.iconTextOrder = newValue}
   }
 
-  var text: String? {
+  var text: String {
     get { return titleAttributes.text }
     set { titleAttributes.text = newValue}
   }
@@ -70,17 +70,17 @@ class TitleAttributesDelegate: EditableItem {
     set { titleAttributes.iconName = newValue}
   }
 
-  var icon: String? {
+  var icon: String {
     get { return titleAttributes.icon }
     set { titleAttributes.icon = newValue}
   }
 
-  var font: UIFont? {
-    get { return titleAttributes.font ?? UIFont.systemFontOfSize(UIFont.labelFontSize())}
+  var font: UIFont {
+    get { return titleAttributes.font }
     set { titleAttributes.font = newValue}
   }
 
-  var foregroundColor: UIColor? {
+  var foregroundColor: UIColor {
     get { return titleAttributes.foregroundColor }
     set { titleAttributes.foregroundColor = newValue}
   }
@@ -90,8 +90,8 @@ class TitleAttributesDelegate: EditableItem {
     set { titleAttributes.backgroundColor = newValue}
   }
 
-  var ligature: Int? {
-    get { return titleAttributes.ligature ?? 1 }
+  var ligature: Int {
+    get { return titleAttributes.ligature }
     set { titleAttributes.ligature = newValue}
   }
 
@@ -100,27 +100,27 @@ class TitleAttributesDelegate: EditableItem {
     set { titleAttributes.shadow = newValue}
   }
 
-  var expansion: Float? {
+  var expansion: Float {
     get { return titleAttributes.expansion }
     set { titleAttributes.expansion = newValue}
   }
 
-  var obliqueness: Float? {
+  var obliqueness: Float {
     get { return titleAttributes.obliqueness }
     set { titleAttributes.obliqueness = newValue}
   }
 
-  var strikethroughColor: UIColor? {
+  var strikethroughColor: UIColor {
     get { return titleAttributes.strikethroughColor }
     set { titleAttributes.strikethroughColor = newValue}
   }
 
-  var underlineColor: UIColor? {
+  var underlineColor: UIColor {
     get { return titleAttributes.underlineColor }
     set { titleAttributes.underlineColor = newValue}
   }
 
-  var baselineOffset: Float? {
+  var baselineOffset: Float {
     get { return titleAttributes.baselineOffset }
     set { titleAttributes.baselineOffset = newValue}
   }
@@ -130,97 +130,97 @@ class TitleAttributesDelegate: EditableItem {
     set { titleAttributes.textEffect = newValue}
   }
 
-  var strokeWidth: Float? {
+  var strokeWidth: Float {
     get { return titleAttributes.strokeWidth }
     set { titleAttributes.strokeWidth = newValue}
   }
 
-  var strokeFill: Bool? {
+  var strokeFill: Bool {
     get { return titleAttributes.strokeFill }
     set { titleAttributes.strokeFill = newValue }
   }
 
-  var strokeColor: UIColor? {
+  var strokeColor: UIColor {
     get { return titleAttributes.strokeColor }
     set { titleAttributes.strokeColor = newValue}
   }
 
-  var underlineStyle: NSUnderlineStyle? {
+  var underlineStyle: NSUnderlineStyle {
     get { return titleAttributes.underlineStyle ?? .StyleNone }
     set { titleAttributes.underlineStyle = newValue}
   }
 
-  var strikethroughStyle: NSUnderlineStyle? {
+  var strikethroughStyle: NSUnderlineStyle {
     get { return titleAttributes.strikethroughStyle ?? .StyleNone}
     set { titleAttributes.strikethroughStyle = newValue}
   }
 
-  var kern: Float? {
+  var kern: Float {
     get { return titleAttributes.kern }
     set { titleAttributes.kern = newValue}
   }
 
-  var paragraphStyle: NSParagraphStyle? {
-    get { return titleAttributes.paragraphStyle ?? NSParagraphStyle.defaultParagraphStyle() }
+  var paragraphStyle: NSParagraphStyle {
+    get { return titleAttributes.paragraphStyle }
     set { titleAttributes.paragraphStyle = newValue}
   }
 
-  var alignment: NSTextAlignment? {
+  var alignment: NSTextAlignment {
     get { return titleAttributes.alignment }
     set { titleAttributes.alignment = newValue}
   }
 
-  var firstLineHeadIndent: CGFloat? {
+  var firstLineHeadIndent: CGFloat {
     get { return titleAttributes.firstLineHeadIndent }
     set { titleAttributes.firstLineHeadIndent = newValue}
   }
 
-  var headIndent: CGFloat? {
+  var headIndent: CGFloat {
     get { return titleAttributes.headIndent }
     set { titleAttributes.headIndent = newValue}
   }
 
-  var tailIndent: CGFloat? {
+  var tailIndent: CGFloat {
     get { return titleAttributes.tailIndent }
     set { titleAttributes.tailIndent = newValue}
   }
 
-  var lineHeightMultiple: CGFloat? {
+  var lineHeightMultiple: CGFloat {
     get { return titleAttributes.lineHeightMultiple }
     set { titleAttributes.lineHeightMultiple = newValue}
   }
 
-  var maximumLineHeight: CGFloat? {
+  var maximumLineHeight: CGFloat {
     get { return titleAttributes.maximumLineHeight }
     set { titleAttributes.maximumLineHeight = newValue}
   }
 
-  var minimumLineHeight: CGFloat? {
+  var minimumLineHeight: CGFloat {
     get { return titleAttributes.minimumLineHeight }
     set { titleAttributes.minimumLineHeight = newValue}
   }
 
-  var lineSpacing: CGFloat? {
+  var lineSpacing: CGFloat {
     get { return titleAttributes.lineSpacing }
     set { titleAttributes.lineSpacing = newValue}
   }
 
-  var paragraphSpacing: CGFloat? {
+  var paragraphSpacing: CGFloat {
     get { return titleAttributes.paragraphSpacing }
     set { titleAttributes.paragraphSpacing = newValue}
   }
 
-  var paragraphSpacingBefore: CGFloat? {
+  var paragraphSpacingBefore: CGFloat {
     get { return titleAttributes.paragraphSpacingBefore }
     set { titleAttributes.paragraphSpacingBefore = newValue}
   }
 
-  var hyphenationFactor: Float? {
+  var hyphenationFactor: Float {
     get { return titleAttributes.hyphenationFactor }
     set { titleAttributes.hyphenationFactor = newValue}
   }
 
-  var lineBreakMode: NSLineBreakMode? {
+  var lineBreakMode: NSLineBreakMode {
     get { return titleAttributes.lineBreakMode }
     set { titleAttributes.lineBreakMode = newValue}
   }

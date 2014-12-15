@@ -4,4 +4,10 @@ import Foundation
 import UIKit
 import MoonKit
 
-UIEdgeInsets(inset: 4.0).insetRect(CGRect(size: CGSize(square: 2))).size.minAxis
+UIFont.fontFamilyAvailable("FontAwesome")
+
+let checkbox = LabeledCheckbox(title: "Highlighted", font: nil, autolayout: false)
+checkbox.frame = CGRect(size: CGSize(width: 200, height: 34))
+checkbox.backgroundColor = UIColor.whiteColor()
+checkbox.setNeedsDisplay()
+checkbox.checked = true

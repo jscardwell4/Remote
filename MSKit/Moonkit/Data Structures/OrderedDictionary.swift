@@ -21,6 +21,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   public var isEmpty: Bool { return indexKeys.isEmpty }
   public var keys: [Key] { return indexKeys }
   public var values: [Value] { return indexKeys.map { self.storage[$0]! } }
+  public var dictionary: [Key:Value] { return storage }
 
 
   ////////////////////////////////////////////////////////////////////////////////

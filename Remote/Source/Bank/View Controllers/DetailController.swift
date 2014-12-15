@@ -148,7 +148,7 @@ class DetailController: UITableViewController {
     tableView?.delegate = self
     tableView?.dataSource = self
     DetailCell.registerIdentifiersWithTableView(tableView)
-    tableView?.registerClass(DetailSectionHeader.self, forHeaderFooterViewReuseIdentifier: "DetailSectionHeader")
+    DetailSectionHeader.registerIdentifiersWithTableView(tableView)
     navigationItem.rightBarButtonItem = editButtonItem()
   }
 
@@ -458,18 +458,6 @@ extension DetailController: UITableViewDataSource {
   }
 
   /**
-  tableView:titleForHeaderInSection:
-
-  :param: tableView UITableView
-  :param: section Int
-
-  :returns: String?
-  */
-  // override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-  //   return self[section]?.title
-  // }
-
-  /**
   tableView:viewForHeaderInSection:
 
   :param: tableView UITableView
@@ -478,10 +466,10 @@ extension DetailController: UITableViewDataSource {
   :returns: UIView?
   */
   override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier("DetailSectionHeader") as DetailSectionHeader
     let detailSection = sections.values[section]
-    header.title = detailSection.title
-    header.action = detailSection.action
+    let identifier = detailSection.identifier.rawValue
+    let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier(identifier) as DetailSectionHeader
+    detailSection.configureHeader(header)
     return header
   }
 

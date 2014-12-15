@@ -213,6 +213,7 @@
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
 		C25E63E11A00427100F54626 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E01A00427100F54626 /* OrderedSet.swift */; };
 		C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27372841A1FC0750079624D /* UIColor+MoonKitAdditions.swift */; };
+		C28447111A3E051F005338AB /* LabeledCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28447101A3E051F005338AB /* LabeledCheckbox.swift */; };
 		C284EA5C1A1EAD6700B07BA8 /* TouchTrackingGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C284EA5B1A1EAD6700B07BA8 /* TouchTrackingGesture.swift */; };
 		C28E50921A13CA2F00DF3206 /* PanGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225879919F9EF4C006D8B1D /* PanGesture.swift */; };
 		C28E50931A13CA5000DF3206 /* MSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47A19E83D8900B36983 /* MSButton.swift */; };
@@ -310,6 +311,7 @@
 		C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleBarButtonItem.swift; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
+		C28447101A3E051F005338AB /* LabeledCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabeledCheckbox.swift; sourceTree = "<group>"; };
 		C284EA5B1A1EAD6700B07BA8 /* TouchTrackingGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchTrackingGesture.swift; sourceTree = "<group>"; };
 		C284EA601A1ED27E00B07BA8 /* OrderedSet_ObjectiveCBridgeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet_ObjectiveCBridgeable.swift; sourceTree = "<group>"; };
 		C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiselectGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -630,6 +632,7 @@
 		C277AB8519D7878A008DEE39 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				C28447101A3E051F005338AB /* LabeledCheckbox.swift */,
 				C2F8C30E1A36133E004229FE /* TwoToneSlider.swift */,
 				C21493C01A35302200D274A2 /* ColorInputView.swift */,
 				C21493BE1A35285A00D274A2 /* ColorSwatch.swift */,
@@ -1287,6 +1290,7 @@
 				C2E7C8321A1AA3F0006BC80E /* Protocols.swift in Sources */,
 				C2358F5419C78E0C00920F8D /* NSPointerArray+MSKitAdditions.m in Sources */,
 				C2358F5519C78E0C00920F8D /* NSAssertionHandler+MSKitAdditions.m in Sources */,
+				C28447111A3E051F005338AB /* LabeledCheckbox.swift in Sources */,
 				C2358F5619C78E0C00920F8D /* NSIndexPath+MSKitAdditions.m in Sources */,
 				C2358F5719C78E0C00920F8D /* MSColorInputViewController.m in Sources */,
 				C2358F5819C78E0C00920F8D /* MSPickerInputViewController.m in Sources */,

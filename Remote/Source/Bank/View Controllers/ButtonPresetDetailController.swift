@@ -40,9 +40,34 @@ class ButtonPresetDetailController: PresetDetailController {
   /** loadTitlesSection */
   func loadTitlesSection() {
 
-    var titlesSection = sections["Titles"]
+    var titlesSection = sections["Titles"] as? FilteringDetailSection
     if titlesSection == nil {
-      titlesSection = DetailSection(section: 1, title: "Titles")
+      titlesSection = FilteringDetailSection(section: 1, title: "Titles")
+      let highlightedPredicate = FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
+        (row: DetailRow) -> Bool in
+          if let controlState = UIControlState(JSONValue: row.name?.dashcaseString ?? "") {
+            return controlState & .Highlighted != nil
+          } else {
+            return false
+          }
+        })
+      let selectedPredicate = FilteringDetailSection.Predicate(name: "Selected", includeRow: {
+        (row: DetailRow) -> Bool in
+          if let controlState = UIControlState(JSONValue: row.name?.dashcaseString ?? "") {
+            return controlState & .Selected != nil
+          } else {
+            return false
+          }
+        })
+      let disabledPredicate = FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
+        (row: DetailRow) -> Bool in
+          if let controlState = UIControlState(JSONValue: row.name?.dashcaseString ?? "") {
+            return controlState & .Disabled != nil
+          } else {
+            return false
+          }
+        })
+      titlesSection?.predicates = [highlightedPredicate, selectedPredicate, disabledPredicate]
       sections["Titles"] = titlesSection!
     } else {
       titlesSection!.removeAllRows(keepCapacity: true)
@@ -61,13 +86,15 @@ class ButtonPresetDetailController: PresetDetailController {
 
         titlesSection!.addRow {
 
+          let mergedAttributes = attributes.mergedWithTitleAttributes(attributesByState["normal"])
+
           var row = DetailAttributedTextRow()
           row.name = state.titlecaseString
-          row.info = attributes.stringWithFillers(attributesByState["normal"]?.attributes)
+          row.info = mergedAttributes.string
 
           row.select = {
 
-            let attributesDelegate = TitleAttributesDelegate(titleAttributes: attributes)
+            let attributesDelegate = TitleAttributesDelegate(titleAttributes: mergedAttributes)
             attributesDelegate.observer = self
 
             self.pushedTitleAttributesKey = state

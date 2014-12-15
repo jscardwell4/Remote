@@ -14,6 +14,26 @@ extension MSKeyPath: SequenceType {
   }
 }
 
+//extension MSDictionary: DictionaryLiteralConvertible {
+//
+//  /**
+//  init:AnyObject)...:
+//
+//  :param: elements (NSObject
+//  :param: AnyObject)...
+//  */
+//  public convenience init(dictionaryLiteral elements: (NSObject, AnyObject)...) {
+//    self.init()
+//
+//    for (key, value) in elements {
+//      keys.append(key)
+//      values.append(value)
+//      dictionary[key] = value
+//    }
+//
+//  }
+//}
+
 extension MSDictionary: Printable {
 
   convenience init(orderedDictionary: OrderedDictionary<NSObject,AnyObject>) {
@@ -65,7 +85,7 @@ extension MSDictionary: Printable {
 
       // Otherwise we embed the value
       else {
-        
+
         var dict = MSDictionary()  // Create a dictionary within which to embed our value
         var subdict = dict         // This will reference the dictionary to which our value entered
 

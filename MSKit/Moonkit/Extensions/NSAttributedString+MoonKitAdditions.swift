@@ -14,11 +14,11 @@ extension NSAttributedString {
   public var font: UIFont? { return attribute(NSFontAttributeName, atIndex: 0, effectiveRange: nil) as? UIFont }
 
   public var foregroundColor: UIColor? {
-    return attribute(NSForegroundColorAttributeName, atIndex: 0, effectiveRange: nil) as? UIColor
+    return length > 0 ? attribute(NSForegroundColorAttributeName, atIndex: 0, effectiveRange: nil) as? UIColor : nil
   }
 
   public var backgroundColor: UIColor? {
-    return attribute(NSBackgroundColorAttributeName, atIndex: 0, effectiveRange: nil) as? UIColor
+    return length > 0 ? attribute(NSBackgroundColorAttributeName, atIndex: 0, effectiveRange: nil) as? UIColor : nil
   }
 
 
@@ -27,10 +27,12 @@ extension NSAttributedString {
 extension NSMutableAttributedString {
 
   public override var font: UIFont? {
-    get { return attribute(NSFontAttributeName, atIndex: 0, effectiveRange: nil) as? UIFont }
+    get { return length > 0 ? attribute(NSFontAttributeName, atIndex: 0, effectiveRange: nil) as? UIFont : nil }
     set {
-      if newValue != nil { addAttribute(NSFontAttributeName, value: newValue!, range: NSRange(0..<length)) }
-      else { removeAttribute(NSFontAttributeName, range: NSRange(0..<length)) }
+      if length > 0 {
+        if newValue != nil { addAttribute(NSFontAttributeName, value: newValue!, range: NSRange(0..<length)) }
+        else { removeAttribute(NSFontAttributeName, range: NSRange(0..<length)) }
+      }
     }
   }
 
@@ -40,7 +42,7 @@ extension NSMutableAttributedString {
   :param: font UIFont
   */
   public func setFont(font: UIFont, range: Range<Int>? = nil) {
-    addAttribute(NSFontAttributeName, value: font, range: NSRange(range ?? 0..<length))
+    if length > 0 { addAttribute(NSFontAttributeName, value: font, range: NSRange(range ?? 0..<length)) }
   }
 
 

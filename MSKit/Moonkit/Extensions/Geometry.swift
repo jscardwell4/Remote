@@ -32,6 +32,10 @@ extension CGPoint: NilLiteralConvertible {
   public init(nilLiteral: ()) { self = CGPoint.nullPoint }
 }
 
+extension CGPoint: Unpackable2 {
+  public func unpack() -> (CGFloat, CGFloat) { return (x, y) }
+}
+
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
 }
@@ -64,6 +68,10 @@ extension CGVector: NilLiteralConvertible {
 
 extension CGVector: Printable {
   public var description: String { return "(\(dx), \(dy))"}
+}
+
+extension CGVector: Unpackable2 {
+  public func unpack() -> (CGFloat, CGFloat) { return (dx, dy) }
 }
 
 public func -(lhs: CGVector, rhs: CGVector) -> CGVector {
@@ -113,6 +121,9 @@ extension CGSize {
     return CGSizeApplyAffineTransform(self, transform)
   }
 }
+extension CGSize: Unpackable2 {
+  public func unpack() -> (CGFloat, CGFloat) { return (width, height) }
+}
 
 public func max(s1: CGSize, s2: CGSize) -> CGSize { return s1 > s2 ? s1 : s2 }
 public func min(s1: CGSize, s2: CGSize) -> CGSize { return s1 < s2 ? s1 : s2 }
@@ -144,6 +155,10 @@ extension UIEdgeInsets {
     return UIEdgeInsetsInsetRect(rect, self)
   }
   public init(inset: CGFloat) { self = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset) }
+}
+
+extension UIEdgeInsets: Unpackable4 {
+  public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (top, left, bottom, right) }
 }
 
 extension CGAffineTransform {
@@ -216,6 +231,10 @@ extension CGRect {
                   width: min(size.width + pushX + pullY, size.width),
                   height: min(size.height + pushY + pullY, size.height))
   }
+}
+
+extension CGRect: Unpackable4 {
+  public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (origin.x, origin.y, size.width, size.height) }
 }
 
 public func ∪(lhs: CGRect, rhs: CGRect) -> CGRect { return lhs.rectByUnion(rhs) }

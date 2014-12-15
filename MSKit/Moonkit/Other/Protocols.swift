@@ -39,3 +39,18 @@ public protocol Summable {
 public protocol OptionalSubscriptingCollectionType: CollectionType {
   subscript (position: Optional<Self.Index>) -> Self.Generator.Element? { get }
 }
+
+public protocol Unpackable2 {
+  typealias Element
+  func unpack() -> (Element, Element)
+}
+
+public protocol Unpackable3 {
+  typealias Element
+  func unpack() -> (Element, Element, Element)
+}
+
+public protocol Unpackable4 {
+  typealias Element
+  func unpack() -> (Element, Element, Element, Element)
+}

@@ -9,9 +9,14 @@
 import Foundation
 import UIKit
 
+
 public class Checkbox: UIControl {
 
   public var checked: Bool = false { didSet { setNeedsDisplay() } }
+
+  public var checkmarkColor: UIColor = UIColor(white: 0.1, alpha: 1) { didSet { setNeedsDisplay() } }
+
+  public var useFontAwesome = true
 
   /** toggleChecked */
   public func toggleChecked() { checked = !checked }
@@ -26,7 +31,11 @@ public class Checkbox: UIControl {
   */
   public override init(frame: CGRect) {
     super.init(frame: frame)
+    opaque = false
+    backgroundColor = UIColor.clearColor()
     addTarget(self, action: "toggleChecked", forControlEvents: .TouchUpInside)
+    setContentHuggingPriority(1000, forAxis: .Vertical)
+    setContentHuggingPriority(1000, forAxis: .Horizontal)
   }
 
   /**
@@ -48,14 +57,21 @@ public class Checkbox: UIControl {
 
   :returns: CGSize
   */
-  public override func intrinsicContentSize() -> CGSize { return CGSize(square: 44.0) }
+  public override func intrinsicContentSize() -> CGSize { return CGSize(square: 28.0) }
 
   /**
   alignmentRectInsets
 
   :returns: UIEdgeInsets
   */
-  public override func alignmentRectInsets() -> UIEdgeInsets { return UIEdgeInsets(inset: 7.0) }
+  // public override func alignmentRectInsets() -> UIEdgeInsets {
+  //   let dx = floor(bounds.width * 0.15909 + 0.5)
+  //   let dy = floor(bounds.height * 0.11364 + 0.5)
+  //   let w  = floor(bounds.width * 0.86364 + 0.5)
+  //   let h  = floor(bounds.height * 0.81818 + 0.5)
+
+  //   return UIEdgeInsets(top: dy, left: dx, bottom: bounds.height - h, right: bounds.width - w)
+  // }
 
   /**
   drawRect:
@@ -63,105 +79,143 @@ public class Checkbox: UIControl {
   :param: rect CGRect
   */
   public override func drawRect(rect: CGRect) {
-    //// General Declarations
-    let context = UIGraphicsGetCurrentContext()
 
-    //// Color Declarations
-    let affirmativeGreenColor = UIColor(red: 0.294, green: 0.847, blue: 0.384, alpha: 1.000)
-
-    //// Shadow Declarations
-    let semiDarkShadow = UIColor.blackColor().colorWithAlphaComponent(0.44)
-    let semiDarkShadowOffset = CGSizeMake(0.1, 2.1)
-    let semiDarkShadowBlurRadius: CGFloat = 2
-    let lightShadow = UIColor.whiteColor().colorWithAlphaComponent(0.44)
-    let lightShadowOffset = CGSizeMake(0.1, 2.1)
-    let lightShadowBlurRadius: CGFloat = 2
-
-    //// Rectangle Drawing
-    let rectanglePath = UIBezierPath(rect: CGRectMake(rect.minX, rect.minY, 44, 44))
-    UIColor.whiteColor().setFill()
-    rectanglePath.fill()
+    if useFontAwesome {
+      UIFont.fontAwesomeIconForName(checked ? "check-square-o" : "square-o").drawInRect(rect, withAttributes: [
+        NSFontAttributeName: UIFont(name: "FontAwesome", size: rect.size.minAxis - 1.0)!
+      ])
+    } else {
+      //// General Declarations
+      let context = UIGraphicsGetCurrentContext()
 
 
-    //// box Drawing
-    let boxPath = UIBezierPath(roundedRect: CGRectMake(rect.minX + 7, rect.minY + 5, rect.width - 13, rect.height - 13), cornerRadius: 5)
-    CGContextSaveGState(context)
-    CGContextSetShadowWithColor(context, semiDarkShadowOffset, semiDarkShadowBlurRadius, (semiDarkShadow as UIColor).CGColor)
-    UIColor.whiteColor().setFill()
-    boxPath.fill()
+      //// Variable Declarations
+      let radius: CGFloat = rect.size.width * 0.11363636
 
-    ////// box Inner Shadow
-    CGContextSaveGState(context)
-    CGContextClipToRect(context, boxPath.bounds)
-    CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-    CGContextSetAlpha(context, CGColorGetAlpha((semiDarkShadow as UIColor).CGColor))
-    CGContextBeginTransparencyLayer(context, nil)
-    let boxOpaqueShadow = (semiDarkShadow as UIColor).colorWithAlphaComponent(1)
-    CGContextSetShadowWithColor(context, semiDarkShadowOffset, semiDarkShadowBlurRadius, (boxOpaqueShadow as UIColor).CGColor)
-    CGContextSetBlendMode(context, kCGBlendModeSourceOut)
-    CGContextBeginTransparencyLayer(context, nil)
+      //// box Drawing
+      let boxRect = CGRect(x: rect.minX + floor(rect.width * 0.09091 + 0.5),
+                           y: rect.minY + floor(rect.height * 0.09091 + 0.5),
+                           width: floor(rect.width * 0.90909 + 0.5) - floor(rect.width * 0.09091 + 0.5),
+                           height: floor(rect.height * 0.84091 + 0.5) - floor(rect.height * 0.09091 + 0.5))
 
-    boxOpaqueShadow.setFill()
-    boxPath.fill()
+      let boxPath = UIBezierPath(roundedRect: boxRect, cornerRadius: radius)
+      CGContextSaveGState(context)
+      CGContextSetShadowWithColor(
+        context,
+        DrawingKit.semiDarkShadow.shadowOffset,
+        DrawingKit.semiDarkShadow.shadowBlurRadius,
+        (DrawingKit.semiDarkShadow.shadowColor as UIColor).CGColor
+      )
+      UIColor.whiteColor().setFill()
+      UIRectFill(boxRect)
 
-    CGContextEndTransparencyLayer(context)
-    CGContextEndTransparencyLayer(context)
-    CGContextRestoreGState(context)
+      ////// box Inner Shadow
+      UIGraphicsPushContext(context)
+      UIRectClip(boxRect.rectWithOrigin(CGPoint.zeroPoint))
+      CGContextSetShadow(context, CGSize.zeroSize, 0)
+      CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.semiDarkShadow.shadowColor as UIColor).CGColor))
+      CGContextBeginTransparencyLayer(context, nil)
 
-    CGContextRestoreGState(context)
+      let boxOpaqueShadow = (DrawingKit.semiDarkShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+      CGContextSetShadowWithColor(
+        context,
+        DrawingKit.semiDarkShadow.shadowOffset,
+        DrawingKit.semiDarkShadow.shadowBlurRadius,
+        (boxOpaqueShadow as UIColor).CGColor
+      )
+      CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+      CGContextBeginTransparencyLayer(context, nil)
+
+      boxOpaqueShadow.setFill()
+      UIRectFill(boxRect)
+
+      CGContextEndTransparencyLayer(context)
+      CGContextEndTransparencyLayer(context)
+      UIGraphicsPopContext()
+
+      UIGraphicsPopContext()
 
 
 
-    if (checked) {
-        //// checkmark Drawing
-        var checkmarkPath = UIBezierPath()
-        checkmarkPath.moveToPoint(CGPointMake(rect.minX + 44, rect.minY + 2.98))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 40.96, rect.minY), controlPoint1: CGPointMake(rect.minX + 44, rect.minY + 1.33), controlPoint2: CGPointMake(rect.minX + 42.64, rect.minY))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 38.75, rect.minY + 0.99), controlPoint1: CGPointMake(rect.minX + 40.08, rect.minY), controlPoint2: CGPointMake(rect.minX + 39.3, rect.minY + 0.39))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 38.73, rect.minY + 0.97))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 21.12, rect.minY + 19.82))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 15.18, rect.minY + 13.99))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 15.18, rect.minY + 14))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 13.04, rect.minY + 13.12), controlPoint1: CGPointMake(rect.minX + 14.63, rect.minY + 13.45), controlPoint2: CGPointMake(rect.minX + 13.87, rect.minY + 13.12))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 10, rect.minY + 16.1), controlPoint1: CGPointMake(rect.minX + 11.36, rect.minY + 13.12), controlPoint2: CGPointMake(rect.minX + 10, rect.minY + 14.45))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 10.55, rect.minY + 17.8), controlPoint1: CGPointMake(rect.minX + 10, rect.minY + 16.73), controlPoint2: CGPointMake(rect.minX + 10.21, rect.minY + 17.32))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 10.55, rect.minY + 17.81))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 19.05, rect.minY + 29.73))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 19.05, rect.minY + 29.73))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 21.54, rect.minY + 31), controlPoint1: CGPointMake(rect.minX + 19.6, rect.minY + 30.49), controlPoint2: CGPointMake(rect.minX + 20.51, rect.minY + 31))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 23.94, rect.minY + 29.82), controlPoint1: CGPointMake(rect.minX + 22.52, rect.minY + 31), controlPoint2: CGPointMake(rect.minX + 23.39, rect.minY + 30.53))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 23.95, rect.minY + 29.83))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 43.38, rect.minY + 4.79))
-        checkmarkPath.addLineToPoint(CGPointMake(rect.minX + 43.37, rect.minY + 4.78))
-        checkmarkPath.addCurveToPoint(CGPointMake(rect.minX + 44, rect.minY + 2.98), controlPoint1: CGPointMake(rect.minX + 43.76, rect.minY + 4.28), controlPoint2: CGPointMake(rect.minX + 44, rect.minY + 3.66))
-        checkmarkPath.closePath()
-        checkmarkPath.miterLimit = 4;
+      if (checked) {
+          //// checkmark Drawing
+          var checkmarkPath = UIBezierPath()
+          checkmarkPath.moveToPoint(     CGPoint(x: rect.minX + 0.95455 * rect.width, y: rect.minY + 0.09047 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.88555 * rect.width, y: rect.minY + 0.02273 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.95455 * rect.width, y: rect.minY + 0.05305 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.92366 * rect.width, y: rect.minY + 0.02273 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.83519 * rect.width, y: rect.minY + 0.04514 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.86542 * rect.width, y: rect.minY + 0.02273 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.84777 * rect.width, y: rect.minY + 0.03160 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.83470 * rect.width, y: rect.minY + 0.04469 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.43462 * rect.width, y: rect.minY + 0.47323 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.29959 * rect.width, y: rect.minY + 0.34065 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.29944 * rect.width, y: rect.minY + 0.34080 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.25081 * rect.width, y: rect.minY + 0.32080 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.28698 * rect.width, y: rect.minY + 0.32851 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.26987 * rect.width, y: rect.minY + 0.32080 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.18182 * rect.width, y: rect.minY + 0.38855 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.21270 * rect.width, y: rect.minY + 0.32080 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.18182 * rect.width, y: rect.minY + 0.35113 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.19438 * rect.width, y: rect.minY + 0.42734 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.18182 * rect.width, y: rect.minY + 0.40301 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.18651 * rect.width, y: rect.minY + 0.41635 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.19428 * rect.width, y: rect.minY + 0.42739 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.38746 * rect.width, y: rect.minY + 0.69837 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.38756 * rect.width, y: rect.minY + 0.69832 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.44399 * rect.width, y: rect.minY + 0.72727 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.40003 * rect.width, y: rect.minY + 0.71578 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.42062 * rect.width, y: rect.minY + 0.72727 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.49866 * rect.width, y: rect.minY + 0.70043 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.46637 * rect.width, y: rect.minY + 0.72727 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.48607 * rect.width, y: rect.minY + 0.71665 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.49888 * rect.width, y: rect.minY + 0.70059 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.94044 * rect.width, y: rect.minY + 0.13154 * rect.height))
+          checkmarkPath.addLineToPoint(  CGPoint(x: rect.minX + 0.94022 * rect.width, y: rect.minY + 0.13138 * rect.height))
+          checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.95455 * rect.width, y: rect.minY + 0.09047 * rect.height),
+                          controlPoint1: CGPoint(x: rect.minX + 0.94908 * rect.width, y: rect.minY + 0.11998 * rect.height),
+                          controlPoint2: CGPoint(x: rect.minX + 0.95455 * rect.width, y: rect.minY + 0.10592 * rect.height))
+          checkmarkPath.closePath()
+          checkmarkPath.miterLimit = 4;
 
-        CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, semiDarkShadowOffset, semiDarkShadowBlurRadius, (semiDarkShadow as UIColor).CGColor)
-        affirmativeGreenColor.setFill()
-        checkmarkPath.fill()
+          UIGraphicsPushContext(context)
+          CGContextSetShadowWithColor(
+            context,
+            DrawingKit.semiDarkShadow.shadowOffset,
+            DrawingKit.semiDarkShadow.shadowBlurRadius,
+            (DrawingKit.semiDarkShadow.shadowColor as UIColor).CGColor
+          )
 
-        ////// checkmark Inner Shadow
-        CGContextSaveGState(context)
-        CGContextClipToRect(context, checkmarkPath.bounds)
-        CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((lightShadow as UIColor).CGColor))
-        CGContextBeginTransparencyLayer(context, nil)
-        let checkmarkOpaqueShadow = (lightShadow as UIColor).colorWithAlphaComponent(1)
-        CGContextSetShadowWithColor(context, lightShadowOffset, lightShadowBlurRadius, (checkmarkOpaqueShadow as UIColor).CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
-        CGContextBeginTransparencyLayer(context, nil)
+          checkmarkColor.setFill()
+          checkmarkPath.fill()
 
-        checkmarkOpaqueShadow.setFill()
-        checkmarkPath.fill()
+          ////// checkmark Inner Shadow
+          UIGraphicsPushContext(context)
+          UIRectClip(checkmarkPath.bounds)
+          CGContextSetShadow(context, CGSize.zeroSize, 0)
+          CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.lightShadow.shadowColor as UIColor).CGColor))
+          CGContextBeginTransparencyLayer(context, nil)
+          let checkmarkOpaqueShadow = (DrawingKit.lightShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+          CGContextSetShadowWithColor(
+            context,
+            DrawingKit.lightShadow.shadowOffset,
+            DrawingKit.lightShadow.shadowBlurRadius,
+            (checkmarkOpaqueShadow as UIColor).CGColor
+          )
+          CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+          CGContextBeginTransparencyLayer(context, nil)
 
-        CGContextEndTransparencyLayer(context)
-        CGContextEndTransparencyLayer(context)
-        CGContextRestoreGState(context)
+          checkmarkOpaqueShadow.setFill()
+          checkmarkPath.fill()
 
-        CGContextRestoreGState(context)
+          CGContextEndTransparencyLayer(context)
+          CGContextEndTransparencyLayer(context)
+          UIGraphicsPopContext()
 
+          UIGraphicsPopContext()
+
+      }
     }
+
   }
 }

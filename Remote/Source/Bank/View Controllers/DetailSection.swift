@@ -13,7 +13,7 @@ import MoonKit
 class DetailSection {
 
   var title: String?
-  var action: DetailSectionHeader.Action?
+  var identifier: DetailSectionHeader.Identifier { return .Header }
   let section: Int
 
   var count: Int { return blocks.count }
@@ -28,6 +28,15 @@ class DetailSection {
       row.indexPath = NSIndexPath(forRow: index, inSection: self.section)
       return row
     }
+  }
+
+  /**
+  configureHeader:
+
+  :param: header DetailSectionHeader
+  */
+  func configureHeader(header: DetailSectionHeader) {
+    header.title = title
   }
 
   private var blocks: [() -> DetailRow] = []
