@@ -29,6 +29,63 @@ class Button: RemoteElement {
 
   override var elementType: BaseType { return .Button }
 
+  /**
+  initWithPreset:
+
+  :param: preset Preset
+  */
+  override init(preset: Preset) {
+    super.init(preset: preset)
+
+    if let titlesData = preset.titles {
+      setTitles(ControlStateTitleSet.importObjectFromData(titlesData, context: managedObjectContext),
+        forMode: RemoteElement.DefaultMode)
+    }
+
+    if let iconsData = preset.icons {
+      setIcons(ControlStateImageSet.importObjectFromData(iconsData, context: managedObjectContext),
+       forMode: RemoteElement.DefaultMode)
+    }
+
+    if let imagesData = preset.images {
+      setImages(ControlStateImageSet.importObjectFromData(imagesData, context: managedObjectContext),
+        forMode: RemoteElement.DefaultMode)
+    }
+
+    if let backgroundColorsData = preset.backgroundColors {
+      setBackgroundColors(ControlStateColorSet.importObjectFromData(backgroundColorsData, context: managedObjectContext),
+                  forMode: RemoteElement.DefaultMode)
+    }
+
+    titleEdgeInsets = preset.titleEdgeInsets
+    contentEdgeInsets = preset.contentEdgeInsets
+    imageEdgeInsets = preset.imageEdgeInsets
+
+    if let commandData = preset.command {
+      setCommand(Command.importObjectFromData(commandData, context: managedObjectContext), forMode: RemoteElement.DefaultMode)
+    }
+
+  }
+
+  /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  :param: entity NSEntityDescription
+  :param: context NSManagedObjectContext?
+  */
+  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
+  /**
+  initWithContext:
+
+  :param: context NSManagedObjectContext
+  */
+  override init(context: NSManagedObjectContext) {
+    super.init(context: context)
+  }
+
   @NSManaged var title:            NSAttributedString?
   @NSManaged var icon:             ImageView?
   @NSManaged var image:            ImageView?

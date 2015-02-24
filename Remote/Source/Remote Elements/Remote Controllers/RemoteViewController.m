@@ -12,7 +12,7 @@
 #import "SettingsManager.h"
 //#import "ButtonGroup.h"
 //#import "Remote.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "StoryboardProxy.h"
 #import "MSRemoteAppController.h"
 #import "Remote-Swift.h"

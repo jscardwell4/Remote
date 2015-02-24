@@ -63,6 +63,7 @@ class Image: BankableModelObject, PreviewableItem {
   }
 
   var image: UIImage? { return UIImage(named: assetName) }
+  var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
   override var commentedUUID: String { var uuidCopy: NSString = uuid!; uuidCopy.comment = " // \(assetName)"; return uuidCopy }
 
   /**

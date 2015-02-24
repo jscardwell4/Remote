@@ -12,7 +12,7 @@
     "$4.bottom = $3.top :: $4.left = $0.left :: $4.right = $1.left :: $4.top = $2.bottom",
     "$5.bottom = $3.top :: $5.left = $1.right :: $5.right = $0.right :: $5.top = $2.bottom"
   ],
-  "background-color": "black",
+  "background-color": "#666666FF",
   "subelements": [
     {
       "base-type": "button",

@@ -1,13 +1,121 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ESI-NQ-T4b">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fYC-ex-Kkj">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Type Dynamic - Elysio Bold.otf">
+            <string>Elysio-Bold</string>
+            <string>Elysio-Bold</string>
+            <string>Elysio-Bold</string>
+            <string>Elysio-Bold</string>
+            <string>Elysio-Bold</string>
+        </mutableArray>
+        <mutableArray key="Type Dynamic - Elysio Light Italic.otf">
+            <string>Elysio-LightItalic</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
+        <!--Main Menu Controller-->
+        <scene sceneID="nCc-q3-6uZ">
+            <objects>
+                <viewController storyboardIdentifier="Main Menu" id="fYC-ex-Kkj" customClass="MainMenuController" customModule="Remote" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UnH-PN-W0i"/>
+                        <viewControllerLayoutGuide type="bottom" id="RY0-cH-pfx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ho6-Sr-L3T">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Painted Metal" translatesAutoresizingMaskIntoConstraints="NO" id="1El-2Y-Nw2" userLabel="Background">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3Y-vb-2kL" userLabel="Message">
+                                <rect key="frame" x="16" y="20" width="288" height="21"/>
+                                <fontDescription key="fontDescription" name="Elysio-LightItalic" family="Elysio" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yho-6B-U1E">
+                                <rect key="frame" x="110" y="86" width="101" height="44"/>
+                                <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="32"/>
+                                <state key="normal" title="Remote">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="remoteAction" destination="fYC-ex-Kkj" eventType="touchUpInside" id="6j4-Sm-3Mc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QFw-SY-Xck">
+                                <rect key="frame" x="110" y="166" width="78" height="44"/>
+                                <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="32"/>
+                                <state key="normal" title="Editor">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="editorAction" destination="fYC-ex-Kkj" eventType="touchUpInside" id="N7v-Rp-28o"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CYe-d6-9CP">
+                                <rect key="frame" x="105" y="262" width="68" height="44"/>
+                                <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="32"/>
+                                <state key="normal" title="Bank">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="bankAction" destination="fYC-ex-Kkj" eventType="touchUpInside" id="YKo-7t-nEE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DUy-y2-Fki">
+                                <rect key="frame" x="105" y="349" width="109" height="44"/>
+                                <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="32"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="settingsAction" destination="fYC-ex-Kkj" eventType="touchUpInside" id="ehh-Nq-EiT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwv-um-AeU">
+                                <rect key="frame" x="105" y="429" width="60" height="44"/>
+                                <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="32"/>
+                                <state key="normal" title="Help">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="helpAction" destination="fYC-ex-Kkj" eventType="touchUpInside" id="7LA-7S-kE9"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="v0P-Z8-Fkc">
+                                <rect key="frame" x="141" y="511" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="bankButton" destination="CYe-d6-9CP" id="Qwt-CS-aqO"/>
+                        <outlet property="editorButton" destination="QFw-SY-Xck" id="O1a-rC-n3f"/>
+                        <outlet property="helpButton" destination="jwv-um-AeU" id="SUd-x9-eeo"/>
+                        <outlet property="messageLabel" destination="H3Y-vb-2kL" id="eyW-a4-rzf"/>
+                        <outlet property="remoteButton" destination="Yho-6B-U1E" id="DP8-aQ-B95"/>
+                        <outlet property="settingsButton" destination="DUy-y2-Fki" id="CHf-Ys-WyK"/>
+                        <outlet property="spinner" destination="v0P-Z8-Fkc" id="Zis-LJ-lcK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wx2-Yq-3Ge" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2004" y="-1376"/>
+        </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="Rx6-pl-PgD">
             <objects>
-                <viewController storyboardIdentifier="Main Menu" autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="crossDissolve" id="ESI-NQ-T4b" customClass="MainMenuViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Old Main Menu" autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="crossDissolve" id="ESI-NQ-T4b" customClass="MainMenuViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QLG-Gs-NDq"/>
                         <viewControllerLayoutGuide type="bottom" id="x8c-e5-j0T"/>
@@ -479,6 +587,7 @@
     </scenes>
     <resources>
         <image name="Default.png" width="320" height="480"/>
+        <image name="Painted Metal" width="320" height="480"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <nil key="statusBar"/>

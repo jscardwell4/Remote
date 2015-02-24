@@ -6,10 +6,10 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
-
+#import "Remote-Swift.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONSOLE);
@@ -28,7 +28,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND|LOG_CONTEXT_FILE|LOG_CONTEXT_CONS
 
 + (HTTPCommand *)commandWithURL:(NSString *)url
 {
-    return [self commandWithURL:url context:[CoreDataManager defaultContext]];
+    return [self commandWithURL:url context:[DataManager mainContext]];
 }
 
 + (HTTPCommand *)commandWithURL:(NSString *)url context:(NSManagedObjectContext *)context

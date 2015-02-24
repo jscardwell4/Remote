@@ -12,15 +12,24 @@ import MoonKit
 
 class DetailSection {
 
+  /** Weak reference to controller presenting this section */
   weak var controller: DetailController?
+
+  /** The title to display for the section */
   var title: String?
+
+  /** Specifies which kind of header is ultimately used */
   var identifier: DetailSectionHeader.Identifier { return .Header }
+
+  /** The assigned section number */
   let section: Int
 
+  /** Total number or row creation blocks */
   var count: Int { return blocks.count }
 
+  /** Lazy collection that maps row creation blocks to their results */
   var rows: LazyRandomAccessCollection<MapCollectionView<[(index: Int, element: () -> DetailRow)], DetailRow>> {
-    let enumeratedBlocks = Array(enumerate(blocks))
+    let enumeratedBlocks = Array(enumerate(blocks.values))
     let lazyEnumeratedBlocks = lazy(enumeratedBlocks)
     return lazyEnumeratedBlocks.map {
       (index: Int, element: (Void) -> DetailRow) -> DetailRow in
@@ -32,7 +41,7 @@ class DetailSection {
   }
 
   /**
-  configureHeader:
+  Decorates the specified header using stored property values
 
   :param: header DetailSectionHeader
   */
@@ -40,24 +49,25 @@ class DetailSection {
     header.title = title
   }
 
-  private var blocks: [() -> DetailRow] = []
+  private var blocks: OrderedDictionary<String, () -> DetailRow> = [:]
 
   /**
-  subscript:
+  Access an individual row
 
   :param: row Int
 
-  :returns: DetailRow?
+  :returns: DetailRow
   */
   subscript(row: Int) -> DetailRow { assert(row < count); return rows[row] }
 
   /**
-  insertRow:atIndex:
+  Insert a row by wrapping in a creation block that simply returns the row
 
   :param: row DetailRow
   :param: idx Int
+  :param: key String
   */
-  func insertRow(row: DetailRow, atIndex idx: Int) { insertRow({row}, atIndex: idx) }
+  func insertRow(row: DetailRow, atIndex idx: Int, forKey key: String) { insertRow({row}, atIndex: idx, forKey: key) }
 
   /**
   insertRow:atIndex:
@@ -65,9 +75,9 @@ class DetailSection {
   :param: createRow (Void) -> DetailRow
   :param: idx Int
   */
-  func insertRow(createRow: (Void) -> DetailRow, atIndex idx: Int) {
+  func insertRow(createRow: (Void) -> DetailRow, atIndex idx: Int, forKey key: String) {
     assert(idx <= blocks.count)
-    blocks.insert(createRow, atIndex: idx)
+    blocks.insertValue(createRow, atIndex: idx, forKey: key)
   }
 
   /**
@@ -75,7 +85,14 @@ class DetailSection {
 
   :param: idx Int
   */
-  func removeRowAtIndex(idx: Int) { assert(idx < blocks.count); _ = blocks.removeAtIndex(idx) }
+  func removeRowAtIndex(idx: Int) { assert(idx < blocks.count); blocks.removeAtIndex(idx) }
+
+  /**
+  removeRowForKey:
+
+  :param: key String
+  */
+  func removeRowForKey(key: String) { blocks[key] = nil }
 
   /**
   replaceRowAtIndex:withRow:
@@ -97,7 +114,7 @@ class DetailSection {
 
   :param: createRow (Void) -> DetailRow
   */
-  func addRow(createRow: (Void) -> DetailRow) { blocks.append(createRow) }
+  func addRow(createRow: (Void) -> DetailRow, forKey key: String) { blocks[key] = createRow }
 
   /**
   initWithSectionNumber:title:

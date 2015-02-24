@@ -20,6 +20,9 @@ class Preset: BankableModelObject, PreviewableItem {
 
   @NSManaged var storage: DictionaryStorage
 
+  @NSManaged var childPresets: NSOrderedSet?
+  @NSManaged var parentPreset: Preset?
+
   /** awakeFromInsert */
   override func awakeFromInsert() {
     super.awakeFromInsert()
@@ -56,24 +59,18 @@ class Preset: BankableModelObject, PreviewableItem {
   }
 
   /**
-  generateElement
-
-  :returns: RemoteElement?
-  */
-  func generateElement() -> RemoteElement? {
-    return managedObjectContext != nil
-             ? RemoteElement.remoteElementFromPreset(self, context: managedObjectContext!)
-             : nil
-  }
-
-  /**
   updateWithData:
 
   :param: data [NSObject AnyObject]!
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
-    if let jsonData = data as? [String:AnyObject] { storage.dictionary = jsonData }
+    if var jsonData = data as? [String:AnyObject] {
+      if let subelementsJSONData = jsonData.removeValueForKey("subelements") as? [[String:AnyObject]] {
+        childPresets = NSOrderedSet(array: Preset.importObjectsFromData(subelementsJSONData, context: managedObjectContext))
+      }
+      storage.dictionary = jsonData
+    }
   }
 
   /**
@@ -123,11 +120,6 @@ class Preset: BankableModelObject, PreviewableItem {
     set { storage["background-color"] = newValue?.JSONValue }
   }
 
-  var subelements: [PresetAttributes]? {
-    get { return nil } // return (storage["subelements"] as? [[String:AnyObject]])?.map{PresetAttributes(storage: $0, context: self.context)} }
-    set { } //storage["subelements"] = newValue?.map{$0.storage} }
-  }
-
   var constraints: String? {
     get {
       if let constraintsArray = storage["constraints"] as? [String] {
@@ -158,11 +150,6 @@ class Preset: BankableModelObject, PreviewableItem {
   var autohide: Bool? {
     get { return (storage["autohide"] as? NSNumber)?.boolValue }
     set { storage["autohide"] = newValue }
-  }
-
-  var label: NSAttributedString? {
-    get { return storage["label"] as? NSAttributedString }
-    set { storage["label"] = newValue }
   }
 
   var labelAttributes: [String:AnyObject]? {
@@ -208,19 +195,19 @@ class Preset: BankableModelObject, PreviewableItem {
     set { storage["background-colors"] = newValue }
   }
 
-  var titleEdgeInsets: UIEdgeInsets? {
-    get { return (storage["title-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
-    set { storage["title-edge-insets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
+  var titleEdgeInsets: UIEdgeInsets {
+    get { return UIEdgeInsetsFromString(storage["title-edge-insets"] as? String ?? "{0, 0, 0, 0}") }
+    set { storage["title-edge-insets"] = NSStringFromUIEdgeInsets(newValue) }
   }
 
-  var contentEdgeInsets: UIEdgeInsets? {
-    get { return (storage["content-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
-    set { storage["contentEdgeInsets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
+  var contentEdgeInsets: UIEdgeInsets {
+    get { return UIEdgeInsetsFromString(storage["content-edge-insets"] as? String ?? "{0, 0, 0, 0}") }
+    set { storage["contentEdgeInsets"] = NSStringFromUIEdgeInsets(newValue) }
   }
 
-  var imageEdgeInsets: UIEdgeInsets? {
-    get { return (storage["image-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
-    set { storage["image-edge-insets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
+  var imageEdgeInsets: UIEdgeInsets {
+    get { return UIEdgeInsetsFromString(storage["image-edge-insets"] as? String ?? "{0, 0, 0, 0}") }
+    set { storage["image-edge-insets"] = NSStringFromUIEdgeInsets(newValue) }
   }
 
   var command: [String:String]? {

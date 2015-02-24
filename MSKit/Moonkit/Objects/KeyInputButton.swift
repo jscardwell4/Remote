@@ -59,15 +59,15 @@ public class KeyInputButton: UIControl {
     let prominent = [Style.Prominent, Style.Done] ∋ style
     let reverse = [Style.Reversed, Style.DeleteBackward] ∋ style
     let normalStateColor = prominent
-                             ? DrawingKit.prominentBackgroundColor
+                             ? DrawingKit.prominentColor
                              : (reverse
-                                  ? DrawingKit.highlightedBackgroundColor
-                                  : DrawingKit.normalBackgroundColor)
+                                  ? DrawingKit.keyboardColor2
+                                  : DrawingKit.keyboardColor1)
     let highlightedStateColor = prominent
-                                  ? DrawingKit.highlightedBackgroundColor
+                                  ? DrawingKit.keyboardColor2
                                   : (reverse
-                                      ? DrawingKit.normalBackgroundColor
-                                      : DrawingKit.highlightedBackgroundColor)
+                                      ? DrawingKit.keyboardColor1
+                                      : DrawingKit.keyboardColor2)
 
     let backgroundColor = highlighted ? highlightedStateColor : normalStateColor
 

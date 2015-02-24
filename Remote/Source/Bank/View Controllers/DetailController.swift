@@ -256,11 +256,26 @@ class DetailController: UITableViewController {
   subscript(row: Int, section: Int) -> DetailRow? { return self[section]?[row] }
 
   /**
+  reloadRowAtIndexPath:withRowAnimation:
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    reloadRowsAtIndexPaths([indexPath], withRowAnimation: animation)
+  }
+
+  /**
   reloadRowsAtIndexPaths:animated:
 
   :param: indexPaths [NSIndexPath]
+  :param: animation UITableViewRowAnimation = .Automatic
   */
-  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) { configureCellsAtIndexPaths(indexPaths) }
+  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
+    tableView.endUpdates()
+  }
 
   /**
   removeRowAtIndexPath:withRowAnimation:
@@ -283,19 +298,6 @@ class DetailController: UITableViewController {
   func insertRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     tableView.beginUpdates()
     tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: animation)
-    tableView.endUpdates()
-  }
-
-  /**
-  replaceRowAtIndexPath:withRowAnimation:
-
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func replaceRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    tableView.beginUpdates()
-    removeRowAtIndexPath(indexPath, withRowAnimation: animation)
-    insertRowAtIndexPath(indexPath, withRowAnimation: animation)
     tableView.endUpdates()
   }
 
@@ -373,7 +375,7 @@ class DetailController: UITableViewController {
 
 
             // Insert row into our section
-            self.sections.values[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row)
+            self.sections.values[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row, forKey: "Picker")
 
             self.insertRowAtIndexPath(pickerPath)
 
@@ -467,6 +469,18 @@ extension DetailController: UITableViewDelegate {
     self[indexPath]?.select?()
     sqrt(4.0)
   }
+
+  /**
+  tableView:heightForHeaderInSection:
+
+  :param: tableView UITableView
+  :param: section Int
+
+  :returns: CGFloat
+  */
+  // override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  //   return sections[section] is FilteringDetailSection ? 64.0 : 44.0
+  // }
 
 }
 

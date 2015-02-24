@@ -32,6 +32,7 @@ public extension String {
       return s
     } else { return String(map(self){$0 == " " ? "-" : $0}).lowercaseString }
   }
+
   public var titlecaseString: String {
     if isTitlecase { return self }
     else if isDashcase { return String(map(self){$0 == "-" ? " " : $0}).capitalizedString }
@@ -48,6 +49,7 @@ public extension String {
       return capitalizedString
     }
   }
+
   public var camelcaseString: String {
     if isCamelcase { return self }
     else if isTitlecase { return String(self[startIndex]).lowercaseString + String(filter(dropFirst(self)){$0 != " "}) }
@@ -71,6 +73,7 @@ public extension String {
       return capitalizedString
     }
   }
+
   public var isCamelcase: Bool { return ~/"^\\p{Ll}+(\\p{Lu}+\\p{Ll}*)*$" ~= self }
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
   public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
@@ -82,9 +85,7 @@ public extension String {
 
   :returns: String
   */
-  public func join(strings: String...) -> String {
-    return join(strings)
-  }
+  public func join(strings: String...) -> String { return join(strings) }
 
   /**
   initWithContentsOfFile:error:
@@ -98,6 +99,20 @@ public extension String {
     } else { return nil }
   }
 
+  /**
+  init:ofType:error:
+
+  :param: resource String
+  :param: type String?
+  :param: error NSErrorPointer = nil
+  */
+  public init?(contentsOfBundleResource resource: String, ofType type: String?, error: NSErrorPointer = nil) {
+    if let filePath = NSBundle.mainBundle().pathForResource(resource, ofType: type) {
+      if let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: error) {
+        self = string as String
+      } else { return nil }
+    } else { return nil }
+  }
 
   /**
   substringFromRange:
@@ -106,9 +121,7 @@ public extension String {
 
   :returns: String
   */
-  public func substringFromRange(range: Range<Int>) -> String {
-    return self[range]
-  }
+  public func substringFromRange(range: Range<Int>) -> String { return self[range] }
 
   /**
   subscript:
@@ -210,6 +223,18 @@ public extension String {
                                           options: nil,
                                             range: NSRange(location: 0, length: characterCount),
                                      withTemplate: template)
+  }
+
+  /**
+  replaceMatchesForRegEx:withTemplate:
+
+  :param: regex NSRegularExpression
+  :param: template String
+
+  :returns: String
+  */
+  public mutating func replaceMatchesForRegEx(regex: NSRegularExpression, withTemplate template: String) {
+    self = stringByReplacingMatchesForRegEx(regex, withTemplate: template)
   }
 
   public var characterCount: Int { return countElements(self) }

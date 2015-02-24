@@ -21,8 +21,10 @@ class FilteringDetailSectionHeader: DetailSectionHeader {
   */
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
+    contentView.removeAllConstraints()
     contentView.addSubview(checkBoxContainer)
-    contentView.constrain("[container]-| :: container.centerY = self.centerY + 3", views: ["container": checkBoxContainer])
+    contentView.constrain("[container]-| :: V:|-(>=\(DetailSectionHeader.headerFont.pointSize)@999)-[container]-(>=8@999)-|",
+                    views: ["container": checkBoxContainer])
   }
 
   var activePredicatesDidChange: ((Void) -> Void)?
@@ -48,7 +50,9 @@ class FilteringDetailSectionHeader: DetailSectionHeader {
         apply(labeledCheckboxes){self.checkBoxContainer.addSubview($0)}
         let views: OrderedDictionary<String, UIView> = OrderedDictionary(keys: (0..<labeledCheckboxes.count).map{"view\($0)"},
                                                                          values: labeledCheckboxes)
-        let format = "|-" + "-8-".join(views.keys.map{"[\($0)]"}) + "-| :: " + "::".join(views.keys.map{"V:|-[\($0)]|"})
+        let horizontalFormat = "|-" + "-8-".join(views.keys.map{"[\($0)]"}) + "-|"
+        let verticalForamt = "::".join(views.keys.map{"V:|-[\($0)]|"})
+        let format = "::".join(horizontalFormat, verticalForamt)
         checkBoxContainer.constrain(format, views: views.dictionary)
       }
     }

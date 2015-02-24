@@ -9,7 +9,8 @@
 #import "RemoteElementExportSupportFunctions.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "JSONObjectKeys.h"
-#import "CoreDataManager.h"
+#import "Remote-Swift.h"
+//#import "CoreDataManager.h"
 //#import <objc/runtime.h>
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -20,7 +21,7 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 @dynamic button, indicator;
 
 + (instancetype)command {
-  return [self commandInContext:[CoreDataManager defaultContext]];
+  return [self commandInContext:[DataManager mainContext]];
 }
 
 + (instancetype)commandInContext:(NSManagedObjectContext *)context {

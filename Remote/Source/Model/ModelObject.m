@@ -7,7 +7,8 @@
 //
 #import "ModelObject.h"
 #import "MSRemoteMacros.h"
-#import "CoreDataManager.h"
+#import "Remote-Swift.h"
+//#import "CoreDataManager.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -37,7 +38,7 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 /// @param uuid
 /// @return instancetype
 + (instancetype)objectWithUUID:(NSString *)uuid {
-  return [self objectWithUUID:uuid context:[CoreDataManager defaultContext]];
+  return [self objectWithUUID:uuid context:[DataManager mainContext]];
 }
 
 /// This method will create a new model object with the specified uuid. if `uuid` is nil or invalid
@@ -62,6 +63,22 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 
   return object;
 
+}
+
+- (instancetype)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+  return [self initWithContext:context];
+}
+
+- (instancetype)initWithContext:(NSManagedObjectContext *)moc {
+  if (!moc)
+    ThrowInvalidNilArgument(moc);
+  NSEntityDescription * entity = [NSEntityDescription entityForName:NSStringFromClass([self class])
+                                             inManagedObjectContext:moc];
+
+  if (entity)
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:moc];
+
+  return self;
 }
 
 /// awakeFromInsert
@@ -199,7 +216,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param error
 /// @return instancetype
 + (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
-  return [self existingObjectWithID:objectID context:[CoreDataManager defaultContext] error:error];
+  return [self existingObjectWithID:objectID context:[DataManager mainContext] error:error];
 }
 
 /// existingObjectWithID:context:error:
@@ -219,7 +236,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param uuid
 /// @return instancetype
 + (instancetype)existingObjectWithUUID:(NSString *)uuid {
-  return [self existingObjectWithUUID:uuid context:[CoreDataManager defaultContext]];
+  return [self existingObjectWithUUID:uuid context:[DataManager mainContext]];
 }
 
 /// existingObjectWithUUID:context:
@@ -260,14 +277,14 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param value
 /// @return instancetype
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value {
-  return [self findFirstByAttribute:attribute withValue:value context:[CoreDataManager defaultContext]];
+  return [self findFirstByAttribute:attribute withValue:value context:[DataManager mainContext]];
 }
 
 /// allValuesForAttribute:
 /// @param attribute
 /// @return NSArray *
 + (NSArray *)allValuesForAttribute:(NSString *)attribute {
-  return [self allValuesForAttribute:attribute context:[CoreDataManager defaultContext]];
+  return [self allValuesForAttribute:attribute context:[DataManager mainContext]];
 }
 
 /// allValuesForAttribute:context:
@@ -301,7 +318,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param predicate
 /// @return NSArray *
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate {
-  return [self findAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
+  return [self findAllMatchingPredicate:predicate context:[DataManager mainContext]];
 }
 
 /// findAllMatchingPredicate:context:
@@ -319,7 +336,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 /// findAll
 /// @return NSArray *
-+ (NSArray *)findAll { return [self findAllInContext:[CoreDataManager defaultContext]]; }
++ (NSArray *)findAll { return [self findAllInContext:[DataManager mainContext]]; }
 
 /// findAllInContext:
 /// @param moc
@@ -339,7 +356,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param ascending
 /// @return NSArray *
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending {
-  return [self findAllSortedBy:sortBy ascending:ascending context:[CoreDataManager defaultContext]];
+  return [self findAllSortedBy:sortBy ascending:ascending context:[DataManager mainContext]];
 }
 
 /// findAllSortedBy:ascending:context:
@@ -369,7 +386,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 ////////////////////////////////////////////////////////////////////////////////
 @implementation ModelObject (Counting)
 
-+ (NSUInteger)countOfObjects { return [self countOfObjectsInContext:[CoreDataManager defaultContext]]; }
++ (NSUInteger)countOfObjects { return [self countOfObjectsInContext:[DataManager mainContext]]; }
 
 + (NSUInteger)countOfObjectsInContext:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
@@ -402,7 +419,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param predicate
 /// @return NSUInteger
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate {
-  return [self countOfObjectsWithPredicate:predicate context:[CoreDataManager defaultContext]];
+  return [self countOfObjectsWithPredicate:predicate context:[DataManager mainContext]];
 }
 
 @end
@@ -424,7 +441,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// deleteAllMatchingPredicate:
 /// @param predicate
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
-  [self deleteAllMatchingPredicate:predicate context:[CoreDataManager defaultContext]];
+  [self deleteAllMatchingPredicate:predicate context:[DataManager mainContext]];
 }
 
 @end
@@ -497,7 +514,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
                    withPredicate:predicate
                         sortedBy:sortBy
                        ascending:ascending
-                       context:[CoreDataManager defaultContext]];
+                       context:[DataManager mainContext]];
 }
 
 @end

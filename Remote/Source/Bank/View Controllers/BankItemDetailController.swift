@@ -47,10 +47,13 @@ class BankItemDetailController: NamedItemDetailController {
   */
   init(model: BankableModelObject) {
     assert(model.managedObjectContext != nil, "initializing controller with deleted model")
-    context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: model.managedObjectContext!)
+    context = DataManager.childContextForContext(model.managedObjectContext!)
+    context.nametag = "bank item detail controller"
     let objectID = model.objectID
-    let item = context.existingObjectWithID(objectID, error: nil) as BankableModelObject
-    super.init(namedItem: item)
+    var error: NSError?
+    let existingObject = context.existingObjectWithID(objectID, error: &error)
+    if MSHandleError(error, message: "failed to retrieve existing object by ID") { fatalError("aborting…") }
+    super.init(namedItem: existingObject as BankableModelObject)
   }
 
 }

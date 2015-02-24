@@ -14,20 +14,19 @@ import MoonKit
 class RemoteElement: NamedModelObject {
 
   /**
-  remoteElementFromPreset:context:
+  remoteElementFromPreset:
 
   :param: preset Preset
-  :param: context NSManagedObjectContext
 
   :returns: RemoteElement?
   */
-  class func remoteElementFromPreset(preset: Preset, context: NSManagedObjectContext) -> RemoteElement? {
+  class func remoteElementFromPreset(preset: Preset) -> RemoteElement? {
     var element: RemoteElement?
 
     switch preset.baseType {
-      case .Remote:      element = Remote(preset: preset, context: context)
-      case .ButtonGroup: element = ButtonGroup(preset: preset, context: context)
-      case .Button:      element = Button(preset: preset, context: context)
+      case .Remote:      element = Remote(preset: preset)
+      case .ButtonGroup: element = ButtonGroup(preset: preset)
+      case .Button:      element = Button(preset: preset)
       default: break
     }
 
@@ -35,13 +34,12 @@ class RemoteElement: NamedModelObject {
   }
 
   /**
-  initWithAttributes:context:
+  initWithAttributes:
 
   :param: preset Preset
-  :param: context NSManagedObjectContext
   */
-  convenience init(preset: Preset, context: NSManagedObjectContext) {
-    self.init(context: context)
+  init(preset: Preset) {
+    super.init(context: preset.managedObjectContext)
     role = preset.role
     shape = preset.shape
     style = preset.style
@@ -49,15 +47,36 @@ class RemoteElement: NamedModelObject {
     setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
     setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
     var elements: OrderedSet<RemoteElement> = []
-    if let elementsData = preset.subelements {
-//      for subelementAttributes in elementsData {
-//        if let element = RemoteElement.remoteElementFromPreset(subelementAttributes, context: context) { elements.append(element) }
-//      }
+    if let subelementPresets = preset.childPresets {
+      for subelementPreset in subelementPresets.array as [Preset] {
+        if let element = RemoteElement.remoteElementFromPreset(subelementPreset) {
+          elements.append(element)
+        }
+      }
     }
     childElements = elements
     if let constraints = preset.constraints {
       constraintManager.setConstraintsFromString(constraints)
     }
+  }
+
+  /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  :param: entity NSEntityDescription
+  :param: context NSManagedObjectContext?
+  */
+  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
+  /**
+  initWithContext:
+
+  :param: context NSManagedObjectContext
+  */
+  override init(context: NSManagedObjectContext) {
+    super.init(context: context)
   }
 
   @NSManaged var tag: NSNumber

@@ -27,11 +27,32 @@ where…
 */
 class IRCodeDetailController: BankItemDetailController {
 
+  private struct SectionKey {
+    static let Details = "Details"
+  }
+
+  private struct RowKey {
+    static let Manufacturer = "Manufacturer"
+    static let CodeSet      = "Code Set"
+    static let Frequency    = "Frequency"
+    static let Repeat       = "Repeat"
+    static let Offset       = "Offset"
+    static let OnOffPattern = "On-Off Pattern"
+  }
+
   /** loadSections */
   override func loadSections() {
     super.loadSections()
 
     precondition(model is IRCode, "we should have been given an ircode")
+
+    loadDetailsSection()
+
+  }
+
+
+  /** loadDetailsSection */
+  private func loadDetailsSection() {
 
     let irCode = model as IRCode
     let manufacturers = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] ?? []
@@ -42,7 +63,7 @@ class IRCodeDetailController: BankItemDetailController {
     /// Manufacturer
     ////////////////////////////////////////////////////////////////////////////////
 
-    section.addRow {
+    section.addRow({
       var row = DetailButtonRow()
       row.name = "Manufacturer"
       row.info = irCode.manufacturer
@@ -70,12 +91,12 @@ class IRCodeDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.Manufacturer)
 
     /// Code Set
     ////////////////////////////////////////////////////////////////////////////////
 
-    section.addRow {
+    section.addRow({
       var row = DetailButtonRow()
       row.name = "Code Set"
       row.info = irCode.codeSet ?? "No Code Set"
@@ -95,12 +116,12 @@ class IRCodeDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.CodeSet)
 
     /// Frequency
     ////////////////////////////////////////////////////////////////////////////////
 
-    section.addRow {
+    section.addRow({
       var row = DetailTextFieldRow()
       row.name = "Frequency"
       row.info = NSNumber(longLong: irCode.frequency)
@@ -108,12 +129,12 @@ class IRCodeDetailController: BankItemDetailController {
       row.inputType = .Integer
       row.valueDidChange = { if let i = ($0 as? NSNumber)?.longLongValue { irCode.frequency = i } }
       return row
-    }
+    }, forKey: RowKey.Frequency)
 
     /// Repeat
     ////////////////////////////////////////////////////////////////////////////////
 
-    section.addRow {
+    section.addRow({
       var row = DetailTextFieldRow()
       row.name = "Repeat"
       row.info = NSNumber(longLong: irCode.frequency)
@@ -121,12 +142,12 @@ class IRCodeDetailController: BankItemDetailController {
       row.inputType = .Integer
       row.valueDidChange = { if let i = ($0 as? NSNumber)?.shortValue { irCode.repeatCount = i } }
       return row
-    }
+    }, forKey: RowKey.Repeat)
 
     /// Offset
     ////////////////////////////////////////////////////////////////////////////////
 
-    section.addRow {
+    section.addRow({
       var row = DetailStepperRow()
       row.name = "Offset"
       row.stepperMinValue = 1
@@ -138,12 +159,12 @@ class IRCodeDetailController: BankItemDetailController {
       row.valueDidChange = { if let i = ($0 as? NSNumber)?.shortValue { irCode.offset = i } }
 
       return row
-    }
+    }, forKey: RowKey.Offset)
 
     /// On-Off Pattern
     ////////////////////////////////////////////////////////////////////////////////
 
-    section.addRow {
+    section.addRow({
       var row = DetailTextViewRow()
       row.name = "On-Off Pattern"
       row.info = irCode.onOffPattern
@@ -162,9 +183,9 @@ class IRCodeDetailController: BankItemDetailController {
         }
       }
       return row
-    }
+    }, forKey: RowKey.OnOffPattern)
 
-    sections = ["Section": section]
+    sections[SectionKey.Details] = section
   }
 
 }

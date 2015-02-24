@@ -177,7 +177,7 @@ static NSArray const * kITachErrorCodes;
               kITachDeviceUniqueIdentifier : @"uniqueIdentifier"};
   });
 
-  NSManagedObjectContext * moc = [CoreDataManager defaultContext];
+  NSManagedObjectContext * moc = [DataManager mainContext];
 
   __block ITachDevice * device = nil;
 

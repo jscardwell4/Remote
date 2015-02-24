@@ -227,7 +227,8 @@ class RemoteElementEditingController: UIViewController {
   required init(element: RemoteElement, size: CGSize? = nil) {
     super.init()
     sourceViewSize = size
-    context = CoreDataManager.childContextOfType(.MainQueueConcurrencyType, forContext: element.managedObjectContext!)
+    assert(element.managedObjectContext != nil)
+    context = DataManager.childContextForContext(element.managedObjectContext!)
     context.performBlockAndWait {
       self.changedModelValues = element.changedValues()
       self.remoteElement = self.context.existingObjectWithID(element.objectID, error: nil) as RemoteElement

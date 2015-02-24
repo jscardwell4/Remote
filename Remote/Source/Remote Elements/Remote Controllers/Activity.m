@@ -11,7 +11,7 @@
 //#import "RemoteElement.h"
 //#import "Remote.h"
 #import "RemoteElementImportSupportFunctions.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "Remote-Swift.h"
 
 @interface Activity (CoreDataGenerateAccessors)
@@ -25,7 +25,7 @@
 @dynamic launchMacro, haltMacro, remote;
 
 + (instancetype)activityWithName:(NSString *)name {
-  return [self activityWithName:name inContext:[CoreDataManager defaultContext]];
+  return [self activityWithName:name inContext:[DataManager mainContext]];
 }
 
 + (instancetype)activityWithName:(NSString *)name inContext:(NSManagedObjectContext *)context {

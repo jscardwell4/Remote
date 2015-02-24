@@ -154,6 +154,7 @@ extension UIEdgeInsets {
   public func insetRect(rect: CGRect) -> CGRect {
     return UIEdgeInsetsInsetRect(rect, self)
   }
+  public static var zeroInsets: UIEdgeInsets { return UIEdgeInsets(inset: 0) }
   public init(inset: CGFloat) { self = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset) }
 }
 

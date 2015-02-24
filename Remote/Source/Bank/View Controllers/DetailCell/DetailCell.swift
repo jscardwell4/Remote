@@ -38,9 +38,10 @@ class DetailCell: UITableViewCell {
     case Stepper         = "DetailStepperCell"
     case TextView        = "DetailTextViewCell"
     case TextField       = "DetailTextFieldCell"
+    case Custom          = "DetailCustomCell"
 
     static var all: [Identifier] {
-      return [.AttributedText, .Label, .List, .Button, .Image, .LabeledImage, .Switch,
+      return [.AttributedText, .Label, .List, .Button, .Image, .LabeledImage, .Switch, .Custom,
               .Color, .Slider, .TwoToneSlider, .Picker, .Stepper, .TextView, .TextField, .Cell]
     }
 
@@ -61,6 +62,7 @@ class DetailCell: UITableViewCell {
         case .Stepper:         return DetailStepperCell.self
         case .TextField:       return DetailTextFieldCell.self
         case .TextView:        return DetailTextViewCell.self
+        case .Custom:          return DetailCustomCell.self
       }
     }
 

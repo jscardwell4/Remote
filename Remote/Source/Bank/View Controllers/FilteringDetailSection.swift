@@ -14,6 +14,8 @@ class FilteringDetailSection: DetailSection {
 
   override var identifier: DetailSectionHeader.Identifier { return .FilteringHeader }
 
+  var singleRowDisplay = false
+
   class Predicate {
     let name: String
     let includeRow: (DetailRow) -> Bool
@@ -79,7 +81,11 @@ class FilteringDetailSection: DetailSection {
     (header as? FilteringDetailSectionHeader)?.predicates = predicates
     (header as? FilteringDetailSectionHeader)?.activePredicatesDidChange = {
       self.activePredicatesDidChange?(self)
-      self.controller?.reloadSection(self, withRowAnimation: .Fade)
+      if self.singleRowDisplay {
+        self.controller?.reloadRowAtIndexPath(NSIndexPath(forRow: 0, inSection: self.section), withRowAnimation: .Fade)
+      } else {
+        self.controller?.reloadSection(self, withRowAnimation: .Fade)
+      }
    }
   }
 

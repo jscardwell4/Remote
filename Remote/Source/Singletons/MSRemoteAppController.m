@@ -13,14 +13,11 @@
 
 #import "RemoteViewController.h"
 #import "MainMenuViewController.h"
-#import "CoreDataManager.h"
-#import "DatabaseLoader.h"
 #import "SettingsManager.h"
 #import "ConnectionManager.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
 #import "RemoteController.h"
-//#import "Remote.h"
 #import "SettingsViewController.h"
 #import "Remote-Swift.h"
 @import CoreImage;
@@ -40,9 +37,6 @@ static const int msLogContext = 0;
 @end
 
 @implementation MSRemoteAppController 
-{
-  NSOperationQueue * _workQueue;
-}
 
 + (NSString const *)versionInfo {
 
@@ -179,9 +173,8 @@ static const int msLogContext = 0;
 //  nsprintf(@"elysio fonts…\n\t%@", [@"\n\t" join:[UIFont fontNamesForFamilyName:@"Elysio"]]);
 
   // set a reference to our launch screen view controller
-  MainMenuViewController * mainMenuVC = (MainMenuViewController *)[self.window rootViewController];
+  MainMenuController * mainMenuVC = (MainMenuController *)[self.window rootViewController];
 
-  mainMenuVC.view.userInteractionEnabled = NO;
   [mainMenuVC toggleSpinner];
 
   // Apply user defined settings and observe status bar setting changes
@@ -195,101 +188,15 @@ static const int msLogContext = 0;
     UIApp.statusBarHidden = [[SettingsManager valueForSetting:SMSettingStatusBar] boolValue];
   }];
 
-  // intialize core data statck
-  BOOL coreDataStackInitializedSuccessfully = [CoreDataManager initializeDatabase];
+  // intialize core data stack
+  [DataManager prepareDatabaseWithCompletion:^{
 
-  assert(coreDataStackInitializedSuccessfully);
-
-  // create our work queue for database loading and building
-  _workQueue = [NSOperationQueue operationQueueWithName:@"com.moondeerstudios.initialization"];
-
-  // create block operations for our work queue
-  __block BOOL errorOccurred = NO;   // if set to YES, remaining operations should cancel
-
-  NSOperation * rebuildDatabase = [NSBlockOperation blockOperationWithBlock:
-                                   ^{
-    if (!errorOccurred && [UserDefaults boolForKey:@"loadData"]) {
-      NSManagedObjectContext * moc = [CoreDataManager defaultContext];
-      [moc performBlockAndWait:^{
-        errorOccurred = (![DatabaseLoader loadData]);
-
-        if (!errorOccurred) {
-          NSManagedObjectContext * defaultContext = [CoreDataManager defaultContext];
-          __block NSError * error = nil;
-          [defaultContext performBlock:^{
-            [defaultContext save:&error];
-          }];
-          MSHandleErrors(error);
-        }
-      }];
-    }
-  }];
-
-//  #define OUTPUT_JSON_FILES
-// #define LOG_JSON_FILES
-
-    NSOperation * dumpJSON = [NSBlockOperation blockOperationWithBlock:^{
-      #ifdef OUTPUT_JSON_FILES
-      NSManagedObjectContext * moc = [CoreDataManager defaultContext];
-      NSMutableDictionary * jsonStrings = [@{} mutableCopy];
-      [moc performBlockAndWait:^{
-
-        NSString * filePath = [@"/" join:@[DocumentsFilePath, @"RemoteController-export.json"]];
-        RemoteController * controller = [RemoteController remoteController:moc];
-        assert(controller);
-        jsonStrings[filePath] = controller.JSONString;
-
-        NSArray * remotes = [Remote findAllInContext:moc];
-        assert(remotes.count);
-        for (Remote * remote in remotes) {
-          filePath = [@"/" join:@[DocumentsFilePath, $(@"Remote-%@-export.json", remote.name)]];
-          jsonStrings[filePath] = remote.JSONString;
-        }
-
-        filePath = [@"/" join:@[DocumentsFilePath, @"ComponentDevice-export.json"]];
-        NSArray * componentDevices = [ComponentDevice findAllSortedBy:@"name" ascending:YES context:moc];
-        assert(componentDevices.count);
-        jsonStrings[filePath] = componentDevices.JSONString;
-
-        filePath = [@"/" join:@[DocumentsFilePath, @"Manufacturer-export.json"]];
-        NSArray * manufacturers = [Manufacturer findAllSortedBy:@"name" ascending:YES context:moc];
-        assert(manufacturers.count);
-        jsonStrings[filePath] = manufacturers.JSONString;
-
-        filePath = [@"/" join:@[DocumentsFilePath, @"Image-export.json"]];
-        NSArray * images = [Image findAllInContext:moc];
-        assert(images.count);
-        jsonStrings[filePath] = images.JSONString;
-      }];
-
-      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [jsonStrings enumerateKeysAndObjectsUsingBlock:^(NSString * filePath, NSString *jsonString, BOOL *stop) {
-          NSError * error = nil;
-          [jsonString writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-          MSHandleErrors(error);
-        }];
-      });
-
-    #endif
-  }];
-
-  [dumpJSON addDependency:rebuildDatabase];
-
-  NSOperation * readyApplication = [NSBlockOperation blockOperationWithBlock:^{
-    [MainQueue addOperationWithBlock:^{
-      [mainMenuVC toggleSpinner];
-      mainMenuVC.view.userInteractionEnabled = YES;
+    [DatabaseLoader loadDataWithCompletion:^(BOOL success, NSError* error) {
+      [MainQueue addOperationWithBlock:^{ [mainMenuVC toggleSpinner]; }];
     }];
+
   }];
 
-  [readyApplication addDependency:dumpJSON];
-
-  [_workQueue addOperations:@[
-     rebuildDatabase,
-     readyApplication,
-     dumpJSON
-   ]
-          waitUntilFinished:NO];
 
   return YES;
 }
@@ -330,7 +237,7 @@ static const int msLogContext = 0;
 
 /// showRemote
 - (void)showRemote {
-  [self showViewController:[RemoteController remoteController:[CoreDataManager defaultContext]].viewController];
+  [self showViewController:[RemoteController remoteController:[DataManager mainContext]].viewController];
 }
 
 /// showEditor
@@ -339,8 +246,8 @@ static const int msLogContext = 0;
   if ([self.window.rootViewController isKindOfClass:[RemoteViewController class]]) {
     remote = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
   } else {
-    RemoteController * controller = [RemoteController remoteController:[CoreDataManager defaultContext]];
-    remote = controller.homeRemote ?: [Remote createInContext:[CoreDataManager defaultContext]];
+    RemoteController * controller = [RemoteController remoteController:[DataManager mainContext]];
+    remote = controller.homeRemote ?: [Remote createInContext:[DataManager mainContext]];
   }
   RemoteEditingController * editorVC = [[RemoteEditingController alloc] initWithElement:remote];
   editorVC.delegate  = self;

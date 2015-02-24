@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		C2014FBA180E004E00C31780 /* JSONObjectKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2014FB9180E004E00C31780 /* JSONObjectKeys.m */; };
 		C203CC371A17DA1E0064D4CB /* RemoteElementViewConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */; };
+		C20D11A41A40A88600C33499 /* BatteryStatusButtonPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D119C1A40A88600C33499 /* BatteryStatusButtonPreview.swift */; };
+		C20D11A51A40A88600C33499 /* ButtonGroupPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D119D1A40A88600C33499 /* ButtonGroupPreview.swift */; };
+		C20D11A61A40A88600C33499 /* ButtonPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D119E1A40A88600C33499 /* ButtonPreview.swift */; };
+		C20D11A71A40A88600C33499 /* ConnectionStatusButtonPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D119F1A40A88600C33499 /* ConnectionStatusButtonPreview.swift */; };
+		C20D11A81A40A88600C33499 /* ModeSelectionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11A01A40A88600C33499 /* ModeSelectionPreview.swift */; };
+		C20D11A91A40A88600C33499 /* RemoteElementPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11A11A40A88600C33499 /* RemoteElementPreview.swift */; };
+		C20D11AA1A40A88600C33499 /* RemotePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11A21A40A88600C33499 /* RemotePreview.swift */; };
+		C20D11AB1A40A88600C33499 /* RockerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11A31A40A88600C33499 /* RockerPreview.swift */; };
+		C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */; };
+		C20D11B11A40FDD900C33499 /* DetailCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11B01A40FDD900C33499 /* DetailCustomCell.swift */; };
+		C20D11B31A40FE2500C33499 /* DetailCustomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11B21A40FE2500C33499 /* DetailCustomRow.swift */; };
 		C215C9CC19F7375F000CC6CC /* DetailButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CB19F7375F000CC6CC /* DetailButtonCell.swift */; };
 		C215C9CF19F739E5000CC6CC /* DetailLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9CE19F739E5000CC6CC /* DetailLabelCell.swift */; };
 		C215C9D319F73A0C000CC6CC /* DetailTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D219F73A0C000CC6CC /* DetailTextFieldCell.swift */; };
@@ -17,6 +28,7 @@
 		C215C9D919F73A4A000CC6CC /* DetailStepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D819F73A4A000CC6CC /* DetailStepperCell.swift */; };
 		C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5919DB788E0052DDB7 /* Preset.swift */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
+		C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C43031A80015E004F8DA8 /* MainMenuController.swift */; };
 		C21F931819E48CA800E9FF2D /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */; };
 		C22033B11A28D35D00372BCE /* DetailLabeledImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033AF1A28D35D00372BCE /* DetailLabeledImageRow.swift */; };
 		C22033B21A28D35D00372BCE /* DetailSliderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22033B01A28D35D00372BCE /* DetailSliderRow.swift */; };
@@ -33,6 +45,7 @@
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C225879F19FB0A70006D8B1D /* ImportExportFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225879E19FB0A70006D8B1D /* ImportExportFileManager.swift */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
+		C22E5C881A489C0C0017CEB6 /* DatabaseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E5C871A489C0C0017CEB6 /* DatabaseLoader.swift */; };
 		C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5119DB788E0052DDB7 /* NetworkDevice.swift */; };
 		C230DF3D19DC7164008C2337 /* ISYDeviceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */; };
 		C230DF3F19DC7164008C2337 /* ITachDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C230DF3E19DC7164008C2337 /* ITachDevice.swift */; };
@@ -229,8 +242,6 @@
 		C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFA016DC18530093D5B4 /* MainMenuViewController.m */; };
 		C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */; };
 		C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFB416DC18530093D5B4 /* SelectionViewController.m */; };
-		C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFE916DC18530093D5B4 /* CoreDataManager.m */; };
-		C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */; };
 		C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFED16DC18530093D5B4 /* MSRemoteAppController.m */; };
 		C25B47AB16FF8D5E0042B59E /* SettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF516DC18530093D5B4 /* SettingsManager.m */; };
 		C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFF716DC18530093D5B4 /* SettingsViewController.m */; };
@@ -240,7 +251,6 @@
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */; };
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
-		C26296801810619900760056 /* CoreDataManager+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = C262967F1810619900760056 /* CoreDataManager+Model.m */; };
 		C2629BF7170248E100A0FFC2 /* CommandSetCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B45C216FF66FE0042B59E /* CommandSetCollection.m */; };
 		C269842319DF8513007E268B /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */; };
 		C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8119D7791C008DEE39 /* BankCollectionCategoryCell.swift */; };
@@ -437,6 +447,7 @@
 		C2B84B0E1A27E56D000D699C /* ButtonGroupPresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B0B1A27E56D000D699C /* ButtonGroupPresetDetailController.swift */; };
 		C2B84B0F1A27E56D000D699C /* ButtonPresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B0C1A27E56D000D699C /* ButtonPresetDetailController.swift */; };
 		C2B84B101A27E56D000D699C /* RemotePresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B0D1A27E56D000D699C /* RemotePresetDetailController.swift */; };
+		C2BE96EA1A473093007599B2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BE96E91A473093007599B2 /* DataManager.swift */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
 		C2C628D319D7188C00E40176 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C628D219D7188C00E40176 /* Bank.swift */; };
 		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
@@ -659,6 +670,17 @@
 		C2037B7419D0F29B001F6AD9 /* BankCollectionZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoomView.swift; sourceTree = "<group>"; };
 		C203CC331A17BB750064D4CB /* Remote.base 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 19.xcdatamodel"; sourceTree = "<group>"; };
 		C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementViewConstraint.swift; sourceTree = "<group>"; };
+		C20D119C1A40A88600C33499 /* BatteryStatusButtonPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryStatusButtonPreview.swift; sourceTree = "<group>"; };
+		C20D119D1A40A88600C33499 /* ButtonGroupPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonGroupPreview.swift; sourceTree = "<group>"; };
+		C20D119E1A40A88600C33499 /* ButtonPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPreview.swift; sourceTree = "<group>"; };
+		C20D119F1A40A88600C33499 /* ConnectionStatusButtonPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionStatusButtonPreview.swift; sourceTree = "<group>"; };
+		C20D11A01A40A88600C33499 /* ModeSelectionPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeSelectionPreview.swift; sourceTree = "<group>"; };
+		C20D11A11A40A88600C33499 /* RemoteElementPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementPreview.swift; sourceTree = "<group>"; };
+		C20D11A21A40A88600C33499 /* RemotePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePreview.swift; sourceTree = "<group>"; };
+		C20D11A31A40A88600C33499 /* RockerPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RockerPreview.swift; sourceTree = "<group>"; };
+		C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDrawingKit.swift; sourceTree = "<group>"; };
+		C20D11B01A40FDD900C33499 /* DetailCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCustomCell.swift; sourceTree = "<group>"; };
+		C20D11B21A40FE2500C33499 /* DetailCustomRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCustomRow.swift; sourceTree = "<group>"; };
 		C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Glyphish_Test.json; sourceTree = "<group>"; };
 		C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer_Test.json; sourceTree = "<group>"; };
 		C215C9CB19F7375F000CC6CC /* DetailButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailButtonCell.swift; sourceTree = "<group>"; };
@@ -670,6 +692,7 @@
 		C215C9D819F73A4A000CC6CC /* DetailStepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailStepperCell.swift; sourceTree = "<group>"; };
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
+		C21C43031A80015E004F8DA8 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		C21F931719E48CA800E9FF2D /* BankCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionCell.swift; sourceTree = "<group>"; };
 		C22033AF1A28D35D00372BCE /* DetailLabeledImageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailLabeledImageRow.swift; sourceTree = "<group>"; };
 		C22033B01A28D35D00372BCE /* DetailSliderRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailSliderRow.swift; sourceTree = "<group>"; };
@@ -688,6 +711,7 @@
 		C225879E19FB0A70006D8B1D /* ImportExportFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportExportFileManager.swift; path = Bank/ImportExportFileManager.swift; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
 		C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionItemCell.swift; sourceTree = "<group>"; };
+		C22E5C871A489C0C0017CEB6 /* DatabaseLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLoader.swift; sourceTree = "<group>"; };
 		C230DF3C19DC7164008C2337 /* ISYDeviceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceGroup.swift; sourceTree = "<group>"; };
 		C230DF3E19DC7164008C2337 /* ITachDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDevice.swift; sourceTree = "<group>"; };
 		C230DF4019DC7164008C2337 /* ISYDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDevice.swift; sourceTree = "<group>"; };
@@ -908,7 +932,6 @@
 		C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingController.swift; sourceTree = "<group>"; };
 		C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEditingController.swift; sourceTree = "<group>"; };
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
-		C262967F1810619900760056 /* CoreDataManager+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Model.m"; sourceTree = "<group>"; };
 		C26296811811F9AE00760056 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
 		C26B5CE0182803DE005AB70E /* CommandSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSet.h; sourceTree = "<group>"; };
 		C26B5CE1182803DE005AB70E /* CommandSetCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandSetCollection.h; sourceTree = "<group>"; };
@@ -935,10 +958,6 @@
 		C26BAFB216DC18530093D5B4 /* SelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionTableViewController.m; sourceTree = "<group>"; };
 		C26BAFB316DC18530093D5B4 /* SelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
 		C26BAFB416DC18530093D5B4 /* SelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
-		C26BAFE816DC18530093D5B4 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
-		C26BAFE916DC18530093D5B4 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoreDataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C26BAFEA16DC18530093D5B4 /* DatabaseLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseLoader.h; sourceTree = "<group>"; };
-		C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseLoader.m; sourceTree = "<group>"; };
 		C26BAFEC16DC18530093D5B4 /* MSRemoteAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSRemoteAppController.h; sourceTree = "<group>"; };
 		C26BAFED16DC18530093D5B4 /* MSRemoteAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSRemoteAppController.m; sourceTree = "<group>"; };
 		C26BAFF416DC18530093D5B4 /* SettingsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsManager.h; sourceTree = "<group>"; };
@@ -1168,6 +1187,7 @@
 		C2B84B0C1A27E56D000D699C /* ButtonPresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPresetDetailController.swift; sourceTree = "<group>"; };
 		C2B84B0D1A27E56D000D699C /* RemotePresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePresetDetailController.swift; sourceTree = "<group>"; };
 		C2BD71E61702225200FAE4A3 /* CommandContainer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandContainer_Private.h; sourceTree = "<group>"; };
+		C2BE96E91A473093007599B2 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionAttributes.swift; sourceTree = "<group>"; };
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1399,6 +1419,7 @@
 		C22BECBF19FC729500898B79 /* DetailCell */ = {
 			isa = PBXGroup;
 			children = (
+				C20D11B01A40FDD900C33499 /* DetailCustomCell.swift */,
 				C2F8C3101A361769004229FE /* DetailTwoToneSliderCell.swift */,
 				C2CEFF1F1A30BD9800F3BE24 /* DetailTextInputCell.swift */,
 				C2F853F61A2CE28700F478C3 /* DetailPickerCell.swift */,
@@ -1422,6 +1443,7 @@
 		C22BECC119FC72AE00898B79 /* DetailRow */ = {
 			isa = PBXGroup;
 			children = (
+				C20D11B21A40FE2500C33499 /* DetailCustomRow.swift */,
 				C2F8C3141A361775004229FE /* DetailTwoToneSliderRow.swift */,
 				C2F853F81A2D2AEC00F478C3 /* DetailPickerRow.swift */,
 				C22033BF1A29446800372BCE /* DetailAttributedTextRow.swift */,
@@ -1521,10 +1543,10 @@
 		C25B456216FF5F8E0042B59E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C235A2F31A0E96B10067E226 /* ButtonView.swift */,
 				C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */,
 				C235A2F11A0E96B10067E226 /* BatteryStatusButtonView.swift */,
 				C235A2F21A0E96B10067E226 /* ButtonGroupView.swift */,
-				C235A2F31A0E96B10067E226 /* ButtonView.swift */,
 				C235A2F41A0E96B10067E226 /* ConnectionStatusButtonView.swift */,
 				C235A2F51A0E96B10067E226 /* ModeSelectionView.swift */,
 				C235A2F61A0E96B10067E226 /* RemoteElementView.swift */,
@@ -1809,6 +1831,7 @@
 			isa = PBXGroup;
 			children = (
 				C26BAF9F16DC18530093D5B4 /* MainMenuViewController.h */,
+				C21C43031A80015E004F8DA8 /* MainMenuController.swift */,
 				C26BAFA016DC18530093D5B4 /* MainMenuViewController.m */,
 			);
 			path = "Other View Controllers";
@@ -1817,12 +1840,10 @@
 		C26BAFE716DC18530093D5B4 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
+				C22E5C871A489C0C0017CEB6 /* DatabaseLoader.swift */,
+				C2BE96E91A473093007599B2 /* DataManager.swift */,
+				C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */,
 				C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */,
-				C26BAFE816DC18530093D5B4 /* CoreDataManager.h */,
-				C26BAFE916DC18530093D5B4 /* CoreDataManager.m */,
-				C262967F1810619900760056 /* CoreDataManager+Model.m */,
-				C26BAFEA16DC18530093D5B4 /* DatabaseLoader.h */,
-				C26BAFEB16DC18530093D5B4 /* DatabaseLoader.m */,
 				C26BAFEC16DC18530093D5B4 /* MSRemoteAppController.h */,
 				C26BAFED16DC18530093D5B4 /* MSRemoteAppController.m */,
 				C26BAFF416DC18530093D5B4 /* SettingsManager.h */,
@@ -2354,6 +2375,14 @@
 		C2F2A46E17EF55E300DE2F41 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				C20D119C1A40A88600C33499 /* BatteryStatusButtonPreview.swift */,
+				C20D119D1A40A88600C33499 /* ButtonGroupPreview.swift */,
+				C20D119E1A40A88600C33499 /* ButtonPreview.swift */,
+				C20D119F1A40A88600C33499 /* ConnectionStatusButtonPreview.swift */,
+				C20D11A01A40A88600C33499 /* ModeSelectionPreview.swift */,
+				C20D11A11A40A88600C33499 /* RemoteElementPreview.swift */,
+				C20D11A21A40A88600C33499 /* RemotePreview.swift */,
+				C20D11A31A40A88600C33499 /* RockerPreview.swift */,
 				C25B46F016FF69110042B59E /* BankObjectPreview.h */,
 				C25B46F116FF69110042B59E /* BankObjectPreview.m */,
 			);
@@ -2982,22 +3011,27 @@
 				C235A2FD1A0E96B10067E226 /* ModeSelectionView.swift in Sources */,
 				C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */,
 				C21F931819E48CA800E9FF2D /* BankCollectionCell.swift in Sources */,
+				C20D11AB1A40A88600C33499 /* RockerPreview.swift in Sources */,
 				C289BB5919F85B64008E92C1 /* DetailStepperRow.swift in Sources */,
 				C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */,
 				C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */,
 				C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */,
 				C269842919E0452E007E268B /* BankCollectionController.swift in Sources */,
 				C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */,
+				C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */,
 				C2C628D319D7188C00E40176 /* Bank.swift in Sources */,
 				C235A2FF1A0E96B10067E226 /* RemoteView.swift in Sources */,
 				C22033B21A28D35D00372BCE /* DetailSliderRow.swift in Sources */,
 				C27267431A21555800EA0C7A /* StateMap.swift in Sources */,
+				C20D11B31A40FE2500C33499 /* DetailCustomRow.swift in Sources */,
 				C289BB5C19F85B64008E92C1 /* DetailTextInputRow.swift in Sources */,
 				C27DE08819E5E67F00CCB725 /* PresetDetailController.swift in Sources */,
+				C20D11A71A40A88600C33499 /* ConnectionStatusButtonPreview.swift in Sources */,
 				C29F23EC178505AA00CD782B /* Remote.xcdatamodeld in Sources */,
 				C2B84B101A27E56D000D699C /* RemotePresetDetailController.swift in Sources */,
 				C215C9CF19F739E5000CC6CC /* DetailLabelCell.swift in Sources */,
 				C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */,
+				C20D11AA1A40A88600C33499 /* RemotePreview.swift in Sources */,
 				C269842619DF8562007E268B /* BankCollectionLayout.swift in Sources */,
 				C25B474A16FF8D5E0042B59E /* RemoteController.m in Sources */,
 				C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */,
@@ -3010,6 +3044,7 @@
 				C25B474D16FF8D5E0042B59E /* ControlStateColorSet.m in Sources */,
 				C215C9D719F73A38000CC6CC /* DetailSwitchCell.swift in Sources */,
 				C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */,
+				C20D11A91A40A88600C33499 /* RemoteElementPreview.swift in Sources */,
 				C277AB7E19D74AD6008DEE39 /* PresetCategory.swift in Sources */,
 				C235A2E71A0819590067E226 /* RemoteElementEditingAnimatedTransitioning.swift in Sources */,
 				C25B474F16FF8D5E0042B59E /* ControlStateImageSet.m in Sources */,
@@ -3019,24 +3054,27 @@
 				C27DE08519E5E67F00CCB725 /* IRCodeDetailController.swift in Sources */,
 				C252E4FC19E2195B00DBBBB2 /* DetailController.swift in Sources */,
 				C235A2DE1A06E1AE0067E226 /* ButtonGroupEditingController.swift in Sources */,
+				C20D11A51A40A88600C33499 /* ButtonGroupPreview.swift in Sources */,
 				C25B475016FF8D5E0042B59E /* ControlStateSet.m in Sources */,
 				C2DCAA2B1A20E87400F1B51A /* DictionaryStorage.swift in Sources */,
 				C215C9CC19F7375F000CC6CC /* DetailButtonCell.swift in Sources */,
 				C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */,
 				C26DD69319F326910087B204 /* NamedModelObject.swift in Sources */,
 				C277AB7C19D74011008DEE39 /* IRCodeSet.swift in Sources */,
+				C2BE96EA1A473093007599B2 /* DataManager.swift in Sources */,
 				C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */,
 				C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */,
 				C2F01E311A03D9E3007F6966 /* BackgroundEditingController.swift in Sources */,
 				C235A2FC1A0E96B10067E226 /* ConnectionStatusButtonView.swift in Sources */,
-				C26296801810619900760056 /* CoreDataManager+Model.m in Sources */,
 				C203CC371A17DA1E0064D4CB /* RemoteElementViewConstraint.swift in Sources */,
 				C277AB8019D74AD6008DEE39 /* ImageCategory.swift in Sources */,
 				C25B475616FF8D5E0042B59E /* HTTPCommandEditingViewController.m in Sources */,
 				C29C22E21A37EAF600B0101F /* DetailSectionHeader.swift in Sources */,
 				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
+				C20D11B11A40FDD900C33499 /* DetailCustomCell.swift in Sources */,
 				C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */,
+				C22E5C881A489C0C0017CEB6 /* DatabaseLoader.swift in Sources */,
 				C215C9D919F73A4A000CC6CC /* DetailStepperCell.swift in Sources */,
 				C22033C01A29446800372BCE /* DetailAttributedTextRow.swift in Sources */,
 				C27DE08A19E5E67F00CCB725 /* ITachDeviceDetailController.swift in Sources */,
@@ -3061,6 +3099,7 @@
 				C25B476D16FF8D5E0042B59E /* Command.m in Sources */,
 				C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */,
 				C25B476E16FF8D5E0042B59E /* CommandContainer.m in Sources */,
+				C20D11A81A40A88600C33499 /* ModeSelectionPreview.swift in Sources */,
 				C252E4FB19E2191E00DBBBB2 /* DetailCell.swift in Sources */,
 				C25B476F16FF8D5E0042B59E /* CommandSet.m in Sources */,
 				C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */,
@@ -3090,6 +3129,8 @@
 				C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */,
 				C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */,
 				C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */,
+				C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */,
+				C20D11A61A40A88600C33499 /* ButtonPreview.swift in Sources */,
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
 				C25B479B16FF8D5E0042B59E /* ITachConnectionManager.m in Sources */,
 				C25B479E16FF8D5E0042B59E /* ColorSelectionViewController.m in Sources */,
@@ -3103,13 +3144,12 @@
 				C25B47A216FF8D5E0042B59E /* MainMenuViewController.m in Sources */,
 				C230DF3F19DC7164008C2337 /* ITachDevice.swift in Sources */,
 				C25B47A316FF8D5E0042B59E /* SelectionTableViewController.m in Sources */,
+				C20D11A41A40A88600C33499 /* BatteryStatusButtonPreview.swift in Sources */,
 				C250CED81A16DC36006D36CF /* Constraint.swift in Sources */,
 				C2F853F71A2CE28700F478C3 /* DetailPickerCell.swift in Sources */,
 				C25B47A416FF8D5E0042B59E /* SelectionViewController.m in Sources */,
-				C25B47A516FF8D5E0042B59E /* CoreDataManager.m in Sources */,
 				C2DCAA2F1A20F6BB00F1B51A /* Font.swift in Sources */,
 				C2CEFF201A30BD9800F3BE24 /* DetailTextInputCell.swift in Sources */,
-				C25B47A616FF8D5E0042B59E /* DatabaseLoader.m in Sources */,
 				C2879F5B19DB78D60052DDB7 /* ComponentDevice.swift in Sources */,
 				C235A2E31A06E1CB0067E226 /* ButtonEditingController.swift in Sources */,
 				C25B47A716FF8D5E0042B59E /* MSRemoteAppController.m in Sources */,

@@ -12,7 +12,7 @@
 #import "ViewDecorator.h"
 //#import "RemoteElementView.h"
 #import "StoryboardProxy.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "Constraint.h"
 #import "REBackgroundEditingViewController.h"
 

@@ -7,7 +7,7 @@
 //
 @import CoreData;
 #import "ISYDeviceConnection.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -144,7 +144,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
       if ([services containsObject:kInsteonServiceType]) {
 
 
-        NSManagedObjectContext * moc = [CoreDataManager defaultContext];
+        NSManagedObjectContext * moc = [DataManager mainContext];
         __weak ISYDeviceConnection * weakself = self;
 
         [moc performBlockAndWait:^{
@@ -195,7 +195,7 @@ MSSTRING_CONST kGetMethod          = @"GET";
 
       if (success && !MSHandleErrors(error) && weakself.dataParsed) {
 
-        NSManagedObjectContext * moc = [CoreDataManager defaultContext];
+        NSManagedObjectContext * moc = [DataManager mainContext];
 
         [moc performBlock:^{
 

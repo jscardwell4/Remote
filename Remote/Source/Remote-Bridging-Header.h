@@ -9,7 +9,7 @@
 //#import "RemoteElement.h"
 //#import "RemoteElement_Private.h"
 #import "ControlStateImageSet.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "REPresetCollectionViewController.h"
 #import "StoryboardProxy.h"
 #import "ViewDecorator.h"

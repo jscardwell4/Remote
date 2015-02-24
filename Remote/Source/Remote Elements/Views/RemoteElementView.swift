@@ -17,6 +17,18 @@ class RemoteElementView: UIView {
   class var MinimumSize: CGSize { return CGSize(square: 44.0) }
 
   /**
+  viewWithPreset:
+
+  :param: preset Preset
+
+  :returns: RemoteElementView?
+  */
+  class func viewWithPreset(preset: Preset) -> RemoteElementView? {
+    let model = RemoteElement.remoteElementFromPreset(preset)
+    return model != nil ? viewWithModel(model!) : nil
+  }
+
+  /**
   viewWithModel:
 
   :param: model RemoteElement
@@ -61,7 +73,7 @@ class RemoteElementView: UIView {
     super.init()
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.model = model
-//    self.model.refresh()
+   self.model.refresh()
     registerForChangeNotification()
     initializeIVARs()
   }

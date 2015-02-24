@@ -14,7 +14,7 @@
 #import "Command.h"
 //#import "ButtonGroup.h"
 //#import "Remote.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;

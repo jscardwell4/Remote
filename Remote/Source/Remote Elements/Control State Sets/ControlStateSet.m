@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 #import "ControlStateSet.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 
 @interface ControlStateSet (Abstract)
 @property (nonatomic) id normal;

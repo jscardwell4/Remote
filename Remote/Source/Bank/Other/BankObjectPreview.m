@@ -6,7 +6,7 @@
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
 //#import "BankObjectPreview.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 
 @interface BankObjectPreview ()
 @property (nonatomic, strong) NSData * imageData;

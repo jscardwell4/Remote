@@ -14,7 +14,7 @@ extension ModelObject {
 
   class func existingObjectForEntity(entityName: String,
                             withUUID uuid: String,
-                            context: NSManagedObjectContext = CoreDataManager.defaultContext()) -> ModelObject?
+                            context: NSManagedObjectContext = DataManager.mainContext()) -> ModelObject?
   {
     var model: ModelObject?
     if isValidUUID(uuid) {
@@ -30,7 +30,7 @@ extension ModelObject {
   class func objectForEntity(entityName: String,
                     withUUID uuid: String,
                       ofType type: ModelObject.Type,
-                     context: NSManagedObjectContext = CoreDataManager.defaultContext()) -> ModelObject?
+                     context: NSManagedObjectContext = DataManager.mainContext()) -> ModelObject?
   {
     var model: ModelObject?
     if isValidUUID(uuid) {
@@ -49,7 +49,7 @@ extension ModelObject {
   class func importObjectForEntity(entityName: String,
                            forType type: ModelObject.Type,
                           fromData data: [NSObject : AnyObject]?,
-                           context: NSManagedObjectContext = CoreDataManager.defaultContext()) -> ModelObject?
+                           context: NSManagedObjectContext = DataManager.mainContext()) -> ModelObject?
   {
     var model: ModelObject?
     if data != nil {

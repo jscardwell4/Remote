@@ -12,11 +12,38 @@ import MoonKit
 
 class ComponentDeviceDetailController: BankItemDetailController {
 
+  private struct SectionKey {
+    static let Manufacturer  = "Manufacturer"
+    static let NetworkDevice = "Network Device"
+    static let Power         = "Power"
+    static let Inputs        = "Inputs"
+  }
+
+  private struct RowKey {
+    static let Manufacturer  = "Manufacturer"
+    static let CodeSet       = "Code Set"
+    static let NetworkDevice = "Network Device"
+    static let Port          = "Port"
+    static let On            = "On"
+    static let Off           = "Off"
+    static let InputPowersOn = "Input Powers On"
+  }
+
   /** loadSections */
   override func loadSections() {
     super.loadSections()
 
     precondition(model is ComponentDevice, "we should have been given a component device")
+
+    loadManufacturerSection()
+    loadNetworkDeviceSection()
+    loadPowerSection()
+    loadInputsSection()
+
+  }
+
+  /** loadManufacturerSection */
+  private func loadManufacturerSection() {
 
     let componentDevice = model as ComponentDevice
 
@@ -30,7 +57,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     let manufacturerSection = DetailSection(section: 0)
 
-    manufacturerSection.addRow {
+    manufacturerSection.addRow({
       var row = DetailButtonRow(pushableItem: componentDevice.manufacturer)
       row.name = "Manufacturer"
       row.info = componentDevice.manufacturer
@@ -88,9 +115,9 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.Manufacturer)
 
-    manufacturerSection.addRow {
+    manufacturerSection.addRow({
 
       var row = DetailButtonRow(pushableCategory: componentDevice.codeSet)
       row.name = "Code Set"
@@ -142,15 +169,26 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.CodeSet)
 
+    sections[SectionKey.Manufacturer] = manufacturerSection
+  }
+
+  /** loadNetworkDeviceSection */
+  private func loadNetworkDeviceSection() {
+
+    let componentDevice = model as ComponentDevice
+
+    if componentDevice.managedObjectContext == nil { return }
+
+    let moc = componentDevice.managedObjectContext!
 
     /// Network Device
     ////////////////////////////////////////////////////////////////////////////////
 
     let networkDeviceSection = DetailSection(section: 1, title: "Network Device")
 
-    networkDeviceSection.addRow {
+    networkDeviceSection.addRow({
       var row = DetailButtonRow()
       row.info = componentDevice.networkDevice ?? "No Network Device"
       row.name = "Network Device"
@@ -175,9 +213,9 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.NetworkDevice)
 
-    networkDeviceSection.addRow {
+    networkDeviceSection.addRow({
       var row = DetailStepperRow()
       row.name = "Port"
       row.info = Int(componentDevice.port)
@@ -187,14 +225,27 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.valueDidChange = { if let n = $0 as? NSNumber { componentDevice.port = n.shortValue } }
 
       return row
-    }
+    }, forKey: RowKey.Port)
+
+    sections[SectionKey.NetworkDevice] = networkDeviceSection
+  }
+
+  /** loadPowerSection */
+  private func loadPowerSection() {
+
+    let componentDevice = model as ComponentDevice
+
+    if componentDevice.managedObjectContext == nil { return }
+
+    let moc = componentDevice.managedObjectContext!
+
 
     /// Power
     ////////////////////////////////////////////////////////////////////////////////
 
     let powerSection = DetailSection(section: 2, title: "Power")
 
-    powerSection.addRow {
+    powerSection.addRow({
       var row = DetailButtonRow()
       row.name = "On"
       row.info = componentDevice.onCommand ?? "No On Command"
@@ -227,9 +278,9 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.On)
 
-    powerSection.addRow {
+    powerSection.addRow({
       var row = DetailButtonRow()
       row.name = "Off"
       row.info = componentDevice.offCommand ?? "No Off Command"
@@ -262,7 +313,18 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.Off)
+
+  }
+
+  /** loadInputsSection */
+  private func loadInputsSection() {
+
+    let componentDevice = model as ComponentDevice
+
+    if componentDevice.managedObjectContext == nil { return }
+
+    let moc = componentDevice.managedObjectContext!
 
 
     // Inputs
@@ -270,26 +332,20 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     let inputsSection = DetailSection(section: 3, title: "Inputs")
 
-    inputsSection.addRow {
+    inputsSection.addRow({
       var row = DetailSwitchRow()
       row.name = "Inputs Power On Device"
       row.info = NSNumber(bool: componentDevice.inputPowersOn)
       row.valueDidChange = { componentDevice.inputPowersOn = $0 as Bool }
 
       return row
+    }, forKey: RowKey.InputPowersOn)
+
+    for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
+      inputsSection.addRow({ return DetailListRow(pushableItem: input) }, forKey: "\(SectionKey.Inputs)\(idx)")
     }
 
-    for input in sortedByName(componentDevice.inputs) {
-      inputsSection.addRow { return DetailListRow(pushableItem: input) }
-    }
-
-    /// Create the sections
-    ////////////////////////////////////////////////////////////////////////////////
-
-    sections = ["Manufacturer": manufacturerSection,
-                "Network Device": networkDeviceSection,
-                "Power": powerSection,
-                "Inputs": inputsSection]
+    sections[SectionKey.Inputs] = inputsSection
   }
 
 }

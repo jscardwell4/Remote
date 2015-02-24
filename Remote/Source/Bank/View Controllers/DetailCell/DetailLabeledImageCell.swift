@@ -13,7 +13,12 @@ import MoonKit
 final class DetailLabeledImageCell: DetailCell {
 
   var placeholderImage: UIImage? {
-    didSet { if preview.image == nil && placeholderImage != nil { setPreviewImage(placeholderImage) } }
+    didSet {
+      if preview.image == nil && placeholderImage != nil {
+        setPreviewImage(placeholderImage)
+        preview.tintColor = UIColor.lightGrayColor()
+      }
+    }
   }
 
   /**
@@ -54,6 +59,7 @@ final class DetailLabeledImageCell: DetailCell {
     nameLabel.text = nil
     preview.image = nil
     preview.contentMode = .ScaleAspectFit
+    preview.tintColor = UIColor.blackColor()
   }
 
   override var info: AnyObject? {

@@ -14,12 +14,17 @@ final class DetailImageRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .Image }
 
+  var imageTint: UIColor?
+
   /**
   configure:
 
   :param: cell DetailCell
   */
-  // override func configureCell(cell: DetailCell) { super.configureCell(cell) }
+  override func configureCell(cell: DetailCell) {
+    super.configureCell(cell)
+    if imageTint != nil { (cell as? DetailImageCell)?.imageTint = imageTint }
+  }
 
   /**
   initWithPreviewableItem:

@@ -27,6 +27,36 @@ class Remote: RemoteElement {
   override var parentElement: RemoteElement? { get { return nil } set {} }
 
   /**
+  initWithPreset:
+
+  :param: preset Preset
+  */
+  override init(preset: Preset) {
+    super.init(preset: preset)
+
+    topBarHidden = preset.topBarHidden ?? false
+  }
+
+  /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  :param: entity NSEntityDescription
+  :param: context NSManagedObjectContext?
+  */
+  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
+  /**
+  initWithContext:
+
+  :param: context NSManagedObjectContext
+  */
+  override init(context: NSManagedObjectContext) {
+    super.init(context: context)
+  }
+
+  /**
   setButtonGroup:forPanelAssignment:
 
   :param: buttonGroup ButtonGroup?

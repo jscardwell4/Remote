@@ -92,8 +92,25 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func stretchSubview(subview: UIView, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("|[subview(>=0)]| :: V:|[subview(>=0)]|", views: ["subview": subview], identifier: identifier)
+            : []
+  }
+
+  /**
+  insetSubview:insets:identifier:
+
+  :param: subview UIView
+  :param: insets UIEdgeInsets
+  :param: identifier String? = nil
+
+  :returns: [NSLayoutConstraint]
+  */
+  public func insetSubview(subview: UIView, insets: UIEdgeInsets, identifier: String? = nil) -> [NSLayoutConstraint] {
+    let (top, left, bottom, right) = insets.unpack()
+    return subview.isDescendantOfView(self)
+            ? constrain("|-\(left)-[subview(>=0)]-\(right)-| :: V:|-\(top)-[subview(>=0)]-\(bottom)-|",
+                  views: ["subview": subview], identifier: identifier)
             : []
   }
 
@@ -106,7 +123,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func horizontallyStretchSubview(subview: UIView, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("H:|[subview(>=0)]|", views: ["subview": subview], identifier: identifier)
             : []
   }
@@ -120,7 +137,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func verticallyStretchSubview(subview: UIView, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("V:|[subview(>=0)]|", views: ["subview": subview], identifier: identifier)
             : []
   }
@@ -138,7 +155,7 @@ public extension UIView {
                                  offset: CGFloat = 0.0,
                              identifier: String? = nil) -> [NSLayoutConstraint]
   {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.centerX = self.centerX + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }
@@ -156,7 +173,7 @@ public extension UIView {
                                offset: CGFloat = 0.0,
                            identifier: String? = nil) -> [NSLayoutConstraint]
   {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.centerY = self.centerY + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }
@@ -171,7 +188,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func centerSubview(subview: UIView, offset: CGFloat = 0.0, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.center = self.center + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }
@@ -186,7 +203,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func leftAlignSubview(subview: UIView, offset: CGFloat = 0.0, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.left = self.left + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }
@@ -201,7 +218,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func rightAlignSubview(subview: UIView, offset: CGFloat = 0.0, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.right = self.right + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }
@@ -216,7 +233,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func topAlignSubview(subview: UIView, offset: CGFloat = 0.0, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.top = self.top + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }
@@ -231,7 +248,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func bottomAlignSubview(subview: UIView, offset: CGFloat = 0.0, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ∋ subview
+    return subview.isDescendantOfView(self)
             ? constrain("subview.bottom = self.bottom + \(offset)", views:["subview": subview], identifier: identifier)
             : []
   }

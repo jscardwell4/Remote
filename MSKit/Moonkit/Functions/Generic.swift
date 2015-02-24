@@ -17,16 +17,6 @@ public func sequence<T>(v: (T,T)) -> [T] { return [v.0, v.1] }
 public func sequence<T>(v: (T,T,T)) -> [T] { return [v.0, v.1, v.2] }
 public func sequence<T>(v: (T,T,T,T)) -> [T] { return [v.0, v.1, v.2, v.3] }
 
-public func disperse2<T>(v: [T]) -> (T,T) { return (v[0], v[1]) }
-public func disperse3<T>(v: [T]) -> (T,T,T) { return (v[0], v[1], v[2]) }
-public func disperse4<T>(v: [T]) -> (T,T,T,T) { return (v[0], v[1], v[2], v[3]) }
-
-public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
-  var result: [K:U] = [:]
-  for (key, value) in dict { result[key] = block(key, value) }
-  return result
-}
-
 /**
 createIdentifier:suffix:
 
@@ -140,28 +130,6 @@ public func length<T:Strideable>(interval: ClosedInterval<T>) -> T.Stride { retu
 public postfix func ‽<T>(lhs: [Optional<T>]) -> [T] { return lhs.filter{$0 != nil}.map{$0!} }
 
 /**
-compressed:
-
-:param: array [Optional<T>]
-
-:returns: [T]
-*/
-public func compressed<T>(array: [Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
-public prefix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
-
-/**
-flattened:
-
-:param: array [[T]]
-
-:returns: [T]
-*/
-public func flattened<T>(array:[[T]]) -> [T] { var a: [T] = []; for s in array { a += s}; return a }
-public prefix func ∪<T>(array: [[T]]) -> [T] { return flattened(array) }
-
-public prefix func ‽∪<T>(array:[Optional<[T]>]) -> [T] { return flattened(compressed(array)) }
-
-/**
 spliced:newElements:atIndex:
 
 :param: x C
@@ -207,14 +175,6 @@ public func uniqued<S:SequenceType where S.Generator.Element:Equatable>(seq:S) -
 }
 
 /**
-unique<T:Equatable>:
-
-:param: array [T]
-*/
-public func unique<T:Equatable>(inout array:[T]) { array = uniqued(array) }
-
-
-/**
 Returns true if `lhs` is nil or `rhs` evaluates to true
 
 :param: lhs Optional<T>
@@ -233,7 +193,11 @@ Prefix operator that extracts the first two elements of an array and returns as 
 :param: array [T]
 :returns: (T, T)
 */
-public prefix func ⇇<T>(array:[T]) -> (T, T) { return (array[0], array[1]) }
+//public prefix func ⇇<C: CollectionType where C.Index: IntegerLiteralConvertible> (x:[C])
+//  -> (C.Generator.Element, C.Generator.Element)
+//{
+//  return (x[0], x[1])
+//}
 
 /**
 Function for extracting first two elements of rhs into lhs
@@ -283,68 +247,6 @@ public func ∩<T:Equatable, S0:SequenceType, S1:SequenceType where S0.Generator
 {
   return filter(uniqued(lhs ∪ rhs)) {$0 ∈ lhs && $0 ∈ rhs}
 }
-
-/**
-Union set operator which stores result in lhs
-
-:param: lhs [T]
-:param: rhs [T]
-*/
-public func ∪=<T>(inout lhs:[T], rhs:[T]) { lhs += rhs }
-
-/**
-Minus set operator which stores result in lhs
-
-:param: lhs [T]
-:param: rhs [T]
-:returns: [T]
-*/
-public func ∖=<T:Equatable>(inout lhs:[T], rhs:[T]) -> [T] { lhs = lhs.filter { $0 ∉ rhs }; return lhs }
-
-/**
-Intersection set operator which stores result in lhs
-
-:param: lhs [T]
-:param: rhs [T]
-:returns: [T]
-*/
-public func ∩=<T:Equatable>(inout lhs:[T], rhs:[T]) { lhs = uniqued(lhs ∪ rhs).filter {$0 ∈ lhs && $0 ∈ rhs} }
-
-/**
-Returns true if lhs is a subset of rhs
-
-:param: lhs [T]
-:param: rhs [T]
-:returns: Bool
-*/
-public func ⊂<T:Equatable>(lhs:[T], rhs:[T]) -> Bool { return lhs.filter {$0 ∉ rhs}.isEmpty }
-
-/**
-Returns true if lhs is not a subset of rhs
-
-:param: lhs [T]
-:param: rhs [T]
-:returns: Bool
-*/
-public func ⊄<T:Equatable>(lhs:[T], rhs:[T]) -> Bool { return !(lhs ⊂ rhs) }
-
-/**
-Returns true if rhs is a subset of lhs
-
-:param: lhs [T]
-:param: rhs [T]
-:returns: Bool
-*/
-public func ⊃<T:Equatable>(lhs:[T], rhs:[T]) -> Bool { return rhs ⊂ lhs }
-
-/**
-Returns true if rhs is not a subset of lhs
-
-:param: lhs [T]
-:param: rhs [T]
-:returns: Bool
-*/
-public func ⊅<T:Equatable>(lhs:[T], rhs:[T]) -> Bool { return !(lhs ⊃ rhs) }
 
 /**
 Postfix operator that turns a generator into its generated array

@@ -15,7 +15,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
   /// MARK: Identifiers
   ////////////////////////////////////////////////////////////////////////////////
 
-  private class var headerFont: UIFont { return UIFont(name: "Elysio-Medium", size: 18)! }
+  class var headerFont: UIFont { return UIFont(name: "Elysio-Medium", size: 18)! }
 
   private let identifier: Identifier
 
@@ -131,7 +131,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
     if let titleText = title {
 
 
-      let textRect = CGRect(x: rect.minX + 20, y: rect.minY + 6, width: rect.width - 84, height: rect.height - 12)
+      let textRect = CGRect(x: rect.minX + 20, y: rect.minY + 12, width: rect.width - 84, height: rect.height - 12)
 
       UIGraphicsPushContext(context)
       CGContextSetShadowWithColor(context,
@@ -146,21 +146,21 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
                                 NSForegroundColorAttributeName: tableBackgroundColor,
                                 NSParagraphStyleAttributeName: textStyle]
 
-      let textTextHeight: CGFloat = titleText.boundingRectWithSize(CGSize(width: textRect.width, height: CGFloat.infinity),
-                                                           options: .UsesLineFragmentOrigin,
-                                                        attributes: textFontAttributes,
-                                                           context: nil).height
+      // let textTextHeight: CGFloat = titleText.boundingRectWithSize(CGSize(width: textRect.width, height: CGFloat.infinity),
+      //                                                      options: .UsesLineFragmentOrigin,
+      //                                                   attributes: textFontAttributes,
+      //                                                      context: nil).height
 
-      let textTextRect = CGRect(x: textRect.minX,
-                                y: textRect.minY + textRect.height - textTextHeight,
-                                width: textRect.width,
-                                height: textTextHeight)
+      // let textTextRect = CGRect(x: textRect.minX,
+      //                           y: textRect.minY + textRect.height - textTextHeight,
+      //                           width: textRect.width,
+      //                           height: textTextHeight)
 
       UIGraphicsPushContext(context)
 
       UIRectClip(textRect)
 
-      titleText.drawInRect(textTextRect, withAttributes: textFontAttributes)
+      titleText.drawInRect(textRect, withAttributes: textFontAttributes)
 
       UIGraphicsPopContext()
 
@@ -191,7 +191,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
                                            NSForegroundColorAttributeName: textInnerShadow.shadowColor!,
                                            NSParagraphStyleAttributeName: textStyle]
 
-      titleText.drawInRect(textTextRect, withAttributes: textInnerShadowFontAttributes)
+      titleText.drawInRect(textRect, withAttributes: textInnerShadowFontAttributes)
 
       CGContextEndTransparencyLayer(context)
       CGContextEndTransparencyLayer(context)

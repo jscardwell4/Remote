@@ -99,27 +99,50 @@ class ButtonGroup: RemoteElement {
 
   override var elementType: BaseType { return .ButtonGroup }
 
+  /** awakeFromInsert */
+  override func awakeFromInsert() {
+    super.awakeFromInsert()
+    labelAttributes = DictionaryStorage(context: managedObjectContext!)
+  }
+
+  /**
+  initWithPreset:
+
+  :param: preset Preset
+  */
+  override init(preset: Preset) {
+    super.init(preset: preset)
+
+    autohide = preset.autohide ?? false
+
+    if let labelAttributes = preset.labelAttributes { self.labelAttributes.dictionary = labelAttributes }
+    labelConstraints = preset.labelConstraints
+    // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
+  }
+
+  /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  :param: entity NSEntityDescription
+  :param: context NSManagedObjectContext?
+  */
+  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
+  /**
+  initWithContext:
+
+  :param: context NSManagedObjectContext
+  */
+  override init(context: NSManagedObjectContext) {
+    super.init(context: context)
+  }
+
   @NSManaged var commandContainer: CommandContainer?
   @NSManaged var autohide: Bool
   // @NSManaged var label: NSAttributedString?
-  @NSManaged var primitiveLabelAttributes: DictionaryStorage?
-  var labelAttributes: TitleAttributes? {
-    get {
-      willAccessValueForKey("labelAttributes")
-      let storage = primitiveLabelAttributes?.dictionary
-      didAccessValueForKey("labelAttributes")
-      return storage == nil ? nil : TitleAttributes(storage: storage! as [String:AnyObject])
-    }
-    set {
-      willChangeValueForKey("labelAttributes")
-      if newValue == nil { primitiveLabelAttributes = nil }
-      else {
-        if primitiveLabelAttributes == nil { primitiveLabelAttributes = DictionaryStorage(context: managedObjectContext) }
-        primitiveLabelAttributes?.dictionary = newValue!.dictionaryValue
-      }
-      didChangeValueForKey("labelAttributes")
-    }
-  }
+  @NSManaged var labelAttributes: DictionaryStorage
   @NSManaged var labelConstraints: String?
 
   var isPanel: Bool { return panelLocation != .Undefined && panelTrigger != .Undefined }
@@ -241,8 +264,11 @@ class ButtonGroup: RemoteElement {
     if let collection = commandContainer as? CommandSetCollection {
       if contains(0 ..< Int(collection.count), idx) {
         if let text = collection.labelAtIndex(UInt(idx)) {
-          labelAttributes?.text = text
-          commandSetLabel = labelAttributes?.string ?? NSAttributedString(string: text)
+          if let storage = labelAttributes.dictionary as? [String:AnyObject] {
+            var titleAttributes = TitleAttributes(storage: storage)
+            titleAttributes.text = text
+            commandSetLabel = titleAttributes.string
+          }
         }
       }
     }
@@ -276,7 +302,7 @@ class ButtonGroup: RemoteElement {
       labelConstraints = data["label-constraints"] as? String
 
       if let labelAttributesData = data["label-attributes"] as? [String:AnyObject] {
-        labelAttributes = TitleAttributes(JSONValue: labelAttributesData)
+        labelAttributes.dictionary = labelAttributesData
       }
 
     }
@@ -308,7 +334,7 @@ class ButtonGroup: RemoteElement {
     if commandSets.count > 0 { dictionary["command-set"] = commandSets }
     if labels.count > 0 { dictionary["label"] = labels }
     if let constraints = labelConstraints { dictionary["label-constraints"] = constraints }
-    if let attributes = labelAttributes { dictionary["label-attributes"] = attributes.JSONValue }
+    if !labelAttributes.dictionary.isEmpty { dictionary["label-attributes"] = labelAttributes.dictionary }
 
     dictionary.compact()
     dictionary.compress()
@@ -317,61 +343,6 @@ class ButtonGroup: RemoteElement {
   }
 
 }
-
-/// MARK: - Presets
-////////////////////////////////////////////////////////////////////////////////
-// extension ButtonGroup {
-
-//   protocol ButtonGroupPreset: Preset {
-//     var label: NSAttributedString? { get set }
-//     var labelAttributes: TitleAttributes? { get set }
-//   }
-
-//   enum PresetType { case None, SelectionPanel, Toolbar, DPad, Numberpad, Transport, Rocker }
-
-//   /**
-//   initWithPresetType:context:
-
-//   :param: presetType PresetType
-//   :param: context NSManagedObjectContext
-//   */
-//   convenience init(presetType: PresetType, context: NSManagedObjectContext) {
-//     self.init(context: context)
-
-//     switch presetType {
-
-//       case SelectionPanel:
-//         role = Role.SelectionPanel
-
-//       case Toolbar:
-//         role = Role.Toolbar
-
-//       case DPad:
-//         role = Role.DPad
-
-//       case Numberpad:
-//         role = Role.Numberpad
-
-//       case Transport:
-//         role = Role.Transport
-
-//       case Rocker:
-//         role = Role.Rocker
-//         style = Style.DrawBorder | Style.GlossStyle1
-//         shape = Shape.RoundedRectangle
-//         setBackgroundColor(UIColor.blackColor(), forMode: RemoteElement.DefaultMode)
-//         let titleAttributes = TitleAttributes(context: context)
-//         titleAttributes.foregroundColor = UIColor.whiteColor()
-//         titleAttributes.strokeColor = UIColor(white: 1.0, alpha: 0.5)
-//         titleAttributes.strokeWidth = -2
-//         titleAttributes.alignment = NSTextAlignment.Center.rawValue
-//         labelAttributes = titleAttributes
-
-//       default: break
-//     }
-//   }
-
-// }
 
 extension ButtonGroup.PanelAssignment: Equatable {}
 func ==(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> Bool { return lhs.rawValue == rhs.rawValue }

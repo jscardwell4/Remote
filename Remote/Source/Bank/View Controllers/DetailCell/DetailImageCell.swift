@@ -12,6 +12,8 @@ import MoonKit
 
 class DetailImageCell: DetailCell {
 
+  var imageTint: UIColor? { didSet { preview.tintColor = imageTint } }
+
   /**
   initWithStyle:reuseIdentifier:
 

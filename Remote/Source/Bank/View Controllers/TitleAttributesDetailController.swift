@@ -12,6 +12,35 @@ import MoonKit
 
 class TitleAttributesDetailController: DetailController {
 
+  private struct SectionKey {
+    static let Content        = "Content"
+    static let Font           = "Font"
+    static let Stroke         = "Stroke"
+    static let Style          = "Style"
+    static let Underline      = "Underline"
+    static let Strikethrough  = "Strikethrough"
+    static let ParagraphStyle = "Paragraph Style"
+  }
+
+  private struct RowKey {
+    static let Text               = "Text"
+    static let Icon               = "Icon"
+    static let Order              = "Order"
+    static let Font               = "Font"
+    static let ForegroundColor    = "Foreground Color"
+    static let BackgroundColor    = "Background Color"
+    static let Width              = "Width"
+    static let Fill               = "Fill"
+    static let StrokeColor        = "Stroke Color"
+    static let Obliqueness        = "Obliqueness"
+    static let Letterpress        = "Letterpress"
+    static let UnderlineStyle     = "Underline Style"
+    static let UnderlineColor     = "Underline Color"
+    static let StrikethroughStyle = "Strikethrough Style"
+    static let StrikethroughColor = "Strikethrough Color"
+    static let Alignment          = "Alignment"
+  }
+
   var attributesDelegate: TitleAttributesDelegate! { return item as? TitleAttributesDelegate }
 
   /** loadSections */
@@ -19,6 +48,19 @@ class TitleAttributesDetailController: DetailController {
     super.loadSections()
 
     precondition(item is TitleAttributesDelegate, "we should have been given a title attributes delegate")
+
+    loadContentSection()
+    loadFontSection()
+    loadStrokeSection()
+    loadStyleSection()
+    loadUnderlineSection()
+    loadStrikethroughSection()
+    loadParagraphStyleSection()
+
+  }
+
+  /** loadContentSection */
+  private func loadContentSection() {
 
     let attributesDelegate = item as TitleAttributesDelegate
 
@@ -29,17 +71,17 @@ class TitleAttributesDetailController: DetailController {
     let contentSection = DetailSection(section: 0, title: "Content")
 
     // text
-    contentSection.addRow {
+    contentSection.addRow({
       var row = DetailTextFieldRow()
       row.name = "Text"
       row.info = attributesDelegate.text
       row.placeholderText = "No Text"
       row.valueDidChange = { attributesDelegate.text = $0 as? String ?? "" }
       return row
-    }
+    }, forKey: RowKey.Text)
 
     // iconName
-    contentSection.addRow {
+    contentSection.addRow({
       var row = DetailButtonRow()
       row.name = "Icon"
       row.infoDataType = .AttributedStringData
@@ -65,10 +107,10 @@ class TitleAttributesDetailController: DetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.Icon)
 
     // Icon-Text order
-    contentSection.addRow {
+    contentSection.addRow({
       var row = DetailButtonRow()
       row.name = "Order"
       row.info = attributesDelegate.iconTextOrder.JSONValue.capitalizedString
@@ -88,7 +130,16 @@ class TitleAttributesDetailController: DetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.Order)
+
+    sections[SectionKey.Content] = contentSection
+
+  }
+
+  /** loadFontSection */
+  private func loadFontSection() {
+
+    let attributesDelegate = item as TitleAttributesDelegate
 
     /*********************************************************************************
       Font Section
@@ -99,30 +150,39 @@ class TitleAttributesDetailController: DetailController {
 
     // Font
     // TODO: Make font an editable field
-    fontSection.addRow {
+    fontSection.addRow({
       var row = DetailLabelRow()
       row.name = "Font"
       row.info = attributesDelegate.font.fontDescriptor().postscriptName
       return row
-    }
+    }, forKey: RowKey.Font)
 
     // Foreground color
-    fontSection.addRow {
+    fontSection.addRow({
       var row = DetailColorRow()
       row.name = "Foreground Color"
       row.info = attributesDelegate.foregroundColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.foregroundColor = color } }
       return row
-    }
+    }, forKey: RowKey.ForegroundColor)
 
     // Background color
-    fontSection.addRow {
+    fontSection.addRow({
       var row = DetailColorRow()
       row.name = "Background Color"
       row.info = attributesDelegate.backgroundColor
       row.valueDidChange = { attributesDelegate.backgroundColor = $0 as? UIColor }
       return row
-    }
+    }, forKey: RowKey.BackgroundColor)
+
+    sections[SectionKey.Font] = fontSection
+
+  }
+
+  /** loadStrokeSection */
+  private func loadStrokeSection() {
+
+    let attributesDelegate = item as TitleAttributesDelegate
 
     /*********************************************************************************
       Stroke Section
@@ -131,7 +191,7 @@ class TitleAttributesDetailController: DetailController {
     let strokeSection = DetailSection(section: 2, title: "Stroke")
 
     // Stroke width - 0 = no change, positive float = stroke width, negative float = stroke and fill text
-    strokeSection.addRow {
+    strokeSection.addRow({
       var row = DetailTextFieldRow()
       row.name = "Width"
       row.info = abs(attributesDelegate.strokeWidth)
@@ -144,80 +204,34 @@ class TitleAttributesDetailController: DetailController {
         }
       }
       return row
-   }
+   }, forKey: RowKey.Width)
 
-   strokeSection.addRow {
+   strokeSection.addRow({
      var row = DetailSwitchRow()
      row.name = "Fill"
      row.info = attributesDelegate.strokeFill
      row.valueDidChange = { attributesDelegate.strokeFill = ($0 as NSNumber).boolValue }
      return row
-   }
+   }, forKey: RowKey.Fill)
 
     // Stroke color
-    strokeSection.addRow {
+    strokeSection.addRow({
       var row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.strokeColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.strokeColor = color } }
       return row
-    }
+    }, forKey: RowKey.StrokeColor)
 
+    sections[SectionKey.Stroke] = strokeSection
 
-    /*********************************************************************************
-       Spacing Section
-    *********************************************************************************/
+  }
 
-    let spacingSection = DetailSection(section: 3, title: "Spacing")
+  /** loadStyleSection */
+  private func loadStyleSection() {
 
-    // Ligature
-    spacingSection.addRow {
-      var row = DetailSwitchRow()
-      row.name = "Ligature"
-      row.info = attributesDelegate.ligature == 1
-      row.valueDidChange = { attributesDelegate.ligature = ($0 as NSNumber).boolValue ? 1 : 0 }
-      return row
-    }
+    let attributesDelegate = item as TitleAttributesDelegate
 
-    // Expansion
-    spacingSection.addRow {
-      var row = DetailTextFieldRow()
-      row.name = "Expansion"
-      row.info = attributesDelegate.expansion
-      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.inputType = .FloatingPoint
-      row.placeholderText = "No Expansion"
-      row.valueDidChange = { if let expansion = ($0 as? NSNumber)?.floatValue { attributesDelegate.expansion = expansion } }
-      return row
-   }
-
-   // Baseline offset
-    spacingSection.addRow {
-      var row = DetailTextFieldRow()
-      row.name = "Baseline Offset"
-      row.info = attributesDelegate.baselineOffset
-      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.inputType = .FloatingPoint
-      row.placeholderText = "0"
-      row.valueDidChange = {
-        if let baselineOffset = ($0 as? NSNumber)?.floatValue { attributesDelegate.baselineOffset = baselineOffset }
-      }
-      return row
-   }
-
-    // Kern
-    spacingSection.addRow {
-      var row = DetailTextFieldRow()
-      row.name = "Kern"
-      row.info = attributesDelegate.kern
-      row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
-      row.inputType = .FloatingPoint
-      row.placeholderText = "Auto"
-      row.valueDidChange = {
-        if let kern = ($0 as? NSNumber)?.floatValue { attributesDelegate.kern = kern }
-      }
-      return row
-    }
 
     /*********************************************************************************
       Style Section
@@ -226,7 +240,7 @@ class TitleAttributesDetailController: DetailController {
     let styleSection = DetailSection(section: 4, title: "Style")
 
      // Obliqueness
-    styleSection.addRow {
+    styleSection.addRow({
       var row = DetailTextFieldRow()
       row.name = "Obliqueness"
       row.info = attributesDelegate.obliqueness
@@ -237,16 +251,26 @@ class TitleAttributesDetailController: DetailController {
         if let obliqueness = ($0 as? NSNumber)?.floatValue { attributesDelegate.obliqueness = obliqueness }
       }
       return row
-   }
+   }, forKey: RowKey.Obliqueness)
 
     // Text effect
-    styleSection.addRow {
+    styleSection.addRow({
       var row = DetailSwitchRow()
       row.name = "Letterpress"
       row.info = attributesDelegate.textEffect != nil
       row.valueDidChange = { attributesDelegate.textEffect = ($0 as NSNumber).boolValue ? "letterpress" : nil }
       return row
-    }
+    }, forKey: RowKey.Letterpress)
+
+    sections[SectionKey.Style] = styleSection
+
+  }
+
+  /** loadUnderlineSection */
+  private func loadUnderlineSection() {
+
+    let attributesDelegate = item as TitleAttributesDelegate
+
 
     /*********************************************************************************
       Underline Section
@@ -255,7 +279,7 @@ class TitleAttributesDetailController: DetailController {
     let underlineSection = DetailSection(section: 5, title: "Underline")
 
     // underlineStyle
-    underlineSection.addRow {
+    underlineSection.addRow({
       var row = DetailButtonRow()
       row.name = "Style"
       row.info = attributesDelegate.underlineStyle.JSONValue.titlecaseString
@@ -274,16 +298,26 @@ class TitleAttributesDetailController: DetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.UnderlineStyle)
 
     // Underline color
-    underlineSection.addRow {
+    underlineSection.addRow({
       var row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.underlineColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.underlineColor = color } }
       return row
-    }
+    }, forKey: RowKey.UnderlineColor)
+
+    sections[SectionKey.Underline] = underlineSection
+
+  }
+
+  /** loadStrikethroughSection */
+  private func loadStrikethroughSection() {
+
+    let attributesDelegate = item as TitleAttributesDelegate
+
 
     /*********************************************************************************
       Strikethrough Section
@@ -291,8 +325,8 @@ class TitleAttributesDetailController: DetailController {
 
     let strikethroughSection = DetailSection(section: 6, title: "Strikethrough")
 
-    // strikethroughStyle
-    strikethroughSection.addRow {
+    // Strikethrough style
+    strikethroughSection.addRow({
       var row = DetailButtonRow()
       row.name = "Style"
       row.info = attributesDelegate.strikethroughStyle.JSONValue.titlecaseString
@@ -311,16 +345,25 @@ class TitleAttributesDetailController: DetailController {
       row.detailPickerRow = pickerRow
 
       return row
-    }
+    }, forKey: RowKey.StrikethroughStyle)
 
     // Strikethrough color
-    strikethroughSection.addRow {
+    strikethroughSection.addRow({
       var row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.strikethroughColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.strikethroughColor = color } }
       return row
-    }
+    }, forKey: RowKey.StrikethroughColor)
+
+    sections[SectionKey.Strikethrough] = strikethroughSection
+
+  }
+
+  /** loadParagraphStyleSection */
+  private func loadParagraphStyleSection() {
+
+    let attributesDelegate = item as TitleAttributesDelegate
 
     /********************************************************************************
       Paragraph Style Section
@@ -328,34 +371,30 @@ class TitleAttributesDetailController: DetailController {
 
     let paragraphStyleSection = DetailSection(section: 7, title: "Paragraph Style")
 
-    // alignment                Button
-    paragraphStyleSection.addRow {
+    // Alignment
+    paragraphStyleSection.addRow({
       var row = DetailButtonRow()
       row.name = "Alignment"
       row.info = attributesDelegate.alignment.JSONValue.titlecaseString
+
+      var pickerRow = DetailPickerRow()
+      pickerRow.data = NSTextAlignment.all.map{$0.JSONValue}
+      pickerRow.info = attributesDelegate.alignment.JSONValue.titlecaseString
+      pickerRow.didSelectItem = { [unowned pickerRow] in
+        if !self.didCancel {
+          attributesDelegate.alignment = NSTextAlignment(JSONValue: $0 as? String ?? "natural")
+          self.cellDisplayingPicker?.info = attributesDelegate.alignment.JSONValue.titlecaseString
+          pickerRow.info = $0
+        }
+      }
+
+      row.detailPickerRow = pickerRow
+
       return row
-    }
+    }, forKey: RowKey.Alignment)
 
-    // firstLineHeadIndent      TextField
-    // headIndent               TextField
-    // tailIndent               TextField
-    // lineHeightMultiple       TextField
-    // maximumLineHeight        TextField
-    // minimumLineHeight        TextField
-    // lineSpacing              TextField
-    // paragraphSpacing         TextField
-    // paragraphSpacingBefore   TextField
-    // hyphenationFactor        TextField
-    // lineBreakMode            Button
+    sections[SectionKey.ParagraphStyle] = paragraphStyleSection
 
-    sections = ["Content": contentSection,
-                "Font": fontSection,
-                "Stroke": strokeSection,
-                "Spacing": spacingSection,
-                "Style": styleSection,
-                "Underline": underlineSection,
-                "Strikethrough": strikethroughSection,
-                "Paragraph Style": paragraphStyleSection]
   }
 
 }

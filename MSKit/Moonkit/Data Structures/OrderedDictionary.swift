@@ -142,10 +142,47 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   */
   public subscript (i: DictionaryIndex<Key, Value>) -> (Key, Value) { return storage[i] }
 
+  /**
+  subscript:
+
+  :param: i Int
+
+  :returns: Value
+  */
+  public subscript(i: Int) -> Value {
+    get { precondition(i < values.count); return values[i] }
+    set { precondition(i < values.count); storage[keys[i]] = newValue }
+  }
+
 
   ////////////////////////////////////////////////////////////////////////////////
   /// MARK: - Updating and removing values
   ////////////////////////////////////////////////////////////////////////////////
+
+  /**
+  insertValue:atIndex:forKey:
+
+  :param: value Value?
+  :param: index Int
+  :param: key Key
+  */
+  public mutating func insertValue(value: Value?, atIndex index: Int, forKey key: Key) {
+    precondition(index < keys.count)
+    if let v = value {
+      if let currentIndex = find(keys, key) {
+        if currentIndex != index {
+          indexKeys.removeAtIndex(currentIndex)
+          indexKeys.insert(key, atIndex: index)
+        }
+      } else {
+        indexKeys.insert(key, atIndex: index)
+      }
+      storage[key] = value
+    } else {
+      if let currentIndex = find(indexKeys, key) { indexKeys.removeAtIndex(currentIndex) }
+      storage[key] = nil
+    }
+  }
 
   /**
   setValue:forKey:
@@ -179,7 +216,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   }
 
   /**
-  removeAtIndex:Value>:
+  removeAtIndex:
 
   :param: index DictionaryIndex<Key
   :param: Value>
@@ -188,6 +225,17 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     let (k, _) = self[index]
     indexKeys.removeAtIndex(find(indexKeys, k)!)
     storage.removeAtIndex(index)
+  }
+
+  /**
+  removeAtIndex::
+
+  :param: index Int
+  */
+  public mutating func removeAtIndex(index: Int) {
+    precondition(index < keys.count)
+    storage[keys[index]] = nil
+    indexKeys.removeAtIndex(index)
   }
 
   /**

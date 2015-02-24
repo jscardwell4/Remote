@@ -34,7 +34,7 @@ MSEXTERN_STRING ModelObjectInitializingContextName;
 + (BOOL)isValidUUID:(NSString *)uuid;
 + (instancetype)objectWithUUID:(NSString *)uuid;
 + (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc;
-
+- (instancetype)initWithContext:(NSManagedObjectContext *)moc __attribute__((objc_designated_initializer));
 - (id)objectForKeyedSubscript:(NSString *)uuid;
 //- (id)objectAtIndexedSubscript:(NSUInteger)idx;
 

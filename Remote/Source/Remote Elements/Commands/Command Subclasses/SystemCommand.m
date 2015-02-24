@@ -12,7 +12,7 @@
 #import "MSRemoteAppController.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
-#import "CoreDataManager.h"
+//#import "CoreDataManager.h"
 #import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -38,7 +38,7 @@ BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 &&
 @dynamic type;
 
 + (SystemCommand *)commandWithType:(SystemCommandType)type {
-  return [self commandWithType:type inContext:[CoreDataManager defaultContext]];
+  return [self commandWithType:type inContext:[DataManager mainContext]];
 }
 
 + (SystemCommand *)commandWithType:(SystemCommandType)type inContext:(NSManagedObjectContext *)moc {
